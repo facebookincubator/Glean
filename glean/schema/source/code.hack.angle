@@ -1,0 +1,8 @@
+schema code.hack.2 {
+import hack.4
+
+type Entity =
+  {
+    decl : hack.Declaration |
+  }
+}

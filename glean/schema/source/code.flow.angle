@@ -1,0 +1,8 @@
+schema code.flow.1 {
+import flow.3
+
+type Entity =
+  {
+    decl : flow.SomeDeclaration |
+  }
+}

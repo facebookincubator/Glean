@@ -1,0 +1,2611 @@
+version: 1
+# This tells the Angle parser which version of the syntax we're using.
+# NOTE: bump this version whenever we make a change to the syntax.
+# @generated
+#FILE  glean/schema/source/buck.angle
+schema buck.1 {
+import sys.1
+import src.1
+
+# Targets in buck
+predicate Target :
+    {
+        repo : sys.Blob,
+        name : sys.Blob,
+        platform : maybe sys.Blob,
+    }
+
+# A translation unit (source file and target)
+predicate TranslationUnit :
+    {
+        file : src.File,
+        target : Target,
+    }
+
+# A target locator (subdir//path:name), subdir can be empty
+predicate Locator :
+    {
+        subdir : maybe string,
+        path : string,
+        name : string,
+    }
+
+# A source file reference (either from the repo or generated during build)
+predicate File :
+    {
+        source : src.File |
+        generated : Locator
+    }
+
+# Buck target type (cxx_libary, cxx_binary, ...)
+predicate Type : string
+
+# Buck platform (fbsource specific)
+predicate Platform : string
+
+# Buck label
+predicate Label : string
+
+# A set of Buck labels
+predicate Labels : [Label]
+
+# Buck dependency (buck.direct_deps)
+type Dependency =
+    {
+        target : Locator,
+        explicit_ : bool,  # is it in deps in fbsource?
+        exported : bool,  # is it in exported_deps in fbsource?
+    }
+
+# Reverse locator dependencies derived from buck.TargetDependencies
+predicate LocatorReverseDeps :
+    {
+        locator : Locator,  # unique key
+        rdeps : [Locator],
+    }
+
+# From buck targets --show-target-hash
+predicate TargetHash :
+    {
+        locator : Locator,  # unique key
+        targetHash : string,
+    }
+
+# From buck targets --show-rulekey
+predicate RuleKey :
+    {
+        locator : Locator,  # unique key
+        ruleKey : string,
+    }
+
+}
+
+schema buck.2 : buck.1 {
+import src.1
+
+# Buck target
+predicate Target :
+    {
+        locator : Locator,
+        type_ : Type,
+        defaultPlatform : maybe Platform,
+        labels : Labels,
+    }
+
+# Buck target dependencies
+predicate TargetDependencies.1 :
+    {
+        target : Target,
+        dependencies : [Dependency],
+    }
+
+# A translation unit (source file and target)
+predicate TranslationUnit :
+    {
+        file : src.File,
+        target : Locator,
+        platform : maybe Platform,
+    }
+
+# Buck target link_whole flag
+predicate TargetLinkWhole.1 : Target
+
+# Buck target sources
+predicate TargetSources.1 :
+    {
+        target : Target,
+        headers : [File],
+        exportedHeaders : [File],
+        srcs : [File],
+    }
+
+# Buck target output, indexed by target
+predicate TargetOut.1 :
+    {
+        target : Target,
+        file : src.File,
+    }
+
+# Buck target output, indexed by file
+predicate OutTarget.1 :
+    {
+        file : src.File,
+        target : Target,
+    }
+    stored (F,T) where TargetOut (T,F)
+
+# Which targets mention a file in headers, exportedHeaders, or srcs.
+# Derived from buck.TargetSources
+predicate Owner.1 :
+    {
+        source : src.File,  # unique key
+        owner : TargetSources,
+    }
+    stored
+    (Src,Owner) where
+      Owner = TargetSources
+        {
+          headers = Headers,
+          exportedHeaders = Exported,
+          srcs = Srcs
+        };
+      Src =
+        (S where F = Headers [..]; F = File (source S)) ++
+        (S where F = Exported [..]; F = File (source S)) ++
+        (S where F = Srcs [..]; F = File (source S))
+}
+#FILE  glean/schema/source/builtin.angle
+schema builtin.1 {
+
+# The empty record type
+type Unit = {}
+
+}
+
+schema sys.1 {
+
+# DEPRECATED: use string and/or your own predicate.
+# (Used as name storage, usually utf8 encoded text)
+predicate Blob : [byte]
+
+}
+#FILE  glean/schema/source/code.angle
+schema code.1 {
+import cxx1.4
+import hack.1
+
+type Declaration =
+    {
+        cxx : cxx1.Declaration |
+        hack : hack.Declaration |
+    }
+
+predicate DeclarationWithName :
+    {
+        name : string,
+        decl : Declaration
+    }
+    (Str, Decl) where
+       Decl =
+         (Declaration (cxx D) where cxx1.DeclarationWithName (Str,D))
+         # TODO: hack, java, ...
+}
+#FILE  glean/schema/source/cxx.angle
+schema cxx1.1 {
+import builtin.1
+import src.1
+
+# A name (identifier)
+predicate Name : string
+
+# Types are their textual representations for now
+predicate Type : string
+
+# Named parameter
+type Parameter =
+    {
+        name : Name,
+        type : Type,
+    }
+
+# Type signature of function or method (without name or scope)
+predicate Signature :
+    {
+        returns : Type,
+        parameters : [Parameter],
+    }
+
+# -----------------------------------------------------------------------------
+# Scopes and qualified names
+
+# Fully qualified C++ namespace name (or anonymous)
+predicate NamespaceQName :
+    {
+        name : maybe Name,
+        parent : maybe NamespaceQName,
+    }
+
+# Access scope for C++ declaration
+type Access = enum { Public | Protected | Private }
+
+# Scope (still somewhat incomplete)
+type Scope =
+    {
+        global_ : builtin.Unit |
+        namespace_ : NamespaceQName |
+        recordWithAccess :
+            {
+                record : QName,
+                access : Access
+            } |
+        local : FunctionQName
+    }
+
+# Fully qualified name
+predicate QName :
+    {
+        name : Name,
+        scope : Scope,
+    }
+
+# C++ operator name
+type Operator = string
+
+# C++ literal operator name
+type LiteralOperator = string
+
+# Describe a function or method name (without parameters or scope)
+predicate FunctionName :
+    {
+        name : Name |                         # ordinary name
+        operator_ : Operator |                # C++ operator
+        literalOperator : LiteralOperator |   # C++ literator operator (\"\"_x)
+        constructor : builtin.Unit |
+        destructor : builtin.Unit |
+        conversionOperator : Type
+    }
+
+# Fully qualified function name
+predicate FunctionQName :
+    {
+        name : FunctionName,
+        scope : Scope,
+    }
+
+# -----------------------------------------------------------------------------
+# Declarations
+
+# A namespace declaration
+predicate NamespaceDeclaration :
+    {
+        name : NamespaceQName,
+        source : src.Range,
+    }
+
+# C++ record kind - struct/class/union
+type RecordKind =
+   {
+       struct_ : builtin.Unit |
+       class_ : builtin.Unit |
+       union_ : builtin.Unit
+   }
+
+# Record declaration
+predicate RecordDeclaration :
+    {
+        name : QName,
+        kind : RecordKind,
+        source : src.Range,
+    }
+
+# Enum declaration
+predicate EnumDeclaration :
+    {
+        name : QName,
+        isScoped : bool,
+        type : maybe Type,
+        source : src.Range,
+    }
+
+# C++ method ref qualifier
+type RefQualifier = enum { None_ | LValue | RValue }
+
+# Method signature
+type MethodSignature =
+    {
+        isVirtual : bool,
+        isConst : bool,
+        isVolatile : bool,
+        refQualifier : RefQualifier,
+    }
+
+# Function declaration
+predicate FunctionDeclaration :
+    {
+        name : FunctionQName,
+        signature : Signature,
+        method : maybe MethodSignature,
+        source : src.Range,
+    }
+
+# C++ method override
+predicate MethodOverrides :
+    {
+        derived : FunctionDeclaration,
+        base : FunctionDeclaration,
+    }
+
+# Objective C category identifier
+type ObjcCategoryId =
+    {
+        className : Name,
+        categoryName : Name,
+    }
+
+# Objective C container identifier
+type ObjcContainerId =
+    {
+        protocol : Name |
+        interface_ : Name |
+        categoryInterface : ObjcCategoryId |
+        extensionInterface : Name |
+        implementation : Name |
+        categoryImplementation : ObjcCategoryId |
+    }
+
+# Objective C container (protocol, interface etc.) declaration
+predicate ObjcContainerDeclaration :
+    {
+        id : ObjcContainerId,
+        source : src.Range,
+    }
+
+# Objective C selector
+predicate ObjcSelector : [string]
+
+# Objective C method declaration
+predicate ObjcMethodDeclaration :
+    {
+        selector : ObjcSelector,
+        container : ObjcContainerId,
+        signature : Signature,
+        isInstance : bool,
+        isOptional : bool,
+        isAccessor : bool,
+        source : src.Range,
+    }
+
+# Objective C property declaration
+predicate ObjcPropertyDeclaration :
+    {
+        name : Name,
+        container : ObjcContainerId,
+        type : Type,
+        isInstance : bool,
+        isOptional : bool,
+        isReadOnly : bool,
+        isAtomic : bool,
+        source : src.Range,
+    }
+
+# Objective C property implementation kind
+type ObjcPropertyKind = enum { Synthesize | Dynamic }
+
+# Objective C property implementation
+predicate ObjcPropertyImplementation :
+    {
+        declaration : ObjcPropertyDeclaration,
+        kind : ObjcPropertyKind,
+        ivar : maybe Name,
+        source : src.Range,
+    }
+
+# C++ record base
+type RecordBase =
+    {
+        base : RecordDeclaration,
+        access : Access,
+        isVirtual : bool,
+    }
+
+# Enumerator declaration (constant in an enum)
+predicate Enumerator :
+    {
+        name : Name,
+        enumeration : EnumDeclaration,   # TODO: qname?
+        source : src.Range,
+    }
+
+# Enum definition
+predicate EnumDefinition :
+    {
+        declaration : EnumDeclaration,
+        enumerators : [Enumerator]
+    }
+
+# C++ function definition
+# Will also have a body eventually
+predicate FunctionDefinition :
+    {
+        declaration : FunctionDeclaration,
+        isInline : bool,
+    }
+
+# Objective C interface-implementation relationship
+predicate ObjcImplements :
+    {
+        implementation : ObjcContainerDeclaration,
+        interface_ : ObjcContainerDeclaration,
+    }
+
+# Objective C method definition
+# Will also have a body eventually
+predicate ObjcMethodDefinition : ObjcMethodDeclaration
+
+# Kind of a decl; used in DeclByName
+type DeclKind =
+    enum {
+        namespace_ |
+        usingDeclaration |
+        usingDirective |
+        record_ |
+        enum_ |
+        enumerator |
+        function_ |
+        variable |
+        objcContainer |
+        objcMethod |
+        objcProperty |
+        typeAlias |
+        macro |
+    }
+
+}
+
+
+schema cxx1.2 : cxx1.1 {
+import pp1.1
+import src.1
+
+predicate Declarations : [Declaration]
+
+# Two declarations refer to the same entity
+predicate Same :
+    {
+        declaration1 : Declaration,
+        declaration2 : Declaration,
+    }
+
+# Definitions
+
+# Part of a namespace definition
+predicate NamespaceDefinition :
+    {
+        declaration : NamespaceDeclaration,
+        members : Declarations,
+    }
+
+predicate RecordDefinition :
+    {
+        declaration : RecordDeclaration,
+        bases : [RecordBase],
+        members : Declarations,
+    }
+
+# Objective C interface definition
+predicate ObjcContainerDefinition :
+    {
+        declaration : ObjcContainerDeclaration,
+        protocols : [ObjcContainerDeclaration],
+        members : Declarations,
+    }
+
+# C++ preprocessor include trace
+type IncludeTrace =
+    {
+        include_ : pp1.Include,
+        trace : maybe Trace,
+    }
+
+# A C++ preprocessor event
+type PPEvent =
+    {
+        include_ : IncludeTrace |
+        define : pp1.Define |
+        undef : pp1.Undef |
+        use : pp1.Use |
+    }
+
+# A trace of preprocessor events in a C++ file
+predicate PPTrace :
+    {
+        file : src.File,
+        events : [PPEvent]
+    }
+
+# A trace of all interesting things in a C++ file
+predicate Trace :
+    {
+        file : src.File,
+        declarations : Declarations,
+        preprocessor : PPTrace,
+    }
+
+# C++ type alias kind
+type TypeAliasKind = enum { Typedef | Using }
+
+# Type alias declaration (typedef or using)
+predicate TypeAliasDeclaration :
+    {
+        name : QName,
+        type : Type,
+        kind : TypeAliasKind,
+        source : src.Range,
+    }
+# Using declaration
+predicate UsingDeclaration :
+    {
+        name : FunctionQName,
+        source : src.Range,
+    }
+
+# Using directive
+predicate UsingDirective :
+    {
+        name : QName,
+        source : src.Range,
+    }
+
+# Kind of global variable
+type GlobalVariableKind =
+     enum {
+        SimpleVariable |
+        StaticVariable |
+        StaticMember
+     }
+
+# Global variable attributes
+type GlobalVariableAttribute =
+    enum {
+        Plain |
+        Inline |
+        Constexpr
+    }
+
+# Global variable description
+type GlobalVariable =
+    {
+        kind : GlobalVariableKind,
+        attribute : GlobalVariableAttribute,
+        definition : bool,  # is this a declaration or a definition
+    }
+
+# Attributes of non-static member variables
+type Field =
+    {
+        mutable_ : bool,
+        bitsize : maybe nat,
+    }
+
+# Attributes of Objective C ivars
+type ObjcIVar =
+    {
+        synthesize : bool,
+        bitsize : maybe nat,
+    }
+
+# Kinds of variables
+type VariableKind =
+    {
+        global_ : GlobalVariable |
+        field : Field |
+        ivar : ObjcIVar |
+    }
+
+# Variable declaration
+predicate VariableDeclaration :
+    {
+        name : QName,
+        type : Type,
+        kind : VariableKind,
+        source : src.Range,
+    }
+
+# Sum type of all declarations
+type Declaration =
+    {
+        namespace_ : NamespaceDeclaration |
+        usingDeclaration : UsingDeclaration |
+        usingDirective : UsingDirective |
+        record_ : RecordDeclaration |
+        enum_ : EnumDeclaration |
+        function_ : FunctionDeclaration |
+        variable : VariableDeclaration |
+        objcContainer : ObjcContainerDeclaration |
+        objcMethod : ObjcMethodDeclaration |
+        objcProperty : ObjcPropertyDeclaration |
+        typeAlias : TypeAliasDeclaration |
+    }
+
+# What indirect xrefs can go through
+type XRefVia =
+    {
+        usingDeclaration : UsingDeclaration |
+        usingDirective : UsingDirective |
+        macro : pp1.Use |
+    }
+
+# C++ cross-reference target
+type XRefTarget =
+    {
+        declaration : Declaration |
+        enumerator : Enumerator |
+        objcSelector : ObjcSelector |
+        unknown : src.Loc |
+        indirect : XRefIndirectTarget |
+    }
+
+# Cross-reference that goes through something (macro or using)
+predicate XRefIndirectTarget :
+    {
+        via : XRefVia,
+        target : XRefTarget,
+    }
+
+# Cross-references to a known target
+type FixedXRef =
+    {
+        target : XRefTarget,
+        ranges : src.ByteSpans,
+    }
+
+# Note that "variable" corresponds to many "externals" in FileXRefs
+# Cross-references in a file
+predicate FileXRefMap :
+    {
+        file : src.File,
+        fixed : [FixedXRef],
+        variable : [src.ByteSpans],
+    }
+
+# Note that "externals" entries correspond to "variable" entries (in the "xmap")
+# Instantiation of a FileCrossRefMap with set of external references
+predicate FileXRefs :
+    {
+        xmap : FileXRefMap,
+        externals : [XRefTarget],
+    }
+
+# Uses
+
+# Note that ("target", "file") makes a unique key for these facts
+# All uses of a declaration in a file
+predicate TargetUses :
+    {
+        target : XRefTarget,
+        file : src.File,
+        uses : src.ByteSpans,
+    }
+
+# These are all disjoint equivalence classes.  Constructors within an array
+# guaranteed identical. Array length is at least 2.
+# All the declarations for a given entity.
+predicate DeclFamily : [Declaration]
+
+# These "decl" is a unique key here.  "decl" are only present iff they are
+# in a cxx1.Same, otherwise they are implicitly in a singleton family.
+# Map a declaration to its family.
+predicate DeclToFamily :
+    {
+        decl : Declaration,
+        family : DeclFamily,
+    }
+
+# This is a derived predicate to support searching for declarations by
+# case-insensitive name prefix, to support things like autocomplete.
+#
+# Earlier idea that didn't work so well:
+#
+#  [
+#    ("name_lowercase", string),
+#    ("decl", declaration),
+#  ]
+#
+# doesn't work because we get lots of facts with the same
+# name. e.g. "facebook" has tons of namespace declarations. This would
+# make it hard to do autocomplete, because there would be too many
+# duplicate results for a prefix.  Also it generated too much data.
+# We might try ("decl", [declaration]), but this would require
+# keeping all the declarations in memory when we derive, and might also
+# generate some very large facts for common names.
+#
+#  {
+#    name_lowercase : string,
+#    kind : DeclKind,
+#    name : Name,
+#  }
+#
+# Solves the problem of duplicate results - now there's only one fact
+# for each decl kind.  Getting from a prefix to decls will be a 2-step
+# process - first query cxx1.DeclByName by prefix, and then query
+# the appropriate decl predicates by name.
+
+# Declarations indexed by case-insensitive name
+predicate DeclByName :
+    {
+        name_lowercase : string,
+        kind : DeclKind,
+        ident : { name : Name | macro : pp1.Macro }
+    }
+
+# Generalization of Function call facts, which handles references between
+# any kinds of declarations.
+
+# Declarations referred from a given declaration.
+# Explicit version, because this v1 predicate refers to v2 things.
+predicate DeclarationTargets.1 :
+    {
+        source : Declaration,
+        targets : [Declaration],
+    }
+
+# Declarations referring to a given declaration.
+predicate DeclarationSources.1 :
+    {
+        target : Declaration,
+        sources : [Declaration],
+    }
+
+# Comment referring to a given declaration
+predicate DeclarationComment.1 :
+    {
+        declaration : Declaration,
+        file : src.File,
+        span : src.ByteSpan,
+    }
+}
+
+schema cxx1.3 : cxx1.2 {
+import buck.2
+
+# A trace of a translation unit
+predicate TranslationUnitTrace :
+    {
+        tunit : buck.TranslationUnit,
+        trace : Trace,
+    }
+}
+
+schema cxx1.4 : cxx1.3 {
+import buck.2
+import src.1
+
+# The fileXRefs corresponding to a particular translation unit
+predicate TranslationUnitXRefs :  # 2 is already used in cxx1
+    {
+        tunit : buck.TranslationUnit,
+        xrefs : [FileXRefs]
+    }
+
+# The backing ivar of a property
+predicate ObjcPropertyIVar :
+    {
+        property : ObjcPropertyDeclaration,
+        ivar : VariableDeclaration,
+    }
+
+# Derived Predicates
+
+# src.Range of an arbitrary Declaration.
+predicate DeclarationSrcRange :
+    {
+        decl : Declaration,
+        source : src.Range,
+    }
+    (D,Range) where
+      Range =
+       (R where Declaration (namespace_ X) = D;
+        X = NamespaceDeclaration { source = R }) ++
+       (R where Declaration (usingDeclaration X) = D;
+        X = UsingDeclaration { source = R }) ++
+       (R where Declaration (usingDirective X) = D;
+        X = UsingDirective { source = R }) ++
+       (R where Declaration (record_ X) = D;
+        X = RecordDeclaration { source = R }) ++
+       (R where Declaration (enum_ X) = D;
+        X = EnumDeclaration { source = R }) ++
+       (R where Declaration (function_ X) = D;
+        X = FunctionDeclaration { source = R }) ++
+       (R where Declaration (variable X) = D;
+        X = VariableDeclaration { source = R }) ++
+       (R where Declaration (objcContainer X) = D;
+        X = ObjcContainerDeclaration { source = R }) ++
+       (R where Declaration (objcMethod X) = D;
+        X = ObjcMethodDeclaration { source = R }) ++
+       (R where Declaration (objcProperty X) = D;
+        X = ObjcPropertyDeclaration { source = R }) ++
+       (R where Declaration (typeAlias X) = D;
+        X = TypeAliasDeclaration { source = R })
+
+# Find any declaration with the given name
+predicate DeclarationWithName :
+    {
+        name : string,
+        decl : Declaration
+    }
+    (Str, Decl) where
+      N = Name Str;
+      Decl =
+        (Declaration (record_ R) where
+          Q = QName { name = N };
+          R = RecordDeclaration { name = Q }) ++
+        (Declaration (function_ F) where
+          FN = FunctionName (name N);
+          Q = FunctionQName { name = FN };
+          F = FunctionDeclaration { name = Q })
+}
+#FILE  glean/schema/source/hack.angle
+schema hack.1 {
+import src.1
+
+# Name (identifier)
+predicate Name : string
+
+# Hack type (textual representation)
+predicate Type : string
+
+# Named parameter
+type Parameter =
+    {
+        name : Name,
+        type : maybe Type,
+    }
+
+# Type signature of function or method
+predicate Signature :
+    {
+        returns : maybe Type,
+        parameters : [Parameter],
+    }
+
+# Visibility scope of declaration
+type Visibility = enum { Private | Protected | Public }
+
+# Declaration of a Hack class
+predicate ClassDeclaration : { name : Name }
+
+# Declaration of a Hack interface
+predicate InterfaceDeclaration : { name : Name }
+
+# Declaration of a Hack trait
+predicate TraitDeclaration : { name : Name }
+
+# Declaration of a container, which may be a parent or child of another
+type ContainerDeclaration =
+    {
+         class_ : ClassDeclaration |
+         interface_ : InterfaceDeclaration |
+         trait : TraitDeclaration |
+    }
+
+# Declaration of a Hack enum
+predicate EnumDeclaration : { name : Name }
+
+# Declaration of a Hack typedef (type alias)
+predicate TypedefDeclaration :
+    {
+         name : Name,
+         isTransparent : bool,
+    }
+
+# Declaration of a global constant (top-level)
+predicate GlobalConstDeclaration : { name : Name }
+
+# Declaration of a class constant (member constant)
+predicate ClassConstDeclaration :
+    {
+        name : Name,
+        container : ContainerDeclaration,
+    }
+
+# Declaration of a type constant (container member type constant)
+predicate TypeConstDeclaration :
+    {
+        name : Name,
+        container : ContainerDeclaration,
+    }
+
+# Declaration of a Hack function, which could be top-level or inline
+predicate FunctionDeclaration : { name : Name }
+
+# Declaration of a Hack method (member function)
+predicate MethodDeclaration :
+    {
+        name : Name,
+        container : ContainerDeclaration,
+    }
+
+# Declaration of a Hack property (container member variable)
+predicate PropertyDeclaration :
+    {
+        name : Name,
+        container : ContainerDeclaration,
+    }
+
+# Types of declarations in Hack
+type Declaration =
+    {
+        classConst : ClassConstDeclaration |
+        container : ContainerDeclaration |
+        enum_ : EnumDeclaration |
+        enumerator : Enumerator |
+        function_ : FunctionDeclaration |
+        globalConst : GlobalConstDeclaration |
+        method : MethodDeclaration |
+        property_ : PropertyDeclaration |
+        typeConst : TypeConstDeclaration |
+        typedef_ : TypedefDeclaration |
+    }
+
+# Location of declaration
+predicate DeclarationLocation :
+    {
+        declaration : Declaration,
+        file : src.File,
+        span : src.ByteSpan,
+    }
+
+# Definition of a Hack class
+predicate ClassDefinition :
+    {
+        declaration : ClassDeclaration,
+        isAbstract : bool,
+        isFinal : bool,
+        members : [Declaration],
+    }
+
+# Definition of a Hack interface
+predicate InterfaceDefinition :
+    {
+        declaration : InterfaceDeclaration,
+        members : [Declaration],
+    }
+
+# Definition of a Hack trait
+predicate TraitDefinition :
+    {
+        declaration : TraitDeclaration,
+        members : [Declaration],
+    }
+
+# Enumerator declaration (constant in an enum)
+predicate Enumerator :
+    {
+        name : Name,
+        enumeration : EnumDeclaration,
+    }
+
+# Definition of a Hack enum
+predicate EnumDefinition :
+    {
+        declaration : EnumDeclaration,
+        enumBase: maybe Type,
+        enumConstraint: maybe Type,
+        enumerators : [Enumerator]
+    }
+
+# Definition of a Hack method (member function)
+predicate MethodDefinition :
+    {
+        declaration: MethodDeclaration,
+        signature : Signature,
+        visibility : Visibility,
+        isAbstract : bool,
+        isAsync : bool,
+        isFinal : bool,
+        isStatic : bool,
+    }
+
+# Definition of a Hack property (container member variable)
+predicate PropertyDefinition :
+    {
+        declaration: PropertyDeclaration,
+        type : maybe Type,
+        visibility : Visibility,
+        isFinal : bool,
+        isAbstract : bool,
+        isStatic : bool,
+    }
+
+# Definition of a Hack global (top-level) constant
+predicate GlobalConstDefinition :
+    {
+        declaration : GlobalConstDeclaration,
+        type : maybe Type,
+    }
+
+# Definition of a member constant
+predicate ClassConstDefinition :
+    {
+        declaration : ClassConstDeclaration,
+        type : maybe Type,
+        isAbstract : bool,
+    }
+
+type TypeConstKind = enum { Abstract | Concrete | PartiallyAbstract }
+
+# Definition of a member type constant
+predicate TypeConstDefinition :
+    {
+        declaration: TypeConstDeclaration,
+        type : maybe Type,
+        kind : TypeConstKind,
+    }
+
+# Definition of a Hack function
+predicate FunctionDefinition :
+    {
+        declaration : FunctionDeclaration,
+        signature : Signature,
+        isAsync : bool,
+    }
+
+# Code that is referenced elsewhere
+type XRefTarget =
+    {
+        declaration : Declaration |
+    }
+
+# References to target code
+type XRef =
+    {
+        target : XRefTarget,
+        ranges : src.ByteSpans
+    }
+
+# Cross-references to a target within a file
+predicate FileXRefs :
+    {
+        file : src.File,
+        xrefs : [XRef],
+    }
+
+# Autocomplete-specific definitions follow. We would like to eventually migrate
+# and remove these.
+
+# An identifier in Hack
+predicate identifier :
+    {
+        kind : nat,  # later: enum
+        name : string,
+    }
+
+# Namespaces of symbols that appear in WWW
+predicate symbolNamespace :
+    {
+        namespace_id : nat,
+        namespace_name : string,
+    }
+
+# Definitions of kinds of symbols that appear in WWW
+predicate kind :
+    {
+        id : nat,
+        name : string,
+    }
+
+# Contexts where a symbol is a valid response
+type context =
+    {
+        acid : bool,
+        actype : bool,
+        acnew : bool,
+    }
+
+# Symbols that appear in WWW
+predicate symbol :
+    {
+        name_lowercase : string,
+        valid : context,
+        kind_id : nat,
+        ns_id : nat,
+        filehash_id : string,
+        is_abstract : bool,
+        is_final : bool,
+        canonical_name : string,
+    }
+
+# Files that appear in WWW
+predicate filename :
+    {
+        filename : string,
+        filehash_id : string,
+    }
+
+}
+#FILE  glean/schema/source/hackdependency.angle
+schema hackdependency.1 {
+
+# Name of symbol in Hack
+predicate name :
+    string
+
+# A parent-child relationship between two classish symbols in Hack
+predicate inheritance :
+    {
+        parent : name,
+        child : name,
+    }
+
+}
+#FILE  glean/schema/source/haxlanalyser.angle
+schema haxlanalyser.1 {
+import hs.1
+import src.1
+
+# A Sigma Context
+predicate ContextName : string
+
+predicate Context :
+    {
+        name : ContextName,
+        source : src.Loc,
+    }
+
+# A Sigma Policy
+predicate PolicyName : string
+
+predicate Policy :
+    {
+        name : PolicyName,
+        source : src.Loc,
+    }
+
+# A Tally Configuration in Sigma
+predicate TallyName : string
+
+predicate TallyConfig :
+    {
+        name : TallyName,
+        source : src.Loc,
+    }
+
+# A Sigma Endpoint
+predicate EndpointName : string
+
+predicate Endpoint :
+    {
+        name : EndpointName,
+        source : src.Loc,
+    }
+
+# An ACDC Property Configuration
+predicate ACDCProperty :
+    {
+        name : string,
+        source : src.Loc,
+    }
+
+# A located input map fetch.
+predicate InputKey : string
+
+predicate InputFetch :
+    {
+        key : InputKey,
+        source : src.Loc,
+    }
+
+# ---------- Classic HaxlAnalyser predicates
+# These events are not located, but we should be able to determine the location
+# based on what function declarations they are connected with.
+
+# A Tally bump or fetch type
+type Tally =
+    {
+        name : string,
+        type : TallyType,
+    }
+
+predicate ClassifierRead : string
+
+predicate LaserDataset : string
+
+predicate TestFile : src.File
+
+# Responses
+
+predicate JankyJSONResponse : string
+
+# A write to a scuba table
+predicate ScubaResponse : string
+
+predicate ThriftResponse : string
+
+# A Pirahna job response
+predicate PiranhaResponse : nat
+
+# A Tally bump response
+predicate TallyResponse : Tally
+
+predicate TallyType :
+    {
+        Counter,
+        UniqueCounter,
+        TopK,
+        Quantiles,
+        UniqueQuantiles,
+        FirstN,
+        LastN,
+        Moments,
+        InfiniteCounter
+    }
+
+predicate LogFeatureResponse : string
+
+predicate RestrictionResponse : nat
+
+# A write to a Hive table
+predicate HiveResponse : string
+
+# A write to a Scribe table
+predicate ScribeResponse : string
+
+type Response =
+    {
+        janky_json : JankyJSONResponse |
+        scuba : ScubaResponse |
+        thrift : ThriftResponse |
+        piranha : PiranhaResponse |
+        tally : TallyResponse |
+        log_feature : LogFeatureResponse |
+        restriction : RestrictionResponse |
+        hive : HiveResponse |
+        scribe : ScribeResponse |
+    }
+
+# Fetches
+predicate ThriftFetch : string
+
+predicate ConfigeratorFetch : string
+
+predicate TallyFetch : Tally
+
+predicate ClassifierFetch : string
+
+type Fetch =
+    {
+        thrift : ThriftFetch |
+        configerator : ConfigeratorFetch |
+        tally : TallyFetch |
+        classifier : ClassifierFetch |
+    }
+
+# Call nodes. Weird semantics, and may be deprecated at some point.
+# Declared here to keep parity with the HaxlAnalyser graph.
+predicate Call :
+    {
+        ref : string,
+        qname : string,
+        loc : src.Loc,
+    }
+
+type Node =
+    {
+        module : hs.SourceModule |
+        definition : hs.Definition |
+        class : hs.Class |
+        class_instance : hs.ClassInstance |
+        context : Context |
+        policy : Policy |
+        tally : TallyConfig |
+        endpoint : Endpoint |
+        acdc : ACDCProperty |
+        input_fetch : InputFetch |
+        response : Response |
+        fetch : Fetch |
+    }
+
+# HaxlAnalyser-style edges
+predicate Edge :
+    {
+        origin : Node,
+        dest : Node,
+    }
+
+type XRefTarget =
+    {
+        type : hs.Type |
+        definition : hs.Definition |
+        typeclass : hs.Class |
+        module : hs.SourceModule |
+    }
+
+# Cross references, for code exploration integrations
+predicate XRef :
+    {
+        loc : src.Range,
+        ref : XRefTarget,
+    }
+
+}
+#FILE  glean/schema/source/hs.angle
+schema hs.1 {
+import src.1
+
+# Identifies a package, e.g. 'base-4.11.1.0'
+predicate PackageId : string
+
+# E.g. 'Data.Maybe'
+predicate ModuleName : string
+
+# Uniquely identifies a module and its source
+predicate Module :
+    {
+        packageId : PackageId,
+        moduleName : ModuleName,
+        source : src.File,
+    }
+
+# Uniquely identifies a module and its source. For internal source files,
+# so there is no 'PackageId'
+predicate SourceModule :
+    {
+        moduleName : ModuleName,
+        source : src.File,
+    }
+
+# Unqualified function name
+predicate FunctionName : string
+
+# Code range in which the function body is defined
+predicate FunctionDefinition :
+    {
+        name : FunctionName,
+        source : src.Range,
+    }
+
+# Lists all the module definitions
+predicate ModuleDefinitions :
+    {
+        module : Module,
+        functionDefinitions : [FunctionDefinition],
+    }
+
+predicate DefinitionName : string
+
+predicate Definition :
+    {
+        name : DefinitionName,
+        source : src.Range,
+    }
+
+# Just a string for now; we don't record this info at the moment.
+predicate Type : string
+
+predicate ClassName : string
+
+# We don't record this at the moment, only the instances.
+predicate Class :
+    {
+        name : ClassName,
+        source : src.Range,
+    }
+
+predicate ClassInstance :
+    {
+        typeclass : ClassName,
+        instance : Type,
+        source : src.Range,
+    }
+}
+#FILE  glean/schema/source/java.angle
+schema java.2 {
+import src.1
+
+# A name (identifier)
+predicate Name : string
+
+# A Java type
+predicate Type :
+    {
+        type : Name
+    }
+
+##
+# https://docs.oracle.com/javase/8/docs/api/javax/lang/model/element/Modifier.html
+type Modifier =
+    enum {
+        abstract_ |
+        default_ |
+        final_ |
+        native_ |
+        private_ |
+        protected_ |
+        public_ |
+        static_ |
+        strictfp_ |
+        synchronized_ |
+        transient_ |
+        volatile_ |
+    }
+
+# A variable declaration
+predicate VariableDeclaration :
+    {
+        type : Type,
+        name : Name,
+        modifiers : [Modifier],
+        loc : src.Loc,
+    }
+
+# A class constructor declaration
+predicate ConstructorDeclaration :
+    {
+        parameters : [VariableDeclaration],
+        modifiers : [Modifier],
+        loc : src.Loc,
+    }
+
+# A class method declaration
+predicate MethodDeclaration :
+    {
+        name : Name,
+        parameters : [VariableDeclaration],
+        returnType : Type,
+        modifiers : [Modifier],
+        loc : src.Loc
+    }
+
+# An interface declaration
+predicate InterfaceDeclaration :
+    {
+        name : Name,
+        modifiers : [Modifier],
+        extends_ : [Type],
+        methods : [MethodDeclaration],
+        loc : src.Loc,
+    }
+
+# A class declaration
+predicate ClassDeclaration :
+    {
+        name : Name,
+        modifiers : [Modifier],
+        extends_ : maybe Type,
+        implements_ : [Type],
+        variables : [VariableDeclaration],
+        constructors : [ConstructorDeclaration],
+        methods : [MethodDeclaration],
+        loc : src.Loc
+    }
+
+}
+#FILE  glean/schema/source/lionhead.angle
+schema lionhead.1 {
+import testinfra.3
+
+# Facebook Id
+predicate FbId : nat
+
+# Coverage information for a single harness
+predicate CoveredHarness :
+    {
+        harnessId : FbId,
+        root : testinfra.CoveredFolder,
+    }
+}
+#FILE  glean/schema/source/pp.angle
+schema pp1.1 {
+import src.1
+
+# Preprocessor #include
+predicate Include :
+    {
+        file : src.File,         # file being included
+        path : src.ByteRange,    # span of the file path in the source
+        source : src.Range,      # where #include statement occurs
+    }
+
+# Preprocessor macro
+predicate Macro : string
+
+# Preprocessor #define
+predicate Define :
+    {
+        macro : Macro,
+        source : src.Range,
+    }
+
+# Preprocessor #undef
+predicate Undef :
+    {
+        macro : Macro,
+        source : src.Range,
+    }
+
+# Preprocessor macro use
+predicate Use :
+    {
+        macro : Macro,
+        name : src.ByteRange,            # macro name at use site
+        definition : maybe src.Loc,      # xref to the macro definition
+        expand : bool,                   # expansion or defined check?
+        source : src.Range,              # entire term including args
+    }
+
+}
+#FILE  glean/schema/source/python.angle
+schema python.1 {
+import builtin.1
+import src.1
+
+predicate Name: string
+predicate Type: string
+predicate ClassDeclaration:
+    {
+        name: Name,
+        bases: maybe [Name],
+    }
+predicate FunctionDeclaration: { name: Name }
+predicate VariableDeclaration: { name: Name }
+predicate Module: { name: Name }
+predicate ImportStatement:
+    {
+        name: Name, # QName of symbol being imported
+        as_name: maybe Name,
+        span: src.ByteSpan,
+    }
+
+type Declaration =
+    {
+        cls: ClassDeclaration |
+        func: FunctionDeclaration |
+        variable: VariableDeclaration |
+    }
+
+predicate DeclarationLocation:
+    {
+        declaration: Declaration,
+        file: src.File,
+        span: src.ByteSpan,
+    }
+
+predicate FileXRefs:
+    {
+        file: src.File,
+        xrefs: [XRef],
+    }
+
+type XRef =
+    {
+        target: XRefTarget,
+        source: src.ByteSpan,
+    }
+
+type XRefTarget =
+    {
+        declaration: Declaration |
+        module: Module |
+        indirect: XRefIndirectTarget |
+        unknown: builtin.Unit |
+    }
+
+# this is a predicate to avoid cycles
+predicate XRefIndirectTarget:
+    {
+        import_statement: ImportStatement,
+        target: XRefTarget,
+    }
+
+# this fact records all uses of a declaration in a particular file
+predicate TargetUses:
+    {
+        target: XRefTarget,
+        file: src.File,
+        uses: src.ByteSpans,
+    }
+
+} # python.1
+#FILE  glean/schema/source/schema.angle
+schema all.2 :
+  builtin.1,
+  sys.1,
+  src.1,
+  glean.test.4,
+  pp1.1,
+  buck.2,
+  cxx1.4,
+  thrift.3,
+  scm.1,
+  hs.1,
+  hack.1,
+  hackdependency.1,
+  testinfra.4,
+  java.2,
+  lionhead.1,
+  python.1,
+  code.1,
+{}
+#FILE  glean/schema/source/scm.angle
+schema scm.1 {
+
+# Designator for a repository for ScmQueryService: \"fbsource\", \"www\".
+# Useful for things inside and outside the main Glean universe.
+predicate RepoName : string
+
+# The scm repo type, usually \"hg\" or \"git\" (for ScmQueryService)
+predicate RepoType : string
+
+# The ScmQueryService needs both the repo name and type
+predicate Repo :
+    {
+        name : RepoName,
+        type : RepoType,
+    }
+
+# Designator for a revision, usually from a ScmCommit hash field
+predicate Rev : string
+
+# For timestamp knowledge see
+# https://fb.workplace.com/groups/scm/permalink/1798388996877379/
+# Seconds since UNIX Epoch, usually from a ScmCommit committer_date field,
+# if present, otherwise the author_date field. Note: nat versus i64.
+predicate Timestamp : nat
+
+# Useful commit header ScmQueryService.
+predicate Commit :
+    {
+        repo : Repo,
+        rev : Rev,
+        timestamp : Timestamp
+    }
+
+}
+#FILE  glean/schema/source/src.angle
+schema src.1 {
+
+# Relative path to source file, starts with subdir, e.g. fbcode or fbobjc,
+# Can be under buck-out, e.g. fbcode/buck-out/opt/gen/...
+predicate File : string
+
+# Common source code location type
+type Loc = {
+  file : File,
+  line : nat,
+  column : nat,
+}
+
+# Common source code range type
+type Range = {
+  file : File,
+  lineBegin : nat,
+  columnBegin : nat,
+  lineEnd : nat,
+  columnEnd : nat,
+}
+
+# DEPRECATED
+type ByteRange = {
+  begin : nat,
+  end : nat,
+}
+
+predicate FileLines : {
+  file : File,
+  lengths : [nat],
+      # length of each line, including the terminating newline (if any)
+      # NOTE: we store length rather than offset because it is shorter;
+      # offsets can be recovered via scanl' (+) 0
+  endsInNewline : bool,
+      # does the last line end in a newline?
+  hasUnicodeOrTabs : bool,
+      # does the file have any multibyte UTF-8 code points or tabs
+}
+
+# A span of bytes within a file
+type ByteSpan = {
+  start : nat,
+  length : nat,
+}
+
+# A span of bytes where the start is given as an offset from the start of
+# the previous span
+type RelByteSpan = {
+  offset : nat,
+  length : nat,
+}
+
+# Multiple spans of bytes
+type ByteSpans = [RelByteSpan]
+
+# Kind of language supported by Glean
+type Language = enum {
+  Buck | C | Cpp | Hack | Haskell |
+  ObjC | ObjCpp | Python | Thrift | Java
+}
+
+# Maps a file into the kind of language
+predicate FileLanguage : {
+  file : File,
+  language : Language
+}
+
+}
+#FILE  glean/schema/source/test.angle
+schema glean.test.1 {
+import sys.1
+
+# Named enumerated type for testing
+type Enum = enum { red | green | blue }
+
+# Named sum type for testing
+type Sum =
+    {
+        mon : byte |
+        tue : nat |
+        wed : bool |
+    }
+
+# Named record type for testing
+type Rec =
+    {
+        alpha : Enum,
+        beta : Sum,
+    }
+
+type ArrayByte = [byte]
+type ArrayNat = [nat]
+type ArrayBool = [bool]
+type ArrayString = [string]
+
+predicate Predicate : KitchenSink
+
+# Type for testing all the different Glean types
+type KitchenSink =
+    {
+        byt : byte,
+        nat : nat,
+        array_of_byte : [byte],
+        array_of_nat : [nat],
+        record_ : { a : byte, b : nat },
+        sum_ : { c : byte | d : nat },
+        named_record_ : Rec,
+        named_sum_ : Sum,
+        named_enum_ : Enum,
+        pred : sys.Blob,
+        maybe_ : maybe {},
+        bool_ : bool,
+        string_ : string,
+    }
+
+# A pair of strings
+predicate StringPair : { fst : string, snd : string }
+
+# Reverse glean.test.StringPair
+predicate RevStringPair : { fst : string, snd : string }
+    (A,B) where StringPair(B,A)
+
+# Stored version of RevStringPair
+predicate StoredRevStringPair : { fst : string, snd : string }
+    stored (A,B) where StringPair(B,A)
+
+# Reverse glean.test.StringPair
+predicate RevStringPairRec : { fst : string, snd : string }
+    { fst = A, snd = B } where StringPair { fst = B, snd = A }
+
+# Reverse glean.test.StringPair twice
+predicate RevRevStringPair : { fst : string, snd : string }
+    (A,B) where RevStringPair(B,A)
+
+# find a dual pair of StringPairs
+predicate DualStringPair : { fst : StringPair, snd : StringPair }
+    (P,Q) where
+        P = StringPair(A,B);
+        Q = StringPair(B,A)
+
+# StringPair with identical fields
+predicate ReflStringPair : string
+    A where StringPair(A,A)
+
+# find a sequence of two StringPair edges from A to B via C
+predicate ViaStringPair : { fst : string, snd : string }
+    (A,B) where StringPair(A,C); StringPair(C,B)
+
+# Nested derived predicate
+predicate RevStringPairs : { x : string, r : RevStringPair }
+    (X,R) where R = RevStringPair (_,X)
+
+# A query that mentions a variable that must be bound later (Y here)
+predicate Unbound : { x : string, y : string }
+    (X,Y) where "a" = Y; RevStringPair(X,Y)
+
+# A variable name
+predicate Name : string
+
+predicate Expr :
+  {
+      var_ : Name |
+      lit : nat |
+      prim : Name |
+      ap : { fun : Expr, arg : Expr } |
+      lam : { var_ : Name, body : Expr } |
+  }
+
+# A key-value pair
+predicate KeyValue :
+  { kstring : string, knat : nat }
+  -> { vnat : nat, vstring : string }
+
+predicate DerivedKeyValue :
+  { kstring : string, knat : nat, vnat : nat, vstring : string }
+  (KS,KN,VN,VS) where KeyValue (KS,KN) -> (VN,VS)
+
+} # glean.test.1
+
+
+schema glean.test.4 : glean.test.1 {
+import sys.1
+
+# Type for testing all the different Glean types
+type KitchenSink =
+    {
+        byt : byte,
+        nat : nat,
+        bool_ : bool,
+        string_ : string,
+        pred : sys.Blob,
+        maybe_ : maybe {},
+        record_ : { a : byte, b : nat },
+        sum_ : {
+            c : Predicate |  # recursive predicate reference
+            d : sys.Blob
+        },
+        enum_ : enum { e | f | g },
+        named_record_ : Rec,
+        named_sum_ : Sum,
+        named_enum_ : Enum,
+        array_of_byte : [byte],
+        array_of_nat : [nat],
+        array_of_bool : [bool],
+        array_of_string : [string],
+        array_of_pred : [Predicate],
+        array_of_named_record : [Rec],
+        array_of_named_sum : [Sum],
+        array_of_named_enum : [Enum],
+        # FIXME: we currently don't support directly nested arrays (T60313773)
+        array2_of_byte : [ArrayByte],
+        array2_of_nat : [ArrayNat],
+        array2_of_bool : [ArrayBool],
+        array2_of_string : [ArrayString],
+   }
+
+predicate Predicate : KitchenSink
+
+# Simple graph types
+predicate Node : { label : string }
+predicate Edge : { parent : Node, child : Node }
+
+}
+#FILE  glean/schema/source/testinfra.angle
+schema testinfra.1 {
+
+# TestId of a TestInfra handled Test
+predicate TestId : nat
+
+# Relative path to a folder
+predicate Folder : string
+
+# A generic span with the invariants specified in the name
+type OffsetSpan =
+    {
+        offsetFromZero : nat,
+        lengthAtLeastZero : nat,
+    }
+
+# Coverage range inside a file
+type CoverageRange =
+    {
+        lineRanges : [OffsetSpan] |
+        byteRanges : [OffsetSpan] |
+        # TODO add other ranges
+    }
+
+# Coverage range inside a file
+type CoverageGranularity =
+    {
+        file : bool |
+        range : {
+            coveredRanges : CoverageRange,
+            # None means a producer doesn't provide uncovered ranges
+            uncoveredRanges : maybe CoverageRange,
+         } |
+        # TODO add semantic granularities
+    }
+
+# Algorithm used to hash a file
+type HashAlgo = enum { crc32 | md5 | sha1 }
+
+# Hash information for a file
+type FileHash =
+    {
+        algo : HashAlgo,
+        hash : nat,
+    }
+
+# Length of a file on disk
+type FileLength =
+    {
+        lines : nat |
+        offset : nat |
+        lineOffsets : [nat] |
+        linesAndOffset : {
+            lines : nat,
+            offset : nat,
+        } |
+        # TODO add other lengths
+    }
+
+# Freeform metadata for the whole database
+predicate DatabaseMetadata :
+    {
+        field : string,
+        serializedValue : string,
+    }
+
+} # schema testinfra.1
+
+schema testinfra.2 : testinfra.1 {
+import src.1
+
+# Metadata for a single file
+predicate FileMetadata.2 :
+    {
+        file : src.File,
+        hash : [FileHash],
+        length : maybe FileLength,
+        # None means a producer doesn't provide nonexecutable ranges
+        nonexecutableRanges : maybe CoverageRange,
+    }
+
+}
+
+schema testinfra.3 : testinfra.2 {
+import src.1
+
+# Coverage information for a single file
+predicate CoveredFile :
+    {
+        file : src.File,
+        coverage : CoverageGranularity,
+    }
+
+# Coverage information for a single folder
+predicate CoveredFolder.2 :
+    {
+        folder : Folder,
+        folders : [CoveredFolder],
+        files : [CoveredFile],
+    }
+
+# Coverage information for a single test
+predicate CoveredTest :
+    {
+        testId : TestId,
+        root : CoveredFolder,
+    }
+
+# A set of tests
+predicate Tests.1 : [CoveredTest]
+
+# Test information for a single file
+predicate TestedFile.2 :
+    {
+        file : src.File,
+        tests : Tests,
+    }
+
+# Derived predicates
+
+# Query for CoveredFile where we only want the file, not the CoverageGranularity
+predicate CoveredFileOnly :
+   {
+        coveredFile : CoveredFile,
+        file : src.File
+   }
+   (C,F) where C = CoveredFile { file = F }
+}
+
+schema testinfra.4 : testinfra.3 {
+import src.1
+
+# Facebook Id
+predicate FbId : nat
+
+# An Id corresponding to the minimal unit measured by a framework
+predicate AssemblyId :
+    {
+        testId : TestId |
+        fbId: FbId |
+        # TODO add other assemblies
+    }
+
+# Coverage information for a single assembly
+predicate CoveredAssembly :
+    {
+        assemblyId : AssemblyId,
+        root : CoveredFolder,
+    }
+
+# A set of assemblies
+predicate Assemblies : [CoveredAssembly]
+
+# Coverage information for a single file
+predicate MeasuredFile :
+    {
+        file : src.File,
+        assemblies : Assemblies,
+    }
+
+# Derived predicates
+
+# Query for MeasuredFile where we only want the file, not the CoverageGranularity
+predicate MeasuredFileOnly :
+   {
+        measuredFile : MeasuredFile,
+        file : src.File
+   }
+   (C,F) where C = MeasuredFile { file = F }
+
+predicate DatabaseMetadataField : string
+  F where DatabaseMetadata { field = F }
+}
+#FILE  glean/schema/source/thrift.angle
+schema thrift.1 {
+import src.1
+import cxx1.2
+import scm.1
+import buck.1
+
+# Primitives
+
+# Language string from fbcode/.../thrift_library.bzl such as:
+# cpp2, d, go, hs, hs2, java-swift,
+# javadeprecated, javadeprecated-apache, js,
+# py, py-asyncio, py-twisted, py3, pyi, pyi-asyncio, rust, thriftdoc-py
+type FbcodeLang = string
+
+# Usually a thriftFbcodeLang value, but as a predicate.  Or it could be
+# a value about generating in some \"other\" repository.",
+predicate Lang : string
+
+# First parameter of namespace directive:
+# cpp2, d, erl, go, hack, php, php_path, java, java.swift, hs,
+# py, py.asyncio, py.twisted, py3, rust, cocoa, csharp, c_glib
+predicate NamespaceName : string
+
+# Actual namespace from thrift file (optional quotes removed)
+predicate NamespaceValue : string
+
+# User defined Identifiers in Thrift are identical to identifiers in C++
+predicate Identifier : string
+
+# Location where row and column are 1-based, or all zero for missing info
+type Loc =
+    {
+        startLine : nat,
+        startCol : nat,
+        endLine : nat,
+        endCol : nat,
+    }
+
+# The different kinds of named type declarations in type specifications
+type NamedKind = enum { typedef_ | enum_ | struct_ | union_ }
+
+# ##############################################################################
+# DEPRECATED old predicates, updated in thrift.2
+
+predicate File : string
+
+predicate FileTarget : { file : File, target : buck.Target }
+
+predicate TargetFile : { target : buck.Target, file : File }
+
+# ##############################################################################
+# Mangling, meta-data and supporting types
+
+# This is not limited to FbcodeLang, includes hack
+predicate MangleLang : string
+
+# From ThriftCorePackageMap or ThriftInternPackageMap
+type HackMapKind = enum { core | intern }
+
+# Data about which thrift files to generate in Hack in Www.
+# And some options from https://our.internmc.facebook.com/
+# intern/wiki/Thrift-in-www/adding-updating/
+predicate HackMap :
+    {
+        source : maybe src.File,
+        repoCode : scm.RepoName,
+        path : string,
+        kind : HackMapKind,
+        mangledsvcs : bool,
+        rest : bool,
+        server : bool  # option also called phps
+    }
+
+# Meta info from deriving names from Hack, from & to might be the same,
+# and lang is \"hack\" or ...
+predicate Mangle :
+    {
+        from : scm.Commit,         # fbsource
+        to : scm.Commit,           # www
+        lang : MangleLang,         # "hack"
+    }
+
+# Classify the purpose of a generating class, file, name, etc.
+type GenRole =
+    enum { helper | server | client | type | constant }
+
+# ##############################################################################
+# Mangling Fbsource to WWW generating Hack
+
+# # declare Hack names
+# # In the future this can migrate to Hack AST facts
+
+# Describe a name in hack generated from thrift
+predicate HackName : string
+
+# Kind of records-like-things in Hack
+type HackRecordKind =
+    enum { class_ | abstract_class | interface_ | trait_ | shape_ }
+
+# A thrift-name-derived record, which may contain methods
+predicate HackRecord :
+    {
+        name : HackName,
+        kind : HackRecordKind,
+    }
+
+# Thrift-name-derived method in the context of a record
+predicate HackMethod :
+    {
+        name : HackName,
+        record : HackRecord,
+    }
+
+# Lookup thrift-name-derived methods for a given record
+predicate HackRecordContains :
+    {
+        record : HackRecord,
+        methods : [HackMethod],
+    }
+
+# No support yet : constants, types, exceptions
+# Mangled names point to these generated Hack items
+type HackKind =
+    {
+        file : src.File |
+        record : HackRecord |
+        method : HackMethod |
+        namespace_ : HackName |
+    }
+
+# ##############################################################################
+# Mangling Thrift to python
+
+# This complicated by the presence of so many ways to generate python
+
+# Describe a name in python generated from thrift
+predicate PythonName : string
+
+# Python dotted module name.
+# The module is associated with file(s) in other predicates.
+predicate PythonModule : PythonName
+
+# Lookup module from file, file ought to be a unique key
+predicate PythonFileModule :
+    {
+        file : src.File,
+        module : PythonModule,
+    }
+
+# Lookup file from module, module may not be a unique key
+predicate PythonModuleFile :
+    {
+        module : PythonModule,
+        file : src.File,
+    }
+
+# Python class in a module (in files(s))
+predicate PythonClass :
+    {
+        name : PythonName,
+        module : PythonModule,
+    }
+
+# Python method in a class (in a module (in file(s)))
+predicate PythonMethod :
+    {
+        name : PythonName,
+        class_ : PythonClass,
+    }
+
+# Python field in a class (in a module (in file(s)))
+predicate PythonField :
+    {
+        name : PythonName,
+        class_ : PythonClass,
+    }
+
+# Lookup the thrift-name-derived members for a given class
+predicate PythonClassContains :
+    {
+        class_ : PythonClass,
+        methods : [PythonMethod],
+        fields : [PythonField]
+    }
+
+# Python function in a module (in file(s))
+predicate PythonFunction :
+    {
+        name : PythonName,
+        module : PythonModule,
+    }
+
+# Python value in a module (in file(s))
+predicate PythonValue :
+    {
+        name : PythonName,
+        module : PythonModule,
+    }
+
+# Lookup the thrift-name-derived members for a given module
+predicate PythonModuleContains :
+    {
+        module : PythonModule,
+        classes : [PythonClass],
+        functions : [PythonFunction],
+        values : [PythonValue]
+    }
+
+# Mangled names point to these generated python items
+type PythonItem =
+    {
+        file : src.File |
+        module : PythonModule |
+        class_ : PythonClass |
+        method : PythonMethod |
+        field : PythonField |
+        function_ : PythonFunction |
+        value : PythonValue |
+    }
+# ##############################################################################
+
+# Unindexed: generated C++ (cpp2) item that did not have expected cxx fact
+type Cpp2ItemNamed =
+    {
+        file : src.File,
+        kind : string,
+        name : string
+    }
+
+# Mangled names point to these generated C++ (cpp2) items (indexed or named)
+type Cpp2Item =
+    {
+        file : src.File |
+        decl : cxx1.Declaration |
+        named : Cpp2ItemNamed |
+    }
+
+}
+
+
+schema thrift.2 : thrift.1 {
+import src.1
+import buck.1  # Note: not buck.2
+
+# Example path: "fbcode/glean/shiny/if/shiny.thrift"
+# Pathname to a file, also used to qualify thrift identifiers
+predicate File : src.File
+
+# Mangling
+# Mangled names point to these original items
+type Item.1 =
+    {
+        file : File |
+        namespace_ : Namespace |
+        service_ : ServiceName |
+        function_ : FunctionName |
+        decl : NamedDecl |
+        exception_ : ExceptionName |
+        constant : Constant |
+        enumValue : EnumValue |
+    }
+
+# Lookup generated item from hack to thrift
+predicate FromHack.1 :
+    {
+        hack : HackKind,
+        thrift : Item,
+        role : GenRole
+    }
+
+# Lookup generated items from thrift to hack
+predicate ToHack.1 :
+    {
+        thrift : File,
+        hack : [FromHack],
+    }
+
+# Lookup generated items from python to thrift
+predicate FromPython.1 :
+    {
+        python : PythonItem,
+        thrift : Item,
+        role : GenRole,
+        lang : Lang
+    }
+
+# Lookup generated items from (thrift, lang) to python
+predicate ToPython.1 :
+    {
+        thrift : File,
+        lang : Lang,
+        python : [FromPython]
+    }
+
+# Lookup generated items from C++ (cpp2) to thrift
+predicate FromCpp2.1 :
+    {
+        cpp2 : Cpp2Item,
+        thrift : Item,
+        role : GenRole
+    }
+
+# Lookup generated items from thift to cpp2
+predicate ToCpp2.1 :
+    {
+        thrift : File,
+        cpp2 : [FromCpp2]
+    }
+
+# External Thrift information
+
+# from TLT_Includes (and TLT_Compile and TLT_Output)
+# First arg is thriftFile is Src.file
+# Second arg is buckTarget with label thrift_library/includes
+# The *-thrift-includes thrift_library/includes buck target,
+# from *.thrift file to buck target
+predicate FileTarget :
+    {
+        file : File,
+        target : buck.Target,
+    }
+
+# from TLT_Includes
+# First argument is buckTarget with label thrift_library/includes
+# The *-thrift-includes thrift_library/includes buck target,
+# from buck target to *.thrift file
+predicate TargetFile : { target : buck.Target, file : File }
+
+# from buck query making TLT_Compile (and TLT_Output)
+# First arg is buckTarget with label thrift_library=LANG/compile
+# Connect thrift_library/includes to thrift_library=LANG/compile
+predicate TargetCompile :
+    {
+        compile : buck.Target,
+        lang : FbcodeLang,
+        includes : FileTarget,
+    }
+
+# from buck query making TLT_Compile (and TLT_Output)
+# First arg is thriftFileTarget is thriftFile is Src.file
+# Third arg is buckTarget with label thrift_library=LANG/compile
+# Connect thrift_library/includes to thrift_library=LANG/compile
+predicate CompileTarget :
+    {
+        includes : FileTarget,
+        lang : FbcodeLang,
+        compile : buck.Target,
+    }
+
+# from buck query making TLT_Output
+# First arg is buckTarget with label thrift_library=LANG/output
+# Connect thrift_library=LANG/compile to thrift_library=LANG/output.
+# The out string is a taken from the buck genrule
+predicate TargetOutput :
+    {
+        output : buck.Target,
+        compile : CompileTarget,
+        out : string,
+    }
+
+
+# from buck query making TLT_Output
+# First arg is thriftCompileTarget is thriftFileTarget is thriftFile is Src.file
+# Second arg is buckTarget with label thrift_library=LANG/output
+# Connect thrift_library=LANG/compile to thrift_library=LANG/output.
+# The out string is a taken from the buck genrule
+predicate OutputTarget :
+    {
+        compile : CompileTarget,
+        output : buck.Target,
+        out : string,
+    }
+
+# EXPERIMENTAL: subject to rapid change
+# from buck build --show-output, reordering of thriftFileOutput
+# Connect thrift_library=LANG/output to generated file.
+#  "buck build --show-output results,
+#  "target is from thrift.OutputFile.output,
+#  "output is repo-prefixed buck-out path to file.
+predicate OutputFile : { target : OutputTarget, output : src.File }
+
+# EXPERIMENTAL: subject to rapid change
+# from buck build --show-output, reordering of thriftOutputFile
+# Connect generated file to thrift_library=LANG/output.
+# buck build --show-output results,
+# output is repo-prefixed buck-out path to generated file.
+# origin has corresponding thrift.OutputTarget.output",
+predicate FileOutput : { output : src.File, origin : OutputTarget }
+
+# Internal pieces
+
+# Fully qualified thrift name resolved to file scope
+predicate QualName : { file : File, name : Identifier }
+
+# Headers: include and namespace
+
+# In file source.thrift there is
+# include "some/path/target.thrift"
+# Also see thriftXRefTarget include_ entries
+# Facts recording the include tree, to walk from root down
+predicate Includes : { source : File, target : File }
+
+# Re-order of thriftIncludes to allow reverse lookup
+# Include statement in source (at loc) bringing target into qualified scope
+predicate IncludeStatement :
+    {
+        target : File,
+        source : File,
+        locSource : Loc,
+    }
+
+# Thrift files can have hs_include or cpp_include arbitrary things
+predicate IncludeSplice : string
+
+# Thrift files can have hs_include or cpp_include arbitrary things
+# special here is \"hs_include\" or \"cpp_include\"
+predicate IncludeSpecial :
+    {
+        source : File,
+        special : string,
+        target : IncludeSplice,
+    }
+
+# Namespace header, quoted namespaces are indicated by bool value of true:
+# namespace "hs" My.Module  # name:"hs", namespace_:"My.Module", quoted:false
+# namespace "py" "Blue"     # name:"py", namepsace_:"Blue", quoted:true
+# namespace "java.swift" 'com.service'  # quoted:true, could be single quotes
+# Thrift namespace header, as hint to code generation
+predicate Namespace :
+    {
+        target : File,
+        name : NamespaceName,
+        namespace_ : NamespaceValue,
+        quoted : bool,
+    }
+
+# Thrift Named type, part of a type specification
+
+# User declared type identifier, along with resolved kind
+type NamedType = { name : QualName, kind : NamedKind }
+
+# Thrift declarations as Glean predicates (all start with a File field)
+
+# Named type declaration, always at a particular location
+# could become (union of) separate full definitions
+predicate NamedDecl : { name : NamedType, locName : Loc }
+
+# Declared exception, always at a particular location
+# could become a full definition or reference to struct definition
+predicate ExceptionName : { name : QualName, locName : Loc }
+
+# Declared service name, always at a particular location
+# could become a full definition
+predicate ServiceName : { name : QualName, locName : Loc }
+
+# Find the parent of a given service
+predicate ServiceParent : { child : ServiceName, parent : ServiceName }
+
+# Find the child of a given service
+predicate ServiceChild : { parent : ServiceName, child : ServiceName }
+
+# no internal thrift references to this
+# Declared function name, scoped to a service name
+# could become a full definition"
+predicate FunctionName :
+    {
+        service_ : ServiceName,
+        name : Identifier,
+        locName : Loc,
+    }
+
+# Declared constant name, always at a particular location
+# could become a full definition
+predicate Constant : { name : QualName, locName : Loc }
+
+# Declared enum value name, scoped to an enum name
+# could become a full definition
+predicate EnumValue : { enum_ : NamedType, name : Identifier, locName : Loc }
+
+# Cross-references
+
+# Thrift internal cross-reference target predicates, organized by kind
+type XRefTarget =
+    {
+        include_ : File |
+        named : NamedDecl |
+        exception_ : ExceptionName |
+        service_ : ServiceName |
+        constant : Constant |
+        enumValue : EnumValue |
+    }
+
+# Thrift internal cross-reference target at locTarget in a file
+# see FileXRefs for file context
+type Target = { locTarget : Loc, target : XRefTarget }
+
+# Thrift internal cross-reference from locRef in a file to target
+# see FileXRefs for file context
+type XRef = { locRef : Loc, target : XRefTarget }
+
+# Collection of internal thrift cross-reference information for a file
+predicate FileXRefs :
+    {
+        file : File,
+        targets : [Target],
+        xrefs : [XRef],
+    }
+
+# Fact that a target has a reference, searchable by target
+predicate TargetX : { target : XRefTarget, fileRef : File, locRef : Loc }
+
+# ##############################################################################
+# Error processing
+
+# There are thrift files that do not parse or typecheck right now, capture
+predicate FileError :
+    { file : File, error : string }
+
+}
+
+schema thrift.3 : thrift.2 {
+    # T52840607 move to buck.Target.2 from buck.Target.1
+    # and clean OutputTarget/OutputFile
+import src.1
+import buck.2
+
+predicate FileTarget :
+    {
+        file : File,
+        target : buck.Target,
+    }
+
+predicate CompileTarget :
+    {
+        includes : FileTarget,
+        lang : FbcodeLang,
+        compile : buck.Target,
+    }
+
+predicate OutputTarget :
+    {
+        compile : CompileTarget,
+        output : buck.Target,
+        out : src.File,
+    }
+
+predicate FileOutput : { output : src.File, origin : OutputTarget }
+
+}

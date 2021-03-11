@@ -1,0 +1,51 @@
+-- @generated
+module Glean.Schema.Python (allPredicates) where
+
+import Glean.Types
+
+allPredicates :: [(PredicateRef, Int)]
+allPredicates =
+  [ (PredicateRef "python.ClassDefinition" 2, 492)
+  , (PredicateRef "python.ImportStatementByName" 2, 458)
+  , (PredicateRef "python.DeclarationToName" 2, 454)
+  , (PredicateRef "python.DeclarationByName" 2, 450)
+  , (PredicateRef "python.DocstringContent" 2, 435)
+  , (PredicateRef "python.VariableBySName" 2, 427)
+  , (PredicateRef "python.FileDirectXRefs" 2, 426)
+  , (PredicateRef "python.FunctionDeclaration" 1, 404)
+  , (PredicateRef "python.DirectXRefsByFile" 2, 388)
+  , (PredicateRef "python.FunctionDefinition" 2, 362)
+  , (PredicateRef "python.DeclarationUses" 2, 350)
+  , (PredicateRef "python.ImportStatement" 2, 328)
+  , (PredicateRef "python.ImportStatement" 1, 327)
+  , (PredicateRef "python.DeclarationLocation" 2, 318)
+  , (PredicateRef "python.DeclarationLocation" 1, 317)
+  , (PredicateRef "python.ModuleBySName" 2, 316)
+  , (PredicateRef "python.ClassDeclaration" 1, 269)
+  , (PredicateRef "python.VariableDefinition" 2, 262)
+  , (PredicateRef "python.FileXRefs" 2, 238)
+  , (PredicateRef "python.FileXRefs" 1, 237)
+  , (PredicateRef "python.SName" 2, 229)
+  , (PredicateRef "python.TargetUses" 2, 202)
+  , (PredicateRef "python.TargetUses" 1, 201)
+  , (PredicateRef "python.ClassBySName" 2, 188)
+  , (PredicateRef "python.XRefIndirectTarget" 2, 167)
+  , (PredicateRef "python.XRefIndirectTarget" 1, 166)
+  , (PredicateRef "python.Module" 1, 164)
+  , (PredicateRef "python.DeclarationBySName" 2, 143)
+  , (PredicateRef "python.Name" 1, 129)
+  , (PredicateRef "python.ModuleDefinition" 2, 121)
+  , (PredicateRef "python.SNameToName" 2, 102)
+  , (PredicateRef "python.NameToSName" 2, 97)
+  , (PredicateRef "python.Type" 1, 80)
+  , (PredicateRef "python.DeclarationWithName" 2, 69)
+  , (PredicateRef "python.FunctionBySName" 2, 62)
+  , (PredicateRef "python.ImportStatementByAsSName" 3, 60)
+  , (PredicateRef "python.ImportStatementByAsSName" 2, 59)
+  , (PredicateRef "python.VariableDeclaration" 1, 23)
+  , (PredicateRef "python.DeclarationsByFile" 2, 21)
+  , (PredicateRef "python.XRefsViaNameByFile" 2, 20)
+  , (PredicateRef "python.ImportStatementByAsName" 3, 8)
+  , (PredicateRef "python.ImportStatementByAsName" 2, 7)
+  ]
+

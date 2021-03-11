@@ -1,0 +1,116 @@
+schema search.cxx.1 {
+import cxx1.4
+
+# Declataions with no scope
+predicate GlobalDeclarationWithName :
+  {
+    name : cxx1.Name,
+    decl : cxx1.Declaration,
+  }
+  { N, D }
+  where
+  D =
+    (
+      cxx1.Declaration
+        {
+          objcContainer = 
+            {
+              id =
+                { protocol = N } |
+                { interface_ = N } |
+                { categoryInterface = { className = N } } |
+                { extensionInterface = N } |
+                { implementation = N } |
+                { categoryImplementation = { className = N } }
+            }
+        }
+    ) |
+    (cxx1.Declaration { objcProperty = { name = N }})
+}
+
+schema search.cxx.4 : search.cxx.1 {
+import cxx1.4
+import code.cxx.3
+
+predicate DeclIsDefn : { decl : cxx1.Declaration, defn : code.cxx.Definition }
+  { Decl, Defn }
+  where
+  Defn =
+    (code.cxx.Definition { record_ = { declaration = D } }
+      where { record_ = D } = Decl ) |
+    (code.cxx.Definition { function_ = { declaration = D } }
+      where { function_ = D } = Decl ) |
+    (code.cxx.Definition { enum_ = { declaration = D } }
+      where { enum_ = D } = Decl )  |
+    (code.cxx.Definition { objcMethod = cxx1.ObjcMethodDefinition D }
+      where { objcMethod = D } = Decl ) |
+    (code.cxx.Definition { objcContainer = { declaration = D } }
+      where { objcContainer = D } = Decl ) |
+    (code.cxx.Definition { variable = D }
+      where { variable = D } = Decl;
+            D = cxx1.VariableDeclaration
+                  { kind = { global_ = { definition = true }}} )
+
+predicate SearchByNameAndScope :
+  {
+    name : cxx1.Name,
+    scope : cxx1.Scope,
+    entity : code.cxx.Entity,
+  }
+  {N, Scope, Entity} where { Entity, Scope } =
+    ( # Several things use QName, so share the query for it
+      {
+        code.cxx.Entity { decl = { record_ = { name = Q }}}  |
+          code.cxx.Entity { decl = { variable = { name = Q }}} |
+          code.cxx.Entity { decl = { typeAlias = { name = Q }}} |
+          code.cxx.Entity { decl = { enum_ = { name = Q }}},
+        Scope
+      }
+      where
+        Q = cxx1.QName { name = N, scope = Scope }
+    ) |
+    (
+      {
+        code.cxx.Entity
+          {
+            decl = { function_ = { name =
+              {
+                name = { name = N },
+                scope = Scope,
+              }
+            }}
+          },
+        Scope
+      }
+    ) |
+    (
+      { code.cxx.Entity { decl = Decl }, { global_ = {} } }
+      where
+        GlobalDeclarationWithName { N, Decl }
+    ) |
+    (
+      # TODO the scope here isn't right
+      {
+        code.cxx.Entity { enumerator = cxx1.Enumerator { name = N }},
+        cxx1.Scope { global_ = {} }
+      }
+    )
+
+predicate SearchBySelector :
+  {
+    selector : cxx1.ObjcSelector,
+    entity : code.cxx.Entity,
+  }
+  { Selector, Ent } where
+  Ent = code.cxx.Entity { decl = { objcMethod = { selector = Selector }}}
+
+# Easy way to query for TargetUses for an Entity
+predicate EntityUses :
+  {
+    entity : code.cxx.Entity,
+    uses : cxx1.TargetUses
+  }
+  { E, U } where
+    code.cxx.Entity { decl = D } = E;
+    U = cxx1.TargetUses { target = { declaration = D } }
+}

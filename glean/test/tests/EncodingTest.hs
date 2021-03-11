@@ -1,0 +1,186 @@
+module EncodingTest (main) where
+
+import Data.ByteString (ByteString)
+import qualified Data.ByteString as BS
+import qualified Data.ByteString.Base16 as Hex
+import qualified Data.ByteString.Char8 as ByteString
+import Data.Default
+import Data.IntMap.Strict (IntMap)
+import Foreign.C.String
+import Foreign.C.Types
+import Foreign.Ptr
+import Test.HUnit
+
+import TestRunner
+import Thrift.Protocol.Compact
+import Thrift.Protocol.JSON
+
+import Glean.Database.Config
+import Glean.FFI (invoke, unsafeMallocedByteString, unsafeWithBytes)
+import Glean.Init
+import Glean.Query.JSON
+import Glean.RTS
+import Glean.RTS.Builder
+import Glean.Database.Schema
+import Glean.Typed.Binary
+import Glean.Types
+import Glean.Schema.GleanTest.Types as Glean.Test
+import Glean.Schema.Sys.Types (Blob(..))
+import qualified Glean.Angle.Types as Schema
+
+kitchenSink :: KitchenSink
+kitchenSink = KitchenSink
+  { kitchenSink_byt = Byte 42
+  , kitchenSink_nat = Nat 70000
+  , kitchenSink_bool_ = True
+  , kitchenSink_string_ = "Hello, world!"
+  , kitchenSink_pred = Blob 256789 Nothing
+  , kitchenSink_maybe_ = Nothing
+  , kitchenSink_record_ = def
+  , kitchenSink_sum_ = def
+  , kitchenSink_enum_ = def
+  , kitchenSink_named_record_ = Rec
+      { rec_alpha = Enum_green
+      , rec_beta = Sum_mon $ Byte 5
+      }
+  , kitchenSink_named_sum_ = Sum_wed False
+  , kitchenSink_named_enum_ = Enum_blue
+  , kitchenSink_array_of_byte =
+      BS.pack [0,5,127,minBound,maxBound]
+  , kitchenSink_array_of_nat = Nat <$>
+      [0,0xF6,0x12345,0x65434567,minBound,maxBound]
+  , kitchenSink_array_of_bool = [True,False,True]
+  , kitchenSink_array_of_string =
+      ["abcd","","lzdkfhlsadhgl","asfdfs\0fasasfda\0faaf"]
+  , kitchenSink_array_of_pred =
+      [ Glean.Test.Predicate 5432 Nothing
+      , Glean.Test.Predicate 0x1234567 Nothing ]
+  , kitchenSink_array_of_named_record =
+      [ Rec Enum_red $ Sum_mon $ Byte 42
+      , Rec Enum_green $ Sum_tue $ Nat 1234556
+      , Rec Enum_blue $ Sum_wed False ]
+  , kitchenSink_array_of_named_sum =
+      [ Sum_mon $ Byte 65
+      , Sum_tue $ Nat 32453
+      , Sum_wed True ]
+  , kitchenSink_array_of_named_enum =
+      [ Enum_blue, Enum_green, Enum_red ]
+  , kitchenSink_array2_of_byte =
+      [ BS.pack [6,132,3,0]
+      , BS.empty
+      , BS.pack [89, 143] ]
+  , kitchenSink_array2_of_nat = fmap Nat <$>
+      [ []
+      , [733, 323986598, 2364, 282383]
+      , [0,0,0,0] ]
+  , kitchenSink_array2_of_bool =
+      [ [ True ]
+      , [ False ] ]
+  , kitchenSink_array2_of_string =
+      [ [ "a", "bc", "def" ] ]
+  }
+
+data E = E
+  { eTestPredicate :: PredicateDetails
+  }
+
+mkE :: IO E
+mkE = do
+  -- Build the DbSchema
+  (sourceSchemas, schemas) <- parseSchemaDir schemaSourceDir
+  dbSchema <- newDbSchema sourceSchemas schemas readWriteContent
+
+  -- glean.test.Predicate has glean.test.KitchenSink as its key
+  Just testPred <- return $ lookupPredicateRef
+    (Schema.PredicateRef "glean.test.Predicate" 4)
+    dbSchema
+
+  return $ E
+    { eTestPredicate = testPred
+    }
+
+data Enc = Enc
+  { encFact
+      :: IntMap ByteString
+      -> PredicateDetails
+      -> Fid
+      -> ByteString
+      -> ByteString
+      -> IO ByteString
+  , encReencode :: Maybe (ByteString -> IO ByteString)
+  , encSerialize :: Glean.Test.KitchenSink -> ByteString
+  , encDeserialize :: ByteString -> Either String Glean.Test.Predicate
+  , encPrint :: ByteString -> IO ()
+  }
+
+roundTrip :: Enc -> E -> Glean.Test.KitchenSink -> Test
+roundTrip Enc{..} E{..} val = TestCase $ do
+  putStrLn "original:"
+  print val
+  putStrLn "Thrift serialised:"
+  encPrint $ encSerialize val
+
+  -- Build the RTS value
+  term <- withBuilder $ \builder -> do
+    buildRtsValue builder val
+    finishBuilder builder
+
+  -- Encode Term
+  encoded <- encFact
+    mempty
+    eTestPredicate
+    (Fid 10000)
+    term
+    mempty
+
+  putStrLn "encoded:"
+  encPrint encoded
+
+  -- Deserialize encoded term to native Client type
+  Right Glean.Test.Predicate
+    { predicate_key = Just newval@Glean.Test.KitchenSink{} }
+      <- return $ encDeserialize encoded
+  print newval
+
+  assertEqual "roundTrip" val newval
+
+  case encReencode of
+    Nothing -> return ()
+    Just reencode -> do
+      reencoded <- reencode encoded
+      putStrLn "reencoded:"
+      encPrint reencoded
+      assertEqual "reencoded" reencoded encoded
+
+jsonEnc :: Enc
+jsonEnc = Enc
+  { encFact = factToJSON False
+  , encReencode = Nothing
+  , encSerialize = serializeJSON
+  , encDeserialize = deserializeJSON
+  , encPrint = ByteString.putStrLn
+  }
+
+compactEnc :: Enc
+compactEnc = Enc
+  { encFact = factToCompact
+  , encReencode = Just $ \encoded -> unsafeWithBytes encoded $ \ptr size -> do
+      (p,n) <- invoke $ glean_test_compact_reencode ptr size
+      unsafeMallocedByteString p n
+  , encSerialize = serializeCompact
+  , encDeserialize = deserializeCompact
+  , encPrint = ByteString.putStrLn . Hex.encode
+  }
+
+foreign import ccall unsafe glean_test_compact_reencode
+  :: Ptr () -> CSize -> Ptr (Ptr ()) -> Ptr CSize -> IO CString
+
+main :: IO ()
+main = withUnitTest $ do
+  e <- mkE
+  testRunner $ TestList
+    [ TestLabel "roundTrip JSON 0" $ roundTrip jsonEnc e def
+    , TestLabel "roundTrip JSON 1" $ roundTrip jsonEnc e kitchenSink
+    , TestLabel "roundTrip compact 0" $ roundTrip compactEnc e def
+    , TestLabel "roundTrip compact 1" $ roundTrip compactEnc e kitchenSink
+    ]

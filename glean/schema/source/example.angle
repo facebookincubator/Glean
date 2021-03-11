@@ -1,0 +1,42 @@
+# An example schema used in the Angle documentation
+
+schema example.1 {
+
+predicate Class :
+  {
+     name : string,
+     line : nat,
+  }
+
+predicate Parent :
+  {
+     child : Class,
+     parent : Class,
+  }
+
+predicate Child :
+  {
+     parent : Class,
+     child : Class,
+  }
+  stored
+  { P, C } where Parent { C, P }
+
+predicate Has :
+  { 
+    class_ : Class,
+    has : Member,
+  }
+
+predicate Member :
+  {
+    method : { name : string, doc : maybe string } |
+    variable : { name : string }
+  }
+
+predicate FileClasses :
+  {
+    file : string,
+    classes : [Class]
+  }        
+}

@@ -1,0 +1,140 @@
+schema search.hack.5 {
+import hack.4
+
+# SearchByName can be used to search for symbols in any context (wildcard
+# context).
+#
+# This can be combined with hack.NameLowerCase for case-insensitive search.
+predicate SearchByName :
+  {
+    name : hack.Name,
+    decl : hack.Declaration
+  }
+  { N, Decl } where
+  Decl =
+    hack.Declaration { classConst = { name = N }} |
+    hack.Declaration { container = { class_ = { name = { name = N }}}} |
+    hack.Declaration { container = { interface_ = { name = { name = N }}}} |
+    hack.Declaration { container = { trait = { name = { name = N }}}} |
+    hack.Declaration { enum_ = { name = { name = N }}} |
+    hack.Declaration { enumerator = { name = N }} |
+    hack.Declaration { function_ = { name = { name = N }}} |
+    hack.Declaration { globalConst = { name = { name = N }}} |
+    hack.Declaration { namespace_ = { name = { name = N }}} |
+    hack.Declaration { method = { name = N }} |
+    hack.Declaration { property_ = { name = N }} |
+    hack.Declaration { typeConst = { name = N }} |
+    hack.Declaration { typedef_ = { name = { name = N }}}
+
+# SearchInNamespace can find containers (class_, interface_, trait_),
+# enum_, function_, globalConst, namespace_, and typedef_ in a NamespaceQName
+#
+# With namespace_ of nothing, this searches for top-level declarations (global
+# items without a context).
+#
+# Also helps SearchInContext to find declarations in non-empty namespace
+# contexts.
+predicate SearchInNamespace :
+  {
+    name : hack.Name,
+    namespace_ : maybe hack.NamespaceQName,
+    decl : hack.Declaration
+  }
+  { N, NS, Decl } where
+  Decl =
+    hack.Declaration { container = { class_ = { name = { name = N, namespace_ = NS }}}} |
+    hack.Declaration { container = { interface_ = { name = { name = N, namespace_ = NS }}}} |
+    hack.Declaration { container = { trait = { name = { name = N, namespace_ = NS }}}} |
+    hack.Declaration { enum_ = { name = { name = N, namespace_ = NS }}} |
+    hack.Declaration { function_ = { name = { name = N, namespace_ = NS }}} |
+    hack.Declaration { globalConst = { name = { name = N, namespace_ = NS }}} |
+    hack.Declaration { namespace_ = { name = { name = N, parent = NS }}} |
+    hack.Declaration { typedef_ = { name = { name = N, namespace_ = NS }}}
+
+# Find classConst, method, property_, and typeConst in containers
+#
+# Helps SearchInContainerOrEnum to find declarations in container contexts
+predicate SearchInContainer :
+  {
+    name : hack.Name,
+    containerName : hack.Name,
+    containerNamespace : maybe hack.NamespaceQName,
+    decl : hack.Declaration
+  }
+  { N, ParentName, ParentNamespace, D } where
+  ParentQName = hack.QName {name = ParentName, namespace_ = ParentNamespace};
+  ParentContainer =
+    hack.ContainerDeclaration { class_ = { name = ParentQName}} |
+    hack.ContainerDeclaration { interface_ = { name = ParentQName}} |
+    hack.ContainerDeclaration { trait = { name = ParentQName}};
+  D =
+    hack.Declaration { classConst = { name = N, container = ParentContainer }} |
+    hack.Declaration { method = { name = N, container = ParentContainer }} |
+    hack.Declaration { property_ = { name = N, container = ParentContainer }} |
+    hack.Declaration { typeConst = { name = N, container = ParentContainer }};
+
+# Find an Enumerator in a Enum
+#
+# Helps SearchInContainerOrEnum to find declarations in enum contexts
+predicate SearchInEnum :
+  {
+    name : hack.Name,
+    enumName : hack.Name,
+    enumNamespace : maybe hack.NamespaceQName,
+    decl : hack.Declaration
+  }
+  { N, ParentName, ParentNamespace, E } where
+  ParentQName = hack.QName {name = ParentName, namespace_ = ParentNamespace};
+  ParentEnum = hack.EnumDeclaration { name = ParentQName };
+  E = hack.Declaration { enumerator = { name = N, enumeration = ParentEnum }};
+
+# This can be used to search for concrete syntax like
+#
+# \NamespaceFoo\ClassBar::MethodBaz
+# or
+# \NamespaceFoo\EnumBar::EnumeratorBaz
+#
+# Also helps SearchInContext to find declarations in container and enum contexts
+predicate SearchInContainerOrEnum :
+  {
+    name : hack.Name,
+    contextName : hack.Name,
+    contextNamespace : maybe hack.NamespaceQName,
+    decl : hack.Declaration
+  }
+  { N, ParentName, ParentNamespace, Decl } where
+  Decl =
+    (D where
+      SearchInContainer { name = N, containerName = ParentName, containerNamespace = ParentNamespace, decl = D }) |
+    (E where
+      SearchInEnum {name = N, enumName = ParentName, enumNamespace = ParentNamespace, decl = E})
+
+
+# SearchInContext can be used to search for symbols with a non-empty context.
+#
+# SearchInContext can find classConst, method, property_, and typeConst in
+# ContainerDeclaration, find enumerator in EnumDeclaration,
+# and find the other declaration kinds in a non-empty
+# NamespaceQName.
+#
+# Thus the contextName may be a class, interface, trait,
+# enum, or namespace.
+#
+# This is complementary to SearchForGlobal and SearchByName.
+predicate SearchInContext :
+  {
+    name : hack.Name,
+    contextName : hack.Name,
+    contextNamespace : maybe hack.NamespaceQName,
+    decl : hack.Declaration
+  }
+  { N, ParentName, ParentNamespace, Decl } where
+  Decl =
+    (D where
+      SearchInContainerOrEnum { name = N, contextName = ParentName, contextNamespace = ParentNamespace, decl = D }) |
+    (D where
+      NS = hack.NamespaceQName { name = ParentName, parent = ParentNamespace };
+      SearchInNamespace {name = N, namespace_ = { just = NS }, decl = D} )
+
+
+}

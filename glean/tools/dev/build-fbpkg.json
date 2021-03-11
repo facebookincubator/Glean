@@ -1,0 +1,27 @@
+{
+  "command": "SandcastleUniversalCommand",
+  "user": "$$USER",
+  "oncall": "code_indexing",
+  "alias": "$$ALIAS",
+  "priority": 3,
+  "capabilities": {
+    "vcs": "fbcode-fbsource",
+    "tenant": "glean_dev_build",
+    "type": "fbcode"
+  },
+  "metadata": {
+    "prefer_flash": true
+  },
+  "hash": "$$HASH",
+  "args": {
+    "name": "$$ALIAS",
+    "oncall": "code_indexing",
+    "steps": [
+      {
+        "name": "Build fbpkg",
+        "shell": "fbpkg build $$FBPKG --ephemeral --yes --silent-duplicate-error --message devrun",
+        "retries": 0
+      }
+    ]
+  }
+}

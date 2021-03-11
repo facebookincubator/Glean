@@ -1,0 +1,11 @@
+packages:
+    hsthrift/common/util/fb-util.cabal
+    hsthrift/common/mangle/mangle.cabal
+    hsthrift/lib/thrift-lib.cabal
+    hsthrift/server/thrift-server.cabal
+    hsthrift/compiler/thrift-compiler.cabal
+    hsthrift/haxl/thrift-haxl.cabal
+    hsthrift/tests/thrift-tests.cabal
+    glean.cabal
+
+tests: True

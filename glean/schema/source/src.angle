@@ -1,0 +1,90 @@
+schema src.1 {
+
+# Relative path to source file, starts with subdir, e.g. fbcode or fbobjc,
+# Can be under buck-out, e.g. fbcode/buck-out/opt/gen/...
+predicate File : string
+
+# Common source code location type
+type Loc = {
+  file : File,
+  line : nat,
+  column : nat,
+}
+
+# Common source code range type
+# Expect: 1-based line and column numbers, Begin and End are inclusive.
+type Range = {
+  file : File,
+  lineBegin : nat,
+  columnBegin : nat,
+  lineEnd : nat,
+  columnEnd : nat,
+}
+
+# DEPRECATED
+type ByteRange = {
+  begin : nat,
+  end : nat,
+}
+
+predicate FileLines : {
+  file : File,
+  lengths : [nat],
+    # length of each line, including the terminating newline (if any)
+    # NOTE: we store length rather than offset because it is shorter;
+    # offsets can be recovered via scanl' (+) 0
+  endsInNewline : bool,
+    # does the last line end in a newline?
+  hasUnicodeOrTabs : bool,
+    # does the file have any multibyte UTF-8 code points or tabs
+}
+
+# A span of bytes within a file
+type ByteSpan = {
+  start : nat,
+  length : nat,
+}
+
+# A span of bytes where the start is given as an offset from the start of
+# the previous span
+type RelByteSpan = {
+  offset : nat,
+  length : nat,
+}
+
+# Predicate to check if one bytespan contains another. This includes
+# if the two spans are equal
+predicate ByteSpanContains :
+  {
+    byteSpan: ByteSpan,
+    contains: ByteSpan
+  }
+  {S1, S2} where
+    {Start1, Len1} = S1;
+    {Start2, Len2} = S2;
+    End1=Start1+Len1;
+    End2=Start2+Len2;
+    Start1<=Start2;
+    End2<=End1
+
+# Multiple spans of bytes
+type ByteSpans = [RelByteSpan]
+
+# Kind of language supported by Glean
+type Language = enum {
+  Buck | C | Cpp | Hack | Haskell  |
+  ObjC | ObjCpp | Python | Thrift | Java | GraphQL
+}
+
+# Maps a file into the kind of language
+predicate FileLanguage : {
+  file : File,
+  language : Language
+}
+
+type FileLocation = {
+  file : File,
+  span : ByteSpan,
+}
+
+}

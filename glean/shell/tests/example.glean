@@ -1,0 +1,88 @@
+[
+  { 
+    "predicate": "example.Class.1",
+    "facts": [
+      { 
+        "id": 1,
+        "key": {
+          "name": "Pet",
+          "line": 10
+        }
+      },
+      { 
+        "id": 2,
+        "key": {
+          "name": "Lizard",
+          "line": 20
+        }
+      },
+      { 
+        "id": 3,
+        "key": {
+          "name": "Fish",
+          "line": 30
+        }
+      },
+      { 
+        "id": 4,
+        "key": {
+          "name": "Goldfish",
+          "line": 40
+        }
+      }
+    ]
+  },
+
+  { 
+    "predicate": "example.Parent.1",
+    "facts": [
+      {
+        "key": {
+          "child": { "id": 2 },
+          "parent": { "id": 1 }
+        }
+      },
+      {
+        "key": {
+          "child": { "id": 3 },
+          "parent": { "id": 1 }
+        }
+      },
+      {
+        "key": {
+          "child": { "id": 4 },
+          "parent": { "id": 3 }
+        }
+      }
+    ]
+  },
+
+  { 
+    "predicate": "example.Has.1",
+    "facts": [
+      {
+        "key": {
+          "class_": { "id": 1 },
+          "has": { "key": { "method": { 
+            "name": "feed", 
+            "doc": "Give the pet some food"
+          }}}
+        }
+      },
+      {
+        "key": {
+          "class_": { "id": 2 },
+          "has": { "key": { "variable": { "name": "colour" }}}
+        }
+      },
+      {
+        "key": {
+          "class_": { "id": 3 },
+          "has": { "key": { "variable": { "name": "fins" }}}
+        }
+      }
+    ]
+  }
+
+  
+]

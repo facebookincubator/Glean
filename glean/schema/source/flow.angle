@@ -1,0 +1,195 @@
+schema flow.3 {
+import src.1
+
+predicate Module: {
+  file: src.File |
+  builtin |
+  lib: string |
+  noSource |
+  string_: string |
+}
+
+predicate FileOfStringModule: {
+  file: src.File,
+  string_: string,
+}
+
+predicate StringToFileModule: {
+  string_: string,
+  file: src.File,
+}
+  stored { S, F } where FileOfStringModule { F, S }
+  
+predicate Range: {
+  module : Module,
+  span: src.ByteSpan,
+}
+
+predicate Name: string
+predicate Type: string
+predicate Documentation: Range
+
+predicate Declaration: {
+  name: Name,
+  loc: Range,
+}
+
+predicate DeclarationInfo: {
+  declaration: Declaration,
+  type: Type,
+  documentation: maybe Documentation,
+}
+
+# connects a variable to its declaration within the same file
+predicate LocalDeclarationReference: {
+  declaration: Declaration,
+  loc: Range,
+}
+
+predicate MemberDeclaration: {
+  name: Name,
+  loc: Range,
+}
+
+predicate MemberDeclarationReference: {
+  memberDeclaration: MemberDeclaration,
+  loc: Range,
+}
+
+predicate MemberDeclarationInfo: {
+  memberDeclaration: MemberDeclaration,
+  type: Type,
+  documentation: maybe Documentation,
+}
+
+predicate Export: {
+  commonJS |              # module.exports
+  commonJSMember: Name |  # module.exports.foo
+  named: Name |           # export { foo }
+  default_ |              # export default
+  star: Module |          # export * from 'module'
+}
+predicate ModuleExport: {
+  module: Module,
+  export_: Export,
+}
+
+# indicates that a declaration is an import statement
+predicate ImportDeclaration: {
+  declaration: Declaration,
+  import_: {
+    moduleExport: ModuleExport |
+    moduleNamespace: Module |
+  }
+}
+
+# associates an exported symbol with where in the module the symbol was declared
+predicate SourceOfExport: {
+  moduleExport: ModuleExport,
+  source: {
+    declaration: Declaration |
+    memberDeclaration: MemberDeclaration |
+    moduleExport: ModuleExport |
+    moduleNamespace: Module |
+  },
+}
+
+predicate TypeDeclaration: {
+  name: Name,
+  loc: Range,
+}
+
+predicate TypeDeclarationReference: {
+  typeDeclaration: TypeDeclaration,
+  loc: Range,
+}
+
+predicate TypeDeclarationInfo: {
+  typeDeclaration: TypeDeclaration,
+  type: Type,
+  documentation: maybe Documentation,
+}
+
+predicate TypeExport: {
+  named: Name |   # export type
+  star: Module |  # export
+}
+predicate ModuleTypeExport: {
+  module: Module,
+  typeExport: TypeExport,
+}
+
+predicate TypeImportDeclaration: {
+  typeDeclaration: TypeDeclaration,
+  import_: {
+    type: ModuleTypeExport |
+    typeof_: ModuleExport |
+    moduleTypeof: Module |
+  }
+}
+
+predicate SourceOfTypeExport: {
+  moduleTypeExport: ModuleTypeExport,
+  source: {
+    typeDeclaration: TypeDeclaration |
+    moduleTypeExport: ModuleTypeExport |
+    moduleNamespace: Module |
+  }
+}
+
+# Maps a src.File to the references within it. This is derived
+# automatically from the other references, and is used to provide
+# language-neutral reference info via the codemarkup schema.
+predicate FileXRef : { 
+  file : src.File,
+  ref : XRef
+}
+  stored
+  ( { F, { localRef = L }} where 
+    L = LocalDeclarationReference { loc = Loc };
+    { module = Mod } = Loc;
+    { file = F } = Mod ) |
+  ( { F, { memberRef = M }} where 
+    M = MemberDeclarationReference { loc = Loc } ;
+    { module = Mod } = Loc;
+    { file = F } = Mod ) |
+  ( { F, { typeRef = T }} where 
+    T = TypeDeclarationReference { loc = Loc };
+    { module = Mod } = Loc;
+    { file = F } = Mod )
+
+type XRef = {
+  localRef : LocalDeclarationReference |
+  memberRef : MemberDeclarationReference |
+  typeRef : TypeDeclarationReference |
+}  
+
+# Maps a src.File to the declarations it contains. This is derived
+# automatically from the declarations, and is used to provide
+# language-neutral declaration info via the codemarkup schema.
+predicate FileDeclaration: { 
+  file : src.File,
+  declaration : SomeDeclaration
+}
+  stored
+  ( { F, { localDecl = D } } where
+    D = Declaration { loc = Loc };
+    { module = Mod } = Loc;
+    { file = F }  = Mod ) |
+  ( { F, { memberDecl = D } } where
+    D = MemberDeclaration { loc = Loc };
+    { module = Mod } = Loc;
+    { file = F }  = Mod ) |
+  ( { F, { typeDecl = D } } where
+    D = TypeDeclaration { loc = Loc };
+    { module = Mod } = Loc;
+    { file = F }  = Mod ) 
+
+type SomeDeclaration = {
+  localDecl : Declaration |
+  memberDecl : MemberDeclaration |
+  typeDecl : TypeDeclaration |
+}  
+
+}
+

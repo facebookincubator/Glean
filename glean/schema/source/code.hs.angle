@@ -1,0 +1,10 @@
+schema code.hs.1 {
+import hs.1
+
+type Entity =
+  {
+    function_ : hs.FunctionDefinition |
+    class_ : hs.Class |
+  }
+
+}

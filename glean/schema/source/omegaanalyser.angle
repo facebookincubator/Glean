@@ -1,0 +1,34 @@
+schema omegaanalyser.1 {
+
+predicate OmegaEndpoint : string
+
+predicate Class_ : string
+
+predicate Function_ : string
+
+# For now, it will be just a string with the method's fully qualified name.
+# e.g. ClassFoo::methodBar.
+predicate Method : string
+
+
+type Node =
+  {
+    class_ : Class_ |
+    method : Method |
+    function_ : Function_
+  }
+
+# Represents an entry in the Dependency Map, i.e. an Omega Node and a list of
+# Endpoints that depend on it. If this omega node is modified, these Endpoints
+# could be affected and should be tested in an Experiment.
+predicate DependencyList :
+  {
+    node : Node,
+    endpoints : [OmegaEndpoint]
+  }
+
+}
+
+schema omegaanalyser.2 : omegaanalyser.1 {
+  predicate OmegaPolicy : string
+}
