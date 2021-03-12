@@ -17,10 +17,6 @@ module Glean.Search.Search
 
   -- * Symbol Id
   , module Glean.Search.EntityQuery
-
-  -- * DEPRECATED things
-  , findDecls -- use findEntities
-  , entityRefsToDeclRefs
   ) where
 
 import Control.Monad
@@ -45,7 +41,6 @@ import Glean.Schema.Code.Types as Code
 import Glean.Schema.CodeCxx.Types as Cxx
 import Glean.Schema.CodeHack.Types as Hack
 import Glean.Schema.CodeHs.Types as Hs
-import Glean.Schema.CodeJava.Types as Java
 import Glean.Schema.Cxx1.Types as Cxx
 import Glean.Schema.Hack.Types as Hack
 import Glean.Schema.SearchCxx.Types as Cxx
@@ -103,10 +98,7 @@ findEntities
   -> Some Glean.Backend
   -> Repos
   -> SearchQuery
-  -> Bool
-     -- ^ Add references (semi-deprecated, in the future this functionality
-     -- will be supplied by the Symbol View API, but for now it's needed so
-     -- that we can implement the old findDecls API on top of this.)
+  -> Bool -- ^ Also find references?
   -> IO [EntityRefs]
 findEntities lim backend SchemaRepos{..} q@SearchQuery{..} refs = do
   let
@@ -506,70 +498,3 @@ findHackDecls lim backend repo SearchQuery{..} = Glean.runHaxl backend repo $
               field @"contextNamespace" (namespaceOf ns) $
               field @"decl" d
             end
-
--- -----------------------------------------------------------------------------
--- Deprecated functionality
-
--- | Search C++ and Haskell code respecitvely in the two repos supplied.
--- This is currently just called from the CLI. The Thrift API
--- takes a single repo argument and calls findDecls
---
--- DEPRECATED
-findDecls
-  :: Some Glean.Backend
-  -> Repos
-  -> String             -- Name
-  -> Bool               -- Add references
-  -> IO Search.FindDeclsResult
-findDecls backend repos name refs = do
-  let
-    q = def
-      { Search.query = Text.pack name
-      , case_sensitive = True
-      , languages = Nothing }
-    -- we choose to limit the number of results from each part of the search
-    lim = Just 100
-  results <- findEntities lim backend repos q refs
-  return $ Search.FindDeclsResult (entityRefsToDeclRefs results)
-
--- | DEPRECATED
-entityRefsToDeclRefs :: [EntityRefs] -> [Search.DeclRefs]
-entityRefsToDeclRefs results =
-  [ DeclRefs decl xrefs
-  | EntityRefs _repo ent xrefs <- results
-  , decl <- entityToDecl ent
-  ]
-  where
-  -- Legacy conversion from Entity to Decl, can go away once we migrate
-  -- clients from findDecls to findEntities.
-  --
-  -- Not all Entities have equivalent Decls, so this might filter out
-  -- some results.
-  entityToDecl :: Code.Entity -> [Search.Decl]
-  entityToDecl (Code.Entity_cxx cxxEnt) = cxxEntToDecl cxxEnt
-  entityToDecl (Code.Entity_java javaEnt) = javaEntToDecl javaEnt
-  entityToDecl (Code.Entity_hs hsEnt) = hsEntToDecl hsEnt
-  entityToDecl (Code.Entity_pp decl) = [Decl_macro_decl decl]
-  entityToDecl (Code.Entity_python _) = []
-  entityToDecl (Code.Entity_hack _) = []
-  entityToDecl (Code.Entity_flow _) = []
-
-  javaEntToDecl (Java.Entity_class_ decl) = [Decl_java_class_decl decl]
-
-  hsEntToDecl (Hs.Entity_function_ decl) = [Decl_hs_fun_def decl]
-  hsEntToDecl _ = []
-
-  cxxEntToDecl (Cxx.Entity_decl decl) = cxxDeclToDecl decl
-  cxxEntToDecl (Cxx.Entity_defn defn) = cxxDefnToDecl defn
-  cxxEntToDecl (Cxx.Entity_enumerator enum) = [Decl_enumerator_def enum]
-
-  cxxDeclToDecl (Cxx.Declaration_function_ decl) = [Decl_fun_decl decl]
-  cxxDeclToDecl (Cxx.Declaration_record_ decl) = [Decl_rec_decl decl]
-  cxxDeclToDecl (Cxx.Declaration_variable decl) = [Decl_var_decl decl]
-  cxxDeclToDecl (Cxx.Declaration_enum_ decl) = [Decl_enum_decl decl]
-  cxxDeclToDecl _ = []
-
-  cxxDefnToDecl (Cxx.Definition_function_ def) = [Decl_fun_def def]
-  cxxDefnToDecl (Cxx.Definition_record_ def) = [Decl_rec_def def]
-  cxxDefnToDecl (Cxx.Definition_enum_ def) = [Decl_enum_def def]
-  cxxDefnToDecl _ = []
