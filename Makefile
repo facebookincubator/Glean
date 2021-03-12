@@ -42,7 +42,7 @@ SCHEMAS= \
 
 thrift:: thrift-cpp thrift-hs
 
-jjthrift-hs:: thrift-hsthrift-hs thrift-glean-hs thrift-schema-hs
+thrift-hs:: thrift-hsthrift-hs thrift-glean-hs thrift-schema-hs
 
 thrift-hsthrift-hs ::
 	(cd hsthrift && make CABAL="$(CABAL)" thrift-hs)
