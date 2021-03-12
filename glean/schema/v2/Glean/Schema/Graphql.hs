@@ -5,11 +5,11 @@ import Glean.Types
 
 allPredicates :: [(PredicateRef, Int)]
 allPredicates =
-  [ (PredicateRef "graphql.VariableDef" 1, 445)
-  , (PredicateRef "graphql.ScalarTypeDef" 1, 436)
-  , (PredicateRef "graphql.InterfaceTypeDef" 1, 376)
-  , (PredicateRef "graphql.InputValueDef" 1, 372)
-  , (PredicateRef "graphql.Query" 1, 371)
+  [ (PredicateRef "graphql.VariableDef" 1, 446)
+  , (PredicateRef "graphql.ScalarTypeDef" 1, 437)
+  , (PredicateRef "graphql.InterfaceTypeDef" 1, 377)
+  , (PredicateRef "graphql.InputValueDef" 1, 373)
+  , (PredicateRef "graphql.Query" 1, 372)
   , (PredicateRef "graphql.DirectiveDef" 1, 319)
   , (PredicateRef "graphql.Fragment" 1, 298)
   , (PredicateRef "graphql.Argument" 1, 264)

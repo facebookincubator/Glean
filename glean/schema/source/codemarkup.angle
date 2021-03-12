@@ -146,20 +146,25 @@ predicate FlowImportXRef :
     ) | (
       FlowModuleNamespaceXRef { Local, TargetFile };
       TargetSpan = { 0, 0 }
+    );
+
+predicate FlowTypeImportXRef :
+  {
+    local : flow.TypeDeclaration,
+    targetFile : src.File,
+    targetSpan : src.ByteSpan
+  }
+  { TypeDecl, TargetFile, TargetSpan } where
+    flow.TypeImportDeclaration {
+      typeDeclaration = TypeDecl,
+      import_ = Import
+    };
+    (
+      { type = MTE } = Import;
+      FlowTypeExportLocation { MTE, TargetFile, TargetSpan };
     ) | (
-      # This seems wrong, why isn't the XRef to a TypeDeclaration?
-      { name = N, loc = L } = Local;
-      flow.TypeImportDeclaration {
-        typeDeclaration = { name = N, loc = L },
-        import_ = Import
-      };
-      (
-        { type = MTE } = Import;
-        FlowTypeExportLocation { MTE, TargetFile, TargetSpan };
-      ) | (
-        { typeof_ = ModuleExport } = Import;
-        FlowModuleExportLocation { ModuleExport, TargetFile, TargetSpan };
-      )
+      { typeof_ = ModuleExport } = Import;
+      FlowModuleExportLocation { ModuleExport, TargetFile, TargetSpan };
     )
 
 predicate FlowFileDirectXRefs:
@@ -179,6 +184,9 @@ predicate FlowFileDirectXRefs:
   ) | (
     { localRef = { declaration = D } } = XRef;
     FlowImportXRef { D, TargetFile, TargetSpan };
+  ) | (
+    { typeRef = { typeDeclaration = T } } = XRef;
+    FlowTypeImportXRef { T, TargetFile, TargetSpan };
   );
   Decl = Declaration { Str, TargetFile, TargetSpan }
 
@@ -597,20 +605,25 @@ predicate FlowImportXRef :
     ) | (
       FlowModuleNamespaceXRef { Local, TargetFile };
       TargetSpan = { 0, 0 }
+    );
+
+predicate FlowTypeImportXRef :
+  {
+    local : flow.TypeDeclaration,
+    targetFile : src.File,
+    targetSpan : src.ByteSpan
+  }
+  { TypeDecl, TargetFile, TargetSpan } where
+    flow.TypeImportDeclaration {
+      typeDeclaration = TypeDecl,
+      import_ = Import
+    };
+    (
+      { type = MTE } = Import;
+      FlowTypeExportLocation { MTE, TargetFile, TargetSpan };
     ) | (
-      # This seems wrong, why isn't the XRef to a TypeDeclaration?
-      { name = N, loc = L } = Local;
-      flow.TypeImportDeclaration {
-        typeDeclaration = { name = N, loc = L },
-        import_ = Import
-      };
-      (
-        { type = MTE } = Import;
-        FlowTypeExportLocation { MTE, TargetFile, TargetSpan };
-      ) | (
-        { typeof_ = ModuleExport } = Import;
-        FlowModuleExportLocation { ModuleExport, TargetFile, TargetSpan };
-      )
+      { typeof_ = ModuleExport } = Import;
+      FlowModuleExportLocation { ModuleExport, TargetFile, TargetSpan };
     )
 
 predicate FlowDeclarationInfo:
@@ -842,6 +855,10 @@ predicate FlowFileEntityXRefs:
     { localRef = { declaration = LocalD } } = XRef;
     FlowImportXRef { LocalD, TargetFile, TargetSpan };
     D = flow.SomeDeclaration { localDecl = LocalD };
+  ) | (
+    { typeRef = { typeDeclaration = T } } = XRef;
+    FlowTypeImportXRef { T, TargetFile, TargetSpan };
+    D = flow.SomeDeclaration { typeDecl = T };
   );
   Decl = Declaration { Str, TargetFile, TargetSpan };
   Entity = code.Entity { flow = { decl = D } };

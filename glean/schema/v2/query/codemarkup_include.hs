@@ -189,6 +189,21 @@ type instance Glean.QueryOf Glean.Schema.Codemarkup.Types.FlowResolve = Glean.Sc
 
 instance Glean.ToQuery Glean.Schema.Codemarkup.Types.FlowResolve
 
+type instance Glean.QueryResult Glean.Schema.Query.Codemarkup.Types.FlowTypeImportXRef_key = Glean.Schema.Codemarkup.Types.FlowTypeImportXRef_key
+type instance Glean.QueryOf Glean.Schema.Codemarkup.Types.FlowTypeImportXRef_key = Glean.Schema.Query.Codemarkup.Types.FlowTypeImportXRef_key
+
+instance Glean.ToQuery Glean.Schema.Codemarkup.Types.FlowTypeImportXRef_key where
+  toQuery (Glean.Schema.Codemarkup.Types.FlowTypeImportXRef_key x1 x2 x3) = Glean.Schema.Query.Codemarkup.Types.FlowTypeImportXRef_key (Prelude.Just (Glean.toQuery x1)) (Prelude.Just (Glean.toQuery x2)) (Prelude.Just (Glean.toQuery x3))
+
+instance Glean.PredicateQuery Glean.Schema.Codemarkup.Types.FlowTypeImportXRef where
+  toQueryId = Glean.Schema.Query.Codemarkup.Types.FlowTypeImportXRef_with_id . Glean.fromFid . Glean.idOf
+  toQueryKey = Glean.Schema.Query.Codemarkup.Types.FlowTypeImportXRef_with_key . Glean.toQuery
+
+type instance Glean.QueryResult Glean.Schema.Query.Codemarkup.Types.FlowTypeImportXRef = Glean.Schema.Codemarkup.Types.FlowTypeImportXRef
+type instance Glean.QueryOf Glean.Schema.Codemarkup.Types.FlowTypeImportXRef = Glean.Schema.Query.Codemarkup.Types.FlowTypeImportXRef
+
+instance Glean.ToQuery Glean.Schema.Codemarkup.Types.FlowTypeImportXRef
+
 type instance Glean.QueryResult Glean.Schema.Query.Codemarkup.Types.Resolve_key = Glean.Schema.Codemarkup.Types.Resolve_key
 type instance Glean.QueryOf Glean.Schema.Codemarkup.Types.Resolve_key = Glean.Schema.Query.Codemarkup.Types.Resolve_key
 

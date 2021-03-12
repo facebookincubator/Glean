@@ -32,6 +32,7 @@ const map<string, i64> PREDICATE_VERSIONS = {
   "FileEntities": 9,
   "FlowXRefDeclInfo": 9,
   "FlowResolve": 9,
+  "FlowTypeImportXRef": 9,
   "Resolve": 9,
   "HackFileDeclarations": 9,
   "FlowCompatibleModuleExport": 9,
@@ -86,6 +87,17 @@ typedef glean.Id FlowXRefDeclInfo_id
 struct FlowXRefDeclInfo {
   1: FlowXRefDeclInfo_id id (hs.strict);
   2: optional FlowXRefDeclInfo_key key (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+}
+
+typedef glean.Id FlowTypeImportXRef_id
+
+@glean.PredicateAnnotation{
+  name="codemarkup.FlowTypeImportXRef";
+  version=9;
+}
+struct FlowTypeImportXRef {
+  1: FlowTypeImportXRef_id id (hs.strict);
+  2: optional FlowTypeImportXRef_key key (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
 }
 
 typedef glean.Id FlowTypeExportLocation_id
@@ -419,6 +431,12 @@ struct FlowXRefDeclInfo_key {
   3: flow.Name name;
   4: flow.Range targetLoc;
   5: flow.SomeDeclaration entity;
+}
+
+struct FlowTypeImportXRef_key {
+  1: flow.TypeDeclaration local;
+  2: src.File targetFile;
+  3: src.ByteSpan targetSpan;
 }
 
 struct FlowTypeExportLocation_key {

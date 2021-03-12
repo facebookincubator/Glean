@@ -26,7 +26,7 @@ type instance Angle.RecordFields Glean.Schema.Hs.Types.Class_key = 'Angle.TField
 instance Glean.Predicate Glean.Schema.Hs.Types.Class where
   type KeyType Glean.Schema.Hs.Types.Class = Glean.Schema.Hs.Types.Class_key
   getName _proxy  = Glean.PredicateRef "hs.Class"1
-  getIndex _proxy  = 420
+  getIndex _proxy  = 421
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Hs.Types.class_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Hs.Types.Class x k
   getFactKey = Glean.Schema.Hs.Types.class_key
@@ -39,7 +39,7 @@ instance Glean.Type Glean.Schema.Hs.Types.Class where
 instance Glean.Predicate Glean.Schema.Hs.Types.FunctionName where
   type KeyType Glean.Schema.Hs.Types.FunctionName = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "hs.FunctionName"1
-  getIndex _proxy  = 383
+  getIndex _proxy  = 384
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Hs.Types.functionName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Hs.Types.FunctionName x k
   getFactKey = Glean.Schema.Hs.Types.functionName_key

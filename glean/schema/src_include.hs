@@ -26,7 +26,7 @@ instance Glean.Predicate Glean.Schema.Src.Types.ByteSpanContains where
   type KeyType Glean.Schema.Src.Types.ByteSpanContains =
     Glean.Schema.Src.Types.ByteSpanContains_key
   getName _proxy  = Glean.PredicateRef "src.ByteSpanContains"1
-  getIndex _proxy  = 471
+  getIndex _proxy  = 472
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Src.Types.byteSpanContains_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Src.Types.ByteSpanContains x k
   getFactKey = Glean.Schema.Src.Types.byteSpanContains_key
@@ -50,7 +50,7 @@ instance Glean.Predicate Glean.Schema.Src.Types.FileLanguage where
   type KeyType Glean.Schema.Src.Types.FileLanguage =
     Glean.Schema.Src.Types.FileLanguage_key
   getName _proxy  = Glean.PredicateRef "src.FileLanguage"1
-  getIndex _proxy  = 399
+  getIndex _proxy  = 400
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Src.Types.fileLanguage_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Src.Types.FileLanguage x k
   getFactKey = Glean.Schema.Src.Types.fileLanguage_key

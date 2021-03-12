@@ -5,8 +5,8 @@ import Glean.Types
 
 allPredicates :: [(PredicateRef, Int)]
 allPredicates =
-  [ (PredicateRef "hs.Class" 1, 420)
-  , (PredicateRef "hs.FunctionName" 1, 383)
+  [ (PredicateRef "hs.Class" 1, 421)
+  , (PredicateRef "hs.FunctionName" 1, 384)
   , (PredicateRef "hs.Type" 1, 353)
   , (PredicateRef "hs.PackageId" 1, 349)
   , (PredicateRef "hs.Module" 1, 300)

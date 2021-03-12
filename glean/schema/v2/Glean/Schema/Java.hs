@@ -5,12 +5,12 @@ import Glean.Types
 
 allPredicates :: [(PredicateRef, Int)]
 allPredicates =
-  [ (PredicateRef "java.XRef" 3, 421)
-  , (PredicateRef "java.TypeParam" 3, 377)
-  , (PredicateRef "java.Annotation" 4, 374)
-  , (PredicateRef "java.MethodDeclaration" 4, 370)
-  , (PredicateRef "java.MethodDeclaration" 3, 369)
-  , (PredicateRef "java.MethodDeclaration" 2, 368)
+  [ (PredicateRef "java.XRef" 3, 422)
+  , (PredicateRef "java.TypeParam" 3, 378)
+  , (PredicateRef "java.Annotation" 4, 375)
+  , (PredicateRef "java.MethodDeclaration" 4, 371)
+  , (PredicateRef "java.MethodDeclaration" 3, 370)
+  , (PredicateRef "java.MethodDeclaration" 2, 369)
   , (PredicateRef "java.AnnotatedClass" 4, 345)
   , (PredicateRef "java.InterfaceDeclaration" 4, 305)
   , (PredicateRef "java.InterfaceDeclaration" 3, 304)

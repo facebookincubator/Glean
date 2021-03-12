@@ -32,6 +32,7 @@ const map<string, i64> PREDICATE_VERSIONS = {
   "FileEntities": 9,
   "FlowXRefDeclInfo": 9,
   "FlowResolve": 9,
+  "FlowTypeImportXRef": 9,
   "Resolve": 9,
   "HackFileDeclarations": 9,
   "FlowCompatibleModuleExport": 9,
@@ -90,6 +91,18 @@ union FlowXRefDeclInfo {
   2: FlowXRefDeclInfo_key key;
   3: builtin.Unit get;
 } (hs.prefix = "FlowXRefDeclInfo_with_")
+
+typedef glean.Id FlowTypeImportXRef_id
+
+@glean.PredicateAnnotation{
+  name="codemarkup.FlowTypeImportXRef";
+  version=9;
+}
+union FlowTypeImportXRef {
+  1: FlowTypeImportXRef_id id (hs.strict);
+  2: FlowTypeImportXRef_key key;
+  3: builtin.Unit get;
+} (hs.prefix = "FlowTypeImportXRef_with_")
 
 typedef glean.Id FlowTypeExportLocation_id
 
@@ -451,6 +464,12 @@ struct FlowXRefDeclInfo_key {
   3: optional flow.Name name (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
   4: optional flow.Range targetLoc (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
   5: optional flow.SomeDeclaration entity (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+}
+
+struct FlowTypeImportXRef_key {
+  1: optional flow.TypeDeclaration local (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+  2: optional src.File targetFile (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+  3: optional src.ByteSpan targetSpan (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
 }
 
 struct FlowTypeExportLocation_key {

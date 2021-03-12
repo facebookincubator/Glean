@@ -29,7 +29,7 @@ instance Glean.Predicate Glean.Schema.Pp1.Types.Include where
   type KeyType Glean.Schema.Pp1.Types.Include =
     Glean.Schema.Pp1.Types.Include_key
   getName _proxy  = Glean.PredicateRef "pp1.Include"1
-  getIndex _proxy  = 418
+  getIndex _proxy  = 419
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Pp1.Types.include_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Pp1.Types.Include x k
   getFactKey = Glean.Schema.Pp1.Types.include_key
