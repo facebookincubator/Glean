@@ -1,6 +1,6 @@
 module Logger.IO (module Logger.IO) where
 
-import Configerator
+import Glean.Impl.ConfigProvider
 
 data Logger = Logger
 

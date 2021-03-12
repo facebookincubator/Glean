@@ -92,7 +92,8 @@ common deps
         tar ^>=0.5.1.0,
         ghc-prim ^>=0.5.2.0,
         parsec ^>=3.1.13.0,
-        haxl >= 2.1.2.0 && < 2.4
+        haxl >= 2.1.2.0 && < 2.4,
+        hinotify ^>= 0.4.1
 
 common hsc2hs-cpp
     hsc2hs-options: --cc=g++ --lflag=-lstdc++ --cflag=-D__HSC2HS__=1 --cflag=-std=c++17
@@ -102,16 +103,12 @@ library stubs
     visibility: public
     hs-source-dirs: glean/github
     exposed-modules:
-        Configerator
         Facebook.Fb303
         Facebook.Service
         Glean.BuildInfo
         Glean.Datasource.Scribe.Write
         Glean.Init
         Glean.Server.Shard
-        Logger.IO
-        Logger.GleanDatabaseStats
-        Logger.GleanServer
         ServiceData.Types
         ServiceData.GlobalStats
         TestRunner
@@ -125,6 +122,17 @@ library tailer
     hs-source-dirs: glean/github
     exposed-modules:
         Glean.Tailer
+    build-depends:
+        glean:util
+
+library logger
+    import: fb-haskell, deps
+    visibility: private
+    hs-source-dirs: glean/github
+    exposed-modules:
+        Logger.IO
+        Logger.GleanDatabaseStats
+        Logger.GleanServer
     build-depends:
         glean:util
 
@@ -146,6 +154,16 @@ library config
         Glean.ClientConfig.Types
         Glean.ServerConfig.Types
     pkgconfig-depends: libfolly
+
+library defaultconfigs
+    import: fb-haskell, deps
+    visibility: private
+    hs-source-dirs: glean/github
+    exposed-modules:
+        Glean.DefaultConfigs
+    build-depends:
+        glean:config,
+        glean:util
 
 library if-fb303-hs
     import: fb-haskell, deps
@@ -263,7 +281,7 @@ library rts
         glean/rts/validate.cpp
         glean/rts/bytecode/subroutine.cpp
     pkgconfig-depends: libfolly, libunwind, libglog, icu-uc, gflags
-    cxx-options: -std=c++17
+    cxx-options: -std=c++17 -DOSS=1
     build-depends:
         glean:if-internal-cpp,
         glean:ffi
@@ -303,8 +321,11 @@ library util
         Glean.Database.Backup.Backend
         Glean.Database.Repo
         Glean.Impl.ThriftService
+        Glean.Impl.ConfigProvider
+        Glean.Impl.TestConfigProvider
         Glean.Tailer.Types
         Glean.Util.Bisect
+        Glean.Util.ConfigProvider
         Glean.Util.Cacher
         Glean.Util.Future
         Glean.Util.HKD
@@ -334,6 +355,7 @@ library core
     visibility: public
     hs-source-dirs: glean/hs
     default-extensions: CPP
+    hsc2hs-options: --cflag=-DOSS=1
 
     exposed-modules:
         Glean.FFI
@@ -400,6 +422,7 @@ library core
     build-depends:
         glean:bytecode,
         glean:config,
+        glean:defaultconfigs,
         glean:util,
         glean:if-glean-hs,
         glean:if-internal-hs,
@@ -473,11 +496,13 @@ library db
         glean:bytecode,
         glean:config,
         glean:core,
+        glean:defaultconfigs,
         glean:util,
         glean:if-glean-hs,
         glean:if-internal-hs,
         glean:ffi,
         glean:rts,
+        glean:logger,
         glean:stubs,
         glean:tailer,
         glean:rocksdb,
@@ -1047,18 +1072,18 @@ test-suite parser
         glean:stubs,
         glean:core,
 
--- TODO: needs ConfigeratorTestUtils
--- test-suite schematest
---     import: test
---     type: exitcode-stdio-1.0
---     main-is: SchemaTest.hs
---     ghc-options: -main-is SchemaTest
---     build-depends:
---         glean:stubs,
---         glean:core,
---         glean:config,
---         glean:if-glean-hs,
---         glean:util,
+test-suite schematest
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: SchemaTest.hs
+    ghc-options: -main-is SchemaTest
+    build-depends:
+        glean:stubs,
+        glean:core,
+        glean:db,
+        glean:config,
+        glean:if-glean-hs,
+        glean:util,
 
 test-suite inventory
     import: test

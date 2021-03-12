@@ -9,6 +9,7 @@ module Glean.Impl.TestConfigProvider (
 import qualified Data.ByteString as ByteString
 import Data.Maybe
 import qualified Data.Text as Text
+import System.Directory
 import System.FilePath
 import System.IO.Temp
 
@@ -43,4 +44,5 @@ realConfigAPI (TestConfigAPI cfg) = cfg
 instance TestConfigProvider TestConfigAPI where
   setTestConfig (TestConfigAPI ConfigAPI{..}) path contents = do
     let file = fromMaybe "" (configDir opts) </> Text.unpack path
+    createDirectoryIfMissing True (takeDirectory file)
     ByteString.writeFile file contents
