@@ -674,16 +674,14 @@ loadCmd :: String -> Eval ()
 loadCmd str
   | [db, file] <- args
   , Just repo <- Glean.parseRepo db
-  = withBackend $ \be -> do liftIO $ load be repo [file]; setRepo repo
+  = do load repo [file]; setRepo repo
 
   -- Just a file: derive the repo from the filename and pick an unused hash
-  | [file] <- args = withBackend $ \be -> do
-    repo <- liftIO $ do
-      let name = Text.pack (takeBaseName file)
-      hash <- pickHash be name
-      let repo = Thrift.Repo name hash
-      load be repo [file]
-      return repo
+  | [file] <- args = do
+    let name = Text.pack (takeBaseName file)
+    hash <- pickHash name
+    let repo = Thrift.Repo name hash
+    load repo [file]
     setRepo repo
 
   | otherwise

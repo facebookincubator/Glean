@@ -4,10 +4,10 @@ module Glean.Shell.Index
   , pickHash
   ) where
 
-
 import Control.Exception
 import Control.Monad
 import Control.Monad.IO.Class
+import Control.Monad.Trans.Control
 import Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
 import qualified Data.ByteString as B
@@ -31,24 +31,27 @@ indexCmd str
   | otherwise = liftIO $ throwIO $ ErrorCall
     "syntax:  :index flow <dir>"
   where
-  indexFlow dir =
-    withBackend $ \be -> do
-      repo <- liftIO $ withSystemTempDirectory "glean-shell" $ \tmp -> do
-        callProcess "flow"
+  indexFlow dir = do
+      withSystemTempDirectory' "glean-shell" $ \tmp -> do
+        liftIO $ callProcess "flow"
           [ "glean"
           , dir
           , "--output-dir", tmp
           , "--write-root", "." ]
-        files <- listDirectory tmp
+        files <- liftIO $ listDirectory tmp
         let name = Text.pack (takeBaseName dir)
-        hash <- pickHash be name
+        hash <- pickHash name
         let repo = Glean.Repo name hash
-        load be repo (map (tmp </>) files)
-        return repo
-      setRepo repo
+        load repo (map (tmp </>) files)
+        setRepo repo
 
-pickHash :: Backend b => b -> Text -> IO Text
-pickHash be name = do
+withSystemTempDirectory' :: String -> (FilePath -> Eval a) -> Eval a
+withSystemTempDirectory' str action = Eval $ do
+  a <- liftWith $ \run -> withSystemTempDirectory str (run . unEval . action)
+  restoreT $ return a
+
+pickHash :: Text -> Eval Text
+pickHash name = withBackend $ \be -> do
   r <- liftIO $ listDatabases be def
   let
     hashes =
@@ -59,8 +62,8 @@ pickHash be name = do
       ]
   return $ head $ filter (`notElem` hashes) $ map showt [0::Int ..]
 
-load :: Backend b => b -> Glean.Repo -> [FilePath] -> IO ()
-load be repo files =
+load :: Glean.Repo -> [FilePath] -> Eval ()
+load repo files = withBackend $ \be ->  liftIO $ do
   void $ fillDatabase
       be
       repo
