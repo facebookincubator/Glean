@@ -10,8 +10,6 @@ import qualified Control.Monad.Catch as C
 import Control.Monad.IO.Class (liftIO, MonadIO)
 import Control.Monad.Trans.Class (lift)
 import qualified Control.Monad.Trans.State.Strict as State
-import Data.Aeson as Aeson
-import qualified Data.Aeson.Types as Aeson
 import qualified Data.ByteString.UTF8 as UTF8
 import Data.Char
 import Data.Default
@@ -20,11 +18,11 @@ import qualified Data.HashMap.Strict as HashMap
 import Data.Int
 import Data.IORef
 import Data.List
+import Data.List.Split
 import qualified Data.Map as Map
 import Data.Maybe
 import Data.Ord
 import Text.Printf
-import qualified Data.ByteString as B
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
 import Data.Text.Prettyprint.Doc as Pretty hiding ((<>), pageWidth)
@@ -48,7 +46,6 @@ import qualified Text.JSON as JSON
 import Text.Parsec (runParser)
 import TextShow
 
-import Foreign.CPP.Dynamic (parseJSON)
 import Util.EventBase
 import Util.JSON.Pretty ()
 import Util.List
@@ -63,6 +60,7 @@ import Glean.RTS.Types (Pid(..), Fid(..))
 import Glean.Schema.Resolve
 import Glean.Angle.Types as SchemaTypes
 import Glean.Schema.Util
+import Glean.Shell.Index
 import Glean.Shell.Terminal
 import Glean.Shell.Types
 import qualified Glean.Types as Thrift
@@ -136,53 +134,6 @@ options = info (O.helper <*> parser) fullDesc
           "angle" -> Just ShellAngle
           _ -> Nothing
 
-data ShellMode = ShellJSON | ShellAngle
-  deriving Eq
-
-data SchemaQuery = SchemaQuery
-  { sqPredicate :: String
-  , sqRecursive :: Bool
-  , sqStored :: Bool
-  , sqQuery :: String
-  , sqCont :: Maybe Thrift.UserQueryCont
-  , sqTransform :: Maybe (JSON.JSValue -> JSON.Result JSON.JSValue)
-  , sqSyntax :: Thrift.QuerySyntax
-  }
-
-data Stats = NoStats | SummaryStats | FullStats
-  deriving Eq
-
-data ShellState = ShellState
-  { backend :: Some LocalOrRemote
-  , repo :: Maybe Thrift.Repo
-  , mode :: ShellMode
-  , schemas :: Schemas
-  , schemaInfo :: Thrift.SchemaInfo
-  , limit :: Int64
-  , timeout :: Maybe Int64
-  , stats :: Stats
-  , lastSchemaQuery :: Maybe SchemaQuery
-  , updateSchema :: Maybe (IO ())
-  , isTTY :: Bool
-  , pageWidth :: Maybe PageWidth
-  , pager :: Bool
-  , outputHandle :: MVar Handle
-  , debug :: Thrift.QueryDebugOptions
-  }
-
-newtype Eval a = Eval
-  { unEval :: State.StateT ShellState IO a
-  }
-  deriving
-    ( Functor
-    , Applicative
-    , Monad
-    , Haskeline.MonadException
-    , MonadIO
-    , C.MonadCatch
-    , C.MonadMask
-    , C.MonadThrow )
-
 output :: Doc a -> Eval ()
 output doc = do
   ShellState{..} <- getState
@@ -206,29 +157,6 @@ repoString repo = concat
   ,Text.unpack (Thrift.repo_hash repo)
   ]
 
-getState :: Eval ShellState
-getState = Eval State.get
-
-getRepo :: Eval (Maybe Thrift.Repo)
-getRepo = repo <$> getState
-
-setRepo :: Thrift.Repo -> Eval ()
-setRepo r =
-  withBackend $ \backend -> do
-    schema <- liftIO $ getSchemaInfo backend r
-    resolved <- either (liftIO . throwIO . ErrorCall) (return . snd) $
-      parseAndResolveSchema (Thrift.schemaInfo_schema schema)
-    Eval $ State.modify $ \s -> s
-      { repo = Just r
-      , schemaInfo = schema
-      , schemas = resolved }
-
-getMode :: Eval ShellMode
-getMode = mode <$> getState
-
-setMode :: ShellMode -> Eval ()
-setMode m = Eval $ State.modify $ \s -> s{ mode = m }
-
 lookupPid :: Pid -> Eval (Maybe PredicateRef)
 lookupPid (Pid pid) = do
   Thrift.SchemaInfo{..} <- schemaInfo <$> getState
@@ -240,12 +168,6 @@ withRepo f = do
   case r of
     Just repo -> f repo
     Nothing -> liftIO $ throwIO $ ErrorCall "no database selected"
-
-withBackend :: (forall b . LocalOrRemote b => b -> Eval a) -> Eval a
-withBackend f = do
-  state <- getState
-  case backend state of
-    Some b -> f b
 
 getSchemaCmd :: String -> Eval ()
 getSchemaCmd str = do
@@ -498,6 +420,9 @@ helptext mode = vcat
     commands =
       [ ("database [<name>]",
             "Use database <name>")
+      , ("index <lang> <dir>",
+            "Index source files in <dir> and create a database. <lang> supports "
+            <> "only flow currently.")
       , ("list [<reponame>]",
             "List available databases which match <reponame>")
       , ("list-all [<reponame>]",
@@ -678,6 +603,7 @@ commands =
   , Cmd "limit" Haskeline.noCompletion $ \str _ -> limitCmd str
   , Cmd "describe" completeDatabaseName $ const . displayDatabases False True
   , Cmd "describe-all" completeDatabaseName $ const . displayDatabases True True
+  , Cmd "index" indexCompletion $ \str _ -> indexCmd str
   , Cmd "list" completeDatabaseName $ const . displayDatabases False False
   , Cmd "list-all" completeDatabaseName $ const . displayDatabases True False
   , Cmd "dump" Haskeline.noCompletion $ \str _ -> dumpCmd str
@@ -748,42 +674,22 @@ loadCmd :: String -> Eval ()
 loadCmd str
   | [db, file] <- args
   , Just repo <- Glean.parseRepo db
-  = do load repo file; setRepo repo
+  = withBackend $ \be -> do liftIO $ load be repo [file]; setRepo repo
 
   -- Just a file: derive the repo from the filename and pick an unused hash
-  | [file] <- args = do
-    let name = Text.pack (takeBaseName file)
-    hashes <- withBackend $ \be -> do
-      r <- liftIO $ listDatabases be def
-      return
-        [ repo_hash
-        | Thrift.Database{..} <- Thrift.listDatabasesResult_databases r
-        , let Thrift.Repo{..} = database_repo
-        , repo_name == name
-        ]
-    let
-      hash = head $ filter (`notElem` hashes) $ map showt [0::Int ..]
-      repo = Thrift.Repo name hash
-    load repo file; setRepo repo
+  | [file] <- args = withBackend $ \be -> do
+    repo <- liftIO $ do
+      let name = Text.pack (takeBaseName file)
+      hash <- pickHash be name
+      let repo = Thrift.Repo name hash
+      load be repo [file]
+      return repo
+    setRepo repo
 
   | otherwise
   = liftIO $ throwIO $ ErrorCall "syntax:  :load [<db>/<hash>] <file>"
   where
     args = Data.List.words str
-
-    load repo file = do
-      withBackend $ \be -> liftIO $ do
-        r <- Foreign.CPP.Dynamic.parseJSON =<< B.readFile file
-        val <- either (throwIO  . ErrorCall . Text.unpack) return r
-        batches <- case Aeson.parse parseJsonFactBatches val of
-          Error str -> throwIO $ ErrorCall str
-          Aeson.Success x -> return x
-        void $ fillDatabase
-          be
-          repo
-          ""
-          (throwIO $ ErrorCall "database already exists")
-          $ Glean.sendJsonBatch be repo batches Nothing
 
 dumpCmd :: String -> Eval ()
 dumpCmd str =
@@ -1174,6 +1080,15 @@ availableTypes = do
       | TypeRef{..} <- refs ]
     noVer = map typeRef_name refs
   return $ map Text.unpack $ sort noVer ++ sort withVer
+
+indexCompletion :: Haskeline.CompletionFunc Eval
+indexCompletion line@(left,_) =
+  case splitWhen isSpace (reverse left) of
+    [_cmd, _lang] -> ($line) $ Haskeline.completeWord Nothing " \t" $ \str ->
+      return (fromVocabulary str ["flow"])
+    (_cmd : _lang : rest)
+      | not (null rest) -> Haskeline.completeFilename line
+    _otherwise -> Haskeline.noCompletion line
 
 availablePredicatesAndTypes :: Eval [String]
 availablePredicatesAndTypes = (++) <$> availablePredicates <*> availableTypes

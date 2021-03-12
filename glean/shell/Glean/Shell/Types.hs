@@ -1,13 +1,37 @@
 {-# LANGUAGE DeriveFunctor, DeriveFoldable, DeriveTraversable #-}
 module Glean.Shell.Types (
-  Parse(..), Statement(..), JSONQuery(..), AngleQuery(..)
+  Parse(..), Statement(..), JSONQuery(..), AngleQuery(..),
+  ShellMode(..),
+  SchemaQuery(..),
+  Stats(..),
+  ShellState(..),
+  Eval(..),
+  withBackend,
+  getState,
+  getRepo,
+  setRepo,
+  getMode,
+  setMode,
 ) where
 
-import Glean.RTS.Types
-
+import Control.Concurrent
+import Control.Exception
+import qualified Control.Monad.Catch as C
+import Control.Monad.IO.Class (MonadIO, liftIO)
+import qualified Control.Monad.Trans.State.Strict as State
+import Data.Int
+import Data.Text.Prettyprint.Doc as Pretty
+import qualified System.Console.Haskeline as Haskeline
+import System.IO
+import qualified Text.JSON as JSON
 import qualified Text.Parsec as P
 import qualified Text.Parsec.Language as P
 import qualified Text.Parsec.Token as P
+
+import Glean
+import Glean.Schema.Resolve
+import Glean.Types as Thrift
+import Glean.Util.Some
 
 data Statement pat
   = Command String String
@@ -63,3 +87,80 @@ instance Parse JSONQuery where
 lexer :: P.TokenParser st
 lexer = P.makeTokenParser P.emptyDef
   { P.identLetter = P.alphaNum P.<|> P.oneOf "_." }
+
+
+data ShellMode = ShellJSON | ShellAngle
+  deriving Eq
+
+data SchemaQuery = SchemaQuery
+  { sqPredicate :: String
+  , sqRecursive :: Bool
+  , sqStored :: Bool
+  , sqQuery :: String
+  , sqCont :: Maybe Thrift.UserQueryCont
+  , sqTransform :: Maybe (JSON.JSValue -> JSON.Result JSON.JSValue)
+  , sqSyntax :: Thrift.QuerySyntax
+  }
+
+data Stats = NoStats | SummaryStats | FullStats
+  deriving Eq
+
+data ShellState = ShellState
+  { backend :: Some LocalOrRemote
+  , repo :: Maybe Thrift.Repo
+  , mode :: ShellMode
+  , schemas :: Schemas
+  , schemaInfo :: Thrift.SchemaInfo
+  , limit :: Int64
+  , timeout :: Maybe Int64
+  , stats :: Stats
+  , lastSchemaQuery :: Maybe SchemaQuery
+  , updateSchema :: Maybe (IO ())
+  , isTTY :: Bool
+  , pageWidth :: Maybe PageWidth
+  , pager :: Bool
+  , outputHandle :: MVar System.IO.Handle
+  , debug :: Thrift.QueryDebugOptions
+  }
+
+newtype Eval a = Eval
+  { unEval :: State.StateT ShellState IO a
+  }
+  deriving
+    ( Functor
+    , Applicative
+    , Monad
+    , Haskeline.MonadException
+    , MonadIO
+    , C.MonadCatch
+    , C.MonadMask
+    , C.MonadThrow )
+
+withBackend :: (forall b . LocalOrRemote b => b -> Eval a) -> Eval a
+withBackend f = do
+  state <- getState
+  case backend state of
+    Some b -> f b
+
+getState :: Eval ShellState
+getState = Eval State.get
+
+getRepo :: Eval (Maybe Thrift.Repo)
+getRepo = repo <$> getState
+
+setRepo :: Thrift.Repo -> Eval ()
+setRepo r =
+  withBackend $ \backend -> do
+    schema <- liftIO $ getSchemaInfo backend r
+    resolved <- either (liftIO . throwIO . ErrorCall) (return . snd) $
+      parseAndResolveSchema (Thrift.schemaInfo_schema schema)
+    Eval $ State.modify $ \s -> s
+      { repo = Just r
+      , schemaInfo = schema
+      , schemas = resolved }
+
+getMode :: Eval ShellMode
+getMode = mode <$> getState
+
+setMode :: ShellMode -> Eval ()
+setMode m = Eval $ State.modify $ \s -> s{ mode = m }
