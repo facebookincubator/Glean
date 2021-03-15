@@ -27,13 +27,3 @@ instance Glean.ToQuery Glean.Schema.CodeJava.Types.Entity where
 instance Glean.SumQuery Glean.Schema.Query.Java.Types.ClassDeclaration Glean.Schema.Query.CodeJava.Types.Entity where
   injectQuery q = Data.Default.def
     { Glean.Schema.Query.CodeJava.Types.entity_class_ = Prelude.Just q }
-
-type instance Glean.QueryResult Glean.Schema.Query.CodeJava.Types.Entity_2 = Glean.Schema.CodeJava.Types.Entity_2
-type instance Glean.QueryOf Glean.Schema.CodeJava.Types.Entity_2 = Glean.Schema.Query.CodeJava.Types.Entity_2
-
-instance Glean.ToQuery Glean.Schema.CodeJava.Types.Entity_2 where
-  toQuery (Glean.Schema.CodeJava.Types.Entity_2_class_ x) = Data.Default.def { Glean.Schema.Query.CodeJava.Types.entity_2_class_ = Prelude.Just (Glean.toQuery x) }
-
-instance Glean.SumQuery Glean.Schema.Query.Java.Types.ClassDeclaration_3 Glean.Schema.Query.CodeJava.Types.Entity_2 where
-  injectQuery q = Data.Default.def
-    { Glean.Schema.Query.CodeJava.Types.entity_2_class_ = Prelude.Just q }

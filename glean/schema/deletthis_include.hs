@@ -24,12 +24,12 @@ instance Glean.Type Glean.Schema.Deletthis.Types.FileReverseDeps_key where
     <*> Glean.decodeRtsValue
     <*> Glean.decodeRtsValue
 
-type instance Angle.RecordFields Glean.Schema.Deletthis.Types.FileReverseDeps_key = 'Angle.TField "file" (Glean.KeyType Glean.Schema.Src.Types.File) ('Angle.TField "referenced_by" (Glean.KeyType Glean.Schema.Src.Types.File) ('Angle.TField "via" (Glean.Schema.Code.Types.Entity_8) ('Angle.TNoFields)))
+type instance Angle.RecordFields Glean.Schema.Deletthis.Types.FileReverseDeps_key = 'Angle.TField "file" (Glean.KeyType Glean.Schema.Src.Types.File) ('Angle.TField "referenced_by" (Glean.KeyType Glean.Schema.Src.Types.File) ('Angle.TField "via" (Glean.Schema.Code.Types.Entity) ('Angle.TNoFields)))
 
 instance Glean.Predicate Glean.Schema.Deletthis.Types.FileReverseDeps where
   type KeyType Glean.Schema.Deletthis.Types.FileReverseDeps =
     Glean.Schema.Deletthis.Types.FileReverseDeps_key
-  getName _proxy  = Glean.PredicateRef "deletthis.FileReverseDeps"2
+  getName _proxy  = Glean.PredicateRef "deletthis.FileReverseDeps"3
   getIndex _proxy  = 177
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Deletthis.Types.fileReverseDeps_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Deletthis.Types.FileReverseDeps x k

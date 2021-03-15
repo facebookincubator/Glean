@@ -38,13 +38,3 @@ struct Entity {
   7: optional code_flow.Entity flow (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
   8: bool any = false;
 }
-
-struct Entity_8 {
-  1: optional code_cxx.Entity cxx (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
-  2: optional pp1.Define pp (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
-  3: optional code_java.Entity_2 java (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
-  4: optional code_hs.Entity hs (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
-  5: optional code_python.Entity python (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
-  6: optional code_hack.Entity hack (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
-  7: bool any = false;
-}

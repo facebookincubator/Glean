@@ -25,7 +25,3 @@ const map<string, i64> PREDICATE_VERSIONS = {
 union Entity {
   1: java.ClassDeclaration class_ (java.swift.name = "class_");
 } (hs.nonempty)
-
-union Entity_2 {
-  1: java.ClassDeclaration_3 class_ (java.swift.name = "class_");
-} (hs.nonempty)

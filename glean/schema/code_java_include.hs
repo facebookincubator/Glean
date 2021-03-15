@@ -26,17 +26,3 @@ type instance Angle.SumFields Glean.Schema.CodeJava.Types.Entity = 'Angle.TField
 instance Glean.SumBranches Glean.Schema.Java.Types.ClassDeclaration Glean.Schema.CodeJava.Types.Entity where
   injectBranch = Glean.Schema.CodeJava.Types.Entity_class_
   projectBranch (Glean.Schema.CodeJava.Types.Entity_class_ x) = Prelude.Just x
-
-instance Glean.Type Glean.Schema.CodeJava.Types.Entity_2 where
-  buildRtsValue b (Glean.Schema.CodeJava.Types.Entity_2_class_ x) = do
-    Glean.buildRtsSelector b 0
-    Glean.buildRtsValue b x
-  decodeRtsValue = Glean.sumD
-    [ Glean.mapD Glean.Schema.CodeJava.Types.Entity_2_class_
-    ]
-
-type instance Angle.SumFields Glean.Schema.CodeJava.Types.Entity_2 = 'Angle.TField "class_" (Glean.KeyType Glean.Schema.Java.Types.ClassDeclaration_3) ('Angle.TNoFields)
-
-instance Glean.SumBranches Glean.Schema.Java.Types.ClassDeclaration_3 Glean.Schema.CodeJava.Types.Entity_2 where
-  injectBranch = Glean.Schema.CodeJava.Types.Entity_2_class_
-  projectBranch (Glean.Schema.CodeJava.Types.Entity_2_class_ x) = Prelude.Just x

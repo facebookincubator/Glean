@@ -26,8 +26,3 @@ struct Entity {
   1: optional java.ClassDeclaration class_ (java.swift.name = "class_", cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
   2: bool any = false;
 }
-
-struct Entity_2 {
-  1: optional java.ClassDeclaration_3 class_ (java.swift.name = "class_", cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
-  2: bool any = false;
-}
