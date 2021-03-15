@@ -24,5 +24,6 @@ const map<string, i64> PREDICATE_VERSIONS = {
 
 struct Entity {
   1: optional flow.SomeDeclaration decl (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
-  2: bool any = false;
+  2: optional flow.Module module_ (java.swift.name = "module_", cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+  3: bool any = false;
 }

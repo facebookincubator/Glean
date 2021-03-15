@@ -91,6 +91,7 @@ trimCodeEntity = \case
         Hack.Declaration_typedef_ y -> trim y
 
     trimFlow = \case
+      Flow.Entity_module_ m -> Flow.Entity_module_ m
       Flow.Entity_decl x -> Flow.Entity_decl $ case x of
          Flow.SomeDeclaration_localDecl d -> trim d
          Flow.SomeDeclaration_memberDecl d -> trim d

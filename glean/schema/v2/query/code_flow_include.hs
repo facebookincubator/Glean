@@ -23,7 +23,12 @@ type instance Glean.QueryOf Glean.Schema.CodeFlow.Types.Entity = Glean.Schema.Qu
 
 instance Glean.ToQuery Glean.Schema.CodeFlow.Types.Entity where
   toQuery (Glean.Schema.CodeFlow.Types.Entity_decl x) = Data.Default.def { Glean.Schema.Query.CodeFlow.Types.entity_decl = Prelude.Just (Glean.toQuery x) }
+  toQuery (Glean.Schema.CodeFlow.Types.Entity_module_ x) = Data.Default.def { Glean.Schema.Query.CodeFlow.Types.entity_module_ = Prelude.Just (Glean.toQuery x) }
 
 instance Glean.SumQuery Glean.Schema.Query.Flow.Types.SomeDeclaration Glean.Schema.Query.CodeFlow.Types.Entity where
   injectQuery q = Data.Default.def
     { Glean.Schema.Query.CodeFlow.Types.entity_decl = Prelude.Just q }
+
+instance Glean.SumQuery Glean.Schema.Query.Flow.Types.Module Glean.Schema.Query.CodeFlow.Types.Entity where
+  injectQuery q = Data.Default.def
+    { Glean.Schema.Query.CodeFlow.Types.entity_module_ = Prelude.Just q }

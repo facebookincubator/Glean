@@ -38,15 +38,6 @@ union Entity {
   7: code_flow.Entity flow;
 } (hs.nonempty)
 
-union Entity_9 {
-  1: code_cxx.Entity cxx;
-  2: pp1.Define pp;
-  3: code_java.Entity java;
-  4: code_hs.Entity hs;
-  5: code_python.Entity python;
-  6: code_hack.Entity hack;
-} (hs.nonempty)
-
 union Entity_8 {
   1: code_cxx.Entity cxx;
   2: pp1.Define pp;

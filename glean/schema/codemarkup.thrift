@@ -8,6 +8,7 @@
 include "glean/if/glean.thrift"
 include "glean/schema/builtin.thrift"
 include "glean/schema/code.thrift"
+include "glean/schema/code_flow.thrift"
 include "glean/schema/flow.thrift"
 include "glean/schema/src.thrift"
 
@@ -21,38 +22,38 @@ namespace rust glean_schema_codemarkup
 
 hs_include "glean/schema/codemarkup_include.hs"
 const map<string, i64> PREDICATE_VERSIONS = {
-  "FlowModuleNamespaceXRef": 9,
-  "HackEntityUses": 9,
-  "FileDeclarations": 9,
-  "FlowFileEntityXRefs": 9,
-  "HaskellFileDirectXRefs": 9,
-  "PythonFileDirectXRefs": 9,
-  "PythonResolve": 9,
-  "EntityToDeclaration": 9,
-  "FileEntities": 9,
-  "FlowXRefDeclInfo": 9,
-  "FlowResolve": 9,
-  "FlowTypeImportXRef": 9,
-  "Resolve": 9,
-  "HackFileDeclarations": 9,
-  "FlowCompatibleModuleExport": 9,
-  "FlowSameModule": 9,
-  "FileAnnotations": 9,
-  "FlowXRefInfo": 9,
-  "HackResolve": 9,
-  "HackFileDirectXRefs": 9,
-  "EntityUses": 9,
-  "PythonFileEntityXRefs": 9,
-  "FlowTypeExportLocation": 9,
-  "FlowFileDirectXRefs": 9,
-  "HackFileEntityXRefs": 9,
-  "FlowImportXRef": 9,
-  "FlowModuleExportLocation": 9,
-  "PythonFileDeclarations": 9,
-  "FileDirectXRefs": 9,
-  "FlowDeclarationInfo": 9,
-  "FileEntityXRefs": 9,
-  "FlowFileDeclarations": 9,
+  "FlowModuleNamespaceXRef": 10,
+  "HackEntityUses": 10,
+  "FileDeclarations": 10,
+  "FlowFileEntityXRefs": 10,
+  "HaskellFileDirectXRefs": 10,
+  "PythonFileDirectXRefs": 10,
+  "PythonResolve": 10,
+  "EntityToDeclaration": 10,
+  "FileEntities": 10,
+  "FlowXRefDeclInfo": 10,
+  "FlowResolve": 10,
+  "FlowTypeImportXRef": 10,
+  "Resolve": 10,
+  "HackFileDeclarations": 10,
+  "FlowCompatibleModuleExport": 10,
+  "FlowSameModule": 10,
+  "FileAnnotations": 10,
+  "FlowXRefInfo": 10,
+  "HackResolve": 10,
+  "HackFileDirectXRefs": 10,
+  "EntityUses": 10,
+  "PythonFileEntityXRefs": 10,
+  "FlowTypeExportLocation": 10,
+  "FlowFileDirectXRefs": 10,
+  "HackFileEntityXRefs": 10,
+  "FlowImportXRef": 10,
+  "FlowModuleExportLocation": 10,
+  "PythonFileDeclarations": 10,
+  "FileDirectXRefs": 10,
+  "FlowDeclarationInfo": 10,
+  "FileEntityXRefs": 10,
+  "FlowFileDeclarations": 10,
 }
 
 
@@ -60,7 +61,7 @@ typedef glean.Id HackEntityUses_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.HackEntityUses";
-  version=9;
+  version=10;
 }
 struct HackEntityUses {
   1: HackEntityUses_id id (hs.strict);
@@ -71,7 +72,7 @@ typedef glean.Id FlowXRefInfo_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.FlowXRefInfo";
-  version=9;
+  version=10;
 }
 struct FlowXRefInfo {
   1: FlowXRefInfo_id id (hs.strict);
@@ -82,7 +83,7 @@ typedef glean.Id FlowXRefDeclInfo_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.FlowXRefDeclInfo";
-  version=9;
+  version=10;
 }
 struct FlowXRefDeclInfo {
   1: FlowXRefDeclInfo_id id (hs.strict);
@@ -93,7 +94,7 @@ typedef glean.Id FlowTypeImportXRef_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.FlowTypeImportXRef";
-  version=9;
+  version=10;
 }
 struct FlowTypeImportXRef {
   1: FlowTypeImportXRef_id id (hs.strict);
@@ -104,7 +105,7 @@ typedef glean.Id FlowTypeExportLocation_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.FlowTypeExportLocation";
-  version=9;
+  version=10;
 }
 struct FlowTypeExportLocation {
   1: FlowTypeExportLocation_id id (hs.strict);
@@ -115,7 +116,7 @@ typedef glean.Id FlowSameModule_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.FlowSameModule";
-  version=9;
+  version=10;
 }
 struct FlowSameModule {
   1: FlowSameModule_id id (hs.strict);
@@ -126,7 +127,7 @@ typedef glean.Id FlowModuleNamespaceXRef_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.FlowModuleNamespaceXRef";
-  version=9;
+  version=10;
 }
 struct FlowModuleNamespaceXRef {
   1: FlowModuleNamespaceXRef_id id (hs.strict);
@@ -137,7 +138,7 @@ typedef glean.Id FlowModuleExportLocation_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.FlowModuleExportLocation";
-  version=9;
+  version=10;
 }
 struct FlowModuleExportLocation {
   1: FlowModuleExportLocation_id id (hs.strict);
@@ -148,7 +149,7 @@ typedef glean.Id FlowImportXRef_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.FlowImportXRef";
-  version=9;
+  version=10;
 }
 struct FlowImportXRef {
   1: FlowImportXRef_id id (hs.strict);
@@ -159,7 +160,7 @@ typedef glean.Id FlowDeclarationInfo_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.FlowDeclarationInfo";
-  version=9;
+  version=10;
 }
 struct FlowDeclarationInfo {
   1: FlowDeclarationInfo_id id (hs.strict);
@@ -170,7 +171,7 @@ typedef glean.Id FlowCompatibleModuleExport_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.FlowCompatibleModuleExport";
-  version=9;
+  version=10;
 }
 struct FlowCompatibleModuleExport {
   1: FlowCompatibleModuleExport_id id (hs.strict);
@@ -181,7 +182,7 @@ typedef glean.Id EntityUses_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.EntityUses";
-  version=9;
+  version=10;
 }
 struct EntityUses {
   1: EntityUses_id id (hs.strict);
@@ -192,7 +193,7 @@ typedef glean.Id FileDirectXRefs_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.FileDirectXRefs";
-  version=9;
+  version=10;
 }
 struct FileDirectXRefs {
   1: FileDirectXRefs_id id (hs.strict);
@@ -203,7 +204,7 @@ typedef glean.Id FileEntityXRefs_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.FileEntityXRefs";
-  version=9;
+  version=10;
 }
 struct FileEntityXRefs {
   1: FileEntityXRefs_id id (hs.strict);
@@ -214,7 +215,7 @@ typedef glean.Id FlowFileDirectXRefs_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.FlowFileDirectXRefs";
-  version=9;
+  version=10;
 }
 struct FlowFileDirectXRefs {
   1: FlowFileDirectXRefs_id id (hs.strict);
@@ -225,7 +226,7 @@ typedef glean.Id FlowFileEntityXRefs_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.FlowFileEntityXRefs";
-  version=9;
+  version=10;
 }
 struct FlowFileEntityXRefs {
   1: FlowFileEntityXRefs_id id (hs.strict);
@@ -236,7 +237,7 @@ typedef glean.Id HackFileDirectXRefs_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.HackFileDirectXRefs";
-  version=9;
+  version=10;
 }
 struct HackFileDirectXRefs {
   1: HackFileDirectXRefs_id id (hs.strict);
@@ -247,7 +248,7 @@ typedef glean.Id HackFileEntityXRefs_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.HackFileEntityXRefs";
-  version=9;
+  version=10;
 }
 struct HackFileEntityXRefs {
   1: HackFileEntityXRefs_id id (hs.strict);
@@ -258,7 +259,7 @@ typedef glean.Id HaskellFileDirectXRefs_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.HaskellFileDirectXRefs";
-  version=9;
+  version=10;
 }
 struct HaskellFileDirectXRefs {
   1: HaskellFileDirectXRefs_id id (hs.strict);
@@ -269,7 +270,7 @@ typedef glean.Id PythonFileDirectXRefs_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.PythonFileDirectXRefs";
-  version=9;
+  version=10;
 }
 struct PythonFileDirectXRefs {
   1: PythonFileDirectXRefs_id id (hs.strict);
@@ -280,7 +281,7 @@ typedef glean.Id PythonFileEntityXRefs_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.PythonFileEntityXRefs";
-  version=9;
+  version=10;
 }
 struct PythonFileEntityXRefs {
   1: PythonFileEntityXRefs_id id (hs.strict);
@@ -291,7 +292,7 @@ typedef glean.Id EntityToDeclaration_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.EntityToDeclaration";
-  version=9;
+  version=10;
 }
 struct EntityToDeclaration {
   1: EntityToDeclaration_id id (hs.strict);
@@ -302,7 +303,7 @@ typedef glean.Id FileDeclarations_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.FileDeclarations";
-  version=9;
+  version=10;
 }
 struct FileDeclarations {
   1: FileDeclarations_id id (hs.strict);
@@ -313,7 +314,7 @@ typedef glean.Id FileEntities_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.FileEntities";
-  version=9;
+  version=10;
 }
 struct FileEntities {
   1: FileEntities_id id (hs.strict);
@@ -324,7 +325,7 @@ typedef glean.Id FlowFileDeclarations_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.FlowFileDeclarations";
-  version=9;
+  version=10;
 }
 struct FlowFileDeclarations {
   1: FlowFileDeclarations_id id (hs.strict);
@@ -335,7 +336,7 @@ typedef glean.Id FlowResolve_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.FlowResolve";
-  version=9;
+  version=10;
 }
 struct FlowResolve {
   1: FlowResolve_id id (hs.strict);
@@ -346,7 +347,7 @@ typedef glean.Id HackFileDeclarations_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.HackFileDeclarations";
-  version=9;
+  version=10;
 }
 struct HackFileDeclarations {
   1: HackFileDeclarations_id id (hs.strict);
@@ -357,7 +358,7 @@ typedef glean.Id HackResolve_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.HackResolve";
-  version=9;
+  version=10;
 }
 struct HackResolve {
   1: HackResolve_id id (hs.strict);
@@ -368,7 +369,7 @@ typedef glean.Id PythonFileDeclarations_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.PythonFileDeclarations";
-  version=9;
+  version=10;
 }
 struct PythonFileDeclarations {
   1: PythonFileDeclarations_id id (hs.strict);
@@ -379,7 +380,7 @@ typedef glean.Id PythonResolve_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.PythonResolve";
-  version=9;
+  version=10;
 }
 struct PythonResolve {
   1: PythonResolve_id id (hs.strict);
@@ -390,7 +391,7 @@ typedef glean.Id Resolve_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.Resolve";
-  version=9;
+  version=10;
 }
 struct Resolve {
   1: Resolve_id id (hs.strict);
@@ -401,7 +402,7 @@ typedef glean.Id FileAnnotations_id
 
 @glean.PredicateAnnotation{
   name="codemarkup.FileAnnotations";
-  version=9;
+  version=10;
 }
 struct FileAnnotations {
   1: FileAnnotations_id id (hs.strict);
@@ -435,14 +436,16 @@ struct FlowXRefDeclInfo_key {
 
 struct FlowTypeImportXRef_key {
   1: flow.TypeDeclaration local;
-  2: src.File targetFile;
-  3: src.ByteSpan targetSpan;
+  2: code_flow.Entity entity;
+  3: src.File targetFile;
+  4: src.ByteSpan targetSpan;
 }
 
 struct FlowTypeExportLocation_key {
   1: flow.ModuleTypeExport moduleTypeExport;
-  2: src.File file;
-  3: src.ByteSpan span;
+  2: code_flow.Entity entity;
+  3: src.File file;
+  4: src.ByteSpan span;
 }
 
 struct FlowSameModule_key {
@@ -452,19 +455,22 @@ struct FlowSameModule_key {
 
 struct FlowModuleNamespaceXRef_key {
   1: flow.Declaration local;
-  2: src.File file;
+  2: code_flow.Entity entity;
+  3: src.File file;
 }
 
 struct FlowModuleExportLocation_key {
   1: flow.ModuleExport local;
-  2: src.File file;
-  3: src.ByteSpan span;
+  2: code_flow.Entity entity;
+  3: src.File file;
+  4: src.ByteSpan span;
 }
 
 struct FlowImportXRef_key {
   1: flow.Declaration local;
-  2: src.File targetFile;
-  3: src.ByteSpan targetSpan;
+  2: code_flow.Entity entity;
+  3: src.File targetFile;
+  4: src.ByteSpan targetSpan;
 }
 
 struct FlowDeclarationInfo_key {

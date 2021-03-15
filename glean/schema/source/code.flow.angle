@@ -6,3 +6,13 @@ type Entity =
     decl : flow.SomeDeclaration |
   }
 }
+
+schema code.flow.2 {
+import flow.3
+
+type Entity =
+  {
+    decl : flow.SomeDeclaration |
+    module_ : flow.Module |
+  }
+}

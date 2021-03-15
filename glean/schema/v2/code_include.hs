@@ -88,66 +88,6 @@ instance Glean.SumBranches Glean.Schema.CodeFlow.Types.Entity Glean.Schema.Code.
   projectBranch (Glean.Schema.Code.Types.Entity_flow x) = Prelude.Just x
   projectBranch _ = Prelude.Nothing
 
-instance Glean.Type Glean.Schema.Code.Types.Entity_9 where
-  buildRtsValue b (Glean.Schema.Code.Types.Entity_9_cxx x) = do
-    Glean.buildRtsSelector b 0
-    Glean.buildRtsValue b x
-  buildRtsValue b (Glean.Schema.Code.Types.Entity_9_pp x) = do
-    Glean.buildRtsSelector b 1
-    Glean.buildRtsValue b x
-  buildRtsValue b (Glean.Schema.Code.Types.Entity_9_java x) = do
-    Glean.buildRtsSelector b 2
-    Glean.buildRtsValue b x
-  buildRtsValue b (Glean.Schema.Code.Types.Entity_9_hs x) = do
-    Glean.buildRtsSelector b 3
-    Glean.buildRtsValue b x
-  buildRtsValue b (Glean.Schema.Code.Types.Entity_9_python x) = do
-    Glean.buildRtsSelector b 4
-    Glean.buildRtsValue b x
-  buildRtsValue b (Glean.Schema.Code.Types.Entity_9_hack x) = do
-    Glean.buildRtsSelector b 5
-    Glean.buildRtsValue b x
-  decodeRtsValue = Glean.sumD
-    [ Glean.mapD Glean.Schema.Code.Types.Entity_9_cxx
-    , Glean.mapD Glean.Schema.Code.Types.Entity_9_pp
-    , Glean.mapD Glean.Schema.Code.Types.Entity_9_java
-    , Glean.mapD Glean.Schema.Code.Types.Entity_9_hs
-    , Glean.mapD Glean.Schema.Code.Types.Entity_9_python
-    , Glean.mapD Glean.Schema.Code.Types.Entity_9_hack
-    ]
-
-type instance Angle.SumFields Glean.Schema.Code.Types.Entity_9 = 'Angle.TField "cxx" (Glean.Schema.CodeCxx.Types.Entity) ('Angle.TField "pp" (Glean.KeyType Glean.Schema.Pp1.Types.Define) ('Angle.TField "java" (Glean.Schema.CodeJava.Types.Entity) ('Angle.TField "hs" (Glean.Schema.CodeHs.Types.Entity) ('Angle.TField "python" (Glean.Schema.CodePython.Types.Entity) ('Angle.TField "hack" (Glean.Schema.CodeHack.Types.Entity) ('Angle.TNoFields))))))
-
-instance Glean.SumBranches Glean.Schema.CodeCxx.Types.Entity Glean.Schema.Code.Types.Entity_9 where
-  injectBranch = Glean.Schema.Code.Types.Entity_9_cxx
-  projectBranch (Glean.Schema.Code.Types.Entity_9_cxx x) = Prelude.Just x
-  projectBranch _ = Prelude.Nothing
-
-instance Glean.SumBranches Glean.Schema.Pp1.Types.Define Glean.Schema.Code.Types.Entity_9 where
-  injectBranch = Glean.Schema.Code.Types.Entity_9_pp
-  projectBranch (Glean.Schema.Code.Types.Entity_9_pp x) = Prelude.Just x
-  projectBranch _ = Prelude.Nothing
-
-instance Glean.SumBranches Glean.Schema.CodeJava.Types.Entity Glean.Schema.Code.Types.Entity_9 where
-  injectBranch = Glean.Schema.Code.Types.Entity_9_java
-  projectBranch (Glean.Schema.Code.Types.Entity_9_java x) = Prelude.Just x
-  projectBranch _ = Prelude.Nothing
-
-instance Glean.SumBranches Glean.Schema.CodeHs.Types.Entity Glean.Schema.Code.Types.Entity_9 where
-  injectBranch = Glean.Schema.Code.Types.Entity_9_hs
-  projectBranch (Glean.Schema.Code.Types.Entity_9_hs x) = Prelude.Just x
-  projectBranch _ = Prelude.Nothing
-
-instance Glean.SumBranches Glean.Schema.CodePython.Types.Entity Glean.Schema.Code.Types.Entity_9 where
-  injectBranch = Glean.Schema.Code.Types.Entity_9_python
-  projectBranch (Glean.Schema.Code.Types.Entity_9_python x) = Prelude.Just x
-  projectBranch _ = Prelude.Nothing
-
-instance Glean.SumBranches Glean.Schema.CodeHack.Types.Entity Glean.Schema.Code.Types.Entity_9 where
-  injectBranch = Glean.Schema.Code.Types.Entity_9_hack
-  projectBranch (Glean.Schema.Code.Types.Entity_9_hack x) = Prelude.Just x
-  projectBranch _ = Prelude.Nothing
-
 instance Glean.Type Glean.Schema.Code.Types.Entity_8 where
   buildRtsValue b (Glean.Schema.Code.Types.Entity_8_cxx x) = do
     Glean.buildRtsSelector b 0

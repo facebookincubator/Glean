@@ -15,6 +15,9 @@ import qualified Glean.Schema.Query.Builtin.Types
 import qualified Glean.Schema.Code.Types
 import qualified Glean.Schema.Query.Code.Types
 
+import qualified Glean.Schema.CodeFlow.Types
+import qualified Glean.Schema.Query.CodeFlow.Types
+
 import qualified Glean.Schema.Flow.Types
 import qualified Glean.Schema.Query.Flow.Types
 
@@ -28,7 +31,7 @@ type instance Glean.QueryResult Glean.Schema.Query.Codemarkup.Types.FlowModuleNa
 type instance Glean.QueryOf Glean.Schema.Codemarkup.Types.FlowModuleNamespaceXRef_key = Glean.Schema.Query.Codemarkup.Types.FlowModuleNamespaceXRef_key
 
 instance Glean.ToQuery Glean.Schema.Codemarkup.Types.FlowModuleNamespaceXRef_key where
-  toQuery (Glean.Schema.Codemarkup.Types.FlowModuleNamespaceXRef_key x1 x2) = Glean.Schema.Query.Codemarkup.Types.FlowModuleNamespaceXRef_key (Prelude.Just (Glean.toQuery x1)) (Prelude.Just (Glean.toQuery x2))
+  toQuery (Glean.Schema.Codemarkup.Types.FlowModuleNamespaceXRef_key x1 x2 x3) = Glean.Schema.Query.Codemarkup.Types.FlowModuleNamespaceXRef_key (Prelude.Just (Glean.toQuery x1)) (Prelude.Just (Glean.toQuery x2)) (Prelude.Just (Glean.toQuery x3))
 
 instance Glean.PredicateQuery Glean.Schema.Codemarkup.Types.FlowModuleNamespaceXRef where
   toQueryId = Glean.Schema.Query.Codemarkup.Types.FlowModuleNamespaceXRef_with_id . Glean.fromFid . Glean.idOf
@@ -193,7 +196,7 @@ type instance Glean.QueryResult Glean.Schema.Query.Codemarkup.Types.FlowTypeImpo
 type instance Glean.QueryOf Glean.Schema.Codemarkup.Types.FlowTypeImportXRef_key = Glean.Schema.Query.Codemarkup.Types.FlowTypeImportXRef_key
 
 instance Glean.ToQuery Glean.Schema.Codemarkup.Types.FlowTypeImportXRef_key where
-  toQuery (Glean.Schema.Codemarkup.Types.FlowTypeImportXRef_key x1 x2 x3) = Glean.Schema.Query.Codemarkup.Types.FlowTypeImportXRef_key (Prelude.Just (Glean.toQuery x1)) (Prelude.Just (Glean.toQuery x2)) (Prelude.Just (Glean.toQuery x3))
+  toQuery (Glean.Schema.Codemarkup.Types.FlowTypeImportXRef_key x1 x2 x3 x4) = Glean.Schema.Query.Codemarkup.Types.FlowTypeImportXRef_key (Prelude.Just (Glean.toQuery x1)) (Prelude.Just (Glean.toQuery x2)) (Prelude.Just (Glean.toQuery x3)) (Prelude.Just (Glean.toQuery x4))
 
 instance Glean.PredicateQuery Glean.Schema.Codemarkup.Types.FlowTypeImportXRef where
   toQueryId = Glean.Schema.Query.Codemarkup.Types.FlowTypeImportXRef_with_id . Glean.fromFid . Glean.idOf
@@ -358,7 +361,7 @@ type instance Glean.QueryResult Glean.Schema.Query.Codemarkup.Types.FlowTypeExpo
 type instance Glean.QueryOf Glean.Schema.Codemarkup.Types.FlowTypeExportLocation_key = Glean.Schema.Query.Codemarkup.Types.FlowTypeExportLocation_key
 
 instance Glean.ToQuery Glean.Schema.Codemarkup.Types.FlowTypeExportLocation_key where
-  toQuery (Glean.Schema.Codemarkup.Types.FlowTypeExportLocation_key x1 x2 x3) = Glean.Schema.Query.Codemarkup.Types.FlowTypeExportLocation_key (Prelude.Just (Glean.toQuery x1)) (Prelude.Just (Glean.toQuery x2)) (Prelude.Just (Glean.toQuery x3))
+  toQuery (Glean.Schema.Codemarkup.Types.FlowTypeExportLocation_key x1 x2 x3 x4) = Glean.Schema.Query.Codemarkup.Types.FlowTypeExportLocation_key (Prelude.Just (Glean.toQuery x1)) (Prelude.Just (Glean.toQuery x2)) (Prelude.Just (Glean.toQuery x3)) (Prelude.Just (Glean.toQuery x4))
 
 instance Glean.PredicateQuery Glean.Schema.Codemarkup.Types.FlowTypeExportLocation where
   toQueryId = Glean.Schema.Query.Codemarkup.Types.FlowTypeExportLocation_with_id . Glean.fromFid . Glean.idOf
@@ -403,7 +406,7 @@ type instance Glean.QueryResult Glean.Schema.Query.Codemarkup.Types.FlowImportXR
 type instance Glean.QueryOf Glean.Schema.Codemarkup.Types.FlowImportXRef_key = Glean.Schema.Query.Codemarkup.Types.FlowImportXRef_key
 
 instance Glean.ToQuery Glean.Schema.Codemarkup.Types.FlowImportXRef_key where
-  toQuery (Glean.Schema.Codemarkup.Types.FlowImportXRef_key x1 x2 x3) = Glean.Schema.Query.Codemarkup.Types.FlowImportXRef_key (Prelude.Just (Glean.toQuery x1)) (Prelude.Just (Glean.toQuery x2)) (Prelude.Just (Glean.toQuery x3))
+  toQuery (Glean.Schema.Codemarkup.Types.FlowImportXRef_key x1 x2 x3 x4) = Glean.Schema.Query.Codemarkup.Types.FlowImportXRef_key (Prelude.Just (Glean.toQuery x1)) (Prelude.Just (Glean.toQuery x2)) (Prelude.Just (Glean.toQuery x3)) (Prelude.Just (Glean.toQuery x4))
 
 instance Glean.PredicateQuery Glean.Schema.Codemarkup.Types.FlowImportXRef where
   toQueryId = Glean.Schema.Query.Codemarkup.Types.FlowImportXRef_with_id . Glean.fromFid . Glean.idOf
@@ -418,7 +421,7 @@ type instance Glean.QueryResult Glean.Schema.Query.Codemarkup.Types.FlowModuleEx
 type instance Glean.QueryOf Glean.Schema.Codemarkup.Types.FlowModuleExportLocation_key = Glean.Schema.Query.Codemarkup.Types.FlowModuleExportLocation_key
 
 instance Glean.ToQuery Glean.Schema.Codemarkup.Types.FlowModuleExportLocation_key where
-  toQuery (Glean.Schema.Codemarkup.Types.FlowModuleExportLocation_key x1 x2 x3) = Glean.Schema.Query.Codemarkup.Types.FlowModuleExportLocation_key (Prelude.Just (Glean.toQuery x1)) (Prelude.Just (Glean.toQuery x2)) (Prelude.Just (Glean.toQuery x3))
+  toQuery (Glean.Schema.Codemarkup.Types.FlowModuleExportLocation_key x1 x2 x3 x4) = Glean.Schema.Query.Codemarkup.Types.FlowModuleExportLocation_key (Prelude.Just (Glean.toQuery x1)) (Prelude.Just (Glean.toQuery x2)) (Prelude.Just (Glean.toQuery x3)) (Prelude.Just (Glean.toQuery x4))
 
 instance Glean.PredicateQuery Glean.Schema.Codemarkup.Types.FlowModuleExportLocation where
   toQueryId = Glean.Schema.Query.Codemarkup.Types.FlowModuleExportLocation_with_id . Glean.fromFid . Glean.idOf

@@ -76,41 +76,6 @@ instance Glean.SumQuery Glean.Schema.Query.CodeFlow.Types.Entity Glean.Schema.Qu
   injectQuery q = Data.Default.def
     { Glean.Schema.Query.Code.Types.entity_flow = Prelude.Just q }
 
-type instance Glean.QueryResult Glean.Schema.Query.Code.Types.Entity_9 = Glean.Schema.Code.Types.Entity_9
-type instance Glean.QueryOf Glean.Schema.Code.Types.Entity_9 = Glean.Schema.Query.Code.Types.Entity_9
-
-instance Glean.ToQuery Glean.Schema.Code.Types.Entity_9 where
-  toQuery (Glean.Schema.Code.Types.Entity_9_cxx x) = Data.Default.def { Glean.Schema.Query.Code.Types.entity_9_cxx = Prelude.Just (Glean.toQuery x) }
-  toQuery (Glean.Schema.Code.Types.Entity_9_pp x) = Data.Default.def { Glean.Schema.Query.Code.Types.entity_9_pp = Prelude.Just (Glean.toQuery x) }
-  toQuery (Glean.Schema.Code.Types.Entity_9_java x) = Data.Default.def { Glean.Schema.Query.Code.Types.entity_9_java = Prelude.Just (Glean.toQuery x) }
-  toQuery (Glean.Schema.Code.Types.Entity_9_hs x) = Data.Default.def { Glean.Schema.Query.Code.Types.entity_9_hs = Prelude.Just (Glean.toQuery x) }
-  toQuery (Glean.Schema.Code.Types.Entity_9_python x) = Data.Default.def { Glean.Schema.Query.Code.Types.entity_9_python = Prelude.Just (Glean.toQuery x) }
-  toQuery (Glean.Schema.Code.Types.Entity_9_hack x) = Data.Default.def { Glean.Schema.Query.Code.Types.entity_9_hack = Prelude.Just (Glean.toQuery x) }
-
-instance Glean.SumQuery Glean.Schema.Query.CodeCxx.Types.Entity Glean.Schema.Query.Code.Types.Entity_9 where
-  injectQuery q = Data.Default.def
-    { Glean.Schema.Query.Code.Types.entity_9_cxx = Prelude.Just q }
-
-instance Glean.SumQuery Glean.Schema.Query.Pp1.Types.Define Glean.Schema.Query.Code.Types.Entity_9 where
-  injectQuery q = Data.Default.def
-    { Glean.Schema.Query.Code.Types.entity_9_pp = Prelude.Just q }
-
-instance Glean.SumQuery Glean.Schema.Query.CodeJava.Types.Entity Glean.Schema.Query.Code.Types.Entity_9 where
-  injectQuery q = Data.Default.def
-    { Glean.Schema.Query.Code.Types.entity_9_java = Prelude.Just q }
-
-instance Glean.SumQuery Glean.Schema.Query.CodeHs.Types.Entity Glean.Schema.Query.Code.Types.Entity_9 where
-  injectQuery q = Data.Default.def
-    { Glean.Schema.Query.Code.Types.entity_9_hs = Prelude.Just q }
-
-instance Glean.SumQuery Glean.Schema.Query.CodePython.Types.Entity Glean.Schema.Query.Code.Types.Entity_9 where
-  injectQuery q = Data.Default.def
-    { Glean.Schema.Query.Code.Types.entity_9_python = Prelude.Just q }
-
-instance Glean.SumQuery Glean.Schema.Query.CodeHack.Types.Entity Glean.Schema.Query.Code.Types.Entity_9 where
-  injectQuery q = Data.Default.def
-    { Glean.Schema.Query.Code.Types.entity_9_hack = Prelude.Just q }
-
 type instance Glean.QueryResult Glean.Schema.Query.Code.Types.Entity_8 = Glean.Schema.Code.Types.Entity_8
 type instance Glean.QueryOf Glean.Schema.Code.Types.Entity_8 = Glean.Schema.Query.Code.Types.Entity_8
 

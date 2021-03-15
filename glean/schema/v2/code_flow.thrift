@@ -24,4 +24,5 @@ const map<string, i64> PREDICATE_VERSIONS = {
 
 union Entity {
   1: flow.SomeDeclaration decl;
+  2: flow.Module module_ (java.swift.name = "module_");
 } (hs.nonempty)
