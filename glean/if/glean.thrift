@@ -456,6 +456,11 @@ struct UserQueryOptions {
 
       // debugging options
   12: QueryDebugOptions debug;
+
+      // do not send the results with the response.
+      // Saves the server the work of encoding and sending the response
+      // through the wire.
+  13: bool omit_results = false;
 }
 
 struct QueryDebugOptions {
@@ -554,6 +559,8 @@ struct UserQueryStats {
        // size of the compiled bytecode
   8: optional i64 execute_time_ns;
        // time to execute the compiled query
+  9: i64 result_count;
+       // the number of top-level facts in the result. Not counting nested facts.
 }
 
 # Results in Glean's internal binary representation

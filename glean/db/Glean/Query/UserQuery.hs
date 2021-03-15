@@ -395,7 +395,7 @@ userQueryFactsImpl
       limits = mkQueryRuntimeOptions opts config
 
   vlog 2 $ "userQueryFactsImpl: " <> show (length userQueryFacts_facts)
-  QueryResults{..} <- do
+  qResults@QueryResults{..} <- do
     nextId <- firstFreeId lookup
     -- executeCompiled needs a Define, even though we won't use it
     bracket (FactSet.new nextId) release $ \derived -> do
@@ -405,26 +405,26 @@ userQueryFactsImpl
       (release . compiledQuerySub) $ \sub ->
         executeCompiled schemaInventory stack sub limits
 
-  let n =
-        Vector.length queryResultsNestedFacts +
-        Vector.length queryResultsFacts
-  addStatValueType "glean.query.facts" n Stats.Sum
-  let stats = Stats { statFactCount = n }
+  stats <- getStats qResults
 
-  return Results
-    { resFacts = Vector.toList queryResultsFacts
-    , resPredicate = Nothing
-    , resNestedFacts = mkNestedFacts queryResultsNestedFacts
-    , resCont = Nothing
-    , resStats = stats
-    , resDiags = []
-    , resWriteHandle = Nothing
-    , resFactsSearched = Nothing
-    , resType = Nothing  -- could be facts of different predicates
-    , resBytecodeSize = Nothing
-    , resCompileTime = Nothing
-    , resExecutionTime = Nothing
-    }
+  let results = Results
+        { resFacts = Vector.toList queryResultsFacts
+        , resPredicate = Nothing
+        , resNestedFacts = mkNestedFacts queryResultsNestedFacts
+        , resCont = Nothing
+        , resStats = stats
+        , resDiags = []
+        , resWriteHandle = Nothing
+        , resFactsSearched = Nothing
+        , resType = Nothing  -- could be facts of different predicates
+        , resBytecodeSize = Nothing
+        , resCompileTime = Nothing
+        , resExecutionTime = Nothing
+        }
+
+  return $ if Thrift.userQueryOptions_omit_results opts
+     then withoutFacts results
+     else results
 
 userQueryImpl
   :: Database.Env
@@ -515,7 +515,7 @@ userQueryImpl
       _otherwise -> firstFreeId lookup
     derived <- FactSet.new nextId
     let stack = stacked lookup derived
-    ( QueryResults{..}
+    ( qResults@QueryResults{..}
       , queryDiag
       , bytecodeSize) <-
       case Thrift.userQueryOptions_continuation opts of
@@ -544,31 +544,31 @@ userQueryImpl
         nextId <- firstFreeId derived
         return $ Just $ mkUserQueryCont bs nextId
 
-    let
-      numFacts =
-        Vector.length queryResultsFacts +
-        Vector.length queryResultsNestedFacts
-
-    stats <- getStats numFacts
+    stats <- getStats qResults
     when (isJust userCont) $
       addStatValueType "glean.query.truncated" 1 Stats.Sum
 
     let pred = predicateRef_name predicateRef <> "." <>
           showt (predicateRef_version predicateRef)
-    return Results
-      { resFacts = Vector.toList queryResultsFacts
-      , resPredicate = Just details
-      , resNestedFacts = mkNestedFacts queryResultsNestedFacts
-      , resCont = userCont
-      , resStats = stats
-      , resDiags = irDiag ++ queryDiag
-      , resWriteHandle = maybeWriteHandle
-      , resFactsSearched = queryResultsStats
-      , resType = Just pred
-      , resBytecodeSize = Just bytecodeSize
-      , resCompileTime = Just compileTime
-      , resExecutionTime = Just queryResultsElapsedNs
-      }
+
+    let results = Results
+          { resFacts = Vector.toList queryResultsFacts
+          , resPredicate = Just details
+          , resNestedFacts = mkNestedFacts queryResultsNestedFacts
+          , resCont = userCont
+          , resStats = stats
+          , resDiags = irDiag ++ queryDiag
+          , resWriteHandle = maybeWriteHandle
+          , resFactsSearched = queryResultsStats
+          , resType = Just pred
+          , resBytecodeSize = Just bytecodeSize
+          , resCompileTime = Just compileTime
+          , resExecutionTime = Just queryResultsElapsedNs
+          }
+
+    return $ if Thrift.userQueryOptions_omit_results opts
+       then withoutFacts results
+       else results
 
 -- JSON queries:
 userQueryImpl
@@ -610,7 +610,6 @@ userQueryImpl
       -- Handle queries for a key pattern. Queries for a specific id
       -- will be handed off to userQueryFactsImpl.
       userQueryTerm query cont = do
-
         let
           limits0 = mkQueryRuntimeOptions opts config
           limits
@@ -625,7 +624,7 @@ userQueryImpl
           _otherwise -> firstFreeId lookup
         derived <- FactSet.new nextId
         let stack = stacked lookup derived
-        QueryResults{..} <-
+        qResults@QueryResults{..} <-
           case cont of
             Just ucont ->
               restartCompiled schemaInventory stack (Just predicatePid) limits
@@ -650,28 +649,28 @@ userQueryImpl
             nextId <- firstFreeId derived
             return $ Just $ mkUserQueryCont bs nextId
 
-        let
-          numFacts =
-            Vector.length queryResultsFacts +
-            Vector.length queryResultsNestedFacts
-        stats <- getStats numFacts
+        stats <- getStats qResults
         when (isJust userCont) $
           addStatValueType "glean.query.truncated" 1 Stats.Sum
 
-        return Results
-          { resFacts = Vector.toList queryResultsFacts
-          , resPredicate = Just details
-          , resNestedFacts = mkNestedFacts queryResultsNestedFacts
-          , resCont = userCont
-          , resStats = stats
-          , resDiags = []
-          , resWriteHandle = maybeWriteHandle
-          , resFactsSearched = queryResultsStats
-          , resType = Just pred
-          , resCompileTime = Nothing
-          , resBytecodeSize = Nothing
-          , resExecutionTime = Just queryResultsElapsedNs
-          }
+        let results = Results
+              { resFacts = Vector.toList queryResultsFacts
+              , resPredicate = Just details
+              , resNestedFacts = mkNestedFacts queryResultsNestedFacts
+              , resCont = userCont
+              , resStats = stats
+              , resDiags = []
+              , resWriteHandle = maybeWriteHandle
+              , resFactsSearched = queryResultsStats
+              , resType = Just pred
+              , resCompileTime = Nothing
+              , resBytecodeSize = Nothing
+              , resExecutionTime = Just queryResultsElapsedNs
+              }
+
+        return $ if Thrift.userQueryOptions_omit_results opts
+           then withoutFacts results
+           else results
 
     let
       oops = throwIO . Thrift.BadQuery . ("invalid JSON query: " <>)
@@ -738,6 +737,12 @@ mkNestedFacts facts =
   IntMap.fromList
     [ (fromIntegral (fromFid id), f)
     | (id,f) <- Vector.toList facts ]
+
+withoutFacts :: Results stats fact -> Results stats fact
+withoutFacts results = results
+    { resFacts = mempty
+    , resNestedFacts = mempty
+    }
 
 mkQueryRuntimeOptions
   :: Thrift.UserQueryOptions
@@ -806,13 +811,24 @@ showPred predicate maybeVer =
 
 data Stats = Stats
   { statFactCount :: {-# UNPACK #-} !Int
+  , statResultCount :: {-# UNPACK #-} !Int
   }
 
-getStats :: Int -> IO Stats
-getStats f = do
-  addStatValueType "glean.query.facts" f Stats.Sum
+getStats :: QueryResults -> IO Stats
+getStats QueryResults{..} = do
+  let
+    results =
+      Vector.length queryResultsFacts
+
+    facts =
+      Vector.length queryResultsFacts +
+      Vector.length queryResultsNestedFacts
+
+  addStatValueType "glean.query.facts" facts Stats.Sum
+  addStatValueType "glean.query.results" results Stats.Sum
   return $ Stats
-    { statFactCount = f
+    { statFactCount = facts
+    , statResultCount  = results
     }
 
 withStats :: IO (Results Stats fact) -> IO (Results Thrift.UserQueryStats fact)
@@ -821,6 +837,8 @@ withStats io = do
   let stats = Thrift.UserQueryStats
         { Thrift.userQueryStats_num_facts =
             fromIntegral $ statFactCount $ resStats res
+        , Thrift.userQueryStats_result_count =
+            fromIntegral $ statResultCount $ resStats res
         , Thrift.userQueryStats_elapsed_ns = truncate (secs * 1000000000)
         , Thrift.userQueryStats_allocated_bytes = fromIntegral bytes
         , Thrift.userQueryStats_facts_searched = resFactsSearched res

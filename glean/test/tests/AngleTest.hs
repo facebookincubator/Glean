@@ -1545,6 +1545,34 @@ angleRecExpansion modify = dbTestCase $ \env repo -> do
         }] -> True
     _ -> False
 
+angleQueryOptions :: Test
+angleQueryOptions = dbTestCase $ \env repo -> do
+  let omitResults omit (Query query decoder) = Query q decoder
+        where
+          opts = fromMaybe def (userQuery_options query)
+          q = query
+            { userQuery_options = Just opts
+              { userQueryOptions_omit_results = omit }
+            }
+
+      counts (_, Nothing) = error "No query stats"
+      counts (results, Just UserQueryStats{..}) =
+        ( length results
+        , userQueryStats_result_count
+        )
+
+  r <- queryStats env repo $ omitResults True $ angle @Cxx.FunctionName
+    [s|
+      cxx1.FunctionName { name = "ab"..  }
+    |]
+  assertEqual "queryOptions - omitting results" (counts r) (0, 2)
+
+  r <- queryStats env repo $ omitResults False $ angle @Cxx.FunctionName
+    [s|
+      cxx1.FunctionName { name = "ab"..  }
+    |]
+  assertEqual "queryOptions - not omitting results" (counts r) (2, 2)
+
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
@@ -1568,4 +1596,5 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "dsl" $ angleDSL id
   , TestLabel "recExpansion" $ angleRecExpansion id
   , TestLabel "recExpansion/page" $ angleRecExpansion (limit 1)
+  , TestLabel "queryOptions" angleQueryOptions
   ]

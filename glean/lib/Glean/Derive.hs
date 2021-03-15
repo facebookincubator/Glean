@@ -44,6 +44,7 @@ derivePredicate backend repo sender maxBytes maxResults
       , userQueryOptions_store_derived_facts = True
       , userQueryOptions_max_bytes = maxBytes
       , userQueryOptions_max_results = maxResults
+      , userQueryOptions_omit_results = True
       }
 
     retry :: Double -> IO a -> IO a
