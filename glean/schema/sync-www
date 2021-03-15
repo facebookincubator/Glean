@@ -30,10 +30,6 @@ if [ ! -d "$DEST" ]; then
   exit 1
 fi
 
-buck run //glean/schema/gen:gen-schema -- \
-     --dir glean/schema/source \
-     --hackjson "$SRC"
-
 if [ ! -d "$SRC" ]; then
   echo "Something went wrong: didn't find schema at $SRC"
   exit 1
