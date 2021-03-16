@@ -97,6 +97,7 @@ data Command
       , output :: Maybe FilePath
       , statsOutput :: Maybe FilePath
       , timeout :: Maybe Int64
+      , omitResults :: Bool
       }
   | Restore
       { what :: WhatToRestore
@@ -308,6 +309,8 @@ options = info (parser <**> helper)
           ( metavar "QUERY"
           <> help "query to execute ('@file' to read from file, '-' for stdin)"
           )
+        omitResults <- switch $ long "omit-results"
+          <> help "don't print results; use with --stat to get a count of results"
         return Query{..}
 
     restoreCmd :: Parser Command
@@ -640,6 +643,7 @@ main =
                     , userQueryOptions_continuation = cont
                     , userQueryOptions_syntax = QuerySyntax_ANGLE
                     , userQueryOptions_recursive = recurse
+                    , userQueryOptions_omit_results = omitResults
                     }
                 }
               n <- case userQueryResults_results of
