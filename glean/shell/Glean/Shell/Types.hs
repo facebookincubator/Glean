@@ -100,6 +100,7 @@ data SchemaQuery = SchemaQuery
   , sqCont :: Maybe Thrift.UserQueryCont
   , sqTransform :: Maybe (JSON.JSValue -> JSON.Result JSON.JSValue)
   , sqSyntax :: Thrift.QuerySyntax
+  , sqOmitResults :: Bool
   }
 
 data Stats = NoStats | SummaryStats | FullStats

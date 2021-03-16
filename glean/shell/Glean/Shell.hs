@@ -442,6 +442,8 @@ helptext mode = vcat
             "Set limit on the number of query results")
       , ("timeout off|<n>",
             "Set the query time budget")
+      , ("count <query>",
+            "Show only a count of query results, not the results themselves")
       , ("more",
             "Fetch more results from the previous query")
       , ("profile [off|summary|full]",
@@ -554,18 +556,19 @@ evaluate s = do
 doJSONStmt :: Statement JSONQuery -> Eval Bool
 doJSONStmt (Command name arg) = doCmd name arg
 doJSONStmt (FactRef bang fid) = userFact bang fid >> return False
-doJSONStmt (Pattern (JSONQuery ide rec stored pat))
-  = runUserQuery sq >> return False
-  where
-    sq = SchemaQuery
-      { sqPredicate = pred
-      , sqRecursive = rec
-      , sqStored = stored
-      , sqQuery = pat
-      , sqCont = Nothing
-      , sqTransform = trans
-      , sqSyntax = Thrift.QuerySyntax_JSON }
+doJSONStmt (Pattern query) = runUserQuery (fromJSONQuery query) >> return False
 
+fromJSONQuery :: JSONQuery -> SchemaQuery
+fromJSONQuery (JSONQuery ide rec stored pat) = SchemaQuery
+    { sqPredicate = pred
+    , sqRecursive = rec
+    , sqStored = stored
+    , sqQuery = pat
+    , sqCont = Nothing
+    , sqTransform = trans
+    , sqSyntax = Thrift.QuerySyntax_JSON
+    , sqOmitResults = False }
+  where
     -- magic transformation when we query for "xrefs". This is to make
     -- debugging of xref issues easier by presenting xref data in an
     -- easier-to-comprehend format.
@@ -576,17 +579,19 @@ doJSONStmt (Pattern (JSONQuery ide rec stored pat))
 doAngleStmt :: Statement AngleQuery -> Eval Bool
 doAngleStmt (Command name arg) = doCmd name arg
 doAngleStmt (FactRef bang fid) = userFact bang fid >> return False
-doAngleStmt (Pattern (AngleQuery rec stored pat))
-  = runUserQuery sq >> return False
-  where
-    sq = SchemaQuery
-      { sqPredicate = ""
-      , sqRecursive = rec
-      , sqStored = stored
-      , sqQuery = pat
-      , sqCont = Nothing
-      , sqTransform = Nothing
-      , sqSyntax = Thrift.QuerySyntax_ANGLE }
+doAngleStmt (Pattern query)
+  = runUserQuery (fromAngleQuery query) >> return False
+
+fromAngleQuery :: AngleQuery -> SchemaQuery
+fromAngleQuery (AngleQuery rec stored pat) = SchemaQuery
+  { sqPredicate = ""
+  , sqRecursive = rec
+  , sqStored = stored
+  , sqQuery = pat
+  , sqCont = Nothing
+  , sqTransform = Nothing
+  , sqSyntax = Thrift.QuerySyntax_ANGLE
+  , sqOmitResults = False }
 
 data Cmd = Cmd
   { cmdName :: String
@@ -622,6 +627,7 @@ commands =
   , Cmd "profile" (completeWords (pure ["off","summary","full"])) $
       \str _ -> statsCmd str
   , Cmd "timeout" Haskeline.noCompletion $ \str _ -> timeoutCmd str
+  , Cmd "count" Haskeline.noCompletion $ \str _ -> countCmd str
   , Cmd "!restore" Haskeline.noCompletion $ const . restoreDatabase
   , Cmd "!kickoff" Haskeline.noCompletion $ const . kickOff
   , Cmd "!delete" completeDatabases $ const . deleteDatabase
@@ -721,6 +727,21 @@ timeoutCmd str
     Eval $ State.modify $ \s -> s { timeout = Just (fromIntegral n) }
   | otherwise = liftIO $ throwIO $ ErrorCall "syntax: :timeout off|<number>"
 
+countCmd :: String -> Eval ()
+countCmd str = do
+  ShellState {..} <- getState
+  case mode of
+    ShellJSON -> run fromJSONQuery
+    ShellAngle -> run fromAngleQuery
+  where
+    run :: Parse query => (query -> SchemaQuery) -> Eval ()
+    run from =
+      case runParser parse () "<input>" str of
+        Left err -> do
+          output $ "*** Syntax error:" <+> pretty (show err)
+          return ()
+        Right query -> runUserQuery (from query) { sqOmitResults = True }
+
 statsCmd :: String -> Eval ()
 statsCmd "" = do
   s <- stats <$> getState
@@ -810,7 +831,8 @@ runUserQuery SchemaQuery
     , sqQuery = rest
     , sqCont = cont
     , sqTransform = transform
-    , sqSyntax = syntax } = do
+    , sqSyntax = syntax
+    , sqOmitResults = omitResults } = do
   let SourceRef pred maybeVer = parseRef (Text.pack str)
   ShellState{..} <- getState
   Thrift.UserQueryResults{..} <- withRepo $ \repo -> withBackend $ \be ->
@@ -834,6 +856,7 @@ runUserQuery SchemaQuery
              , Thrift.userQueryOptions_collect_facts_searched =
                  stats == FullStats
              , Thrift.userQueryOptions_debug = debug
+             , Thrift.userQueryOptions_omit_results = omitResults
              }
           }
   output $ vcat $
@@ -853,13 +876,12 @@ runUserQuery SchemaQuery
     ++
     [ "" ]
     ++
-    [ pretty (length userQueryResults_facts) <+> "results"
-      <>
-      case userQueryResults_stats of
-        Nothing -> mempty
+    [ case userQueryResults_stats of
+        Nothing -> pretty (length userQueryResults_facts) <+> "results"
         Just Thrift.UserQueryStats{..} ->
           pretty
-            ( printf ", %d facts, %.2fms, %ld bytes"
+            ( printf "%d results, %d facts, %.2fms, %ld bytes"
+              userQueryStats_result_count
               userQueryStats_num_facts
               (realToFrac userQueryStats_elapsed_ns / 1000000 :: Double)
               userQueryStats_allocated_bytes
@@ -908,6 +930,7 @@ runUserQuery SchemaQuery
         , sqCont = Just cont
         , sqTransform = transform
         , sqSyntax = syntax
+        , sqOmitResults = omitResults
         }}
 
 -- | A line from the user (or entry on the command line) may end in a backslash
