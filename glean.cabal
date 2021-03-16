@@ -114,6 +114,7 @@ library stubs
         TestRunner
     build-depends:
         glean:if-fb303-hs,
+        mangle,
         thrift-server
 
 library tailer

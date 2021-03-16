@@ -1,16 +1,50 @@
-{-# LANGUAGE CPP #-}
-module Glean.Init (module Glean.Init) where
+{-# LANGUAGE CPP, TemplateHaskell #-}
+module Glean.Init (
+    withUnitTest,
+    withGflags,
+    withOptions,
+  ) where
 
 import Control.Exception
+import Foreign
+import Foreign.C
 import Options.Applicative
 import qualified System.Environment as Sys
+
 import Util.Encoding (setDefaultEncodingToUTF8)
 import Util.OptParse
 import Util.Text (withCStrings)
 import Util.Control.Exception (tryAll)
 
+import Mangle.TH
+
+$(mangle
+  "void folly::init(int*, char***, bool)"
+  [d|
+    foreign import ccall unsafe
+      c_follyInit
+        :: Ptr CInt
+        -> Ptr (Ptr (Ptr CChar))
+        -> CBool
+        -> IO ()
+  |])
+
+follyInit :: [String] -> IO ()
+follyInit args = do
+  name <- Sys.getExecutablePath
+  withCStrings (name:args) $ \argv ->
+    with (fromIntegral (1 + length args)) $ \pargc ->
+    with argv $ \pargv ->
+      c_follyInit pargc pargv 0
+
+follyUninit :: IO ()
+follyUninit = return ()
+
 withUnitTest :: IO () -> IO ()
 withUnitTest = id
+
+withGflags :: [String] -> IO a -> IO a
+withGflags args = bracket_ (follyInit args) follyUninit
 
 withOptions :: ParserInfo a -> (a -> IO b) -> IO b
 withOptions = withParser Sys.getArgs
@@ -24,7 +58,7 @@ withParser argsIO p act = do
     Right (opts, fbArgs) -> run (fixHelp fbArgs) $ act opts
   where
     p' = p { infoParser = fbhelper <*> infoParser p }
-    run _args = id
+    run args act = bracket_ (follyInit args) follyUninit act
     -- Because the C++ flag help is usually a huge amount of spew, we want to
     -- reserve --help for the Haskell options helper, and provide a --help-all
     -- flag to show the help for the C++ flags.
@@ -46,3 +80,4 @@ fbhelper = abortOption showHelpText $ mconcat
 #else
   showHelpText = ShowHelpText
 #endif
+
