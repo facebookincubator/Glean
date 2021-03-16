@@ -20,4 +20,5 @@ data Control
   = FallThrough
   | CondJump
   | UncondJump
+  | UncondReturn
   deriving(Eq, Ord, Enum, Bounded, Read, Show)

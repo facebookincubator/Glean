@@ -161,7 +161,7 @@ genEvalSwitch =
       [ "      case Op::" <> insnName insn <> ":"
       , "        eval_" <> insnName insn <> "();" ]
       ++
-      if returns insn
+      if insnControl insn == UncondReturn
       then
       [ "        return;"]
       else
@@ -201,4 +201,4 @@ genEvalIndirect =
       [ "label_" <> insnName insn <> ":"
       , "  eval_" <> insnName insn <> "();" ]
       ++
-      if returns insn then [ "  return;"] else dispatch
+      if insnControl insn == UncondReturn then [ "  return;"] else dispatch

@@ -2,7 +2,6 @@ module Glean.Bytecode.Generate.Instruction
   ( Insn(..)
   , Arg(..), Usage(..)
   , instructions
-  , returns
   , version
   , lowestSupportedVersion
   ) where
@@ -361,13 +360,13 @@ instructions =
     -- i.e. the current state of the evaluator and then return from the
     -- subroutine. The intention is to resume execution later, starting from
     -- 'cont'.
-  , Insn "Suspend" UncondJump
+  , Insn "Suspend" UncondReturn
       [ Arg "fun" (Fun [WordPtr,WordPtr] Void) Load
       , Arg "cont" Offset Imm
       ]
 
     -- Return from a subroutine.
-  , Insn "Ret" UncondJump []
+  , Insn "Ret" UncondReturn []
 
     -- Load a word from a memory location pointed to by a register
   , Insn "LoadWord" FallThrough
@@ -381,8 +380,3 @@ instructions =
       , Arg "dst" WordPtr Load
       ]
   ]
-
-returns :: Insn -> Bool
-returns (Insn "Ret" _ _) = True
-returns (Insn "Suspend" _ _) = True
-returns _ = False

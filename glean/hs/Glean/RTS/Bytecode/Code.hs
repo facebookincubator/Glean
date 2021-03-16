@@ -437,7 +437,8 @@ newBlock = Code $ do
   where
     jump_to label insns
       | insn : _ <- insns
-      , insnControl insn == UncondJump = insns
+      , insnControl insn == UncondJump
+        || insnControl insn == UncondReturn = insns
       | otherwise = Jump label : insns
 
 instance MonadInsn Code where
@@ -455,8 +456,9 @@ instance MonadInsn Code where
   issue insn = do
     Code $ S.modify' $ \s@CodeS{..} -> s { csInsns = insn : csInsns }
     case insnControl insn of
-      UncondJump -> void newBlock
       CondJump -> void newBlock
+      UncondJump -> void newBlock
+      UncondReturn -> void newBlock
       _ -> return ()
 
   literal lit = Code $ do
