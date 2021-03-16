@@ -90,7 +90,7 @@ common deps
         deepseq ^>=1.4.3.0,
         hashable >=1.2.7.0 && <1.4,
         tar ^>=0.5.1.0,
-        ghc-prim ^>=0.5.2.0,
+        ghc-prim >=0.5.2.0 && <0.7,
         parsec ^>=3.1.13.0,
         haxl >= 2.1.2.0 && < 2.4,
         hinotify ^>= 0.4.1
@@ -421,6 +421,7 @@ library core
         Glean.Util.PredMap
         Glean.Util.PredSet
 
+    build-tool-depends: alex:alex, happy:happy
     build-depends:
         glean:bytecode,
         glean:config,
@@ -757,7 +758,7 @@ executable server
         glean:core,
         glean:db,
         glean:util,
-        haskeline ^>=0.7.3,
+        haskeline >=0.7.3 && <0.9,
         json,
         thrift-server
 
@@ -780,7 +781,8 @@ executable shell
         glean:db,
         glean:client-hs,
         glean:util,
-        haskeline ^>=0.7.3,
+        glean:lib,
+        haskeline >=0.7.3 && <0.9,
         json,
         monad-control,
         split
@@ -800,6 +802,7 @@ executable glean
         glean:config,
         glean:core,
         glean:lib,
+        glean:util,
         json,
 
 executable search

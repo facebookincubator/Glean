@@ -12,7 +12,7 @@ gen-bytecode::
 	$(CABAL) new-run gen-bytecode-hs -- --install_dir=glean/hs
 
 test::
-	$(CABAL) new-test glean
+	$(CABAL) new-test glean:tests
 
 SCHEMAS= \
 	buck \

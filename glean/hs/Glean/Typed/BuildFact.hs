@@ -7,6 +7,7 @@ module Glean.Typed.BuildFact
 
 import Data.Maybe
 import Control.Monad (void)
+import Control.Monad.Fail (MonadFail)
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Reader
 

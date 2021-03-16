@@ -1,0 +1,30 @@
+# https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions
+name: CI
+on: [push, pull_request]
+
+jobs:
+  ci:
+    strategy:
+      fail-fast: false
+      matrix:
+        ghc: [ghc-8.4.4, ghc-8.6.5, ghc-8.8.4, ghc-8.10.2]
+    runs-on: ubuntu-latest
+    container:
+      image: alpmestan/thrift:0.2
+      options: --cpus 2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install ${{ matrix.ghc }}
+        run: apt-get install -y ${{ matrix.ghc }} librocksdb-dev
+      - name: Get hsthrift and build/install its dependencies
+        run: ./install_deps.sh
+      - name: Populate hackage index
+        run: cabal update
+      - name: Build hsthrift/Glean
+        run: |
+          make thrift
+          make gen-bytecode
+          make glean
+      - name: Run Glean tests
+        run: make test
