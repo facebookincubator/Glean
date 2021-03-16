@@ -106,7 +106,7 @@ newtype Code a = Code { runCode :: S.State CodeS a }
 constant :: Word64 -> Code (Register 'Word)
 constant w = Code $ do
   s@CodeS{..} <- S.get
-  Constant <$> case IntMap.lookup (fromIntegral w) csConstantMap of
+  Register Constant <$> case IntMap.lookup (fromIntegral w) csConstantMap of
     Just i -> return i
     Nothing -> do
       S.put s
@@ -125,7 +125,7 @@ local f = do
   Code $ S.modify' $ \s -> s
     { csLocals = csLocals + 1
     , csMaxLocal = max csMaxLocal (csLocals + 1) }
-  x <- f $ Local csLocals
+  x <- f $ Register Local csLocals
   Code $ S.modify' $ \s -> s { csLocals = csLocals }
   return x
 
@@ -136,7 +136,7 @@ locals n f = do
   Code $ S.modify' $ \s -> s
     { csLocals = csLocals + fromIntegral n
     , csMaxLocal = max csMaxLocal (csLocals + fromIntegral n) }
-  x <- f $ map Local [csLocals .. csLocals + fromIntegral n - 1]
+  x <- f $ map (Register Local) [csLocals .. csLocals + fromIntegral n - 1]
   Code $ S.modify' $ \s -> s { csLocals = csLocals }
   return x
 
@@ -150,7 +150,7 @@ outputs n f = do
   Code $ S.modify' $ \s -> s
     { csOutputs = csOutputs + fromIntegral n
     , csMaxOutputs = max csMaxOutputs (csOutputs + fromIntegral n) }
-  x <- f $ map Input [csOutputs .. csOutputs + fromIntegral n - 1]
+  x <- f $ map (Register Input) [csOutputs .. csOutputs + fromIntegral n - 1]
   Code $ S.modify' $ \s -> s { csOutputs = csOutputs }
   return x
 
@@ -187,49 +187,49 @@ calledFrom frames inner = do
 
 -- | Tuples of registers
 class Registers a where
-  registers :: (forall t . Word64 -> Register t) -> Word64 -> (a, Word64)
+  registers :: Segment -> Word64 -> (a, Word64)
 
 instance Registers () where
   registers _ i = ((), i)
 
 instance Registers (Register t) where
-  registers f i = (f i, i+1)
+  registers s i = (Register s i, i+1)
 
 instance (Registers a, Registers b) => Registers (a,b) where
-  registers f i0 =
-    let (a, i1) = registers f i0
-        (b, i2) = registers f i1
+  registers s i0 =
+    let (a, i1) = registers s i0
+        (b, i2) = registers s i1
     in
     ((a,b), i2)
 
 instance (Registers a, Registers b, Registers c) => Registers (a,b,c) where
-  registers f i0 =
-    let (a, i1) = registers f i0
-        (b, i2) = registers f i1
-        (c, i3) = registers f i2
+  registers s i0 =
+    let (a, i1) = registers s i0
+        (b, i2) = registers s i1
+        (c, i3) = registers s i2
     in
     ((a,b,c), i3)
 
 instance
     (Registers a, Registers b, Registers c, Registers d)
     => Registers (a,b,c,d) where
-  registers f i0 =
-    let (a, i1) = registers f i0
-        (b, i2) = registers f i1
-        (c, i3) = registers f i2
-        (d, i4) = registers f i3
+  registers s i0 =
+    let (a, i1) = registers s i0
+        (b, i2) = registers s i1
+        (c, i3) = registers s i2
+        (d, i4) = registers s i3
     in
     ((a,b,c,d), i4)
 
 instance
     (Registers a, Registers b, Registers c, Registers d, Registers e)
     => Registers (a,b,c,d,e) where
-  registers f i0 =
-    let (a, i1) = registers f i0
-        (b, i2) = registers f i1
-        (c, i3) = registers f i2
-        (d, i4) = registers f i3
-        (e, i5) = registers f i4
+  registers s i0 =
+    let (a, i1) = registers s i0
+        (b, i2) = registers s i1
+        (c, i3) = registers s i2
+        (d, i4) = registers s i3
+        (e, i5) = registers s i4
     in
     ((a,b,c,d,e), i5)
 
@@ -269,10 +269,10 @@ generate opt gen
           get_label pc label = (offsets VP.! fromLabel label) - pc
 
           get_reg :: forall ty . Register ty -> Word64
-          get_reg (Input n) = assert (n < finalInputSize) n
-          get_reg (Constant n) = assert (n < csConstantsSize)
+          get_reg (Register Input n) = assert (n < finalInputSize) n
+          get_reg (Register Constant n) = assert (n < csConstantsSize)
             (n + finalInputSize)
-          get_reg (Local n) = n + finalInputSize + csConstantsSize
+          get_reg (Register Local n) = n + finalInputSize + csConstantsSize
 
           optimise = case opt of
             Optimised -> shortcut
@@ -407,11 +407,13 @@ layout CFG{..} = runST $ do
 newtype Label = Label { fromLabel :: Int }
   deriving(Eq,Ord,Enum,Num,Show)
 
+-- | Frame segment which a register belongs to
+data Segment = Input | Constant | Local
+  deriving(Eq,Ord,Enum,Bounded,Show)
+
 -- | Registers
 data Register (t :: Ty)
-  = Input {-# UNPACK #-} !Word64
-  | Constant {-# UNPACK #-} !Word64
-  | Local {-# UNPACK #-} !Word64
+  = Register !Segment {-# UNPACK #-} !Word64
   deriving Show
 
 castRegister :: Register a -> Register b
