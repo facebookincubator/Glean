@@ -54,6 +54,8 @@ import Util.Text
 import Util.TimeSec
 
 import qualified Glean.BuildInfo as BuildInfo
+import Glean.Database.Schema.Types (DbSchema(..))
+import Glean.Database.Schema (newDbSchema, readWriteContent)
 import Glean.Database.Config (parseSchemaDir)
 import qualified Glean.Database.Config as DB (Config(..))
 import Glean.Init
@@ -671,7 +673,7 @@ reloadCmd = do
   state <- getState
   case updateSchema state of
     Nothing -> output ":reload requires the shell to be started with --schema"
-    Just io -> liftIO io
+    Just io -> io
   case repo state of
     Nothing -> return ()
     Just repo -> do
@@ -1168,7 +1170,7 @@ evalMain cfg = do
           liftIO $ putStr "> " >> putStrLn q;
           void $ evaluate q
 
-setupLocalSchema :: Config -> IO (Config, Maybe (IO ()))
+setupLocalSchema :: Config -> IO (Config, Maybe (Eval ()))
 setupLocalSchema cfg = do
   case cfgSchemaDir cfg of
     Nothing -> return (cfg, Nothing)
@@ -1185,10 +1187,21 @@ setupLocalSchema cfg = do
               return $ (SourceSchemas 0 [], Schemas HashMap.empty 0 [])
           (schemaTS, update) <- ThriftSource.mutable schema
           let
-            updateSchema :: IO ()
+            updateSchema :: Eval ()
             updateSchema = do
-              newSchema <- parseSchemaDir dir
-              update (const newSchema)
+              new@(source,resolved) <- liftIO $ parseSchemaDir dir
+              -- convert to a DbSchema, because this forces
+              -- typechecking of the derived predicates. Otherwise we
+              -- won't notice type errors until after the schema is
+              -- updated below.
+              db <- liftIO $ newDbSchema source resolved readWriteContent
+              liftIO $ update (const new)
+              let
+                numSchemas = length (srcSchemas (schemaSource db))
+                numPredicates = HashMap.size (predicatesByRef db)
+              output $ "reloading schema [" <>
+                pretty numSchemas <> " schemas, " <>
+                pretty numPredicates <> " predicates]"
 
             -- When using --schema, we also set --db-schema-override. This
             -- allows the local schema to override whatever was in the DB,

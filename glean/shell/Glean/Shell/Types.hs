@@ -116,7 +116,7 @@ data ShellState = ShellState
   , timeout :: Maybe Int64
   , stats :: Stats
   , lastSchemaQuery :: Maybe SchemaQuery
-  , updateSchema :: Maybe (IO ())
+  , updateSchema :: Maybe (Eval ())
   , isTTY :: Bool
   , pageWidth :: Maybe PageWidth
   , pager :: Bool
