@@ -1,5 +1,6 @@
 -- @generated
 {-# LANGUAGE TypeFamilies, MultiParamTypeClasses, DataKinds #-}
+{-# LANGUAGE FlexibleInstances, TypeSynonymInstances #-}
 {-# LANGUAGE UndecidableInstances #-}
 import qualified Data.ByteString
 import qualified Data.Default
@@ -28,7 +29,7 @@ instance Glean.Predicate Glean.Schema.SearchCxx.Types.EntityUses where
   type KeyType Glean.Schema.SearchCxx.Types.EntityUses =
     Glean.Schema.SearchCxx.Types.EntityUses_key
   getName _proxy  = Glean.PredicateRef "search.cxx.EntityUses"4
-  getIndex _proxy  = 237
+  getIndex _proxy  = 239
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.SearchCxx.Types.entityUses_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.SearchCxx.Types.EntityUses x k
   getFactKey = Glean.Schema.SearchCxx.Types.entityUses_key
@@ -54,7 +55,7 @@ instance Glean.Predicate Glean.Schema.SearchCxx.Types.SearchByNameAndScope where
   type KeyType Glean.Schema.SearchCxx.Types.SearchByNameAndScope =
     Glean.Schema.SearchCxx.Types.SearchByNameAndScope_key
   getName _proxy  = Glean.PredicateRef "search.cxx.SearchByNameAndScope"4
-  getIndex _proxy  = 228
+  getIndex _proxy  = 229
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.SearchCxx.Types.searchByNameAndScope_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.SearchCxx.Types.SearchByNameAndScope x k
   getFactKey = Glean.Schema.SearchCxx.Types.searchByNameAndScope_key
@@ -78,7 +79,7 @@ instance Glean.Predicate Glean.Schema.SearchCxx.Types.GlobalDeclarationWithName 
   type KeyType Glean.Schema.SearchCxx.Types.GlobalDeclarationWithName =
     Glean.Schema.SearchCxx.Types.GlobalDeclarationWithName_key
   getName _proxy  = Glean.PredicateRef "search.cxx.GlobalDeclarationWithName"1
-  getIndex _proxy  = 196
+  getIndex _proxy  = 197
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.SearchCxx.Types.globalDeclarationWithName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.SearchCxx.Types.GlobalDeclarationWithName x k
   getFactKey = Glean.Schema.SearchCxx.Types.globalDeclarationWithName_key
@@ -102,7 +103,7 @@ instance Glean.Predicate Glean.Schema.SearchCxx.Types.DeclIsDefn where
   type KeyType Glean.Schema.SearchCxx.Types.DeclIsDefn =
     Glean.Schema.SearchCxx.Types.DeclIsDefn_key
   getName _proxy  = Glean.PredicateRef "search.cxx.DeclIsDefn"4
-  getIndex _proxy  = 174
+  getIndex _proxy  = 175
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.SearchCxx.Types.declIsDefn_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.SearchCxx.Types.DeclIsDefn x k
   getFactKey = Glean.Schema.SearchCxx.Types.declIsDefn_key
@@ -126,7 +127,7 @@ instance Glean.Predicate Glean.Schema.SearchCxx.Types.SearchBySelector where
   type KeyType Glean.Schema.SearchCxx.Types.SearchBySelector =
     Glean.Schema.SearchCxx.Types.SearchBySelector_key
   getName _proxy  = Glean.PredicateRef "search.cxx.SearchBySelector"4
-  getIndex _proxy  = 126
+  getIndex _proxy  = 127
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.SearchCxx.Types.searchBySelector_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.SearchCxx.Types.SearchBySelector x k
   getFactKey = Glean.Schema.SearchCxx.Types.searchBySelector_key

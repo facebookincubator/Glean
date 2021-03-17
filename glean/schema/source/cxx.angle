@@ -275,7 +275,7 @@ type DeclKind =
     macro |
   }
 
-}
+} # end schema cxx1.1
 
 
 schema cxx1.2 : cxx1.1 {
@@ -541,7 +541,7 @@ predicate DeclarationComment.1 :
     file : src.File,
     span : src.ByteSpan,
   }
-}
+} # end schema cxx1.2
 
 schema cxx1.3 : cxx1.2 {
 import buck.2
@@ -552,7 +552,7 @@ predicate TranslationUnitTrace :
     tunit : buck.TranslationUnit,
     trace : Trace,
   }
-}
+} # end schema cxx1.3
 
 schema cxx1.4 : cxx1.3 {
 import buck.2
@@ -990,4 +990,4 @@ predicate FunctionAttribute :
         declaration : FunctionDeclaration,
     }
 
-} # end schema
+} # end schema cxx1.4

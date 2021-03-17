@@ -5,10 +5,10 @@ import Glean.Types
 
 allPredicates :: [(PredicateRef, Int)]
 allPredicates =
-  [ (PredicateRef "search.cxx.EntityUses" 4, 237)
-  , (PredicateRef "search.cxx.SearchByNameAndScope" 4, 228)
-  , (PredicateRef "search.cxx.GlobalDeclarationWithName" 1, 196)
-  , (PredicateRef "search.cxx.DeclIsDefn" 4, 174)
-  , (PredicateRef "search.cxx.SearchBySelector" 4, 126)
+  [ (PredicateRef "search.cxx.EntityUses" 4, 239)
+  , (PredicateRef "search.cxx.SearchByNameAndScope" 4, 229)
+  , (PredicateRef "search.cxx.GlobalDeclarationWithName" 1, 197)
+  , (PredicateRef "search.cxx.DeclIsDefn" 4, 175)
+  , (PredicateRef "search.cxx.SearchBySelector" 4, 127)
   ]
 

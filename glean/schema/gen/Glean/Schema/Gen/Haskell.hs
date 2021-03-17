@@ -95,6 +95,7 @@ header :: Mode -> NameSpaces -> [NameSpaces] -> Text
 header mode here deps = Text.unlines $
   [ "-- @" <> "generated"
   , "{-# LANGUAGE TypeFamilies, MultiParamTypeClasses, DataKinds #-}"
+  , "{-# LANGUAGE FlexibleInstances, TypeSynonymInstances #-}"
   , "{-# LANGUAGE UndecidableInstances #-}"
     -- UndecidableInstances is needed for the RecordFields type instances
   , "import qualified Data.ByteString"

@@ -1,5 +1,6 @@
 -- @generated
 {-# LANGUAGE TypeFamilies, MultiParamTypeClasses, DataKinds #-}
+{-# LANGUAGE FlexibleInstances, TypeSynonymInstances #-}
 {-# LANGUAGE UndecidableInstances #-}
 import qualified Data.ByteString
 import qualified Data.Default
@@ -27,7 +28,7 @@ instance Glean.Predicate Glean.Schema.SearchPp.Types.SearchByName where
   type KeyType Glean.Schema.SearchPp.Types.SearchByName =
     Glean.Schema.SearchPp.Types.SearchByName_key
   getName _proxy  = Glean.PredicateRef "search.pp.SearchByName"2
-  getIndex _proxy  = 283
+  getIndex _proxy  = 285
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.SearchPp.Types.searchByName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.SearchPp.Types.SearchByName x k
   getFactKey = Glean.Schema.SearchPp.Types.searchByName_key
@@ -51,7 +52,7 @@ instance Glean.Predicate Glean.Schema.SearchPp.Types.SearchByName_1 where
   type KeyType Glean.Schema.SearchPp.Types.SearchByName_1 =
     Glean.Schema.SearchPp.Types.SearchByName_1_key
   getName _proxy  = Glean.PredicateRef "search.pp.SearchByName"1
-  getIndex _proxy  = 282
+  getIndex _proxy  = 284
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.SearchPp.Types.searchByName_1_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.SearchPp.Types.SearchByName_1 x k
   getFactKey = Glean.Schema.SearchPp.Types.searchByName_1_key

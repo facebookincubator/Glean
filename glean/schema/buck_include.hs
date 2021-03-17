@@ -1,5 +1,6 @@
 -- @generated
 {-# LANGUAGE TypeFamilies, MultiParamTypeClasses, DataKinds #-}
+{-# LANGUAGE FlexibleInstances, TypeSynonymInstances #-}
 {-# LANGUAGE UndecidableInstances #-}
 import qualified Data.ByteString
 import qualified Data.Default
@@ -30,7 +31,7 @@ instance Glean.Predicate Glean.Schema.Buck.Types.Locator where
   type KeyType Glean.Schema.Buck.Types.Locator =
     Glean.Schema.Buck.Types.Locator_key
   getName _proxy  = Glean.PredicateRef "buck.Locator"1
-  getIndex _proxy  = 496
+  getIndex _proxy  = 502
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.locator_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.Locator x k
   getFactKey = Glean.Schema.Buck.Types.locator_key
@@ -54,7 +55,7 @@ instance Glean.Predicate Glean.Schema.Buck.Types.TargetDependencies where
   type KeyType Glean.Schema.Buck.Types.TargetDependencies =
     Glean.Schema.Buck.Types.TargetDependencies_key
   getName _proxy  = Glean.PredicateRef "buck.TargetDependencies"1
-  getIndex _proxy  = 485
+  getIndex _proxy  = 490
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.targetDependencies_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.TargetDependencies x k
   getFactKey = Glean.Schema.Buck.Types.targetDependencies_key
@@ -67,7 +68,7 @@ instance Glean.Type Glean.Schema.Buck.Types.TargetDependencies where
 instance Glean.Predicate Glean.Schema.Buck.Types.Type where
   type KeyType Glean.Schema.Buck.Types.Type = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "buck.Type"1
-  getIndex _proxy  = 481
+  getIndex _proxy  = 486
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.type_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.Type x k
   getFactKey = Glean.Schema.Buck.Types.type_key
@@ -80,7 +81,7 @@ instance Glean.Type Glean.Schema.Buck.Types.Type where
 instance Glean.Predicate Glean.Schema.Buck.Types.Platform where
   type KeyType Glean.Schema.Buck.Types.Platform = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "buck.Platform"1
-  getIndex _proxy  = 466
+  getIndex _proxy  = 471
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.platform_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.Platform x k
   getFactKey = Glean.Schema.Buck.Types.platform_key
@@ -108,7 +109,7 @@ instance Glean.Predicate Glean.Schema.Buck.Types.TargetSources where
   type KeyType Glean.Schema.Buck.Types.TargetSources =
     Glean.Schema.Buck.Types.TargetSources_key
   getName _proxy  = Glean.PredicateRef "buck.TargetSources"3
-  getIndex _proxy  = 443
+  getIndex _proxy  = 448
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.targetSources_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.TargetSources x k
   getFactKey = Glean.Schema.Buck.Types.targetSources_key
@@ -136,7 +137,7 @@ instance Glean.Predicate Glean.Schema.Buck.Types.TargetSources_1 where
   type KeyType Glean.Schema.Buck.Types.TargetSources_1 =
     Glean.Schema.Buck.Types.TargetSources_1_key
   getName _proxy  = Glean.PredicateRef "buck.TargetSources"1
-  getIndex _proxy  = 442
+  getIndex _proxy  = 447
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.targetSources_1_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.TargetSources_1 x k
   getFactKey = Glean.Schema.Buck.Types.targetSources_1_key
@@ -160,7 +161,7 @@ instance Glean.Predicate Glean.Schema.Buck.Types.OutTarget where
   type KeyType Glean.Schema.Buck.Types.OutTarget =
     Glean.Schema.Buck.Types.OutTarget_key
   getName _proxy  = Glean.PredicateRef "buck.OutTarget"1
-  getIndex _proxy  = 435
+  getIndex _proxy  = 440
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.outTarget_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.OutTarget x k
   getFactKey = Glean.Schema.Buck.Types.outTarget_key
@@ -173,7 +174,7 @@ instance Glean.Type Glean.Schema.Buck.Types.OutTarget where
 instance Glean.Predicate Glean.Schema.Buck.Types.OutputLabel where
   type KeyType Glean.Schema.Buck.Types.OutputLabel = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "buck.OutputLabel"3
-  getIndex _proxy  = 413
+  getIndex _proxy  = 418
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.outputLabel_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.OutputLabel x k
   getFactKey = Glean.Schema.Buck.Types.outputLabel_key
@@ -197,7 +198,7 @@ instance Glean.Predicate Glean.Schema.Buck.Types.Owner where
   type KeyType Glean.Schema.Buck.Types.Owner =
     Glean.Schema.Buck.Types.Owner_key
   getName _proxy  = Glean.PredicateRef "buck.Owner"3
-  getIndex _proxy  = 405
+  getIndex _proxy  = 410
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.owner_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.Owner x k
   getFactKey = Glean.Schema.Buck.Types.owner_key
@@ -221,7 +222,7 @@ instance Glean.Predicate Glean.Schema.Buck.Types.Owner_1 where
   type KeyType Glean.Schema.Buck.Types.Owner_1 =
     Glean.Schema.Buck.Types.Owner_1_key
   getName _proxy  = Glean.PredicateRef "buck.Owner"1
-  getIndex _proxy  = 404
+  getIndex _proxy  = 409
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.owner_1_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.Owner_1 x k
   getFactKey = Glean.Schema.Buck.Types.owner_1_key
@@ -249,7 +250,7 @@ instance Glean.Predicate Glean.Schema.Buck.Types.Target where
   type KeyType Glean.Schema.Buck.Types.Target =
     Glean.Schema.Buck.Types.Target_key
   getName _proxy  = Glean.PredicateRef "buck.Target"2
-  getIndex _proxy  = 396
+  getIndex _proxy  = 401
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.target_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.Target x k
   getFactKey = Glean.Schema.Buck.Types.target_key
@@ -275,7 +276,7 @@ instance Glean.Predicate Glean.Schema.Buck.Types.Target_1 where
   type KeyType Glean.Schema.Buck.Types.Target_1 =
     Glean.Schema.Buck.Types.Target_1_key
   getName _proxy  = Glean.PredicateRef "buck.Target"1
-  getIndex _proxy  = 395
+  getIndex _proxy  = 400
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.target_1_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.Target_1 x k
   getFactKey = Glean.Schema.Buck.Types.target_1_key
@@ -299,7 +300,7 @@ instance Glean.Predicate Glean.Schema.Buck.Types.RuleKey where
   type KeyType Glean.Schema.Buck.Types.RuleKey =
     Glean.Schema.Buck.Types.RuleKey_key
   getName _proxy  = Glean.PredicateRef "buck.RuleKey"1
-  getIndex _proxy  = 393
+  getIndex _proxy  = 398
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.ruleKey_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.RuleKey x k
   getFactKey = Glean.Schema.Buck.Types.ruleKey_key
@@ -323,7 +324,7 @@ instance Glean.Predicate Glean.Schema.Buck.Types.TargetHash where
   type KeyType Glean.Schema.Buck.Types.TargetHash =
     Glean.Schema.Buck.Types.TargetHash_key
   getName _proxy  = Glean.PredicateRef "buck.TargetHash"1
-  getIndex _proxy  = 354
+  getIndex _proxy  = 357
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.targetHash_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.TargetHash x k
   getFactKey = Glean.Schema.Buck.Types.targetHash_key
@@ -336,7 +337,7 @@ instance Glean.Type Glean.Schema.Buck.Types.TargetHash where
 instance Glean.Predicate Glean.Schema.Buck.Types.Label where
   type KeyType Glean.Schema.Buck.Types.Label = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "buck.Label"1
-  getIndex _proxy  = 316
+  getIndex _proxy  = 318
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.label_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.Label x k
   getFactKey = Glean.Schema.Buck.Types.label_key
@@ -350,7 +351,7 @@ instance Glean.Predicate Glean.Schema.Buck.Types.Labels where
   type KeyType Glean.Schema.Buck.Types.Labels =
     [Glean.Schema.Buck.Types.Label]
   getName _proxy  = Glean.PredicateRef "buck.Labels"1
-  getIndex _proxy  = 285
+  getIndex _proxy  = 287
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.labels_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.Labels x k
   getFactKey = Glean.Schema.Buck.Types.labels_key
@@ -364,7 +365,7 @@ instance Glean.Predicate Glean.Schema.Buck.Types.TargetLinkWhole where
   type KeyType Glean.Schema.Buck.Types.TargetLinkWhole =
     Glean.Schema.Buck.Types.Target
   getName _proxy  = Glean.PredicateRef "buck.TargetLinkWhole"1
-  getIndex _proxy  = 245
+  getIndex _proxy  = 247
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.targetLinkWhole_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.TargetLinkWhole x k
   getFactKey = Glean.Schema.Buck.Types.targetLinkWhole_key
@@ -388,7 +389,7 @@ instance Glean.Predicate Glean.Schema.Buck.Types.TargetIndexer where
   type KeyType Glean.Schema.Buck.Types.TargetIndexer =
     Glean.Schema.Buck.Types.TargetIndexer_key
   getName _proxy  = Glean.PredicateRef "buck.TargetIndexer"3
-  getIndex _proxy  = 244
+  getIndex _proxy  = 246
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.targetIndexer_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.TargetIndexer x k
   getFactKey = Glean.Schema.Buck.Types.targetIndexer_key
@@ -401,7 +402,7 @@ instance Glean.Type Glean.Schema.Buck.Types.TargetIndexer where
 instance Glean.Predicate Glean.Schema.Buck.Types.TargetIndexerName where
   type KeyType Glean.Schema.Buck.Types.TargetIndexerName = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "buck.TargetIndexerName"3
-  getIndex _proxy  = 229
+  getIndex _proxy  = 230
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.targetIndexerName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.TargetIndexerName x k
   getFactKey = Glean.Schema.Buck.Types.targetIndexerName_key
@@ -425,7 +426,7 @@ instance Glean.Predicate Glean.Schema.Buck.Types.TargetOut where
   type KeyType Glean.Schema.Buck.Types.TargetOut =
     Glean.Schema.Buck.Types.TargetOut_key
   getName _proxy  = Glean.PredicateRef "buck.TargetOut"1
-  getIndex _proxy  = 220
+  getIndex _proxy  = 221
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.targetOut_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.TargetOut x k
   getFactKey = Glean.Schema.Buck.Types.targetOut_key
@@ -449,7 +450,7 @@ instance Glean.Predicate Glean.Schema.Buck.Types.LocatorReverseDeps where
   type KeyType Glean.Schema.Buck.Types.LocatorReverseDeps =
     Glean.Schema.Buck.Types.LocatorReverseDeps_key
   getName _proxy  = Glean.PredicateRef "buck.LocatorReverseDeps"1
-  getIndex _proxy  = 206
+  getIndex _proxy  = 207
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.locatorReverseDeps_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.LocatorReverseDeps x k
   getFactKey = Glean.Schema.Buck.Types.locatorReverseDeps_key
@@ -475,7 +476,7 @@ instance Glean.Predicate Glean.Schema.Buck.Types.TargetOuts where
   type KeyType Glean.Schema.Buck.Types.TargetOuts =
     Glean.Schema.Buck.Types.TargetOuts_key
   getName _proxy  = Glean.PredicateRef "buck.TargetOuts"3
-  getIndex _proxy  = 147
+  getIndex _proxy  = 148
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.targetOuts_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.TargetOuts x k
   getFactKey = Glean.Schema.Buck.Types.targetOuts_key
@@ -499,7 +500,7 @@ instance Glean.Predicate Glean.Schema.Buck.Types.LocatorWithLabel where
   type KeyType Glean.Schema.Buck.Types.LocatorWithLabel =
     Glean.Schema.Buck.Types.LocatorWithLabel_key
   getName _proxy  = Glean.PredicateRef "buck.LocatorWithLabel"3
-  getIndex _proxy  = 140
+  getIndex _proxy  = 141
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.locatorWithLabel_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.LocatorWithLabel x k
   getFactKey = Glean.Schema.Buck.Types.locatorWithLabel_key
@@ -525,7 +526,7 @@ instance Glean.Predicate Glean.Schema.Buck.Types.OutsTarget where
   type KeyType Glean.Schema.Buck.Types.OutsTarget =
     Glean.Schema.Buck.Types.OutsTarget_key
   getName _proxy  = Glean.PredicateRef "buck.OutsTarget"3
-  getIndex _proxy  = 127
+  getIndex _proxy  = 128
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buck.Types.outsTarget_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buck.Types.OutsTarget x k
   getFactKey = Glean.Schema.Buck.Types.outsTarget_key

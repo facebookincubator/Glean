@@ -1,5 +1,6 @@
 -- @generated
 {-# LANGUAGE TypeFamilies, MultiParamTypeClasses, DataKinds #-}
+{-# LANGUAGE FlexibleInstances, TypeSynonymInstances #-}
 {-# LANGUAGE UndecidableInstances #-}
 import qualified Data.ByteString
 import qualified Data.Default
@@ -31,7 +32,7 @@ instance Glean.Predicate Glean.Schema.Buckuses.Types.UsesOfTarget where
   type KeyType Glean.Schema.Buckuses.Types.UsesOfTarget =
     Glean.Schema.Buckuses.Types.UsesOfTarget_key
   getName _proxy  = Glean.PredicateRef "buckuses.UsesOfTarget"2
-  getIndex _proxy  = 487
+  getIndex _proxy  = 492
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buckuses.Types.usesOfTarget_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buckuses.Types.UsesOfTarget x k
   getFactKey = Glean.Schema.Buckuses.Types.usesOfTarget_key
@@ -57,7 +58,7 @@ instance Glean.Predicate Glean.Schema.Buckuses.Types.UsesOfTarget_1 where
   type KeyType Glean.Schema.Buckuses.Types.UsesOfTarget_1 =
     Glean.Schema.Buckuses.Types.UsesOfTarget_1_key
   getName _proxy  = Glean.PredicateRef "buckuses.UsesOfTarget"1
-  getIndex _proxy  = 486
+  getIndex _proxy  = 491
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buckuses.Types.usesOfTarget_1_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buckuses.Types.UsesOfTarget_1 x k
   getFactKey = Glean.Schema.Buckuses.Types.usesOfTarget_1_key
@@ -81,7 +82,7 @@ instance Glean.Predicate Glean.Schema.Buckuses.Types.UsesOfTargetHeader where
   type KeyType Glean.Schema.Buckuses.Types.UsesOfTargetHeader =
     Glean.Schema.Buckuses.Types.UsesOfTargetHeader_key
   getName _proxy  = Glean.PredicateRef "buckuses.UsesOfTargetHeader"2
-  getIndex _proxy  = 444
+  getIndex _proxy  = 449
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buckuses.Types.usesOfTargetHeader_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buckuses.Types.UsesOfTargetHeader x k
   getFactKey = Glean.Schema.Buckuses.Types.usesOfTargetHeader_key

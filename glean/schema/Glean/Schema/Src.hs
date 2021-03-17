@@ -5,9 +5,9 @@ import Glean.Types
 
 allPredicates :: [(PredicateRef, Int)]
 allPredicates =
-  [ (PredicateRef "src.ByteSpanContains" 1, 474)
-  , (PredicateRef "src.FileLanguage" 1, 402)
-  , (PredicateRef "src.File" 1, 92)
+  [ (PredicateRef "src.ByteSpanContains" 1, 479)
+  , (PredicateRef "src.FileLanguage" 1, 407)
+  , (PredicateRef "src.File" 1, 93)
   , (PredicateRef "src.FileLines" 1, 74)
   ]
 

@@ -1,5 +1,6 @@
 -- @generated
 {-# LANGUAGE TypeFamilies, MultiParamTypeClasses, DataKinds #-}
+{-# LANGUAGE FlexibleInstances, TypeSynonymInstances #-}
 {-# LANGUAGE UndecidableInstances #-}
 import qualified Data.ByteString
 import qualified Data.Default
@@ -31,7 +32,7 @@ instance Glean.Predicate Glean.Schema.SearchHack.Types.SearchInContext where
   type KeyType Glean.Schema.SearchHack.Types.SearchInContext =
     Glean.Schema.SearchHack.Types.SearchInContext_key
   getName _proxy  = Glean.PredicateRef "search.hack.SearchInContext"5
-  getIndex _proxy  = 482
+  getIndex _proxy  = 487
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.SearchHack.Types.searchInContext_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.SearchHack.Types.SearchInContext x k
   getFactKey = Glean.Schema.SearchHack.Types.searchInContext_key
@@ -57,7 +58,7 @@ instance Glean.Predicate Glean.Schema.SearchHack.Types.SearchInNamespace where
   type KeyType Glean.Schema.SearchHack.Types.SearchInNamespace =
     Glean.Schema.SearchHack.Types.SearchInNamespace_key
   getName _proxy  = Glean.PredicateRef "search.hack.SearchInNamespace"5
-  getIndex _proxy  = 383
+  getIndex _proxy  = 388
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.SearchHack.Types.searchInNamespace_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.SearchHack.Types.SearchInNamespace x k
   getFactKey = Glean.Schema.SearchHack.Types.searchInNamespace_key
@@ -81,7 +82,7 @@ instance Glean.Predicate Glean.Schema.SearchHack.Types.SearchByName where
   type KeyType Glean.Schema.SearchHack.Types.SearchByName =
     Glean.Schema.SearchHack.Types.SearchByName_key
   getName _proxy  = Glean.PredicateRef "search.hack.SearchByName"5
-  getIndex _proxy  = 370
+  getIndex _proxy  = 375
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.SearchHack.Types.searchByName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.SearchHack.Types.SearchByName x k
   getFactKey = Glean.Schema.SearchHack.Types.searchByName_key
@@ -109,7 +110,7 @@ instance Glean.Predicate Glean.Schema.SearchHack.Types.SearchInContainer where
   type KeyType Glean.Schema.SearchHack.Types.SearchInContainer =
     Glean.Schema.SearchHack.Types.SearchInContainer_key
   getName _proxy  = Glean.PredicateRef "search.hack.SearchInContainer"5
-  getIndex _proxy  = 249
+  getIndex _proxy  = 251
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.SearchHack.Types.searchInContainer_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.SearchHack.Types.SearchInContainer x k
   getFactKey = Glean.Schema.SearchHack.Types.searchInContainer_key
@@ -137,7 +138,7 @@ instance Glean.Predicate Glean.Schema.SearchHack.Types.SearchInEnum where
   type KeyType Glean.Schema.SearchHack.Types.SearchInEnum =
     Glean.Schema.SearchHack.Types.SearchInEnum_key
   getName _proxy  = Glean.PredicateRef "search.hack.SearchInEnum"5
-  getIndex _proxy  = 137
+  getIndex _proxy  = 138
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.SearchHack.Types.searchInEnum_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.SearchHack.Types.SearchInEnum x k
   getFactKey = Glean.Schema.SearchHack.Types.searchInEnum_key

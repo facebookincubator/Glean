@@ -1,5 +1,6 @@
 -- @generated
 {-# LANGUAGE TypeFamilies, MultiParamTypeClasses, DataKinds #-}
+{-# LANGUAGE FlexibleInstances, TypeSynonymInstances #-}
 {-# LANGUAGE UndecidableInstances #-}
 import qualified Data.ByteString
 import qualified Data.Default
@@ -33,7 +34,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.ClassDefinition where
   type KeyType Glean.Schema.Python.Types.ClassDefinition =
     Glean.Schema.Python.Types.ClassDefinition_key
   getName _proxy  = Glean.PredicateRef "python.ClassDefinition"2
-  getIndex _proxy  = 495
+  getIndex _proxy  = 501
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.classDefinition_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.ClassDefinition x k
   getFactKey = Glean.Schema.Python.Types.classDefinition_key
@@ -57,7 +58,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.ImportStatementByName where
   type KeyType Glean.Schema.Python.Types.ImportStatementByName =
     Glean.Schema.Python.Types.ImportStatementByName_key
   getName _proxy  = Glean.PredicateRef "python.ImportStatementByName"2
-  getIndex _proxy  = 461
+  getIndex _proxy  = 466
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.importStatementByName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.ImportStatementByName x k
   getFactKey = Glean.Schema.Python.Types.importStatementByName_key
@@ -73,7 +74,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.DeclarationToName where
   type ValueType Glean.Schema.Python.Types.DeclarationToName =
     Glean.Schema.Python.Types.DeclarationToName_value
   getName _proxy  = Glean.PredicateRef "python.DeclarationToName"2
-  getIndex _proxy  = 457
+  getIndex _proxy  = 462
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.declarationToName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k v = Glean.Schema.Python.Types.DeclarationToName x k v
   getFactKey = Glean.Schema.Python.Types.declarationToName_key
@@ -89,7 +90,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.DeclarationByName where
   type ValueType Glean.Schema.Python.Types.DeclarationByName =
     Glean.Schema.Python.Types.DeclarationByName_value
   getName _proxy  = Glean.PredicateRef "python.DeclarationByName"2
-  getIndex _proxy  = 453
+  getIndex _proxy  = 458
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.declarationByName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k v = Glean.Schema.Python.Types.DeclarationByName x k v
   getFactKey = Glean.Schema.Python.Types.declarationByName_key
@@ -102,7 +103,7 @@ instance Glean.Type Glean.Schema.Python.Types.DeclarationByName where
 instance Glean.Predicate Glean.Schema.Python.Types.DocstringContent where
   type KeyType Glean.Schema.Python.Types.DocstringContent = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "python.DocstringContent"2
-  getIndex _proxy  = 438
+  getIndex _proxy  = 443
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.docstringContent_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.DocstringContent x k
   getFactKey = Glean.Schema.Python.Types.docstringContent_key
@@ -118,7 +119,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.VariableBySName where
   type ValueType Glean.Schema.Python.Types.VariableBySName =
     Glean.Schema.Python.Types.VariableBySName_value
   getName _proxy  = Glean.PredicateRef "python.VariableBySName"2
-  getIndex _proxy  = 430
+  getIndex _proxy  = 435
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.variableBySName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k v = Glean.Schema.Python.Types.VariableBySName x k v
   getFactKey = Glean.Schema.Python.Types.variableBySName_key
@@ -142,7 +143,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.FileDirectXRefs where
   type KeyType Glean.Schema.Python.Types.FileDirectXRefs =
     Glean.Schema.Python.Types.FileDirectXRefs_key
   getName _proxy  = Glean.PredicateRef "python.FileDirectXRefs"2
-  getIndex _proxy  = 429
+  getIndex _proxy  = 434
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.fileDirectXRefs_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.FileDirectXRefs x k
   getFactKey = Glean.Schema.Python.Types.fileDirectXRefs_key
@@ -164,7 +165,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.FunctionDeclaration where
   type KeyType Glean.Schema.Python.Types.FunctionDeclaration =
     Glean.Schema.Python.Types.FunctionDeclaration_key
   getName _proxy  = Glean.PredicateRef "python.FunctionDeclaration"1
-  getIndex _proxy  = 407
+  getIndex _proxy  = 412
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.functionDeclaration_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.FunctionDeclaration x k
   getFactKey = Glean.Schema.Python.Types.functionDeclaration_key
@@ -188,7 +189,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.DirectXRefsByFile where
   type KeyType Glean.Schema.Python.Types.DirectXRefsByFile =
     Glean.Schema.Python.Types.DirectXRefsByFile_key
   getName _proxy  = Glean.PredicateRef "python.DirectXRefsByFile"2
-  getIndex _proxy  = 391
+  getIndex _proxy  = 396
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.directXRefsByFile_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.DirectXRefsByFile x k
   getFactKey = Glean.Schema.Python.Types.directXRefsByFile_key
@@ -228,7 +229,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.FunctionDefinition where
   type KeyType Glean.Schema.Python.Types.FunctionDefinition =
     Glean.Schema.Python.Types.FunctionDefinition_key
   getName _proxy  = Glean.PredicateRef "python.FunctionDefinition"2
-  getIndex _proxy  = 365
+  getIndex _proxy  = 369
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.functionDefinition_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.FunctionDefinition x k
   getFactKey = Glean.Schema.Python.Types.functionDefinition_key
@@ -254,7 +255,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.DeclarationUses where
   type KeyType Glean.Schema.Python.Types.DeclarationUses =
     Glean.Schema.Python.Types.DeclarationUses_key
   getName _proxy  = Glean.PredicateRef "python.DeclarationUses"2
-  getIndex _proxy  = 352
+  getIndex _proxy  = 355
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.declarationUses_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.DeclarationUses x k
   getFactKey = Glean.Schema.Python.Types.declarationUses_key
@@ -278,7 +279,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.ImportStatement where
   type KeyType Glean.Schema.Python.Types.ImportStatement =
     Glean.Schema.Python.Types.ImportStatement_key
   getName _proxy  = Glean.PredicateRef "python.ImportStatement"2
-  getIndex _proxy  = 330
+  getIndex _proxy  = 332
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.importStatement_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.ImportStatement x k
   getFactKey = Glean.Schema.Python.Types.importStatement_key
@@ -304,7 +305,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.ImportStatement_1 where
   type KeyType Glean.Schema.Python.Types.ImportStatement_1 =
     Glean.Schema.Python.Types.ImportStatement_1_key
   getName _proxy  = Glean.PredicateRef "python.ImportStatement"1
-  getIndex _proxy  = 329
+  getIndex _proxy  = 331
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.importStatement_1_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.ImportStatement_1 x k
   getFactKey = Glean.Schema.Python.Types.importStatement_1_key
@@ -330,7 +331,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.DeclarationLocation where
   type KeyType Glean.Schema.Python.Types.DeclarationLocation =
     Glean.Schema.Python.Types.DeclarationLocation_key
   getName _proxy  = Glean.PredicateRef "python.DeclarationLocation"2
-  getIndex _proxy  = 320
+  getIndex _proxy  = 322
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.declarationLocation_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.DeclarationLocation x k
   getFactKey = Glean.Schema.Python.Types.declarationLocation_key
@@ -356,7 +357,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.DeclarationLocation_1 where
   type KeyType Glean.Schema.Python.Types.DeclarationLocation_1 =
     Glean.Schema.Python.Types.DeclarationLocation_1_key
   getName _proxy  = Glean.PredicateRef "python.DeclarationLocation"1
-  getIndex _proxy  = 319
+  getIndex _proxy  = 321
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.declarationLocation_1_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.DeclarationLocation_1 x k
   getFactKey = Glean.Schema.Python.Types.declarationLocation_1_key
@@ -372,7 +373,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.ModuleBySName where
   type ValueType Glean.Schema.Python.Types.ModuleBySName =
     Glean.Schema.Python.Types.ModuleBySName_value
   getName _proxy  = Glean.PredicateRef "python.ModuleBySName"2
-  getIndex _proxy  = 318
+  getIndex _proxy  = 320
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.moduleBySName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k v = Glean.Schema.Python.Types.ModuleBySName x k v
   getFactKey = Glean.Schema.Python.Types.moduleBySName_key
@@ -396,7 +397,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.ClassDeclaration where
   type KeyType Glean.Schema.Python.Types.ClassDeclaration =
     Glean.Schema.Python.Types.ClassDeclaration_key
   getName _proxy  = Glean.PredicateRef "python.ClassDeclaration"1
-  getIndex _proxy  = 271
+  getIndex _proxy  = 273
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.classDeclaration_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.ClassDeclaration x k
   getFactKey = Glean.Schema.Python.Types.classDeclaration_key
@@ -420,7 +421,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.VariableDefinition where
   type KeyType Glean.Schema.Python.Types.VariableDefinition =
     Glean.Schema.Python.Types.VariableDefinition_key
   getName _proxy  = Glean.PredicateRef "python.VariableDefinition"2
-  getIndex _proxy  = 264
+  getIndex _proxy  = 266
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.variableDefinition_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.VariableDefinition x k
   getFactKey = Glean.Schema.Python.Types.variableDefinition_key
@@ -444,7 +445,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.FileXRefs where
   type KeyType Glean.Schema.Python.Types.FileXRefs =
     Glean.Schema.Python.Types.FileXRefs_key
   getName _proxy  = Glean.PredicateRef "python.FileXRefs"2
-  getIndex _proxy  = 240
+  getIndex _proxy  = 242
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.fileXRefs_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.FileXRefs x k
   getFactKey = Glean.Schema.Python.Types.fileXRefs_key
@@ -468,7 +469,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.FileXRefs_1 where
   type KeyType Glean.Schema.Python.Types.FileXRefs_1 =
     Glean.Schema.Python.Types.FileXRefs_1_key
   getName _proxy  = Glean.PredicateRef "python.FileXRefs"1
-  getIndex _proxy  = 239
+  getIndex _proxy  = 241
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.fileXRefs_1_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.FileXRefs_1 x k
   getFactKey = Glean.Schema.Python.Types.fileXRefs_1_key
@@ -492,7 +493,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.SName where
   type KeyType Glean.Schema.Python.Types.SName =
     Glean.Schema.Python.Types.SName_key
   getName _proxy  = Glean.PredicateRef "python.SName"2
-  getIndex _proxy  = 230
+  getIndex _proxy  = 231
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.sName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.SName x k
   getFactKey = Glean.Schema.Python.Types.sName_key
@@ -518,7 +519,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.TargetUses where
   type KeyType Glean.Schema.Python.Types.TargetUses =
     Glean.Schema.Python.Types.TargetUses_key
   getName _proxy  = Glean.PredicateRef "python.TargetUses"2
-  getIndex _proxy  = 202
+  getIndex _proxy  = 203
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.targetUses_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.TargetUses x k
   getFactKey = Glean.Schema.Python.Types.targetUses_key
@@ -544,7 +545,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.TargetUses_1 where
   type KeyType Glean.Schema.Python.Types.TargetUses_1 =
     Glean.Schema.Python.Types.TargetUses_1_key
   getName _proxy  = Glean.PredicateRef "python.TargetUses"1
-  getIndex _proxy  = 201
+  getIndex _proxy  = 202
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.targetUses_1_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.TargetUses_1 x k
   getFactKey = Glean.Schema.Python.Types.targetUses_1_key
@@ -560,7 +561,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.ClassBySName where
   type ValueType Glean.Schema.Python.Types.ClassBySName =
     Glean.Schema.Python.Types.ClassBySName_value
   getName _proxy  = Glean.PredicateRef "python.ClassBySName"2
-  getIndex _proxy  = 188
+  getIndex _proxy  = 189
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.classBySName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k v = Glean.Schema.Python.Types.ClassBySName x k v
   getFactKey = Glean.Schema.Python.Types.classBySName_key
@@ -584,7 +585,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.XRefIndirectTarget where
   type KeyType Glean.Schema.Python.Types.XRefIndirectTarget =
     Glean.Schema.Python.Types.XRefIndirectTarget_key
   getName _proxy  = Glean.PredicateRef "python.XRefIndirectTarget"2
-  getIndex _proxy  = 167
+  getIndex _proxy  = 168
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.xRefIndirectTarget_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.XRefIndirectTarget x k
   getFactKey = Glean.Schema.Python.Types.xRefIndirectTarget_key
@@ -608,7 +609,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.XRefIndirectTarget_1 where
   type KeyType Glean.Schema.Python.Types.XRefIndirectTarget_1 =
     Glean.Schema.Python.Types.XRefIndirectTarget_1_key
   getName _proxy  = Glean.PredicateRef "python.XRefIndirectTarget"1
-  getIndex _proxy  = 166
+  getIndex _proxy  = 167
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.xRefIndirectTarget_1_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.XRefIndirectTarget_1 x k
   getFactKey = Glean.Schema.Python.Types.xRefIndirectTarget_1_key
@@ -630,7 +631,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.Module where
   type KeyType Glean.Schema.Python.Types.Module =
     Glean.Schema.Python.Types.Module_key
   getName _proxy  = Glean.PredicateRef "python.Module"1
-  getIndex _proxy  = 164
+  getIndex _proxy  = 165
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.module_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.Module x k
   getFactKey = Glean.Schema.Python.Types.module_key
@@ -646,7 +647,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.DeclarationBySName where
   type ValueType Glean.Schema.Python.Types.DeclarationBySName =
     Glean.Schema.Python.Types.DeclarationBySName_value
   getName _proxy  = Glean.PredicateRef "python.DeclarationBySName"2
-  getIndex _proxy  = 143
+  getIndex _proxy  = 144
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.declarationBySName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k v = Glean.Schema.Python.Types.DeclarationBySName x k v
   getFactKey = Glean.Schema.Python.Types.declarationBySName_key
@@ -659,7 +660,7 @@ instance Glean.Type Glean.Schema.Python.Types.DeclarationBySName where
 instance Glean.Predicate Glean.Schema.Python.Types.Name where
   type KeyType Glean.Schema.Python.Types.Name = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "python.Name"1
-  getIndex _proxy  = 129
+  getIndex _proxy  = 130
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.name_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.Name x k
   getFactKey = Glean.Schema.Python.Types.name_key
@@ -683,7 +684,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.ModuleDefinition where
   type KeyType Glean.Schema.Python.Types.ModuleDefinition =
     Glean.Schema.Python.Types.ModuleDefinition_key
   getName _proxy  = Glean.PredicateRef "python.ModuleDefinition"2
-  getIndex _proxy  = 121
+  getIndex _proxy  = 122
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.moduleDefinition_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Python.Types.ModuleDefinition x k
   getFactKey = Glean.Schema.Python.Types.moduleDefinition_key
@@ -699,7 +700,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.SNameToName where
   type ValueType Glean.Schema.Python.Types.SNameToName =
     Glean.Schema.Python.Types.SNameToName_value
   getName _proxy  = Glean.PredicateRef "python.SNameToName"2
-  getIndex _proxy  = 102
+  getIndex _proxy  = 103
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.sNameToName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k v = Glean.Schema.Python.Types.SNameToName x k v
   getFactKey = Glean.Schema.Python.Types.sNameToName_key
@@ -715,7 +716,7 @@ instance Glean.Predicate Glean.Schema.Python.Types.NameToSName where
   type ValueType Glean.Schema.Python.Types.NameToSName =
     Glean.Schema.Python.Types.NameToSName_value
   getName _proxy  = Glean.PredicateRef "python.NameToSName"2
-  getIndex _proxy  = 97
+  getIndex _proxy  = 98
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Python.Types.nameToSName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k v = Glean.Schema.Python.Types.NameToSName x k v
   getFactKey = Glean.Schema.Python.Types.nameToSName_key

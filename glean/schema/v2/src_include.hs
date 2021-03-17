@@ -1,5 +1,6 @@
 -- @generated
 {-# LANGUAGE TypeFamilies, MultiParamTypeClasses, DataKinds #-}
+{-# LANGUAGE FlexibleInstances, TypeSynonymInstances #-}
 {-# LANGUAGE UndecidableInstances #-}
 import qualified Data.ByteString
 import qualified Data.Default
@@ -26,7 +27,7 @@ instance Glean.Predicate Glean.Schema.Src.Types.ByteSpanContains where
   type KeyType Glean.Schema.Src.Types.ByteSpanContains =
     Glean.Schema.Src.Types.ByteSpanContains_key
   getName _proxy  = Glean.PredicateRef "src.ByteSpanContains"1
-  getIndex _proxy  = 474
+  getIndex _proxy  = 479
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Src.Types.byteSpanContains_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Src.Types.ByteSpanContains x k
   getFactKey = Glean.Schema.Src.Types.byteSpanContains_key
@@ -50,7 +51,7 @@ instance Glean.Predicate Glean.Schema.Src.Types.FileLanguage where
   type KeyType Glean.Schema.Src.Types.FileLanguage =
     Glean.Schema.Src.Types.FileLanguage_key
   getName _proxy  = Glean.PredicateRef "src.FileLanguage"1
-  getIndex _proxy  = 402
+  getIndex _proxy  = 407
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Src.Types.fileLanguage_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Src.Types.FileLanguage x k
   getFactKey = Glean.Schema.Src.Types.fileLanguage_key
@@ -63,7 +64,7 @@ instance Glean.Type Glean.Schema.Src.Types.FileLanguage where
 instance Glean.Predicate Glean.Schema.Src.Types.File where
   type KeyType Glean.Schema.Src.Types.File = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "src.File"1
-  getIndex _proxy  = 92
+  getIndex _proxy  = 93
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Src.Types.file_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Src.Types.File x k
   getFactKey = Glean.Schema.Src.Types.file_key

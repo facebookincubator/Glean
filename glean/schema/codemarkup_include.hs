@@ -1,5 +1,6 @@
 -- @generated
 {-# LANGUAGE TypeFamilies, MultiParamTypeClasses, DataKinds #-}
+{-# LANGUAGE FlexibleInstances, TypeSynonymInstances #-}
 {-# LANGUAGE UndecidableInstances #-}
 import qualified Data.ByteString
 import qualified Data.Default
@@ -32,7 +33,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.FlowModuleNamespaceXRef w
   type KeyType Glean.Schema.Codemarkup.Types.FlowModuleNamespaceXRef =
     Glean.Schema.Codemarkup.Types.FlowModuleNamespaceXRef_key
   getName _proxy  = Glean.PredicateRef "codemarkup.FlowModuleNamespaceXRef"10
-  getIndex _proxy  = 479
+  getIndex _proxy  = 484
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.flowModuleNamespaceXRef_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.FlowModuleNamespaceXRef x k
   getFactKey = Glean.Schema.Codemarkup.Types.flowModuleNamespaceXRef_key
@@ -58,7 +59,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.HackEntityUses where
   type KeyType Glean.Schema.Codemarkup.Types.HackEntityUses =
     Glean.Schema.Codemarkup.Types.HackEntityUses_key
   getName _proxy  = Glean.PredicateRef "codemarkup.HackEntityUses"10
-  getIndex _proxy  = 476
+  getIndex _proxy  = 481
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.hackEntityUses_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.HackEntityUses x k
   getFactKey = Glean.Schema.Codemarkup.Types.hackEntityUses_key
@@ -82,7 +83,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.FileDeclarations where
   type KeyType Glean.Schema.Codemarkup.Types.FileDeclarations =
     Glean.Schema.Codemarkup.Types.FileDeclarations_key
   getName _proxy  = Glean.PredicateRef "codemarkup.FileDeclarations"10
-  getIndex _proxy  = 470
+  getIndex _proxy  = 475
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.fileDeclarations_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.FileDeclarations x k
   getFactKey = Glean.Schema.Codemarkup.Types.fileDeclarations_key
@@ -108,7 +109,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.FlowFileEntityXRefs where
   type KeyType Glean.Schema.Codemarkup.Types.FlowFileEntityXRefs =
     Glean.Schema.Codemarkup.Types.FlowFileEntityXRefs_key
   getName _proxy  = Glean.PredicateRef "codemarkup.FlowFileEntityXRefs"10
-  getIndex _proxy  = 467
+  getIndex _proxy  = 472
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.flowFileEntityXRefs_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.FlowFileEntityXRefs x k
   getFactKey = Glean.Schema.Codemarkup.Types.flowFileEntityXRefs_key
@@ -132,7 +133,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.HaskellFileDirectXRefs wh
   type KeyType Glean.Schema.Codemarkup.Types.HaskellFileDirectXRefs =
     Glean.Schema.Codemarkup.Types.HaskellFileDirectXRefs_key
   getName _proxy  = Glean.PredicateRef "codemarkup.HaskellFileDirectXRefs"10
-  getIndex _proxy  = 449
+  getIndex _proxy  = 454
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.haskellFileDirectXRefs_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.HaskellFileDirectXRefs x k
   getFactKey = Glean.Schema.Codemarkup.Types.haskellFileDirectXRefs_key
@@ -156,7 +157,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.PythonFileDirectXRefs whe
   type KeyType Glean.Schema.Codemarkup.Types.PythonFileDirectXRefs =
     Glean.Schema.Codemarkup.Types.PythonFileDirectXRefs_key
   getName _proxy  = Glean.PredicateRef "codemarkup.PythonFileDirectXRefs"10
-  getIndex _proxy  = 447
+  getIndex _proxy  = 452
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.pythonFileDirectXRefs_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.PythonFileDirectXRefs x k
   getFactKey = Glean.Schema.Codemarkup.Types.pythonFileDirectXRefs_key
@@ -180,7 +181,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.PythonResolve where
   type KeyType Glean.Schema.Codemarkup.Types.PythonResolve =
     Glean.Schema.Codemarkup.Types.PythonResolve_key
   getName _proxy  = Glean.PredicateRef "codemarkup.PythonResolve"10
-  getIndex _proxy  = 432
+  getIndex _proxy  = 437
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.pythonResolve_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.PythonResolve x k
   getFactKey = Glean.Schema.Codemarkup.Types.pythonResolve_key
@@ -204,7 +205,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.EntityToDeclaration where
   type KeyType Glean.Schema.Codemarkup.Types.EntityToDeclaration =
     Glean.Schema.Codemarkup.Types.EntityToDeclaration_key
   getName _proxy  = Glean.PredicateRef "codemarkup.EntityToDeclaration"10
-  getIndex _proxy  = 419
+  getIndex _proxy  = 424
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.entityToDeclaration_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.EntityToDeclaration x k
   getFactKey = Glean.Schema.Codemarkup.Types.entityToDeclaration_key
@@ -230,7 +231,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.FileEntities where
   type KeyType Glean.Schema.Codemarkup.Types.FileEntities =
     Glean.Schema.Codemarkup.Types.FileEntities_key
   getName _proxy  = Glean.PredicateRef "codemarkup.FileEntities"10
-  getIndex _proxy  = 400
+  getIndex _proxy  = 405
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.fileEntities_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.FileEntities x k
   getFactKey = Glean.Schema.Codemarkup.Types.fileEntities_key
@@ -260,7 +261,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.FlowXRefDeclInfo where
   type KeyType Glean.Schema.Codemarkup.Types.FlowXRefDeclInfo =
     Glean.Schema.Codemarkup.Types.FlowXRefDeclInfo_key
   getName _proxy  = Glean.PredicateRef "codemarkup.FlowXRefDeclInfo"10
-  getIndex _proxy  = 397
+  getIndex _proxy  = 402
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.flowXRefDeclInfo_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.FlowXRefDeclInfo x k
   getFactKey = Glean.Schema.Codemarkup.Types.flowXRefDeclInfo_key
@@ -284,7 +285,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.FlowResolve where
   type KeyType Glean.Schema.Codemarkup.Types.FlowResolve =
     Glean.Schema.Codemarkup.Types.FlowResolve_key
   getName _proxy  = Glean.PredicateRef "codemarkup.FlowResolve"10
-  getIndex _proxy  = 366
+  getIndex _proxy  = 371
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.flowResolve_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.FlowResolve x k
   getFactKey = Glean.Schema.Codemarkup.Types.flowResolve_key
@@ -312,7 +313,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.FlowTypeImportXRef where
   type KeyType Glean.Schema.Codemarkup.Types.FlowTypeImportXRef =
     Glean.Schema.Codemarkup.Types.FlowTypeImportXRef_key
   getName _proxy  = Glean.PredicateRef "codemarkup.FlowTypeImportXRef"10
-  getIndex _proxy  = 360
+  getIndex _proxy  = 364
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.flowTypeImportXRef_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.FlowTypeImportXRef x k
   getFactKey = Glean.Schema.Codemarkup.Types.flowTypeImportXRef_key
@@ -336,7 +337,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.Resolve where
   type KeyType Glean.Schema.Codemarkup.Types.Resolve =
     Glean.Schema.Codemarkup.Types.Resolve_key
   getName _proxy  = Glean.PredicateRef "codemarkup.Resolve"10
-  getIndex _proxy  = 315
+  getIndex _proxy  = 317
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.resolve_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.Resolve x k
   getFactKey = Glean.Schema.Codemarkup.Types.resolve_key
@@ -360,7 +361,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.HackFileDeclarations wher
   type KeyType Glean.Schema.Codemarkup.Types.HackFileDeclarations =
     Glean.Schema.Codemarkup.Types.HackFileDeclarations_key
   getName _proxy  = Glean.PredicateRef "codemarkup.HackFileDeclarations"10
-  getIndex _proxy  = 310
+  getIndex _proxy  = 312
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.hackFileDeclarations_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.HackFileDeclarations x k
   getFactKey = Glean.Schema.Codemarkup.Types.hackFileDeclarations_key
@@ -385,7 +386,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.FlowCompatibleModuleExpor
     Glean.Schema.Codemarkup.Types.FlowCompatibleModuleExport_key
   getName _proxy  =
     Glean.PredicateRef "codemarkup.FlowCompatibleModuleExport"10
-  getIndex _proxy  = 257
+  getIndex _proxy  = 259
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.flowCompatibleModuleExport_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.FlowCompatibleModuleExport x k
   getFactKey = Glean.Schema.Codemarkup.Types.flowCompatibleModuleExport_key
@@ -409,7 +410,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.FlowSameModule where
   type KeyType Glean.Schema.Codemarkup.Types.FlowSameModule =
     Glean.Schema.Codemarkup.Types.FlowSameModule_key
   getName _proxy  = Glean.PredicateRef "codemarkup.FlowSameModule"10
-  getIndex _proxy  = 246
+  getIndex _proxy  = 248
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.flowSameModule_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.FlowSameModule x k
   getFactKey = Glean.Schema.Codemarkup.Types.flowSameModule_key
@@ -433,7 +434,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.FileAnnotations where
   type KeyType Glean.Schema.Codemarkup.Types.FileAnnotations =
     Glean.Schema.Codemarkup.Types.FileAnnotations_key
   getName _proxy  = Glean.PredicateRef "codemarkup.FileAnnotations"10
-  getIndex _proxy  = 243
+  getIndex _proxy  = 245
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.fileAnnotations_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.FileAnnotations x k
   getFactKey = Glean.Schema.Codemarkup.Types.fileAnnotations_key
@@ -460,7 +461,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.FlowFileReferenceEntityXR
     Glean.Schema.Codemarkup.Types.FlowFileReferenceEntityXRef_key
   getName _proxy  =
     Glean.PredicateRef "codemarkup.FlowFileReferenceEntityXRef"10
-  getIndex _proxy  = 234
+  getIndex _proxy  = 235
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.flowFileReferenceEntityXRef_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.FlowFileReferenceEntityXRef x k
   getFactKey = Glean.Schema.Codemarkup.Types.flowFileReferenceEntityXRef_key
@@ -488,7 +489,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.FlowXRefInfo where
   type KeyType Glean.Schema.Codemarkup.Types.FlowXRefInfo =
     Glean.Schema.Codemarkup.Types.FlowXRefInfo_key
   getName _proxy  = Glean.PredicateRef "codemarkup.FlowXRefInfo"10
-  getIndex _proxy  = 225
+  getIndex _proxy  = 226
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.flowXRefInfo_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.FlowXRefInfo x k
   getFactKey = Glean.Schema.Codemarkup.Types.flowXRefInfo_key
@@ -515,7 +516,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.FlowFileImportDeclEntityX
     Glean.Schema.Codemarkup.Types.FlowFileImportDeclEntityXRef_key
   getName _proxy  =
     Glean.PredicateRef "codemarkup.FlowFileImportDeclEntityXRef"10
-  getIndex _proxy  = 224
+  getIndex _proxy  = 225
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.flowFileImportDeclEntityXRef_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.FlowFileImportDeclEntityXRef x k
   getFactKey = Glean.Schema.Codemarkup.Types.flowFileImportDeclEntityXRef_key
@@ -539,7 +540,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.HackResolve where
   type KeyType Glean.Schema.Codemarkup.Types.HackResolve =
     Glean.Schema.Codemarkup.Types.HackResolve_key
   getName _proxy  = Glean.PredicateRef "codemarkup.HackResolve"10
-  getIndex _proxy  = 223
+  getIndex _proxy  = 224
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.hackResolve_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.HackResolve x k
   getFactKey = Glean.Schema.Codemarkup.Types.hackResolve_key
@@ -563,7 +564,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.HackFileDirectXRefs where
   type KeyType Glean.Schema.Codemarkup.Types.HackFileDirectXRefs =
     Glean.Schema.Codemarkup.Types.HackFileDirectXRefs_key
   getName _proxy  = Glean.PredicateRef "codemarkup.HackFileDirectXRefs"10
-  getIndex _proxy  = 198
+  getIndex _proxy  = 199
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.hackFileDirectXRefs_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.HackFileDirectXRefs x k
   getFactKey = Glean.Schema.Codemarkup.Types.hackFileDirectXRefs_key
@@ -589,7 +590,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.EntityUses where
   type KeyType Glean.Schema.Codemarkup.Types.EntityUses =
     Glean.Schema.Codemarkup.Types.EntityUses_key
   getName _proxy  = Glean.PredicateRef "codemarkup.EntityUses"10
-  getIndex _proxy  = 173
+  getIndex _proxy  = 174
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.entityUses_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.EntityUses x k
   getFactKey = Glean.Schema.Codemarkup.Types.entityUses_key
@@ -615,7 +616,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.PythonFileEntityXRefs whe
   type KeyType Glean.Schema.Codemarkup.Types.PythonFileEntityXRefs =
     Glean.Schema.Codemarkup.Types.PythonFileEntityXRefs_key
   getName _proxy  = Glean.PredicateRef "codemarkup.PythonFileEntityXRefs"10
-  getIndex _proxy  = 170
+  getIndex _proxy  = 171
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.pythonFileEntityXRefs_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.PythonFileEntityXRefs x k
   getFactKey = Glean.Schema.Codemarkup.Types.pythonFileEntityXRefs_key
@@ -643,7 +644,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.FlowTypeExportLocation wh
   type KeyType Glean.Schema.Codemarkup.Types.FlowTypeExportLocation =
     Glean.Schema.Codemarkup.Types.FlowTypeExportLocation_key
   getName _proxy  = Glean.PredicateRef "codemarkup.FlowTypeExportLocation"10
-  getIndex _proxy  = 160
+  getIndex _proxy  = 161
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.flowTypeExportLocation_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.FlowTypeExportLocation x k
   getFactKey = Glean.Schema.Codemarkup.Types.flowTypeExportLocation_key
@@ -667,7 +668,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.FlowFileDirectXRefs where
   type KeyType Glean.Schema.Codemarkup.Types.FlowFileDirectXRefs =
     Glean.Schema.Codemarkup.Types.FlowFileDirectXRefs_key
   getName _proxy  = Glean.PredicateRef "codemarkup.FlowFileDirectXRefs"10
-  getIndex _proxy  = 154
+  getIndex _proxy  = 155
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.flowFileDirectXRefs_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.FlowFileDirectXRefs x k
   getFactKey = Glean.Schema.Codemarkup.Types.flowFileDirectXRefs_key
@@ -693,7 +694,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.HackFileEntityXRefs where
   type KeyType Glean.Schema.Codemarkup.Types.HackFileEntityXRefs =
     Glean.Schema.Codemarkup.Types.HackFileEntityXRefs_key
   getName _proxy  = Glean.PredicateRef "codemarkup.HackFileEntityXRefs"10
-  getIndex _proxy  = 138
+  getIndex _proxy  = 139
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.hackFileEntityXRefs_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.HackFileEntityXRefs x k
   getFactKey = Glean.Schema.Codemarkup.Types.hackFileEntityXRefs_key
@@ -721,7 +722,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.FlowImportXRef where
   type KeyType Glean.Schema.Codemarkup.Types.FlowImportXRef =
     Glean.Schema.Codemarkup.Types.FlowImportXRef_key
   getName _proxy  = Glean.PredicateRef "codemarkup.FlowImportXRef"10
-  getIndex _proxy  = 118
+  getIndex _proxy  = 119
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.flowImportXRef_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.FlowImportXRef x k
   getFactKey = Glean.Schema.Codemarkup.Types.flowImportXRef_key
@@ -749,7 +750,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.FlowModuleExportLocation 
   type KeyType Glean.Schema.Codemarkup.Types.FlowModuleExportLocation =
     Glean.Schema.Codemarkup.Types.FlowModuleExportLocation_key
   getName _proxy  = Glean.PredicateRef "codemarkup.FlowModuleExportLocation"10
-  getIndex _proxy  = 112
+  getIndex _proxy  = 113
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.flowModuleExportLocation_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.FlowModuleExportLocation x k
   getFactKey = Glean.Schema.Codemarkup.Types.flowModuleExportLocation_key
@@ -773,7 +774,7 @@ instance Glean.Predicate Glean.Schema.Codemarkup.Types.PythonFileDeclarations wh
   type KeyType Glean.Schema.Codemarkup.Types.PythonFileDeclarations =
     Glean.Schema.Codemarkup.Types.PythonFileDeclarations_key
   getName _proxy  = Glean.PredicateRef "codemarkup.PythonFileDeclarations"10
-  getIndex _proxy  = 103
+  getIndex _proxy  = 104
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Codemarkup.Types.pythonFileDeclarations_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Codemarkup.Types.PythonFileDeclarations x k
   getFactKey = Glean.Schema.Codemarkup.Types.pythonFileDeclarations_key
