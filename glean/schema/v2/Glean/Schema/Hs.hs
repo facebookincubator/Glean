@@ -5,13 +5,13 @@ import Glean.Types
 
 allPredicates :: [(PredicateRef, Int)]
 allPredicates =
-  [ (PredicateRef "hs.Class" 1, 421)
-  , (PredicateRef "hs.FunctionName" 1, 384)
-  , (PredicateRef "hs.Type" 1, 353)
-  , (PredicateRef "hs.PackageId" 1, 349)
-  , (PredicateRef "hs.Module" 1, 300)
-  , (PredicateRef "hs.DefinitionName" 1, 299)
-  , (PredicateRef "hs.ModuleDefinitions" 1, 259)
+  [ (PredicateRef "hs.Class" 1, 423)
+  , (PredicateRef "hs.FunctionName" 1, 386)
+  , (PredicateRef "hs.Type" 1, 355)
+  , (PredicateRef "hs.PackageId" 1, 351)
+  , (PredicateRef "hs.Module" 1, 302)
+  , (PredicateRef "hs.DefinitionName" 1, 301)
+  , (PredicateRef "hs.ModuleDefinitions" 1, 261)
   , (PredicateRef "hs.FileXRefMap" 2, 221)
   , (PredicateRef "hs.Definition" 2, 179)
   , (PredicateRef "hs.Definition" 1, 178)

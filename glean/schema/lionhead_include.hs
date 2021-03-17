@@ -27,7 +27,7 @@ instance Glean.Predicate Glean.Schema.Lionhead.Types.CoveredHarness where
   type KeyType Glean.Schema.Lionhead.Types.CoveredHarness =
     Glean.Schema.Lionhead.Types.CoveredHarness_key
   getName _proxy  = Glean.PredicateRef "lionhead.CoveredHarness"1
-  getIndex _proxy  = 466
+  getIndex _proxy  = 468
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Lionhead.Types.coveredHarness_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Lionhead.Types.CoveredHarness x k
   getFactKey = Glean.Schema.Lionhead.Types.coveredHarness_key
@@ -40,7 +40,7 @@ instance Glean.Type Glean.Schema.Lionhead.Types.CoveredHarness where
 instance Glean.Predicate Glean.Schema.Lionhead.Types.FbId where
   type KeyType Glean.Schema.Lionhead.Types.FbId = Glean.Nat
   getName _proxy  = Glean.PredicateRef "lionhead.FbId"1
-  getIndex _proxy  = 423
+  getIndex _proxy  = 425
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Lionhead.Types.fbId_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Lionhead.Types.FbId x k
   getFactKey = Glean.Schema.Lionhead.Types.fbId_key

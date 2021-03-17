@@ -39,7 +39,9 @@ const map<string, i64> PREDICATE_VERSIONS = {
   "FlowCompatibleModuleExport": 10,
   "FlowSameModule": 10,
   "FileAnnotations": 10,
+  "FlowFileReferenceEntityXRef": 10,
   "FlowXRefInfo": 10,
+  "FlowFileImportDeclEntityXRef": 10,
   "HackResolve": 10,
   "HackFileDirectXRefs": 10,
   "EntityUses": 10,
@@ -248,6 +250,30 @@ union FlowFileEntityXRefs {
   2: FlowFileEntityXRefs_key key;
   3: builtin.Unit get;
 } (hs.prefix = "FlowFileEntityXRefs_with_")
+
+typedef glean.Id FlowFileImportDeclEntityXRef_id
+
+@glean.PredicateAnnotation{
+  name="codemarkup.FlowFileImportDeclEntityXRef";
+  version=10;
+}
+union FlowFileImportDeclEntityXRef {
+  1: FlowFileImportDeclEntityXRef_id id (hs.strict);
+  2: FlowFileImportDeclEntityXRef_key key;
+  3: builtin.Unit get;
+} (hs.prefix = "FlowFileImportDeclEntityXRef_with_")
+
+typedef glean.Id FlowFileReferenceEntityXRef_id
+
+@glean.PredicateAnnotation{
+  name="codemarkup.FlowFileReferenceEntityXRef";
+  version=10;
+}
+union FlowFileReferenceEntityXRef {
+  1: FlowFileReferenceEntityXRef_id id (hs.strict);
+  2: FlowFileReferenceEntityXRef_key key;
+  3: builtin.Unit get;
+} (hs.prefix = "FlowFileReferenceEntityXRef_with_")
 
 typedef glean.Id HackFileDirectXRefs_id
 
@@ -554,6 +580,18 @@ struct FlowFileEntityXRefs_key {
   1: optional src.File file (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
   2: optional DirectXRef xref (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
   3: optional code.Entity entity (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+}
+
+struct FlowFileImportDeclEntityXRef_key {
+  1: optional src.File file (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+  2: optional DirectXRef xref (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+  3: optional code_flow.Entity entity (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+}
+
+struct FlowFileReferenceEntityXRef_key {
+  1: optional src.File file (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+  2: optional DirectXRef xref (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+  3: optional code_flow.Entity entity (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
 }
 
 struct HackFileDirectXRefs_key {

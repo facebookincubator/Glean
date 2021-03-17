@@ -282,6 +282,21 @@ type instance Glean.QueryOf Glean.Schema.Codemarkup.Types.FileAnnotations = Glea
 
 instance Glean.ToQuery Glean.Schema.Codemarkup.Types.FileAnnotations
 
+type instance Glean.QueryResult Glean.Schema.Query.Codemarkup.Types.FlowFileReferenceEntityXRef_key = Glean.Schema.Codemarkup.Types.FlowFileReferenceEntityXRef_key
+type instance Glean.QueryOf Glean.Schema.Codemarkup.Types.FlowFileReferenceEntityXRef_key = Glean.Schema.Query.Codemarkup.Types.FlowFileReferenceEntityXRef_key
+
+instance Glean.ToQuery Glean.Schema.Codemarkup.Types.FlowFileReferenceEntityXRef_key where
+  toQuery (Glean.Schema.Codemarkup.Types.FlowFileReferenceEntityXRef_key x1 x2 x3) = Glean.Schema.Query.Codemarkup.Types.FlowFileReferenceEntityXRef_key (Prelude.Just (Glean.toQuery x1)) (Prelude.Just (Glean.toQuery x2)) (Prelude.Just (Glean.toQuery x3))
+
+instance Glean.PredicateQuery Glean.Schema.Codemarkup.Types.FlowFileReferenceEntityXRef where
+  toQueryId = Glean.Schema.Query.Codemarkup.Types.FlowFileReferenceEntityXRef_with_id . Glean.fromFid . Glean.idOf
+  toQueryKey = Glean.Schema.Query.Codemarkup.Types.FlowFileReferenceEntityXRef_with_key . Glean.toQuery
+
+type instance Glean.QueryResult Glean.Schema.Query.Codemarkup.Types.FlowFileReferenceEntityXRef = Glean.Schema.Codemarkup.Types.FlowFileReferenceEntityXRef
+type instance Glean.QueryOf Glean.Schema.Codemarkup.Types.FlowFileReferenceEntityXRef = Glean.Schema.Query.Codemarkup.Types.FlowFileReferenceEntityXRef
+
+instance Glean.ToQuery Glean.Schema.Codemarkup.Types.FlowFileReferenceEntityXRef
+
 type instance Glean.QueryResult Glean.Schema.Query.Codemarkup.Types.FlowXRefInfo_key = Glean.Schema.Codemarkup.Types.FlowXRefInfo_key
 type instance Glean.QueryOf Glean.Schema.Codemarkup.Types.FlowXRefInfo_key = Glean.Schema.Query.Codemarkup.Types.FlowXRefInfo_key
 
@@ -296,6 +311,21 @@ type instance Glean.QueryResult Glean.Schema.Query.Codemarkup.Types.FlowXRefInfo
 type instance Glean.QueryOf Glean.Schema.Codemarkup.Types.FlowXRefInfo = Glean.Schema.Query.Codemarkup.Types.FlowXRefInfo
 
 instance Glean.ToQuery Glean.Schema.Codemarkup.Types.FlowXRefInfo
+
+type instance Glean.QueryResult Glean.Schema.Query.Codemarkup.Types.FlowFileImportDeclEntityXRef_key = Glean.Schema.Codemarkup.Types.FlowFileImportDeclEntityXRef_key
+type instance Glean.QueryOf Glean.Schema.Codemarkup.Types.FlowFileImportDeclEntityXRef_key = Glean.Schema.Query.Codemarkup.Types.FlowFileImportDeclEntityXRef_key
+
+instance Glean.ToQuery Glean.Schema.Codemarkup.Types.FlowFileImportDeclEntityXRef_key where
+  toQuery (Glean.Schema.Codemarkup.Types.FlowFileImportDeclEntityXRef_key x1 x2 x3) = Glean.Schema.Query.Codemarkup.Types.FlowFileImportDeclEntityXRef_key (Prelude.Just (Glean.toQuery x1)) (Prelude.Just (Glean.toQuery x2)) (Prelude.Just (Glean.toQuery x3))
+
+instance Glean.PredicateQuery Glean.Schema.Codemarkup.Types.FlowFileImportDeclEntityXRef where
+  toQueryId = Glean.Schema.Query.Codemarkup.Types.FlowFileImportDeclEntityXRef_with_id . Glean.fromFid . Glean.idOf
+  toQueryKey = Glean.Schema.Query.Codemarkup.Types.FlowFileImportDeclEntityXRef_with_key . Glean.toQuery
+
+type instance Glean.QueryResult Glean.Schema.Query.Codemarkup.Types.FlowFileImportDeclEntityXRef = Glean.Schema.Codemarkup.Types.FlowFileImportDeclEntityXRef
+type instance Glean.QueryOf Glean.Schema.Codemarkup.Types.FlowFileImportDeclEntityXRef = Glean.Schema.Query.Codemarkup.Types.FlowFileImportDeclEntityXRef
+
+instance Glean.ToQuery Glean.Schema.Codemarkup.Types.FlowFileImportDeclEntityXRef
 
 type instance Glean.QueryResult Glean.Schema.Query.Codemarkup.Types.HackResolve_key = Glean.Schema.Codemarkup.Types.HackResolve_key
 type instance Glean.QueryOf Glean.Schema.Codemarkup.Types.HackResolve_key = Glean.Schema.Query.Codemarkup.Types.HackResolve_key

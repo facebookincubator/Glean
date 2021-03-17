@@ -39,7 +39,9 @@ const map<string, i64> PREDICATE_VERSIONS = {
   "FlowCompatibleModuleExport": 10,
   "FlowSameModule": 10,
   "FileAnnotations": 10,
+  "FlowFileReferenceEntityXRef": 10,
   "FlowXRefInfo": 10,
+  "FlowFileImportDeclEntityXRef": 10,
   "HackResolve": 10,
   "HackFileDirectXRefs": 10,
   "EntityUses": 10,
@@ -231,6 +233,28 @@ typedef glean.Id FlowFileEntityXRefs_id
 struct FlowFileEntityXRefs {
   1: FlowFileEntityXRefs_id id (hs.strict);
   2: optional FlowFileEntityXRefs_key key (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+}
+
+typedef glean.Id FlowFileImportDeclEntityXRef_id
+
+@glean.PredicateAnnotation{
+  name="codemarkup.FlowFileImportDeclEntityXRef";
+  version=10;
+}
+struct FlowFileImportDeclEntityXRef {
+  1: FlowFileImportDeclEntityXRef_id id (hs.strict);
+  2: optional FlowFileImportDeclEntityXRef_key key (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+}
+
+typedef glean.Id FlowFileReferenceEntityXRef_id
+
+@glean.PredicateAnnotation{
+  name="codemarkup.FlowFileReferenceEntityXRef";
+  version=10;
+}
+struct FlowFileReferenceEntityXRef {
+  1: FlowFileReferenceEntityXRef_id id (hs.strict);
+  2: optional FlowFileReferenceEntityXRef_key key (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
 }
 
 typedef glean.Id HackFileDirectXRefs_id
@@ -521,6 +545,18 @@ struct FlowFileEntityXRefs_key {
   1: src.File file;
   2: DirectXRef xref;
   3: code.Entity entity;
+}
+
+struct FlowFileImportDeclEntityXRef_key {
+  1: src.File file;
+  2: DirectXRef xref;
+  3: code_flow.Entity entity;
+}
+
+struct FlowFileReferenceEntityXRef_key {
+  1: src.File file;
+  2: DirectXRef xref;
+  3: code_flow.Entity entity;
 }
 
 struct HackFileDirectXRefs_key {

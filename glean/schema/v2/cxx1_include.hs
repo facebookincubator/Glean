@@ -29,7 +29,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.NamespaceQName where
   type KeyType Glean.Schema.Cxx1.Types.NamespaceQName =
     Glean.Schema.Cxx1.Types.NamespaceQName_key
   getName _proxy  = Glean.PredicateRef "cxx1.NamespaceQName"1
-  getIndex _proxy  = 492
+  getIndex _proxy  = 494
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.namespaceQName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.NamespaceQName x k
   getFactKey = Glean.Schema.Cxx1.Types.namespaceQName_key
@@ -53,7 +53,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.DeclarationSrcRange where
   type KeyType Glean.Schema.Cxx1.Types.DeclarationSrcRange =
     Glean.Schema.Cxx1.Types.DeclarationSrcRange_key
   getName _proxy  = Glean.PredicateRef "cxx1.DeclarationSrcRange"4
-  getIndex _proxy  = 491
+  getIndex _proxy  = 493
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.declarationSrcRange_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.DeclarationSrcRange x k
   getFactKey = Glean.Schema.Cxx1.Types.declarationSrcRange_key
@@ -79,7 +79,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.RecordDeclaration where
   type KeyType Glean.Schema.Cxx1.Types.RecordDeclaration =
     Glean.Schema.Cxx1.Types.RecordDeclaration_key
   getName _proxy  = Glean.PredicateRef "cxx1.RecordDeclaration"1
-  getIndex _proxy  = 488
+  getIndex _proxy  = 490
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.recordDeclaration_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.RecordDeclaration x k
   getFactKey = Glean.Schema.Cxx1.Types.recordDeclaration_key
@@ -103,7 +103,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.XRefIndirectTarget where
   type KeyType Glean.Schema.Cxx1.Types.XRefIndirectTarget =
     Glean.Schema.Cxx1.Types.XRefIndirectTarget_key
   getName _proxy  = Glean.PredicateRef "cxx1.XRefIndirectTarget"2
-  getIndex _proxy  = 463
+  getIndex _proxy  = 465
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.xRefIndirectTarget_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.XRefIndirectTarget x k
   getFactKey = Glean.Schema.Cxx1.Types.xRefIndirectTarget_key
@@ -129,7 +129,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.DeclByName where
   type KeyType Glean.Schema.Cxx1.Types.DeclByName =
     Glean.Schema.Cxx1.Types.DeclByName_key
   getName _proxy  = Glean.PredicateRef "cxx1.DeclByName"4
-  getIndex _proxy  = 462
+  getIndex _proxy  = 464
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.declByName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.DeclByName x k
   getFactKey = Glean.Schema.Cxx1.Types.declByName_key
@@ -153,7 +153,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.DeclInObjcContainer where
   type KeyType Glean.Schema.Cxx1.Types.DeclInObjcContainer =
     Glean.Schema.Cxx1.Types.DeclInObjcContainer_key
   getName _proxy  = Glean.PredicateRef "cxx1.DeclInObjcContainer"4
-  getIndex _proxy  = 454
+  getIndex _proxy  = 456
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.declInObjcContainer_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.DeclInObjcContainer x k
   getFactKey = Glean.Schema.Cxx1.Types.declInObjcContainer_key
@@ -177,7 +177,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.DeclarationTargets where
   type KeyType Glean.Schema.Cxx1.Types.DeclarationTargets =
     Glean.Schema.Cxx1.Types.DeclarationTargets_key
   getName _proxy  = Glean.PredicateRef "cxx1.DeclarationTargets"1
-  getIndex _proxy  = 444
+  getIndex _proxy  = 446
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.declarationTargets_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.DeclarationTargets x k
   getFactKey = Glean.Schema.Cxx1.Types.declarationTargets_key
@@ -201,7 +201,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.ObjcContainerInheritance where
   type KeyType Glean.Schema.Cxx1.Types.ObjcContainerInheritance =
     Glean.Schema.Cxx1.Types.ObjcContainerInheritance_key
   getName _proxy  = Glean.PredicateRef "cxx1.ObjcContainerInheritance"4
-  getIndex _proxy  = 424
+  getIndex _proxy  = 426
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.objcContainerInheritance_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.ObjcContainerInheritance x k
   getFactKey = Glean.Schema.Cxx1.Types.objcContainerInheritance_key
@@ -225,7 +225,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.ObjcPropertyIVar where
   type KeyType Glean.Schema.Cxx1.Types.ObjcPropertyIVar =
     Glean.Schema.Cxx1.Types.ObjcPropertyIVar_key
   getName _proxy  = Glean.PredicateRef "cxx1.ObjcPropertyIVar"4
-  getIndex _proxy  = 418
+  getIndex _proxy  = 420
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.objcPropertyIVar_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.ObjcPropertyIVar x k
   getFactKey = Glean.Schema.Cxx1.Types.objcPropertyIVar_key
@@ -249,7 +249,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.FunctionDefinition where
   type KeyType Glean.Schema.Cxx1.Types.FunctionDefinition =
     Glean.Schema.Cxx1.Types.FunctionDefinition_key
   getName _proxy  = Glean.PredicateRef "cxx1.FunctionDefinition"1
-  getIndex _proxy  = 416
+  getIndex _proxy  = 418
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.functionDefinition_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.FunctionDefinition x k
   getFactKey = Glean.Schema.Cxx1.Types.functionDefinition_key
@@ -273,7 +273,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.TranslationUnitXRefs where
   type KeyType Glean.Schema.Cxx1.Types.TranslationUnitXRefs =
     Glean.Schema.Cxx1.Types.TranslationUnitXRefs_key
   getName _proxy  = Glean.PredicateRef "cxx1.TranslationUnitXRefs"4
-  getIndex _proxy  = 415
+  getIndex _proxy  = 417
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.translationUnitXRefs_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.TranslationUnitXRefs x k
   getFactKey = Glean.Schema.Cxx1.Types.translationUnitXRefs_key
@@ -297,7 +297,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.Signature where
   type KeyType Glean.Schema.Cxx1.Types.Signature =
     Glean.Schema.Cxx1.Types.Signature_key
   getName _proxy  = Glean.PredicateRef "cxx1.Signature"1
-  getIndex _proxy  = 407
+  getIndex _proxy  = 409
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.signature_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.Signature x k
   getFactKey = Glean.Schema.Cxx1.Types.signature_key
@@ -310,7 +310,7 @@ instance Glean.Type Glean.Schema.Cxx1.Types.Signature where
 instance Glean.Predicate Glean.Schema.Cxx1.Types.Attribute where
   type KeyType Glean.Schema.Cxx1.Types.Attribute = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "cxx1.Attribute"4
-  getIndex _proxy  = 404
+  getIndex _proxy  = 406
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.attribute_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.Attribute x k
   getFactKey = Glean.Schema.Cxx1.Types.attribute_key
@@ -334,7 +334,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.DeclInRecord where
   type KeyType Glean.Schema.Cxx1.Types.DeclInRecord =
     Glean.Schema.Cxx1.Types.DeclInRecord_key
   getName _proxy  = Glean.PredicateRef "cxx1.DeclInRecord"4
-  getIndex _proxy  = 396
+  getIndex _proxy  = 398
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.declInRecord_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.DeclInRecord x k
   getFactKey = Glean.Schema.Cxx1.Types.declInRecord_key
@@ -358,7 +358,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.FileXRefs where
   type KeyType Glean.Schema.Cxx1.Types.FileXRefs =
     Glean.Schema.Cxx1.Types.FileXRefs_key
   getName _proxy  = Glean.PredicateRef "cxx1.FileXRefs"2
-  getIndex _proxy  = 386
+  getIndex _proxy  = 388
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.fileXRefs_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.FileXRefs x k
   getFactKey = Glean.Schema.Cxx1.Types.fileXRefs_key
@@ -371,7 +371,7 @@ instance Glean.Type Glean.Schema.Cxx1.Types.FileXRefs where
 instance Glean.Predicate Glean.Schema.Cxx1.Types.ObjcSelector where
   type KeyType Glean.Schema.Cxx1.Types.ObjcSelector = [Data.Text.Text]
   getName _proxy  = Glean.PredicateRef "cxx1.ObjcSelector"1
-  getIndex _proxy  = 380
+  getIndex _proxy  = 382
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.objcSelector_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.ObjcSelector x k
   getFactKey = Glean.Schema.Cxx1.Types.objcSelector_key
@@ -395,7 +395,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.NamespaceDefinition where
   type KeyType Glean.Schema.Cxx1.Types.NamespaceDefinition =
     Glean.Schema.Cxx1.Types.NamespaceDefinition_key
   getName _proxy  = Glean.PredicateRef "cxx1.NamespaceDefinition"2
-  getIndex _proxy  = 344
+  getIndex _proxy  = 346
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.namespaceDefinition_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.NamespaceDefinition x k
   getFactKey = Glean.Schema.Cxx1.Types.namespaceDefinition_key
@@ -419,7 +419,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.FunctionAttribute where
   type KeyType Glean.Schema.Cxx1.Types.FunctionAttribute =
     Glean.Schema.Cxx1.Types.FunctionAttribute_key
   getName _proxy  = Glean.PredicateRef "cxx1.FunctionAttribute"4
-  getIndex _proxy  = 340
+  getIndex _proxy  = 342
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.functionAttribute_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.FunctionAttribute x k
   getFactKey = Glean.Schema.Cxx1.Types.functionAttribute_key
@@ -447,7 +447,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.TypeAliasDeclaration where
   type KeyType Glean.Schema.Cxx1.Types.TypeAliasDeclaration =
     Glean.Schema.Cxx1.Types.TypeAliasDeclaration_key
   getName _proxy  = Glean.PredicateRef "cxx1.TypeAliasDeclaration"2
-  getIndex _proxy  = 338
+  getIndex _proxy  = 340
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.typeAliasDeclaration_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.TypeAliasDeclaration x k
   getFactKey = Glean.Schema.Cxx1.Types.typeAliasDeclaration_key
@@ -473,7 +473,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.FileXRefMap where
   type KeyType Glean.Schema.Cxx1.Types.FileXRefMap =
     Glean.Schema.Cxx1.Types.FileXRefMap_key
   getName _proxy  = Glean.PredicateRef "cxx1.FileXRefMap"2
-  getIndex _proxy  = 320
+  getIndex _proxy  = 322
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.fileXRefMap_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.FileXRefMap x k
   getFactKey = Glean.Schema.Cxx1.Types.fileXRefMap_key
@@ -501,7 +501,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.EnumDeclaration where
   type KeyType Glean.Schema.Cxx1.Types.EnumDeclaration =
     Glean.Schema.Cxx1.Types.EnumDeclaration_key
   getName _proxy  = Glean.PredicateRef "cxx1.EnumDeclaration"1
-  getIndex _proxy  = 315
+  getIndex _proxy  = 317
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.enumDeclaration_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.EnumDeclaration x k
   getFactKey = Glean.Schema.Cxx1.Types.enumDeclaration_key
@@ -525,7 +525,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.ObjcContainerDeclaration where
   type KeyType Glean.Schema.Cxx1.Types.ObjcContainerDeclaration =
     Glean.Schema.Cxx1.Types.ObjcContainerDeclaration_key
   getName _proxy  = Glean.PredicateRef "cxx1.ObjcContainerDeclaration"1
-  getIndex _proxy  = 312
+  getIndex _proxy  = 314
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.objcContainerDeclaration_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.ObjcContainerDeclaration x k
   getFactKey = Glean.Schema.Cxx1.Types.objcContainerDeclaration_key
@@ -559,7 +559,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.ObjcMethodDeclaration where
   type KeyType Glean.Schema.Cxx1.Types.ObjcMethodDeclaration =
     Glean.Schema.Cxx1.Types.ObjcMethodDeclaration_key
   getName _proxy  = Glean.PredicateRef "cxx1.ObjcMethodDeclaration"1
-  getIndex _proxy  = 311
+  getIndex _proxy  = 313
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.objcMethodDeclaration_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.ObjcMethodDeclaration x k
   getFactKey = Glean.Schema.Cxx1.Types.objcMethodDeclaration_key
@@ -583,7 +583,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.MethodOverrides where
   type KeyType Glean.Schema.Cxx1.Types.MethodOverrides =
     Glean.Schema.Cxx1.Types.MethodOverrides_key
   getName _proxy  = Glean.PredicateRef "cxx1.MethodOverrides"1
-  getIndex _proxy  = 290
+  getIndex _proxy  = 292
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.methodOverrides_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.MethodOverrides x k
   getFactKey = Glean.Schema.Cxx1.Types.methodOverrides_key
@@ -607,7 +607,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.ObjcInterfaceToImplementation w
   type KeyType Glean.Schema.Cxx1.Types.ObjcInterfaceToImplementation =
     Glean.Schema.Cxx1.Types.ObjcInterfaceToImplementation_key
   getName _proxy  = Glean.PredicateRef "cxx1.ObjcInterfaceToImplementation"1
-  getIndex _proxy  = 273
+  getIndex _proxy  = 275
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.objcInterfaceToImplementation_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.ObjcInterfaceToImplementation x k
   getFactKey = Glean.Schema.Cxx1.Types.objcInterfaceToImplementation_key
@@ -651,7 +651,7 @@ instance Glean.Predicate Glean.Schema.Cxx1.Types.FunctionName where
   type KeyType Glean.Schema.Cxx1.Types.FunctionName =
     Glean.Schema.Cxx1.Types.FunctionName_key
   getName _proxy  = Glean.PredicateRef "cxx1.FunctionName"1
-  getIndex _proxy  = 250
+  getIndex _proxy  = 252
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.functionName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.FunctionName x k
   getFactKey = Glean.Schema.Cxx1.Types.functionName_key
@@ -674,7 +674,7 @@ type instance Angle.RecordFields Glean.Schema.Cxx1.Types.Same_key = 'Angle.TFiel
 instance Glean.Predicate Glean.Schema.Cxx1.Types.Same where
   type KeyType Glean.Schema.Cxx1.Types.Same = Glean.Schema.Cxx1.Types.Same_key
   getName _proxy  = Glean.PredicateRef "cxx1.Same"2
-  getIndex _proxy  = 236
+  getIndex _proxy  = 238
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Cxx1.Types.same_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Cxx1.Types.Same x k
   getFactKey = Glean.Schema.Cxx1.Types.same_key

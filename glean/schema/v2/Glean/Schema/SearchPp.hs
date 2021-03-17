@@ -5,7 +5,7 @@ import Glean.Types
 
 allPredicates :: [(PredicateRef, Int)]
 allPredicates =
-  [ (PredicateRef "search.pp.SearchByName" 2, 281)
-  , (PredicateRef "search.pp.SearchByName" 1, 280)
+  [ (PredicateRef "search.pp.SearchByName" 2, 283)
+  , (PredicateRef "search.pp.SearchByName" 1, 282)
   ]
 
