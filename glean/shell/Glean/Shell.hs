@@ -56,6 +56,7 @@ import Util.TimeSec
 import qualified Glean.BuildInfo as BuildInfo
 import Glean.Database.Config (parseSchemaDir)
 import qualified Glean.Database.Config as DB (Config(..))
+import Glean.Init
 import Glean.RTS.Types (Pid(..), Fid(..))
 import Glean.Schema.Resolve
 import Glean.Angle.Types as SchemaTypes
@@ -83,10 +84,11 @@ data Config = Config
   , cfgSchemaDir :: Maybe FilePath
   , cfgWidth :: Maybe Int
   , cfgPager :: Bool
+  , cfgVerbose :: Maybe Int
   }
 
-options :: ParserInfo Config
-options = info (O.helper <*> parser) fullDesc
+options :: ConfigProvider cfg => ParserInfo (Config, ConfigOptions cfg)
+options = info (O.helper <*> liftA2 (,) parser configOptions) fullDesc
   where
     parser :: Parser Config
     parser = do
@@ -125,6 +127,12 @@ options = info (O.helper <*> parser) fullDesc
       cfgPager <- switch
         (  long "pager"
         <> O.help "Use a pager for displaying long output"
+        )
+      cfgVerbose <- optional $ option auto
+        (  long "verbose"
+        <> short 'v'
+        <> metavar "N"
+        <> O.help "Enbable debug logging at level N"
         )
       return Config{..}
      where
@@ -1196,7 +1204,15 @@ setupLocalSchema cfg = do
             )
 
 main :: IO ()
-main = withConfigOptions options $ \(cfg, cfgOpts) ->
+main = do
+  (cfg, cfgOpts) <- execParser options
+  glog_v <- lookupEnv "GLOG_v"
+  let
+    gflags
+      | Just n <- cfgVerbose cfg = ["--v=" <> show n]
+      | isNothing glog_v = ["--minloglevel=2"] -- default: warnings and above only
+      | otherwise = []
+  withGflags gflags $ do
   withEventBaseDataplane $ \evb ->
     withConfigProvider cfgOpts $ \cfgAPI -> do
       (cfg, updateSchema) <- setupLocalSchema cfg

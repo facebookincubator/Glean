@@ -179,10 +179,11 @@ class GleanShellLoad(GleanShellTest):
     def test(self):
         repo = "test"
         prompt = repo + ">"
-        output = self.shellCommand(
+        self.shellCommand(
             ":load " + repo + "/0 glean/shell/tests/expr.glean", prompt=prompt
         )
-        self.assertIn("workFinished", output)
+        output = self.shellCommand(":db", prompt=prompt)
+        self.assertIn("test/0", output)
 
         output = self.shellCommand(":stat", prompt=prompt)
         self.assertIsNotNone(re.search("glean.test.Expr.1\r\n *count: 6", output))
@@ -193,12 +194,14 @@ class GleanShellLoad(GleanShellTest):
         self.assertIn("1 results", output)
 
         # :load <file> should choose the repo name automatically:
-        output = self.shellCommand(":load glean/shell/tests/expr.glean", prompt="expr>")
-        self.assertIn("workFinished", output)
+        self.shellCommand(":load glean/shell/tests/expr.glean", prompt="expr>")
+        output = self.shellCommand(":db", prompt="expr>")
+        self.assertIn("expr/0", output)
 
         # :load <file> again should choose a new unique repo name:
-        output = self.shellCommand(":load glean/shell/tests/expr.glean", prompt="expr>")
-        self.assertIn("workFinished", output)
+        self.shellCommand(":load glean/shell/tests/expr.glean", prompt="expr>")
+        output = self.shellCommand(":db", prompt="expr>")
+        self.assertIn("expr/1", output)
 
 
 class GleanShellDump(GleanShellTest):
@@ -207,8 +210,7 @@ class GleanShellDump(GleanShellTest):
         self.shellCommand(":dump " + dumpfile)
         repo = "test"
         prompt = repo + ">"
-        output = self.shellCommand(":load " + repo + "/0 " + dumpfile, prompt=prompt)
-        self.assertIn("workFinished", output)
+        self.shellCommand(":load " + repo + "/0 " + dumpfile, prompt=prompt)
         output = self.shellCommand(":stat", prompt=prompt)
         self.assertIsNotNone(re.search("sys.Blob.1\r\n *count: 2", output))
 
