@@ -112,29 +112,32 @@ toSchemaInfo DbSchema{..} = Thrift.SchemaInfo
 thinSchemaInfo
   :: DbSchema
   -> [(Pid, PredicateStats)]
-  -> Thrift.SchemaInfo
-thinSchemaInfo DbSchema{..} predicateStats = Thrift.SchemaInfo
-  { schemaInfo_schema =
-      Text.encodeUtf8 $ renderStrict $ layoutCompact $ pretty $
-        schemaSource { srcSchemas = allNeededSchemas }
-  , schemaInfo_predicateIds = Map.fromList
-      [ (fromPid $ predicatePid p, predicateRef p)
-      | p <- HashMap.elems predicatesByRef
-      {-
-        TODO: we should also filter out Pids of predicates that were
-        removed from the schema:
-
-        , predicateRef p `HashSet.member` nonEmptyPredicates
-
-        but the problem is that those Pids will end up being
-        reassigned, which can cause problems for suspending/resuming
-        queries. The proper fix for this will be to use PredicateRefs
-        not Pids in suspended queries, but this workaround will work
-        in most cases for now.
-      -}
-      ]
-  }
+  -> (Thrift.SchemaInfo, [Name])
+thinSchemaInfo DbSchema{..} predicateStats =
+  (schemaInfo, map schemaName allNeededSchemas)
   where
+  schemaInfo = Thrift.SchemaInfo
+    { schemaInfo_schema =
+        Text.encodeUtf8 $ renderStrict $ layoutCompact $ pretty $
+          schemaSource { srcSchemas = allNeededSchemas }
+    , schemaInfo_predicateIds = Map.fromList
+        [ (fromPid $ predicatePid p, predicateRef p)
+        | p <- HashMap.elems predicatesByRef
+        {-
+          TODO: we should also filter out Pids of predicates that were
+          removed from the schema:
+
+          , predicateRef p `HashSet.member` nonEmptyPredicates
+
+          but the problem is that those Pids will end up being
+          reassigned, which can cause problems for suspending/resuming
+          queries. The proper fix for this will be to use PredicateRefs
+          not Pids in suspended queries, but this workaround will work
+          in most cases for now.
+        -}
+        ]
+    }
+
   -- Predicates that have some facts
   nonEmptyPredicates :: HashSet PredicateRef
   nonEmptyPredicates = HashSet.fromList

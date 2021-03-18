@@ -17,8 +17,9 @@ import Control.Monad.Extra
 import qualified Data.ByteString as BS
 import qualified Data.HashMap.Strict as HashMap
 import Data.IORef
-import qualified Data.Map as Map
+import Data.List
 import Data.Maybe
+import qualified Data.Text as Text
 
 import Util.Control.Exception
 import Util.Log
@@ -336,11 +337,10 @@ setupSchema Env{..} repo handle mode = do
 thinSchema :: Repo -> OpenDB -> IO ()
 thinSchema repo OpenDB{..} = do
   stats <- Storage.predicateStats odbHandle
-  let newSchemaInfo = thinSchemaInfo odbSchema stats
+  let (newSchemaInfo, names) = thinSchemaInfo odbSchema stats
   storeSchema odbHandle newSchemaInfo
-  logInfo $ "thinned schema for " <> showRepo "/" repo <> " has " <>
-    show (Map.size (Thrift.schemaInfo_predicateIds newSchemaInfo)) <>
-    " predicates"
+  logInfo $ "thinned schema for " <> showRepo "/" repo <> " contains " <>
+    intercalate ", " (map Text.unpack names)
 
 -- | Update the schema for all open DBs when the prevailing schema has
 -- changed.
