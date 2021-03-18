@@ -28,7 +28,9 @@ import qualified Glean.Database.Catalog as Catalog
 import qualified Glean.Database.Catalog.Filter as Catalog
 import Glean.Database.Env
 import Glean.Database.Types
+#if FACEBOOK
 import qualified Glean.Search.Handler as SearchHandler
+#endif
 import qualified Glean.Handler as GleanHandler
 import Glean.Server.Config as Config
 import Glean.Server.Shard
@@ -62,7 +64,9 @@ withHandler
 withHandler cfg state cont =
   case cfgHandler cfg of
     "glean" -> cont $ GleanHandler.handler state
+#if FACEBOOK
     "search" -> cont $ SearchHandler.searchHandler state
+#endif
     _ -> throwIO $ ErrorCall "--handler: invalid value"
 
 -- The 'dbUpdateNotifierThread' will sit in a loop waiting for changes

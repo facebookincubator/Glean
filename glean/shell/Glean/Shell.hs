@@ -68,7 +68,9 @@ import Glean.Shell.Terminal
 import Glean.Shell.Types
 import qualified Glean.Types as Thrift
 import Glean.Util.ConfigProvider
+#if FACEBOOK
 import Glean.Util.CxxXRef
+#endif
 import Glean.Util.Some
 import qualified Glean.Util.ThriftSource as ThriftSource
 import Glean.Backend hiding
@@ -113,13 +115,16 @@ options = info (O.helper <*> liftA2 (,) parser configOptions) fullDesc
         )
       cfgQuery <- many $ strArgument
         (  metavar "QUERY"
-        <> O.help "Perform one or more queries or commands\
-                  \ (default: enter the REPL)")
+        <> O.help
+          ( "Perform one or more queries or commands"
+          <> " (default: enter the REPL)")
+        )
       cfgSchemaDir <- optional $ strOption
         (  long "schema"
         <> metavar "DIR"
-        <> O.help "load schema from a directory containing source files\
-                  \ (*.angle)"
+        <> O.help
+          ( "load schema from a directory containing source files"
+          <> "(*.angle)")
         )
       cfgWidth <- optional $ option auto
         (  long "width"
@@ -583,7 +588,9 @@ fromJSONQuery (JSONQuery ide rec stored pat) = SchemaQuery
     -- debugging of xref issues easier by presenting xref data in an
     -- easier-to-comprehend format.
     (pred, trans)
+#if FACEBOOK
       | ide == "xrefs" = ("cxx1.FileXRefs", Just transformXRefs)
+#endif
       | otherwise = (ide, Nothing)
 
 doAngleStmt :: Statement AngleQuery -> Eval Bool

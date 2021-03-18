@@ -23,8 +23,12 @@ options = Config
       (O.long "write-port"
         <> O.metavar "FILE"
         <> O.help "write port number to file once server is alive"))
+#if FACEBOOK
   <*> O.strOption
       (O.long "handler"
         <> O.value "glean"
         <> O.metavar "(glean | search)"
         <> O.help "which handler to run")
+#else
+  <*> pure "glean"
+#endif
