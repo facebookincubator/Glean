@@ -728,8 +728,7 @@ library lib
         glean:if-search-hs,
         glean:schema,
         glean:util,
-        split,
-        base
+        split
 
 library test-unit
     import: fb-haskell, deps
@@ -743,21 +742,19 @@ executable server
     hs-source-dirs: glean/server
     main-is: Glean/Server.hs
     ghc-options: -main-is Glean.Server
+    default-extensions: CPP
     other-modules:
         Glean.Handler
-        Glean.Search.Handler
         Glean.Server.Config
     extra-libraries: stdc++
     build-depends:
         glean:client-hs,
         glean:if-fb303-hs,
         glean:if-glean-hs,
-        glean:if-search-hs,
         glean:stubs,
         glean:config,
         glean:core,
         glean:db,
-        glean:lib,
         glean:util,
         haskeline ^>=0.7.3,
         json,
@@ -771,6 +768,7 @@ executable shell
         Glean.Shell.Terminal
         Glean.Shell.Types
     ghc-options: -main-is Glean.Shell -pgml g++
+    default-extensions: CPP
     extra-libraries: stdc++
     build-depends:
         glean:if-glean-hs,
@@ -778,11 +776,12 @@ executable shell
         glean:config,
         glean:core,
         glean:db,
-        glean:lib,
+        glean:client-hs,
+        glean:util,
         haskeline ^>=0.7.3,
         json,
-        glean:client-hs,
-        glean:util
+        monad-control,
+        split
 
 
 executable glean
