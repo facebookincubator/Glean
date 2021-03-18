@@ -86,18 +86,21 @@ getTodo env@Env{..} sinbin = getFinalize <|> getRestore <|> getBackup
         Item{..} : _ -> return (itemRepo, doRestore env itemRepo itemMeta)
 
     getBackup = do
-      dsite <- getSite env
-      case dsite of
-        Just (prefix, Some site, DatabaseBackupPolicy{..}) -> do
-          dbs <- Catalog.list envCatalog [Local] $ do
-            repoNameV `inF` databaseBackupPolicy_allowed
-            completenessV .==. CompletenessComplete
-            backedUpV .==. False
-            latest
-          case dbs of
-            [] -> retry
-            Item{..} : _ -> return (itemRepo, doBackup env itemRepo prefix site)
-        Nothing -> retry
+      policy <- ServerConfig.config_backup <$> Observed.get envServerConfig
+      let allowedRepoNames = databaseBackupPolicy_allowed policy
+      dbs <- Catalog.list envCatalog [Local] $ do
+        repoNameV `inF` allowedRepoNames
+        completenessV .==. CompletenessComplete
+        backedUpV .==. False
+        latest
+      case dbs of
+        [] -> retry
+        Item{..} : _ -> do
+          dsite <- getSite env (repo_name itemRepo)
+          case dsite of
+            Just (prefix, Some site, DatabaseBackupPolicy{..}) ->
+                return (itemRepo, doBackup env itemRepo prefix site)
+            Nothing -> retry
 
     latest = do
       repoV `notInF` sinbin

@@ -4,11 +4,13 @@ module Glean.Database.Backup.Locator
   , toSiteLocator
   , toRepoLocator
   , getSite
+  , getAllSites
   ) where
 
 import Control.Concurrent.STM
 import Data.Functor
 import qualified Data.HashMap.Strict as HashMap
+import Data.Maybe (maybeToList)
 import Data.Text (Text)
 import qualified Data.Text as Text
 
@@ -45,9 +47,20 @@ toRepoLocator prefix site repo =
 
 getSite
   :: Env
+  -> Text
   -> STM (Maybe (Text, Some Site, DatabaseBackupPolicy))
-getSite Env{..} = do
+getSite Env{..} _repoName = do
   policy <- ServerConfig.config_backup <$> Observed.get envServerConfig
   return $
     fromSiteLocator envBackupBackends (databaseBackupPolicy_location policy)
     <&> \(prefix, site) -> (prefix, site, policy)
+
+getAllSites
+  :: Env
+  -> STM [(Text, Some Site, DatabaseBackupPolicy)]
+getAllSites Env{..} = do
+  policy <- ServerConfig.config_backup <$> Observed.get envServerConfig
+  let defaultSite = maybeToList $
+        fromSiteLocator envBackupBackends (databaseBackupPolicy_location policy)
+          <&> \(prefix, site) -> (prefix, site, policy)
+  return defaultSite

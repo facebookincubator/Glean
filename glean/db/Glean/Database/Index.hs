@@ -7,7 +7,7 @@ module Glean.Database.Index (
   updateProperties,
 
   -- temporary exports for the janitor
-  ifRestore, ifRestoreRepo, listRestorable, restoreDatabase_,
+  forRestoreSitesM, ifRestoreRepo, listRestorable, restoreDatabase_,
   expireDatabase
 ) where
 
@@ -283,50 +283,48 @@ closeIdleDatabase env repo duration = do
     env
     repo
 
-ifRestore :: Env -> a -> (forall site. Backup.Site site => Text -> site -> IO a) -> IO a
-ifRestore env@Env{..} none inner = do
+forRestoreSitesM
+  :: Env
+  -> a
+  -> (forall site. Backup.Site site => Text -> site -> IO a)
+  -> IO [a]
+forRestoreSitesM env@Env{..} none inner = do
   ServerConfig.DatabaseRestorePolicy{..} <-
     ServerConfig.config_restore <$> Observed.get envServerConfig
-  r <- atomically $ Backup.getSite env
+  r <- atomically $ Backup.getAllSites env
   case r of
-    Just (prefix, site, _)
+    sites@(_:_)
       | databaseRestorePolicy_enabled
-        || not (Set.null databaseRestorePolicy_override) -> inner prefix site
-    _ -> return none
+        || not (Set.null databaseRestorePolicy_override) ->
+      mapM (\(prefix, site, _) -> inner prefix site) sites
+    _ -> return [none]
 
-ifRestoreRepo :: Env -> a -> Repo -> (forall site. Backup.Site site => Text -> site -> IO a) -> IO a
+ifRestoreRepo
+  :: Env
+  -> a
+  -> Repo
+  -> (forall site. Backup.Site site => Text -> site -> IO a)
+  -> IO a
 ifRestoreRepo env@Env{..} none repo inner = do
+  let repoName = Thrift.repo_name repo
   ServerConfig.DatabaseRestorePolicy{..} <-
     ServerConfig.config_restore <$> Observed.get envServerConfig
-  r <- atomically $ Backup.getSite env
+  r <- atomically $ Backup.getSite env repoName
   case r of
     Just (prefix, site, _)
-      | (Thrift.repo_name repo `Set.member` databaseRestorePolicy_override)
+      | (repoName `Set.member` databaseRestorePolicy_override)
           /= databaseRestorePolicy_enabled -> inner prefix site
     _ -> return none
-
-withRestore :: Env -> a -> (forall site. Backup.Site site => Text -> site -> IO a) -> IO a
-withRestore env none inner = do
-  r <- atomically $ Backup.getSite env
-  case r of
-    Just (prefix, site, _) -> inner prefix site
-    Nothing -> return none
 
 listDatabases :: Env -> Thrift.ListDatabases -> IO Thrift.ListDatabasesResult
 listDatabases env@Env{..} Thrift.ListDatabases{..} = do
   backups <-
     if listDatabases_includeBackups
-      then
-        HashMap.mapWithKey
-          (\repo meta -> Thrift.GetDatabaseResult
-            { getDatabaseResult_database = metaToThriftDatabase
-                Thrift.DatabaseStatus_Restorable
-                Nothing
-                repo
-                meta
-            , getDatabaseResult_tasks = Nothing
-            })
-          <$> withRestore env mempty listRestorable
+      then do
+        sites <- atomically $ Backup.getAllSites env
+        restorables <- mapM
+          (\(prefix, site, _) -> listRestorable prefix site) sites
+        return $ reposToResults $ HashMap.unions restorables
       else
         return mempty
   local <- atomically $ Catalog.getLocalDatabases envCatalog
@@ -336,6 +334,16 @@ listDatabases env@Env{..} Thrift.ListDatabases{..} = do
         $ HashMap.elems
         $ HashMap.union local backups
     }
+  where
+    reposToResults = HashMap.mapWithKey
+      (\repo meta -> Thrift.GetDatabaseResult
+        { getDatabaseResult_database = metaToThriftDatabase
+            Thrift.DatabaseStatus_Restorable
+            Nothing
+            repo
+            meta
+        , getDatabaseResult_tasks = Nothing
+        })
 
 listRestorable :: Backup.Site site => Text -> site -> IO (HashMap Repo Meta)
 listRestorable prefix site =

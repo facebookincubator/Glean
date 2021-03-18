@@ -208,7 +208,7 @@ fetchBackups env = do
     fetch now = do
       logInfo "fetching restorable databases list"
       atomically $ writeTVar (envLastBackupsSync env) (Just now)
-      Just . HashMap.toList <$> ifRestore env mempty listRestorable
+      Just . concatMap HashMap.toList <$> forRestoreSitesM env mempty listRestorable
 
 -- Group databases by repository name
 byRepoName :: [Item] -> [(Text, [Item])]
