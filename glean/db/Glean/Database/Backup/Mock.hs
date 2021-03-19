@@ -35,7 +35,7 @@ instance Backend MockBackend where
   fromPath _ = Just . mockSite . Text.unpack
 
 instance Site MockSite where
-  backup (MockSite path) repo props bytes = do
+  backup (MockSite path) repo props _ttl bytes = do
     let repo_path = repoPath path repo
     createDirectoryIfMissing True (takeDirectory repo_path)
     LB.writeFile repo_path bytes

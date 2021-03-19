@@ -13,6 +13,7 @@ import qualified Data.ByteString.Lazy as LBS
 import Data.HashSet (HashSet)
 import qualified Data.HashSet as HashSet
 import Data.Hashable (Hashable)
+import qualified Data.Map as Map
 import Data.Maybe
 import Data.Text (Text)
 import Data.Time (getCurrentTime)
@@ -120,8 +121,14 @@ doBackup env@Env{..} repo prefix site =
     Backend.Data{..} <- withScratchDirectory envRoot repo $ \scratch ->
       Storage.backup odbHandle scratch $ \bytes -> do
         say logInfo "uploading"
+        policy <- ServerConfig.databaseBackupPolicy_repos
+          . ServerConfig.config_backup <$> Observed.get envServerConfig
+        let ttl = case ServerConfig.backup_delete_after_seconds <$>
+              Map.lookup (repo_name repo) policy of
+                Just 0 -> Nothing
+                ttl -> fromIntegral <$> ttl
         meta <- atomically $ Catalog.readMeta envCatalog repo
-        Backend.backup site repo (metaToProps meta) bytes
+        Backend.backup site repo (metaToProps meta) ttl bytes
     Logger.logDBStatistics env repo stats dataSize
     say logInfo "finished"
     atomically $ do

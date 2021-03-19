@@ -22,7 +22,13 @@ class Backend a where
 
 -- | A backup site
 class Site a where
-  backup :: a -> Repo -> Map String String -> LBS.ByteString -> IO Data
+  backup
+    :: a -- ^ site to back up to
+    -> Repo -- ^ repo to back up
+    -> Map String String -- ^ DB properties
+    -> Maybe Int -- ^ Backup TTL in seconds (if supported by Site)
+    -> LBS.ByteString -- ^ serialized DB
+    -> IO Data
   inspect :: a -> Repo -> IO (Map String String)
   restore :: a -> Repo -> FilePath -> IO (Map String String)
   delete :: a -> Repo -> IO ()
