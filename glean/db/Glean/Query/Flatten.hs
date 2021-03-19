@@ -569,9 +569,7 @@ captureKey dbSchema (FlatQuery pat Nothing stmts) ty
   --    $fid is the fact ID
   --    $key is the key
     let
-      pid = succ (schemaMaxPid dbSchema)
-      ref = Schema.PredicateRef "<tmp>" 0
-      pidRef = PidRef pid ref
+      pidRef = PidRef (tempPid dbSchema) tempPredicateRef
       pidTy = Angle.Predicate pidRef
       retTy = tupleSchema [pidTy, ty, unit]
 

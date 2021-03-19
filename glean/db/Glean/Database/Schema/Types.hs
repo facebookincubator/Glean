@@ -9,6 +9,8 @@ module Glean.Database.Schema.Types
   , lookupTypeRef
   , dbSchemaRtsType
   , mkRtsType
+  , tempPredicateRef
+  , tempPid
   ) where
 
 import Data.HashMap.Strict (HashMap)
@@ -80,14 +82,23 @@ lookupType (SourceRef name (Just v)) = lookupTypeRef (TypeRef name v)
 lookupTypeRef :: TypeRef -> DbSchema -> Maybe TypeDetails
 lookupTypeRef ref  = HashMap.lookup ref . schemaTypesByRef
 
+tempPredicateRef :: PredicateRef
+tempPredicateRef = PredicateRef "_tmp_" 0
+
+tempPid :: DbSchema -> Pid
+tempPid = succ . schemaMaxPid
 
 -- | Convert Schema types to RTS types using a DbSchema
 dbSchemaRtsType :: DbSchema -> Schema.Type -> Maybe Type
 dbSchemaRtsType dbSchema = mkRtsType lookupType lookupPid
   where
   lookupType ref = typeType <$> lookupTypeRef ref dbSchema
-  lookupPid ref = predicatePid <$> lookupPredicateRef ref dbSchema
-
+  lookupPid ref = case lookupPredicateRef ref dbSchema of
+    Just pid -> Just $ predicatePid pid
+    -- detect temporary predicates that might have been serialized
+    -- see Glean.Query.Flatten.captureKey
+    _ | tempPredicateRef == ref -> Just $ tempPid dbSchema
+    _ -> Nothing
 
 -- | Convert from Schema Types to RTS Types. This involves
 -- 1. PredicateRef -> PidRef

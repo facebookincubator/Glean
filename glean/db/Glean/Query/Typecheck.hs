@@ -4,6 +4,7 @@ module Glean.Query.Typecheck
   , NameResolutionPolicy(..)
   , TcEnv(..)
   , emptyTcEnv
+  , toScope
   ) where
 
 import Control.Monad.Except
@@ -549,7 +550,6 @@ data NameResolutionPolicy
     -- version. This policy is used when typechecking queries, where
     -- we currently have no means to establish a Scope.
 
-
 toScope :: NameResolutionPolicy -> Scope
 toScope (UseScope scope _) = scope
 toScope (Qualified dbSchema) = lookup
@@ -559,9 +559,13 @@ toScope (Qualified dbSchema) = lookup
       ResolvesTo (RefPred (predicateRef details))
     | Just details <- lookupType ref dbSchema =
       ResolvesTo (RefType (typeRef details))
+    | Just version <- maybeVer
+    -- detect temporary predicates that might have been serialized
+    -- see Glean.Query.Flatten.captureKey
+    , tempPredicateRef == PredicateRef name version =
+      ResolvesTo (RefPred tempPredicateRef)
     | otherwise =
       OutOfScope
-
 
 initialTypecheckState
   :: TcEnv

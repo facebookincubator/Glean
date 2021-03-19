@@ -97,7 +97,7 @@ data SourceRef = SourceRef
   { sourceRefName :: Name
   , sourceRefVersion :: Maybe Version
   }
-  deriving (Eq, Ord)
+  deriving (Show, Eq, Ord)
 
 data FieldDef_ pref tref = FieldDef
   { fieldDefName :: Name

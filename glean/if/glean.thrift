@@ -392,6 +392,8 @@ struct UserQueryCont {
   4: i64 nextId;
   5: i32 version; // internal continuation version
   6: i64 hash; // internal continuation hash
+  7: optional binary returnType // angle return type
+  8: list<i64> pids // pids to expand in the results
 }
 
 enum QuerySyntax {

@@ -3,6 +3,7 @@ module Glean.Angle.Parser
   ( parseQuery
   , parseQueryWithVersion
   , parseSchema
+  , parseType
   ) where
 
 import Control.Monad.Except
@@ -70,6 +71,7 @@ import Glean.Angle.Types (AngleVersion, SourcePat, SourceStatement, SourceQuery,
 
 %name query query
 %name schema schemas
+%name type_ type
 %monad { P }
 %lexer { (alexMonadScan >>=) } { Token _ T_EOF }
 %error { parseError }
@@ -302,6 +304,9 @@ seplist2_(p,sep)
 {
 parseQuery :: ByteString -> Either String SourceQuery
 parseQuery bs = runAlex (LB.fromStrict bs) $ query
+
+parseType :: ByteString -> Either String Schema.SourceType
+parseType bs = runAlex (LB.fromStrict bs) $ type_
 
 parseQueryWithVersion :: AngleVersion -> ByteString -> Either String SourceQuery
 parseQueryWithVersion ver bs =
