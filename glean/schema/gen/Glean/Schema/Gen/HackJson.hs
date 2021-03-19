@@ -212,7 +212,7 @@ data AngleTypeRepr
   | SumTShape {fields::[(Text, AngleTypeRepr)]}
   | PredicateTKeyValue {pref::PredicateRef, classname::Text}
   | PredicateTNamed {pref::PredicateRef, classname::Text}
-  | PredicateT {pref::PredicateRef, inner::AngleTypeRepr}
+  | PredicateT {pref::PredicateRef, classname::Text, inner::AngleTypeRepr}
   | NamedTypeTNamed {tref::TypeRef, classname::Text}
   | NamedTypeTAlias {tref::TypeRef, classname::Text, inner::AngleTypeRepr}
   | NamedTypeTEnum {alts::[Name], tref::TypeRef, classname::Text}
@@ -252,7 +252,7 @@ angleTypeReprFor (Predicate ref) = do
     -- If the predicate has value of type {} and the key is not a record or sum
     -- avoid wrapping it in a class
     Just (k, Record []) ->
-      PredicateT ref <$> angleTypeReprFor k
+      PredicateT ref (classname ctx) <$> angleTypeReprFor k
     Just (_k, _v) -> return $
       PredicateTKeyValue ref $ classname ctx
     where
