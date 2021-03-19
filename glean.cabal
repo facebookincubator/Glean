@@ -765,6 +765,7 @@ executable shell
     hs-source-dirs: glean/shell
     main-is: Glean/Shell.hs
     other-modules:
+        Glean.Shell.Index
         Glean.Shell.Terminal
         Glean.Shell.Types
     ghc-options: -main-is Glean.Shell -pgml g++
