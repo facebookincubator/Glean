@@ -32,10 +32,16 @@ $(mangle
 follyInit :: [String] -> IO ()
 follyInit args = do
   name <- Sys.getExecutablePath
-  withCStrings (name:args) $ \argv ->
-    with (fromIntegral (1 + length args)) $ \pargc ->
+  let allArgs = defaultGflags <> args
+  withCStrings (name : allArgs) $ \argv ->
+    with (fromIntegral (1 + length allArgs)) $ \pargc ->
     with argv $ \pargv ->
       c_follyInit pargc pargv 0
+
+-- Tell glog to log to stderr by default, this can be overridden by
+-- command-line flags.
+defaultGflags :: [String]
+defaultGflags = ["--logtostderr"]
 
 follyUninit :: IO ()
 follyUninit = return ()
