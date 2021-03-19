@@ -9,8 +9,9 @@ module Glean.Database.Backup.Locator
 
 import Control.Concurrent.STM
 import Data.Functor
+import qualified Data.Map as Map
 import qualified Data.HashMap.Strict as HashMap
-import Data.Maybe (maybeToList)
+import Data.Maybe (maybeToList, mapMaybe)
 import Data.Text (Text)
 import qualified Data.Text as Text
 
@@ -49,10 +50,15 @@ getSite
   :: Env
   -> Text
   -> STM (Maybe (Text, Some Site, DatabaseBackupPolicy))
-getSite Env{..} _repoName = do
+getSite Env{..} repoName = do
   policy <- ServerConfig.config_backup <$> Observed.get envServerConfig
+  let locator = Map.findWithDefault
+        (databaseBackupPolicy_location policy)
+        repoName
+        (Map.map ServerConfig.backup_location $
+          databaseBackupPolicy_repos policy)
   return $
-    fromSiteLocator envBackupBackends (databaseBackupPolicy_location policy)
+    fromSiteLocator envBackupBackends locator
     <&> \(prefix, site) -> (prefix, site, policy)
 
 getAllSites
@@ -62,5 +68,9 @@ getAllSites Env{..} = do
   policy <- ServerConfig.config_backup <$> Observed.get envServerConfig
   let defaultSite = maybeToList $
         fromSiteLocator envBackupBackends (databaseBackupPolicy_location policy)
-          <&> \(prefix, site) -> (prefix, site, policy)
-  return defaultSite
+      perRepoLocations = map ServerConfig.backup_location $ Map.elems $
+        databaseBackupPolicy_repos policy
+      perRepoSites = mapMaybe (fromSiteLocator envBackupBackends)
+        perRepoLocations
+  return $ map (\(prefix, site) -> (prefix, site, policy)) $
+    defaultSite ++ perRepoSites
