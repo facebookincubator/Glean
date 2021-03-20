@@ -18,7 +18,7 @@ import qualified Glean.Schema.Src.Types
 instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.ScubaResponse where
   type KeyType Glean.Schema.Haxlanalyser.Types.ScubaResponse = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "haxlanalyser.ScubaResponse"1
-  getIndex _proxy  = 498
+  getIndex _proxy  = 499
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.scubaResponse_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.ScubaResponse x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.scubaResponse_key
@@ -31,7 +31,7 @@ instance Glean.Type Glean.Schema.Haxlanalyser.Types.ScubaResponse where
 instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.ClassifierRead where
   type KeyType Glean.Schema.Haxlanalyser.Types.ClassifierRead = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "haxlanalyser.ClassifierRead"1
-  getIndex _proxy  = 489
+  getIndex _proxy  = 490
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.classifierRead_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.ClassifierRead x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.classifierRead_key
@@ -44,7 +44,7 @@ instance Glean.Type Glean.Schema.Haxlanalyser.Types.ClassifierRead where
 instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.SitevarFetch where
   type KeyType Glean.Schema.Haxlanalyser.Types.SitevarFetch = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "haxlanalyser.SitevarFetch"1
-  getIndex _proxy  = 460
+  getIndex _proxy  = 461
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.sitevarFetch_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.SitevarFetch x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.sitevarFetch_key
@@ -70,7 +70,7 @@ instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.Call where
   type KeyType Glean.Schema.Haxlanalyser.Types.Call =
     Glean.Schema.Haxlanalyser.Types.Call_key
   getName _proxy  = Glean.PredicateRef "haxlanalyser.Call"1
-  getIndex _proxy  = 457
+  getIndex _proxy  = 458
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.call_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.Call x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.call_key
@@ -84,7 +84,7 @@ instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.FeatureSetFeature where
   type KeyType Glean.Schema.Haxlanalyser.Types.FeatureSetFeature =
     Data.Text.Text
   getName _proxy  = Glean.PredicateRef "haxlanalyser.FeatureSetFeature"1
-  getIndex _proxy  = 446
+  getIndex _proxy  = 447
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.featureSetFeature_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.FeatureSetFeature x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.featureSetFeature_key
@@ -108,7 +108,7 @@ instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.ACDCProperty where
   type KeyType Glean.Schema.Haxlanalyser.Types.ACDCProperty =
     Glean.Schema.Haxlanalyser.Types.ACDCProperty_key
   getName _proxy  = Glean.PredicateRef "haxlanalyser.ACDCProperty"1
-  getIndex _proxy  = 445
+  getIndex _proxy  = 446
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.aCDCProperty_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.ACDCProperty x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.aCDCProperty_key
@@ -121,7 +121,7 @@ instance Glean.Type Glean.Schema.Haxlanalyser.Types.ACDCProperty where
 instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.ScribeResponse where
   type KeyType Glean.Schema.Haxlanalyser.Types.ScribeResponse = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "haxlanalyser.ScribeResponse"1
-  getIndex _proxy  = 438
+  getIndex _proxy  = 439
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.scribeResponse_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.ScribeResponse x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.scribeResponse_key
@@ -135,7 +135,7 @@ instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.TallyResponse where
   type KeyType Glean.Schema.Haxlanalyser.Types.TallyResponse =
     Glean.Schema.Haxlanalyser.Types.Tally
   getName _proxy  = Glean.PredicateRef "haxlanalyser.TallyResponse"1
-  getIndex _proxy  = 433
+  getIndex _proxy  = 434
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.tallyResponse_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.TallyResponse x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.tallyResponse_key
@@ -148,7 +148,7 @@ instance Glean.Type Glean.Schema.Haxlanalyser.Types.TallyResponse where
 instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.HiveResponse where
   type KeyType Glean.Schema.Haxlanalyser.Types.HiveResponse = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "haxlanalyser.HiveResponse"1
-  getIndex _proxy  = 381
+  getIndex _proxy  = 382
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.hiveResponse_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.HiveResponse x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.hiveResponse_key
@@ -162,7 +162,7 @@ instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.ConfigeratorFetch where
   type KeyType Glean.Schema.Haxlanalyser.Types.ConfigeratorFetch =
     Data.Text.Text
   getName _proxy  = Glean.PredicateRef "haxlanalyser.ConfigeratorFetch"1
-  getIndex _proxy  = 359
+  getIndex _proxy  = 360
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.configeratorFetch_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.ConfigeratorFetch x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.configeratorFetch_key
@@ -186,7 +186,7 @@ instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.TallyConfig where
   type KeyType Glean.Schema.Haxlanalyser.Types.TallyConfig =
     Glean.Schema.Haxlanalyser.Types.TallyConfig_key
   getName _proxy  = Glean.PredicateRef "haxlanalyser.TallyConfig"1
-  getIndex _proxy  = 353
+  getIndex _proxy  = 354
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.tallyConfig_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.TallyConfig x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.tallyConfig_key
@@ -199,7 +199,7 @@ instance Glean.Type Glean.Schema.Haxlanalyser.Types.TallyConfig where
 instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.ThriftResponse where
   type KeyType Glean.Schema.Haxlanalyser.Types.ThriftResponse = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "haxlanalyser.ThriftResponse"1
-  getIndex _proxy  = 347
+  getIndex _proxy  = 348
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.thriftResponse_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.ThriftResponse x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.thriftResponse_key
@@ -223,7 +223,7 @@ instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.Endpoint where
   type KeyType Glean.Schema.Haxlanalyser.Types.Endpoint =
     Glean.Schema.Haxlanalyser.Types.Endpoint_key
   getName _proxy  = Glean.PredicateRef "haxlanalyser.Endpoint"1
-  getIndex _proxy  = 311
+  getIndex _proxy  = 312
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.endpoint_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.Endpoint x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.endpoint_key
@@ -247,7 +247,7 @@ instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.Edge where
   type KeyType Glean.Schema.Haxlanalyser.Types.Edge =
     Glean.Schema.Haxlanalyser.Types.Edge_key
   getName _proxy  = Glean.PredicateRef "haxlanalyser.Edge"1
-  getIndex _proxy  = 306
+  getIndex _proxy  = 307
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.edge_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.Edge x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.edge_key
@@ -260,7 +260,7 @@ instance Glean.Type Glean.Schema.Haxlanalyser.Types.Edge where
 instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.ContextName where
   type KeyType Glean.Schema.Haxlanalyser.Types.ContextName = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "haxlanalyser.ContextName"1
-  getIndex _proxy  = 300
+  getIndex _proxy  = 301
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.contextName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.ContextName x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.contextName_key
@@ -274,7 +274,7 @@ instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.TestFile where
   type KeyType Glean.Schema.Haxlanalyser.Types.TestFile =
     Glean.Schema.Src.Types.File
   getName _proxy  = Glean.PredicateRef "haxlanalyser.TestFile"1
-  getIndex _proxy  = 288
+  getIndex _proxy  = 289
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.testFile_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.TestFile x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.testFile_key
@@ -288,7 +288,7 @@ instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.TallyFetch where
   type KeyType Glean.Schema.Haxlanalyser.Types.TallyFetch =
     Glean.Schema.Haxlanalyser.Types.Tally
   getName _proxy  = Glean.PredicateRef "haxlanalyser.TallyFetch"1
-  getIndex _proxy  = 269
+  getIndex _proxy  = 270
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.tallyFetch_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.TallyFetch x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.tallyFetch_key
@@ -312,7 +312,7 @@ instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.Policy where
   type KeyType Glean.Schema.Haxlanalyser.Types.Policy =
     Glean.Schema.Haxlanalyser.Types.Policy_key
   getName _proxy  = Glean.PredicateRef "haxlanalyser.Policy"1
-  getIndex _proxy  = 267
+  getIndex _proxy  = 268
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.policy_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.Policy x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.policy_key
@@ -336,7 +336,7 @@ instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.InputFetch where
   type KeyType Glean.Schema.Haxlanalyser.Types.InputFetch =
     Glean.Schema.Haxlanalyser.Types.InputFetch_key
   getName _proxy  = Glean.PredicateRef "haxlanalyser.InputFetch"1
-  getIndex _proxy  = 228
+  getIndex _proxy  = 229
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.inputFetch_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.InputFetch x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.inputFetch_key
@@ -349,7 +349,7 @@ instance Glean.Type Glean.Schema.Haxlanalyser.Types.InputFetch where
 instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.RestrictionResponse where
   type KeyType Glean.Schema.Haxlanalyser.Types.RestrictionResponse = Glean.Nat
   getName _proxy  = Glean.PredicateRef "haxlanalyser.RestrictionResponse"1
-  getIndex _proxy  = 193
+  getIndex _proxy  = 194
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.restrictionResponse_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.RestrictionResponse x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.restrictionResponse_key
@@ -373,7 +373,7 @@ instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.Context where
   type KeyType Glean.Schema.Haxlanalyser.Types.Context =
     Glean.Schema.Haxlanalyser.Types.Context_key
   getName _proxy  = Glean.PredicateRef "haxlanalyser.Context"1
-  getIndex _proxy  = 192
+  getIndex _proxy  = 193
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.context_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.Context x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.context_key
@@ -386,7 +386,7 @@ instance Glean.Type Glean.Schema.Haxlanalyser.Types.Context where
 instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.PolicyName where
   type KeyType Glean.Schema.Haxlanalyser.Types.PolicyName = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "haxlanalyser.PolicyName"1
-  getIndex _proxy  = 187
+  getIndex _proxy  = 188
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.policyName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.PolicyName x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.policyName_key
@@ -399,7 +399,7 @@ instance Glean.Type Glean.Schema.Haxlanalyser.Types.PolicyName where
 instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.EndpointName where
   type KeyType Glean.Schema.Haxlanalyser.Types.EndpointName = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "haxlanalyser.EndpointName"1
-  getIndex _proxy  = 172
+  getIndex _proxy  = 173
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.endpointName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.EndpointName x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.endpointName_key
@@ -413,7 +413,7 @@ instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.JankyJSONResponse where
   type KeyType Glean.Schema.Haxlanalyser.Types.JankyJSONResponse =
     Data.Text.Text
   getName _proxy  = Glean.PredicateRef "haxlanalyser.JankyJSONResponse"1
-  getIndex _proxy  = 151
+  getIndex _proxy  = 152
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.jankyJSONResponse_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.JankyJSONResponse x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.jankyJSONResponse_key
@@ -426,7 +426,7 @@ instance Glean.Type Glean.Schema.Haxlanalyser.Types.JankyJSONResponse where
 instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.ThriftFetch where
   type KeyType Glean.Schema.Haxlanalyser.Types.ThriftFetch = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "haxlanalyser.ThriftFetch"1
-  getIndex _proxy  = 149
+  getIndex _proxy  = 150
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.thriftFetch_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.ThriftFetch x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.thriftFetch_key
@@ -439,7 +439,7 @@ instance Glean.Type Glean.Schema.Haxlanalyser.Types.ThriftFetch where
 instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.InputKey where
   type KeyType Glean.Schema.Haxlanalyser.Types.InputKey = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "haxlanalyser.InputKey"1
-  getIndex _proxy  = 126
+  getIndex _proxy  = 127
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.inputKey_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.InputKey x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.inputKey_key
@@ -453,7 +453,7 @@ instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.ACDCPropertyAccess wher
   type KeyType Glean.Schema.Haxlanalyser.Types.ACDCPropertyAccess =
     Data.Text.Text
   getName _proxy  = Glean.PredicateRef "haxlanalyser.ACDCPropertyAccess"1
-  getIndex _proxy  = 110
+  getIndex _proxy  = 111
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.aCDCPropertyAccess_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.ACDCPropertyAccess x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.aCDCPropertyAccess_key
@@ -466,7 +466,7 @@ instance Glean.Type Glean.Schema.Haxlanalyser.Types.ACDCPropertyAccess where
 instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.PiranhaResponse where
   type KeyType Glean.Schema.Haxlanalyser.Types.PiranhaResponse = Glean.Nat
   getName _proxy  = Glean.PredicateRef "haxlanalyser.PiranhaResponse"1
-  getIndex _proxy  = 86
+  getIndex _proxy  = 87
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.piranhaResponse_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.PiranhaResponse x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.piranhaResponse_key
@@ -479,7 +479,7 @@ instance Glean.Type Glean.Schema.Haxlanalyser.Types.PiranhaResponse where
 instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.LaserDataset where
   type KeyType Glean.Schema.Haxlanalyser.Types.LaserDataset = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "haxlanalyser.LaserDataset"1
-  getIndex _proxy  = 68
+  getIndex _proxy  = 69
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.laserDataset_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.LaserDataset x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.laserDataset_key
@@ -493,7 +493,7 @@ instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.ClassifierFetch where
   type KeyType Glean.Schema.Haxlanalyser.Types.ClassifierFetch =
     Data.Text.Text
   getName _proxy  = Glean.PredicateRef "haxlanalyser.ClassifierFetch"1
-  getIndex _proxy  = 58
+  getIndex _proxy  = 59
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.classifierFetch_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.ClassifierFetch x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.classifierFetch_key
@@ -506,7 +506,7 @@ instance Glean.Type Glean.Schema.Haxlanalyser.Types.ClassifierFetch where
 instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.TallyName where
   type KeyType Glean.Schema.Haxlanalyser.Types.TallyName = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "haxlanalyser.TallyName"1
-  getIndex _proxy  = 54
+  getIndex _proxy  = 55
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.tallyName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.TallyName x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.tallyName_key
@@ -520,7 +520,7 @@ instance Glean.Predicate Glean.Schema.Haxlanalyser.Types.LogFeatureResponse wher
   type KeyType Glean.Schema.Haxlanalyser.Types.LogFeatureResponse =
     Data.Text.Text
   getName _proxy  = Glean.PredicateRef "haxlanalyser.LogFeatureResponse"1
-  getIndex _proxy  = 50
+  getIndex _proxy  = 51
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Haxlanalyser.Types.logFeatureResponse_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Haxlanalyser.Types.LogFeatureResponse x k
   getFactKey = Glean.Schema.Haxlanalyser.Types.logFeatureResponse_key

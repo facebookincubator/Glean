@@ -5,6 +5,6 @@ import Glean.Types
 
 allPredicates :: [(PredicateRef, Int)]
 allPredicates =
-  [ (PredicateRef "deletthis.FileReverseDeps" 3, 178)
+  [ (PredicateRef "deletthis.FileReverseDeps" 3, 179)
   ]
 

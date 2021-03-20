@@ -5,7 +5,7 @@ import Glean.Types
 
 allPredicates :: [(PredicateRef, Int)]
 allPredicates =
-  [ (PredicateRef "hackdependency.inheritance" 1, 296)
-  , (PredicateRef "hackdependency.name" 1, 48)
+  [ (PredicateRef "hackdependency.inheritance" 1, 297)
+  , (PredicateRef "hackdependency.name" 1, 49)
   ]
 

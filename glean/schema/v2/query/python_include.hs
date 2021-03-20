@@ -496,6 +496,21 @@ type instance Glean.QueryOf Glean.Schema.Python.Types.ImportStatementByAsSName_2
 
 instance Glean.ToQuery Glean.Schema.Python.Types.ImportStatementByAsSName_2
 
+type instance Glean.QueryResult Glean.Schema.Query.Python.Types.ContainingTopLevelDeclaration_key = Glean.Schema.Python.Types.ContainingTopLevelDeclaration_key
+type instance Glean.QueryOf Glean.Schema.Python.Types.ContainingTopLevelDeclaration_key = Glean.Schema.Query.Python.Types.ContainingTopLevelDeclaration_key
+
+instance Glean.ToQuery Glean.Schema.Python.Types.ContainingTopLevelDeclaration_key where
+  toQuery (Glean.Schema.Python.Types.ContainingTopLevelDeclaration_key x1 x2) = Glean.Schema.Query.Python.Types.ContainingTopLevelDeclaration_key (Prelude.Just (Glean.toQuery x1)) (Prelude.Just (Glean.toQuery x2))
+
+instance Glean.PredicateQuery Glean.Schema.Python.Types.ContainingTopLevelDeclaration where
+  toQueryId = Glean.Schema.Query.Python.Types.ContainingTopLevelDeclaration_with_id . Glean.fromFid . Glean.idOf
+  toQueryKey = Glean.Schema.Query.Python.Types.ContainingTopLevelDeclaration_with_key . Glean.toQuery
+
+type instance Glean.QueryResult Glean.Schema.Query.Python.Types.ContainingTopLevelDeclaration = Glean.Schema.Python.Types.ContainingTopLevelDeclaration
+type instance Glean.QueryOf Glean.Schema.Python.Types.ContainingTopLevelDeclaration = Glean.Schema.Query.Python.Types.ContainingTopLevelDeclaration
+
+instance Glean.ToQuery Glean.Schema.Python.Types.ContainingTopLevelDeclaration
+
 type instance Glean.QueryResult Glean.Schema.Query.Python.Types.VariableDeclaration_key = Glean.Schema.Python.Types.VariableDeclaration_key
 type instance Glean.QueryOf Glean.Schema.Python.Types.VariableDeclaration_key = Glean.Schema.Query.Python.Types.VariableDeclaration_key
 

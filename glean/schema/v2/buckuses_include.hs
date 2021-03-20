@@ -32,7 +32,7 @@ instance Glean.Predicate Glean.Schema.Buckuses.Types.UsesOfTarget where
   type KeyType Glean.Schema.Buckuses.Types.UsesOfTarget =
     Glean.Schema.Buckuses.Types.UsesOfTarget_key
   getName _proxy  = Glean.PredicateRef "buckuses.UsesOfTarget"2
-  getIndex _proxy  = 492
+  getIndex _proxy  = 493
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buckuses.Types.usesOfTarget_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buckuses.Types.UsesOfTarget x k
   getFactKey = Glean.Schema.Buckuses.Types.usesOfTarget_key
@@ -58,7 +58,7 @@ instance Glean.Predicate Glean.Schema.Buckuses.Types.UsesOfTarget_1 where
   type KeyType Glean.Schema.Buckuses.Types.UsesOfTarget_1 =
     Glean.Schema.Buckuses.Types.UsesOfTarget_1_key
   getName _proxy  = Glean.PredicateRef "buckuses.UsesOfTarget"1
-  getIndex _proxy  = 491
+  getIndex _proxy  = 492
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buckuses.Types.usesOfTarget_1_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buckuses.Types.UsesOfTarget_1 x k
   getFactKey = Glean.Schema.Buckuses.Types.usesOfTarget_1_key
@@ -82,7 +82,7 @@ instance Glean.Predicate Glean.Schema.Buckuses.Types.UsesOfTargetHeader where
   type KeyType Glean.Schema.Buckuses.Types.UsesOfTargetHeader =
     Glean.Schema.Buckuses.Types.UsesOfTargetHeader_key
   getName _proxy  = Glean.PredicateRef "buckuses.UsesOfTargetHeader"2
-  getIndex _proxy  = 449
+  getIndex _proxy  = 450
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buckuses.Types.usesOfTargetHeader_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buckuses.Types.UsesOfTargetHeader x k
   getFactKey = Glean.Schema.Buckuses.Types.usesOfTargetHeader_key
@@ -106,7 +106,7 @@ instance Glean.Predicate Glean.Schema.Buckuses.Types.UsesOfTargetHeader1 where
   type KeyType Glean.Schema.Buckuses.Types.UsesOfTargetHeader1 =
     Glean.Schema.Buckuses.Types.UsesOfTargetHeader1_key
   getName _proxy  = Glean.PredicateRef "buckuses.UsesOfTargetHeader1"1
-  getIndex _proxy  = 65
+  getIndex _proxy  = 66
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Buckuses.Types.usesOfTargetHeader1_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Buckuses.Types.UsesOfTargetHeader1 x k
   getFactKey = Glean.Schema.Buckuses.Types.usesOfTargetHeader1_key

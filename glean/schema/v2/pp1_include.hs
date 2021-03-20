@@ -30,7 +30,7 @@ instance Glean.Predicate Glean.Schema.Pp1.Types.Include where
   type KeyType Glean.Schema.Pp1.Types.Include =
     Glean.Schema.Pp1.Types.Include_key
   getName _proxy  = Glean.PredicateRef "pp1.Include"1
-  getIndex _proxy  = 426
+  getIndex _proxy  = 427
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Pp1.Types.include_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Pp1.Types.Include x k
   getFactKey = Glean.Schema.Pp1.Types.include_key
@@ -43,7 +43,7 @@ instance Glean.Type Glean.Schema.Pp1.Types.Include where
 instance Glean.Predicate Glean.Schema.Pp1.Types.Macro where
   type KeyType Glean.Schema.Pp1.Types.Macro = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "pp1.Macro"1
-  getIndex _proxy  = 362
+  getIndex _proxy  = 363
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Pp1.Types.macro_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Pp1.Types.Macro x k
   getFactKey = Glean.Schema.Pp1.Types.macro_key
@@ -67,7 +67,7 @@ instance Glean.Predicate Glean.Schema.Pp1.Types.Define where
   type KeyType Glean.Schema.Pp1.Types.Define =
     Glean.Schema.Pp1.Types.Define_key
   getName _proxy  = Glean.PredicateRef "pp1.Define"1
-  getIndex _proxy  = 340
+  getIndex _proxy  = 341
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Pp1.Types.define_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Pp1.Types.Define x k
   getFactKey = Glean.Schema.Pp1.Types.define_key
@@ -96,7 +96,7 @@ type instance Angle.RecordFields Glean.Schema.Pp1.Types.Use_key = 'Angle.TField 
 instance Glean.Predicate Glean.Schema.Pp1.Types.Use where
   type KeyType Glean.Schema.Pp1.Types.Use = Glean.Schema.Pp1.Types.Use_key
   getName _proxy  = Glean.PredicateRef "pp1.Use"1
-  getIndex _proxy  = 295
+  getIndex _proxy  = 296
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Pp1.Types.use_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Pp1.Types.Use x k
   getFactKey = Glean.Schema.Pp1.Types.use_key
@@ -119,7 +119,7 @@ type instance Angle.RecordFields Glean.Schema.Pp1.Types.Undef_key = 'Angle.TFiel
 instance Glean.Predicate Glean.Schema.Pp1.Types.Undef where
   type KeyType Glean.Schema.Pp1.Types.Undef = Glean.Schema.Pp1.Types.Undef_key
   getName _proxy  = Glean.PredicateRef "pp1.Undef"1
-  getIndex _proxy  = 205
+  getIndex _proxy  = 206
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Pp1.Types.undef_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Pp1.Types.Undef x k
   getFactKey = Glean.Schema.Pp1.Types.undef_key

@@ -30,7 +30,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.RevStringPair where
   type KeyType Glean.Schema.GleanTest.Types.RevStringPair =
     Glean.Schema.GleanTest.Types.RevStringPair_key
   getName _proxy  = Glean.PredicateRef "glean.test.RevStringPair"1
-  getIndex _proxy  = 496
+  getIndex _proxy  = 497
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.revStringPair_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.RevStringPair x k
   getFactKey = Glean.Schema.GleanTest.Types.revStringPair_key
@@ -54,7 +54,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.LeftOr where
   type KeyType Glean.Schema.GleanTest.Types.LeftOr =
     Glean.Schema.GleanTest.Types.LeftOr_key
   getName _proxy  = Glean.PredicateRef "glean.test.LeftOr"1
-  getIndex _proxy  = 482
+  getIndex _proxy  = 483
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.leftOr_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.LeftOr x k
   getFactKey = Glean.Schema.GleanTest.Types.leftOr_key
@@ -80,7 +80,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.Tree where
   type KeyType Glean.Schema.GleanTest.Types.Tree =
     Glean.Schema.GleanTest.Types.Tree_key
   getName _proxy  = Glean.PredicateRef "glean.test.Tree"4
-  getIndex _proxy  = 477
+  getIndex _proxy  = 478
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.tree_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.Tree x k
   getFactKey = Glean.Schema.GleanTest.Types.tree_key
@@ -104,7 +104,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.StoredRevStringPairWithA w
   type KeyType Glean.Schema.GleanTest.Types.StoredRevStringPairWithA =
     Glean.Schema.GleanTest.Types.StoredRevStringPairWithA_key
   getName _proxy  = Glean.PredicateRef "glean.test.StoredRevStringPairWithA"1
-  getIndex _proxy  = 476
+  getIndex _proxy  = 477
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.storedRevStringPairWithA_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.StoredRevStringPairWithA x k
   getFactKey = Glean.Schema.GleanTest.Types.storedRevStringPairWithA_key
@@ -118,7 +118,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.Ref where
   type KeyType Glean.Schema.GleanTest.Types.Ref =
     Glean.Schema.GleanTest.Types.Predicate
   getName _proxy  = Glean.PredicateRef "glean.test.Ref"4
-  getIndex _proxy  = 467
+  getIndex _proxy  = 468
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.ref_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.Ref x k
   getFactKey = Glean.Schema.GleanTest.Types.ref_key
@@ -133,7 +133,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.Bar where
   type ValueType Glean.Schema.GleanTest.Types.Bar =
     Glean.Schema.GleanTest.Types.Bar_value
   getName _proxy  = Glean.PredicateRef "glean.test.Bar"4
-  getIndex _proxy  = 464
+  getIndex _proxy  = 465
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.bar_id
   mkFact (Glean.IdOf (Glean.Fid x)) k v = Glean.Schema.GleanTest.Types.Bar x k v
   getFactKey = Glean.Schema.GleanTest.Types.bar_key
@@ -161,7 +161,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.DerivedKeyValue where
   type KeyType Glean.Schema.GleanTest.Types.DerivedKeyValue =
     Glean.Schema.GleanTest.Types.DerivedKeyValue_key
   getName _proxy  = Glean.PredicateRef "glean.test.DerivedKeyValue"1
-  getIndex _proxy  = 456
+  getIndex _proxy  = 457
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.derivedKeyValue_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.DerivedKeyValue x k
   getFactKey = Glean.Schema.GleanTest.Types.derivedKeyValue_key
@@ -185,7 +185,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.ViaStringPair where
   type KeyType Glean.Schema.GleanTest.Types.ViaStringPair =
     Glean.Schema.GleanTest.Types.ViaStringPair_key
   getName _proxy  = Glean.PredicateRef "glean.test.ViaStringPair"1
-  getIndex _proxy  = 442
+  getIndex _proxy  = 443
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.viaStringPair_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.ViaStringPair x k
   getFactKey = Glean.Schema.GleanTest.Types.viaStringPair_key
@@ -209,7 +209,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.LeftOr2 where
   type KeyType Glean.Schema.GleanTest.Types.LeftOr2 =
     Glean.Schema.GleanTest.Types.LeftOr2_key
   getName _proxy  = Glean.PredicateRef "glean.test.LeftOr2"1
-  getIndex _proxy  = 432
+  getIndex _proxy  = 433
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.leftOr2_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.LeftOr2 x k
   getFactKey = Glean.Schema.GleanTest.Types.leftOr2_key
@@ -233,7 +233,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.StringPair where
   type KeyType Glean.Schema.GleanTest.Types.StringPair =
     Glean.Schema.GleanTest.Types.StringPair_key
   getName _proxy  = Glean.PredicateRef "glean.test.StringPair"1
-  getIndex _proxy  = 417
+  getIndex _proxy  = 418
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.stringPair_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.StringPair x k
   getFactKey = Glean.Schema.GleanTest.Types.stringPair_key
@@ -246,7 +246,7 @@ instance Glean.Type Glean.Schema.GleanTest.Types.StringPair where
 instance Glean.Predicate Glean.Schema.GleanTest.Types.Name where
   type KeyType Glean.Schema.GleanTest.Types.Name = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "glean.test.Name"1
-  getIndex _proxy  = 413
+  getIndex _proxy  = 414
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.name_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.Name x k
   getFactKey = Glean.Schema.GleanTest.Types.name_key
@@ -268,7 +268,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.StringPairBox where
   type KeyType Glean.Schema.GleanTest.Types.StringPairBox =
     Glean.Schema.GleanTest.Types.StringPairBox_key
   getName _proxy  = Glean.PredicateRef "glean.test.StringPairBox"1
-  getIndex _proxy  = 386
+  getIndex _proxy  = 387
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.stringPairBox_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.StringPairBox x k
   getFactKey = Glean.Schema.GleanTest.Types.stringPairBox_key
@@ -281,7 +281,7 @@ instance Glean.Type Glean.Schema.GleanTest.Types.StringPairBox where
 instance Glean.Predicate Glean.Schema.GleanTest.Types.ReflStringPair where
   type KeyType Glean.Schema.GleanTest.Types.ReflStringPair = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "glean.test.ReflStringPair"1
-  getIndex _proxy  = 366
+  getIndex _proxy  = 367
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.reflStringPair_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.ReflStringPair x k
   getFactKey = Glean.Schema.GleanTest.Types.reflStringPair_key
@@ -305,7 +305,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.StoredRevStringPair where
   type KeyType Glean.Schema.GleanTest.Types.StoredRevStringPair =
     Glean.Schema.GleanTest.Types.StoredRevStringPair_key
   getName _proxy  = Glean.PredicateRef "glean.test.StoredRevStringPair"1
-  getIndex _proxy  = 339
+  getIndex _proxy  = 340
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.storedRevStringPair_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.StoredRevStringPair x k
   getFactKey = Glean.Schema.GleanTest.Types.storedRevStringPair_key
@@ -329,7 +329,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.RevStringPairs where
   type KeyType Glean.Schema.GleanTest.Types.RevStringPairs =
     Glean.Schema.GleanTest.Types.RevStringPairs_key
   getName _proxy  = Glean.PredicateRef "glean.test.RevStringPairs"1
-  getIndex _proxy  = 338
+  getIndex _proxy  = 339
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.revStringPairs_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.RevStringPairs x k
   getFactKey = Glean.Schema.GleanTest.Types.revStringPairs_key
@@ -343,7 +343,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.RefRef where
   type KeyType Glean.Schema.GleanTest.Types.RefRef =
     Glean.Schema.GleanTest.Types.Ref
   getName _proxy  = Glean.PredicateRef "glean.test.RefRef"4
-  getIndex _proxy  = 314
+  getIndex _proxy  = 315
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.refRef_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.RefRef x k
   getFactKey = Glean.Schema.GleanTest.Types.refRef_key
@@ -379,7 +379,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.DerivedKeyValue2 where
   type ValueType Glean.Schema.GleanTest.Types.DerivedKeyValue2 =
     Glean.Schema.GleanTest.Types.DerivedKeyValue2_value
   getName _proxy  = Glean.PredicateRef "glean.test.DerivedKeyValue2"1
-  getIndex _proxy  = 290
+  getIndex _proxy  = 291
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.derivedKeyValue2_id
   mkFact (Glean.IdOf (Glean.Fid x)) k v = Glean.Schema.GleanTest.Types.DerivedKeyValue2 x k v
   getFactKey = Glean.Schema.GleanTest.Types.derivedKeyValue2_key
@@ -403,7 +403,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.NothingTest where
   type KeyType Glean.Schema.GleanTest.Types.NothingTest =
     Glean.Schema.GleanTest.Types.NothingTest_key
   getName _proxy  = Glean.PredicateRef "glean.test.nothingTest"4
-  getIndex _proxy  = 286
+  getIndex _proxy  = 287
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.nothingTest_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.NothingTest x k
   getFactKey = Glean.Schema.GleanTest.Types.nothingTest_key
@@ -419,7 +419,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.FooToFoo where
   type ValueType Glean.Schema.GleanTest.Types.FooToFoo =
     Glean.Schema.GleanTest.Types.FooToFoo_value
   getName _proxy  = Glean.PredicateRef "glean.test.FooToFoo"4
-  getIndex _proxy  = 282
+  getIndex _proxy  = 283
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.fooToFoo_id
   mkFact (Glean.IdOf (Glean.Fid x)) k v = Glean.Schema.GleanTest.Types.FooToFoo x k v
   getFactKey = Glean.Schema.GleanTest.Types.fooToFoo_key
@@ -443,7 +443,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.Edge where
   type KeyType Glean.Schema.GleanTest.Types.Edge =
     Glean.Schema.GleanTest.Types.Edge_key
   getName _proxy  = Glean.PredicateRef "glean.test.Edge"4
-  getIndex _proxy  = 280
+  getIndex _proxy  = 281
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.edge_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.Edge x k
   getFactKey = Glean.Schema.GleanTest.Types.edge_key
@@ -456,7 +456,7 @@ instance Glean.Type Glean.Schema.GleanTest.Types.Edge where
 instance Glean.Predicate Glean.Schema.GleanTest.Types.IsGlean where
   type KeyType Glean.Schema.GleanTest.Types.IsGlean = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "glean.test.IsGlean"1
-  getIndex _proxy  = 279
+  getIndex _proxy  = 280
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.isGlean_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.IsGlean x k
   getFactKey = Glean.Schema.GleanTest.Types.isGlean_key
@@ -471,7 +471,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.Foo where
   type ValueType Glean.Schema.GleanTest.Types.Foo =
     Glean.Schema.GleanTest.Types.Foo_value
   getName _proxy  = Glean.PredicateRef "glean.test.Foo"4
-  getIndex _proxy  = 256
+  getIndex _proxy  = 257
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.foo_id
   mkFact (Glean.IdOf (Glean.Fid x)) k v = Glean.Schema.GleanTest.Types.Foo x k v
   getFactKey = Glean.Schema.GleanTest.Types.foo_key
@@ -495,7 +495,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.MatchOneAlt where
   type KeyType Glean.Schema.GleanTest.Types.MatchOneAlt =
     Glean.Schema.GleanTest.Types.MatchOneAlt_key
   getName _proxy  = Glean.PredicateRef "glean.test.MatchOneAlt"1
-  getIndex _proxy  = 250
+  getIndex _proxy  = 251
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.matchOneAlt_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.MatchOneAlt x k
   getFactKey = Glean.Schema.GleanTest.Types.matchOneAlt_key
@@ -509,7 +509,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.Predicate where
   type KeyType Glean.Schema.GleanTest.Types.Predicate =
     Glean.Schema.GleanTest.Types.KitchenSink
   getName _proxy  = Glean.PredicateRef "glean.test.Predicate"4
-  getIndex _proxy  = 233
+  getIndex _proxy  = 234
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.predicate_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.Predicate x k
   getFactKey = Glean.Schema.GleanTest.Types.predicate_key
@@ -523,7 +523,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.Predicate_1 where
   type KeyType Glean.Schema.GleanTest.Types.Predicate_1 =
     Glean.Schema.GleanTest.Types.KitchenSink_1
   getName _proxy  = Glean.PredicateRef "glean.test.Predicate"1
-  getIndex _proxy  = 232
+  getIndex _proxy  = 233
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.predicate_1_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.Predicate_1 x k
   getFactKey = Glean.Schema.GleanTest.Types.predicate_1_key
@@ -547,7 +547,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.Unbound where
   type KeyType Glean.Schema.GleanTest.Types.Unbound =
     Glean.Schema.GleanTest.Types.Unbound_key
   getName _proxy  = Glean.PredicateRef "glean.test.Unbound"1
-  getIndex _proxy  = 216
+  getIndex _proxy  = 217
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.unbound_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.Unbound x k
   getFactKey = Glean.Schema.GleanTest.Types.unbound_key
@@ -560,7 +560,7 @@ instance Glean.Type Glean.Schema.GleanTest.Types.Unbound where
 instance Glean.Predicate Glean.Schema.GleanTest.Types.IsThree where
   type KeyType Glean.Schema.GleanTest.Types.IsThree = Glean.Nat
   getName _proxy  = Glean.PredicateRef "glean.test.IsThree"1
-  getIndex _proxy  = 204
+  getIndex _proxy  = 205
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.isThree_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.IsThree x k
   getFactKey = Glean.Schema.GleanTest.Types.isThree_key
@@ -573,7 +573,7 @@ instance Glean.Type Glean.Schema.GleanTest.Types.IsThree where
 instance Glean.Predicate Glean.Schema.GleanTest.Types.Qux where
   type KeyType Glean.Schema.GleanTest.Types.Qux = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "glean.test.Qux"4
-  getIndex _proxy  = 200
+  getIndex _proxy  = 201
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.qux_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.Qux x k
   getFactKey = Glean.Schema.GleanTest.Types.qux_key
@@ -609,7 +609,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.KeyValue where
   type ValueType Glean.Schema.GleanTest.Types.KeyValue =
     Glean.Schema.GleanTest.Types.KeyValue_value
   getName _proxy  = Glean.PredicateRef "glean.test.KeyValue"1
-  getIndex _proxy  = 196
+  getIndex _proxy  = 197
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.keyValue_id
   mkFact (Glean.IdOf (Glean.Fid x)) k v = Glean.Schema.GleanTest.Types.KeyValue x k v
   getFactKey = Glean.Schema.GleanTest.Types.keyValue_key
@@ -633,7 +633,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.SameString where
   type KeyType Glean.Schema.GleanTest.Types.SameString =
     Glean.Schema.GleanTest.Types.SameString_key
   getName _proxy  = Glean.PredicateRef "glean.test.SameString"1
-  getIndex _proxy  = 176
+  getIndex _proxy  = 177
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.sameString_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.SameString x k
   getFactKey = Glean.Schema.GleanTest.Types.sameString_key
@@ -673,7 +673,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.Expr where
   type KeyType Glean.Schema.GleanTest.Types.Expr =
     Glean.Schema.GleanTest.Types.Expr_key
   getName _proxy  = Glean.PredicateRef "glean.test.Expr"1
-  getIndex _proxy  = 173
+  getIndex _proxy  = 174
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.expr_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.Expr x k
   getFactKey = Glean.Schema.GleanTest.Types.expr_key
@@ -697,7 +697,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.RevRevStringPair where
   type KeyType Glean.Schema.GleanTest.Types.RevRevStringPair =
     Glean.Schema.GleanTest.Types.RevRevStringPair_key
   getName _proxy  = Glean.PredicateRef "glean.test.RevRevStringPair"1
-  getIndex _proxy  = 170
+  getIndex _proxy  = 171
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.revRevStringPair_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.RevRevStringPair x k
   getFactKey = Glean.Schema.GleanTest.Types.revRevStringPair_key
@@ -721,7 +721,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.RevStringPairRec where
   type KeyType Glean.Schema.GleanTest.Types.RevStringPairRec =
     Glean.Schema.GleanTest.Types.RevStringPairRec_key
   getName _proxy  = Glean.PredicateRef "glean.test.RevStringPairRec"1
-  getIndex _proxy  = 123
+  getIndex _proxy  = 124
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.revStringPairRec_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.RevStringPairRec x k
   getFactKey = Glean.Schema.GleanTest.Types.revStringPairRec_key
@@ -743,7 +743,7 @@ instance Glean.Predicate Glean.Schema.GleanTest.Types.Node where
   type KeyType Glean.Schema.GleanTest.Types.Node =
     Glean.Schema.GleanTest.Types.Node_key
   getName _proxy  = Glean.PredicateRef "glean.test.Node"4
-  getIndex _proxy  = 63
+  getIndex _proxy  = 64
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.GleanTest.Types.node_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.GleanTest.Types.Node x k
   getFactKey = Glean.Schema.GleanTest.Types.node_key

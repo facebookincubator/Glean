@@ -31,7 +31,7 @@ instance Glean.Predicate Glean.Schema.Deletthis.Types.FileReverseDeps where
   type KeyType Glean.Schema.Deletthis.Types.FileReverseDeps =
     Glean.Schema.Deletthis.Types.FileReverseDeps_key
   getName _proxy  = Glean.PredicateRef "deletthis.FileReverseDeps"3
-  getIndex _proxy  = 178
+  getIndex _proxy  = 179
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Deletthis.Types.fileReverseDeps_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Deletthis.Types.FileReverseDeps x k
   getFactKey = Glean.Schema.Deletthis.Types.fileReverseDeps_key

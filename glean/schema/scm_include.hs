@@ -16,7 +16,7 @@ import qualified Glean.Schema.Builtin.Types
 instance Glean.Predicate Glean.Schema.Scm.Types.RepoType where
   type KeyType Glean.Schema.Scm.Types.RepoType = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "scm.RepoType"1
-  getIndex _proxy  = 421
+  getIndex _proxy  = 422
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Scm.Types.repoType_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Scm.Types.RepoType x k
   getFactKey = Glean.Schema.Scm.Types.repoType_key
@@ -29,7 +29,7 @@ instance Glean.Type Glean.Schema.Scm.Types.RepoType where
 instance Glean.Predicate Glean.Schema.Scm.Types.Rev where
   type KeyType Glean.Schema.Scm.Types.Rev = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "scm.Rev"1
-  getIndex _proxy  = 334
+  getIndex _proxy  = 335
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Scm.Types.rev_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Scm.Types.Rev x k
   getFactKey = Glean.Schema.Scm.Types.rev_key
@@ -42,7 +42,7 @@ instance Glean.Type Glean.Schema.Scm.Types.Rev where
 instance Glean.Predicate Glean.Schema.Scm.Types.RepoName where
   type KeyType Glean.Schema.Scm.Types.RepoName = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "scm.RepoName"1
-  getIndex _proxy  = 298
+  getIndex _proxy  = 299
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Scm.Types.repoName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Scm.Types.RepoName x k
   getFactKey = Glean.Schema.Scm.Types.repoName_key
@@ -65,7 +65,7 @@ type instance Angle.RecordFields Glean.Schema.Scm.Types.Repo_key = 'Angle.TField
 instance Glean.Predicate Glean.Schema.Scm.Types.Repo where
   type KeyType Glean.Schema.Scm.Types.Repo = Glean.Schema.Scm.Types.Repo_key
   getName _proxy  = Glean.PredicateRef "scm.Repo"1
-  getIndex _proxy  = 191
+  getIndex _proxy  = 192
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Scm.Types.repo_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Scm.Types.Repo x k
   getFactKey = Glean.Schema.Scm.Types.repo_key
@@ -78,7 +78,7 @@ instance Glean.Type Glean.Schema.Scm.Types.Repo where
 instance Glean.Predicate Glean.Schema.Scm.Types.Timestamp where
   type KeyType Glean.Schema.Scm.Types.Timestamp = Glean.Nat
   getName _proxy  = Glean.PredicateRef "scm.Timestamp"1
-  getIndex _proxy  = 120
+  getIndex _proxy  = 121
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Scm.Types.timestamp_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Scm.Types.Timestamp x k
   getFactKey = Glean.Schema.Scm.Types.timestamp_key
@@ -104,7 +104,7 @@ instance Glean.Predicate Glean.Schema.Scm.Types.Commit where
   type KeyType Glean.Schema.Scm.Types.Commit =
     Glean.Schema.Scm.Types.Commit_key
   getName _proxy  = Glean.PredicateRef "scm.Commit"1
-  getIndex _proxy  = 92
+  getIndex _proxy  = 93
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Scm.Types.commit_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Scm.Types.Commit x k
   getFactKey = Glean.Schema.Scm.Types.commit_key

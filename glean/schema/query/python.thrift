@@ -56,6 +56,7 @@ const map<string, i64> PREDICATE_VERSIONS = {
   "FunctionBySName": 2,
   "ImportStatementByAsSName": 3,
   "ImportStatementByAsSName_2": 2,
+  "ContainingTopLevelDeclaration": 3,
   "VariableDeclaration": 1,
   "DeclarationsByFile": 2,
   "XRefsViaNameByFile": 2,
@@ -532,6 +533,18 @@ union XRefIndirectTarget_1 {
   3: builtin.Unit get;
 } (hs.prefix = "XRefIndirectTarget_1_with_")
 
+typedef glean.Id ContainingTopLevelDeclaration_id
+
+@glean.PredicateAnnotation{
+  name="python.ContainingTopLevelDeclaration";
+  version=3;
+}
+union ContainingTopLevelDeclaration {
+  1: ContainingTopLevelDeclaration_id id (hs.strict);
+  2: ContainingTopLevelDeclaration_key key;
+  3: builtin.Unit get;
+} (hs.prefix = "ContainingTopLevelDeclaration_with_")
+
 typedef glean.Id ClassDefinition_id
 
 @glean.PredicateAnnotation{
@@ -909,6 +922,11 @@ struct FileXRefs_1_key {
 struct XRefIndirectTarget_1_key {
   1: optional ImportStatement_1 import_statement (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
   2: optional XRefTarget_1 target (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+}
+
+struct ContainingTopLevelDeclaration_key {
+  1: optional Declaration declaration (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+  2: optional Declaration container (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
 }
 
 union ClassDefinition_bases_just__array {

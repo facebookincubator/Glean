@@ -31,7 +31,7 @@ instance Glean.Predicate Glean.Schema.Docmarkup.Types.EntityAnnotations where
   type KeyType Glean.Schema.Docmarkup.Types.EntityAnnotations =
     Glean.Schema.Docmarkup.Types.EntityAnnotations_key
   getName _proxy  = Glean.PredicateRef "docmarkup.EntityAnnotations"1
-  getIndex _proxy  = 497
+  getIndex _proxy  = 498
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Docmarkup.Types.entityAnnotations_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Docmarkup.Types.EntityAnnotations x k
   getFactKey = Glean.Schema.Docmarkup.Types.entityAnnotations_key
@@ -57,7 +57,7 @@ instance Glean.Predicate Glean.Schema.Docmarkup.Types.EntityComments where
   type KeyType Glean.Schema.Docmarkup.Types.EntityComments =
     Glean.Schema.Docmarkup.Types.EntityComments_key
   getName _proxy  = Glean.PredicateRef "docmarkup.EntityComments"1
-  getIndex _proxy  = 370
+  getIndex _proxy  = 371
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Docmarkup.Types.entityComments_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Docmarkup.Types.EntityComments x k
   getFactKey = Glean.Schema.Docmarkup.Types.entityComments_key
@@ -81,7 +81,7 @@ instance Glean.Predicate Glean.Schema.Docmarkup.Types.DocAttr where
   type KeyType Glean.Schema.Docmarkup.Types.DocAttr =
     Glean.Schema.Docmarkup.Types.DocAttr_key
   getName _proxy  = Glean.PredicateRef "docmarkup.DocAttr"1
-  getIndex _proxy  = 360
+  getIndex _proxy  = 361
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Docmarkup.Types.docAttr_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Docmarkup.Types.DocAttr x k
   getFactKey = Glean.Schema.Docmarkup.Types.docAttr_key
@@ -94,7 +94,7 @@ instance Glean.Type Glean.Schema.Docmarkup.Types.DocAttr where
 instance Glean.Predicate Glean.Schema.Docmarkup.Types.DocAttrKey where
   type KeyType Glean.Schema.Docmarkup.Types.DocAttrKey = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "docmarkup.DocAttrKey"1
-  getIndex _proxy  = 346
+  getIndex _proxy  = 347
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Docmarkup.Types.docAttrKey_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Docmarkup.Types.DocAttrKey x k
   getFactKey = Glean.Schema.Docmarkup.Types.docAttrKey_key
@@ -110,7 +110,7 @@ instance Glean.Predicate Glean.Schema.Docmarkup.Types.EntityDocAttr where
   type ValueType Glean.Schema.Docmarkup.Types.EntityDocAttr =
     Glean.Schema.Docmarkup.Types.EntityDocAttr_value
   getName _proxy  = Glean.PredicateRef "docmarkup.EntityDocAttr"1
-  getIndex _proxy  = 237
+  getIndex _proxy  = 238
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Docmarkup.Types.entityDocAttr_id
   mkFact (Glean.IdOf (Glean.Fid x)) k v = Glean.Schema.Docmarkup.Types.EntityDocAttr x k v
   getFactKey = Glean.Schema.Docmarkup.Types.entityDocAttr_key
@@ -134,7 +134,7 @@ instance Glean.Predicate Glean.Schema.Docmarkup.Types.EntityByDocAttrKey where
   type KeyType Glean.Schema.Docmarkup.Types.EntityByDocAttrKey =
     Glean.Schema.Docmarkup.Types.EntityByDocAttrKey_key
   getName _proxy  = Glean.PredicateRef "docmarkup.EntityByDocAttrKey"1
-  getIndex _proxy  = 89
+  getIndex _proxy  = 90
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Docmarkup.Types.entityByDocAttrKey_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Docmarkup.Types.EntityByDocAttrKey x k
   getFactKey = Glean.Schema.Docmarkup.Types.entityByDocAttrKey_key

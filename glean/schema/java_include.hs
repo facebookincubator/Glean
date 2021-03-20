@@ -27,7 +27,7 @@ type instance Angle.RecordFields Glean.Schema.Java.Types.XRef_key = 'Angle.TFiel
 instance Glean.Predicate Glean.Schema.Java.Types.XRef where
   type KeyType Glean.Schema.Java.Types.XRef = Glean.Schema.Java.Types.XRef_key
   getName _proxy  = Glean.PredicateRef "java.XRef"3
-  getIndex _proxy  = 429
+  getIndex _proxy  = 430
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.xRef_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.XRef x k
   getFactKey = Glean.Schema.Java.Types.xRef_key
@@ -51,7 +51,7 @@ instance Glean.Predicate Glean.Schema.Java.Types.TypeParam where
   type KeyType Glean.Schema.Java.Types.TypeParam =
     Glean.Schema.Java.Types.TypeParam_key
   getName _proxy  = Glean.PredicateRef "java.TypeParam"3
-  getIndex _proxy  = 385
+  getIndex _proxy  = 386
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.typeParam_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.TypeParam x k
   getFactKey = Glean.Schema.Java.Types.typeParam_key
@@ -73,7 +73,7 @@ instance Glean.Predicate Glean.Schema.Java.Types.Annotation where
   type KeyType Glean.Schema.Java.Types.Annotation =
     Glean.Schema.Java.Types.Annotation_key
   getName _proxy  = Glean.PredicateRef "java.Annotation"4
-  getIndex _proxy  = 382
+  getIndex _proxy  = 383
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.annotation_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.Annotation x k
   getFactKey = Glean.Schema.Java.Types.annotation_key
@@ -107,7 +107,7 @@ instance Glean.Predicate Glean.Schema.Java.Types.MethodDeclaration where
   type KeyType Glean.Schema.Java.Types.MethodDeclaration =
     Glean.Schema.Java.Types.MethodDeclaration_key
   getName _proxy  = Glean.PredicateRef "java.MethodDeclaration"4
-  getIndex _proxy  = 378
+  getIndex _proxy  = 379
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.methodDeclaration_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.MethodDeclaration x k
   getFactKey = Glean.Schema.Java.Types.methodDeclaration_key
@@ -139,7 +139,7 @@ instance Glean.Predicate Glean.Schema.Java.Types.MethodDeclaration_3 where
   type KeyType Glean.Schema.Java.Types.MethodDeclaration_3 =
     Glean.Schema.Java.Types.MethodDeclaration_3_key
   getName _proxy  = Glean.PredicateRef "java.MethodDeclaration"3
-  getIndex _proxy  = 377
+  getIndex _proxy  = 378
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.methodDeclaration_3_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.MethodDeclaration_3 x k
   getFactKey = Glean.Schema.Java.Types.methodDeclaration_3_key
@@ -169,7 +169,7 @@ instance Glean.Predicate Glean.Schema.Java.Types.MethodDeclaration_2 where
   type KeyType Glean.Schema.Java.Types.MethodDeclaration_2 =
     Glean.Schema.Java.Types.MethodDeclaration_2_key
   getName _proxy  = Glean.PredicateRef "java.MethodDeclaration"2
-  getIndex _proxy  = 376
+  getIndex _proxy  = 377
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.methodDeclaration_2_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.MethodDeclaration_2 x k
   getFactKey = Glean.Schema.Java.Types.methodDeclaration_2_key
@@ -193,7 +193,7 @@ instance Glean.Predicate Glean.Schema.Java.Types.AnnotatedClass where
   type KeyType Glean.Schema.Java.Types.AnnotatedClass =
     Glean.Schema.Java.Types.AnnotatedClass_key
   getName _proxy  = Glean.PredicateRef "java.AnnotatedClass"4
-  getIndex _proxy  = 350
+  getIndex _proxy  = 351
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.annotatedClass_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.AnnotatedClass x k
   getFactKey = Glean.Schema.Java.Types.annotatedClass_key
@@ -227,7 +227,7 @@ instance Glean.Predicate Glean.Schema.Java.Types.InterfaceDeclaration where
   type KeyType Glean.Schema.Java.Types.InterfaceDeclaration =
     Glean.Schema.Java.Types.InterfaceDeclaration_key
   getName _proxy  = Glean.PredicateRef "java.InterfaceDeclaration"4
-  getIndex _proxy  = 309
+  getIndex _proxy  = 310
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.interfaceDeclaration_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.InterfaceDeclaration x k
   getFactKey = Glean.Schema.Java.Types.interfaceDeclaration_key
@@ -259,7 +259,7 @@ instance Glean.Predicate Glean.Schema.Java.Types.InterfaceDeclaration_3 where
   type KeyType Glean.Schema.Java.Types.InterfaceDeclaration_3 =
     Glean.Schema.Java.Types.InterfaceDeclaration_3_key
   getName _proxy  = Glean.PredicateRef "java.InterfaceDeclaration"3
-  getIndex _proxy  = 308
+  getIndex _proxy  = 309
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.interfaceDeclaration_3_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.InterfaceDeclaration_3 x k
   getFactKey = Glean.Schema.Java.Types.interfaceDeclaration_3_key
@@ -289,7 +289,7 @@ instance Glean.Predicate Glean.Schema.Java.Types.InterfaceDeclaration_2 where
   type KeyType Glean.Schema.Java.Types.InterfaceDeclaration_2 =
     Glean.Schema.Java.Types.InterfaceDeclaration_2_key
   getName _proxy  = Glean.PredicateRef "java.InterfaceDeclaration"2
-  getIndex _proxy  = 307
+  getIndex _proxy  = 308
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.interfaceDeclaration_2_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.InterfaceDeclaration_2 x k
   getFactKey = Glean.Schema.Java.Types.interfaceDeclaration_2_key
@@ -329,7 +329,7 @@ instance Glean.Predicate Glean.Schema.Java.Types.ClassDeclaration where
   type KeyType Glean.Schema.Java.Types.ClassDeclaration =
     Glean.Schema.Java.Types.ClassDeclaration_key
   getName _proxy  = Glean.PredicateRef "java.ClassDeclaration"4
-  getIndex _proxy  = 276
+  getIndex _proxy  = 277
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.classDeclaration_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.ClassDeclaration x k
   getFactKey = Glean.Schema.Java.Types.classDeclaration_key
@@ -367,7 +367,7 @@ instance Glean.Predicate Glean.Schema.Java.Types.ClassDeclaration_3 where
   type KeyType Glean.Schema.Java.Types.ClassDeclaration_3 =
     Glean.Schema.Java.Types.ClassDeclaration_3_key
   getName _proxy  = Glean.PredicateRef "java.ClassDeclaration"3
-  getIndex _proxy  = 275
+  getIndex _proxy  = 276
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.classDeclaration_3_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.ClassDeclaration_3 x k
   getFactKey = Glean.Schema.Java.Types.classDeclaration_3_key
@@ -403,7 +403,7 @@ instance Glean.Predicate Glean.Schema.Java.Types.ClassDeclaration_2 where
   type KeyType Glean.Schema.Java.Types.ClassDeclaration_2 =
     Glean.Schema.Java.Types.ClassDeclaration_2_key
   getName _proxy  = Glean.PredicateRef "java.ClassDeclaration"2
-  getIndex _proxy  = 274
+  getIndex _proxy  = 275
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.classDeclaration_2_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.ClassDeclaration_2 x k
   getFactKey = Glean.Schema.Java.Types.classDeclaration_2_key
@@ -427,7 +427,7 @@ instance Glean.Predicate Glean.Schema.Java.Types.FileXRefs where
   type KeyType Glean.Schema.Java.Types.FileXRefs =
     Glean.Schema.Java.Types.FileXRefs_key
   getName _proxy  = Glean.PredicateRef "java.FileXRefs"3
-  getIndex _proxy  = 243
+  getIndex _proxy  = 244
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.fileXRefs_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.FileXRefs x k
   getFactKey = Glean.Schema.Java.Types.fileXRefs_key
@@ -465,7 +465,7 @@ instance Glean.Predicate Glean.Schema.Java.Types.TypeArg where
   type KeyType Glean.Schema.Java.Types.TypeArg =
     Glean.Schema.Java.Types.TypeArg_key
   getName _proxy  = Glean.PredicateRef "java.TypeArg"3
-  getIndex _proxy  = 234
+  getIndex _proxy  = 235
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.typeArg_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.TypeArg x k
   getFactKey = Glean.Schema.Java.Types.typeArg_key
@@ -489,7 +489,7 @@ instance Glean.Predicate Glean.Schema.Java.Types.Inheritance where
   type KeyType Glean.Schema.Java.Types.Inheritance =
     Glean.Schema.Java.Types.Inheritance_key
   getName _proxy  = Glean.PredicateRef "java.Inheritance"4
-  getIndex _proxy  = 220
+  getIndex _proxy  = 221
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.inheritance_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.Inheritance x k
   getFactKey = Glean.Schema.Java.Types.inheritance_key
@@ -513,7 +513,7 @@ instance Glean.Predicate Glean.Schema.Java.Types.Inheritance_3 where
   type KeyType Glean.Schema.Java.Types.Inheritance_3 =
     Glean.Schema.Java.Types.Inheritance_3_key
   getName _proxy  = Glean.PredicateRef "java.Inheritance"3
-  getIndex _proxy  = 219
+  getIndex _proxy  = 220
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.inheritance_3_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.Inheritance_3 x k
   getFactKey = Glean.Schema.Java.Types.inheritance_3_key
@@ -526,7 +526,7 @@ instance Glean.Type Glean.Schema.Java.Types.Inheritance_3 where
 instance Glean.Predicate Glean.Schema.Java.Types.Name where
   type KeyType Glean.Schema.Java.Types.Name = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "java.Name"2
-  getIndex _proxy  = 131
+  getIndex _proxy  = 132
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.name_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.Name x k
   getFactKey = Glean.Schema.Java.Types.name_key
@@ -558,7 +558,7 @@ instance Glean.Predicate Glean.Schema.Java.Types.ConstructorDeclaration where
   type KeyType Glean.Schema.Java.Types.ConstructorDeclaration =
     Glean.Schema.Java.Types.ConstructorDeclaration_key
   getName _proxy  = Glean.PredicateRef "java.ConstructorDeclaration"4
-  getIndex _proxy  = 118
+  getIndex _proxy  = 119
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.constructorDeclaration_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.ConstructorDeclaration x k
   getFactKey = Glean.Schema.Java.Types.constructorDeclaration_key
@@ -588,7 +588,7 @@ instance Glean.Predicate Glean.Schema.Java.Types.ConstructorDeclaration_3 where
   type KeyType Glean.Schema.Java.Types.ConstructorDeclaration_3 =
     Glean.Schema.Java.Types.ConstructorDeclaration_3_key
   getName _proxy  = Glean.PredicateRef "java.ConstructorDeclaration"3
-  getIndex _proxy  = 117
+  getIndex _proxy  = 118
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.constructorDeclaration_3_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.ConstructorDeclaration_3 x k
   getFactKey = Glean.Schema.Java.Types.constructorDeclaration_3_key
@@ -614,7 +614,7 @@ instance Glean.Predicate Glean.Schema.Java.Types.ConstructorDeclaration_2 where
   type KeyType Glean.Schema.Java.Types.ConstructorDeclaration_2 =
     Glean.Schema.Java.Types.ConstructorDeclaration_2_key
   getName _proxy  = Glean.PredicateRef "java.ConstructorDeclaration"2
-  getIndex _proxy  = 116
+  getIndex _proxy  = 117
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.constructorDeclaration_2_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.ConstructorDeclaration_2 x k
   getFactKey = Glean.Schema.Java.Types.constructorDeclaration_2_key
@@ -637,7 +637,7 @@ type instance Angle.RecordFields Glean.Schema.Java.Types.Type_key = 'Angle.TFiel
 instance Glean.Predicate Glean.Schema.Java.Types.Type where
   type KeyType Glean.Schema.Java.Types.Type = Glean.Schema.Java.Types.Type_key
   getName _proxy  = Glean.PredicateRef "java.Type"3
-  getIndex _proxy  = 82
+  getIndex _proxy  = 83
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.type_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.Type x k
   getFactKey = Glean.Schema.Java.Types.type_key
@@ -659,7 +659,7 @@ instance Glean.Predicate Glean.Schema.Java.Types.Type_2 where
   type KeyType Glean.Schema.Java.Types.Type_2 =
     Glean.Schema.Java.Types.Type_2_key
   getName _proxy  = Glean.PredicateRef "java.Type"2
-  getIndex _proxy  = 81
+  getIndex _proxy  = 82
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Java.Types.type_2_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Java.Types.Type_2 x k
   getFactKey = Glean.Schema.Java.Types.type_2_key

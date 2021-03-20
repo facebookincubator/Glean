@@ -31,7 +31,7 @@ instance Glean.Predicate Glean.Schema.Graphql.Types.VariableDef where
   type KeyType Glean.Schema.Graphql.Types.VariableDef =
     Glean.Schema.Graphql.Types.VariableDef_key
   getName _proxy  = Glean.PredicateRef "graphql.VariableDef"1
-  getIndex _proxy  = 453
+  getIndex _proxy  = 454
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Graphql.Types.variableDef_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Graphql.Types.VariableDef x k
   getFactKey = Glean.Schema.Graphql.Types.variableDef_key
@@ -55,7 +55,7 @@ instance Glean.Predicate Glean.Schema.Graphql.Types.ScalarTypeDef where
   type KeyType Glean.Schema.Graphql.Types.ScalarTypeDef =
     Glean.Schema.Graphql.Types.ScalarTypeDef_key
   getName _proxy  = Glean.PredicateRef "graphql.ScalarTypeDef"1
-  getIndex _proxy  = 444
+  getIndex _proxy  = 445
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Graphql.Types.scalarTypeDef_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Graphql.Types.ScalarTypeDef x k
   getFactKey = Glean.Schema.Graphql.Types.scalarTypeDef_key
@@ -81,7 +81,7 @@ instance Glean.Predicate Glean.Schema.Graphql.Types.InterfaceTypeDef where
   type KeyType Glean.Schema.Graphql.Types.InterfaceTypeDef =
     Glean.Schema.Graphql.Types.InterfaceTypeDef_key
   getName _proxy  = Glean.PredicateRef "graphql.InterfaceTypeDef"1
-  getIndex _proxy  = 384
+  getIndex _proxy  = 385
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Graphql.Types.interfaceTypeDef_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Graphql.Types.InterfaceTypeDef x k
   getFactKey = Glean.Schema.Graphql.Types.interfaceTypeDef_key
@@ -109,7 +109,7 @@ instance Glean.Predicate Glean.Schema.Graphql.Types.InputValueDef where
   type KeyType Glean.Schema.Graphql.Types.InputValueDef =
     Glean.Schema.Graphql.Types.InputValueDef_key
   getName _proxy  = Glean.PredicateRef "graphql.InputValueDef"1
-  getIndex _proxy  = 380
+  getIndex _proxy  = 381
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Graphql.Types.inputValueDef_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Graphql.Types.InputValueDef x k
   getFactKey = Glean.Schema.Graphql.Types.inputValueDef_key
@@ -137,7 +137,7 @@ instance Glean.Predicate Glean.Schema.Graphql.Types.Query where
   type KeyType Glean.Schema.Graphql.Types.Query =
     Glean.Schema.Graphql.Types.Query_key
   getName _proxy  = Glean.PredicateRef "graphql.Query"1
-  getIndex _proxy  = 379
+  getIndex _proxy  = 380
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Graphql.Types.query_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Graphql.Types.Query x k
   getFactKey = Glean.Schema.Graphql.Types.query_key
@@ -163,7 +163,7 @@ instance Glean.Predicate Glean.Schema.Graphql.Types.DirectiveDef where
   type KeyType Glean.Schema.Graphql.Types.DirectiveDef =
     Glean.Schema.Graphql.Types.DirectiveDef_key
   getName _proxy  = Glean.PredicateRef "graphql.DirectiveDef"1
-  getIndex _proxy  = 323
+  getIndex _proxy  = 324
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Graphql.Types.directiveDef_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Graphql.Types.DirectiveDef x k
   getFactKey = Glean.Schema.Graphql.Types.directiveDef_key
@@ -193,7 +193,7 @@ instance Glean.Predicate Glean.Schema.Graphql.Types.Fragment where
   type KeyType Glean.Schema.Graphql.Types.Fragment =
     Glean.Schema.Graphql.Types.Fragment_key
   getName _proxy  = Glean.PredicateRef "graphql.Fragment"1
-  getIndex _proxy  = 302
+  getIndex _proxy  = 303
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Graphql.Types.fragment_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Graphql.Types.Fragment x k
   getFactKey = Glean.Schema.Graphql.Types.fragment_key
@@ -217,7 +217,7 @@ instance Glean.Predicate Glean.Schema.Graphql.Types.Argument where
   type KeyType Glean.Schema.Graphql.Types.Argument =
     Glean.Schema.Graphql.Types.Argument_key
   getName _proxy  = Glean.PredicateRef "graphql.Argument"1
-  getIndex _proxy  = 268
+  getIndex _proxy  = 269
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Graphql.Types.argument_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Graphql.Types.Argument x k
   getFactKey = Glean.Schema.Graphql.Types.argument_key
@@ -245,7 +245,7 @@ instance Glean.Predicate Glean.Schema.Graphql.Types.InlineFragment where
   type KeyType Glean.Schema.Graphql.Types.InlineFragment =
     Glean.Schema.Graphql.Types.InlineFragment_key
   getName _proxy  = Glean.PredicateRef "graphql.InlineFragment"1
-  getIndex _proxy  = 236
+  getIndex _proxy  = 237
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Graphql.Types.inlineFragment_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Graphql.Types.InlineFragment x k
   getFactKey = Glean.Schema.Graphql.Types.inlineFragment_key
@@ -271,7 +271,7 @@ instance Glean.Predicate Glean.Schema.Graphql.Types.EnumTypeDef where
   type KeyType Glean.Schema.Graphql.Types.EnumTypeDef =
     Glean.Schema.Graphql.Types.EnumTypeDef_key
   getName _proxy  = Glean.PredicateRef "graphql.EnumTypeDef"1
-  getIndex _proxy  = 208
+  getIndex _proxy  = 209
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Graphql.Types.enumTypeDef_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Graphql.Types.EnumTypeDef x k
   getFactKey = Glean.Schema.Graphql.Types.enumTypeDef_key
@@ -297,7 +297,7 @@ instance Glean.Predicate Glean.Schema.Graphql.Types.UnionTypeDef where
   type KeyType Glean.Schema.Graphql.Types.UnionTypeDef =
     Glean.Schema.Graphql.Types.UnionTypeDef_key
   getName _proxy  = Glean.PredicateRef "graphql.UnionTypeDef"1
-  getIndex _proxy  = 198
+  getIndex _proxy  = 199
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Graphql.Types.unionTypeDef_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Graphql.Types.UnionTypeDef x k
   getFactKey = Glean.Schema.Graphql.Types.unionTypeDef_key
@@ -323,7 +323,7 @@ instance Glean.Predicate Glean.Schema.Graphql.Types.InputObjectTypeDef where
   type KeyType Glean.Schema.Graphql.Types.InputObjectTypeDef =
     Glean.Schema.Graphql.Types.InputObjectTypeDef_key
   getName _proxy  = Glean.PredicateRef "graphql.InputObjectTypeDef"1
-  getIndex _proxy  = 195
+  getIndex _proxy  = 196
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Graphql.Types.inputObjectTypeDef_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Graphql.Types.InputObjectTypeDef x k
   getFactKey = Glean.Schema.Graphql.Types.inputObjectTypeDef_key
@@ -347,7 +347,7 @@ instance Glean.Predicate Glean.Schema.Graphql.Types.Directive where
   type KeyType Glean.Schema.Graphql.Types.Directive =
     Glean.Schema.Graphql.Types.Directive_key
   getName _proxy  = Glean.PredicateRef "graphql.Directive"1
-  getIndex _proxy  = 152
+  getIndex _proxy  = 153
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Graphql.Types.directive_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Graphql.Types.Directive x k
   getFactKey = Glean.Schema.Graphql.Types.directive_key
@@ -375,7 +375,7 @@ instance Glean.Predicate Glean.Schema.Graphql.Types.ObjectTypeDef where
   type KeyType Glean.Schema.Graphql.Types.ObjectTypeDef =
     Glean.Schema.Graphql.Types.ObjectTypeDef_key
   getName _proxy  = Glean.PredicateRef "graphql.ObjectTypeDef"1
-  getIndex _proxy  = 143
+  getIndex _proxy  = 144
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Graphql.Types.objectTypeDef_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Graphql.Types.ObjectTypeDef x k
   getFactKey = Glean.Schema.Graphql.Types.objectTypeDef_key
@@ -407,7 +407,7 @@ instance Glean.Predicate Glean.Schema.Graphql.Types.Field where
   type KeyType Glean.Schema.Graphql.Types.Field =
     Glean.Schema.Graphql.Types.Field_key
   getName _proxy  = Glean.PredicateRef "graphql.Field"1
-  getIndex _proxy  = 129
+  getIndex _proxy  = 130
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Graphql.Types.field_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Graphql.Types.Field x k
   getFactKey = Glean.Schema.Graphql.Types.field_key
@@ -435,7 +435,7 @@ instance Glean.Predicate Glean.Schema.Graphql.Types.FieldDef where
   type KeyType Glean.Schema.Graphql.Types.FieldDef =
     Glean.Schema.Graphql.Types.FieldDef_key
   getName _proxy  = Glean.PredicateRef "graphql.FieldDef"1
-  getIndex _proxy  = 101
+  getIndex _proxy  = 102
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Graphql.Types.fieldDef_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Graphql.Types.FieldDef x k
   getFactKey = Glean.Schema.Graphql.Types.fieldDef_key

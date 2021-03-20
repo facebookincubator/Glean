@@ -414,23 +414,31 @@ schema python.3 : python.2 {
 # This is the inverse of ImportStatement. It allows for efficient queries
 # by alias. Note that multiple ImportStatements might have the same
 # alias, so this must be a record and not Name -> ImportStatement.
-predicate ImportStatementByAsName: 
-  { 
-    name : Name, 
-    import_ : ImportStatement 
+predicate ImportStatementByAsName:
+  {
+    name : Name,
+    import_ : ImportStatement
   }
-  stored 
+  stored
   { Name, I } where ImportStatement { as_name = Name } = I
 
 # Same as ImportStatementByAsName, but for structured names.
-predicate ImportStatementByAsSName: 
+predicate ImportStatementByAsSName:
   {
      sname : SName,
      import_ : ImportStatement
   }
   { AsSName, I }
-  where 
-    SNameToName AsSName -> AsName; 
+  where
+    SNameToName AsSName -> AsName;
     ImportStatementByAsName { AsName, I }
+
+# map from a declaration to the closest top level declaration
+# useful as we operate a lot of analysis on the top level declarations
+predicate ContainingTopLevelDeclaration:
+  {
+    declaration: Declaration,
+    container: Declaration,
+  }
 
 }

@@ -56,6 +56,7 @@ const map<string, i64> PREDICATE_VERSIONS = {
   "FunctionBySName": 2,
   "ImportStatementByAsSName": 3,
   "ImportStatementByAsSName_2": 2,
+  "ContainingTopLevelDeclaration": 3,
   "VariableDeclaration": 1,
   "DeclarationsByFile": 2,
   "XRefsViaNameByFile": 2,
@@ -503,6 +504,17 @@ struct XRefIndirectTarget_1 {
   2: optional XRefIndirectTarget_1_key key (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
 }
 
+typedef glean.Id ContainingTopLevelDeclaration_id
+
+@glean.PredicateAnnotation{
+  name="python.ContainingTopLevelDeclaration";
+  version=3;
+}
+struct ContainingTopLevelDeclaration {
+  1: ContainingTopLevelDeclaration_id id (hs.strict);
+  2: optional ContainingTopLevelDeclaration_key key (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+}
+
 typedef glean.Id ClassDefinition_id
 
 @glean.PredicateAnnotation{
@@ -756,6 +768,11 @@ struct FileXRefs_1_key {
 struct XRefIndirectTarget_1_key {
   1: ImportStatement_1 import_statement;
   2: XRefTarget_1 target;
+}
+
+struct ContainingTopLevelDeclaration_key {
+  1: Declaration declaration;
+  2: Declaration container;
 }
 
 struct ClassDefinition_key {
