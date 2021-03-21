@@ -2,17 +2,13 @@
 
 -- | Pure functions for doc block formatting as 'ByteString' (typically UTF-8)
 module Glean.DocBlock.TrimLogic
-  ( -- * BS/Text
-    toText, fromText
-    -- * lines
+  ( -- * process comment
+    trimArtAndIndent
+    -- * convert
+    -- ** Text
+  , toText
+    -- ** list of lines
   , toLines, fromLines
-    -- * white space
-  , trimRight, trimLeft, trimBlanks, trimIndent
-    -- ** tabs
-  , expandTabs
-    -- * process
-  , trimDocBlockArt
-  , trimArtAndIndent
   ) where
 
 import Data.Array ( (!) )
@@ -20,7 +16,7 @@ import Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
 import Data.Maybe
 import Data.Text (Text)
-import Data.Text.Encoding (encodeUtf8, decodeUtf8With)
+import Data.Text.Encoding (decodeUtf8With)
 import Data.Text.Encoding.Error (lenientDecode)
 import qualified Text.Regex.Base as RE
 import qualified Text.Regex.PCRE.ByteString as RE
@@ -29,30 +25,27 @@ import Data.Word (Word8)
 -- -----------------------------------------------------------------------------
 -- Processing the DocBlock
 
--- | Utf8 'ByteString' from 'Text'
-fromText :: Text -> ByteString
-fromText = encodeUtf8
-
 -- | Utf8 'ByteString' to 'Text' (with replacement character if ill-formed)
 toText :: ByteString -> Text
 toText = decodeUtf8With lenientDecode
 
--- | Reversable splitting into list of lines (no newline in results)
+-- | Reversable splitting into list of lines (no newline in list of results)
 --
 --  > forall x. fromLines (toLines x) == x
 toLines :: ByteString -> [ByteString]
 toLines = BS.split newline
   where newline = 10
 
--- | Reverse 'toLines'
+-- | Reverse 'toLines' by inserting newline.
 --
 --  > forall x. fromLines (toLines x) == x
 fromLines :: [ByteString] -> ByteString
 fromLines = BS.intercalate newline
   where newline = BS.singleton 10
 
--- | 7-bit ASCII safe check as 'Word8' for 'ByteString' (safe subset of utf-8).
--- Cannot use 'Data.Word8.isSpace' which uses Latin-1 (ISO-8859-1) 8-bit ASCII.
+-- 7-bit ASCII safe check as 'Word8' for 'ByteString' (safe subset of utf-8).
+-- Cannot use 'Data.Word8.isSpace' or 'Data.ByteString.Char8' which
+-- use Latin-1 (ISO-8859-1) 8-bit ASCII that includes NBSP 0xA0.
 isSpace :: Word8 -> Bool
 isSpace w = w == 32 || w == 9 || w == 10 || w == 11 || w == 12  || w == 13
 
@@ -65,13 +58,14 @@ trimLeft = BS.dropWhile isSpace
 trimBlanks :: [ByteString] -> [ByteString]
 trimBlanks = reverse . dropWhile BS.null . reverse . dropWhile BS.null
 
--- | Tabs expand to 2 spaces
+-- Tabs expand to 2 spaces
 expandTabs :: ByteString -> ByteString
-expandTabs b | BS.any (tab ==) b = BS.intercalate "  " (BS.split tab b)
+expandTabs b | tab `BS.elem` b = BS.intercalate "  " (BS.split tab b)
              | otherwise = b
   where tab = 9
 
--- | All leading space in first line removed (doc block bytespan did not
+
+-- All leading space in first line removed (doc block bytespan did not
 -- have to start at first column).  The remaining lines get their common
 -- leading spaces removed in a uniform shift (blank lines are unchanged).
 trimIndent :: [ByteString] -> [ByteString]
@@ -89,14 +83,14 @@ trimIndent (h:ts) =
     countSpace s | BS.null s = Nothing -- empty lines do not contribute
                  | otherwise = snd . (!0) <$> RE.matchOnce startSpaces s
 
--- |
 -- Input expects no tabs
 --
 -- * Many single line comments
---    * if first line starts // /// //! then trim from each line, if present
--- * Block comment on one line as in /** foo */
+--    * if first line starts // /// //! //< ///< //!<
+-- then trim from each line, if present
+-- * Block comment on one line as in /* foo */ or /** foo */ or /**< foo */
 -- * Block comment on multiple lines
---    * Require first line to start /* /** /*!
+--    * Require first line to start /* /** /*! /*< /**< /*!< (or more *)
 --    * The mid lines all have leading * trimmed, or none of them are changed
 --    * Require last line to end */ and optionally have leading *
 trimDocBlockArt :: [ByteString] -> [ByteString]
@@ -118,8 +112,8 @@ trimDocBlockArt bsIn = maybe trimIn trimBlanks $ case trimIn of
     -- let y = trimRight x; z = "remove regex from y" in z == trimRight z
     mk :: ByteString -> RE.Regex
     mk = RE.makeRegexOpts RE.compBlank RE.execBlank
-    slashSlashDoc = mk "^\\s*//[/!]?\\s?"
-    slashStarsDoc = mk "^\\s*/\\*+!?\\s?"
+    slashSlashDoc = mk "^\\s*//[/!]?<?\\s?"
+    slashStarsDoc = mk "^\\s*/\\*+!?<?\\s?"
     starsSlash = mk "\\s*\\*+/$"
     leadingStar = mk "^\\s*\\*"
     -- helpers
@@ -136,7 +130,10 @@ trimDocBlockArt bsIn = maybe trimIn trimBlanks $ case trimIn of
     trimLeadingStar xs = fromMaybe xs (mapM (dropLenM leadingStar) xs)
     trimStarsSlash = takeStartM starsSlash
 
--- | Input is 'toLines'.
--- Remove comment markers, trailing space, tabs, and indent
+-- | Remove comment markers, trailing space, tabs, and leading indentation.
+--
+-- Input is list of lines (e.g. from 'toLines'), with no newlines.
+--
+-- Output is list of same length.
 trimArtAndIndent :: [ByteString] -> [ByteString]
 trimArtAndIndent = trimIndent . trimDocBlockArt . map expandTabs
