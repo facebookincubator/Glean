@@ -1,1 +1,63 @@
-{"namespace":"GSDeletthis","generated":"@generated - To regenerated this file run fbcode//glean/schema/gen/sync-www","genTypes":{"GSDeletthisFileReverseDeps":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"src.File","version":1},"classname":"GSSrcFile"},"fieldInfoName":"file"},{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"src.File","version":1},"classname":"GSSrcFile"},"fieldInfoName":"referenced_by"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"code.Entity","version":11},"classname":"GSCodeEntity"},"fieldInfoName":"via"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":3,"refName":"deletthis.FileReverseDeps"}}}}},"enums":{}}
+{
+    "namespace": "GSDeletthis",
+    "generated": "@generated - To regenerated this file run fbcode//glean/schema/gen/sync-www",
+    "genTypes": {
+        "GSDeletthisFileReverseDeps": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "src.File",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcFile"
+                            },
+                            "fieldInfoName": "file"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "src.File",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcFile"
+                            },
+                            "fieldInfoName": "referenced_by"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "code.Entity",
+                                    "version": 11
+                                },
+                                "classname": "GSCodeEntity"
+                            },
+                            "fieldInfoName": "via"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 3,
+                        "refName": "deletthis.FileReverseDeps"
+                    }
+                }
+            }
+        }
+    },
+    "enums": {}
+}

@@ -1,1 +1,2040 @@
-{"namespace":"GSGleanTest","generated":"@generated - To regenerated this file run fbcode//glean/schema/gen/sync-www","genTypes":{"GSGleanTestSameString":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"x"},{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"y"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.SameString"}}}},"GSGleanTestExpr":{"tag":"ClassType","contents":{"tag":"Union","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"glean.test.Name","version":1},"classname":"GSGleanTestName"},"fieldInfoName":"var_"},{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"lit"},{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"glean.test.Name","version":1},"classname":"GSGleanTestName"},"fieldInfoName":"prim"},{"fieldInfoType":{"tag":"RecordTShape","fields":[["fun",{"tag":"PredicateTNamed","pref":{"name":"glean.test.Expr","version":1},"classname":"GSGleanTestExpr"}],["arg",{"tag":"PredicateTNamed","pref":{"name":"glean.test.Expr","version":1},"classname":"GSGleanTestExpr"}]]},"fieldInfoName":"ap"},{"fieldInfoType":{"tag":"RecordTShape","fields":[["var_",{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"glean.test.Name","version":1},"classname":"GSGleanTestName"}],["body",{"tag":"PredicateTNamed","pref":{"name":"glean.test.Expr","version":1},"classname":"GSGleanTestExpr"}]]},"fieldInfoName":"lam"}],"classGenHasCycles":true,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.Expr"}}}},"GSGleanTestRevRevStringPair":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"fst"},{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"snd"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.RevRevStringPair"}}}},"GSGleanTestKeyValue":{"tag":"ClassType","contents":{"tag":"KeyValue","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"RecordTShape","fields":[["kstring",{"tag":"StringTString"}],["knat",{"tag":"NatTInt"}]]},"fieldInfoName":"key"},{"fieldInfoType":{"tag":"RecordTShape","fields":[["vnat",{"tag":"NatTInt"}],["vstring",{"tag":"StringTString"}]]},"fieldInfoName":"value"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.KeyValue"}}}},"GSGleanTestQux":{"tag":"ClassType","contents":{"tag":"Wrapper","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"key"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":4,"refName":"glean.test.Qux"}}}},"GSGleanTestIsThree":{"tag":"ClassType","contents":{"tag":"Wrapper","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"key"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.IsThree"}}}},"GSGleanTestViaStringPair":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"fst"},{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"snd"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.ViaStringPair"}}}},"GSGleanTestBar":{"tag":"ClassType","contents":{"tag":"KeyValue","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"key"},{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"glean.test.Qux","version":4},"classname":"GSGleanTestQux"},"fieldInfoName":"value"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":4,"refName":"glean.test.Bar"}}}},"GSGleanTestDerivedKeyValue":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"kstring"},{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"knat"},{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"vnat"},{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"vstring"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.DerivedKeyValue"}}}},"GSGleanTestKitchenSink":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"ByteTInt"},"fieldInfoName":"byt"},{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"nat"},{"fieldInfoType":{"tag":"BooleanTBool"},"fieldInfoName":"bool_"},{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"string_"},{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"ArrayTVec","inner":{"tag":"ByteTInt"}},"pref":{"name":"sys.Blob","version":1},"classname":"GSSysBlob"},"fieldInfoName":"pred"},{"fieldInfoType":{"tag":"MaybeTOption","inner":{"tag":"RecordTShape","fields":[]}},"fieldInfoName":"maybe_"},{"fieldInfoType":{"tag":"RecordTShape","fields":[["a",{"tag":"ByteTInt"}],["b",{"tag":"NatTInt"}]]},"fieldInfoName":"record_"},{"fieldInfoType":{"tag":"SumTShape","fields":[["c",{"tag":"PredicateT","inner":{"tag":"NamedTypeTNamed","tref":{"name":"glean.test.KitchenSink","version":4},"classname":"GSGleanTestKitchenSink"},"pref":{"name":"glean.test.Predicate","version":4},"classname":"GSGleanTestPredicate"}],["d",{"tag":"PredicateT","inner":{"tag":"ArrayTVec","inner":{"tag":"ByteTInt"}},"pref":{"name":"sys.Blob","version":1},"classname":"GSSysBlob"}]]},"fieldInfoName":"sum_"},{"fieldInfoType":{"tag":"EnumeratedTEnum","alts":["e","f","g"],"classname":"GSGleanTestKitchenSinkEnumFor_enum_"},"fieldInfoName":"enum_"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"glean.test.Rec","version":1},"classname":"GSGleanTestRec"},"fieldInfoName":"named_record_"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"glean.test.Sum","version":1},"classname":"GSGleanTestSum"},"fieldInfoName":"named_sum_"},{"fieldInfoType":{"tag":"NamedTypeTEnum","tref":{"name":"glean.test.Enum","version":1},"alts":["red","green","blue"],"classname":"GSGleanTestEnum"},"fieldInfoName":"named_enum_"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"ByteTInt"}},"fieldInfoName":"array_of_byte"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NatTInt"}},"fieldInfoName":"array_of_nat"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"BooleanTBool"}},"fieldInfoName":"array_of_bool"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"StringTString"}},"fieldInfoName":"array_of_string"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateT","inner":{"tag":"NamedTypeTNamed","tref":{"name":"glean.test.KitchenSink","version":4},"classname":"GSGleanTestKitchenSink"},"pref":{"name":"glean.test.Predicate","version":4},"classname":"GSGleanTestPredicate"}},"fieldInfoName":"array_of_pred"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTNamed","tref":{"name":"glean.test.Rec","version":1},"classname":"GSGleanTestRec"}},"fieldInfoName":"array_of_named_record"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTNamed","tref":{"name":"glean.test.Sum","version":1},"classname":"GSGleanTestSum"}},"fieldInfoName":"array_of_named_sum"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTEnum","tref":{"name":"glean.test.Enum","version":1},"alts":["red","green","blue"],"classname":"GSGleanTestEnum"}},"fieldInfoName":"array_of_named_enum"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTAlias","tref":{"name":"glean.test.ArrayByte","version":1},"inner":{"tag":"ArrayTVec","inner":{"tag":"ByteTInt"}},"classname":"GSGleanTestArrayByte"}},"fieldInfoName":"array2_of_byte"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTAlias","tref":{"name":"glean.test.ArrayNat","version":1},"inner":{"tag":"ArrayTVec","inner":{"tag":"NatTInt"}},"classname":"GSGleanTestArrayNat"}},"fieldInfoName":"array2_of_nat"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTAlias","tref":{"name":"glean.test.ArrayBool","version":1},"inner":{"tag":"ArrayTVec","inner":{"tag":"BooleanTBool"}},"classname":"GSGleanTestArrayBool"}},"fieldInfoName":"array2_of_bool"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTAlias","tref":{"name":"glean.test.ArrayString","version":1},"inner":{"tag":"ArrayTVec","inner":{"tag":"StringTString"}},"classname":"GSGleanTestArrayString"}},"fieldInfoName":"array2_of_string"}],"classGenHasCycles":true,"classGenReference":{"refLatest":true,"refTag":"TypeReference","refVersion":4,"refName":"glean.test.KitchenSink"}}}},"GSGleanTestRef":{"tag":"ClassType","contents":{"tag":"Wrapper","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"NamedTypeTNamed","tref":{"name":"glean.test.KitchenSink","version":4},"classname":"GSGleanTestKitchenSink"},"pref":{"name":"glean.test.Predicate","version":4},"classname":"GSGleanTestPredicate"},"fieldInfoName":"key"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":4,"refName":"glean.test.Ref"}}}},"GSGleanTestMatchOneAlt":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"glean.test.Sum","version":1},"classname":"GSGleanTestSum"},"fieldInfoName":"x"},{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"y"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.MatchOneAlt"}}}},"GSGleanTestFoo":{"tag":"ClassType","contents":{"tag":"KeyValue","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"key"},{"fieldInfoType":{"tag":"PredicateTKeyValue","pref":{"name":"glean.test.Bar","version":4},"classname":"GSGleanTestBar"},"fieldInfoName":"value"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":4,"refName":"glean.test.Foo"}}}},"GSGleanTestKitchenSink_DEPRECATED1":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"ByteTInt"},"fieldInfoName":"byt"},{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"nat"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"ByteTInt"}},"fieldInfoName":"array_of_byte"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NatTInt"}},"fieldInfoName":"array_of_nat"},{"fieldInfoType":{"tag":"RecordTShape","fields":[["a",{"tag":"ByteTInt"}],["b",{"tag":"NatTInt"}]]},"fieldInfoName":"record_"},{"fieldInfoType":{"tag":"SumTShape","fields":[["c",{"tag":"ByteTInt"}],["d",{"tag":"NatTInt"}]]},"fieldInfoName":"sum_"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"glean.test.Rec","version":1},"classname":"GSGleanTestRec"},"fieldInfoName":"named_record_"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"glean.test.Sum","version":1},"classname":"GSGleanTestSum"},"fieldInfoName":"named_sum_"},{"fieldInfoType":{"tag":"NamedTypeTEnum","tref":{"name":"glean.test.Enum","version":1},"alts":["red","green","blue"],"classname":"GSGleanTestEnum"},"fieldInfoName":"named_enum_"},{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"ArrayTVec","inner":{"tag":"ByteTInt"}},"pref":{"name":"sys.Blob","version":1},"classname":"GSSysBlob"},"fieldInfoName":"pred"},{"fieldInfoType":{"tag":"MaybeTOption","inner":{"tag":"RecordTShape","fields":[]}},"fieldInfoName":"maybe_"},{"fieldInfoType":{"tag":"BooleanTBool"},"fieldInfoName":"bool_"},{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"string_"}],"classGenHasCycles":false,"classGenReference":{"refLatest":false,"refTag":"TypeReference","refVersion":1,"refName":"glean.test.KitchenSink"}}}},"GSGleanTestUnbound2":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"x"},{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"y"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.Unbound2"}}}},"GSGleanTestTreeToTree":{"tag":"ClassType","contents":{"tag":"KeyValue","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"glean.test.Tree","version":4},"classname":"GSGleanTestTree"},"fieldInfoName":"key"},{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"glean.test.Tree","version":4},"classname":"GSGleanTestTree"},"fieldInfoName":"value"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":4,"refName":"glean.test.TreeToTree"}}}},"GSGleanTestSum":{"tag":"ClassType","contents":{"tag":"Union","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"ByteTInt"},"fieldInfoName":"mon"},{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"tue"},{"fieldInfoType":{"tag":"BooleanTBool"},"fieldInfoName":"wed"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"TypeReference","refVersion":1,"refName":"glean.test.Sum"}}}},"GSGleanTestDualStringPair":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"glean.test.StringPair","version":1},"classname":"GSGleanTestStringPair"},"fieldInfoName":"fst"},{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"glean.test.StringPair","version":1},"classname":"GSGleanTestStringPair"},"fieldInfoName":"snd"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.DualStringPair"}}}},"GSGleanTestNode":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"label"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":4,"refName":"glean.test.Node"}}}},"GSGleanTestRevStringPairs":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"x"},{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"glean.test.RevStringPair","version":1},"classname":"GSGleanTestRevStringPair"},"fieldInfoName":"r"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.RevStringPairs"}}}},"GSGleanTestStoredRevStringPair":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"fst"},{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"snd"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.StoredRevStringPair"}}}},"GSGleanTestWrappedStringPair":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"glean.test.StringPair","version":1},"classname":"GSGleanTestStringPair"},"fieldInfoName":"wrapped"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"TypeReference","refVersion":1,"refName":"glean.test.WrappedStringPair"}}}},"GSGleanTestArrayNat":{"tag":"AliasType","contents":{"tag":"ArrayTVec","inner":{"tag":"NatTInt"}}},"GSGleanTestRevStringPairRec":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"fst"},{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"snd"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.RevStringPairRec"}}}},"GSGleanTestName":{"tag":"ClassType","contents":{"tag":"Wrapper","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"key"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.Name"}}}},"GSGleanTestStringPair":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"fst"},{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"snd"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.StringPair"}}}},"GSGleanTestArrayBool":{"tag":"AliasType","contents":{"tag":"ArrayTVec","inner":{"tag":"BooleanTBool"}}},"GSGleanTestRec":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"NamedTypeTEnum","tref":{"name":"glean.test.Enum","version":1},"alts":["red","green","blue"],"classname":"GSGleanTestEnum"},"fieldInfoName":"alpha"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"glean.test.Sum","version":1},"classname":"GSGleanTestSum"},"fieldInfoName":"beta"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"TypeReference","refVersion":1,"refName":"glean.test.Rec"}}}},"GSGleanTestLeftOr2":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"x"},{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"y"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.LeftOr2"}}}},"GSGleanTestArrayString":{"tag":"AliasType","contents":{"tag":"ArrayTVec","inner":{"tag":"StringTString"}}},"GSGleanTestUnbound":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"x"},{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"y"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.Unbound"}}}},"GSGleanTestPredicate":{"tag":"ClassType","contents":{"tag":"Wrapper","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"glean.test.KitchenSink","version":4},"classname":"GSGleanTestKitchenSink"},"fieldInfoName":"key"}],"classGenHasCycles":true,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":4,"refName":"glean.test.Predicate"}}}},"GSGleanTestStoredRevStringPairWithA":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"fst"},{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"snd"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.StoredRevStringPairWithA"}}}},"GSGleanTestPredicate_DEPRECATED1":{"tag":"ClassType","contents":{"tag":"Wrapper","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"glean.test.KitchenSink","version":1},"classname":"GSGleanTestKitchenSink_DEPRECATED1"},"fieldInfoName":"key"}],"classGenHasCycles":false,"classGenReference":{"refLatest":false,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.Predicate"}}}},"GSGleanTestTree":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"node"},{"fieldInfoType":{"tag":"MaybeTOption","inner":{"tag":"PredicateTNamed","pref":{"name":"glean.test.Tree","version":4},"classname":"GSGleanTestTree"}},"fieldInfoName":"left"},{"fieldInfoType":{"tag":"MaybeTOption","inner":{"tag":"PredicateTNamed","pref":{"name":"glean.test.Tree","version":4},"classname":"GSGleanTestTree"}},"fieldInfoName":"right"}],"classGenHasCycles":true,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":4,"refName":"glean.test.Tree"}}}},"GSGleanTestLeftOr":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"x"},{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"y"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.LeftOr"}}}},"GSGleanTestRevStringPair":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"fst"},{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"snd"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.RevStringPair"}}}},"GSGleanTestEntity":{"tag":"ClassType","contents":{"tag":"Union","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"code.cxx.Entity","version":3},"classname":"GSCodeCxxEntity"},"fieldInfoName":"cxx"},{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"pp1.Define","version":1},"classname":"GSPp1Define"},"fieldInfoName":"pp"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"TypeReference","refVersion":4,"refName":"glean.test.Entity"}}}},"GSGleanTestArrayByte":{"tag":"AliasType","contents":{"tag":"ArrayTVec","inner":{"tag":"ByteTInt"}}},"GSGleanTestIsGlean":{"tag":"ClassType","contents":{"tag":"Wrapper","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"key"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.IsGlean"}}}},"GSGleanTestFooToFoo":{"tag":"ClassType","contents":{"tag":"KeyValue","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTKeyValue","pref":{"name":"glean.test.Foo","version":4},"classname":"GSGleanTestFoo"},"fieldInfoName":"key"},{"fieldInfoType":{"tag":"PredicateTKeyValue","pref":{"name":"glean.test.Foo","version":4},"classname":"GSGleanTestFoo"},"fieldInfoName":"value"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":4,"refName":"glean.test.FooToFoo"}}}},"GSGleanTestEdge":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"glean.test.Node","version":4},"classname":"GSGleanTestNode"},"fieldInfoName":"parent"},{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"glean.test.Node","version":4},"classname":"GSGleanTestNode"},"fieldInfoName":"child"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":4,"refName":"glean.test.Edge"}}}},"GSGleanTestDerivedKeyValue2":{"tag":"ClassType","contents":{"tag":"KeyValue","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"RecordTShape","fields":[["kstring",{"tag":"StringTString"}],["knat",{"tag":"NatTInt"}]]},"fieldInfoName":"key"},{"fieldInfoType":{"tag":"RecordTShape","fields":[["vnat",{"tag":"NatTInt"}],["vstring",{"tag":"StringTString"}]]},"fieldInfoName":"value"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.DerivedKeyValue2"}}}},"GSGleanTestEnum":{"tag":"EnumType","contents":["red","green","blue"]},"GSGleanTestNothingTest":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"MaybeTOption","inner":{"tag":"StringTString"}},"fieldInfoName":"a"},{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"b"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":4,"refName":"glean.test.nothingTest"}}}},"GSGleanTestRefRef":{"tag":"ClassType","contents":{"tag":"Wrapper","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"PredicateT","inner":{"tag":"NamedTypeTNamed","tref":{"name":"glean.test.KitchenSink","version":4},"classname":"GSGleanTestKitchenSink"},"pref":{"name":"glean.test.Predicate","version":4},"classname":"GSGleanTestPredicate"},"pref":{"name":"glean.test.Ref","version":4},"classname":"GSGleanTestRef"},"fieldInfoName":"key"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":4,"refName":"glean.test.RefRef"}}}},"GSGleanTestReflStringPair":{"tag":"ClassType","contents":{"tag":"Wrapper","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"key"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.ReflStringPair"}}}},"GSGleanTestStringPairBox":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"glean.test.StringPair","version":1},"classname":"GSGleanTestStringPair"},"fieldInfoName":"box"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"glean.test.StringPairBox"}}}}},"enums":{"GSGleanTestKitchenSinkEnumFor_enum_":[["e","e"],["f","f"],["g","g"]]}}
+{
+    "namespace": "GSGleanTest",
+    "generated": "@generated - To regenerated this file run fbcode//glean/schema/gen/sync-www",
+    "genTypes": {
+        "GSGleanTestSameString": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "x"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "y"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.SameString"
+                    }
+                }
+            }
+        },
+        "GSGleanTestExpr": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Union",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "glean.test.Name",
+                                    "version": 1
+                                },
+                                "classname": "GSGleanTestName"
+                            },
+                            "fieldInfoName": "var_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "lit"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "glean.test.Name",
+                                    "version": 1
+                                },
+                                "classname": "GSGleanTestName"
+                            },
+                            "fieldInfoName": "prim"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "RecordTShape",
+                                "fields": [
+                                    [
+                                        "fun",
+                                        {
+                                            "tag": "PredicateTNamed",
+                                            "pref": {
+                                                "name": "glean.test.Expr",
+                                                "version": 1
+                                            },
+                                            "classname": "GSGleanTestExpr"
+                                        }
+                                    ],
+                                    [
+                                        "arg",
+                                        {
+                                            "tag": "PredicateTNamed",
+                                            "pref": {
+                                                "name": "glean.test.Expr",
+                                                "version": 1
+                                            },
+                                            "classname": "GSGleanTestExpr"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "fieldInfoName": "ap"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "RecordTShape",
+                                "fields": [
+                                    [
+                                        "var_",
+                                        {
+                                            "tag": "PredicateT",
+                                            "inner": {
+                                                "tag": "StringTString"
+                                            },
+                                            "pref": {
+                                                "name": "glean.test.Name",
+                                                "version": 1
+                                            },
+                                            "classname": "GSGleanTestName"
+                                        }
+                                    ],
+                                    [
+                                        "body",
+                                        {
+                                            "tag": "PredicateTNamed",
+                                            "pref": {
+                                                "name": "glean.test.Expr",
+                                                "version": 1
+                                            },
+                                            "classname": "GSGleanTestExpr"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "fieldInfoName": "lam"
+                        }
+                    ],
+                    "classGenHasCycles": true,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.Expr"
+                    }
+                }
+            }
+        },
+        "GSGleanTestRevRevStringPair": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "fst"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "snd"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.RevRevStringPair"
+                    }
+                }
+            }
+        },
+        "GSGleanTestKeyValue": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "KeyValue",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "RecordTShape",
+                                "fields": [
+                                    [
+                                        "kstring",
+                                        {
+                                            "tag": "StringTString"
+                                        }
+                                    ],
+                                    [
+                                        "knat",
+                                        {
+                                            "tag": "NatTInt"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "fieldInfoName": "key"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "RecordTShape",
+                                "fields": [
+                                    [
+                                        "vnat",
+                                        {
+                                            "tag": "NatTInt"
+                                        }
+                                    ],
+                                    [
+                                        "vstring",
+                                        {
+                                            "tag": "StringTString"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "fieldInfoName": "value"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.KeyValue"
+                    }
+                }
+            }
+        },
+        "GSGleanTestQux": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Wrapper",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "key"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "glean.test.Qux"
+                    }
+                }
+            }
+        },
+        "GSGleanTestIsThree": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Wrapper",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "key"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.IsThree"
+                    }
+                }
+            }
+        },
+        "GSGleanTestViaStringPair": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "fst"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "snd"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.ViaStringPair"
+                    }
+                }
+            }
+        },
+        "GSGleanTestBar": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "KeyValue",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "key"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "glean.test.Qux",
+                                    "version": 4
+                                },
+                                "classname": "GSGleanTestQux"
+                            },
+                            "fieldInfoName": "value"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "glean.test.Bar"
+                    }
+                }
+            }
+        },
+        "GSGleanTestDerivedKeyValue": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "kstring"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "knat"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "vnat"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "vstring"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.DerivedKeyValue"
+                    }
+                }
+            }
+        },
+        "GSGleanTestKitchenSink": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "ByteTInt"
+                            },
+                            "fieldInfoName": "byt"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "nat"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "BooleanTBool"
+                            },
+                            "fieldInfoName": "bool_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "string_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "ArrayTVec",
+                                    "inner": {
+                                        "tag": "ByteTInt"
+                                    }
+                                },
+                                "pref": {
+                                    "name": "sys.Blob",
+                                    "version": 1
+                                },
+                                "classname": "GSSysBlob"
+                            },
+                            "fieldInfoName": "pred"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "MaybeTOption",
+                                "inner": {
+                                    "tag": "RecordTShape",
+                                    "fields": []
+                                }
+                            },
+                            "fieldInfoName": "maybe_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "RecordTShape",
+                                "fields": [
+                                    [
+                                        "a",
+                                        {
+                                            "tag": "ByteTInt"
+                                        }
+                                    ],
+                                    [
+                                        "b",
+                                        {
+                                            "tag": "NatTInt"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "fieldInfoName": "record_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "SumTShape",
+                                "fields": [
+                                    [
+                                        "c",
+                                        {
+                                            "tag": "PredicateT",
+                                            "inner": {
+                                                "tag": "NamedTypeTNamed",
+                                                "tref": {
+                                                    "name": "glean.test.KitchenSink",
+                                                    "version": 4
+                                                },
+                                                "classname": "GSGleanTestKitchenSink"
+                                            },
+                                            "pref": {
+                                                "name": "glean.test.Predicate",
+                                                "version": 4
+                                            },
+                                            "classname": "GSGleanTestPredicate"
+                                        }
+                                    ],
+                                    [
+                                        "d",
+                                        {
+                                            "tag": "PredicateT",
+                                            "inner": {
+                                                "tag": "ArrayTVec",
+                                                "inner": {
+                                                    "tag": "ByteTInt"
+                                                }
+                                            },
+                                            "pref": {
+                                                "name": "sys.Blob",
+                                                "version": 1
+                                            },
+                                            "classname": "GSSysBlob"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "fieldInfoName": "sum_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "EnumeratedTEnum",
+                                "alts": [
+                                    "e",
+                                    "f",
+                                    "g"
+                                ],
+                                "classname": "GSGleanTestKitchenSinkEnumFor_enum_"
+                            },
+                            "fieldInfoName": "enum_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "glean.test.Rec",
+                                    "version": 1
+                                },
+                                "classname": "GSGleanTestRec"
+                            },
+                            "fieldInfoName": "named_record_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "glean.test.Sum",
+                                    "version": 1
+                                },
+                                "classname": "GSGleanTestSum"
+                            },
+                            "fieldInfoName": "named_sum_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTEnum",
+                                "tref": {
+                                    "name": "glean.test.Enum",
+                                    "version": 1
+                                },
+                                "alts": [
+                                    "red",
+                                    "green",
+                                    "blue"
+                                ],
+                                "classname": "GSGleanTestEnum"
+                            },
+                            "fieldInfoName": "named_enum_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "ByteTInt"
+                                }
+                            },
+                            "fieldInfoName": "array_of_byte"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NatTInt"
+                                }
+                            },
+                            "fieldInfoName": "array_of_nat"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "BooleanTBool"
+                                }
+                            },
+                            "fieldInfoName": "array_of_bool"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "StringTString"
+                                }
+                            },
+                            "fieldInfoName": "array_of_string"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateT",
+                                    "inner": {
+                                        "tag": "NamedTypeTNamed",
+                                        "tref": {
+                                            "name": "glean.test.KitchenSink",
+                                            "version": 4
+                                        },
+                                        "classname": "GSGleanTestKitchenSink"
+                                    },
+                                    "pref": {
+                                        "name": "glean.test.Predicate",
+                                        "version": 4
+                                    },
+                                    "classname": "GSGleanTestPredicate"
+                                }
+                            },
+                            "fieldInfoName": "array_of_pred"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTNamed",
+                                    "tref": {
+                                        "name": "glean.test.Rec",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGleanTestRec"
+                                }
+                            },
+                            "fieldInfoName": "array_of_named_record"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTNamed",
+                                    "tref": {
+                                        "name": "glean.test.Sum",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGleanTestSum"
+                                }
+                            },
+                            "fieldInfoName": "array_of_named_sum"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTEnum",
+                                    "tref": {
+                                        "name": "glean.test.Enum",
+                                        "version": 1
+                                    },
+                                    "alts": [
+                                        "red",
+                                        "green",
+                                        "blue"
+                                    ],
+                                    "classname": "GSGleanTestEnum"
+                                }
+                            },
+                            "fieldInfoName": "array_of_named_enum"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTAlias",
+                                    "tref": {
+                                        "name": "glean.test.ArrayByte",
+                                        "version": 1
+                                    },
+                                    "inner": {
+                                        "tag": "ArrayTVec",
+                                        "inner": {
+                                            "tag": "ByteTInt"
+                                        }
+                                    },
+                                    "classname": "GSGleanTestArrayByte"
+                                }
+                            },
+                            "fieldInfoName": "array2_of_byte"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTAlias",
+                                    "tref": {
+                                        "name": "glean.test.ArrayNat",
+                                        "version": 1
+                                    },
+                                    "inner": {
+                                        "tag": "ArrayTVec",
+                                        "inner": {
+                                            "tag": "NatTInt"
+                                        }
+                                    },
+                                    "classname": "GSGleanTestArrayNat"
+                                }
+                            },
+                            "fieldInfoName": "array2_of_nat"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTAlias",
+                                    "tref": {
+                                        "name": "glean.test.ArrayBool",
+                                        "version": 1
+                                    },
+                                    "inner": {
+                                        "tag": "ArrayTVec",
+                                        "inner": {
+                                            "tag": "BooleanTBool"
+                                        }
+                                    },
+                                    "classname": "GSGleanTestArrayBool"
+                                }
+                            },
+                            "fieldInfoName": "array2_of_bool"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTAlias",
+                                    "tref": {
+                                        "name": "glean.test.ArrayString",
+                                        "version": 1
+                                    },
+                                    "inner": {
+                                        "tag": "ArrayTVec",
+                                        "inner": {
+                                            "tag": "StringTString"
+                                        }
+                                    },
+                                    "classname": "GSGleanTestArrayString"
+                                }
+                            },
+                            "fieldInfoName": "array2_of_string"
+                        }
+                    ],
+                    "classGenHasCycles": true,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "TypeReference",
+                        "refVersion": 4,
+                        "refName": "glean.test.KitchenSink"
+                    }
+                }
+            }
+        },
+        "GSGleanTestRef": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Wrapper",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "NamedTypeTNamed",
+                                    "tref": {
+                                        "name": "glean.test.KitchenSink",
+                                        "version": 4
+                                    },
+                                    "classname": "GSGleanTestKitchenSink"
+                                },
+                                "pref": {
+                                    "name": "glean.test.Predicate",
+                                    "version": 4
+                                },
+                                "classname": "GSGleanTestPredicate"
+                            },
+                            "fieldInfoName": "key"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "glean.test.Ref"
+                    }
+                }
+            }
+        },
+        "GSGleanTestMatchOneAlt": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "glean.test.Sum",
+                                    "version": 1
+                                },
+                                "classname": "GSGleanTestSum"
+                            },
+                            "fieldInfoName": "x"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "y"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.MatchOneAlt"
+                    }
+                }
+            }
+        },
+        "GSGleanTestFoo": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "KeyValue",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "key"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTKeyValue",
+                                "pref": {
+                                    "name": "glean.test.Bar",
+                                    "version": 4
+                                },
+                                "classname": "GSGleanTestBar"
+                            },
+                            "fieldInfoName": "value"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "glean.test.Foo"
+                    }
+                }
+            }
+        },
+        "GSGleanTestKitchenSink_DEPRECATED1": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "ByteTInt"
+                            },
+                            "fieldInfoName": "byt"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "nat"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "ByteTInt"
+                                }
+                            },
+                            "fieldInfoName": "array_of_byte"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NatTInt"
+                                }
+                            },
+                            "fieldInfoName": "array_of_nat"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "RecordTShape",
+                                "fields": [
+                                    [
+                                        "a",
+                                        {
+                                            "tag": "ByteTInt"
+                                        }
+                                    ],
+                                    [
+                                        "b",
+                                        {
+                                            "tag": "NatTInt"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "fieldInfoName": "record_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "SumTShape",
+                                "fields": [
+                                    [
+                                        "c",
+                                        {
+                                            "tag": "ByteTInt"
+                                        }
+                                    ],
+                                    [
+                                        "d",
+                                        {
+                                            "tag": "NatTInt"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "fieldInfoName": "sum_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "glean.test.Rec",
+                                    "version": 1
+                                },
+                                "classname": "GSGleanTestRec"
+                            },
+                            "fieldInfoName": "named_record_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "glean.test.Sum",
+                                    "version": 1
+                                },
+                                "classname": "GSGleanTestSum"
+                            },
+                            "fieldInfoName": "named_sum_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTEnum",
+                                "tref": {
+                                    "name": "glean.test.Enum",
+                                    "version": 1
+                                },
+                                "alts": [
+                                    "red",
+                                    "green",
+                                    "blue"
+                                ],
+                                "classname": "GSGleanTestEnum"
+                            },
+                            "fieldInfoName": "named_enum_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "ArrayTVec",
+                                    "inner": {
+                                        "tag": "ByteTInt"
+                                    }
+                                },
+                                "pref": {
+                                    "name": "sys.Blob",
+                                    "version": 1
+                                },
+                                "classname": "GSSysBlob"
+                            },
+                            "fieldInfoName": "pred"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "MaybeTOption",
+                                "inner": {
+                                    "tag": "RecordTShape",
+                                    "fields": []
+                                }
+                            },
+                            "fieldInfoName": "maybe_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "BooleanTBool"
+                            },
+                            "fieldInfoName": "bool_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "string_"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "TypeReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.KitchenSink"
+                    }
+                }
+            }
+        },
+        "GSGleanTestUnbound2": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "x"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "y"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.Unbound2"
+                    }
+                }
+            }
+        },
+        "GSGleanTestTreeToTree": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "KeyValue",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "glean.test.Tree",
+                                    "version": 4
+                                },
+                                "classname": "GSGleanTestTree"
+                            },
+                            "fieldInfoName": "key"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "glean.test.Tree",
+                                    "version": 4
+                                },
+                                "classname": "GSGleanTestTree"
+                            },
+                            "fieldInfoName": "value"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "glean.test.TreeToTree"
+                    }
+                }
+            }
+        },
+        "GSGleanTestSum": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Union",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "ByteTInt"
+                            },
+                            "fieldInfoName": "mon"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "tue"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "BooleanTBool"
+                            },
+                            "fieldInfoName": "wed"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "TypeReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.Sum"
+                    }
+                }
+            }
+        },
+        "GSGleanTestDualStringPair": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "glean.test.StringPair",
+                                    "version": 1
+                                },
+                                "classname": "GSGleanTestStringPair"
+                            },
+                            "fieldInfoName": "fst"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "glean.test.StringPair",
+                                    "version": 1
+                                },
+                                "classname": "GSGleanTestStringPair"
+                            },
+                            "fieldInfoName": "snd"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.DualStringPair"
+                    }
+                }
+            }
+        },
+        "GSGleanTestNode": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "label"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "glean.test.Node"
+                    }
+                }
+            }
+        },
+        "GSGleanTestRevStringPairs": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "x"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "glean.test.RevStringPair",
+                                    "version": 1
+                                },
+                                "classname": "GSGleanTestRevStringPair"
+                            },
+                            "fieldInfoName": "r"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.RevStringPairs"
+                    }
+                }
+            }
+        },
+        "GSGleanTestStoredRevStringPair": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "fst"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "snd"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.StoredRevStringPair"
+                    }
+                }
+            }
+        },
+        "GSGleanTestWrappedStringPair": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "glean.test.StringPair",
+                                    "version": 1
+                                },
+                                "classname": "GSGleanTestStringPair"
+                            },
+                            "fieldInfoName": "wrapped"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "TypeReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.WrappedStringPair"
+                    }
+                }
+            }
+        },
+        "GSGleanTestArrayNat": {
+            "tag": "AliasType",
+            "contents": {
+                "tag": "ArrayTVec",
+                "inner": {
+                    "tag": "NatTInt"
+                }
+            }
+        },
+        "GSGleanTestRevStringPairRec": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "fst"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "snd"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.RevStringPairRec"
+                    }
+                }
+            }
+        },
+        "GSGleanTestName": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Wrapper",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "key"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.Name"
+                    }
+                }
+            }
+        },
+        "GSGleanTestStringPair": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "fst"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "snd"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.StringPair"
+                    }
+                }
+            }
+        },
+        "GSGleanTestArrayBool": {
+            "tag": "AliasType",
+            "contents": {
+                "tag": "ArrayTVec",
+                "inner": {
+                    "tag": "BooleanTBool"
+                }
+            }
+        },
+        "GSGleanTestRec": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTEnum",
+                                "tref": {
+                                    "name": "glean.test.Enum",
+                                    "version": 1
+                                },
+                                "alts": [
+                                    "red",
+                                    "green",
+                                    "blue"
+                                ],
+                                "classname": "GSGleanTestEnum"
+                            },
+                            "fieldInfoName": "alpha"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "glean.test.Sum",
+                                    "version": 1
+                                },
+                                "classname": "GSGleanTestSum"
+                            },
+                            "fieldInfoName": "beta"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "TypeReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.Rec"
+                    }
+                }
+            }
+        },
+        "GSGleanTestLeftOr2": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "x"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "y"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.LeftOr2"
+                    }
+                }
+            }
+        },
+        "GSGleanTestArrayString": {
+            "tag": "AliasType",
+            "contents": {
+                "tag": "ArrayTVec",
+                "inner": {
+                    "tag": "StringTString"
+                }
+            }
+        },
+        "GSGleanTestUnbound": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "x"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "y"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.Unbound"
+                    }
+                }
+            }
+        },
+        "GSGleanTestPredicate": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Wrapper",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "glean.test.KitchenSink",
+                                    "version": 4
+                                },
+                                "classname": "GSGleanTestKitchenSink"
+                            },
+                            "fieldInfoName": "key"
+                        }
+                    ],
+                    "classGenHasCycles": true,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "glean.test.Predicate"
+                    }
+                }
+            }
+        },
+        "GSGleanTestStoredRevStringPairWithA": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "fst"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "snd"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.StoredRevStringPairWithA"
+                    }
+                }
+            }
+        },
+        "GSGleanTestPredicate_DEPRECATED1": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Wrapper",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "glean.test.KitchenSink",
+                                    "version": 1
+                                },
+                                "classname": "GSGleanTestKitchenSink_DEPRECATED1"
+                            },
+                            "fieldInfoName": "key"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.Predicate"
+                    }
+                }
+            }
+        },
+        "GSGleanTestTree": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "node"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "MaybeTOption",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "glean.test.Tree",
+                                        "version": 4
+                                    },
+                                    "classname": "GSGleanTestTree"
+                                }
+                            },
+                            "fieldInfoName": "left"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "MaybeTOption",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "glean.test.Tree",
+                                        "version": 4
+                                    },
+                                    "classname": "GSGleanTestTree"
+                                }
+                            },
+                            "fieldInfoName": "right"
+                        }
+                    ],
+                    "classGenHasCycles": true,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "glean.test.Tree"
+                    }
+                }
+            }
+        },
+        "GSGleanTestLeftOr": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "x"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "y"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.LeftOr"
+                    }
+                }
+            }
+        },
+        "GSGleanTestRevStringPair": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "fst"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "snd"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.RevStringPair"
+                    }
+                }
+            }
+        },
+        "GSGleanTestEntity": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Union",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "code.cxx.Entity",
+                                    "version": 3
+                                },
+                                "classname": "GSCodeCxxEntity"
+                            },
+                            "fieldInfoName": "cxx"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "pp1.Define",
+                                    "version": 1
+                                },
+                                "classname": "GSPp1Define"
+                            },
+                            "fieldInfoName": "pp"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "TypeReference",
+                        "refVersion": 4,
+                        "refName": "glean.test.Entity"
+                    }
+                }
+            }
+        },
+        "GSGleanTestArrayByte": {
+            "tag": "AliasType",
+            "contents": {
+                "tag": "ArrayTVec",
+                "inner": {
+                    "tag": "ByteTInt"
+                }
+            }
+        },
+        "GSGleanTestIsGlean": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Wrapper",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "key"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.IsGlean"
+                    }
+                }
+            }
+        },
+        "GSGleanTestFooToFoo": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "KeyValue",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTKeyValue",
+                                "pref": {
+                                    "name": "glean.test.Foo",
+                                    "version": 4
+                                },
+                                "classname": "GSGleanTestFoo"
+                            },
+                            "fieldInfoName": "key"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTKeyValue",
+                                "pref": {
+                                    "name": "glean.test.Foo",
+                                    "version": 4
+                                },
+                                "classname": "GSGleanTestFoo"
+                            },
+                            "fieldInfoName": "value"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "glean.test.FooToFoo"
+                    }
+                }
+            }
+        },
+        "GSGleanTestEdge": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "glean.test.Node",
+                                    "version": 4
+                                },
+                                "classname": "GSGleanTestNode"
+                            },
+                            "fieldInfoName": "parent"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "glean.test.Node",
+                                    "version": 4
+                                },
+                                "classname": "GSGleanTestNode"
+                            },
+                            "fieldInfoName": "child"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "glean.test.Edge"
+                    }
+                }
+            }
+        },
+        "GSGleanTestDerivedKeyValue2": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "KeyValue",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "RecordTShape",
+                                "fields": [
+                                    [
+                                        "kstring",
+                                        {
+                                            "tag": "StringTString"
+                                        }
+                                    ],
+                                    [
+                                        "knat",
+                                        {
+                                            "tag": "NatTInt"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "fieldInfoName": "key"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "RecordTShape",
+                                "fields": [
+                                    [
+                                        "vnat",
+                                        {
+                                            "tag": "NatTInt"
+                                        }
+                                    ],
+                                    [
+                                        "vstring",
+                                        {
+                                            "tag": "StringTString"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "fieldInfoName": "value"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.DerivedKeyValue2"
+                    }
+                }
+            }
+        },
+        "GSGleanTestEnum": {
+            "tag": "EnumType",
+            "contents": [
+                "red",
+                "green",
+                "blue"
+            ]
+        },
+        "GSGleanTestNothingTest": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "MaybeTOption",
+                                "inner": {
+                                    "tag": "StringTString"
+                                }
+                            },
+                            "fieldInfoName": "a"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "b"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "glean.test.nothingTest"
+                    }
+                }
+            }
+        },
+        "GSGleanTestRefRef": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Wrapper",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "PredicateT",
+                                    "inner": {
+                                        "tag": "NamedTypeTNamed",
+                                        "tref": {
+                                            "name": "glean.test.KitchenSink",
+                                            "version": 4
+                                        },
+                                        "classname": "GSGleanTestKitchenSink"
+                                    },
+                                    "pref": {
+                                        "name": "glean.test.Predicate",
+                                        "version": 4
+                                    },
+                                    "classname": "GSGleanTestPredicate"
+                                },
+                                "pref": {
+                                    "name": "glean.test.Ref",
+                                    "version": 4
+                                },
+                                "classname": "GSGleanTestRef"
+                            },
+                            "fieldInfoName": "key"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "glean.test.RefRef"
+                    }
+                }
+            }
+        },
+        "GSGleanTestReflStringPair": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Wrapper",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "key"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.ReflStringPair"
+                    }
+                }
+            }
+        },
+        "GSGleanTestStringPairBox": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "glean.test.StringPair",
+                                    "version": 1
+                                },
+                                "classname": "GSGleanTestStringPair"
+                            },
+                            "fieldInfoName": "box"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "glean.test.StringPairBox"
+                    }
+                }
+            }
+        }
+    },
+    "enums": {
+        "GSGleanTestKitchenSinkEnumFor_enum_": [
+            [
+                "e",
+                "e"
+            ],
+            [
+                "f",
+                "f"
+            ],
+            [
+                "g",
+                "g"
+            ]
+        ]
+    }
+}

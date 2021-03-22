@@ -1,1 +1,23 @@
-{"namespace":"GSBuiltin","generated":"@generated - To regenerated this file run fbcode//glean/schema/gen/sync-www","genTypes":{"GSBuiltinUnit":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"TypeReference","refVersion":1,"refName":"builtin.Unit"}}}}},"enums":{}}
+{
+    "namespace": "GSBuiltin",
+    "generated": "@generated - To regenerated this file run fbcode//glean/schema/gen/sync-www",
+    "genTypes": {
+        "GSBuiltinUnit": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "TypeReference",
+                        "refVersion": 1,
+                        "refName": "builtin.Unit"
+                    }
+                }
+            }
+        }
+    },
+    "enums": {}
+}

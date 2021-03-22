@@ -1,1 +1,2191 @@
-{"namespace":"GSJava","generated":"@generated - To regenerated this file run fbcode//glean/schema/gen/sync-www","genTypes":{"GSJavaFileXRefs":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"src.File","version":1},"classname":"GSSrcFile"},"fieldInfoName":"file"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.XRef","version":3},"classname":"GSJavaXRef"}},"fieldInfoName":"xrefs"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":3,"refName":"java.FileXRefs"}}}},"GSJavaType_DEPRECATED2":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"java.Name","version":2},"classname":"GSJavaName"},"fieldInfoName":"type"}],"classGenHasCycles":false,"classGenReference":{"refLatest":false,"refTag":"PredicateReference","refVersion":2,"refName":"java.Type"}}}},"GSJavaConstructorDeclaration_DEPRECATED2":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.VariableDeclaration","version":2},"classname":"GSJavaVariableDeclaration_DEPRECATED2"}},"fieldInfoName":"parameters"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTEnum","tref":{"name":"java.Modifier","version":2},"alts":["abstract_","default_","final_","native_","private_","protected_","public_","static_","strictfp_","synchronized_","transient_","volatile_"],"classname":"GSJavaModifier"}},"fieldInfoName":"modifiers"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.Loc","version":1},"classname":"GSSrcLoc"},"fieldInfoName":"loc"}],"classGenHasCycles":false,"classGenReference":{"refLatest":false,"refTag":"PredicateReference","refVersion":2,"refName":"java.ConstructorDeclaration"}}}},"GSJavaInheritance":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":3},"classname":"GSJavaType"},"fieldInfoName":"base"},{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.ClassDeclaration","version":4},"classname":"GSJavaClassDeclaration"},"fieldInfoName":"subclass"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":4,"refName":"java.Inheritance"}}}},"GSJavaTypeArg":{"tag":"ClassType","contents":{"tag":"Union","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":3},"classname":"GSJavaType"},"fieldInfoName":"type"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"java.Wildcard","version":3},"classname":"GSJavaWildcard"},"fieldInfoName":"wildcard"}],"classGenHasCycles":true,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":3,"refName":"java.TypeArg"}}}},"GSJavaModifier":{"tag":"EnumType","contents":["abstract_","default_","final_","native_","private_","protected_","public_","static_","strictfp_","synchronized_","transient_","volatile_"]},"GSJavaTypeParam":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":3},"classname":"GSJavaType"}},"fieldInfoName":"extends_"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":3,"refName":"java.TypeParam"}}}},"GSJavaMethodDeclaration":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.QName","version":3},"classname":"GSJavaQName"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.VariableDeclaration","version":4},"classname":"GSJavaVariableDeclaration"}},"fieldInfoName":"parameters"},{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":3},"classname":"GSJavaType"},"fieldInfoName":"returnType"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.Annotation","version":4},"classname":"GSJavaAnnotation"}},"fieldInfoName":"annotations"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTEnum","tref":{"name":"java.Modifier","version":2},"alts":["abstract_","default_","final_","native_","private_","protected_","public_","static_","strictfp_","synchronized_","transient_","volatile_"],"classname":"GSJavaModifier"}},"fieldInfoName":"modifiers"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.TypeParam","version":3},"classname":"GSJavaTypeParam"}},"fieldInfoName":"typeParams"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.Loc","version":1},"classname":"GSSrcLoc"},"fieldInfoName":"loc"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":4,"refName":"java.MethodDeclaration"}}}},"GSJavaAnnotation":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.QName","version":3},"classname":"GSJavaQName"},"fieldInfoName":"name"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":4,"refName":"java.Annotation"}}}},"GSJavaVariableDeclaration_DEPRECATED2":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":2},"classname":"GSJavaType_DEPRECATED2"},"fieldInfoName":"type"},{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"java.Name","version":2},"classname":"GSJavaName"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTEnum","tref":{"name":"java.Modifier","version":2},"alts":["abstract_","default_","final_","native_","private_","protected_","public_","static_","strictfp_","synchronized_","transient_","volatile_"],"classname":"GSJavaModifier"}},"fieldInfoName":"modifiers"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.Loc","version":1},"classname":"GSSrcLoc"},"fieldInfoName":"loc"}],"classGenHasCycles":false,"classGenReference":{"refLatest":false,"refTag":"PredicateReference","refVersion":2,"refName":"java.VariableDeclaration"}}}},"GSJavaConstructorDeclaration_DEPRECATED3":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.QName","version":3},"classname":"GSJavaQName"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.VariableDeclaration","version":3},"classname":"GSJavaVariableDeclaration_DEPRECATED3"}},"fieldInfoName":"parameters"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTEnum","tref":{"name":"java.Modifier","version":2},"alts":["abstract_","default_","final_","native_","private_","protected_","public_","static_","strictfp_","synchronized_","transient_","volatile_"],"classname":"GSJavaModifier"}},"fieldInfoName":"modifiers"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.TypeParam","version":3},"classname":"GSJavaTypeParam"}},"fieldInfoName":"typeParams"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.Loc","version":1},"classname":"GSSrcLoc"},"fieldInfoName":"loc"}],"classGenHasCycles":false,"classGenReference":{"refLatest":false,"refTag":"PredicateReference","refVersion":3,"refName":"java.ConstructorDeclaration"}}}},"GSJavaInterfaceDeclaration":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.QName","version":3},"classname":"GSJavaQName"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.Annotation","version":4},"classname":"GSJavaAnnotation"}},"fieldInfoName":"annotations"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTEnum","tref":{"name":"java.Modifier","version":2},"alts":["abstract_","default_","final_","native_","private_","protected_","public_","static_","strictfp_","synchronized_","transient_","volatile_"],"classname":"GSJavaModifier"}},"fieldInfoName":"modifiers"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":3},"classname":"GSJavaType"}},"fieldInfoName":"extends_"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.MethodDeclaration","version":4},"classname":"GSJavaMethodDeclaration"}},"fieldInfoName":"methods"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.TypeParam","version":3},"classname":"GSJavaTypeParam"}},"fieldInfoName":"typeParams"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.Loc","version":1},"classname":"GSSrcLoc"},"fieldInfoName":"loc"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":4,"refName":"java.InterfaceDeclaration"}}}},"GSJavaAnnotatedClass":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.Annotation","version":4},"classname":"GSJavaAnnotation"},"fieldInfoName":"annotation"},{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.ClassDeclaration","version":4},"classname":"GSJavaClassDeclaration"},"fieldInfoName":"class_"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":4,"refName":"java.AnnotatedClass"}}}},"GSJavaVariableDeclaration_DEPRECATED3":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.QName","version":3},"classname":"GSJavaQName"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":3},"classname":"GSJavaType"},"fieldInfoName":"type"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTEnum","tref":{"name":"java.Modifier","version":2},"alts":["abstract_","default_","final_","native_","private_","protected_","public_","static_","strictfp_","synchronized_","transient_","volatile_"],"classname":"GSJavaModifier"}},"fieldInfoName":"modifiers"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.Loc","version":1},"classname":"GSSrcLoc"},"fieldInfoName":"loc"}],"classGenHasCycles":false,"classGenReference":{"refLatest":false,"refTag":"PredicateReference","refVersion":3,"refName":"java.VariableDeclaration"}}}},"GSJavaQName":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"MaybeTOption","inner":{"tag":"StringTString"}},"fieldInfoName":"fqn"},{"fieldInfoType":{"tag":"MaybeTOption","inner":{"tag":"StringTString"}},"fieldInfoName":"signature"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":3,"refName":"java.QName"}}}},"GSJavaVariableDeclaration":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.QName","version":3},"classname":"GSJavaQName"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":3},"classname":"GSJavaType"},"fieldInfoName":"type"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.Annotation","version":4},"classname":"GSJavaAnnotation"}},"fieldInfoName":"annotations"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTEnum","tref":{"name":"java.Modifier","version":2},"alts":["abstract_","default_","final_","native_","private_","protected_","public_","static_","strictfp_","synchronized_","transient_","volatile_"],"classname":"GSJavaModifier"}},"fieldInfoName":"modifiers"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.Loc","version":1},"classname":"GSSrcLoc"},"fieldInfoName":"loc"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":4,"refName":"java.VariableDeclaration"}}}},"GSJavaXRef":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"java.XRefTarget","version":3},"classname":"GSJavaXRefTarget"},"fieldInfoName":"target"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTNamed","tref":{"name":"src.ByteSpan","version":1},"classname":"GSSrcByteSpan"}},"fieldInfoName":"ranges"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":3,"refName":"java.XRef"}}}},"GSJavaName":{"tag":"ClassType","contents":{"tag":"Wrapper","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"key"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":2,"refName":"java.Name"}}}},"GSJavaWildcard":{"tag":"ClassType","contents":{"tag":"Union","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":3},"classname":"GSJavaType"},"fieldInfoName":"extends_"},{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":3},"classname":"GSJavaType"},"fieldInfoName":"super_"},{"fieldInfoType":{"tag":"BooleanTBool"},"fieldInfoName":"unbounded"}],"classGenHasCycles":true,"classGenReference":{"refLatest":true,"refTag":"TypeReference","refVersion":3,"refName":"java.Wildcard"}}}},"GSJavaClassDeclaration_DEPRECATED2":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"java.Name","version":2},"classname":"GSJavaName"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTEnum","tref":{"name":"java.Modifier","version":2},"alts":["abstract_","default_","final_","native_","private_","protected_","public_","static_","strictfp_","synchronized_","transient_","volatile_"],"classname":"GSJavaModifier"}},"fieldInfoName":"modifiers"},{"fieldInfoType":{"tag":"MaybeTOption","inner":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":2},"classname":"GSJavaType_DEPRECATED2"}},"fieldInfoName":"extends_"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":2},"classname":"GSJavaType_DEPRECATED2"}},"fieldInfoName":"implements_"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.VariableDeclaration","version":2},"classname":"GSJavaVariableDeclaration_DEPRECATED2"}},"fieldInfoName":"variables"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.ConstructorDeclaration","version":2},"classname":"GSJavaConstructorDeclaration_DEPRECATED2"}},"fieldInfoName":"constructors"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.MethodDeclaration","version":2},"classname":"GSJavaMethodDeclaration_DEPRECATED2"}},"fieldInfoName":"methods"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.Loc","version":1},"classname":"GSSrcLoc"},"fieldInfoName":"loc"}],"classGenHasCycles":false,"classGenReference":{"refLatest":false,"refTag":"PredicateReference","refVersion":2,"refName":"java.ClassDeclaration"}}}},"GSJavaMethodDeclaration_DEPRECATED3":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.QName","version":3},"classname":"GSJavaQName"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.VariableDeclaration","version":3},"classname":"GSJavaVariableDeclaration_DEPRECATED3"}},"fieldInfoName":"parameters"},{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":3},"classname":"GSJavaType"},"fieldInfoName":"returnType"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTEnum","tref":{"name":"java.Modifier","version":2},"alts":["abstract_","default_","final_","native_","private_","protected_","public_","static_","strictfp_","synchronized_","transient_","volatile_"],"classname":"GSJavaModifier"}},"fieldInfoName":"modifiers"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.TypeParam","version":3},"classname":"GSJavaTypeParam"}},"fieldInfoName":"typeParams"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.Loc","version":1},"classname":"GSSrcLoc"},"fieldInfoName":"loc"}],"classGenHasCycles":false,"classGenReference":{"refLatest":false,"refTag":"PredicateReference","refVersion":3,"refName":"java.MethodDeclaration"}}}},"GSJavaType":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"type"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.TypeArg","version":3},"classname":"GSJavaTypeArg"}},"fieldInfoName":"typeArgs"}],"classGenHasCycles":true,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":3,"refName":"java.Type"}}}},"GSJavaInterfaceDeclaration_DEPRECATED3":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.QName","version":3},"classname":"GSJavaQName"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTEnum","tref":{"name":"java.Modifier","version":2},"alts":["abstract_","default_","final_","native_","private_","protected_","public_","static_","strictfp_","synchronized_","transient_","volatile_"],"classname":"GSJavaModifier"}},"fieldInfoName":"modifiers"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":3},"classname":"GSJavaType"}},"fieldInfoName":"extends_"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.MethodDeclaration","version":3},"classname":"GSJavaMethodDeclaration_DEPRECATED3"}},"fieldInfoName":"methods"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.TypeParam","version":3},"classname":"GSJavaTypeParam"}},"fieldInfoName":"typeParams"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.Loc","version":1},"classname":"GSSrcLoc"},"fieldInfoName":"loc"}],"classGenHasCycles":false,"classGenReference":{"refLatest":false,"refTag":"PredicateReference","refVersion":3,"refName":"java.InterfaceDeclaration"}}}},"GSJavaXRefTarget":{"tag":"ClassType","contents":{"tag":"Union","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.QName","version":3},"classname":"GSJavaQName"},"fieldInfoName":"class_or_interface_"},{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.QName","version":3},"classname":"GSJavaQName"},"fieldInfoName":"ctor_"},{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.QName","version":3},"classname":"GSJavaQName"},"fieldInfoName":"method_"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"TypeReference","refVersion":3,"refName":"java.XRefTarget"}}}},"GSJavaConstructorDeclaration":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.QName","version":3},"classname":"GSJavaQName"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.VariableDeclaration","version":4},"classname":"GSJavaVariableDeclaration"}},"fieldInfoName":"parameters"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.Annotation","version":4},"classname":"GSJavaAnnotation"}},"fieldInfoName":"annotations"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTEnum","tref":{"name":"java.Modifier","version":2},"alts":["abstract_","default_","final_","native_","private_","protected_","public_","static_","strictfp_","synchronized_","transient_","volatile_"],"classname":"GSJavaModifier"}},"fieldInfoName":"modifiers"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.TypeParam","version":3},"classname":"GSJavaTypeParam"}},"fieldInfoName":"typeParams"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.Loc","version":1},"classname":"GSSrcLoc"},"fieldInfoName":"loc"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":4,"refName":"java.ConstructorDeclaration"}}}},"GSJavaClassDeclaration_DEPRECATED3":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.QName","version":3},"classname":"GSJavaQName"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTEnum","tref":{"name":"java.Modifier","version":2},"alts":["abstract_","default_","final_","native_","private_","protected_","public_","static_","strictfp_","synchronized_","transient_","volatile_"],"classname":"GSJavaModifier"}},"fieldInfoName":"modifiers"},{"fieldInfoType":{"tag":"MaybeTOption","inner":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":3},"classname":"GSJavaType"}},"fieldInfoName":"extends_"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":3},"classname":"GSJavaType"}},"fieldInfoName":"implements_"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.VariableDeclaration","version":3},"classname":"GSJavaVariableDeclaration_DEPRECATED3"}},"fieldInfoName":"variables"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.ConstructorDeclaration","version":3},"classname":"GSJavaConstructorDeclaration_DEPRECATED3"}},"fieldInfoName":"constructors"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.MethodDeclaration","version":3},"classname":"GSJavaMethodDeclaration_DEPRECATED3"}},"fieldInfoName":"methods"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.TypeParam","version":3},"classname":"GSJavaTypeParam"}},"fieldInfoName":"typeParams"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.Loc","version":1},"classname":"GSSrcLoc"},"fieldInfoName":"loc"}],"classGenHasCycles":false,"classGenReference":{"refLatest":false,"refTag":"PredicateReference","refVersion":3,"refName":"java.ClassDeclaration"}}}},"GSJavaMethodDeclaration_DEPRECATED2":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"java.Name","version":2},"classname":"GSJavaName"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.VariableDeclaration","version":2},"classname":"GSJavaVariableDeclaration_DEPRECATED2"}},"fieldInfoName":"parameters"},{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":2},"classname":"GSJavaType_DEPRECATED2"},"fieldInfoName":"returnType"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTEnum","tref":{"name":"java.Modifier","version":2},"alts":["abstract_","default_","final_","native_","private_","protected_","public_","static_","strictfp_","synchronized_","transient_","volatile_"],"classname":"GSJavaModifier"}},"fieldInfoName":"modifiers"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.Loc","version":1},"classname":"GSSrcLoc"},"fieldInfoName":"loc"}],"classGenHasCycles":false,"classGenReference":{"refLatest":false,"refTag":"PredicateReference","refVersion":2,"refName":"java.MethodDeclaration"}}}},"GSJavaClassDeclaration":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.QName","version":3},"classname":"GSJavaQName"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTEnum","tref":{"name":"java.Modifier","version":2},"alts":["abstract_","default_","final_","native_","private_","protected_","public_","static_","strictfp_","synchronized_","transient_","volatile_"],"classname":"GSJavaModifier"}},"fieldInfoName":"modifiers"},{"fieldInfoType":{"tag":"MaybeTOption","inner":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":3},"classname":"GSJavaType"}},"fieldInfoName":"extends_"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":3},"classname":"GSJavaType"}},"fieldInfoName":"implements_"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.Annotation","version":4},"classname":"GSJavaAnnotation"}},"fieldInfoName":"annotations"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.VariableDeclaration","version":4},"classname":"GSJavaVariableDeclaration"}},"fieldInfoName":"variables"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.ConstructorDeclaration","version":4},"classname":"GSJavaConstructorDeclaration"}},"fieldInfoName":"constructors"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.MethodDeclaration","version":4},"classname":"GSJavaMethodDeclaration"}},"fieldInfoName":"methods"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.TypeParam","version":3},"classname":"GSJavaTypeParam"}},"fieldInfoName":"typeParams"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.Loc","version":1},"classname":"GSSrcLoc"},"fieldInfoName":"loc"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":4,"refName":"java.ClassDeclaration"}}}},"GSJavaInheritance_DEPRECATED3":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":3},"classname":"GSJavaType"},"fieldInfoName":"base"},{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"java.ClassDeclaration","version":3},"classname":"GSJavaClassDeclaration_DEPRECATED3"},"fieldInfoName":"subclass"}],"classGenHasCycles":false,"classGenReference":{"refLatest":false,"refTag":"PredicateReference","refVersion":3,"refName":"java.Inheritance"}}}},"GSJavaInterfaceDeclaration_DEPRECATED2":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"java.Name","version":2},"classname":"GSJavaName"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTEnum","tref":{"name":"java.Modifier","version":2},"alts":["abstract_","default_","final_","native_","private_","protected_","public_","static_","strictfp_","synchronized_","transient_","volatile_"],"classname":"GSJavaModifier"}},"fieldInfoName":"modifiers"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.Type","version":2},"classname":"GSJavaType_DEPRECATED2"}},"fieldInfoName":"extends_"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"java.MethodDeclaration","version":2},"classname":"GSJavaMethodDeclaration_DEPRECATED2"}},"fieldInfoName":"methods"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.Loc","version":1},"classname":"GSSrcLoc"},"fieldInfoName":"loc"}],"classGenHasCycles":false,"classGenReference":{"refLatest":false,"refTag":"PredicateReference","refVersion":2,"refName":"java.InterfaceDeclaration"}}}}},"enums":{}}
+{
+    "namespace": "GSJava",
+    "generated": "@generated - To regenerated this file run fbcode//glean/schema/gen/sync-www",
+    "genTypes": {
+        "GSJavaFileXRefs": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "src.File",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcFile"
+                            },
+                            "fieldInfoName": "file"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.XRef",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaXRef"
+                                }
+                            },
+                            "fieldInfoName": "xrefs"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 3,
+                        "refName": "java.FileXRefs"
+                    }
+                }
+            }
+        },
+        "GSJavaType_DEPRECATED2": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "java.Name",
+                                    "version": 2
+                                },
+                                "classname": "GSJavaName"
+                            },
+                            "fieldInfoName": "type"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "PredicateReference",
+                        "refVersion": 2,
+                        "refName": "java.Type"
+                    }
+                }
+            }
+        },
+        "GSJavaConstructorDeclaration_DEPRECATED2": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.VariableDeclaration",
+                                        "version": 2
+                                    },
+                                    "classname": "GSJavaVariableDeclaration_DEPRECATED2"
+                                }
+                            },
+                            "fieldInfoName": "parameters"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTEnum",
+                                    "tref": {
+                                        "name": "java.Modifier",
+                                        "version": 2
+                                    },
+                                    "alts": [
+                                        "abstract_",
+                                        "default_",
+                                        "final_",
+                                        "native_",
+                                        "private_",
+                                        "protected_",
+                                        "public_",
+                                        "static_",
+                                        "strictfp_",
+                                        "synchronized_",
+                                        "transient_",
+                                        "volatile_"
+                                    ],
+                                    "classname": "GSJavaModifier"
+                                }
+                            },
+                            "fieldInfoName": "modifiers"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.Loc",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcLoc"
+                            },
+                            "fieldInfoName": "loc"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "PredicateReference",
+                        "refVersion": 2,
+                        "refName": "java.ConstructorDeclaration"
+                    }
+                }
+            }
+        },
+        "GSJavaInheritance": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.Type",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaType"
+                            },
+                            "fieldInfoName": "base"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.ClassDeclaration",
+                                    "version": 4
+                                },
+                                "classname": "GSJavaClassDeclaration"
+                            },
+                            "fieldInfoName": "subclass"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "java.Inheritance"
+                    }
+                }
+            }
+        },
+        "GSJavaTypeArg": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Union",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.Type",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaType"
+                            },
+                            "fieldInfoName": "type"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "java.Wildcard",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaWildcard"
+                            },
+                            "fieldInfoName": "wildcard"
+                        }
+                    ],
+                    "classGenHasCycles": true,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 3,
+                        "refName": "java.TypeArg"
+                    }
+                }
+            }
+        },
+        "GSJavaModifier": {
+            "tag": "EnumType",
+            "contents": [
+                "abstract_",
+                "default_",
+                "final_",
+                "native_",
+                "private_",
+                "protected_",
+                "public_",
+                "static_",
+                "strictfp_",
+                "synchronized_",
+                "transient_",
+                "volatile_"
+            ]
+        },
+        "GSJavaTypeParam": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.Type",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaType"
+                                }
+                            },
+                            "fieldInfoName": "extends_"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 3,
+                        "refName": "java.TypeParam"
+                    }
+                }
+            }
+        },
+        "GSJavaMethodDeclaration": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.QName",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaQName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.VariableDeclaration",
+                                        "version": 4
+                                    },
+                                    "classname": "GSJavaVariableDeclaration"
+                                }
+                            },
+                            "fieldInfoName": "parameters"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.Type",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaType"
+                            },
+                            "fieldInfoName": "returnType"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.Annotation",
+                                        "version": 4
+                                    },
+                                    "classname": "GSJavaAnnotation"
+                                }
+                            },
+                            "fieldInfoName": "annotations"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTEnum",
+                                    "tref": {
+                                        "name": "java.Modifier",
+                                        "version": 2
+                                    },
+                                    "alts": [
+                                        "abstract_",
+                                        "default_",
+                                        "final_",
+                                        "native_",
+                                        "private_",
+                                        "protected_",
+                                        "public_",
+                                        "static_",
+                                        "strictfp_",
+                                        "synchronized_",
+                                        "transient_",
+                                        "volatile_"
+                                    ],
+                                    "classname": "GSJavaModifier"
+                                }
+                            },
+                            "fieldInfoName": "modifiers"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.TypeParam",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaTypeParam"
+                                }
+                            },
+                            "fieldInfoName": "typeParams"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.Loc",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcLoc"
+                            },
+                            "fieldInfoName": "loc"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "java.MethodDeclaration"
+                    }
+                }
+            }
+        },
+        "GSJavaAnnotation": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.QName",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaQName"
+                            },
+                            "fieldInfoName": "name"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "java.Annotation"
+                    }
+                }
+            }
+        },
+        "GSJavaVariableDeclaration_DEPRECATED2": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.Type",
+                                    "version": 2
+                                },
+                                "classname": "GSJavaType_DEPRECATED2"
+                            },
+                            "fieldInfoName": "type"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "java.Name",
+                                    "version": 2
+                                },
+                                "classname": "GSJavaName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTEnum",
+                                    "tref": {
+                                        "name": "java.Modifier",
+                                        "version": 2
+                                    },
+                                    "alts": [
+                                        "abstract_",
+                                        "default_",
+                                        "final_",
+                                        "native_",
+                                        "private_",
+                                        "protected_",
+                                        "public_",
+                                        "static_",
+                                        "strictfp_",
+                                        "synchronized_",
+                                        "transient_",
+                                        "volatile_"
+                                    ],
+                                    "classname": "GSJavaModifier"
+                                }
+                            },
+                            "fieldInfoName": "modifiers"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.Loc",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcLoc"
+                            },
+                            "fieldInfoName": "loc"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "PredicateReference",
+                        "refVersion": 2,
+                        "refName": "java.VariableDeclaration"
+                    }
+                }
+            }
+        },
+        "GSJavaConstructorDeclaration_DEPRECATED3": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.QName",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaQName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.VariableDeclaration",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaVariableDeclaration_DEPRECATED3"
+                                }
+                            },
+                            "fieldInfoName": "parameters"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTEnum",
+                                    "tref": {
+                                        "name": "java.Modifier",
+                                        "version": 2
+                                    },
+                                    "alts": [
+                                        "abstract_",
+                                        "default_",
+                                        "final_",
+                                        "native_",
+                                        "private_",
+                                        "protected_",
+                                        "public_",
+                                        "static_",
+                                        "strictfp_",
+                                        "synchronized_",
+                                        "transient_",
+                                        "volatile_"
+                                    ],
+                                    "classname": "GSJavaModifier"
+                                }
+                            },
+                            "fieldInfoName": "modifiers"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.TypeParam",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaTypeParam"
+                                }
+                            },
+                            "fieldInfoName": "typeParams"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.Loc",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcLoc"
+                            },
+                            "fieldInfoName": "loc"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "PredicateReference",
+                        "refVersion": 3,
+                        "refName": "java.ConstructorDeclaration"
+                    }
+                }
+            }
+        },
+        "GSJavaInterfaceDeclaration": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.QName",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaQName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.Annotation",
+                                        "version": 4
+                                    },
+                                    "classname": "GSJavaAnnotation"
+                                }
+                            },
+                            "fieldInfoName": "annotations"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTEnum",
+                                    "tref": {
+                                        "name": "java.Modifier",
+                                        "version": 2
+                                    },
+                                    "alts": [
+                                        "abstract_",
+                                        "default_",
+                                        "final_",
+                                        "native_",
+                                        "private_",
+                                        "protected_",
+                                        "public_",
+                                        "static_",
+                                        "strictfp_",
+                                        "synchronized_",
+                                        "transient_",
+                                        "volatile_"
+                                    ],
+                                    "classname": "GSJavaModifier"
+                                }
+                            },
+                            "fieldInfoName": "modifiers"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.Type",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaType"
+                                }
+                            },
+                            "fieldInfoName": "extends_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.MethodDeclaration",
+                                        "version": 4
+                                    },
+                                    "classname": "GSJavaMethodDeclaration"
+                                }
+                            },
+                            "fieldInfoName": "methods"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.TypeParam",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaTypeParam"
+                                }
+                            },
+                            "fieldInfoName": "typeParams"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.Loc",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcLoc"
+                            },
+                            "fieldInfoName": "loc"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "java.InterfaceDeclaration"
+                    }
+                }
+            }
+        },
+        "GSJavaAnnotatedClass": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.Annotation",
+                                    "version": 4
+                                },
+                                "classname": "GSJavaAnnotation"
+                            },
+                            "fieldInfoName": "annotation"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.ClassDeclaration",
+                                    "version": 4
+                                },
+                                "classname": "GSJavaClassDeclaration"
+                            },
+                            "fieldInfoName": "class_"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "java.AnnotatedClass"
+                    }
+                }
+            }
+        },
+        "GSJavaVariableDeclaration_DEPRECATED3": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.QName",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaQName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.Type",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaType"
+                            },
+                            "fieldInfoName": "type"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTEnum",
+                                    "tref": {
+                                        "name": "java.Modifier",
+                                        "version": 2
+                                    },
+                                    "alts": [
+                                        "abstract_",
+                                        "default_",
+                                        "final_",
+                                        "native_",
+                                        "private_",
+                                        "protected_",
+                                        "public_",
+                                        "static_",
+                                        "strictfp_",
+                                        "synchronized_",
+                                        "transient_",
+                                        "volatile_"
+                                    ],
+                                    "classname": "GSJavaModifier"
+                                }
+                            },
+                            "fieldInfoName": "modifiers"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.Loc",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcLoc"
+                            },
+                            "fieldInfoName": "loc"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "PredicateReference",
+                        "refVersion": 3,
+                        "refName": "java.VariableDeclaration"
+                    }
+                }
+            }
+        },
+        "GSJavaQName": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "MaybeTOption",
+                                "inner": {
+                                    "tag": "StringTString"
+                                }
+                            },
+                            "fieldInfoName": "fqn"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "MaybeTOption",
+                                "inner": {
+                                    "tag": "StringTString"
+                                }
+                            },
+                            "fieldInfoName": "signature"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 3,
+                        "refName": "java.QName"
+                    }
+                }
+            }
+        },
+        "GSJavaVariableDeclaration": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.QName",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaQName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.Type",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaType"
+                            },
+                            "fieldInfoName": "type"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.Annotation",
+                                        "version": 4
+                                    },
+                                    "classname": "GSJavaAnnotation"
+                                }
+                            },
+                            "fieldInfoName": "annotations"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTEnum",
+                                    "tref": {
+                                        "name": "java.Modifier",
+                                        "version": 2
+                                    },
+                                    "alts": [
+                                        "abstract_",
+                                        "default_",
+                                        "final_",
+                                        "native_",
+                                        "private_",
+                                        "protected_",
+                                        "public_",
+                                        "static_",
+                                        "strictfp_",
+                                        "synchronized_",
+                                        "transient_",
+                                        "volatile_"
+                                    ],
+                                    "classname": "GSJavaModifier"
+                                }
+                            },
+                            "fieldInfoName": "modifiers"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.Loc",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcLoc"
+                            },
+                            "fieldInfoName": "loc"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "java.VariableDeclaration"
+                    }
+                }
+            }
+        },
+        "GSJavaXRef": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "java.XRefTarget",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaXRefTarget"
+                            },
+                            "fieldInfoName": "target"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTNamed",
+                                    "tref": {
+                                        "name": "src.ByteSpan",
+                                        "version": 1
+                                    },
+                                    "classname": "GSSrcByteSpan"
+                                }
+                            },
+                            "fieldInfoName": "ranges"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 3,
+                        "refName": "java.XRef"
+                    }
+                }
+            }
+        },
+        "GSJavaName": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Wrapper",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "key"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 2,
+                        "refName": "java.Name"
+                    }
+                }
+            }
+        },
+        "GSJavaWildcard": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Union",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.Type",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaType"
+                            },
+                            "fieldInfoName": "extends_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.Type",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaType"
+                            },
+                            "fieldInfoName": "super_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "BooleanTBool"
+                            },
+                            "fieldInfoName": "unbounded"
+                        }
+                    ],
+                    "classGenHasCycles": true,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "TypeReference",
+                        "refVersion": 3,
+                        "refName": "java.Wildcard"
+                    }
+                }
+            }
+        },
+        "GSJavaClassDeclaration_DEPRECATED2": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "java.Name",
+                                    "version": 2
+                                },
+                                "classname": "GSJavaName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTEnum",
+                                    "tref": {
+                                        "name": "java.Modifier",
+                                        "version": 2
+                                    },
+                                    "alts": [
+                                        "abstract_",
+                                        "default_",
+                                        "final_",
+                                        "native_",
+                                        "private_",
+                                        "protected_",
+                                        "public_",
+                                        "static_",
+                                        "strictfp_",
+                                        "synchronized_",
+                                        "transient_",
+                                        "volatile_"
+                                    ],
+                                    "classname": "GSJavaModifier"
+                                }
+                            },
+                            "fieldInfoName": "modifiers"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "MaybeTOption",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.Type",
+                                        "version": 2
+                                    },
+                                    "classname": "GSJavaType_DEPRECATED2"
+                                }
+                            },
+                            "fieldInfoName": "extends_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.Type",
+                                        "version": 2
+                                    },
+                                    "classname": "GSJavaType_DEPRECATED2"
+                                }
+                            },
+                            "fieldInfoName": "implements_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.VariableDeclaration",
+                                        "version": 2
+                                    },
+                                    "classname": "GSJavaVariableDeclaration_DEPRECATED2"
+                                }
+                            },
+                            "fieldInfoName": "variables"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.ConstructorDeclaration",
+                                        "version": 2
+                                    },
+                                    "classname": "GSJavaConstructorDeclaration_DEPRECATED2"
+                                }
+                            },
+                            "fieldInfoName": "constructors"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.MethodDeclaration",
+                                        "version": 2
+                                    },
+                                    "classname": "GSJavaMethodDeclaration_DEPRECATED2"
+                                }
+                            },
+                            "fieldInfoName": "methods"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.Loc",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcLoc"
+                            },
+                            "fieldInfoName": "loc"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "PredicateReference",
+                        "refVersion": 2,
+                        "refName": "java.ClassDeclaration"
+                    }
+                }
+            }
+        },
+        "GSJavaMethodDeclaration_DEPRECATED3": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.QName",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaQName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.VariableDeclaration",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaVariableDeclaration_DEPRECATED3"
+                                }
+                            },
+                            "fieldInfoName": "parameters"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.Type",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaType"
+                            },
+                            "fieldInfoName": "returnType"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTEnum",
+                                    "tref": {
+                                        "name": "java.Modifier",
+                                        "version": 2
+                                    },
+                                    "alts": [
+                                        "abstract_",
+                                        "default_",
+                                        "final_",
+                                        "native_",
+                                        "private_",
+                                        "protected_",
+                                        "public_",
+                                        "static_",
+                                        "strictfp_",
+                                        "synchronized_",
+                                        "transient_",
+                                        "volatile_"
+                                    ],
+                                    "classname": "GSJavaModifier"
+                                }
+                            },
+                            "fieldInfoName": "modifiers"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.TypeParam",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaTypeParam"
+                                }
+                            },
+                            "fieldInfoName": "typeParams"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.Loc",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcLoc"
+                            },
+                            "fieldInfoName": "loc"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "PredicateReference",
+                        "refVersion": 3,
+                        "refName": "java.MethodDeclaration"
+                    }
+                }
+            }
+        },
+        "GSJavaType": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "type"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.TypeArg",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaTypeArg"
+                                }
+                            },
+                            "fieldInfoName": "typeArgs"
+                        }
+                    ],
+                    "classGenHasCycles": true,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 3,
+                        "refName": "java.Type"
+                    }
+                }
+            }
+        },
+        "GSJavaInterfaceDeclaration_DEPRECATED3": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.QName",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaQName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTEnum",
+                                    "tref": {
+                                        "name": "java.Modifier",
+                                        "version": 2
+                                    },
+                                    "alts": [
+                                        "abstract_",
+                                        "default_",
+                                        "final_",
+                                        "native_",
+                                        "private_",
+                                        "protected_",
+                                        "public_",
+                                        "static_",
+                                        "strictfp_",
+                                        "synchronized_",
+                                        "transient_",
+                                        "volatile_"
+                                    ],
+                                    "classname": "GSJavaModifier"
+                                }
+                            },
+                            "fieldInfoName": "modifiers"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.Type",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaType"
+                                }
+                            },
+                            "fieldInfoName": "extends_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.MethodDeclaration",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaMethodDeclaration_DEPRECATED3"
+                                }
+                            },
+                            "fieldInfoName": "methods"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.TypeParam",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaTypeParam"
+                                }
+                            },
+                            "fieldInfoName": "typeParams"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.Loc",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcLoc"
+                            },
+                            "fieldInfoName": "loc"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "PredicateReference",
+                        "refVersion": 3,
+                        "refName": "java.InterfaceDeclaration"
+                    }
+                }
+            }
+        },
+        "GSJavaXRefTarget": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Union",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.QName",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaQName"
+                            },
+                            "fieldInfoName": "class_or_interface_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.QName",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaQName"
+                            },
+                            "fieldInfoName": "ctor_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.QName",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaQName"
+                            },
+                            "fieldInfoName": "method_"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "TypeReference",
+                        "refVersion": 3,
+                        "refName": "java.XRefTarget"
+                    }
+                }
+            }
+        },
+        "GSJavaConstructorDeclaration": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.QName",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaQName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.VariableDeclaration",
+                                        "version": 4
+                                    },
+                                    "classname": "GSJavaVariableDeclaration"
+                                }
+                            },
+                            "fieldInfoName": "parameters"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.Annotation",
+                                        "version": 4
+                                    },
+                                    "classname": "GSJavaAnnotation"
+                                }
+                            },
+                            "fieldInfoName": "annotations"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTEnum",
+                                    "tref": {
+                                        "name": "java.Modifier",
+                                        "version": 2
+                                    },
+                                    "alts": [
+                                        "abstract_",
+                                        "default_",
+                                        "final_",
+                                        "native_",
+                                        "private_",
+                                        "protected_",
+                                        "public_",
+                                        "static_",
+                                        "strictfp_",
+                                        "synchronized_",
+                                        "transient_",
+                                        "volatile_"
+                                    ],
+                                    "classname": "GSJavaModifier"
+                                }
+                            },
+                            "fieldInfoName": "modifiers"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.TypeParam",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaTypeParam"
+                                }
+                            },
+                            "fieldInfoName": "typeParams"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.Loc",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcLoc"
+                            },
+                            "fieldInfoName": "loc"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "java.ConstructorDeclaration"
+                    }
+                }
+            }
+        },
+        "GSJavaClassDeclaration_DEPRECATED3": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.QName",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaQName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTEnum",
+                                    "tref": {
+                                        "name": "java.Modifier",
+                                        "version": 2
+                                    },
+                                    "alts": [
+                                        "abstract_",
+                                        "default_",
+                                        "final_",
+                                        "native_",
+                                        "private_",
+                                        "protected_",
+                                        "public_",
+                                        "static_",
+                                        "strictfp_",
+                                        "synchronized_",
+                                        "transient_",
+                                        "volatile_"
+                                    ],
+                                    "classname": "GSJavaModifier"
+                                }
+                            },
+                            "fieldInfoName": "modifiers"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "MaybeTOption",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.Type",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaType"
+                                }
+                            },
+                            "fieldInfoName": "extends_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.Type",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaType"
+                                }
+                            },
+                            "fieldInfoName": "implements_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.VariableDeclaration",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaVariableDeclaration_DEPRECATED3"
+                                }
+                            },
+                            "fieldInfoName": "variables"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.ConstructorDeclaration",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaConstructorDeclaration_DEPRECATED3"
+                                }
+                            },
+                            "fieldInfoName": "constructors"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.MethodDeclaration",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaMethodDeclaration_DEPRECATED3"
+                                }
+                            },
+                            "fieldInfoName": "methods"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.TypeParam",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaTypeParam"
+                                }
+                            },
+                            "fieldInfoName": "typeParams"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.Loc",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcLoc"
+                            },
+                            "fieldInfoName": "loc"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "PredicateReference",
+                        "refVersion": 3,
+                        "refName": "java.ClassDeclaration"
+                    }
+                }
+            }
+        },
+        "GSJavaMethodDeclaration_DEPRECATED2": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "java.Name",
+                                    "version": 2
+                                },
+                                "classname": "GSJavaName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.VariableDeclaration",
+                                        "version": 2
+                                    },
+                                    "classname": "GSJavaVariableDeclaration_DEPRECATED2"
+                                }
+                            },
+                            "fieldInfoName": "parameters"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.Type",
+                                    "version": 2
+                                },
+                                "classname": "GSJavaType_DEPRECATED2"
+                            },
+                            "fieldInfoName": "returnType"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTEnum",
+                                    "tref": {
+                                        "name": "java.Modifier",
+                                        "version": 2
+                                    },
+                                    "alts": [
+                                        "abstract_",
+                                        "default_",
+                                        "final_",
+                                        "native_",
+                                        "private_",
+                                        "protected_",
+                                        "public_",
+                                        "static_",
+                                        "strictfp_",
+                                        "synchronized_",
+                                        "transient_",
+                                        "volatile_"
+                                    ],
+                                    "classname": "GSJavaModifier"
+                                }
+                            },
+                            "fieldInfoName": "modifiers"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.Loc",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcLoc"
+                            },
+                            "fieldInfoName": "loc"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "PredicateReference",
+                        "refVersion": 2,
+                        "refName": "java.MethodDeclaration"
+                    }
+                }
+            }
+        },
+        "GSJavaClassDeclaration": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.QName",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaQName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTEnum",
+                                    "tref": {
+                                        "name": "java.Modifier",
+                                        "version": 2
+                                    },
+                                    "alts": [
+                                        "abstract_",
+                                        "default_",
+                                        "final_",
+                                        "native_",
+                                        "private_",
+                                        "protected_",
+                                        "public_",
+                                        "static_",
+                                        "strictfp_",
+                                        "synchronized_",
+                                        "transient_",
+                                        "volatile_"
+                                    ],
+                                    "classname": "GSJavaModifier"
+                                }
+                            },
+                            "fieldInfoName": "modifiers"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "MaybeTOption",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.Type",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaType"
+                                }
+                            },
+                            "fieldInfoName": "extends_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.Type",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaType"
+                                }
+                            },
+                            "fieldInfoName": "implements_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.Annotation",
+                                        "version": 4
+                                    },
+                                    "classname": "GSJavaAnnotation"
+                                }
+                            },
+                            "fieldInfoName": "annotations"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.VariableDeclaration",
+                                        "version": 4
+                                    },
+                                    "classname": "GSJavaVariableDeclaration"
+                                }
+                            },
+                            "fieldInfoName": "variables"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.ConstructorDeclaration",
+                                        "version": 4
+                                    },
+                                    "classname": "GSJavaConstructorDeclaration"
+                                }
+                            },
+                            "fieldInfoName": "constructors"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.MethodDeclaration",
+                                        "version": 4
+                                    },
+                                    "classname": "GSJavaMethodDeclaration"
+                                }
+                            },
+                            "fieldInfoName": "methods"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.TypeParam",
+                                        "version": 3
+                                    },
+                                    "classname": "GSJavaTypeParam"
+                                }
+                            },
+                            "fieldInfoName": "typeParams"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.Loc",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcLoc"
+                            },
+                            "fieldInfoName": "loc"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "java.ClassDeclaration"
+                    }
+                }
+            }
+        },
+        "GSJavaInheritance_DEPRECATED3": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.Type",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaType"
+                            },
+                            "fieldInfoName": "base"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "java.ClassDeclaration",
+                                    "version": 3
+                                },
+                                "classname": "GSJavaClassDeclaration_DEPRECATED3"
+                            },
+                            "fieldInfoName": "subclass"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "PredicateReference",
+                        "refVersion": 3,
+                        "refName": "java.Inheritance"
+                    }
+                }
+            }
+        },
+        "GSJavaInterfaceDeclaration_DEPRECATED2": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "java.Name",
+                                    "version": 2
+                                },
+                                "classname": "GSJavaName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTEnum",
+                                    "tref": {
+                                        "name": "java.Modifier",
+                                        "version": 2
+                                    },
+                                    "alts": [
+                                        "abstract_",
+                                        "default_",
+                                        "final_",
+                                        "native_",
+                                        "private_",
+                                        "protected_",
+                                        "public_",
+                                        "static_",
+                                        "strictfp_",
+                                        "synchronized_",
+                                        "transient_",
+                                        "volatile_"
+                                    ],
+                                    "classname": "GSJavaModifier"
+                                }
+                            },
+                            "fieldInfoName": "modifiers"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.Type",
+                                        "version": 2
+                                    },
+                                    "classname": "GSJavaType_DEPRECATED2"
+                                }
+                            },
+                            "fieldInfoName": "extends_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "java.MethodDeclaration",
+                                        "version": 2
+                                    },
+                                    "classname": "GSJavaMethodDeclaration_DEPRECATED2"
+                                }
+                            },
+                            "fieldInfoName": "methods"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.Loc",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcLoc"
+                            },
+                            "fieldInfoName": "loc"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "PredicateReference",
+                        "refVersion": 2,
+                        "refName": "java.InterfaceDeclaration"
+                    }
+                }
+            }
+        }
+    },
+    "enums": {}
+}

@@ -1,1 +1,1200 @@
-{"namespace":"GSGraphql","generated":"@generated - To regenerated this file run fbcode//glean/schema/gen/sync-www","genTypes":{"GSGraphqlScalarTypeDef":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.Directive","version":1},"classname":"GSGraphqlDirective"}},"fieldInfoName":"directives"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"graphql.ScalarTypeDef"}}}},"GSGraphqlVariableDef":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"type"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.Directive","version":1},"classname":"GSGraphqlDirective"}},"fieldInfoName":"directives"},{"fieldInfoType":{"tag":"MaybeTOption","inner":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"}},"fieldInfoName":"defaultValue"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"graphql.VariableDef"}}}},"GSGraphqlField":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"type"},{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.Directive","version":1},"classname":"GSGraphqlDirective"}},"fieldInfoName":"directives"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"graphql.SelectionSet","version":1},"classname":"GSGraphqlSelectionSet"},"fieldInfoName":"selectionSet"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.Argument","version":1},"classname":"GSGraphqlArgument"}},"fieldInfoName":"arguments"},{"fieldInfoType":{"tag":"MaybeTOption","inner":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"}},"fieldInfoName":"alias"}],"classGenHasCycles":true,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"graphql.Field"}}}},"GSGraphqlSelectionSet":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.Field","version":1},"classname":"GSGraphqlField"}},"fieldInfoName":"fields"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.InlineFragment","version":1},"classname":"GSGraphqlInlineFragment"}},"fieldInfoName":"inlineFragments"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"}},"fieldInfoName":"fragmentSpreads"}],"classGenHasCycles":true,"classGenReference":{"refLatest":true,"refTag":"TypeReference","refVersion":1,"refName":"graphql.SelectionSet"}}}},"GSGraphqlObjectTypeDef":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"}},"fieldInfoName":"interfaces"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.FieldDef","version":1},"classname":"GSGraphqlFieldDef"}},"fieldInfoName":"fields"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.Directive","version":1},"classname":"GSGraphqlDirective"}},"fieldInfoName":"directives"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"graphql.ObjectTypeDef"}}}},"GSGraphqlDirective":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.Argument","version":1},"classname":"GSGraphqlArgument"}},"fieldInfoName":"arguments"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"graphql.Directive"}}}},"GSGraphqlFieldDef":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"type"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.InputValueDef","version":1},"classname":"GSGraphqlInputValueDef"}},"fieldInfoName":"argumentDefs"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.Directive","version":1},"classname":"GSGraphqlDirective"}},"fieldInfoName":"directives"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"graphql.FieldDef"}}}},"GSGraphqlArgument":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"value"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"graphql.Argument"}}}},"GSGraphqlInputObjectTypeDef":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.InputValueDef","version":1},"classname":"GSGraphqlInputValueDef"}},"fieldInfoName":"fields"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.Directive","version":1},"classname":"GSGraphqlDirective"}},"fieldInfoName":"directives"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"graphql.InputObjectTypeDef"}}}},"GSGraphqlUnionTypeDef":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"}},"fieldInfoName":"types"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.Directive","version":1},"classname":"GSGraphqlDirective"}},"fieldInfoName":"directives"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"graphql.UnionTypeDef"}}}},"GSGraphqlEnumTypeDef":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"}},"fieldInfoName":"values"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.Directive","version":1},"classname":"GSGraphqlDirective"}},"fieldInfoName":"directives"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"graphql.EnumTypeDef"}}}},"GSGraphqlInlineFragment":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"inferredTypeCondition"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.Directive","version":1},"classname":"GSGraphqlDirective"}},"fieldInfoName":"directives"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"graphql.SelectionSet","version":1},"classname":"GSGraphqlSelectionSet"},"fieldInfoName":"selectionSet"},{"fieldInfoType":{"tag":"MaybeTOption","inner":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"}},"fieldInfoName":"typeCondition"}],"classGenHasCycles":true,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"graphql.InlineFragment"}}}},"GSGraphqlInterfaceTypeDef":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.FieldDef","version":1},"classname":"GSGraphqlFieldDef"}},"fieldInfoName":"fields"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.Directive","version":1},"classname":"GSGraphqlDirective"}},"fieldInfoName":"directives"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"graphql.InterfaceTypeDef"}}}},"GSGraphqlQuery":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.Directive","version":1},"classname":"GSGraphqlDirective"}},"fieldInfoName":"directives"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.VariableDef","version":1},"classname":"GSGraphqlVariableDef"}},"fieldInfoName":"variableDefs"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"graphql.SelectionSet","version":1},"classname":"GSGraphqlSelectionSet"},"fieldInfoName":"selectionSet"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"graphql.Query"}}}},"GSGraphqlInputValueDef":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"type"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.Directive","version":1},"classname":"GSGraphqlDirective"}},"fieldInfoName":"directives"},{"fieldInfoType":{"tag":"MaybeTOption","inner":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"}},"fieldInfoName":"defaultValue"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"graphql.InputValueDef"}}}},"GSGraphqlFragment":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"typeCondition"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.VariableDef","version":1},"classname":"GSGraphqlVariableDef"}},"fieldInfoName":"variableDefs"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.Directive","version":1},"classname":"GSGraphqlDirective"}},"fieldInfoName":"directives"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"graphql.SelectionSet","version":1},"classname":"GSGraphqlSelectionSet"},"fieldInfoName":"selectionSet"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"graphql.Fragment"}}}},"GSGraphqlDirectiveDef":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"graphql.Value","version":1},"classname":"GSGraphqlValue"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"graphql.InputValueDef","version":1},"classname":"GSGraphqlInputValueDef"}},"fieldInfoName":"argumentDefs"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTEnum","tref":{"name":"graphql.DirectiveDefLocation","version":1},"alts":["QUERY","MUTATION","SUBSCRIPTION","FIELD","FRAGMENT_DEFINITION","FRAGMENT_SPREAD","INLINE_FRAGMENT","SCHEMA","SCALAR","OBJECT","FIELD_DEFINITION","ARGUMENT_DEFINITION","INTERFACE","UNION","ENUM","ENUM_VALUE","INPUT_OBJECT","INPUT_FIELD_DEFINITION"],"classname":"GSGraphqlDirectiveDefLocation"}},"fieldInfoName":"locations"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"graphql.DirectiveDef"}}}},"GSGraphqlDirectiveDefLocation":{"tag":"EnumType","contents":["QUERY","MUTATION","SUBSCRIPTION","FIELD","FRAGMENT_DEFINITION","FRAGMENT_SPREAD","INLINE_FRAGMENT","SCHEMA","SCALAR","OBJECT","FIELD_DEFINITION","ARGUMENT_DEFINITION","INTERFACE","UNION","ENUM","ENUM_VALUE","INPUT_OBJECT","INPUT_FIELD_DEFINITION"]},"GSGraphqlValue":{"tag":"ClassType","contents":{"tag":"Wrapper","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"key"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"graphql.Value"}}}}},"enums":{}}
+{
+    "namespace": "GSGraphql",
+    "generated": "@generated - To regenerated this file run fbcode//glean/schema/gen/sync-www",
+    "genTypes": {
+        "GSGraphqlScalarTypeDef": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.Directive",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlDirective"
+                                }
+                            },
+                            "fieldInfoName": "directives"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "graphql.ScalarTypeDef"
+                    }
+                }
+            }
+        },
+        "GSGraphqlVariableDef": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "type"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.Directive",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlDirective"
+                                }
+                            },
+                            "fieldInfoName": "directives"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "MaybeTOption",
+                                "inner": {
+                                    "tag": "PredicateT",
+                                    "inner": {
+                                        "tag": "StringTString"
+                                    },
+                                    "pref": {
+                                        "name": "graphql.Value",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlValue"
+                                }
+                            },
+                            "fieldInfoName": "defaultValue"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "graphql.VariableDef"
+                    }
+                }
+            }
+        },
+        "GSGraphqlField": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "type"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.Directive",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlDirective"
+                                }
+                            },
+                            "fieldInfoName": "directives"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "graphql.SelectionSet",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlSelectionSet"
+                            },
+                            "fieldInfoName": "selectionSet"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.Argument",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlArgument"
+                                }
+                            },
+                            "fieldInfoName": "arguments"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "MaybeTOption",
+                                "inner": {
+                                    "tag": "PredicateT",
+                                    "inner": {
+                                        "tag": "StringTString"
+                                    },
+                                    "pref": {
+                                        "name": "graphql.Value",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlValue"
+                                }
+                            },
+                            "fieldInfoName": "alias"
+                        }
+                    ],
+                    "classGenHasCycles": true,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "graphql.Field"
+                    }
+                }
+            }
+        },
+        "GSGraphqlSelectionSet": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.Field",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlField"
+                                }
+                            },
+                            "fieldInfoName": "fields"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.InlineFragment",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlInlineFragment"
+                                }
+                            },
+                            "fieldInfoName": "inlineFragments"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateT",
+                                    "inner": {
+                                        "tag": "StringTString"
+                                    },
+                                    "pref": {
+                                        "name": "graphql.Value",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlValue"
+                                }
+                            },
+                            "fieldInfoName": "fragmentSpreads"
+                        }
+                    ],
+                    "classGenHasCycles": true,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "TypeReference",
+                        "refVersion": 1,
+                        "refName": "graphql.SelectionSet"
+                    }
+                }
+            }
+        },
+        "GSGraphqlObjectTypeDef": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateT",
+                                    "inner": {
+                                        "tag": "StringTString"
+                                    },
+                                    "pref": {
+                                        "name": "graphql.Value",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlValue"
+                                }
+                            },
+                            "fieldInfoName": "interfaces"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.FieldDef",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlFieldDef"
+                                }
+                            },
+                            "fieldInfoName": "fields"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.Directive",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlDirective"
+                                }
+                            },
+                            "fieldInfoName": "directives"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "graphql.ObjectTypeDef"
+                    }
+                }
+            }
+        },
+        "GSGraphqlDirective": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.Argument",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlArgument"
+                                }
+                            },
+                            "fieldInfoName": "arguments"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "graphql.Directive"
+                    }
+                }
+            }
+        },
+        "GSGraphqlFieldDef": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "type"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.InputValueDef",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlInputValueDef"
+                                }
+                            },
+                            "fieldInfoName": "argumentDefs"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.Directive",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlDirective"
+                                }
+                            },
+                            "fieldInfoName": "directives"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "graphql.FieldDef"
+                    }
+                }
+            }
+        },
+        "GSGraphqlArgument": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "value"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "graphql.Argument"
+                    }
+                }
+            }
+        },
+        "GSGraphqlInputObjectTypeDef": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.InputValueDef",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlInputValueDef"
+                                }
+                            },
+                            "fieldInfoName": "fields"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.Directive",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlDirective"
+                                }
+                            },
+                            "fieldInfoName": "directives"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "graphql.InputObjectTypeDef"
+                    }
+                }
+            }
+        },
+        "GSGraphqlUnionTypeDef": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateT",
+                                    "inner": {
+                                        "tag": "StringTString"
+                                    },
+                                    "pref": {
+                                        "name": "graphql.Value",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlValue"
+                                }
+                            },
+                            "fieldInfoName": "types"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.Directive",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlDirective"
+                                }
+                            },
+                            "fieldInfoName": "directives"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "graphql.UnionTypeDef"
+                    }
+                }
+            }
+        },
+        "GSGraphqlEnumTypeDef": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateT",
+                                    "inner": {
+                                        "tag": "StringTString"
+                                    },
+                                    "pref": {
+                                        "name": "graphql.Value",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlValue"
+                                }
+                            },
+                            "fieldInfoName": "values"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.Directive",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlDirective"
+                                }
+                            },
+                            "fieldInfoName": "directives"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "graphql.EnumTypeDef"
+                    }
+                }
+            }
+        },
+        "GSGraphqlInlineFragment": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "inferredTypeCondition"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.Directive",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlDirective"
+                                }
+                            },
+                            "fieldInfoName": "directives"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "graphql.SelectionSet",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlSelectionSet"
+                            },
+                            "fieldInfoName": "selectionSet"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "MaybeTOption",
+                                "inner": {
+                                    "tag": "PredicateT",
+                                    "inner": {
+                                        "tag": "StringTString"
+                                    },
+                                    "pref": {
+                                        "name": "graphql.Value",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlValue"
+                                }
+                            },
+                            "fieldInfoName": "typeCondition"
+                        }
+                    ],
+                    "classGenHasCycles": true,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "graphql.InlineFragment"
+                    }
+                }
+            }
+        },
+        "GSGraphqlInterfaceTypeDef": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.FieldDef",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlFieldDef"
+                                }
+                            },
+                            "fieldInfoName": "fields"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.Directive",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlDirective"
+                                }
+                            },
+                            "fieldInfoName": "directives"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "graphql.InterfaceTypeDef"
+                    }
+                }
+            }
+        },
+        "GSGraphqlQuery": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.Directive",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlDirective"
+                                }
+                            },
+                            "fieldInfoName": "directives"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.VariableDef",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlVariableDef"
+                                }
+                            },
+                            "fieldInfoName": "variableDefs"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "graphql.SelectionSet",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlSelectionSet"
+                            },
+                            "fieldInfoName": "selectionSet"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "graphql.Query"
+                    }
+                }
+            }
+        },
+        "GSGraphqlInputValueDef": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "type"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.Directive",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlDirective"
+                                }
+                            },
+                            "fieldInfoName": "directives"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "MaybeTOption",
+                                "inner": {
+                                    "tag": "PredicateT",
+                                    "inner": {
+                                        "tag": "StringTString"
+                                    },
+                                    "pref": {
+                                        "name": "graphql.Value",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlValue"
+                                }
+                            },
+                            "fieldInfoName": "defaultValue"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "graphql.InputValueDef"
+                    }
+                }
+            }
+        },
+        "GSGraphqlFragment": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "typeCondition"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.VariableDef",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlVariableDef"
+                                }
+                            },
+                            "fieldInfoName": "variableDefs"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.Directive",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlDirective"
+                                }
+                            },
+                            "fieldInfoName": "directives"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "graphql.SelectionSet",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlSelectionSet"
+                            },
+                            "fieldInfoName": "selectionSet"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "graphql.Fragment"
+                    }
+                }
+            }
+        },
+        "GSGraphqlDirectiveDef": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "graphql.Value",
+                                    "version": 1
+                                },
+                                "classname": "GSGraphqlValue"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "graphql.InputValueDef",
+                                        "version": 1
+                                    },
+                                    "classname": "GSGraphqlInputValueDef"
+                                }
+                            },
+                            "fieldInfoName": "argumentDefs"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTEnum",
+                                    "tref": {
+                                        "name": "graphql.DirectiveDefLocation",
+                                        "version": 1
+                                    },
+                                    "alts": [
+                                        "QUERY",
+                                        "MUTATION",
+                                        "SUBSCRIPTION",
+                                        "FIELD",
+                                        "FRAGMENT_DEFINITION",
+                                        "FRAGMENT_SPREAD",
+                                        "INLINE_FRAGMENT",
+                                        "SCHEMA",
+                                        "SCALAR",
+                                        "OBJECT",
+                                        "FIELD_DEFINITION",
+                                        "ARGUMENT_DEFINITION",
+                                        "INTERFACE",
+                                        "UNION",
+                                        "ENUM",
+                                        "ENUM_VALUE",
+                                        "INPUT_OBJECT",
+                                        "INPUT_FIELD_DEFINITION"
+                                    ],
+                                    "classname": "GSGraphqlDirectiveDefLocation"
+                                }
+                            },
+                            "fieldInfoName": "locations"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "graphql.DirectiveDef"
+                    }
+                }
+            }
+        },
+        "GSGraphqlDirectiveDefLocation": {
+            "tag": "EnumType",
+            "contents": [
+                "QUERY",
+                "MUTATION",
+                "SUBSCRIPTION",
+                "FIELD",
+                "FRAGMENT_DEFINITION",
+                "FRAGMENT_SPREAD",
+                "INLINE_FRAGMENT",
+                "SCHEMA",
+                "SCALAR",
+                "OBJECT",
+                "FIELD_DEFINITION",
+                "ARGUMENT_DEFINITION",
+                "INTERFACE",
+                "UNION",
+                "ENUM",
+                "ENUM_VALUE",
+                "INPUT_OBJECT",
+                "INPUT_FIELD_DEFINITION"
+            ]
+        },
+        "GSGraphqlValue": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Wrapper",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "key"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "graphql.Value"
+                    }
+                }
+            }
+        }
+    },
+    "enums": {}
+}

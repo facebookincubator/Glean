@@ -1,1 +1,35 @@
-{"namespace":"GSCodePython","generated":"@generated - To regenerated this file run fbcode//glean/schema/gen/sync-www","genTypes":{"GSCodePythonEntity":{"tag":"ClassType","contents":{"tag":"Union","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"python.Declaration","version":2},"classname":"GSPythonDeclaration"},"fieldInfoName":"decl"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"TypeReference","refVersion":1,"refName":"code.python.Entity"}}}}},"enums":{}}
+{
+    "namespace": "GSCodePython",
+    "generated": "@generated - To regenerated this file run fbcode//glean/schema/gen/sync-www",
+    "genTypes": {
+        "GSCodePythonEntity": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Union",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "python.Declaration",
+                                    "version": 2
+                                },
+                                "classname": "GSPythonDeclaration"
+                            },
+                            "fieldInfoName": "decl"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "TypeReference",
+                        "refVersion": 1,
+                        "refName": "code.python.Entity"
+                    }
+                }
+            }
+        }
+    },
+    "enums": {}
+}

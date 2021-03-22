@@ -1,1 +1,700 @@
-{"namespace":"GSHs","generated":"@generated - To regenerated this file run fbcode//glean/schema/gen/sync-www","genTypes":{"GSHsDefinition":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"hs.DefinitionName","version":1},"classname":"GSHsDefinitionName"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.FileLocation","version":1},"classname":"GSSrcFileLocation"},"fieldInfoName":"source"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":2,"refName":"hs.Definition"}}}},"GSHsModuleName":{"tag":"ClassType","contents":{"tag":"Wrapper","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"key"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"hs.ModuleName"}}}},"GSHsDefinition_DEPRECATED1":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"hs.DefinitionName","version":1},"classname":"GSHsDefinitionName"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.Range","version":1},"classname":"GSSrcRange"},"fieldInfoName":"source"}],"classGenHasCycles":false,"classGenReference":{"refLatest":false,"refTag":"PredicateReference","refVersion":1,"refName":"hs.Definition"}}}},"GSHsSourceModule":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"hs.ModuleName","version":1},"classname":"GSHsModuleName"},"fieldInfoName":"moduleName"},{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"src.File","version":1},"classname":"GSSrcFile"},"fieldInfoName":"source"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"hs.SourceModule"}}}},"GSHsClassInstance":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"hs.ClassName","version":1},"classname":"GSHsClassName"},"fieldInfoName":"typeclass"},{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"hs.Type","version":1},"classname":"GSHsType"},"fieldInfoName":"instance"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.Range","version":1},"classname":"GSSrcRange"},"fieldInfoName":"source"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"hs.ClassInstance"}}}},"GSHsFunctionDefinition":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"hs.FunctionName","version":1},"classname":"GSHsFunctionName"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.Range","version":1},"classname":"GSSrcRange"},"fieldInfoName":"source"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"hs.FunctionDefinition"}}}},"GSHsModuleDefinitions":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"hs.Module","version":1},"classname":"GSHsModule"},"fieldInfoName":"module"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"PredicateTNamed","pref":{"name":"hs.FunctionDefinition","version":1},"classname":"GSHsFunctionDefinition"}},"fieldInfoName":"functionDefinitions"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"hs.ModuleDefinitions"}}}},"GSHsFileXRefMap":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"src.File","version":1},"classname":"GSSrcFile"},"fieldInfoName":"file"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTNamed","tref":{"name":"hs.XReference","version":2},"classname":"GSHsXReference"}},"fieldInfoName":"refs"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":2,"refName":"hs.FileXRefMap"}}}},"GSHsXReference":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"hs.XRefTarget","version":2},"classname":"GSHsXRefTarget"},"fieldInfoName":"target"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTNamed","tref":{"name":"src.ByteSpan","version":1},"classname":"GSSrcByteSpan"}},"fieldInfoName":"spans"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"TypeReference","refVersion":2,"refName":"hs.XReference"}}}},"GSHsType":{"tag":"ClassType","contents":{"tag":"Wrapper","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"key"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"hs.Type"}}}},"GSHsXRefTarget":{"tag":"ClassType","contents":{"tag":"Union","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"hs.DefinitionName","version":1},"classname":"GSHsDefinitionName"},"fieldInfoName":"definition"},{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"hs.ClassName","version":1},"classname":"GSHsClassName"},"fieldInfoName":"typeclass"},{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"hs.ModuleName","version":1},"classname":"GSHsModuleName"},"fieldInfoName":"hs_module"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"TypeReference","refVersion":2,"refName":"hs.XRefTarget"}}}},"GSHsFunctionName":{"tag":"ClassType","contents":{"tag":"Wrapper","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"key"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"hs.FunctionName"}}}},"GSHsModule":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"hs.PackageId","version":1},"classname":"GSHsPackageId"},"fieldInfoName":"packageId"},{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"hs.ModuleName","version":1},"classname":"GSHsModuleName"},"fieldInfoName":"moduleName"},{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"src.File","version":1},"classname":"GSSrcFile"},"fieldInfoName":"source"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"hs.Module"}}}},"GSHsDefinitionName":{"tag":"ClassType","contents":{"tag":"Wrapper","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"key"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"hs.DefinitionName"}}}},"GSHsPackageId":{"tag":"ClassType","contents":{"tag":"Wrapper","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"key"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"hs.PackageId"}}}},"GSHsClassName":{"tag":"ClassType","contents":{"tag":"Wrapper","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"key"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"hs.ClassName"}}}},"GSHsXRef":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.FileLocation","version":1},"classname":"GSSrcFileLocation"},"fieldInfoName":"loc"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"hs.XRefTarget","version":2},"classname":"GSHsXRefTarget"},"fieldInfoName":"ref"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":2,"refName":"hs.XRef"}}}},"GSHsClass":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"hs.ClassName","version":1},"classname":"GSHsClassName"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.Range","version":1},"classname":"GSSrcRange"},"fieldInfoName":"source"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"hs.Class"}}}}},"enums":{}}
+{
+    "namespace": "GSHs",
+    "generated": "@generated - To regenerated this file run fbcode//glean/schema/gen/sync-www",
+    "genTypes": {
+        "GSHsDefinition": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "hs.DefinitionName",
+                                    "version": 1
+                                },
+                                "classname": "GSHsDefinitionName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.FileLocation",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcFileLocation"
+                            },
+                            "fieldInfoName": "source"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 2,
+                        "refName": "hs.Definition"
+                    }
+                }
+            }
+        },
+        "GSHsModuleName": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Wrapper",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "key"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "hs.ModuleName"
+                    }
+                }
+            }
+        },
+        "GSHsDefinition_DEPRECATED1": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "hs.DefinitionName",
+                                    "version": 1
+                                },
+                                "classname": "GSHsDefinitionName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.Range",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcRange"
+                            },
+                            "fieldInfoName": "source"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "hs.Definition"
+                    }
+                }
+            }
+        },
+        "GSHsSourceModule": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "hs.ModuleName",
+                                    "version": 1
+                                },
+                                "classname": "GSHsModuleName"
+                            },
+                            "fieldInfoName": "moduleName"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "src.File",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcFile"
+                            },
+                            "fieldInfoName": "source"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "hs.SourceModule"
+                    }
+                }
+            }
+        },
+        "GSHsClassInstance": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "hs.ClassName",
+                                    "version": 1
+                                },
+                                "classname": "GSHsClassName"
+                            },
+                            "fieldInfoName": "typeclass"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "hs.Type",
+                                    "version": 1
+                                },
+                                "classname": "GSHsType"
+                            },
+                            "fieldInfoName": "instance"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.Range",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcRange"
+                            },
+                            "fieldInfoName": "source"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "hs.ClassInstance"
+                    }
+                }
+            }
+        },
+        "GSHsFunctionDefinition": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "hs.FunctionName",
+                                    "version": 1
+                                },
+                                "classname": "GSHsFunctionName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.Range",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcRange"
+                            },
+                            "fieldInfoName": "source"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "hs.FunctionDefinition"
+                    }
+                }
+            }
+        },
+        "GSHsModuleDefinitions": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "hs.Module",
+                                    "version": 1
+                                },
+                                "classname": "GSHsModule"
+                            },
+                            "fieldInfoName": "module"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "hs.FunctionDefinition",
+                                        "version": 1
+                                    },
+                                    "classname": "GSHsFunctionDefinition"
+                                }
+                            },
+                            "fieldInfoName": "functionDefinitions"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "hs.ModuleDefinitions"
+                    }
+                }
+            }
+        },
+        "GSHsFileXRefMap": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "src.File",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcFile"
+                            },
+                            "fieldInfoName": "file"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTNamed",
+                                    "tref": {
+                                        "name": "hs.XReference",
+                                        "version": 2
+                                    },
+                                    "classname": "GSHsXReference"
+                                }
+                            },
+                            "fieldInfoName": "refs"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 2,
+                        "refName": "hs.FileXRefMap"
+                    }
+                }
+            }
+        },
+        "GSHsXReference": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "hs.XRefTarget",
+                                    "version": 2
+                                },
+                                "classname": "GSHsXRefTarget"
+                            },
+                            "fieldInfoName": "target"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTNamed",
+                                    "tref": {
+                                        "name": "src.ByteSpan",
+                                        "version": 1
+                                    },
+                                    "classname": "GSSrcByteSpan"
+                                }
+                            },
+                            "fieldInfoName": "spans"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "TypeReference",
+                        "refVersion": 2,
+                        "refName": "hs.XReference"
+                    }
+                }
+            }
+        },
+        "GSHsType": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Wrapper",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "key"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "hs.Type"
+                    }
+                }
+            }
+        },
+        "GSHsXRefTarget": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Union",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "hs.DefinitionName",
+                                    "version": 1
+                                },
+                                "classname": "GSHsDefinitionName"
+                            },
+                            "fieldInfoName": "definition"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "hs.ClassName",
+                                    "version": 1
+                                },
+                                "classname": "GSHsClassName"
+                            },
+                            "fieldInfoName": "typeclass"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "hs.ModuleName",
+                                    "version": 1
+                                },
+                                "classname": "GSHsModuleName"
+                            },
+                            "fieldInfoName": "hs_module"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "TypeReference",
+                        "refVersion": 2,
+                        "refName": "hs.XRefTarget"
+                    }
+                }
+            }
+        },
+        "GSHsFunctionName": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Wrapper",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "key"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "hs.FunctionName"
+                    }
+                }
+            }
+        },
+        "GSHsModule": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "hs.PackageId",
+                                    "version": 1
+                                },
+                                "classname": "GSHsPackageId"
+                            },
+                            "fieldInfoName": "packageId"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "hs.ModuleName",
+                                    "version": 1
+                                },
+                                "classname": "GSHsModuleName"
+                            },
+                            "fieldInfoName": "moduleName"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "src.File",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcFile"
+                            },
+                            "fieldInfoName": "source"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "hs.Module"
+                    }
+                }
+            }
+        },
+        "GSHsDefinitionName": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Wrapper",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "key"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "hs.DefinitionName"
+                    }
+                }
+            }
+        },
+        "GSHsPackageId": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Wrapper",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "key"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "hs.PackageId"
+                    }
+                }
+            }
+        },
+        "GSHsClassName": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Wrapper",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "key"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "hs.ClassName"
+                    }
+                }
+            }
+        },
+        "GSHsXRef": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.FileLocation",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcFileLocation"
+                            },
+                            "fieldInfoName": "loc"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "hs.XRefTarget",
+                                    "version": 2
+                                },
+                                "classname": "GSHsXRefTarget"
+                            },
+                            "fieldInfoName": "ref"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 2,
+                        "refName": "hs.XRef"
+                    }
+                }
+            }
+        },
+        "GSHsClass": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "hs.ClassName",
+                                    "version": 1
+                                },
+                                "classname": "GSHsClassName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.Range",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcRange"
+                            },
+                            "fieldInfoName": "source"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "hs.Class"
+                    }
+                }
+            }
+        }
+    },
+    "enums": {}
+}

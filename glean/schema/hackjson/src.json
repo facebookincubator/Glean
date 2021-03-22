@@ -1,1 +1,433 @@
-{"namespace":"GSSrc","generated":"@generated - To regenerated this file run fbcode//glean/schema/gen/sync-www","genTypes":{"GSSrcLanguage":{"tag":"EnumType","contents":["Buck","C","Cpp","Hack","Haskell","ObjC","ObjCpp","Python","Thrift","Java","GraphQL"]},"GSSrcFileLanguage":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"src.File","version":1},"classname":"GSSrcFile"},"fieldInfoName":"file"},{"fieldInfoType":{"tag":"NamedTypeTEnum","tref":{"name":"src.Language","version":1},"alts":["Buck","C","Cpp","Hack","Haskell","ObjC","ObjCpp","Python","Thrift","Java","GraphQL"],"classname":"GSSrcLanguage"},"fieldInfoName":"language"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"src.FileLanguage"}}}},"GSSrcRelByteSpan":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"offset"},{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"length"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"TypeReference","refVersion":1,"refName":"src.RelByteSpan"}}}},"GSSrcByteSpanContains":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.ByteSpan","version":1},"classname":"GSSrcByteSpan"},"fieldInfoName":"byteSpan"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.ByteSpan","version":1},"classname":"GSSrcByteSpan"},"fieldInfoName":"contains"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"src.ByteSpanContains"}}}},"GSSrcByteRange":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"begin"},{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"end"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"TypeReference","refVersion":1,"refName":"src.ByteRange"}}}},"GSSrcByteSpans":{"tag":"AliasType","contents":{"tag":"ArrayTVec","inner":{"tag":"NamedTypeTNamed","tref":{"name":"src.RelByteSpan","version":1},"classname":"GSSrcRelByteSpan"}}},"GSSrcRange":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"src.File","version":1},"classname":"GSSrcFile"},"fieldInfoName":"file"},{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"lineBegin"},{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"columnBegin"},{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"lineEnd"},{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"columnEnd"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"TypeReference","refVersion":1,"refName":"src.Range"}}}},"GSSrcFileLocation":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"src.File","version":1},"classname":"GSSrcFile"},"fieldInfoName":"file"},{"fieldInfoType":{"tag":"NamedTypeTNamed","tref":{"name":"src.ByteSpan","version":1},"classname":"GSSrcByteSpan"},"fieldInfoName":"span"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"TypeReference","refVersion":1,"refName":"src.FileLocation"}}}},"GSSrcFileLines":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"src.File","version":1},"classname":"GSSrcFile"},"fieldInfoName":"file"},{"fieldInfoType":{"tag":"ArrayTVec","inner":{"tag":"NatTInt"}},"fieldInfoName":"lengths"},{"fieldInfoType":{"tag":"BooleanTBool"},"fieldInfoName":"endsInNewline"},{"fieldInfoType":{"tag":"BooleanTBool"},"fieldInfoName":"hasUnicodeOrTabs"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"src.FileLines"}}}},"GSSrcByteSpan":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"start"},{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"length"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"TypeReference","refVersion":1,"refName":"src.ByteSpan"}}}},"GSSrcFile":{"tag":"ClassType","contents":{"tag":"Wrapper","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"key"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":1,"refName":"src.File"}}}},"GSSrcLoc":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"src.File","version":1},"classname":"GSSrcFile"},"fieldInfoName":"file"},{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"line"},{"fieldInfoType":{"tag":"NatTInt"},"fieldInfoName":"column"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"TypeReference","refVersion":1,"refName":"src.Loc"}}}}},"enums":{}}
+{
+    "namespace": "GSSrc",
+    "generated": "@generated - To regenerated this file run fbcode//glean/schema/gen/sync-www",
+    "genTypes": {
+        "GSSrcLanguage": {
+            "tag": "EnumType",
+            "contents": [
+                "Buck",
+                "C",
+                "Cpp",
+                "Hack",
+                "Haskell",
+                "ObjC",
+                "ObjCpp",
+                "Python",
+                "Thrift",
+                "Java",
+                "GraphQL"
+            ]
+        },
+        "GSSrcFileLanguage": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "src.File",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcFile"
+                            },
+                            "fieldInfoName": "file"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTEnum",
+                                "tref": {
+                                    "name": "src.Language",
+                                    "version": 1
+                                },
+                                "alts": [
+                                    "Buck",
+                                    "C",
+                                    "Cpp",
+                                    "Hack",
+                                    "Haskell",
+                                    "ObjC",
+                                    "ObjCpp",
+                                    "Python",
+                                    "Thrift",
+                                    "Java",
+                                    "GraphQL"
+                                ],
+                                "classname": "GSSrcLanguage"
+                            },
+                            "fieldInfoName": "language"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "src.FileLanguage"
+                    }
+                }
+            }
+        },
+        "GSSrcRelByteSpan": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "offset"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "length"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "TypeReference",
+                        "refVersion": 1,
+                        "refName": "src.RelByteSpan"
+                    }
+                }
+            }
+        },
+        "GSSrcByteSpanContains": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.ByteSpan",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcByteSpan"
+                            },
+                            "fieldInfoName": "byteSpan"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.ByteSpan",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcByteSpan"
+                            },
+                            "fieldInfoName": "contains"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "src.ByteSpanContains"
+                    }
+                }
+            }
+        },
+        "GSSrcByteRange": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "begin"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "end"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "TypeReference",
+                        "refVersion": 1,
+                        "refName": "src.ByteRange"
+                    }
+                }
+            }
+        },
+        "GSSrcByteSpans": {
+            "tag": "AliasType",
+            "contents": {
+                "tag": "ArrayTVec",
+                "inner": {
+                    "tag": "NamedTypeTNamed",
+                    "tref": {
+                        "name": "src.RelByteSpan",
+                        "version": 1
+                    },
+                    "classname": "GSSrcRelByteSpan"
+                }
+            }
+        },
+        "GSSrcRange": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "src.File",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcFile"
+                            },
+                            "fieldInfoName": "file"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "lineBegin"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "columnBegin"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "lineEnd"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "columnEnd"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "TypeReference",
+                        "refVersion": 1,
+                        "refName": "src.Range"
+                    }
+                }
+            }
+        },
+        "GSSrcFileLocation": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "src.File",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcFile"
+                            },
+                            "fieldInfoName": "file"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "src.ByteSpan",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcByteSpan"
+                            },
+                            "fieldInfoName": "span"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "TypeReference",
+                        "refVersion": 1,
+                        "refName": "src.FileLocation"
+                    }
+                }
+            }
+        },
+        "GSSrcFileLines": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "src.File",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcFile"
+                            },
+                            "fieldInfoName": "file"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NatTInt"
+                                }
+                            },
+                            "fieldInfoName": "lengths"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "BooleanTBool"
+                            },
+                            "fieldInfoName": "endsInNewline"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "BooleanTBool"
+                            },
+                            "fieldInfoName": "hasUnicodeOrTabs"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "src.FileLines"
+                    }
+                }
+            }
+        },
+        "GSSrcByteSpan": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "start"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "length"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "TypeReference",
+                        "refVersion": 1,
+                        "refName": "src.ByteSpan"
+                    }
+                }
+            }
+        },
+        "GSSrcFile": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Wrapper",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "key"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "src.File"
+                    }
+                }
+            }
+        },
+        "GSSrcLoc": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "src.File",
+                                    "version": 1
+                                },
+                                "classname": "GSSrcFile"
+                            },
+                            "fieldInfoName": "file"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "line"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NatTInt"
+                            },
+                            "fieldInfoName": "column"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "TypeReference",
+                        "refVersion": 1,
+                        "refName": "src.Loc"
+                    }
+                }
+            }
+        }
+    },
+    "enums": {}
+}

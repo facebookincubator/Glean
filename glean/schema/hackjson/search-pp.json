@@ -1,1 +1,83 @@
-{"namespace":"GSSearchPp","generated":"@generated - To regenerated this file run fbcode//glean/schema/gen/sync-www","genTypes":{"GSSearchPpSearchByName_DEPRECATED1":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"StringTString"},"fieldInfoName":"name"},{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"pp1.Define","version":1},"classname":"GSPp1Define"},"fieldInfoName":"entity"}],"classGenHasCycles":false,"classGenReference":{"refLatest":false,"refTag":"PredicateReference","refVersion":1,"refName":"search.pp.SearchByName"}}}},"GSSearchPpSearchByName":{"tag":"ClassType","contents":{"tag":"Struct","contents":{"classGenFieldInfos":[{"fieldInfoType":{"tag":"PredicateT","inner":{"tag":"StringTString"},"pref":{"name":"pp1.Macro","version":1},"classname":"GSPp1Macro"},"fieldInfoName":"macro"},{"fieldInfoType":{"tag":"PredicateTNamed","pref":{"name":"pp1.Define","version":1},"classname":"GSPp1Define"},"fieldInfoName":"entity"}],"classGenHasCycles":false,"classGenReference":{"refLatest":true,"refTag":"PredicateReference","refVersion":2,"refName":"search.pp.SearchByName"}}}}},"enums":{}}
+{
+    "namespace": "GSSearchPp",
+    "generated": "@generated - To regenerated this file run fbcode//glean/schema/gen/sync-www",
+    "genTypes": {
+        "GSSearchPpSearchByName_DEPRECATED1": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "StringTString"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "pp1.Define",
+                                    "version": 1
+                                },
+                                "classname": "GSPp1Define"
+                            },
+                            "fieldInfoName": "entity"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "search.pp.SearchByName"
+                    }
+                }
+            }
+        },
+        "GSSearchPpSearchByName": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "pp1.Macro",
+                                    "version": 1
+                                },
+                                "classname": "GSPp1Macro"
+                            },
+                            "fieldInfoName": "macro"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "pp1.Define",
+                                    "version": 1
+                                },
+                                "classname": "GSPp1Define"
+                            },
+                            "fieldInfoName": "entity"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 2,
+                        "refName": "search.pp.SearchByName"
+                    }
+                }
+            }
+        }
+    },
+    "enums": {}
+}

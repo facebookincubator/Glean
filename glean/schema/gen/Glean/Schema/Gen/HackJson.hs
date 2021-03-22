@@ -7,7 +7,7 @@ module Glean.Schema.Gen.HackJson
 import Control.Monad.Reader
 import Control.Monad.Writer.Strict hiding (Sum)
 import qualified Data.Aeson as Aeson
-import Data.Aeson.Text
+import qualified Data.Aeson.Encode.Pretty as Aeson
 import qualified Data.Char as Char
 import Data.Graph
 import Data.Hashable
@@ -15,7 +15,8 @@ import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.Text (Text)
 import qualified Data.Text as Text
-import Data.Text.Lazy (toStrict)
+import qualified Data.Text.Lazy as Text.Lazy
+import qualified Data.Text.Lazy.Builder as TextBuilder
 import GHC.Generics
 
 import Util.Text (textShow)
@@ -118,7 +119,8 @@ genSchemaHackJson _version preddefs typedefs = HashMap.toList files
     fileDefs = HashMap.fromListWith (++) $
       map (\def -> (defFile def, [def])) allDefs
     files = HashMap.mapWithKey f fileDefs
-    f file defs = toStrict $ encodeToLazyText genData
+    f file defs = Text.Lazy.toStrict $ TextBuilder.toLazyText $
+      Aeson.encodePrettyToTextBuilder genData
       where
         (genTypes, enums) = runWriter $ mapM (genTypeOfDef ctx) defs
         genData = HackGenData
