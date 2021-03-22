@@ -1,19 +1,21 @@
-{-# LANGUAGE QuasiQuotes, OverloadedStrings #-}
 -- Copyright 2004-present Facebook. All Rights Reserved.
+{-# LANGUAGE QuasiQuotes, OverloadedStrings, RecordWildCards #-}
 
 -- | Check comment block removal logic
 module TrimLogicTest
   ( main
   ) where
 
+import Data.ByteString.Char8 (ByteString)
+import Data.Text (Text)
+import Test.HUnit
+import TestRunner
+
 import Util.String.Quasi
 
 import Glean.Init
-import Glean.DocBlock.TrimLogic (toLines, fromLines, trimArtAndIndent)
-
-import Data.ByteString.Char8 (ByteString)
-import Test.HUnit
-import TestRunner
+import Glean.DocBlock.TrimLogic
+  (toLines, fromLines, trimArtAndIndent, parseAnnotations)
 
 process :: ByteString -> ByteString
 process = fromLines . trimArtAndIndent . toLines
@@ -27,6 +29,17 @@ trimTest :: ByteString -> ByteString -> Test
 trimTest a b =
   let name = show a
   in TestLabel name (TestCase (assertTrim name (TrimTest a b)))
+
+data PATest = PATest { pa_raw :: ByteString, pa_kvs :: [(Text, Text)] }
+
+assertPA :: String -> PATest -> Assertion
+assertPA name PATest{..} = assertEqual name
+  (parseAnnotations $ trimArtAndIndent $ toLines pa_raw) pa_kvs
+
+paTest :: ByteString -> [(Text, Text)] -> Test
+paTest a b =
+  let name = show a
+  in TestLabel name (TestCase (assertPA name (PATest a b)))
 
 emptys :: Test
 emptys = TestLabel "emptys" $ TestList $ map tt
@@ -207,10 +220,46 @@ How Are You?|]
   |] [s|Hello
  World
 How Are You?|]
+  ]
 
+parseAnnotation1 :: Test
+parseAnnotation1 = TestLabel "parseAnnotation1" $ TestList
+  [ paTest [s|/// @ the value |]
+      []
+  , paTest [s|///@key|]
+      [("key", "")]
+  , paTest [s|/// @key |]
+      [("key", "")]
+  , paTest [s|/// @key the value |]
+      [("key", "the value")]
+  , paTest [s|///@key the value|]
+      [("key", "the value")]
+  , paTest [s|/** @key */ |]
+      [("key", "")]
+  , paTest [s|/** @key the value */|]
+      [("key", "the value")]
+  , paTest [s|
+  /// @key the value
+  /// @foo bar
+  /// @key more
+  |]
+      [("key", "the value"), ("foo", "bar") , ("key", "more")]
+  , paTest [s|
+  /**
+   * @key the value
+   * @foo bar
+   * @key more */|]
+      [("key", "the value"), ("foo", "bar") , ("key", "more")]
+  , paTest [s|
+  /**
+     @key the value
+     @foo bar
+   * @key more */|]
+      [("key", "the value"), ("foo", "bar") , ("key", "more")]
   ]
 
 main :: IO ()
 main = withUnitTest $ do
   testRunner $ TestList
-    [ emptys, slashSlash1, slashSlash2, slashStar1, slashStar2  ]
+    [ emptys, slashSlash1, slashSlash2, slashStar1, slashStar2
+    , parseAnnotation1 ]

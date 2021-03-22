@@ -4,6 +4,8 @@
 module Glean.DocBlock.TrimLogic
   ( -- * process comment
     trimArtAndIndent
+    -- * annotations
+  , parseAnnotations
     -- * convert
     -- ** Text
   , toText
@@ -46,6 +48,9 @@ fromLines = BS.intercalate newline
 -- 7-bit ASCII safe check as 'Word8' for 'ByteString' (safe subset of utf-8).
 -- Cannot use 'Data.Word8.isSpace' or 'Data.ByteString.Char8' which
 -- use Latin-1 (ISO-8859-1) 8-bit ASCII that includes NBSP 0xA0.
+--
+-- This matches the @\s@ whitespace character class in PCRE in default @"C"@
+-- locale.
 isSpace :: Word8 -> Bool
 isSpace w = w == 32 || w == 9 || w == 10 || w == 11 || w == 12  || w == 13
 
@@ -137,3 +142,35 @@ trimDocBlockArt bsIn = maybe trimIn trimBlanks $ case trimIn of
 -- Output is list of same length.
 trimArtAndIndent :: [ByteString] -> [ByteString]
 trimArtAndIndent = trimIndent . trimDocBlockArt . map expandTabs
+
+-- | Parse all @-tag (single-line) annotations.
+--
+-- Input is a list of lines (no newlines, see 'toLines') from
+-- 'trimDocBlockArt' (to remove comment markers).
+--
+-- Output is '(key, value)' pairs, in input order.
+-- 'key' is non-empty and free of whitespaces.
+-- 'value' may be empty, has no leading or trailing spaces,
+-- may contain whitespace.
+parseAnnotations :: [ByteString] -> [(Text, Text)]
+parseAnnotations = mapMaybe parseSingleLine
+
+parseSingleLine:: ByteString -> Maybe (Text, Text)
+parseSingleLine bs = extract <$> RE.matchOnce keyValue bs
+  where
+    -- tolerate and ignore a leading '*' (optional capture index 1)
+    -- ignore leading whitespace and match literal @ then
+    -- non-empty, non-whitespace key (capture index 2)
+    -- rest of line is raw value (capture index 3)
+    keyValue :: RE.Regex
+    keyValue = RE.makeRegexOpts RE.compBlank RE.execBlank
+      ("^(\\s*\\*)?\\s*@(\\S+)(.*)$" :: ByteString)
+
+    pick :: (RE.MatchOffset, RE.MatchLength) -> ByteString
+    pick (offset, len) = BS.take len (BS.drop offset bs)
+
+    extract :: RE.MatchArray -> (Text, Text)
+    extract a =
+      let key = pick (a ! 2)
+          value = trimRight $ trimLeft $ pick (a ! 3)
+      in (toText key, toText value)
