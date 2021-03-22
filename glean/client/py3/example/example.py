@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# isort:skip_file
+# pyre-strict
 
 import argparse
 import asyncio
@@ -13,7 +13,7 @@ from glean.client_config.types import ClientConfig
 from glean.service.types import HostPort, Service
 
 
-logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 async def main() -> None:
