@@ -288,12 +288,10 @@ main = do
               [ Entity_cxx Entity_enumerator{} ] -> True
               _ -> False
 
-{- TODO: broken
           search "facebook::p" "enumerator (scoped)" $ \r ->
             case sort r of
-              [ Entity_cxx (Entity_decl = Decl_enumerator_def{} } ] -> True
+              [ Entity_cxx Entity_enumerator{} ] -> True
               _ -> False
--}
 
           search "EE" "enum class" $ \r ->
             case sort r of
@@ -305,17 +303,15 @@ main = do
               [ Entity_cxx (Entity_defn Definition_enum_{}) ] -> True
               _ -> False
 
-{- TODO: broken
-          search "E::r" "enumerator of enum class" $ \r ->
+          search "EE::r" "enumerator of enum class" $ \r ->
             case sort r of
-              [ Entity_cxx (Entity_decl = Decl_enumerator_def{} } ] -> True
+              [ Entity_cxx Entity_enumerator{} ] -> True
               _ -> False
 
-          search "facebook::E::r" "enumerator of enum class (scoped)" $ \r ->
+          search "facebook::EE::r" "enumerator of enum class (scoped)" $ \r ->
             case sort r of
-              [ Entity_cxx (Entity_decl = Decl_enumerator_def{} } ] -> True
+              [ Entity_cxx Entity_enumerator{} ] -> True
               _ -> False
--}
 
           search "meth1" "objc method" $ \r ->
             case sort r of

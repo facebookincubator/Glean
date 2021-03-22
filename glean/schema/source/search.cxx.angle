@@ -89,11 +89,20 @@ predicate SearchByNameAndScope :
         GlobalDeclarationWithName { N, Decl }
     ) |
     (
-      # TODO the scope here isn't right
       {
-        code.cxx.Entity { enumerator = cxx1.Enumerator { name = N }},
-        cxx1.Scope { global_ = {} }
-      }
+        code.cxx.Entity { enumerator = E },
+        Scope
+      } 
+      where
+         { name = N, enumeration = T } = E;
+         { name = QN, isScoped = Scoped } = T;
+         (
+           false = Scoped;
+           { scope = Scope } = QN
+         ) | (
+           true = Scoped;
+           { recordWithAccess = { record = QN, access = Public }} = Scope
+         )
     )
 
 predicate SearchBySelector :
