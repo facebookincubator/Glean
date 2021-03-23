@@ -5,6 +5,7 @@ module Glean.DefaultConfigs (
     schemaConfigPath,
   ) where
 
+import Data.Default
 import Data.Text (Text)
 
 import Glean.Util.ThriftSource
@@ -12,10 +13,10 @@ import Glean.ClientConfig.Types
 import qualified Glean.Recipes.Types as Recipes
 
 defaultClientConfigSource :: ThriftSource ClientConfig
-defaultClientConfigSource = config "client"
+defaultClientConfigSource = value def
 
 defaultRecipesConfigSource :: ThriftSource Recipes.Config
-defaultRecipesConfigSource = config "recipes"
+defaultRecipesConfigSource = value def
 
 -- | Path in configerator where the server configs live
 serverConfigPath :: String
