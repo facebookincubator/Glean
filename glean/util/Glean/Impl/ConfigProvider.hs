@@ -18,6 +18,7 @@ import qualified Data.HashMap.Strict as HashMap
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Options.Applicative
+import System.Directory
 import System.FilePath
 import System.IO.Error
 import System.INotify
@@ -35,9 +36,8 @@ data ConfigAPI = ConfigAPI
 
 data LocalConfigOptions = LocalConfigOptions
   { configDir :: Maybe FilePath
-      -- ^ directory where the configs are found. If Nothing, all get
-      -- and subscribe attempts will throw. The client may catch the
-      -- exception and subsitute a default value.
+      -- ^ directory where the configs are found. If Nothing, we'll
+      -- use $HOME/.config/glean.
   }
 
 type instance ConfigOptions ConfigAPI = LocalConfigOptions
@@ -54,7 +54,8 @@ instance ConfigProvider ConfigAPI where
     configDir <- optional $ strOption
       (  long "config-dir"
       <> metavar "DIR"
-      <> help "directory where the config files can be found"
+      <> help ("directory where the config files can be found " <>
+        "(default: $HOME/.config/glean)")
       )
     return LocalConfigOptions{..}
 
@@ -70,7 +71,7 @@ instance ConfigProvider ConfigAPI where
   subscribe cfg@ConfigAPI{..} path updated deserializer = do
     a <- get cfg path deserializer
     updated a
-    dir <- getDir path opts
+    dir <- getDir opts
     modifyMVar_ subscriptions $ \hm -> do
       let
         changed contents =
@@ -94,7 +95,7 @@ instance ConfigProvider ConfigAPI where
   cancel _ _ = return () -- unimplemented for now
 
   get ConfigAPI{..} path deserializer = do
-    dir <- getDir path opts
+    dir <- getDir opts
     contents <- ByteString.readFile (dir </> Text.unpack path)
       `catch` \e ->
         if isDoesNotExistError e
@@ -117,9 +118,9 @@ deserialize path deserializer contents =
       ": " <> Text.pack err
     Right a -> return a
 
-getDir :: ConfigPath -> LocalConfigOptions -> IO FilePath
-getDir path opts =
+-- | default to $HOME/.config/glean if --config-dir is not set
+getDir :: LocalConfigOptions -> IO FilePath
+getDir opts =
   case configDir opts of
-    Nothing -> throwIO $ ConfigProviderException $
-      "no config for " <> path <> ": missing --config-dir option"
+    Nothing -> getXdgDirectory XdgConfig "glean"
     Just dir -> return dir
