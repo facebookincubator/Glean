@@ -349,7 +349,8 @@ library util
         glean:stubs,
         glean:config,
         glean:if-glean-hs,
-        primitive
+        primitive,
+        network
 
 library core
     import: fb-haskell, deps, hsc2hs-cpp
