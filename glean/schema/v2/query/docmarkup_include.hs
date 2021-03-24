@@ -118,10 +118,10 @@ instance Glean.SumQuery Glean.Schema.Query.Docmarkup.Types.DocAttrs Glean.Schema
   injectQuery q = Data.Default.def
     { Glean.Schema.Query.Docmarkup.Types.generalAnnotations_doc = Prelude.Just q }
 
-instance Glean.SumQuery [Glean.Schema.Query.Hack.Types.UserAttribute] Glean.Schema.Query.Docmarkup.Types.GeneralAnnotations where
+instance Glean.SumQuery Glean.Schema.Query.Docmarkup.Types.GeneralAnnotations_hack__array Glean.Schema.Query.Docmarkup.Types.GeneralAnnotations where
   injectQuery q = Data.Default.def
     { Glean.Schema.Query.Docmarkup.Types.generalAnnotations_hack = Prelude.Just q }
 
-instance Glean.SumQuery [Glean.Schema.Query.Java.Types.Annotation] Glean.Schema.Query.Docmarkup.Types.GeneralAnnotations where
+instance Glean.SumQuery Glean.Schema.Query.Docmarkup.Types.GeneralAnnotations_java__array Glean.Schema.Query.Docmarkup.Types.GeneralAnnotations where
   injectQuery q = Data.Default.def
     { Glean.Schema.Query.Docmarkup.Types.generalAnnotations_java = Prelude.Just q }

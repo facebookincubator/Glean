@@ -463,6 +463,24 @@ toQuery here ty = go False here ty
           Just ty -> go True here ty
     _other -> return "Glean.toQuery"
 
+-- | Help "SumQuery" when the branch type is Array of a named type.
+-- We need to append @"_<fieldDefName>_array"@ to the main type.
+--
+-- Compare with Glean.Schema.Gen.Thrift.thriftTy for mode Query, which
+-- add this @"_array"@.
+--
+-- I do not have a @Maybe@ case to test, so this may need extending
+-- in the future.
+--
+-- First argument is the normal type renaming.
+toQueryType :: (FieldDef -> M Text) -> NameSpaces -> FieldDef -> M Text
+toQueryType fieldTypeName here field = case fieldDefType field of
+  Array elemTy | elemTy /= Byte -> do
+    (_, name) <- withUnionFieldHint (fieldDefName field) $
+      withRecordFieldHint "array" $ nameThisType (fieldDefType field)
+    let qname = haskellTypeName Query (here, name)
+    return qname
+  _other -> toQueryConTypeName <$> fieldTypeName field
 
 -- | Helper for 'unionDef' because @instance SumQuery (QueryOf _)@ gives
 -- @Illegal type synonym family application in instance@ so I will write
@@ -498,8 +516,9 @@ unionDef mode ident ver fields = do
 
   conTypeNames <- mapM (makeTypeName PredName Data False) fields
   keyTypeNames <- mapM (makeTypeName PredKey Data False) fields
-  queryConTypeNames <- map toQueryConTypeName <$>
-    mapM (makeTypeName PredName Query False) fields
+  queryConTypeNames <- mapM
+    (toQueryType (makeTypeName PredName Query False) here)
+    fields
 
   toQueries <- forM fields $ \field ->
     withUnionFieldHint (fieldDefName field) $
