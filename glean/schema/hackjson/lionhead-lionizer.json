@@ -1,0 +1,130 @@
+{
+    "namespace": "GSLionheadLionizer",
+    "generated": "@generated - To regenerated this file run fbcode//glean/schema/gen/sync-www",
+    "genTypes": {
+        "GSLionheadLionizerFindFunction": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "docmarkup.DocAttrKey",
+                                    "version": 1
+                                },
+                                "classname": "GSDocmarkupDocAttrKey"
+                            },
+                            "fieldInfoName": "key"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTAlias",
+                                "tref": {
+                                    "name": "docmarkup.DocAttrValue",
+                                    "version": 1
+                                },
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "classname": "GSDocmarkupDocAttrValue"
+                            },
+                            "fieldInfoName": "value"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "cxx1.FunctionDeclaration",
+                                    "version": 1
+                                },
+                                "classname": "GSCxx1FunctionDeclaration"
+                            },
+                            "fieldInfoName": "declaration"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "lionhead.lionizer.FindFunction"
+                    }
+                }
+            }
+        },
+        "GSLionheadLionizerFindFunctionWithDef": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "docmarkup.DocAttrKey",
+                                    "version": 1
+                                },
+                                "classname": "GSDocmarkupDocAttrKey"
+                            },
+                            "fieldInfoName": "key"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTAlias",
+                                "tref": {
+                                    "name": "docmarkup.DocAttrValue",
+                                    "version": 1
+                                },
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "classname": "GSDocmarkupDocAttrValue"
+                            },
+                            "fieldInfoName": "value"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "cxx1.FunctionDeclaration",
+                                    "version": 1
+                                },
+                                "classname": "GSCxx1FunctionDeclaration"
+                            },
+                            "fieldInfoName": "declaration"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "cxx1.FunctionDefinition",
+                                    "version": 1
+                                },
+                                "classname": "GSCxx1FunctionDefinition"
+                            },
+                            "fieldInfoName": "definition"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 1,
+                        "refName": "lionhead.lionizer.FindFunctionWithDef"
+                    }
+                }
+            }
+        }
+    },
+    "enums": {}
+}
