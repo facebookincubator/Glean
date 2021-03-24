@@ -13,10 +13,10 @@ import Glean.ClientConfig.Types
 import qualified Glean.Recipes.Types as Recipes
 
 defaultClientConfigSource :: ThriftSource ClientConfig
-defaultClientConfigSource = value def
+defaultClientConfigSource = configDefault "client"
 
 defaultRecipesConfigSource :: ThriftSource Recipes.Config
-defaultRecipesConfigSource = value def
+defaultRecipesConfigSource = configDefault "recipes"
 
 -- | Path in configerator where the server configs live
 serverConfigPath :: String
