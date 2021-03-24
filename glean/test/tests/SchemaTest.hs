@@ -83,18 +83,59 @@ mergeSchemaTest = TestCase $
          _ -> False
 
 
-withSchema :: Int -> String -> (Either SomeException () -> IO a) -> IO a
-withSchema version str action =
+withSchemaFile :: Int -> String -> (FilePath -> FilePath -> IO a) -> IO a
+withSchemaFile version str action = do
   withSystemTempDirectory "glean-dbtest" $ \root -> do
     let newSchemaFile = root </> "schema"
     appendFile newSchemaFile $ "version: " <> show version
     appendFile newSchemaFile str
+    action root newSchemaFile
 
-    r <- tryAll $ withEmptyTestDB [setRoot root, setSchemaPath newSchemaFile] $
+withSchema :: Int -> String -> (Either SomeException () -> IO a) -> IO a
+withSchema version str action =
+  withSchemaFile version str $ \root file -> do
+    r <- tryAll $ withEmptyTestDB [setRoot root, setSchemaPath file] $
       \env repo -> withOpenDatabase env repo $ \_ -> return ()
 
     print (r :: Either SomeException ())
     action r
+
+
+schemaUnversioned :: Test
+schemaUnversioned = TestCase $ do
+  let
+    schema =
+      [s|
+          schema test.1 {
+            predicate P : { a : string, b : nat }
+            predicate Q : { p : P }
+          }
+
+          schema test.2 {
+            predicate P : { a : string, b : nat, c : bool }
+            predicate Q : { p : P }
+          }
+
+          schema all.1 : test.1 {}
+      |]
+
+  withSchemaFile latestAngleVersion schema $ \root file -> do
+    withEmptyTestDB [setRoot root, setSchemaPath file] $ \env repo -> do
+      void $ sendJsonBatch env repo
+        [ JsonFactBatch
+            { jsonFactBatch_predicate = PredicateRef "test.P" 1
+            , jsonFactBatch_facts = [ "{ \"key\" : {} }" ]
+            }
+        ]
+        Nothing
+
+      -- Test that an unversioned query "test.P _" resolves to test.P.1,
+      -- because the all.1 schema inherits from test.1
+      r <- try $ angleQuery env repo "test.P _"
+      print (r :: Either BadQuery UserQueryResults)
+      assertBool "unversioned 1" $ case r of
+        Right UserQueryResults{..} -> length userQueryResults_facts == 1
+        _ -> False
 
 
 schemaTypeError :: Test
@@ -622,4 +663,5 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "backwardCompatDeriving" backwardCompatDeriving
   , TestLabel "deriveDefault" deriveDefault
   , TestLabel "thinSchema" thinSchemaTest
+  , TestLabel "schemaUnversioned" schemaUnversioned
   ]

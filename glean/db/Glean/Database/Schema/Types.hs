@@ -32,10 +32,11 @@ import Glean.Schema.Resolve
 data DbSchema = DbSchema
   { predicatesByRef :: HashMap PredicateRef PredicateDetails
   , predicatesByName :: HashMap Name PredicateDetails
-     -- ^ points to the latest predicate for each name
+     -- ^ points to the predicate for each name in schema "all"
   , predicatesById :: IntMap PredicateDetails
   , schemaTypesByRef :: HashMap TypeRef TypeDetails
   , schemaTypesByName :: HashMap Name TypeDetails
+     -- ^ points to the type for each name in schema "all"
   , schemaInventory :: Inventory
   , schemaSpec :: Schemas
   , schemaSource :: SourceSchemas

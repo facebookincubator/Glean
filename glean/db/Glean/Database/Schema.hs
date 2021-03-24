@@ -27,9 +27,11 @@ import qualified Data.HashMap.Lazy as Lazy.HashMap
 import qualified Data.HashSet as HashSet
 import Data.HashSet (HashSet)
 import qualified Data.IntMap as IntMap
+import Data.List (maximumBy)
 import qualified Data.Map as Map
 import Data.Map (Map)
 import Data.Maybe
+import Data.Ord
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import Data.Text.Prettyprint.Doc
@@ -263,10 +265,11 @@ mkDbSchema
   -> [ResolvedSchema]
   -> IO DbSchema
 mkDbSchema override getPids dbContent source base addition = do
+  let resolved = schemasResolved base <> addition
   let refs = HashMap.keys
         $ HashMap.unions
         $ map resolvedSchemaPredicates
-        $ schemasResolved base <> addition
+        $ resolved
   let pids = getPids refs
   let refToPid = HashMap.fromList
         $ filter (\(_,pid) -> pid /= Pid Thrift.iNVALID_ID)
@@ -289,45 +292,47 @@ mkDbSchema override getPids dbContent source base addition = do
     addition
 
   let predicates = HashMap.elems (tcEnvPredicates env)
-      types = HashMap.elems (tcEnvTypes env)
 
       byId = IntMap.fromList
         [ (fromIntegral (fromPid predicatePid), deets)
         | deets@PredicateDetails{..} <- predicates ]
 
+      byRef = HashMap.fromList
+        [ (predicateRef, deets)
+        | deets@PredicateDetails{..} <- predicates ]
+
       maxPid = maybe lowestPid (Pid . fromIntegral . fst)
         (IntMap.lookupMax byId)
 
+      -- When a query mentions an unversioned predicate, we use a default
+      -- version of the predicate. The default version is whatever is
+      -- exported by the highest version of the distinguished schema "all"
+      (defaultPredicates, defaultTypes) =
+        case filter ((== "all") . resolvedSchemaName) resolved of
+          [] -> ([], [])
+          schemas ->
+            ( HashMap.keys (resolvedSchemaReExportedPredicates all)
+            , HashMap.keys (resolvedSchemaReExportedTypes all) )
+            where
+            all = maximumBy (comparing resolvedSchemaVersion) schemas
+
   return $ DbSchema
-    { predicatesByRef = HashMap.fromList
-        [ (predicateRef, deets)
-        | deets@PredicateDetails{..} <- predicates ]
-    , predicatesByName = HashMap.fromListWith latestPred
-        [ (predicateRef_name predicateRef, deets)
-        | deets@PredicateDetails{..} <- predicates ]
+    { predicatesByRef = byRef
+    , predicatesByName = HashMap.fromList
+        [ (predicateRef_name ref, deets)
+        | ref <- defaultPredicates
+        , Just deets@PredicateDetails{..} <- [HashMap.lookup ref byRef] ]
     , predicatesById = byId
     , schemaTypesByRef = tcEnvTypes env
-    , schemaTypesByName = HashMap.fromListWith latestType
-        [ (typeRef_name typeRef, deets)
-        | deets@TypeDetails{..} <- types ]
+    , schemaTypesByName = HashMap.fromList
+        [ (typeRef_name ref, deets)
+        | ref <- defaultTypes
+        , Just deets@TypeDetails{..} <- [HashMap.lookup ref (tcEnvTypes env)] ]
     , schemaInventory = inventory predicates
-    , schemaSpec = base {
-        schemasResolved = schemasResolved base <> addition }
+    , schemaSpec = base { schemasResolved = resolved }
     , schemaSource = source
     , schemaMaxPid = maxPid
     }
-  where
-    latestPred :: PredicateDetails -> PredicateDetails -> PredicateDetails
-    latestPred a b
-      | predicateRef_version (predicateRef a) >
-        predicateRef_version (predicateRef b) = a
-      | otherwise = b
-
-    latestType :: TypeDetails -> TypeDetails -> TypeDetails
-    latestType a b
-      | typeRef_version (typeRef a) >
-        typeRef_version (typeRef b) = a
-      | otherwise = b
 
 
 typecheckSchema

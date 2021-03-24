@@ -93,6 +93,7 @@ class GleanShellReload(GleanShellTest):
                 "schema example.2 : example.1 {"
                 + "  predicate Foo:string S where Class {S,_ }"
                 + "}"
+                + "schema all.1 : example.2 {}"
             )
         self.shellCommand(":reload", "example>")
 
