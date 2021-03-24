@@ -27,7 +27,7 @@ instance Glean.Predicate Glean.Schema.Hackdependency.Types.Inheritance where
   type KeyType Glean.Schema.Hackdependency.Types.Inheritance =
     Glean.Schema.Hackdependency.Types.Inheritance_key
   getName _proxy  = Glean.PredicateRef "hackdependency.inheritance"1
-  getIndex _proxy  = 297
+  getIndex _proxy  = 301
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Hackdependency.Types.inheritance_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Hackdependency.Types.Inheritance x k
   getFactKey = Glean.Schema.Hackdependency.Types.inheritance_key

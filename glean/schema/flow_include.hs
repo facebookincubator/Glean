@@ -28,7 +28,7 @@ instance Glean.Predicate Glean.Schema.Flow.Types.ImportDeclaration where
   type KeyType Glean.Schema.Flow.Types.ImportDeclaration =
     Glean.Schema.Flow.Types.ImportDeclaration_key
   getName _proxy  = Glean.PredicateRef "flow.ImportDeclaration"3
-  getIndex _proxy  = 495
+  getIndex _proxy  = 499
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Flow.Types.importDeclaration_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Flow.Types.ImportDeclaration x k
   getFactKey = Glean.Schema.Flow.Types.importDeclaration_key
@@ -42,7 +42,7 @@ instance Glean.Predicate Glean.Schema.Flow.Types.Documentation where
   type KeyType Glean.Schema.Flow.Types.Documentation =
     Glean.Schema.Flow.Types.Range
   getName _proxy  = Glean.PredicateRef "flow.Documentation"3
-  getIndex _proxy  = 469
+  getIndex _proxy  = 473
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Flow.Types.documentation_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Flow.Types.Documentation x k
   getFactKey = Glean.Schema.Flow.Types.documentation_key
@@ -82,7 +82,7 @@ instance Glean.Predicate Glean.Schema.Flow.Types.Module where
   type KeyType Glean.Schema.Flow.Types.Module =
     Glean.Schema.Flow.Types.Module_key
   getName _proxy  = Glean.PredicateRef "flow.Module"3
-  getIndex _proxy  = 451
+  getIndex _proxy  = 455
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Flow.Types.module_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Flow.Types.Module x k
   getFactKey = Glean.Schema.Flow.Types.module_key
@@ -106,7 +106,7 @@ instance Glean.Predicate Glean.Schema.Flow.Types.StringToFileModule where
   type KeyType Glean.Schema.Flow.Types.StringToFileModule =
     Glean.Schema.Flow.Types.StringToFileModule_key
   getName _proxy  = Glean.PredicateRef "flow.StringToFileModule"3
-  getIndex _proxy  = 442
+  getIndex _proxy  = 446
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Flow.Types.stringToFileModule_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Flow.Types.StringToFileModule x k
   getFactKey = Glean.Schema.Flow.Types.stringToFileModule_key
@@ -130,7 +130,7 @@ instance Glean.Predicate Glean.Schema.Flow.Types.FileXRef where
   type KeyType Glean.Schema.Flow.Types.FileXRef =
     Glean.Schema.Flow.Types.FileXRef_key
   getName _proxy  = Glean.PredicateRef "flow.FileXRef"3
-  getIndex _proxy  = 440
+  getIndex _proxy  = 444
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Flow.Types.fileXRef_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Flow.Types.FileXRef x k
   getFactKey = Glean.Schema.Flow.Types.fileXRef_key
@@ -170,7 +170,7 @@ instance Glean.Predicate Glean.Schema.Flow.Types.Export where
   type KeyType Glean.Schema.Flow.Types.Export =
     Glean.Schema.Flow.Types.Export_key
   getName _proxy  = Glean.PredicateRef "flow.Export"3
-  getIndex _proxy  = 396
+  getIndex _proxy  = 400
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Flow.Types.export_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Flow.Types.Export x k
   getFactKey = Glean.Schema.Flow.Types.export_key
@@ -194,7 +194,7 @@ instance Glean.Predicate Glean.Schema.Flow.Types.FileDeclaration where
   type KeyType Glean.Schema.Flow.Types.FileDeclaration =
     Glean.Schema.Flow.Types.FileDeclaration_key
   getName _proxy  = Glean.PredicateRef "flow.FileDeclaration"3
-  getIndex _proxy  = 357
+  getIndex _proxy  = 361
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Flow.Types.fileDeclaration_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Flow.Types.FileDeclaration x k
   getFactKey = Glean.Schema.Flow.Types.fileDeclaration_key
@@ -218,7 +218,7 @@ instance Glean.Predicate Glean.Schema.Flow.Types.ModuleTypeExport where
   type KeyType Glean.Schema.Flow.Types.ModuleTypeExport =
     Glean.Schema.Flow.Types.ModuleTypeExport_key
   getName _proxy  = Glean.PredicateRef "flow.ModuleTypeExport"3
-  getIndex _proxy  = 336
+  getIndex _proxy  = 340
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Flow.Types.moduleTypeExport_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Flow.Types.ModuleTypeExport x k
   getFactKey = Glean.Schema.Flow.Types.moduleTypeExport_key
@@ -242,7 +242,7 @@ instance Glean.Predicate Glean.Schema.Flow.Types.LocalDeclarationReference where
   type KeyType Glean.Schema.Flow.Types.LocalDeclarationReference =
     Glean.Schema.Flow.Types.LocalDeclarationReference_key
   getName _proxy  = Glean.PredicateRef "flow.LocalDeclarationReference"3
-  getIndex _proxy  = 334
+  getIndex _proxy  = 338
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Flow.Types.localDeclarationReference_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Flow.Types.LocalDeclarationReference x k
   getFactKey = Glean.Schema.Flow.Types.localDeclarationReference_key
@@ -268,7 +268,7 @@ instance Glean.Predicate Glean.Schema.Flow.Types.DeclarationInfo where
   type KeyType Glean.Schema.Flow.Types.DeclarationInfo =
     Glean.Schema.Flow.Types.DeclarationInfo_key
   getName _proxy  = Glean.PredicateRef "flow.DeclarationInfo"3
-  getIndex _proxy  = 330
+  getIndex _proxy  = 334
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Flow.Types.declarationInfo_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Flow.Types.DeclarationInfo x k
   getFactKey = Glean.Schema.Flow.Types.declarationInfo_key
@@ -292,7 +292,7 @@ instance Glean.Predicate Glean.Schema.Flow.Types.SourceOfTypeExport where
   type KeyType Glean.Schema.Flow.Types.SourceOfTypeExport =
     Glean.Schema.Flow.Types.SourceOfTypeExport_key
   getName _proxy  = Glean.PredicateRef "flow.SourceOfTypeExport"3
-  getIndex _proxy  = 282
+  getIndex _proxy  = 284
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Flow.Types.sourceOfTypeExport_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Flow.Types.SourceOfTypeExport x k
   getFactKey = Glean.Schema.Flow.Types.sourceOfTypeExport_key
@@ -316,7 +316,7 @@ instance Glean.Predicate Glean.Schema.Flow.Types.Declaration where
   type KeyType Glean.Schema.Flow.Types.Declaration =
     Glean.Schema.Flow.Types.Declaration_key
   getName _proxy  = Glean.PredicateRef "flow.Declaration"3
-  getIndex _proxy  = 272
+  getIndex _proxy  = 274
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Flow.Types.declaration_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Flow.Types.Declaration x k
   getFactKey = Glean.Schema.Flow.Types.declaration_key
@@ -340,7 +340,7 @@ instance Glean.Predicate Glean.Schema.Flow.Types.TypeImportDeclaration where
   type KeyType Glean.Schema.Flow.Types.TypeImportDeclaration =
     Glean.Schema.Flow.Types.TypeImportDeclaration_key
   getName _proxy  = Glean.PredicateRef "flow.TypeImportDeclaration"3
-  getIndex _proxy  = 254
+  getIndex _proxy  = 256
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Flow.Types.typeImportDeclaration_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Flow.Types.TypeImportDeclaration x k
   getFactKey = Glean.Schema.Flow.Types.typeImportDeclaration_key
@@ -364,7 +364,7 @@ instance Glean.Predicate Glean.Schema.Flow.Types.Range where
   type KeyType Glean.Schema.Flow.Types.Range =
     Glean.Schema.Flow.Types.Range_key
   getName _proxy  = Glean.PredicateRef "flow.Range"3
-  getIndex _proxy  = 210
+  getIndex _proxy  = 211
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Flow.Types.range_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Flow.Types.Range x k
   getFactKey = Glean.Schema.Flow.Types.range_key

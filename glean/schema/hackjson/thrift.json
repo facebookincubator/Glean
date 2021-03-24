@@ -267,6 +267,45 @@
                 }
             }
         },
+        "GSThriftExceptionSpecName": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Union",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "thrift.ExceptionName",
+                                    "version": 2
+                                },
+                                "classname": "GSThriftExceptionName"
+                            },
+                            "fieldInfoName": "simple"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "thrift.TypeDefException",
+                                    "version": 4
+                                },
+                                "classname": "GSThriftTypeDefException"
+                            },
+                            "fieldInfoName": "typedef_"
+                        }
+                    ],
+                    "classGenHasCycles": true,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "TypeReference",
+                        "refVersion": 4,
+                        "refName": "thrift.ExceptionSpecName"
+                    }
+                }
+            }
+        },
         "GSThriftFileError": {
             "tag": "ClassType",
             "contents": {
@@ -856,7 +895,7 @@
                                 "tag": "NamedTypeTNamed",
                                 "tref": {
                                     "name": "thrift.ResultStream",
-                                    "version": 3
+                                    "version": 4
                                 },
                                 "classname": "GSThriftResultStream"
                             },
@@ -867,7 +906,7 @@
                     "classGenReference": {
                         "refLatest": true,
                         "refTag": "TypeReference",
-                        "refVersion": 3,
+                        "refVersion": 4,
                         "refName": "thrift.ResultType"
                     }
                 }
@@ -1401,6 +1440,73 @@
                 }
             }
         },
+        "GSThriftFunctionSpecification_DEPRECATED3": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "thrift.FunctionName",
+                                    "version": 2
+                                },
+                                "classname": "GSThriftFunctionName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "thrift.ResultType",
+                                    "version": 3
+                                },
+                                "classname": "GSThriftResultType_DEPRECATED3"
+                            },
+                            "fieldInfoName": "result"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTNamed",
+                                    "tref": {
+                                        "name": "thrift.UnqualField",
+                                        "version": 3
+                                    },
+                                    "classname": "GSThriftUnqualField"
+                                }
+                            },
+                            "fieldInfoName": "arguments"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTNamed",
+                                    "tref": {
+                                        "name": "thrift.ExceptionSpecification",
+                                        "version": 3
+                                    },
+                                    "classname": "GSThriftExceptionSpecification_DEPRECATED3"
+                                }
+                            },
+                            "fieldInfoName": "throws_"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "PredicateReference",
+                        "refVersion": 3,
+                        "refName": "thrift.FunctionSpecification"
+                    }
+                }
+            }
+        },
         "GSThriftToCpp2": {
             "tag": "ClassType",
             "contents": {
@@ -1476,7 +1582,7 @@
                                 "tag": "NamedTypeTNamed",
                                 "tref": {
                                     "name": "thrift.ResultType",
-                                    "version": 3
+                                    "version": 4
                                 },
                                 "classname": "GSThriftResultType"
                             },
@@ -1503,7 +1609,7 @@
                                     "tag": "NamedTypeTNamed",
                                     "tref": {
                                         "name": "thrift.ExceptionSpecification",
-                                        "version": 3
+                                        "version": 4
                                     },
                                     "classname": "GSThriftExceptionSpecification"
                                 }
@@ -1515,7 +1621,7 @@
                     "classGenReference": {
                         "refLatest": true,
                         "refTag": "PredicateReference",
-                        "refVersion": 3,
+                        "refVersion": 4,
                         "refName": "thrift.FunctionSpecification"
                     }
                 }
@@ -1734,6 +1840,48 @@
                         "refTag": "TypeReference",
                         "refVersion": 1,
                         "refName": "thrift.Cpp2ItemNamed"
+                    }
+                }
+            }
+        },
+        "GSThriftExceptionType": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "thrift.QualName",
+                                    "version": 2
+                                },
+                                "classname": "GSThriftQualName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTNamed",
+                                    "tref": {
+                                        "name": "thrift.FieldSpecification",
+                                        "version": 3
+                                    },
+                                    "classname": "GSThriftFieldSpecification"
+                                }
+                            },
+                            "fieldInfoName": "fields"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "thrift.ExceptionType"
                     }
                 }
             }
@@ -2058,6 +2206,101 @@
                 }
             }
         },
+        "GSThriftResultStream_DEPRECATED3": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "MaybeTOption",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "thrift.TypeSpecification",
+                                        "version": 3
+                                    },
+                                    "classname": "GSThriftTypeSpecification"
+                                }
+                            },
+                            "fieldInfoName": "response"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "thrift.TypeSpecification",
+                                    "version": 3
+                                },
+                                "classname": "GSThriftTypeSpecification"
+                            },
+                            "fieldInfoName": "stream_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "NamedTypeTNamed",
+                                    "tref": {
+                                        "name": "thrift.ExceptionSpecification",
+                                        "version": 3
+                                    },
+                                    "classname": "GSThriftExceptionSpecification_DEPRECATED3"
+                                }
+                            },
+                            "fieldInfoName": "throws_"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "TypeReference",
+                        "refVersion": 3,
+                        "refName": "thrift.ResultStream"
+                    }
+                }
+            }
+        },
+        "GSThriftTypeDefException": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "thrift.NamedDecl",
+                                    "version": 2
+                                },
+                                "classname": "GSThriftNamedDecl"
+                            },
+                            "fieldInfoName": "alias"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "thrift.ExceptionSpecName",
+                                    "version": 4
+                                },
+                                "classname": "GSThriftExceptionSpecName"
+                            },
+                            "fieldInfoName": "type_"
+                        }
+                    ],
+                    "classGenHasCycles": true,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 4,
+                        "refName": "thrift.TypeDefException"
+                    }
+                }
+            }
+        },
         "GSThriftCompileTarget": {
             "tag": "ClassType",
             "contents": {
@@ -2219,7 +2462,7 @@
                                     "tag": "PredicateTNamed",
                                     "pref": {
                                         "name": "thrift.FunctionSpecification",
-                                        "version": 3
+                                        "version": 4
                                     },
                                     "classname": "GSThriftFunctionSpecification"
                                 }
@@ -2231,7 +2474,7 @@
                     "classGenReference": {
                         "refLatest": true,
                         "refTag": "PredicateReference",
-                        "refVersion": 3,
+                        "refVersion": 4,
                         "refName": "thrift.ServiceDefinition"
                     }
                 }
@@ -2502,7 +2745,7 @@
                                     "tag": "NamedTypeTNamed",
                                     "tref": {
                                         "name": "thrift.ExceptionSpecification",
-                                        "version": 3
+                                        "version": 4
                                     },
                                     "classname": "GSThriftExceptionSpecification"
                                 }
@@ -2514,7 +2757,7 @@
                     "classGenReference": {
                         "refLatest": true,
                         "refTag": "TypeReference",
-                        "refVersion": 3,
+                        "refVersion": 4,
                         "refName": "thrift.ResultStream"
                     }
                 }
@@ -2555,6 +2798,48 @@
                         "refTag": "PredicateReference",
                         "refVersion": 2,
                         "refName": "thrift.NamedDecl"
+                    }
+                }
+            }
+        },
+        "GSThriftServiceDefinition_DEPRECATED3": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "thrift.ServiceName",
+                                    "version": 2
+                                },
+                                "classname": "GSThriftServiceName"
+                            },
+                            "fieldInfoName": "name"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "ArrayTVec",
+                                "inner": {
+                                    "tag": "PredicateTNamed",
+                                    "pref": {
+                                        "name": "thrift.FunctionSpecification",
+                                        "version": 3
+                                    },
+                                    "classname": "GSThriftFunctionSpecification_DEPRECATED3"
+                                }
+                            },
+                            "fieldInfoName": "functions"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "PredicateReference",
+                        "refVersion": 3,
+                        "refName": "thrift.ServiceDefinition"
                     }
                 }
             }
@@ -2933,6 +3218,67 @@
                 "struct_",
                 "union_"
             ]
+        },
+        "GSThriftResultType_DEPRECATED3": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Union",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "builtin.Unit",
+                                    "version": 1
+                                },
+                                "classname": "GSBuiltinUnit"
+                            },
+                            "fieldInfoName": "oneway_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "builtin.Unit",
+                                    "version": 1
+                                },
+                                "classname": "GSBuiltinUnit"
+                            },
+                            "fieldInfoName": "void_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "thrift.TypeSpecification",
+                                    "version": 3
+                                },
+                                "classname": "GSThriftTypeSpecification"
+                            },
+                            "fieldInfoName": "result"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "thrift.ResultStream",
+                                    "version": 3
+                                },
+                                "classname": "GSThriftResultStream_DEPRECATED3"
+                            },
+                            "fieldInfoName": "stream_"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "TypeReference",
+                        "refVersion": 3,
+                        "refName": "thrift.ResultType"
+                    }
+                }
+            }
         },
         "GSThriftHackRecord": {
             "tag": "ClassType",
@@ -3324,12 +3670,12 @@
                         },
                         {
                             "fieldInfoType": {
-                                "tag": "PredicateTNamed",
-                                "pref": {
-                                    "name": "thrift.ExceptionName",
-                                    "version": 2
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "thrift.ExceptionSpecName",
+                                    "version": 4
                                 },
-                                "classname": "GSThriftExceptionName"
+                                "classname": "GSThriftExceptionSpecName"
                             },
                             "fieldInfoName": "type_"
                         },
@@ -3352,7 +3698,7 @@
                     "classGenReference": {
                         "refLatest": true,
                         "refTag": "TypeReference",
-                        "refVersion": 3,
+                        "refVersion": 4,
                         "refName": "thrift.ExceptionSpecification"
                     }
                 }
@@ -3485,6 +3831,67 @@
                         "refTag": "PredicateReference",
                         "refVersion": 2,
                         "refName": "thrift.ServiceChild"
+                    }
+                }
+            }
+        },
+        "GSThriftExceptionSpecification_DEPRECATED3": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTAlias",
+                                "tref": {
+                                    "name": "thrift.FieldId",
+                                    "version": 3
+                                },
+                                "inner": {
+                                    "tag": "NamedTypeTNamed",
+                                    "tref": {
+                                        "name": "thrift.IntegerLiteral",
+                                        "version": 3
+                                    },
+                                    "classname": "GSThriftIntegerLiteral"
+                                },
+                                "classname": "GSThriftFieldId"
+                            },
+                            "fieldInfoName": "id"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateTNamed",
+                                "pref": {
+                                    "name": "thrift.ExceptionName",
+                                    "version": 2
+                                },
+                                "classname": "GSThriftExceptionName"
+                            },
+                            "fieldInfoName": "type_"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "PredicateT",
+                                "inner": {
+                                    "tag": "StringTString"
+                                },
+                                "pref": {
+                                    "name": "thrift.Identifier",
+                                    "version": 1
+                                },
+                                "classname": "GSThriftIdentifier"
+                            },
+                            "fieldInfoName": "name"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": false,
+                        "refTag": "TypeReference",
+                        "refVersion": 3,
+                        "refName": "thrift.ExceptionSpecification"
                     }
                 }
             }

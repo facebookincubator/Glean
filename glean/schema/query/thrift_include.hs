@@ -327,6 +327,21 @@ type instance Glean.QueryOf Glean.Schema.Thrift.Types.FromHack = Glean.Schema.Qu
 
 instance Glean.ToQuery Glean.Schema.Thrift.Types.FromHack
 
+type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.ExceptionType_key = Glean.Schema.Thrift.Types.ExceptionType_key
+type instance Glean.QueryOf Glean.Schema.Thrift.Types.ExceptionType_key = Glean.Schema.Query.Thrift.Types.ExceptionType_key
+
+instance Glean.ToQuery Glean.Schema.Thrift.Types.ExceptionType_key where
+  toQuery (Glean.Schema.Thrift.Types.ExceptionType_key x1 x2) = Glean.Schema.Query.Thrift.Types.ExceptionType_key (Prelude.Just (Glean.toQuery x1)) (Prelude.Just ((Glean.Schema.Query.Thrift.Types.ExceptionType_fields_array_exact . Prelude.map Glean.toQuery) x2))
+
+instance Glean.PredicateQuery Glean.Schema.Thrift.Types.ExceptionType where
+  toQueryId = Glean.Schema.Query.Thrift.Types.ExceptionType_with_id . Glean.fromFid . Glean.idOf
+  toQueryKey = Glean.Schema.Query.Thrift.Types.ExceptionType_with_key . Glean.toQuery
+
+type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.ExceptionType = Glean.Schema.Thrift.Types.ExceptionType
+type instance Glean.QueryOf Glean.Schema.Thrift.Types.ExceptionType = Glean.Schema.Query.Thrift.Types.ExceptionType
+
+instance Glean.ToQuery Glean.Schema.Thrift.Types.ExceptionType
+
 type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.TypeDefType_key = Glean.Schema.Thrift.Types.TypeDefType_key
 type instance Glean.QueryOf Glean.Schema.Thrift.Types.TypeDefType_key = Glean.Schema.Query.Thrift.Types.TypeDefType_key
 
@@ -356,6 +371,21 @@ type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.FunctionSpecific
 type instance Glean.QueryOf Glean.Schema.Thrift.Types.FunctionSpecification = Glean.Schema.Query.Thrift.Types.FunctionSpecification
 
 instance Glean.ToQuery Glean.Schema.Thrift.Types.FunctionSpecification
+
+type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.FunctionSpecification_3_key = Glean.Schema.Thrift.Types.FunctionSpecification_3_key
+type instance Glean.QueryOf Glean.Schema.Thrift.Types.FunctionSpecification_3_key = Glean.Schema.Query.Thrift.Types.FunctionSpecification_3_key
+
+instance Glean.ToQuery Glean.Schema.Thrift.Types.FunctionSpecification_3_key where
+  toQuery (Glean.Schema.Thrift.Types.FunctionSpecification_3_key x1 x2 x3 x4) = Glean.Schema.Query.Thrift.Types.FunctionSpecification_3_key (Prelude.Just (Glean.toQuery x1)) (Prelude.Just (Glean.toQuery x2)) (Prelude.Just ((Glean.Schema.Query.Thrift.Types.FunctionSpecification_3_arguments_array_exact . Prelude.map Glean.toQuery) x3)) (Prelude.Just ((Glean.Schema.Query.Thrift.Types.FunctionSpecification_3_throws__array_exact . Prelude.map Glean.toQuery) x4))
+
+instance Glean.PredicateQuery Glean.Schema.Thrift.Types.FunctionSpecification_3 where
+  toQueryId = Glean.Schema.Query.Thrift.Types.FunctionSpecification_3_with_id . Glean.fromFid . Glean.idOf
+  toQueryKey = Glean.Schema.Query.Thrift.Types.FunctionSpecification_3_with_key . Glean.toQuery
+
+type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.FunctionSpecification_3 = Glean.Schema.Thrift.Types.FunctionSpecification_3
+type instance Glean.QueryOf Glean.Schema.Thrift.Types.FunctionSpecification_3 = Glean.Schema.Query.Thrift.Types.FunctionSpecification_3
+
+instance Glean.ToQuery Glean.Schema.Thrift.Types.FunctionSpecification_3
 
 type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.ToPython_key = Glean.Schema.Thrift.Types.ToPython_key
 type instance Glean.QueryOf Glean.Schema.Thrift.Types.ToPython_key = Glean.Schema.Query.Thrift.Types.ToPython_key
@@ -507,6 +537,21 @@ type instance Glean.QueryOf Glean.Schema.Thrift.Types.ServiceDefinition = Glean.
 
 instance Glean.ToQuery Glean.Schema.Thrift.Types.ServiceDefinition
 
+type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.ServiceDefinition_3_key = Glean.Schema.Thrift.Types.ServiceDefinition_3_key
+type instance Glean.QueryOf Glean.Schema.Thrift.Types.ServiceDefinition_3_key = Glean.Schema.Query.Thrift.Types.ServiceDefinition_3_key
+
+instance Glean.ToQuery Glean.Schema.Thrift.Types.ServiceDefinition_3_key where
+  toQuery (Glean.Schema.Thrift.Types.ServiceDefinition_3_key x1 x2) = Glean.Schema.Query.Thrift.Types.ServiceDefinition_3_key (Prelude.Just (Glean.toQuery x1)) (Prelude.Just ((Glean.Schema.Query.Thrift.Types.ServiceDefinition_3_functions_array_exact . Prelude.map Glean.toQuery) x2))
+
+instance Glean.PredicateQuery Glean.Schema.Thrift.Types.ServiceDefinition_3 where
+  toQueryId = Glean.Schema.Query.Thrift.Types.ServiceDefinition_3_with_id . Glean.fromFid . Glean.idOf
+  toQueryKey = Glean.Schema.Query.Thrift.Types.ServiceDefinition_3_with_key . Glean.toQuery
+
+type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.ServiceDefinition_3 = Glean.Schema.Thrift.Types.ServiceDefinition_3
+type instance Glean.QueryOf Glean.Schema.Thrift.Types.ServiceDefinition_3 = Glean.Schema.Query.Thrift.Types.ServiceDefinition_3
+
+instance Glean.ToQuery Glean.Schema.Thrift.Types.ServiceDefinition_3
+
 instance Glean.PredicateQuery Glean.Schema.Thrift.Types.NamespaceValue where
   toQueryId = Glean.Schema.Query.Thrift.Types.NamespaceValue_with_id . Glean.fromFid . Glean.idOf
   toQueryKey = Glean.Schema.Query.Thrift.Types.NamespaceValue_with_key . Glean.toQuery
@@ -545,6 +590,21 @@ type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.EnumValue = Glea
 type instance Glean.QueryOf Glean.Schema.Thrift.Types.EnumValue = Glean.Schema.Query.Thrift.Types.EnumValue
 
 instance Glean.ToQuery Glean.Schema.Thrift.Types.EnumValue
+
+type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.TypeDefException_key = Glean.Schema.Thrift.Types.TypeDefException_key
+type instance Glean.QueryOf Glean.Schema.Thrift.Types.TypeDefException_key = Glean.Schema.Query.Thrift.Types.TypeDefException_key
+
+instance Glean.ToQuery Glean.Schema.Thrift.Types.TypeDefException_key where
+  toQuery (Glean.Schema.Thrift.Types.TypeDefException_key x1 x2) = Glean.Schema.Query.Thrift.Types.TypeDefException_key (Prelude.Just (Glean.toQuery x1)) (Prelude.Just (Glean.toQuery x2))
+
+instance Glean.PredicateQuery Glean.Schema.Thrift.Types.TypeDefException where
+  toQueryId = Glean.Schema.Query.Thrift.Types.TypeDefException_with_id . Glean.fromFid . Glean.idOf
+  toQueryKey = Glean.Schema.Query.Thrift.Types.TypeDefException_with_key . Glean.toQuery
+
+type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.TypeDefException = Glean.Schema.Thrift.Types.TypeDefException
+type instance Glean.QueryOf Glean.Schema.Thrift.Types.TypeDefException = Glean.Schema.Query.Thrift.Types.TypeDefException
+
+instance Glean.ToQuery Glean.Schema.Thrift.Types.TypeDefException
 
 type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.CompileTarget_key = Glean.Schema.Thrift.Types.CompileTarget_key
 type instance Glean.QueryOf Glean.Schema.Thrift.Types.CompileTarget_key = Glean.Schema.Query.Thrift.Types.CompileTarget_key
@@ -873,6 +933,12 @@ type instance Glean.QueryOf Glean.Schema.Thrift.Types.ExceptionSpecification = G
 instance Glean.ToQuery Glean.Schema.Thrift.Types.ExceptionSpecification where
   toQuery (Glean.Schema.Thrift.Types.ExceptionSpecification x1 x2 x3) = Glean.Schema.Query.Thrift.Types.ExceptionSpecification (Prelude.Just (Glean.toQuery x1)) (Prelude.Just (Glean.toQuery x2)) (Prelude.Just (Glean.toQuery x3))
 
+type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.ExceptionSpecification_3 = Glean.Schema.Thrift.Types.ExceptionSpecification_3
+type instance Glean.QueryOf Glean.Schema.Thrift.Types.ExceptionSpecification_3 = Glean.Schema.Query.Thrift.Types.ExceptionSpecification_3
+
+instance Glean.ToQuery Glean.Schema.Thrift.Types.ExceptionSpecification_3 where
+  toQuery (Glean.Schema.Thrift.Types.ExceptionSpecification_3 x1 x2 x3) = Glean.Schema.Query.Thrift.Types.ExceptionSpecification_3 (Prelude.Just (Glean.toQuery x1)) (Prelude.Just (Glean.toQuery x2)) (Prelude.Just (Glean.toQuery x3))
+
 type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.Item = Glean.Schema.Thrift.Types.Item
 type instance Glean.QueryOf Glean.Schema.Thrift.Types.Item = Glean.Schema.Query.Thrift.Types.Item
 
@@ -917,6 +983,21 @@ instance Glean.SumQuery Glean.Schema.Query.Thrift.Types.Constant Glean.Schema.Qu
 instance Glean.SumQuery Glean.Schema.Query.Thrift.Types.EnumValue Glean.Schema.Query.Thrift.Types.Item where
   injectQuery q = Data.Default.def
     { Glean.Schema.Query.Thrift.Types.item_enumValue = Prelude.Just q }
+
+type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.ExceptionSpecName = Glean.Schema.Thrift.Types.ExceptionSpecName
+type instance Glean.QueryOf Glean.Schema.Thrift.Types.ExceptionSpecName = Glean.Schema.Query.Thrift.Types.ExceptionSpecName
+
+instance Glean.ToQuery Glean.Schema.Thrift.Types.ExceptionSpecName where
+  toQuery (Glean.Schema.Thrift.Types.ExceptionSpecName_simple x) = Data.Default.def { Glean.Schema.Query.Thrift.Types.exceptionSpecName_simple = Prelude.Just (Glean.toQuery x) }
+  toQuery (Glean.Schema.Thrift.Types.ExceptionSpecName_typedef_ x) = Data.Default.def { Glean.Schema.Query.Thrift.Types.exceptionSpecName_typedef_ = Prelude.Just (Glean.toQuery x) }
+
+instance Glean.SumQuery Glean.Schema.Query.Thrift.Types.ExceptionName Glean.Schema.Query.Thrift.Types.ExceptionSpecName where
+  injectQuery q = Data.Default.def
+    { Glean.Schema.Query.Thrift.Types.exceptionSpecName_simple = Prelude.Just q }
+
+instance Glean.SumQuery Glean.Schema.Query.Thrift.Types.TypeDefException Glean.Schema.Query.Thrift.Types.ExceptionSpecName where
+  injectQuery q = Data.Default.def
+    { Glean.Schema.Query.Thrift.Types.exceptionSpecName_typedef_ = Prelude.Just q }
 
 type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.IntegerLiteral = Glean.Schema.Thrift.Types.IntegerLiteral
 type instance Glean.QueryOf Glean.Schema.Thrift.Types.IntegerLiteral = Glean.Schema.Query.Thrift.Types.IntegerLiteral
@@ -994,6 +1075,12 @@ type instance Glean.QueryOf Glean.Schema.Thrift.Types.ResultStream = Glean.Schem
 
 instance Glean.ToQuery Glean.Schema.Thrift.Types.ResultStream where
   toQuery (Glean.Schema.Thrift.Types.ResultStream x1 x2 x3) = Glean.Schema.Query.Thrift.Types.ResultStream (Prelude.Just ((Prelude.maybe (Data.Default.def { Glean.Schema.Query.Thrift.Types.resultStream_response_nothing = Prelude.Just Data.Default.def}) (\x -> Data.Default.def { Glean.Schema.Query.Thrift.Types.resultStream_response_just = Prelude.Just (Glean.toQuery x)})) x1)) (Prelude.Just (Glean.toQuery x2)) (Prelude.Just ((Glean.Schema.Query.Thrift.Types.ResultStream_throws__array_exact . Prelude.map Glean.toQuery) x3))
+
+type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.ResultStream_3 = Glean.Schema.Thrift.Types.ResultStream_3
+type instance Glean.QueryOf Glean.Schema.Thrift.Types.ResultStream_3 = Glean.Schema.Query.Thrift.Types.ResultStream_3
+
+instance Glean.ToQuery Glean.Schema.Thrift.Types.ResultStream_3 where
+  toQuery (Glean.Schema.Thrift.Types.ResultStream_3 x1 x2 x3) = Glean.Schema.Query.Thrift.Types.ResultStream_3 (Prelude.Just ((Prelude.maybe (Data.Default.def { Glean.Schema.Query.Thrift.Types.resultStream_3_response_nothing = Prelude.Just Data.Default.def}) (\x -> Data.Default.def { Glean.Schema.Query.Thrift.Types.resultStream_3_response_just = Prelude.Just (Glean.toQuery x)})) x1)) (Prelude.Just (Glean.toQuery x2)) (Prelude.Just ((Glean.Schema.Query.Thrift.Types.ResultStream_3_throws__array_exact . Prelude.map Glean.toQuery) x3))
 
 type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.HackMapKind = Glean.Schema.Thrift.Types.HackMapKind
 type instance Glean.QueryOf Glean.Schema.Thrift.Types.HackMapKind = Glean.Schema.Query.Thrift.Types.HackMapKind
@@ -1081,6 +1168,15 @@ instance Glean.ToQuery Glean.Schema.Thrift.Types.ResultType where
   toQuery (Glean.Schema.Thrift.Types.ResultType_void_ x) = Data.Default.def { Glean.Schema.Query.Thrift.Types.resultType_void_ = Prelude.Just (Glean.toQuery x) }
   toQuery (Glean.Schema.Thrift.Types.ResultType_result x) = Data.Default.def { Glean.Schema.Query.Thrift.Types.resultType_result = Prelude.Just (Glean.toQuery x) }
   toQuery (Glean.Schema.Thrift.Types.ResultType_stream_ x) = Data.Default.def { Glean.Schema.Query.Thrift.Types.resultType_stream_ = Prelude.Just (Glean.toQuery x) }
+
+type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.ResultType_3 = Glean.Schema.Thrift.Types.ResultType_3
+type instance Glean.QueryOf Glean.Schema.Thrift.Types.ResultType_3 = Glean.Schema.Query.Thrift.Types.ResultType_3
+
+instance Glean.ToQuery Glean.Schema.Thrift.Types.ResultType_3 where
+  toQuery (Glean.Schema.Thrift.Types.ResultType_3_oneway_ x) = Data.Default.def { Glean.Schema.Query.Thrift.Types.resultType_3_oneway_ = Prelude.Just (Glean.toQuery x) }
+  toQuery (Glean.Schema.Thrift.Types.ResultType_3_void_ x) = Data.Default.def { Glean.Schema.Query.Thrift.Types.resultType_3_void_ = Prelude.Just (Glean.toQuery x) }
+  toQuery (Glean.Schema.Thrift.Types.ResultType_3_result x) = Data.Default.def { Glean.Schema.Query.Thrift.Types.resultType_3_result = Prelude.Just (Glean.toQuery x) }
+  toQuery (Glean.Schema.Thrift.Types.ResultType_3_stream_ x) = Data.Default.def { Glean.Schema.Query.Thrift.Types.resultType_3_stream_ = Prelude.Just (Glean.toQuery x) }
 
 type instance Glean.QueryResult Glean.Schema.Query.Thrift.Types.PythonItem = Glean.Schema.Thrift.Types.PythonItem
 type instance Glean.QueryOf Glean.Schema.Thrift.Types.PythonItem = Glean.Schema.Query.Thrift.Types.PythonItem

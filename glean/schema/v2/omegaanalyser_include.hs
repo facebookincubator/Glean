@@ -16,7 +16,7 @@ import qualified Glean.Schema.Builtin.Types
 instance Glean.Predicate Glean.Schema.Omegaanalyser.Types.OmegaPolicy where
   type KeyType Glean.Schema.Omegaanalyser.Types.OmegaPolicy = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "omegaanalyser.OmegaPolicy"2
-  getIndex _proxy  = 494
+  getIndex _proxy  = 498
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Omegaanalyser.Types.omegaPolicy_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Omegaanalyser.Types.OmegaPolicy x k
   getFactKey = Glean.Schema.Omegaanalyser.Types.omegaPolicy_key
@@ -29,7 +29,7 @@ instance Glean.Type Glean.Schema.Omegaanalyser.Types.OmegaPolicy where
 instance Glean.Predicate Glean.Schema.Omegaanalyser.Types.Class_ where
   type KeyType Glean.Schema.Omegaanalyser.Types.Class_ = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "omegaanalyser.Class_"1
-  getIndex _proxy  = 479
+  getIndex _proxy  = 483
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Omegaanalyser.Types.class__id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Omegaanalyser.Types.Class_ x k
   getFactKey = Glean.Schema.Omegaanalyser.Types.class__key
@@ -53,7 +53,7 @@ instance Glean.Predicate Glean.Schema.Omegaanalyser.Types.DependencyList where
   type KeyType Glean.Schema.Omegaanalyser.Types.DependencyList =
     Glean.Schema.Omegaanalyser.Types.DependencyList_key
   getName _proxy  = Glean.PredicateRef "omegaanalyser.DependencyList"1
-  getIndex _proxy  = 373
+  getIndex _proxy  = 377
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Omegaanalyser.Types.dependencyList_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Omegaanalyser.Types.DependencyList x k
   getFactKey = Glean.Schema.Omegaanalyser.Types.dependencyList_key
@@ -66,7 +66,7 @@ instance Glean.Type Glean.Schema.Omegaanalyser.Types.DependencyList where
 instance Glean.Predicate Glean.Schema.Omegaanalyser.Types.Function_ where
   type KeyType Glean.Schema.Omegaanalyser.Types.Function_ = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "omegaanalyser.Function_"1
-  getIndex _proxy  = 364
+  getIndex _proxy  = 368
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Omegaanalyser.Types.function__id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Omegaanalyser.Types.Function_ x k
   getFactKey = Glean.Schema.Omegaanalyser.Types.function__key
@@ -79,7 +79,7 @@ instance Glean.Type Glean.Schema.Omegaanalyser.Types.Function_ where
 instance Glean.Predicate Glean.Schema.Omegaanalyser.Types.OmegaEndpoint where
   type KeyType Glean.Schema.Omegaanalyser.Types.OmegaEndpoint = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "omegaanalyser.OmegaEndpoint"1
-  getIndex _proxy  = 349
+  getIndex _proxy  = 353
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Omegaanalyser.Types.omegaEndpoint_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Omegaanalyser.Types.OmegaEndpoint x k
   getFactKey = Glean.Schema.Omegaanalyser.Types.omegaEndpoint_key
@@ -92,7 +92,7 @@ instance Glean.Type Glean.Schema.Omegaanalyser.Types.OmegaEndpoint where
 instance Glean.Predicate Glean.Schema.Omegaanalyser.Types.Method where
   type KeyType Glean.Schema.Omegaanalyser.Types.Method = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "omegaanalyser.Method"1
-  getIndex _proxy  = 306
+  getIndex _proxy  = 310
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Omegaanalyser.Types.method_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Omegaanalyser.Types.Method x k
   getFactKey = Glean.Schema.Omegaanalyser.Types.method_key

@@ -27,7 +27,7 @@ type instance Angle.RecordFields Glean.Schema.Hs.Types.Class_key = 'Angle.TField
 instance Glean.Predicate Glean.Schema.Hs.Types.Class where
   type KeyType Glean.Schema.Hs.Types.Class = Glean.Schema.Hs.Types.Class_key
   getName _proxy  = Glean.PredicateRef "hs.Class"1
-  getIndex _proxy  = 429
+  getIndex _proxy  = 433
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Hs.Types.class_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Hs.Types.Class x k
   getFactKey = Glean.Schema.Hs.Types.class_key
@@ -40,7 +40,7 @@ instance Glean.Type Glean.Schema.Hs.Types.Class where
 instance Glean.Predicate Glean.Schema.Hs.Types.FunctionName where
   type KeyType Glean.Schema.Hs.Types.FunctionName = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "hs.FunctionName"1
-  getIndex _proxy  = 392
+  getIndex _proxy  = 396
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Hs.Types.functionName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Hs.Types.FunctionName x k
   getFactKey = Glean.Schema.Hs.Types.functionName_key
@@ -53,7 +53,7 @@ instance Glean.Type Glean.Schema.Hs.Types.FunctionName where
 instance Glean.Predicate Glean.Schema.Hs.Types.Type where
   type KeyType Glean.Schema.Hs.Types.Type = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "hs.Type"1
-  getIndex _proxy  = 359
+  getIndex _proxy  = 363
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Hs.Types.type_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Hs.Types.Type x k
   getFactKey = Glean.Schema.Hs.Types.type_key
@@ -66,7 +66,7 @@ instance Glean.Type Glean.Schema.Hs.Types.Type where
 instance Glean.Predicate Glean.Schema.Hs.Types.PackageId where
   type KeyType Glean.Schema.Hs.Types.PackageId = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "hs.PackageId"1
-  getIndex _proxy  = 355
+  getIndex _proxy  = 359
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Hs.Types.packageId_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Hs.Types.PackageId x k
   getFactKey = Glean.Schema.Hs.Types.packageId_key
@@ -91,7 +91,7 @@ type instance Angle.RecordFields Glean.Schema.Hs.Types.Module_key = 'Angle.TFiel
 instance Glean.Predicate Glean.Schema.Hs.Types.Module where
   type KeyType Glean.Schema.Hs.Types.Module = Glean.Schema.Hs.Types.Module_key
   getName _proxy  = Glean.PredicateRef "hs.Module"1
-  getIndex _proxy  = 305
+  getIndex _proxy  = 309
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Hs.Types.module_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Hs.Types.Module x k
   getFactKey = Glean.Schema.Hs.Types.module_key
@@ -104,7 +104,7 @@ instance Glean.Type Glean.Schema.Hs.Types.Module where
 instance Glean.Predicate Glean.Schema.Hs.Types.DefinitionName where
   type KeyType Glean.Schema.Hs.Types.DefinitionName = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "hs.DefinitionName"1
-  getIndex _proxy  = 304
+  getIndex _proxy  = 308
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Hs.Types.definitionName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Hs.Types.DefinitionName x k
   getFactKey = Glean.Schema.Hs.Types.definitionName_key
@@ -128,7 +128,7 @@ instance Glean.Predicate Glean.Schema.Hs.Types.ModuleDefinitions where
   type KeyType Glean.Schema.Hs.Types.ModuleDefinitions =
     Glean.Schema.Hs.Types.ModuleDefinitions_key
   getName _proxy  = Glean.PredicateRef "hs.ModuleDefinitions"1
-  getIndex _proxy  = 264
+  getIndex _proxy  = 266
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Hs.Types.moduleDefinitions_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Hs.Types.ModuleDefinitions x k
   getFactKey = Glean.Schema.Hs.Types.moduleDefinitions_key
@@ -152,7 +152,7 @@ instance Glean.Predicate Glean.Schema.Hs.Types.FileXRefMap where
   type KeyType Glean.Schema.Hs.Types.FileXRefMap =
     Glean.Schema.Hs.Types.FileXRefMap_key
   getName _proxy  = Glean.PredicateRef "hs.FileXRefMap"2
-  getIndex _proxy  = 223
+  getIndex _proxy  = 225
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Hs.Types.fileXRefMap_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Hs.Types.FileXRefMap x k
   getFactKey = Glean.Schema.Hs.Types.fileXRefMap_key
