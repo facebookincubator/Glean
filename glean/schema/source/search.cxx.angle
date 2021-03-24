@@ -95,13 +95,21 @@ predicate SearchBySelector :
   { Selector, Ent } where
   Ent = code.cxx.Entity { decl = { objcMethod = { selector = Selector }}}
 
-# Easy way to query for TargetUses for an Entity
+# Easy way to query for TargetUses for an Entity. Note this doesn't
+# handle the `defn` alternative of `code.cxx.Entity`, but the
+# call site of this predicate ('Glean.Search.Search') always uses it
+# with declarations and not definitions.
 predicate EntityUses :
   {
     entity : code.cxx.Entity,
     uses : cxx1.TargetUses
   }
   { E, U } where
-    code.cxx.Entity { decl = D } = E;
-    U = cxx1.TargetUses { target = { declaration = D } }
+    ( 
+      code.cxx.Entity { decl = D } = E;
+      U = cxx1.TargetUses { target = { declaration = D } }
+    ) | (
+      code.cxx.Entity { enumerator = En } = E;
+      U = cxx1.TargetUses { target = { enumerator = En } }
+    )
 }
