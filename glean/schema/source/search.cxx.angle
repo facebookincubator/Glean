@@ -57,52 +57,34 @@ predicate SearchByNameAndScope :
     scope : cxx1.Scope,
     entity : code.cxx.Entity,
   }
-  {N, Scope, Entity} where { Entity, Scope } =
-    ( # Several things use QName, so share the query for it
-      {
+  {N, Scope, Entity} where
+    ( 
+      # Several things use QName, so share the query for it
+      Q = cxx1.QName { name = N, scope = Scope };
+      Entity = 
         code.cxx.Entity { decl = { record_ = { name = Q }}}  |
-          code.cxx.Entity { decl = { variable = { name = Q }}} |
-          code.cxx.Entity { decl = { typeAlias = { name = Q }}} |
-          code.cxx.Entity { decl = { enum_ = { name = Q }}},
-        Scope
-      }
-      where
-        Q = cxx1.QName { name = N, scope = Scope }
-    ) |
-    (
-      {
-        code.cxx.Entity
-          {
-            decl = { function_ = { name =
-              {
-                name = { name = N },
-                scope = Scope,
-              }
-            }}
-          },
-        Scope
-      }
-    ) |
-    (
-      { code.cxx.Entity { decl = Decl }, { global_ = {} } }
-      where
-        GlobalDeclarationWithName { N, Decl }
-    ) |
-    (
-      {
-        code.cxx.Entity { enumerator = E },
-        Scope
-      } 
-      where
-         { name = N, enumeration = T } = E;
-         { name = QN, isScoped = Scoped } = T;
-         (
-           false = Scoped;
-           { scope = Scope } = QN
-         ) | (
-           true = Scoped;
-           { recordWithAccess = { record = QN, access = Public }} = Scope
-         )
+        code.cxx.Entity { decl = { variable = { name = Q }}} |
+        code.cxx.Entity { decl = { typeAlias = { name = Q }}} |
+        code.cxx.Entity { decl = { enum_ = { name = Q }}};
+    ) | (
+      D = cxx1.FunctionDeclaration  
+        { name = { name = { name = N }, scope = Scope } };
+      Entity = code.cxx.Entity { decl = { function_ = D } }
+    ) | (
+      GlobalDeclarationWithName { N, Decl };
+      Entity = code.cxx.Entity { decl = Decl };
+      { global_ = {} } = Scope;
+    ) | (
+      E = cxx1.Enumerator { name = N, enumeration = T };
+      { name = QN, isScoped = Scoped } = T;
+      (
+        false = Scoped;
+        { scope = Scope } = QN
+      ) | (
+        true = Scoped;
+        { recordWithAccess = { record = QN, access = Public }} = Scope
+      );
+      Entity = code.cxx.Entity { enumerator = E };
     )
 
 predicate SearchBySelector :
