@@ -1,4 +1,4 @@
-{-# LANGUAGE AllowAmbiguousTypes, TypeApplications #-}
+{-# LANGUAGE AllowAmbiguousTypes, TypeApplications, CPP #-}
 module Glean.Typed.BuildFact
   ( NewFact(newFact), makeFact, makeFact_, makeFactV, makeFactV_
   , Facts, newFacts, serializeFacts, factsMemory
@@ -7,6 +7,9 @@ module Glean.Typed.BuildFact
 
 import Data.Maybe
 import Control.Monad (void)
+#if !MIN_VERSION_base(4,13,0)
+import Control.Monad.Fail (MonadFail)
+#endif
 import Control.Monad.Trans.Class
 import Control.Monad.Trans.Reader
 
