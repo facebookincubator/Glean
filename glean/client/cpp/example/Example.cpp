@@ -1,7 +1,7 @@
 #include "glean/client/cpp/GleanClient.h"
 #include "common/init/Init.h"
 #include "common/network/NetworkUtil.h"
-#include "glean/schema/gen-cpp2/cxx1_types.h"
+#include "glean/schema/thrift/gen-cpp2/cxx1_types.h"
 
 using namespace apache::thrift;
 using namespace facebook;

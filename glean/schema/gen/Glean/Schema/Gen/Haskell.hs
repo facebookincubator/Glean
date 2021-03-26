@@ -20,18 +20,20 @@ import Glean.Angle.Types
 
 
 genSchemaHS :: Version -> [PredicateDef] -> [TypeDef] -> [(FilePath,Text)]
-genSchemaHS _version preds allTypes =
-  [ (Text.unpack (underscored namespaces) <> "_include" <.> "hs",
+genSchemaHS _version preddefs typedefs =
+  ("hs" </> "TARGETS", genTargets declsPerNamespace) :
+  [ ("thrift" </> Text.unpack (underscored namespaces) <> "_include" <.> "hs",
       Text.intercalate (newline <> newline)
         (header Data namespaces deps : doGen Data preds types))
   | (namespaces, (deps, preds, types)) <- schemas
   ] ++
-  [ ("query" </> Text.unpack (underscored namespaces) <> "_include" <.> "hs",
+  [ ("thrift" </> "query" </>
+      Text.unpack (underscored namespaces) <> "_include" <.> "hs",
       Text.intercalate (newline <> newline)
         (header Query namespaces deps : doGen Query preds types))
   | (namespaces, (deps, preds, types)) <- schemas
   ] ++
-  [ ("Glean" </> "Schema" </>
+  [ ("hs" </> "Glean" </> "Schema" </>
       Text.unpack (Text.concat (map cap1 namespaces)) <.> "hs",
     genAllPredicates namespaces predIndices preds)
   | (namespaces, (_deps, preds, _types)) <- schemas
@@ -42,13 +44,14 @@ genSchemaHS _version preds allTypes =
     -- be globally unique across all schemas.
     predIndices = HashMap.fromList
       [ (predicateDefRef pred, ix)
-      | (pred, ix) <- zip preds [0..]
+      | (pred, ix) <- zip preddefs [0..]
       ]
 
-    schemas = HashMap.toList $
-      addNamespaceDependencies (sortDeclsByNamespace preds allTypes)
+    schemas = HashMap.toList declsPerNamespace
+    declsPerNamespace =
+      addNamespaceDependencies $ sortDeclsByNamespace preddefs typedefs
 
-    namePolicy = mkNamePolicy preds allTypes
+    namePolicy = mkNamePolicy preddefs typedefs
 
     doGen
       :: Mode
@@ -57,12 +60,39 @@ genSchemaHS _version preds allTypes =
       -> [Text]
     doGen mode preds types = concat gen ++ reverse extra
       where
-      (gen :: [[Text]], extra :: [Text]) = runM mode [] namePolicy allTypes $ do
+      (gen :: [[Text]], extra :: [Text]) = runM mode [] namePolicy typedefs $ do
          ps <- forM preds $ \pred -> do
            let ix = fromJust $ HashMap.lookup (predicateDefRef pred) predIndices
            genPredicate mode ix pred
          ts <- mapM (genType mode) types
          return (ps ++ ts)
+
+genTargets
+  :: HashMap NameSpaces ([NameSpaces], [PredicateDef], [TypeDef])
+  -> Text
+genTargets info =
+  Text.unlines $
+     [ "# @" <> "generated"
+     , "# to regenerate: ./glean/schema/sync"
+     , "load(\"@fbcode_macros//build_defs:haskell_library.bzl\", " <>
+       "\"haskell_library\")"
+     , "" ] ++
+     concatMap genTarget (HashMap.keys info)
+  where
+  genTarget ns =
+    let
+      namespace = underscored ns
+    in
+    -- mini Haskell library for the module containing allPredicates
+    [ "haskell_library("
+    , "  name = \"" <> namespace <> "\","
+    , "  srcs = [\"Glean/Schema/" <> Text.concat (map cap1 ns) <>
+        ".hs\"],"
+    , "  deps = [\"//glean/if:glean-hs2\"]"
+    , ")"
+    , ""
+    ]
+
 
 genAllPredicates
   :: NameSpaces

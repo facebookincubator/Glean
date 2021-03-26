@@ -1,9 +1,9 @@
 include "glean/if/glean.thrift"
-include "glean/schema/cxx1.thrift"
-include "glean/schema/hs.thrift"
-include "glean/schema/pp1.thrift"
-include "glean/schema/java.thrift"
-include "glean/schema/src.thrift"
+include "glean/schema/thrift/cxx1.thrift"
+include "glean/schema/thrift/hs.thrift"
+include "glean/schema/thrift/pp1.thrift"
+include "glean/schema/thrift/java.thrift"
+include "glean/schema/thrift/src.thrift"
 
 namespace hs Glean
 namespace cpp2 facebook.glean.thrift

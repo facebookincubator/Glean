@@ -1,6 +1,6 @@
 {-# LANGUAGE NamedFieldPuns #-}
 -- | This is in a separate module from "Glean.Write.Async" in order
--- so that depending on "//glean/schema:hs" does not create a cycle.
+-- so that depending on "//glean/schema/hs:hs" does not create a cycle.
 --
 -- This creates simpler uses of 'withSender' and 'withWriter'
 module Glean.Write.SimpleAsync

@@ -115,7 +115,6 @@ main = do
 
   reportTime "gen" $ gen opts schemas
 
-
 gen :: Options -> Schemas -> IO ()
 gen Options{..} Schemas{..} = do
   case version of
@@ -161,4 +160,4 @@ gen Options{..} Schemas{..} = do
       doGen genSchemaHackJson hackjson
       doGen genSchemaHS hs
       doGen (genSchemaThrift Data dir) thrift
-      doGen (genSchemaThrift Query dir) (fmap (</> "query") thrift)
+      doGen (genSchemaThrift Query dir) thrift

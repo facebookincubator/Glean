@@ -1,6 +1,6 @@
 #include "glean/ffi/memory.h"
 #include "glean/ffi/wrap.h"
-#include "glean/schema/gen-cpp2/glean_test_types.h"
+#include "glean/schema/thrift/gen-cpp2/glean_test_types.h"
 
 #include <folly/Range.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>

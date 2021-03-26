@@ -18,6 +18,7 @@ import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as Text
+import System.FilePath
 import TextShow
 
 import Glean.Schema.Gen.Utils
@@ -32,12 +33,16 @@ genSchemaThrift
   -> [TypeDef]
   -> [(FilePath, Text)]
 genSchemaThrift mode versionDir version preddefs typedefs =
-  ("TARGETS",
+  (dir </> "TARGETS",
     genTargets mode slashVn version declsPerNamespace) :
-  [ ( Text.unpack (underscored namespaces) ++ ".thrift"
+  [ ( dir </> Text.unpack (underscored namespaces) ++ ".thrift"
     , genNamespace mode slashVn namespaces version namePolicy deps preds types)
   | (namespaces, (deps, preds, types)) <- HashMap.toList declsPerNamespace ]
   where
+  dir = case mode of
+    Data -> "thrift"
+    Query -> "thrift/query"
+
   slashVn = case versionDir of
     Nothing -> ""
     Just str -> "/" <> Text.pack str
@@ -57,8 +62,6 @@ genTargets mode slashVn version info =
      ([ "# @" <> "generated"
      , "# to regenerate: ./glean/schema/sync"
      , "load(\"@fbcode_macros//build_defs:custom_rule.bzl\", \"custom_rule\")"
-     , "load(\"@fbcode_macros//build_defs:haskell_library.bzl\", " <>
-       "\"haskell_library\")"
      , "" ] ++
      concatMap genTarget (HashMap.toList info)) <>
   if mode == Data
@@ -110,25 +113,13 @@ genTargets mode slashVn version info =
     ) ++
     [ "  ],"
     , ")"
-    , "" ] ++ (
-      case mode of
-        Query -> []
-        Data ->
-          -- mini Haskell library for the module containing allPredicates
-          [ "haskell_library("
-          , "  name = \"" <> namespace <> "\","
-          , "  srcs = [\"Glean/Schema/" <> Text.concat (map cap1 ns) <>
-              ".hs\"],"
-          , "  deps = [\"//glean/if:glean-hs2\"]"
-          , ")"
-          , ""
-          ]
-    )
+    ]
     where
     depTargets mode =
       [ "\"//" <> thriftDir mode slashVn <> ":" <> underscored dep <> "\""
       | dep <- deps ]
 
+-- TODO: this shouldn't really go under schema/thrift
 genSchemaRules :: Version -> Text
 genSchemaRules version = rule_schema_gen
   where
@@ -145,8 +136,8 @@ genSchemaRules version = rule_schema_gen
       ]
 
 thriftDir :: Mode -> Text -> Text
-thriftDir Query slashVn = "glean/schema" <> slashVn <> "/query"
-thriftDir _ slashVn = "glean/schema" <> slashVn
+thriftDir Query slashVn = "glean/schema" <> slashVn <> "/thrift/query"
+thriftDir _ slashVn = "glean/schema" <> slashVn <> "/thrift"
 
 hsNamespace :: Mode -> Text
 hsNamespace Query = "Glean.Schema.Query"
@@ -265,7 +256,7 @@ genNamespace mode slashVn namespaces version namePolicy deps preddefs typedefs
     , "namespace rust " <> rustBaseModule mode <> "_" <> underscored namespaces
     , ""
     , "hs_include \"glean/schema" <> slashVn
-      <> "/" <> (case mode of Data -> ""; Query -> "query/")
+      <> "/thrift/" <> (case mode of Data -> ""; Query -> "query/")
       <>  underscored namespaces <> "_include.hs\""
     ] ++
     predicateVersionMap ++

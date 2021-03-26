@@ -7,7 +7,7 @@
 #include "folly/Subprocess.h"
 #include "folly/experimental/TestUtil.h"
 #include "glean/client/cpp/GleanClient.h"
-#include "glean/schema/gen-cpp2/cxx1_types.h"
+#include "glean/schema/thrift/gen-cpp2/cxx1_types.h"
 
 using namespace facebook;
 using namespace facebook::glean;
