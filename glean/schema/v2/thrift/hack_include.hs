@@ -26,7 +26,7 @@ instance Glean.Predicate Glean.Schema.Hack.Types.ClassDeclaration where
   type KeyType Glean.Schema.Hack.Types.ClassDeclaration =
     Glean.Schema.Hack.Types.ClassDeclaration_key
   getName _proxy  = Glean.PredicateRef "hack.ClassDeclaration"4
-  getIndex _proxy  = 493
+  getIndex _proxy  = 495
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Hack.Types.classDeclaration_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Hack.Types.ClassDeclaration x k
   getFactKey = Glean.Schema.Hack.Types.classDeclaration_key
@@ -50,7 +50,7 @@ instance Glean.Predicate Glean.Schema.Hack.Types.QName where
   type KeyType Glean.Schema.Hack.Types.QName =
     Glean.Schema.Hack.Types.QName_key
   getName _proxy  = Glean.PredicateRef "hack.QName"4
-  getIndex _proxy  = 485
+  getIndex _proxy  = 487
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Hack.Types.qName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Hack.Types.QName x k
   getFactKey = Glean.Schema.Hack.Types.qName_key
@@ -76,7 +76,7 @@ instance Glean.Predicate Glean.Schema.Hack.Types.TargetUses where
   type KeyType Glean.Schema.Hack.Types.TargetUses =
     Glean.Schema.Hack.Types.TargetUses_key
   getName _proxy  = Glean.PredicateRef "hack.TargetUses"4
-  getIndex _proxy  = 479
+  getIndex _proxy  = 480
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Hack.Types.targetUses_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Hack.Types.TargetUses x k
   getFactKey = Glean.Schema.Hack.Types.targetUses_key
@@ -100,7 +100,7 @@ instance Glean.Predicate Glean.Schema.Hack.Types.Filename where
   type KeyType Glean.Schema.Hack.Types.Filename =
     Glean.Schema.Hack.Types.Filename_key
   getName _proxy  = Glean.PredicateRef "hack.filename"1
-  getIndex _proxy  = 470
+  getIndex _proxy  = 471
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Hack.Types.filename_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Hack.Types.Filename x k
   getFactKey = Glean.Schema.Hack.Types.filename_key
@@ -126,7 +126,7 @@ instance Glean.Predicate Glean.Schema.Hack.Types.TargetUsesAbs where
   type KeyType Glean.Schema.Hack.Types.TargetUsesAbs =
     Glean.Schema.Hack.Types.TargetUsesAbs_key
   getName _proxy  = Glean.PredicateRef "hack.TargetUsesAbs"4
-  getIndex _proxy  = 464
+  getIndex _proxy  = 465
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Hack.Types.targetUsesAbs_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Hack.Types.TargetUsesAbs x k
   getFactKey = Glean.Schema.Hack.Types.targetUsesAbs_key
@@ -164,7 +164,7 @@ instance Glean.Predicate Glean.Schema.Hack.Types.TraitDefinition where
   type KeyType Glean.Schema.Hack.Types.TraitDefinition =
     Glean.Schema.Hack.Types.TraitDefinition_key
   getName _proxy  = Glean.PredicateRef "hack.TraitDefinition"4
-  getIndex _proxy  = 424
+  getIndex _proxy  = 425
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Hack.Types.traitDefinition_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Hack.Types.TraitDefinition x k
   getFactKey = Glean.Schema.Hack.Types.traitDefinition_key
@@ -188,7 +188,7 @@ instance Glean.Predicate Glean.Schema.Hack.Types.DeclarationName where
   type KeyType Glean.Schema.Hack.Types.DeclarationName =
     Glean.Schema.Hack.Types.DeclarationName_key
   getName _proxy  = Glean.PredicateRef "hack.DeclarationName"4
-  getIndex _proxy  = 409
+  getIndex _proxy  = 410
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Hack.Types.declarationName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Hack.Types.DeclarationName x k
   getFactKey = Glean.Schema.Hack.Types.declarationName_key
@@ -220,7 +220,7 @@ instance Glean.Predicate Glean.Schema.Hack.Types.FunctionDefinition where
   type KeyType Glean.Schema.Hack.Types.FunctionDefinition =
     Glean.Schema.Hack.Types.FunctionDefinition_key
   getName _proxy  = Glean.PredicateRef "hack.FunctionDefinition"4
-  getIndex _proxy  = 402
+  getIndex _proxy  = 403
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Hack.Types.functionDefinition_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Hack.Types.FunctionDefinition x k
   getFactKey = Glean.Schema.Hack.Types.functionDefinition_key
@@ -244,7 +244,7 @@ instance Glean.Predicate Glean.Schema.Hack.Types.PropertyDeclaration where
   type KeyType Glean.Schema.Hack.Types.PropertyDeclaration =
     Glean.Schema.Hack.Types.PropertyDeclaration_key
   getName _proxy  = Glean.PredicateRef "hack.PropertyDeclaration"4
-  getIndex _proxy  = 397
+  getIndex _proxy  = 398
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Hack.Types.propertyDeclaration_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Hack.Types.PropertyDeclaration x k
   getFactKey = Glean.Schema.Hack.Types.propertyDeclaration_key

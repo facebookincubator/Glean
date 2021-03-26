@@ -5,7 +5,7 @@ import Glean.Types
 
 allPredicates :: [(PredicateRef, Int)]
 allPredicates =
-  [ (PredicateRef "scm.RepoType" 1, 426)
+  [ (PredicateRef "scm.RepoType" 1, 427)
   , (PredicateRef "scm.Rev" 1, 339)
   , (PredicateRef "scm.RepoName" 1, 303)
   , (PredicateRef "scm.Repo" 1, 192)

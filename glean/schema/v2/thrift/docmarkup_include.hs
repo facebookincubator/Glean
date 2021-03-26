@@ -31,7 +31,7 @@ instance Glean.Predicate Glean.Schema.Docmarkup.Types.EntityAnnotations where
   type KeyType Glean.Schema.Docmarkup.Types.EntityAnnotations =
     Glean.Schema.Docmarkup.Types.EntityAnnotations_key
   getName _proxy  = Glean.PredicateRef "docmarkup.EntityAnnotations"1
-  getIndex _proxy  = 502
+  getIndex _proxy  = 504
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Docmarkup.Types.entityAnnotations_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Docmarkup.Types.EntityAnnotations x k
   getFactKey = Glean.Schema.Docmarkup.Types.entityAnnotations_key
@@ -57,7 +57,7 @@ instance Glean.Predicate Glean.Schema.Docmarkup.Types.EntityComments where
   type KeyType Glean.Schema.Docmarkup.Types.EntityComments =
     Glean.Schema.Docmarkup.Types.EntityComments_key
   getName _proxy  = Glean.PredicateRef "docmarkup.EntityComments"1
-  getIndex _proxy  = 375
+  getIndex _proxy  = 376
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Docmarkup.Types.entityComments_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Docmarkup.Types.EntityComments x k
   getFactKey = Glean.Schema.Docmarkup.Types.entityComments_key

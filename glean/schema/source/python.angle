@@ -410,6 +410,7 @@ type XRef =
 } # python.2
 
 schema python.3 : python.2 {
+import src.1
 
 # This is the inverse of ImportStatement. It allows for efficient queries
 # by alias. Note that multiple ImportStatements might have the same
@@ -441,4 +442,22 @@ predicate ContainingTopLevelDeclaration:
     container: Declaration,
   }
 
-}
+# Quickly find declarations defined at the module level
+# The dead code automation operates at this level
+predicate IsTopLevelDeclaration: Declaration
+  D where
+    ContainingTopLevelDeclaration {D, C};
+    {module = _} = C;
+
+# Find which  declaration references declaration
+predicate DeclarationReference:
+  {
+    target : Declaration,
+    source : Declaration
+  }
+  { target = T, source = S } where
+    python.DeclarationUses {declaration=T, file=F, span=LittleSpan};
+    python.DeclarationsByFile {declaration=S, file=F, span=BigSpan};
+    src.ByteSpanContains {byteSpan=BigSpan, contains=LittleSpan}
+
+} # python.3

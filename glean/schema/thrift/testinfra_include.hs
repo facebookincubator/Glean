@@ -17,7 +17,7 @@ import qualified Glean.Schema.Src.Types
 instance Glean.Predicate Glean.Schema.Testinfra.Types.TestId where
   type KeyType Glean.Schema.Testinfra.Types.TestId = Glean.Nat
   getName _proxy  = Glean.PredicateRef "testinfra.TestId"1
-  getIndex _proxy  = 488
+  getIndex _proxy  = 490
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Testinfra.Types.testId_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Testinfra.Types.TestId x k
   getFactKey = Glean.Schema.Testinfra.Types.testId_key
@@ -30,7 +30,7 @@ instance Glean.Type Glean.Schema.Testinfra.Types.TestId where
 instance Glean.Predicate Glean.Schema.Testinfra.Types.FbId where
   type KeyType Glean.Schema.Testinfra.Types.FbId = Glean.Nat
   getName _proxy  = Glean.PredicateRef "testinfra.FbId"4
-  getIndex _proxy  = 432
+  getIndex _proxy  = 433
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Testinfra.Types.fbId_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Testinfra.Types.FbId x k
   getFactKey = Glean.Schema.Testinfra.Types.fbId_key
@@ -56,7 +56,7 @@ instance Glean.Predicate Glean.Schema.Testinfra.Types.CoveredFolder where
   type KeyType Glean.Schema.Testinfra.Types.CoveredFolder =
     Glean.Schema.Testinfra.Types.CoveredFolder_key
   getName _proxy  = Glean.PredicateRef "testinfra.CoveredFolder"2
-  getIndex _proxy  = 413
+  getIndex _proxy  = 414
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Testinfra.Types.coveredFolder_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Testinfra.Types.CoveredFolder x k
   getFactKey = Glean.Schema.Testinfra.Types.coveredFolder_key
@@ -80,7 +80,7 @@ instance Glean.Predicate Glean.Schema.Testinfra.Types.MeasuredFile where
   type KeyType Glean.Schema.Testinfra.Types.MeasuredFile =
     Glean.Schema.Testinfra.Types.MeasuredFile_key
   getName _proxy  = Glean.PredicateRef "testinfra.MeasuredFile"4
-  getIndex _proxy  = 411
+  getIndex _proxy  = 412
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Testinfra.Types.measuredFile_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Testinfra.Types.MeasuredFile x k
   getFactKey = Glean.Schema.Testinfra.Types.measuredFile_key
@@ -93,7 +93,7 @@ instance Glean.Type Glean.Schema.Testinfra.Types.MeasuredFile where
 instance Glean.Predicate Glean.Schema.Testinfra.Types.Tag where
   type KeyType Glean.Schema.Testinfra.Types.Tag = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "testinfra.Tag"4
-  getIndex _proxy  = 404
+  getIndex _proxy  = 405
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Testinfra.Types.tag_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Testinfra.Types.Tag x k
   getFactKey = Glean.Schema.Testinfra.Types.tag_key
@@ -118,7 +118,7 @@ instance Glean.Predicate Glean.Schema.Testinfra.Types.ContainsPushBlockingAssemb
     Glean.Schema.Testinfra.Types.ContainsPushBlockingAssembly_key
   getName _proxy  =
     Glean.PredicateRef "testinfra.ContainsPushBlockingAssembly"4
-  getIndex _proxy  = 399
+  getIndex _proxy  = 400
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Testinfra.Types.containsPushBlockingAssembly_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Testinfra.Types.ContainsPushBlockingAssembly x k
   getFactKey = Glean.Schema.Testinfra.Types.containsPushBlockingAssembly_key
@@ -142,7 +142,7 @@ instance Glean.Predicate Glean.Schema.Testinfra.Types.CoveredFileAssemblies wher
   type KeyType Glean.Schema.Testinfra.Types.CoveredFileAssemblies =
     Glean.Schema.Testinfra.Types.CoveredFileAssemblies_key
   getName _proxy  = Glean.PredicateRef "testinfra.CoveredFileAssemblies"4
-  getIndex _proxy  = 395
+  getIndex _proxy  = 396
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Testinfra.Types.coveredFileAssemblies_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Testinfra.Types.CoveredFileAssemblies x k
   getFactKey = Glean.Schema.Testinfra.Types.coveredFileAssemblies_key

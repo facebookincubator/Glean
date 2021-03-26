@@ -20,6 +20,7 @@ namespace rust glean_schema_query_python
 hs_include "glean/schema/v2/thrift/query/python_include.hs"
 const map<string, i64> PREDICATE_VERSIONS = {
   "ClassDefinition": 2,
+  "DeclarationReference": 3,
   "ImportStatementByName": 2,
   "DeclarationToName": 2,
   "DeclarationByName": 2,
@@ -29,6 +30,7 @@ const map<string, i64> PREDICATE_VERSIONS = {
   "FunctionDeclaration": 1,
   "DirectXRefsByFile": 2,
   "FunctionDefinition": 2,
+  "IsTopLevelDeclaration": 3,
   "DeclarationUses": 2,
   "ImportStatement": 2,
   "ImportStatement_1": 1,
@@ -377,6 +379,18 @@ union DeclarationLocation {
   3: builtin.Unit get;
 } (hs.prefix = "DeclarationLocation_with_")
 
+typedef glean.Id DeclarationReference_id
+
+@glean.PredicateAnnotation{
+  name="python.DeclarationReference";
+  version=3;
+}
+union DeclarationReference {
+  1: DeclarationReference_id id (hs.strict);
+  2: DeclarationReference_key key;
+  3: builtin.Unit get;
+} (hs.prefix = "DeclarationReference_with_")
+
 typedef glean.Id DeclarationToName_id
 
 @glean.PredicateAnnotation{
@@ -448,6 +462,18 @@ union FileDirectXRefs {
   2: FileDirectXRefs_key key;
   3: builtin.Unit get;
 } (hs.prefix = "FileDirectXRefs_with_")
+
+typedef glean.Id IsTopLevelDeclaration_id
+
+@glean.PredicateAnnotation{
+  name="python.IsTopLevelDeclaration";
+  version=3;
+}
+union IsTopLevelDeclaration {
+  1: IsTopLevelDeclaration_id id (hs.strict);
+  2: Declaration key;
+  3: builtin.Unit get;
+} (hs.prefix = "IsTopLevelDeclaration_with_")
 
 typedef glean.Id TargetUses_id
 
@@ -803,6 +829,11 @@ struct DeclarationLocation_key {
   1: optional Declaration declaration (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
   2: optional src.File file (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
   3: optional src.ByteSpan span (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+}
+
+struct DeclarationReference_key {
+  1: optional Declaration target (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+  2: optional Declaration source (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
 }
 
 typedef Name DeclarationToName_value

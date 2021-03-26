@@ -20,6 +20,7 @@ namespace rust glean_schema_python
 hs_include "glean/schema/thrift/python_include.hs"
 const map<string, i64> PREDICATE_VERSIONS = {
   "ClassDefinition": 2,
+  "DeclarationReference": 3,
   "ImportStatementByName": 2,
   "DeclarationToName": 2,
   "DeclarationByName": 2,
@@ -29,6 +30,7 @@ const map<string, i64> PREDICATE_VERSIONS = {
   "FunctionDeclaration": 1,
   "DirectXRefsByFile": 2,
   "FunctionDefinition": 2,
+  "IsTopLevelDeclaration": 3,
   "DeclarationUses": 2,
   "ImportStatement": 2,
   "ImportStatement_1": 1,
@@ -360,6 +362,17 @@ struct DeclarationLocation {
   2: optional DeclarationLocation_key key (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
 }
 
+typedef glean.Id DeclarationReference_id
+
+@glean.PredicateAnnotation{
+  name="python.DeclarationReference";
+  version=3;
+}
+struct DeclarationReference {
+  1: DeclarationReference_id id (hs.strict);
+  2: optional DeclarationReference_key key (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+}
+
 typedef glean.Id DeclarationToName_id
 
 @glean.PredicateAnnotation{
@@ -425,6 +438,17 @@ typedef glean.Id FileDirectXRefs_id
 struct FileDirectXRefs {
   1: FileDirectXRefs_id id (hs.strict);
   2: optional FileDirectXRefs_key key (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
+}
+
+typedef glean.Id IsTopLevelDeclaration_id
+
+@glean.PredicateAnnotation{
+  name="python.IsTopLevelDeclaration";
+  version=3;
+}
+struct IsTopLevelDeclaration {
+  1: IsTopLevelDeclaration_id id (hs.strict);
+  2: optional Declaration key (cpp.ref = "true", cpp2.ref = "true", rust.box, swift.recursive_reference = "true");
 }
 
 typedef glean.Id TargetUses_id
@@ -667,6 +691,11 @@ struct DeclarationLocation_key {
   1: Declaration declaration;
   2: src.File file;
   3: src.ByteSpan span;
+}
+
+struct DeclarationReference_key {
+  1: Declaration target;
+  2: Declaration source;
 }
 
 typedef Name DeclarationToName_value

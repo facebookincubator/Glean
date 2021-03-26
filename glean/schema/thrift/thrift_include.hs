@@ -31,7 +31,7 @@ instance Glean.Predicate Glean.Schema.Thrift.Types.ServiceName where
   type KeyType Glean.Schema.Thrift.Types.ServiceName =
     Glean.Schema.Thrift.Types.ServiceName_key
   getName _proxy  = Glean.PredicateRef "thrift.ServiceName"2
-  getIndex _proxy  = 490
+  getIndex _proxy  = 492
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Thrift.Types.serviceName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Thrift.Types.ServiceName x k
   getFactKey = Glean.Schema.Thrift.Types.serviceName_key
@@ -57,7 +57,7 @@ instance Glean.Predicate Glean.Schema.Thrift.Types.FunctionName where
   type KeyType Glean.Schema.Thrift.Types.FunctionName =
     Glean.Schema.Thrift.Types.FunctionName_key
   getName _proxy  = Glean.PredicateRef "thrift.FunctionName"2
-  getIndex _proxy  = 468
+  getIndex _proxy  = 469
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Thrift.Types.functionName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Thrift.Types.FunctionName x k
   getFactKey = Glean.Schema.Thrift.Types.functionName_key
@@ -104,7 +104,7 @@ instance Glean.Predicate Glean.Schema.Thrift.Types.TypeSpecification where
   type KeyType Glean.Schema.Thrift.Types.TypeSpecification =
     Glean.Schema.Thrift.Types.TypeSpecification_key
   getName _proxy  = Glean.PredicateRef "thrift.TypeSpecification"3
-  getIndex _proxy  = 460
+  getIndex _proxy  = 461
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Thrift.Types.typeSpecification_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Thrift.Types.TypeSpecification x k
   getFactKey = Glean.Schema.Thrift.Types.typeSpecification_key
@@ -117,7 +117,7 @@ instance Glean.Type Glean.Schema.Thrift.Types.TypeSpecification where
 instance Glean.Predicate Glean.Schema.Thrift.Types.MangleLang where
   type KeyType Glean.Schema.Thrift.Types.MangleLang = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "thrift.MangleLang"1
-  getIndex _proxy  = 441
+  getIndex _proxy  = 442
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Thrift.Types.mangleLang_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Thrift.Types.MangleLang x k
   getFactKey = Glean.Schema.Thrift.Types.mangleLang_key
@@ -141,7 +141,7 @@ instance Glean.Predicate Glean.Schema.Thrift.Types.ExceptionName where
   type KeyType Glean.Schema.Thrift.Types.ExceptionName =
     Glean.Schema.Thrift.Types.ExceptionName_key
   getName _proxy  = Glean.PredicateRef "thrift.ExceptionName"2
-  getIndex _proxy  = 425
+  getIndex _proxy  = 426
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Thrift.Types.exceptionName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Thrift.Types.ExceptionName x k
   getFactKey = Glean.Schema.Thrift.Types.exceptionName_key
@@ -165,7 +165,7 @@ instance Glean.Predicate Glean.Schema.Thrift.Types.UnionType where
   type KeyType Glean.Schema.Thrift.Types.UnionType =
     Glean.Schema.Thrift.Types.UnionType_key
   getName _proxy  = Glean.PredicateRef "thrift.UnionType"3
-  getIndex _proxy  = 421
+  getIndex _proxy  = 422
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Thrift.Types.unionType_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Thrift.Types.UnionType x k
   getFactKey = Glean.Schema.Thrift.Types.unionType_key
@@ -178,7 +178,7 @@ instance Glean.Type Glean.Schema.Thrift.Types.UnionType where
 instance Glean.Predicate Glean.Schema.Thrift.Types.Identifier where
   type KeyType Glean.Schema.Thrift.Types.Identifier = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "thrift.Identifier"1
-  getIndex _proxy  = 420
+  getIndex _proxy  = 421
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Thrift.Types.identifier_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Thrift.Types.Identifier x k
   getFactKey = Glean.Schema.Thrift.Types.identifier_key
@@ -202,7 +202,7 @@ instance Glean.Predicate Glean.Schema.Thrift.Types.HackMethod where
   type KeyType Glean.Schema.Thrift.Types.HackMethod =
     Glean.Schema.Thrift.Types.HackMethod_key
   getName _proxy  = Glean.PredicateRef "thrift.HackMethod"1
-  getIndex _proxy  = 394
+  getIndex _proxy  = 395
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Thrift.Types.hackMethod_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Thrift.Types.HackMethod x k
   getFactKey = Glean.Schema.Thrift.Types.hackMethod_key
@@ -228,7 +228,7 @@ instance Glean.Predicate Glean.Schema.Thrift.Types.OutputTarget where
   type KeyType Glean.Schema.Thrift.Types.OutputTarget =
     Glean.Schema.Thrift.Types.OutputTarget_key
   getName _proxy  = Glean.PredicateRef "thrift.OutputTarget"3
-  getIndex _proxy  = 388
+  getIndex _proxy  = 389
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Thrift.Types.outputTarget_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Thrift.Types.OutputTarget x k
   getFactKey = Glean.Schema.Thrift.Types.outputTarget_key
@@ -252,7 +252,7 @@ instance Glean.Predicate Glean.Schema.Thrift.Types.QualName where
   type KeyType Glean.Schema.Thrift.Types.QualName =
     Glean.Schema.Thrift.Types.QualName_key
   getName _proxy  = Glean.PredicateRef "thrift.QualName"2
-  getIndex _proxy  = 379
+  getIndex _proxy  = 380
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Thrift.Types.qualName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Thrift.Types.QualName x k
   getFactKey = Glean.Schema.Thrift.Types.qualName_key
@@ -265,7 +265,7 @@ instance Glean.Type Glean.Schema.Thrift.Types.QualName where
 instance Glean.Predicate Glean.Schema.Thrift.Types.File where
   type KeyType Glean.Schema.Thrift.Types.File = Glean.Schema.Src.Types.File
   getName _proxy  = Glean.PredicateRef "thrift.File"2
-  getIndex _proxy  = 378
+  getIndex _proxy  = 379
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Thrift.Types.file_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Thrift.Types.File x k
   getFactKey = Glean.Schema.Thrift.Types.file_key
@@ -278,7 +278,7 @@ instance Glean.Type Glean.Schema.Thrift.Types.File where
 instance Glean.Predicate Glean.Schema.Thrift.Types.HackName where
   type KeyType Glean.Schema.Thrift.Types.HackName = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "thrift.HackName"1
-  getIndex _proxy  = 373
+  getIndex _proxy  = 374
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Thrift.Types.hackName_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Thrift.Types.HackName x k
   getFactKey = Glean.Schema.Thrift.Types.hackName_key
@@ -302,7 +302,7 @@ instance Glean.Predicate Glean.Schema.Thrift.Types.Constant where
   type KeyType Glean.Schema.Thrift.Types.Constant =
     Glean.Schema.Thrift.Types.Constant_key
   getName _proxy  = Glean.PredicateRef "thrift.Constant"2
-  getIndex _proxy  = 372
+  getIndex _proxy  = 373
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Thrift.Types.constant_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Thrift.Types.Constant x k
   getFactKey = Glean.Schema.Thrift.Types.constant_key

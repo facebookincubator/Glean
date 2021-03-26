@@ -5,12 +5,12 @@ import Glean.Types
 
 allPredicates :: [(PredicateRef, Int)]
 allPredicates =
-  [ (PredicateRef "flow.ImportDeclaration" 3, 499)
-  , (PredicateRef "flow.Documentation" 3, 473)
-  , (PredicateRef "flow.Module" 3, 455)
-  , (PredicateRef "flow.StringToFileModule" 3, 446)
-  , (PredicateRef "flow.FileXRef" 3, 444)
-  , (PredicateRef "flow.Export" 3, 400)
+  [ (PredicateRef "flow.ImportDeclaration" 3, 501)
+  , (PredicateRef "flow.Documentation" 3, 474)
+  , (PredicateRef "flow.Module" 3, 456)
+  , (PredicateRef "flow.StringToFileModule" 3, 447)
+  , (PredicateRef "flow.FileXRef" 3, 445)
+  , (PredicateRef "flow.Export" 3, 401)
   , (PredicateRef "flow.FileDeclaration" 3, 361)
   , (PredicateRef "flow.ModuleTypeExport" 3, 340)
   , (PredicateRef "flow.LocalDeclarationReference" 3, 338)

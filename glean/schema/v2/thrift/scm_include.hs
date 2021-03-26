@@ -16,7 +16,7 @@ import qualified Glean.Schema.Builtin.Types
 instance Glean.Predicate Glean.Schema.Scm.Types.RepoType where
   type KeyType Glean.Schema.Scm.Types.RepoType = Data.Text.Text
   getName _proxy  = Glean.PredicateRef "scm.RepoType"1
-  getIndex _proxy  = 426
+  getIndex _proxy  = 427
   getId = Glean.IdOf . Glean.Fid . Glean.Schema.Scm.Types.repoType_id
   mkFact (Glean.IdOf (Glean.Fid x)) k _ = Glean.Schema.Scm.Types.RepoType x k
   getFactKey = Glean.Schema.Scm.Types.repoType_key

@@ -5,13 +5,13 @@ import Glean.Types
 
 allPredicates :: [(PredicateRef, Int)]
 allPredicates =
-  [ (PredicateRef "testinfra.TestId" 1, 488)
-  , (PredicateRef "testinfra.FbId" 4, 432)
-  , (PredicateRef "testinfra.CoveredFolder" 2, 413)
-  , (PredicateRef "testinfra.MeasuredFile" 4, 411)
-  , (PredicateRef "testinfra.Tag" 4, 404)
-  , (PredicateRef "testinfra.ContainsPushBlockingAssembly" 4, 399)
-  , (PredicateRef "testinfra.CoveredFileAssemblies" 4, 395)
+  [ (PredicateRef "testinfra.TestId" 1, 490)
+  , (PredicateRef "testinfra.FbId" 4, 433)
+  , (PredicateRef "testinfra.CoveredFolder" 2, 414)
+  , (PredicateRef "testinfra.MeasuredFile" 4, 412)
+  , (PredicateRef "testinfra.Tag" 4, 405)
+  , (PredicateRef "testinfra.ContainsPushBlockingAssembly" 4, 400)
+  , (PredicateRef "testinfra.CoveredFileAssemblies" 4, 396)
   , (PredicateRef "testinfra.CoveredFileByPushBlockingAssembly" 4, 335)
   , (PredicateRef "testinfra.MeasuredFileOnly" 4, 304)
   , (PredicateRef "testinfra.FileMetadata" 4, 268)

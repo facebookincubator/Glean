@@ -98,6 +98,34 @@
                 "tag": "StringTString"
             }
         },
+        "GSPythonIsTopLevelDeclaration": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Wrapper",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "python.Declaration",
+                                    "version": 2
+                                },
+                                "classname": "GSPythonDeclaration"
+                            },
+                            "fieldInfoName": "key"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 3,
+                        "refName": "python.IsTopLevelDeclaration"
+                    }
+                }
+            }
+        },
         "GSPythonDeclaration_DEPRECATED1": {
             "tag": "ClassType",
             "contents": {
@@ -864,6 +892,45 @@
                         "refTag": "TypeReference",
                         "refVersion": 2,
                         "refName": "python.XRefViaName"
+                    }
+                }
+            }
+        },
+        "GSPythonDeclarationReference": {
+            "tag": "ClassType",
+            "contents": {
+                "tag": "Struct",
+                "contents": {
+                    "classGenFieldInfos": [
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "python.Declaration",
+                                    "version": 2
+                                },
+                                "classname": "GSPythonDeclaration"
+                            },
+                            "fieldInfoName": "target"
+                        },
+                        {
+                            "fieldInfoType": {
+                                "tag": "NamedTypeTNamed",
+                                "tref": {
+                                    "name": "python.Declaration",
+                                    "version": 2
+                                },
+                                "classname": "GSPythonDeclaration"
+                            },
+                            "fieldInfoName": "source"
+                        }
+                    ],
+                    "classGenHasCycles": false,
+                    "classGenReference": {
+                        "refLatest": true,
+                        "refTag": "PredicateReference",
+                        "refVersion": 3,
+                        "refName": "python.DeclarationReference"
                     }
                 }
             }
