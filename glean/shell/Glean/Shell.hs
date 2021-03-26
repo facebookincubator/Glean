@@ -875,6 +875,10 @@ runUserQuery SchemaQuery
              , Thrift.userQueryOptions_debug = debug
              , Thrift.userQueryOptions_omit_results = omitResults
              }
+          -- When running locally with --enable-logging, logs are emitted
+          -- before the ThriftBackend has a chance to incude client_info in the
+          -- request.  This makes sure client_info will appear in the logs
+          , Thrift.userQuery_client_info = Just client_info
           }
   output $ vcat $
     [ "*** " <> pretty diag | diag <- userQueryResults_diagnostics ]
@@ -1237,6 +1241,7 @@ main = do
     withConfigProvider cfgOpts $ \cfgAPI -> do
       (cfg, updateSchema) <- setupLocalSchema cfg
       withBackendWithDefaultOptions evb cfgAPI (cfgService cfg) $ \be -> do
+        client_info <- Backend.clientInfo
         tty <- hIsTerminalDevice stdout
         outh <- newMVar stdout
         State.evalStateT (unEval $ evalMain cfg) ShellState
@@ -1257,4 +1262,5 @@ main = do
           , outputHandle = outh
           , pager = cfgPager cfg
           , debug = def
+          , client_info = client_info
           }

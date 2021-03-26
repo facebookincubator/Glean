@@ -164,6 +164,7 @@ class GleanRepo {
   std::shared_ptr<Glean> glean_;
   Repo repo_;
   Glean::Shard shard_;
+  thrift::UserQueryClientInfo clientInfo_;
 };
 
 } // namespace glean

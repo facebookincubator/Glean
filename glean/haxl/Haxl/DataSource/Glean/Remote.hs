@@ -36,7 +36,7 @@ initGlobalState backend repo =  do
     )
 
 remoteFetch :: ThriftBackend -> Repo -> PerformFetch GleanGet
-remoteFetch (ThriftBackend config evb ts) repo =
+remoteFetch (ThriftBackend config evb ts _) repo =
   BackgroundFetch $ \requests -> do
   let
     ts' = case clientConfig_use_shards config of
@@ -73,7 +73,7 @@ putException ex requests =
 
 
 remoteQuery :: ThriftBackend -> Repo -> PerformFetch GleanQuery
-remoteQuery (ThriftBackend config evb ts) repo = BackgroundFetch $ mapM_ fetch
+remoteQuery (ThriftBackend config evb ts _) repo = BackgroundFetch $ mapM_ fetch
   where
   ts' = case clientConfig_use_shards config of
     NO_SHARDS -> ts

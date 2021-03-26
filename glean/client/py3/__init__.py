@@ -45,6 +45,7 @@ from glean.glean.types import (
     SendJsonBatchResponse,
     Success,
     UserQuery,
+    UserQueryClientInfo,
     UserQueryCont,
     UserQueryEncodedResults,
     UserQueryEncoding,
@@ -59,6 +60,8 @@ from glean.service.types import Service as ServiceLocator
 from later import timeout
 from libfb.py.asyncio.decorators import herd, memoize_forever
 from libfb.py.asyncio.thrift import get_direct_client
+from libfb.py.build_info import BuildInfo
+from libfb.py.pwdutils import get_current_user_name
 from more_itertools import flatten
 from servicerouter.py3 import ClientParams, get_sr_client
 from thrift.py3 import Protocol, Struct, deserialize, serialize
@@ -66,6 +69,13 @@ from typing_extensions import Final
 
 
 Fact = TypeVar("Fact", bound=Struct)
+
+
+client_info = UserQueryClientInfo(
+    name="api-python3",
+    unixname=get_current_user_name(),
+    application=BuildInfo.get_build_rule(),
+)
 
 
 class RepoAlreadyExists(Exception):
@@ -351,6 +361,7 @@ class GleanClient:
                     )
                 )
             ],
+            client_info=client_info,
         )
         async with self._query_semaphore:
             resp = await self._glean_service.userQuery(self.repo, query)
@@ -467,6 +478,7 @@ class GleanClient:
                 q=UserQueryFacts(
                     facts=query_params,
                     encodings=[UserQueryEncoding(compact=UserQueryEncodingCompact())],
+                    client_info=client_info,
                 ),
             )
         if resp.results.type != UserQueryEncodedResults.Type.compact:
@@ -523,6 +535,7 @@ class GleanClient:
             predicate_version=_schema_version(predicate),
             options=options,
             encodings=[UserQueryEncoding(compact=UserQueryEncodingCompact())],
+            client_info=client_info,
         )
         handles = []
         async with self._query_semaphore:

@@ -542,6 +542,8 @@ struct UserQuery {
   6: list<UserQueryEncoding> encodings = [];
       // Acceptable encodings for the results in order of preference. The server
       // guarantees to return one of these encodings or fail.
+  7: optional UserQueryClientInfo client_info;
+      // Information about who is making the call
 }
 
 struct UserQueryStats {
@@ -638,6 +640,17 @@ struct UserQueryFacts {
   4: optional UserQueryOptions options;
   5: list<UserQueryEncoding> encodings = [];
     // Acceptable encodings for the results in order of preference.
+  6: optional UserQueryClientInfo client_info;
+      // Information about who is making the call
+}
+
+struct UserQueryClientInfo {
+  1: string name;
+  // Client identifier (eg. api-haskell, api-python, etc)
+  2: optional string unixname;
+  // User making the query
+  3: string application;
+  // Name of program making the query.
 }
 
 struct ListDatabases {

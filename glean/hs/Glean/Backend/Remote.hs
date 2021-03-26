@@ -23,6 +23,7 @@ module Glean.Backend.Remote
   , localDatabases
   , fillDatabase
   , usingShards
+  , clientInfo
 
   ) where
 
@@ -47,6 +48,7 @@ import Util.Control.Exception
 import Util.EventBase (EventBaseDataplane)
 import Util.Log
 
+import Glean.BuildInfo (buildRule)
 import Glean.ClientConfig.Types (UseShards(..), ClientConfig(..))
 import Glean.DefaultConfigs
 import Glean.GleanService.Client (GleanService)
@@ -56,6 +58,7 @@ import qualified Glean.Types as Thrift
 import Glean.Util.ConfigProvider
 import Glean.Util.Service
 import Glean.Util.Some
+import Glean.Username (getUsername)
 import Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.ThriftService
 import Glean.Impl.ThriftService
@@ -135,12 +138,14 @@ data ThriftBackend = ThriftBackend
   { thriftBackendClientConfig :: ClientConfig
   , thriftBackendEventBase :: EventBaseDataplane
   , thriftBackendService :: ThriftService GleanService
+  , thriftBackendClientInfo :: Thrift.UserQueryClientInfo
   }
 
 instance Show ThriftBackend where
   show tb = unwords [ "ThriftBackend {(",
     "thriftBackendClientConfig: (" <> show (thriftBackendClientConfig tb),
-    "), thriftBackendService: (" <> show (thriftBackendService tb ), ")}" ]
+    "), thriftBackendService: (" <> show (thriftBackendService tb ),
+    "), thriftBackendClientInfo: (" <> show (thriftBackendClientInfo tb ), ")}"]
 
 
 instance Backend (Some Backend) where
@@ -172,15 +177,14 @@ instance Backend (Some Backend) where
   hasDatabase (Some backend) = hasDatabase backend
   maybeRemote (Some backend) = maybeRemote backend
 
-
-
 withRemoteBackendConfig
   :: EventBaseDataplane
   -> ClientConfig
   -> (forall b . Backend b => b -> IO a)
   -> IO a
-withRemoteBackendConfig evb config inner =
-  inner (ThriftBackend config evb (thriftServiceWithTimeout config def))
+withRemoteBackendConfig evb config inner = do
+  client <- clientInfo
+  inner $ ThriftBackend config evb (thriftServiceWithTimeout config def) client
 
 type Settings
   = (ClientConfig,ThriftServiceOptions)
@@ -207,8 +211,13 @@ withRemoteBackend
   -> IO a
 withRemoteBackend evb configAPI settings inner = do
   config <- ThriftSource.loadDefault configAPI defaultClientConfigSource
+  client <- clientInfo
   let (config', opts) = settings (config, def)
-  inner $ ThriftBackend config evb (thriftServiceWithTimeout config' opts)
+  inner $ ThriftBackend
+    config
+    evb
+    (thriftServiceWithTimeout config' opts)
+    client
 
 
 thriftServiceWithTimeout
@@ -245,7 +254,16 @@ instance Backend ThriftBackend where
   getDatabase t repo = withShard t repo $ GleanService.getDatabase repo
   userQueryFacts t repo q = withShard t repo $
     GleanService.userQueryFacts repo q
-  userQuery t repo q = withShard t repo $ GleanService.userQuery repo q
+      { Thrift.userQueryFacts_client_info = client }
+    where
+      client = Thrift.userQueryFacts_client_info q
+        <|> Just (thriftBackendClientInfo t)
+
+  userQuery t repo q = withShard t repo $
+    GleanService.userQuery repo q { Thrift.userQuery_client_info = client }
+    where
+      client = Thrift.userQuery_client_info q
+        <|> Just (thriftBackendClientInfo t)
 
   kickOffDatabase t rq = withoutShard t $ GleanService.kickOff rq
   updateProperties t repo set unset =
@@ -290,7 +308,7 @@ withShard
   -> Thrift.Repo
   -> Thrift GleanService a
   -> IO a
-withShard (ThriftBackend ClientConfig{..} evb serv) repo act =
+withShard (ThriftBackend ClientConfig{..} evb serv _) repo act =
   case clientConfig_use_shards of
     NO_SHARDS -> unsharded
     USE_SHARDS -> sharded
@@ -313,7 +331,7 @@ withoutShard
   :: ThriftBackend
   -> Thrift GleanService a
   -> IO a
-withoutShard (ThriftBackend _ evb serv) req = runThrift evb serv req
+withoutShard (ThriftBackend _ evb serv _) req = runThrift evb serv req
 
 dbShard :: Thrift.Repo -> Shard
 dbShard Thrift.Repo{..} =
@@ -379,6 +397,15 @@ fillDatabase env repo handle ifexists action = tryBracket
 usingShards :: Backend b => b -> Bool
 usingShards backend =
   case maybeRemote backend of
-    Just (ThriftBackend ClientConfig{..} _ _) ->
+    Just (ThriftBackend ClientConfig{..} _ _ _) ->
       clientConfig_use_shards /= NO_SHARDS
     _otherwise -> False
+
+clientInfo :: IO Thrift.UserQueryClientInfo
+clientInfo = do
+  unixname <- getUsername
+  return def
+    { Thrift.userQueryClientInfo_name = "api-haskell"
+    , Thrift.userQueryClientInfo_unixname = Text.pack <$> unixname
+    , Thrift.userQueryClientInfo_application = buildRule
+    }

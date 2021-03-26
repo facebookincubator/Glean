@@ -122,6 +122,7 @@ data ShellState = ShellState
   , pager :: Bool
   , outputHandle :: MVar System.IO.Handle
   , debug :: Thrift.QueryDebugOptions
+  , client_info :: Thrift.UserQueryClientInfo
   }
 
 newtype Eval a = Eval

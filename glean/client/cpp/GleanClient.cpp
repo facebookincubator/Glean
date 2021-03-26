@@ -1,10 +1,14 @@
+#include <fstream>
 #include <mhash.h>
 #include <endian.h>
 
 #include "glean/client/cpp/GleanClient.h"
 #include "common/config/SimpleConfigeratorConfig.h"
 #include "common/network/NetworkUtil.h"
+#include "common/base/BuildInfo.h"
+#include "common/base/Unixname.h"
 
+using namespace facebook;
 using namespace facebook::config;
 using namespace facebook::network;
 using namespace facebook::servicerouter;
@@ -119,31 +123,41 @@ std::string Glean::predicateFromType(const std::string& ty) {
   return name;
 }
 
+thrift::UserQueryClientInfo getClientInfo() {
+  auto info = thrift::UserQueryClientInfo();
+  info.unixname_ref() = getUserUnixname();
+  info.application_ref() = BuildInfo::getBuildRule();
+  info.name_ref() = "api-c++";
+  return info;
+}
+
 GleanRepo::GleanRepo(Repo repo)
-  : repo_(repo), shard_(Glean::getShard(repo)) {};
+  : repo_(repo), shard_(Glean::getShard(repo)), clientInfo_(getClientInfo()) {};
 
 GleanRepo::GleanRepo(Repo repo, std::shared_ptr<Glean> glean)
-  : glean_(std::move(glean)), repo_(repo), shard_(Glean::getShard(repo)) {}
+  : glean_(std::move(glean)), repo_(repo), shard_(Glean::getShard(repo)),
+    clientInfo_(getClientInfo()) {}
 
 GleanRepo::GleanRepo(Repo repo, ClientConfig config)
-  : glean_(std::make_shared<Glean>(config)), repo_(repo) {
+  : glean_(std::make_shared<Glean>(config)), repo_(repo),
+    clientInfo_(getClientInfo()) {
   shard_ = Glean::getShard(repo);
 }
 
 GleanRepo::GleanRepo(std::string repoName)
-  : glean_(std::make_shared<Glean>()) {
+  : glean_(std::make_shared<Glean>()), clientInfo_(getClientInfo()) {
   repo_ = glean_->getLatestRepo(repoName);
   shard_ = Glean::getShard(repo_);
 }
 
 GleanRepo::GleanRepo(std::string repoName, ClientConfig config)
-    : glean_(std::make_shared<Glean>(config)) {
+    : glean_(std::make_shared<Glean>(config)), clientInfo_(getClientInfo()) {
   repo_ = glean_->getLatestRepo(repoName);
   shard_ = Glean::getShard(repo_);
 }
 
 GleanRepo::GleanRepo(std::string repoName, std::shared_ptr<Glean> glean)
-    : glean_(std::move(glean)) {
+    : glean_(std::move(glean)), clientInfo_(getClientInfo()) {
   repo_ = glean_->getLatestRepo(repoName);
   shard_ = Glean::getShard(repo_);
 }
@@ -160,6 +174,7 @@ std::vector<std::string> GleanRepo::queryJson(
   req.predicate_ref() = predicate;
   req.query_ref() = query;
   req.options_ref() = opts;
+  req.client_info_ref() = clientInfo_;
 
   auto res = thrift::UserQueryResults{};
   client->sync_userQuery(res, repo_, req);
@@ -181,6 +196,7 @@ std::vector<std::string> GleanRepo::queryJson(
   req.predicate_version_ref() = predicateVersion;
   req.query_ref() = query;
   req.options_ref() = opts;
+  req.client_info_ref() = clientInfo_;
 
   auto res = thrift::UserQueryResults{};
   client->sync_userQuery(res, repo_, req);

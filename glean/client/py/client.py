@@ -12,6 +12,8 @@ from configerator.configerator_config import ConfigeratorConfig
 from glean.client_config.ttypes import ClientConfig, UseShards
 from glean.service.ttypes import Service
 from libfb.py import net
+from libfb.py.build_info import BuildInfo
+from libfb.py.pwdutils import get_current_user_name
 from ServiceRouter import (
     ConnConfigs,
     ServiceOptions,
@@ -29,6 +31,13 @@ warnings.warn(
     "Please use glean.client.py3 instead. https://fburl.com/4wruxewc",
     category=DeprecationWarning,
     stacklevel=2,
+)
+
+
+client_info = glean.UserQueryClientInfo(
+    name="api-python",
+    unixname=get_current_user_name(),
+    application=BuildInfo.get_build_rule(),
 )
 
 
@@ -182,6 +191,7 @@ class GleanClient:
                 facts=[glean.FactQuery(id=object.id, recursive=recursive)],
                 # Python's Thrift JSON serialization is broken:
                 options=glean.UserQueryOptions(no_base64_binary=True),
+                client_info=client_info,
             ),
         )
         deserialize_json(result.facts[0], object)
@@ -197,7 +207,13 @@ class GleanClient:
         options.no_base64_binary = True
         options.recursive = recursive
         results = self.client.userQuery(
-            self.repo, glean.UserQuery(predicate, json, options=options)
+            self.repo,
+            glean.UserQuery(
+                predicate,
+                json,
+                options=options,
+                client_info=client_info,
+            ),
         )
 
         facts = []

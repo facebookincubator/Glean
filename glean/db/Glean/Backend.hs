@@ -106,7 +106,12 @@ withBackend evb cfgapi service settings inner = case service of
   Remote src -> do
     config <- ThriftSource.loadDefault cfgapi src
     let (config', opts) = settings (config, def)
-    inner (ThriftBackend config evb (thriftServiceWithTimeout config' opts))
+    client <- clientInfo
+    inner $ ThriftBackend
+      config
+      evb
+      (thriftServiceWithTimeout config' opts)
+      client
 
 options :: O.Parser Service
 options = optionsLong "service"
@@ -342,8 +347,9 @@ runLogQueryFacts
   -> Thrift.UserQueryFacts
   -> GleanServerLogger -> IO ()
 runLogQueryFacts cmd env repo Thrift.UserQueryFacts{..} log =
-  runLogRepo cmd env repo $
-    log <> maybe mempty logQueryOptions userQueryFacts_options
+  runLogRepo cmd env repo $ log
+    <> maybe mempty logQueryOptions userQueryFacts_options
+    <> maybe mempty logQueryClientInfo userQueryFacts_client_info
 
 runLogQuery
   :: Text
@@ -362,6 +368,7 @@ runLogQuery cmd env@Database.Env{..} repo Thrift.UserQuery{..} log = do
     , maybe mempty (Logger.setSchemaVersion . fromIntegral)
         userQuery_schema_version
     , maybe mempty logQueryOptions userQuery_options
+    , maybe mempty logQueryClientInfo userQuery_client_info
     ]
 
 logQueryOptions :: Thrift.UserQueryOptions -> GleanServerLogger
@@ -374,6 +381,13 @@ logQueryOptions Thrift.UserQueryOptions{..} = mconcat
   , Logger.setSyntax $ case userQueryOptions_syntax of
       Thrift.QuerySyntax_JSON -> "JSON"
       Thrift.QuerySyntax_ANGLE -> "Angle"
+  ]
+
+logQueryClientInfo :: Thrift.UserQueryClientInfo -> GleanServerLogger
+logQueryClientInfo Thrift.UserQueryClientInfo{..} = mconcat
+  [ maybe mempty Logger.setClientUnixname userQueryClientInfo_unixname
+  , Logger.setClientApplication userQueryClientInfo_application
+  , Logger.setClientName userQueryClientInfo_name
   ]
 
 logQueryResults :: Thrift.UserQueryResults -> GleanServerLogger
