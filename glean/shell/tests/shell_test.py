@@ -12,7 +12,8 @@ from libfb.py.testutil import BaseFacebookTestCase
 SHELL_PATH = find_path_in_fbcode_bin("glean/shell/shell")
 MKTESTDB_PATH = find_path_in_fbcode_bin("glean/test/lib/make_test_db")
 SCHEMA_PATH = find_path_in_fbcode_dir("glean/schema/source")
-EXAMPLE_FACTS_PATH = find_path_in_fbcode_dir("glean/shell/tests/example.glean")
+EXAMPLE_SCHEMA_PATH = find_path_in_fbcode_dir("glean/example/schema")
+EXAMPLE_FACTS_PATH = find_path_in_fbcode_dir("glean/example/facts.glean")
 
 REPO = "dbtest-repo"
 DB = REPO + "/f00baa"
@@ -83,9 +84,11 @@ class GleanShellReload(GleanShellTest):
         cls.startShell(None, None)
 
     def test(self):
-        pexpect.run("cp " + SCHEMA_PATH + "/example.angle " + self.tmpdir + "/schema")
+        pexpect.run(
+            "cp " + EXAMPLE_SCHEMA_PATH + "/example.angle " + self.tmpdir + "/schema"
+        )
         self.shellCommand(":reload", ">")
-        self.shellCommand(":load " + EXAMPLE_FACTS_PATH, "example>")
+        self.shellCommand(":load " + EXAMPLE_FACTS_PATH, "facts>")
 
         # add a new derived predicate to the schema
         with open(self.tmpdir + "/schema/example.angle", "a") as f:
@@ -93,12 +96,12 @@ class GleanShellReload(GleanShellTest):
                 "schema example.2 : example.1 {"
                 + "  predicate Foo:string S where Class {S,_ }"
                 + "}"
-                + "schema all.1 : example.2 {}"
+                + "schema all.2 : example.2 {}"
             )
-        self.shellCommand(":reload", "example>")
+        self.shellCommand(":reload", "facts")
 
         # check that we can query for the new derived predicate
-        output = self.shellCommand("example.Foo _", "example>")
+        output = self.shellCommand("example.Foo _", "facts>")
         self.assertIn("Fish", output)
 
 

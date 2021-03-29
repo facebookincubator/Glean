@@ -66,19 +66,22 @@
           "has": { "key": { "method": { 
             "name": "feed", 
             "doc": "Give the pet some food"
-          }}}
+          }}},
+          "access": 0
         }
       },
       {
         "key": {
           "class_": { "id": 2 },
-          "has": { "key": { "variable": { "name": "colour" }}}
+          "has": { "key": { "variable": { "name": "colour" }}},
+          "access": 0
         }
       },
       {
         "key": {
           "class_": { "id": 3 },
-          "has": { "key": { "variable": { "name": "fins" }}}
+          "has": { "key": { "variable": { "name": "fins" }}},
+          "access": 1
         }
       }
     ]
