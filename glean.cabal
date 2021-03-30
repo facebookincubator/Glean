@@ -109,6 +109,7 @@ library stubs
         Glean.Datasource.Scribe.Write
         Glean.Init
         Glean.Server.Shard
+        Glean.Username
         ServiceData.Types
         ServiceData.GlobalStats
         TestRunner
@@ -534,10 +535,9 @@ library schema
     import: fb-haskell, deps
     visibility: public
     hs-source-dirs:
-        glean/schema
-        glean/schema/gen
-        glean/schema/gen-hs2
-        glean/schema/query/gen-hs2
+        glean/schema/hs
+        glean/schema/thrift/gen-hs2
+        glean/schema/thrift/query/gen-hs2
     exposed-modules:
         Glean.Schema.Buck
         Glean.Schema.Builtin
@@ -562,7 +562,6 @@ library schema
         Glean.Schema.SearchPp
         Glean.Schema.Src
         Glean.Schema.Sys
-        Glean.Schema.Thrift
         Glean.Schema.Buck.Types
         Glean.Schema.Builtin.Types
         Glean.Schema.Code.Types
@@ -653,7 +652,8 @@ executable gen-schema
     build-depends:
         glean:core,
         glean:db,
-        glean:config
+        glean:config,
+        aeson-pretty
 
 library bytecode-instruction
     import: fb-haskell, deps

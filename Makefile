@@ -42,10 +42,16 @@ SCHEMAS= \
 
 thrift:: thrift-cpp thrift-hs
 
-thrift-hs:: thrift-hsthrift-hs thrift-glean-hs thrift-schema-hs
+thrift-hs:: thrift-hsthrift-hs thrift-glean-hs
 
 thrift-hsthrift-hs ::
 	(cd hsthrift && make CABAL="$(CABAL)" thrift-hs)
+
+gen-schema ::
+	$(CABAL) run glean:gen-schema -- \
+		--dir glean/schema/source \
+		--thrift glean/schema \
+		--hs glean/schema \
 
 thrift-glean-hs ::
 	$(THRIFT_COMPILE) --hs glean/github/if/fb303.thrift \
@@ -74,11 +80,11 @@ thrift-glean-hs ::
 thrift-schema-hs::
 	for s in $(SCHEMAS); do \
 		$(THRIFT_COMPILE) --hs \
-			glean/schema/$$s.thrift \
-			-o glean/schema; \
+			glean/schema/thrift/$$s.thrift \
+			-o glean/schema/thrift; \
 		$(THRIFT_COMPILE) --hs \
-			glean/schema/query/$$s.thrift \
-			-o glean/schema/query; \
+			glean/schema/thrift/query/$$s.thrift \
+			-o glean/schema/thrift/query; \
 	done
 
 thrift-cpp::

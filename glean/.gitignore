@@ -7,3 +7,5 @@ lib/gen-hs2/
 lib/if/gen-cpp2/
 hs/Glean/RTS/Bytecode/Gen
 rts/bytecode/gen
+schema/hs
+schema/thrift
