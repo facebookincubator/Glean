@@ -472,7 +472,10 @@ needsRefType :: Type -> M Bool
 needsRefType t = do
   realType <- repType t
   case realType of
-    Nothing -> return True -- type defined elsewhere, we don't know its rep
+    Nothing ->
+      -- type not found in this module or known imported environment,
+      -- so no recusive loop, so we do not need a ref type
+      return False
     Just rep -> case rep of
       Record{} -> return True
       Sum{} -> return True
