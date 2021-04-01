@@ -3,7 +3,9 @@
 #include <sstream>
 #include <vector>
 
+#ifndef UNW_LOCAL_ONLY
 #define UNW_LOCAL_ONLY
+#endif
 #include <libunwind.h>
 #include <folly/Demangle.h>
 
