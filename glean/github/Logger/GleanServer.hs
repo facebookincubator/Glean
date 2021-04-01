@@ -91,3 +91,12 @@ setCompileTimeUs _ = GleanServerLogger
 
 setExecuteTimeUs :: Int -> GleanServerLogger
 setExecuteTimeUs _ = GleanServerLogger
+
+setClientUnixname :: Text -> GleanServerLogger
+setClientUnixname _ = GleanServerLogger
+
+setClientApplication :: Text -> GleanServerLogger
+setClientApplication _ = GleanServerLogger
+
+setClientName :: Text -> GleanServerLogger
+setClientName _ = GleanServerLogger

@@ -25,6 +25,8 @@ jobs:
         run: |
           make thrift
           make gen-bytecode
+          make gen-schema
+          make thrift-schema-hs
           make glean
       - name: Run Glean tests
         run: make test

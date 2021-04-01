@@ -13,6 +13,3 @@ buildTimeISO8601 = "<time>"
 
 buildRevision :: Text
 buildRevision = "<unknown>"
-
-buildRule :: Text
-buildRule = "<unknown>"
