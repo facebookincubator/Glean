@@ -349,4 +349,13 @@ predicate DeclarationReference:
     python.DeclarationsByFile {declaration=S, file=F, span=BigSpan};
     src.ByteSpanContains {byteSpan=BigSpan, contains=LittleSpan}
 
+predicate DeclarationWithLocalName:
+  {
+    local_name: Name,
+    declaration: Declaration,
+  }
+  {LN, D} where
+  SN = SName {local_name = LN};
+  DeclarationWithSName {SN, D};
+
 } # python.3
