@@ -20,68 +20,6 @@ predicate VariableDeclaration: { name: Name }
 # Records that a Python module exists with a given fully qualified name.
 predicate Module: { name: Name }
 
-# DEPRECATED in favor of schema version 2
-predicate ImportStatement:
-  {
-    name: Name, # QName of symbol being imported
-    as_name: maybe Name,
-    span: src.ByteSpan,
-  }
-
-# DEPRECATED in favor of schema version 2
-type Declaration =
-  {
-    cls: ClassDeclaration |
-    func: FunctionDeclaration |
-    variable: VariableDeclaration |
-  }
-
-# DEPRECATED in favor of schema version 2
-predicate DeclarationLocation:
-  {
-    declaration: Declaration,
-    file: src.File,
-    span: src.ByteSpan,
-  }
-
-# DEPRECATED in favor of schema version 2
-predicate FileXRefs:
-  {
-    file: src.File,
-    xrefs: [XRef],
-  }
-
-# DEPRECATED in favor of schema version 2
-type XRef =
-  {
-    target: XRefTarget,
-    source: src.ByteSpan,
-  }
-
-# DEPRECATED in favor of schema version 2
-type XRefTarget =
-  {
-    declaration: Declaration |
-    module: Module |
-    indirect: XRefIndirectTarget |
-    unknown: builtin.Unit |
-  }
-
-# DEPRECATED in favor of schema version 2
-predicate XRefIndirectTarget:
-  {
-    import_statement: ImportStatement,
-    target: XRefTarget,
-  }
-
-# DEPRECATED in favor of schema version 2
-predicate TargetUses:
-  {
-    target: XRefTarget,
-    file: src.File,
-    uses: src.ByteSpans,
-  }
-
 } # python.1
 
 schema python.2 : python.1 {
@@ -271,41 +209,6 @@ predicate DeclarationToName: Declaration -> Name
     ({imp = { as_name = N }} = D) |
     ({module = { name = N }} = D)
 
-# Search for a declaration by (fully qualified) name.
-predicate DeclarationByName: Name -> Declaration
-  N -> D where
-  D = (
-    Declaration { cls = { name = N }}
-  ) | (
-    Declaration { func = { name = N }}
-  ) | (
-    Declaration { variable = { name = N }}
-  ) | (
-    ImportStatementByName { as_name = N, from_name = F };
-    Declaration { imp = { from_name = F, as_name = N }}
-  ) | (
-    Declaration { module = { name = N }}
-  )
-
-# Search for a declaration by structured name
-predicate DeclarationBySName: SName -> Declaration
-  N -> D where
-  D = (
-    ClassBySName N -> C;
-    Declaration { cls = C }
-  ) | (
-    FunctionBySName N -> F;
-    Declaration { func = F }
-  ) | (
-    VariableBySName N -> V;
-    Declaration { variable = V }
-  ) | (
-    ImportStatementByAsSName N -> I;
-    Declaration { imp = I }
-  ) | (
-    ModuleBySName N -> M;
-    Declaration { module = M }
-  )
 
 # This is a variant of DeclarationLocation. It allows for efficient queries
 # by file.
@@ -318,30 +221,6 @@ predicate DeclarationsByFile:
   stored {File, Span, Declaration} where
   DeclarationLocation { Declaration, File, Span }
 
-
-#### DEPRECATED SECTION
-
-# DEPRECATED: use ImportStatementByAsName.3
-predicate ImportStatementByAsName: Name -> ImportStatement
-  stored Name -> I
-  where ImportStatement { as_name = Name } = I
-
-# DEPRECATED: use ImportStatementByAsSName.3
-predicate ImportStatementByAsSName: SName -> ImportStatement
-  AsSName -> I
-  where SNameToName AsSName -> AsName; ImportStatementByAsName AsName -> I
-
-# DEPRECATED: use ImportStatementByAsName.3
-# This is the inverse of ImportStatement. It allows for efficient queries
-# by alias.
-predicate ImportStatementByName:
-  {
-    as_name: Name,
-    from_name: Name,
-  }
-  stored {AsName, FromName} where ImportStatement {FromName, AsName}
-
-# DEPRECATED: use DeclarationByName
 # Search for a declaration by (fully qualified) name.
 predicate DeclarationWithName:
   {
@@ -362,50 +241,52 @@ predicate DeclarationWithName:
     Declaration { module = { name = N }}
   )
 
-# DEPRECATED
-type XRefTarget =
-  {
-    # Another symbol contained within the repo.
-    declaration: Declaration |
-    # DEPRECATED: another symbol, possibly outside of the repo.
-    indirect: XRefIndirectTarget |
-    # A symbol that's outside the indexed repo.
-    unknown: builtin.Unit |
-  }
+#### DEPRECATED SECTION
 
-# DEPRECATED: A reference to an import that might or might not point to
-# a symbol within the repo.
-# NOTE: this is a predicate to avoid cycles
-predicate XRefIndirectTarget:
+# DEPRECATED: use ImportStatementByAsName.3
+# This is the inverse of ImportStatement. It allows for efficient queries
+# by alias.
+predicate ImportStatementByName:
   {
-    import_statement: ImportStatement,
-    target: XRefTarget,
+    as_name: Name,
+    from_name: Name,
   }
+  stored {AsName, FromName} where ImportStatement {FromName, AsName}
 
-# DEPRECATED: Use DeclarationUses
-predicate TargetUses:
-  {
-    target: XRefTarget,
-    file: src.File,
-    uses: src.ByteSpans,
-  }
+# DEPRECATED: use DeclarationWithName
+# Search for a declaration by (fully qualified) name.
+predicate DeclarationByName: Name -> Declaration
+  N -> D where
+  D = (
+    Declaration { cls = { name = N }}
+  ) | (
+    Declaration { func = { name = N }}
+  ) | (
+    Declaration { variable = { name = N }}
+  ) | (
+    ImportStatementByName { as_name = N, from_name = F };
+    Declaration { imp = { from_name = F, as_name = N }}
+  ) | (
+    Declaration { module = { name = N }}
+  )
 
-# DEPRECATED: use XRefsViaNameByFile
-predicate FileXRefs:
-  {
-    file: src.File,
-    xrefs: [XRef],
-  }
-
-# DEPRECATED: use XRefViaName
-type XRef =
-  {
-    # What symbol this access refers to.
-    target: XRefTarget,
-    # Where is the access in the context of the file in the containing
-    # FileXRefs fact.
-    source: src.ByteSpan,
-  }
+# DEPRECATED: use DeclarationWithSName
+# Search for a declaration by structured name
+predicate DeclarationBySName: SName -> Declaration
+  N -> D where
+  D = (
+    ClassBySName N -> C;
+    Declaration { cls = C }
+  ) | (
+    FunctionBySName N -> F;
+    Declaration { func = F }
+  ) | (
+    VariableBySName N -> V;
+    Declaration { variable = V }
+  ) | (
+    ModuleBySName N -> M;
+    Declaration { module = M }
+  )
 
 } # python.2
 
@@ -417,22 +298,30 @@ import src.1
 # alias, so this must be a record and not Name -> ImportStatement.
 predicate ImportStatementByAsName:
   {
-    name : Name,
-    import_ : ImportStatement
-  }
-  stored
-  { Name, I } where ImportStatement { as_name = Name } = I
+    name: Name,
+    import_: ImportStatement
+  } stored { Name, I } where
+  ImportStatement { as_name = Name } = I
 
 # Same as ImportStatementByAsName, but for structured names.
 predicate ImportStatementByAsSName:
   {
-     sname : SName,
-     import_ : ImportStatement
+     sname: SName,
+     import_: ImportStatement
   }
-  { AsSName, I }
-  where
-    SNameToName AsSName -> AsName;
-    ImportStatementByAsName { AsName, I }
+  { AsSName, I } where
+  SNameToName AsSName -> AsName;
+  ImportStatementByAsName { AsName, I }
+
+# Look up declarations with exact SNames
+predicate DeclarationWithSName:
+  {
+    sname: SName,
+    declaration: Declaration,
+  }
+  {SN, D} where
+  SNameToName SN -> N;
+  DeclarationWithName {N, D};
 
 # map from a declaration to the closest top level declaration
 # useful as we operate a lot of analysis on the top level declarations
