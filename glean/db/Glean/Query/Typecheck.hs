@@ -218,7 +218,9 @@ inferExpr ctx pat = case pat of
   Variable name
     | name == "false" -> return (falseVal, Boolean)
     | name == "true" -> return (trueVal, Boolean)
-    | otherwise -> inferVar ctx name
+    | name /= "nothing" -> inferVar ctx name
+      -- "nothing" by itself can't be inferred, we want to fall
+      -- through to the type error message.
   Parser.FactId (Just pred) fid -> do
     isFactIdAllowed pat
     res <- resolveTypeOrPred pred
@@ -272,6 +274,10 @@ inferExpr ctx pat = case pat of
           , "expression: " <> pretty e
           , "does not have an array type"
           ]
+  -- we can infer { just = E } as a maybe:
+  Struct [ Field "just" e ] -> do
+    (e', ty) <- inferExpr ctx e
+    return (RTS.Alt 1 e', Maybe ty)
   TypeSignature e ty -> do
     policy <- gets tcNameResolutionPolicy
     v <- gets tcAngleVersion

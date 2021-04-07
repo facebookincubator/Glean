@@ -647,6 +647,24 @@ angleTest modify = dbTestCase $ \env repo -> do
     |]
   assertEqual "angle - traverse bug" 1 (length r)
 
+  -- Test for correct handling of maybe, bool, and enums in the type checker
+  r <- runQuery_ env repo $ modify $ recursive $ angleData @Nat
+    [s|
+      true = true;
+      true : bool = true;
+      true = true : bool;
+      true : bool = true : bool;
+      nothing = nothing : maybe nat;
+      nothing : maybe nat = nothing : maybe nat;
+      { just = 3 } : maybe nat = { just = 3 } : maybe nat;
+      { just = 3 } = { just = 3 } : maybe nat;
+      { just = 3 } = { just = 3 };
+      mon = mon : glean.test.Sum;
+      mon : glean.test.Sum = mon : glean.test.Sum;
+      3
+    |]
+  assertEqual "angle - eqType maybe" 1 (length r)
+
 
 angleArray :: (forall a . Query a -> Query a) -> Test
 angleArray modify = dbTestCase $ \env repo -> do

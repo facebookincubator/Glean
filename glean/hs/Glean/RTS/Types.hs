@@ -138,8 +138,14 @@ eqType a b = case (a,b) of
   (NamedType (ExpandedType _ t), u) -> t `eqType` u
   (t, NamedType (ExpandedType _ u)) -> t `eqType` u
   (Maybe t, Maybe u) -> t `eqType` u
+  (Maybe t, u) -> lowerMaybe t `eqType` u
+  (t, Maybe u) -> t `eqType` lowerMaybe u
   (Enumerated xs, Enumerated ys) -> xs == ys
+  (Enumerated xs, t) -> lowerEnum xs `eqType` t
+  (t, Enumerated xs) -> t `eqType` lowerEnum xs
   (Boolean, Boolean) -> True
+  (Boolean, t) -> lowerBool `eqType` t
+  (t, Boolean) -> t `eqType` lowerBool
   _ -> False
 
 -- | dereference NamedType on the outside of a Type
