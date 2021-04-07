@@ -62,8 +62,6 @@ thrift-glean-hs ::
 		-o glean/if
 	$(THRIFT_COMPILE) --hs glean/if/internal.thrift \
 		-o glean/if/internal
-	$(THRIFT_COMPILE) --hs glean/if/search.thrift \
-		-o glean/if/search
 	$(THRIFT_COMPILE) --hs \
 		glean/config/recipes/recipes.thrift \
 		-o glean/config/recipes
@@ -86,6 +84,9 @@ thrift-schema-hs::
 			glean/schema/thrift/query/$$s.thrift \
 			-o glean/schema/thrift/query; \
 	done
+	# This depends on the schema .thrift files:
+	$(THRIFT_COMPILE) --hs glean/if/search.thrift \
+		-o glean/if/search
 
 thrift-cpp::
 	(cd hsthrift && make CABAL="$(CABAL)" thrift-cpp)
