@@ -582,9 +582,12 @@ captureKey dbSchema (FlatQuery pat Nothing stmts) ty
         , RTS.Ref (MatchVar keyVar)
         , Tuple []
         ]
-      resultStmt1 = FlatStatement pidTy (Ref (MatchBind keyVar)) (TermGenerator pat)
-      resultGen = DerivedFactGenerator pidRef (Ref (MatchVar keyVar)) (Tuple [])
-      resultStmt2 = FlatStatement pidTy (Ref (MatchBind fidVar)) resultGen
+      resultStmt1 =
+        FlatStatement ty (Ref (MatchBind keyVar)) (TermGenerator pat)
+      resultGen =
+        DerivedFactGenerator pidRef (Ref (MatchVar keyVar)) (Tuple [])
+      resultStmt2 =
+        FlatStatement pidTy (Ref (MatchBind fidVar)) resultGen
 
     return
       ( FlatQuery result Nothing
