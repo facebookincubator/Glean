@@ -190,7 +190,7 @@ mkGenerator (stmts, stmtss, gen) = (gen, flattenStmtGroups (stmts:stmtss))
 
 -- | Flatten a pattern and produce a Generator. If the pattern is
 -- manifestly a generator then the translation is direct, otherwise
--- we can flatten the pattern and wrap it in a QueryGenerator.
+-- we can flatten the pattern and wrap it in a TermGenerator.
 flattenGenerator :: TcPat -> F [(Statements, [Statements], Generator)]
 flattenGenerator pat = case pat of
   Ref (MatchExt (Typed ty match)) -> flattenTcTerm ty match
@@ -340,7 +340,7 @@ should generate
 
    (cxx1.Name "foo"..) | (cxx1.Name "bar"..)
 
-because that would be a lot more efficent than
+because that would be a lot more efficient than
 
    cxx1.Name X
    _ = (() where "foo".. = X) | (() where "bar".. = X)

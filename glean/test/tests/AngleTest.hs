@@ -1375,15 +1375,42 @@ optTest = dbTestCase $ \env repo -> do
   assertEqual "opt 4" (Just 4) $
     factsSearched (PredicateRef "glean.test.Predicate" 4) lookupPid stats
 
-  {-
-    Test reordering of nested matches using a simple DAG:
+  -- Test for optimising away unmatchable alternatives.
+  (_, stats) <- queryStats env repo $ angleData @Text
+    [s|
+      B where
+      { "a", B } =
+          # this should be optimised away:
+        ( { A, B } where glean.test.StringPair { A, B }; A = "b") |
+          # leaving this only:
+        ( { A, B } where glean.test.StringPair { A, B }; A = "a")
+     |]
+  -- we can tell the first alternative was optimised away by counting
+  -- the number of facts searched for glean.test.StringPair.
+  assertEqual "optimise or 1" (Just 1) $
+    factsSearched (PredicateRef "glean.test.StringPair" 1) lookupPid stats
 
-        "a"
-        / \
-      "b" "c"
-        \ /
-        "d"
-  -}
+  -- Test that unification works properly with literal fact IDs
+  result : _ <- runQuery_ env repo $ (allFacts :: Query Glean.Test.StringPair)
+  let fid = factId (getId result)
+  results <- runQuery_ env repo $ Angle.query $ fid `where_` [ fid .= fid ]
+  assertEqual "unify fact Id" 1 (length results)
+
+
+{-
+  Test reordering of nested matches using a simple DAG:
+
+      "a"
+      / \
+    "b" "c"
+      \ /
+      "d"
+-}
+reorderTest :: Test
+reorderTest = dbTestCase $ \env repo -> do
+  si <- getSchemaInfo env repo
+  let lookupPid = Map.fromList
+        [ (ref,pid) | (pid,ref) <- Map.toList (schemaInfo_predicateIds si) ]
 
   -- Inner match is not in a prefix position: do it last
   (_, stats) <- queryStats env repo $ angleData @Text
@@ -1441,26 +1468,19 @@ optTest = dbTestCase $ \env repo -> do
   assertEqual "reorder nested 6" (Just 1) $
     factsSearched (PredicateRef "glean.test.Tree" 4) lookupPid stats
 
-  -- Test for optimising away unmatchable alternatives.
-  (_, stats) <- queryStats env repo $ angleData @Text
+  -- Nested matches on the rhs of a lookup should become lookups
+  (_, stats) <- queryStats env repo $ angle @Glean.Test.Tree
     [s|
-      B where
-      { "a", B } =
-          # this should be optimised away:
-        ( { A, B } where glean.test.StringPair { A, B }; A = "b") |
-          # leaving this only:
-        ( { A, B } where glean.test.StringPair { A, B }; A = "a")
-     |]
-  -- we can tell the first alternative was optimised away by counting
-  -- the number of facts searched for glean.test.StringPair.
-  assertEqual "optimise or 1" (Just 1) $
-    factsSearched (PredicateRef "glean.test.StringPair" 1) lookupPid stats
-
-  -- Test that unification works properly with literal fact IDs
-  result : _ <- runQuery_ env repo $ (allFacts :: Query Glean.Test.StringPair)
-  let fid = factId (getId result)
-  results <- runQuery_ env repo $ Angle.query $ fid `where_` [ fid .= fid ]
-  assertEqual "unify fact Id" 1 (length results)
+      L where
+        L = glean.test.Tree { "b", _, _ };
+        L = glean.test.Tree { "b", { just = { "d", _, _ }}, _}
+          # L is bound, so even though the nested match { "d", _, _ }
+          # is in a prefix position and would normally be done first,
+          # in this case we want to do it afterwards because it's a lookup
+          # and a lookup is always cheaper than a search.
+    |]
+  assertEqual "reorder nested 7" (Just 1) $
+    factsSearched (PredicateRef "glean.test.Tree" 4) lookupPid stats
 
 
 angleRecExpansion :: (forall a . Query a -> Query a) -> Test
@@ -1592,6 +1612,7 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "angleData" $ angleDataTest id
   , TestLabel "angleData/page" $ angleDataTest (limit 1)
   , TestLabel "opt" optTest
+  , TestLabel "reorder" reorderTest
   , TestLabel "scoping" scopingTest
   , TestLabel "dsl" $ angleDSL id
   , TestLabel "recExpansion" $ angleRecExpansion id

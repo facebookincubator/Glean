@@ -156,18 +156,24 @@ reorderStmtGroup stmts = do
   let
     nodes = zip [(0::Int)..] (NonEmpty.toList stmts)
 
+    -- statements, numbered from zero, and with the set of variables
+    -- mentioned anywhere in the statement.
     withVars :: [(Int, VarSet, FlatStatement)]
     withVars =
       [ (n, varsOf stmt IntSet.empty `IntSet.difference` scope, stmt)
       | (n, stmt) <- nodes
       ]
 
-    -- statements in this group that are fact lookups (X = pred pat)
-    lookups =
-      [ (n, x, matchType, stmt)
+    -- statements in this group that are candidates for reordering
+    -- (X = pred pat)
+    --
+    -- The goal of this pass is to establish, for each candidate C of
+    -- the form "X = pred pat" and each statement S that mentions X,
+    -- whether C should go before or after S.
+    candidates =
+      [ (n, x, xs, matchType, stmt)
       | (n, xs, stmt) <- withVars
-      , Just (x, matchType) <- [isLookup stmt]
-      , x `IntSet.member` xs
+      , Just (x, matchType) <- [isCandidate stmt]
       ]
 
     -- Just X if the statement will compile to a fact lookup if X is bound.
@@ -176,25 +182,71 @@ reorderStmtGroup stmts = do
     -- At this point we also classify the match according to whether it
     -- matches at most one thing, matches everything, or something else
     -- (PatternMatch).
-    isLookup
+    isCandidate
       (FlatStatement _ (Ref v) (FactGenerator _ key _))
       | Just (Var _ x _) <- matchVar v =
-        Just (x, classifyPattern lookupScope key)
-    isLookup _ = Nothing
+        Just (x, classifyPattern lhsScope key) -- TODO lookupScope here is wrong
+    isCandidate _ = Nothing
 
-    lookupVars = IntSet.fromList [ x | (_, x, _, _) <- lookups ]
+    lhsVars = IntSet.fromList [ x | (_, x, _, _, _) <- candidates ]
 
-    -- for classifyPattern we want to consider the variables bound by
-    -- lookups as bound, because otherwise a nested match would
-    -- appear to be irrefutable.
-    lookupScope = scope `IntSet.union` lookupVars
+    -- for classifyPattern we want to consider the variables on the
+    -- lhs of the candidates as bound. e.g.
+    --
+    --   X = pred { Y, _ }
+    --   Y = ...
+    --
+    -- we want to consider { Y, _ } as a prefix match and put the
+    -- binding of Y first.
+    lhsScope = scope `IntSet.union` lhsVars
 
     -- for each statements in this group, find the variables that
     -- the statement mentions in a prefix position.
     uses =
-      [ (n, xs, prefixVars lookupVars scope stmt, stmt)
+      [ (n, xs, prefixVars lhsVars scope stmt, stmt)
       | (n, xs, stmt) <- withVars
       ]
+
+    -- classify each candidate (X = pred P) according to whether it
+    -- will be a lookup (X is bound) or a search (X is unbound).
+    --
+    -- If X = pred P is a lookup, then we want all the vars bound by P
+    -- to also be lookups, because a lookup is O(1). So this property
+    -- is propagated transitively.
+    --
+    -- * start from the set of bound vars,
+    -- * add vars that are in non-prefix positions, or where P is a full scan
+    -- * add vars from the rhs of all these candidates
+    -- * keep going until we're done
+    initialLookupVars = IntSet.unions
+      [ scope
+      , IntSet.fromList slowSearches
+      , IntSet.fromList nonPrefixVars
+      ]
+      where
+        slowSearches = [ x | (_, x, _, PatternSearchesAll, _) <- candidates ]
+        nonPrefixVars =
+          [ x
+          | (_, xs, prefix, stmt) <- uses
+          , let lhs = case isCandidate stmt of
+                  Just (x,_) -> Just x
+                  Nothing -> Nothing
+          , x <- IntSet.toList xs
+          , Just x /= lhs && not (x `IntSet.member` prefix)
+          ]
+
+    candidateMap = IntMap.fromListWith (++)
+      [ (n, [stmt]) | stmt@(_,n,_,_,_) <- candidates ]
+
+    lookupVars = go (IntSet.toList initialLookupVars) IntSet.empty
+      where
+      go [] vars = vars
+      go (x:xs) vars
+        | x `IntSet.member` vars = go xs vars
+        | otherwise = go (new ++ xs) (IntSet.insert x vars)
+        where
+        new = concat [ IntSet.toList ys | (_, _, ys, _, _) <- stmts ]
+          where stmts = IntMap.findWithDefault [] x candidateMap
 
     -- find the statements that mention X
     usesOf x = IntMap.lookup x m
@@ -207,19 +259,16 @@ reorderStmtGroup stmts = do
 
     edges :: IntMap [(Int,FlatStatement)]
     edges = IntMap.fromListWith (++)
-      [ case matchType of
-            -- a point match: do it first
-          PatternMatchesOne -> (use, [(lookup,lookupStmt)])
-            -- an irrefutable match: do it later
-          PatternMatchesAll -> (lookup, [(use, useStmt)])
-            -- otherwise: do the inner match first only if the variable is
-            -- in a prefix position (so the outer match will be faster)
-          PatternMatchesSome
-            | x `IntSet.member` prefix -> (use, [(lookup,lookupStmt)])
-            | otherwise -> (lookup, [(use, useStmt)])
-      | (lookup, x, matchType, lookupStmt) <- lookups
+      [ if
+          | PatternMatchesOne <- matchType -> (use, [(lookup,lookupStmt)])
+            -- a point match: always do these first
+          | x `IntSet.member` lookupVars -> (lookup, [(use, useStmt)])
+            -- we want X to be a lookup: do it after the use of X
+          | otherwise -> (use, [(lookup,lookupStmt)])
+            -- otherwise put the candidate before the use
+      | (lookup, x, _, matchType, lookupStmt) <- candidates
       , Just uses <- [usesOf x]
-      , (use, prefix, useStmt) <- uses
+      , (use, _, useStmt) <- uses
       , use /= lookup
       ]
 
@@ -227,8 +276,8 @@ reorderStmtGroup stmts = do
   concat <$> mapM (reorderStmt . snd) (postorderDfs nodes edges)
 
 data PatternMatch
-  = PatternMatchesAll
-    -- ^ irrefutable (never fails to match)
+  = PatternSearchesAll
+    -- ^ no prefix; looks at all the facts
   | PatternMatchesOne
     -- ^ point-match: matches at most one value
   | PatternMatchesSome
@@ -245,7 +294,6 @@ classifyPattern scope t = go PatternMatchesSome t id
   -- during the traversal the current PatternMatch (pref) means:
   --   PatternMatchSome: we're at the beginning
   --   PatternMatchOne: we've seen a fixed prefix so far
-  --   PatternMatchAll: we've seen a wild prefix so far
   go
     :: PatternMatch
     -> Term (Match () Var)
@@ -273,7 +321,7 @@ classifyPattern scope t = go PatternMatchesSome t id
           (_, PatternMatchesOne) -> r PatternMatchesOne
           (PatternMatchesSome, _) -> PatternMatchesSome -- stop here
           (_, PatternMatchesSome) -> PatternMatchesSome -- stop here
-          _ -> r PatternMatchesAll
+          _ -> r PatternSearchesAll
       MatchPrefix _ t -> fixed pref (\pref' -> go pref' t r)
       MatchSum{} -> PatternMatchesSome -- TODO conservative
       MatchExt{} -> PatternMatchesSome
@@ -283,14 +331,14 @@ classifyPattern scope t = go PatternMatchesSome t id
       | otherwise = wild pref r
 
   -- we've seen a bit of fixed pattern
-  fixed PatternMatchesAll _ = PatternMatchesSome -- stop here
+  fixed PatternSearchesAll _ = error "fixed" -- shouldn't happen
   fixed PatternMatchesOne r = r PatternMatchesOne
   fixed PatternMatchesSome r = r PatternMatchesOne
 
   -- we've seen a bit of wild pattern
-  wild PatternMatchesAll r = r PatternMatchesAll
+  wild PatternSearchesAll _ = error "wild"
   wild PatternMatchesOne _ = PatternMatchesSome -- stop here
-  wild PatternMatchesSome r = r PatternMatchesAll
+  wild PatternMatchesSome _ = PatternSearchesAll -- stop here
 
   termSeq pref [] r = r pref
   termSeq pref (x:xs) r = go pref x (\pref -> termSeq pref xs r)
