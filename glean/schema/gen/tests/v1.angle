@@ -2070,7 +2070,7 @@ import buck.1
 
 # Language string from fbcode/.../thrift_library.bzl such as:
 # cpp2, d, go, hs, hs2, java-swift,
-# javadeprecated, javadeprecated-apache, js,
+# javadeprecated, js,
 # py, py-asyncio, py-twisted, py3, pyi, pyi-asyncio, rust, thriftdoc-py
 type FbcodeLang = string
 
