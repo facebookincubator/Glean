@@ -216,8 +216,8 @@ inferExpr ctx pat = case pat of
     ts' <- mapM (typecheckPattern ctx ty) ts
     return (RTS.Array (t':ts'), Schema.Array ty)
   Variable name
-    | name == "false" -> return (falseVal, lowerBool)
-    | name == "true" -> return (trueVal, lowerBool)
+    | name == "false" -> return (falseVal, Boolean)
+    | name == "true" -> return (trueVal, Boolean)
     | otherwise -> inferVar ctx name
   Parser.FactId (Just pred) fid -> do
     isFactIdAllowed pat
