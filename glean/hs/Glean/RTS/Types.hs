@@ -22,6 +22,7 @@ module Glean.RTS.Types
   , PidRef(..)
   , ExpandedType(..)
   , repType
+  , sumLike
   , eqType
   , derefType
     -- ** Representation types
@@ -109,6 +110,13 @@ repType (NamedType (ExpandedType _ ty)) = repType ty
 repType (Maybe ty) = repType (lowerMaybe ty)
 repType (Enumerated names) = repType (lowerEnum names)
 repType Boolean = repType lowerBool
+
+sumLike :: Type -> Maybe [Glean.RTS.Types.FieldDef]
+sumLike (Sum fs) = Just fs
+sumLike (Maybe ty) = Just (maybeFields ty)
+sumLike (Enumerated names) = Just (enumFields names)
+sumLike Boolean = Just boolFields
+sumLike _ = Nothing
 
 -- | Compare types for (structural) equality
 eqType :: Type -> Type -> Bool

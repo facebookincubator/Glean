@@ -4,6 +4,9 @@ module Glean.Schema.Util
   , lowerBool
   , lowerMaybe
   , lowerEnum
+  , boolFields
+  , maybeFields
+  , enumFields
   , tupleSchema
   , parseRef
   , convertRef
@@ -25,15 +28,24 @@ unit = Record []
 
 -- | A maybe type is equivalent to a sum type with {nothing,just} fields.
 lowerMaybe :: Type_ a b -> Type_ a b
-lowerMaybe param = Sum
+lowerMaybe param = Sum (maybeFields param)
+
+maybeFields :: Type_ a b -> [FieldDef_ a b]
+maybeFields param =
   [ FieldDef "nothing" unit
   , FieldDef "just" param ]
 
 lowerBool :: Type_ a b
-lowerBool = Sum [FieldDef "false" unit, FieldDef "true" unit]
+lowerBool = Sum boolFields
+
+boolFields :: [FieldDef_ a b]
+boolFields = [FieldDef "false" unit, FieldDef "true" unit]
 
 lowerEnum :: [Name] -> Type_ a b
-lowerEnum ides = Sum [FieldDef ide unit | ide <- ides]
+lowerEnum ides = Sum (enumFields ides)
+
+enumFields :: [Name] -> [FieldDef_ a b]
+enumFields ides = [FieldDef ide unit | ide <- ides]
 
 tupleSchema :: [Type_ a b] -> Type_ a b
 tupleSchema tys = Record

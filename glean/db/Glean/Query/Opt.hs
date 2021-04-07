@@ -489,7 +489,7 @@ expandStmt (FlatStatement stmtTy lhs (TermGenerator rhs)) =
       | Type.Record fields <- derefType ty ->
         concat (zipWith3 expand (map fieldDefType fields) ts us)
     (Alt n x, Alt m y)
-      | n == m, Type.Sum fields <- derefType ty ->
+      | n == m, Just fields <- sumLike (derefType ty) ->
         expand (fieldDefType (fields !! fromIntegral n)) x y
     (Ref x, Ref y)
       | Just x' <- matchVar x, Just y' <- matchVar y, x' == y' -> []
