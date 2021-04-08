@@ -28,6 +28,7 @@ module Glean.Backend
 import Control.Applicative
 import Control.Concurrent.STM (atomically)
 import Control.Exception
+import qualified Data.ByteString as ByteString
 import Data.Coerce (coerce)
 import Data.Default
 import qualified Data.Map as Map
@@ -381,6 +382,12 @@ logQueryOptions Thrift.UserQueryOptions{..} = mconcat
   , Logger.setSyntax $ case userQueryOptions_syntax of
       Thrift.QuerySyntax_JSON -> "JSON"
       Thrift.QuerySyntax_ANGLE -> "Angle"
+  , maybe mempty
+      ( Logger.setRequestContinuationSize
+      . ByteString.length
+      . Thrift.userQueryCont_continuation
+      )
+      userQueryOptions_continuation
   ]
 
 logQueryClientInfo :: Thrift.UserQueryClientInfo -> GleanServerLogger
@@ -404,6 +411,12 @@ logQueryResults Thrift.UserQueryResults{..} = mconcat
   , Logger.setTruncated (isJust userQueryResults_continuation)
   , maybe mempty logQueryStats userQueryResults_stats
   , maybe mempty Logger.setType userQueryResults_type
+  , maybe mempty
+      ( Logger.setResponseContinuationSize
+      . ByteString.length
+      . Thrift.userQueryCont_continuation
+      )
+      userQueryResults_continuation
   ]
 
 logQueryStats :: Thrift.UserQueryStats -> GleanServerLogger
