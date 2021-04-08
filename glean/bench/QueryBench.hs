@@ -1,6 +1,7 @@
 {-# LANGUAGE TypeApplications #-}
 module QueryBench (main) where
 
+import Control.Concurrent.Async
 import Criterion.Types
 import Data.Default
 import Data.Text (Text)
@@ -64,6 +65,10 @@ main = benchmarkMain $ \run -> withBenchDB 100000 $ \env repo -> do
           runQuery env repo nestedQueryThrift
       , bench "complex" $ whnfIO $
           runQuery env repo complexQueryThrift
+      , bench "complex-parallel" $ whnfIO
+        $ mapConcurrently (\io -> io >>= \x -> x `seq` return x)
+        $ replicate 1000
+        $ runQuery env repo complexQueryThrift
       , bench "page" $ whnfIO $
           runQuery_ env repo pageQueryThrift
       , bench "pagenested" $ whnfIO $

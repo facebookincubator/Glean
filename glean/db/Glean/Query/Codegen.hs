@@ -967,7 +967,7 @@ compileFactGenerator (QueryRegs{..} :: QueryRegs s)
           (fromMaybe ignore maybeReg)
         jumpIf0 ok end  -- 0 -> no match
         decrAndJumpIf0 ok continue  -- 1 -> match
-      suspend saveState loop -- 2 -> timeout
+      suspend saveState loop -- 2 -> timeout / interrupted
       continue <- label
       return ()
 

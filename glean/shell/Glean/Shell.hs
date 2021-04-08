@@ -60,6 +60,7 @@ import Glean.Database.Config (parseSchemaDir)
 import qualified Glean.Database.Config as DB (Config(..))
 import Glean.Init
 import Glean.RTS.Types (Pid(..), Fid(..))
+import Glean.RTS.Foreign.Query (interruptRunningQueries)
 import Glean.Schema.Resolve
 import Glean.Angle.Types as SchemaTypes
 import Glean.Schema.Util
@@ -1063,7 +1064,9 @@ withSignalHandlers act = do
       r <- deRefWeak wtid
       case r of
         Nothing -> return ()
-        Just t  -> throwTo t UserInterrupt
+        Just t  -> do
+          interruptRunningQueries
+          throwTo t UserInterrupt
 
     installHandlers = liftIO $ do
       let installHandler' a b = installHandler a b Nothing

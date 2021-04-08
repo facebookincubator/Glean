@@ -1,4 +1,5 @@
 #include <chrono>
+#include <atomic>
 
 #include <folly/Chrono.h>
 #include <folly/stop_watch.h>
@@ -22,6 +23,10 @@ namespace {
 static constexpr uint32_t CHECK_TIMEOUT_INTERVAL = 100;
 
 using Clock = folly::chrono::coarse_steady_clock;
+
+// all queries started before the last interrupt will be aborted.
+std::atomic<std::chrono::time_point<Clock>> last_interrupt =
+  folly::chrono::coarse_steady_clock::time_point::min();
 
 struct QueryExecutor {
 
@@ -129,6 +134,12 @@ struct QueryExecutor {
       }
     }
     return false;
+  }
+
+  std::chrono::time_point<Clock> start_time;
+  inline bool interrupted() {
+    auto last = last_interrupt.load(std::memory_order_relaxed);
+    return last > start_time;
   }
 
   Inventory &inventory;
@@ -392,6 +403,10 @@ QueryResults QueryExecutor::finish() {
 
 } // namespace {}
 
+void interruptRunningQueries() {
+  last_interrupt = Clock::now();
+}
+
 QueryResults restartQuery(
     Inventory& inventory,
     Define& facts,
@@ -471,9 +486,9 @@ QueryResults executeQuery (
     .expandPids = expandPids,
     .wantStats = wantStats
   };
-
   // coarse_steady_clock is around 1ms granularity which is enough for us.
   q.timeout = Clock::now();
+  q.start_time = Clock::now();
   if (maxTime) {
     q.timeout += std::chrono::milliseconds{*maxTime};
     q.check_timeout = CHECK_TIMEOUT_INTERVAL;
@@ -539,6 +554,9 @@ QueryResults executeQuery (
       next_ = [&](uint64_t token, uint64_t demand, uint64_t *clause_begin,
                   uint64_t *key_end, uint64_t *clause_end, uint64_t *id) {
         if (q.timeExpired()) {
+          return 2;
+        }
+        if (q.interrupted()) {
           return 2;
         }
         auto res = q.next(token, demand != 0 ? FactIterator::KeyValue

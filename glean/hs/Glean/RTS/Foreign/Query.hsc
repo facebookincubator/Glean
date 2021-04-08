@@ -2,6 +2,7 @@ module Glean.RTS.Foreign.Query
   ( CompiledQuery(..)
   , executeCompiled
   , restartCompiled
+  , interruptRunningQueries
   , QueryRuntimeOptions(..)
   , Depth(..)
   , QueryResults(..)
@@ -219,6 +220,9 @@ unpackResults wantStats maybePid (Results p) = do
           else Just contBytes
     }
 
+interruptRunningQueries :: IO ()
+interruptRunningQueries = glean_interrupt_running_queries
+
 depth_ResultsOnly :: Word64
 depth_ResultsOnly =
   (# const (int)facebook::glean::rts::Depth::ResultsOnly)
@@ -261,6 +265,9 @@ foreign import ccall safe glean_query_restart_compiled
   -> Word64 -- want_stats
   -> Ptr Results
   -> IO CString
+
+foreign import ccall unsafe glean_interrupt_running_queries
+  :: IO ()
 
 foreign import ccall unsafe glean_free_query_results
   :: Results -> IO ()

@@ -197,6 +197,10 @@ void glean_lookupcache_anchor_free(Lookup *anchor) {
   ffi::free_(anchor);
 }
 
+void glean_interrupt_running_queries() {
+  interruptRunningQueries();
+}
+
 const char *glean_query_execute_compiled(
     Inventory *inventory,
     Define *facts,

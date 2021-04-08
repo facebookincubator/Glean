@@ -62,6 +62,7 @@ QueryResults restartQuery(
     void* serializedCont,
     uint64_t serializedContLen);
 
+void interruptRunningQueries();
 }
 }
 }
