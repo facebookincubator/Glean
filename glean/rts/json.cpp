@@ -3,6 +3,7 @@
 #include "glean/rts/json.h"
 
 #include <folly/dynamic.h>
+#include <folly/lang/ToAscii.h>
 #include <folly/json.h>
 
 using namespace facebook::glean;
@@ -257,13 +258,13 @@ size_t glean_json_encode_number(
     char *out) {
   if (number < 0) {
     *out++ = '-';
-    return folly::uint64ToBufferUnsafe(
-      ~static_cast<uint64_t>(number) + 1,
-      out) + 1;
+    auto unumber = ~static_cast<uint64_t>(number) + 1;
+    auto len = folly::to_ascii_size_decimal(unumber);
+    return 1 + folly::to_ascii_decimal(out, out + len, unumber);
   } else {
-    return folly::uint64ToBufferUnsafe(
-      static_cast<uint64_t>(number),
-      out);
+    auto unumber = static_cast<uint64_t>(number);
+    auto len = folly::to_ascii_size_decimal(unumber);
+    return folly::to_ascii_decimal(out, out + len, unumber);
   }
 }
 
