@@ -1500,6 +1500,17 @@ reorderTest = dbTestCase $ \env repo -> do
   assertEqual "reorder nested 7" (Just 1) $
     factsSearched (PredicateRef "glean.test.Tree" 4) lookupPid stats
 
+  -- Ordering where the nested query is in a prefix position of its
+  -- parent and not a point query.
+  (_, stats) <- queryStats env repo $ angle @Glean.Test.Edge
+    [s|
+      X where
+        X = glean.test.Edge { parent = { label = "b".. }}
+          # We want the inner query to be done first, on the grounds that
+          # then the outer query becomes a prefix match.
+    |]
+  assertEqual "reorder nested 8" (Just 1) $
+    factsSearched (PredicateRef "glean.test.Edge" 4) lookupPid stats
 
 angleRecExpansion :: (forall a . Query a -> Query a) -> Test
 angleRecExpansion modify = dbTestCase $ \env repo -> do

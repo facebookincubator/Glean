@@ -4,6 +4,7 @@ module Glean.Query.Reorder
 
 import Control.Monad.Except
 import Control.Monad.State
+import qualified Data.ByteString as ByteString
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
 import Data.IntSet (IntSet)
@@ -283,62 +284,66 @@ data PatternMatch
   | PatternMatchesSome
     -- ^ neither of the above
 
--- | Classify a pattern according to whether it's irrefutable or a
--- point-match, or neither.
+-- | Classify a pattern according to the cases in 'PatternMatch'
 classifyPattern
   :: VarSet -- ^ variables in scope
   -> Term (Match () Var)
   -> PatternMatch
-classifyPattern scope t = go PatternMatchesSome t id
+classifyPattern scope t = fromMaybe PatternMatchesOne (go False t end)
   where
-  -- during the traversal the current PatternMatch (pref) means:
-  --   PatternMatchSome: we're at the beginning
-  --   PatternMatchOne: we've seen a fixed prefix so far
   go
-    :: PatternMatch
+    :: Bool -- non-empty fixed prefix seen?
     -> Term (Match () Var)
-    -> (PatternMatch -> PatternMatch)
-    -> PatternMatch
+    -> (Bool -> Maybe PatternMatch)  -- cont
+    -> Maybe PatternMatch
+       -- Nothing -> pattern was empty
+       -- Just p -> non-empty pattern of kind p
   go pref t r = case t of
-    Byte{} -> fixed pref r
-    Nat{} -> fixed pref r
+    Byte{} -> fixed r
+    Nat{} -> fixed r
     Array xs -> termSeq pref xs r
-    ByteArray{} -> fixed pref r
+    ByteArray{} -> fixed r
     Tuple xs -> termSeq pref xs r
-    Alt _ t -> fixed pref (\pref -> go pref t r)
-    String{} -> fixed pref r
+    Alt _ t -> fixed (\pref -> go pref t r)
+    String{} -> fixed r
     Ref m -> case m of
-      MatchWild{} -> wild pref r
-      MatchNever{} -> PatternMatchesSome
-      MatchFid{} -> fixed pref r
+      MatchWild{} -> wild pref
+      MatchNever{} -> Just PatternMatchesSome
+      MatchFid{} -> fixed r
       MatchBind (Var _ v _) -> var v
       MatchVar (Var _ v _) -> var v
       MatchAnd a b ->
-        go pref a $ \resulta ->
-        go pref b $ \resultb ->
-        case (resulta, resultb) of
-          (PatternMatchesOne, _) -> r PatternMatchesOne
-          (_, PatternMatchesOne) -> r PatternMatchesOne
-          (PatternMatchesSome, _) -> PatternMatchesSome -- stop here
-          (_, PatternMatchesSome) -> PatternMatchesSome -- stop here
-          _ -> r PatternSearchesAll
-      MatchPrefix _ t -> fixed pref (\pref' -> go pref' t r)
-      MatchSum{} -> PatternMatchesSome -- TODO conservative
-      MatchExt{} -> PatternMatchesSome
+        case (go pref a end, go pref b end) of
+          (Nothing, _) -> r False
+          (_, Nothing) -> r False
+          (Just PatternMatchesOne, _) -> r True
+          (_, Just PatternMatchesOne) -> r True
+          (Just PatternMatchesSome, _) -> Just PatternMatchesSome -- stop here
+          (_, Just PatternMatchesSome) -> Just PatternMatchesSome -- stop here
+          (Just PatternSearchesAll, Just PatternSearchesAll) ->
+             Just PatternSearchesAll -- stop here
+      MatchPrefix s t
+        | not (ByteString.null s) -> fixed (\pref' -> go pref' t r)
+        | otherwise -> go pref t r
+      MatchSum{} -> Just PatternMatchesSome -- TODO conservative
+      MatchExt{} -> Just PatternMatchesSome
     where
     var v
-      | v `IntSet.member` scope = fixed pref r
-      | otherwise = wild pref r
+      | v `IntSet.member` scope = fixed r
+      | otherwise = wild pref
 
   -- we've seen a bit of fixed pattern
-  fixed PatternSearchesAll _ = error "fixed" -- shouldn't happen
-  fixed PatternMatchesOne r = r PatternMatchesOne
-  fixed PatternMatchesSome r = r PatternMatchesOne
+  fixed r = r True
 
   -- we've seen a bit of wild pattern
-  wild PatternSearchesAll _ = error "wild"
-  wild PatternMatchesOne _ = PatternMatchesSome -- stop here
-  wild PatternMatchesSome _ = PatternSearchesAll -- stop here
+  wild nonEmptyPrefix
+    | nonEmptyPrefix = Just PatternMatchesSome -- stop here
+    | otherwise = Just PatternSearchesAll -- stop here
+
+  -- end of the pattern
+  end nonEmptyPrefix
+    | nonEmptyPrefix = Just PatternMatchesOne
+    | otherwise = Nothing
 
   termSeq pref [] r = r pref
   termSeq pref (x:xs) r = go pref x (\pref -> termSeq pref xs r)
