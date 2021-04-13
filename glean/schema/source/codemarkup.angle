@@ -1302,8 +1302,13 @@ predicate EntityUses:
     span: src.ByteSpan
   }
   {E, File, Span} where
-    HackEntityUses { E, File, Span } |
-    PythonEntityUses { E, File, Span }
+    (
+      {hack = {decl = D}} = E;
+      HackDeclarationUses {D, File, Span};
+    ) | (
+      {python = {decl = D}} = E;
+      python.DeclarationUses {D, File, Span};
+    )
 
 # Find entities in a File (and their concrete Declaration)
 predicate FileEntities:
@@ -1500,6 +1505,17 @@ predicate PythonEntityUses:
   }
   { { python = { decl = D } }, File, Span } where
   python.DeclarationUses { declaration = D, file = File, span = Span}
+
+predicate HackDeclarationUses:
+  {
+    target: hack.Declaration,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  { D, File, Span } where
+    hack.TargetUses { target = { declaration = D }, file = File, uses = Uses };
+    Spans = prim.relToAbsByteSpans Uses;
+    Span = Spans[..];
 
 predicate HackResolve:
   {
