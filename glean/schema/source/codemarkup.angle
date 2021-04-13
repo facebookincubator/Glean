@@ -1063,8 +1063,7 @@ predicate FlowModuleExportLocation :
       { loc = Loc } = D;
       { decl = { memberDecl = D } } = Entity
     );
-    { span = Span } = Loc;
-    { file = File } = Mod
+    { span = Span, module = { file = File } } = Loc;
     # TODO: moduleExport, moduleNamespace
 
 
@@ -1096,8 +1095,7 @@ predicate FlowTypeExportLocation :
       moduleTypeExport = { module = Mod, typeExport = TE },
       source = { typeDeclaration = D }};
     { loc = Loc } = D;
-    { span = Span } = Loc;
-    { file = File } = Mod
+    { span = Span, module = { file = File } } = Loc;
 
 predicate FlowCompatibleModuleExport :
   {
