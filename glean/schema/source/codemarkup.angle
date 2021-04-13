@@ -1080,7 +1080,7 @@ predicate FlowModuleNamespaceXRef :
       declaration = Local,
       import_ = { moduleNamespace = M } };
     { file = File } = M | (N where FlowSameModule { M, N });
-    
+
 
 predicate FlowTypeExportLocation :
   {
@@ -1304,7 +1304,8 @@ predicate EntityUses:
     span: src.ByteSpan
   }
   {E, File, Span} where
-    HackEntityUses { E, File, Span }
+    HackEntityUses { E, File, Span } |
+    PythonEntityUses { E, File, Span }
 
 # Find entities in a File (and their concrete Declaration)
 predicate FileEntities:
@@ -1426,7 +1427,7 @@ predicate FlowFileReferenceEntityXRef:
     );
     Decl = Declaration { Str, TargetFile, TargetSpan };
 
-# Cross-references from import declarations. 
+# Cross-references from import declarations.
 #
 # We want to hyperlink the identifiers in an import declaration to the
 # source of the import:
@@ -1435,7 +1436,7 @@ predicate FlowFileReferenceEntityXRef:
 #   * If it is an import declaraiton, find the source (reusing FlowImportXRef)
 #
 # and do the same for type declarations (FlowTypeImportXRef).
-# 
+#
 predicate FlowFileImportDeclEntityXRef:
   {
     file: src.File,
@@ -1444,7 +1445,7 @@ predicate FlowFileImportDeclEntityXRef:
   }
   { File, { Decl, Src }, Entity } where
     flow.FileDeclaration { File, D };
-    ( 
+    (
       { localDecl = LocalD } = D;
       FlowImportXRef { LocalD, Entity, TargetFile, TargetSpan };
       { name = Name, loc = SrcLoc } = LocalD;
@@ -1492,6 +1493,15 @@ predicate HackEntityUses:
     hack.TargetUses { target = { declaration = D }, file = File, uses = Uses };
     Spans = prim.relToAbsByteSpans Uses;
     Span = Spans[..];
+
+predicate PythonEntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  { { python = { decl = D } }, File, Span } where
+  python.DeclarationUses { declaration = D, file = File, span = Span}
 
 predicate HackResolve:
   {
