@@ -86,11 +86,7 @@ private:
         }
       },
       [f=std::move(f), client=client.get()](size_t) { return f(client); }
-    ).thenError(
-      [](const folly::exception_wrapper& e) -> decltype(f(client.get())) {
-        // abort on anything that's not a TTransportException
-        LOG(FATAL) << "fatal communication error: " << e.what();
-    });
+    );
   }
 
   // Retry a communication request after a delay.
@@ -106,15 +102,6 @@ private:
 
   [[noreturn]] static void abort(const char *what) {
     LOG(FATAL) << what;
-  }
-
-  [[noreturn]] static void unexpectedErrorCode(
-      const char *where,
-      const thrift::BatchError& error) {
-    auto msg = error.get_message() ? ": " + *error.get_message() : "";
-    LOG(FATAL)
-      << "unexpected error in " << where
-      << " (" << static_cast<int>(error.get_code()) << ")" << msg;
   }
 
   // Send the batch and then wait for the substitution
@@ -134,12 +121,12 @@ private:
               return retry(
                   response.move_retry(), [batch, this] { return send(batch); });
 
-            case thrift::SendResponse::error:
-              unexpectedErrorCode("SendResponse", response.get_error());
-
             default:
               abort("invalid SendResponse");
           }
+        })
+        .thenError([](const folly::exception_wrapper& error) -> folly::Future<thrift::Subst> {
+          LOG(FATAL) << "unexpected error: " << error.what();
         });
   }
 
@@ -170,12 +157,24 @@ private:
                 LOG(ERROR) << "server reports unknown handle " << handle;
                 return send(batch).semi();
               } else {
-                unexpectedErrorCode("FinishResponse", response.get_error());
+                auto error = response.get_error();
+                auto msg = error.get_message() ? ": " + *error.get_message() : "";
+                LOG(FATAL)
+                  << "unexpected error in FinishResponse"
+                  << " (" << static_cast<int>(error.get_code()) << ")" << msg;
               }
 
             default:
               abort("invalid FinishResponse");
           }
+        })
+        .thenError([handle, batch, this](const folly::exception_wrapper& error) -> folly::SemiFuture<thrift::Subst> {
+          if (error.is_compatible_with<facebook::glean::thrift::UnknownBatchHandle>()) {
+            // Server forgot the handle, resend the batch
+            LOG(ERROR) << "server reports unknown handle " << handle;
+            return this->send(batch).semi();
+          }
+          LOG(FATAL) << "unexpected error:" << error.what();
         });
   }
 

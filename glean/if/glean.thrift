@@ -290,6 +290,8 @@ exception InvalidDependency {
   3: string reason;
 }
 
+exception UnknownBatchHandle {}
+
 enum DatabaseStatus {
   // database is available and complete:
   Complete = 0,
@@ -838,7 +840,8 @@ service GleanService extends fb303.FacebookService {
   // Get the substitution for the given handle (obtained via a previous
   // sendBatch) if no writes are outstanding for it. The server forgets the
   // handle after this operation.
-  FinishResponse finishBatch(1: Handle handle);
+  FinishResponse finishBatch(1: Handle handle)
+    throws(1: UnknownBatchHandle e);
 
   // Write a batch of facts in JSON format. The call will queue the
   // writes and return immediately. If the caller sets remember=true,
