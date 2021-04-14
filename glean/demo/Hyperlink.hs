@@ -147,7 +147,7 @@ codeMarkupHyperlinks :: Text.Text -> Glean.Haxl w [Hyperlink]
 codeMarkupHyperlinks path = do
   xrefs <- Glean.search_ $ Angle.data_ $
     var $ \x -> x `where_` [
-      wild .= predicate @CodeMarkup.FileDirectXRefs (
+      wild .= predicate @CodeMarkup.FileEntityXRefs (
         rec $
           field @"file" (string path) $
           field @"xref" x
@@ -173,7 +173,28 @@ codeMarkupHyperlinks path = do
               CodeMarkup.declaration_span directXRef_target)))
         }
       }
-  return $ sortBy (compare `on` hlBegin) hyperlinks
+
+  let
+    -- When there are annotations covering identical spans, prefer an
+    -- annotation that points to a different file.  This is mainly to
+    -- support Flow, which for a non-local reference produces two
+    -- Annotations, one pointing to the import declaration and another
+    -- pointing to the original declaraiton.
+    unoverlap :: [Hyperlink] -> [Hyperlink]
+    unoverlap links = walk links
+      where
+      walk (a : b : xs)
+        | hlBegin a == hlBegin b && hlEnd a == hlEnd b =
+          walk (preferred a b : xs)
+        | otherwise = a : walk (b : xs)
+      walk xs = xs
+
+      -- prefer links that point to a different file
+      preferred a b
+        | targetPath (hlTarget a) /= Text.encodeUtf8 path = a
+        | otherwise = b
+
+  return $ unoverlap $ sortBy (compare `on` hlBegin) hyperlinks
 
 
 -- | Find all 'Hyperlink' spans for the given file
