@@ -85,7 +85,7 @@ class ClientTest(TestCase):
         ) as glean_client:
             glean_service = cast(mock.AsyncMock, glean_client._glean_service)
             glean_service.kickOff.return_value.alreadyExists = False
-            glean_service.finishBatch.return_value.type = FinishResponse.Type.error
+            glean_service.finishBatchRetry.return_value.type = FinishResponse.Type.retry
             await glean_client.send_batch([])
         glean_service.workFinished.assert_awaited_once()
         work_finished = glean_service.workFinished.call_args.args[0]

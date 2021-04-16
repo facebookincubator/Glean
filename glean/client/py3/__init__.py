@@ -270,8 +270,8 @@ class GleanClient:
         This function keeps polling the server with a fibonacci backoff, as long
         as the server returns `FinishResponse.retry`.
         """
-        resp = await self._finishBatchRetry(handle)
         try:
+            resp = await self._finishBatchRetry(handle)
             async with timeout(self.config.finish_batch_timeout_sec):
                 interval = iter(_fibonacci())
                 while resp.type == FinishResponse.Type.retry:
