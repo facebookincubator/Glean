@@ -60,7 +60,7 @@ import Glean.Database.Stuff
 import Glean.Database.Types
 import qualified Glean.RTS.Foreign.Subst as Subst
 import qualified Glean.ServerConfig.Types as ServerConfig
-import Glean.Types as Thrift hiding (Database)
+import Glean.Types as Thrift hiding (Database, Exception)
 import Glean.Write.JSON
 import Glean.Util.Metric
 import Glean.Util.Observed as Observed
@@ -328,8 +328,7 @@ pollBatch env@Env{..} handle = do
                 (\w -> w { writeTimeout = timeout })
                 handle
           return $ Thrift.FinishResponse_retry $ Thrift.BatchRetry 0
-    Nothing -> return $ Thrift.FinishResponse_error
-      $ Thrift.BatchError Thrift.BatchErrorCode_UnknownBatchHandle Nothing
+    Nothing -> throwIO Thrift.UnknownBatchHandle
 
 rememberWrite
   :: Env

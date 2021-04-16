@@ -801,8 +801,7 @@ writeDerivedFacts env repo derived = do
         Thrift.SendResponse_handle handle -> return (Just handle)
         Thrift.SendResponse_retry (Thrift.BatchRetry s) ->
           throwIO $ Thrift.Retry s
-        Thrift.SendResponse_error e ->
-          throwIO $ Thrift.Exception (Text.pack (show e))
+        _ -> error "impossible"
 
 
 -- | Check that the predicate declared in the UserQuery request
