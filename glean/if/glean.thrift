@@ -349,15 +349,6 @@ struct ComputedBatch {
   4: Batch batch;
 }
 
-enum BatchErrorCode {
-  UnknownBatchHandle = 1
-} (hs.nounknown)
-
-struct BatchError {
-  1: BatchErrorCode code;
-  2: optional string message;
-}
-
 struct BatchRetry {
   1: double seconds;
 }
@@ -365,13 +356,11 @@ struct BatchRetry {
 union SendResponse {
   1: Handle handle;
   2: BatchRetry retry;
-  3: BatchError error;
 } (hs.nonempty)
 
 union FinishResponse {
   1: Subst subst;
   2: BatchRetry retry;
-  3: BatchError error;
 } (hs.nonempty)
 
 

@@ -150,20 +150,6 @@ private:
                 return finish(handle, batch);
               });
 
-            case thrift::FinishResponse::error:
-              if (response.get_error().get_code() ==
-                  thrift::BatchErrorCode::UnknownBatchHandle) {
-                // Server forgot the handle, resend the batch
-                LOG(ERROR) << "server reports unknown handle " << handle;
-                return send(batch).semi();
-              } else {
-                auto error = response.get_error();
-                auto msg = error.get_message() ? ": " + *error.get_message() : "";
-                LOG(FATAL)
-                  << "unexpected error in FinishResponse"
-                  << " (" << static_cast<int>(error.get_code()) << ")" << msg;
-              }
-
             default:
               abort("invalid FinishResponse");
           }

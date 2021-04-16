@@ -36,7 +36,6 @@ sendBatchAsync backend repo batch = do
     Thrift.SendResponse_handle h -> return h
     Thrift.SendResponse_retry (Thrift.BatchRetry r) ->
       retry r $ sendBatchAsync backend repo batch
-    _ -> error "impossible"
 
 sendJsonBatch
   :: Backend be
@@ -79,4 +78,3 @@ waitBatch backend handle = do
       Thrift.FinishResponse_subst subst -> return subst
       Thrift.FinishResponse_retry (Thrift.BatchRetry r) ->
         retry r $ waitBatch backend handle
-      _ -> error "impossible"
