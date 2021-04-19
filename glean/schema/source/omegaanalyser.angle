@@ -30,5 +30,89 @@ predicate DependencyList :
 }
 
 schema omegaanalyser.2 : omegaanalyser.1 {
+  import hack.4
+  import src.1
+
   predicate OmegaPolicy : string
+
+
+  # Helper predicate to filter out class xrefs that exist exclusively because
+  # of static method calls.
+  # See D27264394 for more information.
+  predicate ClassStaticMethodReferences:
+    {
+      # Declaration of the node that we want to "process"
+      source: hack.Declaration,
+      # Class that we want to filter if it's only referenced in static
+      # method calls
+      targetClass: hack.ClassDeclaration, # class declaration
+      # All the uses/xrefs of that class inside the processed node's decalaration
+      classXRefUses: src.ByteSpans,
+      # All the uses/xrefs of static methods from the target class inside the
+      # processed node's declaration
+      staticMethodXRefUses: src.ByteSpans
+    } {S, TC_DECL, CLASS_USES, STAT_MET_USES} where
+      # Get the span of the source node's declaration: SOURCE_DECL_SPAN
+      TC = hack.ContainerDeclaration {class_ = TC_DECL};
+      hack.DeclarationSpan
+        {
+          declaration = S,
+          file = SOURCE_FILE,
+          span = SOURCE_DECL_SPAN,
+        };
+      # Create a XRefTarget for the target class
+      CLASS_XREFS_TARGET = hack.XRefTarget
+        {
+          declaration = hack.Declaration{ container = TC }
+        };
+
+      # Get all uses of the class in the source file.
+      hack.TargetUsesAbs
+        {
+          target = CLASS_XREFS_TARGET,
+          file = SOURCE_FILE,
+          uses = CLASS_USES,
+        };
+
+      # Keep only the ones inside the source node's declaration
+      src.ByteSpanContains
+        {
+          byteSpan = SOURCE_DECL_SPAN,
+          # These are the uses of the target class inside the source node
+          contains = CLASS_USES[..]
+        };
+
+
+      # Create XRefTargets for all static methods from the target class
+      # Instead of looking for all method declarations that are in container TC,
+      # Go to container TC, get all the members and filter for static methods.
+      # Get all
+      hack.ClassDefinition {
+        declaration = TC_DECL,
+        members = CLASS_MEMBERS
+      };
+
+      hack.Declaration {method = MET_DECLS} = CLASS_MEMBERS[..];
+
+      hack.MethodDefinition {
+        declaration = MET_DECLS,
+        isStatic = true
+      };
+
+
+      # Get all uses of static methods from the target class in the source file.
+      hack.TargetUsesAbs
+        {
+          target = hack.XRefTarget {declaration = hack.Declaration { method = MET_DECLS }},
+          file = SOURCE_FILE,
+          uses = STAT_MET_USES,
+        };
+
+      # Keep only the ones inside the source node's declaration
+      src.ByteSpanContains
+        {
+          byteSpan = SOURCE_DECL_SPAN,
+          contains = STAT_MET_USES[..]
+        };
+
 }
