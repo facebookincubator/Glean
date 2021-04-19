@@ -1,17 +1,22 @@
 -- | Collecting the variables mentioned by a term
 module Glean.Query.Vars (
     VarSet,
-    varsOf
+    varsOf,
+    vars
   ) where
 
 import qualified Data.IntSet as IntSet
 import Data.IntSet (IntSet)
+import Data.List.NonEmpty (NonEmpty)
 
 import Glean.Query.Codegen
 import Glean.Query.Flatten.Types
 import Glean.RTS.Term hiding (Match(..))
 
 type VarSet = IntSet
+
+vars :: VarsOf a => a -> VarSet
+vars x = varsOf x IntSet.empty
 
 class VarsOf a where
   varsOf :: a -> VarSet -> VarSet
@@ -27,6 +32,12 @@ instance VarsOf Generator where
   varsOf (DerivedFactGenerator _ key val) r = varsOf key $! varsOf val r
   varsOf (ArrayElementGenerator _ arr) r = varsOf arr r
   varsOf (PrimCall _ args) r = foldr varsOf r args
+
+instance (VarsOf a) => VarsOf [a] where
+  varsOf container r = foldr varsOf r container
+
+instance (VarsOf a) => VarsOf (NonEmpty a) where
+  varsOf container r = foldr varsOf r container
 
 instance VarsOf m => VarsOf (Term m) where
   varsOf t r = case t of

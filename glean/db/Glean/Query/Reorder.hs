@@ -229,6 +229,7 @@ reorderStmtGroup stmts = do
         nonPrefixVars =
           [ x
           | (_, xs, prefix, stmt) <- uses
+          , isDefined stmt
           , let lhs = case isCandidate stmt of
                   Just (x,_) -> Just x
                   Nothing -> Nothing
@@ -263,6 +264,8 @@ reorderStmtGroup stmts = do
       [ if
           | PatternMatchesOne <- matchType -> (use, [(lookup,lookupStmt)])
             -- a point match: always do these first
+          | not (isDefined useStmt) -> (use, [(lookup,lookupStmt)])
+            -- if the use is undefined at this point, put the lookup first
           | x `IntSet.member` lookupVars -> (lookup, [(use, useStmt)])
             -- we want X to be a lookup: do it after the use of X
           | otherwise -> (use, [(lookup,lookupStmt)])
@@ -272,6 +275,15 @@ reorderStmtGroup stmts = do
       , (use, _, useStmt) <- uses
       , use /= lookup
       ]
+
+    isDefined (FlatStatement _ lhs (TermGenerator rhs)) =
+      all (`IntSet.member` scope) (IntSet.toList (vars lhs)) ||
+      all (`IntSet.member` scope) (IntSet.toList (vars rhs))
+    isDefined (FlatStatement _ _ (ArrayElementGenerator _ arr)) =
+      all (`IntSet.member` scope) (IntSet.toList (vars arr))
+    isDefined (FlatStatement _ _ (PrimCall _ args)) =
+      all (`IntSet.member` scope) (IntSet.toList (vars args))
+    isDefined _ = True
 
   -- order the statements and then recursively reorder nested groups
   concat <$> mapM (reorderStmt . snd) (postorderDfs nodes edges)

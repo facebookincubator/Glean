@@ -101,108 +101,80 @@ flattenQuery' (TcQuery ty head (Just val) stmts) = do
 
 flattenStatement :: TcStatement -> F Statements
 flattenStatement (TcStatement ty lhs rhs) = do
-  (rstmts, rgens) <- flattenSeqGenerators rhs
-  (lstmts, lgens) <- flattenSeqGenerators lhs
-  stmt <- mkStmt ty lgens rgens
-  return $ rstmts <> lstmts <> stmt
+  rgens <- flattenSeqGenerators rhs
+  lgens <- flattenSeqGenerators lhs
+  mkStmt ty lgens rgens
 
 mkStmt
   :: Type
-  -> [(Generator, [FlatStatementGroup])]
-  -> [(Generator, [FlatStatementGroup])]
+  -> [(Statements, [Statements], Generator)]
+  -> [(Statements, [Statements], Generator)]
   -> F Statements
-mkStmt ty [(TermGenerator lhs, lhsstmts)] [(gen, rhsstmts)] = do
+mkStmt ty
+    [(lhsstmts, lhsgroups, TermGenerator lhs)]
+    [(rhsstmts, rhsgroups, gen)] = do
   let stmt = FlatStatement ty lhs gen
-  return $ floatGroups (rhsstmts ++ lhsstmts ++ [singletonGroup stmt])
+  return $
+    lhsstmts <> rhsstmts <>
+    floatGroups (
+      flattenStmtGroups (rhsgroups ++ lhsgroups) ++ [singletonGroup stmt])
     -- Note: retain ordering between rhsstmts and stmt by using
     -- floatGroups. Otherwise in the case that the generator is a
     -- DerivedFactGen, we might reorder the DerivedFactGen before the
     -- statements that define
     -- TODO: improve reordering so that we don't have to do this.
-mkStmt ty [(gen, lhsstmts)] [(TermGenerator rhs, rhsstmts)] = do
+mkStmt ty
+    [(lhsstmts, lhsgroups, gen)]
+    [(rhsstmts, rhsgroups, TermGenerator rhs)] = do
   let stmt = FlatStatement ty rhs gen
-  return $ floatGroups (lhsstmts ++ rhsstmts ++ [singletonGroup stmt])
-mkStmt ty [(TermGenerator lhs, lhsstmts)] many = do
+  return $
+    lhsstmts <> rhsstmts <>
+    floatGroups (
+      flattenStmtGroups (rhsgroups ++ lhsgroups) ++ [singletonGroup stmt])
+mkStmt ty [(lhsstmts, lhsgroups, TermGenerator lhs)] many = do
   v <- fresh ty
-  return $ floatGroups lhsstmts `thenStmt`
-    FlatDisjunction
-      [ rhsstmts ++
-          [singletonGroup (FlatStatement ty (Ref (MatchBind v)) rhsgen)]
-      | (rhsgen, rhsstmts) <- many
-      ] `thenStmt`
-    FlatStatement ty lhs (TermGenerator (Ref (MatchBind v)))
-mkStmt ty many [(gen, rhsstmts)] = do
+  return $ floatGroups $ flattenStmtGroups
+    (lhsgroups ++ [
+      lhsstmts `thenStmt`
+      FlatDisjunction
+        [ flattenStmtGroups (rhsgroups ++
+            [ rhsstmts `thenStmt` FlatStatement ty (Ref (MatchBind v)) rhsgen
+            ])
+        | (rhsstmts, rhsgroups, rhsgen) <- many
+        ] `thenStmt`
+      FlatStatement ty lhs (TermGenerator (Ref (MatchBind v)))
+    ])
+mkStmt ty many [(rhsstmts, rhsgroups, gen)] = do
   v <- fresh ty
-  return $ floatGroups rhsstmts `thenStmt`
-    FlatStatement ty (Ref (MatchBind v)) gen `thenStmt`
-    FlatDisjunction
-      [ lhsstmts ++
-          [singletonGroup (FlatStatement ty (Ref (MatchBind v)) lhsgen)]
-      | (lhsgen, lhsstmts) <- many
-      ]
+  return $ floatGroups $ flattenStmtGroups
+    (rhsgroups ++ [
+      rhsstmts `thenStmt`
+      FlatStatement ty (Ref (MatchBind v)) gen `thenStmt`
+      FlatDisjunction
+        [ flattenStmtGroups (lhsgroups ++
+            [ lhsstmts `thenStmt` FlatStatement ty (Ref (MatchBind v)) lhsgen
+            ])
+        | (lhsstmts, lhsgroups, lhsgen) <- many
+        ]
+    ])
 mkStmt ty lhsmany rhsmany = do
   v <- fresh ty
-  rhs <- mkStmt ty [(TermGenerator (Ref (MatchBind v)), [])] rhsmany
-  lhs <- mkStmt ty lhsmany [(TermGenerator (Ref (MatchBind v)), [])]
+  rhs <- mkStmt ty [(mempty, [], TermGenerator (Ref (MatchBind v)))] rhsmany
+  lhs <- mkStmt ty lhsmany [(mempty, [], TermGenerator (Ref (MatchBind v)))]
   return (rhs <> lhs)
 
 flattenSeqGenerators
   :: TcPat
-  -> F ( Statements
-           -- statements we're floating into the enclosing context
-       , [(Generator, [FlatStatementGroup])]
-           -- disjunction of generators
-       )
-flattenSeqGenerators pat@(Ref (MatchExt (Typed _ TcOr{}))) = do
-  gens <- flattenAltGenerators pat
-  return (mempty, gens)
-flattenSeqGenerators (Ref (MatchExt (Typed ty match))) = do
-  r <- flattenTcTerm ty match
-  case r of
-    -- Just a single generator, we can float the nested statements
-    [(stmts, stmtss, gen)] -> return (stmts, [(gen, flattenStmtGroups stmtss)])
-    _many -> return (mempty, map mkGenerator r)
-flattenSeqGenerators pat = do
-  r <- flattenPattern pat
-  case r of
-    [(stmts,pat)] -> return (stmts, [(TermGenerator pat, [])])
-    _many -> return (mempty,
-      [ (TermGenerator pat, flattenStmtGroups [stmts])
-      | (stmts,pat) <- r ])
-
-flattenAltGenerators :: TcPat -> F [(Generator, [FlatStatementGroup])]
-flattenAltGenerators (Ref (MatchExt (Typed _ (TcOr left right)))) = do
-  gen <- map mkGenerator <$> flattenGenerator left
-  gens <- flattenAltGenerators right
-  return (gen ++ gens)
-flattenAltGenerators (Ref (MatchExt (Typed ty match))) =
-  map mkGenerator <$> flattenTcTerm ty match
-flattenAltGenerators pat = do
-  pats <- flattenPattern pat
-  return
-    [ (TermGenerator pat, flattenStmtGroups [stmts])
-    | (stmts, pat) <- pats ]
-
-mkGenerator
-  :: (Statements, [Statements], Generator)
-  -> (Generator, [FlatStatementGroup])
-mkGenerator (stmts, stmtss, gen) = (gen, flattenStmtGroups (stmts:stmtss))
-
--- | Flatten a pattern and produce a Generator. If the pattern is
--- manifestly a generator then the translation is direct, otherwise
--- we can flatten the pattern and wrap it in a TermGenerator.
-flattenGenerator :: TcPat -> F [(Statements, [Statements], Generator)]
-flattenGenerator pat = case pat of
-  Ref (MatchExt (Typed ty match)) -> flattenTcTerm ty match
-  _otherwise -> do
-    pats <- flattenPattern pat
-    return [(stmts, [], TermGenerator pat') | (stmts,pat') <- pats]
-
-flattenTcTerm :: Type -> TcTerm -> F [(Statements, [Statements], Generator)]
-flattenTcTerm ty pat = case pat of
-  TcOr{} ->
-    throwError "internal: flattenTcMatch"
-    -- handled by flattenSeqGenerators
+  -> F [(Statements, [Statements], Generator)]
+         -- ( statements that can be reordered with the generator
+         -- , statements that must be ordered before the generator
+         -- , the generator
+         -- )
+flattenSeqGenerators (Ref (MatchExt (Typed ty match))) = case match of
+  TcOr left right -> do
+    l <- flattenSeqGenerators left
+    r <- flattenSeqGenerators right
+    return (l ++ r)
   TcFactGen pid kpat vpat -> do
     kpats <- flattenPattern kpat
     vpats <- flattenPattern vpat
@@ -221,6 +193,9 @@ flattenTcTerm ty pat = case pat of
   TcPrimCall op args -> do
     r <- manyTerms (PrimCall op) <$> mapM flattenPattern args
     return [ (stmts, [], t) | (stmts,t) <- r ]
+flattenSeqGenerators pat = do
+  r <- flattenPattern pat
+  return [(stmts, [], TermGenerator pat) | (stmts,pat) <- r ]
 
 flattenFactGen :: PidRef -> Pat -> Pat -> F ([Statements], Generator)
 flattenFactGen pidRef@(PidRef pid _) kpat vpat = do
@@ -288,10 +263,11 @@ flattenPattern pat = case pat of
     bs <- flattenPattern b
     return (as ++ bs)
   Ref (MatchExt (Typed ty _)) -> do
-    (stmts,gens) <- flattenSeqGenerators pat
+    gens <- flattenSeqGenerators pat
     v <- fresh ty
-    stmt <- mkStmt ty [(TermGenerator (RTS.Ref (MatchBind v)), [])] gens
-    return [(stmts <> stmt, RTS.Ref (MatchVar v))]
+    stmts <- mkStmt ty
+      [(mempty, [], TermGenerator (RTS.Ref (MatchBind v)))] gens
+    return [(stmts, RTS.Ref (MatchVar v))]
 
 {- Note [flattening TcOr]
 
