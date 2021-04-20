@@ -72,7 +72,7 @@ withTestEnvDatabase generator test action =
       (Text.pack $ testRepoName test)
       (Text.pack $ testRepoHash test)
 
--- | Run one test and its *.query files, return *.out 'FilePath'.
+-- | Run one test and its *.query files, return (*.out, *.perf) 'FilePath'.
 runTest :: Driver -> TestConfig -> IO [FilePath]
 runTest Driver{..} testIn =
   withTestEnvDatabase driverGenerator testIn $
@@ -80,16 +80,18 @@ runTest Driver{..} testIn =
   where
     queryMakeOuts test backend repo = do
       queries <- get_queries (testProjectRoot test) mempty (testRoot test)
-      forM (Map.elems queries) $ \query -> do
-        result <- runQuery
+      fmap concat $ forM (Map.elems queries) $ \query -> do
+        (result, perf) <- runQuery
           backend
           repo
           (defaultTransforms <> driverTransforms)
           query
-        let out = testOutput test </>
-              dropExtension (takeFileName query) <.> "out"
+        let base = testOutput test </> dropExtension (takeFileName query)
+            out = base <.> "out"
+            perfOut = base <.> "perf"
         writeFile out result
-        return out
+        mapM_ (writeFile perfOut) perf
+        return $ if isJust perf then [out,perfOut] else [out]
 
     get_queries root qs path = do
       files <- listDirectory path
@@ -225,7 +227,8 @@ testAll cfg driver = do
         let path = cfgRoot cfg </> test
         xs <- listDirectory path
         forM_ xs $ \x ->
-          when (takeExtension x == ".out") $ removePathForcibly $ path </> x
+          when (takeExtension x == ".out" || takeExtension x == ".perf") $
+            removePathForcibly $ path </> x
         -- regenerate outputs - use the first group as the base
         forM_ groups $ \group ->
           executeTest cfg driver (head groups) group regenerate test

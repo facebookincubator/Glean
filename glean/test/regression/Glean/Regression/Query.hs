@@ -8,6 +8,8 @@ import Data.Default
 import qualified Data.HashMap.Strict as HashMap
 import Data.List
 import Data.Maybe
+import qualified Data.Map as Map
+import Data.Ord
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
@@ -36,6 +38,8 @@ instance Aeson.FromJSON TQ where
 data Query = Query
   { queryText :: UTF8.ByteString
   , queryRecursive :: Bool
+  , queryPerf :: Bool
+    -- ^ Also gather performance results, compare against test.perf
   , queryMaxResults :: Maybe Int
   , queryTransforms :: TQ
   }
@@ -44,11 +48,20 @@ instance Aeson.FromJSON Query where
   parseJSON = Aeson.withObject "query" $ \v -> do
     queryText <- Text.encodeUtf8 <$> v Aeson..: "query"
     queryRecursive <- v Aeson..:! "recursive" Aeson..!= True
+    queryPerf <- v Aeson..:! "perf" Aeson..!= False
     queryMaxResults <- v Aeson..:! "max_results"
     queryTransforms <- v Aeson..:! "transform" Aeson..!= TQ []
     return Query{..}
 
-runQuery :: Backend e => e -> Thrift.Repo -> Transforms -> FilePath -> IO String
+runQuery
+  :: Backend e => e
+  -> Thrift.Repo
+  -> Transforms
+  -> FilePath
+  -> IO (
+    String, -- The results as transformed, pretty-printed JSON
+    Maybe String -- Query performance stats, also pretty-printed JSON
+  )
 runQuery backend repo xforms qfile = do
   r <- Yaml.decodeFileEither qfile
   case r of
@@ -66,28 +79,48 @@ runQuery backend repo xforms qfile = do
                 , Thrift.userQueryOptions_recursive = queryRecursive
                 , Thrift.userQueryOptions_max_results = fromIntegral <$> k
                 , Thrift.userQueryOptions_continuation = cont
+                , Thrift.userQueryOptions_collect_facts_searched = queryPerf
                 }
             }
 
-          collect acc k cont = do
+          collect acc perf k cont = do
             res <- liftIO $ Backend.userQuery backend repo $ mkQuery k cont
             let facts = Thrift.userQueryResults_facts res
                 remaining = subtract (length facts) <$> k
+                stats = Thrift.userQueryResults_stats res >>=
+                  Thrift.userQueryStats_facts_searched
+                perf' = Map.unionWith (+) perf $ fromMaybe Map.empty stats
             if isJust cont && maybe True (>0) remaining
-              then collect (facts : acc) remaining cont
-              else return (facts : acc)
+              then collect (facts ++ acc) perf' remaining cont
+              else return (facts ++ acc, perf')
 
-      facts <- concat <$> collect [] queryMaxResults Nothing
-      fmap
+      (facts, perf) <- collect [] Map.empty queryMaxResults Nothing
+
+      perfString <- if queryPerf
+        then do
+          Thrift.SchemaInfo{..} <- Backend.getSchemaInfo backend repo
+          return $ Just $ show $ pretty $ JSON.JSObject $ JSON.toJSObject $
+            sortBy (comparing fst)
+              [ (show (pretty pred), JSON.JSRational False (fromIntegral n))
+              | (pid,n) <- Map.toList perf
+              , Just pred <- [Map.lookup pid schemaInfo_predicateIds]
+              ]
+        else
+          return Nothing
+
+      resultString <- fmap
         (show
           . pretty
           . JSON.JSArray
           . (JSON.JSString (JSON.toJSString ('@':"generated")) :)
-          . transform -- sortFacts querySort
+          . transform
           . map nukeIds)
         $ forM facts $ \fact -> case JSON.decode (UTF8.toString fact) of
           JSON.Error err -> die $ "invalid fact in response: " ++ err
           JSON.Ok (value :: JSON.JSValue) -> return value
+
+      return (resultString, perfString)
+
   where
     nukeIds (JSON.JSArray xs) = JSON.JSArray $ map nukeIds xs
     nukeIds (JSON.JSObject xs) = JSON.JSObject $ JSON.toJSObject
