@@ -760,7 +760,7 @@ executable server
         glean:core,
         glean:db,
         glean:util,
-        haskeline >=0.7.3 && <0.9,
+        haskeline >=0.7.3 && <0.8,
         json,
         thrift-server
 
@@ -784,7 +784,7 @@ executable shell
         glean:client-hs,
         glean:util,
         glean:lib,
-        haskeline >=0.7.3 && <0.9,
+        haskeline >=0.7.3 && <0.8,
         json,
         monad-control,
         split
@@ -821,6 +821,21 @@ executable search
         glean:util,
         glean:if-search-hs,
         aeson-pretty,
+
+executable hyperlink
+    import: fb-haskell, deps
+    hs-source-dirs: glean/demo
+    main-is: Hyperlink.hs
+    ghc-options: -main-is Hyperlink
+    extra-libraries: stdc++
+    build-depends:
+        glean:lib,
+        glean:schema,
+        glean:util,
+        glean:client-hs,
+        http-types,
+        wai,
+        warp
 
 -- -----------------------------------------------------------------------------
 -- Tests
