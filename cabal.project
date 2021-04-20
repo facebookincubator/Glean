@@ -2,6 +2,7 @@ packages:
     hsthrift/common/util/fb-util.cabal
     hsthrift/common/github/fb-stubs.cabal
     hsthrift/common/mangle/mangle.cabal
+    hsthrift/cpp-channel/thrift-cpp-channel.cabal
     hsthrift/lib/thrift-lib.cabal
     hsthrift/server/thrift-server.cabal
     hsthrift/compiler/thrift-compiler.cabal

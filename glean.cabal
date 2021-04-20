@@ -47,6 +47,7 @@ common fb-haskell
 common deps
     build-depends:
         fb-util,
+        thrift-cpp-channel,
         thrift-lib,
         HUnit,
         safe,
