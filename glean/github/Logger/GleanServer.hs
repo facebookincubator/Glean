@@ -100,3 +100,9 @@ setClientApplication _ = GleanServerLogger
 
 setClientName :: Text -> GleanServerLogger
 setClientName _ = GleanServerLogger
+
+setRequestContinuationSize :: Int -> GleanServerLogger
+setRequestContinuationSize _ = GleanServerLogger
+
+setResponseContinuationSize :: Int -> GleanServerLogger
+setResponseContinuationSize _ = GleanServerLogger
