@@ -161,7 +161,7 @@ reorderStmtGroup stmts = do
     -- mentioned anywhere in the statement.
     withVars :: [(Int, VarSet, FlatStatement)]
     withVars =
-      [ (n, varsOf stmt IntSet.empty `IntSet.difference` scope, stmt)
+      [ (n, vars stmt `IntSet.difference` scope, stmt)
       | (n, stmt) <- nodes
       ]
 
@@ -189,7 +189,15 @@ reorderStmtGroup stmts = do
         Just (x, classifyPattern lhsScope key) -- TODO lookupScope here is wrong
     isCandidate _ = Nothing
 
-    lhsVars = IntSet.fromList [ x | (_, x, _, _, _) <- candidates ]
+    lhsVars = IntSet.unions $
+       IntSet.fromList [ x | (_, x, _, _, _) <- candidates ] :
+       [ xs | (_, xs, FlatDisjunction{}) <- withVars ]
+       -- we'll consider variables mentioned by disjunctions as
+       -- bound. There's a liberal amount of guesswork going on here
+       -- because we don't know how the disjunction should be ordered
+       -- with respect to the other statements and it might depend on
+       -- the ordering of the statements within the disjunction
+       -- itself.
 
     -- for classifyPattern we want to consider the variables on the
     -- lhs of the candidates as bound. e.g.
