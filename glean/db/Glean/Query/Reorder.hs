@@ -29,13 +29,21 @@ Reordering pass
 
 INPUT
 
-A FlattenedQuery, in which all the statements have the form
+A FlattenedQuery, in which the statements are grouped:
 
-   P1 | .. | Pn  =  Q1 | .. | Qn
+  P where group; ...; group
 
-where each P/Q has the form (G where Statements)
-where G is a generator, which is either
-  - a pattern
+a group is a set of statements that may be reordered:
+
+  group ::= [ stmt, ..., stmt ]
+
+and a stmt is
+
+  stmt ::= P = generator
+        |  ( ( group; ..; group ) | ... | (group; ..; group) )
+
+generator has the form
+  - a term
   - a fact generator
   - an array generator
   - a call to a primitive
@@ -46,13 +54,8 @@ been lifted to statements by the flattening pass.
 
 OUTPUT
 
-A query ready for code generation (CodegenQuery) in which all
-statements have the form
-
-   P  =  Q1 | .. | Qn
-
-where
-  - P is a pattern, Q is (Generator where Statements)
+The same, except that the groups have been flattened and we just have
+sequences of statements.
 
 In addition, the output has valid binding. Namely:
 
@@ -108,9 +111,22 @@ reorder dbSchema QueryWithInfo{..} =
 
 reorderQuery :: FlatQuery -> R CgQuery
 reorderQuery (FlatQuery pat _ stmts) = do
-  stmts' <- mapM reorderStmtGroup stmts
+  stmts' <- reorderGroups stmts
   pat' <- fixVars IsExpr pat
-  return (CgQuery pat' (concat stmts'))
+  return (CgQuery pat' stmts')
+
+reorderGroups :: [FlatStatementGroup] -> R [CgStatement]
+reorderGroups groups = do
+  Scope scope <- gets roScope
+  stmts <- go scope groups
+  reorderStmts stmts
+  where
+    go _ [] = return []
+    go scope (group : groups) = do
+      stmts <- reorderStmtGroup scope group
+      let scope' = vars stmts `IntSet.union` scope
+      rest <- go scope' groups
+      return (stmts <> rest)
 
 {-
 Note [Optimising statement groups]
@@ -151,9 +167,8 @@ The algorithm is:
 
 -}
 
-reorderStmtGroup :: FlatStatementGroup -> R [CgStatement]
-reorderStmtGroup stmts = do
-  Scope scope <- gets roScope
+reorderStmtGroup :: VarSet -> FlatStatementGroup -> R [FlatStatement]
+reorderStmtGroup scope stmts = do
   let
     nodes = zip [(0::Int)..] (NonEmpty.toList stmts)
 
@@ -237,7 +252,6 @@ reorderStmtGroup stmts = do
         nonPrefixVars =
           [ x
           | (_, xs, prefix, stmt) <- uses
-          , isDefined stmt
           , let lhs = case isCandidate stmt of
                   Just (x,_) -> Just x
                   Nothing -> Nothing
@@ -272,7 +286,7 @@ reorderStmtGroup stmts = do
       [ if
           | PatternMatchesOne <- matchType -> (use, [(lookup,lookupStmt)])
             -- a point match: always do these first
-          | not (isDefined useStmt) -> (use, [(lookup,lookupStmt)])
+          | isUnresolved scope useStmt -> (use, [(lookup,lookupStmt)])
             -- if the use is undefined at this point, put the lookup first
           | x `IntSet.member` lookupVars -> (lookup, [(use, useStmt)])
             -- we want X to be a lookup: do it after the use of X
@@ -284,17 +298,89 @@ reorderStmtGroup stmts = do
       , use /= lookup
       ]
 
-    isDefined (FlatStatement _ lhs (TermGenerator rhs)) =
-      all (`IntSet.member` scope) (IntSet.toList (vars lhs)) ||
-      all (`IntSet.member` scope) (IntSet.toList (vars rhs))
-    isDefined (FlatStatement _ _ (ArrayElementGenerator _ arr)) =
-      all (`IntSet.member` scope) (IntSet.toList (vars arr))
-    isDefined (FlatStatement _ _ (PrimCall _ args)) =
-      all (`IntSet.member` scope) (IntSet.toList (vars args))
-    isDefined _ = True
-
   -- order the statements and then recursively reorder nested groups
-  concat <$> mapM (reorderStmt . snd) (postorderDfs nodes edges)
+  return (map snd (postorderDfs nodes edges))
+
+{-
+After reordering groups, we perform some further obvious reorderings.
+
+Note that here we're technically changing the order of statements that
+the user wrote, so we better know what we're doing, because the user
+has no control over this and we won't be able to manually fix the
+Angle code to work around anything that the optimiser gets wrong.
+
+So here we will:
+
+1. Hoist a filter (P = Q) that is resolved (either P or Q is known)
+
+This is important when we expand a derived predicate
+
+    X = pred K
+
+and the predicate is defined as 'Q where S', we typically generate
+
+    X = Y where S; Y = K; Y = Q
+
+(see Glean/Query/Expand.hs).
+
+If unification doesn't deal with the X = K, Y = Q statements, then we
+might need to hoist them ahead of S (or coversely, if we generated
+them in the other order, on some occasions we might need to sink
+them to avoid unresolved variables).
+
+2. Sink a statement that is unresolved (P = Q where neither P nor Q is known)
+
+This avoids "cannot resolve" errors that we can fix by reordering statements.
+-}
+
+reorderStmts :: [FlatStatement] -> R [CgStatement]
+reorderStmts stmts = iterate stmts
+  where
+  iterate [] = return []
+  iterate [x] = reorderStmt x
+  iterate stmts = do
+    Scope scope <- gets roScope
+    let (these, rest) = choose scope stmts
+    cgThese <- concat <$> mapM reorderStmt these
+    cgRest <- iterate rest
+    return (cgThese <> cgRest)
+
+  choose :: VarSet -> [FlatStatement] -> ([FlatStatement],[FlatStatement])
+  choose scope stmts = lift [] stmts
+    where
+    lift _ [] = sink [] stmts
+    lift notPicked (stmt : stmts) =
+      if isResolvedFilter scope stmt
+        then ([stmt], reverse notPicked <> stmts)
+        else lift (stmt : notPicked) stmts
+
+    sink unresolved [] =
+      case reverse unresolved of
+        one : rest -> ([one], rest)
+        [] -> error "sink"
+    sink unresolved (stmt : stmts)
+      | isUnresolved scope stmt = sink (stmt : unresolved) stmts
+      | otherwise = ([stmt], reverse unresolved ++ stmts)
+
+-- | True if the statement is O(1) and resolved
+isResolvedFilter :: VarSet -> FlatStatement -> Bool
+isResolvedFilter _ (FlatStatement _ _ ArrayElementGenerator{}) = False
+  -- an ArrayElementGenerator is not O(1)
+isResolvedFilter scope stmt = isReadyFilter scope stmt False
+
+-- | True if the statement is unresolved in the given scope
+isUnresolved :: VarSet -> FlatStatement -> Bool
+isUnresolved scope stmt = not (isReadyFilter scope stmt True)
+
+isReadyFilter :: VarSet -> FlatStatement -> Bool -> Bool
+isReadyFilter scope (FlatStatement _ lhs (TermGenerator rhs)) _ =
+  all (`IntSet.member` scope) (IntSet.toList (vars lhs)) ||
+  all (`IntSet.member` scope) (IntSet.toList (vars rhs))
+isReadyFilter scope (FlatStatement _ _ (ArrayElementGenerator _ arr)) _ =
+  all (`IntSet.member` scope) (IntSet.toList (vars arr))
+isReadyFilter scope (FlatStatement _ _ (PrimCall _ args)) _ =
+  all (`IntSet.member` scope) (IntSet.toList (vars args))
+isReadyFilter _ _ notFilter = notFilter
 
 data PatternMatch
   = PatternSearchesAll
@@ -545,7 +631,7 @@ toCgStatement (FlatStatement _ lhs gen) = do
   lhs' <- fixVars IsPat lhs
   return [CgStatement lhs' gen']
 toCgStatement (FlatDisjunction [stmts]) =
-  concat <$> mapM reorderStmtGroup stmts
+  reorderGroups stmts
 toCgStatement (FlatDisjunction stmtss) = do
   cg <- intersectBindings stmtss
   return [CgDisjunction cg]
@@ -556,7 +642,7 @@ toCgStatement (FlatDisjunction stmtss) = do
     let
       doOne r = do
         modify $ \state -> state { roScope = scope0 }
-        a <- reorderAlt r
+        a <- reorderGroups r
         scope <- gets roScope
         return (a,scope)
     results <- mapM doOne rs
@@ -565,8 +651,6 @@ toCgStatement (FlatDisjunction stmtss) = do
       renameAlt (unScope scope `IntSet.difference` intersectScope) a
     modify $ \state -> state { roScope = Scope intersectScope }
     return as'
-
-  reorderAlt stmts = concat <$> mapM reorderStmtGroup stmts
 
   -- Rename local variables in each branch of |. See Note [local variables].
   renameAlt :: IntSet -> [CgStatement] -> R [CgStatement]
