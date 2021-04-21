@@ -473,20 +473,19 @@ predicate DeclarationName :
     declaration : hack.Declaration,
     name : hack.Name,
   }
-  { D, N } where
-    ({ classConst = X } = D; { name = N } = X) |
-    ({ container = { class_ = X }} = D; { name = { name = N }} = X) |
-    ({ container = { interface_ = X }} = D; { name = { name = N }} = X) |
-    ({ container = { trait = X }} = D; { name = { name = N }} = X) |
-    ({ enum_ = X } = D; { name = { name = N }} = X) |
-    ({ enumerator = X } = D; { name = N } = X) |
-    ({ function_ = X } = D; { name = { name = N }} = X) |
-    ({ globalConst = X } = D; { name = { name = N }} = X) |
-    ({ namespace_ = X } = D; { name = { name = N }} = X) |
-    ({ method = X } = D; { name = N } = X) |
-    ({ property_ = X } = D; { name = N } = X) |
-    ({ typeConst = X } = D; { name = N } = X) |
-    ({ typedef_ = X } = D; { name = { name = N }} = X)
+    ({{ classConst = { name = N }}, N }) |
+    ({{ container = { class_ = { name = { name = N }}}}, N }) |
+    ({{ container = { interface_ = { name = { name = N }}}}, N }) |
+    ({{ container = { trait = { name = { name = N }}}}, N }) |
+    ({{ enum_ = { name = { name = N }}}, N }) |
+    ({{ enumerator = { name = N }}, N }) |
+    ({{ function_ = { name = { name = N }}}, N }) |
+    ({{ globalConst = { name = { name = N }}}, N }) |
+    ({{ namespace_ = { name = { name = N }}}, N }) |
+    ({{ method = { name = N }}, N}) |
+    ({{ property_ = { name = N }}, N}) |
+    ({{ typeConst = { name = N }}, N}) |
+    ({{ typedef_ = { name = { name = N }}}, N})
 
 # Container that a given container directly inherits from
 # (via extends, implements, use)
