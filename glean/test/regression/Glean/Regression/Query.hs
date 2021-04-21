@@ -96,10 +96,13 @@ runQuery backend repo xforms qfile = do
 
       (facts, perf) <- collect [] Map.empty queryMaxResults Nothing
 
+      let generatedTag = '@':"generated"
+
       perfString <- if queryPerf
         then do
           Thrift.SchemaInfo{..} <- Backend.getSchemaInfo backend repo
           return $ Just $ show $ pretty $ JSON.JSObject $ JSON.toJSObject $
+            (generatedTag, JSON.JSNull) :
             sortBy (comparing fst)
               [ (show (pretty pred), JSON.JSRational False (fromIntegral n))
               | (pid,n) <- Map.toList perf
@@ -112,7 +115,7 @@ runQuery backend repo xforms qfile = do
         (show
           . pretty
           . JSON.JSArray
-          . (JSON.JSString (JSON.toJSString ('@':"generated")) :)
+          . (JSON.JSString (JSON.toJSString generatedTag) :)
           . transform
           . map nukeIds)
         $ forM facts $ \fact -> case JSON.decode (UTF8.toString fact) of
