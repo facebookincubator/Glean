@@ -133,30 +133,34 @@ mkStmt ty
       flattenStmtGroups (rhsgroups ++ lhsgroups) ++ [singletonGroup stmt])
 mkStmt ty [(lhsstmts, lhsgroups, TermGenerator lhs)] many = do
   v <- fresh ty
-  return $ floatGroups $ flattenStmtGroups
-    (lhsgroups ++ [
-      lhsstmts `thenStmt`
-      FlatDisjunction
-        [ flattenStmtGroups (rhsgroups ++
-            [ rhsstmts `thenStmt` FlatStatement ty (Ref (MatchBind v)) rhsgen
-            ])
-        | (rhsstmts, rhsgroups, rhsgen) <- many
-        ] `thenStmt`
-      FlatStatement ty lhs (TermGenerator (Ref (MatchBind v)))
-    ])
+  return $
+    lhsstmts <> floatGroups (
+      flattenStmtGroups (lhsgroups ++ [
+        mempty `thenStmt`
+        FlatDisjunction
+          [ flattenStmtGroups [
+              rhsstmts <> floatGroups (flattenStmtGroups (
+                rhsgroups ++
+                [ oneStmt (FlatStatement ty (Ref (MatchBind v)) rhsgen) ]))]
+          | (rhsstmts, rhsgroups, rhsgen) <- many
+          ] `thenStmt`
+        FlatStatement ty lhs (TermGenerator (Ref (MatchBind v)))
+      ]))
 mkStmt ty many [(rhsstmts, rhsgroups, gen)] = do
   v <- fresh ty
-  return $ floatGroups $ flattenStmtGroups
-    (rhsgroups ++ [
-      rhsstmts `thenStmt`
-      FlatStatement ty (Ref (MatchBind v)) gen `thenStmt`
-      FlatDisjunction
-        [ flattenStmtGroups (lhsgroups ++
-            [ lhsstmts `thenStmt` FlatStatement ty (Ref (MatchBind v)) lhsgen
-            ])
-        | (lhsstmts, lhsgroups, lhsgen) <- many
-        ]
-    ])
+  return $
+    rhsstmts <> floatGroups (
+      flattenStmtGroups (rhsgroups ++ [
+        mempty `thenStmt`
+        FlatStatement ty (Ref (MatchBind v)) gen `thenStmt`
+        FlatDisjunction
+          [ flattenStmtGroups [
+              lhsstmts <> floatGroups (flattenStmtGroups (
+                lhsgroups ++
+                [ oneStmt (FlatStatement ty (Ref (MatchBind v)) lhsgen) ]))]
+          | (lhsstmts, lhsgroups, lhsgen) <- many
+          ]
+      ]))
 mkStmt ty lhsmany rhsmany = do
   v <- fresh ty
   rhs <- mkStmt ty [(mempty, [], TermGenerator (Ref (MatchBind v)))] rhsmany
@@ -345,6 +349,9 @@ instance Monoid Statements where
 
 thenStmt :: Statements -> FlatStatement -> Statements
 thenStmt (Statements ss) s = Statements (s : ss)
+
+oneStmt :: FlatStatement -> Statements
+oneStmt s = Statements [s]
 
 -- | Inject an ordered sequence of FlatStatementGroup into a
 -- Statements.  This is used when we need to retain the ordering
