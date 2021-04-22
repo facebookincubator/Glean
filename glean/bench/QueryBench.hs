@@ -1,3 +1,4 @@
+{-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE TypeApplications #-}
 module QueryBench (main) where
 
@@ -5,6 +6,8 @@ import Control.Concurrent.Async
 import Criterion.Types
 import Data.Default
 import Data.Text (Text)
+
+import Util.String.Quasi
 
 import Glean
 import Glean.Query.Thrift.Internal
@@ -14,6 +17,7 @@ import qualified Glean.Schema.Sys.Types as Sys
 import qualified Glean.Schema.Query.Sys.Types as Query.Sys
 import qualified Glean.Schema.Query.Cxx1.Types as Query.Cxx
 import qualified Glean.Schema.Query.GleanTest.Types as Query.Glean.Test
+import qualified Glean.Schema.Codemarkup.Types as Codemarkup
 import Glean.Util.Benchmark
 
 import BenchDB
@@ -56,6 +60,23 @@ main = benchmarkMain $ \run -> withBenchDB 100000 $ \env repo -> do
     compile = angleData @Code.Cxx.Entity $
       "E where search.cxx.SearchByNameAndScope { \"malloc\", global_, E }"
 
+    compile2 :: Query Codemarkup.EntityUses
+    compile2 = angleData @Codemarkup.EntityUses $
+      [s|
+        codemarkup.Resolve {
+          entity = E,
+          decl = { span = { length = 6, start = 1308 },
+          file = "foo" }
+        };
+        codemarkup.EntityUses { target = E }
+      |]
+
+    compile3 :: Query Codemarkup.FileEntityXRefs
+    compile3 = angleData @Codemarkup.FileEntityXRefs $
+      [s|
+        codemarkup.FileEntityXRefs { file = "foo" }
+      |]
+
   run
     [
       bgroup "thrift"
@@ -85,5 +106,9 @@ main = benchmarkMain $ \run -> withBenchDB 100000 $ \env repo -> do
           runQuery_ env repo pageNestedAngle
       , bench "compile" $ whnfIO $
           runQuery_ env repo compile
+      , bench "compile2" $ whnfIO $
+          runQuery_ env repo compile2
+      , bench "compile3" $ whnfIO $
+          runQuery_ env repo compile3
       ]
     ]
