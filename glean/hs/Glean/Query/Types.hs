@@ -88,10 +88,7 @@ instance (Pretty v, Pretty t) => Pretty (SourcePat_ v t) where
   pretty Wildcard = "_"
   pretty (Variable name) = pretty name
   pretty (ElementsOfArray pat) = pretty pat <> "[..]"
-  pretty (OrPattern lhs rhs) = sep [prettyArg lhs <+> "++", prettyArg rhs]
-    -- Temporary: we're stil pretty-printing OrPattern as ++, so that
-    -- when we pretty-print the schema into a DB, older versions of
-    -- the server and tools can parse it.
+  pretty (OrPattern lhs rhs) = sep [prettyArg lhs <+> "|", prettyArg rhs]
   pretty (NestedQuery q) = parens $ pretty q
   pretty (FactId Nothing n) = "$" <> pretty n
   pretty (FactId (Just p) n) = "$" <> pretty p <+> pretty n
