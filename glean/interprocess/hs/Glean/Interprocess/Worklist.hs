@@ -1,6 +1,6 @@
-module Glean.Interprocess.Worklist (
-  Worklist, Range(..), withTemp, get, next
-) where
+module Glean.Interprocess.Worklist
+  ( Worker, Worklist, Range(..), withTemp, get, next, peek, doNext
+  ) where
 
 import Glean.FFI (invoke)
 
@@ -53,6 +53,20 @@ next w i = do
   (start,end,victim) <-
     invoke $ glean_interprocess_worklist_next w $ fromIntegral i
   return (mkRange start end, fromIntegral victim)
+
+withWorkfile
+  :: (Worklist -> Worker -> IO a)
+  -> FilePath -> Worker -> IO a
+withWorkfile op workfile w = withCString workfile $ \ cpath -> bracket
+  (invoke $ glean_interprocess_worklist_open cpath)
+  glean_interprocess_worklist_close
+  (`op` w)
+
+doNext :: FilePath -> Worker -> IO (Range, Worker)
+doNext w = withWorkfile next w
+
+peek :: FilePath -> Worker -> IO Range
+peek w = withWorkfile get w
 
 foreign import ccall unsafe glean_interprocess_worklist_create
   :: CString -> CSize -> Ptr Word32 -> Ptr Word32 -> IO CString
