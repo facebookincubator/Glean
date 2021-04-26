@@ -594,12 +594,11 @@ main =
 
       Derive{..} ->
         let threads = min maxConcurrency (length predicates) in
-        Glean.withSendQueue backend repo def $ \q ->
-          streamWithThrow threads (forM_ predicates) $ \pred ->
-            derivePredicate backend repo q
-              (Just $ fromIntegral $ pageBytes pageOptions)
-              (fromIntegral <$> pageFacts pageOptions)
-              (parseRef pred)
+        streamWithThrow threads (forM_ predicates) $ \pred ->
+          derivePredicate backend repo
+            (Just $ fromIntegral $ pageBytes pageOptions)
+            (fromIntegral <$> pageFacts pageOptions)
+            (parseRef pred)
 
       Query{..} -> do
         query_bytes <- case query of
