@@ -513,6 +513,37 @@ union UserQueryEncoding {
   3: UserQueryEncodingCompact compact;
 }
 
+struct DerivePredicateQuery {
+  1: string predicate;
+  // Name of stored predicate to be derived
+  2: optional Version predicate_version;
+  // If omitted, defaults to the schema version used by the DB.
+  4: optional UserQueryClientInfo client_info;
+  // Information about who is making the call
+  5: optional DerivePredicateOptions options;
+}
+
+# A predicate is derived through multiple queries. These options work per query.
+struct DerivePredicateOptions {
+  1: optional i64 max_results_per_query;
+      // maximum number of results to be batched for writing
+  2: optional i64 max_bytes_per_query;
+      // maximum number of bytes to be batched for writing
+  3: optional i64 max_time_ms_per_query;
+      // maximum amount of time executing each batch
+}
+
+struct DerivePredicateResponse {
+  1 : Handle handle;
+}
+
+exception UnknownDerivationHandle {}
+
+union DerivationProgress {
+  1: UserQueryStats ongoing;
+  2: UserQueryStats complete;
+} (hs.nonempty)
+
 struct UserQuery {
   1: string predicate;
       // Name of the predicate to query
@@ -900,6 +931,13 @@ service GleanService extends fb303.FacebookService {
 
   UserQueryResults userQuery(1: Repo repo, 2: UserQuery q)
     throws(1: Exception e, 3: BadQuery b, 4: Retry r);
+
+  DerivePredicateResponse derivePredicate(1: Repo repo, 2: DerivePredicateQuery q)
+    throws(1: Exception e, 3: BadQuery b, 4: Retry r);
+
+  DerivationProgress pollDerivation(1: Handle h)
+    throws(1: Exception e, 2: UnknownDerivationHandle h);
+
 }
 
 struct PredicateAnnotation {

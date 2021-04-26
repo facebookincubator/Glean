@@ -56,6 +56,7 @@ import qualified Glean.Database.Work as Database
 import qualified Glean.Database.Writes as Database
 import Glean.Impl.ConfigProvider
 import qualified Glean.Query.UserQuery as UserQuery
+import qualified Glean.Query.Derive as Derive
 import Glean.RTS (Fid(..), Pid(..))
 import qualified Glean.RTS.Foreign.Lookup as Lookup
 import Glean.Database.Schema
@@ -188,6 +189,17 @@ instance Backend LoggingBackend where
   userQuery (LoggingBackend env) repo req =
     loggingAction (runLogQuery "userQuery" env repo req) logQueryResults $
       userQuery env repo req
+
+  derivePredicate (LoggingBackend env) repo q =
+    loggingAction
+      (runLogDerivePredicate "derivePredicate" env repo q)
+      (const mempty)
+      (derivePredicate env repo q)
+
+  pollDerivation (LoggingBackend env) handle =
+    loggingAction (runLogCmd "pollDerivation" env) logDerivationProgress $
+      pollDerivation env handle
+
   listDatabases (LoggingBackend env) req =
     loggingAction (runLogCmd "listDatabases" env) (const mempty) $
       Database.listDatabases env req
@@ -276,6 +288,9 @@ instance Backend Database.Env where
 
   userQueryFacts = UserQuery.userQueryFacts
   userQuery = UserQuery.userQuery
+
+  derivePredicate = Derive.derivePredicate
+  pollDerivation = Derive.pollDerivation
 
   listDatabases = Database.listDatabases
   getDatabase env repo = maybe (throwIO $ Thrift.UnknownDatabase repo) return
@@ -429,6 +444,27 @@ logQueryStats Thrift.UserQueryStats{..} = mconcat
   , maybe mempty (Logger.setExecuteTimeUs . fromIntegral . (`quot` 1000))
       userQueryStats_execute_time_ns
   ]
+
+runLogDerivePredicate
+  :: Text
+  -> Database.Env
+  -> Thrift.Repo
+  -> Thrift.DerivePredicateQuery
+  -> GleanServerLogger
+  -> IO ()
+runLogDerivePredicate cmd env repo Thrift.DerivePredicateQuery {..} log =
+  runLogRepo cmd env repo $ mconcat
+    [ log
+    , Logger.setPredicate derivePredicateQuery_predicate
+    , maybe mempty (Logger.setPredicateVersion . fromIntegral)
+        derivePredicateQuery_predicate_version
+    , maybe mempty logQueryClientInfo derivePredicateQuery_client_info
+    ]
+
+logDerivationProgress :: Thrift.DerivationProgress -> GleanServerLogger
+logDerivationProgress = \case
+      Thrift.DerivationProgress_ongoing _ -> mempty
+      Thrift.DerivationProgress_complete stats -> logQueryStats stats
 
 -- -----------------------------------------------------------------------------
 -- Backends that might be local or remote

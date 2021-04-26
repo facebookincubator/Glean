@@ -19,7 +19,7 @@ predicate StringToFileModule: {
   file: src.File,
 }
   stored { S, F } where FileOfStringModule { F, S }
-  
+
 predicate Range: {
   module : Module,
   span: src.ByteSpan,
@@ -140,20 +140,20 @@ predicate SourceOfTypeExport: {
 # Maps a src.File to the references within it. This is derived
 # automatically from the other references, and is used to provide
 # language-neutral reference info via the codemarkup schema.
-predicate FileXRef : { 
+predicate FileXRef : {
   file : src.File,
   ref : XRef
 }
   stored
-  ( { F, { localRef = L }} where 
+  ( { F, { localRef = L }} where
     L = LocalDeclarationReference { loc = Loc };
     { module = Mod } = Loc;
     { file = F } = Mod ) |
-  ( { F, { memberRef = M }} where 
+  ( { F, { memberRef = M }} where
     M = MemberDeclarationReference { loc = Loc } ;
     { module = Mod } = Loc;
     { file = F } = Mod ) |
-  ( { F, { typeRef = T }} where 
+  ( { F, { typeRef = T }} where
     T = TypeDeclarationReference { loc = Loc };
     { module = Mod } = Loc;
     { file = F } = Mod )
@@ -162,12 +162,12 @@ type XRef = {
   localRef : LocalDeclarationReference |
   memberRef : MemberDeclarationReference |
   typeRef : TypeDeclarationReference |
-}  
+}
 
 # Maps a src.File to the declarations it contains. This is derived
 # automatically from the declarations, and is used to provide
 # language-neutral declaration info via the codemarkup schema.
-predicate FileDeclaration: { 
+predicate FileDeclaration: {
   file : src.File,
   declaration : SomeDeclaration
 }
@@ -183,13 +183,13 @@ predicate FileDeclaration: {
   ( { F, { typeDecl = D } } where
     D = TypeDeclaration { loc = Loc };
     { module = Mod } = Loc;
-    { file = F }  = Mod ) 
+    { file = F }  = Mod )
 
 type SomeDeclaration = {
   localDecl : Declaration |
   memberDecl : MemberDeclaration |
   typeDecl : TypeDeclaration |
-}  
+}
 
 }
 

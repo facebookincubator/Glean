@@ -105,6 +105,7 @@ initEnv evb cfg logger envSchemaSource envRecipeConfig envServerConfig =
     envHeartbeats <- newHeartbeats
 
     envWrites <- newTVarIO HashMap.empty
+    envDerivations <- newTVarIO HashMap.empty
     envWriteQueues <- WriteQueues
       <$> newTQueueIO
       <*> newTVarIO 0

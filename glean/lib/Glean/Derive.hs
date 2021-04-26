@@ -10,7 +10,7 @@ import qualified Data.Map as Map
 import qualified Data.Text.Encoding as Text
 
 import Glean.Angle.Types
-import Glean.Backend
+import Glean.Backend hiding (derivePredicate)
 import Glean.Schema.Util
 import Glean.Types
 import Glean.Write.SendQueue

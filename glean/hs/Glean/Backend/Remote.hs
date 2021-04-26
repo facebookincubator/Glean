@@ -83,6 +83,10 @@ class Backend a where
   userQuery :: a -> Thrift.Repo -> Thrift.UserQuery
     -> IO Thrift.UserQueryResults
 
+  derivePredicate :: a -> Thrift.Repo -> Thrift.DerivePredicateQuery
+    -> IO Thrift.DerivePredicateResponse
+  pollDerivation :: a -> Thrift.Handle -> IO Thrift.DerivationProgress
+
   kickOffDatabase :: a -> Thrift.KickOff -> IO Thrift.KickOffResponse
 
   updateProperties
@@ -159,6 +163,8 @@ instance Backend (Some Backend) where
   getDatabase (Some backend) = getDatabase backend
   userQueryFacts (Some backend) = userQueryFacts backend
   userQuery (Some backend) = userQuery backend
+  derivePredicate (Some backend) = derivePredicate backend
+  pollDerivation (Some backend) = pollDerivation backend
 
   kickOffDatabase (Some backend) = kickOffDatabase backend
   updateProperties (Some backend) = updateProperties backend
@@ -264,6 +270,16 @@ instance Backend ThriftBackend where
     where
       client = Thrift.userQuery_client_info q
         <|> Just (thriftBackendClientInfo t)
+
+  derivePredicate t repo pred = withShard t repo $
+    GleanService.derivePredicate repo pred
+      { Thrift.derivePredicateQuery_client_info = client }
+    where
+      client = Thrift.derivePredicateQuery_client_info pred
+        <|> Just (thriftBackendClientInfo t)
+
+  pollDerivation t handle = withoutShard t $
+    GleanService.pollDerivation handle
 
   kickOffDatabase t rq = withoutShard t $ GleanService.kickOff rq
   updateProperties t repo set unset =

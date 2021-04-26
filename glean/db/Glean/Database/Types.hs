@@ -2,7 +2,8 @@ module Glean.Database.Types (
   Writing(..), OpenDB(..), DBState(..),
   Write(..),
   Tailer(..), TailerKey, DB(..),
-  Env(..), WriteQueues(..), WriteQueue(..), WriteJob(..)
+  Env(..), WriteQueues(..), WriteQueue(..), WriteJob(..),
+  Derivation(..)
 ) where
 
 import Control.Concurrent.Async
@@ -153,6 +154,15 @@ data WriteQueues = WriteQueues
 -- | Uniquely identifies a tailer by the repo name, category, and bucket
 type TailerKey = (Text, Text, Maybe Int)
 
+-- | Information about a derived stored predicate being derived
+data Derivation = Derivation
+  { derivationStart :: TimePoint
+  , derivationQueryingFinished :: Bool
+  , derivationStats :: Thrift.UserQueryStats
+  , derivationPendingWrites :: [Thrift.Handle]
+  , derivationError :: Maybe SomeException
+  }
+
 data Env = forall storage. Storage storage => Env
   { envEventBase :: EventBaseDataplane
   , envLogger :: Logger
@@ -179,6 +189,7 @@ data Env = forall storage. Storage storage => Env
   , envWorkQueue :: WorkQueue
   , envHeartbeats :: Heartbeats
   , envWrites :: TVar (HashMap Text Write)
+  , envDerivations :: TVar (HashMap Text Derivation)
   , envWriteQueues :: WriteQueues
   , envTailerOpts :: Tailer.TailerOptions
   , envTailers :: TVar (HashMap TailerKey Tailer)

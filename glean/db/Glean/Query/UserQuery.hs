@@ -1,6 +1,7 @@
 module Glean.Query.UserQuery
   ( userQueryFacts
   , userQuery
+  , userQueryWrites
   ) where
 
 import Control.Applicative
@@ -429,6 +430,21 @@ userQueryFactsImpl
   return $ if Thrift.userQueryOptions_omit_results opts
      then withoutFacts results
      else results
+
+-- | A version of userQuery where we only care about the
+-- resulting writes caused by the query.
+userQueryWrites
+  :: Database.Env
+  -> DbSchema
+  -> ServerConfig.Config
+  -> Lookup
+  -> Thrift.Repo
+  -> Thrift.UserQuery
+  -> IO (Thrift.UserQueryStats, Maybe Thrift.UserQueryCont, Maybe Thrift.Handle)
+userQueryWrites env schema config lookup repo q = do
+  Results{..} <- withStats $
+    userQueryImpl env schema config lookup repo q
+  return (resStats, resCont, resWriteHandle)
 
 userQueryImpl
   :: Database.Env
