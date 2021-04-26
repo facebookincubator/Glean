@@ -36,7 +36,6 @@ import Options.Applicative hiding (help)
 import System.Console.ANSI
 import Util.Timing
 import qualified System.Console.Haskeline as Haskeline
-import System.Directory
 import System.Environment (lookupEnv)
 import System.FilePath ((</>), takeBaseName)
 import System.IO
@@ -86,7 +85,6 @@ data Config = Config
   , cfgQuery :: [String]
   , cfgMode :: ShellMode
   , cfgLimit :: Int64
-  , cfgSchemaDir :: Maybe FilePath
   , cfgWidth :: Maybe Int
   , cfgPager :: Bool
   , cfgVerbose :: Maybe Int
@@ -119,13 +117,6 @@ options = info (O.helper <*> liftA2 (,) parser configOptions) fullDesc
         <> O.help
           ( "Perform one or more queries or commands"
           <> " (default: enter the REPL)")
-        )
-      cfgSchemaDir <- optional $ strOption
-        (  long "schema"
-        <> metavar "DIR"
-        <> O.help
-          ( "load schema from a directory containing source files"
-          <> "(*.angle)")
         )
       cfgWidth <- optional $ option auto
         (  long "width"
@@ -1186,49 +1177,46 @@ evalMain cfg = do
 
 setupLocalSchema :: Config -> IO (Config, Maybe (Eval ()))
 setupLocalSchema cfg = do
-  case cfgSchemaDir cfg of
-    Nothing -> return (cfg, Nothing)
-    Just dir -> do
-      b <- doesDirectoryExist dir
-      unless b $ throwIO $ ErrorCall $ dir <> " is not a directory"
-      case cfgService cfg of
-        Remote{} -> throwIO $ ErrorCall $
-          "--schema is only supported with local DBs currently; use --db-root"
-        Local dbConfig logging -> do
-          schema <- parseSchemaDir dir
-            `catch` \(e :: ErrorCall) -> do
-              print e
-              return $ (SourceSchemas 0 [], Schemas HashMap.empty 0 [])
-          (schemaTS, update) <- ThriftSource.mutable schema
-          let
-            updateSchema :: Eval ()
-            updateSchema = do
-              new@(source,resolved) <- liftIO $ parseSchemaDir dir
-              -- convert to a DbSchema, because this forces
-              -- typechecking of the derived predicates. Otherwise we
-              -- won't notice type errors until after the schema is
-              -- updated below.
-              db <- liftIO $ newDbSchema source resolved readWriteContent
-              liftIO $ update (const new)
-              let
-                numSchemas = length (srcSchemas (schemaSource db))
-                numPredicates = HashMap.size (predicatesByRef db)
-              output $ "reloading schema [" <>
-                pretty numSchemas <> " schemas, " <>
-                pretty numPredicates <> " predicates]"
+  case cfgService cfg of
+    Remote{} -> throwIO $ ErrorCall $
+      "--schema is only supported with local DBs currently; use --db-root"
+    Local dbConfig logging -> case DB.cfgSchemaDir dbConfig of
+      Nothing -> return (cfg, Nothing)
+      Just dir -> do
+        schema <- parseSchemaDir dir
+          `catch` \(e :: ErrorCall) -> do
+            print e
+            return $ (SourceSchemas 0 [], Schemas HashMap.empty 0 [])
+        (schemaTS, update) <- ThriftSource.mutable schema
+        let
+          updateSchema :: Eval ()
+          updateSchema = do
+            new@(source,resolved) <- liftIO $ parseSchemaDir dir
+            -- convert to a DbSchema, because this forces
+            -- typechecking of the derived predicates. Otherwise we
+            -- won't notice type errors until after the schema is
+            -- updated below.
+            db <- liftIO $ newDbSchema source resolved readWriteContent
+            liftIO $ update (const new)
+            let
+              numSchemas = length (srcSchemas (schemaSource db))
+              numPredicates = HashMap.size (predicatesByRef db)
+            output $ "reloading schema [" <>
+              pretty numSchemas <> " schemas, " <>
+              pretty numPredicates <> " predicates]"
 
-            -- When using --schema, we also set --db-schema-override. This
-            -- allows the local schema to override whatever was in the DB,
-            -- and also allows the local schema to take effect when the
-            -- DB is writable.
-            dbConfig' = dbConfig
-              { DB.cfgSchemaSource = schemaTS
-              , DB.cfgSchemaOverride = True }
+          -- When using --schema, we also set --db-schema-override. This
+          -- allows the local schema to override whatever was in the DB,
+          -- and also allows the local schema to take effect when the
+          -- DB is writable.
+          dbConfig' = dbConfig
+            { DB.cfgSchemaSource = schemaTS
+            , DB.cfgSchemaOverride = True }
 
-          return
-            ( cfg { cfgService = Local dbConfig' logging }
-            , Just updateSchema
-            )
+        return
+          ( cfg { cfgService = Local dbConfig' logging }
+          , Just updateSchema
+          )
 
 main :: IO ()
 main = do
@@ -1237,7 +1225,8 @@ main = do
   let
     gflags
       | Just n <- cfgVerbose cfg = ["--v=" <> show n]
-      | isNothing glog_v = ["--minloglevel=2"] -- default: warnings and above only
+      | isNothing glog_v = ["--minloglevel=2"]
+        -- default: warnings and above only
       | otherwise = []
   withGflags gflags $ do
   withEventBaseDataplane $ \evb ->

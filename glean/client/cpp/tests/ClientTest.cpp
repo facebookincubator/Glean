@@ -46,7 +46,7 @@ void ClientTest::SetUp() {
           "25052",
           "--db-root",
           tmp_dir.path().string(),
-          "--db-schema",
+          "--schema",
           "dir:" + FLAGS_db_schema
       },
       folly::Subprocess::Options().parentDeathSignal(SIGKILL));

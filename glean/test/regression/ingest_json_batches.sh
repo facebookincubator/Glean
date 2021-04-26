@@ -43,7 +43,7 @@ command "${cmd[@]}"
 for f in "$JSON_BATCH_DIR"/*; do
     "$GLEAN_CLI" \
         --db-root="$DB_ROOT" \
-        --db-schema="$SCHEMA" \
+        --schema="$SCHEMA" \
         write \
         --repo="$REPO" \
         "$f"
@@ -58,7 +58,7 @@ then
         echo "Deriving $p"
         "$GLEAN_CLI" \
             --db-root="$DB_ROOT" \
-            --db-schema="$SCHEMA" \
+            --schema="$SCHEMA" \
             derive \
             --repo="$REPO" \
             "$p"

@@ -6,7 +6,7 @@ DB_ROOT="$2"
 SCHEMA="$3"
 shift 3
 
-env ASAN_OPTIONS="detect_leaks=0" "$GLEAN_SERVER" -p 0 --db-root "$DB_ROOT" --handler glean --db-schema="$SCHEMA" &
+env ASAN_OPTIONS="detect_leaks=0" "$GLEAN_SERVER" -p 0 --db-root "$DB_ROOT" --handler glean --schema="$SCHEMA" &
 SERVER_PID="$!"
 trap "kill $SERVER_PID" EXIT
 TRIES=0

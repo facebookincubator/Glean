@@ -41,7 +41,7 @@ class GleanShellTest(BaseFacebookTestCase):
         if schema is None:
             schema_args = ["--schema=" + cls.tmpdir + "/schema"]
         else:
-            schema_args = ["--db-schema=dir:" + schema]
+            schema_args = ["--schema=" + schema]
 
         cls.process = pexpect.spawn(
             SHELL_PATH,

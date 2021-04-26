@@ -43,6 +43,10 @@ import qualified Glean.Tailer as Tailer
 data Config = Config
   { cfgRoot :: FilePath
   , cfgSchemaSource :: ThriftSource (SourceSchemas, Schemas)
+  , cfgSchemaDir :: Maybe FilePath
+      -- ^ Records whether we're reading the schema from a directory
+      -- of source files or not, because some clients (the shell) want
+      -- to know this, and it's not avaialble from the ThriftSource.
   , cfgSchemaOverride :: Bool
       -- ^ If True, when merging the schema stored in the DB with the
       -- current schema, predicates and types from the DB schema are
@@ -70,6 +74,7 @@ instance Default Config where
   def = Config
     { cfgRoot = "."
     , cfgSchemaSource = ThriftSource.value (error "undefined schema")
+    , cfgSchemaDir = Nothing
     , cfgSchemaOverride = False
     , cfgRecipeConfig = def
     , cfgServerConfig = def
@@ -128,25 +133,39 @@ schemaSourceDir = "glean/schema/source"
 -- \"config:PATH\", \"dir:PATH\", and \"file:PATH\" sources.
 schemaSourceParser
   :: String
-  -> Either String (ThriftSource (SourceSchemas, Schemas))
-schemaSourceParser "config" = Right schemaSourceConfig
-schemaSourceParser "dir" = Right (schemaSourceFilesFromDir schemaSourceDir)
+  -> Either String (Maybe FilePath, ThriftSource (SourceSchemas, Schemas))
+schemaSourceParser "config" = Right (Nothing, schemaSourceConfig)
+schemaSourceParser "dir" =
+  Right (Just schemaSourceDir, schemaSourceFilesFromDir schemaSourceDir)
 schemaSourceParser s
   | ("dir", ':':path) <- break (==':') s =
-    Right $ ThriftSource.once $ parseSchemaDir path
+    Right (Just path, ThriftSource.once $ parseSchemaDir path)
+  -- default to interpreting the argument as a directory:
+  | ':' `notElem` s =
+    Right (Just s, ThriftSource.once $ parseSchemaDir s)
   | otherwise =
-    ThriftSource.parseWithDeserializer s parseAndResolveSchema
+    (Nothing,) <$> ThriftSource.parseWithDeserializer s parseAndResolveSchema
 
-schemaSourceOption :: Parser (ThriftSource (SourceSchemas, Schemas))
-schemaSourceOption = option (eitherReader schemaSourceParser)
+-- | Deprecated --db-schema option; use --schema instead.
+dbSchemaSourceOption
+  :: Parser (Maybe FilePath, ThriftSource (SourceSchemas, Schemas))
+dbSchemaSourceOption = option (eitherReader schemaSourceParser)
   (  long "db-schema"
+  <> hidden
   <> metavar "(dir | config | file:PATH | dir:PATH | config:PATH)"
-  <> value schemaSourceConfig)
+  <> value (Nothing, schemaSourceConfig))
+
+schemaSourceOption
+  :: Parser (Maybe FilePath, ThriftSource (SourceSchemas, Schemas))
+schemaSourceOption = option (eitherReader schemaSourceParser)
+  (  long "schema"
+  <> metavar "(dir | config | file:FILE | dir:DIR | config:PATH | DIR)"
+  <> value (Nothing, schemaSourceConfig))
 
 options :: Parser Config
 options = do
   cfgRoot <- strOption (long "db-root")
-  cfgSchemaSource <- schemaSourceOption
+  ~(cfgSchemaDir, cfgSchemaSource) <- schemaSourceOption <|> dbSchemaSourceOption
   cfgSchemaOverride <- switch (long "db-schema-override")
   cfgRecipeConfig <- recipesConfigThriftSource
   cfgServerConfig <-

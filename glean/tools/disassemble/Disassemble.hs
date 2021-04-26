@@ -37,7 +37,7 @@ options = info (parser <**> helper)
   where
     parser :: Parser Config
     parser = do
-      cfgSchemaSource <- schemaSourceOption
+      cfgSchemaSource <- snd <$> schemaSourceOption
       cfgCommand <- typecheckerCmd
       return Config{..}
 
