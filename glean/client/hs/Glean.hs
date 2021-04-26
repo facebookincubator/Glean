@@ -125,7 +125,6 @@ module Glean
   , writeFacts
   , withSendQueue
   , SendQueue
-  , addSendQueueWait
 
   -- ** Writing JSON
   , sendJsonBatch

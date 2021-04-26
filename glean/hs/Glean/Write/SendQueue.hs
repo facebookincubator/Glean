@@ -5,7 +5,6 @@ module Glean.Write.SendQueue
   , Callback
   , withSendQueue
   , writeSendQueue
-  , addSendQueueWait
   ) where
 
 import qualified Control.Concurrent.Async as Async
@@ -215,26 +214,6 @@ sendFromQueue backend repo settings sq = do
 
       Nothing -> return False
   when cont $ sendFromQueue backend repo settings sq
-
--- | Add a handle to the queue of writes that the sender is waiting
--- for.  This can be used when we have sent a batch to the server via
--- a different route (e.g. a query with store_derived_predicates=True)
--- and we want the sender to wait for the writes to complete.
-addSendQueueWait
-  :: SendQueue
-  -> Thrift.Handle
-  -> Int
-  -> IO ()
-addSendQueueWait SendQueue{..} handle size = do
-  start <- getTimePoint
-  atomically $ do
-    writeTQueue sqWaitQueue Wait
-      { waitHandle = handle
-      , waitStart = start
-      , waitSize = size
-      , waitCallback = const $ return ()
-      }
-    modifyTVar' sqCount (+1)
 
 -- | Settings for a 'SendQueue'
 data SendQueueSettings = SendQueueSettings

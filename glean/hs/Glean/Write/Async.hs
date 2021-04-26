@@ -1,5 +1,5 @@
 module Glean.Write.Async (
-  Sender, SendQueueSettings(..), SendQueueEvent(..), withSender, addSenderWait,
+  Sender, SendQueueSettings(..), SendQueueEvent(..), withSender,
   senderQueue,
   Writer, WriterSettings(..), WriterEvent(..), withWriter, writeFacts,
   withBatchWriter,
@@ -58,18 +58,6 @@ withSender backend repo proxy settings action = do
       , senderBackend = Some backend
       , senderRepo = repo
       }
-
--- | Add a handle to the queue of writes that the sender is waiting
--- for.  This can be used when we have sent a batch to the server via
--- a different route (e.g. a query with store_derived_predicates=True)
--- and we want the sender to wait for the writes to complete.
-addSenderWait
-  :: Sender
-  -> Thrift.Handle
-  -> Int
-  -> IO ()
-addSenderWait Sender{..} = addSendQueueWait senderQueue
-
 
 -- | An event that happens in a 'Writer' and can be logged
 data WriterEvent
