@@ -12,6 +12,7 @@ module Glean.Query.Angle
   , where_
   , (.=)
   , (.|)
+  , (.->)
   , query
   , data_
   , nat
@@ -145,6 +146,10 @@ l .= r = AngleStatement $ Angle.SourceStatement <$> gen l <*> gen r
 -- | Build an or-pattern, `A | B`
 (.|) :: Angle a -> Angle a -> Angle a
 a .| b = Angle $ OrPattern <$> gen a <*> gen b
+
+-- | Build a key-value pattern, `A -> B`
+(.->) :: Angle a -> Angle a -> Angle a
+a .-> b = Angle $ KeyValue <$> gen a <*> gen b
 
 instance IsString (Angle Text) where
   fromString s = Angle (pure (String (Text.pack s)))
