@@ -282,7 +282,7 @@ predicate AnnotatedClass :
   {
     annotation : Annotation,
     class_ : ClassDeclaration,
-  } stored { Annotation, Class_ } where 
+  } stored { Annotation, Class_ } where
       Class_ = ClassDeclaration { annotations = As };
       Annotation = As[..]
 
@@ -294,5 +294,27 @@ predicate Inheritance :
   }
   stored { Base, Subclass } where
     Subclass = ClassDeclaration { extends_ = { just = Base } }
+
+predicate XRefFile :
+{
+  xref: XRef,
+  file: src.File,
+}
+  { Xref, File } where
+    { target = T } = Xref;
+    (
+      { class_or_interface_ = N } = T;
+      (
+        java.ClassDeclaration.4 { name = N, loc = { file = File } }
+      ) | (
+        java.InterfaceDeclaration.4 { name = N, loc = { file = File } }
+      )
+    ) | (
+     { method_ = N } = T;
+     java.MethodDeclaration.4 { name = N, loc = { file = File } }
+   ) | (
+     { ctor_ = N } = T;
+     java.ConstructorDeclaration.4 { name = N, loc = { file = File } }
+   )
 
 }
