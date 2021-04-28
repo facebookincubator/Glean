@@ -107,73 +107,37 @@ flattenStatement (TcStatement ty lhs rhs) = do
 
 mkStmt
   :: Type
-  -> [(Statements, [Statements], Generator)]
-  -> [(Statements, [Statements], Generator)]
+  -> [(Statements, Generator)]
+  -> [(Statements, Generator)]
   -> F Statements
-mkStmt ty
-    [(lhsstmts, lhsgroups, TermGenerator lhs)]
-    [(rhsstmts, rhsgroups, gen)] = do
-  let stmt = FlatStatement ty lhs gen
-  return $
-    lhsstmts <> rhsstmts <>
-    floatGroups (
-      flattenStmtGroups (rhsgroups ++ lhsgroups) ++ [singletonGroup stmt])
-    -- Note: retain ordering between rhsstmts and stmt by using
-    -- floatGroups. Otherwise in the case that the generator is a
-    -- DerivedFactGen, we might reorder the DerivedFactGen before the
-    -- statements that define
-    -- TODO: improve reordering so that we don't have to do this.
-mkStmt ty
-    [(lhsstmts, lhsgroups, gen)]
-    [(rhsstmts, rhsgroups, TermGenerator rhs)] = do
-  let stmt = FlatStatement ty rhs gen
-  return $
-    lhsstmts <> rhsstmts <>
-    floatGroups (
-      flattenStmtGroups (rhsgroups ++ lhsgroups) ++ [singletonGroup stmt])
-mkStmt ty [(lhsstmts, lhsgroups, TermGenerator lhs)] many = do
+mkStmt ty [(lhsstmts, TermGenerator lhs)] [(rhsstmts, gen)] = do
+  return $ lhsstmts <> rhsstmts `thenStmt` FlatStatement ty lhs gen
+mkStmt ty [(lhsstmts, gen)] [(rhsstmts, TermGenerator rhs)] = do
+  return $ lhsstmts <> rhsstmts `thenStmt` FlatStatement ty rhs gen
+mkStmt ty [(lhsstmts, lgen)] [(rhsstmts, rgen)] = do
+  v <- fresh ty
+  return $ lhsstmts <> rhsstmts
+    `thenStmt` FlatStatement ty (Ref (MatchBind v)) lgen
+    `thenStmt` FlatStatement ty (Ref (MatchBind v)) rgen
+mkStmt ty [(lhsstmts, gen)] many = do
   v <- fresh ty
   return $
-    lhsstmts <> floatGroups (
-      flattenStmtGroups (lhsgroups ++ [
-        mempty `thenStmt`
-        FlatDisjunction
-          [ flattenStmtGroups [
-              rhsstmts <> floatGroups (flattenStmtGroups (
-                rhsgroups ++
-                [ oneStmt (FlatStatement ty (Ref (MatchBind v)) rhsgen) ]))]
-          | (rhsstmts, rhsgroups, rhsgen) <- many
-          ] `thenStmt`
-        FlatStatement ty lhs (TermGenerator (Ref (MatchBind v)))
-      ]))
-mkStmt ty many [(rhsstmts, rhsgroups, gen)] = do
-  v <- fresh ty
-  return $
-    rhsstmts <> floatGroups (
-      flattenStmtGroups (rhsgroups ++ [
-        mempty `thenStmt`
-        FlatStatement ty (Ref (MatchBind v)) gen `thenStmt`
-        FlatDisjunction
-          [ flattenStmtGroups [
-              lhsstmts <> floatGroups (flattenStmtGroups (
-                lhsgroups ++
-                [ oneStmt (FlatStatement ty (Ref (MatchBind v)) lhsgen) ]))]
-          | (lhsstmts, lhsgroups, lhsgen) <- many
-          ]
-      ]))
+    lhsstmts `thenStmt`
+    FlatStatement ty (Ref (MatchBind v)) gen `thenStmt`
+    disjunction
+      [ flattenStmtGroups [
+          rhsstmts `thenStmt`
+            FlatStatement ty (Ref (MatchBind v)) rhsgen ]
+      | (rhsstmts, rhsgen) <- many
+      ]
+mkStmt ty many [one] = mkStmt ty [one] many
 mkStmt ty lhsmany rhsmany = do
   v <- fresh ty
-  rhs <- mkStmt ty [(mempty, [], TermGenerator (Ref (MatchBind v)))] rhsmany
-  lhs <- mkStmt ty lhsmany [(mempty, [], TermGenerator (Ref (MatchBind v)))]
+  rhs <- mkStmt ty [(mempty, TermGenerator (Ref (MatchBind v)))] rhsmany
+  lhs <- mkStmt ty [(mempty, TermGenerator (Ref (MatchBind v)))] lhsmany
   return (rhs <> lhs)
 
-flattenSeqGenerators
-  :: TcPat
-  -> F [(Statements, [Statements], Generator)]
-         -- ( statements that can be reordered with the generator
-         -- , statements that must be ordered before the generator
-         -- , the generator
-         -- )
+flattenSeqGenerators :: TcPat -> F [(Statements, Generator)]
 flattenSeqGenerators (Ref (MatchExt (Typed ty match))) = case match of
   TcOr left right -> do
     l <- flattenSeqGenerators left
@@ -185,21 +149,22 @@ flattenSeqGenerators (Ref (MatchExt (Typed ty match))) = case match of
     sequence
       [ do
           (stmts, gen) <- flattenFactGen pid kpat vpat
-          return (kstmts <> vstmts, stmts, gen)
+          return
+            ( kstmts <> vstmts <> floatGroups (flattenStmtGroups stmts),
+              gen )
       | (kstmts, kpat) <- kpats
       , (vstmts, vpat) <- vpats ]
   TcElementsOfArray pat -> do
     r <- flattenPattern pat
-    return [(stmts, [], ArrayElementGenerator ty pat') | (stmts,pat') <- r ]
+    return [(stmts, ArrayElementGenerator ty pat') | (stmts,pat') <- r ]
   TcQueryGen query -> do
     (stmts, term, _) <- flattenQuery' query
-    return [(mempty, stmts, TermGenerator term)]
+    return [(floatGroups (flattenStmtGroups stmts), TermGenerator term)]
   TcPrimCall op args -> do
-    r <- manyTerms (PrimCall op) <$> mapM flattenPattern args
-    return [ (stmts, [], t) | (stmts,t) <- r ]
+    manyTerms (PrimCall op) <$> mapM flattenPattern args
 flattenSeqGenerators pat = do
   r <- flattenPattern pat
-  return [(stmts, [], TermGenerator pat) | (stmts,pat) <- r ]
+  return [(stmts, TermGenerator pat) | (stmts,pat) <- r ]
 
 flattenFactGen :: PidRef -> Pat -> Pat -> F ([Statements], Generator)
 flattenFactGen pidRef@(PidRef pid _) kpat vpat = do
@@ -269,8 +234,7 @@ flattenPattern pat = case pat of
   Ref (MatchExt (Typed ty _)) -> do
     gens <- flattenSeqGenerators pat
     v <- fresh ty
-    stmts <- mkStmt ty
-      [(mempty, [], TermGenerator (RTS.Ref (MatchBind v)))] gens
+    stmts <- mkStmt ty [(mempty, TermGenerator (RTS.Ref (MatchBind v)))] gens
     return [(stmts, RTS.Ref (MatchVar v))]
 
 {- Note [flattening TcOr]
@@ -350,9 +314,6 @@ instance Monoid Statements where
 thenStmt :: Statements -> FlatStatement -> Statements
 thenStmt (Statements ss) s = Statements (s : ss)
 
-oneStmt :: FlatStatement -> Statements
-oneStmt s = Statements [s]
-
 -- | Inject an ordered sequence of FlatStatementGroup into a
 -- Statements.  This is used when we need to retain the ordering
 -- between some statements, but allow the whole sequence to be
@@ -369,6 +330,10 @@ floatGroups g = Statements [FlatDisjunction [g]]
 
 flattenStmts :: Statements -> [FlatStatement]
 flattenStmts (Statements s) = reverse s
+
+disjunction :: [[FlatStatementGroup]] -> FlatStatement
+disjunction [[x :| []]] = x
+disjunction groups = FlatDisjunction groups
 
 flattenStmtGroups :: [Statements] -> [FlatStatementGroup]
 flattenStmtGroups stmtss =
