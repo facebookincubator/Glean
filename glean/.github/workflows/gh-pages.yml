@@ -1,0 +1,36 @@
+name: gh-pages
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+jobs:
+  build_docs_job:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Build the Website
+      id: build
+      run: |
+        cd website
+        yarn
+        yarn build
+
+    - name: Get output time
+      run: echo "The time was ${{ steps.build.outputs.time }}"
+
+    - name: Deploy
+      if: github.event_name == 'push'  # only deploy the website when pushing to master
+      uses: JamesIves/github-pages-deploy-action@releases/v3
+      with:
+          ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages  # The branch the action should deploy to.
+          FOLDER: website/build  # The folder the action should deploy.

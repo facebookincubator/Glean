@@ -1,0 +1,130 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "loadedVersions": [
+        {
+          "versionName": "current",
+          "versionLabel": "Next",
+          "versionPath": "/docs",
+          "isLast": true,
+          "routePriority": -1,
+          "sidebarFilePath": "/Users/dvinnik/work/glean/website/sidebars.js",
+          "docsDirPath": "/Users/dvinnik/work/glean/docs",
+          "docsDirPathLocalized": "/Users/dvinnik/work/glean/website/i18n/en/docusaurus-plugin-content-docs/current",
+          "mainDocId": "introduction",
+          "sidebars": {
+            "someSidebar": [
+              {
+                "collapsed": true,
+                "type": "category",
+                "label": "Quick Start",
+                "items": [
+                  {
+                    "type": "doc",
+                    "id": "introduction"
+                  }
+                ]
+              }
+            ]
+          },
+          "permalinkToSidebar": {
+            "/docs/introduction": "someSidebar"
+          },
+          "docs": [
+            {
+              "unversionedId": "introduction",
+              "id": "introduction",
+              "isDocsHomePage": false,
+              "title": "Introduction",
+              "description": "Placeholder",
+              "source": "@site/../docs/introduction.md",
+              "slug": "/introduction",
+              "permalink": "/docs/introduction",
+              "version": "current",
+              "sidebar_label": "Introduction",
+              "sidebar": "someSidebar"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "docusaurus-plugin-content-blog": {
+    "default": {
+      "blogPosts": [
+        {
+          "id": "welcome",
+          "metadata": {
+            "permalink": "/blog/welcome",
+            "source": "@site/blog/2020-01-27-welcome.md",
+            "description": "First post",
+            "date": "2020-01-27T00:00:00.000Z",
+            "tags": [
+              {
+                "label": "facebook",
+                "permalink": "/blog/tags/facebook"
+              },
+              {
+                "label": "hello",
+                "permalink": "/blog/tags/hello"
+              }
+            ],
+            "title": "Welcome",
+            "readingTime": 0.01,
+            "truncated": false
+          }
+        }
+      ],
+      "blogListPaginated": [
+        {
+          "metadata": {
+            "permalink": "/blog",
+            "page": 1,
+            "postsPerPage": 10,
+            "totalPages": 1,
+            "totalCount": 1,
+            "previousPage": null,
+            "nextPage": null,
+            "blogDescription": "Blog",
+            "blogTitle": "Blog"
+          },
+          "items": [
+            "welcome"
+          ]
+        }
+      ],
+      "blogTags": {
+        "facebook": {
+          "name": "facebook",
+          "items": [
+            "welcome"
+          ],
+          "permalink": "/blog/tags/facebook"
+        },
+        "hello": {
+          "name": "hello",
+          "items": [
+            "welcome"
+          ],
+          "permalink": "/blog/tags/hello"
+        }
+      },
+      "blogTagsListPath": "/blog/tags"
+    }
+  },
+  "docusaurus-plugin-content-pages": {
+    "default": [
+      {
+        "type": "jsx",
+        "permalink": "/",
+        "source": "@site/src/pages/index.js"
+      }
+    ]
+  },
+  "docusaurus-plugin-debug": {
+    "default": null
+  },
+  "docusaurus-theme-classic": {
+    "default": null
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "pluginId": "default",
+  "version": "current",
+  "label": "Next",
+  "isLast": true,
+  "docsSidebars": {
+    "someSidebar": [
+      {
+        "collapsed": true,
+        "type": "category",
+        "label": "Quick Start",
+        "items": [
+          {
+            "type": "link",
+            "label": "Introduction",
+            "href": "/docs/introduction"
+          }
+        ]
+      }
+    ]
+  },
+  "permalinkToSidebar": {
+    "/docs/introduction": "someSidebar"
+  }
+}
