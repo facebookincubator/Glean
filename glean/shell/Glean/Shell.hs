@@ -1178,8 +1178,7 @@ evalMain cfg = do
 setupLocalSchema :: Config -> IO (Config, Maybe (Eval ()))
 setupLocalSchema cfg = do
   case cfgService cfg of
-    Remote{} -> throwIO $ ErrorCall $
-      "--schema is only supported with local DBs currently; use --db-root"
+    Remote{} -> return (cfg, Nothing)
     Local dbConfig logging -> case DB.cfgSchemaDir dbConfig of
       Nothing -> return (cfg, Nothing)
       Just dir -> do
