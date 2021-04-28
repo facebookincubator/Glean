@@ -1,0 +1,174 @@
+schema rust.1 {
+import src.1
+
+# A name (identifier)
+predicate Name : string
+
+# A qualified, structured name
+predicate QName :
+  {
+    local_name : Name,
+    parent : maybe QName,
+  }
+
+# A Rust type
+#
+# TODO: Parse these so we can extract the QNames
+predicate Type :
+  {
+    repr : string
+  }
+
+# These `Def`s match the definition kinds that `rustc -Z save-analysis` emits.
+
+# A constant (`const`)
+predicate ConstDef :
+  {
+    name : QName,
+    type : Type,
+  }
+
+# An enumeration (`enum`)
+predicate EnumDef :
+  {
+    name : QName,
+    type : Type,
+  }
+
+# A structure field
+predicate FieldDef :
+  {
+    name : QName,
+    type : Type,
+  }
+
+# A function
+predicate FunctionDef :
+  {
+    name : QName,
+    type : Type,
+  }
+
+# A local variable
+predicate LocalDef :
+  {
+    name : QName,
+    type : Type,
+  }
+
+# A method (associated function)
+predicate MethodDef :
+  {
+    name : QName,
+    type : Type,
+  }
+
+# A module
+predicate ModuleDef :
+  {
+    name : QName,
+  }
+
+# A static variable (global)
+predicate StaticDef :
+  {
+    name : QName,
+    type : Type,
+  }
+
+# A structure
+predicate StructDef :
+  {
+    name : QName,
+  }
+
+# A structure-like named enumeration variant
+predicate StructVariantDef :
+  {
+    name : QName,
+  }
+
+# A trait
+predicate TraitDef :
+  {
+    name : QName,
+  }
+
+# A tuple-like named enumeration variant
+predicate TupleVariantDef :
+  {
+    name : QName,
+  }
+
+# A type alias
+predicate TypeDef :
+  {
+    name : QName,
+    type : Type,
+  }
+
+# Matches the kind field of a ref that `-Z save-analysis` emits
+type Def =
+  {
+    const_ : ConstDef |
+    enum_ : EnumDef |
+    field : FieldDef |
+    function_ : FunctionDef |
+    local : LocalDef |
+    method : MethodDef |
+    module : ModuleDef |
+    static_ : StaticDef |
+    struct_ : StructDef |
+    struct_variant : StructVariantDef |
+    trait : TraitDef |
+    tuple_variant : TupleVariantDef |
+    type : TypeDef |
+  }
+
+# Matches the kind field of an impl that `-Z save-analysis` emits
+type ImplKind =
+  enum {
+    inherent |
+    direct |
+  }
+
+# An implementation
+predicate Impl :
+  {
+    kind : ImplKind,
+  }
+
+# The location of a Def relative to the repo root.
+predicate DefLocation :
+  {
+    def_ : Def,
+    file : src.File,
+    span : src.ByteSpan,
+  }
+
+# The location of an Impl relative to the repo root.
+predicate ImplLocation :
+  {
+    impl : Impl,
+    file : src.File,
+    span : src.ByteSpan,
+  }
+
+# Code that is referenced elsewhere
+type XRefTarget = Def
+
+# References to target code
+predicate XRef :
+  {
+    target : XRefTarget,
+    ranges : [src.ByteSpan],
+  }
+
+# Cross-references to a target within a file.
+predicate FileXRefs :
+  {
+    file : src.File,
+    xrefs : [XRef],
+  }
+
+}
