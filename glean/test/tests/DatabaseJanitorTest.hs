@@ -99,7 +99,9 @@ makeFakeDB schema root repo dbtime completeness stacked = do
       , metaCompleteness = completeness dbtime
       , metaBackup = Nothing
       , metaProperties = HashMap.empty
-      , metaDependencies = Thrift.Dependencies_stacked <$> stacked }
+      , metaDependencies = Thrift.Dependencies_stacked <$> stacked
+      , metaCompletePredicates = mempty
+      }
   let repoPath = databasePath root repo
   createDirectoryIfMissing True repoPath
   storage <- RocksDB.newStorage root def

@@ -45,6 +45,7 @@ newMeta version created completeness properties deps = Meta
   , metaProperties = properties
   , metaBackup = Nothing
   , metaDependencies = deps
+  , metaCompletePredicates = mempty
   }
 
 showCompleteness :: Completeness -> Text

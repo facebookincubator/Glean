@@ -209,8 +209,10 @@ struct Meta {
 
   6: optional Dependencies metaDependencies;
     // What this DB depends on.
-} (hs.prefix = "")
 
+  7: list<PredicateRef> metaCompletePredicates;
+    // Whether all facts for a predicate have already been inserted.
+} (hs.prefix = "")
 
 // -----------------------------------------------------------------------------
 // Thrift API
