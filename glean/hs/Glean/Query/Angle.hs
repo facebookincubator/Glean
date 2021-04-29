@@ -148,7 +148,7 @@ l .= r = AngleStatement $ Angle.SourceStatement <$> gen l <*> gen r
 a .| b = Angle $ OrPattern <$> gen a <*> gen b
 
 -- | Build a key-value pattern, `A -> B`
-(.->) :: Angle a -> Angle a -> Angle a
+(.->) :: Angle a -> Angle b -> Angle c
 a .-> b = Angle $ KeyValue <$> gen a <*> gen b
 
 instance IsString (Angle Text) where
