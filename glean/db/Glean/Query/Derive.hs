@@ -3,11 +3,15 @@ module Glean.Query.Derive
   , pollDerivation
   ) where
 
+import Control.Exception
 import Control.Concurrent
 import Control.Concurrent.STM
-import Control.Exception
+import Control.Monad
 import Data.Default
 import Data.Either
+import Data.Foldable
+import qualified Data.Set as Set
+import Data.Set (Set)
 import qualified Data.HashMap.Strict as HashMap
 import Data.List ((\\))
 import Data.Maybe
@@ -19,13 +23,18 @@ import qualified Data.UUID.V4 as UUID
 import Util.Control.Exception
 import Util.Log
 
-import Glean.Angle.Types
+import Glean.RTS.Types as RTS
+import Glean.Angle.Types as A
+import qualified Glean.Database.Catalog as Catalog
+import Glean.Database.Schema.Types
 import Glean.Database.Stuff
 import Glean.Database.Types as Database
 import Glean.Database.Writes
 import qualified Glean.Query.UserQuery as UserQuery
+import Glean.Query.Typecheck.Types
+import Glean.Query.Codegen
 import Glean.Schema.Util
-import Glean.Types as Thrift
+import Glean.Types as Thrift hiding (Byte, Nat)
 import Glean.Util.Observed as Observed
 import Glean.Util.Time
 import Glean.Util.Warden
@@ -37,22 +46,44 @@ derivePredicate
   -> Thrift.DerivePredicateQuery
   -> IO Thrift.DerivePredicateResponse
 derivePredicate env repo Thrift.DerivePredicateQuery{..} = do
+  pred <- passingConstraints
   handle <- UUID.toText <$> UUID.nextRandom
-  startDerivation env handle
-  let handleFailure e = failDerivation env ref handle e >> throwIO e
+  startDerivation env repo pred handle
   spawn_ (envWarden env)
-    $ handleAll handleFailure
-    $ runDerivation env repo handle query
+    $ handleAll (\e -> failDerivation env pred handle e >> throwIO e)
+    $ do
+      runDerivation env repo handle $ query pred
+      enqueueCheckpoint env repo $ onWritesFinished handle
   return $ Thrift.DerivePredicateResponse handle
   where
-    ref = SourceRef
-      derivePredicateQuery_predicate
-      derivePredicateQuery_predicate_version
+    passingConstraints :: IO PredicateRef
+    passingConstraints = readDatabase env repo $ \schema _ -> do
+      let mdetails = lookupPredicate
+            derivePredicateQuery_predicate
+            derivePredicateQuery_predicate_version
+            schema
+      pred <- case mdetails  of
+        Nothing -> throwIO Thrift.UnknownPredicate
+        Just details -> return $ predicateRef details
 
-    query = def
+      unless (isDerivedAndStored schema pred) $
+        throwIO Thrift.NotAStoredPredicate
+
+      completePreds <- atomically $
+        metaCompletePredicates <$> Catalog.readMeta (envCatalog env) repo
+
+      let complete = isCompletePred completePreds schema
+      when (complete pred) $ throwIO Thrift.PredicateAlreadyComplete
+
+      let dependencies = transitive (predicateDeps schema) pred
+      case filter (not . complete) dependencies of
+        [] -> return pred
+        incomplete -> throwIO $ Thrift.IncompleteDependencies incomplete
+
+    query pred = def
       { userQuery_predicate = derivePredicateQuery_predicate
       , userQuery_predicate_version = derivePredicateQuery_predicate_version
-      , userQuery_query = Text.encodeUtf8 $ showSourceRef ref <> " _"
+      , userQuery_query = Text.encodeUtf8 $ showPredicateRef pred <> " _"
       , userQuery_options = Just opts
       , userQuery_encodings = []
       }
@@ -75,6 +106,76 @@ derivePredicate env repo Thrift.DerivePredicateQuery{..} = do
     maxTime = derivePredicateQuery_options
       >>= derivePredicateOptions_max_time_ms_per_query
 
+    onWritesFinished handle = atomically $ do
+      derivations <- readTVar $ envDerivations env
+      mapM_ (finishDerivation env) (HashMap.lookup handle derivations)
+
+finishDerivation :: Database.Env -> Derivation -> STM ()
+finishDerivation env Derivation{..} = void
+  $ Catalog.modifyMeta (envCatalog env) derivationRepo
+  $ \meta -> return meta
+      { metaCompletePredicates =
+          insertUnique derivationPredicate $ metaCompletePredicates meta
+      }
+  where
+    insertUnique x xs = x : filter (/= x) xs
+
+isCompletePred
+  :: [PredicateRef]
+  -> DbSchema
+  -> PredicateRef
+  -> Bool
+isCompletePred completePreds schema pred =
+  case predicateDeriving $ getPredicateDetails schema pred of
+    NoDeriving -> True
+    Derive DeriveIfEmpty _ -> False
+    Derive DeriveOnDemand _ -> False
+    Derive DerivedAndStored _ -> pred `elem` completePreds
+
+isDerivedAndStored :: DbSchema -> PredicateRef -> Bool
+isDerivedAndStored schema pred =
+  case predicateDeriving $ getPredicateDetails schema pred of
+    Derive DerivedAndStored _ -> True
+    _ -> False
+
+transitive :: Ord a => (a -> [a]) -> a -> [a]
+transitive next root = Set.elems $ go (next root) mempty
+  where
+    go [] visited = visited
+    go (x:xs) visited
+      | x `Set.member`visited = go xs visited
+      | otherwise = go xs $ go (next x) $ Set.insert x visited
+
+-- | predicates which are queried to derive this predicate
+predicateDeps :: DbSchema -> PredicateRef -> [PredicateRef]
+predicateDeps schema pred = maybe mempty (toList . mconcat) $ do
+  let PredicateDetails{..} = getPredicateDetails schema pred
+  Derive _ QueryWithInfo{..} <- return predicateDeriving
+  let TcQuery _ _ _ stmts = qiQuery
+  return [ typeDeps ty | TcStatement ty _ _ <- stmts ]
+
+getPredicateDetails :: DbSchema -> PredicateRef -> PredicateDetails
+getPredicateDetails schema pred =
+  case lookupPredicateRef pred schema of
+    Just details -> details
+    Nothing -> error $
+      "unknown predicate: " <> Text.unpack (showPredicateRef pred)
+
+typeDeps :: RTS.Type -> Set PredicateRef
+typeDeps = \case
+  Byte -> mempty
+  Nat -> mempty
+  String -> mempty
+  Array ty -> typeDeps ty
+  Record fields -> foldMap (typeDeps . fieldDefType) fields
+  Sum fields -> foldMap (typeDeps . fieldDefType) fields
+  Predicate (PidRef _ pred) -> Set.singleton pred
+  NamedType (ExpandedType _ ty) -> typeDeps ty
+  Maybe ty -> typeDeps ty
+  Enumerated _ -> mempty
+  Boolean -> mempty
+
+-- | exhaust a query (until there is no more continuation)
 runDerivation
   :: Database.Env
   -> Thrift.Repo
@@ -108,14 +209,25 @@ runDerivation env repo handle query = do
 
 startDerivation
   :: Database.Env
+  -> Repo
+  -> PredicateRef
   -> Thrift.Handle
   -> IO ()
-startDerivation env handle = do
+startDerivation env repo pred handle = do
   now <- getTimePoint
-  atomically
-    $ modifyTVar' (envDerivations env)
-    $ HashMap.insert handle Derivation
-        { derivationStart = now
+  atomically $ do
+    derivations <- readTVar $ envDerivations env
+    let
+      samePredicate d = pred == derivationPredicate d
+      alreadyDeriving = any samePredicate $ HashMap.elems derivations
+    when alreadyDeriving $
+      throwSTM Thrift.PredicateAlreadyBeingDerived
+
+    modifyTVar' (envDerivations env) $
+      HashMap.insert handle Derivation
+        { derivationPredicate = pred
+        , derivationRepo = repo
+        , derivationStart = now
         , derivationQueryingFinished = False
         , derivationStats = def
         , derivationPendingWrites = []
@@ -124,13 +236,13 @@ startDerivation env handle = do
 
 failDerivation
   :: Database.Env
-  -> SourceRef
+  -> PredicateRef
   -> Thrift.Handle
   -> SomeException
   -> IO ()
 failDerivation env ref handle e = do
   logError $ "Failed derivation of "
-    <> Text.unpack (showSourceRef ref) <> ": " <> show e
+    <> Text.unpack (showPredicateRef ref) <> ": " <> show e
   atomically
     $ modifyTVar' (envDerivations env)
     $ HashMap.adjust (\d -> d { derivationError = Just e }) handle
@@ -206,6 +318,8 @@ pollDerivation env@Env{..} handle = do
       if isFinished withoutCompleted
          then HashMap.delete handle derivations
          else HashMap.insert handle withoutCompleted derivations
+    when (isFinished withoutCompleted) $
+      finishDerivation env withoutCompleted
     return withoutCompleted
 
   if isFinished d

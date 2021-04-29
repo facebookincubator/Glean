@@ -156,7 +156,9 @@ type TailerKey = (Text, Text, Maybe Int)
 
 -- | Information about a derived stored predicate being derived
 data Derivation = Derivation
-  { derivationStart :: TimePoint
+  { derivationPredicate :: PredicateRef
+  , derivationRepo :: Thrift.Repo
+  , derivationStart :: TimePoint
   , derivationQueryingFinished :: Bool
   , derivationStats :: Thrift.UserQueryStats
   , derivationPendingWrites :: [Thrift.Handle]

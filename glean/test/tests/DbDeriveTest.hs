@@ -7,6 +7,7 @@ import Test.HUnit
 import Util.String.Quasi
 import Data.Proxy
 import Control.Concurrent
+import Control.Monad
 
 import TestRunner
 
@@ -14,6 +15,7 @@ import Glean
 import Glean.Init
 import Glean.Database.Types
 import Glean.Types as Thrift
+import Glean.Test.HUnit
 import qualified Glean.Schema.GleanTest.Types as Glean.Test
 
 import TestDB
@@ -21,6 +23,7 @@ import TestDB
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "deriveTest" deriveTest
+  , TestLabel "completenessTest" completenessTest
   ]
 
 -- Test deriving stored facts
@@ -45,6 +48,35 @@ deriveTest = dbTestCaseWritableWithDerive $ \env repo derive -> do
       glean.test.StoredRevStringPair _
     |]
   assertEqual "deriveTest - post-derive" 6 (length results)
+
+-- Test completeness constraint enforcement
+completenessTest :: Test
+completenessTest = dbTestCaseWritableWithDerive $ \_ _ derive -> do
+  -- deriving a non-derived predicate fails
+  assertThrows "completenessTest - non-derived" Thrift.NotAStoredPredicate $
+    void $ derive $ getName (Proxy @Glean.Test.StringPair)
+
+  -- deriving a derived but not stored predicate fails
+  assertThrows "completenessTest - non-stored" Thrift.NotAStoredPredicate $
+    void $ derive $ getName (Proxy @Glean.Test.RevStringPair)
+
+  -- deriving a stored predicate that depends on incomplete predicates fails
+  assertThrows "completenessTest - incomplete dep"
+    (Thrift.IncompleteDependencies
+      [getName $ Proxy @Glean.Test.StoredRevStringPair])
+    $ void $ derive $ getName (Proxy @Glean.Test.StoredRevStringPairWithA)
+
+  -- should derive 6 facts
+  derivedCount <- derive $ getName (Proxy @Glean.Test.StoredRevStringPair)
+  assertEqual "deriveTest - derivation" 6 derivedCount
+
+  -- should derive 6 facts now that the dependency is complete
+  derivedCount <- derive $ getName (Proxy @Glean.Test.StoredRevStringPairWithA)
+  assertEqual "deriveTest - subsequent derivation" 1 derivedCount
+
+  -- deriving a complete predicate fails
+  assertThrows "completenessTest - complete" Thrift.PredicateAlreadyComplete $
+    void $ derive $ getName (Proxy @Glean.Test.StoredRevStringPair)
 
 dbTestCaseWritableWithDerive
   :: (Env -> Repo -> (PredicateRef -> IO Int) -> IO ())

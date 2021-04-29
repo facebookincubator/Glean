@@ -539,7 +539,19 @@ struct DerivePredicateResponse {
   1 : Handle handle;
 }
 
+exception NotAStoredPredicate {}
+
 exception UnknownDerivationHandle {}
+
+exception UnknownPredicate {}
+
+exception PredicateAlreadyComplete {}
+
+exception PredicateAlreadyBeingDerived {}
+
+exception IncompleteDependencies {
+  1: list<PredicateRef> incomplete
+}
 
 union DerivationProgress {
   1: UserQueryStats ongoing;
@@ -935,7 +947,9 @@ service GleanService extends fb303.FacebookService {
     throws(1: Exception e, 3: BadQuery b, 4: Retry r);
 
   DerivePredicateResponse derivePredicate(1: Repo repo, 2: DerivePredicateQuery q)
-    throws(1: Exception e, 3: BadQuery b, 4: Retry r);
+    throws(1: Exception e, 5: NotAStoredPredicate n, 6: UnknownPredicate u,
+           7: PredicateAlreadyComplete p, 8: IncompleteDependencies d
+           9: PredicateAlreadyBeingDerived a);
 
   DerivationProgress pollDerivation(1: Handle h)
     throws(1: Exception e, 2: UnknownDerivationHandle h);

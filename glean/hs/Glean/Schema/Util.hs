@@ -11,6 +11,7 @@ module Glean.Schema.Util
   , parseRef
   , convertRef
   , showSourceRef
+  , showPredicateRef
   , NameSpaces
   , splitDot
   ) where
@@ -80,6 +81,9 @@ convertRef p = SourceRef
 showSourceRef :: SourceRef -> Text
 showSourceRef (SourceRef name Nothing) = name
 showSourceRef (SourceRef name (Just ver)) = name <> "." <> showt ver
+
+showPredicateRef :: PredicateRef -> Text
+showPredicateRef = showSourceRef . convertRef
 
 type NameSpaces = [Text]
 
