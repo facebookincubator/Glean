@@ -1,5 +1,5 @@
   $ source "$TESTDIR/setup.sh"
-  Creating DB using handle fbcode:glean/tools/gleancli:glean@
+  Creating DB using handle fbcode:glean/tools/gleancli:glean@.* (re)
   $ "$SHELL" --service "::1:$PORT" --db "$DB" "example.Class _"
   [>] example.Class _ (re)
   { "id": [0-9]+, "key": { "name": "Fish", "line": 30 } } (re)
