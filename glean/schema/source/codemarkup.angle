@@ -1302,13 +1302,9 @@ predicate EntityUses:
     span: src.ByteSpan
   }
   {E, File, Span} where
-    (
-      {hack = {decl = D}} = E;
-      HackDeclarationUses {D, File, Span};
-    ) | (
-      {python = {decl = D}} = E;
-      python.DeclarationUses {D, File, Span};
-    )
+    HackEntityUses {E, File, Span} |
+    FlowEntityUses {E, File, Span} |
+    PythonEntityUses {E, File, Span}
 
 # Find entities in a File (and their concrete Declaration)
 predicate FileEntities:
@@ -1496,6 +1492,15 @@ predicate HackEntityUses:
     hack.TargetUses { target = { declaration = D }, file = File, uses = Uses };
     Spans = prim.relToAbsByteSpans Uses;
     Span = Spans[..];
+
+predicate FlowEntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  { { flow = { decl = D } }, File, Span } where
+    flow.DeclarationUses { target = D, file = File, use = Span };
 
 predicate PythonEntityUses:
   {

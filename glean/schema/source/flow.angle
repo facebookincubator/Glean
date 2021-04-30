@@ -164,6 +164,23 @@ type XRef = {
   typeRef : TypeDeclarationReference |
 }
 
+# Reverse XRefs: find-references for a declaration
+predicate DeclarationUses :
+  {
+    target : flow.SomeDeclaration,
+    file : src.File,
+    use : src.ByteSpan
+  }
+  ( { target = { localDecl = D }, file = F, use = Span } where
+    LocalDeclarationReference { declaration = D, loc = Range };
+    { module = { file = F } , span = Span } = Range ) |
+  ( { target = { memberDecl = D }, file = F, use = Span } where
+    MemberDeclarationReference { memberDeclaration = D, loc = Range };
+    { module = { file = F }, span = Span } = Range ) |
+  ( { target = { typeDecl = D }, file = F, use = Span } where
+    TypeDeclarationReference { typeDeclaration = D, loc = Range };
+    { module = { file = F }, span = Span } = Range )
+
 # Maps a src.File to the declarations it contains. This is derived
 # automatically from the declarations, and is used to provide
 # language-neutral declaration info via the codemarkup schema.
@@ -192,4 +209,3 @@ type SomeDeclaration = {
 }
 
 }
-
