@@ -300,21 +300,8 @@ predicate XRefFile :
   xref: XRef,
   file: src.File,
 }
-  { Xref, File } where
-    { target = T } = Xref;
-    (
-      { class_or_interface_ = N } = T;
-      (
-        java.ClassDeclaration.4 { name = N, loc = { file = File } }
-      ) | (
-        java.InterfaceDeclaration.4 { name = N, loc = { file = File } }
-      )
-    ) | (
-     { method_ = N } = T;
-     java.MethodDeclaration.4 { name = N, loc = { file = File } }
-   ) | (
-     { ctor_ = N } = T;
-     java.ConstructorDeclaration.4 { name = N, loc = { file = File } }
-   )
+  stored {Xref, File} where
+    FileXRefs {file = File, xrefs = Xs};
+    Xref = Xs[..];
 
 }
