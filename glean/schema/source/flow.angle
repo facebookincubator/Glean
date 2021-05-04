@@ -244,4 +244,18 @@ predicate SearchByModule :
     flow.StringToFileModule { S, F };
     D = flow.TypeDeclaration { name = N, loc = { module = { file = F } } } )
 
+# Location of a SomeDeclaration
+predicate DeclarationLocation :
+  {
+    decl: SomeDeclaration,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  ( { decl = { localDecl = D }, file = F, span = S } where
+    Declaration { loc = { module = { file = F }, span = S } } = D ) |
+  ( { decl = { memberDecl = D }, file = F, span = S } where
+    MemberDeclaration { loc = { module = { file = F }, span = S } } = D ) |
+  ( { decl = { typeDecl = D }, file = F, span = S } where
+    TypeDeclaration { loc = { module = { file = F }, span = S } } = D )
+
 }
