@@ -251,11 +251,13 @@ reorderStmtGroup scope stmts = do
         slowSearches = [ x | (_, x, _, PatternSearchesAll, _) <- candidates ]
         nonPrefixVars =
           [ x
-          | (_, xs, prefix, stmt) <- uses
+          | (_, _, prefix, stmt) <- uses
           , let lhs = case isCandidate stmt of
                   Just (x,_) -> Just x
                   Nothing -> Nothing
-          , x <- IntSet.toList xs
+          , x <- IntSet.toList (boundVars stmt)
+            -- NB. we want variables that this statement can *bind*,
+            -- not all the variables it mentions.
           , Just x /= lhs && not (x `IntSet.member` prefix)
           ]
 

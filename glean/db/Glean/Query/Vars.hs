@@ -2,7 +2,9 @@
 module Glean.Query.Vars (
     VarSet,
     varsOf,
-    vars
+    vars,
+    boundVars,
+    boundVarsOf,
   ) where
 
 import qualified Data.IntSet as IntSet
@@ -61,3 +63,19 @@ instance VarsOf (Match () Var) where
     MatchPrefix _ t -> varsOf t r
     MatchSum alts -> foldr varsOf r [ t | Just t <- alts ]
     MatchExt{} -> r
+
+-- | Like 'varsOf', but only including variables that can be bound by
+-- this statement.
+boundVars :: FlatStatement -> VarSet
+boundVars stmt = boundVarsOf stmt IntSet.empty
+
+boundVarsOf :: FlatStatement -> VarSet -> VarSet
+boundVarsOf (FlatStatement _ lhs rhs) r = varsOf lhs (boundVarsOfGen rhs r)
+boundVarsOf (FlatDisjunction stmtss) r = foldr varsStmts r stmtss
+  where varsStmts stmts r = foldr (\g r -> foldr boundVarsOf r g) r stmts
+
+boundVarsOfGen :: Generator -> VarSet -> VarSet
+boundVarsOfGen DerivedFactGenerator{} r = r
+boundVarsOfGen ArrayElementGenerator{} r = r
+boundVarsOfGen PrimCall{} r = r
+boundVarsOfGen other r = varsOf other r
