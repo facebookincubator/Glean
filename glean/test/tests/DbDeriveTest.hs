@@ -52,6 +52,11 @@ deriveTest = dbTestCaseWritableWithDerive $ \env repo derive -> do
 -- Test completeness constraint enforcement
 completenessTest :: Test
 completenessTest = dbTestCaseWritableWithDerive $ \_ _ derive -> do
+  -- deriving a stored predicate depending on a non-derived one succeeds
+  derivedCount <-
+    derive $ getName (Proxy @Glean.Test.StoredRevStringPairWithRev)
+  assertEqual "deriveTest - derived depending on non-derived" 6 derivedCount
+
   -- deriving a non-derived predicate fails
   assertThrows "completenessTest - non-derived" Thrift.NotAStoredPredicate $
     void $ derive $ getName (Proxy @Glean.Test.StringPair)

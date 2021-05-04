@@ -58,6 +58,10 @@ predicate StoredRevStringPair : { fst : string, snd : string }
 predicate StoredRevStringPairWithA : { fst: string, snd: string }
   stored {A,B} where A="a"; StoredRevStringPair {B,A}
 
+# stored predicate depending on non-stored one
+predicate StoredRevStringPairWithRev : { fst: string, snd: string }
+  stored {A,B} where RevStringPair {B,A}
+
 # Reverse glean.test.StringPair
 predicate RevStringPairRec : { fst : string, snd : string }
   { fst = A, snd = B } where StringPair { fst = B, snd = A }

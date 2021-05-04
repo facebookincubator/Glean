@@ -129,7 +129,7 @@ isCompletePred completePreds schema pred =
   case predicateDeriving $ getPredicateDetails schema pred of
     NoDeriving -> True
     Derive DeriveIfEmpty _ -> False
-    Derive DeriveOnDemand _ -> False
+    Derive DeriveOnDemand _ -> True
     Derive DerivedAndStored _ -> pred `elem` completePreds
 
 isDerivedAndStored :: DbSchema -> PredicateRef -> Bool
