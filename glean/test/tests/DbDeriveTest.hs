@@ -8,6 +8,7 @@ import Util.String.Quasi
 import Data.Proxy
 import Control.Concurrent
 import Control.Monad
+import Control.Concurrent.Async
 
 import TestRunner
 
@@ -71,17 +72,20 @@ completenessTest = dbTestCaseWritableWithDerive $ \_ _ derive -> do
       [getName $ Proxy @Glean.Test.StoredRevStringPair])
     $ void $ derive $ getName (Proxy @Glean.Test.StoredRevStringPairWithA)
 
-  -- should derive 6 facts
-  derivedCount <- derive $ getName (Proxy @Glean.Test.StoredRevStringPair)
-  assertEqual "deriveTest - derivation" 6 derivedCount
+  -- parallel derivation works
+  let run = derive $ getName (Proxy @Glean.Test.StoredRevStringPair)
+  (derivedCount1, derivedCount2) <- concurrently run run
+  assertEqual "deriveTest - parallel"
+    (6, 6)
+    (derivedCount1, derivedCount2)
 
   -- should derive 6 facts now that the dependency is complete
   derivedCount <- derive $ getName (Proxy @Glean.Test.StoredRevStringPairWithA)
   assertEqual "deriveTest - subsequent derivation" 1 derivedCount
 
-  -- deriving a complete predicate fails
-  assertThrows "completenessTest - complete" Thrift.PredicateAlreadyComplete $
-    void $ derive $ getName (Proxy @Glean.Test.StoredRevStringPair)
+  -- deriving a complete predicate is a no-op
+  derivedCount <- derive $ getName (Proxy @Glean.Test.StoredRevStringPair)
+  assertEqual "deriveTest -  complete" 6 derivedCount
 
 dbTestCaseWritableWithDerive
   :: (Env -> Repo -> (PredicateRef -> IO Int) -> IO ())

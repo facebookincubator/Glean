@@ -47,14 +47,22 @@ derivePredicate
   -> IO Thrift.DerivePredicateResponse
 derivePredicate env repo Thrift.DerivePredicateQuery{..} = do
   pred <- passingConstraints
-  handle <- UUID.toText <$> UUID.nextRandom
-  startDerivation env repo pred handle
-  spawn_ (envWarden env)
-    $ handleAll (\e -> failDerivation env pred handle e >> throwIO e)
-    $ do
-      runDerivation env repo handle $ query pred
-      enqueueCheckpoint env repo $ onWritesFinished handle
-  return $ Thrift.DerivePredicateResponse handle
+  existingDerivation <- atomically $ do
+    derivations <- readTVar $ envDerivations env
+    let samePredicate d = pred == derivationPredicate d
+    return $ find (samePredicate . snd) $ HashMap.toList derivations
+
+  case existingDerivation of
+    Just (handle, _) -> return $ Thrift.DerivePredicateResponse handle
+    Nothing -> do
+      handle <- UUID.toText <$> UUID.nextRandom
+      startDerivation env repo pred handle
+      spawn_ (envWarden env)
+        $ handleAll (\e -> failDerivation env pred handle e >> throwIO e)
+        $ do
+          runDerivation env repo handle $ query pred
+          enqueueCheckpoint env repo $ onWritesFinished handle
+      return $ Thrift.DerivePredicateResponse handle
   where
     passingConstraints :: IO PredicateRef
     passingConstraints = readDatabase env repo $ \schema _ -> do
@@ -73,8 +81,6 @@ derivePredicate env repo Thrift.DerivePredicateQuery{..} = do
         metaCompletePredicates <$> Catalog.readMeta (envCatalog env) repo
 
       let complete = isCompletePred completePreds schema
-      when (complete pred) $ throwIO Thrift.PredicateAlreadyComplete
-
       let dependencies = transitive (predicateDeps schema) pred
       case filter (not . complete) dependencies of
         [] -> return pred
@@ -215,24 +221,16 @@ startDerivation
   -> IO ()
 startDerivation env repo pred handle = do
   now <- getTimePoint
-  atomically $ do
-    derivations <- readTVar $ envDerivations env
-    let
-      samePredicate d = pred == derivationPredicate d
-      alreadyDeriving = any samePredicate $ HashMap.elems derivations
-    when alreadyDeriving $
-      throwSTM Thrift.PredicateAlreadyBeingDerived
-
-    modifyTVar' (envDerivations env) $
-      HashMap.insert handle Derivation
-        { derivationPredicate = pred
-        , derivationRepo = repo
-        , derivationStart = now
-        , derivationQueryingFinished = False
-        , derivationStats = def
-        , derivationPendingWrites = []
-        , derivationError = Nothing
-        }
+  atomically $ modifyTVar' (envDerivations env) $
+    HashMap.insert handle Derivation
+      { derivationPredicate = pred
+      , derivationRepo = repo
+      , derivationStart = now
+      , derivationQueryingFinished = False
+      , derivationStats = def
+      , derivationPendingWrites = []
+      , derivationError = Nothing
+      }
 
 failDerivation
   :: Database.Env
@@ -314,12 +312,11 @@ pollDerivation env@Env{..} handle = do
         { derivationPendingWrites =
             derivationPendingWrites d \\ completed
         }
-    writeTVar envDerivations $
-      if isFinished withoutCompleted
-         then HashMap.delete handle derivations
-         else HashMap.insert handle withoutCompleted derivations
-    when (isFinished withoutCompleted) $
-      finishDerivation env withoutCompleted
+
+    if isFinished withoutCompleted
+      then finishDerivation env withoutCompleted
+      else writeTVar envDerivations $
+        HashMap.insert handle withoutCompleted derivations
     return withoutCompleted
 
   if isFinished d
