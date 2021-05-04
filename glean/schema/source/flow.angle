@@ -208,4 +208,40 @@ type SomeDeclaration = {
   typeDecl : TypeDeclaration |
 }
 
+# Search for decl by strings, precisely. We might need to store these
+predicate SearchByName :
+  {
+    name : flow.Name,
+    string_: string,
+    decl : flow.SomeDeclaration
+  }
+  ({ name = N, string_ = S, decl = { localDecl = D } } where
+    D = flow.Declaration { name = N, loc = Loc };
+    { module = { file = F } } = Loc;
+    flow.FileOfStringModule { F , S }) |
+  ({ name = N, string_ = S, decl = { memberDecl = D } } where
+    D = flow.MemberDeclaration { name = N, loc = Loc };
+    { module = { file = F } } = Loc;
+    flow.FileOfStringModule { F , S }) |
+  ({ name = N, string_ = S, decl = { typeDecl = D } } where
+    D = flow.TypeDeclaration { name = N, loc = Loc };
+    { module = { file = F } } = Loc;
+    flow.FileOfStringModule { F , S })
+
+predicate SearchByModule :
+  {
+    string_: string,
+    name : flow.Name,
+    decl : flow.SomeDeclaration
+  }
+  ({ name = N, string_ = S, decl = { localDecl = D } } where
+    flow.StringToFileModule { S, F };
+    D = flow.Declaration { name = N, loc = { module = { file = F } } }) |
+  ({ name = N, string_ = S, decl = { memberDecl = D } } where
+    flow.StringToFileModule { S, F };
+    D = flow.MemberDeclaration { name = N, loc = { module = { file = F } } } ) |
+  ({ name = N, string_ = S, decl = { typeDecl = D } } where
+    flow.StringToFileModule { S, F };
+    D = flow.TypeDeclaration { name = N, loc = { module = { file = F } } } )
+
 }
