@@ -490,6 +490,7 @@ library db
         Glean.Query.JSON
         Glean.Query.Nested.Types
 
+        Glean.Query.Derive
         Glean.Query.Nested
         Glean.Query.Nested.Compile
         Glean.Query.UserQuery
