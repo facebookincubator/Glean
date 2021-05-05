@@ -9,6 +9,8 @@ import Data.Proxy
 import Control.Concurrent
 import Control.Monad
 import Control.Concurrent.Async
+import qualified Data.HashMap.Strict as HashMap
+import Control.Concurrent.STM
 
 import TestRunner
 
@@ -49,6 +51,26 @@ deriveTest = dbTestCaseWritableWithDerive $ \env repo derive -> do
       glean.test.StoredRevStringPair _
     |]
   assertEqual "deriveTest - post-derive" 6 (length results)
+
+  -- should not confuse predicates from different repos
+  let pred = getName (Proxy @Glean.Test.StoredRevStringPairWithA)
+  addDummyDerivationForPredicate pred env
+  derivedCount <- derive pred
+  assertEqual "deriveTest - repo check" 1 derivedCount
+
+addDummyDerivationForPredicate :: PredicateRef -> Env -> IO ()
+addDummyDerivationForPredicate ref env =
+  atomically
+    $ modifyTVar' (envDerivations env)
+    $ HashMap.insert "dummy-handle" Derivation
+      { derivationPredicate = ref
+      , derivationRepo = Thrift.Repo "dummy" "dummy"
+      , derivationStart = undefined
+      , derivationQueryingFinished = undefined
+      , derivationStats = error "wrong repo!"
+      , derivationPendingWrites = undefined
+      , derivationError = undefined
+      }
 
 -- Test completeness constraint enforcement
 completenessTest :: Test

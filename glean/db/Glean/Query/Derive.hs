@@ -49,7 +49,8 @@ derivePredicate env repo Thrift.DerivePredicateQuery{..} = do
   pred <- passingConstraints
   existingDerivation <- atomically $ do
     derivations <- readTVar $ envDerivations env
-    let samePredicate d = pred == derivationPredicate d
+    let samePredicate d =
+          (repo == derivationRepo d) && (pred == derivationPredicate d)
     return $ find (samePredicate . snd) $ HashMap.toList derivations
 
   case existingDerivation of
