@@ -183,7 +183,7 @@ queryDefDeclOf
 queryDefDeclOf i = case declToDef i of
   Nothing -> return OnlyDecl
   Just q -> do
-    xs <- getFirstResult q
+    xs <- getFirstResult (query q)
     return $ if null xs then Decl else Def
 
 -- | Use 'DefCheck' to get matching definition, if possible and present
@@ -191,7 +191,7 @@ queryDefOf
   :: (HaxlQuery (DeclToDef p), DefCheck p)
   => IdOf p
   -> Haxl w (Maybe (DeclToDef p))
-queryDefOf = fmap join . traverse getFirstResult . declToDef
+queryDefOf = fmap join . traverse (getFirstResult . query) . declToDef
 
 -- | Explore whole family and return the corresponding definitions.
 -- The new 'queryDeclToDef' may be more efficient for most cases.

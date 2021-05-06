@@ -465,7 +465,7 @@ locatorPatternIds be repo lp@LocatorPattern{..}
 
 -- | @getSrcFile fileIn@ will return 'Src.File' with @Just fileIn@
 getSrcFile :: Text -> Haxl w (Maybe Src.File)
-getSrcFile fileIn = fmap (fmap withFileIn) $ getFirstResult $
+getSrcFile fileIn = fmap (fmap withFileIn) $ getFirstResult $ query $
   Q.Src.File_with_key fileIn
   where
     withFileIn (Src.File i _) = Src.File i (Just fileIn)
