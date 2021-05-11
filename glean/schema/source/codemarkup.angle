@@ -1457,21 +1457,6 @@ predicate FlowFileImportDeclEntityXRef:
     Name = flow.Name Str;
     { span = Src } = SrcLoc;
 
-
-# Follow a python import through to its target
-predicate PythonImportXRef:
-  {
-    local: python.Declaration,
-    targetEntity: code.Entity,
-    targetFile: src.File,
-    targetSpan: src.ByteSpan,
-  }
-  { Local, TargetEntity, TargetFile, TargetSpan } where
-  { imp = { from_name = FromName }} = Local;
-  python.DeclarationWithName { FromName, TargetDecl };
-  python.DeclarationLocation { TargetDecl, TargetFile, TargetSpan };
-  TargetEntity = code.Entity { python = {decl = TargetDecl }};
-
 predicate PythonFileEntityXRefs:
   {
     file: src.File,
@@ -1479,17 +1464,22 @@ predicate PythonFileEntityXRefs:
     entity: code.Entity,
   }
   {File, {Decl, Src}, Entity} where
-  python.DirectXRefsByFile {File, XRef};
-
-  {PyDecl, AllSrc} = XRef;
-  {Src, Entity} = (
-    PythonImportXRef { PyDecl, E, _, S};
-    {S, E}
-  ) | (
-    python.NonImportDeclaration PyDecl;
-    E = code.Entity { python = { decl = PyDecl } };
-    {AllSrc, E}
-  );
+  {PyDecl, Src} = (
+    python.DeclarationsByFile {
+      file = File,
+      span = Src,
+      declaration = { imp = { from_name = TargetName } },
+    };
+    python.DeclarationWithName { name = TargetName, declaration = TargetDecl};
+    {TargetDecl, Src}
+  )
+  |
+  (
+    python.DirectXRefsByFile {File, XRef};
+    XRef
+  )
+  ;
+  Entity = code.Entity { python = { decl = PyDecl } };
   EntityToDeclaration { entity = Entity, decl = Decl};
 
 predicate HackEntityUses:

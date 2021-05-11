@@ -288,11 +288,6 @@ predicate DeclarationBySName: SName -> Declaration
     Declaration { module = M }
   )
 
-  predicate NonImportDeclaration: Declaration
-    Decl where
-    ({ module = _ } | { variable = _ } | { func = _ } | { cls = _ }) = Decl
-
-
 } # python.2
 
 schema python.3 : python.2 {
