@@ -228,21 +228,30 @@ predicate SearchByName :
     { module = { file = F } } = Loc;
     flow.FileOfStringModule { F , S })
 
+# Search by Name and string code for the Module
 predicate SearchByModule :
   {
     string_: string,
     name : flow.Name,
     decl : flow.SomeDeclaration
   }
-  ({ name = N, string_ = S, decl = { localDecl = D } } where
-    flow.StringToFileModule { S, F };
-    D = flow.Declaration { name = N, loc = { module = { file = F } } }) |
-  ({ name = N, string_ = S, decl = { memberDecl = D } } where
-    flow.StringToFileModule { S, F };
-    D = flow.MemberDeclaration { name = N, loc = { module = { file = F } } } ) |
-  ({ name = N, string_ = S, decl = { typeDecl = D } } where
-    flow.StringToFileModule { S, F };
-    D = flow.TypeDeclaration { name = N, loc = { module = { file = F } } } )
+  { S, N, D } where
+    StringToFileModule { S, F };
+    SearchByFileModule { F, N, D };
+
+# Lookup a declaration knowing its name and its file
+# Should be O(1)
+predicate SearchByFileModule :
+  {
+    file : src.File,
+    name : flow.Name,
+    decl : flow.SomeDeclaration
+  }
+  { file = F, name = N, decl = D } where
+    ({ localDecl = { name = N } } |
+     { memberDecl = { name = N } } |
+     { typeDecl = { name = N }}) = D;
+    FileDeclaration { F, D };
 
 # Location of a SomeDeclaration
 predicate DeclarationLocation :
