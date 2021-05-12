@@ -117,23 +117,39 @@ schemaUnversioned = TestCase $ do
           }
 
           schema all.1 : test.1 {}
+          schema all.2 : test.2 {}
       |]
 
   withSchemaFile latestAngleVersion schema $ \root file -> do
-    withEmptyTestDB [setRoot root, setSchemaPath file] $ \env repo -> do
-      void $ sendJsonBatch env repo
-        [ JsonFactBatch
-            { jsonFactBatch_predicate = PredicateRef "test.P" 1
-            , jsonFactBatch_facts = [ "{ \"key\" : {} }" ]
-            }
-        ]
-        Nothing
+    repo <- withEmptyTestDB [setRoot root, setSchemaPath file] $
+      \env repo -> do
+        void $ sendJsonBatch env repo
+          [ JsonFactBatch
+              { jsonFactBatch_predicate = PredicateRef "test.P" 1
+              , jsonFactBatch_facts = [ "{ \"key\" : {} }" ]
+              }
+          ]
+          Nothing
+        return repo
 
-      -- Test that an unversioned query "test.P _" resolves to test.P.1,
-      -- because the all.1 schema inherits from test.1
+    withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
+      -- Test that an unversioned query "test.P _" resolves to test.P.2,
+      -- because the all.2 schema inherits from test.2 and we pick
+      -- all.2 by default
       r <- try $ angleQuery env repo "test.P _"
       print (r :: Either BadQuery UserQueryResults)
       assertBool "unversioned 1" $ case r of
+        Right UserQueryResults{..} -> null userQueryResults_facts
+        _ -> False
+
+    withTestEnv [setRoot root, setSchemaPath file, setSchemaVersion 1] $
+      \env -> do
+      -- Test that an unversioned query "test.P _" now resolves to
+      -- test.P.1, because we're now asking for all.1 explicitly, and
+      -- all.1 inherits from test.1
+      r <- try $ angleQuery env repo "test.P _"
+      print (r :: Either BadQuery UserQueryResults)
+      assertBool "unversioned 2" $ case r of
         Right UserQueryResults{..} -> length userQueryResults_facts == 1
         _ -> False
 

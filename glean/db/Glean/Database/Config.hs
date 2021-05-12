@@ -27,6 +27,7 @@ import System.FilePath
 import Glean.Angle.Types
 import qualified Glean.Database.Catalog.Local.Files as Catalog.Local.Files
 import qualified Glean.Database.Catalog.Store as Catalog
+import Glean.Database.Schema.Types
 import Glean.Database.Storage
 import qualified Glean.Database.Storage.Memory as Memory
 import qualified Glean.Database.Storage.RocksDB as RocksDB
@@ -52,6 +53,9 @@ data Config = Config
       -- current schema, predicates and types from the DB schema are
       -- replaced with those from the current schema. NOTE: this
       -- option is dangerous and is only for testing.
+  , cfgSchemaVersion :: SchemaVersion
+      -- ^ If set, this is the version of the "all" schema that is
+      -- used to resolve unversioned predicates in a query.
   , cfgRecipeConfig :: ThriftSource Recipes.Config
   , cfgServerConfig :: ThriftSource ServerConfig.Config
   , cfgStorage :: FilePath -> ServerConfig.Config -> IO (Some Storage)
@@ -76,6 +80,7 @@ instance Default Config where
     , cfgSchemaSource = ThriftSource.value (error "undefined schema")
     , cfgSchemaDir = Nothing
     , cfgSchemaOverride = False
+    , cfgSchemaVersion = LatestSchemaAll
     , cfgRecipeConfig = def
     , cfgServerConfig = def
     , cfgStorage = \root scfg -> Some <$> RocksDB.newStorage root scfg
@@ -165,8 +170,19 @@ schemaSourceOption = option (eitherReader schemaSourceParser)
 options :: Parser Config
 options = do
   cfgRoot <- strOption (long "db-root")
-  ~(cfgSchemaDir, cfgSchemaSource) <- schemaSourceOption <|> dbSchemaSourceOption
+  ~(cfgSchemaDir, cfgSchemaSource) <-
+    schemaSourceOption <|> dbSchemaSourceOption
   cfgSchemaOverride <- switch (long "db-schema-override")
+  cfgSchemaVersion <- fmap (maybe LatestSchemaAll SpecificSchemaAll) $
+    optional $ option auto
+    ( long "schema-version"
+    <> metavar "VERSION"
+    <> help (
+      "version of \"all\" schema to use when resolving references " <>
+      "to unversioned predicates in a query (mostly for testing purposes; " <>
+      "defaults to the latest version)")
+    )
+
   cfgRecipeConfig <- recipesConfigThriftSource
   cfgServerConfig <-
     serverConfigThriftSource <|>

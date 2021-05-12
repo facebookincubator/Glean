@@ -481,7 +481,7 @@ userQueryImpl
         -- that returns a temporary predicate.
         _ -> do
           (compileTime, _, query@QueryWithInfo{..}) <- timeIt $
-            compileAngleQuery schema userQuery_query stored
+            compileAngleQuery env schema userQuery_query stored
           let
             irDiag =
               [ "ir:\n" <> Text.pack (show (pretty qiQuery))
@@ -530,8 +530,8 @@ userQueryImpl
       -- client should set this field to "".
       checkPredicatesMatch schema
         details
-        userQuery_predicate
-        userQuery_predicate_version
+        (SourceRef userQuery_predicate userQuery_predicate_version)
+        (envSchemaVersion env)
 
     let limits = mkQueryRuntimeOptions opts config
     nextId <- case Thrift.userQueryOptions_continuation opts of
@@ -613,8 +613,8 @@ userQueryImpl
   Thrift.UserQuery{..} = do
     details@PredicateDetails{..} <-
       case lookupPredicate
-          userQuery_predicate
-          userQuery_predicate_version
+          (SourceRef userQuery_predicate userQuery_predicate_version)
+          (envSchemaVersion env)
           schema of
         Nothing -> throwIO $ Thrift.BadQuery $ mconcat
           [ "unknown predicate: "
@@ -746,13 +746,13 @@ userQueryImpl
 
 
 
-compileAngleQuery :: DbSchema -> ByteString -> Bool -> IO CodegenQuery
-compileAngleQuery dbSchema source stored = do
+compileAngleQuery :: Env -> DbSchema -> ByteString -> Bool -> IO CodegenQuery
+compileAngleQuery env dbSchema source stored = do
   parsed <- checkBadQuery Text.pack $ Angle.parseQuery source
   vlog 2 $ "parsed query: " <> show (pretty parsed)
 
   typechecked <- checkBadQuery id $ runExcept $
-    typecheck dbSchema latestAngleVersion (Qualified dbSchema) parsed
+    typecheck dbSchema latestAngleVersion (Qualified dbSchema ver) parsed
   vlog 2 $ "typechecked query: " <> show (pretty (qiQuery typechecked))
 
   flattened <- checkBadQuery id $ runExcept $
@@ -765,6 +765,8 @@ compileAngleQuery dbSchema source stored = do
   checkBadQuery id $ runExcept $ reorder dbSchema optimised
   -- no need to vlog, compileQuery will vlog it later
   where
+  ver = envSchemaVersion env
+
   checkBadQuery :: (err -> Text) -> Either err a -> IO a
   checkBadQuery txt act = case act of
     Left str -> throwIO $ Thrift.BadQuery $ txt str
@@ -827,25 +829,21 @@ writeDerivedFacts env repo derived = do
 checkPredicatesMatch
   :: DbSchema
   -> PredicateDetails
-  -> Text
-  -> Maybe Int32
+  -> SourceRef
+  -> SchemaVersion
   -> IO ()
-checkPredicatesMatch dbSchema details predicate maybeVer = do
-  case lookupPredicate predicate maybeVer dbSchema of
+checkPredicatesMatch dbSchema details predicate schemaVer = do
+  case lookupPredicate predicate schemaVer dbSchema of
     Nothing -> throwIO $ Thrift.BadQuery $
-      "unknown predicate: " <> showPred predicate maybeVer
+      "unknown predicate: " <> showSourceRef predicate
     Just details' ->
       if predicatePid details == predicatePid details'
         then return ()
         else throwIO $ Thrift.BadQuery $ mconcat
-          [ "predicate " <> showPred predicate maybeVer <>
+          [ "predicate " <> showSourceRef predicate <>
             " does not match type of query: "
           <> predicateRef_name (predicateRef details) <> "."
           <> showt (predicateRef_version (predicateRef details)) ]
-
-showPred :: Text -> Maybe Int32 -> Text
-showPred predicate maybeVer =
-  predicate <> maybe "" (\ver -> "." <> Text.pack (show ver)) maybeVer
 
 
 data Stats = Stats
@@ -1140,7 +1138,7 @@ serializeType = Text.encodeUtf8 . renderStrict . layoutCompact . pretty
 compileType :: DbSchema -> ByteString -> IO Type
 compileType schema src = do
   parsed <- checkParsed $ Angle.parseType src
-  let scope = toScope (Qualified schema)
+  let scope = toScope (Qualified schema LatestSchemaAll)
   resolved <- checkResolved $ resolveType latestAngleVersion scope parsed
   checkConverted $ dbSchemaRtsType schema resolved
   where

@@ -68,8 +68,9 @@ derivePredicate env repo Thrift.DerivePredicateQuery{..} = do
     passingConstraints :: IO PredicateRef
     passingConstraints = readDatabase env repo $ \schema _ -> do
       let mdetails = lookupPredicate
-            derivePredicateQuery_predicate
-            derivePredicateQuery_predicate_version
+            (SourceRef derivePredicateQuery_predicate
+              derivePredicateQuery_predicate_version)
+            (envSchemaVersion env)
             schema
       pred <- case mdetails  of
         Nothing -> throwIO Thrift.UnknownPredicate

@@ -297,7 +297,7 @@ convertType :: NameResolutionPolicy -> Schema.Type -> T Type
 convertType policy ty = do
   let rtsType = case policy of
         UseScope _ rtsType -> rtsType
-        Qualified dbSchema -> dbSchemaRtsType dbSchema
+        Qualified dbSchema _ -> dbSchemaRtsType dbSchema
   case rtsType ty of
     Just typ -> return typ
     Nothing -> throwError "cannot convert type"
@@ -550,20 +550,21 @@ data NameResolutionPolicy
   = UseScope Scope (Schema.Type -> Maybe Type)
     -- ^ Use a Scope mapping names to targets, and unversioned names are
     -- ambiguous unless there is exactly one version in scope.
-  | Qualified DbSchema
+  | Qualified DbSchema SchemaVersion
     -- ^ Predicates and type names must be qualified by the schema
-    -- name, and unversioned references map to the latest
-    -- version. This policy is used when typechecking queries, where
-    -- we currently have no means to establish a Scope.
+    -- name, and unversioned references are resolved by some version
+    -- of the "all" schema specified by the SchemaVersion.  This
+    -- policy is used when typechecking queries, where we currently
+    -- have no means to establish a Scope.
 
 toScope :: NameResolutionPolicy -> Scope
 toScope (UseScope scope _) = scope
-toScope (Qualified dbSchema) = lookup
+toScope (Qualified dbSchema schemaVer) = lookup
   where
   lookup ref@(SourceRef name maybeVer)
-    | Just details <- lookupPredicate name maybeVer dbSchema =
+    | Just details <- lookupPredicate ref schemaVer dbSchema =
       ResolvesTo (RefPred (predicateRef details))
-    | Just details <- lookupType ref dbSchema =
+    | Just details <- lookupType ref schemaVer dbSchema =
       ResolvesTo (RefType (typeRef details))
     | Just version <- maybeVer
     -- detect temporary predicates that might have been serialized

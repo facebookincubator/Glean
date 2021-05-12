@@ -11,9 +11,10 @@ import System.Exit (die)
 
 import Util.OptParse
 
-import Glean.Angle.Types (SourceSchemas, SourceRef(..))
+import Glean.Angle.Types (SourceSchemas)
 import Glean.Database.Config (schemaSourceOption)
 import Glean.Database.Schema
+import Glean.Database.Schema.Types
 import Glean.Impl.ConfigProvider
 import Glean.RTS.Bytecode.Disassemble (disassemble)
 import Glean.Types (PredicateRef(..))
@@ -66,11 +67,11 @@ predicateTypecheckers schema args = do
   preds <- case args of
     [] -> return $ schemaPredicates schema
     refs -> forM refs $ \ref -> do
-      let SourceRef name ver = parseRef ref
+      let sourceRef = parseRef ref
       maybe
         (die $ "unknown predicate '" ++ Text.unpack ref ++ "'")
         return
-        $ lookupPredicate name ver schema
+        $ lookupPredicate sourceRef LatestSchemaAll schema
   forM_ (sortOn predicateRef preds) $ \PredicateDetails{..} -> do
     mapM_ Text.putStrLn $ disassemble
       ("ptc_"

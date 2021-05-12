@@ -23,7 +23,7 @@ import Util.EventBase (EventBaseDataplane)
 import Glean.Angle.Types
 import qualified Glean.Database.Backup.Backend as Backup
 import Glean.Database.Catalog (Catalog)
-import Glean.Database.Schema (DbSchema)
+import Glean.Database.Schema.Types
 import Glean.Database.Stats (Stats)
 import Glean.Database.Storage (Database, Storage)
 import Glean.Database.Work.Heartbeat (Heartbeats)
@@ -176,6 +176,7 @@ data Env = forall storage. Storage storage => Env
   , envSchemaUpdateSignal :: TMVar ()
     -- ^ The schema source, and its parsed/resolved form are both cached here.
   , envSchemaOverride :: Bool
+  , envSchemaVersion :: SchemaVersion
   , envRecipeConfig :: Observed Recipes.Config
   , envServerConfig :: Observed ServerConfig.Config
   , envBackupBackends :: Backup.Backends

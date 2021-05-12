@@ -1,6 +1,7 @@
 module Glean.Database.Schema.Types
   ( DbSchema(..)
   , PredicateDetails(..)
+  , SchemaVersion(..)
   , lookupPredicate
   , lookupPredicateRef
   , lookupPid
@@ -31,16 +32,17 @@ import Glean.Schema.Resolve
 -- | The Schema used by a DB
 data DbSchema = DbSchema
   { predicatesByRef :: HashMap PredicateRef PredicateDetails
-  , predicatesByName :: HashMap Name PredicateDetails
+  , predicatesByName :: IntMap (HashMap Name PredicateDetails)
      -- ^ points to the predicate for each name in schema "all"
   , predicatesById :: IntMap PredicateDetails
   , schemaTypesByRef :: HashMap TypeRef TypeDetails
-  , schemaTypesByName :: HashMap Name TypeDetails
+  , schemaTypesByName :: IntMap (HashMap Name TypeDetails)
      -- ^ points to the type for each name in schema "all"
   , schemaInventory :: Inventory
   , schemaSpec :: Schemas
   , schemaSource :: SourceSchemas
   , schemaMaxPid :: Pid
+  , schemaLatestVersion :: Version
   }
 
 data TypeDetails = TypeDetails
@@ -62,13 +64,26 @@ data PredicateDetails = PredicateDetails
     -- Only predicates in the stored schema can be written.
   }
 
+data SchemaVersion
+  = LatestSchemaAll
+  | SpecificSchemaAll Version
+
+allSchemaVersion :: DbSchema -> SchemaVersion -> Version
+allSchemaVersion _ (SpecificSchemaAll v) = v
+allSchemaVersion dbSchema LatestSchemaAll = schemaLatestVersion dbSchema
+
 lookupPredicate
-  :: Name
-  -> Maybe Version
+  :: SourceRef
+  -> SchemaVersion
+     -- ^ schema version to use if predicate version is Nothing
   -> DbSchema
   -> Maybe PredicateDetails
-lookupPredicate name (Just ver) = lookupPredicateRef $ PredicateRef name ver
-lookupPredicate name Nothing = HashMap.lookup name . predicatesByName
+lookupPredicate (SourceRef name (Just ver)) _ dbSchema =
+  lookupPredicateRef (PredicateRef name ver) dbSchema
+lookupPredicate (SourceRef name Nothing) schemaVer dbSchema =
+  HashMap.lookup name =<<
+    IntMap.lookup (fromIntegral (allSchemaVersion dbSchema schemaVer))
+      (predicatesByName dbSchema)
 
 lookupPredicateRef :: PredicateRef -> DbSchema -> Maybe PredicateDetails
 lookupPredicateRef ref = HashMap.lookup ref . predicatesByRef
@@ -76,9 +91,13 @@ lookupPredicateRef ref = HashMap.lookup ref . predicatesByRef
 lookupPid :: Pid -> DbSchema -> Maybe PredicateDetails
 lookupPid (Pid pid) = IntMap.lookup (fromIntegral pid) . predicatesById
 
-lookupType :: SourceRef -> DbSchema -> Maybe TypeDetails
-lookupType (SourceRef name Nothing) = HashMap.lookup name . schemaTypesByName
-lookupType (SourceRef name (Just v)) = lookupTypeRef (TypeRef name v)
+lookupType :: SourceRef -> SchemaVersion -> DbSchema -> Maybe TypeDetails
+lookupType (SourceRef name (Just v)) _ dbSchema =
+  lookupTypeRef (TypeRef name v) dbSchema
+lookupType (SourceRef name Nothing) schemaVer dbSchema =
+  HashMap.lookup name =<<
+    IntMap.lookup (fromIntegral (allSchemaVersion dbSchema schemaVer))
+      (schemaTypesByName dbSchema)
 
 lookupTypeRef :: TypeRef -> DbSchema -> Maybe TypeDetails
 lookupTypeRef ref  = HashMap.lookup ref . schemaTypesByRef

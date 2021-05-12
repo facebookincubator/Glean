@@ -4,6 +4,7 @@ module Glean.Database.Test
   , setRecipes
   , setSchemaSource
   , setSchemaPath
+  , setSchemaVersion
   , setMemoryStorage
   , setDBVersion
   , setSchemaOverride
@@ -31,6 +32,7 @@ import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Config
 import Glean.Database.Env
 import qualified Glean.Database.Storage.Memory as Memory
+import Glean.Database.Schema.Types
 import Glean.Database.Types
 import Glean.Impl.ConfigProvider ()
 import Glean.Recipes.Types (Recipes)
@@ -60,6 +62,9 @@ setSchemaSource source cfg = cfg{ cfgSchemaSource = source }
 
 setSchemaPath :: FilePath -> Setting
 setSchemaPath = setSchemaSource . schemaSourceFile
+
+setSchemaVersion :: Thrift.Version -> Setting
+setSchemaVersion ver cfg = cfg { cfgSchemaVersion = SpecificSchemaAll ver }
 
 setMemoryStorage :: Setting
 setMemoryStorage cfg = cfg{ cfgStorage = \_ _ -> Some <$> Memory.newStorage }

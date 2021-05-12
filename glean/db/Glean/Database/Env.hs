@@ -124,6 +124,7 @@ initEnv evb cfg logger envSchemaSource envRecipeConfig envServerConfig =
       , envListener = cfgListener cfg
       , envGetCreationTime = getCurrentTime
       , envSchemaOverride = cfgSchemaOverride cfg
+      , envSchemaVersion = cfgSchemaVersion cfg
       , envBackupBackends = HashMap.fromList
           [
 #if FACEBOOK
