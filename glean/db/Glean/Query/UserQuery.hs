@@ -480,8 +480,12 @@ userQueryImpl
         -- This is either a new query or the continuation of a query
         -- that returns a temporary predicate.
         _ -> do
+          let
+            schemaVersion =
+              maybe (envSchemaVersion env) SpecificSchemaAll
+                userQuery_schema_version
           (compileTime, _, query@QueryWithInfo{..}) <- timeIt $
-            compileAngleQuery env schema userQuery_query stored
+            compileAngleQuery schemaVersion schema userQuery_query stored
           let
             irDiag =
               [ "ir:\n" <> Text.pack (show (pretty qiQuery))
@@ -746,8 +750,14 @@ userQueryImpl
 
 
 
-compileAngleQuery :: Env -> DbSchema -> ByteString -> Bool -> IO CodegenQuery
-compileAngleQuery env dbSchema source stored = do
+compileAngleQuery
+  :: SchemaVersion
+    -- ^ Schema version to resolve unversioned predicates
+  -> DbSchema
+  -> ByteString
+  -> Bool
+  -> IO CodegenQuery
+compileAngleQuery ver dbSchema source stored = do
   parsed <- checkBadQuery Text.pack $ Angle.parseQuery source
   vlog 2 $ "parsed query: " <> show (pretty parsed)
 
@@ -765,8 +775,6 @@ compileAngleQuery env dbSchema source stored = do
   checkBadQuery id $ runExcept $ reorder dbSchema optimised
   -- no need to vlog, compileQuery will vlog it later
   where
-  ver = envSchemaVersion env
-
   checkBadQuery :: (err -> Text) -> Either err a -> IO a
   checkBadQuery txt act = case act of
     Left str -> throwIO $ Thrift.BadQuery $ txt str

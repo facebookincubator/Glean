@@ -42,12 +42,14 @@ import Glean.Write.SendBatch
 import TestDB
 
 angleQuery :: Env -> Repo -> ByteString -> IO UserQueryResults
-angleQuery env repo q =
-  userQuery env repo def
-    { userQuery_query = q
-    , userQuery_options = Just def
-      { userQueryOptions_syntax = QuerySyntax_ANGLE }
-    }
+angleQuery env repo q = userQuery env repo $ mkAngleQuery q
+
+mkAngleQuery :: ByteString -> UserQuery
+mkAngleQuery q = def
+  { userQuery_query = q
+  , userQuery_options = Just def
+    { userQueryOptions_syntax = QuerySyntax_ANGLE }
+  }
 
 -- Test that we can extend the schema with a derived predicate after
 -- the DB has been created, and make a query using the new predicate.
@@ -142,6 +144,16 @@ schemaUnversioned = TestCase $ do
         Right UserQueryResults{..} -> null userQueryResults_facts
         _ -> False
 
+    withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
+      -- Test that an unversioned query "test.P _" resolves to test.P.1,
+      -- if we set the schema_version field in the query to 1.
+      r <- try $ userQuery env repo $
+        (mkAngleQuery "test.P _") { userQuery_schema_version = Just 1 }
+      print (r :: Either BadQuery UserQueryResults)
+      assertBool "unversioned 2" $ case r of
+        Right UserQueryResults{..} -> length userQueryResults_facts == 1
+        _ -> False
+
     withTestEnv [setRoot root, setSchemaPath file, setSchemaVersion 1] $
       \env -> do
       -- Test that an unversioned query "test.P _" now resolves to
@@ -149,7 +161,7 @@ schemaUnversioned = TestCase $ do
       -- all.1 inherits from test.1
       r <- try $ angleQuery env repo "test.P _"
       print (r :: Either BadQuery UserQueryResults)
-      assertBool "unversioned 2" $ case r of
+      assertBool "unversioned 3" $ case r of
         Right UserQueryResults{..} -> length userQueryResults_facts == 1
         _ -> False
 

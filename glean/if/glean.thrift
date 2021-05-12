@@ -572,7 +572,9 @@ struct UserQuery {
       // If omitted, defaults to the latest version of this predicate
       // in the schema version.
   4: optional Version schema_version;
-      // If omitted, defaults to the schema version used by the DB.
+      // If supplied, then any unversioned predicates in the query are
+      // resolved using this version of the "all" schema. Otherwise, they
+      // are resolved to the latest version of the "all" schema.
   5: optional UserQueryOptions options;
 
   6: list<UserQueryEncoding> encodings = [];
