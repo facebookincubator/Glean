@@ -7,6 +7,7 @@ import Control.Exception
 import Control.Concurrent
 import Control.Concurrent.STM
 import Control.Monad
+import Data.Bifunctor (second)
 import Data.Default
 import Data.Either
 import Data.Foldable
@@ -47,22 +48,22 @@ derivePredicate
   -> IO Thrift.DerivePredicateResponse
 derivePredicate env repo Thrift.DerivePredicateQuery{..} = do
   pred <- passingConstraints
-  existingDerivation <- atomically $ do
-    derivations <- readTVar $ envDerivations env
-    let samePredicate d =
-          (repo == derivationRepo d) && (pred == derivationPredicate d)
-    return $ find (samePredicate . snd) $ HashMap.toList derivations
+  existingDerivation <- HashMap.lookup (repo, pred)
+    <$> readTVarIO (envDerivations env)
 
   case existingDerivation of
-    Just (handle, _) -> return $ Thrift.DerivePredicateResponse handle
+    Just Derivation{..} ->
+      return $ Thrift.DerivePredicateResponse derivationHandle
     Nothing -> do
       handle <- UUID.toText <$> UUID.nextRandom
       startDerivation env repo pred handle
-      spawn_ (envWarden env)
-        $ handleAll (\e -> failDerivation env pred handle e >> throwIO e)
-        $ do
-          runDerivation env repo handle $ query pred
-          enqueueCheckpoint env repo $ onWritesFinished handle
+
+      let onErr e = failDerivation env repo pred e >> throwIO e
+      spawn_ (envWarden env) $ handleAll onErr $ do
+        runDerivation env repo pred $ query pred
+        enqueueCheckpoint env repo $ atomically
+          $ markPredicateAsComplete env repo pred
+
       return $ Thrift.DerivePredicateResponse handle
   where
     passingConstraints :: IO PredicateRef
@@ -114,16 +115,12 @@ derivePredicate env repo Thrift.DerivePredicateQuery{..} = do
     maxTime = derivePredicateQuery_options
       >>= derivePredicateOptions_max_time_ms_per_query
 
-    onWritesFinished handle = atomically $ do
-      derivations <- readTVar $ envDerivations env
-      mapM_ (finishDerivation env) (HashMap.lookup handle derivations)
-
-finishDerivation :: Database.Env -> Derivation -> STM ()
-finishDerivation env Derivation{..} = void
-  $ Catalog.modifyMeta (envCatalog env) derivationRepo
+markPredicateAsComplete :: Database.Env -> Repo -> PredicateRef -> STM ()
+markPredicateAsComplete env repo pred = void
+  $ Catalog.modifyMeta (envCatalog env) repo
   $ \meta -> return meta
       { metaCompletePredicates =
-          insertUnique derivationPredicate $ metaCompletePredicates meta
+        insertUnique pred $ metaCompletePredicates meta
       }
   where
     insertUnique x xs = x : filter (/= x) xs
@@ -187,10 +184,10 @@ typeDeps = \case
 runDerivation
   :: Database.Env
   -> Thrift.Repo
-  -> Handle
+  -> PredicateRef
   -> Thrift.UserQuery
   -> IO ()
-runDerivation env repo handle query = do
+runDerivation env repo pred query = do
   config <- Observed.get (envServerConfig env)
   readDatabase env repo $ \schema lookup -> do
   let
@@ -199,7 +196,7 @@ runDerivation env repo handle query = do
       case result of
         Left Thrift.Retry{..} -> retry retry_seconds (loop q)
         Right res@(_, mcont, _) -> do
-          updateDerivationProgress env handle res
+          updateDerivationProgress env repo pred res
           case mcont of
             Just cont -> loop $ query `withCont`cont
             Nothing -> return ()
@@ -224,39 +221,39 @@ startDerivation
 startDerivation env repo pred handle = do
   now <- getTimePoint
   atomically $ modifyTVar' (envDerivations env) $
-    HashMap.insert handle Derivation
-      { derivationPredicate = pred
-      , derivationRepo = repo
-      , derivationStart = now
+    HashMap.insert (repo, pred) Derivation
+      { derivationStart = now
       , derivationQueryingFinished = False
       , derivationStats = def
       , derivationPendingWrites = []
       , derivationError = Nothing
+      , derivationHandle = handle
       }
 
 failDerivation
   :: Database.Env
+  -> Repo
   -> PredicateRef
-  -> Thrift.Handle
   -> SomeException
   -> IO ()
-failDerivation env ref handle e = do
+failDerivation env repo pred e = do
   logError $ "Failed derivation of "
-    <> Text.unpack (showPredicateRef ref) <> ": " <> show e
+    <> Text.unpack (showPredicateRef pred) <> ": " <> show e
   atomically
     $ modifyTVar' (envDerivations env)
-    $ HashMap.adjust (\d -> d { derivationError = Just e }) handle
+    $ HashMap.adjust (\d -> d { derivationError = Just e }) (repo, pred)
 
 updateDerivationProgress
   :: Database.Env
-  -> Thrift.Handle
+  -> Repo
+  -> PredicateRef
   -> (Thrift.UserQueryStats, Maybe Thrift.UserQueryCont, Maybe Thrift.Handle)
   -> IO ()
-updateDerivationProgress env handle (stats, mcont, mWriteHandle) = do
+updateDerivationProgress env repo pred (stats, mcont, mWriteHandle) = do
   now <- getTimePoint
   atomically
     $ modifyTVar' (envDerivations env)
-    $ HashMap.adjust (adjust now) handle
+    $ HashMap.adjust (adjust now) (repo, pred)
   where
     adjust now derivation@Derivation{..} = derivation
       { derivationQueryingFinished = isNothing mcont
@@ -288,9 +285,7 @@ pollDerivation
   -> IO Thrift.DerivationProgress
 pollDerivation env@Env{..} handle = do
   completed <- do
-    derivations <- readTVarIO envDerivations
-    Derivation{..} <- maybe (throwIO Thrift.UnknownDerivationHandle) return
-      $ HashMap.lookup handle derivations
+    (key, Derivation{..}) <- atomically $ derivationForHandle env handle
 
     finished <- for derivationPendingWrites $ \writeHandle -> do
       eFinished <- isWriteFinished env writeHandle
@@ -301,24 +296,23 @@ pollDerivation env@Env{..} handle = do
       (err:_, _) -> do
         atomically
           $ modifyTVar' envDerivations
-          $ HashMap.delete handle
+          $ HashMap.delete key
         throwIO err
 
   mask $ \unmask -> do
   -- remove completed writes
   d@Derivation{..} <- unmask $ atomically $ do
-    derivations <- readTVar envDerivations
-    withoutCompleted <- case HashMap.lookup handle derivations of
-      Nothing -> throwSTM Thrift.UnknownDerivationHandle
-      Just d -> return d
-        { derivationPendingWrites =
-            derivationPendingWrites d \\ completed
-        }
+    let removeCompleted d = d
+          { derivationPendingWrites = derivationPendingWrites d \\ completed }
+
+    ((repo, pred), withoutCompleted) <-
+      second removeCompleted <$> derivationForHandle env handle
 
     if isFinished withoutCompleted
-      then finishDerivation env withoutCompleted
-      else writeTVar envDerivations $
-        HashMap.insert handle withoutCompleted derivations
+      then markPredicateAsComplete env repo pred
+      else modifyTVar' envDerivations
+        $ HashMap.insert (repo, pred) withoutCompleted
+
     return withoutCompleted
 
   if isFinished d
@@ -329,6 +323,16 @@ pollDerivation env@Env{..} handle = do
       elapsed <- getElapsedTime derivationStart
       return $ Thrift.DerivationProgress_ongoing derivationStats
         { userQueryStats_elapsed_ns = fromIntegral $ toDiffMicros elapsed }
+
+derivationForHandle
+  :: Database.Env
+  -> Thrift.Handle
+  -> STM ((Repo, PredicateRef), Derivation)
+derivationForHandle env handle = do
+  derivations <- HashMap.toList <$> readTVar (envDerivations env)
+  case find ((handle ==) . derivationHandle . snd) derivations of
+    Nothing -> throwSTM Thrift.UnknownDerivationHandle
+    Just v -> return v
 
 isFinished :: Derivation -> Bool
 isFinished Derivation{..} =

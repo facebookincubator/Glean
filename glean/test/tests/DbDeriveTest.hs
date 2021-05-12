@@ -60,16 +60,17 @@ deriveTest = dbTestCaseWritableWithDerive $ \env repo derive -> do
 
 addDummyDerivationForPredicate :: PredicateRef -> Env -> IO ()
 addDummyDerivationForPredicate ref env =
+  let repo = Thrift.Repo "name" "hash"
+  in
   atomically
     $ modifyTVar' (envDerivations env)
-    $ HashMap.insert "dummy-handle" Derivation
-      { derivationPredicate = ref
-      , derivationRepo = Thrift.Repo "dummy" "dummy"
-      , derivationStart = undefined
+    $ HashMap.insert (repo, ref) Derivation
+      { derivationStart = undefined
       , derivationQueryingFinished = undefined
       , derivationStats = error "wrong repo!"
       , derivationPendingWrites = undefined
       , derivationError = undefined
+      , derivationHandle = "dummy-handle"
       }
 
 -- Test completeness constraint enforcement

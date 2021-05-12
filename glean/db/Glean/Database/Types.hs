@@ -156,13 +156,12 @@ type TailerKey = (Text, Text, Maybe Int)
 
 -- | Information about a derived stored predicate being derived
 data Derivation = Derivation
-  { derivationPredicate :: PredicateRef
-  , derivationRepo :: Thrift.Repo
-  , derivationStart :: TimePoint
+  { derivationStart :: TimePoint
   , derivationQueryingFinished :: Bool
   , derivationStats :: Thrift.UserQueryStats
   , derivationPendingWrites :: [Thrift.Handle]
   , derivationError :: Maybe SomeException
+  , derivationHandle :: Thrift.Handle
   }
 
 data Env = forall storage. Storage storage => Env
@@ -192,7 +191,7 @@ data Env = forall storage. Storage storage => Env
   , envWorkQueue :: WorkQueue
   , envHeartbeats :: Heartbeats
   , envWrites :: TVar (HashMap Text Write)
-  , envDerivations :: TVar (HashMap Text Derivation)
+  , envDerivations :: TVar (HashMap (Thrift.Repo, PredicateRef) Derivation)
   , envWriteQueues :: WriteQueues
   , envTailerOpts :: Tailer.TailerOptions
   , envTailers :: TVar (HashMap TailerKey Tailer)
