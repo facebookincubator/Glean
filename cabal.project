@@ -11,3 +11,6 @@ packages:
     glean.cabal
 
 tests: True
+
+-- necessary to use a haskeline <0.8 with GHCs that ship with base >= 4.14
+allow-newer: haskeline:base
