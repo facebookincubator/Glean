@@ -256,6 +256,20 @@ predicate SearchByFileModule :
      { typeDecl = { name = N }}) = D;
     FileDeclaration { F, D };
 
+# For types exported from .flow files the Haste short name is mapped to the
+# .flow file via the ModuleTypeExport facts
+predicate SearchTypeByModuleExport :
+  {
+    string_: string,
+    name : flow.Name,
+    decl : flow.SomeDeclaration
+  }
+  { S, N, { typeDecl = D } } where
+    StringToFileModule { S, F };
+    MTE = ModuleTypeExport { module = { file = F } };
+    SourceOfTypeExport { MTE, { typeDeclaration = D } };
+    { name = N } = D;
+
 # Location of a SomeDeclaration
 predicate DeclarationLocation :
   {
