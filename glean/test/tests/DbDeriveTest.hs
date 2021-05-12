@@ -7,6 +7,7 @@ import Test.HUnit
 import Util.String.Quasi
 import Data.Proxy
 import Control.Concurrent
+import Control.Exception
 import Control.Monad
 import Control.Concurrent.Async
 import qualified Data.HashMap.Strict as HashMap
@@ -27,7 +28,8 @@ import TestDB
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "derivePredicate" $ testDerivation derivePredicate
-  , TestLabel "deriveStored" $ testDerivation deriveStored
+  , TestLabel "deriveStored" $ testDerivation $ deriveStored $ const mempty
+  , TestLabel "deriveStoredLogging" testDeriveStoredLogging
   ]
 
 testDerivation :: RunDerive -> Test
@@ -138,15 +140,33 @@ derivePredicate env repo proxy = do
           threadDelay (ceiling @Double 1e6) >> loop handle
         Thrift.DerivationProgress_complete  stats -> return stats
 
-deriveStored ::
-  forall p. Predicate p => Env -> Repo -> Proxy p -> IO Int
-deriveStored env repo proxy = do
+testDeriveStoredLogging :: Test
+testDeriveStoredLogging = dbTestCaseWritable $ \env repo -> do
+  tvar <- newTVarIO (0 :: Int)
+  let log _ = atomically $ modifyTVar' tvar (+ 1)
+
+  -- The result is logged once and only once.
+  mapConcurrently_ (deriveStored log env repo)
+      $ replicate 10 $ Proxy @Glean.Test.StoredRevStringPairWithRev
+  logCalls <- readTVarIO tvar
+  assertEqual "deriveStoredLogging - logs once" 1 logCalls
+
+
+deriveStored
+  :: forall p. Predicate p
+  => (Either SomeException Thrift.UserQueryStats -> IO ())
+  -> Env
+  -> Repo
+  -> Proxy p
+  -> IO Int
+deriveStored log env repo proxy = do
   () <- loop
   length <$> runQuery_ env repo (allFacts @p)
   where
     pred = getName proxy
     loop = do
-      res <- Glean.deriveStored env repo $ derivePredicateQuery pred
+      res <- Glean.deriveStored env log repo
+        $ derivePredicateQuery pred
       case res of
         DerivationStatus_ongoing _ -> threadDelay (ceiling @Double 1e6) >> loop
         DerivationStatus_complete _ -> return ()

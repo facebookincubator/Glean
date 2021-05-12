@@ -83,8 +83,8 @@ class Backend a where
   userQuery :: a -> Thrift.Repo -> Thrift.UserQuery
     -> IO Thrift.UserQueryResults
 
-  deriveStored :: a -> Thrift.Repo -> Thrift.DerivePredicateQuery
-    -> IO Thrift.DerivationStatus
+  deriveStored :: a -> LogDerivationResult -> Thrift.Repo
+    -> Thrift.DerivePredicateQuery -> IO Thrift.DerivationStatus
   derivePredicate :: a -> Thrift.Repo -> Thrift.DerivePredicateQuery
     -> IO Thrift.DerivePredicateResponse
   pollDerivation :: a -> Thrift.Handle -> IO Thrift.DerivationProgress
@@ -138,6 +138,7 @@ class Backend a where
   -- | If this is a remote backend, get its ThriftBackend.
   maybeRemote :: a -> Maybe ThriftBackend
 
+type LogDerivationResult = Either SomeException Thrift.UserQueryStats -> IO ()
 
 -- | A remote Glean service, supports the operations of 'Backend'.
 data ThriftBackend = ThriftBackend
@@ -274,7 +275,7 @@ instance Backend ThriftBackend where
       client = Thrift.userQuery_client_info q
         <|> Just (thriftBackendClientInfo t)
 
-  deriveStored t repo pred = withShard t repo $
+  deriveStored t _ repo pred = withShard t repo $
     GleanService.deriveStored repo pred
       { Thrift.derivePredicateQuery_client_info = client }
     where

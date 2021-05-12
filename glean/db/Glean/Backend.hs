@@ -190,11 +190,11 @@ instance Backend LoggingBackend where
     loggingAction (runLogQuery "userQuery" env repo req) logQueryResults $
       userQuery env repo req
 
-  deriveStored (LoggingBackend env) repo q =
+  deriveStored (LoggingBackend env) log repo q =
     loggingAction
       (runLogDerivePredicate "deriveStored" env repo q)
       (const mempty)
-      (deriveStored env repo q)
+      (deriveStored env (runLogDerivationResult env log repo q) repo q)
 
   derivePredicate (LoggingBackend env) repo q =
     loggingAction
@@ -466,6 +466,25 @@ runLogDerivePredicate cmd env repo Thrift.DerivePredicateQuery {..} log =
     , maybe mempty (Logger.setPredicateVersion . fromIntegral)
         derivePredicateQuery_predicate_version
     , maybe mempty logQueryClientInfo derivePredicateQuery_client_info
+    ]
+
+runLogDerivationResult
+  :: Database.Env
+  -> (Either SomeException Thrift.UserQueryStats -> IO ())
+  -> Thrift.Repo
+  -> Thrift.DerivePredicateQuery
+  -> Either SomeException Thrift.UserQueryStats
+  -> IO ()
+runLogDerivationResult env log repo Thrift.DerivePredicateQuery{..} res = do
+  log res
+  runLogRepo "deriveStored(completed)" env repo $ mconcat
+    [ Logger.setPredicate derivePredicateQuery_predicate
+    , maybe mempty (Logger.setPredicateVersion . fromIntegral)
+        derivePredicateQuery_predicate_version
+    , maybe mempty logQueryClientInfo derivePredicateQuery_client_info
+    , case res of
+        Left err -> failureLog err
+        Right stats -> successLog <> logQueryStats stats
     ]
 
 logDerivationProgress :: Thrift.DerivationProgress -> GleanServerLogger
