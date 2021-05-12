@@ -237,7 +237,10 @@ predicate SearchByModule :
   }
   { S, N, D } where
     StringToFileModule { S, F };
-    SearchByFileModule { F, N, D };
+    FileDeclaration { F, D };
+    ({ localDecl = { name = N } } |
+     { memberDecl = { name = N } } |
+     { typeDecl = { name = N }}) = D;
 
 # Lookup a declaration knowing its name and its file
 # Should be O(1)
