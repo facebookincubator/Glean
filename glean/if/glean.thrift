@@ -957,6 +957,10 @@ service GleanService extends fb303.FacebookService {
   UserQueryResults userQuery(1: Repo repo, 2: UserQuery q)
     throws(1: Exception e, 3: BadQuery b, 4: Retry r);
 
+  DerivationStatus deriveStored(1: Repo repo, 2: DerivePredicateQuery q)
+    throws(1: Exception e, 2: NotAStoredPredicate n, 3: UnknownPredicate u,
+           4: IncompleteDependencies d);
+
   DerivePredicateResponse derivePredicate(1: Repo repo, 2: DerivePredicateQuery q)
     throws(1: Exception e, 5: NotAStoredPredicate n, 6: UnknownPredicate u,
            7: PredicateAlreadyComplete p, 8: IncompleteDependencies d

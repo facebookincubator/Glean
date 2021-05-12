@@ -190,6 +190,12 @@ instance Backend LoggingBackend where
     loggingAction (runLogQuery "userQuery" env repo req) logQueryResults $
       userQuery env repo req
 
+  deriveStored (LoggingBackend env) repo q =
+    loggingAction
+      (runLogDerivePredicate "deriveStored" env repo q)
+      (const mempty)
+      (deriveStored env repo q)
+
   derivePredicate (LoggingBackend env) repo q =
     loggingAction
       (runLogDerivePredicate "derivePredicate" env repo q)
@@ -289,6 +295,7 @@ instance Backend Database.Env where
   userQueryFacts = UserQuery.userQueryFacts
   userQuery = UserQuery.userQuery
 
+  deriveStored = Derive.deriveStored
   derivePredicate = Derive.derivePredicate
   pollDerivation = Derive.pollDerivation
 

@@ -72,6 +72,9 @@ handler State{..} req =
     Service.UserQuery repo query ->
       Backend.userQuery backend repo query
 
+    Service.DeriveStored repo pred ->
+      Backend.deriveStored backend repo pred
+
     Service.DerivePredicate repo pred ->
       Backend.derivePredicate backend repo pred
 

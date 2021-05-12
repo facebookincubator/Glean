@@ -125,7 +125,7 @@ deriveStoredImpl env repo Thrift.DerivePredicateQuery{..} = do
               derivePredicateQuery_predicate_version)
             (envSchemaVersion env)
             schema
-      pred <- case mdetails  of
+      pred <- case mdetails of
         Nothing -> throwIO Thrift.UnknownPredicate
         Just details -> return $ predicateRef details
 

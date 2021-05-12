@@ -14,7 +14,8 @@ import Control.Concurrent.STM
 
 import TestRunner
 
-import Glean
+import qualified Glean
+import Glean hiding (derivePredicate, deriveStored)
 import Glean.Init
 import Glean.Database.Types
 import Glean.Types as Thrift
@@ -25,13 +26,23 @@ import TestDB
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
-  [ TestLabel "deriveTest" deriveTest
-  , TestLabel "completenessTest" completenessTest
+  [ TestLabel "derivePredicate" $ testDerivation derivePredicate
+  , TestLabel "deriveStored" $ testDerivation deriveStored
   ]
 
+testDerivation :: RunDerive -> Test
+testDerivation derive = TestList
+  [ TestLabel "deriveTest" $ deriveTest derive
+  , TestLabel "completenessTest" $ completenessTest derive
+  ]
+
+type RunDerive = forall p. Predicate p => Env -> Repo -> Proxy p -> IO Int
+
 -- Test deriving stored facts
-deriveTest :: Test
-deriveTest = dbTestCaseWritableWithDerive $ \env repo derive -> do
+deriveTest :: RunDerive -> Test
+deriveTest runDerive = dbTestCaseWritable $ \env repo -> do
+  let derive :: forall p. Predicate p => Proxy p -> IO Int
+      derive = runDerive env repo
   -- initially zero facts
   results <- runQuery_ env repo $
     angle @Glean.Test.StoredRevStringPair $
@@ -41,7 +52,7 @@ deriveTest = dbTestCaseWritableWithDerive $ \env repo derive -> do
   assertEqual "deriveTest - pre-derive" 0 (length results)
 
   -- compute and store. Should derive 6 facts
-  derivedCount <- derive $ getName (Proxy @Glean.Test.StoredRevStringPair)
+  derivedCount <- derive (Proxy @Glean.Test.StoredRevStringPair)
   assertEqual "deriveTest - derivation" 6 derivedCount
 
   -- now there should be 6 facts stored in the DB
@@ -53,18 +64,18 @@ deriveTest = dbTestCaseWritableWithDerive $ \env repo derive -> do
   assertEqual "deriveTest - post-derive" 6 (length results)
 
   -- should not confuse predicates from different repos
-  let pred = getName (Proxy @Glean.Test.StoredRevStringPairWithA)
-  addDummyDerivationForPredicate pred env
+  let pred = Proxy @Glean.Test.StoredRevStringPairWithA
+  addDummyDerivationForPredicate (getName pred) env
   derivedCount <- derive pred
   assertEqual "deriveTest - repo check" 1 derivedCount
 
 addDummyDerivationForPredicate :: PredicateRef -> Env -> IO ()
-addDummyDerivationForPredicate ref env =
+addDummyDerivationForPredicate pred env =
   let repo = Thrift.Repo "name" "hash"
   in
   atomically
     $ modifyTVar' (envDerivations env)
-    $ HashMap.insert (repo, ref) Derivation
+    $ HashMap.insert (repo, pred) Derivation
       { derivationStart = undefined
       , derivationQueryingFinished = undefined
       , derivationStats = error "wrong repo!"
@@ -74,60 +85,74 @@ addDummyDerivationForPredicate ref env =
       }
 
 -- Test completeness constraint enforcement
-completenessTest :: Test
-completenessTest = dbTestCaseWritableWithDerive $ \_ _ derive -> do
+completenessTest :: RunDerive -> Test
+completenessTest runDerive = dbTestCaseWritable $ \env repo -> do
+  let derive :: forall p. Predicate p => Proxy p -> IO Int
+      derive = runDerive env repo
   -- deriving a stored predicate depending on a non-derived one succeeds
   derivedCount <-
-    derive $ getName (Proxy @Glean.Test.StoredRevStringPairWithRev)
-  assertEqual "deriveTest - derived depending on non-derived" 6 derivedCount
+    derive (Proxy @Glean.Test.StoredRevStringPairWithRev)
+  assertEqual "completenessTest - derived depending on non-derived"
+    6 derivedCount
 
   -- deriving a non-derived predicate fails
   assertThrows "completenessTest - non-derived" Thrift.NotAStoredPredicate $
-    void $ derive $ getName (Proxy @Glean.Test.StringPair)
+    void $ derive (Proxy @Glean.Test.StringPair)
 
   -- deriving a derived but not stored predicate fails
   assertThrows "completenessTest - non-stored" Thrift.NotAStoredPredicate $
-    void $ derive $ getName (Proxy @Glean.Test.RevStringPair)
+    void $ derive (Proxy @Glean.Test.RevStringPair)
 
   -- deriving a stored predicate that depends on incomplete predicates fails
   assertThrows "completenessTest - incomplete dep"
     (Thrift.IncompleteDependencies
       [getName $ Proxy @Glean.Test.StoredRevStringPair])
-    $ void $ derive $ getName (Proxy @Glean.Test.StoredRevStringPairWithA)
+    $ void $ derive (Proxy @Glean.Test.StoredRevStringPairWithA)
 
   -- parallel derivation works
-  let run = derive $ getName (Proxy @Glean.Test.StoredRevStringPair)
+  let run = derive (Proxy @Glean.Test.StoredRevStringPair)
   (derivedCount1, derivedCount2) <- concurrently run run
   assertEqual "deriveTest - parallel"
     (6, 6)
     (derivedCount1, derivedCount2)
 
   -- should derive 6 facts now that the dependency is complete
-  derivedCount <- derive $ getName (Proxy @Glean.Test.StoredRevStringPairWithA)
+  derivedCount <- derive (Proxy @Glean.Test.StoredRevStringPairWithA)
   assertEqual "deriveTest - subsequent derivation" 1 derivedCount
 
   -- deriving a complete predicate is a no-op
-  derivedCount <- derive $ getName (Proxy @Glean.Test.StoredRevStringPair)
+  derivedCount <- derive (Proxy @Glean.Test.StoredRevStringPair)
   assertEqual "deriveTest -  complete" 6 derivedCount
 
-dbTestCaseWritableWithDerive
-  :: (Env -> Repo -> (PredicateRef -> IO Int) -> IO ())
-  -> Test
-dbTestCaseWritableWithDerive f =
-  dbTestCaseWritable $ \env repo ->
-  let
-    derive (PredicateRef name version) = do
-      let query = def
-            { derivePredicateQuery_predicate = name
-            , derivePredicateQuery_predicate_version = Just version
-            }
-      DerivePredicateResponse handle <- Glean.derivePredicate env repo query
-      let loop = do
-            progress <- Glean.pollDerivation env handle
-            case progress of
-              Thrift.DerivationProgress_ongoing _ ->
-                threadDelay (ceiling @Double 1e6) >> loop
-              Thrift.DerivationProgress_complete  stats -> return stats
-      fromIntegral . Thrift.userQueryStats_result_count <$> loop
-  in
-  f env repo derive
+derivePredicate :: Predicate p => Env -> Repo -> Proxy p -> IO Int
+derivePredicate env repo proxy = do
+  DerivePredicateResponse handle <-
+    Glean.derivePredicate env repo $ derivePredicateQuery pred
+  fromIntegral . Thrift.userQueryStats_result_count <$> loop handle
+  where
+    pred = getName proxy
+    loop handle = do
+      progress <- Glean.pollDerivation env handle
+      case progress of
+        Thrift.DerivationProgress_ongoing _ ->
+          threadDelay (ceiling @Double 1e6) >> loop handle
+        Thrift.DerivationProgress_complete  stats -> return stats
+
+deriveStored ::
+  forall p. Predicate p => Env -> Repo -> Proxy p -> IO Int
+deriveStored env repo proxy = do
+  () <- loop
+  length <$> runQuery_ env repo (allFacts @p)
+  where
+    pred = getName proxy
+    loop = do
+      res <- Glean.deriveStored env repo $ derivePredicateQuery pred
+      case res of
+        DerivationStatus_ongoing _ -> threadDelay (ceiling @Double 1e6) >> loop
+        DerivationStatus_complete _ -> return ()
+
+derivePredicateQuery :: PredicateRef -> Thrift.DerivePredicateQuery
+derivePredicateQuery (PredicateRef name version) = def
+  { derivePredicateQuery_predicate = name
+  , derivePredicateQuery_predicate_version = Just version
+  }
