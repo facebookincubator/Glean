@@ -558,6 +558,15 @@ union DerivationProgress {
   2: UserQueryStats complete;
 } (hs.nonempty)
 
+struct DerivationOngoing {}
+
+struct DerivationComplete {}
+
+union DerivationStatus {
+  1: DerivationOngoing ongoing;
+  2: DerivationComplete complete;
+} (hs.nonempty)
+
 struct UserQuery {
   1: string predicate;
       // Name of the predicate to query
