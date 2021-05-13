@@ -8,6 +8,7 @@ import Control.Exception
 import Control.Monad
 import Data.Default
 import Data.Either
+import qualified Data.HashMap.Strict as HashMap
 import Data.List
 import qualified Data.Map as Map
 import Data.Maybe
@@ -122,9 +123,7 @@ schemaUnversioned = TestCase $ do
           schema all.2 : test.2 {}
       |]
 
-  withSchemaFile latestAngleVersion schema $ \root file -> do
-    repo <- withEmptyTestDB [setRoot root, setSchemaPath file] $
-      \env repo -> do
+  let fill env repo =
         void $ sendJsonBatch env repo
           [ JsonFactBatch
               { jsonFactBatch_predicate = PredicateRef "test.P" 1
@@ -132,13 +131,26 @@ schemaUnversioned = TestCase $ do
               }
           ]
           Nothing
-        return repo
+
+  withSchemaFile latestAngleVersion schema $ \root file -> do
+    repo1 <- withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
+      let repo = Thrift.Repo "schematest-repo" "1"
+      kickOffTestDB env repo id
+      fill env repo
+      return repo
+    repo2 <- withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
+      let repo = Thrift.Repo "schematest-repo" "2"
+      kickOffTestDB env repo id
+      let props = HashMap.fromList [("glean.schema_version", "1")]
+      void $ updateProperties env repo props []
+      fill env repo
+      return repo
 
     withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
       -- Test that an unversioned query "test.P _" resolves to test.P.2,
       -- because the all.2 schema inherits from test.2 and we pick
       -- all.2 by default
-      r <- try $ angleQuery env repo "test.P _"
+      r <- try $ angleQuery env repo1 "test.P _"
       print (r :: Either BadQuery UserQueryResults)
       assertBool "unversioned 1" $ case r of
         Right UserQueryResults{..} -> null userQueryResults_facts
@@ -147,7 +159,7 @@ schemaUnversioned = TestCase $ do
     withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
       -- Test that an unversioned query "test.P _" resolves to test.P.1,
       -- if we set the schema_version field in the query to 1.
-      r <- try $ userQuery env repo $
+      r <- try $ userQuery env repo1 $
         (mkAngleQuery "test.P _") { userQuery_schema_version = Just 1 }
       print (r :: Either BadQuery UserQueryResults)
       assertBool "unversioned 2" $ case r of
@@ -159,7 +171,17 @@ schemaUnversioned = TestCase $ do
       -- Test that an unversioned query "test.P _" now resolves to
       -- test.P.1, because we're now asking for all.1 explicitly, and
       -- all.1 inherits from test.1
-      r <- try $ angleQuery env repo "test.P _"
+      r <- try $ angleQuery env repo1 "test.P _"
+      print (r :: Either BadQuery UserQueryResults)
+      assertBool "unversioned 3" $ case r of
+        Right UserQueryResults{..} -> length userQueryResults_facts == 1
+        _ -> False
+
+    withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
+      -- Test that an unversioned query "test.P _" resolves to test.P.1
+      -- when using repo2, which has the glean.schema_version:1 property
+      -- set in its metadata.
+      r <- try $ angleQuery env repo2 "test.P _"
       print (r :: Either BadQuery UserQueryResults)
       assertBool "unversioned 3" $ case r of
         Right UserQueryResults{..} -> length userQueryResults_facts == 1

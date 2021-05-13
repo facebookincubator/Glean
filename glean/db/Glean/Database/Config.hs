@@ -27,7 +27,6 @@ import System.FilePath
 import Glean.Angle.Types
 import qualified Glean.Database.Catalog.Local.Files as Catalog.Local.Files
 import qualified Glean.Database.Catalog.Store as Catalog
-import Glean.Database.Schema.Types
 import Glean.Database.Storage
 import qualified Glean.Database.Storage.Memory as Memory
 import qualified Glean.Database.Storage.RocksDB as RocksDB
@@ -53,7 +52,7 @@ data Config = Config
       -- current schema, predicates and types from the DB schema are
       -- replaced with those from the current schema. NOTE: this
       -- option is dangerous and is only for testing.
-  , cfgSchemaVersion :: SchemaVersion
+  , cfgSchemaVersion :: Maybe Version
       -- ^ If set, this is the version of the "all" schema that is
       -- used to resolve unversioned predicates in a query.
   , cfgRecipeConfig :: ThriftSource Recipes.Config
@@ -80,7 +79,7 @@ instance Default Config where
     , cfgSchemaSource = ThriftSource.value (error "undefined schema")
     , cfgSchemaDir = Nothing
     , cfgSchemaOverride = False
-    , cfgSchemaVersion = LatestSchemaAll
+    , cfgSchemaVersion = Nothing
     , cfgRecipeConfig = def
     , cfgServerConfig = def
     , cfgStorage = \root scfg -> Some <$> RocksDB.newStorage root scfg
@@ -173,8 +172,7 @@ options = do
   ~(cfgSchemaDir, cfgSchemaSource) <-
     schemaSourceOption <|> dbSchemaSourceOption
   cfgSchemaOverride <- switch (long "db-schema-override")
-  cfgSchemaVersion <- fmap (maybe LatestSchemaAll SpecificSchemaAll) $
-    optional $ option auto
+  cfgSchemaVersion <- optional $ option auto
     ( long "schema-version"
     <> metavar "VERSION"
     <> help (

@@ -136,7 +136,7 @@ deriveStoredImpl env log repo Thrift.DerivePredicateQuery{..} = do
       let mdetails = lookupPredicate
             (SourceRef derivePredicateQuery_predicate
               derivePredicateQuery_predicate_version)
-            (envSchemaVersion env)
+            (maybe LatestSchemaAll SpecificSchemaAll (envSchemaVersion env))
             schema
       pred <- case mdetails of
         Nothing -> throwIO Thrift.UnknownPredicate

@@ -5,6 +5,7 @@ module Glean.Query.UserQuery
   ) where
 
 import Control.Applicative
+import Control.Concurrent.STM
 import Control.DeepSeq
 import Control.Exception
 import Control.Monad
@@ -44,10 +45,12 @@ import Thrift.Protocol.JSON.Base64
 import Util.AllocLimit
 import Util.Timing
 import Util.Log
+import Util.Text
 
 import qualified Glean.Angle.Parser as Angle
 import Glean.Angle.Types hiding (Type, FieldDef)
 import qualified Glean.Angle.Types as Angle
+import Glean.Database.Catalog
 import Glean.Database.Schema.Types
 import Glean.Database.Stuff
 import Glean.Database.Types as Database
@@ -480,10 +483,14 @@ userQueryImpl
         -- This is either a new query or the continuation of a query
         -- that returns a temporary predicate.
         _ -> do
+          dbSchemaVersion <- getDbSchemaVersion env repo
           let
             schemaVersion =
-              maybe (envSchemaVersion env) SpecificSchemaAll
-                userQuery_schema_version
+              maybe LatestSchemaAll SpecificSchemaAll $
+                userQuery_schema_version <|>
+                envSchemaVersion env <|>
+                dbSchemaVersion
+
           (compileTime, _, query@QueryWithInfo{..}) <- timeIt $
             compileAngleQuery schemaVersion schema userQuery_query stored
           let
@@ -535,7 +542,7 @@ userQueryImpl
       checkPredicatesMatch schema
         details
         (SourceRef userQuery_predicate userQuery_predicate_version)
-        (envSchemaVersion env)
+        (maybe LatestSchemaAll SpecificSchemaAll (envSchemaVersion env))
 
     let limits = mkQueryRuntimeOptions opts config
     nextId <- case Thrift.userQueryOptions_continuation opts of
@@ -618,7 +625,7 @@ userQueryImpl
     details@PredicateDetails{..} <-
       case lookupPredicate
           (SourceRef userQuery_predicate userQuery_predicate_version)
-          (envSchemaVersion env)
+          (maybe LatestSchemaAll SpecificSchemaAll (envSchemaVersion env))
           schema of
         Nothing -> throwIO $ Thrift.BadQuery $ mconcat
           [ "unknown predicate: "
@@ -1157,3 +1164,10 @@ compileType schema src = do
     badQuery :: Text -> IO a
     badQuery err = throwIO $ Thrift.BadQuery $ Text.unlines
       ["unable to compile type: ", err]
+
+getDbSchemaVersion :: Env -> Thrift.Repo -> IO (Maybe Version)
+getDbSchemaVersion env repo = do
+  props <- atomically $ Thrift.metaProperties <$> readMeta (envCatalog env) repo
+  case HashMap.lookup "glean.schema_version" props of
+    Just txt | Right v <- textToInt txt -> return (Just (fromIntegral v))
+    _otherwise -> return Nothing
