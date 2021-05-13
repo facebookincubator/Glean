@@ -84,5 +84,6 @@ keyOf f = case getFactKey f of
 trySyncHaxl :: Haxl w b -> Haxl w (Either SomeException b)
 trySyncHaxl act = catchIf isSyncException (Right <$> act) (return . Left)
 
-getFirstResult :: (HaxlQuery p) => Query p -> Haxl w (Maybe p)
+-- | Search for at most 1 result and return it or Nothing
+getFirstResult :: (Typeable a, Show a) => Query a -> Haxl w (Maybe a)
 getFirstResult = fmap (listToMaybe . fst) . search . limit 1
