@@ -28,6 +28,7 @@ from glean.glean.clients import GleanService
 from glean.glean.types import (
     BatchRetry,
     DatabaseStatus,
+    Database,
     FactQuery,
     Failure,
     FinishResponse,
@@ -63,7 +64,7 @@ from libfb.py.asyncio.thrift import get_direct_client
 from libfb.py.build_info import BuildInfo
 from libfb.py.pwdutils import get_current_user_name
 from more_itertools import flatten
-from servicerouter.py3 import ClientParams, get_sr_client
+from servicerouter.py3 import ClientParams, get_sr_client, get_selection
 from thrift.py3 import Protocol, Struct, deserialize, serialize
 from typing_extensions import Final
 
@@ -560,10 +561,7 @@ def _get_glean_service(
 
     client_params = ClientParams().setClientIdToBuildRule_DEPRECATED()
     if client_config.use_shards != UseShards.NO_SHARDS and repo is not None:
-        repo_str = f"{repo.name}/{repo.hash}"
-        hash = hashlib.md5(repo_str.encode("utf-8")).digest()
-        shard = int.from_bytes(hash[0:8], byteorder="big") >> 1
-        client_params.shardId = str(shard)
+        client_params.shardId = _get_shard_for_repo(repo)
 
     service: ServiceLocator = client_config.serv
     if service.type == ServiceLocator.Type.tier:
@@ -579,33 +577,60 @@ def _get_glean_service(
     return glean_service
 
 
+def _get_shard_for_repo(repo: Repo) -> str:
+    repo_str = f"{repo.name}/{repo.hash}"
+    hash = hashlib.md5(repo_str.encode("utf-8")).digest()
+    shard = int.from_bytes(hash[0:8], byteorder="big") >> 1
+    return str(shard)
+
+
+async def _is_db_available(
+    glean_service: GleanService, client_config: ClientConfig, db: Database
+) -> bool:
+    if db.status == DatabaseStatus.Complete:
+        return True
+    service: ServiceLocator = client_config.serv
+    if service.type != ServiceLocator.Type.tier:
+        return False
+
+    if (
+        db.status == DatabaseStatus.Restoring
+        and client_config.use_shards != UseShards.NO_SHARDS
+    ):
+        shard_id = _get_shard_for_repo(db.repo)
+        selection = await get_selection(service.tier, options={"shards": [shard_id]})
+        return len(selection) > 0
+    return False
+
+
 async def _get_latest_repo(
     glean_service: GleanService, client_config: ClientConfig, repo_name: str
 ) -> Optional[Repo]:
     dbs = await glean_service.listDatabases(ListDatabases())
     now = int(time.time())
-    latest = None
-    for db in dbs.databases:
-        if (
-            db.repo.name == repo_name
-            and db.created_since_epoch is not None
-            and (now - db.created_since_epoch > client_config.min_db_age)
-            and (
-                db.status == DatabaseStatus.Complete
-                and db.expire_time is None
-                and (
-                    latest is None
-                    or latest.created_since_epoch is None
-                    or latest.created_since_epoch < db.created_since_epoch
-                )
+    candidate_dbs = [
+        db
+        for db in dbs.databases
+        if db.repo.name == repo_name
+        if db.created_since_epoch is not None
+        and now - db.created_since_epoch > client_config.min_db_age
+    ]
+    available_dbs = [
+        db
+        for db in candidate_dbs
+        if await _is_db_available(glean_service, client_config, db)
+    ]
+    latest = next(
+        iter(
+            sorted(
+                available_dbs, key=lambda db: db.created_since_epoch or 0, reverse=True
             )
-        ):
-            latest = db
-
-    if latest is None:
-        return None
-    else:
+        ),
+        None,
+    )
+    if latest:
         return latest.repo
+    return None
 
 
 def make_batch(facts: Iterable[Fact]) -> SendJsonBatch:
