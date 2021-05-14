@@ -135,13 +135,9 @@ impl GleanConfig {
             None => {
                 let temp_client =
                     Glean::create_glean_service(self.fb, &client_config, None).await?;
-                Glean::get_latest_repo(
-                    temp_client,
-                    &self.repo_name,
-                    client_config.min_db_age as u64,
-                )
-                .await?
-                .ok_or(GleanClientError::DatabaseNotAvailable(self.repo_name))?
+                Glean::get_latest_repo(self.fb, temp_client, &self.repo_name, &client_config)
+                    .await?
+                    .ok_or(GleanClientError::DatabaseNotAvailable(self.repo_name))?
             }
         };
         Glean::new(self.fb, repo, client_config).await
@@ -157,10 +153,11 @@ fn fetch_config(fb: FacebookInit) -> Result<ClientConfig, GleanClientError> {
 }
 
 impl Glean {
-    async fn get_latest_repo(
+    async fn get_latest_repo<'a>(
+        fb: FacebookInit,
         client: Arc<dyn GleanService + Send + Sync>,
-        repo_name: &str,
-        min_db_age: u64,
+        repo_name: &'a str,
+        config: &'a ClientConfig,
     ) -> Result<Option<Repo>, GleanClientError> {
         let query = ListDatabases::default();
         let result: ListDatabasesResult = client.listDatabases(&query).await?;
@@ -169,28 +166,64 @@ impl Glean {
         let since_the_epoch = now.duration_since(UNIX_EPOCH)?;
         let now_secs = since_the_epoch.as_secs();
         Ok(dbs
-            .iter()
+            .into_iter()
             .filter(|db| db.repo.name == repo_name)
             .filter(|db| db.created_since_epoch.is_some())
-            .filter(|db| now_secs - (db.created_since_epoch.unwrap() as u64) > min_db_age)
-            .filter(|db| db.status == Some(DatabaseStatus::Complete))
+            .filter(|db| {
+                now_secs - (db.created_since_epoch.unwrap() as u64) > config.min_db_age as u64
+            })
+            .filter(|db| Glean::db_available(fb, db, config))
             .filter(|db| db.expire_time.is_none())
             .max_by_key(|db| db.created_since_epoch.unwrap())
-            .map(|db| db.repo.clone()))
+            .map(|db| db.repo))
     }
 
-    async fn create_glean_service(
+    fn db_available(fb: FacebookInit, db: &Database, config: &ClientConfig) -> bool {
+        match (db.status, Glean::use_shard(config)) {
+            (Some(DatabaseStatus::Complete), _) => true,
+            (Some(DatabaseStatus::Restoring), true) => {
+                Glean::sr_has_shard(fb, db, config).unwrap_or(false)
+            }
+            _ => false,
+        }
+    }
+
+    fn sr_has_shard(
         fb: FacebookInit,
+        db: &Database,
         client_config: &ClientConfig,
-        repo: Option<&Repo>,
-    ) -> Result<Arc<dyn GleanService + Send + Sync>, GleanClientError> {
-        let conn_config: HashMap<String, String> = hashmap! {
+    ) -> Result<bool, GleanClientError> {
+        match &client_config.serv {
+            Service::tier(tier) => {
+                let service_options = Glean::create_service_options(client_config, Some(&db.repo));
+                let conn_config = Glean::create_conn_config(client_config);
+                let hosts = SRChannelBuilder::from_service_name(fb, &tier)?
+                    .with_service_options(&service_options)
+                    .with_conn_config(&conn_config)
+                    .get_selection()?;
+                Ok(!hosts.is_empty())
+            }
+            _ => Ok(false),
+        }
+    }
+
+    fn use_shard(client_config: &ClientConfig) -> bool {
+        client_config.use_shards != UseShards::NO_SHARDS
+    }
+
+    fn create_conn_config(client_config: &ClientConfig) -> HashMap<String, String> {
+        hashmap! {
             "client_id".to_string() => BuildInfo::get_rule().to_string(),
             "overall_timeout".to_string() => format!("{}", client_config.host_timeout_ms),
-        };
+        }
+    }
 
+    fn create_service_options(
+        client_config: &ClientConfig,
+        repo: Option<&Repo>,
+    ) -> HashMap<String, Vec<String>> {
         let mut service_options: HashMap<String, Vec<String>> = HashMap::new();
-        if client_config.use_shards != UseShards::NO_SHARDS {
+        if Glean::use_shard(client_config) {
             if let Some(a) = repo {
                 let repo_str = format!("{}/{}", a.name, a.hash);
                 let mut hasher = Md5::new();
@@ -201,8 +234,18 @@ impl Glean {
                 service_options.insert("shards".to_string(), vec![format!("{}", shard)]);
             }
         }
+        service_options
+    }
+
+    async fn create_glean_service(
+        fb: FacebookInit,
+        client_config: &ClientConfig,
+        repo: Option<&Repo>,
+    ) -> Result<Arc<dyn GleanService + Send + Sync>, GleanClientError> {
         match &client_config.serv {
             Service::tier(tier) => {
+                let service_options = Glean::create_service_options(client_config, repo);
+                let conn_config = Glean::create_conn_config(client_config);
                 let ch = SRChannelBuilder::from_service_name(fb, &tier)?
                     .with_service_options(&service_options)
                     .with_conn_config(&conn_config);
@@ -226,7 +269,7 @@ impl Glean {
         repo: Repo,
         client_config: ClientConfig,
     ) -> Result<Self, GleanClientError> {
-        let client = Self::create_glean_service(fb, &client_config, Some(&repo)).await?;
+        let client = Glean::create_glean_service(fb, &client_config, Some(&repo)).await?;
         Ok(Glean {
             client,
             repo,
