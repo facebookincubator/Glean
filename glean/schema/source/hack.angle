@@ -256,6 +256,21 @@ predicate DeclarationComment :
     comment: maybe Comment,
   }
 
+# Types of definitions in Hack
+type Definition =
+  {
+    class_ : ClassDefinition |
+    classConst : ClassConstDefinition |
+    enum_ : EnumDefinition |
+    function_ : FunctionDefinition |
+    globalConst : GlobalConstDefinition |
+    interface_ : InterfaceDefinition |
+    trait : TraitDefinition |
+    method : MethodDefinition |
+    property_ : PropertyDefinition |
+    typeConst : TypeConstDefinition |
+  }
+
 # Definition of a Hack class
 predicate ClassDefinition :
   {
@@ -380,6 +395,31 @@ predicate FunctionDefinition :
     attributes : [UserAttribute],
     typeParams : [TypeParameter],
   }
+
+# Definitions that contain an attribute
+predicate AttributeToDefinition :
+  {
+    attribute : UserAttribute,
+    definition : Definition,
+  }
+  stored
+  { AS[..], { class_ = { attributes = AS }}} |
+  { AS[..], { enum_ = { attributes = AS }}} |
+  { AS[..], { function_ = { attributes = AS }}} |
+  { AS[..], { interface_ = { attributes = AS }}} |
+  { AS[..], { trait = { attributes = AS }}} |
+  { AS[..], { method = { attributes = AS }}} |
+  { AS[..], { property_ = { attributes = AS }}} |
+  { AS[..], { typeConst = { attributes = AS }}}
+
+predicate AttributeHasParameter :
+  {
+    name : Name,
+    parameter : string,
+    attribute : UserAttribute,
+  }
+  stored
+  { N, PS[..], UserAttribute { N, PS }}
 
 # Code that is referenced elsewhere
 type XRefTarget =
@@ -556,12 +596,12 @@ predicate ContainerParent :
       hack.TraitDefinition { declaration = ChildDecl, implements_ = Impls };
       ParentDecl = Impls[..]
     )
-    
+
 predicate ContainerChild :
   {
     container : hack.ContainerDeclaration,
     child : hack.ContainerDeclaration,
   }
   stored
-  { Parent, Child } where hack.ContainerParent { container=Child, parent=Parent } 
+  { Parent, Child } where hack.ContainerParent { container=Child, parent=Parent }
 }
