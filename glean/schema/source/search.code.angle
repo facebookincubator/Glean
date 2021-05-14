@@ -1,0 +1,36 @@
+schema search.code.1 {
+import code.11
+import code.hack.2
+import code.python.1
+import hack.4
+import python.3
+import search.hack.5
+
+predicate SearchByName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { Name, Entity } where
+  PythonSearchByName {Name, Entity} |
+  HackSearchByName {Name, Entity}
+
+
+predicate HackSearchByName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { Name, { hack = { decl = D }}} where
+  search.hack.SearchByName { name = hack.Name Name, decl = D };
+
+predicate PythonSearchByName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { Name, { python = { decl = D }}} where
+  python.DeclarationWithLocalName { local_name = python.Name Name, declaration = D };
+  python.NonImportDeclaration D;
+
+}

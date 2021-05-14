@@ -241,6 +241,13 @@ predicate DeclarationWithName:
     Declaration { module = { name = N }}
   )
 
+predicate NonImportDeclaration: Declaration
+  D where
+  { cls = _ } |
+  { func = _ } |
+  { variable = _ } |
+  { module = _ } = D
+
 #### DEPRECATED SECTION
 
 # DEPRECATED: use ImportStatementByAsName.3
