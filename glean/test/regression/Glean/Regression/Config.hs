@@ -32,6 +32,8 @@ data TestConfig = TestConfig
       -- ^ top-level directory (fbsource/fbcode)
   , testGroup :: String
       -- ^ test group (cf. 'driverGroups' - "" if driver has no groups)
+  , testSchemaVersion :: Maybe Int
+      -- ^ version of 'all' schema to use in test DB
   } deriving (Show)
 
 -- | Test data generator, for 'driverGenerator' of 'Driver'
@@ -71,6 +73,7 @@ data Config = Config
   , cfgRoot :: FilePath  -- ^ parent path of all sources, *.query, golden *.out
   , cfgOutput :: Maybe FilePath  -- ^ parent path of *.query results
   , cfgReplace :: Bool   -- ^ when True overwrite golden *.out with query result
+  , cfgSchemaVersion :: Maybe Int  -- ^ version of 'all' schema to use
   , cfgTests :: [String]
   }
 
@@ -88,6 +91,8 @@ optionsWith other = O.info (O.helper <*> ((,) <$> parser <*> other)) O.fullDesc
         O.short 'o' <> O.long "output" <> O.metavar "PATH"
       cfgReplace <- O.switch $ O.long "replace"
         <> O.help "Generate (overwrite) golden *.out files instead of testing"
+      cfgSchemaVersion <- O.optional $ O.option O.auto $
+        O.long "schema-version" <> O.metavar "INT"
       cfgTests <- O.many $ O.strArgument $ O.metavar "TEST"
       return $ resolve Config{..}
 

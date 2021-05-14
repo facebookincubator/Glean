@@ -65,6 +65,7 @@ main = do
           , testRoot = testRoot
           , testProjectRoot = testProjectRoot
           , testGroup = platform
+          , testSchemaVersion = Nothing
           }
 
       withTestDatabase (driverGenerator driver) testConfig $

@@ -48,7 +48,9 @@ mainTestIndex dir testIndex =
                   else outDir </> platform
               , testRoot
               , testProjectRoot
-              , testGroup = platform }
+              , testGroup = platform
+              , testSchemaVersion = cfgSchemaVersion cfg
+              }
         withTestDatabase (execExternal ext) testConfig $ \ backend repo ->
           testRunner $
             TestLabel (dir <> " : " <> testGroup testConfig) $

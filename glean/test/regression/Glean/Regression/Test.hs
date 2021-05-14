@@ -63,7 +63,11 @@ withTestEnvDatabase
   -> (Env -> Thrift.Repo -> IO a)
   -> IO a
 withTestEnvDatabase generator test action =
-  withTestEnv [setRoot $ testOutput test </> "db"] $ \backend -> do
+  let
+    settings = [setRoot $ testOutput test </> "db"] <>
+      maybeToList (setSchemaVersion . fromIntegral <$> testSchemaVersion test)
+  in
+  withTestEnv settings $ \backend -> do
   Backend.fillDatabase backend repo "" (die "repo already exists") $ do
     generator test backend repo
   action backend repo
@@ -137,6 +141,7 @@ executeTest cfg driver base_group group diff subdir =
         , testRoot = cfgRoot cfg </> subdir
         , testProjectRoot = cfgProjectRoot cfg
         , testGroup = group
+        , testSchemaVersion = cfgSchemaVersion cfg
         }
   createDirectoryIfMissing True $ testOutput test
   outputs <- runTest driver test

@@ -25,6 +25,7 @@ data Ext = Ext
   , extArgs :: [String]
   , extTransforms :: [String]
   , extGroups :: [String]
+  , extSchemaVersion :: Maybe Int
   }
 
 -- | Expects parameters from buck rule @glean_regression_style_test@ defined in
@@ -41,6 +42,8 @@ extOptions = do
     (O.long "transforms" <> O.metavar "LIST" <> O.value "")
   extGroups <- list <$> O.strOption
     (O.long "groups" <> O.metavar "LIST" <> O.value "")
+  extSchemaVersion <- O.optional $ O.option O.auto $
+    O.long "schema-version" <> O.metavar "INT"
   return Ext{..}
   where
     list = wordsBy (==',')
@@ -59,7 +62,8 @@ execExternal Ext{..} TestConfig{..} env repo = do
         , ("TEST_ROOT", testRoot)
         , ("TEST_PROJECT_ROOT", testProjectRoot)
         , ("TEST_OUTPUT", testOutput)
-        , ("TEST_GROUP", testGroup) ]
+        , ("TEST_GROUP", testGroup)
+        ]
 
       args = map (subst vars) extArgs
   callProcess extBinary args
