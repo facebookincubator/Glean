@@ -29,6 +29,7 @@ use thiserror::Error;
 use thriftclient::ThriftChannelBuilder;
 use tokio::sync::AcquireError;
 use tokio::sync::Semaphore;
+use tracing::{debug, warn};
 use user::current_username;
 
 #[derive(Error, Debug, Clone)]
@@ -135,9 +136,12 @@ impl GleanConfig {
             None => {
                 let temp_client =
                     Glean::create_glean_service(self.fb, &client_config, None).await?;
-                Glean::get_latest_repo(self.fb, temp_client, &self.repo_name, &client_config)
-                    .await?
-                    .ok_or(GleanClientError::DatabaseNotAvailable(self.repo_name))?
+                let latest =
+                    Glean::get_latest_repo(self.fb, temp_client, &self.repo_name, &client_config)
+                        .await?
+                        .ok_or(GleanClientError::DatabaseNotAvailable(self.repo_name))?;
+                debug!("Use latest database: {}/{}", latest.name, latest.hash);
+                latest
             }
         };
         Glean::new(self.fb, repo, client_config).await
@@ -181,9 +185,11 @@ impl Glean {
     fn db_available(fb: FacebookInit, db: &Database, config: &ClientConfig) -> bool {
         match (db.status, Glean::use_shard(config)) {
             (Some(DatabaseStatus::Complete), _) => true,
-            (Some(DatabaseStatus::Restoring), true) => {
-                Glean::sr_has_shard(fb, db, config).unwrap_or(false)
-            }
+            (Some(DatabaseStatus::Restoring), true) => Glean::sr_has_shard(fb, db, config)
+                .unwrap_or_else(|e| {
+                    warn!("ServiceRouter request failed: {}", e);
+                    false
+                }),
             _ => false,
         }
     }
@@ -201,6 +207,13 @@ impl Glean {
                     .with_service_options(&service_options)
                     .with_conn_config(&conn_config)
                     .get_selection()?;
+                debug!(
+                    "{}/{}: this db is available on {} other servers ({:?})",
+                    db.repo.name,
+                    db.repo.hash,
+                    hosts.len(),
+                    hosts
+                );
                 Ok(!hosts.is_empty())
             }
             _ => Ok(false),

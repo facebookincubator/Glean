@@ -4,6 +4,8 @@ use glean_client_config::ClientConfig;
 use glean_schema_cxx1::types::*;
 use glean_service::{HostPort, Service};
 use structopt::StructOpt;
+use tracing::Level;
+use tracing_subscriber::FmtSubscriber;
 
 #[derive(StructOpt, Debug)]
 // #[structopt(name = "basic")]
@@ -29,6 +31,12 @@ struct Args {
 
 #[fbinit::main]
 async fn main(fb: FacebookInit) -> Result<(), Box<dyn std::error::Error>> {
+    let subscriber = FmtSubscriber::builder()
+        .with_max_level(Level::TRACE)
+        .finish();
+
+    tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
+
     let options = Args::from_args();
     let config = match options {
         Args {
