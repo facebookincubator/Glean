@@ -164,7 +164,7 @@ type XRef = {
   typeRef : TypeDeclarationReference |
 }
 
-# Reverse XRefs: find-references for a declaration
+# Reverse XRefs: local find-references for a declaration
 predicate DeclarationUses :
   {
     target : flow.SomeDeclaration,
