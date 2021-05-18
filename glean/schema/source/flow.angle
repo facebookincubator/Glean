@@ -458,4 +458,54 @@ predicate FlowTypeImportXRef :
       { typeof_ = ModuleExport } = Import;
       FlowModuleExportLocation { ModuleExport, Entity, TargetFile, TargetSpan };
     )
+
+# Inverse map of definition entities to their import declarations
+# Useful for fast lookup of import decl occurences of an exported value
+predicate FlowEntityImportUses :
+  {
+    target: SomeEntity,
+    local: Declaration,
+  }
+  stored
+  { TargetDecl , Decl } where
+    FlowImportXRef { local = Decl, entity = TargetDecl };
+
+# Inverse map of type definition entities to their import declarations
+predicate FlowTypeEntityImportUses :
+  {
+    target: SomeEntity,
+    local: TypeDeclaration,
+  }
+  stored
+  { TargetDecl, TypeDecl } where
+    FlowTypeImportXRef { local = TypeDecl, entity = TargetDecl };
+
+# Associate entities with all their refernces:
+# - local references
+# - remote import declarations
+# - remote references to those import declarations
+predicate FlowEntityUsesAll :
+  {
+    target: SomeEntity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  # local uses in same file as definition including members
+  ({ { decl = D }, File, Span } where
+    DeclarationUses { target = D, file = File, use = Span }) |
+  # type imports and references to them
+  ({ Entity, File, Span } where
+    FlowTypeEntityImportUses { Entity, Import };
+    ({ File, Span } where
+      DeclarationLocation { { typeDecl = Import }, File, Span } |
+      DeclarationUses { { typeDecl = Import }, File, Span }
+    )) |
+  # or value imports and their references
+  ({ Entity, File, Span } where
+    FlowEntityImportUses { Entity, Import };
+    ({ File, Span } where
+      DeclarationLocation { { localDecl = Import }, File, Span } |
+      DeclarationUses { { localDecl = Import }, File, Span }
+    ))
+
 }
