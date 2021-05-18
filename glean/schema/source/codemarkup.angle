@@ -390,8 +390,8 @@ predicate FlowEntityUses:
     file: src.File,
     span: src.ByteSpan,
   }
-  { { flow = { decl = D } }, File, Span } where
-    flow.DeclarationUses { target = D, file = File, use = Span };
+  { { flow = Entity }, File, Span } where
+    flow.FlowEntityUsesAll { Entity, File, Span };
 
 predicate PythonEntityUses:
   {
