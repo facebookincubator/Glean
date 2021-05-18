@@ -39,6 +39,8 @@ import qualified System.Console.Haskeline as Haskeline
 import System.Environment (lookupEnv)
 import System.FilePath ((</>), takeBaseName)
 import System.IO
+import System.IO.Temp
+import System.Process (callCommand)
 import System.Mem.Weak
 import System.Posix.Signals
 import qualified Text.JSON as JSON
@@ -445,6 +447,8 @@ helptext mode = vcat
             "Select mode for query syntax and results")
       , ("schema [predicate|type]",
             "Show schema for the given predicate or type")
+      , ("edit",
+            "Edit a query in an external editor")
       , ("limit <n>",
             "Set limit on the number of query results")
       , ("timeout off|<n>",
@@ -614,6 +618,7 @@ commands =
       \stop -> liftIO $ writeIORef stop True
   , Cmd "statistics" (completeWords availablePredicates) $
       \str _ -> displayStatistics str
+  , Cmd "edit" Haskeline.noCompletion $ \_ _ -> editCmd
   , Cmd "limit" Haskeline.noCompletion $ \str _ -> limitCmd str
   , Cmd "describe" completeDatabaseName $ const . displayDatabases False True
   , Cmd "describe-all" completeDatabaseName $ const . displayDatabases True True
@@ -714,6 +719,18 @@ setModeCmd :: String -> Eval ()
 setModeCmd "json" = setMode ShellJSON
 setModeCmd "angle" = setMode ShellAngle
 setModeCmd _ = liftIO $ throwIO $ ErrorCall "syntax: :mode [json|angle]"
+
+editCmd :: Eval ()
+editCmd = do
+  file <- query_file <$> getState
+  query <- liftIO $ do
+    editor <- getEditor
+    callCommand $ unwords [editor, file]
+    readFile file
+  void $ evaluate query
+
+getEditor :: IO String
+getEditor = fromMaybe "ed" <$> (lookupEnv "VISUAL" <|> lookupEnv "EDITOR")
 
 limitCmd :: String -> Eval ()
 limitCmd "" = do
@@ -1232,6 +1249,8 @@ main = do
     withConfigProvider cfgOpts $ \cfgAPI -> do
       (cfg, updateSchema) <- setupLocalSchema cfg
       withBackendWithDefaultOptions evb cfgAPI (cfgService cfg) $ \be -> do
+      withSystemTempFile "scratch-query.angle" $ \q handle -> do
+        hClose handle
         client_info <- Backend.clientInfo
         tty <- hIsTerminalDevice stdout
         outh <- newMVar stdout
@@ -1254,4 +1273,5 @@ main = do
           , pager = cfgPager cfg
           , debug = def
           , client_info = client_info
+          , query_file = q
           }

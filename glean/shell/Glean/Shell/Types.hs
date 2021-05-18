@@ -123,6 +123,7 @@ data ShellState = ShellState
   , outputHandle :: MVar System.IO.Handle
   , debug :: Thrift.QueryDebugOptions
   , client_info :: Thrift.UserQueryClientInfo
+  , query_file :: FilePath
   }
 
 newtype Eval a = Eval
