@@ -227,6 +227,14 @@ predicate Tree :
     right : maybe Tree
   }
 
+# Predicates to test reordering of nested structures
+predicate EdgeWrapper : { edge : Edge }
+
+type EdgeSum = {
+    fst : EdgeWrapper |
+    snd : EdgeWrapper |
+  }
+
 # Make a partial verion of code.Entity to test SymId encode/decode
 type Entity =
   {
