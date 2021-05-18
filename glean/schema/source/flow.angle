@@ -284,4 +284,178 @@ predicate DeclarationLocation :
   ( { decl = { typeDecl = D }, file = F, span = S } where
     TypeDeclaration { loc = { module = { file = F }, span = S } } = D )
 
+#
+# Working across module import/export boundaries
+#
+
+predicate FlowXRefDeclInfo :
+  {
+    ref : XRef,
+    srcLoc : Range,
+    name : Name,
+    targetLoc : Range,
+    entity : SomeDeclaration,
+  }
+  { XRef, SrcLoc, Name, TargetLoc, Decl }
+  where
+  (
+    { localRef = { declaration = D, loc = SrcLoc }} = XRef;
+    { name = Name, loc = TargetLoc } = D;
+    Decl = SomeDeclaration { localDecl = D };
+  ) | (
+    { memberRef = { memberDeclaration = D, loc = SrcLoc }} = XRef;
+    { name = Name, loc = TargetLoc } = D;
+    Decl = SomeDeclaration { memberDecl = D };
+  ) | (
+    { typeRef = { typeDeclaration = D, loc = SrcLoc }} = XRef;
+    { name = Name, loc = TargetLoc } = D;
+    Decl = SomeDeclaration { typeDecl = D };
+  );
+
+predicate FlowSameModule :
+  {
+    left : flow.Module,
+    right : flow.Module
+  }
+  { Left, Right } where
+    ( { string_ = S } = Left;
+      StringToFileModule { string_ = S, file = F };
+      Right = flow.Module { file = F } ) |
+    ( { file = F } = Left;
+      flow.FileOfStringModule { file = F, string_ = S };
+      Right = flow.Module { string_ = S } )
+
+# Map a declaration to a module namespace entity
+predicate FlowModuleNamespaceXRef :
+  {
+    local : Declaration,
+    entity : SomeEntity,
+    file : src.File
+  }
+  { Local, { module_ = { file = File }}, File }
+  where
+    ImportDeclaration {
+      declaration = Local,
+      import_ = { moduleNamespace = M } };
+    { file = File } = M | (N where FlowSameModule { M, N });
+
+# Mostly we need declarations, but occasionally we need modules
+# Synonym for code.flow.Entity
+type SomeEntity =
+  {
+    decl : flow.SomeDeclaration |
+    module_ : flow.Module |
+  }
+
+#
+# If a local declaration is an import, find the corresponding
+# flow.SourceOfExport
+#
+predicate FlowModuleExportLocation :
+  {
+    local : ModuleExport,
+    entity : SomeEntity,
+    file : src.File,
+    span : src.ByteSpan
+  }
+  { ModuleExport, Entity, File, Span }
+  where
+    { module = M, export_ = E } = ModuleExport;
+    Mod = M | (N where FlowSameModule { M, N });
+    SourceOfExport {
+      moduleExport = { module = Mod, export_ = E },
+      source = Source };
+    (
+      { declaration = D } = Source;
+      { loc = Loc } = D;
+      { decl = { localDecl = D } } = Entity
+    ) | (
+      { memberDeclaration = D } = Source;
+      { loc = Loc } = D;
+      { decl = { memberDecl = D } } = Entity
+    );
+    { span = Span, module = { file = File } } = Loc;
+    # TODO: moduleExport, moduleNamespace
+
+predicate FlowTypeExportLocation :
+  {
+    moduleTypeExport : ModuleTypeExport,
+    entity : SomeEntity,
+    file : src.File,
+    span : src.ByteSpan
+  }
+  { ModuleTypeExport, { decl = { typeDecl = D }}, File, Span } where
+    { module = M, typeExport = TE } = ModuleTypeExport;
+    Mod = M | (N where FlowSameModule { M, N });
+    SourceOfTypeExport {
+      moduleTypeExport = { module = Mod, typeExport = TE },
+      source = { typeDeclaration = D }};
+    { loc = Loc } = D;
+    { span = Span, module = { file = File } } = Loc;
+
+predicate FlowCompatibleModuleExport :
+  {
+    left : ModuleExport,
+    right : ModuleExport
+  }
+  { Left, Right } where
+    Left = { module = M, export_ = E } : ModuleExport;
+    ExportRight = (
+        { commonJS = {} } = E;
+        Export { default_ = {} }
+      ) | (
+        { default_ = {} } = E;
+        Export { commonJS = {} }
+      ) | (
+        { named = Name } = E;
+        Export { commonJSMember = Name }
+      ) | (
+        { commonJSMember = Name } = E;
+        Export { named = Name }
+      );
+    Right = { module = M, export_ = ExportRight } : ModuleExport;
+
+#
+# Map an import declaration to the location of its original definition
+# Grab the target definition file and span while we're here
+#
+predicate FlowImportXRef :
+  {
+    local : Declaration,
+    entity : SomeEntity,
+    targetFile : src.File,
+    targetSpan : src.ByteSpan
+  }
+  { Local, Entity, TargetFile, TargetSpan } where
+    (
+      ImportDeclaration {
+        declaration = Local,
+        import_ = { moduleExport = E } };
+      ModuleExport = E | (F where FlowCompatibleModuleExport { E, F });
+      FlowModuleExportLocation { ModuleExport, Entity, TargetFile, TargetSpan };
+    ) | (
+      FlowModuleNamespaceXRef { Local, Entity, TargetFile };
+      TargetSpan = { 0, 0 }
+    );
+
+# Map an import type declaration to the location of its original definition
+predicate FlowTypeImportXRef :
+  {
+    local : TypeDeclaration,
+    entity : SomeEntity,
+    targetFile : src.File,
+    targetSpan : src.ByteSpan
+  }
+  { TypeDecl, Entity, TargetFile, TargetSpan } where
+    TypeImportDeclaration {
+      typeDeclaration = TypeDecl,
+      import_ = Import
+    };
+    (
+      { type = MTE } = Import;
+      FlowTypeExportLocation { MTE, Entity, TargetFile, TargetSpan };
+    ) | (
+      { typeof_ = ModuleExport } = Import;
+      FlowModuleExportLocation { ModuleExport, Entity, TargetFile, TargetSpan };
+    )
 }

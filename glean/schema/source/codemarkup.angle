@@ -53,179 +53,6 @@ type LinkTo =
     # otherRepo: RepoFileLocation |
   }
 
-predicate FlowXRefInfo :
-  {
-    ref : flow.XRef,
-    srcLoc : flow.Range,
-    name : flow.Name,
-    targetLoc : flow.Range,
-  }
-  { XRef, SrcLoc, Name, TargetLoc }
-    where FlowXRefDeclInfo { XRef, SrcLoc, Name, TargetLoc, _ };
-
-predicate FlowXRefDeclInfo :
-  {
-    ref : flow.XRef,
-    srcLoc : flow.Range,
-    name : flow.Name,
-    targetLoc : flow.Range,
-    entity : flow.SomeDeclaration,
-  }
-  { XRef, SrcLoc, Name, TargetLoc, Decl }
-  where
-  (
-    { localRef = { declaration = D, loc = SrcLoc }} = XRef;
-    { name = Name, loc = TargetLoc } = D;
-    Decl = flow.SomeDeclaration { localDecl = D };
-  ) | (
-    { memberRef = { memberDeclaration = D, loc = SrcLoc }} = XRef;
-    { name = Name, loc = TargetLoc } = D;
-    Decl = flow.SomeDeclaration { memberDecl = D };
-  ) | (
-    { typeRef = { typeDeclaration = D, loc = SrcLoc }} = XRef;
-    { name = Name, loc = TargetLoc } = D;
-    Decl = flow.SomeDeclaration { typeDecl = D };
-  );
-
-predicate FlowSameModule :
-  {
-    left : flow.Module,
-    right : flow.Module
-  }
-  { Left, Right } where
-    ( { string_ = S } = Left;
-      flow.StringToFileModule { string_ = S, file = F };
-      Right = flow.Module { file = F } ) |
-    ( { file = F } = Left;
-      flow.FileOfStringModule { file = F, string_ = S };
-      Right = flow.Module { string_ = S } )
-
-#
-# If a local declaration is an import, find the corresponding
-# flow.SourceOfExport
-#
-predicate FlowModuleExportLocation :
-  {
-    local : flow.ModuleExport,
-    entity : code.flow.Entity,
-    file : src.File,
-    span : src.ByteSpan
-  }
-  { ModuleExport, Entity, File, Span }
-  where
-    { module = M, export_ = E } = ModuleExport;
-    Mod = M | (N where FlowSameModule { M, N });
-    flow.SourceOfExport {
-      moduleExport = { module = Mod, export_ = E },
-      source = Source };
-    (
-      { declaration = D } = Source;
-      { loc = Loc } = D;
-      { decl = { localDecl = D } } = Entity
-    ) | (
-      { memberDeclaration = D } = Source;
-      { loc = Loc } = D;
-      { decl = { memberDecl = D } } = Entity
-    );
-    { span = Span, module = { file = File } } = Loc;
-    # TODO: moduleExport, moduleNamespace
-
-
-predicate FlowModuleNamespaceXRef :
-  {
-    local : flow.Declaration,
-    entity : code.flow.Entity,
-    file : src.File
-  }
-  { Local, { module_ = { file = File }}, File }
-  where
-    flow.ImportDeclaration {
-      declaration = Local,
-      import_ = { moduleNamespace = M } };
-    { file = File } = M | (N where FlowSameModule { M, N });
-
-
-predicate FlowTypeExportLocation :
-  {
-    moduleTypeExport : flow.ModuleTypeExport,
-    entity : code.flow.Entity,
-    file : src.File,
-    span : src.ByteSpan
-  }
-  { ModuleTypeExport, { decl = { typeDecl = D }}, File, Span } where
-    { module = M, typeExport = TE } = ModuleTypeExport;
-    Mod = M | (N where FlowSameModule { M, N });
-    flow.SourceOfTypeExport {
-      moduleTypeExport = { module = Mod, typeExport = TE },
-      source = { typeDeclaration = D }};
-    { loc = Loc } = D;
-    { span = Span, module = { file = File } } = Loc;
-
-predicate FlowCompatibleModuleExport :
-  {
-    left : flow.ModuleExport,
-    right : flow.ModuleExport
-  }
-  { Left, Right } where
-    Left = { module = M, export_ = E } : flow.ModuleExport;
-    ExportRight = (
-        { commonJS = {} } = E;
-        flow.Export { default_ = {} }
-      ) | (
-        { default_ = {} } = E;
-        flow.Export { commonJS = {} }
-      ) | (
-        { named = Name } = E;
-        flow.Export { commonJSMember = Name }
-      ) | (
-        { commonJSMember = Name } = E;
-        flow.Export { named = Name }
-      );
-    Right = { module = M, export_ = ExportRight } : flow.ModuleExport;
-
-#
-# Resolve an XRef that points to an import declaration to the
-# location of its original declaration.
-#
-predicate FlowImportXRef :
-  {
-    local : flow.Declaration,
-    entity : code.flow.Entity,
-    targetFile : src.File,
-    targetSpan : src.ByteSpan
-  }
-  { Local, Entity, TargetFile, TargetSpan } where
-    (
-      flow.ImportDeclaration {
-        declaration = Local,
-        import_ = { moduleExport = E } };
-      ModuleExport = E | (F where FlowCompatibleModuleExport { E, F });
-      FlowModuleExportLocation { ModuleExport, Entity, TargetFile, TargetSpan };
-    ) | (
-      FlowModuleNamespaceXRef { Local, Entity, TargetFile };
-      TargetSpan = { 0, 0 }
-    );
-
-predicate FlowTypeImportXRef :
-  {
-    local : flow.TypeDeclaration,
-    entity : code.flow.Entity,
-    targetFile : src.File,
-    targetSpan : src.ByteSpan
-  }
-  { TypeDecl, Entity, TargetFile, TargetSpan } where
-    flow.TypeImportDeclaration {
-      typeDeclaration = TypeDecl,
-      import_ = Import
-    };
-    (
-      { type = MTE } = Import;
-      FlowTypeExportLocation { MTE, Entity, TargetFile, TargetSpan };
-    ) | (
-      { typeof_ = ModuleExport } = Import;
-      FlowModuleExportLocation { ModuleExport, Entity, TargetFile, TargetSpan };
-    )
-
 predicate FlowDeclarationInfo:
   {
     decl: flow.SomeDeclaration,
@@ -473,7 +300,7 @@ predicate FlowFileReferenceEntityXRef:
   }
   { File, {Decl, Src}, Entity } where
     flow.FileXRef { file = File, ref = XRef };
-    FlowXRefDeclInfo { XRef, SrcLoc, Name, TargetLoc, D };
+    flow.FlowXRefDeclInfo { XRef, SrcLoc, Name, TargetLoc, D };
     Name = flow.Name Str;
     { span = Src } = SrcLoc;
     (
@@ -483,10 +310,10 @@ predicate FlowFileReferenceEntityXRef:
       { decl = D } = Entity;
     ) | (
       { localRef = { declaration = LocalD } } = XRef;
-      FlowImportXRef { LocalD, Entity, TargetFile, TargetSpan };
+      flow.FlowImportXRef { LocalD, Entity, TargetFile, TargetSpan };
     ) | (
       { typeRef = { typeDeclaration = T } } = XRef;
-      FlowTypeImportXRef { T, Entity, TargetFile, TargetSpan };
+      flow.FlowTypeImportXRef { T, Entity, TargetFile, TargetSpan };
     );
     Decl = Declaration { Str, TargetFile, TargetSpan };
 
@@ -510,11 +337,11 @@ predicate FlowFileImportDeclEntityXRef:
     flow.FileDeclaration { File, D };
     (
       { localDecl = LocalD } = D;
-      FlowImportXRef { LocalD, Entity, TargetFile, TargetSpan };
+      flow.FlowImportXRef { LocalD, Entity, TargetFile, TargetSpan };
       { name = Name, loc = SrcLoc } = LocalD;
     ) | (
       { typeDecl = TypeD } = D;
-      FlowTypeImportXRef { TypeD, Entity, TargetFile, TargetSpan };
+      flow.FlowTypeImportXRef { TypeD, Entity, TargetFile, TargetSpan };
       { name = Name, loc = SrcLoc } = TypeD;
     );
     Decl = Declaration { Str, TargetFile, TargetSpan };
