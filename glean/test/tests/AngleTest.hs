@@ -1512,21 +1512,6 @@ reorderTest = dbTestCase $ \env repo -> do
   assertEqual "reorder nested 8" (Just 1) $
     factsSearched (PredicateRef "glean.test.Edge" 4) lookupPid stats
 
-  -- nested prefix match bound outside of disjunction. Do it first.
-  (_, stats) <- queryStats env repo $ angleData @Glean.Test.EdgeSum
-    [s|
-      X where
-        A = glean.test.Node { label = "b" };
-        X = ( glean.test.EdgeSum { fst = { edge = { A, _ } } }
-            | glean.test.EdgeSum { fst = { edge = { A, _ } } }
-            );
-          # We want the inner query to be done first, on the grounds that
-          # then the outer query becomes a prefix match.
-    |]
-
-  assertEqual "reorder nested 9" (Just 2) $
-    factsSearched (PredicateRef "glean.test.EdgeWrapper" 4) lookupPid stats
-
 angleRecExpansion :: (forall a . Query a -> Query a) -> Test
 angleRecExpansion modify = dbTestCase $ \env repo -> do
   results <- runQuery_ env repo $ modify $ recursive $

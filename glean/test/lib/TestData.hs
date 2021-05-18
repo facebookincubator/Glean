@@ -155,14 +155,9 @@ mkTestFacts first second = do
   d <- makeFact @Glean.Test.Node (Glean.Test.Node_key "d")
 
   first $ makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key a b)
-  second $ do
-    e1 <- makeFact @Glean.Test.Edge (Glean.Test.Edge_key a c)
-    e2 <- makeFact @Glean.Test.Edge (Glean.Test.Edge_key b d)
-    e3 <- makeFact @Glean.Test.Edge (Glean.Test.Edge_key c d)
-
-    makeFact_ @Glean.Test.EdgeWrapper (Glean.Test.EdgeWrapper_key e1)
-    makeFact_ @Glean.Test.EdgeWrapper (Glean.Test.EdgeWrapper_key e2)
-    makeFact_ @Glean.Test.EdgeWrapper (Glean.Test.EdgeWrapper_key e3)
+  second $ makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key a c)
+  second $ makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key b d)
+  second $ makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key c d)
 
   d <- makeFact @Glean.Test.Tree (Glean.Test.Tree_key "d" Nothing Nothing)
   c <- makeFact @Glean.Test.Tree (Glean.Test.Tree_key "c" (Just d) Nothing)

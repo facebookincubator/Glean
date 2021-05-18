@@ -283,28 +283,18 @@ reorderStmtGroup scope stmts = do
         , x <- IntSet.toList xs
         ]
 
-    -- If B is made to be a point match by A, then A cannot depend on B
-    canDependOn a b@(FlatStatement _ _ gen)
-      | Just (_, PatternMatchesOne) <- isCandidate b
-      , not $ IntSet.null (vars a `IntSet.intersection` vars gen)
-      = False
-    canDependOn _ _ = True
-
     edges :: IntMap [(Int,FlatStatement)]
     edges = IntMap.fromListWith (++)
       [ if
-          | FlatStatement _ _ (FactGenerator _ key _) <- lookupStmt
-          , PatternMatchesOne <- classifyPattern scope key
-          -> (use, [(lookup,lookupStmt)])
+          | PatternMatchesOne <- matchType -> (use, [(lookup,lookupStmt)])
             -- a point match: always do these first
           | isUnresolved scope useStmt -> (use, [(lookup,lookupStmt)])
             -- if the use is undefined at this point, put the lookup first
-          | x `IntSet.member` lookupVars
-          , lookupStmt `canDependOn` useStmt -> (lookup, [(use, useStmt)])
+          | x `IntSet.member` lookupVars -> (lookup, [(use, useStmt)])
             -- we want X to be a lookup: do it after the use of X
           | otherwise -> (use, [(lookup,lookupStmt)])
             -- otherwise put the candidate before the use
-      | (lookup, x, _, _, lookupStmt) <- candidates
+      | (lookup, x, _, matchType, lookupStmt) <- candidates
       , Just uses <- [usesOf x]
       , (use, _, useStmt) <- uses
       , use /= lookup
