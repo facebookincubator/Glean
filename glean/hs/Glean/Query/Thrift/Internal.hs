@@ -22,6 +22,7 @@ module Glean.Query.Thrift.Internal
   , MkQuery(..)
     -- * Support
   , reportUserQueryStats
+  , showUserQueryStats
   , queryPredicate
   , displayQuery
   , decodeResults
@@ -246,8 +247,12 @@ store (Query q decoder) = Query q' decoder
     { userQueryOptions_store_derived_facts = True } }
 
 reportUserQueryStats :: Thrift.UserQueryStats -> IO ()
-reportUserQueryStats Thrift.UserQueryStats{..} =
-  vlog 1 $ printf "%d facts, %.2fms, %ld bytes\n"
+reportUserQueryStats stats =
+  vlog 1 $ showUserQueryStats stats
+
+showUserQueryStats :: Thrift.UserQueryStats -> String
+showUserQueryStats Thrift.UserQueryStats{..} =
+  printf "%d facts, %.2fms, %ld bytes\n"
     userQueryStats_num_facts
     (realToFrac userQueryStats_elapsed_ns / 1000000 :: Double)
     userQueryStats_allocated_bytes

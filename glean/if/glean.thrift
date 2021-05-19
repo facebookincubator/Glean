@@ -558,7 +558,9 @@ union DerivationProgress {
   2: UserQueryStats complete;
 } (hs.nonempty)
 
-struct DerivationOngoing {}
+struct DerivationOngoing {
+  1: UserQueryStats stats;
+}
 
 struct DerivationComplete {}
 

@@ -94,6 +94,7 @@ deriveStored env log repo query = do
       if isFinished d
          then Thrift.DerivationStatus_complete def
          else Thrift.DerivationStatus_ongoing def
+            { Thrift.derivationOngoing_stats = derivationStats }
 
 logResult :: LogResult -> Derivation -> IO ()
 logResult log Derivation{..} =

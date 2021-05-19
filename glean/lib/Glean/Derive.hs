@@ -5,15 +5,18 @@ module Glean.Derive
 import Control.Concurrent
 import Data.Default
 import Data.Int
+import qualified Data.Text as Text
 
 import Glean.Angle.Types
-import qualified Glean.Backend as Backend
-import Glean.Types
 import Glean.Query.Thrift.Internal
+import Glean.Types
+import Glean hiding (derivePredicate)
+import Glean.Schema.Util (showSourceRef)
+import Util.Log
 
 -- | Compute and store the specified derived predicate
 derivePredicate
-  :: Backend.Backend b
+  :: Glean.Backend b
   => b
   -> Repo
   -> Maybe Int64  -- ^ page size (bytes)
@@ -21,11 +24,16 @@ derivePredicate
   -> SourceRef    -- ^ predicate to derive
   -> IO ()
 
-derivePredicate backend repo maxBytes maxResults
-    (SourceRef name version) = do
-  DerivePredicateResponse handle <- Backend.derivePredicate backend repo query
-  checkProgress handle
+derivePredicate backend repo maxBytes maxResults s = loop
   where
+    loop = do
+      result <- Glean.deriveStored backend (const mempty) repo query
+      case result of
+        DerivationStatus_complete{} -> reportComplete
+        DerivationStatus_ongoing x -> do
+          reportProgress $ derivationOngoing_stats x
+          retry loop
+
     query = def
       { derivePredicateQuery_predicate = name
       , derivePredicateQuery_predicate_version = version
@@ -35,15 +43,22 @@ derivePredicate backend repo maxBytes maxResults
         }
       }
 
-    checkProgress handle = do
-      result <- Backend.pollDerivation backend handle
-      case result of
-        DerivationProgress_ongoing stats -> do
-          reportUserQueryStats stats
-          retry $ checkProgress handle
-        DerivationProgress_complete stats -> do
-          reportUserQueryStats  stats
-          return ()
+    SourceRef name version = s
+
+    predicate = unwords [Glean.showRepo repo, Text.unpack $ showSourceRef s]
+
+    reportComplete = vlog 1 $ unwords
+      ["derivation complete:", predicate]
+
+    reportProgress stats = do
+      putStrLn $ unwords
+        [ Text.unpack $ showSourceRef s
+        , ":"
+        , show $ userQueryStats_num_facts stats
+        , "facts"
+        ]
+      vlog 1 $ unwords
+        ["derivation progress:", predicate, showUserQueryStats stats]
 
     retry :: IO a -> IO a
     retry action = do
