@@ -127,6 +127,7 @@ withFactBuilder action =
     (fromIntegral (length ids))
     mem
     (Just $ Data.Vector.Storable.fromList $ coerce $ reverse ids)
+    mempty
 
 
 type WriteFacts a = ReaderT FactBuilder IO a

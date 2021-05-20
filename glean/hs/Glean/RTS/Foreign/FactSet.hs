@@ -49,6 +49,7 @@ serialize facts =
   Thrift.Batch first_id (fromIntegral count)
     <$> unsafeMallocedByteString facts_data facts_size
     <*> pure Nothing
+    <*> pure mempty
 
 append :: FactSet -> FactSet -> IO ()
 append target source =

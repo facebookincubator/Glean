@@ -50,6 +50,9 @@ struct TypeRef {
   2: Version version;
 }
 
+// The unit of fact ownership
+typedef string (hs.type = "ByteString") UnitName
+
 // -----------------------------------------------------------------------------
 // Runtime types
 
@@ -253,6 +256,21 @@ struct Batch {
     //   - all elements are unique
     //   - ids are reasonably dense (writing the batch to the db will use a
     //     data structure of size O(max id - firstId))
+
+  5: map<UnitName, list<Id> (hs.type="VectorStorable")> (hs.type="HashMap")
+    owned;
+    // (optional for now)
+    //
+    // Specifies ownership of the facts in this batch. The list is
+    // really a list of intervals [x1,x2, y1,y2, ... ] representing
+    // the inclusive ranges x1..x2, y1..y2, ... where x1 <= x2, y1 <= y2, ...
+    //
+    // The ranges do not need to be sorted, and can overlap.
+    //
+    // A fact can have an arbitrary number of owners.
+    //
+    // Units do not need to be declared beforehand; a Unit exists if
+    // it is the owner of at least one fact.
 }
 
 struct Subst {
