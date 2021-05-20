@@ -598,8 +598,15 @@ async def _is_db_available(
         and client_config.use_shards != UseShards.NO_SHARDS
     ):
         shard_id = _get_shard_for_repo(db.repo)
-        selection = await get_selection(service.tier, options={"shards": [shard_id]})
-        return len(selection) > 0
+        try:
+            selection = await get_selection(
+                service.tier, options={"shards": [shard_id]}
+            )
+            return len(selection) > 0
+        except RuntimeError:
+            # Instagram doesn't support `get_selection`:
+            # https://fburl.com/tasks/reugmpab
+            return False
     return False
 
 
