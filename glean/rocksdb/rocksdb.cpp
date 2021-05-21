@@ -96,6 +96,8 @@ public:
   static const Family keys;
   static const Family stats;
   static const Family meta;
+  static const Family ownershipUnits;
+  static const Family ownershipRaw;
 
   static size_t count() { return families.size(); }
 
@@ -128,6 +130,9 @@ const Family Family::keys("keys", [](auto& opts) {
 const Family Family::stats("stats", [](auto& opts) {
   opts.OptimizeForPointLookup(10); });
 const Family Family::meta("meta", [](auto&) {});
+const Family Family::ownershipUnits("ownershipUnits", [](auto& opts) {
+  opts.OptimizeForPointLookup(100); });
+const Family Family::ownershipRaw("ownershipRaw", [](auto&) {});
 
 enum class AdminId : uint32_t {
   NEXT_ID,
@@ -354,6 +359,7 @@ struct DatabaseImpl final : Database {
   Id starting_id;
   Id next_id;
   AtomicPredicateStats stats_;
+  std::vector<size_t> ownership_unit_counters;
 
   explicit DatabaseImpl(ContainerImpl c, Id start, int64_t version)
       : container_(std::move(c)) {
@@ -384,6 +390,7 @@ struct DatabaseImpl final : Database {
     }
 
     stats_.set(loadStats());
+    ownership_unit_counters = loadOwnershipUnitCounters();
   }
 
   DatabaseImpl(const DatabaseImpl&) = delete;
@@ -453,6 +460,34 @@ struct DatabaseImpl final : Database {
       check(s);
     }
     return stats;
+  }
+
+  std::vector<size_t> loadOwnershipUnitCounters() {
+    container_.requireOpen();
+    std::vector<size_t> result;
+
+    std::unique_ptr<rocksdb::Iterator> iter(
+      container_.db->NewIterator(
+        rocksdb::ReadOptions(),
+        container_.family(Family::ownershipRaw)));
+
+    if (!iter) {
+      rts::error("rocksdb: couldn't allocate iterator");
+    }
+
+    for (iter->SeekToFirst(); iter->Valid(); iter->Next()) {
+      binary::Input key(byteRange(iter->key()));
+      auto id = key.trustedNat();
+      if (id == result.size()) {
+        result.push_back(0);
+      } else if (id+1 == result.size()) {
+        ++result.back();
+      } else {
+        rts::error("rocksdb: invalid ownershipUnits");
+      }
+    }
+
+    return result;
   }
 
   rts::Id startingId() const override {
@@ -878,6 +913,65 @@ struct DatabaseImpl final : Database {
     next_id = first_free_id;
 
     stats_.set(std::move(new_stats));
+  }
+
+  void addOwnership(const std::vector<OwnershipSet>& ownership) override {
+    container_.requireOpen();
+
+    if (ownership.empty()) {
+      return;
+    }
+
+    size_t new_count = 0;
+    std::vector<size_t> touched;
+    rocksdb::WriteBatch batch;
+
+    for (const auto& set : ownership) {
+      uint32_t unit_id;
+      rocksdb::PinnableSlice val;
+      auto s = container_.db->Get(
+        rocksdb::ReadOptions(),
+        container_.family(Family::ownershipUnits),
+        slice(set.unit),
+        &val);
+      if (!s.IsNotFound()) {
+        check(s);
+        assert(val.size() == sizeof(uint32_t));
+        unit_id = folly::loadUnaligned<uint32_t>(val.data());
+        if (unit_id >= ownership_unit_counters.size()) {
+          rts::error("inconsistent unit id {}", unit_id);
+        }
+        touched.push_back(unit_id);
+      } else {
+        unit_id = ownership_unit_counters.size() + new_count;
+        check(batch.Put(
+          container_.family(Family::ownershipUnits),
+          slice(set.unit),
+          toSlice(unit_id)));
+        ++new_count;
+      }
+
+      binary::Output key;
+      key.nat(unit_id);
+      key.nat(unit_id < ownership_unit_counters.size()
+        ? ownership_unit_counters[unit_id]
+        : 1);
+      check(batch.Put(
+        container_.family(Family::ownershipRaw),
+        slice(key),
+        rocksdb::Slice(
+          reinterpret_cast<const char *>(set.ids.data()),
+          set.ids.size() * sizeof(int64_t))));
+    }
+
+    check(container_.db->Write(container_.writeOptions, &batch));
+
+    for (auto i : touched) {
+      assert(i < ownership_unit_counters.size());
+      ++ownership_unit_counters[i];
+    }
+    ownership_unit_counters.insert(
+      ownership_unit_counters.end(),  new_count, 1);
   }
 };
 

@@ -72,7 +72,15 @@ struct Database : rts::Lookup {
 
   virtual PredicateStats stats() const = 0;
 
+  struct OwnershipSet {
+    folly::ByteRange unit;
+    folly::Range<const int64_t *> ids;
+      // This is a list of intervals [x1,x2, y1,y2, ...]
+      // representing the inclusive ranges x1..x2, y1..y2, ...
+  };
+
   virtual void commit(rts::FactSet& facts) = 0;
+  virtual void addOwnership(const std::vector<OwnershipSet>& ownership) = 0;
 };
 
 void restore(const std::string& target, const std::string& source);
