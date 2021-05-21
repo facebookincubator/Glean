@@ -17,5 +17,25 @@ type Entity =
     hack : code.hack.Entity |
     flow : code.flow.Entity |
   }
+}
 
+schema code.12 {
+import code.cxx.3
+import code.java.3
+import code.hack.3
+import code.flow.2
+import code.hs.1
+import code.python.1
+import pp1.1
+
+type Entity =
+  {
+    cxx : code.cxx.Entity |
+    pp : pp1.Define |
+    java : code.java.Entity |
+    hs : code.hs.Entity |
+    python : code.python.Entity |
+    hack : code.hack.Entity |
+    flow : code.flow.Entity |
+  }
 }

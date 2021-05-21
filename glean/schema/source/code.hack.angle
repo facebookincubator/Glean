@@ -6,3 +6,12 @@ type Entity =
     decl : hack.Declaration |
   }
 }
+
+schema code.hack.3 {
+import hack.5
+
+type Entity =
+  {
+    decl : hack.Declaration |
+  }
+}
