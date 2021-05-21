@@ -990,4 +990,55 @@ predicate FunctionAttribute :
         declaration : FunctionDeclaration,
     }
 
+# ObjCContainerId to Name
+predicate ObjContainerIdName :
+  {
+    id : ObjcContainerId,
+    name : Name,
+  }
+  { Id, Name } where
+    ( { protocol = Name } = Id) |
+    ( { interface_ = Name } = Id) |
+    ( { categoryInterface = { categoryName = Name } } = Id) |
+    ( { extensionInterface = Name } = Id) |
+    ( { implementation = Name } = Id) |
+    ( { categoryImplementation = { categoryName = Name  } } = Id)
+
+# General purpose Declaration to shortname Name
+predicate DeclarationLocation :
+  {
+    decl : Declaration,
+    source : src.Range,
+    name : Name,
+  }
+  { Decl, Range, Name } where
+    ( { namespace_ = X } = Decl;
+      X = NamespaceDeclaration { source = Range, name = QName };
+      QName = NamespaceQName { name = { just = Name }}) |
+    ( { usingDeclaration = X } = Decl;
+      X = UsingDeclaration { source = Range, name = QName };
+      QName = FunctionQName { name = { name = Name }}) |
+    ( { usingDirective = X } = Decl;
+      X = UsingDirective { source = Range, name = { name = Name }}) |
+    ( { record_ = X } = Decl;
+      X = RecordDeclaration { source = Range, name = { name = Name }}) |
+    ( { enum_ = X } = Decl;
+      X = EnumDeclaration { source = Range, name = { name = Name }}) |
+    ( { function_ = X } = Decl;
+      X = FunctionDeclaration { source = Range, name = QName };
+      QName = FunctionQName { name = { name = Name }}) |
+    ( { variable = X } = Decl;
+      X = VariableDeclaration { source = Range, name = { name = Name }}) |
+    ( { objcContainer = X } = Decl;
+      X = ObjcContainerDeclaration { source = Range, id = Id };
+      ObjContainerIdName { Id, Name }) |
+    ( { objcMethod = X } = Decl;
+      X = ObjcMethodDeclaration { source = Range, selector = S };
+      S = ObjcSelector [Str];
+      Name = Name Str) |
+    ( { objcProperty = X } = Decl;
+      X = ObjcPropertyDeclaration { source = Range, name = Name }) |
+    ( { typeAlias = X } = Decl;
+      X = TypeAliasDeclaration { source = Range, name = { name = Name }})
+
 } # end schema cxx1.4
