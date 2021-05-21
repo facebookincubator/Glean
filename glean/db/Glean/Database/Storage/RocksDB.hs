@@ -5,11 +5,15 @@ module Glean.Database.Storage.RocksDB
 
 import qualified Codec.Archive.Tar as Tar
 import Control.Monad
+import qualified Data.HashMap.Strict as HashMap
 import Data.Int
+import Data.List (unzip4)
+import qualified Data.Vector.Storable as VS
 import Data.Word
 import Foreign.C.String
 import Foreign.C.Types
 import Foreign.ForeignPtr
+import Foreign.Marshal.Array
 import Foreign.Ptr
 import Foreign.Storable
 import System.Directory
@@ -120,8 +124,29 @@ instance Storage RocksDB where
         then Just <$> unsafeMallocedByteString value_ptr value_size
         else return Nothing
 
-  commit db facts = with db $ \db_ptr -> with facts $ \facts_ptr ->
-    invoke $ glean_rocksdb_commit db_ptr facts_ptr
+  commit db facts owned = with db $ \db_ptr -> do
+    with facts $ \facts_ptr -> invoke $ glean_rocksdb_commit db_ptr facts_ptr
+    when (not $ HashMap.null owned) $
+      withMany entry (HashMap.toList owned) $ \xs ->
+      let (unit_ptrs, unit_sizes, facts_ptrs, facts_sizes) = unzip4 xs
+      in
+      withArray unit_ptrs $ \p_unit_ptrs ->
+      withArray unit_sizes $ \p_unit_sizes ->
+      withArray facts_ptrs $ \p_facts_ptrs ->
+      withArray facts_sizes $ \p_facts_sizes ->
+      invoke $ glean_rocksdb_add_ownership
+        db_ptr
+        (fromIntegral $ HashMap.size owned)
+        p_unit_ptrs
+        p_unit_sizes
+        p_facts_ptrs
+        p_facts_sizes
+    where
+      entry (unit, facts) f =
+        unsafeWithBytes unit $ \unit_ptr unit_size ->
+        VS.unsafeWith facts $ \facts_ptr ->
+        f (unit_ptr, unit_size, facts_ptr, fromIntegral $ VS.length facts)
+
 
   optimize db = withContainer db $ invoke . glean_rocksdb_container_optimize
 
@@ -222,6 +247,15 @@ foreign import ccall unsafe glean_rocksdb_database_lookup
 foreign import ccall safe glean_rocksdb_commit
   :: Ptr (Database RocksDB)
   -> Ptr FactSet
+  -> IO CString
+
+foreign import ccall safe glean_rocksdb_add_ownership
+  :: Ptr (Database RocksDB)
+  -> CSize
+  -> Ptr (Ptr ())
+  -> Ptr CSize
+  -> Ptr (Ptr Fid)
+  -> Ptr CSize
   -> IO CString
 
 foreign import ccall unsafe glean_rocksdb_database_stats

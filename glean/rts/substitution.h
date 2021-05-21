@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <boost/icl/interval_set.hpp>
 
 #include "glean/rts/id.h"
 
@@ -27,6 +28,17 @@ public:
       ? items[distance(start(),id)]
       : id;
   }
+
+  // Apply the Substitution to a set of fact ID ranges.
+  //
+  // Input/output: a list of ranges, [x1,x2, y1,y2, ...]
+  //
+  // The input doesn't need to be sorted or non-overlapping, but the
+  // output will be non-overlapping and sorted in ascending order.
+  std::vector<Id> substIntervals(const std::vector<Id>& intervals) const;
+
+  boost::icl::interval_set<Id> substIntervals(
+      const boost::icl::interval_set<Id>& intervals) const;
 
   Id start() const {
     return base;

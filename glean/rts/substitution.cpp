@@ -19,6 +19,47 @@ Id Substitution::firstFreeId() const {
    return i != items.end() ? std::max(*i+1, finish()) : finish();
  }
 
+std::vector<Id> Substitution::substIntervals(const std::vector<Id>& intervals) const {
+  CHECK_EQ(intervals.size() % 2, 0);
+  boost::icl::interval_set<Id> is;
+  auto i = intervals.begin();
+  const auto e = intervals.end();
+  while (i != e) {
+    const auto start = i[0];
+    const auto finish = i[1];
+    CHECK(start <= finish);
+    if (finish < base) {
+      is.add({start,finish});
+    } else {
+      for (Id id = start; id <= finish; ++id) {
+        is.add(subst(id));
+      }
+    }
+    i += 2;
+  }
+  std::vector<Id> results;
+  results.reserve(is.iterative_size()*2);
+  for (auto p : is) {
+    results.push_back(p.lower());
+    results.push_back(p.upper());
+  }
+  return results;
+}
+
+boost::icl::interval_set<Id> Substitution::substIntervals(const boost::icl::interval_set<Id>& intervals) const {
+  boost::icl::interval_set<Id> result;
+  for (auto ival : intervals) {
+    if (ival.upper() < base) {
+      result.add(ival);
+    } else {
+      for (Id id = ival.lower(); id <= ival.upper(); ++id) {
+        result.add(subst(id));
+      }
+    }
+  }
+  return result;
+}
+
 Substitution Substitution::compose(
     const Substitution& first,
     const Substitution& second) {

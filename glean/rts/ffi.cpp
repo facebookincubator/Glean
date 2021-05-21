@@ -395,6 +395,27 @@ const char *glean_serialize_subst(
   });
 }
 
+const char *glean_subst_intervals(
+    const Substitution *subst,
+    const glean_fact_id_t *ins,
+    size_t ins_size,
+    glean_fact_id_t **outs,
+    size_t *outs_size) {
+  return ffi::wrap([=] {
+    std::vector<Id> ids;
+    ids.reserve(ins_size);
+    std::transform(
+      ins,
+      ins+ins_size,
+      std::back_inserter(ids),
+      Id::fromThrift);
+    auto res = subst->substIntervals(ids);
+    auto fres = ffi::malloc_array<glean_fact_id_t>(res.size());
+    std::transform(res.begin(), res.end(), fres.get(), [](auto id) { return id.toThrift(); });
+    fres.release_to(outs, outs_size);
+  });
+}
+
 const char *glean_factset_new(
     int64_t first_id,
     FactSet **facts) {

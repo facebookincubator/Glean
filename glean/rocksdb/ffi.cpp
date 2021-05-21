@@ -128,6 +128,25 @@ const char *glean_rocksdb_commit(
   });
 }
 
+const char *glean_rocksdb_add_ownership(
+    Database *db,
+    size_t count,
+    const void **units,
+    const size_t *unit_sizes,
+    const int64_t **ids,
+    const size_t *id_sizes) {
+  return ffi::wrap([=] {
+    std::vector<Database::OwnershipSet> v;
+    v.reserve(count);
+    for (size_t i = 0; i < count; ++i) {
+      v.push_back({
+        {static_cast<const unsigned char *>(units[i]), unit_sizes[i]},
+        {ids[i], id_sizes[i]}});
+    }
+    db->addOwnership(v);
+  });
+}
+
 const char *glean_rocksdb_database_stats(
     Database *db,
     size_t *count,

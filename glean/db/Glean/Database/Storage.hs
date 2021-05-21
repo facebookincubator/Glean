@@ -9,6 +9,8 @@ module Glean.Database.Storage
 
 import Data.ByteString (ByteString)
 import qualified Data.ByteString.Lazy as Lazy
+import Data.HashMap.Strict (HashMap)
+import qualified Data.Vector.Storable as VS
 
 import Glean.RTS.Foreign.FactSet (FactSet)
 import Glean.RTS.Foreign.Lookup (CanLookup)
@@ -76,7 +78,7 @@ class CanLookup (Database s) => Storage s where
 
   -- | Commit a set of facts to the database. The facts must have the right ids,
   -- they are NOT renamed.
-  commit :: Database s -> FactSet -> IO ()
+  commit :: Database s -> FactSet -> HashMap ByteString (VS.Vector Fid) -> IO ()
 
   -- | Optimise a database for reading. This is typically done before backup.
   optimize :: Database s -> IO ()

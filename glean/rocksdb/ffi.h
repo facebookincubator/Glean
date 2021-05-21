@@ -103,6 +103,15 @@ const char *glean_rocksdb_commit(
   FactSet *facts
 );
 
+const char *glean_rocksdb_add_ownership(
+  Database *db,
+  size_t count,
+  const void **units,
+  const size_t *unit_sizes,
+  const int64_t **ids,
+  const size_t *id_sizes
+);
+
 const char *glean_rocksdb_database_stats(
   Database *db,
   size_t *count,

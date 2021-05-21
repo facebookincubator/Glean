@@ -266,6 +266,14 @@ const char *glean_serialize_subst(
   int64_t **ids
 );
 
+const char *glean_subst_intervals(
+  const Substitution *subst,
+  const glean_fact_id_t *ins,
+  size_t ins_size,
+  glean_fact_id_t **outs,
+  size_t *outs_size
+);
+
 
 const char *glean_factset_new(
   int64_t first_id,

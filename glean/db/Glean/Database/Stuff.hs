@@ -15,6 +15,7 @@ import Control.Exception hiding(try)
 import Control.Monad.Catch (try)
 import Control.Monad.Extra
 import qualified Data.ByteString as BS
+import Data.Coerce
 import qualified Data.HashMap.Strict as HashMap
 import Data.IORef
 import Data.List
@@ -37,6 +38,7 @@ import Glean.Database.Storage
   , canOpenVersion )
 import qualified Glean.Database.Storage as Storage
 import Glean.Database.Meta (Meta(..))
+import Glean.Database.Schema
 import Glean.Database.Types
 import Glean.FFI
 import Glean.RTS.Foreign.FactSet (FactSet)
@@ -46,7 +48,7 @@ import qualified Glean.RTS.Foreign.Lookup as Lookup
 import qualified Glean.RTS.Foreign.LookupCache as LookupCache
 import qualified Glean.RTS.Foreign.Stacked as Stacked
 import Glean.RTS.Foreign.Subst (Subst)
-import Glean.Database.Schema
+import qualified Glean.RTS.Foreign.Subst as Subst
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.ServerConfig.Types (DBVersion(..))
 import qualified Glean.Types as Thrift
@@ -151,12 +153,14 @@ writeDatabase env repo factBatch latency =
                   -- don't wait for the GC to free it.
                 (\(facts, subst) -> do
                   updateLookupCacheStats env
+                  let !is = Subst.substIntervals subst . coerce <$>
+                        Thrift.batch_owned batch
                   logExceptions (\s -> inRepo repo $ "commit error: " ++ s)
                     $ when (not $ envMockWrites env)
                     $ do
                         mem <- fromIntegral <$> FactSet.factMemory facts
                         Stats.tick (envStats env) Stats.commitThroughput mem $
-                          Storage.commit odbHandle facts
+                          Storage.commit odbHandle facts is
                   return subst
                 )
 
@@ -189,9 +193,11 @@ writeDatabase env repo factBatch latency =
               -- the GC to free it.
             (\(deduped_facts, dsubst) -> do
               deduped_batch <- FactSet.serialize deduped_facts
+              let !is = coerce . Subst.substIntervals dsubst . coerce
+                    <$> Thrift.batch_owned factBatch
               -- And now write it do the DB, deduplicating again
               wsubst <- withMutex (wrLock writing) $ const $
-                do_write True deduped_batch
+                do_write True deduped_batch { Thrift.batch_owned = is }
               return $ dsubst <> wsubst
             )
     Nothing -> dbError repo "can't write to a read only database"

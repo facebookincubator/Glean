@@ -65,8 +65,11 @@ instance Storage Memory where
   retrieve db key =
     atomically $ HashMap.lookup key <$> readTVar (dbData db)
 
-  commit = FactSet.append . dbFacts
+  -- TODO: ownership
+  commit db facts _ = FactSet.append (dbFacts db) facts
+
   optimize _ = return ()
+
   -- TODO
   backup db _ _ = dbError (dbRepo db) "unimplemented 'backup'"
   -- TODO
