@@ -9,6 +9,7 @@ import Control.Monad.Extra
 import qualified Control.Monad.Catch as C
 import Control.Monad.IO.Class (liftIO, MonadIO)
 import Control.Monad.Trans.Class (lift)
+import Control.Monad.Trans.Maybe
 import qualified Control.Monad.Trans.State.Strict as State
 import qualified Data.ByteString.UTF8 as UTF8
 import Data.Char
@@ -730,7 +731,8 @@ editCmd = do
   void $ evaluate query
 
 getEditor :: IO String
-getEditor = fromMaybe "ed" <$> (lookupEnv "VISUAL" <|> lookupEnv "EDITOR")
+getEditor = fmap (fromMaybe "ed") $ runMaybeT $
+  MaybeT (lookupEnv "VISUAL") <|> MaybeT (lookupEnv "EDITOR")
 
 limitCmd :: String -> Eval ()
 limitCmd "" = do
