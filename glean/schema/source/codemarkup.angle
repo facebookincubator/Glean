@@ -908,6 +908,7 @@ import hs.2
 # impport hack.5 not ready
 import hack.4
 import flow.3
+import cxx1.4
 
 # Deprecated types
 
@@ -1083,7 +1084,8 @@ predicate ResolveLocation:
   { Location, Entity } where
     HackResolveLocation { Location, Entity } |
     PythonResolveLocation { Location, Entity } |
-    FlowResolveLocation { Location, Entity }
+    FlowResolveLocation { Location, Entity } |
+    CxxResolveLocation { Location, Entity }
 
 # Finding xrefs. All references in a file and their targets
 predicate FileEntityXRefLocations:
@@ -1095,7 +1097,8 @@ predicate FileEntityXRefLocations:
   { File, XRef, Entity } where
     HackFileEntityXRefLocations { File, XRef, Entity } |
     FlowFileEntityXRefLocations { File, XRef, Entity } |
-    PythonFileEntityXRefLocations { File, XRef, Entity }
+    PythonFileEntityXRefLocations { File, XRef, Entity } |
+    CxxFileEntityXRefLocations { File, XRef, Entity }
 
 # Find references to a language entity
 predicate EntityUses:
@@ -1107,7 +1110,8 @@ predicate EntityUses:
   {Entity, File, Span} where
     HackEntityUses { Entity, File, Span } |
     FlowEntityUses { Entity, File, Span } |
-    PythonEntityUses { Entity, File, Span }
+    PythonEntityUses { Entity, File, Span } |
+    CxxEntityUses { Entity, File, Span }
 
 # Private language instances
 
@@ -1148,6 +1152,18 @@ predicate FlowResolveLocation:
     flow.DeclarationNameSpan { Decl, Name, Span };
     Name = flow.Name NameStr ;
     Entity = code.Entity { flow = { decl = Decl } };
+
+predicate CxxResolveLocation:
+  {
+    location: Location,
+    entity: code.Entity,
+  }
+  { { Str, File, { range = Range } }, Entity } where
+    cxx1.Trace { file = File, declarations = cxx1.Declarations Decls };
+    Decl = Decls[..];
+    cxx1.DeclarationLocation { Decl, Range, Name };
+    cxx1.Name Str = Name;
+    Entity = code.Entity { cxx = { decl = Decl } };
 
 # Finding references in a file
 
@@ -1301,6 +1317,48 @@ predicate PythonEntityToDeclaration:
   python.DeclarationLocation {PyDecl, File, Span};
   Decl = Declaration {Name, File, Span};
 
+predicate CxxFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: XRefLocation,
+    entity: code.Entity,
+  }
+  { File, XRef, Entity } where
+    XMap = cxx1.FileXRefMap { File, Fixeds, _ };
+    cxx1.FileXRefs { XMap, _ };
+
+    # .. go through fixed declarations
+    ({ XRef, Entity } where
+      cxx1.FixedXRef { { declaration = Decl }, Spans } = Fixeds[..];
+      cxx1.DeclarationLocation { Decl, Range, cxx1.Name Name };
+      Span = Spans[..];
+      { file = TargetFile } = Range;
+      { { Name, TargetFile, { range = Range } }, { span = Span }} = XRef;
+      code.Entity { cxx = { decl = Decl }} = Entity;
+    )
+    # .. go through variable
+    # need to zip xref target Externals with Variable at same location
+    # .. can't zip..
+    #  (XRefTarget, Span) = zip Externals[..] Variables[..];
+    #  CxxXRefTargetEntity { XRefTarget, Entity }
+    #  { { Name, TargetFile, { range = Range } }, { span = Span }} = XRef;
+
+# Finding references to a definition
+predicate CxxXRefTargetEntity:
+  {
+    target: cxx1.XRefTarget,
+    entity: code.Entity,
+  }
+  ({ Target, { cxx = { decl = D } } }  where
+    { declaration = D } = Target) |
+  ({ Target, { cxx = { enumerator = E } } }  where
+    { enumerator = E } = Target)
+  # recursive to handle indirect xrefs
+  # todo try unrolling 1 or 2 levels
+  # ({ Target, Entity }  where
+  #  { indirect = { target = X } } = Target;
+  #  CxxXRefTargetEntity { X, Entity })
+
 predicate HackEntityUses:
   {
     target: code.Entity,
@@ -1329,5 +1387,18 @@ predicate PythonEntityUses:
   }
   { { python = { decl = D } }, File, Span } where
   python.DeclarationUses { declaration = D, file = File, span = Span}
+
+predicate CxxEntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  ({ { cxx = { decl = D } }, File, Span } where
+    cxx1.TargetUses { { declaration = D } , File, Spans };
+    Span = Spans[..]) |
+  ({ { cxx = { enumerator = E } }, File, Span } where
+    cxx1.TargetUses { { enumerator = E } , File, Spans };
+    Span = Spans[..])
 
 }
