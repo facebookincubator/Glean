@@ -9,12 +9,12 @@ import Control.Monad.Extra
 import qualified Control.Monad.Catch as C
 import Control.Monad.IO.Class (liftIO, MonadIO)
 import Control.Monad.Trans.Class (lift)
-import Control.Monad.Trans.Maybe
 import qualified Control.Monad.Trans.State.Strict as State
 import qualified Data.ByteString.UTF8 as UTF8
 import Data.Char
 import Data.Default
 import Data.Functor
+import Data.Foldable (asum)
 import qualified Data.HashMap.Strict as HashMap
 import Data.Int
 import Data.IORef
@@ -449,7 +449,8 @@ helptext mode = vcat
       , ("schema [predicate|type]",
             "Show schema for the given predicate or type")
       , ("edit",
-            "Edit a query in an external editor")
+            "Edit a query in an external editor. "
+            <> "Set the EDITOR environment variable to choose an editor")
       , ("limit <n>",
             "Set limit on the number of query results")
       , ("timeout off|<n>",
@@ -724,15 +725,22 @@ setModeCmd _ = liftIO $ throwIO $ ErrorCall "syntax: :mode [json|angle]"
 editCmd :: Eval ()
 editCmd = do
   file <- query_file <$> getState
-  query <- liftIO $ do
-    editor <- getEditor
-    callCommand $ unwords [editor, file]
-    readFile file
-  void $ evaluate query
+  meditor <- liftIO getEditor
+  case meditor of
+    Nothing -> liftIO $ do
+      putStrLn "EDITOR not set."
+      putStrLn "Set the EDITOR environment variable choose an editor."
+    Just editor -> do
+      query <- liftIO $ do
+        callCommand $ unwords [editor, file]
+        readFile file
+      void $ evaluate query
 
-getEditor :: IO String
-getEditor = fmap (fromMaybe "ed") $ runMaybeT $
-  MaybeT (lookupEnv "VISUAL") <|> MaybeT (lookupEnv "EDITOR")
+getEditor :: IO (Maybe String)
+getEditor = asum <$> sequence
+  [ lookupEnv "EDITOR"
+  , lookupEnv "VISUAL"
+  ]
 
 limitCmd :: String -> Eval ()
 limitCmd "" = do
