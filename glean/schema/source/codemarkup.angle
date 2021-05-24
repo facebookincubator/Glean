@@ -897,3 +897,437 @@ predicate FlowResolve:
     E = code.Entity { flow = { decl = D } };
 
 }
+
+schema codemarkup.12 {
+import src.1
+import python.3
+# import code.12 not ready
+import code.11
+import code.flow.2
+import hs.2
+# impport hack.5 not ready
+import hack.4
+import flow.3
+
+# Deprecated types
+
+# deprecated
+type Declaration =
+  {
+    name: string,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+
+# deprecated
+type DirectXRef =
+  {
+    target: Declaration,
+    source: src.ByteSpan,
+  }
+
+# deprecated: shiny xrefs
+type Annotation =
+  {
+    span: src.ByteSpan,
+    shortName: string,
+    linkTo: maybe LinkTo,
+  }
+
+type LinkTo =
+  {
+    localRepo: src.FileLocation |
+  }
+
+# Deprecate Shiny xref API
+
+# deprecated
+# usage: https://fburl.com/scuba/glean_server/9oiuyblv
+predicate FileAnnotations:
+  {
+    file: src.File,
+    annotation: Annotation,
+  }
+  { File, Ann } where
+  FileDirectXRefs {
+    File, { { name=ShortName, file=DstFile, span=DstSpan }, Source }
+  };
+  Ann =
+    Annotation {
+      span = Source,
+      shortName = ShortName,
+      linkTo = { just = { localRepo = { DstFile, DstSpan } } }
+    }
+
+# deprecated, used only by FileAnnotations
+predicate FileDirectXRefs:
+  {
+    file: src.File,
+    xref: DirectXRef,
+  }
+  ({ File, DirectXRef } where
+    FileEntityXRefLocations { File, XRef, _ };
+    ToLegacyXRef {XRef, DirectXRef}) |
+  ({ File, DirectXRef } where
+    HaskellFileDirectXRefs { File, DirectXRef })
+
+# deprecated, used only by FileAnnotations via FileDirectXRefs
+predicate HaskellFileDirectXRefs:
+  {
+    file: src.File,
+    xref: DirectXRef,
+  }
+  {File, {Decl, Src}} where
+  hs.FileXRefMap { file = File, refs = Refs };
+  { target = Target, spans = Spans } : hs.XReference = Refs [..];
+  Src : src.ByteSpan = Spans [..];
+  Target = hs.XRefTarget { definition =  hs.DefinitionName TargetName };
+  hs.Definition {hs.DefinitionName TargetName, {TargetFile, TargetSpan}};
+  Decl = Declaration {TargetName, TargetFile, TargetSpan};
+
+# Deprecated language-agnostic API (v2)
+
+# deprecated
+# usage: https://fburl.com/scuba/glean_server/ikx3jonh
+predicate FileEntities:
+  {
+    file: src.File,
+    decl: Declaration,
+    entity: code.Entity,
+  }
+  { File, { Name, File, Span }, Entity} where
+    FileEntityLocations { File, { Name, File, { span = Span }}, Entity }
+
+# deprecated
+# usage: https://fburl.com/scuba/glean_server/klkte66n
+predicate Resolve:
+  {
+    decl: Declaration,
+    entity: code.Entity,
+  }
+  { { Name, File, Span }, Entity } where
+    ResolveLocation { { Name, File, { span = Span }}, Entity }
+
+# deprecated
+# usage: https://fburl.com/scuba/glean_server/fjkzcdgp
+predicate FileEntityXRefs:
+  {
+    file: src.File,
+    xref: DirectXRef,
+    entity: code.Entity,
+  }
+  { File, DirectXRef, Entity } where
+    FileEntityXRefLocations { File, XRef, Entity };
+    ToLegacyXRef {XRef, DirectXRef};
+
+# Compat shims for old xref format (deprecated)
+predicate ToLegacyXRef:
+  {
+    from: XRefLocation,
+    to: DirectXRef
+  }
+  { { FromTarget, FromSource } , DirectXRef } where
+    DirectXRef = (
+      { Name, TargetFile, {span = TargetSpan} } = FromTarget;
+      { span = Span } = FromSource;
+      {{ Name, TargetFile, TargetSpan}, Span };
+    )
+
+#
+# Public API
+#
+
+# Public types
+
+# Within a file, the type of symbol locations
+type RangeSpan =
+  {
+    span : src.ByteSpan |
+    range : src.Range # cxx compat
+  }
+
+# Symbol locations within a repo
+type Location =
+  {
+    name: string,
+    file: src.File,
+    location : RangeSpan,
+  }
+
+# XRefs from source to target declaration or definition
+type XRefLocation =
+  {
+    target: Location,
+    source: RangeSpan
+  }
+
+# Public language-agnostic API
+
+# All entities defined in a src.File and their locations
+predicate FileEntityLocations:
+  {
+    file: src.File,
+    location: Location,
+    entity: code.Entity,
+  }
+  { File, Location, Entity } where
+    ResolveLocation { Location, Entity };
+    Location { file = File } = Location;
+
+# Map a location to the Entity declared there
+predicate ResolveLocation:
+  {
+    location: Location,
+    entity: code.Entity,
+  }
+  { Location, Entity } where
+    HackResolveLocation { Location, Entity } |
+    PythonResolveLocation { Location, Entity } |
+    FlowResolveLocation { Location, Entity }
+
+# Finding xrefs. All references in a file and their targets
+predicate FileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: XRefLocation,
+    entity: code.Entity,
+  }
+  { File, XRef, Entity } where
+    HackFileEntityXRefLocations { File, XRef, Entity } |
+    FlowFileEntityXRefLocations { File, XRef, Entity } |
+    PythonFileEntityXRefLocations { File, XRef, Entity }
+
+# Find references to a language entity
+predicate EntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    span: src.ByteSpan
+  }
+  {Entity, File, Span} where
+    HackEntityUses { Entity, File, Span } |
+    FlowEntityUses { Entity, File, Span } |
+    PythonEntityUses { Entity, File, Span }
+
+# Private language instances
+
+# Resolving locations to entities
+
+predicate HackResolveLocation:
+  {
+    location: Location,
+    entity: code.Entity,
+  }
+  { { Name, File, { span = Span } }, Entity } where
+    hack.FileDeclarations { file = File, declarations = Ds };
+    Decl = Ds[..];
+# hack.5
+#    hack.DeclarationName Decl -> (hack.Name Name);
+# hack.4
+    hack.DeclarationName { declaration = Decl, name = hack.Name Name };
+    hack.DeclarationLocation { declaration = Decl, file = File, span = Span };
+    Entity = code.Entity { hack = { decl = Decl } };
+
+predicate PythonResolveLocation:
+  {
+    location: Location,
+    entity: code.Entity,
+  }
+  { { Name, File, { span = Span } }, Entity } where
+    python.DeclarationsByFile { File, Span, Decl };
+    python.DeclarationToName Decl -> (Name : string);
+    Entity = code.Entity { python = { decl = Decl } };
+
+predicate FlowResolveLocation:
+  {
+    location: Location,
+    entity: code.Entity,
+  }
+  { { NameStr, File, { span = Span } }, Entity } where
+    flow.FileDeclaration { File, Decl };
+    flow.DeclarationNameSpan { Decl, Name, Span };
+    Name = flow.Name NameStr ;
+    Entity = code.Entity { flow = { decl = Decl } };
+
+# Finding references in a file
+
+predicate HackFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: XRefLocation,
+    entity: code.Entity,
+  }
+  { File, { Location, { span = Src } }, Entity } where
+    hack.FileXRefs { file = File, xrefs = XRefs };
+    hack.XRef { target = { declaration = D }, ranges = Uses } = XRefs[..];
+# hack.4
+    hack.DeclarationName { declaration = D, name = hack.Name TargetName };
+# hack.5
+#    hack.DeclarationName D -> (hack.Name TargetName);
+    hack.DeclarationLocation { declaration = D, file = TargetFile, span = TargetSpan };
+    Location = Location { TargetName, TargetFile, { span = TargetSpan }};
+    Sources = prim.relToAbsByteSpans Uses;
+    Src = Sources[..];
+    Entity = code.Entity { hack = { decl = D } };
+
+predicate FlowFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: XRefLocation,
+    entity: code.Entity,
+  }
+  { File, XRef, { flow = Entity } } where
+    FlowFileReferenceEntityXRefLocations { File, XRef, Entity } |
+    FlowFileImportDeclEntityXRefLocations { File, XRef, Entity }
+
+# Flow cross-references from occurrences.
+#
+# References in the Flow index point to the local import declaration
+# in the file.  To resolve these to the remote reference:
+#
+#  * For each reference in the file (flow.FileXRef)
+#  * emit a DirectXRef to its target
+#  * also, if the target is a flow.ImportDeclaration
+#  * find the source of the import, and emit a DirectXRef to that
+#
+# And do the same for type declarations.
+#
+# This will result in two DirectXRefs for each non-local reference,
+# one pointing to the import declaration and another to the non-local
+# target. The client can decide which one(s) it wants.
+#
+predicate FlowFileReferenceEntityXRefLocations:
+  {
+    file: src.File,
+    xref: XRefLocation,
+    entity: code.flow.Entity,
+  }
+  { File, {Location, { span = Src }}, Entity } where
+    flow.FileXRef { file = File, ref = XRef };
+    flow.FlowXRefDeclInfo { XRef, SrcLoc, Name, TargetLoc, D };
+    Name = flow.Name Str;
+    { span = Src } = SrcLoc;
+    (
+      # TODO: should be able to inline M, but the optimiser got it wrong
+      { module = M, span = TargetSpan } = TargetLoc;
+      { file = TargetFile } = M;
+      { decl = D } = Entity;
+    ) | (
+      { localRef = { declaration = LocalD } } = XRef;
+      flow.FlowImportXRef { LocalD, Entity, TargetFile, TargetSpan };
+    ) | (
+      { typeRef = { typeDeclaration = T } } = XRef;
+      flow.FlowTypeImportXRef { T, Entity, TargetFile, TargetSpan };
+    );
+    Location = Location { Str, TargetFile, { span = TargetSpan }}
+
+# Flow cross-references from import declarations.
+#
+# We want to hyperlink the identifiers in an import declaration to the
+# source of the import:
+#
+# * For each declaration in the file (flow.FileDeclaration)
+# * If it is an import declaraiton, find the source (reusing FlowImportXRef)
+#
+# and do the same for type declarations (FlowTypeImportXRef).
+#
+predicate FlowFileImportDeclEntityXRefLocations:
+  {
+    file: src.File,
+    xref: XRefLocation,
+    entity: code.flow.Entity,
+  }
+  { File, { Location, { span = Src } }, Entity } where
+    flow.FileDeclaration { File, D };
+    (
+      { localDecl = LocalD } = D;
+      flow.FlowImportXRef { LocalD, Entity, TargetFile, TargetSpan };
+      { name = Name, loc = SrcLoc } = LocalD;
+    ) | (
+      { typeDecl = TypeD } = D;
+      flow.FlowTypeImportXRef { TypeD, Entity, TargetFile, TargetSpan };
+      { name = Name, loc = SrcLoc } = TypeD;
+    );
+    Location = Location { Str, TargetFile, { span = TargetSpan } };
+    Name = flow.Name Str;
+    { span = Src } = SrcLoc;
+
+predicate PythonFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: XRefLocation,
+    entity: code.Entity,
+  }
+  {File, {Location, { span = Src }}, Entity} where
+  {PyDecl, Src} = (
+    python.DeclarationsByFile {
+      file = File,
+      span = Src,
+      declaration = { imp = { from_name = TargetName } },
+    };
+    python.DeclarationWithName { name = TargetName, declaration = TargetDecl};
+    {TargetDecl, Src}
+  ) | (
+    python.DirectXRefsByFile {File, XRef};
+    XRef
+  );
+  Entity = code.Entity { python = { decl = PyDecl } };
+  PythonEntityToDeclaration { entity = Entity, decl = Decl};
+  { Name, TargetFile, TargetSpan } = Decl;
+  { Name, TargetFile, { span = TargetSpan }} = Location;
+
+# N.B. uses deprecated types
+predicate PythonEntityToDeclaration:
+  {
+    entity: code.Entity,
+    decl: Declaration,
+  }
+  {Ent, Decl} where
+  { python = { decl = PyDecl }} = Ent;
+  (
+    { cls = D } = PyDecl;
+    D = python.ClassDeclaration { name = PyName };
+  ) | (
+    { func = D } = PyDecl;
+    D = python.FunctionDeclaration { name = PyName };
+  ) | (
+    { variable = D } = PyDecl;
+    D = python.VariableDeclaration { name = PyName };
+  ) | (
+    { imp = D } = PyDecl;
+    D = python.ImportStatement { from_name = PyName };
+  ) ;
+  PyName = python.Name Name;
+  python.DeclarationLocation {PyDecl, File, Span};
+  Decl = Declaration {Name, File, Span};
+
+predicate HackEntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  { { hack = { decl = D } }, File, Span } where
+    hack.TargetUses { target = { declaration = D }, file = File, uses = Uses };
+    Spans = prim.relToAbsByteSpans Uses;
+    Span = Spans[..];
+
+predicate FlowEntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  { { flow = Entity }, File, Span } where
+    flow.FlowEntityUsesAll { Entity, File, Span };
+
+predicate PythonEntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  { { python = { decl = D } }, File, Span } where
+  python.DeclarationUses { declaration = D, file = File, span = Span}
+
+}
