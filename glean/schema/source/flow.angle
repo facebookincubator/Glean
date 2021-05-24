@@ -508,4 +508,15 @@ predicate FlowEntityUsesAll :
       DeclarationUses { { localDecl = Import }, File, Span }
     ))
 
+# Useful lookup from declaration to name and span. See also DeclarationLocation
+predicate DeclarationNameSpan:
+  {
+    decl: flow.SomeDeclaration,
+    name: flow.Name,
+    span: src.ByteSpan
+  }
+  { { localDecl = { name = Name, loc = { span = Span }}}, Name, Span } |
+  { { memberDecl = { name = Name, loc = { span = Span }}}, Name, Span } |
+  { { typeDecl = { name = Name, loc = { span = Span }}}, Name, Span }
+
 }
