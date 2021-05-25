@@ -13,6 +13,7 @@ where
 
 import Control.Monad
 import qualified Data.ByteString.Lazy as BSL
+import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Map.Strict as Map
 import Data.Maybe
 import qualified Data.Text as Text
@@ -63,12 +64,14 @@ withTestEnvDatabase
   -> (Env -> Thrift.Repo -> IO a)
   -> IO a
 withTestEnvDatabase generator test action =
+  withTestEnv [setRoot $ testOutput test </> "db"] $ \backend -> do
   let
-    settings = [setRoot $ testOutput test </> "db"] <>
-      maybeToList (setSchemaVersion . fromIntegral <$> testSchemaVersion test)
-  in
-  withTestEnv settings $ \backend -> do
+    setDbVersion ver = void $ Backend.updateProperties backend repo
+      (HashMap.fromList
+        [("glean.schema_version", Text.pack (show ver))
+        ]) []
   Backend.fillDatabase backend repo "" (die "repo already exists") $ do
+    mapM_ setDbVersion $ testSchemaVersion test
     generator test backend repo
   action backend repo
   where

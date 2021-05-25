@@ -530,16 +530,18 @@ userQueryImpl
       _ -> throwIO $ Thrift.BadQuery
         "only queries for facts are currently supported"
 
-    unless (Text.null userQuery_predicate) $
+    unless (Text.null userQuery_predicate) $ do
       -- With Angle queries, setting userQuery_predicate is
       -- optional. If the client sets it, we will check it: this
       -- can be a useful way to catch errors in the client.
       -- If the query is not returning whole facts, then the
       -- client should set this field to "".
+      dbSchemaVersion <- getDbSchemaVersion env repo
       checkPredicatesMatch schema
         details
         (SourceRef userQuery_predicate userQuery_predicate_version)
-        (maybe LatestSchemaAll SpecificSchemaAll (envSchemaVersion env))
+        (maybe LatestSchemaAll SpecificSchemaAll $
+          envSchemaVersion env <|> dbSchemaVersion)
 
     let limits = mkQueryRuntimeOptions opts config
     nextId <- case Thrift.userQueryOptions_continuation opts of
