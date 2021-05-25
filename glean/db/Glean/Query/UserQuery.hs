@@ -5,7 +5,6 @@ module Glean.Query.UserQuery
   ) where
 
 import Control.Applicative
-import Control.Concurrent.STM
 import Control.DeepSeq
 import Control.Exception
 import Control.Monad
@@ -45,12 +44,10 @@ import Thrift.Protocol.JSON.Base64
 import Util.AllocLimit
 import Util.Timing
 import Util.Log
-import Util.Text
 
 import qualified Glean.Angle.Parser as Angle
 import Glean.Angle.Types hiding (Type, FieldDef)
 import qualified Glean.Angle.Types as Angle
-import Glean.Database.Catalog
 import Glean.Database.Schema.Types
 import Glean.Database.Stuff
 import Glean.Database.Types as Database
@@ -1164,10 +1161,3 @@ compileType schema src = do
     badQuery :: Text -> IO a
     badQuery err = throwIO $ Thrift.BadQuery $ Text.unlines
       ["unable to compile type: ", err]
-
-getDbSchemaVersion :: Env -> Thrift.Repo -> IO (Maybe Version)
-getDbSchemaVersion env repo = do
-  props <- atomically $ Thrift.metaProperties <$> readMeta (envCatalog env) repo
-  case HashMap.lookup "glean.schema_version" props of
-    Just txt | Right v <- textToInt txt -> return (Just (fromIntegral v))
-    _otherwise -> return Nothing

@@ -135,11 +135,18 @@ deriveStoredImpl env log repo Thrift.DerivePredicateQuery{..} = do
 
     passingConstraints :: IO PredicateRef
     passingConstraints = readDatabase env repo $ \schema _ -> do
-      let mdetails = lookupPredicate
+      dbSchemaVersion <- getDbSchemaVersion env repo
+      let
+        schemaVersion =
+          maybe LatestSchemaAll SpecificSchemaAll $
+            envSchemaVersion env <|> dbSchemaVersion
+
+        mdetails = lookupPredicate
             (SourceRef derivePredicateQuery_predicate
               derivePredicateQuery_predicate_version)
-            (maybe LatestSchemaAll SpecificSchemaAll (envSchemaVersion env))
+            schemaVersion
             schema
+
       pred <- case mdetails of
         Nothing -> throwIO Thrift.UnknownPredicate
         Just details -> return $ predicateRef details

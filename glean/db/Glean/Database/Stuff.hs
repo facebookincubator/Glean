@@ -6,7 +6,8 @@ module Glean.Database.Stuff (
   databaseClosed, asyncOpenDB, closeOpenDB,
   newDB, acquireDB, releaseDB,
   schemaUpdated,
-  thinSchema
+  thinSchema,
+  getDbSchemaVersion
 ) where
 
 import Control.Concurrent.Async (Async, wait)
@@ -24,6 +25,7 @@ import qualified Data.Text as Text
 
 import Util.Control.Exception
 import Util.Log
+import Util.Text
 
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Catalog.Filter (Locality(..))
@@ -478,3 +480,15 @@ asyncOpenDB env@Env{..} db@DB{..} version mode on_success on_failure =
       logError $ inRepo dbRepo "couldn't open:" ++ show (exc :: SomeException)
       on_failure exc
       throwIO exc
+
+
+-- | Fetch the glean.schema_version property of a DB, if it has
+-- one. This property is used to resolve queries that don't specify
+-- precise predicate versions.
+getDbSchemaVersion :: Env -> Thrift.Repo -> IO (Maybe Thrift.Version)
+getDbSchemaVersion env repo = do
+  props <- atomically $ Thrift.metaProperties <$>
+    Catalog.readMeta (envCatalog env) repo
+  case HashMap.lookup "glean.schema_version" props of
+    Just txt | Right v <- textToInt txt -> return (Just (fromIntegral v))
+    _otherwise -> return Nothing
