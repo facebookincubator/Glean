@@ -4,6 +4,7 @@ module Glean.Query.Derive
   , deriveStored
   ) where
 
+import Control.DeepSeq
 import Control.Exception
 import Control.Concurrent
 import Control.Concurrent.STM
@@ -323,7 +324,7 @@ addProgress
 addProgress env repo pred (stats, mcont, mWriteHandle) =
   atomically
     $ modifyTVar' (envDerivations env)
-    $ HashMap.adjust adjust (repo, pred)
+    $ HashMap.adjust (force . adjust) (repo, pred)
   where
     adjust derivation@Derivation{..} = derivation
       { derivationQueryingFinished = isNothing mcont

@@ -6,6 +6,7 @@ module Glean.Database.Types (
   Derivation(..)
 ) where
 
+import Control.DeepSeq
 import Control.Concurrent.Async
 import Control.Concurrent.MVar (MVar)
 import Control.Concurrent.STM
@@ -163,6 +164,16 @@ data Derivation = Derivation
   , derivationError :: Maybe SomeException
   , derivationHandle :: Thrift.Handle
   }
+
+instance NFData Derivation where
+  rnf Derivation{..} =
+    derivationStart
+    `seq` derivationQueryingFinished
+    `seq` rnf derivationStats
+    `seq` rnf derivationPendingWrites
+    `seq` maybe () (`seq` ()) derivationError
+    `seq` derivationHandle
+    `seq`()
 
 data Env = forall storage. Storage storage => Env
   { envEventBase :: EventBaseDataplane
