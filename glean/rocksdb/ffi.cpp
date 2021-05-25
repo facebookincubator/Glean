@@ -147,6 +147,14 @@ const char *glean_rocksdb_add_ownership(
   });
 }
 
+const char *glean_rocksdb_get_ownership_unit_iterator(
+    Database *db,
+    OwnershipUnitIterator **iter) {
+  return ffi::wrap([=] {
+    *iter = db->getOwnershipUnitIterator().release();
+  });
+}
+
 const char *glean_rocksdb_database_stats(
     Database *db,
     size_t *count,

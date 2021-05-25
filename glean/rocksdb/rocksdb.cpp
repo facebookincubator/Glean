@@ -973,6 +973,44 @@ struct DatabaseImpl final : Database {
     ownership_unit_counters.insert(
       ownership_unit_counters.end(),  new_count, 1);
   }
+
+  std::unique_ptr<rts::OwnershipUnitIterator>
+      getOwnershipUnitIterator() override {
+    struct UnitIterator : rts::OwnershipUnitIterator {
+      explicit UnitIterator(std::unique_ptr<rocksdb::Iterator> i)
+        : iter(std::move(i))
+      {}
+
+      folly::Optional<rts::OwnershipUnit> get() override {
+        if (iter->Valid()) {
+          binary::Input key(byteRange(iter->key()));
+          auto unit = key.trustedNat();
+          const auto val = iter->value();
+          iter->Next();
+          return rts::OwnershipUnit{
+            static_cast<uint32_t>(unit),
+            { reinterpret_cast<const OwnershipUnit::Ids *>(val.data()),
+              val.size() / sizeof(OwnershipUnit::Ids) }
+          };
+        } else {
+          return {};
+        }
+      }
+
+      std::unique_ptr<rocksdb::Iterator> iter;
+    };
+    std::unique_ptr<rocksdb::Iterator> iter(
+      container_.db->NewIterator(
+        rocksdb::ReadOptions(),
+        container_.family(Family::ownershipRaw)));
+
+    if (!iter) {
+      rts::error("rocksdb: couldn't allocate ownership unit iterator");
+    }
+
+    iter->SeekToFirst();
+    return std::make_unique<UnitIterator>(std::move(iter));
+  }
 };
 
 std::unique_ptr<Database> ContainerImpl::openDatabase(

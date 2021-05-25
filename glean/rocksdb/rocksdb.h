@@ -3,6 +3,7 @@
 #include "glean/rts/densemap.h"
 #include "glean/rts/factset.h"
 #include "glean/rts/lookup.h"
+#include "glean/rts/ownership.h"
 #include "glean/rts/stats.h"
 #include "glean/rts/store.h"
 
@@ -81,6 +82,8 @@ struct Database : rts::Lookup {
 
   virtual void commit(rts::FactSet& facts) = 0;
   virtual void addOwnership(const std::vector<OwnershipSet>& ownership) = 0;
+  virtual std::unique_ptr<rts::OwnershipUnitIterator>
+    getOwnershipUnitIterator() = 0;
 };
 
 void restore(const std::string& target, const std::string& source);

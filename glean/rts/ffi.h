@@ -40,6 +40,7 @@ typedef struct LookupCache LookupCache;
 typedef struct Predicate Predicate;
 typedef struct Substitution Substitution;
 typedef struct QueryResults QueryResults;
+typedef struct OwnershipUnitIterator OwnershipUnitIterator;
 
 #ifdef __cplusplus
 }

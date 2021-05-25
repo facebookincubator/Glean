@@ -112,6 +112,11 @@ const char *glean_rocksdb_add_ownership(
   const size_t *id_sizes
 );
 
+const char *glean_rocksdb_get_ownership_unit_iterator(
+  Database *db,
+  OwnershipUnitIterator **iter
+);
+
 const char *glean_rocksdb_database_stats(
   Database *db,
   size_t *count,
