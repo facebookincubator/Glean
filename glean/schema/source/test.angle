@@ -102,6 +102,14 @@ type WrappedStringPair = { wrapped : StringPair }
      X=Y;
      P=Q
 
+# A stored predicate with no facts
+predicate EmptyStoredStringPair : { fst: string, snd: string }
+  stored
+  {C,D} where
+    A = StringPair {"a",_};
+    B = StringPair {"b",_};
+    A = B;
+    A = StringPair {C,D};
 
 # If Y is bound, then it is matched against "a", but if Y is unbound
 # then it will become bound to "a".

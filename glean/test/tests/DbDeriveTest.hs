@@ -19,6 +19,7 @@ import qualified Glean
 import Glean hiding (derivePredicate, deriveStored)
 import Glean.Init
 import Glean.Database.Types
+import qualified Glean.Database.Catalog as Catalog
 import Glean.Types as Thrift
 import Glean.Test.HUnit
 import qualified Glean.Schema.GleanTest.Types as Glean.Test
@@ -125,6 +126,16 @@ completenessTest runDerive = dbTestCaseWritable $ \env repo -> do
   -- deriving a complete predicate is a no-op
   derivedCount <- derive (Proxy @Glean.Test.StoredRevStringPair)
   assertEqual "deriveTest -  complete" 6 derivedCount
+
+  -- deriving a predicate with no facts records it as complete
+  let prox = Proxy @Glean.Test.EmptyStoredStringPair
+      pred = getName prox
+  derivedCount <- derive prox
+  complete <- atomically $
+    metaCompletePredicates <$> Catalog.readMeta (envCatalog env) repo
+  assertEqual "deriveTest -  empty"
+    (0, True)
+    (derivedCount, pred `elem` complete)
 
 derivePredicate :: Predicate p => Env -> Repo -> Proxy p -> IO Int
 derivePredicate env repo proxy = do
