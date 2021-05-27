@@ -126,6 +126,9 @@ module Glean
   , withSendQueue
   , SendQueue
 
+  -- ** Writing binary
+  , sendBatch
+
   -- ** Writing JSON
   , sendJsonBatch
   , SendJsonBatch(..)

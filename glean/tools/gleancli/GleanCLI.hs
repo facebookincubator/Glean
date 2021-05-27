@@ -35,11 +35,13 @@ import Util.OptParse
 import qualified Glean
 import Glean.BuildInfo
 import qualified Glean.Database.Work as Database
+import Glean.Database.Schema
 import Glean.Datasource.Scribe.Write
 import Glean.Derive
 import Glean.Types as Thrift hiding (ValidateSchema)
 import qualified Glean.Types as Thrift
 import Glean.Write
+import Glean.Write.JSON ( buildJsonBatch )
 import Glean.Util.ConfigProvider
 
 data ScribeOptions = ScribeOptions
@@ -63,6 +65,7 @@ data Command
       , finish :: Bool
       , properties :: [(Text,Text)]
       , maxConcurrency :: Int
+      , experimentalFasterWriting :: Bool
       }
   | Finish
       { repo :: Repo
@@ -200,6 +203,7 @@ options = info (parser <**> helper)
           )
         handle <- handleOpt
         maxConcurrency <- maxConcurrencyOpt
+        experimentalFasterWriting <- switch (long "experimental-faster-writing")
         return Write{create=True, ..}
 
     readProperty :: ReadM (Text,Text)
@@ -224,6 +228,7 @@ options = info (parser <**> helper)
         finish <- finishOpt
         handle <- handleOpt
         maxConcurrency <- maxConcurrencyOpt
+        experimentalFasterWriting <- switch (long "experimental-faster-writing")
         return Write{create=False, properties=[], dependencies=Nothing, ..}
 
     finishCmd :: Parser Command
@@ -470,24 +475,40 @@ main =
               Just msg -> Outcome_failure (Thrift.Failure msg)
           }
 
-      write repo files max scribe = streamWithThrow max (forM_ files) $
-        \file -> do
+      write repo files max _scribe fasterWriting | fasterWriting = do
+        schemaInfo <- Glean.getSchemaInfo backend repo
+        dbSchema <- fromSchemaInfo schemaInfo readWriteContent
+        streamWithThrow max (forM_ files) $ \file -> do
           r <- Foreign.CPP.Dynamic.parseJSON =<< B.readFile file
           val <- either (throwIO  . ErrorCall . ((file ++ ": ") ++) .
             Text.unpack) return r
           batches <- case Aeson.parse parseJsonFactBatches val of
             Aeson.Error str -> throwIO $ ErrorCall $ file ++ ": " ++ str
             Aeson.Success x -> return x
-          case scribe of
-            Nothing -> void $ Glean.sendJsonBatch backend repo batches Nothing
-            Just ScribeOptions { writeFromScribe = WriteFromScribe{..}, .. } ->
-              scribeWriteBatches
-                writeFromScribe_category
-                (case writeFromScribe_bucket of
-                  Just (PickScribeBucket_bucket n) -> Just (fromIntegral n)
-                  Nothing -> Nothing)
-                batches
-                scribeCompress
+          batch <- buildJsonBatch dbSchema Nothing batches
+          _ <- Glean.sendBatch backend repo batch
+          return ()
+
+      write repo files max scribe _fasterWriting =
+        streamWithThrow max (forM_ files) $
+          \file -> do
+            r <- Foreign.CPP.Dynamic.parseJSON =<< B.readFile file
+            val <- either (throwIO  . ErrorCall . ((file ++ ": ") ++) .
+              Text.unpack) return r
+            batches <- case Aeson.parse parseJsonFactBatches val of
+              Aeson.Error str -> throwIO $ ErrorCall $ file ++ ": " ++ str
+              Aeson.Success x -> return x
+            case scribe of
+              Nothing -> void $ Glean.sendJsonBatch backend repo batches Nothing
+              Just ScribeOptions
+                { writeFromScribe = WriteFromScribe{..}, .. } ->
+                  scribeWriteBatches
+                    writeFromScribe_category
+                    (case writeFromScribe_bucket of
+                      Just (PickScribeBucket_bucket n) -> Just (fromIntegral n)
+                      Nothing -> Nothing)
+                    batches
+                    scribeCompress
 
       resultToFailure Right{} = Nothing
       resultToFailure (Left err) = Just (show err)
@@ -515,7 +536,13 @@ main =
              else
                let writeFail err = die 3 $ "DB write failure: " ++ err in
                maybe (return ()) writeFail mFail)
-           (\_ -> write repo writeFiles maxConcurrency scribe)
+           (\_ ->
+              write
+                repo
+                writeFiles
+                maxConcurrency
+                scribe
+                experimentalFasterWriting)
 
       Finish{..} -> finished repo handle task parcel failure
 

@@ -1,5 +1,6 @@
 module Glean.Write.JSON
-  ( emptySubst
+  ( buildJsonBatch
+  , emptySubst
   , syncWriteJsonBatch
   , writeJsonBatch
   , writeJsonBatchByteString
@@ -50,6 +51,19 @@ syncWriteJsonBatch env repo batch = do
   tick <- beginTick 1
   writeJsonBatch env repo batch tick
 
+buildJsonBatch
+  :: DbSchema
+  -> Maybe SendJsonBatchOptions
+  -> [JsonFactBatch]
+  -> IO Batch
+buildJsonBatch dbSchema opts batches =
+  withFactBuilder $ \builders ->
+    mapM_ (writeBatch dbSchema builders) batches
+  where
+    writeBatch dbSchema builders JsonFactBatch{..} = do
+      details <- predDetailsForWriting dbSchema jsonFactBatch_predicate
+      let opts' = fromMaybe def opts
+      mapM_ (writeFact dbSchema opts' builders details) jsonFactBatch_facts
 
 writeJsonBatch
   :: Env
@@ -59,15 +73,9 @@ writeJsonBatch
   -> IO ()
 writeJsonBatch env repo SendJsonBatch{..} tick = do
   dbSchema <- withOpenDatabase env repo (return . Database.odbSchema)
-  batch <- withFactBuilder $ \builders ->
-    mapM_ (writeBatch dbSchema builders) sendJsonBatch_batches
+  batch <- buildJsonBatch dbSchema sendJsonBatch_options sendJsonBatch_batches
   _ <- writeDatabase env repo batch tick
   return ()
-  where
-    writeBatch dbSchema builders JsonFactBatch{..} = do
-      details <- predDetailsForWriting dbSchema jsonFactBatch_predicate
-      let opts = fromMaybe def sendJsonBatch_options
-      mapM_ (writeFact dbSchema opts builders details) jsonFactBatch_facts
 
 writeJsonBatchByteString
   :: Env
