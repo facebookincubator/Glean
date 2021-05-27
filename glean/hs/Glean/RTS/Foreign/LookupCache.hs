@@ -6,6 +6,7 @@ module Glean.RTS.Foreign.LookupCache
 where
 
 import Control.Exception
+import Data.List
 import qualified Data.Vector.Storable as V
 import qualified Data.Vector.Storable.Mutable as VM
 import Data.Word
@@ -56,6 +57,12 @@ instance Semigroup StatValues where
 
 instance Monoid StatValues where
   mempty = StatValues $ V.replicate sTAT_COUNT 0
+
+instance Show StatValues where
+  show statValues = intercalate ", " $ map (f statValues) $ enumFrom minBound
+    where
+      f statValues stat =
+        show stat <> ": " <> show (getStat statValues stat)
 
 -- NOTE: This must be kept in sync with the stats in rts/cache.h
 data Stat

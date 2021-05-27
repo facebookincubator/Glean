@@ -3,6 +3,7 @@
 
 module Glean.Write.Options
   ( sendQueueOptions
+  , sendAndRebaseQueueOptions
   , writerOptions
   ) where
 
@@ -11,6 +12,8 @@ import qualified Options.Applicative as O
 
 import Glean.Write.Async (WriterSettings(..))
 import Glean.Write.SendQueue (SendQueueSettings(..))
+import Glean.Write.SendAndRebaseQueue (SendAndRebaseQueueSettings(..))
+
 
 sendQueueOptions :: O.Parser SendQueueSettings
 sendQueueOptions = do
@@ -32,7 +35,28 @@ sendQueueOptions = do
     <> O.value 1024
     <> O.showDefault
     <> O.help "maximum number of batches in send queue"
-  return def{sendQueueThreads, sendQueueMaxMemory, sendQueueMaxBatches}
+  return def
+    { sendQueueThreads
+    , sendQueueMaxMemory
+    , sendQueueMaxBatches
+    }
+
+sendAndRebaseQueueOptions :: O.Parser SendAndRebaseQueueSettings
+sendAndRebaseQueueOptions = do
+  sendAndRebaseQueueSendQueueSettings <- sendQueueOptions
+  sendAndRebaseQueueFactCacheSize <- O.option O.auto $
+    O.long "fact-cache-size"
+    <> O.metavar "N"
+    <> O.value 2000000000
+    <> O.showDefault
+    <> O.help "size of the cache for sent facts"
+  return SendAndRebaseQueueSettings
+    { sendAndRebaseQueueSendQueueSettings
+    , sendAndRebaseQueueFactCacheSize
+    , sendAndRebaseQueueSenders =
+        sendQueueThreads sendAndRebaseQueueSendQueueSettings
+    }
+
 
 writerOptions :: O.Parser WriterSettings
 writerOptions = do

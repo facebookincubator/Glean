@@ -2,11 +2,15 @@ module Glean.RTS.Foreign.FactSet
   ( FactSet
   , new
   , factMemory
+  , firstFreeId
   , serialize
   , append
+  , rebase
   , renameFacts
   ) where
 
+import Data.Int
+import Data.Vector.Storable as Vector
 import Foreign.C.String
 import Foreign.C.Types
 import Foreign.ForeignPtr
@@ -16,6 +20,7 @@ import Glean.FFI
 import Glean.RTS.Foreign.Define
 import Glean.RTS.Foreign.Inventory (Inventory)
 import Glean.RTS.Foreign.Lookup (Lookup(..), CanLookup(..))
+import Glean.RTS.Foreign.LookupCache (LookupCache)
 import Glean.RTS.Foreign.Stacked (stacked)
 import Glean.RTS.Foreign.Subst (Subst)
 import Glean.RTS.Types (Fid(..))
@@ -41,6 +46,9 @@ new next_id = construct $ invoke $ glean_factset_new next_id
 factMemory :: FactSet -> IO Int
 factMemory facts = fromIntegral <$> with facts glean_factset_fact_memory
 
+firstFreeId :: FactSet -> IO Fid
+firstFreeId facts = with facts glean_factset_first_free_id
+
 serialize :: FactSet -> IO Thrift.Batch
 serialize facts =
   with facts $ \facts_ptr -> do
@@ -50,6 +58,21 @@ serialize facts =
     <$> unsafeMallocedByteString facts_data facts_size
     <*> pure Nothing
     <*> pure mempty
+
+rebase :: Inventory -> Thrift.Subst -> LookupCache -> FactSet -> IO FactSet
+rebase inventory Thrift.Subst{..} cache facts =
+  with inventory $ \inventory_ptr ->
+  unsafeWith subst_ids $ \ids_ptr ->
+  with cache $ \cache_ptr ->
+  with facts $ \facts_ptr ->
+  construct $ invoke $
+    glean_factset_rebase
+      facts_ptr
+      inventory_ptr
+      (Fid subst_firstId)
+      (fromIntegral $ Vector.length subst_ids)
+      ids_ptr
+      cache_ptr
 
 append :: FactSet -> FactSet -> IO ()
 append target source =
@@ -80,6 +103,9 @@ foreign import ccall unsafe "&glean_factset_free" glean_factset_free
 foreign import ccall unsafe glean_factset_fact_memory
   :: Ptr FactSet -> IO CSize
 
+foreign import ccall unsafe glean_factset_first_free_id
+  :: Ptr FactSet -> IO Fid
+
 foreign import ccall unsafe glean_factset_lookup
   :: Ptr FactSet -> Lookup
 
@@ -92,6 +118,16 @@ foreign import ccall unsafe glean_factset_serialize
   -> Ptr CSize
   -> Ptr (Ptr ())
   -> Ptr CSize
+  -> IO CString
+
+foreign import ccall unsafe glean_factset_rebase
+  :: Ptr FactSet
+  -> Ptr Inventory
+  -> Fid
+  -> CSize
+  -> Ptr Int64
+  -> Ptr LookupCache
+  -> Ptr (Ptr FactSet)
   -> IO CString
 
 foreign import ccall unsafe glean_factset_append

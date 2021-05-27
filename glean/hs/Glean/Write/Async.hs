@@ -154,7 +154,7 @@ withWriter s settings action = do
   flushWriter w (void . tryPutTMVar done)
   r <- atomically $ readTMVar done
   case r of
-    Right () -> return result
+    Right _subst -> return result
     Left exc -> throwIO exc
 
 -- | Create a new 'Writer' for regression testing.  This accumulates into

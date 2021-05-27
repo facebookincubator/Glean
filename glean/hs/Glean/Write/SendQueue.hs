@@ -46,7 +46,7 @@ data QueueStatus
   | Failed SomeException
 
 -- | When the send operation fails or is completed this is called once.
-type Callback = Either SomeException () -> STM ()
+type Callback = Either SomeException Thrift.Subst -> STM ()
 
 -- | The GleanService can return a Handle for an async operation, and the
 -- client can later poll to determine the actual result/retry/error.
@@ -168,9 +168,9 @@ pollFromWaitQueue backend settings sq = do
     $ \r ->
     case r of
       Just wait -> do
-        _ <- waitBatch backend $ waitHandle wait
+        subst <- waitBatch backend $ waitHandle wait
         atomically $ do
-          waitCallback wait $ Right ()
+          waitCallback wait $ Right subst
           modifyTVar' (sqCount sq) $ \n -> n - 1
         elapsed <- getElapsedTime $ waitStart wait
         sendQueueLog settings $ SendQueueSent (waitSize wait) elapsed

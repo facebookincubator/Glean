@@ -66,7 +66,7 @@ Substitution defineUntrustedBatch(
         def.define(ty, Fact::Clause::from(out.bytes(), key_size), max_ref);
 
       if (!id) {
-        error("invalid fact redefinition");
+        error("invalid fact redefinition ({})", predicate->name);
       }
 
       subst.setAt(i, id);

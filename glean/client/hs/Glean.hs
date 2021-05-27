@@ -118,11 +118,17 @@ module Glean
   , withSender
   , SchemaPredicates
   , Sender
+  , sendAndRebaseQueueOptions
+  , SendAndRebaseQueueSettings(..)
+  , sendQueueOptions
   , SendQueueSettings(..)
   , withWriter
   , Writer
   , WriterSettings(..)
   , writeFacts
+  , writeSendAndRebaseQueue
+  , withSendAndRebaseQueue
+  , writeSendQueue
   , withSendQueue
   , SendQueue
 
@@ -150,7 +156,9 @@ import Glean.Repo
 import Glean.Typed
 import Glean.Types
 import Glean.Write.Async
+import Glean.Write.Options
 import Glean.Write.SendBatch
+import Glean.Write.SendAndRebaseQueue
 import Glean.Write.SendQueue
 import Glean.Util.ThriftSource (ThriftSource)
 import Glean.ClientConfig.Types

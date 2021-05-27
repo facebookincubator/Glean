@@ -3,6 +3,7 @@
 module GleanCLI (main) where
 
 import Control.Concurrent
+import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
 import Data.Aeson as Aeson
@@ -65,7 +66,7 @@ data Command
       , finish :: Bool
       , properties :: [(Text,Text)]
       , maxConcurrency :: Int
-      , experimentalFasterWriting :: Bool
+      , experimentalFasterWriting :: Maybe Glean.SendAndRebaseQueueSettings
       }
   | Finish
       { repo :: Repo
@@ -173,6 +174,17 @@ options = info (parser <**> helper)
         , scribeCompress = compress
         }
 
+    experimentalFasterWritingOptions
+      :: Parser (Maybe Glean.SendAndRebaseQueueSettings)
+    experimentalFasterWritingOptions = do
+        experimentalFasterWritingFlag <-
+          switch (long "experimental-faster-writing")
+        sendAndRebaseQueue <- Glean.sendAndRebaseQueueOptions
+        return $ if experimentalFasterWritingFlag then
+            Just sendAndRebaseQueue
+        else
+          Nothing
+
     unfinishCmd::Parser Command
     unfinishCmd =
       commandParser "unfinish"
@@ -203,7 +215,7 @@ options = info (parser <**> helper)
           )
         handle <- handleOpt
         maxConcurrency <- maxConcurrencyOpt
-        experimentalFasterWriting <- switch (long "experimental-faster-writing")
+        experimentalFasterWriting <- experimentalFasterWritingOptions
         return Write{create=True, ..}
 
     readProperty :: ReadM (Text,Text)
@@ -228,7 +240,7 @@ options = info (parser <**> helper)
         finish <- finishOpt
         handle <- handleOpt
         maxConcurrency <- maxConcurrencyOpt
-        experimentalFasterWriting <- switch (long "experimental-faster-writing")
+        experimentalFasterWriting <- experimentalFasterWritingOptions
         return Write{create=False, properties=[], dependencies=Nothing, ..}
 
     finishCmd :: Parser Command
@@ -475,19 +487,26 @@ main =
               Just msg -> Outcome_failure (Thrift.Failure msg)
           }
 
-      write repo files max _scribe fasterWriting | fasterWriting = do
+      write repo files max Nothing (Just fasterWriting) = do
         schemaInfo <- Glean.getSchemaInfo backend repo
         dbSchema <- fromSchemaInfo schemaInfo readWriteContent
-        streamWithThrow max (forM_ files) $ \file -> do
-          r <- Foreign.CPP.Dynamic.parseJSON =<< B.readFile file
-          val <- either (throwIO  . ErrorCall . ((file ++ ": ") ++) .
-            Text.unpack) return r
-          batches <- case Aeson.parse parseJsonFactBatches val of
-            Aeson.Error str -> throwIO $ ErrorCall $ file ++ ": " ++ str
-            Aeson.Success x -> return x
-          batch <- buildJsonBatch dbSchema Nothing batches
-          _ <- Glean.sendBatch backend repo batch
-          return ()
+        logMessages <- newTQueueIO
+        let inventory = schemaInventory dbSchema
+        Glean.withSendAndRebaseQueue backend repo inventory fasterWriting $
+          \queue ->
+            streamWithThrow max (forM_ files) $ \file -> do
+              r <- Foreign.CPP.Dynamic.parseJSON =<< B.readFile file
+              val <- either (throwIO  . ErrorCall . ((file ++ ": ") ++) .
+                Text.unpack) return r
+              batches <- case Aeson.parse parseJsonFactBatches val of
+                Aeson.Error str -> throwIO $ ErrorCall $ file ++ ": " ++ str
+                Aeson.Success x -> return x
+              batch <- buildJsonBatch dbSchema Nothing batches
+              _ <- Glean.writeSendAndRebaseQueue queue batch $
+                \_ -> writeTQueue logMessages $ "Wrote " <> file
+              atomically (flushTQueue logMessages) >>= mapM_ putStrLn
+              return ()
+        atomically (flushTQueue logMessages) >>= mapM_ putStrLn
 
       write repo files max scribe _fasterWriting =
         streamWithThrow max (forM_ files) $

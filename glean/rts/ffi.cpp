@@ -1,15 +1,21 @@
+#include "glean/rts/ffi.h"
 #include "glean/ffi/memory.h"
 #include "glean/ffi/wrap.h"
+#include "glean/if/gen-cpp2/glean_types.h"
+#include "glean/rts/bytecode/subroutine.h"
 #include "glean/rts/cache.h"
 #include "glean/rts/ffi.h"
+#include "glean/rts/id.h"
+#include "glean/rts/lookup.h"
 #include "glean/rts/query.h"
+#include "glean/rts/sanity.h"
 #include "glean/rts/stacked.h"
 #include "glean/rts/string.h"
+#include "glean/rts/substitution.h"
 #include "glean/rts/validate.h"
 
-#include "glean/rts/bytecode/subroutine.h"
-
 #include <folly/Exception.h>
+#include <vector>
 
 using namespace facebook::glean;
 using namespace facebook::glean::rts;
@@ -283,6 +289,10 @@ void glean_lookup_free(Lookup *lookup) {
   ffi::free_(lookup);
 }
 
+const char *glean_lookup_empty(Lookup** lookup) {
+  return ffi::wrap([=] { *lookup = new EmptyLookup(); });
+}
+
 const char *glean_lookup_starting_id(Lookup *lookup, int64_t *id) {
   return ffi::wrap([=]{
     *id = lookup->startingId().toThrift();
@@ -432,6 +442,10 @@ size_t glean_factset_fact_memory(FactSet *facts) {
   return facts->factMemory();
 }
 
+int64_t glean_factset_first_free_id(FactSet *facts) {
+  return facts->firstFreeId().toThrift();
+}
+
 Lookup *glean_factset_lookup(FactSet *facts) {
   return facts;
 }
@@ -451,6 +465,32 @@ const char *glean_factset_serialize(
     *first_id = batch.get_firstId();
     *count = batch.get_count();
     ffi::clone_bytes(batch.get_facts()).release_to(facts_data, facts_size);
+  });
+}
+
+const char* glean_factset_rebase(
+    FactSet* facts,
+    const Inventory* inventory,
+    int64_t firstId,
+    size_t count,
+    int64_t* ids,
+    LookupCache* cache,
+    FactSet** result) {
+  return ffi::wrap([=] {
+    thrift::Subst thrift_subst;
+    auto subst_vec = std::vector<int64_t>();
+    // TODO: Remove this copy
+    subst_vec.insert(subst_vec.end(), &ids[0], &ids[count]);
+    thrift_subst.firstId_ref() = firstId;
+    thrift_subst.ids_ref() = subst_vec;
+    Substitution subst = Substitution::deserialize(thrift_subst);
+    GLEAN_SANITY_CHECK(subst.sanityCheck(false));
+    *result = nullptr;
+    cache->withBulkStore([&](auto& store) {
+      GLEAN_SANITY_CHECK(facts->sanityCheck());
+      *result = new FactSet(facts->rebase(*inventory, subst, store));
+      GLEAN_SANITY_CHECK((*result)->sanityCheck());
+    });
   });
 }
 

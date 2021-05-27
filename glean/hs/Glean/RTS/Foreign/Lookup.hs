@@ -1,6 +1,7 @@
 module Glean.RTS.Foreign.Lookup
   ( Lookup(..)
   , CanLookup(..)
+  , EmptyLookup(..)
   , startingId
   , firstFreeId
   , lookupFact
@@ -34,6 +35,15 @@ startingId x = withLookup x $ \l -> invoke $ glean_lookup_starting_id l
 firstFreeId :: CanLookup a => a -> IO Fid
 firstFreeId x = withLookup x $ \l -> invoke $ glean_lookup_first_free_id l
 
+data EmptyLookup = EmptyLookup
+
+instance CanLookup EmptyLookup where
+  withLookup EmptyLookup f =
+    bracket
+      (invoke glean_lookup_empty)
+      glean_lookup_free
+      f
+
 lookupFact :: CanLookup a => a -> Fid -> IO (Maybe Thrift.Fact)
 lookupFact look fid =
   withLookup look $ \look_ptr -> do
@@ -53,6 +63,9 @@ withSnapshot base boundary f =
     (invoke $ glean_snapshot_new base_ptr boundary)
     glean_lookup_free
     f
+
+foreign import ccall unsafe glean_lookup_empty
+  :: Ptr Lookup -> IO CString
 
 foreign import ccall unsafe glean_lookup_free
   :: Lookup -> IO ()
