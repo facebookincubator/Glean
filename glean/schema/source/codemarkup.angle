@@ -709,11 +709,20 @@ predicate CxxResolveLocation:
     entity: code.Entity,
   }
   { { Str, File, { range = Range } }, Entity } where
-    cxx1.Trace { file = File, declarations = cxx1.Declarations Decls };
-    Decl = Decls[..];
-    cxx1.DeclarationLocation { Decl, Range, Name };
-    cxx1.Name Str = Name;
-    Entity = code.Entity { cxx = { decl = Decl } };
+    cxx1.Trace { File, cxx1.Declarations Decls, { events = PPDecls } };
+
+    # regular decls
+    ({ Str, Range, Entity } where
+      Decl = Decls[..];
+      cxx1.DeclarationLocation { Decl, Range, cxx1.Name Str };
+      Entity = code.Entity { cxx = { decl = Decl } };
+    ) |
+    ## preprocessor #defines
+    ({ Str, Range, Entity } where
+      { define = Define }  = PPDecls[..];
+      cxx1.PPDefineLocation { Define, Str, _, Range };
+      Entity = code.Entity { pp = Define };
+    )
 
 # Finding references in a file
 
@@ -867,7 +876,19 @@ predicate PythonEntityToDeclaration:
   python.DeclarationLocation {PyDecl, File, Span};
   Decl = Declaration {Name, File, Span};
 
+# Either C++ / ObjC xrefs or C preprocessor xrefs
 predicate CxxFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: XRefLocation,
+    entity: code.Entity,
+  }
+  { File, XRef, Entity } where
+    CxxFileEntityFixedXRefLocations { File, XRef, Entity } |
+    CxxFileEntityPPXRefLocations { File, XRef, Entity }
+
+# Fixed C++ xrefs only
+predicate CxxFileEntityFixedXRefLocations:
   {
     file: src.File,
     xref: XRefLocation,
@@ -892,6 +913,19 @@ predicate CxxFileEntityXRefLocations:
     #  (XRefTarget, Span) = zip Externals[..] Variables[..];
     #  CxxXRefTargetEntity { XRefTarget, Entity }
     #  { { Name, TargetFile, { range = Range } }, { span = Span }} = XRef;
+
+# C preprocessor uses of #defines as xrefs
+predicate CxxFileEntityPPXRefLocations:
+  {
+    file: src.File,
+    xref: XRefLocation,
+    entity: code.Entity,
+  }
+  { File, XRef, { pp = Define }} where
+    cxx1.FilePPUseXRefs { File, SrcRange, Define };
+    cxx1.PPDefineLocation { Define, Name, TargetFile, TargetRange };
+    { Name, TargetFile, { range = TargetRange } } = Target : Location;
+    { target = Target, source = { range = SrcRange }} = XRef;
 
 # Finding references to a definition
 predicate CxxXRefTargetEntity:
@@ -1209,11 +1243,20 @@ predicate CxxResolveLocation:
     entity: code.Entity,
   }
   { { Str, File, { range = Range } }, Entity } where
-    cxx1.Trace { file = File, declarations = cxx1.Declarations Decls };
-    Decl = Decls[..];
-    cxx1.DeclarationLocation { Decl, Range, Name };
-    cxx1.Name Str = Name;
-    Entity = code.Entity { cxx = { decl = Decl } };
+    cxx1.Trace { File, cxx1.Declarations Decls, { events = PPDecls } };
+
+    # regular decls
+    ({ Str, Range, Entity } where
+      Decl = Decls[..];
+      cxx1.DeclarationLocation { Decl, Range, cxx1.Name Str };
+      Entity = code.Entity { cxx = { decl = Decl } };
+    ) |
+    ## preprocessor #defines
+    ({ Str, Range, Entity } where
+      { define = Define }  = PPDecls[..];
+      cxx1.PPDefineLocation { Define, Str, _, Range };
+      Entity = code.Entity { pp = Define };
+    )
 
 # Finding references in a file
 
@@ -1364,7 +1407,19 @@ predicate PythonEntityToDeclaration:
   python.DeclarationLocation {PyDecl, File, Span};
   Decl = Declaration {Name, File, Span};
 
+# Either C++ / ObjC xrefs or C preprocessor xrefs
 predicate CxxFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: XRefLocation,
+    entity: code.Entity,
+  }
+  { File, XRef, Entity } where
+    CxxFileEntityFixedXRefLocations { File, XRef, Entity } |
+    CxxFileEntityPPXRefLocations { File, XRef, Entity }
+
+# Fixed C++ xrefs only
+predicate CxxFileEntityFixedXRefLocations:
   {
     file: src.File,
     xref: XRefLocation,
@@ -1389,6 +1444,19 @@ predicate CxxFileEntityXRefLocations:
     #  (XRefTarget, Span) = zip Externals[..] Variables[..];
     #  CxxXRefTargetEntity { XRefTarget, Entity }
     #  { { Name, TargetFile, { range = Range } }, { span = Span }} = XRef;
+
+# C preprocessor uses of #defines as xrefs
+predicate CxxFileEntityPPXRefLocations:
+  {
+    file: src.File,
+    xref: XRefLocation,
+    entity: code.Entity,
+  }
+  { File, XRef, { pp = Define }} where
+    cxx1.FilePPUseXRefs { File, SrcRange, Define };
+    cxx1.PPDefineLocation { Define, Name, TargetFile, TargetRange };
+    { Name, TargetFile, { range = TargetRange } } = Target : Location;
+    { target = Target, source = { range = SrcRange }} = XRef;
 
 # Finding references to a definition
 predicate CxxXRefTargetEntity:

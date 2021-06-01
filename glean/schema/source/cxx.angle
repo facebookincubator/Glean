@@ -1041,4 +1041,32 @@ predicate DeclarationLocation :
     ( { typeAlias = X } = Decl;
       X = TypeAliasDeclaration { source = Range, name = { name = Name }})
 
+# All uses of preprocessor #defines in a file, as xrefs
+predicate FilePPUseXRefs:
+  {
+    file: src.File,
+    source: src.Range,
+    define: pp1.Define,
+  }
+  { File, SrcRange, Define } where
+    cxx1.Trace { file = File, preprocessor = { events = PPEvents } };
+    PPEvent = PPEvents[..];
+    { use = Use } = PPEvent;
+    { macro = Macro, definition = { just = { file = TargetFile }}, source = SrcRange } = Use;
+
+    # Search for the macro define, since 'definition' isn't a range xref
+    Define = pp1.Define { macro = Macro, source = { file = TargetFile } };
+
+# Definition location for a pp1.Define
+predicate PPDefineLocation :
+  {
+    define : pp1.Define,
+    name : string,
+    file : src.File,
+    range : src.Range,
+  }
+  { Define, Name, File, Range } where
+    { pp1.Macro Name , Range } = Define;
+    { file = File } = Range;
+
 } # end schema cxx1.4
