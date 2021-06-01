@@ -1049,7 +1049,19 @@ predicate FilePPUseXRefs:
     define: pp1.Define,
   }
   { File, SrcRange, Define } where
-    cxx1.Trace { file = File, preprocessor = { events = PPEvents } };
+    Trace = cxx1.Trace { file = File };
+    FilePPUseTraceXRefs { File, Trace, SrcRange, Define };
+
+# All uses of preprocessor #defines in a file, as xrefs, for a specific trace
+predicate FilePPUseTraceXRefs:
+  {
+    file: src.File,
+    trace: cxx1.Trace,
+    source: src.Range,
+    define: pp1.Define,
+  }
+  { File, Trace, SrcRange, Define } where
+    Trace = cxx1.Trace { file = File, preprocessor = { events = PPEvents } };
     PPEvent = PPEvents[..];
     { use = Use } = PPEvent;
     { macro = Macro, definition = { just = { file = TargetFile }}, source = SrcRange } = Use;

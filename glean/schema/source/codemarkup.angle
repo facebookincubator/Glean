@@ -703,14 +703,38 @@ predicate FlowResolveLocation:
     Name = flow.Name NameStr ;
     Entity = code.Entity { flow = { decl = Decl } };
 
+# Resolve locations for all traces in a Cxx file
 predicate CxxResolveLocation:
   {
     location: Location,
     entity: code.Entity,
   }
-  { { Str, File, { range = Range } }, Entity } where
-    cxx1.Trace { File, cxx1.Declarations Decls, { events = PPDecls } };
+  { { Str, File, Range }, Entity } where
+    Trace = cxx1.Trace { file = File };
+    CxxResolveTraceLocation { Trace, { Str, File, Range } , Entity };
 
+# Like FileEntityLocations but indexed by a specific Trace (for Cxx)
+predicate CxxFileEntityTraceLocations:
+  {
+    file: src.File,
+    trace: cxx1.Trace,
+    location: Location,
+    entity: code.Entity,
+  }
+  { File, Trace, Location, Entity } where
+    CxxResolveTraceLocation { Trace, Location, Entity };
+    Location { file = File } = Location;
+
+# Resolve locations for Cxx, but for only a specific trace
+# We'll need to pick the trace on the client
+predicate CxxResolveTraceLocation:
+  {
+    trace : cxx1.Trace,
+    location: Location,
+    entity: code.Entity,
+  }
+  { Trace, { Str, File, { range = Range } }, Entity } where
+    Trace = cxx1.Trace { File, cxx1.Declarations Decls, { events = PPDecls } };
     # regular decls
     ({ Str, Range, Entity } where
       Decl = Decls[..];
@@ -895,8 +919,19 @@ predicate CxxFileEntityFixedXRefLocations:
     entity: code.Entity,
   }
   { File, XRef, Entity } where
-    XMap = cxx1.FileXRefMap { File, Fixeds, _ };
-    cxx1.FileXRefs { XMap, _ };
+    CxxFileEntityTraceFixedXRefLocations { File, _, XRef, Entity }
+
+# Fixed C++ xrefs only, for a specific trace (FileXRefMap)
+predicate CxxFileEntityTraceFixedXRefLocations:
+  {
+    file: src.File,
+    trace: cxx1.FileXRefMap,
+    xref: XRefLocation,
+    entity: code.Entity,
+  }
+  { File, Trace, XRef, Entity } where
+    cxx1.FileXRefMap { file = File, fixed = Fixeds } = Trace;
+    cxx1.FileXRefs { Trace, _ };
 
     # .. go through fixed declarations
     ({ XRef, Entity } where
@@ -907,12 +942,6 @@ predicate CxxFileEntityFixedXRefLocations:
       { { Name, TargetFile, { range = Range } }, { span = Span }} = XRef;
       code.Entity { cxx = { decl = Decl }} = Entity;
     )
-    # .. go through variable
-    # need to zip xref target Externals with Variable at same location
-    # .. can't zip..
-    #  (XRefTarget, Span) = zip Externals[..] Variables[..];
-    #  CxxXRefTargetEntity { XRefTarget, Entity }
-    #  { { Name, TargetFile, { range = Range } }, { span = Span }} = XRef;
 
 # C preprocessor uses of #defines as xrefs
 predicate CxxFileEntityPPXRefLocations:
@@ -921,8 +950,21 @@ predicate CxxFileEntityPPXRefLocations:
     xref: XRefLocation,
     entity: code.Entity,
   }
-  { File, XRef, { pp = Define }} where
-    cxx1.FilePPUseXRefs { File, SrcRange, Define };
+  { File, XRef, Entity } where
+    Trace = cxx1.Trace { file = File };
+    CxxFileEntityTracePPXRefLocations { File, Trace, XRef, Entity };
+
+# C preprocessor uses of #defines as xrefs, for a specific trace
+# N.B. uses are keyed by traces, not xmaps, for PP
+predicate CxxFileEntityTracePPXRefLocations:
+  {
+    file: src.File,
+    trace: cxx1.Trace,
+    xref: XRefLocation,
+    entity: code.Entity,
+  }
+  { File, Trace, XRef, { pp = Define }} where
+    cxx1.FilePPUseTraceXRefs { File, Trace, SrcRange, Define };
     cxx1.PPDefineLocation { Define, Name, TargetFile, TargetRange };
     { Name, TargetFile, { range = TargetRange } } = Target : Location;
     { target = Target, source = { range = SrcRange }} = XRef;
@@ -1237,14 +1279,38 @@ predicate FlowResolveLocation:
     Name = flow.Name NameStr ;
     Entity = code.Entity { flow = { decl = Decl } };
 
+# Resolve locations for all traces in a Cxx file
 predicate CxxResolveLocation:
   {
     location: Location,
     entity: code.Entity,
   }
-  { { Str, File, { range = Range } }, Entity } where
-    cxx1.Trace { File, cxx1.Declarations Decls, { events = PPDecls } };
+  { { Str, File, Range }, Entity } where
+    Trace = cxx1.Trace { file = File };
+    CxxResolveTraceLocation { Trace, { Str, File, Range } , Entity };
 
+# Like FileEntityLocations but indexed by a specific Trace (for Cxx)
+predicate CxxFileEntityTraceLocations:
+  {
+    file: src.File,
+    trace: cxx1.Trace,
+    location: Location,
+    entity: code.Entity,
+  }
+  { File, Trace, Location, Entity } where
+    CxxResolveTraceLocation { Trace, Location, Entity };
+    Location { file = File } = Location;
+
+# Resolve locations for Cxx, but for only a specific trace
+# We'll need to pick the trace on the client
+predicate CxxResolveTraceLocation:
+  {
+    trace : cxx1.Trace,
+    location: Location,
+    entity: code.Entity,
+  }
+  { Trace, { Str, File, { range = Range } }, Entity } where
+    Trace = cxx1.Trace { File, cxx1.Declarations Decls, { events = PPDecls } };
     # regular decls
     ({ Str, Range, Entity } where
       Decl = Decls[..];
@@ -1426,11 +1492,19 @@ predicate CxxFileEntityFixedXRefLocations:
     entity: code.Entity,
   }
   { File, XRef, Entity } where
-    # this is a massive performance problem as e.g. folly/Synchronized.h
-    # has 20k+ facts for the xrefs. Need to search . limit 1 to be useful,
-    # and not expand on the server
-    XMap = cxx1.FileXRefMap { File, Fixeds, _ };
-    cxx1.FileXRefs { XMap, _ };
+    CxxFileEntityTraceFixedXRefLocations { File, _, XRef, Entity }
+
+# Fixed C++ xrefs only, for a specific trace (FileXRefMap)
+predicate CxxFileEntityTraceFixedXRefLocations:
+  {
+    file: src.File,
+    trace: cxx1.FileXRefMap,
+    xref: XRefLocation,
+    entity: code.Entity,
+  }
+  { File, Trace, XRef, Entity } where
+    cxx1.FileXRefMap { file = File, fixed = Fixeds } = Trace;
+    cxx1.FileXRefs { Trace, _ };
 
     # .. go through fixed declarations
     ({ XRef, Entity } where
@@ -1449,8 +1523,21 @@ predicate CxxFileEntityPPXRefLocations:
     xref: XRefLocation,
     entity: code.Entity,
   }
-  { File, XRef, { pp = Define }} where
-    cxx1.FilePPUseXRefs { File, SrcRange, Define };
+  { File, XRef, Entity } where
+    Trace = cxx1.Trace { file = File };
+    CxxFileEntityTracePPXRefLocations { File, Trace, XRef, Entity };
+
+# C preprocessor uses of #defines as xrefs, for a specific trace
+# N.B. uses are keyed by traces, not xmaps, for PP
+predicate CxxFileEntityTracePPXRefLocations:
+  {
+    file: src.File,
+    trace: cxx1.Trace,
+    xref: XRefLocation,
+    entity: code.Entity,
+  }
+  { File, Trace, XRef, { pp = Define }} where
+    cxx1.FilePPUseTraceXRefs { File, Trace, SrcRange, Define };
     cxx1.PPDefineLocation { Define, Name, TargetFile, TargetRange };
     { Name, TargetFile, { range = TargetRange } } = Target : Location;
     { target = Target, source = { range = SrcRange }} = XRef;
