@@ -67,7 +67,7 @@ predicate ByteSpanContains :
     Start1<=Start2;
     End2<=End1
 
-# Multiple spans of bytes
+# Multiple relative-offset bytespans
 type ByteSpans = [RelByteSpan]
 
 # Kind of language supported by Glean

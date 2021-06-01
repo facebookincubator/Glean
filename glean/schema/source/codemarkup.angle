@@ -1426,6 +1426,9 @@ predicate CxxFileEntityFixedXRefLocations:
     entity: code.Entity,
   }
   { File, XRef, Entity } where
+    # this is a massive performance problem as e.g. folly/Synchronized.h
+    # has 20k+ facts for the xrefs. Need to search . limit 1 to be useful,
+    # and not expand on the server
     XMap = cxx1.FileXRefMap { File, Fixeds, _ };
     cxx1.FileXRefs { XMap, _ };
 
@@ -1438,12 +1441,6 @@ predicate CxxFileEntityFixedXRefLocations:
       { { Name, TargetFile, { range = Range } }, { span = Span }} = XRef;
       code.Entity { cxx = { decl = Decl }} = Entity;
     )
-    # .. go through variable
-    # need to zip xref target Externals with Variable at same location
-    # .. can't zip..
-    #  (XRefTarget, Span) = zip Externals[..] Variables[..];
-    #  CxxXRefTargetEntity { XRefTarget, Entity }
-    #  { { Name, TargetFile, { range = Range } }, { span = Span }} = XRef;
 
 # C preprocessor uses of #defines as xrefs
 predicate CxxFileEntityPPXRefLocations:
@@ -1457,22 +1454,6 @@ predicate CxxFileEntityPPXRefLocations:
     cxx1.PPDefineLocation { Define, Name, TargetFile, TargetRange };
     { Name, TargetFile, { range = TargetRange } } = Target : Location;
     { target = Target, source = { range = SrcRange }} = XRef;
-
-# Finding references to a definition
-predicate CxxXRefTargetEntity:
-  {
-    target: cxx1.XRefTarget,
-    entity: code.Entity,
-  }
-  ({ Target, { cxx = { decl = D } } }  where
-    { declaration = D } = Target) |
-  ({ Target, { cxx = { enumerator = E } } }  where
-    { enumerator = E } = Target)
-  # recursive to handle indirect xrefs
-  # todo try unrolling 1 or 2 levels
-  # ({ Target, Entity }  where
-  #  { indirect = { target = X } } = Target;
-  #  CxxXRefTargetEntity { X, Entity })
 
 predicate HackEntityUses:
   {
