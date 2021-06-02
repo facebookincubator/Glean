@@ -2,6 +2,7 @@ schema search.code.1 {
 import code.11
 import code.hack.2
 import code.python.1
+import flow.3
 import hack.4
 import python.3
 import search.hack.5
@@ -13,7 +14,8 @@ predicate SearchByName:
   }
   { Name, Entity } where
   PythonSearchByName {Name, Entity} |
-  HackSearchByName {Name, Entity}
+  HackSearchByName {Name, Entity} |
+  FlowSearchByName {Name, Entity}
 
 
 predicate HackSearchByName:
@@ -32,5 +34,13 @@ predicate PythonSearchByName:
   { Name, { python = { decl = D }}} where
   python.DeclarationWithLocalName { local_name = python.Name Name, declaration = D };
   python.NonImportDeclaration D;
+
+predicate FlowSearchByName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { Name, { flow = { decl = D }}} where
+  flow.SearchByName { name = flow.Name Name, decl = D};
 
 }

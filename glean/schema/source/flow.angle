@@ -212,21 +212,17 @@ type SomeDeclaration = {
 predicate SearchByName :
   {
     name : flow.Name,
-    string_: string,
     decl : flow.SomeDeclaration
   }
-  ({ name = N, string_ = S, decl = { localDecl = D } } where
-    D = flow.Declaration { name = N, loc = Loc };
-    { module = { file = F } } = Loc;
-    flow.FileOfStringModule { F , S }) |
-  ({ name = N, string_ = S, decl = { memberDecl = D } } where
-    D = flow.MemberDeclaration { name = N, loc = Loc };
-    { module = { file = F } } = Loc;
-    flow.FileOfStringModule { F , S }) |
-  ({ name = N, string_ = S, decl = { typeDecl = D } } where
-    D = flow.TypeDeclaration { name = N, loc = Loc };
-    { module = { file = F } } = Loc;
-    flow.FileOfStringModule { F , S })
+  ({ name = N, decl = { localDecl = D } } where
+    D = flow.Declaration { name = N };
+  ) |
+  ({ name = N, decl = { memberDecl = D } } where
+    D = flow.MemberDeclaration { name = N };
+  ) |
+  ({ name = N, decl = { typeDecl = D } } where
+    D = flow.TypeDeclaration { name = N };
+  )
 
 # Search by Name and string code for the Module
 predicate SearchByModule :
