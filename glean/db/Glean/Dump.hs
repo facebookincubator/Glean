@@ -43,6 +43,7 @@ dump backend repo withBatch = doDump =<< loadDbSchema backend repo
             withBatch JsonFactBatch
               { jsonFactBatch_predicate = predicateRef
               , jsonFactBatch_facts = jsonFacts
+              , jsonFactBatch_unit = Nothing -- TODO?
               }
 
       -- limit the size of batches we give back, so that the writer

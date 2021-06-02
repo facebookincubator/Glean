@@ -2,6 +2,7 @@
 module JSONWriteTest (main) where
 
 import Control.Monad
+import Data.ByteString (ByteString)
 import qualified Data.ByteString.Char8 as BC
 import Data.Default
 import Data.Proxy
@@ -22,11 +23,19 @@ import qualified Glean.Schema.Sys.Types as Sys
 
 import TestData
 
+mkBatch :: PredicateRef -> [ByteString] -> JsonFactBatch
+mkBatch ref facts =
+  JsonFactBatch
+    { jsonFactBatch_predicate = ref
+    , jsonFactBatch_facts = facts
+    , jsonFactBatch_unit = Nothing
+    }
+
 writeJsonBatchTest :: Test
 writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
   let
     batches =
-      [ JsonFactBatch (getName (Proxy @Sys.Blob))
+      [ mkBatch (getName (Proxy @Sys.Blob))
         [ "{ \"id\": 1025, \"key\": \"hello\"}"
         , "{ \"id\": 1026, \"key\": \"bye\"}"
         ]
@@ -51,7 +60,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
   -- Write another fact into the DB
   let
     batches =
-      [ JsonFactBatch (getName (Proxy @Sys.Blob))
+      [ mkBatch (getName (Proxy @Sys.Blob))
         [ "{ \"id\": 1025, \"key\": \"test\"}" -- overlaps with previous
         ]
       ]
@@ -65,7 +74,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
   -- Test a predicate ref to an earlier fact
   let
     batches =
-      [ JsonFactBatch (getName (Proxy @Glean.Test.Predicate))
+      [ mkBatch (getName (Proxy @Glean.Test.Predicate))
         [ "{ \"id\": 1025, \"key\": { \"sum_\" : { \"d\": " <>
           BC.pack (show test_blob_id) <> "}, \"pred\" : " <>
           BC.pack (show test_blob_id) <> "}}"
@@ -92,10 +101,10 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
   -- Test a predicate ref to a fact in the same batch
   let
     batches =
-      [ JsonFactBatch (getName (Proxy @Sys.Blob))
+      [ mkBatch (getName (Proxy @Sys.Blob))
         [ "{ \"id\": 1025, \"key\": \"test2\"}"
         ]
-      , JsonFactBatch (getName (Proxy @Glean.Test.Predicate))
+      , mkBatch (getName (Proxy @Glean.Test.Predicate))
         [ "{ \"id\": 1026, \"key\": { \"sum_\" : { \"d\": 1025" <>
           "}, \"pred\" : 1025}}"
         ]
@@ -113,7 +122,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
   -- test a more interesting value:
   let
     batches =
-      [ JsonFactBatch (getName (Proxy @Glean.Test.Predicate_1))
+      [ mkBatch (getName (Proxy @Glean.Test.Predicate_1))
         [ serializeJSON $ Glean.Test.Predicate_1 1027 $
             Just $ kitchenSink1 {
               Glean.Test.kitchenSink_1_pred = Sys.Blob 1028 (Just "blobby") }
@@ -130,7 +139,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
   -- nested facts can have duplicate Ids, provided we don't refer to them
   let
     batches =
-      [ JsonFactBatch (getName (Proxy @Glean.Test.Predicate))
+      [ mkBatch (getName (Proxy @Glean.Test.Predicate))
         -- Construct a value using "def", which will set all the IDs to 0.
         -- Note that we *must* define the nested facts, otherwise they
         -- will default to a reference to fact 0, which will be an error.
@@ -156,7 +165,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
   -- Round-trip test: serialize the fact and insert it again
   let
     batches =
-      [ JsonFactBatch (getName (Proxy @Glean.Test.Predicate))
+      [ mkBatch (getName (Proxy @Glean.Test.Predicate))
         [ serializeJSON test_pred
         ]
       ]
@@ -173,7 +182,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
   -- Test for ids very far apart
   let
     batches =
-      [ JsonFactBatch (getName (Proxy @Sys.Blob))
+      [ mkBatch (getName (Proxy @Sys.Blob))
         [ "{ \"id\": 1024, \"key\": \"test4\"}"
         , "{ \"id\": 4611686018427387903, \"key\": \"test5\"}"
         ]
@@ -189,7 +198,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
   -- Test for missing ids
   let
     batches =
-      [ JsonFactBatch (getName (Proxy @Sys.Blob))
+      [ mkBatch (getName (Proxy @Sys.Blob))
         [ "{\"key\": " <> BC.pack (show s) <> "}"
         | s <- sequence ["ab","bc","cd"]
         ]
@@ -205,12 +214,12 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
   -- Test for mixture of named + anon facts
   let
     batches =
-      [ JsonFactBatch (getName (Proxy @Sys.Blob)) $
+      [ mkBatch (getName (Proxy @Sys.Blob)) $
         [ "{\"key\": " <> BC.pack (show s) <> "}"
         | s <- sequence ["ab","bc","cd"]
         ] ++
         [[s| {"id": 10000, "key": "abba"} |]]
-      , JsonFactBatch (getName (Proxy @Glean.Test.Predicate))
+      , mkBatch (getName (Proxy @Glean.Test.Predicate))
         [[s|
           { "key": { "sum_" : { "d": 10000 }, "pred" : 10000}}
         |]]
@@ -227,7 +236,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
   -- Test for nested facts
   let
     batches =
-      [ JsonFactBatch (getName (Proxy @Glean.Test.Predicate))
+      [ mkBatch (getName (Proxy @Glean.Test.Predicate))
         [[s|
         { "key":
           { "sum_": { "d": { "id": 10000, "key": "abba" }}
@@ -248,7 +257,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
   -- Named facts that refer to anon facts
   let
     batches =
-      [ JsonFactBatch (getName (Proxy @Glean.Test.Predicate))
+      [ mkBatch (getName (Proxy @Glean.Test.Predicate))
         [[s|
         { "id": 3
         , "key":

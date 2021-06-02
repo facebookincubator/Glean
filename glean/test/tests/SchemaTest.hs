@@ -45,6 +45,14 @@ import TestDB
 angleQuery :: Env -> Repo -> ByteString -> IO UserQueryResults
 angleQuery env repo q = userQuery env repo $ mkAngleQuery q
 
+mkBatch :: PredicateRef -> [ByteString] -> JsonFactBatch
+mkBatch ref facts =
+  JsonFactBatch
+    { jsonFactBatch_predicate = ref
+    , jsonFactBatch_facts = facts
+    , jsonFactBatch_unit = Nothing
+    }
+
 mkAngleQuery :: ByteString -> UserQuery
 mkAngleQuery q = def
   { userQuery_query = q
@@ -125,10 +133,8 @@ schemaUnversioned = TestCase $ do
 
   let fill env repo =
         void $ sendJsonBatch env repo
-          [ JsonFactBatch
-              { jsonFactBatch_predicate = PredicateRef "test.P" 1
-              , jsonFactBatch_facts = [ "{ \"key\" : {} }" ]
-              }
+          [ mkBatch (PredicateRef "test.P" 1)
+              [ "{ \"key\" : {} }" ]
           ]
           Nothing
 
@@ -447,19 +453,15 @@ writeEphemeralPredicate = TestCase $
     withTestEnv [setRoot root, setSchemaPath schema_v1_file] $ \env -> do
       -- this should work
       void $ sendJsonBatch env repo
-        [ JsonFactBatch
-            { jsonFactBatch_predicate = PredicateRef "test.P" 1
-            , jsonFactBatch_facts = [ "{ \"key\" : {} }" ]
-            }
+        [ mkBatch (PredicateRef "test.P" 1)
+            [ "{ \"key\" : {} }" ]
         ]
         Nothing
 
       -- this should fail
       r <- try $ sendJsonBatch env repo
-        [ JsonFactBatch
-            { jsonFactBatch_predicate = PredicateRef "test.P" 2
-            , jsonFactBatch_facts = [ "{ \"key\" : {} }" ]
-            }
+        [ mkBatch (PredicateRef "test.P" 2)
+            [ "{ \"key\" : {} }" ]
         ]
         Nothing
       print r
@@ -503,10 +505,8 @@ backwardCompatDeriving = TestCase $
     repo0 <- withEmptyTestDB [setRoot root, setSchemaPath schema_v0_file] $
       \env repo -> do
         void $ sendJsonBatch env repo
-          [ JsonFactBatch
-              { jsonFactBatch_predicate = PredicateRef "test.P" 1
-              , jsonFactBatch_facts = [ "{ \"key\" : {} }" ]
-              }
+          [ mkBatch (PredicateRef "test.P" 1)
+              [ "{ \"key\" : {} }" ]
           ]
           Nothing
         completeTestDB env repo
@@ -527,10 +527,8 @@ backwardCompatDeriving = TestCase $
     repo1 <- withEmptyTestDB [setRoot root, setSchemaPath schema_v1_file] $
       \env repo -> do
         void $ sendJsonBatch env repo
-          [ JsonFactBatch
-              { jsonFactBatch_predicate = PredicateRef "test.P" 2
-              , jsonFactBatch_facts = [ "{ \"key\" : {} }" ]
-              }
+          [ mkBatch (PredicateRef "test.P" 2)
+              [ "{ \"key\" : {} }" ]
           ]
           Nothing
         completeTestDB env repo
@@ -598,10 +596,8 @@ deriveDefault = TestCase $
     let
       mkP version env repo =
         void $ sendJsonBatch env repo
-          [ JsonFactBatch
-              { jsonFactBatch_predicate = PredicateRef "test.P" version
-              , jsonFactBatch_facts = [ "{ \"key\" : {} }" ]
-              }
+          [ mkBatch (PredicateRef "test.P" version)
+              [ "{ \"key\" : {} }" ]
           ]
           Nothing
 
@@ -679,10 +675,8 @@ thinSchemaTest = TestCase $
     repo0 <- withEmptyTestDB [setRoot root, setSchemaPath schema_v0_file]
       $ \env repo -> do
         void $ sendJsonBatch env repo
-          [ JsonFactBatch
-              { jsonFactBatch_predicate = PredicateRef "test.P" 1
-              , jsonFactBatch_facts = [ "{ \"key\" : {} }" ]
-              }
+          [ mkBatch (PredicateRef "test.P" 1)
+              [ "{ \"key\" : {} }" ]
           ]
           Nothing
         completeTestDB env repo

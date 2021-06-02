@@ -742,6 +742,8 @@ struct DeleteDatabaseResult {
 struct JsonFactBatch {
   1: PredicateRef predicate;
   2: list<json> facts;
+  3: optional string unit;
+    // the unit that owns these facts, if known.
 }
 
 struct SendJsonBatch {

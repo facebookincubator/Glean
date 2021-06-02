@@ -42,6 +42,7 @@ parseJsonFactBatch = withObject "JsonFactBatch" $ \v ->
   JsonFactBatch
     <$> Aeson.explicitParseField parsePred v "predicate"
     <*> Aeson.explicitParseField parseFacts v "facts"
+    <*> v .:? "unit"
   where
     parsePred v = parsePredicate v `mplus` parsePredicateRef v
     parseFacts = withArray "facts" (mapM parseFact . Vector.toList)
@@ -49,7 +50,6 @@ parseJsonFactBatch = withObject "JsonFactBatch" $ \v ->
 parseJsonFactBatches :: Value -> Aeson.Parser [JsonFactBatch]
 parseJsonFactBatches = withArray "JsonFactBatch" $ \vec ->
   mapM parseJsonFactBatch (Vector.toList vec)
-
 
 -- | Write facts to a file in JSON format suitable for parsing using
 -- 'parseJsonFactBatches'.

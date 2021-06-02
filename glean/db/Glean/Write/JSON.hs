@@ -13,11 +13,14 @@ import qualified Data.ByteString.Unsafe as BS
 import Data.Coerce (coerce)
 import Data.Default
 import Data.IORef
+import Data.HashMap.Strict (HashMap)
+import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
+import Data.Text (Text)
 import Data.Text.Prettyprint.Doc hiding ((<>))
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
-import qualified Data.Vector.Storable
+import qualified Data.Vector.Storable as Vector
 import Foreign hiding (void)
 import Foreign.C.Types (CSize)
 import TextShow hiding (Builder)
@@ -87,10 +90,28 @@ writeJsonBatchByteString
   -> IO ()
 writeJsonBatchByteString env repo pred facts opts tick = do
   dbSchema <- withOpenDatabase env repo (return . Database.odbSchema)
-  batch <- withFactBuilder $ \builders -> do
-    details <- predDetailsForWriting dbSchema pred
-    mapM_ (writeFact dbSchema opts builders details) facts
+  batch <- withFactBuilder $ \builder ->
+    writeFacts dbSchema opts builder pred facts Nothing{-TODO-}
   void $ writeDatabase env repo batch tick
+
+writeFacts
+  :: DbSchema
+  -> SendJsonBatchOptions
+  -> FactBuilder
+  -> PredicateRef
+  -> [ByteString]  -- ^ The facts to write, in JSON
+  -> Maybe Text -- ^ The unit that owns the facts, if any
+  -> IO ()
+writeFacts dbSchema opts builder@FactBuilder{..} pred factList unit = do
+  details <- predDetailsForWriting dbSchema pred
+  before <- readIORef nextId
+  mapM_ (writeFact dbSchema opts builder details) factList
+  after <- readIORef nextId
+  forM_ unit $ \unitText ->
+    when (after > before) $ do
+      let unit = Text.encodeUtf8 unitText
+      modifyIORef owned $
+        HashMap.insertWith (++) unit [Fid before, Fid (after-1)]
 
 predDetailsForWriting :: DbSchema -> PredicateRef -> IO PredicateDetails
 predDetailsForWriting dbSchema pred = do
@@ -120,6 +141,7 @@ data FactBuilder = FactBuilder
   { facts :: Builder
   , nextId :: {-# UNPACK #-} !(IORef Int64)
   , idsRef :: {-# UNPACK #-} !(IORef [Fid])  -- TODO: use a Storable Vector
+  , owned :: {-# UNPACK #-} !(IORef (HashMap ByteString [Fid]))
   }
 
 withFactBuilder :: (FactBuilder -> IO ()) -> IO Thrift.Batch
@@ -127,15 +149,17 @@ withFactBuilder action =
   withBuilder $ \facts -> do
   nextId <- newIORef firstAnonId
   idsRef <- newIORef []
+  owned <- newIORef HashMap.empty
   action FactBuilder{..}
   mem <- finishBuilder facts
   ids <- readIORef idsRef
+  ownerMap <- readIORef owned
   return $ Thrift.Batch
     firstAnonId
     (fromIntegral (length ids))
     mem
-    (Just $ Data.Vector.Storable.fromList $ coerce $ reverse ids)
-    mempty
+    (Just $ Vector.fromList $ coerce $ reverse ids)
+    (fmap (Vector.fromList . coerce) ownerMap)
 
 
 type WriteFacts a = ReaderT FactBuilder IO a
