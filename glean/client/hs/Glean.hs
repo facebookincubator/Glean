@@ -143,6 +143,7 @@ module Glean
   -- ** Misc
   , validate
   , Validate(..)
+  , computeOwnership
   ) where
 
 import Glean.Backend hiding (dbShard)

@@ -71,6 +71,9 @@ instance Storage Memory where
   optimize _ = return ()
 
   -- TODO
+  computeOwnership _ _ = return ()
+
+  -- TODO
   backup db _ _ = dbError (dbRepo db) "unimplemented 'backup'"
   -- TODO
   restore _ repo _ _ = dbError repo "unimplemented 'restore'"

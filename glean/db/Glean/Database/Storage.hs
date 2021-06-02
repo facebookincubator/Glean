@@ -13,6 +13,7 @@ import Data.HashMap.Strict (HashMap)
 import qualified Data.Vector.Storable as VS
 
 import Glean.RTS.Foreign.FactSet (FactSet)
+import Glean.RTS.Foreign.Inventory (Inventory)
 import Glean.RTS.Foreign.Lookup (CanLookup)
 import Glean.RTS.Types (Fid, Pid)
 import Glean.ServerConfig.Types (DBVersion(..))
@@ -82,6 +83,8 @@ class CanLookup (Database s) => Storage s where
 
   -- | Optimise a database for reading. This is typically done before backup.
   optimize :: Database s -> IO ()
+
+  computeOwnership :: Database s -> Inventory -> IO ()
 
   -- | Backup a database. The scratch directory which can be used for storing
   -- intermediate files is guaranteed to be empty and will be deleted after

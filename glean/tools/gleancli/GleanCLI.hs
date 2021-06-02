@@ -117,6 +117,9 @@ data Command
       { repo :: Repo
       , perPredicate :: Bool
       }
+  | Ownership
+      { repo :: Repo
+      }
 
 data Config = Config
   { cfgService :: Glean.Service
@@ -148,6 +151,7 @@ options = info (parser <**> helper)
         , validateSchemaCmd
         , statsCommand
         , unfinishCmd
+        , ownershipCmd
         ]
       return Config{..}
 
@@ -389,6 +393,12 @@ options = info (parser <**> helper)
         repo <- repoOpts
         perPredicate <- perPredicateOpt
         return Stats{..}
+
+    ownershipCmd :: Parser Command
+    ownershipCmd =
+      commandParser "ownership" (progDesc "") $ do
+        repo <- repoOpts
+        return Ownership{ repo = repo }
 
     parseDay = return .
       parseTimeOrError False defaultTimeLocale (iso8601DateFormat Nothing)
@@ -733,3 +743,7 @@ main =
                   , show predicateStats_size
                   , "bytes" ]
           mapM_ putStrLn (sort (map format stats))
+
+      Ownership{..} -> case Glean.backendKind backend of
+        Glean.BackendEnv env -> Glean.computeOwnership env repo
+        _ -> die 2 "Need local database to compute ownership"
