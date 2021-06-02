@@ -1,5 +1,5 @@
 -- | This is a very incomplete skeleton of an in-memory storage backend.
--- At the moment it is only usable for tests which don't produce or query
+-- at the moment it is only usable for tests which don't produce or query
 -- facts.
 
 module Glean.Database.Storage.Memory
@@ -70,8 +70,11 @@ instance Storage Memory where
 
   optimize _ = return ()
 
-  -- TODO
+  -- TODO: ownership
   computeOwnership _ _ = return ()
+
+  -- TODO: ownership
+  getUnitId _ _ = return (error "unimplemented getUnitId")
 
   -- TODO
   backup db _ _ = dbError (dbRepo db) "unimplemented 'backup'"

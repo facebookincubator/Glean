@@ -15,6 +15,7 @@ import qualified Data.Vector.Storable as VS
 import Glean.RTS.Foreign.FactSet (FactSet)
 import Glean.RTS.Foreign.Inventory (Inventory)
 import Glean.RTS.Foreign.Lookup (CanLookup)
+import Glean.RTS.Foreign.Ownership
 import Glean.RTS.Types (Fid, Pid)
 import Glean.ServerConfig.Types (DBVersion(..))
 import Glean.Types (PredicateStats, Repo, SchemaInfo)
@@ -85,6 +86,8 @@ class CanLookup (Database s) => Storage s where
   optimize :: Database s -> IO ()
 
   computeOwnership :: Database s -> Inventory -> IO ()
+
+  getUnitId :: Database s -> ByteString -> IO (Maybe UnitId)
 
   -- | Backup a database. The scratch directory which can be used for storing
   -- intermediate files is guaranteed to be empty and will be deleted after

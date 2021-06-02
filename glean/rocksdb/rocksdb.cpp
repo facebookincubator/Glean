@@ -490,6 +490,22 @@ struct DatabaseImpl final : Database {
     return result;
   }
 
+  folly::Optional<uint32_t> getUnitId(folly::ByteRange unit) override {
+    rocksdb::PinnableSlice val;
+    auto s = container_.db->Get(
+        rocksdb::ReadOptions(),
+        container_.family(Family::ownershipUnits),
+        slice(unit),
+        &val);
+    if (!s.IsNotFound()) {
+      check(s);
+      assert(val.size() == sizeof(uint32_t));
+      return folly::loadUnaligned<uint32_t>(val.data());
+    } else {
+      return folly::none;
+    }
+  }
+
   rts::Id startingId() const override {
     return starting_id;
   }
@@ -928,16 +944,9 @@ struct DatabaseImpl final : Database {
 
     for (const auto& set : ownership) {
       uint32_t unit_id;
-      rocksdb::PinnableSlice val;
-      auto s = container_.db->Get(
-        rocksdb::ReadOptions(),
-        container_.family(Family::ownershipUnits),
-        slice(set.unit),
-        &val);
-      if (!s.IsNotFound()) {
-        check(s);
-        assert(val.size() == sizeof(uint32_t));
-        unit_id = folly::loadUnaligned<uint32_t>(val.data());
+      auto res = getUnitId(set.unit);
+      if (res.hasValue()) {
+        unit_id = *res;
         if (unit_id >= ownership_unit_counters.size()) {
           rts::error("inconsistent unit id {}", unit_id);
         }

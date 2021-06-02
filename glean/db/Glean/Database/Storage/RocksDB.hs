@@ -27,7 +27,7 @@ import Glean.FFI
 import Glean.RTS.Foreign.FactSet (FactSet)
 import Glean.RTS.Foreign.Lookup
   (CanLookup(..), Lookup(..))
-import qualified Glean.RTS.Foreign.Ownership as Ownership
+import Glean.RTS.Foreign.Ownership as Ownership
 import Glean.RTS.Types (Fid(..), invalidFid, Pid(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
 import qualified Glean.Types as Thrift
@@ -156,6 +156,14 @@ instance Storage RocksDB where
     using (invoke $ glean_rocksdb_get_ownership_unit_iterator db_ptr) $
     Ownership.compute inv db
 
+  getUnitId db unit =
+    with db $ \db_ptr->
+    unsafeWithBytes unit $ \unit_ptr unit_size -> do
+      w64 <- invoke $ glean_rocksdb_get_unit_id db_ptr unit_ptr unit_size
+      if w64 > 0xffffffff
+        then return Nothing
+        else return (Just (UnitId (fromIntegral w64)))
+
   backup db scratch process = do
     createDirectoryIfMissing True path
     withContainer db $ \s_ptr ->
@@ -280,4 +288,11 @@ foreign import ccall unsafe glean_rocksdb_database_stats
 foreign import ccall safe glean_rocksdb_restore
   :: CString
   -> CString
+  -> IO CString
+
+foreign import ccall unsafe glean_rocksdb_get_unit_id
+  :: Ptr (Database RocksDB)
+  -> Ptr ()
+  -> CSize
+  -> Ptr Word64
   -> IO CString

@@ -117,6 +117,13 @@ const char *glean_rocksdb_get_ownership_unit_iterator(
   OwnershipUnitIterator **iter
 );
 
+const char *glean_rocksdb_get_unit_id(
+  Database *db,
+  void *unit,
+  size_t unit_size,
+  uint64_t *unit_id
+);
+
 const char *glean_rocksdb_database_stats(
   Database *db,
   size_t *count,

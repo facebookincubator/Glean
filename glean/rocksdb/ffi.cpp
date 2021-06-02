@@ -155,6 +155,19 @@ const char *glean_rocksdb_get_ownership_unit_iterator(
   });
 }
 
+const char *glean_rocksdb_get_unit_id(Database *db, void *unit,
+                                      size_t unit_size, uint64_t *unit_id) {
+  return ffi::wrap([=] {
+    auto res = db->getUnitId(folly::ByteRange(
+        reinterpret_cast<const unsigned char *>(unit), unit_size));
+    if (res.hasValue()) {
+      *unit_id = *res;
+    } else {
+      *unit_id = UINT64_MAX;
+    }
+  });
+}
+
 const char *glean_rocksdb_database_stats(
     Database *db,
     size_t *count,

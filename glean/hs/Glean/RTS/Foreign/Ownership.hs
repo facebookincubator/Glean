@@ -1,8 +1,10 @@
 module Glean.RTS.Foreign.Ownership
   ( UnitIterator
   , compute
+  , UnitId(..)
   ) where
 
+import Data.Word
 import Foreign.C.String
 import Foreign.Ptr
 import Foreign.Storable
@@ -16,6 +18,8 @@ newtype UnitIterator = UnitIterator (Ptr UnitIterator)
 
 instance Static UnitIterator where
   destroyStatic = glean_ownership_unit_iterator_free
+
+newtype UnitId = UnitId Word32
 
 compute
   :: CanLookup a
