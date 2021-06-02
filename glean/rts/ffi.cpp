@@ -7,6 +7,7 @@
 #include "glean/rts/ffi.h"
 #include "glean/rts/id.h"
 #include "glean/rts/lookup.h"
+#include "glean/rts/ownership.h"
 #include "glean/rts/query.h"
 #include "glean/rts/sanity.h"
 #include "glean/rts/stacked.h"
@@ -836,6 +837,19 @@ const char *glean_validate(
     v.keys = keys != 0;
     v.limit = limit;
     validate(*inventory, v, *lookup);
+  });
+}
+
+void glean_ownership_unit_iterator_free(OwnershipUnitIterator *iter) {
+  ffi::free_(iter);
+}
+
+const char *glean_ownership_compute(
+    Inventory *inventory,
+    Lookup *lookup,
+    OwnershipUnitIterator *iter) {
+  return ffi::wrap([=] {
+    computeOwnership(*inventory, *lookup, iter);
   });
 }
 

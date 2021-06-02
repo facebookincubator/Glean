@@ -484,6 +484,16 @@ const char *glean_validate(
   Lookup *lookup
 );
 
+void glean_ownership_unit_iterator_free(
+  OwnershipUnitIterator *
+);
+
+const char *glean_ownership_compute(
+  Inventory *inventory,
+  Lookup *lookup,
+  OwnershipUnitIterator *iter
+);
+
 #ifdef __cplusplus
 }
 }

@@ -2,11 +2,15 @@
 
 #include "glean/rts/id.h"
 
+#include <folly/Optional.h>
 #include <folly/Range.h>
 
 namespace facebook {
 namespace glean {
 namespace rts {
+
+class Inventory;
+struct Lookup;
 
 /**
  * Raw ownership data (facts -> unit)
@@ -36,6 +40,11 @@ struct OwnershipUnitIterator {
   // currently supported but should be added.
   virtual folly::Optional<OwnershipUnit> get() = 0;
 };
+
+void computeOwnership(
+  const Inventory& inventory,
+  Lookup& lookup,
+  OwnershipUnitIterator *iter);
 
 }
 }
