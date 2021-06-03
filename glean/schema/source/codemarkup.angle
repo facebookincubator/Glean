@@ -943,6 +943,19 @@ predicate CxxFileEntityTraceFixedXRefLocations:
       code.Entity { cxx = { decl = Decl }} = Entity;
     )
 
+# "Variable" external XRefs only, for a specific trace (FileXRefMap)
+# todo: we should really zip these in Angle and export them as XRefLocations
+predicate CxxFileEntityTraceVariableXRefLocations:
+  {
+    file: src.File,
+    trace: cxx1.FileXRefMap,
+    spans: [src.ByteSpans],
+    targets : [cxx1.XRefTarget],
+  }
+  { File, Trace, ByteSpanSpans, Targets } where
+    cxx1.FileXRefMap { file = File, variable = ByteSpanSpans } = Trace;
+    cxx1.FileXRefs { Trace, Targets };
+
 # C preprocessor uses of #defines as xrefs
 predicate CxxFileEntityPPXRefLocations:
   {
@@ -1515,6 +1528,19 @@ predicate CxxFileEntityTraceFixedXRefLocations:
       { { Name, TargetFile, { range = Range } }, { span = Span }} = XRef;
       code.Entity { cxx = { decl = Decl }} = Entity;
     )
+
+# "Variable" external XRefs only, for a specific trace (FileXRefMap)
+# todo: we should really zip these in Angle and export them as XRefLocations
+predicate CxxFileEntityTraceVariableXRefLocations:
+  {
+    file: src.File,
+    trace: cxx1.FileXRefMap,
+    spans: [src.ByteSpans],
+    targets : [cxx1.XRefTarget],
+  }
+  { File, Trace, ByteSpanSpans, Targets } where
+    cxx1.FileXRefMap { file = File, variable = ByteSpanSpans } = Trace;
+    cxx1.FileXRefs { Trace, Targets };
 
 # C preprocessor uses of #defines as xrefs
 predicate CxxFileEntityPPXRefLocations:
