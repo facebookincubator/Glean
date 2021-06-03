@@ -1,12 +1,15 @@
 {
 {-# OPTIONS_GHC -funbox-strict-fields #-}
+{-# LANGUAGE DeriveFunctor #-}
 module Glean.Angle.Lexer
   ( Token(..)
   , TokenType(..)
+  , Located(..)
   , AlexInput
   , alexGetInput
   , AlexPosn(..)
   , runAlex
+  , lexer
   , Alex(..)
   , alexError
   , alexMonadScan
@@ -27,6 +30,7 @@ import Data.Text (Text)
 import qualified Data.Text.Encoding as Text
 import Data.Word (Word64)
 
+import Glean.Query.Types (SrcSpan(..), SrcLoc(..))
 import Glean.Angle.Types (AngleVersion, latestAngleVersion)
 }
 
@@ -97,6 +101,13 @@ data AlexUserState = AlexUserState
 alexInitUserState :: AlexUserState
 alexInitUserState = AlexUserState latestAngleVersion ""
 
+-- | A value with its source location.
+data Located a = L
+  { lspan :: SrcSpan
+  , lval  :: a
+  }
+  deriving (Eq, Show, Functor)
+
 data Token = Token ByteString TokenType
 
 data TokenType
@@ -162,22 +173,27 @@ setVersion :: AngleVersion -> Alex ()
 setVersion ver = Alex $ \state -> Right
   (state { alex_ust = (alex_ust state) { angleVersion = ver }}, ())
 
-basicToken :: TokenType -> AlexAction Token
-basicToken t (_,_,b,_) len = return $ Token (ByteString.take len b) t
+basicToken :: TokenType -> AlexAction (SrcLoc, Token)
+basicToken t (AlexPn _ line col,_,b,_) len =
+  return $ (SrcLoc line col, Token (ByteString.take len b) t)
 
-tokenContent :: (ByteString -> TokenType) -> AlexAction Token
+tokenContent :: (ByteString -> TokenType) -> AlexAction (SrcLoc, Token)
 tokenContent f = tokenContentP (return . f)
 
-tokenContentP :: (ByteString -> Alex TokenType) -> AlexAction Token
-tokenContentP f (_,_,b,_) len = Token content <$> f content
-  where content = ByteString.take len b
+tokenContentP :: (ByteString -> Alex TokenType) -> AlexAction (SrcLoc, Token)
+tokenContentP f (AlexPn _ line col,_,b,_) len =
+  (SrcLoc line col,) . Token content <$> f content
+  where
+    content = ByteString.take len b
 
 number :: ByteString -> Word64
 number = ByteString.foldl' f 0 where
   f x y = x * 10 + fromIntegral (y - fromIntegral (Data.Char.ord '0'))
 
-alexEOF :: Alex Token
-alexEOF = return (Token "" T_EOF)
+alexEOF :: Alex (SrcLoc, Token)
+alexEOF = do
+  (AlexPn _ line col,_,_,_) <- alexGetInput
+  return (SrcLoc line col, Token "" T_EOF)
 
 -- | We'll use JSON syntax for strings, as a reasonably fast way to support
 -- some escaping syntax.
@@ -196,4 +212,12 @@ parseString b =
 encodeTextForAngle :: Text -> Text
 encodeTextForAngle =
   Text.decodeUtf8 . Lazy.toStrict . Aeson.encode . Aeson.String
+
+lexer :: (Located Token -> Alex a) -> Alex a
+lexer f = do
+  (start, tok) <- alexMonadScan
+  (AlexPn _ eline ecol,_,_,_) <- alexGetInput
+  let end = SrcLoc eline ecol
+  f $ L (SrcSpan start end) tok
+
 }

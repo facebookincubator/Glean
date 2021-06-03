@@ -38,8 +38,15 @@ queryParser = TestCase $ do
   let r = parseQuery "}"
   either print (putDoc . pretty) r
   assertBool "parse error" $ case r of
-    Left s -> "line 1, column 2: parse error at: }" `isPrefixOf` s
+    Left s -> "line 1, column 1: parse error at: }" `isPrefixOf` s
     _ -> False
+
+  let r = parseQuery "A\n    where"
+  either print (putDoc . pretty) r
+  assertBool "parse error 2" $ case r of
+    Left s -> "line 2, column 10: parse error at: end of string" `isPrefixOf` s
+    _ -> False
+
 
 schemaParser :: Test
 schemaParser = TestCase $ do

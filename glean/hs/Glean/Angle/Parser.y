@@ -24,56 +24,56 @@ import qualified Glean.Angle.Types as Schema
 import Glean.Angle.Types (AngleVersion, SourcePat, SourceStatement, SourceQuery, SourceType)
 }
 
-%tokentype { Token }
+%tokentype { Located Token }
 %token
-  'bool'        { Token _ T_Bool }
-  'byte'        { Token _ T_Byte }
-  'derive'      { Token _ T_Derive }
-  'default'     { Token _ T_Default }
-  'enum'        { Token _ T_Enum }
-  'import'      { Token _ T_Import }
-  'maybe'       { Token _ T_Maybe }
-  'nat'         { Token _ T_Nat }
-  'predicate'   { Token _ T_Predicate }
-  'schema'      { Token _ T_Schema }
-  'string'      { Token _ T_String }
-  'stored'      { Token _ T_Stored }
-  'type'        { Token _ T_Type }
-  'where'       { Token _ T_QueryDef }
+  'bool'        { L _ (Token _ T_Bool) }
+  'byte'        { L _ (Token _ T_Byte) }
+  'derive'      { L _ (Token _ T_Derive) }
+  'default'     { L _ (Token _ T_Default) }
+  'enum'        { L _ (Token _ T_Enum) }
+  'import'      { L _ (Token _ T_Import) }
+  'maybe'       { L _ (Token _ T_Maybe) }
+  'nat'         { L _ (Token _ T_Nat) }
+  'predicate'   { L _ (Token _ T_Predicate) }
+  'schema'      { L _ (Token _ T_Schema) }
+  'string'      { L _ (Token _ T_String) }
+  'stored'      { L _ (Token _ T_Stored) }
+  'type'        { L _ (Token _ T_Type) }
+  'where'       { L _ (Token _ T_QueryDef) }
 
-  '++'          { Token _ T_Append }
-  '..'          { Token _ T_DotDot }
-  '->'          { Token _ T_RightArrow }
-  ','           { Token _ T_Comma }
-  '|'           { Token _ T_Bar }
-  ':'           { Token _ T_Colon }
-  ';'           { Token _ T_Semi }
-  '('           { Token _ T_LeftParen }
-  ')'           { Token _ T_RightParen }
-  '['           { Token _ T_LeftSquare }
-  ']'           { Token _ T_RightSquare }
-  '{'           { Token _ T_LeftCurly }
-  '}'           { Token _ T_RightCurly }
-  '='           { Token _ T_Equals }
-  '!=='         { Token _ T_NotEquals }
-  '>'           { Token _ T_GreaterThan }
-  '>='          { Token _ T_GreaterThanOrEquals }
-  '<'           { Token _ T_LessThan }
-  '<='          { Token _ T_LessThanOrEquals }
-  '+'           { Token _ T_Plus }
-  '_'           { Token _ T_Underscore }
-  '$'           { Token _ T_Dollar }
+  '++'          { L _ (Token _ T_Append) }
+  '..'          { L _ (Token _ T_DotDot) }
+  '->'          { L _ (Token _ T_RightArrow) }
+  ','           { L _ (Token _ T_Comma) }
+  '|'           { L _ (Token _ T_Bar) }
+  ':'           { L _ (Token _ T_Colon) }
+  ';'           { L _ (Token _ T_Semi) }
+  '('           { L _ (Token _ T_LeftParen) }
+  ')'           { L _ (Token _ T_RightParen) }
+  '['           { L _ (Token _ T_LeftSquare) }
+  ']'           { L _ (Token _ T_RightSquare) }
+  '{'           { L _ (Token _ T_LeftCurly) }
+  '}'           { L _ (Token _ T_RightCurly) }
+  '='           { L _ (Token _ T_Equals) }
+  '!=='         { L _ (Token _ T_NotEquals) }
+  '>'           { L _ (Token _ T_GreaterThan) }
+  '>='          { L _ (Token _ T_GreaterThanOrEquals) }
+  '<'           { L _ (Token _ T_LessThan) }
+  '<='          { L _ (Token _ T_LessThanOrEquals) }
+  '+'           { L _ (Token _ T_Plus) }
+  '_'           { L _ (Token _ T_Underscore) }
+  '$'           { L _ (Token _ T_Dollar) }
 
-  IDENT         { Token _ (T_Ident $$) }
-  STRING        { Token _ (T_StringLit $$) }
-  NAT           { Token _ (T_NatLit $$) }
+  IDENT         { L _ (Token _ (T_Ident $$)) }
+  STRING        { L _ (Token _ (T_StringLit $$)) }
+  NAT           { L _ (Token _ (T_NatLit $$)) }
 
 
 %name query query
 %name schema schemas
 %name type_ type
 %monad { P }
-%lexer { (alexMonadScan >>=) } { Token _ T_EOF }
+%lexer { lexer } { L _ (Token _ T_EOF)}
 %error { parseError }
 %expect 0
 
@@ -331,9 +331,8 @@ type P a = Alex a
 invalid :: SourcePat
 invalid = Nat (fromIntegral iNVALID_ID)
 
-parseError :: Token -> P a
-parseError (Token b t) = do
-  (AlexPn _ line col, _, _, _) <- alexGetInput
+parseError :: Located Token -> P a
+parseError (L (SrcSpan (SrcLoc line col) _) (Token b t)) = do
   filename <- getFile
   alexError $
     (if null filename then "" else filename <> ": ") <>
@@ -344,7 +343,7 @@ parseError (Token b t) = do
 
 -- Accept older constructs for backwards-compability only when we're
 -- parsing the appropriate version(s) of the syntax.
-ifVersionOrOlder :: AngleVersion -> Token -> a -> Alex a
+ifVersionOrOlder :: AngleVersion -> Located Token -> a -> Alex a
 ifVersionOrOlder v tok r = do
   thisVer <- getVersion
   when (thisVer > v) $ parseError tok

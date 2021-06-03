@@ -6,6 +6,8 @@ module Glean.Query.Types
   , SourcePat_(..)
   , Field(..)
   , IsWild(..)
+  , SrcSpan(..)
+  , SrcLoc(..)
   ) where
 
 import qualified Data.Aeson as Aeson
@@ -34,6 +36,23 @@ data SourceStatement_ pat = SourceStatement pat pat
 type Name = Text
 
 type FieldName = Text
+
+-- | A 'SrcSpan' delimits a portion of a text file.
+-- The end position is the column /after/ the end of the span.
+-- That is, a span of (1,1)-(1,2) is one character long, and a span of
+-- (1,1)-(1,1) is zero characters long.
+data SrcSpan = SrcSpan
+  { spanStart :: {-# UNPACK #-} !SrcLoc
+  , spanEnd   :: {-# UNPACK #-} !SrcLoc
+  }
+  deriving (Eq, Show)
+
+-- | A point in a source text file.
+data SrcLoc = SrcLoc
+  { locLine :: {-# UNPACK #-} !Int
+  , locCol  :: {-# UNPACK #-} !Int
+  }
+  deriving (Show, Eq)
 
 data SourcePat_ v t
   = Nat Word64
@@ -70,6 +89,10 @@ class IsWild pat where
 instance IsWild (SourcePat_ v t) where
   isWild Wildcard = True
   isWild _ = False
+
+instance Pretty SrcLoc where
+  pretty (SrcLoc line col) =
+    "line " <> pretty  line <> ", column " <> pretty col
 
 instance (Pretty v, Pretty t) => Pretty (SourcePat_ v t) where
   pretty (Nat w) = pretty w
