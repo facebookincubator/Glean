@@ -344,7 +344,7 @@ withShard (ThriftBackend ClientConfig{..} evb serv _) repo act =
       case r of
         Right a -> return a
         Left e@(ChannelException msg) ->
-          if "no hosts were found" `Text.isSuffixOf` msg then do
+          if "SELECTION_NO_HOST_FOR_SHARD" `Text.isInfixOf` msg then do
             logWarning $ "falling back to unsharded request: " <> show e
             unsharded
           else
