@@ -167,18 +167,23 @@ predicate SearchByName :
   { N, Decl } where
   Decl =
     hack.Declaration { classConst = { name = N }} |
-    hack.Declaration { container = { class_ = { name = { name = N }}}} |
-    hack.Declaration { container = { interface_ = { name = { name = N }}}} |
-    hack.Declaration { container = { trait = { name = { name = N }}}} |
-    hack.Declaration { container = { enum_ = { name = { name = N }}}} |
     hack.Declaration { enumerator = { name = N }} |
-    hack.Declaration { function_ = { name = { name = N }}} |
-    hack.Declaration { globalConst = { name = { name = N }}} |
-    hack.Declaration { namespace_ = { name = { name = N }}} |
     hack.Declaration { method = { name = N }} |
     hack.Declaration { property_ = { name = N }} |
     hack.Declaration { typeConst = { name = N }} |
-    hack.Declaration { typedef_ = { name = { name = N }}}
+    (
+      QN = {name = N} : hack.QName;
+      hack.Declaration { container = { class_ = { name = QN }}} |
+      hack.Declaration { container = { interface_ = {name = QN }}} |
+      hack.Declaration { container = { trait = { name = QN }}} |
+      hack.Declaration { container = { enum_ = { name = QN }}} |
+      hack.Declaration { function_ = { name = QN }} |
+      hack.Declaration { globalConst = { name = QN }} |
+      hack.Declaration { typedef_ = { name = QN }}
+    ) | (
+      QN = {name = N} : hack.NamespaceQName;
+      hack.Declaration { namespace_ = { name = QN }}
+    )
 
 # SearchInNamespace can find containers (class_, interface_, trait_),
 # enum_, function_, globalConst, namespace_, and typedef_ in a NamespaceQName
