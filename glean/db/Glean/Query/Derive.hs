@@ -27,6 +27,7 @@ import Util.Control.Exception
 import Util.Log
 
 import Glean.RTS.Types as RTS
+import qualified Glean.RTS.Term as Term
 import Glean.Angle.Types as A
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Schema.Types
@@ -37,6 +38,7 @@ import qualified Glean.Query.UserQuery as UserQuery
 import Glean.Query.Typecheck.Types
 import Glean.Query.Codegen
 import Glean.Schema.Util
+import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types as Thrift hiding (Byte, Nat, Exception)
 import Glean.Util.Observed as Observed
 import Glean.Util.Time
@@ -178,13 +180,16 @@ deriveStoredImpl env@Env{..} log repo Thrift.DerivePredicateQuery{..} =
     checkConstraints schema pred = do
       unless (isDerivedAndStored schema pred) $
         throwSTM Thrift.NotAStoredPredicate
-      completePreds <-
-        metaCompletePredicates <$> Catalog.readMeta envCatalog repo
-      let complete = isCompletePred completePreds schema
-          dependencies = transitive (predicateDeps schema) pred
-          incomplete = filter (not . complete) dependencies
-      unless (null incomplete) $
-        throwSTM $ Thrift.IncompleteDependencies incomplete
+
+      ServerConfig.Config{..} <- Observed.get envServerConfig
+      unless config_disable_predicate_dependency_checks $ do
+        completePreds <-
+          metaCompletePredicates <$> Catalog.readMeta envCatalog repo
+        let complete = isCompletePred completePreds schema
+            dependencies = transitive (predicateDeps schema) pred
+            incomplete = filter (not . complete) dependencies
+        unless (null incomplete) $
+          throwSTM $ Thrift.IncompleteDependencies incomplete
 
     query pred = def
       { userQuery_predicate = derivePredicateQuery_predicate
@@ -276,11 +281,12 @@ transitive next root = Set.elems $ go (next root) mempty
 
 -- | predicates which are queried to derive this predicate
 predicateDeps :: DbSchema -> PredicateRef -> [PredicateRef]
-predicateDeps schema pred = maybe mempty (toList . mconcat) $ do
-  let PredicateDetails{..} = getPredicateDetails schema pred
-  Derive _ QueryWithInfo{..} <- return predicateDeriving
-  let TcQuery _ _ _ stmts = qiQuery
-  return [ typeDeps ty | TcStatement ty _ _ <- stmts ]
+predicateDeps schema pred =
+  case predicateDeriving of
+    Derive _ QueryWithInfo{..} -> toList $ tcQueryDeps qiQuery
+    _ -> mempty
+  where
+    PredicateDetails{..} = getPredicateDetails schema pred
 
 getPredicateDetails :: DbSchema -> PredicateRef -> PredicateDetails
 getPredicateDetails schema pred =
@@ -288,6 +294,45 @@ getPredicateDetails schema pred =
     Just details -> details
     Nothing -> error $
       "unknown predicate: " <> Text.unpack (showPredicateRef pred)
+
+tcQueryDeps :: TcQuery -> Set PredicateRef
+tcQueryDeps (TcQuery ty _ _ stmts) = typeDeps ty <> foldMap tcStatementDeps stmts
+
+tcStatementDeps :: TcStatement -> Set PredicateRef
+tcStatementDeps (TcStatement ty lhs rhs) =
+  typeDeps ty <> tcPatDeps lhs <> tcPatDeps rhs
+
+tcPatDeps :: TcPat -> Set PredicateRef
+tcPatDeps = \case
+  Term.Byte _ -> mempty
+  Term.Nat _ -> mempty
+  Term.Array xs -> foldMap tcPatDeps xs
+  Term.ByteArray _ -> mempty
+  Term.Tuple xs -> foldMap tcPatDeps xs
+  Term.Alt _ t -> tcPatDeps t
+  Term.String _ -> mempty
+  Term.Ref match -> matchDeps match
+
+matchDeps :: Match (Typed TcTerm) Var -> Set PredicateRef
+matchDeps = \case
+  MatchWild ty -> typeDeps ty
+  MatchNever ty -> typeDeps ty
+  MatchFid _ -> mempty
+  MatchBind _ -> mempty
+  MatchVar _ -> mempty
+  MatchAnd one two -> tcPatDeps one <> tcPatDeps two
+  MatchPrefix _ x -> tcPatDeps x
+  MatchSum xs -> foldMap tcPatDeps $ catMaybes xs
+  MatchExt (Typed ty tcterm) -> typeDeps ty <> tcTermDeps tcterm
+
+tcTermDeps :: TcTerm -> Set PredicateRef
+tcTermDeps = \case
+  TcOr x y -> tcPatDeps x <> tcPatDeps y
+  TcFactGen (PidRef _ pred) x y ->
+    Set.singleton pred <> tcPatDeps x <> tcPatDeps y
+  TcElementsOfArray x -> tcPatDeps x
+  TcQueryGen q -> tcQueryDeps q
+  TcPrimCall _ xs -> foldMap tcPatDeps xs
 
 typeDeps :: RTS.Type -> Set PredicateRef
 typeDeps = \case

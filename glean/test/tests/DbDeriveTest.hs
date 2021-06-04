@@ -109,8 +109,10 @@ completenessTest runDerive = dbTestCaseWritable $ \env repo -> do
   -- deriving a stored predicate that depends on incomplete predicates fails
   assertThrows "completenessTest - incomplete dep"
     (Thrift.IncompleteDependencies
-      [getName $ Proxy @Glean.Test.StoredRevStringPair])
-    $ void $ derive (Proxy @Glean.Test.StoredRevStringPairWithA)
+      [ getName $ Proxy @Glean.Test.StoredRevStringPair
+      , getName $ Proxy @Glean.Test.StoredRevStringPairWithA
+      ])
+    $ void $ derive (Proxy @Glean.Test.StoredRevStringPairSum)
 
   -- parallel derivation works
   let run = derive (Proxy @Glean.Test.StoredRevStringPair)

@@ -62,6 +62,11 @@ predicate StoredRevStringPairWithA : { fst: string, snd: string }
 predicate StoredRevStringPairWithRev : { fst: string, snd: string }
   stored {A,B} where RevStringPair {B,A}
 
+# Stored predicate with query statement containing an alternative
+predicate StoredRevStringPairSum : { fst: string, snd: string }
+  stored { A, A } where
+  (StoredRevStringPair{A,_}) | (StoredRevStringPairWithA{A,_})
+
 # Reverse glean.test.StringPair
 predicate RevStringPairRec : { fst : string, snd : string }
   { fst = A, snd = B } where StringPair { fst = B, snd = A }
