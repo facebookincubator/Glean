@@ -547,16 +547,18 @@ main =
         tryBracket
            (when create $ do
                 putStrLn $ "Creating DB using handle " ++ Text.unpack handle
-                void $ Glean.kickOffDatabase backend def
-                  { kickOff_repo = repo
-                  , kickOff_fill = Just $ case scribe of
-                      Nothing -> KickOffFill_writeHandle handle
-                      Just scribe -> KickOffFill_scribe
-                        (writeFromScribe scribe)
-                          { writeFromScribe_writeHandle = handle }
-                  , kickOff_properties = HashMap.fromList properties
-                  , kickOff_dependencies = dependencies
-                  }
+                Thrift.KickOffResponse alreadyExists <-
+                  Glean.kickOffDatabase backend def
+                    { kickOff_repo = repo
+                    , kickOff_fill = Just $ case scribe of
+                        Nothing -> KickOffFill_writeHandle handle
+                        Just scribe -> KickOffFill_scribe
+                          (writeFromScribe scribe)
+                            { writeFromScribe_writeHandle = handle }
+                    , kickOff_properties = HashMap.fromList properties
+                    , kickOff_dependencies = dependencies
+                    }
+                when alreadyExists $ die 3 "DB create failure: already exists"
            )
            (\_ result ->
              let mFail = resultToFailure result in
