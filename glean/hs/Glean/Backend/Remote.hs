@@ -21,7 +21,6 @@ module Glean.Backend.Remote
   , loadPredicates
   , databases
   , localDatabases
-  , fillDatabase
   , usingShards
   , clientInfo
 
@@ -29,7 +28,6 @@ module Glean.Backend.Remote
 
 import Control.Applicative
 import Control.Exception
-import Control.Monad
 import Data.Bits
 import qualified Data.ByteString.Unsafe as B
 import Data.Default
@@ -40,11 +38,9 @@ import qualified Data.Text.Encoding as Text
 import Foreign
 import GHC.Fingerprint
 import System.IO.Unsafe
-import TextShow (showt)
 
 import Thrift.Channel
 import Thrift.Api
-import Util.Control.Exception
 import Util.EventBase (EventBaseDataplane)
 import Util.Log
 
@@ -393,33 +389,6 @@ localDatabases :: Backend a => a -> IO [Thrift.Database]
 localDatabases be =
   Thrift.listDatabasesResult_databases <$>
     listDatabases be def { Thrift.listDatabases_includeBackups = False }
-
-fillDatabase
-  :: Backend a
-  => a
-  -> Thrift.Repo
-  -> Text
-  -> IO () -- ^ @return ()@ to allow existing, or @throwIO@ to forbid
-  -> IO b
-  -> IO b
-fillDatabase env repo handle ifexists action = tryBracket
-  (do
-    r <- kickOffDatabase env def
-      { Thrift.kickOff_repo = repo
-      , Thrift.kickOff_fill = Just $ Thrift.KickOffFill_writeHandle handle
-      }
-    when (Thrift.kickOffResponse_alreadyExists r) ifexists)
-  (\_ e -> workFinished env Thrift.WorkFinished
-    { workFinished_work = def
-        { Thrift.work_repo = repo
-        , Thrift.work_handle = handle
-        }
-    , workFinished_outcome = case e of
-        Left ex -> Thrift.Outcome_failure (Thrift.Failure (showt ex))
-        Right _ -> Thrift.Outcome_success def
-    })
-  $ const action
-
 
 usingShards :: Backend b => b -> Bool
 usingShards backend =

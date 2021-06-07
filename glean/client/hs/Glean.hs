@@ -156,6 +156,7 @@ import Glean.Query.Thrift
 import Glean.Repo
 import Glean.Typed
 import Glean.Types
+import Glean.Write
 import Glean.Write.Async
 import Glean.Write.Options
 import Glean.Write.SendBatch

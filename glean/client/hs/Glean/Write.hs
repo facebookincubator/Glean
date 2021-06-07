@@ -3,6 +3,7 @@ module Glean.Write
   ( parseRef
   , parseJsonFactBatches
   , dumpJsonToFile
+  , fillDatabase
   ) where
 
 import Control.Monad.Extra
@@ -11,11 +12,16 @@ import qualified Data.Aeson.Types as Aeson
 import Data.ByteString (ByteString)
 import qualified Data.ByteString.Char8 as BC
 import qualified Data.ByteString.Lazy.Char8 as LB
+import Data.Default
 import Data.IORef
 import Data.Maybe
+import Data.Text (Text)
 import qualified Data.Vector as Vector
 import System.IO
 import Text.Printf
+import TextShow
+
+import Util.Control.Exception
 
 import Glean.Backend
 import Glean.Types hiding (Value)
@@ -75,3 +81,39 @@ dumpJsonToFile backend repo file =
         predicateRef_name predicateRef_version
       BC.hPutStrLn hdl (BC.intercalate ",\n" jsonFactBatch_facts)
       hPutStrLn hdl "]}"
+
+-- | Create a database and run the supplied IO action to write data
+-- into it. When the IO action returns, the DB will be marked complete
+-- and cannot be modified further. If the IO action throws an exception,
+-- the DB will be marked broken.
+fillDatabase
+  :: Backend a
+  => a
+    -- ^ The backend
+  -> Repo
+    -- ^ The repo to create
+  -> Text
+    -- ^ Handle for writing. Can be anything you like.
+  -> IO ()
+    -- ^ What to do if the DB already exists. @return ()@ to continue,
+    -- or @throwIO@ to forbid.
+  -> IO b
+    -- ^ Caller-supplied action to write data into the DB.
+  -> IO b
+fillDatabase env repo handle ifexists action = tryBracket
+  (do
+    r <- kickOffDatabase env def
+      { kickOff_repo = repo
+      , kickOff_fill = Just $ KickOffFill_writeHandle handle
+      }
+    when (kickOffResponse_alreadyExists r) ifexists)
+  (\_ e -> workFinished env WorkFinished
+    { workFinished_work = def
+        { work_repo = repo
+        , work_handle = handle
+        }
+    , workFinished_outcome = case e of
+        Left ex -> Outcome_failure (Failure (showt ex))
+        Right _ -> Outcome_success def
+    })
+  $ const action

@@ -16,7 +16,8 @@ import Test.QuickCheck.IO ()
 
 import TestRunner
 
-import Glean.Backend (fillDatabase, enqueueJsonBatch)
+import Glean (fillDatabase)
+import Glean.Backend (enqueueJsonBatch)
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Catalog.Filter
 import Glean.Database.Catalog.Test

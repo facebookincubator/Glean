@@ -27,6 +27,7 @@ import qualified Test.HUnit as HUnit
 import TestRunner (testRunner)
 import Util.JSON.Pretty ()
 
+import Glean (fillDatabase)
 import Glean.Backend (Backend)
 import qualified Glean.Backend as Backend
 import Glean.Database.Test
@@ -70,7 +71,7 @@ withTestEnvDatabase generator test action =
       (HashMap.fromList
         [("glean.schema_version", Text.pack (show ver))
         ]) []
-  Backend.fillDatabase backend repo "" (die "repo already exists") $ do
+  fillDatabase backend repo "" (die "repo already exists") $ do
     mapM_ setDbVersion $ testSchemaVersion test
     generator test backend repo
   action backend repo
