@@ -29,8 +29,9 @@ import qualified Text.Parsec.Language as P
 import qualified Text.Parsec.Token as P
 
 import Glean
+import qualified Glean.Types as Thrift
+import Glean.LocalOrRemote (LocalOrRemote)
 import Glean.Schema.Resolve
-import Glean.Types as Thrift
 import Glean.Util.Some
 
 data Statement pat
@@ -108,7 +109,7 @@ data Stats = NoStats | SummaryStats | FullStats
 
 data ShellState = ShellState
   { backend :: Some LocalOrRemote
-  , repo :: Maybe Thrift.Repo
+  , repo :: Maybe Repo
   , mode :: ShellMode
   , schemas :: Schemas
   , schemaInfo :: Thrift.SchemaInfo
@@ -148,10 +149,10 @@ withBackend f = do
 getState :: Eval ShellState
 getState = Eval State.get
 
-getRepo :: Eval (Maybe Thrift.Repo)
+getRepo :: Eval (Maybe Repo)
 getRepo = repo <$> getState
 
-setRepo :: Thrift.Repo -> Eval ()
+setRepo :: Repo -> Eval ()
 setRepo r =
   withBackend $ \backend -> do
     schema <- liftIO $ getSchemaInfo backend r

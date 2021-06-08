@@ -14,6 +14,7 @@ import Util.EventBase
 
 import qualified Glean
 import Glean.BuildInfo
+import Glean.Impl.ConfigProvider
 import Glean.Schema.Src as Src
 import Glean.Schema.Src.Types as Src
 import Glean.Schema.Cxx1 as Cxx
@@ -22,7 +23,7 @@ import Glean.Util.ConfigProvider
 
 
 data Config = Config
-  { cfgService :: Glean.Service
+  { cfgService :: Glean.ThriftSource Glean.ClientConfig
   }
 
 options :: ParserInfo Config
@@ -37,8 +38,8 @@ main :: IO ()
 main =
   withConfigOptions options $ \(cfg, cfgOpts) ->
   withEventBaseDataplane $ \evb ->
-  withConfigProvider cfgOpts $ \cfgAPI ->
-  Glean.withBackendWithDefaultOptions evb cfgAPI (cfgService cfg) create
+  withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) ->
+  Glean.withRemoteBackend evb cfgAPI (cfgService cfg) create
 
 
 create :: Glean.Backend b => b -> IO ()

@@ -49,11 +49,10 @@ import Util.Log
 import Util.OptParse
 import Util.Timing
 
-import Glean.Backend (withBackend)
-import Glean.Backend.Remote (setTimeout)
-import Glean hiding (Config, options)
+import Glean hiding (options)
 import qualified Glean
 import Glean.Util.ConfigProvider
+import Glean.Impl.ConfigProvider
 import Glean.Types
 
 data WorkLimit
@@ -63,7 +62,7 @@ data WorkLimit
     -- ^ make exactly this many requests
 
 data Config = Config
-  { cfgService :: Glean.Service
+  { cfgService :: ThriftSource ClientConfig
   , cfgQuery :: Text
   , cfgRepo :: Repo
   , cfgConcurrent :: Int
@@ -140,11 +139,11 @@ main :: IO ()
 main =
   withConfigOptions options $ \(Config{..}, cfgOpts) ->
   withEventBaseDataplane $ \evb ->
-  withConfigProvider cfgOpts $ \cfgAPI ->
+  withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) ->
   let
     settings = maybe id (setTimeout . fromIntegral) cfgThriftTimeout
   in
-  withBackend evb cfgAPI cfgService settings $ \backend -> do
+  withRemoteBackendSettings evb cfgAPI cfgService settings $ \backend -> do
     Stats{..} <- newStats
     let
       doRequest =

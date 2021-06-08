@@ -21,6 +21,7 @@ import Util.EventBase
 
 import qualified Glean
 import Glean.Angle as Angle
+import Glean.Impl.ConfigProvider
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import Glean.Schema.Query.Src.Types as Query.Src hiding (ByteRange(..))
 import Glean.Schema.Query.Cxx1.Types as Query.Cxx
@@ -30,7 +31,7 @@ import Glean.Util.XRefs
 
 
 data Config = Config
-  { cfgService :: Glean.Service
+  { cfgService :: Glean.ThriftSource Glean.ClientConfig
   , cfgFile :: FilePath
   , cfgOffset :: Int
   }
@@ -49,8 +50,8 @@ main :: IO ()
 main = do
   withConfigOptions options $ \(cfg, cfgOpts) ->
     withEventBaseDataplane $ \evb ->
-      withConfigProvider cfgOpts $ \cfgAPI ->
-        Glean.withBackendWithDefaultOptions evb cfgAPI (cfgService cfg)
+      withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) ->
+        Glean.withRemoteBackend evb cfgAPI (cfgService cfg)
           $ \backend -> do
             repo <- Glean.getLatestRepo backend "fbsource"
             doQuery backend cfg repo

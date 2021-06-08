@@ -23,7 +23,6 @@ import Glean.Database.Catalog.Filter
 import Glean.Database.Catalog.Test
 import Glean.Database.Config
 import Glean.Database.Index
-import Glean.Database.Repo
 import Glean.Database.Storage.Memory (newStorage)
 import Glean.Database.Stuff
 import Glean.Database.Test

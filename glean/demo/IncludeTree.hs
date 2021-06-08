@@ -3,8 +3,9 @@
 -- from the root file.
 module IncludeTree (main) where
 
-import Glean hiding (Config, options)
+import Glean hiding (options)
 import qualified Glean (options)
+import Glean.Impl.ConfigProvider
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import Glean.Util.ConfigProvider
 import Glean.Util.PredMap (PredMap)
@@ -23,7 +24,7 @@ import qualified Options.Applicative as O
 import TextShow (showt)
 
 data Config = Config
-  { cfgService :: Service
+  { cfgService :: ThriftSource ClientConfig
   , cfgRepo :: Glean.Repo
   , cfgTranslationUnitTrace :: IdOf Cxx.TranslationUnitTrace
   }
@@ -127,6 +128,6 @@ main :: IO ()
 main =
   withConfigOptions options $ \(cfg, cfgOpts) ->
     withEventBaseDataplane $ \ebd ->
-      withConfigProvider cfgOpts $ \cfgAPI ->
-        withBackendWithDefaultOptions ebd cfgAPI (cfgService cfg) $ \be ->
+      withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) ->
+        withRemoteBackend ebd cfgAPI (cfgService cfg) $ \be ->
           processTranslationUnitTrace be cfg

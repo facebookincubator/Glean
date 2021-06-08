@@ -1,38 +1,72 @@
 --
--- | Interface providing everything that read-only applications of
--- Glean should need.
+-- | Interface providing everything that clients of a Glean server should need.
+-- To use a local database store, see "Glean.LocalOrRemote".
+--
+-- Client code should look like:
+--
+-- > import Glean
+-- > import Glean.Util.ConfigProvider
+-- > import Glean.Impl.ConfigProvider
+-- > import Util.EventBase
+-- >
+-- > main :: IO ()
+-- > main =
+-- >   withConfigOptions options $ \(service, cfgOpts) ->
+-- >   withEventBaseDataplane $ \evb ->
+-- >   withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) ->
+-- >   withRemoteBackend evb cfgAPI service $ \backend -> do
+-- >     ...
 --
 module Glean
   (
   -- * Connecting to a Glean server
     options
-  , optionsLong
-  , withBackendWithDefaultOptions
+  , withRemoteBackend
+  , withRemoteBackendSettings
+  , Settings
+  , setService
+  , setNoShards
+  , setTimeout
   , defaultClientConfigSource
 
-  -- * types for backend
-  , Service(..)
-  , Config(..)
+  -- * Backend, for raw interaction with the server
   , Backend(..)
-  , LocalOrRemote(..)
   , UseShards(..)
-  , LoggingBackend(..)
-  , BackendKind(..)
   , ThriftSource
   , ClientConfig(..)
   , ListDatabases(..)
   , ListDatabasesResult(..)
   , KickOff(..)
   , KickOffFill(..)
+  , KickOffResponse(..)
   , Database(..)
+  , Work(..)
+  , WorkAvailable(..)
+  , WorkUnavailable(..)
+  , WorkHeartbeat(..)
+  , GetWork(..)
+  , GetWorkResponse(..)
+  , AbortWork(..)
+  , WorkCancelled(..)
+  , WorkFinished(..)
+  , SchemaInfo(..)
+  , UnknownDatabase(..)
+  , Outcome(..)
+  , Success(..)
+  , Failure(..)
 
   -- * Repositories
   , Repo(..)
   , getLatestRepo
   , NoDatabase(..)
-  , parseRepo
   , showRepo
-  , displayRepo
+  , showRepoSep
+  , repoToText
+  , repoToTextSep
+  , readRepo
+  , parseRepo
+  , parseRepoText
+  , parseRepoTextSep
   , dbShard
 
   -- * Queries
@@ -42,6 +76,8 @@ module Glean
   , runQuery
   , runQuery_
   , runQueryEach
+  , runQueryEachBatch
+  , runQueryMapPages_
   , BadQuery(..)
   , allFacts
 
@@ -112,7 +148,9 @@ module Glean
   , FactBuilder
   , makeFact
   , makeFact_
-  , NewFact
+  , makeFactV
+  , makeFactV_
+  , NewFact(..)
 
   -- ** Lower-level write API
   , withSender
@@ -125,6 +163,7 @@ module Glean
   , withWriter
   , Writer
   , WriterSettings(..)
+  , writerOptions
   , writeFacts
   , writeSendAndRebaseQueue
   , withSendAndRebaseQueue
@@ -139,21 +178,15 @@ module Glean
   , sendJsonBatch
   , SendJsonBatch(..)
   , JsonFactBatch(..)
-
-  -- ** Misc
-  , validate
-  , Validate(..)
-  , computeOwnership
   ) where
 
-import Glean.Backend hiding (dbShard)
-import Glean.Database.Config (Config(..))
-import Glean.Database.Validate
+import Glean.Backend.Remote hiding (dbShard)
 import Glean.Angle.Lexer
 
 import Glean.Haxl
 import Glean.Query.Thrift
 import Glean.Repo
+import Glean.Repo.Text
 import Glean.Typed
 import Glean.Types
 import Glean.Write

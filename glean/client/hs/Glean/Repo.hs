@@ -6,10 +6,6 @@ module Glean.Repo
   , NoDatabase(..)
     -- * Database util
   , dbShard
-    -- * Repo utils
-  , parseRepo
-  , showRepo
-  , displayRepo
   ) where
 
 import Control.Exception
@@ -20,13 +16,13 @@ import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Maybe
 import Data.Text (Text)
-import qualified Data.Text as Text
 import Util.TimeSec (Time(..))
 import qualified Util.TimeSec as Time
 
 import Util.Log
 
-import Glean.Backend hiding (dbShard)
+import Glean.Repo.Text
+import Glean.Backend.Remote hiding (dbShard)
 import qualified Glean.Backend.Remote as Backend
 import Glean.Types
 
@@ -118,22 +114,6 @@ checkRestorableAvailable backend (Database{..}:dbs)
     if not avail
       then checkRestorableAvailable backend dbs
       else return (Just database_repo)
-
--- | Show a repo in NAME/HASH format to String
-showRepo :: Repo -> String
-showRepo Repo{..} = Text.unpack repo_name ++ '/' : Text.unpack repo_hash
-
--- | Render the Repo in NAME/HASH format to Text
-displayRepo :: Repo -> Text
-displayRepo Repo{..} = repo_name <> "/" <> repo_hash
-
--- | Attempt to parse a repo of the form <name>/<hash> as commonly
--- used by Glean tools.
-parseRepo :: String -> Maybe Repo
-parseRepo repo
-  | (name,'/':hash) <- break (=='/') repo =
-    Just (Repo (Text.pack name) (Text.pack hash))
-  | otherwise = Nothing
 
 dbShard :: Database -> Text
 dbShard = Backend.dbShard . database_repo

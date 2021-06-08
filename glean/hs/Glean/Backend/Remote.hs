@@ -1,9 +1,14 @@
+{-# LANGUAGE ApplicativeDo #-}
 module Glean.Backend.Remote
   ( Backend(..)
 
+    -- * Command-line options
+  , options
+  , optionsLong
+
     -- * Construction
   , withRemoteBackend
-  , withRemoteBackendConfig
+  , withRemoteBackendSettings
   , Settings
   , setService
   , setNoShards
@@ -37,6 +42,7 @@ import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import Foreign
 import GHC.Fingerprint
+import Options.Applicative as Options
 import System.IO.Unsafe
 
 import Thrift.Channel
@@ -183,15 +189,6 @@ instance Backend (Some Backend) where
   hasDatabase (Some backend) = hasDatabase backend
   maybeRemote (Some backend) = maybeRemote backend
 
-withRemoteBackendConfig
-  :: EventBaseDataplane
-  -> ClientConfig
-  -> (forall b . Backend b => b -> IO a)
-  -> IO a
-withRemoteBackendConfig evb config inner = do
-  client <- clientInfo
-  inner $ ThriftBackend config evb (thriftServiceWithTimeout config def) client
-
 type Settings
   = (ClientConfig,ThriftServiceOptions)
   -> (ClientConfig,ThriftServiceOptions)
@@ -212,11 +209,24 @@ withRemoteBackend
   :: ConfigProvider cfg
   => EventBaseDataplane
   -> cfg
+  -> ThriftSource ClientConfig
+  -> (forall b . Backend b => b -> IO a)
+  -> IO a
+withRemoteBackend evb cfg configSource inner =
+  withRemoteBackendSettings evb cfg configSource id inner
+
+-- | Construct a 'Backend' for interacting with a Glean server, using
+-- the given 'Settings'.
+withRemoteBackendSettings
+  :: ConfigProvider cfg
+  => EventBaseDataplane
+  -> cfg
+  -> ThriftSource ClientConfig
   -> Settings
   -> (forall b . Backend b => b -> IO a)
   -> IO a
-withRemoteBackend evb configAPI settings inner = do
-  config <- ThriftSource.loadDefault configAPI defaultClientConfigSource
+withRemoteBackendSettings evb configAPI configSource settings inner = do
+  config <- ThriftSource.loadDefault configAPI configSource
   client <- clientInfo
   let (config', opts) = settings (config, def)
   inner $ ThriftBackend
@@ -405,3 +415,35 @@ clientInfo = do
     , Thrift.userQueryClientInfo_unixname = Text.pack <$> unixname
     , Thrift.userQueryClientInfo_application = buildRule
     }
+
+
+options :: Parser (ThriftSource ClientConfig)
+options = optionsLong "service"
+
+optionsLong :: String -> Parser (ThriftSource ClientConfig)
+optionsLong self = do
+  config <- option (eitherReader ThriftSource.parse)
+    (  long "client-config"
+    <> metavar "(file:PATH | config:PATH)"
+    <> Options.value defaultClientConfigSource)
+  let updateService svc config = config { clientConfig_serv = svc }
+  service <- fmap updateService <$> optional (strOption
+    (  long self
+    <> metavar "TIER or HOST:PORT"
+    <> help "Glean server to connect to"))
+  let updateSharding sh config = config { clientConfig_use_shards = sh }
+  sharding <- fmap updateSharding <$> optional (option readShard
+    (  long "use-shards"
+    <> metavar "yes|no|fallback"
+    <> help ("Whether to specify a shard when connecting" <>
+         " (default: fallback)")))
+  return
+    $ maybe id fmap service
+    $ maybe id fmap sharding
+    $ config
+  where
+    readShard = maybeReader $ \str -> case str of
+      "yes" -> Just USE_SHARDS
+      "no" -> Just NO_SHARDS
+      "fallback" -> Just USE_SHARDS_AND_FALLBACK
+      _ -> Nothing

@@ -21,10 +21,9 @@ import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Catalog.Filter
 import qualified Glean.Database.Catalog.Store as Store
 import Glean.Database.Meta (Meta)
-import Glean.Database.Repo
 import Glean.Test.HUnit
 import Glean.Test.Mock
-import Glean.Types (UnknownDatabase(..))
+import Glean.Types (Repo(..), UnknownDatabase(..))
 
 data MockStore = MockStore
   { storeList :: Mock (IO (HashMap Repo Meta))

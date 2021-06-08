@@ -8,9 +8,9 @@ import Data.ByteString (ByteString)
 import Thrift.Protocol.Compact
 
 import Glean.Database.Exception
-import Glean.Database.Repo (Repo)
 import Glean.Database.Storage (Storage, Database)
 import qualified Glean.Database.Storage as Storage
+import Glean.Types (Repo)
 import qualified Glean.Types as Thrift
 
 sCHEMA_KEY :: ByteString

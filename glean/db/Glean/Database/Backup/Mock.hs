@@ -18,7 +18,8 @@ import qualified System.Posix.Files as Posix
 import Text.Read
 
 import Glean.Database.Backup.Backend
-import Glean.Database.Repo
+import Glean.Repo.Text
+import Glean.Types
 import Glean.Util.Some
 
 data MockBackend = MockBackend
@@ -71,4 +72,4 @@ instance Site MockSite where
   toPath (MockSite path) = Text.pack path
 
 repoPath :: FilePath -> Repo -> FilePath
-repoPath path repo = path </> showRepo "." repo
+repoPath path repo = path </> showRepoSep "." repo

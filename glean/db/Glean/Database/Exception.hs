@@ -7,6 +7,7 @@ module Glean.Database.Exception
 import Control.Exception
 import Control.Monad.Catch (MonadThrow(..))
 
+import Glean.Types hiding (Exception)
 import Glean.Database.Repo
 
 newtype DBError = DBError String

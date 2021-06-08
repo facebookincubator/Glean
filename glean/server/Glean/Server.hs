@@ -23,7 +23,7 @@ import Util.Control.Exception
 import Util.EventBase
 import Util.Log
 
-import Glean.Backend.Remote
+import Glean.Backend.Remote hiding (options)
 import qualified Glean.Database.Catalog as Catalog
 import qualified Glean.Database.Catalog.Filter as Catalog
 import Glean.Database.Env

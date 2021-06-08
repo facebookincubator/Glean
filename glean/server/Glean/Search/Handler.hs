@@ -5,6 +5,7 @@ module Glean.Search.Handler (searchHandler) where
 import Data.Default
 
 import Glean
+import Glean.Backend (LoggingBackend(..))
 import Glean.Handler as GleanHandler
 import Glean.Schema.Code.Types as Code
 import Glean.Schema.CodeCxx.Types as Cxx

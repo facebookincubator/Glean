@@ -23,9 +23,9 @@ import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Catalog.Filter
 import qualified Glean.Database.Catalog.Store as Store
 import Glean.Database.Catalog.Test
-import Glean.Database.Repo
 import Glean.Init
 import Glean.Test.HUnit
+import Glean.Repo.Text
 import Glean.Test.Mock
 import Glean.Types hiding (Exception)
 
@@ -42,7 +42,7 @@ newtype ARepo = ARepo Repo
   deriving(Eq)
 
 instance Show ARepo where
-  show (ARepo repo) = showRepo "/" repo
+  show (ARepo repo) = showRepo repo
 
 instance Arbitrary ARepo where
   arbitrary = ARepo <$> elements repos

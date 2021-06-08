@@ -38,7 +38,7 @@ import Data.Ord (Down(..))
 import Data.Text (Text)
 
 import Glean.Database.Meta
-import Glean.Database.Repo
+import Glean.Types (Repo(..))
 import qualified Glean.Types as Thrift
 
 -- | How a DB is available

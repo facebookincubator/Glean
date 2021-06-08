@@ -21,7 +21,7 @@ import System.FilePath
 
 import Util.IO (safeRemovePathForcibly)
 
-import Glean.Database.Repo (Repo, databasePath)
+import Glean.Database.Repo (databasePath)
 import Glean.Database.Storage
 import Glean.FFI
 import Glean.RTS.Foreign.FactSet (FactSet)
@@ -30,6 +30,7 @@ import Glean.RTS.Foreign.Lookup
 import Glean.RTS.Foreign.Ownership as Ownership
 import Glean.RTS.Types (Fid(..), invalidFid, Pid(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
+import Glean.Types (Repo)
 import qualified Glean.Types as Thrift
 
 newtype Cache = Cache (ForeignPtr Cache)

@@ -5,7 +5,7 @@ module Glean.Database.Catalog.Store
 import Data.HashMap.Strict
 
 import Glean.Database.Meta (Meta)
-import Glean.Database.Repo (Repo)
+import Glean.Types (Repo)
 
 -- | A metadata store
 class Store a where

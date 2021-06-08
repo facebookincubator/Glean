@@ -25,6 +25,7 @@ import Util.OptParse
 
 import qualified Glean
 import Glean ( getFactKey, Nat(..) )
+import Glean.Impl.ConfigProvider
 import Glean.Pretty.Code ()
 import Glean.Pretty.Cxx ()
 import Glean.Pretty.Hs ()
@@ -64,7 +65,7 @@ data Command
     }
 
 data Config = Config
-  { cfgService :: Glean.Service
+  { cfgService :: Glean.ThriftSource Glean.ClientConfig
   , cfgCommand :: Command
   }
 
@@ -135,12 +136,8 @@ main :: IO ()
 main = do
   withConfigOptions options $ \(cfg, cfgOpts) ->
     withEventBaseDataplane $ \evb ->
-      withConfigProvider cfgOpts $ \cfgAPI -> do
-        let service = case cfgService cfg of
-              Glean.Local cfg log ->
-                Glean.Local cfg { Glean.cfgReadOnly = True } log
-              other -> other
-        Glean.withBackendWithDefaultOptions evb cfgAPI service $ \be -> do
+      withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) -> do
+        Glean.withRemoteBackend evb cfgAPI (cfgService cfg) $ \be -> do
           doQuery (Some be) cfg
 
 doQuery :: Some Glean.Backend -> Config -> IO ()

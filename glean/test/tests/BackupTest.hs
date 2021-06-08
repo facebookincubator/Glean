@@ -17,7 +17,6 @@ import qualified Glean.Database.Backup.Backend as Backup
 import qualified Glean.Database.Backup.Mock as Backup.Mock
 import Glean.Database.Config
 import Glean.Database.Env
-import Glean.Database.Repo
 import Glean.Database.Types
 import Glean.Impl.ConfigProvider
 import Glean.Init

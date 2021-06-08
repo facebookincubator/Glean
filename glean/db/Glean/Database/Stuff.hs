@@ -43,6 +43,7 @@ import Glean.Database.Meta (Meta(..))
 import Glean.Database.Schema
 import Glean.Database.Types
 import Glean.FFI
+import Glean.Repo.Text
 import Glean.RTS.Foreign.FactSet (FactSet)
 import qualified Glean.RTS.Foreign.FactSet as FactSet
 import Glean.RTS.Foreign.Inventory (Inventory)
@@ -53,6 +54,7 @@ import Glean.RTS.Foreign.Subst (Subst)
 import qualified Glean.RTS.Foreign.Subst as Subst
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.ServerConfig.Types (DBVersion(..))
+import Glean.Types (Repo)
 import qualified Glean.Types as Thrift
 import Glean.Util.Metric
 import Glean.Util.Mutex
@@ -347,7 +349,7 @@ thinSchema repo OpenDB{..} = do
   stats <- Storage.predicateStats odbHandle
   let (newSchemaInfo, names) = thinSchemaInfo odbSchema stats
   storeSchema odbHandle newSchemaInfo
-  logInfo $ "thinned schema for " <> showRepo "/" repo <> " contains " <>
+  logInfo $ "thinned schema for " <> showRepo repo <> " contains " <>
     intercalate ", " (map Text.unpack names)
 
 -- | Update the schema for all open DBs when the prevailing schema has
@@ -389,12 +391,12 @@ schemaUpdated env@Env{..} mbRepo = do
         case odbWriting of
           Just{} -> do
             logInfo $ "not updating schema for writable DB: " <>
-              showRepo "/" dbRepo
+              showRepo dbRepo
             return ()
             -- see setupSchema above, we don't update the schema for
             -- a writable DB.
           Nothing -> do
-            logInfo $ "updating schema for: " <> showRepo "/" dbRepo
+            logInfo $ "updating schema for: " <> showRepo dbRepo
             schema <- setupSchema env dbRepo odbHandle ReadOnly
             atomically $ do
               state <- readTVar dbState

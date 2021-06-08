@@ -13,13 +13,12 @@ import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 
 import Glean.Database.Exception
-import Glean.Database.Repo (Repo)
 import Glean.Database.Storage
 import Glean.RTS.Foreign.FactSet (FactSet)
 import qualified Glean.RTS.Foreign.FactSet as FactSet
 import Glean.RTS.Foreign.Lookup
 import Glean.RTS.Types (lowestPid)
-import Glean.Types (PredicateStats(..))
+import Glean.Types (PredicateStats(..), Repo)
 
 newtype Memory = Memory (TVar (HashMap Repo (Database Memory)))
 

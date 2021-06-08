@@ -29,6 +29,7 @@ import Glean.Database.Meta
 import Glean.Database.Repo
 import Glean.Database.Stuff
 import Glean.Database.Types
+import Glean.Repo.Text
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types hiding (Database)
 import qualified Glean.Types as Thrift
@@ -107,7 +108,7 @@ runDatabaseJanitor env = do
 
   fetching <- forM fetch $ \Item{..} ->
     ifRestoreRepo env 0 itemRepo $ \prefix site -> do
-      logInfo $ "Restoring: " ++ showRepo "/" itemRepo ++
+      logInfo $ "Restoring: " ++ showRepo itemRepo ++
         " ("  ++ showNominalDiffTime (dbAge t itemMeta) ++ " old)"
       restoreDatabase_ env prefix site itemRepo
       return 1

@@ -33,7 +33,8 @@ import Util.EventBase
 import Util.IO
 import Util.OptParse
 
-import qualified Glean
+import qualified Glean hiding (options)
+import qualified Glean.LocalOrRemote as Glean
 import Glean.BuildInfo
 import qualified Glean.Database.Work as Database
 import Glean.Database.Schema
@@ -593,7 +594,7 @@ main =
 
       Delete{..} -> void $ Glean.deleteDatabase backend repo
 
-      Dump{..} -> dumpJsonToFile backend repo dumpFile
+      Dump{..} -> Glean.dumpJsonToFile backend repo dumpFile
 
       Validate{..} -> case Glean.backendKind backend of
         Glean.BackendEnv env -> Glean.validate env repo validate

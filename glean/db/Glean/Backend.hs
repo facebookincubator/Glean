@@ -44,7 +44,7 @@ import Data.RateLimiterMap
 import Util.EventBase (EventBaseDataplane)
 import Util.Logger
 
-import Glean.ClientConfig.Types (UseShards(..), ClientConfig(..))
+import Glean.ClientConfig.Types (ClientConfig(..))
 import qualified Glean.Database.Catalog as Catalog
 import qualified Glean.Database.Config as Database
 import qualified Glean.Database.Env as Database
@@ -64,7 +64,8 @@ import qualified Glean.Types as Thrift
 import Glean.Util.Observed as Observed
 import Glean.Util.ThriftSource as ThriftSource
 
-import Glean.Backend.Remote
+import Glean.Backend.Remote hiding (options, optionsLong)
+import qualified Glean.Backend.Remote as Remote
 
 
 data Logging = EnableLogging | DisableLogging
@@ -115,43 +116,21 @@ withBackend evb cfgapi service settings inner = case service of
       (thriftServiceWithTimeout config' opts)
       client
 
+-- | Command-line options to specify a 'Service' that we can connect to.
+-- The 'Service' is either a remote Glean server (e.g. @--service=<host>:port@)
+-- or a local database store (e.g. @--db-root=<dir>@).
 options :: O.Parser Service
 options = optionsLong "service"
 
 optionsLong :: String -> O.Parser Service
 optionsLong self =
-  Remote <$> remote <|>
+  Remote <$> Remote.optionsLong self <|>
   Local <$> Database.options <*> logging
   where
-    remote = do
-      config <- O.option (O.eitherReader ThriftSource.parse)
-        (  O.long "client-config"
-        <> O.metavar "(file:PATH | config:PATH)"
-        <> O.value defaultClientConfigSource)
-      let updateService svc config = config { clientConfig_serv = svc }
-      service <- fmap updateService <$> optional (O.strOption
-        (  O.long self
-        <> O.metavar "TIER or HOST:PORT"
-        <> O.help "Glean server to connect to"))
-      let updateSharding sh config = config { clientConfig_use_shards = sh }
-      sharding <- fmap updateSharding <$> optional (O.option readShard
-        (  O.long "use-shards"
-        <> O.metavar "yes|no|fallback"
-        <> O.help ("Whether to specify a shard when connecting" <>
-             " (default: fallback)")))
-      return
-        $ maybe id fmap service
-        $ maybe id fmap sharding
-        $ config
     logging = (\b -> if b then EnableLogging else DisableLogging) <$> O.switch
       (  O.long "enable-logging"
       <> O.help "Log requests to Scuba/Hive/..."
       )
-    readShard = O.maybeReader $ \str -> case str of
-      "yes" -> Just USE_SHARDS
-      "no" -> Just NO_SHARDS
-      "fallback" -> Just USE_SHARDS_AND_FALLBACK
-      _ -> Nothing
 
 data InvalidSchema = InvalidSchema deriving(Show)
 instance Exception InvalidSchema

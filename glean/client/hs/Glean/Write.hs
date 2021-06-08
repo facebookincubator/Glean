@@ -2,7 +2,6 @@
 module Glean.Write
   ( parseRef
   , parseJsonFactBatches
-  , dumpJsonToFile
   , fillDatabase
   ) where
 
@@ -10,22 +9,17 @@ import Control.Monad.Extra
 import Data.Aeson
 import qualified Data.Aeson.Types as Aeson
 import Data.ByteString (ByteString)
-import qualified Data.ByteString.Char8 as BC
 import qualified Data.ByteString.Lazy.Char8 as LB
 import Data.Default
-import Data.IORef
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Vector as Vector
-import System.IO
-import Text.Printf
 import TextShow
 
 import Util.Control.Exception
 
-import Glean.Backend
+import Glean.Backend.Remote
 import Glean.Types hiding (Value)
-import Glean.Dump (dump)
 import Glean.Schema.Util
 import Glean.Angle.Types
 
@@ -56,31 +50,6 @@ parseJsonFactBatch = withObject "JsonFactBatch" $ \v ->
 parseJsonFactBatches :: Value -> Aeson.Parser [JsonFactBatch]
 parseJsonFactBatches = withArray "JsonFactBatch" $ \vec ->
   mapM parseJsonFactBatch (Vector.toList vec)
-
--- | Write facts to a file in JSON format suitable for parsing using
--- 'parseJsonFactBatches'.
---
-dumpJsonToFile
-  :: Backend b
-  => b
-  -> Repo
-  -> FilePath
-  -> IO ()
-dumpJsonToFile backend repo file =
-  withFile file WriteMode $ \hdl -> do
-    notFirst <- newIORef False
-    hPutStrLn hdl "["
-    dump backend repo (withBatch hdl notFirst)
-    hPutStrLn hdl "]"
-  where
-    withBatch hdl notFirst JsonFactBatch{..} = do
-      whenM (readIORef notFirst) $ hPutStr hdl ","
-      writeIORef notFirst True
-      let PredicateRef{..} = jsonFactBatch_predicate
-      hPrintf hdl "{ \"predicate\": \"%s.%d\", \"facts\": [\n"
-        predicateRef_name predicateRef_version
-      BC.hPutStrLn hdl (BC.intercalate ",\n" jsonFactBatch_facts)
-      hPutStrLn hdl "]}"
 
 -- | Create a database and run the supplied IO action to write data
 -- into it. When the IO action returns, the DB will be marked complete

@@ -16,10 +16,11 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 
 import Glean.Database.Backup.Backend as Backend
-import Glean.Database.Repo
 import Glean.Database.Types
+import Glean.Repo.Text
 import Glean.ServerConfig.Types (DatabaseBackupPolicy(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
+import Glean.Types
 import Glean.Util.Some
 import Glean.Util.Observed as Observed
 
@@ -36,7 +37,7 @@ fromRepoLocator backends loc = do
   let (site_slash, repo_text) = Text.breakOnEnd "/" loc
   (site_text, _) <- Text.unsnoc site_slash
   (prefix, site) <- fromSiteLocator backends site_text
-  repo <- parseRepo "." repo_text
+  repo <- parseRepoTextSep "." repo_text
   return (prefix, site, repo)
 
 toSiteLocator :: Site site => Text -> site -> Text
@@ -44,7 +45,7 @@ toSiteLocator prefix site = prefix <> ":" <> toPath site
 
 toRepoLocator :: Site site => Text -> site -> Repo -> Text
 toRepoLocator prefix site repo =
-  toSiteLocator prefix site <> "/" <> showtRepo "." repo
+  toSiteLocator prefix site <> "/" <> repoToTextSep "." repo
 
 getSite
   :: Env

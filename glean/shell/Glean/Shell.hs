@@ -55,12 +55,16 @@ import Util.String
 import Util.Text
 import Util.TimeSec
 
+import qualified Glean hiding (options)
 import qualified Glean.BuildInfo as BuildInfo
+import Glean.Backend.Remote (clientInfo)
 import Glean.Database.Schema.Types (DbSchema(..))
 import Glean.Database.Schema (newDbSchema, readWriteContent)
 import Glean.Database.Config (parseSchemaDir)
 import qualified Glean.Database.Config as DB (Config(..))
 import Glean.Init
+import Glean.LocalOrRemote (Service(..), withBackendWithDefaultOptions)
+import qualified Glean.LocalOrRemote as Glean
 import Glean.RTS.Types (Pid(..), Fid(..))
 import Glean.RTS.Foreign.Query (interruptRunningQueries)
 import Glean.Schema.Resolve
@@ -76,11 +80,6 @@ import Glean.Util.CxxXRef
 #endif
 import Glean.Util.Some
 import qualified Glean.Util.ThriftSource as ThriftSource
-import Glean.Backend hiding
-  (options, restoreDatabase, deleteDatabase, withBackend)
-import qualified Glean.Backend as Backend
-import qualified Glean
-import Glean.Write
 
 data Config = Config
   { cfgService :: Service
@@ -98,7 +97,7 @@ options = info (O.helper <*> liftA2 (,) parser configOptions) fullDesc
   where
     parser :: Parser Config
     parser = do
-      cfgService <- Backend.options
+      cfgService <- Glean.options
       cfgDatabase <- optional $ strOption
         (  long "db"
         <> metavar "NAME"
@@ -217,7 +216,7 @@ displayStatistics :: String -> Eval ()
 displayStatistics arg =
   withRepo $ \repo ->
   withBackend $ \backend -> do
-  xs <- liftIO $ predicateStats backend repo
+  xs <- liftIO $ Glean.predicateStats backend repo
   preds <- forM (Map.toList xs) $ \(id,stats) -> do
     ref <- maybe (Left id) Right <$> lookupPid (Pid id)
     return (ref,stats)
@@ -256,7 +255,8 @@ getDatabases
   -> Eval [Thrift.Database]
 getDatabases all filterStr = do
   r <- withBackend $ \be ->
-    liftIO $ listDatabases be def { Thrift.listDatabases_includeBackups = all }
+    liftIO $ Glean.listDatabases be
+      def { Thrift.listDatabases_includeBackups = all }
   let
     -- argument can be NAME or NAME/HASH
     repoFilter str db =
@@ -375,7 +375,7 @@ kickOff s
         _ -> liftIO $ throwIO $ ErrorCall "Too many arguments"
       withBackend $ \be -> do
         r <- liftIO $
-          kickOffDatabase be $ def
+          Glean.kickOffDatabase be $ def
             { Thrift.kickOff_repo = repo
             , Thrift.kickOff_fill = fill
             }
@@ -385,12 +385,12 @@ kickOff s
 
 restoreDatabase :: String -> Eval ()
 restoreDatabase loc = withBackend $ \be ->
-  liftIO $ Backend.restoreDatabase be $ Text.pack loc
+  liftIO $ Glean.restoreDatabase be $ Text.pack loc
 
 deleteDatabase :: String -> Eval ()
 deleteDatabase db
   | Just repo <- Glean.parseRepo db = withBackend $ \be ->
-    void $ liftIO $ Backend.deleteDatabase be repo
+    void $ liftIO $ Glean.deleteDatabase be repo
   | otherwise
   = liftIO $ throwIO $ ErrorCall "syntax:  :!delete <name>/<hash>"
 
@@ -684,7 +684,7 @@ reloadCmd = do
     Nothing -> return ()
     Just repo -> do
       Thrift.GetDatabaseResult{..} <- withBackend $ \be ->
-        liftIO $ getDatabase be repo
+        liftIO $ Glean.getDatabase be repo
       case Thrift.database_status getDatabaseResult_database of
         Just Thrift.DatabaseStatus_Complete -> return ()
         _otherwise -> output $ vcat
@@ -715,7 +715,7 @@ dumpCmd :: String -> Eval ()
 dumpCmd str =
   withBackend $ \backend ->
   withRepo $ \repo ->
-  liftIO $ dumpJsonToFile backend repo str
+  liftIO $ Glean.dumpJsonToFile backend repo str
 
 setModeCmd :: String -> Eval ()
 setModeCmd "json" = setMode ShellJSON
@@ -830,7 +830,7 @@ debugCmd str = case words (strip str) of
 userFact :: Bool -> Glean.Fid -> Eval ()
 userFact bang fid = do
   Thrift.UserQueryResults{..} <- withRepo $ \repo -> withBackend $ \be ->
-    liftIO $ userQueryFacts be repo $
+    liftIO $ Glean.userQueryFacts be repo $
       def { Thrift.userQueryFacts_facts =
               [def { Thrift.factQuery_id = fromFid fid }]
           , Thrift.userQueryFacts_options = Just def
@@ -839,7 +839,7 @@ userFact bang fid = do
             , Thrift.userQueryOptions_recursive = bang }
           }
   Thrift.Fact{..} <- withRepo $ \repo -> withBackend $ \be -> do
-    r <- liftIO $ queryFact be repo (fromFid fid)
+    r <- liftIO $ Glean.queryFact be repo (fromFid fid)
     case r of
       Nothing -> liftIO $ throwIO $ ErrorCall "cannot fetch fact"
       Just f -> return f
@@ -872,7 +872,7 @@ runUserQuery SchemaQuery
   let SourceRef pred maybeVer = parseRef (Text.pack str)
   ShellState{..} <- getState
   Thrift.UserQueryResults{..} <- withRepo $ \repo -> withBackend $ \be ->
-    liftIO $ userQuery be repo $
+    liftIO $ Glean.userQuery be repo $
       def { Thrift.userQuery_predicate = pred
           , Thrift.userQuery_predicate_version = maybeVer
           , Thrift.userQuery_query =
@@ -1261,7 +1261,7 @@ main = do
       withBackendWithDefaultOptions evb cfgAPI (cfgService cfg) $ \be -> do
       withSystemTempFile "scratch-query.angle" $ \q handle -> do
         hClose handle
-        client_info <- Backend.clientInfo
+        client_info <- clientInfo
         tty <- hIsTerminalDevice stdout
         outh <- newMVar stdout
         State.evalStateT (unEval $ evalMain cfg) ShellState

@@ -1,0 +1,52 @@
+Components and Dependencies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This is the dependency structure of the main components, by directory:
+
+                +----------+
+                |          |
+                |   lib    | Schema-specific libraries
+                |          |
+                +-----+----+
+                      |
+                +-----v----+
+                |          |
+                |  schema  | Generated schema support code
+                |          |
+                +-----+----+
+                      |
+                      |
+                      |
+                      |
+                +-----v-----+                   +-----------------+
+                |           | remote            |                 | Access
+                | client/hs | client API        | client/hs/local | local DBs
+                |           |                   |                 |
+  +------+      +-----+-----+                   +--------+--------+
+  |      |            |                                  |
+  |  if  |            |                                  |
+  |      |       +----v---+                         +----v---+
+  +------+<------|        |                         |        |
+                 |   hs   <--------------------------   db   |
+  +------+<------|        |                         |        |
+  |      |       +----+---+                         +----|---+
+  | util |            |                                  |
+  |      |            |                                  |
+  +------+            |                                  |
+                      |                                  |         Haskell
+            ----------+----------------------------------+-----------------
+                      |                                  |           C++
+                      |                                  |
+                 +----v----+                        +----v----+
+                 |         |                        |         |
+                 |   rts   <------------------------+ rocksdb |
+                 |         |                        |         |
+                 +---------+                        +---------+
+
+
+* Haskell clients should depend on client/hs
+
+* Haskell clients can optionally depende on client/hs/local if they
+  want to be able to use local databases directly rather than
+  connecting to a server. This pulls in the whole of the storage and
+  query backend, though.

@@ -20,7 +20,8 @@ import Util.Log
 import Glean.Database.Catalog.Store
 import Glean.Database.Exception
 import Glean.Database.Meta (Meta)
-import Glean.Database.Repo (Repo(..), databasePath)
+import Glean.Database.Repo (databasePath)
+import Glean.Types (Repo(..))
 import Glean.Util.IO (readFileContents)
 
 newtype Files = Files { _filesRoot :: FilePath }

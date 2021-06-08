@@ -36,7 +36,7 @@ import Haxl.DataSource.Glean
 import Haxl.DataSource.Glean.Backend as Backend
 import Util.Control.Exception ( isSyncException )
 
-import Glean.Backend
+import Glean.Backend.Remote
 import Glean.Query.Thrift
 import Glean.Types
 import Glean.Typed

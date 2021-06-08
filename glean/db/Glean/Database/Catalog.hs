@@ -43,6 +43,7 @@ import qualified Glean.Database.Catalog.Store as Store
 import Glean.Database.Exception
 import Glean.Database.Meta
 import Glean.Database.Repo
+import Glean.Types (Repo(..))
 import qualified Glean.Types as Thrift
 
 -- | Catalog entry

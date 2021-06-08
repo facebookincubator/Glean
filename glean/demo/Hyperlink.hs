@@ -13,6 +13,7 @@ import qualified Glean.Schema.Pp1.Types as Pp1
 import qualified Glean.Schema.Codemarkup.Types as CodeMarkup
 
 import qualified Glean
+import Glean.Impl.ConfigProvider
 import Glean.Angle as Angle
 import Glean.Util.ConfigProvider
 import Glean.Util.Range (ByteRange(..), byteOffsetToLineCol, getLineOffsets)
@@ -51,7 +52,7 @@ import qualified Options.Applicative as O
 import System.FilePath
 
 data Config = Config
-  { cfgService :: Glean.Service
+  { cfgService :: Glean.ThriftSource Glean.ClientConfig
   , cfgHttp :: Maybe Int
   , cfgHttpIface :: String
   , cfgRepoName :: Text
@@ -501,8 +502,8 @@ main :: IO ()
 main =
   withConfigOptions options $ \(cfg, cfgOpts) ->
   withEventBaseDataplane $ \evb ->
-  withConfigProvider cfgOpts $ \configAPI -> do
-    Glean.withBackendWithDefaultOptions evb configAPI (cfgService cfg)
+  withConfigProvider cfgOpts $ \(configAPI :: ConfigAPI) -> do
+    Glean.withRemoteBackend evb configAPI (cfgService cfg)
       $ \backend -> do
       repo <- case cfgRepoHash cfg of
         Nothing -> Glean.getLatestRepo backend (cfgRepoName cfg)

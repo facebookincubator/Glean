@@ -16,7 +16,7 @@ import System.IO.Temp
 import Test.HUnit
 import TestRunner
 
-import Glean hiding (Config(..))
+import Glean
 import Glean.Init (withUnitTestOptions)
 import Glean.Regression.Config
 import Glean.Regression.Driver.ExternalLib
