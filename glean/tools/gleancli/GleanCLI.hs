@@ -496,6 +496,13 @@ main =
               Nothing -> Outcome_success def
               Just msg -> Outcome_failure (Thrift.Failure msg)
           }
+          `catch` \e@Retry{} ->
+             die 1 $
+               "finish: " <> show e <> "\n" <>
+               "  This error indicates that previous write or derive\n" <>
+               "  operations have not completed yet. Please ensure that\n" <>
+               "  all writing operations have completed before invoking\n" <>
+               "  'glean finish'"
 
       write repo files max Nothing (Just fasterWriting) = do
         schemaInfo <- Glean.getSchemaInfo backend repo
