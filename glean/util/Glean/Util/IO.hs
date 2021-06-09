@@ -1,7 +1,11 @@
 module Glean.Util.IO (
   HandleIO(..),
   readFileContents, writeFileContents, withTempFileContents,
+  backupFileOnError,
 ) where
+
+import Util.Control.Exception
+import Util.Log
 
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Lazy as LBS
@@ -64,3 +68,16 @@ withTempFileContentsIn dir s f =
 writeFileContents :: HandleIO a => FilePath -> a -> IO ()
 writeFileContents file s =
   withTempFileContentsIn (takeDirectory file) s $ \tmp -> renameFile tmp file
+
+-- | This is a combinator to use with withTempFileContents, to
+-- keep a copy of the temp file when there has been an error.  These
+-- backups are in the @glean-backup-file-on-error@ subdirectory.
+backupFileOnError :: (FilePath -> IO b) -> (FilePath -> IO b)
+backupFileOnError f = \ filepath -> f filepath `onSomeException` backup filepath
+  where
+    backup filepath _exc = do
+      let subdir = takeDirectory filepath </> "glean-backup-file-on-error"
+          dest = subdir </> takeFileName filepath
+      logError $ "Making backup of temp file: " <> dest
+      createDirectoryIfMissing True subdir
+      copyFile filepath dest
