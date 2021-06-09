@@ -8,6 +8,7 @@
 #include <tuple>
 #include <vector>
 #include <folly/Optional.h>
+#include <folly/experimental/EliasFanoCoding.h>
 
 namespace facebook {
 namespace glean {
@@ -63,6 +64,27 @@ struct Bits256 {
         _mm256_sub_epi32(
           _mm256_set1_epi32(n),
           _mm256_set_epi32(224,192,160,128,96,64,32,0))));
+  }
+
+  size_t count() const {
+    const uint64_t* p = reinterpret_cast<const uint64_t*>(&value);
+    // _mm256_popcnt instructions require AVX512
+    return
+      _mm_popcnt_u64(p[0]) +
+      _mm_popcnt_u64(p[1]) +
+      _mm_popcnt_u64(p[2]) +
+      _mm_popcnt_u64(p[3]);
+  }
+
+  uint32_t upper() const {
+    const uint64_t* p = reinterpret_cast<const uint64_t*>(&value);
+    auto a = _lzcnt_u64(p[3]);
+    if (a < 64) { return 255 - a; }
+    a = _lzcnt_u64(p[2]);
+    if (a < 64) { return 191 - a; }
+    a = _lzcnt_u64(p[1]);
+    if (a < 64) { return 127 - a; }
+    return (63 - _lzcnt_u64(p[0]));
   }
 
   Bits256 with(const uint8_t *vals, uint8_t len) const {
@@ -239,6 +261,8 @@ public:
   Sizes sizes() const;
   Sizes capacities() const;
   size_t bytes() const;
+  size_t size() const;
+  uint32_t upper() const;
 
   struct Block {
     Hdr hdr;
@@ -329,6 +353,11 @@ public:
    * returns a pointer to it.
    */
   static const SetU32 *merge(SetU32& result, const SetU32& left, const SetU32& right);
+
+  using EliasFanoList = folly::compression::MutableEliasFanoCompressedList;
+  EliasFanoList toEliasFano();
+
+  static void dump(SetU32 &);
 
 private:
   static bool fitsSparse(uint8_t m, uint8_t n) {

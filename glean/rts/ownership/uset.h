@@ -10,6 +10,9 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
+using UsetId = uint32_t;
+constexpr UsetId INVALID_USET = 0xffffffff;
+
 /**
  * A "unique" set stored by `Usets` below. This is a `SetU32` with a memoized
  * hash, a ref count and some administrative data used by the ownership
@@ -44,11 +47,13 @@ struct Uset {
   uint32_t refs;
 
   /**
-   * Has the set been promoted to the DB - i.e., is it the actual ownership
-   * set of at least one fact. This will most likely store some kind of id
-   * when we actually stored sets in the DB.
+   * Once a set is promoted to the DB (i.e. it is the ownership set of
+   * at least one fact), we assign it a 32-bit ID. Before it is promoted,
+   * id is INVALID_USET.
    */
-  bool promoted = false;
+  UsetId id = INVALID_USET;
+
+  bool promoted() const { return id != INVALID_USET; };
 
   /**
    * Generic pointer used temporarily for a variety of things - it is much
@@ -147,7 +152,7 @@ struct Usets {
     assert(uset->refs != 0);
     --uset->refs;
     if (uset->refs == 0) {
-      assert(!uset->promoted);
+      assert(!uset->promoted());
       usets.erase(uset);
       stats.bytes -= uset->set.bytes();
       delete uset;
@@ -155,8 +160,8 @@ struct Usets {
   }
 
   void promote(Uset * uset) {
-    if (!uset->promoted) {
-      uset->promoted = true;
+    if (!uset->promoted()) {
+      uset->id = nextId++;
       ++uset->refs;
       ++stats.promoted;
     }
@@ -178,9 +183,13 @@ struct Usets {
     return stats;
   }
 
+  using EliasFanoList = SetU32::EliasFanoList;
+  std::vector<EliasFanoList> toEliasFano();
+
 private:
   folly::F14FastSet<Uset *, Uset::Hash, Uset::Eq> usets;
   Stats stats;
+  UsetId nextId = 0;
 };
 
 }

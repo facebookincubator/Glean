@@ -2,6 +2,8 @@
 
 #include <xxhash.h>
 
+using namespace folly::compression;
+
 namespace facebook {
 namespace glean {
 namespace rts {
@@ -158,6 +160,43 @@ void SetU32::shrink_to_fit() {
   hdrs.shrink_to_fit();
   dense.shrink_to_fit();
   sparse.shrink_to_fit();
+}
+
+size_t SetU32::size() const {
+  size_t s = 0;
+  for (auto &block : *this) {
+    switch (block.hdr.type()) {
+      case Hdr::Sparse: {
+        s += block.hdr.sparseLen();
+        break;
+      }
+      case Hdr::Dense: {
+        s += block.dense->count();
+        break;
+      }
+      case Hdr::Full: {
+        s += 256;
+        break;
+      }
+    }
+  }
+  return s;
+}
+
+uint32_t SetU32::upper() const {
+  auto &hdr = this->hdrs.back();
+  auto id = hdr.id() << 8;
+  switch (hdr.type()) {
+    case Hdr::Sparse: {
+      return id | this->sparse.back();
+    }
+    case Hdr::Dense: {
+      return id | this->dense.back().upper();
+    }
+    case Hdr::Full: {
+      return id | 255;
+    }
+  }
 }
 
 void SetU32::append(uint32_t value) {
@@ -372,6 +411,72 @@ const SetU32 *SetU32::merge(SetU32& result, const SetU32& left, const SetU32& ri
       result.append(super->begin(), super_s);
       result.appendMerge(super_s, super->end(), sub_s, sub->end());
       return &result;
+    }
+  }
+}
+
+SetU32::EliasFanoList SetU32::toEliasFano() {
+  auto upperBound = this->upper();
+  size_t size = this->size();
+  folly::compression::EliasFanoEncoderV2<uint32_t, uint32_t> encoder(
+      size, upperBound);
+
+  VLOG(5) << "upper=" << upperBound << ", size=" << size;
+  for (auto &block : *this) {
+    auto id = block.hdr.id() << 8;
+    switch (block.hdr.type()) {
+      case SetU32::Hdr::Sparse: {
+        for (uint32_t i = 0; i < block.hdr.sparseLen(); i++) {
+          VLOG(5) << "add(sparse): " << (id | block.sparse[i]);
+          encoder.add(id | block.sparse[i]);
+        }
+        break;
+      }
+      case SetU32::Hdr::Dense: {
+        for (uint32_t i = 0; i < 256; i++) {
+          if (block.dense->contains(i)) {
+            VLOG(5) << "add(dense): " << (id | i);
+            encoder.add(id | i);
+          }
+        }
+        break;
+      }
+      case SetU32::Hdr::Full: {
+        for (uint32_t i = 0; i < 256; i++) {
+          VLOG(5) << "add(full): " << (id | i);
+          encoder.add(id | i);
+        }
+        break;
+      }
+    }
+  }
+  return encoder.finish();
+}
+
+void SetU32::dump(SetU32 &set) {
+  for (auto &block : set) {
+    auto id = block.hdr.id() << 8;
+    switch (block.hdr.type()) {
+      case SetU32::Hdr::Sparse: {
+        for (uint32_t i = 0; i < block.hdr.sparseLen(); i++) {
+          LOG(INFO) << "sparse: " << (id | block.sparse[i]);
+        }
+        break;
+      }
+      case SetU32::Hdr::Dense: {
+        for (uint32_t i = 0; i < 256; i++) {
+          if (block.dense->contains(i)) {
+            LOG(INFO) << "dense: " << (id | i);
+          }
+        }
+        break;
+      }
+      case SetU32::Hdr::Full: {
+        for (uint32_t i = 0; i < 256; i++) {
+          LOG(INFO) << "full: " << (id | i);
+        }
+        break;
+      }
     }
   }
 }
