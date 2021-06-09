@@ -116,50 +116,50 @@ main = do
 
   reportTime "gen" $ gen opts schemas
 
--- | Remove source location information from a schema's
-rmLocSchemas :: SourceSchemas -> SourceSchemas_ ()
+-- | Remove source location information from a schema's AST
+rmLocSchemas :: SourceSchemas_ a -> SourceSchemas_ ()
 rmLocSchemas (SourceSchemas version schemas) =
   SourceSchemas version (rmLocSchema <$> schemas)
   where
-    rmLocSchema :: SourceSchema -> SourceSchema_ ()
+    rmLocSchema :: SourceSchema_ a -> SourceSchema_ ()
     rmLocSchema (SourceSchema name inherits decls) =
       SourceSchema name inherits $ rmLocDecl <$> decls
 
-    rmLocDecl :: SourceDecl -> SourceDecl_ ()
+    rmLocDecl :: SourceDecl_ a -> SourceDecl_ ()
     rmLocDecl = \case
       SourceImport name -> SourceImport name
       SourcePredicate pred -> SourcePredicate $ rmLocQuery <$> pred
       SourceType typeDef -> SourceType typeDef
       SourceDeriving ref deriv -> SourceDeriving ref $ rmLocQuery <$> deriv
 
-    rmLocQuery :: SourceQuery -> SourceQuery' ()
+    rmLocQuery :: SourceQuery' a -> SourceQuery' ()
     rmLocQuery (SourceQuery mhead stmts) =
       SourceQuery (rmLocPat <$> mhead) (rmLocStatement <$> stmts)
 
-    rmLocStatement :: SourceStatement -> SourceStatement' ()
+    rmLocStatement :: SourceStatement' a -> SourceStatement' ()
     rmLocStatement (SourceStatement x y) =
       SourceStatement (rmLocPat x) (rmLocPat y)
 
-    rmLocPat :: SourcePat -> SourcePat' ()
+    rmLocPat :: SourcePat' a -> SourcePat' ()
     rmLocPat = \case
-      Nat x -> Nat x
-      String x -> String x
-      StringPrefix x -> StringPrefix x
-      ByteArray x -> ByteArray x
-      Array xs -> Array (rmLocPat <$> xs)
-      Tuple xs -> Tuple (rmLocPat <$> xs)
-      Struct xs -> Struct (rmLocField <$> xs)
-      App x xs -> App (rmLocPat x) (rmLocPat <$> xs)
-      KeyValue x y -> KeyValue (rmLocPat x) (rmLocPat y)
-      Wildcard -> Wildcard
+      Nat _ x -> Nat () x
+      String _ x -> String () x
+      StringPrefix _ x -> StringPrefix () x
+      ByteArray _ x -> ByteArray () x
+      Array _ xs -> Array () (rmLocPat <$> xs)
+      Tuple _ xs -> Tuple () (rmLocPat <$> xs)
+      Struct _ xs -> Struct () (rmLocField <$> xs)
+      App _ x xs -> App () (rmLocPat x) (rmLocPat <$> xs)
+      KeyValue _ x y -> KeyValue () (rmLocPat x) (rmLocPat y)
+      Wildcard _ -> Wildcard ()
       Variable _ v -> Variable () v
-      ElementsOfArray x -> ElementsOfArray (rmLocPat x)
-      OrPattern x y -> OrPattern (rmLocPat x) (rmLocPat y)
-      NestedQuery query -> NestedQuery $ rmLocQuery query
-      FactId x y -> FactId x y
-      TypeSignature x t -> TypeSignature (rmLocPat x) t
+      ElementsOfArray _ x -> ElementsOfArray () (rmLocPat x)
+      OrPattern _ x y -> OrPattern () (rmLocPat x) (rmLocPat y)
+      NestedQuery _ query -> NestedQuery () $ rmLocQuery query
+      FactId _ x y -> FactId () x y
+      TypeSignature _ x t -> TypeSignature () (rmLocPat x) t
 
-    rmLocField :: Field SrcSpan Name SourceType -> Field () Name SourceType
+    rmLocField :: Field a Name SourceType -> Field () Name SourceType
     rmLocField (Field name pat) =
       Field name (rmLocPat pat)
 

@@ -6,9 +6,11 @@ module Glean.Query.Types
   , SourcePat_(..)
   , Field(..)
   , IsWild(..)
-  , IsSrcSpan
+  , IsSrcSpan(..)
   , SrcSpan(..)
   , SrcLoc(..)
+  , sourcePatSpan
+  , spanBetween
   ) where
 
 import qualified Data.Aeson as Aeson
@@ -56,30 +58,48 @@ data SrcLoc = SrcLoc
   deriving (Show, Eq)
 
 data SourcePat_ s v t
-  = Nat Word64
-  | String Text
-  | StringPrefix Text
-  | ByteArray ByteString
+  = Nat s Word64
+  | String s Text
+  | StringPrefix s Text
+  | ByteArray s ByteString
     -- ^ There's no concrete syntax for this (yet), but it can be used
     -- via the DSL.
-  | Array [SourcePat_ s v t]
-  | Tuple [SourcePat_ s v t]
-  | Struct [Field s v t]
-  | App (SourcePat_ s v t) [SourcePat_ s v t]
-  | KeyValue (SourcePat_ s v t) (SourcePat_ s v t)
-  | Wildcard
+  | Array s [SourcePat_ s v t]
+  | Tuple s [SourcePat_ s v t]
+  | Struct s [Field s v t]
+  | App s (SourcePat_ s v t) [SourcePat_ s v t]
+  | KeyValue s (SourcePat_ s v t) (SourcePat_ s v t)
+  | Wildcard s
   | Variable s v
-  | ElementsOfArray (SourcePat_ s v t)
-  | OrPattern (SourcePat_ s v t) (SourcePat_ s v t)
-  | NestedQuery
+  | ElementsOfArray s (SourcePat_ s v t)
+  | OrPattern s (SourcePat_ s v t) (SourcePat_ s v t)
+  | NestedQuery s
       (SourceQuery_ (SourcePat_ s v t) (SourceStatement_ (SourcePat_ s v t)))
-  | FactId (Maybe Text) Word64
-  | TypeSignature (SourcePat_ s v t) t
+  | FactId s (Maybe Text) Word64
+  | TypeSignature s (SourcePat_ s v t) t
  deriving (Eq, Show)
 
 data Field s v t = Field FieldName (SourcePat_ s v t)
   deriving (Eq, Show)
 
+sourcePatSpan :: SourcePat_ s v t -> s
+sourcePatSpan = \case
+  Nat s _ -> s
+  String s _ -> s
+  StringPrefix s _ -> s
+  ByteArray s _ -> s
+  Array s _ -> s
+  Tuple s _ -> s
+  Struct s _ -> s
+  App s _ _ -> s
+  KeyValue s _ _ -> s
+  Wildcard s -> s
+  Variable s _ -> s
+  ElementsOfArray s _ -> s
+  OrPattern s _ _ -> s
+  NestedQuery s _ -> s
+  FactId s _ _ -> s
+  TypeSignature s _ _ -> s
 
 -- ---------------------------------------------------------------------------
 -- Pretty printing
@@ -88,13 +108,25 @@ class IsWild pat where
   isWild :: pat -> Bool
 
 instance IsWild (SourcePat_ s v t) where
-  isWild Wildcard = True
+  isWild Wildcard{} = True
   isWild _ = False
 
 -- | Types that represent the source location of a term in the AST
-class (Pretty a) => IsSrcSpan a
+class (Pretty a) => IsSrcSpan a where
+  type Loc a :: *
+  startLoc   :: a -> Loc a
+  endLoc     :: a -> Loc a
+  mkSpan     :: Loc a -> Loc a -> a
 
-instance IsSrcSpan SrcSpan
+-- space encompassing from start of first span to end of second.
+spanBetween :: IsSrcSpan a => a -> a-> a
+spanBetween x y = mkSpan (startLoc x) (endLoc y)
+
+instance IsSrcSpan SrcSpan where
+  type Loc SrcSpan = SrcLoc
+  startLoc = spanStart
+  endLoc = spanEnd
+  mkSpan = SrcSpan
 
 instance Pretty SrcSpan where
   pretty s =
@@ -107,27 +139,28 @@ instance Pretty SrcLoc where
     "line " <> pretty  line <> ", column " <> pretty col
 
 instance (Pretty v, Pretty t) => Pretty (SourcePat_ s v t) where
-  pretty (Nat w) = pretty w
-  pretty (String str) =
+  pretty (Nat _ w) = pretty w
+  pretty (String _ str) =
     pretty (Text.decodeUtf8 (BL.toStrict (Aeson.encode (Aeson.String str))))
-  pretty (StringPrefix str) = pretty (String str :: SourcePat_ s v t) <> ".."
-  pretty (ByteArray b) = pretty (show b)
-  pretty (Array pats) = brackets $ hsep (punctuate "," (map pretty pats))
-  pretty (Tuple pats) = braces $ hsep (punctuate "," (map pretty pats))
-  pretty (Struct fs) = cat [ nest 2 $ cat [ "{", fields fs], "}"]
+  pretty (StringPrefix s str) =
+    pretty (String s str :: SourcePat_ s v t) <> ".."
+  pretty (ByteArray _ b) = pretty (show b)
+  pretty (Array _ pats) = brackets $ hsep (punctuate "," (map pretty pats))
+  pretty (Tuple _ pats) = braces $ hsep (punctuate "," (map pretty pats))
+  pretty (Struct _ fs) = cat [ nest 2 $ cat [ "{", fields fs], "}"]
     where
     fields = sep . punctuate "," . map field
     field (Field name pat) = pretty name <+> "=" <+> pretty pat
-  pretty (App l pats) = pretty l <+> hsep (punctuate " " (map prettyArg pats))
-  pretty (KeyValue k v) = prettyArg k <+> "->" <+> prettyArg v
-  pretty Wildcard = "_"
+  pretty (App _ l pats) = pretty l <+> hsep (punctuate " " (map prettyArg pats))
+  pretty (KeyValue _ k v) = prettyArg k <+> "->" <+> prettyArg v
+  pretty (Wildcard _) = "_"
   pretty (Variable _ name) = pretty name
-  pretty (ElementsOfArray pat) = pretty pat <> "[..]"
-  pretty (OrPattern lhs rhs) = sep [prettyArg lhs <+> "|", prettyArg rhs]
-  pretty (NestedQuery q) = parens $ pretty q
-  pretty (FactId Nothing n) = "$" <> pretty n
-  pretty (FactId (Just p) n) = "$" <> pretty p <+> pretty n
-  pretty (TypeSignature p t) = prettyArg p <+> ":" <+> pretty t
+  pretty (ElementsOfArray _ pat) = pretty pat <> "[..]"
+  pretty (OrPattern _ lhs rhs) = sep [prettyArg lhs <+> "|", prettyArg rhs]
+  pretty (NestedQuery _ q) = parens $ pretty q
+  pretty (FactId _ Nothing n) = "$" <> pretty n
+  pretty (FactId _ (Just p) n) = "$" <> pretty p <+> pretty n
+  pretty (TypeSignature _ p t) = prettyArg p <+> ":" <+> pretty t
 
 instance (Pretty pat, Pretty stmt) => Pretty (SourceQuery_ pat stmt) where
   pretty (SourceQuery maybeHead stmts) = case stmts of

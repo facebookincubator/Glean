@@ -65,8 +65,8 @@ import Glean.Angle.Types (AngleVersion, SourcePat, SourceStatement, SourceQuery,
   '$'           { L _ (Token _ T_Dollar) }
 
   IDENT_        { L _ (Token _ (T_Ident _)) }
-  STRING        { L _ (Token _ (T_StringLit $$)) }
-  NAT           { L _ (Token _ (T_NatLit $$)) }
+  STRING_       { L _ (Token _ (T_StringLit _)) }
+  NAT_          { L _ (Token _ (T_NatLit _)) }
 
 
 %name query query
@@ -87,62 +87,62 @@ query
 statement :: { SourceStatement }
 statement
   : pattern '=' pattern  { SourceStatement $1 $3 }
-  | pattern    { SourceStatement Wildcard $1 }
+  | pattern              { SourceStatement (Wildcard $ sspan $1) $1 }
 
 pattern :: { SourcePat }
 pattern
-  : gen '++' pattern  { OrPattern $1 $3 } -- deprecated syntax
-  | gen '|' pattern  { OrPattern $1 $3 }
+  : gen '++' pattern  { OrPattern (s $1 $3) $1 $3 } -- deprecated syntax
+  | gen '|' pattern  { OrPattern (s $1 $3) $1 $3 }
   | gen  { $1 }
 
 gen :: { SourcePat }
 gen
   : plus  { $1 }
-  | plus '!==' plus  { App (Variable (lspan $2) "prim.neNat") [$1, $3] }
-  | plus '>' plus  { App (Variable (lspan $2) "prim.gtNat") [$1, $3] }
-  | plus '>=' plus  { App (Variable (lspan $2) "prim.geNat") [$1, $3] }
-  | plus '<' plus  { App (Variable (lspan $2) "prim.ltNat") [$1, $3] }
-  | plus '<=' plus  { App (Variable (lspan $2) "prim.leNat") [$1, $3] }
-  | kv '[' '..' ']'  { ElementsOfArray $1 }
+  | plus '!==' plus  { App (s $1 $3) (Variable (sspan $2) "prim.neNat") [$1, $3] }
+  | plus '>' plus    { App (s $1 $3) (Variable (sspan $2) "prim.gtNat") [$1, $3] }
+  | plus '>=' plus   { App (s $1 $3) (Variable (sspan $2) "prim.geNat") [$1, $3] }
+  | plus '<' plus    { App (s $1 $3) (Variable (sspan $2) "prim.ltNat") [$1, $3] }
+  | plus '<=' plus   { App (s $1 $3) (Variable (sspan $2) "prim.leNat") [$1, $3] }
+  | kv '[' '..' ']'  { ElementsOfArray (s $1 $4) $1 }
     -- NB. kv to resolve shift-reduce conflict
-  | plus ':' type  { TypeSignature $1 $3 }
+  | plus ':' type  { TypeSignature (s $1 $3) $1 (lval $3) }
 
 plus :: { SourcePat }
 plus
-  : plus '+' app  { App (Variable (lspan $2) "prim.addNat") [$1, $3] }
+  : plus '+' app  { App (s $1 $3) (Variable (sspan $2) "prim.addNat") [$1, $3] }
   | app  { $1 }
 
 app :: { SourcePat }
 app
-  : list1(kv)  { case $1 of [f] -> f; f:args -> App f args }
+  : list1(kv)  { case $1 of [f] -> f; f:args -> App (s f $ last args) f args }
 
 -- K -> V binds tighter than application, so that e.g.
 --   p K -> V
 -- can be used to match facts of the functional predicate p.
 kv :: { SourcePat }
 kv
-  : apat '->' apat  { KeyValue $1 $3 }
+  : apat '->' apat  { KeyValue (s $1 $3) $1 $3 }
   | apat  { $1 }
 
 apat :: { SourcePat }
 apat
-  : NAT  { Nat $1 }
-  | STRING  { String  $1 }
-  | STRING '..' { StringPrefix $1 }
-  | '$' NAT   { FactId Nothing $2  }
-  | '$' var NAT   { FactId (Just $ lval $2) $3 }
-  | '[' seplist0(pattern,',') ']'  { Array $2 }
-  | '{' seplist2(pattern,',') '}'  { Tuple $2 }
-  | '{' seplist0_(field,',') '}'  { Struct $2 }
-  | '_'  { Wildcard }
-  | var  { Variable (lspan $1) (lval $1) }
+  : NAT                             { Nat (sspan $1) (lval $1) }
+  | STRING                          { String (sspan $1) (lval $1) }
+  | STRING '..'                     { StringPrefix (s $1 $2) (lval $1) }
+  | '$' NAT                         { FactId (s $1 $2) Nothing (lval $2)  }
+  | '$' var NAT                     { FactId (s $1 $3) (Just $ lval $2) (lval $3) }
+  | '[' seplist0(pattern,',') ']'   { Array (s $1 $3) $2 }
+  | '{' seplist2(pattern,',') '}'   { Tuple (s $1 $3) $2 }
+  | '{' seplist0_(field,',') '}'    { Struct (s $1 $3) $2 }
+  | '_'                             { Wildcard (sspan $1) }
+  | var                             { Variable (sspan $1) (lval $1) }
   | '(' query ')'
     { case $2 of
-        SourceQuery Nothing [SourceStatement Wildcard pat] -> pat
-        _other -> NestedQuery $2 }
+        SourceQuery Nothing [SourceStatement (Wildcard _) pat] -> pat
+        _other -> NestedQuery (s $1 $3) $2 }
   -- OLD version 1 constructs:
-  | '(' ')'  {% ifVersionOrOlder 1 $2 (Tuple []) }
-  | '(' seplist2(pattern,',') ')'  {% ifVersionOrOlder 1 $3 (Tuple $2) }
+  | '(' ')'                         {% ifVersionOrOlder 1 $2 (Tuple (s $1 $2) []) }
+  | '(' seplist2(pattern,',') ')'   {% ifVersionOrOlder 1 $3 (Tuple (s $1 $3) $2) }
 
 field :: { Field SrcSpan Name SourceType }
 field
@@ -154,6 +154,12 @@ var : IDENT  { fmap Text.decodeUtf8 $1 }
 IDENT :: { Located ByteString }
 IDENT : IDENT_ { let L span (Token _ (T_Ident val)) = $1 in L span val }
 
+STRING :: { Located Text }
+STRING : STRING_ { let L span (Token _ (T_StringLit val)) = $1 in L span val }
+
+NAT :: { Located Word64 }
+NAT : NAT_ { let L span (Token _ (T_NatLit val)) = $1 in L span val }
+
 -- -----------------------------------------------------------------------------
 -- Schema
 
@@ -163,16 +169,16 @@ schemas : list(schemadef)  { $1 }
 schemadef :: { Schema.SourceSchema }
 schemadef
   : 'schema' name inherit '{' list(schemadecl) '}'
-    { Schema.SourceSchema $2 $3 (concat $5) }
+    { Schema.SourceSchema (lval $2) $3 (concat $5) }
 
 inherit :: { [Name] }
 inherit
-  : ':' seplist_(name, ',')  { $2 }
+  : ':' seplist_(name, ',')  { map lval $2 }
   | {- empty -}  { [] }
 
 schemadecl :: { [Schema.SourceDecl] }
 schemadecl
-  : 'import' name  { [Schema.SourceImport $2] }
+  : 'import' name  { [Schema.SourceImport (lval $2)] }
   | typedef  { [$1] }
   | predicate  { $1 }
   | derivedecl  { [$1] }
@@ -183,7 +189,7 @@ predicate
     { let ref = parseRef $2 in
       Schema.SourcePredicate Schema.PredicateDef
         { predicateDefRef = ref
-        , predicateDefKeyType = $4
+        , predicateDefKeyType = lval $4
         , predicateDefValueType = $5
         , predicateDefDeriving = Schema.NoDeriving }
         : map (Schema.SourceDeriving ref) (maybeToList $6)
@@ -206,33 +212,33 @@ derivedecl
 optval :: { Schema.SourceType }
 optval
   : {- empty -} { unit }
-  | '->' type { $2 }
+  | '->' type { lval $2 }
 
-type :: { Schema.SourceType }
+type :: { Located Schema.SourceType }
 type
-  : 'byte'  { Schema.Byte }
-  | 'nat'  { Schema.Nat }
-  | 'string'  { Schema.String }
-  | '[' type ']'  { Schema.Array $2 }
-  | '{' seplist0_(fielddef, ',') '}'  { Schema.Record $2 }
-  | '{' fielddef '|' '}' { Schema.Sum [$2] }
-  | '{' seplist2_(fielddef, '|')  '}' { Schema.Sum $2 }
-  | 'enum' '{' seplist_(fieldname, '|') '}'  { Schema.Enumerated $3 }
-  | name  { Schema.Predicate (parseRef $1) }
+  : 'byte'                                  { L (sspan $1)   Schema.Byte }
+  | 'nat'                                   { L (sspan $1)   Schema.Nat }
+  | 'string'                                { L (sspan $1)   Schema.String }
+  | '[' type ']'                            { L (s $1 $3)  $ Schema.Array (lval $2) }
+  | '{' seplist0_(fielddef, ',') '}'        { L (s $1 $3)  $ Schema.Record $2 }
+  | '{' fielddef '|' '}'                    { L (s $1 $4)  $ Schema.Sum [$2] }
+  | '{' seplist2_(fielddef, '|')  '}'       { L (s $1 $3)  $ Schema.Sum $2 }
+  | 'enum' '{' seplist_(fieldname, '|') '}' { L (s $1 $4)  $ Schema.Enumerated $3 }
+  | name                                    { L (sspan $1) $ Schema.Predicate (parseRef $ lval $1) }
      -- resolved to typedef/predicate later
-  | 'maybe' type  { Schema.Maybe $2 }
-  | 'bool'  { Schema.Boolean }
-  | '(' type ')' { $2 }
+  | 'maybe' type                            { L (s $1 $2)  $ Schema.Maybe (lval $2) }
+  | 'bool'                                  { L (sspan $1) $ Schema.Boolean }
+  | '(' type ')'                            { L (s $1 $3)  $ lval $2 }
 
 fielddef :: { Schema.SourceFieldDef }
 fielddef
-  : fieldname ':' type { Schema.FieldDef $1 $3 }
+  : fieldname ':' type { Schema.FieldDef $1 (lval $3) }
   | fieldname  { Schema.FieldDef $1 unit }
 
 -- Allow keywords to be used as fieldnames
 fieldname :: { Name }
 fieldname
-  : name  { $1 }
+  : name  { lval $1 }
   | 'bool'  { "bool" }
   | 'byte'  { "byte" }
   | 'enum'  { "enum" }
@@ -249,12 +255,12 @@ typedef :: { Schema.SourceDecl }
 typedef
   : 'type' name '=' type
     { Schema.SourceType Schema.TypeDef
-        { typeDefRef = parseRef $2
-        , typeDefType = $4 }
+        { typeDefRef = parseRef (lval $2)
+        , typeDefType = lval $4 }
     }
 
-name :: { Schema.Name }
-name : IDENT { Text.decodeUtf8 (lval $1) }
+name :: { Located Schema.Name }
+name : IDENT { fmap Text.decodeUtf8 $1 }
 
 -- -----------------------------------------------------------------------------
 -- Utils
@@ -308,7 +314,7 @@ parseQuery :: ByteString -> Either String SourceQuery
 parseQuery bs = runAlex (LB.fromStrict bs) $ query
 
 parseType :: ByteString -> Either String Schema.SourceType
-parseType bs = runAlex (LB.fromStrict bs) $ type_
+parseType bs = runAlex (LB.fromStrict bs) $ fmap lval type_
 
 parseQueryWithVersion :: AngleVersion -> ByteString -> Either String SourceQuery
 parseQueryWithVersion ver bs =
@@ -330,8 +336,21 @@ parseSchema bs
 
 type P a = Alex a
 
+class HasSpan a where
+  sspan :: a -> SrcSpan
+instance HasSpan (Located a) where
+  sspan (L span _) = span
+instance HasSpan (SourcePat_ SrcSpan a b) where
+  sspan = sourcePatSpan
+
+s :: (HasSpan a, HasSpan b) => a -> b -> SrcSpan
+s from to = spanBetween (sspan from) (sspan to)
+
 invalid :: SourcePat
-invalid = Nat (fromIntegral iNVALID_ID)
+invalid = Nat invalidSrcSpan (fromIntegral iNVALID_ID)
+  where
+    invalidSrcSpan = SrcSpan invalidLoc invalidLoc
+    invalidLoc = SrcLoc (-1) (-1)
 
 parseError :: Located Token -> P a
 parseError (L (SrcSpan (SrcLoc line col) _) (Token b t)) = do

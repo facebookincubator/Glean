@@ -73,7 +73,11 @@ import Glean.Types (Nat, Byte)
 data SpanAngleDSL = DSL
   deriving (Show, Eq)
 
-instance IsSrcSpan SpanAngleDSL
+instance IsSrcSpan SpanAngleDSL where
+  type Loc SpanAngleDSL = SpanAngleDSL
+  startLoc _ = DSL
+  endLoc _ = DSL
+  mkSpan _ _ = DSL
 
 instance Pretty SpanAngleDSL where
   pretty DSL = "angle DSL"
@@ -91,7 +95,7 @@ newtype AngleStatement =
 display :: Angle t -> Text
 display (Angle m) = render $
   case evalState m 0 of
-    NestedQuery q -> q
+    NestedQuery _ q -> q
     t -> SourceQuery (Just t) []
 
 -- | Build a query that returns facts of a predicate.
@@ -143,12 +147,13 @@ var f = Angle $ do
 predicate :: forall p . Predicate p => Angle (KeyType p) -> Angle p
 predicate (Angle pat) = Angle $ do
   p <- pat
-  return $ App (Variable DSL (predicateRef (Proxy @p))) [p]
+  return $ App DSL (Variable DSL (predicateRef (Proxy @p))) [p]
 
 -- | Build a query of the form `X where statements`
 where_ :: Angle t -> [AngleStatement] -> Angle t
 where_ t stmts = Angle $
-  NestedQuery <$> (SourceQuery <$> (Just <$> gen t) <*> mapM genStmt stmts)
+  NestedQuery DSL <$>
+    (SourceQuery <$> (Just <$> gen t) <*> mapM genStmt stmts)
 
 -- | Build a statement, `A = B`
 (.=) :: Angle t -> Angle t -> AngleStatement
@@ -156,37 +161,37 @@ l .= r = AngleStatement $ Angle.SourceStatement <$> gen l <*> gen r
 
 -- | Build an or-pattern, `A | B`
 (.|) :: Angle a -> Angle a -> Angle a
-a .| b = Angle $ OrPattern <$> gen a <*> gen b
+a .| b = Angle $ OrPattern DSL <$> gen a <*> gen b
 
 -- | Build a key-value pattern, `A -> B`
 (.->) :: Angle a -> Angle b -> Angle c
-a .-> b = Angle $ KeyValue <$> gen a <*> gen b
+a .-> b = Angle $ KeyValue DSL <$> gen a <*> gen b
 
 instance IsString (Angle Text) where
-  fromString s = Angle (pure (String (Text.pack s)))
+  fromString s = Angle (pure (String DSL (Text.pack s)))
 
 -- | A string expression. Note that literal strings may be used as Angle
 -- expressions directly if the @OverloadedStrings@ extension is
 -- enabled.
 string :: Text -> Angle Text
-string t = Angle (pure (String t))
+string t = Angle (pure (String DSL t))
 
 nat :: Word64 -> Angle Nat
-nat w = Angle (pure (Nat w))
+nat w = Angle (pure (Nat DSL w))
 
 byte :: Word8 -> Angle Byte
-byte w = Angle (pure (Nat (fromIntegral w)))
+byte w = Angle (pure (Nat DSL (fromIntegral w)))
 
 stringPrefix :: Text -> Angle Text
-stringPrefix t = Angle (pure (StringPrefix t))
+stringPrefix t = Angle (pure (StringPrefix DSL t))
 
 -- | A query for a literal value of type [byte]
 byteArray :: ByteString -> Angle ByteString
-byteArray b = Angle (pure (String (Text.decodeUtf8 b)))
+byteArray b = Angle (pure (String DSL (Text.decodeUtf8 b)))
 
 -- | Build an array expression
 array :: [Angle t] -> Angle [t]
-array xs = Angle $ Array <$> mapM gen xs
+array xs = Angle $ Array DSL <$> mapM gen xs
 
 -- | Build a tuple
 tuple :: AngleTuple a => a -> Angle (AngleTupleTy a)
@@ -202,7 +207,7 @@ type SourceField = Angle.Field SpanAngleDSL Name SourceType
 -- >   end
 --
 rec :: HasFields f (RecordFields t) => Fields f -> Angle t
-rec fs = Angle $ Struct <$> go fs []
+rec fs = Angle $ Struct DSL <$> go fs []
   where
   go :: forall f . Fields f -> [SourceField] -> State Int [SourceField]
   go f acc = case f of
@@ -225,8 +230,8 @@ alt
   -> Angle r
 alt val = Angle $ do
   v <- gen val
-  return (Struct [Angle.Field (Text.pack (symbolVal (Proxy @l))) v])
-
+  return $ Struct DSL
+    [Angle.Field (Text.pack (symbolVal (Proxy @l))) v]
 
 data Fields :: TFields -> * where
   NoFields :: Fields 'TNoFields
@@ -243,7 +248,7 @@ end :: Fields 'TNoFields
 end = NoFields
 
 wild :: Angle t
-wild = Angle $ pure Wildcard
+wild = Angle $ pure $ Wildcard DSL
 
 -- | Use this when you want a variable to match a nested predicate
 -- rather than its key.
@@ -268,7 +273,8 @@ asPredicate (Angle a) = Angle a
 -- add one manually using 'hasType'. The supplied type can be a named
 -- type or a predicate, but for a predicate you should use 'sig' instead.
 hasType :: Angle a -> Text -> Angle a
-hasType (Angle a) t = Angle $ (`TypeSignature` Predicate (parseRef t)) <$> a
+hasType (Angle a) t = Angle $
+  (\x -> TypeSignature DSL x $ Predicate (parseRef t)) <$> a
 
 -- | Sometimes the Angle typechecker needs a type signature, and this
 -- adds a type signature for a predicate type.  Prefer this over 'hasType'
@@ -277,7 +283,8 @@ hasType (Angle a) t = Angle $ (`TypeSignature` Predicate (parseRef t)) <$> a
 sig :: forall p. Predicate p => Angle p -> Angle p
 sig a = Angle $ do
   ta <- gen a
-  return (ta `TypeSignature` Predicate (convertRef (getName (Proxy @p))))
+  return $ TypeSignature DSL ta $
+    Predicate (convertRef (getName (Proxy @p)))
 
 class AngleTuple a where
   type AngleTupleTy a
@@ -288,7 +295,7 @@ instance AngleTuple (Angle a, Angle b) where
   fromTuple (a, b) = Angle $ do
     ta <- gen a
     tb <- gen b
-    return $ Tuple [ta,tb]
+    return $ Tuple DSL [ta,tb]
 
 instance AngleTuple (Angle a, Angle b, Angle c) where
   type AngleTupleTy (Angle a, Angle b, Angle c) = (a,b,c)
@@ -296,7 +303,7 @@ instance AngleTuple (Angle a, Angle b, Angle c) where
     ta <- gen a
     tb <- gen b
     tc <- gen c
-    return $ Tuple [ta,tb,tc]
+    return $ Tuple DSL [ta,tb,tc]
 
 -- | Build a fact id with an explicit type @$123 : Type.2@
 factId :: forall p. Predicate p => IdOf p -> Angle p
@@ -304,7 +311,12 @@ factId = sig . factId_
 
 -- | Build a fact id without an explicit type, @$ 123@
 factId_ :: forall p. IdOf p -> Angle p
-factId_ = Angle . return . FactId Nothing . fromIntegral . fromFid . idOf
+factId_ = Angle
+  . return
+  . FactId DSL Nothing
+  . fromIntegral
+  . fromFid
+  . idOf
 
 -- | Convert @factIds (1 :| [2,3]) :: NonEmpty (IdOf p)@ into
 -- @($1 : p.v) ++ $2 ++ $3@ for building angle
@@ -319,7 +331,7 @@ factIds xs = sig $ foldr1 (.|) (fmap factId_ (nubOrd' xs))
 elementsOf :: Angle [x] -> Angle x
 elementsOf listOfX = Angle $ do
   xs <- gen listOfX
-  return (ElementsOfArray xs)
+  return (ElementsOfArray DSL xs)
 
 true :: Angle Bool
 true = Angle $ pure (Variable DSL "true")
@@ -328,7 +340,9 @@ false :: Angle Bool
 false = Angle $ pure (Variable DSL "false")
 
 just :: Angle a -> Angle (Maybe a)
-just x = Angle $ do tx <- gen x; pure (Struct [Angle.Field "just" tx])
+just x = Angle $ do
+  tx <- gen x
+  pure (Struct DSL [Angle.Field "just" tx])
 
 nothing :: Angle (Maybe a)
 nothing = Angle $ pure (Variable DSL "nothing")
