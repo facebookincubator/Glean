@@ -61,8 +61,8 @@ import Data.Word
 import GHC.TypeLits hiding (Nat)
 import TextShow
 
-import Glean.Angle.Types (SourcePat, SourceType, SourceStatement,
-  Type_(Predicate), SourceQuery)
+import Glean.Angle.Types (SourcePat', SourceType,
+  SourceStatement', Type_(Predicate), SourceQuery')
 import Glean.Query.Types hiding (Field, SourceStatement)
 import qualified Glean.Query.Types as Angle
 import Glean.Query.Thrift.Internal as Thrift hiding (query)
@@ -70,6 +70,17 @@ import Glean.Schema.Util
 import Glean.Typed hiding (end)
 import Glean.Types (Nat, Byte)
 
+data SpanAngleDSL = DSL
+  deriving (Show, Eq)
+
+instance IsSrcSpan SpanAngleDSL
+
+instance Pretty SpanAngleDSL where
+  pretty DSL = "angle DSL"
+
+type SourcePat = SourcePat' SpanAngleDSL
+type SourceStatement = SourceStatement' SpanAngleDSL
+type SourceQuery = SourceQuery' SpanAngleDSL
 
 newtype Angle t = Angle { gen :: State Int SourcePat }
 
@@ -127,12 +138,12 @@ var :: forall a b . (Angle a -> Angle b) -> Angle b
 var f = Angle $ do
   x <- get
   modify (+1)
-  gen $ f (Angle (pure (Variable ("X" <> showt x))))
+  gen $ f (Angle (pure (Variable DSL ("X" <> showt x))))
 
 predicate :: forall p . Predicate p => Angle (KeyType p) -> Angle p
 predicate (Angle pat) = Angle $ do
   p <- pat
-  return $ App (Variable (predicateRef (Proxy @p))) [p]
+  return $ App (Variable DSL (predicateRef (Proxy @p))) [p]
 
 -- | Build a query of the form `X where statements`
 where_ :: Angle t -> [AngleStatement] -> Angle t
@@ -181,7 +192,7 @@ array xs = Angle $ Array <$> mapM gen xs
 tuple :: AngleTuple a => a -> Angle (AngleTupleTy a)
 tuple = fromTuple
 
-type SourceField = Angle.Field Name SourceType
+type SourceField = Angle.Field SpanAngleDSL Name SourceType
 
 -- | Match a record. Zero or more of the fields may be matched.
 --
@@ -311,16 +322,16 @@ elementsOf listOfX = Angle $ do
   return (ElementsOfArray xs)
 
 true :: Angle Bool
-true = Angle $ pure (Variable "true")
+true = Angle $ pure (Variable DSL "true")
 
 false :: Angle Bool
-false = Angle $ pure (Variable "false")
+false = Angle $ pure (Variable DSL "false")
 
 just :: Angle a -> Angle (Maybe a)
 just x = Angle $ do tx <- gen x; pure (Struct [Angle.Field "just" tx])
 
 nothing :: Angle (Maybe a)
-nothing = Angle $ pure (Variable "nothing")
+nothing = Angle $ pure (Variable DSL "nothing")
 
 {-
   TODO:

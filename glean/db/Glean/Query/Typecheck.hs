@@ -43,10 +43,11 @@ emptyTcEnv = TcEnv HashMap.empty HashMap.empty
 -- turn it into a 'TypecheckedQuery' which is in terms of raw Terms,
 -- ready for compiling to bytecode.
 typecheck
-  :: DbSchema
+  :: IsSrcSpan s
+  => DbSchema
   -> AngleVersion
   -> NameResolutionPolicy
-  -> SourceQuery
+  -> SourceQuery' s
   -> Except Text TypecheckedQuery
 typecheck dbSchema ver policy query = do
   let
@@ -64,11 +65,12 @@ typecheck dbSchema ver policy query = do
 
 -- | Typecheck the query for a derived predicate
 typecheckDeriving
-  :: TcEnv
+  :: IsSrcSpan s
+  => TcEnv
   -> AngleVersion
   -> NameResolutionPolicy
   -> PredicateDetails
-  -> SourceDerivingInfo
+  -> SourceDerivingInfo' s
   -> Except Text (DerivingInfo TypecheckedQuery)
 typecheckDeriving tcEnv ver policy PredicateDetails{..} derivingInfo = do
   (d, TypecheckState{..}) <-
@@ -110,21 +112,24 @@ typecheckDeriving tcEnv ver policy PredicateDetails{..} derivingInfo = do
               nextVar predicateKeyType
   return d
 
-needsResult :: SourceQuery -> T (SourcePat, [SourceStatement])
+needsResult
+  :: IsSrcSpan s
+  => SourceQuery' s
+  -> T (SourcePat' s, [SourceStatement' s])
 needsResult (SourceQuery (Just p) stmts) = return (p,stmts)
 needsResult q@(SourceQuery Nothing stmts) = case reverse stmts of
-  (SourceStatement (Variable v) _ : _) ->
-    return (Variable v, stmts)
+  (SourceStatement (Variable s v) _ : _) ->
+    return (Variable s v, stmts)
   (SourceStatement Wildcard rhs : rstmts) ->
     return (rhs, reverse rstmts)
   _ -> throwError $ "the last statement should be an expression: " <>
     Text.pack (show (pretty q))
 
-ignoreResult :: SourcePat -> SourcePat
+ignoreResult :: IsSrcSpan s => SourcePat' s -> SourcePat' s
 ignoreResult (OrPattern a b) = OrPattern (ignoreAlt a) (ignoreAlt b)
 ignoreResult other = other
 
-ignoreAlt :: SourcePat -> SourcePat
+ignoreAlt :: IsSrcSpan s => SourcePat' s -> SourcePat' s
 ignoreAlt p = case p of
   OrPattern a b -> OrPattern (ignoreAlt a) (ignoreAlt b)
   NestedQuery (SourceQuery Nothing stmts) ->
@@ -133,14 +138,14 @@ ignoreAlt p = case p of
     NestedQuery (SourceQuery (Just empty) [SourceStatement Wildcard other])
   where empty = TypeSignature (Parser.Tuple []) unit
 
-inferQuery :: Context -> SourceQuery -> T TcQuery
+inferQuery :: IsSrcSpan s => Context -> SourceQuery' s -> T TcQuery
 inferQuery ctx q = do
   (head,stmts) <- needsResult q
   stmts' <- mapM typecheckStatement stmts
   (head', ty) <- inferExpr ctx head
   return (TcQuery ty head' Nothing stmts')
 
-typecheckQuery :: Context -> Type -> SourceQuery -> T TcQuery
+typecheckQuery :: IsSrcSpan s => Context -> Type -> SourceQuery' s -> T TcQuery
 typecheckQuery ctx ty q = do
   (head,stmts) <- needsResult q
   head' <- typecheckPattern ctx  ty head
@@ -151,7 +156,7 @@ unexpectedValue :: T a
 unexpectedValue = throwError $
   "a key/value pattern (X -> Y) cannot be used here"
 
-typecheckStatement :: SourceStatement -> T TcStatement
+typecheckStatement :: IsSrcSpan s => SourceStatement' s -> T TcStatement
 typecheckStatement (SourceStatement lhs rhs0) = do
   let
     -- We want to allow things like (A; B) | (C; D) at the statement
@@ -191,7 +196,7 @@ data Context = ContextExpr | ContextPat
 -- don't allow structs or alts. Variables must be occurrences
 -- (because this is a term, not a pattern), and Wildcards are
 -- disallowed.
-inferExpr :: Context -> SourcePat -> T (TcPat, Type)
+inferExpr :: IsSrcSpan s => Context -> SourcePat' s -> T (TcPat, Type)
 inferExpr ctx pat = case pat of
   Parser.Nat w -> return (RTS.Nat w, Schema.Nat)
     -- how would we do ByteTy?
@@ -215,10 +220,10 @@ inferExpr ctx pat = case pat of
     (t',ty) <- inferExpr ctx t
     ts' <- mapM (typecheckPattern ctx ty) ts
     return (RTS.Array (t':ts'), Schema.Array ty)
-  Variable name
+  Variable span name
     | name == "false" -> return (falseVal, Boolean)
     | name == "true" -> return (trueVal, Boolean)
-    | name /= "nothing" -> inferVar ctx name
+    | name /= "nothing" -> inferVar ctx span name
       -- "nothing" by itself can't be inferred, we want to fall
       -- through to the type error message.
   Parser.FactId (Just pred) fid -> do
@@ -236,7 +241,7 @@ inferExpr ctx pat = case pat of
           Ref (MatchFid (Fid (fromIntegral fid))),
           Schema.Predicate (PidRef pid ref))
       _other -> throwError $ "not a predicate: " <> pred
-  App (Variable txt) args@(arg:_)
+  App (Variable span txt) args@(arg:_)
     | Just (primOp, primArgTys, retTy) <- HashMap.lookup txt primitives -> do
         args' <- primInferAndCheck args primOp primArgTys
         return
@@ -245,13 +250,14 @@ inferExpr ctx pat = case pat of
     | otherwise -> do
       res <- resolveTypeOrPred txt
       case res of
-        Nothing -> throwError $
-          "unknown type or predicate while inferring application: " <> txt
+        Nothing -> prettyErrorFrom span
+          $ "unknown type or predicate while inferring application: "
+          <> pretty txt
         Just (RefPred ref) -> tcFactGenerator ref arg
         Just (RefType ref) -> do
           TcEnv{..} <- gets tcEnv
           case HashMap.lookup ref tcEnvTypes of
-            Nothing -> lift $ throwError $ "unknown type: " <> txt
+            Nothing -> prettyErrorFrom span $ "unknown type: " <> pretty txt
             Just TypeDetails{..} ->
               (,typeType) <$> typecheckPattern ctx typeType arg
   OrPattern a b -> do
@@ -304,7 +310,7 @@ convertType policy ty = do
 
 -- | Check that the pattern has the correct type, and generate the
 -- low-level pattern with type-annotated variables.
-typecheckPattern :: Context -> Type -> SourcePat -> T TcPat
+typecheckPattern :: IsSrcSpan s => Context -> Type -> SourcePat' s -> T TcPat
 typecheckPattern ctx typ pat = case (typ, pat) of
   (Schema.Byte, Parser.Nat w) -> return (RTS.Byte (fromIntegral w))
   (Schema.Nat, Parser.Nat w) -> return (RTS.Nat w)
@@ -338,7 +344,7 @@ typecheckPattern ctx typ pat = case (typ, pat) of
 
   -- v1 syntax for sum type patterns was "con pat", but this could also
   -- be a type annotation:
-  (Sum fields, App (Variable fieldName) [pat]) -> do
+  (Sum fields, App (Variable _ fieldName) [pat]) -> do
     v <- gets tcAngleVersion
     if v >= 2 then checkTypeAnn fieldName pat else do
     case lookupField fieldName fields of
@@ -350,7 +356,7 @@ typecheckPattern ctx typ pat = case (typ, pat) of
       (ty, n) :_ -> RTS.Alt n <$> typecheckPattern ctx ty pat
       _ -> patTypeErrorDesc ("unknown alt: " <> fieldName) pat typ
   -- 'field' is shorthand for '{ field = _ }' when matching a sum type
-  (Sum fields, Variable fieldName)
+  (Sum fields, Variable _ fieldName)
     | ((ty, n):_)  <- lookupField fieldName fields ->
       return (RTS.Alt n (mkWild ty))
   (Sum _, Struct _) ->
@@ -358,7 +364,7 @@ typecheckPattern ctx typ pat = case (typ, pat) of
       "matching on a sum type should have the form { field = pattern }"
       pat typ
   (Schema.NamedType (ExpandedType _ ty), term) -> typecheckPattern ctx ty term
-  (ty, App (Variable txt) args@(arg:_))
+  (ty, App (Variable _ txt) args@(arg:_))
     | Just (primOp, primArgTys, retTy) <- HashMap.lookup txt primitives -> do
         unless (ty `eqType` retTy) $
           patTypeError pat ty
@@ -375,10 +381,10 @@ typecheckPattern ctx typ pat = case (typ, pat) of
 
   (Maybe elemTy, pat) ->
     typecheckPattern ctx (lowerMaybe elemTy) pat
-  (Schema.Enumerated names, Variable name)
+  (Schema.Enumerated names, Variable _ name)
     | Just n <- elemIndex name names ->
     return (RTS.Alt (fromIntegral n) (RTS.Tuple []))
-  (Schema.Boolean, Variable name)
+  (Schema.Boolean, Variable _ name)
     | name == "false" -> return falseVal
     | name == "true" -> return trueVal
 
@@ -430,7 +436,7 @@ typecheckPattern ctx typ pat = case (typ, pat) of
     fst <$> tcFactGenerator ref pat
 
   (ty, Wildcard) -> return (mkWild ty)
-  (ty, Variable name) -> varOcc ctx name ty
+  (ty, Variable span name) -> varOcc ctx span name ty
 
   (_, KeyValue{}) -> unexpectedValue
 
@@ -459,8 +465,9 @@ typecheckPattern ctx typ pat = case (typ, pat) of
         typecheckPattern ctx typeType pat
 
 tcFactGenerator
-  :: PredicateRef
-  -> SourcePat
+  :: IsSrcSpan s
+  => PredicateRef
+  -> SourcePat' s
   -> T (TcPat, Type)
 tcFactGenerator ref pat = do
   TcEnv{..} <- gets tcEnv
@@ -483,7 +490,7 @@ tcFactGenerator ref pat = do
     , ty)
 
 
-isVar :: SourcePat -> Bool
+isVar :: IsSrcSpan s => SourcePat' s -> Bool
 isVar Wildcard = True
 isVar Variable{} = True
 isVar _ = False
@@ -491,7 +498,7 @@ isVar _ = False
 -- | Fact Id patterns (#1234 or #pred 1234) are only allowed in
 -- queries, not in derived predicates, because they potentially allow
 -- a type-incorrect fact to be constructed.
-isFactIdAllowed :: SourcePat -> T ()
+isFactIdAllowed :: IsSrcSpan s => SourcePat' s -> T ()
 isFactIdAllowed pat = do
   mode <- gets tcMode
   when (mode /= TcModeQuery) $ throwError $
@@ -601,24 +608,24 @@ bindOrUse ContextExpr name state =
 bindOrUse ContextPat name state =
   state { tcBindings = HashSet.insert name (tcBindings state) }
 
-inferVar :: Context -> Name -> T (TcPat, Type)
-inferVar ctx name = do
-  checkVarCase name
+inferVar :: IsSrcSpan span => Context -> span -> Name -> T (TcPat, Type)
+inferVar ctx span name = do
+  checkVarCase span name
   state@TypecheckState{..} <- get
   case HashMap.lookup name tcScope of
     Just v@(Var ty _ _) -> do
       put $ bindOrUse ctx name $ state { tcFree = HashSet.delete name tcFree }
       return (Ref (MatchVar v), ty)
-    Nothing -> prettyError $ nest 4 $ vcat
+    Nothing -> prettyErrorFrom span $ nest 4 $ vcat
       [ "variable has unknown type: " <> pretty name
       , "Perhaps you mistyped the variable name?"
       , "If not, try adding a type annotation like: (" <> pretty name <> " : T)"
       , "or reverse the statement (Q = P instead of P = Q)"
       ]
 
-varOcc :: Context -> Name -> Type -> T TcPat
-varOcc ctx name ty = do
-  checkVarCase name
+varOcc :: IsSrcSpan span => Context -> span -> Name -> Type -> T TcPat
+varOcc ctx span name ty = do
+  checkVarCase span name
   state@TypecheckState{..} <- get
   case HashMap.lookup name tcScope of
     Nothing -> do
@@ -635,7 +642,7 @@ varOcc ctx name ty = do
         put $ bindOrUse ctx name $
           state { tcFree = HashSet.delete name tcFree }
         return (Ref (MatchVar v))
-      | otherwise -> prettyError $
+      | otherwise -> prettyErrorFrom span $
         nest 4 $ vcat
           [ "type mismatch for variable " <> pretty name
           , "type of variable: " <> pretty ty'
@@ -674,17 +681,24 @@ unboundVariablesAreErrors_ uses binds = do
       , "cannot be used outside of the '|'"
       ]
 
-checkVarCase :: Name -> T ()
-checkVarCase name
+checkVarCase :: IsSrcSpan span => span -> Name -> T ()
+checkVarCase span name
   | Just (h,_) <- Text.uncons name, not (isUpper h) = do
     v <- gets tcAngleVersion
     when (caseRestriction v) $
-      prettyError $ "variable does not begin with an upper-case letter: " <>
+      prettyErrorFrom span $
+      "variable does not begin with an upper-case letter: " <>
         pretty name
   | otherwise = return ()
 
 prettyError :: Doc ann -> T a
 prettyError doc = throwError $ Text.pack $ show doc
+
+prettyErrorFrom :: IsSrcSpan span => span -> Doc ann -> T a
+prettyErrorFrom span doc = prettyError $ vcat
+  [ pretty span
+  , doc
+  ]
 
 oldOrPattern :: T a -> (a -> T b) -> T (a,b)
 oldOrPattern ta tb = do
@@ -708,7 +722,13 @@ oldOrPattern ta tb = do
 -- 2. The set of variables that are considered to be *used* by this
 --    pattern are those that are used in either branch.
 --
-orPattern :: SourcePat -> T a -> SourcePat -> (a -> T b) -> T (a,b)
+orPattern
+  :: IsSrcSpan s
+  => SourcePat' s
+  -> T a
+  -> SourcePat' s
+  -> (a -> T b)
+  -> T (a,b)
 orPattern pata ta patb tb = do
   v <- gets tcAngleVersion
   if not (varBinding v) then oldOrPattern ta tb else do
@@ -733,7 +753,7 @@ orPattern pata ta patb tb = do
 -- 3. To determine what is local to any nested A|B subterms, we update
 --    tcVisible by finding the visible variables of the current pattern.
 --
-oneBranch :: SourcePat -> T a -> T (a, VarSet, VarSet)
+oneBranch :: IsSrcSpan s => SourcePat' s -> T a -> T (a, VarSet, VarSet)
 oneBranch pat ta = do
   state0 <- get
   let visible = tcVisible state0
@@ -765,14 +785,19 @@ data PrimArgType
   -- comment on what the function is checking for debugging purposes.
   | InferAndCheck (Type -> Bool) String
 
-primInferAndCheck :: [SourcePat] -> PrimOp -> [PrimArgType] -> T [TcPat]
+primInferAndCheck
+  :: IsSrcSpan s
+  => [SourcePat' s]
+  -> PrimOp
+  -> [PrimArgType]
+  -> T [TcPat]
 primInferAndCheck args primOp argTys = do
   when (length args /= length argTys) $
     primInferAndCheckError primOp $ "expected " ++ show (length argTys)
       ++ " arguments, found " ++ show (length args)
   zipWithM (checkArg primOp) args argTys
   where
-    checkArg :: PrimOp -> SourcePat -> PrimArgType -> T TcPat
+    checkArg :: IsSrcSpan s => PrimOp -> SourcePat' s -> PrimArgType -> T TcPat
     checkArg _ arg (Check argTy) = typecheckPattern ContextExpr argTy arg
     checkArg primOp arg (InferAndCheck argCheck debugString) = do
       (arg', argTy) <- inferExpr ContextExpr arg
@@ -824,9 +849,9 @@ primitives = HashMap.fromList
 
 type VarSet = HashSet Name
 
-varsPat :: SourcePat -> VarSet -> VarSet
+varsPat :: IsSrcSpan s => SourcePat' s -> VarSet -> VarSet
 varsPat pat r = case pat of
-  Variable v -> HashSet.insert v r
+  Variable _ v -> HashSet.insert v r
   Parser.Array ps -> foldr varsPat r ps
   Parser.Tuple ps -> foldr varsPat r ps
   Struct fs -> foldr (\(Field _ p) r -> varsPat p r) r fs
@@ -843,7 +868,7 @@ varsPat pat r = case pat of
   Wildcard -> r
   FactId{} -> r
 
-varsQuery :: SourceQuery -> VarSet -> VarSet
+varsQuery :: IsSrcSpan s => SourceQuery' s -> VarSet -> VarSet
 varsQuery (SourceQuery head stmts) r =
   foldr varsStmt (foldr varsPat r head) stmts
   where

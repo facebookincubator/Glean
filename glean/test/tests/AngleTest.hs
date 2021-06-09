@@ -161,6 +161,19 @@ angleErrorTests = dbTestCase $ \env repo -> do
         `Text.isInfixOf` x
       _ -> False
 
+  -- source location of error
+  r <- try $ runQuery_ env repo $ angle @Glean.Test.Predicate
+    [s|
+      A where
+        A = glean.test.Node _;
+        B = glean.test.Edge _;
+        A = B;
+    |]
+  print r
+  assertBool "angle - variable location" $
+    case r of
+      Left (BadQuery x) -> "line 5, column 9" `Text.isInfixOf` x
+      _ -> False
 
 angleTest :: (forall a . Query a -> Query a) -> Test
 angleTest modify = dbTestCase $ \env repo -> do

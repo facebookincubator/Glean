@@ -32,7 +32,8 @@ import System.FilePath
 
 import Util.Timing
 
-import Glean.Angle.Types
+import Glean.Query.Types
+import Glean.Angle.Types hiding (Array, String, Nat)
 import Glean.Angle.Parser
 import Glean.Database.Config (catSchemaFiles)
 import Glean.Database.Schema
@@ -108,12 +109,59 @@ main = do
       Left err -> throwIO $ ErrorCall $ "schema roundtrip error: " <> err
          ++ "\n" ++ pp
       Right schemasRoundTrip ->
-        when (sourceSchemas /= schemasRoundTrip) $
+        when (rmLocSchemas sourceSchemas /= rmLocSchemas schemasRoundTrip) $
           throwIO $ ErrorCall "schema did not roundtrip successfully"
 
   forM_ (source opts) $ \f -> BC.writeFile f src
 
   reportTime "gen" $ gen opts schemas
+
+-- | Remove source location information from a schema's
+rmLocSchemas :: SourceSchemas -> SourceSchemas_ ()
+rmLocSchemas (SourceSchemas version schemas) =
+  SourceSchemas version (rmLocSchema <$> schemas)
+  where
+    rmLocSchema :: SourceSchema -> SourceSchema_ ()
+    rmLocSchema (SourceSchema name inherits decls) =
+      SourceSchema name inherits $ rmLocDecl <$> decls
+
+    rmLocDecl :: SourceDecl -> SourceDecl_ ()
+    rmLocDecl = \case
+      SourceImport name -> SourceImport name
+      SourcePredicate pred -> SourcePredicate $ rmLocQuery <$> pred
+      SourceType typeDef -> SourceType typeDef
+      SourceDeriving ref deriv -> SourceDeriving ref $ rmLocQuery <$> deriv
+
+    rmLocQuery :: SourceQuery -> SourceQuery' ()
+    rmLocQuery (SourceQuery mhead stmts) =
+      SourceQuery (rmLocPat <$> mhead) (rmLocStatement <$> stmts)
+
+    rmLocStatement :: SourceStatement -> SourceStatement' ()
+    rmLocStatement (SourceStatement x y) =
+      SourceStatement (rmLocPat x) (rmLocPat y)
+
+    rmLocPat :: SourcePat -> SourcePat' ()
+    rmLocPat = \case
+      Nat x -> Nat x
+      String x -> String x
+      StringPrefix x -> StringPrefix x
+      ByteArray x -> ByteArray x
+      Array xs -> Array (rmLocPat <$> xs)
+      Tuple xs -> Tuple (rmLocPat <$> xs)
+      Struct xs -> Struct (rmLocField <$> xs)
+      App x xs -> App (rmLocPat x) (rmLocPat <$> xs)
+      KeyValue x y -> KeyValue (rmLocPat x) (rmLocPat y)
+      Wildcard -> Wildcard
+      Variable _ v -> Variable () v
+      ElementsOfArray x -> ElementsOfArray (rmLocPat x)
+      OrPattern x y -> OrPattern (rmLocPat x) (rmLocPat y)
+      NestedQuery query -> NestedQuery $ rmLocQuery query
+      FactId x y -> FactId x y
+      TypeSignature x t -> TypeSignature (rmLocPat x) t
+
+    rmLocField :: Field SrcSpan Name SourceType -> Field () Name SourceType
+    rmLocField (Field name pat) =
+      Field name (rmLocPat pat)
 
 gen :: Options -> Schemas -> IO ()
 gen Options{..} Schemas{..} = do

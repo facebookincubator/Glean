@@ -64,7 +64,7 @@ import Glean.Angle.Types (AngleVersion, SourcePat, SourceStatement, SourceQuery,
   '_'           { L _ (Token _ T_Underscore) }
   '$'           { L _ (Token _ T_Dollar) }
 
-  IDENT         { L _ (Token _ (T_Ident $$)) }
+  IDENT_        { L _ (Token _ (T_Ident _)) }
   STRING        { L _ (Token _ (T_StringLit $$)) }
   NAT           { L _ (Token _ (T_NatLit $$)) }
 
@@ -98,18 +98,18 @@ pattern
 gen :: { SourcePat }
 gen
   : plus  { $1 }
-  | plus '!==' plus  { App (Variable "prim.neNat") [$1, $3] }
-  | plus '>' plus  { App (Variable "prim.gtNat") [$1, $3] }
-  | plus '>=' plus  { App (Variable "prim.geNat") [$1, $3] }
-  | plus '<' plus  { App (Variable "prim.ltNat") [$1, $3] }
-  | plus '<=' plus  { App (Variable "prim.leNat") [$1, $3] }
+  | plus '!==' plus  { App (Variable (lspan $2) "prim.neNat") [$1, $3] }
+  | plus '>' plus  { App (Variable (lspan $2) "prim.gtNat") [$1, $3] }
+  | plus '>=' plus  { App (Variable (lspan $2) "prim.geNat") [$1, $3] }
+  | plus '<' plus  { App (Variable (lspan $2) "prim.ltNat") [$1, $3] }
+  | plus '<=' plus  { App (Variable (lspan $2) "prim.leNat") [$1, $3] }
   | kv '[' '..' ']'  { ElementsOfArray $1 }
     -- NB. kv to resolve shift-reduce conflict
   | plus ':' type  { TypeSignature $1 $3 }
 
 plus :: { SourcePat }
 plus
-  : plus '+' app  { App (Variable "prim.addNat") [$1, $3] }
+  : plus '+' app  { App (Variable (lspan $2) "prim.addNat") [$1, $3] }
   | app  { $1 }
 
 app :: { SourcePat }
@@ -129,13 +129,13 @@ apat
   : NAT  { Nat $1 }
   | STRING  { String  $1 }
   | STRING '..' { StringPrefix $1 }
-  | '$' NAT   { FactId Nothing $2 }
-  | '$' var NAT   { FactId (Just $2) $3 }
+  | '$' NAT   { FactId Nothing $2  }
+  | '$' var NAT   { FactId (Just $ lval $2) $3 }
   | '[' seplist0(pattern,',') ']'  { Array $2 }
   | '{' seplist2(pattern,',') '}'  { Tuple $2 }
   | '{' seplist0_(field,',') '}'  { Struct $2 }
   | '_'  { Wildcard }
-  | var  { Variable $1 }
+  | var  { Variable (lspan $1) (lval $1) }
   | '(' query ')'
     { case $2 of
         SourceQuery Nothing [SourceStatement Wildcard pat] -> pat
@@ -144,13 +144,15 @@ apat
   | '(' ')'  {% ifVersionOrOlder 1 $2 (Tuple []) }
   | '(' seplist2(pattern,',') ')'  {% ifVersionOrOlder 1 $3 (Tuple $2) }
 
-field :: { Field Name SourceType }
+field :: { Field SrcSpan Name SourceType }
 field
   : fieldname '=' pattern  { Field $1 $3 }
 
-var :: { Text }
-var : IDENT  { Text.decodeUtf8 $1 }
+var :: { Located Text }
+var : IDENT  { fmap Text.decodeUtf8 $1 }
 
+IDENT :: { Located ByteString }
+IDENT : IDENT_ { let L span (Token _ (T_Ident val)) = $1 in L span val }
 
 -- -----------------------------------------------------------------------------
 -- Schema
@@ -252,7 +254,7 @@ typedef
     }
 
 name :: { Schema.Name }
-name : IDENT { Text.decodeUtf8 $1 }
+name : IDENT { Text.decodeUtf8 (lval $1) }
 
 -- -----------------------------------------------------------------------------
 -- Utils

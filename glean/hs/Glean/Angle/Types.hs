@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveFunctor #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 
 -- | Types representing a source-level schema
@@ -21,9 +22,9 @@ module Glean.Angle.Types
   , PredicateDef
   , DerivingInfo(..)
   , DeriveWhen(..)
-  , SourceSchema(..)
-  , SourceSchemas(..)
-  , SourceDecl(..)
+  , SourceSchema
+  , SourceSchemas
+  , SourceDecl
   , SourceRef(..)
   , SourceType
   , SourceFieldDef
@@ -33,6 +34,13 @@ module Glean.Angle.Types
   , SourcePat
   , SourceStatement
   , SourceQuery
+  , SourcePat'
+  , SourceStatement'
+  , SourceQuery'
+  , SourceDerivingInfo'
+  , SourceSchemas_(..)
+  , SourceSchema_(..)
+  , SourceDecl_(..)
   ) where
 
 import Data.Text.Prettyprint.Doc
@@ -119,13 +127,13 @@ data PredicateDef_ pref tref query = PredicateDef
   , predicateDefValueType :: Type_ pref tref
   , predicateDefDeriving :: DerivingInfo query
   }
-  deriving Eq
+  deriving (Eq, Functor)
 
 -- | How to derive a predicate
 data DerivingInfo q
   = NoDeriving
   | Derive DeriveWhen q
-  deriving Eq
+  deriving (Eq, Functor)
 
 data DeriveWhen
   = DeriveOnDemand
@@ -141,14 +149,23 @@ data DeriveWhen
     -- during a schema migration.
   deriving Eq
 
-type SourcePat = SourcePat_ Name SourceType
-type SourceStatement = SourceStatement_ SourcePat
-type SourceQuery = SourceQuery_ SourcePat SourceStatement
+type SourcePat' s = SourcePat_ s Name SourceType
+type SourceStatement' s = SourceStatement_ (SourcePat' s)
+type SourceQuery' s = SourceQuery_ (SourcePat' s) (SourceStatement' s)
+type SourceDerivingInfo' s = DerivingInfo (SourceQuery' s)
+type SourcePredicateDef' s = PredicateDef_ SourceRef SourceRef (SourceQuery' s)
+
+type SourcePat = SourcePat' SrcSpan
+type SourceStatement = SourceStatement' SrcSpan
+type SourceQuery = SourceQuery' SrcSpan
 type SourceType = Type_ SourceRef SourceRef
 type SourceFieldDef = FieldDef_ SourceRef SourceRef
 type SourceTypeDef = TypeDef_ SourceRef SourceRef
-type SourcePredicateDef = PredicateDef_ SourceRef SourceRef SourceQuery
-type SourceDerivingInfo = DerivingInfo SourceQuery
+type SourcePredicateDef = SourcePredicateDef' SrcSpan
+type SourceDerivingInfo = SourceDerivingInfo' SrcSpan
+type SourceSchemas = SourceSchemas_ SrcSpan
+type SourceSchema = SourceSchema_ SrcSpan
+type SourceDecl = SourceDecl_ SrcSpan
 
 type Type = Type_ PredicateRef TypeRef
 type FieldDef = FieldDef_ PredicateRef TypeRef
@@ -156,24 +173,24 @@ type TypeDef = TypeDef_ PredicateRef TypeRef
 type PredicateDef = PredicateDef_ PredicateRef TypeRef SourceQuery
 
 -- | A 'schema' declaration
-data SourceSchema = SourceSchema
+data SourceSchema_ s = SourceSchema
   { schemaName :: Name
   , schemaInherits :: [Name]
-  , schemaDecls :: [SourceDecl]
+  , schemaDecls :: [SourceDecl_ s]
   }
   deriving (Eq)
 
-data SourceSchemas = SourceSchemas
+data SourceSchemas_ s = SourceSchemas
   { srcAngleVersion :: AngleVersion
-  , srcSchemas :: [SourceSchema]
+  , srcSchemas :: [SourceSchema_ s]
   }
   deriving (Eq)
 
-data SourceDecl
+data SourceDecl_ s
   = SourceImport Name
-  | SourcePredicate SourcePredicateDef
+  | SourcePredicate (SourcePredicateDef' s)
   | SourceType SourceTypeDef
-  | SourceDeriving SourceRef SourceDerivingInfo
+  | SourceDeriving SourceRef (SourceDerivingInfo' s)
   deriving (Eq)
 
 -- -----------------------------------------------------------------------------
