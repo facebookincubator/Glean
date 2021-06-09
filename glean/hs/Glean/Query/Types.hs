@@ -112,7 +112,7 @@ instance IsWild (SourcePat_ s v t) where
   isWild _ = False
 
 -- | Types that represent the source location of a term in the AST
-class (Pretty a) => IsSrcSpan a where
+class (Pretty a, Pretty (Loc a)) => IsSrcSpan a where
   type Loc a :: *
   startLoc   :: a -> Loc a
   endLoc     :: a -> Loc a

@@ -20,13 +20,15 @@ import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import Data.Text.Prettyprint.Doc hiding ((<>), enclose)
 
-import Glean.Angle.Types as Schema hiding (Type)
+import Glean.Angle.Types hiding (Type, String, Array, Nat)
 import qualified Glean.Angle.Types as Schema
 import Glean.Query.Codegen
 import Glean.Query.Typecheck.Types
 import Glean.Query.Types as Parser
 import Glean.RTS.Types as RTS
-import Glean.RTS.Term as RTS hiding (Match(..))
+import Glean.RTS.Term hiding
+  (Tuple, ByteArray, String, Array, Nat, Wildcard, Variable)
+import qualified Glean.RTS.Term as RTS
 import Glean.Database.Schema.Types
 import Glean.Schema.Util
 import Glean.Schema.Resolve
@@ -104,7 +106,7 @@ typecheckDeriving tcEnv ver policy PredicateDetails{..} derivingInfo = do
           maybeVal' <- case maybeVal of
             Nothing
               | unit `eqType` predicateValueType -> return Nothing
-              | otherwise -> prettyError $ nest 4 $ vcat
+              | otherwise -> prettyErrorIn head $ nest 4 $ vcat
                 [ "a functional predicate must return a value,"
                 , "i.e. the query should have the form 'X -> Y where .." ]
             Just val -> Just <$>
@@ -128,8 +130,12 @@ needsResult q@(SourceQuery Nothing stmts) = case reverse stmts of
     return (Variable s v, stmts)
   (SourceStatement Wildcard{} rhs : rstmts) ->
     return (rhs, reverse rstmts)
-  _ -> throwError $ "the last statement should be an expression: " <>
-    Text.pack (show (pretty q))
+  (SourceStatement pat _ : _) ->
+    prettyErrorIn pat err
+  _ ->
+    prettyError err
+  where
+    err = "the last statement should be an expression: " <> pretty q
 
 ignoreResult :: IsSrcSpan s => SourcePat' s -> SourcePat' s
 ignoreResult (OrPattern s a b) = OrPattern s (ignoreAlt a) (ignoreAlt b)
@@ -164,8 +170,8 @@ typecheckQuery ctx ty q = do
   stmts' <- mapM typecheckStatement stmts
   return (TcQuery ty head' Nothing stmts')
 
-unexpectedValue :: T a
-unexpectedValue = throwError $
+unexpectedValue :: IsSrcSpan a => SourcePat' a -> T b
+unexpectedValue pat = prettyErrorIn pat
   "a key/value pattern (X -> Y) cannot be used here"
 
 typecheckStatement :: IsSrcSpan s => SourceStatement' s -> T TcStatement
@@ -242,34 +248,35 @@ inferExpr ctx pat = case pat of
     isFactIdAllowed pat
     res <- resolveTypeOrPred pred
     case res of
-      Nothing -> throwError $
-        "unknown type or predicate in literal fact ID: " <> pred
+      Nothing -> prettyErrorIn pat $
+        "unknown type or predicate in literal fact ID: " <> pretty pred
       Just (RefPred ref) -> do
         TcEnv{..} <- gets tcEnv
         pid <- case HashMap.lookup ref tcEnvPredicates of
-          Nothing -> throwError $ "inferExpr: " <> Text.pack (show (pretty ref))
+          Nothing -> prettyErrorIn pat
+            $ "inferExpr: " <> pretty ref
           Just details -> return (predicatePid details)
         return (
           Ref (MatchFid (Fid (fromIntegral fid))),
           Schema.Predicate (PidRef pid ref))
-      _other -> throwError $ "not a predicate: " <> pred
-  App _ (Variable span txt) args@(arg:_)
+      _other -> prettyErrorIn pat $ "not a predicate: " <> pretty pred
+  App span var@(Variable _ txt) args@(arg:_)
     | Just (primOp, primArgTys, retTy) <- HashMap.lookup txt primitives -> do
-        args' <- primInferAndCheck args primOp primArgTys
+        args' <- primInferAndCheck span args primOp primArgTys
         return
             ( RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args')))
             , retTy )
     | otherwise -> do
       res <- resolveTypeOrPred txt
       case res of
-        Nothing -> prettyErrorFrom span
+        Nothing -> prettyErrorIn var
           $ "unknown type or predicate while inferring application: "
           <> pretty txt
         Just (RefPred ref) -> tcFactGenerator ref arg
         Just (RefType ref) -> do
           TcEnv{..} <- gets tcEnv
           case HashMap.lookup ref tcEnvTypes of
-            Nothing -> prettyErrorFrom span $ "unknown type: " <> pretty txt
+            Nothing -> prettyErrorIn var $ "unknown type: " <> pretty txt
             Just TypeDetails{..} ->
               (,typeType) <$> typecheckPattern ctx typeType arg
   OrPattern _ a b -> do
@@ -286,7 +293,7 @@ inferExpr ctx pat = case pat of
     case ty of
       (Schema.Array elemTy) ->
         return (Ref (MatchExt (Typed elemTy (TcElementsOfArray e'))), elemTy)
-      _other -> throwError $ Text.pack $ show $
+      _other -> prettyErrorIn pat $
         nest 4 $ vcat
           [ "type error in array element generator:"
           , "expression: " <> pretty e
@@ -296,29 +303,30 @@ inferExpr ctx pat = case pat of
   Struct _ [ Field "just" e ] -> do
     (e', ty) <- inferExpr ctx e
     return (RTS.Alt 1 e', Maybe ty)
-  TypeSignature _ e ty -> do
+  TypeSignature s e ty -> do
     policy <- gets tcNameResolutionPolicy
     v <- gets tcAngleVersion
     ty' <- lift $ resolveType v (toScope policy) ty
-    typ <- convertType policy ty'
+    typ <- convertType s policy ty'
     (,typ) <$> typecheckPattern ctx typ e
 
-  KeyValue{} -> unexpectedValue
+  v@KeyValue{} -> unexpectedValue v
 
-  _ -> prettyError $ nest 4 $ vcat
+  _ -> prettyErrorIn pat $ nest 4 $ vcat
     [ "can't infer the type of: " <> pretty pat
     , "try adding a type annotation like (" <> pretty pat <> " : T)"
     , "or reverse the statement (Q = P instead of P = Q)"
     ]
 
-convertType :: NameResolutionPolicy -> Schema.Type -> T Type
-convertType policy ty = do
+convertType
+  :: IsSrcSpan s => s -> NameResolutionPolicy -> Schema.Type -> T Type
+convertType span policy ty = do
   let rtsType = case policy of
         UseScope _ rtsType -> rtsType
         Qualified dbSchema _ -> dbSchemaRtsType dbSchema
   case rtsType ty of
     Just typ -> return typ
-    Nothing -> throwError "cannot convert type"
+    Nothing -> prettyErrorAt span "cannot convert type"
 
 -- | Check that the pattern has the correct type, and generate the
 -- low-level pattern with type-annotated variables.
@@ -376,11 +384,11 @@ typecheckPattern ctx typ pat = case (typ, pat) of
       "matching on a sum type should have the form { field = pattern }"
       pat typ
   (Schema.NamedType (ExpandedType _ ty), term) -> typecheckPattern ctx ty term
-  (ty, App _ (Variable _ txt) args@(arg:_))
+  (ty, App span (Variable _ txt) args@(arg:_))
     | Just (primOp, primArgTys, retTy) <- HashMap.lookup txt primitives -> do
         unless (ty `eqType` retTy) $
           patTypeError pat ty
-        args' <- primInferAndCheck args primOp primArgTys
+        args' <- primInferAndCheck span args primOp primArgTys
         return (RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args'))))
     | otherwise -> do
     res <- resolveTypeOrPred txt
@@ -425,11 +433,11 @@ typecheckPattern ctx typ pat = case (typ, pat) of
           _otherwise -> patTypeError pat typ
     return $ Ref (MatchFid (Fid (fromIntegral fid)))
 
-  (ty, TypeSignature _ e sigty) -> do
+  (ty, TypeSignature s e sigty) -> do
     policy <- gets tcNameResolutionPolicy
     v <- gets tcAngleVersion
     rsigty <- lift $ resolveType v (toScope policy) sigty
-    sigty' <- convertType policy rsigty
+    sigty' <- convertType s policy rsigty
     if ty `eqType` sigty'
       then typecheckPattern ctx ty e
       else
@@ -450,7 +458,7 @@ typecheckPattern ctx typ pat = case (typ, pat) of
   (ty, Wildcard{}) -> return (mkWild ty)
   (ty, Variable span name) -> varOcc ctx span name ty
 
-  (_, KeyValue{}) -> unexpectedValue
+  (_, KeyValue{}) -> unexpectedValue pat
 
   -- type annotations are unnecessary, but we allow and check them
   (ty, q) -> patTypeError q ty
@@ -484,7 +492,7 @@ tcFactGenerator
 tcFactGenerator ref pat = do
   TcEnv{..} <- gets tcEnv
   PredicateDetails{..} <- case HashMap.lookup ref tcEnvPredicates of
-    Nothing -> throwError $ "tcFactGenerator: " <> Text.pack (show (pretty ref))
+    Nothing -> prettyErrorIn pat $ "tcFactGenerator: " <> pretty ref
     Just details -> return details
   (kpat', vpat') <- case pat of
     KeyValue _ kpat vpat -> do
@@ -512,10 +520,8 @@ isVar _ = False
 isFactIdAllowed :: IsSrcSpan s => SourcePat' s -> T ()
 isFactIdAllowed pat = do
   mode <- gets tcMode
-  when (mode /= TcModeQuery) $ throwError $
-    "fact IDs are not allowed in a derived predicate: " <>
-       Text.pack (show (pretty pat))
-
+  when (mode /= TcModeQuery) $ prettyErrorIn pat $
+    "fact IDs are not allowed in a derived predicate: " <> pretty pat
 
 falseVal, trueVal :: TcPat
 falseVal = RTS.Alt 0 (RTS.Tuple [])
@@ -531,11 +537,12 @@ mkWild ty
   | Record [] <- derefType ty = RTS.Tuple []
   | otherwise = RTS.Ref (MatchWild ty)
 
-patTypeError :: (Pretty pat, Pretty ty) => pat -> ty -> T a
+patTypeError :: (IsSrcSpan s, Pretty ty) => SourcePat' s -> ty -> T a
 patTypeError = patTypeErrorDesc "type error in pattern"
 
-patTypeErrorDesc :: (Pretty pat, Pretty ty) => Text -> pat -> ty -> T a
-patTypeErrorDesc desc q ty = prettyError $
+patTypeErrorDesc
+  :: (IsSrcSpan s, Pretty ty) => Text -> SourcePat' s -> ty -> T a
+patTypeErrorDesc desc q ty = prettyErrorIn q $
   nest 4 $ vcat
     [ pretty desc
     , "pattern: " <> pretty q
@@ -627,7 +634,7 @@ inferVar ctx span name = do
     Just v@(Var ty _ _) -> do
       put $ bindOrUse ctx name $ state { tcFree = HashSet.delete name tcFree }
       return (Ref (MatchVar v), ty)
-    Nothing -> prettyErrorFrom span $ nest 4 $ vcat
+    Nothing -> prettyErrorAt span $ nest 4 $ vcat
       [ "variable has unknown type: " <> pretty name
       , "Perhaps you mistyped the variable name?"
       , "If not, try adding a type annotation like: (" <> pretty name <> " : T)"
@@ -653,7 +660,7 @@ varOcc ctx span name ty = do
         put $ bindOrUse ctx name $
           state { tcFree = HashSet.delete name tcFree }
         return (Ref (MatchVar v))
-      | otherwise -> prettyErrorFrom span $
+      | otherwise -> prettyErrorAt span $
         nest 4 $ vcat
           [ "type mismatch for variable " <> pretty name
           , "type of variable: " <> pretty ty'
@@ -697,7 +704,7 @@ checkVarCase span name
   | Just (h,_) <- Text.uncons name, not (isUpper h) = do
     v <- gets tcAngleVersion
     when (caseRestriction v) $
-      prettyErrorFrom span $
+      prettyErrorAt span $
       "variable does not begin with an upper-case letter: " <>
         pretty name
   | otherwise = return ()
@@ -705,9 +712,12 @@ checkVarCase span name
 prettyError :: Doc ann -> T a
 prettyError = throwError . Text.pack . show
 
-prettyErrorFrom :: IsSrcSpan span => span -> Doc ann -> T a
-prettyErrorFrom span doc = prettyError $ vcat
-  [ pretty span
+prettyErrorIn :: IsSrcSpan s => SourcePat' s -> Doc ann -> T a
+prettyErrorIn pat doc = prettyErrorAt (sourcePatSpan pat) doc
+
+prettyErrorAt :: IsSrcSpan span => span -> Doc ann -> T a
+prettyErrorAt span doc = prettyError $ vcat
+  [ pretty $ startLoc span
   , doc
   ]
 
@@ -798,13 +808,14 @@ data PrimArgType
 
 primInferAndCheck
   :: IsSrcSpan s
-  => [SourcePat' s]
+  => s
+  -> [SourcePat' s]
   -> PrimOp
   -> [PrimArgType]
   -> T [TcPat]
-primInferAndCheck args primOp argTys = do
+primInferAndCheck span args primOp argTys = do
   when (length args /= length argTys) $
-    primInferAndCheckError primOp $ "expected " ++ show (length argTys)
+    primInferAndCheckError span primOp $ "expected " ++ show (length argTys)
       ++ " arguments, found " ++ show (length args)
   zipWithM (checkArg primOp) args argTys
   where
@@ -812,11 +823,12 @@ primInferAndCheck args primOp argTys = do
     checkArg _ arg (Check argTy) = typecheckPattern ContextExpr argTy arg
     checkArg primOp arg (InferAndCheck argCheck debugString) = do
       (arg', argTy) <- inferExpr ContextExpr arg
-      unless (argCheck argTy) $ primInferAndCheckError primOp debugString
+      unless (argCheck argTy) $ primInferAndCheckError span primOp debugString
       return arg'
 
-primInferAndCheckError :: PrimOp -> String -> T b
-primInferAndCheckError primOp debugString = prettyError $ nest 4 $ vcat
+primInferAndCheckError :: IsSrcSpan s => s -> PrimOp -> String -> T b
+primInferAndCheckError span primOp debugString =
+  prettyErrorAt span $ nest 4 $ vcat
   [ "primitive operation " <> pretty primOp
     <> " does not pass associated check: "
   , pretty debugString
