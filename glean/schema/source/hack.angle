@@ -649,7 +649,7 @@ predicate Signature :
   }
 
 # Visibility scope of declaration
-type Visibility = enum { Private | Protected | Public }
+type Visibility = enum { Private | Protected | Public | Internal }
 
 # Variance (subtyping)
 type Variance = enum { Contravariant | Covariant | Invariant }
