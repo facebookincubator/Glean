@@ -847,10 +847,16 @@ void glean_ownership_unit_iterator_free(OwnershipUnitIterator *iter) {
 const char *glean_ownership_compute(
     Inventory *inventory,
     Lookup *lookup,
-    OwnershipUnitIterator *iter) {
+    OwnershipUnitIterator *iter,
+    Ownership **result
+) {
   return ffi::wrap([=] {
-    computeOwnership(*inventory, *lookup, iter);
+    *result = computeOwnership(*inventory, *lookup, iter).release();
   });
+}
+
+void glean_ownership_free(Ownership *own) {
+  ffi::free_(own);
 }
 
 }

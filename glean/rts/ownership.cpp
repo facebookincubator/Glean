@@ -9,6 +9,7 @@
 #include <folly/container/F14Map.h>
 #include <folly/container/F14Set.h>
 #include <folly/Hash.h>
+#include <folly/experimental/EliasFanoCoding.h>
 
 #include <immintrin.h>
 #include <xxhash.h>
@@ -17,6 +18,8 @@
 #include <initializer_list>
 #include <limits>
 #include <type_traits>
+
+using namespace folly::compression;
 
 namespace facebook {
 namespace glean {
@@ -123,7 +126,7 @@ FOLLY_NOINLINE Usets collectUsets(TrieArray<Uset>& utrie) {
  * The resulting `Usets` will contain exactly those sets (the "promoted" ones)
  * which describe the ownership of at least one fact.
  */
-FOLLY_NOINLINE void completeOwnership(std::vector<Uset *> facts, Usets usets,
+FOLLY_NOINLINE void completeOwnership(std::vector<Uset *> &facts, Usets& usets,
                                       const Inventory &inventory,
                                       Lookup &lookup) {
   struct Stats {
@@ -230,9 +233,30 @@ FOLLY_NOINLINE void completeOwnership(std::vector<Uset *> facts, Usets usets,
   stats.dump();
 }
 
+struct OwnershipImpl final : Ownership {
+  ~OwnershipImpl() override {
+    for (auto &set: sets_) {
+      set.free();
+    }
+  }
+
+  OwnershipImpl(std::vector<MutableEliasFanoCompressedList>&& sets,
+                std::vector<UsetId>&& facts) :
+      sets_(std::move(sets)), facts_(std::move(facts)) {}
+
+  UsetId getUset(Id id) override {
+    return facts_[id.toWord()];
+  }
+
+  // Sets, indexed by UsetId
+  std::vector<MutableEliasFanoCompressedList> sets_;
+
+  std::vector<UsetId> facts_;
+};
+
 }
 
-void computeOwnership(
+std::unique_ptr<Ownership> computeOwnership(
     const Inventory& inventory,
     Lookup& lookup,
     OwnershipUnitIterator *iter) {
@@ -240,12 +264,24 @@ void computeOwnership(
   auto utrie = fillOwnership(iter);
   LOG(INFO) << "collecting units";
   auto usets = collectUsets(utrie);
-  // TODO: Should `computeOwnership` work with the trie rather than a flat
-  // vector?
+  // TODO: Should `completeOwnership` work with the trie rather than a
+  // flat vector?
   auto facts = utrie.flatten();
   LOG(INFO) << "completing ownership (" << facts.size() << ")";
-  completeOwnership(std::move(facts), std::move(usets), inventory, lookup);
+  completeOwnership(facts, usets, inventory, lookup);
+  LOG(INFO) << "finalizing sets";
+
+  std::vector<UsetId> factOwners(facts.size());
+  for (uint32_t i = 1; i < facts.size(); i++) {
+    factOwners[i] = facts[i] ? facts[i]->id : INVALID_USET;
+  }
+
+  auto sets = usets.toEliasFano();
   LOG(INFO) << "finished ownership";
+
+  return std::make_unique<OwnershipImpl>(
+      std::move(sets),
+      std::move(factOwners));
 }
 
 }

@@ -70,7 +70,7 @@ instance Storage Memory where
   optimize _ = return ()
 
   -- TODO: ownership
-  computeOwnership _ _ = return ()
+  computeOwnership _ _ = return (error "unimplemented computeOwnership")
 
   -- TODO: ownership
   getUnitId _ _ = return (error "unimplemented getUnitId")

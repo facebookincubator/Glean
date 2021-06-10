@@ -85,7 +85,7 @@ class CanLookup (Database s) => Storage s where
   -- | Optimise a database for reading. This is typically done before backup.
   optimize :: Database s -> IO ()
 
-  computeOwnership :: Database s -> Inventory -> IO ()
+  computeOwnership :: Database s -> Inventory -> IO Ownership
 
   getUnitId :: Database s -> ByteString -> IO (Maybe UnitId)
 

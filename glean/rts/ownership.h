@@ -1,5 +1,6 @@
 #pragma once
 
+#include "glean/rts/ownership/uset.h"
 #include "glean/rts/id.h"
 
 #include <folly/Optional.h>
@@ -41,10 +42,16 @@ struct OwnershipUnitIterator {
   virtual folly::Optional<OwnershipUnit> get() = 0;
 };
 
-void computeOwnership(
-  const Inventory& inventory,
-  Lookup& lookup,
-  OwnershipUnitIterator *iter);
+
+struct Ownership {
+  virtual ~Ownership() {}
+  virtual UsetId getUset(Id id) = 0;
+};
+
+std::unique_ptr<Ownership> computeOwnership(
+    const Inventory& inventory,
+    Lookup& lookup,
+    OwnershipUnitIterator *iter);
 
 }
 }

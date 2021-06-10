@@ -41,6 +41,7 @@ typedef struct Predicate Predicate;
 typedef struct Substitution Substitution;
 typedef struct QueryResults QueryResults;
 typedef struct OwnershipUnitIterator OwnershipUnitIterator;
+typedef struct Ownership Ownership;
 
 #ifdef __cplusplus
 }
@@ -491,8 +492,11 @@ void glean_ownership_unit_iterator_free(
 const char *glean_ownership_compute(
   Inventory *inventory,
   Lookup *lookup,
-  OwnershipUnitIterator *iter
+  OwnershipUnitIterator *iter,
+  Ownership **ownership
 );
+
+void glean_ownership_free(Ownership *own);
 
 #ifdef __cplusplus
 }
