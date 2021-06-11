@@ -153,7 +153,40 @@ incrementalTest = TestCase $
     r <- edgesFrom "b"
     assertEqual "inc 6" ["a"] r
 
+
+-- tickled a bug in the storage of ownership information
+dupSetTest :: Test
+dupSetTest = TestCase $
+  withTestEnv [] $ \env -> do
+    let base = Repo "base" "0"
+    kickOffTestDB env base id
+    writeFactsIntoDB env base [ Glean.Test.allPredicates ] $ do
+      withUnit "A" $
+        makeFact_ @Glean.Test.Node (Glean.Test.Node_key "a")
+      withUnit "B" $
+        makeFact_ @Glean.Test.Node (Glean.Test.Node_key "b")
+    writeFactsIntoDB env base [ Glean.Test.allPredicates ] $ do
+      withUnit "A" $
+        makeFact_ @Glean.Test.Node (Glean.Test.Node_key "aa")
+      withUnit "B" $
+        makeFact_ @Glean.Test.Node (Glean.Test.Node_key "bb")
+    completeTestDB env base
+
+    let inc = Repo "base-inc" "0"
+    kickOffTestDB env inc $ \kickOff ->
+      kickOff { kickOff_dependencies = Just $
+        Dependencies_pruned def {
+          pruned_base = base,
+          pruned_units = ["B"],
+          pruned_exclude = True
+        } }
+
+    results <- runQuery_ env inc $ query $
+      predicate @Glean.Test.Node wild
+    assertEqual "dupSetTest" 2 (length results)
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "incrementalTest" incrementalTest
+  , TestLabel "dupSetTest" dupSetTest
   ]

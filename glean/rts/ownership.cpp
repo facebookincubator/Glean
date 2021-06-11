@@ -99,21 +99,31 @@ FOLLY_NOINLINE TrieArray<Uset> fillOwnership(OwnershipUnitIterator* iter) {
 FOLLY_NOINLINE Usets collectUsets(TrieArray<Uset>& utrie) {
   Usets usets;
   size_t visits = 0;
-  // We use the `link` field to avoid trying to insert the same `Uset` multiple
-  // times.
-  utrie.foreach([&](Uset *entry) {
-    if (entry->link() == nullptr) {
-      auto p = usets.add(entry);
-      // Note that we guarantee to maintain set uniqueness when computing the
-      // trie.
-      CHECK(p == entry);
-      entry->link(entry);
-    }
+  utrie.foreach([&](Uset *entry) -> Uset* {
     ++visits;
+
+    // entry->link() caches usets.add(entry) below
+    Uset* p = static_cast<Uset*>(entry->link());
+
+    // visited this Uset before?
+    if (p == nullptr) {
+      p = usets.add(entry);
+      entry->link(p);
+    }
+
+    // duplicate set? Update the Trie to point to the canonical one.
+    if (p != entry) {
+      entry->drop();
+      return p;
+    } else {
+      return nullptr;
+    }
   });
+
   usets.foreach([](Uset *entry) {
     entry->link(nullptr);
   });
+
   LOG(INFO)
     << visits << " visits, "
     << usets.size() << " usets";
@@ -169,7 +179,7 @@ FOLLY_NOINLINE void completeOwnership(std::vector<Uset *> &facts, Usets& usets,
   }
 
   // Iterate over facts backwards - this ensures that we get all dependencies.
-  const auto max_id = Id::fromWord(facts.size() - 1);
+  const auto max_id = Id::fromWord(facts.size());
   for (auto iter = lookup.enumerateBack(max_id);
       auto fact = iter->get();
       iter->next()) {
@@ -325,7 +335,7 @@ std::unique_ptr<Ownership> computeOwnership(
   LOG(INFO) << "finalizing sets";
 
   std::vector<UsetId> factOwners(facts.size());
-  for (uint32_t i = 1; i < facts.size(); i++) {
+  for (uint32_t i = Id::lowest().toWord(); i < facts.size(); i++) {
     factOwners[i] = facts[i] ? facts[i]->id : INVALID_USET;
   }
 

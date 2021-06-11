@@ -29,6 +29,12 @@ struct Uset {
     refs += n;
   }
 
+  void drop() {
+    if (--refs == 0) {
+      delete this;
+    }
+  }
+
   void *link() const {
     return ptr;
   }

@@ -964,7 +964,7 @@ struct DatabaseImpl final : Database {
       key.nat(unit_id);
       key.nat(unit_id < ownership_unit_counters.size()
         ? ownership_unit_counters[unit_id]
-        : 1);
+        : 0);
       check(batch.Put(
         container_.family(Family::ownershipRaw),
         slice(key),

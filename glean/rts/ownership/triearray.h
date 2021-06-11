@@ -120,7 +120,9 @@ public:
   void foreach(F&& f) {
     traverse([&](Tree& tree, uint64_t key, uint64_t size, uint64_t block) {
       if (auto *value = tree.value()) {
-        f(value);
+        if (auto new_value = f(value)) {
+          tree = Tree::value(new_value);
+        }
       }
     });
   }
