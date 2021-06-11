@@ -3,12 +3,10 @@ module TestDB (
   withTestDB, dbTestCase, dbTestCaseWritable
 ) where
 
-import Control.Monad
 import Data.Either
 import Test.HUnit
 
 import Glean.Database.Storage (DBVersion(..), currentVersion, writableVersions)
-import Glean.Database.Stuff
 import Glean.Database.Test
 import Glean.Database.Types
 import Glean.Backend as Backend
@@ -75,10 +73,9 @@ writeTestDB env repo facts = do
     Backend.getSchemaInfo env repo
   assertBool "schema1" (isRight backend_schema)
 
-  predicates <- Backend.loadPredicates env repo
-    [ Cxx.allPredicates
-    , Glean.Test.allPredicates
-    , Sys.allPredicates
-    ]
-  batch <- buildBatch predicates Nothing facts
-  void $ syncWriteDatabase env repo batch
+  let allPredicates =
+        [ Cxx.allPredicates
+        , Glean.Test.allPredicates
+        , Sys.allPredicates
+        ]
+  writeFactsIntoDB env repo allPredicates facts

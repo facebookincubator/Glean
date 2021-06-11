@@ -13,6 +13,7 @@ module Glean.Database.Test
   , waitUntilComplete
   , completeTestDB
   , withEmptyTestDB
+  , writeFactsIntoDB
   ) where
 
 import Control.Concurrent.STM
@@ -32,12 +33,14 @@ import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Config
 import Glean.Database.Env
 import qualified Glean.Database.Storage.Memory as Memory
+import Glean.Database.Stuff
 import Glean.Database.Types
 import Glean.Impl.ConfigProvider ()
 import Glean.Recipes.Types (Recipes)
 import qualified Glean.Recipes.Types as Recipes
 import Glean.Schema.Resolve
 import qualified Glean.ServerConfig.Types as ServerConfig
+import Glean.Typed
 import qualified Glean.Types as Thrift
 import Glean.Util.ConfigProvider
 import Glean.Util.Observed as Observed
@@ -114,6 +117,17 @@ kickOffTestDB env repo update = do
           then Thrift.KickOffFill_recipes $ Thrift.repo_name repo
           else Thrift.KickOffFill_writeHandle ""
     }
+
+writeFactsIntoDB
+  :: Env
+  -> Thrift.Repo
+  -> [SchemaPredicates]
+  -> (forall m. NewFact m => m ())
+  -> IO ()
+writeFactsIntoDB env repo allPredicates facts = do
+  predicates <- loadPredicates env repo allPredicates
+  batch <- buildBatch predicates Nothing facts
+  void $ syncWriteDatabase env repo batch
 
 waitUntilComplete :: Env -> Thrift.Repo -> IO ()
 waitUntilComplete Env{..} repo = atomically $ do
