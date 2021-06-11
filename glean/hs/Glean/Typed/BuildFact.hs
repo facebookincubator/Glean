@@ -1,12 +1,18 @@
 {-# LANGUAGE AllowAmbiguousTypes, TypeApplications, CPP #-}
 module Glean.Typed.BuildFact
-  ( NewFact(newFact), makeFact, makeFact_, makeFactV, makeFactV_
+  ( NewFact(newFact,withUnit), makeFact, makeFact_, makeFactV, makeFactV_
   , Facts, newFacts, serializeFacts, factsMemory
   , FactBuilder, buildFacts, extendFacts, buildBatch
   ) where
 
+import Data.HashMap.Strict (HashMap)
+import qualified Data.HashMap.Strict as HashMap
+import Data.Int
+import Data.IORef
 import Data.Maybe
-import Control.Monad (void)
+import qualified Data.Vector.Storable as Vector
+import Control.Monad
+import Control.Monad.IO.Class
 #if !MIN_VERSION_base(4,13,0)
 import Control.Monad.Fail (MonadFail)
 #endif
@@ -17,6 +23,7 @@ import Glean.RTS.Builder (sizeOfBuilder, withBuilder)
 import Glean.RTS.Foreign.Define (defineFact)
 import Glean.RTS.Foreign.FactSet (FactSet)
 import qualified Glean.RTS.Foreign.FactSet as FactSet
+import Glean.RTS.Foreign.Lookup
 import Glean.RTS.Types (lowestFid)
 import Glean.Typed.Binary
 import Glean.Typed.Id
@@ -31,6 +38,9 @@ import qualified Glean.Types as Thrift
 class (MonadFail m, Monad m) => NewFact m where
   -- | Create a new fact with a the given key and value
   newFact :: Predicate p => KeyType p -> ValueType p -> m (IdOf p)
+
+  -- | Create some facts owned by the given UnitName
+  withUnit ::Thrift.UnitName -> m a -> m a
 
 -- | Create a new fact in a 'NewFact' monad and return the corresponding Thrift
 -- structure which will have 'Just' the passed key and value.
@@ -63,6 +73,7 @@ makeFact_ key = makeFactV_ @p key ()
 data Facts = Facts
   { factsPredicates :: Predicates
   , factsData :: FactSet
+  , factsOwnership :: IORef (HashMap Thrift.UnitName [Int64])
   }
 
 -- | Create a new empty collection of facts. New facts will be assigned
@@ -73,11 +84,17 @@ newFacts
   :: Predicates -- ^ pid map
   -> Maybe Fid -- ^ start id
   -> IO Facts
-newFacts ps start = Facts ps <$> FactSet.new (fromMaybe lowestFid start)
+newFacts ps start =
+  Facts ps
+    <$> FactSet.new (fromMaybe lowestFid start)
+    <*> newIORef HashMap.empty
 
 -- | Serialize the facts into a batch which can be sent via Thrift.
 serializeFacts :: Facts -> IO Thrift.Batch
-serializeFacts = FactSet.serialize . factsData
+serializeFacts Facts{..} = do
+  batch <- FactSet.serialize factsData
+  ownership <- readIORef factsOwnership
+  return batch { Thrift.batch_owned = fmap Vector.fromList ownership }
 
 -- | Return a rough estimate of how much memory is used by the facts.
 factsMemory :: Facts -> IO Int
@@ -107,6 +124,18 @@ instance NewFact FactsM where
       where
         mk :: Predicate p => Facts -> (PidOf p -> f (IdOf p)) -> f (IdOf p)
         mk facts f = f $ getPid $ factsPredicates facts
+
+  withUnit unit build = FactsM $ do
+    Facts{..} <- ask
+    firstId <- liftIO $ firstFreeId factsData
+    a <- runFactsM build
+    lastId <- liftIO $ firstFreeId factsData
+    when (lastId > firstId) $ liftIO $
+      modifyIORef' factsOwnership $
+        HashMap.insertWith (++) unit
+          [fromFid firstId, fromFid lastId - 1]
+    return a
+
 
 -- | A fact builder
 type FactBuilder = forall m. NewFact m => m ()
