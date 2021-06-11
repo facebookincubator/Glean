@@ -177,6 +177,43 @@ std::unique_ptr<FactIterator> FactIterator::append(
     std::make_unique<AppendIterator>(std::move(left), std::move(right));
 }
 
+namespace {
+
+struct FilterIterator final : FactIterator {
+  FilterIterator(
+    std::unique_ptr<FactIterator> base,
+    std::function<bool(Id id)> visible)
+      : base_(std::move(base)),
+        visible_(std::move(visible)) {}
+
+  void next() override {
+    base_->next();
+  }
+
+  Fact::Ref get(Demand demand) override {
+    auto r = base_->get(demand);
+    while (r.id != Id::invalid() && !visible_(r.id)) {
+      base_->next();
+      r = base_->get(demand);
+    }
+    return r;
+  }
+
+  std::unique_ptr<FactIterator> base_;
+  std::function<bool(Id id)> visible_;
+};
+
+} // namespace
+
+std::unique_ptr<FactIterator> FactIterator::filter(
+    std::unique_ptr<FactIterator> base,
+    std::function<bool(Id id)> visible) {
+  return
+    std::make_unique<FilterIterator>(
+        std::move(base),
+        std::move(visible));
+}
+
 }
 }
 }

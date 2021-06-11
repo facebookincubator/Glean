@@ -18,7 +18,7 @@ struct FactIterator {
   enum Demand { KeyOnly, KeyValue };
 
   // Advance the iterator to the next fact. Calling this after get() returned
-  // folly::none is not valid.
+  // Fact::Ref::invalid() is not allowed.
   virtual void next() = 0;
 
   // Get the current fact. Demand says whether to include its value which might
@@ -36,6 +36,15 @@ struct FactIterator {
   static std::unique_ptr<FactIterator> append(
     std::unique_ptr<FactIterator> left,
     std::unique_ptr<FactIterator> right
+  );
+
+  // Filter the facts of the underlying DB according to the provided
+  // visibility function. It is the responsibility of the caller to
+  // ensure that the resulting set of facts is valid (has no dangling
+  // fact IDs).
+  static std::unique_ptr<FactIterator> filter(
+    std::unique_ptr<FactIterator> base,
+    std::function<bool(Id id)> visible
   );
 };
 
