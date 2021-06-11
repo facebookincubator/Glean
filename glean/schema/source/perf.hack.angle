@@ -28,16 +28,15 @@ predicate FunctionData :
     products : [FunctionProducts],  # Top 3 - https://fburl.com/diffusion/r51gsa5v
   }
 
-predicate FunctionCallers :
+type FunctionCallers =
   { # Base query - https://fburl.com/diffusion/exc2nq9b
-      caller_definition : hack.FunctionDefinition, # Not yet needed
       caller_name : perf.hack.FunctionName,     # $caller['caller'] https://fburl.com/diffusion/16t1znli
       call_location : FileLine,            # $caller['file'], $caller['line']
       inclusive_cpu_caller : ScaledMillion,     # $data['callers']['count'] https://fburl.com/diffusion/wrp5fxza
   }
 
 # Example:  Products: ads:app_signals (29.7%)m_android (20.3%)ads:ads_signals (12.3%)
-predicate FunctionProducts :
+type FunctionProducts =
   { # Base query - https://fburl.com/diffusion/e9j9geet
       product_name : string,  # $data['products']['product']
       product_call_percent : ScaledMillion,  # $data['products']['count']  https://fburl.com/diffusion/z2rlovnv
