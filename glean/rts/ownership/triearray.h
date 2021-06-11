@@ -126,6 +126,9 @@ public:
   }
 
   std::vector<T*> flatten() {
+    if (maxkey_ < minkey_) {
+      return std::vector<T*>(0);
+    }
     std::vector<T*> vec(maxkey_+1, nullptr);
     traverse([&](const Tree& tree, uint64_t key, uint64_t size, uint64_t block) {
       auto *value = tree.value();
