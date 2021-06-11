@@ -31,6 +31,7 @@ import Glean.Database.Work.Heartbeat (Heartbeats)
 import Glean.Database.Work.Queue (WorkQueue)
 import Glean.RTS.Foreign.LookupCache (LookupCache)
 import qualified Glean.RTS.Foreign.LookupCache as LookupCache
+import Glean.RTS.Foreign.Ownership (Ownership, Slice)
 import Glean.RTS.Foreign.Subst (Subst)
 import Glean.RTS.Types (Fid(..))
 import Glean.Schema.Resolve (Schemas)
@@ -73,6 +74,12 @@ data OpenDB = forall storage. Storage storage => OpenDB
 
     -- When was the database last used
   , odbIdleSince :: TVar TimePoint
+
+    -- only for a read-only DB. Updated when a DB is finished.
+  , odbOwnership :: TVar (Maybe Ownership)
+
+    -- for a stacked update DB, keep track of the slice of the base DB
+  , odbBaseSlice :: Maybe Slice
   }
 
 -- State of a databases

@@ -118,7 +118,8 @@ deriveStoredImpl
   -> Thrift.DerivePredicateQuery
   -> IO Derivation
 deriveStoredImpl env@Env{..} log repo Thrift.DerivePredicateQuery{..} =
-  readDatabase env repo $ \schema _ -> do
+  readDatabase env repo $ \odb _ -> do
+  let schema = odbSchema odb
   pred <- getPredicateRef schema
   handle <- UUID.toText <$> UUID.nextRandom
   now <- getTimePoint

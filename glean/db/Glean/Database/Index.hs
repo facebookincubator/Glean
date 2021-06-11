@@ -68,10 +68,9 @@ kickOffDatabase :: Env -> Thrift.KickOff -> IO Thrift.KickOffResponse
 kickOffDatabase env@Env{..} Thrift.KickOff{..}
   | envReadOnly = dbError kickOff_repo "can't create database in read only mode"
   | otherwise = do
-      mode <- case kickOff_dependencies of
-        Nothing -> return $ Storage.Create lowestFid Nothing
-        Just (Dependencies_stacked repo) ->
-          readDatabase env repo $ \schema lookup -> do
+      let
+        stackedCreate repo =
+          readDatabase env repo $ \odb lookup -> do
             atomically $ do
               meta <- Catalog.readMeta envCatalog repo
               case metaCompleteness meta of
@@ -79,7 +78,11 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
                 c -> throwSTM $ InvalidDependency kickOff_repo repo $
                   "database is " <> showCompleteness c
             start <- firstFreeId lookup
-            return $ Storage.Create start (Just $ toSchemaInfo schema)
+            return $ Storage.Create start (Just $ toSchemaInfo (odbSchema odb))
+      mode <- case kickOff_dependencies of
+        Nothing -> return $ Storage.Create lowestFid Nothing
+        Just (Dependencies_stacked repo) -> stackedCreate repo
+        Just (Dependencies_pruned update) -> stackedCreate (pruned_base update)
 
       -- NOTE: We don't want to load recipes (which might fail) if we don't
       -- need them.
@@ -123,8 +126,8 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
           (atomically $ releaseDB env db) $
           do
             -- Open the new db in Create mode which will create the physical
-            -- storage. This might fail - in that case, we mark the db as failed.
-            opener <- asyncOpenDB env db version mode
+            -- storage. This might fail - in that case, we mark the db as failed
+            opener <- asyncOpenDB env db version mode kickOff_dependencies
               (do
                 -- On success, schedule the db's tasks. If this throws,
                 -- 'asyncOpenDB' will close the db and call our failure action

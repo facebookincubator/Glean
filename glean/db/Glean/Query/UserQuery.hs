@@ -120,10 +120,11 @@ genericUserQuery
 {-# INLINE genericUserQuery #-}
 genericUserQuery env repo query enc = do
   config@ServerConfig.Config{..} <- Observed.get (envServerConfig env)
-  readDatabase env repo $ \schema lookup ->
+  readDatabase env repo $ \odb lookup ->
+    let schema = odbSchema odb in
     maybe id withSavedAllocLimit config_query_alloc_limit
       $ performUserQuery enc schema
-      $ userQueryImpl env schema config lookup repo query
+      $ userQueryImpl env odb config lookup repo query
 
 -- | A generic implementation of lookup queries.
 genericUserQueryFacts
@@ -136,9 +137,9 @@ genericUserQueryFacts
 {-# INLINE genericUserQueryFacts #-}
 genericUserQueryFacts env repo query enc = do
   config <- Observed.get (envServerConfig env)
-  readDatabase env repo $ \schema lookup ->
-    performUserQuery enc schema $
-      userQueryFactsImpl schema config lookup query
+  readDatabase env repo $ \odb lookup ->
+    performUserQuery enc (odbSchema odb) $
+      userQueryFactsImpl (odbSchema odb) config lookup query
 
 -- | Results returned from a query, parametrised of the types of facts and
 -- statistics
@@ -435,20 +436,20 @@ userQueryFactsImpl
 -- resulting writes caused by the query.
 userQueryWrites
   :: Database.Env
-  -> DbSchema
+  -> OpenDB
   -> ServerConfig.Config
   -> Lookup
   -> Thrift.Repo
   -> Thrift.UserQuery
   -> IO (Thrift.UserQueryStats, Maybe Thrift.UserQueryCont, Maybe Thrift.Handle)
-userQueryWrites env schema config lookup repo q = do
+userQueryWrites env odb config lookup repo q = do
   Results{..} <- withStats $
-    userQueryImpl env schema config lookup repo q
+    userQueryImpl env odb config lookup repo q
   return (resStats, resCont, resWriteHandle)
 
 userQueryImpl
   :: Database.Env
-  -> DbSchema
+  -> OpenDB
   -> ServerConfig.Config
   -> Lookup
   -> Thrift.Repo
@@ -458,7 +459,7 @@ userQueryImpl
 -- Angle queries:
 userQueryImpl
   env
-  schema@DbSchema{..}
+  odb
   config@ServerConfig.Config{..}
   lookup
   repo
@@ -466,6 +467,7 @@ userQueryImpl
   | let opts = fromMaybe def userQuery_options
   , Thrift.QuerySyntax_ANGLE <- Thrift.userQueryOptions_syntax opts = do
     let
+      schema@DbSchema{..} = odbSchema odb
       opts = fromMaybe def userQuery_options
       stored = Thrift.userQueryOptions_store_derived_facts opts
       debug = Thrift.userQueryOptions_debug opts
@@ -616,11 +618,13 @@ userQueryImpl
 -- JSON queries:
 userQueryImpl
   env
-  schema@DbSchema{..}
+  odb
   config@ServerConfig.Config{..}
   lookup
   repo
   Thrift.UserQuery{..} = do
+    let schema@DbSchema{..} = odbSchema odb
+
     details@PredicateDetails{..} <-
       case lookupPredicate
           (SourceRef userQuery_predicate userQuery_predicate_version)

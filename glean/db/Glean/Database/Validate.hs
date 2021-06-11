@@ -15,8 +15,8 @@ import qualified Glean.RTS.Foreign.Inventory as Inventory
 import Glean.Types (Repo)
 
 validate :: Env -> Repo -> Validate -> IO ()
-validate env repo val = readDatabase env repo $ \schema db ->
-  Inventory.validate (schemaInventory schema) val db
+validate env repo val = readDatabase env repo $ \odb db ->
+  Inventory.validate (schemaInventory (odbSchema odb)) val db
 
 computeOwnership :: Env -> Repo -> IO ()
 computeOwnership env repo = withOpenDatabase env repo $ \OpenDB{..} ->

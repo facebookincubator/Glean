@@ -16,6 +16,7 @@ import Data.Int (Int64)
 import qualified Data.Map.Strict as Map
 import qualified Data.HashMap.Strict as HashMap
 import Data.List (sort)
+import Data.List.Split (splitOn)
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -207,12 +208,7 @@ options = info (parser <**> helper)
         writeFiles <- fileArgs
         finish <- finishOpt
         scribe <- Just <$> scribeOptions <|> pure Nothing
-        dependencies <- optional $ Thrift.Dependencies_stacked
-          <$> option (maybeReader Glean.parseRepo)
-          (  long "stacked"
-          <> metavar "REPO"
-          <> help "Create a stacked database"
-          )
+        dependencies <- optional (stackedOptions <|> updateOptions)
         properties <- many $ option readProperty
           (  long "property"
           <> metavar "NAME=VALUE"
@@ -222,6 +218,35 @@ options = info (parser <**> helper)
         maxConcurrency <- maxConcurrencyOpt
         experimentalFasterWriting <- experimentalFasterWritingOptions
         return Write{create=True, ..}
+
+    stackedOptions = Thrift.Dependencies_stacked
+      <$> option (maybeReader Glean.parseRepo)
+      (  long "stacked"
+      <> metavar "REPO"
+      <> help "Create a stacked database"
+      )
+
+    updateOptions = do
+      repo <- option (maybeReader Glean.parseRepo)
+        (  long "incremental"
+        <> metavar "REPO"
+        <> help "Create an incremental database"
+        )
+      let
+        splitUnits = map B8.pack . splitOn ","
+        include = (,False) . splitUnits <$> strOption
+          (  long "include"
+          <> metavar "unit,unit,.."
+          <> help "Include these units"
+          )
+        exclude = (,True) . splitUnits <$> strOption
+          (  long "exclude"
+          <> metavar "unit,unit,.."
+          <> help "Exclude these units"
+          )
+      ~(units, exclude) <- include <|> exclude
+      return $ Thrift.Dependencies_pruned $
+        Thrift.Pruned repo units exclude
 
     readProperty :: ReadM (Text,Text)
     readProperty = eitherReader $ \str ->

@@ -13,6 +13,7 @@ import qualified Glean.Database.Config as Database
 import qualified Glean.Database.Env as Database
 import Glean.Database.Schema (schemaInventory)
 import Glean.Database.Stuff (readDatabase)
+import Glean.Database.Types
 import Glean.FFI (invoke, with)
 import Glean.RTS.Foreign.Inventory (Inventory)
 import Glean.RTS.Foreign.Lookup
@@ -46,8 +47,8 @@ main =
   withConfigProvider cfgOpts $ \cfgAPI ->
   Database.withDatabases evb cfgDB cfgAPI $ \env ->
   readDatabase env cfgOriginal $ \_original_schema original ->
-  readDatabase env cfgNew $ \new_schema new ->
-  with (schemaInventory new_schema) $ \inventory_ptr ->
+  readDatabase env cfgNew $ \odb new ->
+  with (schemaInventory (odbSchema odb)) $ \inventory_ptr ->
   withLookup original $ \original_ptr ->
   withLookup new $ \new_ptr ->
   invoke $ glean_diff inventory_ptr original_ptr new_ptr

@@ -34,10 +34,6 @@ import Glean.Database.Exception
 import Glean.Database.Repo
 import qualified Glean.Database.Stats as Stats
 import Glean.Database.Storage
-  ( Storage
-  , Database
-  , Mode(..)
-  , canOpenVersion )
 import qualified Glean.Database.Storage as Storage
 import Glean.Database.Meta (Meta(..))
 import Glean.Database.Schema
@@ -49,11 +45,11 @@ import qualified Glean.RTS.Foreign.FactSet as FactSet
 import Glean.RTS.Foreign.Inventory (Inventory)
 import qualified Glean.RTS.Foreign.Lookup as Lookup
 import qualified Glean.RTS.Foreign.LookupCache as LookupCache
+import qualified Glean.RTS.Foreign.Ownership as Ownership
 import qualified Glean.RTS.Foreign.Stacked as Stacked
 import Glean.RTS.Foreign.Subst (Subst)
 import qualified Glean.RTS.Foreign.Subst as Subst
 import qualified Glean.ServerConfig.Types as ServerConfig
-import Glean.ServerConfig.Types (DBVersion(..))
 import Glean.Types (Repo)
 import qualified Glean.Types as Thrift
 import Glean.Util.Metric
@@ -88,24 +84,44 @@ withOpenDatabase env@Env{..} repo action =
       case r of
         Left odb -> return odb
         Right (version, mode) -> do
+          deps <- atomically $ metaDependencies <$>
+            Catalog.readMeta envCatalog dbRepo
           -- opening a DB has long uninterruptible sections so do it on a
           -- separate thread in case we get cancelled
           opener <-
-            asyncOpenDB env db version mode (return ()) (const $ return ())
+            asyncOpenDB env db version mode deps (return ()) (const $ return ())
           restore $ wait opener
     action odb `finally` do
       t <- getTimePoint
       atomically $ writeTVar (odbIdleSince odb) t
 
 withOpenDBLookup :: Env -> Repo -> OpenDB -> (Lookup.Lookup -> IO a) -> IO a
-withOpenDBLookup env@Env{..} repo OpenDB{..} f = do
+withOpenDBLookup env@Env{..} repo
+    OpenDB{ odbHandle = handle, odbBaseSlice = baseSlice } f = do
   deps <- atomically $ metaDependencies <$> Catalog.readMeta envCatalog repo
   case deps of
-    Nothing -> Lookup.withLookup odbHandle f
+    Nothing -> Lookup.withLookup handle f
     Just (Thrift.Dependencies_stacked base_repo) ->
       readDatabase env base_repo $ \_ base ->
-      Lookup.withLookup odbHandle $ \lookup ->
+      Lookup.withLookup handle $ \lookup ->
       Lookup.withLookup (Stacked.stacked base lookup) f
+    Just (Thrift.Dependencies_pruned update) -> do
+      let base_repo = Thrift.pruned_base update
+      case baseSlice of
+        Nothing -> throwIO $ Thrift.Exception $
+          repoToText repo <> ": missing base slice"
+        Just slice ->
+          readDatabase env base_repo $ \baseOdb base -> do
+          maybeOwn <- readTVarIO (odbOwnership baseOdb)
+          case maybeOwn of
+            Nothing -> throwIO $ Thrift.Exception $
+              "base DB " <> repoToText base_repo <>
+              " has no ownership info"
+            Just own ->
+              Lookup.withLookup (Ownership.sliced own slice base) $ \sliced ->
+              Lookup.withLookup handle $ \lookup ->
+              Lookup.withLookup (Stacked.stacked sliced lookup) f
+
 
 withWritableDatabase :: Env -> Repo -> (WriteQueue -> IO a) -> IO a
 withWritableDatabase env repo action =
@@ -211,10 +227,10 @@ writeDatabase env repo factBatch latency =
 readDatabase
   :: Env
   -> Repo
-  -> (DbSchema -> Lookup.Lookup -> IO a)
+  -> (OpenDB -> Lookup.Lookup -> IO a)
   -> IO a
 readDatabase env repo f = withOpenDatabase env repo $ \odb ->
-  withOpenDBLookup env repo odb $ f $ odbSchema odb
+  withOpenDBLookup env repo odb $ f odb
 
 newDB :: Repo -> STM DB
 newDB repo = DB repo
@@ -441,13 +457,14 @@ asyncOpenDB
   -> DB
   -> DBVersion
   -> Mode
+  -> Maybe Thrift.Dependencies
   -> IO ()
       -- ^ Action to run on success before setting the db status to
       -- 'Open'. If this fails, we will call the failure action.
   -> (SomeException -> IO ())
       -- ^ Action to run on any failure.
   -> IO (Async OpenDB)
-asyncOpenDB env@Env{..} db@DB{..} version mode on_success on_failure =
+asyncOpenDB env@Env{..} db@DB{..} version mode deps on_success on_failure =
   -- Be paranoid about 'spawnMask' itself throwing.
   handling_failures $ Warden.spawnMask envWarden $ \restore ->
   bracket_ (atomically $ acquireDB db) (atomically $ releaseDB env db) $
@@ -465,6 +482,12 @@ asyncOpenDB env@Env{..} db@DB{..} version mode on_success on_failure =
             writing <- case mode of
               ReadOnly -> return Nothing
               _ -> Just <$> setupWriting env handle
+            ownership <- case mode of
+              ReadOnly -> Just <$>
+                computeOwnership handle (schemaInventory dbSchema)
+              _ -> return Nothing
+            ownershipVar <- newTVarIO ownership
+            maybeSlice <- baseSlice env deps
             idle <- newTVarIO =<< getTimePoint
             on_success
             return OpenDB
@@ -472,6 +495,8 @@ asyncOpenDB env@Env{..} db@DB{..} version mode on_success on_failure =
               , odbWriting = writing
               , odbSchema = dbSchema
               , odbIdleSince = idle
+              , odbOwnership = ownershipVar
+              , odbBaseSlice = maybeSlice
               }
           atomically $ writeTVar dbState $ Open odb
           return odb
@@ -494,3 +519,26 @@ getDbSchemaVersion env repo = do
   case HashMap.lookup "glean.schema_version" props of
     Just txt | Right v <- textToInt txt -> return (Just (fromIntegral v))
     _otherwise -> return Nothing
+
+
+-- TODO: later we will store the slice in the stacked DB, and read it
+-- back directly from there.
+baseSlice :: Env -> Maybe Thrift.Dependencies -> IO (Maybe Ownership.Slice)
+baseSlice env (Just (Thrift.Dependencies_pruned update)) = do
+  let base_repo = Thrift.pruned_base update
+  withOpenDatabase env base_repo $ \OpenDB{..} -> do
+    maybeOwn <- readTVarIO odbOwnership
+    case maybeOwn of
+      Nothing -> throwIO $ Thrift.Exception $
+        "base DB " <> repoToText base_repo <>
+        " has no ownership info"
+      Just own -> do
+        unitIds <- forM (Thrift.pruned_units update) $ \unit -> do
+          r <- Storage.getUnitId odbHandle unit
+          case r of
+            Nothing -> throwIO $ Thrift.BadQuery $
+              "unkonwn unit: " <> Text.pack (show unit)
+            Just uid -> return uid
+        Just <$> Ownership.slice own unitIds (Thrift.pruned_exclude update)
+baseSlice _ _ =
+  return Nothing

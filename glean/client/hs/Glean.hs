@@ -54,6 +54,8 @@ module Glean
   , Outcome(..)
   , Success(..)
   , Failure(..)
+  , Pruned(..)
+  , Dependencies(..)
 
   -- * Repositories
   , Repo(..)

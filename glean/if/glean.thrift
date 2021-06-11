@@ -187,9 +187,17 @@ union Completeness {
 
 typedef map<string,string> (hs.type = "HashMap") DatabaseProperties
 
+// A Stacked DB that views only a portion of the underlying DB
+struct Pruned {
+  1: Repo base
+  2: list<binary> units
+  3: bool exclude  // True => exclude the units, otherwise include
+}
+
 // Dependencies of a DB (to be extended)
 union Dependencies {
-  1: Repo stacked;
+  1: Repo stacked;  // TODO remove?
+  2: Pruned pruned;
 } (hs.nonempty)
 
 // Information about a database stored by Glean.
@@ -785,7 +793,7 @@ struct KickOff {
     // "glean."  are reserved for use by Glean itself.
 
   4: optional Dependencies dependencies;
-    // What this DB depends on. WARNING: DO NOT USE YET.
+    // What this DB depends on.
 }
 
 struct KickOffResponse {

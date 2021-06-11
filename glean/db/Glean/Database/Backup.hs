@@ -36,7 +36,8 @@ import Glean.Database.Repo
 import qualified Glean.Database.Storage as Storage
 import Glean.Database.Stuff (withOpenDatabase, thinSchema, schemaUpdated)
 import Glean.Database.Types
-import Glean.Database.Schema.Types (lookupPid, predicateRef)
+import Glean.Database.Schema.Types
+import Glean.Database.Storage
 import Glean.ServerConfig.Types (DatabaseBackupPolicy(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types as Thrift
@@ -205,6 +206,8 @@ doFinalize env@Env{..} repo =
         say logInfo "optimising"
         Storage.optimize odbHandle
       thinSchema repo odb
+      own <- computeOwnership odbHandle (schemaInventory odbSchema)
+      atomically $ writeTVar odbOwnership (Just own)
     -- update and re-merge our internal representation of the schema
     schemaUpdated env (Just repo)
     time <- getCurrentTime

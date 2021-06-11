@@ -89,6 +89,8 @@ runDatabaseJanitor env = do
     dependencies = stacked . metaDependencies . itemMeta
     stacked (Just (Thrift.Dependencies_stacked repo)) =
       [repo `Map.lookup` repoMap]
+    stacked (Just (Thrift.Dependencies_pruned update)) =
+      [pruned_base update `Map.lookup` repoMap]
     stacked Nothing = []
     repoMap =
       Map.fromList $ map (\item -> (itemRepo item, item)) allDBs

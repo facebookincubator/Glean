@@ -135,6 +135,7 @@ recalculateStatus Catalog{..} entry = do
 
         dependencies = case metaDependencies meta of
           Just (Thrift.Dependencies_stacked repo) -> [repo]
+          Just (Thrift.Dependencies_pruned up) -> [Thrift.pruned_base up]
           Nothing -> []
         live = entryRepo entry `HashMap.member` entriesLive
       forM_ dependencies $ \dep -> if live then
