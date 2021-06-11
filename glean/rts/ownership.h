@@ -1,5 +1,6 @@
 #pragma once
 
+#include "glean/rts/id.h"
 #include "glean/rts/ownership/uset.h"
 #include "glean/rts/id.h"
 
@@ -12,6 +13,8 @@ namespace rts {
 
 class Inventory;
 struct Lookup;
+
+using UnitId = uint32_t;
 
 /**
  * Raw ownership data (facts -> unit)
@@ -27,7 +30,7 @@ struct OwnershipUnit {
   };
 
   /** The ownership unit that the facts belong to. */
-  uint32_t unit;
+  UnitId unit;
 
   /** Fact ids owner by the unit. */
   folly::Range<const Ids *> ids;
@@ -42,10 +45,28 @@ struct OwnershipUnitIterator {
   virtual folly::Optional<OwnershipUnit> get() = 0;
 };
 
+///
+// A Slice is a bitmap, with one bit for each Uset, to indicate
+// whether facts with that Uset should be visible or not.
+//
+// A Slice only makes sense in the context of a particular DB.
+//
+struct Slice {
+  explicit Slice(std::vector<bool> set) : set_(std::move(set)) {}
+
+  bool visible(UsetId uset) { return set_[uset]; }
+
+ private:
+  std::vector<bool> set_;
+};
 
 struct Ownership {
   virtual ~Ownership() {}
   virtual UsetId getUset(Id id) = 0;
+  virtual std::unique_ptr<Slice> slice(
+      std::vector<UnitId> units,
+      bool exclude) const = 0;
+    // units must be sorted
 };
 
 std::unique_ptr<Ownership> computeOwnership(

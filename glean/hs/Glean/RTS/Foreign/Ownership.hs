@@ -3,8 +3,11 @@ module Glean.RTS.Foreign.Ownership
   , compute
   , UnitId(..)
   , Ownership
+  , Slice
+  , slice
   ) where
 
+import Data.Coerce
 import Foreign hiding (with)
 import Foreign.C
 
@@ -38,6 +41,24 @@ compute inv l iter =
   withLookup l $ \lookup ->
   construct $ invoke $ glean_ownership_compute inv_ptr lookup iter
 
+newtype Slice = Slice (ForeignPtr Slice)
+
+instance Object Slice where
+  wrap = Slice
+  unwrap (Slice p) = p
+  destroy = glean_slice_free
+
+-- | Construct a slice view of a DB from a set of UnitIds
+slice :: Ownership -> [UnitId] -> Bool -> IO Slice
+slice ownership units exclude =
+  withArrayLen (coerce units) $ \unit_arr_size unit_arr ->
+  with ownership $ \ownership_ptr ->
+  construct $ invoke $ glean_slice_compute
+    ownership_ptr
+    unit_arr
+    (fromIntegral unit_arr_size)
+    (fromIntegral (fromEnum exclude))
+
 foreign import ccall unsafe glean_ownership_unit_iterator_free
   :: UnitIterator -> IO ()
 
@@ -50,3 +71,14 @@ foreign import ccall safe glean_ownership_compute
 
 foreign import ccall unsafe "&glean_ownership_free"
    glean_ownership_free :: FunPtr (Ptr Ownership -> IO ())
+
+foreign import ccall safe glean_slice_compute
+  :: Ptr Ownership
+  -> Ptr Word32
+  -> CSize
+  -> CInt
+  -> Ptr (Ptr Slice)
+  -> IO CString
+
+foreign import ccall unsafe "&glean_slice_free"
+   glean_slice_free :: FunPtr (Ptr Slice -> IO ())

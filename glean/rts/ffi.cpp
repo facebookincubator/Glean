@@ -17,6 +17,7 @@
 
 #include <folly/Exception.h>
 #include <vector>
+#include <algorithm>
 
 using namespace facebook::glean;
 using namespace facebook::glean::rts;
@@ -857,6 +858,23 @@ const char *glean_ownership_compute(
 
 void glean_ownership_free(Ownership *own) {
   ffi::free_(own);
+}
+
+const char *glean_slice_compute(
+  Ownership *ownership,
+  uint32_t *unit_ids,
+  size_t unit_ids_size,
+  int exclude,
+  Slice **result) {
+  return ffi::wrap([=] {
+    auto vec = std::vector<uint32_t>(unit_ids, unit_ids + unit_ids_size);
+    std::sort(vec.begin(), vec.end());
+    *result = ownership->slice(std::move(vec), exclude != 0).release();
+  });
+}
+
+void glean_slice_free(Slice *slice) {
+  ffi::free_(slice);
 }
 
 }
