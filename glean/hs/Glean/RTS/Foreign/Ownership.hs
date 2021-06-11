@@ -5,8 +5,11 @@ module Glean.RTS.Foreign.Ownership
   , Ownership
   , Slice
   , slice
+  , sliced
+  , Sliced
   ) where
 
+import Control.Exception
 import Data.Coerce
 import Foreign hiding (with)
 import Foreign.C
@@ -59,6 +62,21 @@ slice ownership units exclude =
     (fromIntegral unit_arr_size)
     (fromIntegral (fromEnum exclude))
 
+data Sliced base = Sliced Ownership Slice base
+
+sliced :: CanLookup base => Ownership -> Slice -> base -> Sliced base
+sliced = Sliced
+
+instance CanLookup base => CanLookup (Sliced base) where
+  withLookup (Sliced ownership slice base) f =
+    withLookup base $ \p_base ->
+    with ownership $ \ownership_ptr ->
+    with slice $ \slice_ptr ->
+    bracket
+      (invoke $ glean_make_sliced p_base ownership_ptr slice_ptr)
+      glean_sliced_free
+      f
+
 foreign import ccall unsafe glean_ownership_unit_iterator_free
   :: UnitIterator -> IO ()
 
@@ -82,3 +100,13 @@ foreign import ccall safe glean_slice_compute
 
 foreign import ccall unsafe "&glean_slice_free"
    glean_slice_free :: FunPtr (Ptr Slice -> IO ())
+
+foreign import ccall unsafe glean_make_sliced
+  :: Lookup
+  -> Ptr Ownership
+  -> Ptr Slice
+  -> Ptr Lookup
+  -> IO CString
+
+foreign import ccall unsafe
+   glean_sliced_free :: Lookup -> IO ()

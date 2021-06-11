@@ -43,6 +43,7 @@ typedef struct QueryResults QueryResults;
 typedef struct OwnershipUnitIterator OwnershipUnitIterator;
 typedef struct Ownership Ownership;
 typedef struct Slice Slice;
+typedef struct Sliced Sliced;
 
 #ifdef __cplusplus
 }
@@ -508,6 +509,15 @@ const char *glean_slice_compute(
 );
 
 void glean_slice_free(Slice *slice);
+
+const char *glean_make_sliced(
+  Lookup *lookup,
+  Ownership *ownership,
+  Slice *slice,
+  Sliced **sliced
+);
+
+void glean_sliced_free(Sliced *sliced);
 
 #ifdef __cplusplus
 }

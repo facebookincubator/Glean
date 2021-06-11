@@ -877,6 +877,22 @@ void glean_slice_free(Slice *slice) {
   ffi::free_(slice);
 }
 
+
+const char *glean_make_sliced(
+  Lookup *lookup,
+  Ownership *ownership,
+  Slice *slice,
+  Sliced **sliced) {
+  return ffi::wrap([=] {
+    *sliced = new Sliced(lookup, ownership, slice);
+  });
+}
+
+void glean_sliced_free(Sliced *sliced) {
+  ffi::free_(sliced);
+}
+
+
 }
 }
 }
