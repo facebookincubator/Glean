@@ -31,8 +31,8 @@ predicate FunctionData :
 type FunctionCallers =
   { # Base query - https://fburl.com/diffusion/exc2nq9b
       caller_name : perf.hack.FunctionName,     # $caller['caller'] https://fburl.com/diffusion/16t1znli
-      call_location : FileLine,            # $caller['file'], $caller['line']
-      inclusive_cpu_caller : ScaledMillion,     # $data['callers']['count'] https://fburl.com/diffusion/wrp5fxza
+      caller_location : FileLine,            # $caller['file'], $caller['line']
+      caller_call_percent : ScaledMillion,     # $data['callers']['count'] https://fburl.com/diffusion/wrp5fxza
   }
 
 # Example:  Products: ads:app_signals (29.7%)m_android (20.3%)ads:ads_signals (12.3%)
