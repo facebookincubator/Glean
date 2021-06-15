@@ -54,20 +54,6 @@ syncWriteJsonBatch env repo batch = do
   tick <- beginTick 1
   writeJsonBatch env repo batch tick
 
-buildJsonBatch
-  :: DbSchema
-  -> Maybe SendJsonBatchOptions
-  -> [JsonFactBatch]
-  -> IO Batch
-buildJsonBatch dbSchema opts batches =
-  withFactBuilder $ \builders ->
-    mapM_ (writeBatch dbSchema builders) batches
-  where
-    writeBatch dbSchema builders JsonFactBatch{..} = do
-      details <- predDetailsForWriting dbSchema jsonFactBatch_predicate
-      let opts' = fromMaybe def opts
-      mapM_ (writeFact dbSchema opts' builders details) jsonFactBatch_facts
-
 writeJsonBatch
   :: Env
   -> Repo
@@ -79,6 +65,17 @@ writeJsonBatch env repo SendJsonBatch{..} tick = do
   batch <- buildJsonBatch dbSchema sendJsonBatch_options sendJsonBatch_batches
   _ <- writeDatabase env repo batch tick
   return ()
+
+buildJsonBatch
+  :: DbSchema
+  -> Maybe SendJsonBatchOptions
+  -> [JsonFactBatch]
+  -> IO Batch
+buildJsonBatch dbSchema opts batches =
+  withFactBuilder $ \builders ->
+    forM_ batches $ \JsonFactBatch{..} ->
+      writeFacts dbSchema (fromMaybe def opts) builders
+        jsonFactBatch_predicate jsonFactBatch_facts jsonFactBatch_unit
 
 writeJsonBatchByteString
   :: Env
