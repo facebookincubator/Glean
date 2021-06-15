@@ -75,6 +75,7 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
               meta <- Catalog.readMeta envCatalog repo
               case metaCompleteness meta of
                 Complete{} -> return ()
+                Finalizing{} -> return ()
                 c -> throwSTM $ InvalidDependency kickOff_repo repo $
                   "database is " <> showCompleteness c
             start <- firstFreeId lookup
