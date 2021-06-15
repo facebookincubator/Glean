@@ -31,10 +31,8 @@ import Data.Text.Prettyprint.Doc.Render.Text (renderIO)
 import Data.Text.Prettyprint.Doc.Util as Pretty hiding (words)
 import Data.Time.Clock
 import Data.Time.Clock.POSIX
-import qualified Data.Time.Format as Time
 import qualified Options.Applicative as O
 import Options.Applicative hiding (help)
-import System.Console.ANSI
 import Util.Timing
 import qualified System.Console.Haskeline as Haskeline
 import System.Environment (lookupEnv)
@@ -78,6 +76,7 @@ import Glean.Util.ConfigProvider
 #if FACEBOOK
 import Glean.Util.CxxXRef
 #endif
+import Glean.Util.ShellPrint
 import Glean.Util.Some
 import qualified Glean.Util.ThriftSource as ThriftSource
 
@@ -273,61 +272,12 @@ displayDatabases all verbose filterStr = do
   dbs <- getDatabases all filterStr
   now <- liftIO $ utcTimeToPOSIXSeconds <$> getCurrentTime
   state <- getState
-  let colour col s
-        | isTTY state =
-          setSGRCode [SetColor Foreground Vivid col] <> s <>
-          setSGRCode [Reset]
-        | otherwise = s
   outh <- liftIO $ readMVar $ outputHandle state
-  -- TODO: Move this to Pretty once we add support for formatting annotations
   liftIO $ forM_ (sortOn Thrift.database_created_since_epoch dbs) $ \db -> do
-    let
-      (status, col) =
-        case Thrift.database_status db of
-          Just Thrift.DatabaseStatus_Complete -> ("(complete)", Green)
-          Just Thrift.DatabaseStatus_Finalizing -> ("(finalizing)", Green)
-          Just Thrift.DatabaseStatus_Incomplete -> ("(incomplete)", Blue)
-          Just Thrift.DatabaseStatus_Restoring -> ("(restoring)", Black)
-          Just Thrift.DatabaseStatus_Broken -> ("(broken)", Red)
-          Just Thrift.DatabaseStatus_Restorable -> ("(restorable)", Black)
-          Just Thrift.DatabaseStatus_Missing -> ("(missing deps)", Black)
-          Nothing -> ("(unknown)", Red)
     let t0 = Time (round now)
-    hPutStrLn outh $ unlines $
-      [ colour col (repoString $ Thrift.database_repo db) <> " " <> status ]
-      ++
-      [ "  Created: " <> t <>
-        let age = t0 `timeDiff` fromUTCTime utc in
-        " (" <> Text.unpack (ppTimeSpanWithGranularity Hour age) <> " ago)"
-      | Just t <- [Text.unpack <$> Thrift.database_created db]
-      , not (null t)
-      , Just utc <-
-        [Time.parseTimeM False Time.defaultTimeLocale iso8601 t]
-      ]
-      ++
-      ["  Backup: " ++ Text.unpack loc
-      | verbose ||
-        Thrift.database_status db == Just Thrift.DatabaseStatus_Restorable
-      , Just loc <- [Thrift.database_location db]]
-      ++
-      ["  Expires in: " ++ Text.unpack (ppTimeSpan span)
-      | verbose
-      , Just exp <- [Thrift.unPosixEpochTime <$> Thrift.database_expire_time db]
-      , let span = TimeSpan (fromIntegral (exp - round now))
-      ]
-      ++
-      ["  Shard: " ++ Text.unpack (Glean.dbShard db)
-      | verbose
-      ]
-      ++
-      [ "    " <> Text.unpack name <> ": " <> Text.unpack value
-      | verbose
-      , (name,value) <- sortOn fst $
-          HashMap.toList (Thrift.database_properties db)
-      ]
+    shellPrint outh verbose (isTTY state) t0 db
+    hPutStrLn outh ""
 
-iso8601 :: String
-iso8601 = "%Y-%m-%dT%H:%M:%SZ"
 
 selectDatabase
   :: Maybe String   -- ^ Nothing <=> use the latest complete DB
