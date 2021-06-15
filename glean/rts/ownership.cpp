@@ -255,7 +255,10 @@ struct OwnershipImpl final : Ownership {
       sets_(std::move(sets)), facts_(std::move(facts)) {}
 
   UsetId getUset(Id id) override {
-    return facts_[id.toWord()];
+    // facts_.size() might be smaller than the total number of facts
+    // if there were some unowned facts at the end, so we need a
+    // bounds check.
+    return id.toWord() < facts_.size() ? facts_[id.toWord()] : INVALID_USET;
   }
 
   std::unique_ptr<Slice> slice(

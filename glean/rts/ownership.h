@@ -54,7 +54,9 @@ struct OwnershipUnitIterator {
 struct Slice {
   explicit Slice(std::vector<bool> set) : set_(std::move(set)) {}
 
-  bool visible(UsetId uset) { return set_[uset]; }
+  bool visible(UsetId uset) {
+    return uset != INVALID_USET ? set_[uset] : false;
+  }
 
  private:
   std::vector<bool> set_;

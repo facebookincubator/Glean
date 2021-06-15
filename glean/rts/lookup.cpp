@@ -191,6 +191,13 @@ struct FilterIterator final : FactIterator {
   }
 
   Fact::Ref get(Demand demand) override {
+    // TODO: If we're doing a prefix seek and demand requires values, this
+    // will do 2 DB lookups (to get the value) even for facts that we
+    // skip which can be pretty significant. One possibility to avoid
+    // this is to do a KeyOnly lookup first, check the fact id and do
+    // a KeyValue lookup (if necessary) only if we want the
+    // fact. Another is to push the filtering all the way down into
+    // the individual iterators (ugly).
     auto r = base_->get(demand);
     while (r.id != Id::invalid() && !visible_(r.id)) {
       base_->next();

@@ -185,8 +185,74 @@ dupSetTest = TestCase $
       predicate @Glean.Test.Node wild
     assertEqual "dupSetTest" 2 (length results)
 
+orphanTest :: Test
+orphanTest = TestCase $
+  withTestEnv [] $ \env -> do
+    let base = Repo "base" "0"
+    kickOffTestDB env base id
+    writeFactsIntoDB env base [ Glean.Test.allPredicates ] $ do
+      d <- withUnit "D" $
+        makeFact @Glean.Test.Node (Glean.Test.Node_key "d")
+      c <- withUnit "C" $ do
+        c <- makeFact @Glean.Test.Node (Glean.Test.Node_key "c")
+        makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key c d)
+        return c
+      b <- withUnit "B" $ do
+        b <- makeFact @Glean.Test.Node (Glean.Test.Node_key "b")
+        makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key b d)
+        return b
+      -- these facts are orphans:
+      a <- makeFact @Glean.Test.Node (Glean.Test.Node_key "a")
+      makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key a b)
+      makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key a c)
+    completeTestDB env base
+
+    -- exclude all of B, C, D
+    let inc = Repo "base-inc" "0"
+    kickOffTestDB env inc $ \kickOff ->
+      kickOff { kickOff_dependencies = Just $
+        Dependencies_pruned def {
+          pruned_base = base,
+          pruned_units = ["B","C","D"],
+          pruned_exclude = True
+        } }
+
+    -- no nodes should exist
+    results <- runQuery_ env inc $ query $
+      predicate @Glean.Test.Node wild
+    assertEqual "orphan 0" [] results
+
+    -- no edges should exist
+    results <- runQuery_ env inc $ query $
+      predicate @Glean.Test.Edge
+        (rec $ field @"parent" (rec $ field @"label" (string "a") end) end)
+    assertEqual "orphan 1" [] results
+
+    -- exclude just B
+    let inc = Repo "base-inc" "1"
+    kickOffTestDB env inc $ \kickOff ->
+      kickOff { kickOff_dependencies = Just $
+        Dependencies_pruned def {
+          pruned_base = base,
+          pruned_units = ["B"],
+          pruned_exclude = True
+        } }
+
+    -- 2 nodes now
+    results <- runQuery_ env inc $ query $
+      predicate @Glean.Test.Node wild
+    assertEqual "orphan 2" 2 (length results)
+
+    -- one edge
+    results <- runQuery_ env inc $ query $
+      predicate @Glean.Test.Edge
+        (rec $ field @"child" (rec $ field @"label" (string "d") end) end)
+    assertEqual "orphan 3" 1 (length results)
+
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "incrementalTest" incrementalTest
   , TestLabel "dupSetTest" dupSetTest
+  , TestLabel "orphanTest" orphanTest
   ]
