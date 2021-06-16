@@ -38,13 +38,13 @@ queryParser = TestCase $ do
   let r = parseQuery "}"
   either print (putDoc . pretty) r
   assertBool "parse error" $ case r of
-    Left s -> "line 1, column 1: parse error at: }" `isPrefixOf` s
+    Left s -> "line 1, column 1\nparse error at: }" `isPrefixOf` s
     _ -> False
 
   let r = parseQuery "A\n    where"
   either print (putDoc . pretty) r
   assertBool "parse error 2" $ case r of
-    Left s -> "line 2, column 10: parse error at: end of string" `isPrefixOf` s
+    Left s -> "line 2, column 10\nparse error at: end of string" `isPrefixOf` s
     _ -> False
 
 
@@ -57,7 +57,7 @@ schemaParser = TestCase $ do
   |]
   either print (putDoc . pretty) r
   assertBool "schema parser 1" $ case r of
-    Left s -> "parsertest.angle: line 1" `isInfixOf` s
+    Left s -> "line 1, column 5\nparsertest.angle:" `isInfixOf` s
     _ -> False
 
   -- empty enum is not allowed

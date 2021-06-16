@@ -717,7 +717,7 @@ prettyErrorIn pat doc = prettyErrorAt (sourcePatSpan pat) doc
 
 prettyErrorAt :: IsSrcSpan span => span -> Doc ann -> T a
 prettyErrorAt span doc = prettyError $ vcat
-  [ pretty $ startLoc span
+  [ pretty span
   , doc
   ]
 

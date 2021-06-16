@@ -25,10 +25,9 @@ import Data.Maybe
 import Data.Ord
 import Text.Printf
 import qualified Data.Text as Text
-import qualified Data.Text.IO as Text
 import Data.Text.Prettyprint.Doc as Pretty hiding ((<>), pageWidth)
-import Data.Text.Prettyprint.Doc.Render.Text (renderIO)
 import Data.Text.Prettyprint.Doc.Util as Pretty hiding (words)
+import qualified Data.Text.Prettyprint.Doc.Render.Terminal as Pretty
 import Data.Time.Clock
 import Data.Time.Clock.POSIX
 import qualified Options.Applicative as O
@@ -42,6 +41,7 @@ import System.IO.Temp
 import System.Process (callCommand)
 import System.Mem.Weak
 import System.Posix.Signals
+import System.Exit
 import qualified Text.JSON as JSON
 import Text.Parsec (runParser)
 import TextShow
@@ -71,6 +71,7 @@ import Glean.Schema.Util
 import Glean.Shell.Index
 import Glean.Shell.Terminal
 import Glean.Shell.Types
+import Glean.Shell.Error (Ann, BadQuery(..), prettyBadQuery)
 import qualified Glean.Types as Thrift
 import Glean.Util.ConfigProvider
 #if FACEBOOK
@@ -142,15 +143,15 @@ options = info (O.helper <*> liftA2 (,) parser configOptions) fullDesc
           "angle" -> Just ShellAngle
           _ -> Nothing
 
-output :: Doc a -> Eval ()
+output :: Doc Ann -> Eval ()
 output doc = do
   ShellState{..} <- getState
   out <- liftIO $ readMVar outputHandle
   liftIO
-    $ renderIO out
-    $ unAnnotateS
+    $ Pretty.renderIO out
     $ layoutPretty
         LayoutOptions{ layoutPageWidth = fromMaybe Unbounded pageWidth }
+    $ (if isTTY then id else Pretty.unAnnotate)
     $ doc <> hardline
 
 newtype Repl a = Repl
@@ -809,6 +810,12 @@ userFact bang fid = do
     JSON.Ok (value :: JSON.JSValue) ->
       output $ pretty pref <> line <> pretty value
 
+asBadQuery :: Thrift.QuerySyntax -> String -> Thrift.BadQuery -> BadQuery
+asBadQuery syntax query (Thrift.BadQuery err) =
+  if syntax == Thrift.QuerySyntax_ANGLE
+     then BadQueryAngle (Text.pack query) err
+     else BadQueryJSON err
+
 runUserQuery :: SchemaQuery -> Eval ()
 runUserQuery SchemaQuery
     { sqPredicate = str
@@ -821,8 +828,8 @@ runUserQuery SchemaQuery
     , sqOmitResults = omitResults } = do
   let SourceRef pred maybeVer = parseRef (Text.pack str)
   ShellState{..} <- getState
-  Thrift.UserQueryResults{..} <- withRepo $ \repo -> withBackend $ \be ->
-    liftIO $ Glean.userQuery be repo $
+  Thrift.UserQueryResults{..} <- withRepo $ \repo -> withBackend $ \be -> do
+    liftIO $ handle (throwIO . asBadQuery syntax rest) $ Glean.userQuery be repo
       def { Thrift.userQuery_predicate = pred
           , Thrift.userQuery_predicate_version = maybeVer
           , Thrift.userQuery_query =
@@ -997,8 +1004,8 @@ repl = replMask $ \restore ->
             liftIO $ putStrLn "Interrupted"
             return False
           | Just SomeAsyncException{} <- fromException e -> liftIO $ throwIO e
-          | Just (Thrift.BadQuery txt) <- fromException e -> do
-            liftIO $ Text.putStrLn txt
+          | Just (err :: BadQuery) <- fromException e -> do
+            Repl $ lift $ output $ prettyBadQuery err
             return False
           | otherwise -> do
             liftIO $ putStrLn $ "*** Exception: " <> show e
@@ -1150,7 +1157,9 @@ evalMain cfg = do
         initialize cfg
         forM_ whole $ \ q -> do
           liftIO $ putStr "> " >> putStrLn q;
-          void $ evaluate q
+          void (evaluate q) `C.catch` \e -> do
+            output $ prettyBadQuery e
+            liftIO exitFailure
 
 setupLocalSchema :: Config -> IO (Config, Maybe (Eval ()))
 setupLocalSchema cfg = do

@@ -15,6 +15,7 @@ import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import Data.Text (Text)
 import Data.Word
+import Data.Text.Prettyprint.Doc (pretty)
 
 import Glean.Angle.Lexer
 import Glean.Schema.Util
@@ -346,6 +347,10 @@ instance HasSpan (SourcePat_ SrcSpan a b) where
 s :: (HasSpan a, HasSpan b) => a -> b -> SrcSpan
 s from to = spanBetween (sspan from) (sspan to)
 
+-- | Located between two items
+lbetween :: Located a -> Located b -> c -> Located c
+lbetween (L from _) (L to _) = L (spanBetween from to)
+
 invalid :: SourcePat
 invalid = Nat invalidSrcSpan (fromIntegral iNVALID_ID)
   where
@@ -353,14 +358,16 @@ invalid = Nat invalidSrcSpan (fromIntegral iNVALID_ID)
     invalidLoc = SrcLoc (-1) (-1)
 
 parseError :: Located Token -> P a
-parseError (L (SrcSpan (SrcLoc line col) _) (Token b t)) = do
+parseError (L (SrcSpan loc _) (Token b t)) = do
   filename <- getFile
   alexError $
-    (if null filename then "" else filename <> ": ") <>
-    "line " <> show line <> ", column " <> show col <>
-    ": parse error at: " <> case t of
+    show (pretty loc) <> "\n" <>
+    (if null filename then "" else filename <> ": ")
+    <> "parse error at: "
+    <> case t of
       T_EOF -> "end of string"
       _ -> LB.unpack b
+
 
 -- Accept older constructs for backwards-compability only when we're
 -- parsing the appropriate version(s) of the syntax.
