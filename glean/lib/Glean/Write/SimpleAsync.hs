@@ -13,10 +13,10 @@ import qualified Data.ByteString as BS
 import Data.Default
 import Util.Log (logError, logInfo)
 
-import Glean.Backend (Backend, SchemaPredicates)
-import qualified Glean.Types as Thrift -- gen
+import Glean
 import Glean.Util.Time ( toDiffMillis )
 import Glean.Write.Async
+import Glean.Types
 
 -- | 'withSimpleSender' has 'senderLog' write to "Util.Log"
 --
@@ -24,7 +24,7 @@ import Glean.Write.Async
 withSimpleSender
   :: (Backend be)
   => be
-  -> Thrift.Repo
+  -> Repo
   -> [SchemaPredicates]
   -> SendQueueSettings
   -> (Sender -> IO a)
@@ -62,7 +62,7 @@ withSimpleWriter sender settings =
       { writerLog = \event -> do
           case event of
             WriterPushing batch -> logInfo $
-              "pushing batch " ++ show (BS.length $ Thrift.batch_facts batch)
+              "pushing batch " ++ show (BS.length $ batch_facts batch)
             WriterStalling -> logInfo "writing stalled"
             WriterResuming time -> logInfo $
               "writing caught up in " ++ show (toDiffMillis time) ++ "ms"
@@ -72,7 +72,7 @@ withSimpleWriter sender settings =
 withTestWriter
   :: (Backend be)
   => be
-  -> Thrift.Repo
+  -> Repo
   -> [SchemaPredicates]
   -> (Writer -> IO a)
   -> IO a
