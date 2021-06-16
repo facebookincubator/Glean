@@ -445,7 +445,10 @@ predicate PythonEntityToDeclaration:
   ) | (
     { imp = D } = PyDecl;
     D = python.ImportStatement { from_name = PyName };
-  ) ;
+  ) | (
+    { module = D } = PyDecl;
+    D = python.Module { name = PyName };
+  );
   PyName = python.Name Name;
   python.DeclarationLocation {PyDecl, File, Span};
   Decl = Declaration {Name, File, Span};
@@ -1031,7 +1034,10 @@ predicate PythonEntityToDeclaration:
   ) | (
     { imp = D } = PyDecl;
     D = python.ImportStatement { from_name = PyName };
-  ) ;
+  ) | (
+    { module = D } = PyDecl;
+    D = python.Module { name = PyName };
+  );
   PyName = python.Name Name;
   python.DeclarationLocation {PyDecl, File, Span};
   Decl = Declaration {Name, File, Span};
