@@ -982,7 +982,7 @@ getInputLines = Repl $ getLines prompt1 []
       case maybeLine of
         Nothing -> return Stop  -- stop on ^D or EOF
         Just sIn -> case endBS sIn of
-          Whole s -> return (Go (unwords (reverse (s:prior))))
+          Whole s -> return (Go (intercalate "\n" (reverse (s:prior))))
           Cont c -> getLines prompt2 (c:prior)
 
 repl :: Repl ()
