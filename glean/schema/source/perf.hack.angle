@@ -1,5 +1,5 @@
 schema perf.hack.1 {
-import hack.4
+
 import src.1
 
 # A bare method or function name, without container or namespace
@@ -69,7 +69,7 @@ type ReturnCount =
 # https://fburl.com/code/0121g1m7
 predicate LoopCounts :
   {
-    location: FileLine,         # XX , $row['line_number'] <- XX = $row['filename']?
+    location : FileLine,         # XX , $row['line_number'] <- XX = $row['filename']?
     loop_counts : [LoopCount],  # https://fburl.com/diffusion/8a2hcxlf
   }
 
@@ -77,7 +77,7 @@ predicate LoopCounts :
 # Percentage is num_iterations / count https://fburl.com/diffusion/dvm95koc
 type LoopCount =
   {
-    num_iterations: nat,    # $row['num_iterations']
+    num_iterations : nat,    # $row['num_iterations']
     count : nat,            #  $row['count']
   }
 }
