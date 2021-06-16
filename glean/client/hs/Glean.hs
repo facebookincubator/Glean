@@ -40,6 +40,7 @@ module Glean
   , KickOffFill(..)
   , KickOffResponse(..)
   , Database(..)
+  , DatabaseStatus(..)
   , Work(..)
   , WorkAvailable(..)
   , WorkUnavailable(..)
