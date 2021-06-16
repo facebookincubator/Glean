@@ -56,6 +56,7 @@ module Glean
   , Failure(..)
   , Pruned(..)
   , Dependencies(..)
+  , PosixEpochTime(..)
 
   -- * Repositories
   , Repo(..)
