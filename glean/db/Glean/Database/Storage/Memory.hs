@@ -71,9 +71,9 @@ instance Storage Memory where
 
   -- TODO: ownership
   computeOwnership _ _ = return (error "unimplemented computeOwnership")
-
-  -- TODO: ownership
   getUnitId _ _ = return (error "unimplemented getUnitId")
+  storeOwnership _ = return (error "unimplemented storeOwnership")
+  getOwnership _ = return (error "unimplemented getOwnership")
 
   -- TODO
   backup db _ _ = dbError (dbRepo db) "unimplemented 'backup'"

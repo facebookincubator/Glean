@@ -3,6 +3,7 @@
 #include <folly/Bits.h>
 #include <folly/CppAttributes.h>
 #include <folly/Likely.h>
+#include <folly/Range.h>
 
 namespace facebook {
 namespace glean {
@@ -143,6 +144,19 @@ inline constexpr size_t MAX_NAT_SIZE = 9;
 /// Encode and store a number in the buffer and return the number of bytes
 /// taken up by the encoding. This assumes that the buffer has enough space.
 size_t storeNat(unsigned char* out, uint64_t val);
+
+/// A stack-allocated encoded nat
+struct EncodedNat {
+  explicit EncodedNat(uint64_t val) {
+    encoded_size = storeNat(buf, val);
+  }
+  folly::ByteRange byteRange() {
+    return folly::ByteRange(buf, buf + encoded_size);
+  }
+ private:
+  uint8_t buf[rts::MAX_NAT_SIZE];
+  size_t encoded_size;
+};
 
 } // namespace rts
 } // namespace glean

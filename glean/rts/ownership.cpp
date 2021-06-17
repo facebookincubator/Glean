@@ -243,86 +243,100 @@ FOLLY_NOINLINE void completeOwnership(std::vector<Uset *> &facts, Usets& usets,
   stats.dump();
 }
 
-struct OwnershipImpl final : Ownership {
-  ~OwnershipImpl() override {
-    for (auto &set: sets_) {
-      set.free();
+}
+
+UsetId MemoryOwnership::getUset(Id id) {
+  // facts_.size() might be smaller than the total number of facts
+  // if there were some unowned facts at the end, so we need a
+  // bounds check.
+  return id.toWord() < facts_.size() ? facts_[id.toWord()] : INVALID_USET;
+}
+
+std::unique_ptr<OwnershipSetIterator> MemoryOwnership::getSetIterator() {
+  struct MemorySetIterator : OwnershipSetIterator {
+    MemorySetIterator(uint32_t i, std::vector<MutableUnitSet>& sets) :
+      i_(i), sets_(sets) {}
+
+    size_t size() override { return sets_.size(); }
+
+    folly::Optional<std::pair<UnitId,UnitSet*>> get() override {
+      if (i_ >= sets_.size()) {
+        return folly::none;
+      } else {
+        uint32_t i = i_++;
+        assert(!sets_.empty()); // be gone, linter
+        return std::pair<UnitId,UnitSet*>(
+            i,
+            reinterpret_cast<UnitSet*>(&sets_[i]));
+      }
     }
-  }
 
-  OwnershipImpl(std::vector<MutableEliasFanoCompressedList>&& sets,
-                std::vector<UsetId>&& facts) :
-      sets_(std::move(sets)), facts_(std::move(facts)) {}
+    uint32_t i_;
+    std::vector<MutableUnitSet>& sets_;
+  };
 
-  UsetId getUset(Id id) override {
-    // facts_.size() might be smaller than the total number of facts
-    // if there were some unowned facts at the end, so we need a
-    // bounds check.
-    return id.toWord() < facts_.size() ? facts_[id.toWord()] : INVALID_USET;
-  }
+  return std::make_unique<MemorySetIterator>(0, sets_);
+}
 
-  std::unique_ptr<Slice> slice(
-      std::vector<UnitId> units,
-      bool exclude) const override {
-    using Reader = EliasFanoReader<
-      folly::compression::EliasFanoEncoderV2<uint32_t,uint32_t>>;
-    std::vector<bool> members(sets_.size(), false);
-    if (!units.empty()) {
-      for (uint32_t i = 0; i < sets_.size(); i++) {
-        VLOG(5) << "slice set: " << i;
-        auto& list = sets_[i];
-        auto reader = Reader(list);
-        if (exclude) {
-          // we want members[i] = false iff sets_[i] is a subset of units,
-          // indicating that the fact is owned by excluded units only.
-          if (!reader.next()) {
-            // empty ownership set... include these facts I guess?
+std::unique_ptr<Slice> slice(
+    Ownership *ownership,
+    const std::vector<UnitId>& units,
+    bool exclude) {
+  auto iter = ownership->getSetIterator();
+  using Reader = EliasFanoReader<
+    folly::compression::EliasFanoEncoderV2<uint32_t,uint32_t>>;
+  std::vector<bool> members(iter->size(), false);
+  if (!units.empty()) {
+    assert(!members.empty());
+    while (auto pair = iter->get()) {
+      auto i = pair->first;
+      VLOG(5) << "slice set: " << i;
+      auto reader = Reader(*pair->second);
+      if (exclude) {
+        // we want members[i] = false iff sets_[i] is a subset of units,
+        // indicating that the fact is owned by excluded units only.
+        if (!reader.next()) {
+          // empty ownership set... include these facts I guess?
+          members[i] = true;
+          continue;
+        }
+        auto it = units.begin();
+        do {
+          it = std::lower_bound(it, units.end(), reader.value());
+          if (it == units.end() || reader.value() < *it) {
+            // owned by a unit we didn't exclude
+            VLOG(5) << "present: " << reader.value();
             members[i] = true;
-            continue;
+            break;
           }
-          auto it = units.begin();
-          do {
-            it = std::lower_bound(it, units.end(), reader.value());
-            if (it == units.end() || reader.value() < *it) {
-              // owned by a unit we didn't exclude
-              VLOG(5) << "present: " << reader.value();
-              members[i] = true;
+          // reader.value() == *it; advance both
+          it++;
+        } while (reader.next());
+        // if the loop condition fails, the set only contains
+        // excluded units.
+      } else {
+        if (!reader.skipTo(units[0])) {
+          continue;
+        }
+        for (auto unit : units) {
+          if (reader.value() < unit) {
+            if (!reader.skipTo(unit)) {
               break;
             }
-            // reader.value() == *it; advance both
-            it++;
-          } while (reader.next());
-          // if the loop condition fails, the set only contains
-          // excluded units.
-        } else {
-          if (!reader.skipTo(units[0])) {
-            continue;
           }
-          for (auto unit : units) {
-            if (reader.value() < unit) {
-              if (!reader.skipTo(unit)) { break; }
-            }
-            if (reader.value() == unit) {
-              VLOG(5) << "present: " << unit;
-              members[i] = true;
-              break;
-            }
+          if (reader.value() == unit) {
+            VLOG(5) << "present: " << unit;
+            members[i] = true;
+            break;
           }
         }
       }
     }
-    return std::make_unique<Slice>(std::move(members));
   }
-
-  // Sets, indexed by UsetId
-  std::vector<MutableEliasFanoCompressedList> sets_;
-
-  std::vector<UsetId> facts_;
-};
-
+  return std::make_unique<Slice>(std::move(members));
 }
 
-std::unique_ptr<Ownership> computeOwnership(
+std::unique_ptr<MemoryOwnership> computeOwnership(
     const Inventory& inventory,
     Lookup& lookup,
     OwnershipUnitIterator *iter) {
@@ -345,7 +359,7 @@ std::unique_ptr<Ownership> computeOwnership(
   auto sets = usets.toEliasFano();
   LOG(INFO) << "finished ownership";
 
-  return std::make_unique<OwnershipImpl>(
+  return std::make_unique<MemoryOwnership>(
       std::move(sets),
       std::move(factOwners));
 }

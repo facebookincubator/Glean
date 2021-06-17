@@ -153,9 +153,18 @@ instance Storage RocksDB where
   optimize db = withContainer db $ invoke . glean_rocksdb_container_optimize
 
   computeOwnership db inv =
-    with db $ \db_ptr->
+    with db $ \db_ptr ->
     using (invoke $ glean_rocksdb_get_ownership_unit_iterator db_ptr) $
     Ownership.compute inv db
+
+  storeOwnership db own =
+    with db $ \db_ptr ->
+    with own $ \own_ptr ->
+    invoke $ glean_rocksdb_store_ownership db_ptr own_ptr
+
+  getOwnership db =
+    with db $ \db_ptr ->
+    construct $ invoke $ glean_rocksdb_get_ownership db_ptr
 
   getUnitId db unit =
     with db $ \db_ptr->
@@ -296,4 +305,14 @@ foreign import ccall unsafe glean_rocksdb_get_unit_id
   -> Ptr ()
   -> CSize
   -> Ptr Word64
+  -> IO CString
+
+foreign import ccall unsafe glean_rocksdb_store_ownership
+  :: Ptr (Database RocksDB)
+  -> Ptr MemoryOwnership
+  -> IO CString
+
+foreign import ccall unsafe glean_rocksdb_get_ownership
+  :: Ptr (Database RocksDB)
+  -> Ptr (Ptr Ownership)
   -> IO CString

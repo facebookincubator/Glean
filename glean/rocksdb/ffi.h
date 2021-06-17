@@ -137,6 +137,16 @@ const char *glean_rocksdb_restore(
   const char *source
 );
 
+const char *glean_rocksdb_store_ownership(
+  Database *db,
+  MemoryOwnership *ownership
+);
+
+const char *glean_rocksdb_get_ownership(
+  Database *db,
+  Ownership **ownership
+);
+
 #ifdef __cplusplus
 }
 }

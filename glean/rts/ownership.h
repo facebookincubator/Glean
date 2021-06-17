@@ -15,6 +15,8 @@ class Inventory;
 struct Lookup;
 
 using UnitId = uint32_t;
+using MutableUnitSet = folly::compression::MutableEliasFanoCompressedList;
+using UnitSet = folly::compression::EliasFanoCompressedList;
 
 /**
  * Raw ownership data (facts -> unit)
@@ -45,6 +47,12 @@ struct OwnershipUnitIterator {
   virtual folly::Optional<OwnershipUnit> get() = 0;
 };
 
+struct OwnershipSetIterator {
+  virtual ~OwnershipSetIterator() {}
+  virtual size_t size() = 0;
+  virtual folly::Optional<std::pair<UnitId,UnitSet*>> get() = 0;
+};
+
 ///
 // A Slice is a bitmap, with one bit for each Uset, to indicate
 // whether facts with that Uset should be visible or not.
@@ -64,18 +72,45 @@ struct Slice {
 
 struct Ownership {
   virtual ~Ownership() {}
+
   virtual UsetId getUset(Id id) = 0;
-  virtual std::unique_ptr<Slice> slice(
-      std::vector<UnitId> units,
-      bool exclude) const = 0;
-    // units must be sorted
+
+  virtual std::unique_ptr<OwnershipSetIterator> getSetIterator() = 0;
 };
 
-std::unique_ptr<Ownership> computeOwnership(
+
+///
+// Computed ownership data stored in memory
+//
+struct MemoryOwnership final : Ownership {
+  ~MemoryOwnership() override {
+    for (auto &set: sets_) {
+      set.free();
+    }
+  }
+
+  MemoryOwnership(std::vector<MutableUnitSet>&& sets,
+                  std::vector<UsetId>&& facts) :
+      sets_(std::move(sets)), facts_(std::move(facts)) {}
+
+  UsetId getUset(Id id) override;
+
+  std::unique_ptr<OwnershipSetIterator> getSetIterator() override;
+
+  std::vector<MutableUnitSet> sets_; // Sets, indexed by UsetId
+  std::vector<UsetId> facts_; // Owner set for each fact
+};
+
+std::unique_ptr<MemoryOwnership> computeOwnership(
     const Inventory& inventory,
     Lookup& lookup,
     OwnershipUnitIterator *iter);
 
+
+std::unique_ptr<Slice> slice(
+    Ownership *ownership,
+    const std::vector<UnitId>& units, // must be sorted
+    bool exclude);
 
 ///
 // A "slice" of a Lookup, restricted to returning only those facts

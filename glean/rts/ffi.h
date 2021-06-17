@@ -32,6 +32,7 @@ namespace glean {
 namespace rts {
 #endif
 
+// @lint-ignore-every CLANGTIDY facebook-hte-Typedef
 typedef struct Lookup Lookup;
 typedef struct Define Define;
 typedef struct FactSet FactSet;
@@ -42,6 +43,7 @@ typedef struct Substitution Substitution;
 typedef struct QueryResults QueryResults;
 typedef struct OwnershipUnitIterator OwnershipUnitIterator;
 typedef struct Ownership Ownership;
+typedef struct MemoryOwnership MemoryOwnership;
 typedef struct Slice Slice;
 typedef struct Sliced Sliced;
 
@@ -495,7 +497,7 @@ const char *glean_ownership_compute(
   Inventory *inventory,
   Lookup *lookup,
   OwnershipUnitIterator *iter,
-  Ownership **ownership
+  MemoryOwnership **ownership
 );
 
 void glean_ownership_free(Ownership *own);

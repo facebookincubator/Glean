@@ -85,6 +85,9 @@ struct Database : rts::Lookup {
   virtual std::unique_ptr<rts::OwnershipUnitIterator>
     getOwnershipUnitIterator() = 0;
   virtual folly::Optional<uint32_t> getUnitId(folly::ByteRange) = 0;
+
+  virtual void storeOwnership(rts::MemoryOwnership &ownership) = 0;
+  virtual std::unique_ptr<rts::Ownership> getOwnership() = 0;
 };
 
 void restore(const std::string& target, const std::string& source);

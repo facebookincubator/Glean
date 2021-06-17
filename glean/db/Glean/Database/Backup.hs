@@ -207,7 +207,7 @@ doFinalize env@Env{..} repo =
         Storage.optimize odbHandle
       thinSchema repo odb
       own <- computeOwnership odbHandle (schemaInventory odbSchema)
-      atomically $ writeTVar odbOwnership (Just own)
+      storeOwnership odbHandle own
     -- update and re-merge our internal representation of the schema
     schemaUpdated env (Just repo)
     time <- getCurrentTime

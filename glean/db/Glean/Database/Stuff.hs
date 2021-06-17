@@ -112,15 +112,10 @@ withOpenDBLookup env@Env{..} repo
           repoToText repo <> ": missing base slice"
         Just slice ->
           readDatabase env base_repo $ \baseOdb base -> do
-          maybeOwn <- readTVarIO (odbOwnership baseOdb)
-          case maybeOwn of
-            Nothing -> throwIO $ Thrift.Exception $
-              "base DB " <> repoToText base_repo <>
-              " has no ownership info"
-            Just own ->
-              Lookup.withLookup (Ownership.sliced own slice base) $ \sliced ->
-              Lookup.withLookup handle $ \lookup ->
-              Lookup.withLookup (Stacked.stacked sliced lookup) f
+          own <- case baseOdb of OpenDB{..} -> Storage.getOwnership odbHandle
+          Lookup.withLookup (Ownership.sliced own slice base) $ \sliced ->
+            Lookup.withLookup handle $ \lookup ->
+            Lookup.withLookup (Stacked.stacked sliced lookup) f
 
 
 withWritableDatabase :: Env -> Repo -> (WriteQueue -> IO a) -> IO a
@@ -482,11 +477,6 @@ asyncOpenDB env@Env{..} db@DB{..} version mode deps on_success on_failure =
             writing <- case mode of
               ReadOnly -> return Nothing
               _ -> Just <$> setupWriting env handle
-            ownership <- case mode of
-              ReadOnly -> Just <$>
-                computeOwnership handle (schemaInventory dbSchema)
-              _ -> return Nothing
-            ownershipVar <- newTVarIO ownership
             maybeSlice <- baseSlice env deps
             idle <- newTVarIO =<< getTimePoint
             on_success
@@ -495,7 +485,6 @@ asyncOpenDB env@Env{..} db@DB{..} version mode deps on_success on_failure =
               , odbWriting = writing
               , odbSchema = dbSchema
               , odbIdleSince = idle
-              , odbOwnership = ownershipVar
               , odbBaseSlice = maybeSlice
               }
           atomically $ writeTVar dbState $ Open odb
@@ -527,18 +516,14 @@ baseSlice :: Env -> Maybe Thrift.Dependencies -> IO (Maybe Ownership.Slice)
 baseSlice env (Just (Thrift.Dependencies_pruned update)) = do
   let base_repo = Thrift.pruned_base update
   withOpenDatabase env base_repo $ \OpenDB{..} -> do
-    maybeOwn <- readTVarIO odbOwnership
-    case maybeOwn of
-      Nothing -> throwIO $ Thrift.Exception $
-        "base DB " <> repoToText base_repo <>
-        " has no ownership info"
-      Just own -> do
-        unitIds <- forM (Thrift.pruned_units update) $ \unit -> do
-          r <- Storage.getUnitId odbHandle unit
-          case r of
-            Nothing -> throwIO $ Thrift.BadQuery $
-              "unkonwn unit: " <> Text.pack (show unit)
-            Just uid -> return uid
-        Just <$> Ownership.slice own unitIds (Thrift.pruned_exclude update)
+    unitIds <- forM (Thrift.pruned_units update) $ \unit -> do
+      r <- Storage.getUnitId odbHandle unit
+      case r of
+        Nothing -> throwIO $ Thrift.BadQuery $
+          "unknown unit: " <> Text.pack (show unit)
+        Just uid -> return uid
+    ownership <- Storage.getOwnership odbHandle
+    Just <$> Ownership.slice ownership unitIds
+      (Thrift.pruned_exclude update)
 baseSlice _ _ =
   return Nothing
