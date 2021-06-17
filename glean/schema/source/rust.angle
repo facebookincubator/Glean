@@ -42,6 +42,20 @@ predicate FieldDef :
     type : Type,
   }
 
+# A foreign function (`fn` in `extern` block)
+predicate ForeignFunctionDef :
+  {
+    name : QName,
+    type : Type,
+  }
+
+# A foreign static variable (`static` in `extern` block)
+predicate ForeignStaticDef :
+  {
+    name : QName,
+    type : Type,
+  }
+
 # A function
 predicate FunctionDef :
   {
@@ -107,12 +121,20 @@ predicate TypeDef :
     type : Type,
   }
 
+# A union (typically for FFI)
+predicate UnionDef :
+  {
+    name : QName,
+  }
+
 # Matches the kind field of a ref that `-Z save-analysis` emits
 type Def =
   {
     const_ : ConstDef |
     enum_ : EnumDef |
     field : FieldDef |
+    foreign_function : ForeignFunctionDef |
+    foreign_static : ForeignStaticDef |
     function_ : FunctionDef |
     local : LocalDef |
     method : MethodDef |
@@ -123,6 +145,7 @@ type Def =
     trait : TraitDef |
     tuple_variant : TupleVariantDef |
     type : TypeDef |
+    union_ : UnionDef |
   }
 
 # Matches the kind field of an impl that `-Z save-analysis` emits
