@@ -230,7 +230,6 @@ queryIdHackDecl elq Query.Hack.Declaration{..} =
   fmap concat . sequence $
   [ branchId elq declaration_classConst
   , branchId (queryIdHackContainer elq) declaration_container
-  , branchId elq declaration_enum_
   , branchId elq declaration_enumerator
   , branchId elq declaration_function_
   , branchId elq declaration_globalConst

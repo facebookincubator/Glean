@@ -35,8 +35,6 @@ hackNaming = \case
     x
   Hack.Declaration_container x ->
     InNamespace name_class <$> containerQName x
-  Hack.Declaration_enum_ x ->
-    InNamespace name_class . Hack.enumDeclaration_key_name <$> getFactKey x
   Hack.Declaration_enumerator x -> do
     ek <- getFactKey x
     edk <- getFactKey (Hack.enumerator_key_enumeration ek)
@@ -74,6 +72,8 @@ hackNaming = \case
     containerQName = \case
       Hack.ContainerDeclaration_class_ y ->
         Hack.classDeclaration_key_name <$> getFactKey y
+      Hack.ContainerDeclaration_enum_ y ->
+        Hack.enumDeclaration_key_name <$> getFactKey y
       Hack.ContainerDeclaration_interface_ y ->
         Hack.interfaceDeclaration_key_name <$> getFactKey y
       Hack.ContainerDeclaration_trait y ->

@@ -78,9 +78,9 @@ trimCodeEntity = \case
         Hack.Declaration_classConst y -> trim y
         Hack.Declaration_container y -> Hack.Declaration_container $ case y of
           Hack.ContainerDeclaration_class_ z -> trim z
+          Hack.ContainerDeclaration_enum_ z -> trim z
           Hack.ContainerDeclaration_interface_ z -> trim z
           Hack.ContainerDeclaration_trait z -> trim z
-        Hack.Declaration_enum_ y -> trim y
         Hack.Declaration_enumerator y -> trim y
         Hack.Declaration_function_ y -> trim y
         Hack.Declaration_globalConst y -> trim y
