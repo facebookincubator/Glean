@@ -6,8 +6,10 @@ import Control.Monad
 import qualified Data.ByteString as B
 import Data.Default
 import Data.Foldable
+import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Map.Strict as Map
 import Data.List (sort)
+import Data.List.Split
 import Data.Proxy
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -63,6 +65,7 @@ plugins =
   , plugin @ValidateSchemaCommand
   , plugin @StatsCommand
   , plugin @OwnershipCommand
+  , plugin @SetPropertyCommand
 #if FACEBOOK
   , plugin @FacebookPlugin
 #endif
@@ -265,3 +268,25 @@ instance Plugin OwnershipCommand where
   runCommand _ _ backend Ownership{..} = case Glean.backendKind backend of
     Glean.BackendEnv env -> Glean.computeOwnership env ownershipRepo
     _ -> die 2 "Need local database to compute ownership"
+
+data SetPropertyCommand
+  = SetProperty
+      { setPropRepo :: Repo
+      , properties :: [(Text,Text)]
+      }
+
+instance Plugin SetPropertyCommand where
+  parseCommand =
+    commandParser "set-property" (progDesc "") $ do
+      setPropRepo <- repoOpts
+      properties <- many $ argument readOption (metavar "NAME=VALUE")
+      return SetProperty{..}
+    where
+    readOption = maybeReader $ \s ->
+      case splitOn "=" s of
+        [name, value] -> Just (Text.pack name, Text.pack value)
+        _ -> Nothing
+
+  runCommand _ _ backend SetProperty{..} =
+    void $ Glean.updateProperties backend setPropRepo
+      (HashMap.fromList properties) []
