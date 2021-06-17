@@ -89,6 +89,9 @@ metaToThriftDatabase status expire repo Meta{..} = Database
   , database_created_since_epoch = Just metaCreated
   , database_expire_time = utcTimeToPosixEpochTime <$> expire
   , database_properties = metaProperties
+  , database_completed = case metaCompleteness of
+      Complete (DatabaseComplete time) -> Just time
+      _ -> Nothing
   }
 
 metaToProps :: Meta -> Map String String

@@ -9,7 +9,7 @@ import Prelude hiding ((<>))
 
 import qualified Data.Text as Text
 import qualified Data.HashMap.Strict as HashMap
-import qualified Data.Time.Format as Time
+import Data.Time.Clock.POSIX
 import Data.List hiding (span)
 import Util.TimeSec
 import Text.PrettyPrint.Annotated.HughesPJ
@@ -87,13 +87,12 @@ instance ShellFormat Thrift.Database where
     [ annotate (statusColour status) (shellFormat ctx repo)
         <+> shellFormat ctx status
       , nest 2 $ vcat $
-        [ "Created:" <+> text t <+>
-          let age = ctxNow `timeDiff` fromUTCTime utc in parens $
-          text (Text.unpack (ppTimeSpanWithGranularity Hour age)) <> " ago"
-        | Just t <- [Text.unpack <$> Thrift.database_created db]
-        , not (null t)
-        , Just utc <-
-          [Time.parseTimeM False Time.defaultTimeLocale iso8601 t]
+        [ "Created:" <+> showWhen t
+        | Just t <- [Thrift.database_created_since_epoch db]
+        ]
+        ++
+        [ "Completed:" <+> showWhen t
+        | Just t <- [Thrift.database_completed db]
         ]
         ++
         [ "Backup:" <+> text (Text.unpack loc)
@@ -121,6 +120,12 @@ instance ShellFormat Thrift.Database where
         ]
     ]
     where
+      showWhen (Thrift.PosixEpochTime t) =
+        text (show (posixSecondsToUTCTime (fromIntegral t))) <+>
+          parens (text (Text.unpack age) <+> "ago")
+        where
+          age = ppTimeSpanWithGranularity Hour $
+            ctxNow `timeDiff` Time (fromIntegral t)
+
       status = Thrift.database_status db
       repo = Thrift.database_repo db
-      iso8601 = "%Y-%m-%dT%H:%M:%SZ"

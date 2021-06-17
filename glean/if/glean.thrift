@@ -354,6 +354,9 @@ struct Database {
   8: DatabaseProperties properties;
       // Arbitrary metadata about this DB. Properties prefixed by
       // "glean."  are reserved for use by Glean itself.
+  9: optional PosixEpochTime completed;
+      // If the DB is complete, this is the time when the DB was
+      // marked completed.
 }
 
 struct PredicateStats {
