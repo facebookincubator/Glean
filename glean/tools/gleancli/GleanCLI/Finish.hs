@@ -47,7 +47,7 @@ instance Plugin FinishCommand where
       finishHandle <- handleOpt
       return Finish{..}
 
-  runCommand backend Finish{..} =
+  runCommand _ _ backend Finish{..} =
     finished backend finishRepo finishHandle task parcel failure
 
 finished

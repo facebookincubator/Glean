@@ -1,4 +1,4 @@
-{-# LANGUAGE ApplicativeDo, TypeApplications, AllowAmbiguousTypes #-}
+{-# LANGUAGE CPP, ApplicativeDo, TypeApplications, AllowAmbiguousTypes #-}
 
 module GleanCLI (main) where
 
@@ -31,6 +31,10 @@ import GleanCLI.Query
 import GleanCLI.Types
 import GleanCLI.Write
 
+#if FACEBOOK
+import GleanCLI.Facebook
+#endif
+
 data Config = Config
   { cfgService :: Glean.Service
   , cfgCommand :: PluginCommand
@@ -59,6 +63,9 @@ plugins =
   , plugin @ValidateSchemaCommand
   , plugin @StatsCommand
   , plugin @OwnershipCommand
+#if FACEBOOK
+  , plugin @FacebookPlugin
+#endif
   ]
 
 options :: ParserInfo Config
@@ -81,7 +88,7 @@ main =
   withConfigProvider cfgOpts $ \cfgAPI ->
   Glean.withBackendWithDefaultOptions evb cfgAPI cfgService $ \backend -> do
     case cfgCommand of
-      PluginCommand c -> runCommand backend c
+      PluginCommand c -> runCommand evb cfgAPI backend c
 
 
 -- -----------------------------------------------------------------------------
@@ -105,7 +112,7 @@ instance Plugin UnfinishCommand where
       handle <- handleOpt
       return Unfinish{..}
 
-  runCommand backend Unfinish{..} = do
+  runCommand _ _ backend Unfinish{..} = do
     case Glean.backendKind backend of
       Glean.BackendEnv env -> do
         Database.unfinishDatabase env repo handle
@@ -130,7 +137,7 @@ instance Plugin DumpCommand where
         )
       return Dump{..}
 
-  runCommand backend Dump{..} =
+  runCommand _ _ backend Dump{..} =
     Glean.dumpJsonToFile backend dumpRepo dumpFile
 
 data DeleteCommand
@@ -143,7 +150,7 @@ instance Plugin DeleteCommand where
     commandParser "delete" (progDesc "Delete a database") $ do
       Delete <$> repoOpts
 
-  runCommand backend Delete{..} =
+  runCommand _ _ backend Delete{..} =
     void $ Glean.deleteDatabase backend deleteRepo
 
 
@@ -179,7 +186,7 @@ instance Plugin ValidateCommand where
             }
         }
 
-  runCommand backend Validate{..} = case Glean.backendKind backend of
+  runCommand _ _ backend Validate{..} = case Glean.backendKind backend of
     Glean.BackendEnv env -> Glean.validate env validateRepo validate
     _ -> die 2 "Can't validate a remote database"
 
@@ -197,7 +204,7 @@ instance Plugin ValidateSchemaCommand where
         )
       return (ValidateSchema file)
 
-  runCommand backend ValidateSchema{..} = do
+  runCommand _ _ backend ValidateSchema{..} = do
     str <- B.readFile file
     Glean.validateSchema backend (Thrift.ValidateSchema str)
 
@@ -214,7 +221,7 @@ instance Plugin StatsCommand where
       perPredicate <- switch ( long "per-predicate" )
       return Stats{..}
 
-  runCommand backend Stats{..} = do
+  runCommand _ _ backend Stats{..} = do
     stats <- Map.toList <$> Glean.predicateStats backend statsRepo
     let totalCount = sum [ predicateStats_count
           | (_name, PredicateStats{..}) <- stats ]
@@ -255,6 +262,6 @@ instance Plugin OwnershipCommand where
       ownershipRepo <- repoOpts
       return Ownership{..}
 
-  runCommand backend Ownership{..} = case Glean.backendKind backend of
+  runCommand _ _ backend Ownership{..} = case Glean.backendKind backend of
     Glean.BackendEnv env -> Glean.computeOwnership env ownershipRepo
     _ -> die 2 "Need local database to compute ownership"

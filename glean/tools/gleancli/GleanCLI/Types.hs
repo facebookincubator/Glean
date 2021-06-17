@@ -3,8 +3,18 @@ module GleanCLI.Types
   ) where
 
 import Options.Applicative
+
+import Util.EventBase
 import qualified Glean.LocalOrRemote as Glean
+import Glean.Util.ConfigProvider
 
 class Plugin c where
   parseCommand :: Parser c
-  runCommand :: Glean.LocalOrRemote b => b -> c -> IO ()
+
+  runCommand
+    :: (Glean.LocalOrRemote backend, ConfigProvider cfg)
+    => EventBaseDataplane
+    -> cfg
+    -> backend
+    -> c
+    -> IO ()

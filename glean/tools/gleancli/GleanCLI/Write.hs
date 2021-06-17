@@ -162,7 +162,7 @@ instance Plugin WriteCommand where
       return $ Thrift.Dependencies_pruned $
         Thrift.Pruned repo units exclude
 
-  runCommand backend Write{..} =
+  runCommand _ _ backend Write{..} =
     tryBracket
        (when create $ do
             putStrLn $ "Creating DB using handle " ++ Text.unpack writeHandle

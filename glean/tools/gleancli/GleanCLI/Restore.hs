@@ -52,7 +52,7 @@ instance Plugin RestoreCommand where
       dayOpt = option (eitherReader parseDay)
         (long "date" <> metavar "YYYY-MM-DD")
 
-  runCommand backend Restore{..} = do
+  runCommand _ _ backend Restore{..} = do
     case what of
       RestoreLocator locator -> do
         Glean.restoreDatabase backend locator

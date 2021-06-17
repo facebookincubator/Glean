@@ -70,7 +70,7 @@ instance Plugin QueryCommand where
         <> help "don't print results; use with --stat to get a count of results"
       return Query{..}
 
-  runCommand backend Query{..} = do
+  runCommand _ _ backend Query{..} = do
     query_bytes <- case query of
       "-" -> B.hGetContents stdin
       '@':path -> B.readFile path

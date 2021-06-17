@@ -35,7 +35,7 @@ instance Plugin DeriveCommand where
         )
       return Derive{..}
 
-  runCommand backend Derive{..} =
+  runCommand _ _ backend Derive{..} =
     let threads = min deriveMaxConcurrency (length predicates) in
     streamWithThrow threads (forM_ predicates) $ \pred ->
       derivePredicate backend deriveRepo
