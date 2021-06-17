@@ -17,7 +17,8 @@ import System.Console.ANSI
 import System.IO
 
 import qualified Glean.Types as Thrift
-import qualified Glean
+import Glean.Backend.Remote (dbShard)
+import Glean.Repo.Text (showRepo)
 
 data Context = Context
   { ctxVerbose :: Bool
@@ -65,11 +66,7 @@ instance ShellFormat (Maybe Thrift.DatabaseStatus) where
       status
 
 instance ShellFormat Thrift.Repo where
-  shellFormat _ctx repo = hcat
-    [ text $ Text.unpack (Thrift.repo_name repo)
-    , text $ "/"
-    , text $ Text.unpack (Thrift.repo_hash repo)
-    ]
+  shellFormat _ctx repo = text (showRepo repo)
 
 statusColour :: Maybe Thrift.DatabaseStatus -> Color
 statusColour status = case status of
@@ -109,7 +106,7 @@ instance ShellFormat Thrift.Database where
         , let timeSpan = expires `timeDiff` ctxNow
         ]
         ++
-        [ "Shard:" <+> text (Text.unpack (Glean.dbShard db))
+        [ "Shard:" <+> text (Text.unpack (dbShard repo))
         | ctxVerbose
         ]
         ++
