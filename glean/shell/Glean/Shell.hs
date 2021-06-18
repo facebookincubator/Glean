@@ -276,7 +276,7 @@ displayDatabases all verbose filterStr = do
   outh <- liftIO $ readMVar $ outputHandle state
   liftIO $ forM_ (sortOn Thrift.database_created_since_epoch dbs) $ \db -> do
     let t0 = Time (round now)
-    shellPrint outh verbose (isTTY state) t0 db
+    hPutStrLn outh $ shellPrint verbose (isTTY state) t0 db
     hPutStrLn outh ""
 
 

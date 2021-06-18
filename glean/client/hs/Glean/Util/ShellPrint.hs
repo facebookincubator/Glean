@@ -14,7 +14,6 @@ import Data.List hiding (span)
 import Util.TimeSec
 import Text.PrettyPrint.Annotated.HughesPJ
 import System.Console.ANSI
-import System.IO
 
 import qualified Glean.Types as Thrift
 import Glean.Backend.Remote (dbShard)
@@ -26,22 +25,18 @@ data Context = Context
   , ctxNow :: Time
   }
 
-shellPrint :: ShellFormat a => Handle -> Bool -> Bool -> Time -> a -> IO ()
-shellPrint outh ctxVerbose ctxIsTTY ctxNow x =
-  hPutStrLn outh s
+shellPrint :: ShellFormat a => Bool -> Bool -> Time -> a -> String
+shellPrint ctxVerbose ctxIsTTY ctxNow x =
+  renderDecorated
+    colourStart
+    colourEnd
+    (shellFormat Context{..} x)
   where
-    s =
-      renderDecorated
-        colourStart
-        colourEnd
-        (shellFormat Context{..} x)
     colourStart c
-      | ctxIsTTY =
-        setSGRCode [SetColor Foreground Vivid c]
+      | ctxIsTTY = setSGRCode [SetColor Foreground Vivid c]
       | otherwise = mempty
     colourEnd _
-      | ctxIsTTY =
-        setSGRCode [Reset]
+      | ctxIsTTY = setSGRCode [Reset]
       | otherwise = mempty
 
 class ShellFormat a where
@@ -80,7 +75,10 @@ statusColour status = case status of
   Nothing -> Red
 
 instance ShellFormat Thrift.Database where
-  shellFormat ctx@Context{..} db = cat
+  shellFormat ctx db = shellFormat ctx (db, [] :: [String])
+
+instance ShellFormat (Thrift.Database, [String]) where
+  shellFormat ctx@Context{..} (db, extras) = cat
     [ annotate (statusColour status) (shellFormat ctx repo)
         <+> shellFormat ctx status
       , nest 2 $ vcat $
@@ -91,6 +89,8 @@ instance ShellFormat Thrift.Database where
         [ "Completed:" <+> showWhen t
         | Just t <- [Thrift.database_completed db]
         ]
+        ++
+        map text extras
         ++
         [ "Backup:" <+> text (Text.unpack loc)
         | ctxVerbose ||
