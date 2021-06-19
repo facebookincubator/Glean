@@ -365,4 +365,32 @@ predicate DeclarationWithLocalName:
   SN = SName {local_name = LN};
   DeclarationWithSName {SN, D};
 
+type Definition =
+  {
+    cls: ClassDefinition |
+    func: FunctionDefinition |
+    variable: VariableDefinition |
+    module: ModuleDefinition |
+  }
+
+# The location of a Definition relative to the repo root.
+# The span here includes the body and the decorators (if present)
+predicate DefinitionLocation:
+  {
+    definition: Definition,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+
+# This is a variant of DefinitionLocation. It allows for efficient queries
+# by file.
+predicate DefinitionsByFile:
+  {
+    file: src.File,
+    span: src.ByteSpan,
+    definition: Definition,
+  }
+  stored {File, Span, Definition} where
+  DefinitionLocation { Definition, File, Span }
+
 } # python.3
