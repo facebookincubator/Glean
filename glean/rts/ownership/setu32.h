@@ -247,7 +247,7 @@ public:
   SetU32() = default;
 
   struct copy_capacity_tag {};
-  static constexpr copy_capacity_tag copy_capacity;
+  static constexpr copy_capacity_tag copy_capacity {};
 
   SetU32(const SetU32& other, copy_capacity_tag);
 

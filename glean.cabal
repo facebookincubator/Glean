@@ -275,6 +275,9 @@ library rts
         glean/rts/json.cpp
         glean/rts/lookup.cpp
         glean/rts/nat.cpp
+        glean/rts/ownership.cpp
+        glean/rts/ownership/setu32.cpp
+        glean/rts/ownership/uset.cpp
         glean/rts/prim.cpp
         glean/rts/query.cpp
         glean/rts/sanity.cpp
@@ -283,8 +286,8 @@ library rts
         glean/rts/thrift.cpp
         glean/rts/validate.cpp
         glean/rts/bytecode/subroutine.cpp
-    pkgconfig-depends: libfolly, libunwind, libglog, icu-uc, gflags
-    cxx-options: -std=c++17 -DOSS=1
+    pkgconfig-depends: libfolly, libunwind, libglog, icu-uc, gflags, libxxhash
+    cxx-options: -std=c++17 -DOSS=1 -mavx2 -mlzcnt
     build-depends:
         glean:if-internal-cpp,
         glean:ffi
@@ -322,7 +325,6 @@ library util
     hs-source-dirs: glean/util
     exposed-modules:
         Glean.Database.Backup.Backend
-        Glean.Database.Repo
         Glean.Impl.ThriftService
         Glean.Impl.ConfigProvider
         Glean.Impl.TestConfigProvider
@@ -377,6 +379,7 @@ library core
         Glean.RTS.Foreign.JSON
         Glean.RTS.Foreign.LookupCache
         Glean.RTS.Foreign.Lookup
+        Glean.RTS.Foreign.Ownership
         Glean.RTS.Foreign.Query
         Glean.RTS.Foreign.Stacked
         Glean.RTS.Foreign.Subst
@@ -409,12 +412,14 @@ library core
         Glean.Write.Options
         Glean.Write.SendBatch
         Glean.Write.SendQueue
+        Glean.Write.SendAndRebaseQueue
 
         Glean.Angle.Lexer
         Glean.Angle.Parser
         Glean.Angle.Types
         Glean.Query.Angle
         Glean.Query.Types
+        Glean.Repo.Text
         Glean.Schema.Resolve
         Glean.Schema.Util
 
@@ -459,9 +464,9 @@ library db
         Glean.Database.Janitor
         Glean.Database.Logger
         Glean.Database.Meta
+        Glean.Database.Repo
         Glean.Database.Schema
         Glean.Database.Schema.Types
-        Glean.Database.Shard
         Glean.Database.Stats
         Glean.Database.Storage
         Glean.Database.Storage.Memory
@@ -528,9 +533,19 @@ library client-hs
         glean:if-glean-hs,
         glean:util,
         glean:core,
-        glean:db,
         glean:config,
         glean:haxl-datasource
+
+library client-hs-local
+    import: fb-haskell, deps
+    visibility: public
+    hs-source-dirs: glean/client/hs/local
+    exposed-modules:
+        Glean.LocalOrRemote
+    build-depends:
+        glean:if-glean-hs,
+        glean:core,
+        glean:db,
 
 
 library schema
@@ -782,6 +797,7 @@ executable shell
         glean:core,
         glean:db,
         glean:client-hs,
+        glean:client-hs-local,
         glean:util,
         glean:lib,
         haskeline >=0.7.3 && <0.8,
@@ -794,10 +810,19 @@ executable glean
     import: fb-haskell, deps
     hs-source-dirs: glean/tools/gleancli
     main-is: GleanCLI.hs
+    other-modules:
+        GleanCLI.Common
+        GleanCLI.Derive
+        GleanCLI.Finish
+        GleanCLI.Query
+        GleanCLI.Restore
+        GleanCLI.Types
+        GleanCLI.Write
     ghc-options: -main-is GleanCLI
     extra-libraries: stdc++
     build-depends:
         glean:client-hs,
+        glean:client-hs-local,
         glean:db,
         glean:if-glean-hs,
         glean:stubs,
@@ -806,6 +831,7 @@ executable glean
         glean:lib,
         glean:util,
         json,
+        split,
 
 executable search
     import: fb-haskell, deps
@@ -1150,3 +1176,14 @@ test-suite lookup
         glean:stubs,
         glean:core,
         glean:db
+
+test-suite incremental
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: IncrementalTest.hs
+    ghc-options: -main-is IncrementalTest
+    build-depends:
+        glean:stubs,
+        glean:client-hs,
+        glean:core,
+        glean:schema

@@ -48,12 +48,12 @@ const PredicateStats& AtomicPredicateStats::unprotected() const {
 
 PredicateStats AtomicPredicateStats::get() const {
   folly::hazptr_local<1> hptr;
-  return hptr[0].protect(impl->holder)->stats;
+  return hptr[0].get_protected(impl->holder)->stats;
 }
 
 size_t AtomicPredicateStats::count(rts::Pid pid) const {
   folly::hazptr_local<1> hptr;
-  if (auto stat = hptr[0].protect(impl->holder)->stats.get(pid)) {
+  if (auto stat = hptr[0].get_protected(impl->holder)->stats.get(pid)) {
     return stat->count;
   } else {
     return {};
