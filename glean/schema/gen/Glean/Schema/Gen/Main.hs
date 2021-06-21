@@ -30,6 +30,7 @@ import Options.Applicative
 import System.Directory
 import System.FilePath
 
+import Util.IO
 import Util.Timing
 
 import Glean.Query.Types
@@ -94,7 +95,7 @@ main = do
     str <- case input opts of
       Left one -> BC.readFile one
       Right dir -> do
-        files <- map (dir </>) <$> getDirectoryContents dir
+        files <- map (dir </>) <$> listDirectoryRecursive dir
         catSchemaFiles files
     (sourceSchemas, schemas) <- case parseAndResolveSchema str of
       Left err -> throwIO $ ErrorCall $ err

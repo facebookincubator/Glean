@@ -21,8 +21,9 @@ import Data.Default
 import Data.List
 import qualified Data.Text as Text
 import Options.Applicative
-import System.Directory
 import System.FilePath
+
+import Util.IO (listDirectoryRecursive)
 
 import Glean.Angle.Types
 import qualified Glean.Database.Catalog.Local.Files as Catalog.Local.Files
@@ -111,7 +112,7 @@ schemaSourceFilesFromDir = ThriftSource.once . parseSchemaDir
 -- | Read schema files from a directory
 parseSchemaDir :: FilePath -> IO (SourceSchemas, Schemas)
 parseSchemaDir dir = do
-  str <- catSchemaFiles . map (dir </>) =<< listDirectory dir
+  str <- catSchemaFiles =<< listDirectoryRecursive dir
   case parseAndResolveSchema str of
     Left err -> throwIO $ ErrorCall $ err
     Right schema -> return schema
