@@ -225,7 +225,8 @@ instance Plugin StatsCommand where
       return Stats{..}
 
   runCommand _ _ backend Stats{..} = do
-    stats <- Map.toList <$> Glean.predicateStats backend statsRepo
+    stats <- Map.toList <$>
+      Glean.predicateStats backend statsRepo Glean.ExcludeBase
     let totalCount = sum [ predicateStats_count
           | (_name, PredicateStats{..}) <- stats ]
         totalSize = sum [ predicateStats_size

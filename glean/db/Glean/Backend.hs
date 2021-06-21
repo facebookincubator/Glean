@@ -158,9 +158,9 @@ instance Backend LoggingBackend where
   validateSchema (LoggingBackend env) req =
     loggingAction (runLogCmd "validateSchema" env) (const mempty) $
       validateSchema env req
-  predicateStats (LoggingBackend env) repo =
+  predicateStats (LoggingBackend env) repo opts =
     loggingAction (runLogRepo "predicateStats" env repo) (const mempty) $
-      predicateStats env repo
+      predicateStats env repo opts
   userQueryFacts (LoggingBackend env) repo req =
     loggingAction (runLogQueryFacts "userQueryFacts" env repo req)
       logQueryResults $
@@ -268,8 +268,21 @@ instance Backend Database.Env where
     (curSrc, curSchemas)  <- get (Database.envSchemaSource env)
     validateNewSchema str curSrc curSchemas
 
-  predicateStats env repo = withOpenDatabase env repo $ \Database.OpenDB{..} ->
-    Map.fromList . coerce <$> Storage.predicateStats odbHandle
+  predicateStats env repo ExcludeBase =
+    withOpenDatabase env repo $ \Database.OpenDB{..} ->
+      Map.fromList . coerce <$> Storage.predicateStats odbHandle
+
+  predicateStats env repo IncludeBase = do
+    statsList <- withOpenDatabaseStack env repo $ \Database.OpenDB{..} ->
+      Storage.predicateStats odbHandle
+    return $ Map.fromListWith combineStats $ coerce $ concat statsList
+    where
+      combineStats x y = Thrift.PredicateStats
+        { predicateStats_count
+          = Thrift.predicateStats_count x + Thrift.predicateStats_count y
+        , predicateStats_size
+          = Thrift.predicateStats_size x + Thrift.predicateStats_size y
+        }
 
   userQueryFacts = UserQuery.userQueryFacts
   userQuery = UserQuery.userQuery

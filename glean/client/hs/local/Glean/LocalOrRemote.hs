@@ -31,6 +31,7 @@ module Glean.LocalOrRemote
   , BackendKind(..)
 
   -- * Misc
+  , StackedDbOpts(..)
   , validate
   , Validate(..)
   , computeOwnership

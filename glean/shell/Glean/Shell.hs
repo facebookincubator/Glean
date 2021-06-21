@@ -55,7 +55,7 @@ import Util.TimeSec
 
 import qualified Glean hiding (options)
 import qualified Glean.BuildInfo as BuildInfo
-import Glean.Backend.Remote (clientInfo)
+import Glean.Backend.Remote (clientInfo, StackedDbOpts(..))
 import Glean.Database.Schema.Types (DbSchema(..))
 import Glean.Database.Schema (newDbSchema, readWriteContent)
 import Glean.Database.Config (parseSchemaDir)
@@ -216,7 +216,7 @@ displayStatistics :: String -> Eval ()
 displayStatistics arg =
   withRepo $ \repo ->
   withBackend $ \backend -> do
-  xs <- liftIO $ Glean.predicateStats backend repo
+  xs <- liftIO $ Glean.predicateStats backend repo ExcludeBase
   preds <- forM (Map.toList xs) $ \(id,stats) -> do
     ref <- maybe (Left id) Right <$> lookupPid (Pid id)
     return (ref,stats)

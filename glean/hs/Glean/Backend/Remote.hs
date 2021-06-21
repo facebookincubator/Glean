@@ -1,6 +1,7 @@
 {-# LANGUAGE ApplicativeDo #-}
 module Glean.Backend.Remote
   ( Backend(..)
+  , StackedDbOpts(..)
 
     -- * Command-line options
   , options
@@ -65,6 +66,10 @@ import Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.ThriftService
 import Glean.Impl.ThriftService
 
+data StackedDbOpts
+  = IncludeBase
+  | ExcludeBase
+  deriving (Eq, Show)
 
 -- |
 -- An abstraction over Glean's Thrift API. This allows client code
@@ -76,7 +81,8 @@ class Backend a where
   factIdRange :: a -> Thrift.Repo -> IO Thrift.FactIdRange
   getSchemaInfo :: a -> Thrift.Repo -> IO Thrift.SchemaInfo
   validateSchema :: a -> Thrift.ValidateSchema -> IO ()
-  predicateStats :: a -> Thrift.Repo -> IO (Map Thrift.Id Thrift.PredicateStats)
+  predicateStats :: a -> Thrift.Repo -> StackedDbOpts
+    -> IO (Map Thrift.Id Thrift.PredicateStats)
   listDatabases :: a -> Thrift.ListDatabases -> IO Thrift.ListDatabasesResult
   getDatabase :: a -> Thrift.Repo -> IO Thrift.GetDatabaseResult
 
@@ -265,7 +271,9 @@ instance Backend ThriftBackend where
   factIdRange t repo = withShard t repo $ GleanService.factIdRange repo
   getSchemaInfo t repo = withShard t repo $ GleanService.getSchemaInfo repo
   validateSchema t req = withoutShard t $ GleanService.validateSchema req
-  predicateStats t repo = withShard t repo $ GleanService.predicateStats repo
+  predicateStats t repo opts = withShard t repo $
+    GleanService.predicateStats repo $
+      Thrift.PredicateStatsOpts{Thrift.predicateStatsOpts_excludeBase=opts==ExcludeBase}
   listDatabases t l = withoutShard t $ GleanService.listDatabases l
   getDatabase t repo = withShard t repo $ GleanService.getDatabase repo
   userQueryFacts t repo q = withShard t repo $

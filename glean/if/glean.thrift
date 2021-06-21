@@ -898,6 +898,10 @@ struct ValidateSchema {
   1: string (hs.type = "ByteString") schema;
 }
 
+struct PredicateStatsOpts {
+  1: bool excludeBase = true
+}
+
 service GleanService extends fb303.FacebookService {
   // DEPRECATED
   list<Id> getPredicates(1: Repo repo, 2: list<PredicateRef> predicates);
@@ -973,7 +977,9 @@ service GleanService extends fb303.FacebookService {
   // DEPRECATED
   Id firstFreeId(1: Repo repo) throws(1: Exception e);
 
-  map<Id, PredicateStats> predicateStats(1: Repo repo) throws(1: Exception e);
+  map<Id, PredicateStats> predicateStats(
+    1: Repo repo, 2: PredicateStatsOpts opts
+  ) throws(1: Exception e);
 
   ListDatabasesResult listDatabases(1: ListDatabases l);
   GetDatabaseResult getDatabase(1: Repo repo)

@@ -1,7 +1,7 @@
 -- TODO: Refactor this and Glean.Database.Index into sensible bits
 module Glean.Database.Stuff (
   lookupActiveDatabase, withActiveDatabase, usingActiveDatabase,
-  withOpenDatabase, withWritableDatabase,
+  withOpenDatabase, withOpenDatabaseStack, withWritableDatabase,
   writeDatabase, readDatabase, syncWriteDatabase,
   databaseClosed, asyncOpenDB, closeOpenDB,
   newDB, acquireDB, releaseDB,
@@ -94,6 +94,20 @@ withOpenDatabase env@Env{..} repo action =
     action odb `finally` do
       t <- getTimePoint
       atomically $ writeTVar (odbIdleSince odb) t
+
+-- | Runs the action on each DB in the stack, in top-to-bottom order
+withOpenDatabaseStack :: Env -> Repo -> (OpenDB -> IO a) -> IO [a]
+withOpenDatabaseStack env@Env{..} repo action = go repo [] where
+  go repo results = do
+    deps <- atomically $ metaDependencies <$> Catalog.readMeta envCatalog repo
+    results' <- withOpenDatabase env repo $ fmap (: results) . action
+    case deps of
+      Nothing -> return $ reverse results'
+      Just (Thrift.Dependencies_pruned pruned)
+        | Thrift.Pruned{Thrift.pruned_base=baseRepo} <- pruned ->
+            go baseRepo results'
+      Just (Thrift.Dependencies_stacked baseRepo) ->
+        go baseRepo results'
 
 withOpenDBLookup :: Env -> Repo -> OpenDB -> (Lookup.Lookup -> IO a) -> IO a
 withOpenDBLookup env@Env{..} repo

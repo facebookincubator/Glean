@@ -15,6 +15,7 @@ import Facebook.Fb303
 import Glean.GleanService.Service as Service
 import Glean.Database.Types
 import qualified Glean.Backend as Backend
+import Glean.Backend (StackedDbOpts(..))
 import Glean.Types as Thrift
 
 data State = State
@@ -81,8 +82,9 @@ handler State{..} req =
     Service.PollDerivation handle ->
       Backend.pollDerivation backend handle
 
-    Service.PredicateStats repo ->
-      Backend.predicateStats backend repo
+    Service.PredicateStats repo Thrift.PredicateStatsOpts{..} ->
+      Backend.predicateStats backend repo $
+        if predicateStatsOpts_excludeBase then ExcludeBase else IncludeBase
 
     Service.ListDatabases l ->
       Backend.listDatabases backend l
