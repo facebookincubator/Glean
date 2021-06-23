@@ -756,7 +756,7 @@ library test-unit
         Glean.Test.HUnit
         Glean.Test.Mock
 
-executable server
+executable glean-server
     import: fb-haskell, deps
     hs-source-dirs: glean/server
     main-is: Glean/Server.hs
@@ -779,7 +779,7 @@ executable server
         json,
         thrift-server
 
-executable shell
+executable glean-shell
     import: fb-haskell, deps
     hs-source-dirs: glean/shell
     main-is: Glean/Shell.hs
@@ -833,7 +833,7 @@ executable glean
         json,
         split,
 
-executable search
+executable glean-search
     import: fb-haskell, deps
     hs-source-dirs: glean/tools/search
     main-is: Search.hs
@@ -848,7 +848,7 @@ executable search
         glean:if-search-hs,
         aeson-pretty,
 
-executable hyperlink
+executable glean-hyperlink
     import: fb-haskell, deps
     hs-source-dirs: glean/demo
     main-is: Hyperlink.hs
