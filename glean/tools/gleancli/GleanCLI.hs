@@ -8,7 +8,7 @@ import Data.Default
 import Data.Foldable
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Map.Strict as Map
-import Data.List (sort)
+import Data.List (sort, isInfixOf)
 import Data.List.Split
 import Data.Proxy
 import Data.Text (Text)
@@ -17,7 +17,9 @@ import Options.Applicative
 
 import Util.EventBase
 import Util.IO
+import Util.TimeSec
 import Util.OptParse
+import System.IO
 
 import qualified Glean hiding (options)
 import qualified Glean.LocalOrRemote as Glean
@@ -25,6 +27,7 @@ import qualified Glean.Database.Work as Database
 import Glean.Types as Thrift hiding (ValidateSchema)
 import qualified Glean.Types as Thrift
 import Glean.Util.ConfigProvider
+import Glean.Util.ShellPrint
 
 import GleanCLI.Common
 import GleanCLI.Derive
@@ -56,6 +59,7 @@ plugins =
   [ plugin @WriteCommand
   , plugin @FinishCommand
   , plugin @UnfinishCommand
+  , plugin @ListCommand
   , plugin @DumpCommand
   , plugin @DeleteCommand
   , plugin @DeriveCommand
@@ -121,6 +125,33 @@ instance Plugin UnfinishCommand where
         Database.unfinishDatabase env repo handle
       _ -> die 5 "It is NOT possible to unfinish a remote database"
 
+data ListCommand
+  = List
+      { listDbNames :: [String]
+      }
+
+instance Plugin ListCommand where
+  parseCommand =
+    commandParser "list"
+      (progDesc "List databases which match REPONAME")
+      $ do
+      listDbNames <- many $ strArgument (metavar "REPONAME")
+      return List{..}
+
+  runCommand _ _ backend List{..} = do
+    r <- Glean.listDatabases backend def
+    let
+      repoFilter db str =
+        str `isInfixOf` Glean.showRepo repo
+        where repo = Thrift.database_repo db
+      xs = Thrift.listDatabasesResult_databases r
+      dbs = filter f xs
+      f db = null listDbNames || any (repoFilter db) listDbNames
+    isTTY <- hIsTerminalDevice stdout
+    t0 <- now
+    forM_ dbs $ \db -> do
+      putStrLn $ shellPrint False isTTY t0 db
+      putStrLn ""
 
 data DumpCommand
   = Dump
