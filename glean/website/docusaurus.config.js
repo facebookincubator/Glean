@@ -7,6 +7,8 @@
  * @format
  */
 
+const {fbContent} = require('internaldocs-fb-helpers');
+
 module.exports = {
   title: 'Glean',
   tagline:
@@ -97,7 +99,7 @@ module.exports = {
   },
   presets: [
     [
-      '@docusaurus/preset-classic',
+      require.resolve('docusaurus-plugin-internaldocs-fb/docusaurus-preset'),
       {
         docs: {
           path: '../docs',
