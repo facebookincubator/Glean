@@ -215,6 +215,7 @@ data StatsCommand
   = Stats
       { statsRepo :: Repo
       , perPredicate :: Bool
+      , excludeBase :: Bool
       }
 
 instance Plugin StatsCommand where
@@ -222,11 +223,13 @@ instance Plugin StatsCommand where
     commandParser "stats" (progDesc "Get fact counts and sizes") $ do
       statsRepo <- repoOpts
       perPredicate <- switch ( long "per-predicate" )
+      excludeBase <- switch ( long "exclude-base" )
       return Stats{..}
 
   runCommand _ _ backend Stats{..} = do
     stats <- Map.toList <$>
-      Glean.predicateStats backend statsRepo Glean.ExcludeBase
+      Glean.predicateStats backend statsRepo
+        (if excludeBase then Glean.ExcludeBase else Glean.IncludeBase)
     let totalCount = sum [ predicateStats_count
           | (_name, PredicateStats{..}) <- stats ]
         totalSize = sum [ predicateStats_size
