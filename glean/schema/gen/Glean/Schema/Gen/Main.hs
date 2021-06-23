@@ -95,7 +95,7 @@ main = do
     str <- case input opts of
       Left one -> BC.readFile one
       Right dir -> do
-        files <- map (dir </>) <$> listDirectoryRecursive dir
+        files <- listDirectoryRecursive dir
         catSchemaFiles files
     (sourceSchemas, schemas) <- case parseAndResolveSchema str of
       Left err -> throwIO $ ErrorCall $ err
