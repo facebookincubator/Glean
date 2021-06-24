@@ -6,7 +6,9 @@ sidebar_label: Walkthrough
 
 import {OssOnly, FbInternalOnly} from 'internaldocs-fb-helpers';
 
-We can play with Glean using the [shell](../shell).
+We can play with Glean using the [shell](shell). You can do this
+directly from the [Docker image](trying) if you want, or [Build Glean
+from source](building) first.
 
 To try experiments we can work with a local schema definition and
 local database (as opposed to connecting to a Glean server).  If you

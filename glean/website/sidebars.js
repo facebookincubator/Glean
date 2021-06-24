@@ -13,6 +13,7 @@ module.exports = {
   someSidebar: {
        'Quick Start': [
            'introduction',
+           'trying',
            'building',
            'walkthrough',
        ],
@@ -44,6 +45,7 @@ module.exports = {
            'derived',
            'databases',
            'write',
+           'running',
            'shell',
            'server',
            'cli',

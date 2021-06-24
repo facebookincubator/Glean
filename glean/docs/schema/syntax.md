@@ -189,7 +189,7 @@ inheritance declarations.
 
 Names take the form of a dot-separated sequence of alphanumeric words. For example, `sys.Blob`, `clang.File`, or `cxx.objc.Name`. The words up to the last dot are the *namespace*, the final word is the *name*.
 
-See [Names](../angle/names) for full details.
+See [Names](../angle/reference#names) for full details.
 
 Briefly:
 * Namespaces (schema names) are dot-separated sequences of identifiers each beginning with a lower-case letter
