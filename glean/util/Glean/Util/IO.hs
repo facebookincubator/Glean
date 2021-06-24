@@ -7,8 +7,10 @@ module Glean.Util.IO (
 import Util.Control.Exception
 import Util.Log
 
+import Control.Monad.Extra
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Lazy as LBS
+import Data.Maybe
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
 import qualified Data.Text.Lazy as LText
@@ -72,11 +74,20 @@ writeFileContents file s =
 -- | This is a combinator to use with withTempFileContents, to
 -- keep a copy of the temp file when there has been an error.  These
 -- backups are in the @glean-backup-file-on-error@ subdirectory.
-backupFileOnError :: (FilePath -> IO b) -> (FilePath -> IO b)
-backupFileOnError f = \ filepath -> f filepath `onSomeException` backup filepath
+backupFileOnError
+  :: Maybe FilePath
+  -- ^ Folder to place backup, defaults to a subfolder in the same folder
+  -> (FilePath -> IO b)
+  -> (FilePath -> IO b)
+backupFileOnError dir action filepath = do
+  whenJust dir $ createDirectoryIfMissing False
+  action filepath `onSomeException` backup filepath
   where
     backup filepath _exc = do
-      let subdir = takeDirectory filepath </> "glean-backup-file-on-error"
+      let subdir =
+            fromMaybe
+              (takeDirectory filepath </> "glean-backup-file-on-error")
+              dir
           dest = subdir </> takeFileName filepath
       logError $ "Making backup of temp file: " <> dest
       createDirectoryIfMissing True subdir
