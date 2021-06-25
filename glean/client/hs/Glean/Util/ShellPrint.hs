@@ -1,49 +1,83 @@
+{-# LANGUAGE TypeApplications #-}
 -- Copyright 2004-present Facebook. All Rights Reserved.
 
 module Glean.Util.ShellPrint
   ( ShellFormat(..)
+  , ShellPrintFormat(..)
+  , shellFormatOpt
   , shellPrint
   ) where
 
 import Prelude hiding ((<>))
 
+import Data.Aeson
+import qualified Data.Aeson as J
+import qualified Data.Aeson.Encode.Pretty as J
+import qualified Data.ByteString.Lazy.Char8 as BS
 import qualified Data.Text as Text
 import qualified Data.HashMap.Strict as HashMap
 import Data.Time.Clock.POSIX
 import Data.List hiding (span)
-import Util.TimeSec
-import Text.PrettyPrint.Annotated.HughesPJ
+import Options.Applicative as O
 import System.Console.ANSI
+import Text.PrettyPrint.Annotated.HughesPJ
+import Util.TimeSec
 
 import qualified Glean.Types as Thrift
 import Glean.Backend.Remote (dbShard)
 import Glean.Repo.Text (showRepo)
 
+data ShellPrintFormat
+  = TTY
+  | PlainText
+  | Json
+  deriving (Eq,Show)
+
 data Context = Context
   { ctxVerbose :: Bool
-  , ctxIsTTY :: Bool
+  , ctxFormat :: ShellPrintFormat
   , ctxNow :: Time
   }
 
-shellPrint :: ShellFormat a => Bool -> Bool -> Time -> a -> String
-shellPrint ctxVerbose ctxIsTTY ctxNow x =
-  renderDecorated
-    colourStart
-    colourEnd
-    (shellFormat Context{..} x)
+parseFormat :: String -> Maybe ShellPrintFormat
+parseFormat "tty" = Just TTY
+parseFormat "plain" = Just PlainText
+parseFormat "json" = Just Json
+parseFormat _ = Nothing
+
+shellFormatOpt :: Parser (Maybe ShellPrintFormat)
+shellFormatOpt =
+  O.optional $ O.option (maybeReader parseFormat) $ mconcat
+    [ O.long "format"
+    , O.metavar "(tty|plain|json)"
+    , O.help "Output format"
+    ]
+
+shellPrint :: ShellFormat a => Bool -> ShellPrintFormat -> Time -> a -> String
+shellPrint ctxVerbose ctxFormat ctxNow x =
+  case ctxFormat of
+    Json ->
+      BS.unpack $
+      J.encodePretty $
+      shellFormatJson Context{..} x
+    TTY ->
+      renderText
+        (\c -> setSGRCode [SetColor Foreground Vivid c])
+        (const $ setSGRCode [Reset])
+    PlainText -> renderText mempty mempty
   where
-    colourStart c
-      | ctxIsTTY = setSGRCode [SetColor Foreground Vivid c]
-      | otherwise = mempty
-    colourEnd _
-      | ctxIsTTY = setSGRCode [Reset]
-      | otherwise = mempty
+    renderText colourStart colourEnd =
+      renderDecorated
+        colourStart
+        colourEnd
+        (shellFormatText Context{..} x)
 
 class ShellFormat a where
-    shellFormat :: Context -> a -> Doc Color
+    shellFormatText :: Context -> a -> Doc Color
+    shellFormatJson :: Context -> a -> Value
 
 instance ShellFormat Thrift.DatabaseStatus where
-  shellFormat _ctx status =
+  shellFormatText _ctx status =
     case status of
       Thrift.DatabaseStatus_Complete -> parens "complete"
       Thrift.DatabaseStatus_Finalizing -> parens "finalizing"
@@ -52,16 +86,31 @@ instance ShellFormat Thrift.DatabaseStatus where
       Thrift.DatabaseStatus_Broken -> parens "broken"
       Thrift.DatabaseStatus_Restorable -> parens "restorable"
       Thrift.DatabaseStatus_Missing -> parens "missing deps"
+  shellFormatJson _ctx status = J.toJSON @String $
+      case status of
+        Thrift.DatabaseStatus_Complete -> "COMPLETE"
+        Thrift.DatabaseStatus_Finalizing -> "FINALIZING"
+        Thrift.DatabaseStatus_Incomplete -> "INCOMPLETE"
+        Thrift.DatabaseStatus_Restoring -> "RESTORING"
+        Thrift.DatabaseStatus_Broken -> "BROKEN"
+        Thrift.DatabaseStatus_Restorable -> "RESTORABLE"
+        Thrift.DatabaseStatus_Missing -> "MISSING"
 
 instance ShellFormat (Maybe Thrift.DatabaseStatus) where
-  shellFormat ctx status =
+  shellFormatText ctx status =
     maybe
       (parens "unknown")
-      (shellFormat ctx)
+      (shellFormatText ctx)
+      status
+  shellFormatJson ctx status =
+    maybe
+      (J.toJSON @String "UNKNOWN")
+      (shellFormatJson ctx)
       status
 
 instance ShellFormat Thrift.Repo where
-  shellFormat _ctx repo = text (showRepo repo)
+  shellFormatText _ctx repo = text (showRepo repo)
+  shellFormatJson _ctx repo = J.toJSON (showRepo repo)
 
 statusColour :: Maybe Thrift.DatabaseStatus -> Color
 statusColour status = case status of
@@ -75,12 +124,13 @@ statusColour status = case status of
   Nothing -> Red
 
 instance ShellFormat Thrift.Database where
-  shellFormat ctx db = shellFormat ctx (db, [] :: [String])
+  shellFormatText ctx db = shellFormatText ctx (db, [] :: [String])
+  shellFormatJson ctx db = shellFormatJson ctx (db, [] :: [String])
 
 instance ShellFormat (Thrift.Database, [String]) where
-  shellFormat ctx@Context{..} (db, extras) = cat
-    [ annotate (statusColour status) (shellFormat ctx repo)
-        <+> shellFormat ctx status
+  shellFormatText ctx@Context{..} (db, extras) = vcat
+    [ annotate (statusColour status) (shellFormatText ctx repo)
+        <+> shellFormatText ctx status
       , nest 2 $ vcat $
         [ "Created:" <+> showWhen t
         | Just t <- [Thrift.database_created_since_epoch db]
@@ -126,3 +176,25 @@ instance ShellFormat (Thrift.Database, [String]) where
 
       status = Thrift.database_status db
       repo = Thrift.database_repo db
+  shellFormatJson ctx (db, extras) = J.object
+    [ "repo" .= shellFormatJson ctx repo
+    , "status" .= shellFormatJson ctx status
+    , "created" .= jsonMaybeTime (Thrift.database_created_since_epoch db)
+    , "completed" .= jsonMaybeTime (Thrift.database_completed db)
+    , "backup" .= maybe J.Null J.toJSON (Thrift.database_location db)
+    , "expires" .= jsonMaybeTime (Thrift.database_expire_time db)
+    , "shard" .= J.toJSON (dbShard $ Thrift.database_repo db)
+    , "extra" .= J.toJSON extras
+    ]
+    where
+      status = Thrift.database_status db
+      repo = Thrift.database_repo db
+      jsonMaybeTime = maybe J.Null jsonTime
+      jsonTime (Thrift.PosixEpochTime t) =
+        J.toJSON $ posixSecondsToUTCTime (fromIntegral t)
+
+instance ShellFormat [Thrift.Database] where
+  shellFormatText ctx dbs =
+    vcat $ concatMap f $ sortOn Thrift.database_created_since_epoch dbs
+    where f db = [shellFormatText ctx db, text "    "]
+  shellFormatJson ctx dbs = J.toJSON $ map (shellFormatJson ctx) dbs

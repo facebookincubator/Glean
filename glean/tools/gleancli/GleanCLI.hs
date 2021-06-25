@@ -8,6 +8,7 @@ import Data.Default
 import Data.Foldable
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Map.Strict as Map
+import Data.Maybe
 import Data.List (sort, isInfixOf)
 import Data.List.Split
 import Data.Proxy
@@ -128,6 +129,7 @@ instance Plugin UnfinishCommand where
 data ListCommand
   = List
       { listDbNames :: [String]
+      , listFormat :: Maybe ShellPrintFormat
       }
 
 instance Plugin ListCommand where
@@ -136,6 +138,7 @@ instance Plugin ListCommand where
       (progDesc "List databases which match REPONAME")
       $ do
       listDbNames <- many $ strArgument (metavar "REPONAME")
+      listFormat <- shellFormatOpt
       return List{..}
 
   runCommand _ _ backend List{..} = do
@@ -148,10 +151,9 @@ instance Plugin ListCommand where
       dbs = filter f xs
       f db = null listDbNames || any (repoFilter db) listDbNames
     isTTY <- hIsTerminalDevice stdout
+    let format = fromMaybe (if isTTY then TTY else PlainText) listFormat
     t0 <- now
-    forM_ dbs $ \db -> do
-      putStrLn $ shellPrint False isTTY t0 db
-      putStrLn ""
+    putStrLn $ shellPrint False format t0 dbs
 
 data DumpCommand
   = Dump
