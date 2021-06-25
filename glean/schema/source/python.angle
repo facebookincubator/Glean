@@ -393,4 +393,26 @@ predicate DefinitionsByFile:
   stored {File, Span, Definition} where
   DefinitionLocation { Definition, File, Span }
 
+# Map from a Definition to the corresponding Declaration
+predicate DefinitionDeclaration:
+  {
+    definition: Definition,
+    declaration: Declaration,
+  }
+  {Def, Decl} where
+  ({ cls = { declaration = CD } } = Def; Decl = python.Declaration { cls = CD }) |
+  ({ func = { declaration = FD } } = Def; Decl = python.Declaration { func = FD }) |
+  ({ module = { module = MD } } = Def; Decl = python.Declaration { module = MD }) |
+  ({ variable = { declaration = VD } } = Def; Decl = python.Declaration { variable = VD });
+
+# Inverse of DefinitionDeclaration, maps the Declaration to a corresponding Definition
+predicate DeclarationDefinition:
+  {
+    declaration: Declaration,
+    definition: Definition,
+  }
+  stored { Decl, Def } where
+  python.Definition Def;
+  python.DefinitionDeclaration { Def, Decl };
+
 } # python.3
