@@ -10,11 +10,14 @@ import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
 import qualified Data.ByteString.Lazy as LBS
+import qualified Data.HashMap.Strict as HashMap
 import Data.HashSet (HashSet)
 import qualified Data.HashSet as HashSet
 import Data.Hashable (Hashable)
+import Data.List
 import qualified Data.Map as Map
 import Data.Maybe
+import Data.Ord
 import Data.Text (Text)
 import Data.Time (getCurrentTime)
 import Data.Typeable (Typeable)
@@ -82,8 +85,18 @@ getTodo env@Env{..} sinbin = getFinalize <|> getRestore <|> getBackup
         Item{..} : _ -> return (itemRepo, doFinalize env itemRepo)
 
     getRestore = do
-      dbs <- Catalog.list envCatalog [Restoring] latest
-      case dbs of
+      let newestByRepo = groupF repoNameV $ do
+            sortF createdV Descending
+            limitF 1
+      restoring <- Catalog.list envCatalog [Restoring] $ do
+        repoV `notInF` sinbin
+        newestByRepo
+      when (null restoring) retry
+      avail <-  Catalog.list envCatalog [Local] $ do
+        repoV `notInF` sinbin
+        completenessV .==. CompletenessComplete
+        newestByRepo
+      case bestRestore restoring avail of
         [] -> retry
         Item{..} : _ -> return (itemRepo, doRestore env itemRepo itemMeta)
 
@@ -108,6 +121,38 @@ getTodo env@Env{..} sinbin = getFinalize <|> getRestore <|> getBackup
       repoV `notInF` sinbin
       sortF createdV Descending
       limitF 1
+
+-- To find the next DB to restore, we
+--   - find the newest DB of each repo that needs restoring
+--   - restore the DB which is currently the most stale; that is
+--     where the newest, complete, local DB of the same repo is the oldest
+bestRestore :: [Item] -> [Item] -> [Item]
+bestRestore restoring avail = sortBy order restoring
+  where
+    -- stalest first, and then most recent if none are stale
+    order a b =
+        comparing staleness a b <>
+        comparing (metaCreated . itemMeta) b a -- NB. descending
+
+    availMap = HashMap.fromList
+      [ (repo_name (itemRepo item), item) | item <- avail ]
+
+    -- creation time of the local DB if stale, or maxBound
+    staleness backup =
+      case HashMap.lookup (repo_name (itemRepo backup)) availMap of
+        Nothing -> NoLocalDb
+        Just local
+          | tlocal > tbackup -> LocalDbNewer
+          | otherwise -> LocalDbOlder tlocal
+          where
+            tlocal = metaCreated (itemMeta local)
+            tbackup = metaCreated (itemMeta backup)
+
+data Staleness
+  = NoLocalDb
+  | LocalDbOlder PosixEpochTime
+  | LocalDbNewer
+  deriving (Eq,Ord)
 
 doBackup :: Site site => Env -> Repo -> Text -> site -> IO Bool
 doBackup env@Env{..} repo prefix site =
