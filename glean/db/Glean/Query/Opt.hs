@@ -228,7 +228,7 @@ optStmts stmts = do
 -- Look for the sentinel left by optStmts
 notFalseGroups :: [FlatStatementGroup] -> Bool
 notFalseGroups ((s :| _) : _) = notFalseStmt s
-notFalseGroups _ = False
+notFalseGroups [] = True
 
 notFalseStmt :: FlatStatement -> Bool
 notFalseStmt (FlatDisjunction []) = False

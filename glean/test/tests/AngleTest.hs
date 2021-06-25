@@ -1406,6 +1406,14 @@ optTest = dbTestCase $ \env repo -> do
   assertEqual "opt 4" (Just 4) $
     factsSearched (PredicateRef "glean.test.Predicate" 4) lookupPid stats
 
+  -- test for optimising away unmatchable alternative without
+  -- removing matchable ones
+  r <- runQuery_ env repo $ angleData @Nat
+    [s|
+      1 = (2|1); 1
+    |]
+  assertEqual "opt 5" 1 (length r)
+
   -- Test for optimising away unmatchable alternatives.
   (_, stats) <- queryStats env repo $ angleData @Text
     [s|
