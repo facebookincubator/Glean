@@ -281,21 +281,16 @@ displayDatabases all verbose filterStr = do
     hPutStrLn outh ""
 
 
-selectDatabase
-  :: Maybe String   -- ^ Nothing <=> use the latest complete DB
-  -> Eval ()
-selectDatabase (Just "") = do
+dbCmd :: String -> Eval ()
+dbCmd "" = do
   r <- getRepo
   case r of
     Nothing -> output "no database selected"
     Just repo -> displayDatabases False True (repoString repo)
-selectDatabase spec
-  | Just str <- spec, Just repo <- Glean.parseRepo str =
-      setRepo repo
+dbCmd str
+  | Just repo <- Glean.parseRepo str = setRepo repo
   | otherwise = do
-      let repoName
-            | Just str <- spec, not (null str) = Text.pack str
-            | otherwise = "fbsource"
+      let repoName = Text.pack str
       result <- C.try $ withBackend $ \be ->
         liftIO $ Glean.getLatestRepo be repoName
       case result of
@@ -304,12 +299,11 @@ selectDatabase spec
             output $ pretty $ "no " <> repoName <> " database available"
           | Just SomeAsyncException{} <- fromException e -> liftIO $ throwIO e
           | otherwise -> do
-            output $ pretty $ "couldn't find an fbsource database: " <>
+            output $ pretty $ "couldn't find database: " <>
               Text.pack (show e)
         Right repo -> do
           output $ pretty $ "using database " ++ repoString repo
           setRepo repo
-
 
 kickOff :: String -> Eval ()
 kickOff s
@@ -348,7 +342,7 @@ deleteDatabase db
 
 
 initialize :: Config -> Eval ()
-initialize cfg = selectDatabase (cfgDatabase cfg)
+initialize cfg = mapM_ dbCmd (cfgDatabase cfg)
 
 hello :: Eval ()
 hello = output msg
@@ -584,8 +578,8 @@ commands =
   , Cmd "mode" (completeWords (pure ["json","angle"])) $
       \str _ -> setModeCmd str
   , Cmd "more" Haskeline.noCompletion $ const $ const moreCmd
-  , Cmd "database" completeDatabases $ const . selectDatabase . Just
-  , Cmd "db" completeDatabaseName $ const . selectDatabase . Just
+  , Cmd "database" completeDatabases $ const . dbCmd
+  , Cmd "db" completeDatabaseName $ const . dbCmd
   , Cmd "debug" (completeWords (pure
       ["off", "ir", "-ir", "bytecode", "-bytecode", "all"])) $
         \str _ -> debugCmd str
