@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Install ${{ matrix.ghc }}
-        run: apt-get install -y ${{ matrix.ghc }} librocksdb-dev
+        run: apt-get install -y ${{ matrix.ghc }} librocksdb-dev libxxhash-dev
       - name: Get hsthrift and build/install its dependencies
         run: ./install_deps.sh
       - name: Populate hackage index
