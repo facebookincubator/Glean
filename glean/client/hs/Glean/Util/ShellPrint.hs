@@ -14,10 +14,12 @@ import Data.Aeson
 import qualified Data.Aeson as J
 import qualified Data.Aeson.Encode.Pretty as J
 import qualified Data.ByteString.Lazy.Char8 as BS
+import Data.Char
 import qualified Data.Text as Text
 import qualified Data.HashMap.Strict as HashMap
 import Data.Time.Clock.POSIX
 import Data.List hiding (span)
+import Data.Void
 import Options.Applicative as O
 import System.Console.ANSI
 import Text.PrettyPrint.Annotated.HughesPJ
@@ -76,6 +78,14 @@ class ShellFormat a where
     shellFormatText :: Context -> a -> Doc Color
     shellFormatJson :: Context -> a -> Value
 
+instance ShellFormat Void where
+  shellFormatText _ctx v = case v of
+  shellFormatJson _ctx v = case v of
+
+instance ShellFormat String where
+  shellFormatText _ctx s = text s
+  shellFormatJson _ctx s = J.toJSON s
+
 instance ShellFormat Thrift.DatabaseStatus where
   shellFormatText _ctx status =
     case status of
@@ -124,10 +134,10 @@ statusColour status = case status of
   Nothing -> Red
 
 instance ShellFormat Thrift.Database where
-  shellFormatText ctx db = shellFormatText ctx (db, [] :: [String])
-  shellFormatJson ctx db = shellFormatJson ctx (db, [] :: [String])
+  shellFormatText ctx db = shellFormatText ctx (db, []::[(String, Void)])
+  shellFormatJson ctx db = shellFormatJson ctx (db, []::[(String, Void)])
 
-instance ShellFormat (Thrift.Database, [String]) where
+instance ShellFormat v => ShellFormat (Thrift.Database, [(String, v)]) where
   shellFormatText ctx@Context{..} (db, extras) = vcat
     [ annotate (statusColour status) (shellFormatText ctx repo)
         <+> shellFormatText ctx status
@@ -140,7 +150,8 @@ instance ShellFormat (Thrift.Database, [String]) where
         | Just t <- [Thrift.database_completed db]
         ]
         ++
-        map text extras
+        [ text key <> ":" <+> shellFormatText ctx value
+        | (key, value) <- extras]
         ++
         [ "Backup:" <+> text (Text.unpack loc)
         | ctxVerbose ||
@@ -176,7 +187,7 @@ instance ShellFormat (Thrift.Database, [String]) where
 
       status = Thrift.database_status db
       repo = Thrift.database_repo db
-  shellFormatJson ctx (db, extras) = J.object
+  shellFormatJson ctx (db, extras) = J.object $
     [ "repo" .= shellFormatJson ctx repo
     , "status" .= shellFormatJson ctx status
     , "created" .= jsonMaybeTime (Thrift.database_created_since_epoch db)
@@ -184,14 +195,19 @@ instance ShellFormat (Thrift.Database, [String]) where
     , "backup" .= maybe J.Null J.toJSON (Thrift.database_location db)
     , "expires" .= jsonMaybeTime (Thrift.database_expire_time db)
     , "shard" .= J.toJSON (dbShard $ Thrift.database_repo db)
-    , "extra" .= J.toJSON extras
-    ]
+    ] ++
+    [ jsonKeyFrom key .= shellFormatJson ctx value
+    | (key, value) <- extras]
     where
       status = Thrift.database_status db
       repo = Thrift.database_repo db
       jsonMaybeTime = maybe J.Null jsonTime
       jsonTime (Thrift.PosixEpochTime t) =
         J.toJSON $ posixSecondsToUTCTime (fromIntegral t)
+      jsonKeyFrom s = Text.pack $ map f s
+        where
+          f ' ' = '_'
+          f c = toLower c
 
 instance ShellFormat [Thrift.Database] where
   shellFormatText ctx dbs =
