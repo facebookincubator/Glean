@@ -19,8 +19,8 @@ namespace rust glean
 // Uniquely identifies a fact in a database
 typedef i64 Id
 
-const Id INVALID_ID = 0
-const Id FIRST_FREE_ID = 1024
+const Id INVALID_ID = 0;
+const Id FIRST_FREE_ID = 1024;
 
 // Used to identify versions of a predicate (TODO: merge with schema.thrift)
 typedef i32 Version
@@ -83,7 +83,7 @@ struct ParcelRunning {
   1: i32 retries;
   2: string handle;
   3: string runner;
-  4: map<string,string> progress = {};
+  4: map<string, string> progress = {};
 }
 
 // successfully finished
@@ -125,7 +125,7 @@ struct DatabaseBroken {
   2: string reason;
 }
 
-typedef map<recipes.TaskName,Task> (hs.type = "HashMap") Tasks
+typedef map<recipes.TaskName, Task> (hs.type = "HashMap") Tasks
 
 // This is a legacy data structure which will be replaced soon
 union DatabaseIncomplete {
@@ -141,10 +141,10 @@ struct DatabaseFinalizing {
 
 union ScribeStart {
   1: string start_time;
-    // Time point to start reading (otherwise read all available data)
+  // Time point to start reading (otherwise read all available data)
 
   2: string checkpoint;
-    // Checkpoint to start from
+// Checkpoint to start from
 } (hs.nonempty)
 
 struct SendJsonBatchOptions {
@@ -152,29 +152,28 @@ struct SendJsonBatchOptions {
 }
 
 union PickScribeBucket {
-  1: i32 bucket
-    // use this specific bucket
+  1: i32 bucket;
+// use this specific bucket
 
-  // This is a union type to allow for more options in the future: we
-  // might have the server pick a bucket for us, for example.
+// This is a union type to allow for more options in the future: we
+// might have the server pick a bucket for us, for example.
 } (hs.nonempty)
-
 
 // How to populate a DB from a Scribe category
 struct WriteFromScribe {
   1: WorkHandle writeHandle;
-    // The handle is used for finalizing the DB later via workFinished
+  // The handle is used for finalizing the DB later via workFinished
 
   2: string category;
-    // Scribe category to read from
+  // Scribe category to read from
 
   3: optional ScribeStart start;
-    // Where to start from. If missing, use all the data in the bucket.
+  // Where to start from. If missing, use all the data in the bucket.
 
   4: optional SendJsonBatchOptions options;
 
   5: optional PickScribeBucket bucket;
-    // how to choose a bucket; omit for no bucket
+// how to choose a bucket; omit for no bucket
 }
 
 // The status of data being written into a DB
@@ -185,105 +184,106 @@ union Completeness {
   5: DatabaseFinalizing finalizing;
 } (hs.prefix = "", hs.nonempty)
 
-typedef map<string,string> (hs.type = "HashMap") DatabaseProperties
+typedef map<string, string> (hs.type = "HashMap") DatabaseProperties
 
 // A Stacked DB that views only a portion of the underlying DB
 struct Pruned {
-  1: Repo base
-  2: list<binary> units
-  3: bool exclude  // True => exclude the units, otherwise include
+  1: Repo base;
+  2: list<binary> units;
+  3: bool exclude; // True => exclude the units, otherwise include
 }
 
 // Dependencies of a DB (to be extended)
 union Dependencies {
-  1: Repo stacked;  // TODO remove?
+  1: Repo stacked; // TODO remove?
   2: Pruned pruned;
 } (hs.nonempty)
 
 // Information about a database stored by Glean.
 struct Meta {
   1: server_config.DBVersion metaVersion;
-    // Database version
+  // Database version
 
   2: PosixEpochTime metaCreated;
-    // When was the database created
+  // When was the database created
 
   3: Completeness metaCompleteness;
-    // Completeness status
+  // Completeness status
 
   4: optional string metaBackup;
-    // Backup status
+  // Backup status
 
   5: DatabaseProperties metaProperties;
-    // Arbitrary metadata about this DB. Properties prefixed by
-    // "glean."  are reserved for use by Glean itself.
+  // Arbitrary metadata about this DB. Properties prefixed by
+  // "glean."  are reserved for use by Glean itself.
 
   6: optional Dependencies metaDependencies;
-    // What this DB depends on.
+  // What this DB depends on.
 
   7: list<PredicateRef> metaCompletePredicates;
-    // Whether all facts for a predicate have already been inserted.
+// Whether all facts for a predicate have already been inserted.
 } (hs.prefix = "")
 
 // -----------------------------------------------------------------------------
 // Thrift API
 
 // decodes to a term (or a sequence of terms?)
-typedef binary (cpp.type="folly::fbstring") Value
+typedef binary (cpp.type = "folly::fbstring") Value
 
 // Special value Fact 0 "" "" returned when nothing found
 struct Fact {
   1: Id type; // 'type' is Id for the Predicate definition
   2: Value key; // key decodes to a term that matches keyType
-  3: Value value;  // value decodes to a term that matches valueType
+  3: Value value; // value decodes to a term that matches valueType
 }
 
 // A collection of facts which can be written to a database.
 struct Batch {
   1: Id firstId;
-    // Id of the first fact in the batch if ids isn't supplied and the boundary
-    // between the underlying database and the batch - any fact id >= firstId
-    // will be assumed to refer to facts in the batch and will not be looked
-    // up in the underlying database.
+  // Id of the first fact in the batch if ids isn't supplied and the boundary
+  // between the underlying database and the batch - any fact id >= firstId
+  // will be assumed to refer to facts in the batch and will not be looked
+  // up in the underlying database.
 
   2: i64 count;
-    // Number of facts in the batch.
+  // Number of facts in the batch.
 
-  3: binary (cpp.type="folly::fbstring") facts;
-    // Facts encoded in an internal binary format. Facts may only refer to facts
-    // which occur before them in this sequence and to facts in the underlying
-    // database with ids below firstId. If ids isn't supplied, the facts here
-    // are assumed to have sequential ids starting with firstId.
+  3: binary (cpp.type = "folly::fbstring") facts;
+  // Facts encoded in an internal binary format. Facts may only refer to facts
+  // which occur before them in this sequence and to facts in the underlying
+  // database with ids below firstId. If ids isn't supplied, the facts here
+  // are assumed to have sequential ids starting with firstId.
 
-  4: optional list<i64> (hs.type="VectorStorable") ids;
-    // If supplied, this list contains the ids for the facts in the batch. It
-    // must satisfy the following conditions:
-    //
-    //   - length == count
-    //   - all elements are >= firstId
-    //   - all elements are unique
-    //   - ids are reasonably dense (writing the batch to the db will use a
-    //     data structure of size O(max id - firstId))
+  4: optional list<i64> (hs.type = "VectorStorable") ids;
+  // If supplied, this list contains the ids for the facts in the batch. It
+  // must satisfy the following conditions:
+  //
+  //   - length == count
+  //   - all elements are >= firstId
+  //   - all elements are unique
+  //   - ids are reasonably dense (writing the batch to the db will use a
+  //     data structure of size O(max id - firstId))
 
-  5: map<UnitName, list<Id> (hs.type="VectorStorable")> (hs.type="HashMap")
-    owned;
-    // (optional for now)
-    //
-    // Specifies ownership of the facts in this batch. The list is
-    // really a list of intervals [x1,x2, y1,y2, ... ] representing
-    // the inclusive ranges x1..x2, y1..y2, ... where x1 <= x2, y1 <= y2, ...
-    //
-    // The ranges do not need to be sorted, and can overlap.
-    //
-    // A fact can have an arbitrary number of owners.
-    //
-    // Units do not need to be declared beforehand; a Unit exists if
-    // it is the owner of at least one fact.
+  5: map<UnitName, list<Id> (hs.type = "VectorStorable")> (
+    hs.type = "HashMap",
+  ) owned;
+// (optional for now)
+//
+// Specifies ownership of the facts in this batch. The list is
+// really a list of intervals [x1,x2, y1,y2, ... ] representing
+// the inclusive ranges x1..x2, y1..y2, ... where x1 <= x2, y1 <= y2, ...
+//
+// The ranges do not need to be sorted, and can overlap.
+//
+// A fact can have an arbitrary number of owners.
+//
+// Units do not need to be declared beforehand; a Unit exists if
+// it is the owner of at least one fact.
 }
 
 struct Subst {
   1: Id firstId;
-  2: list<i64> (hs.type="VectorStorable") ids;
+  2: list<i64> (hs.type = "VectorStorable") ids;
 }
 
 struct Error {
@@ -318,7 +318,8 @@ exception InvalidDependency {
   3: string reason;
 }
 
-exception UnknownBatchHandle {}
+exception UnknownBatchHandle {
+}
 
 enum DatabaseStatus {
   // database is available and complete:
@@ -343,20 +344,20 @@ struct Database {
   2: optional string created;
   // deprecated: 3
   4: optional DatabaseStatus status;
-    // The status of this database including dependencies
+  // The status of this database including dependencies
   5: optional string location;
   6: optional PosixEpochTime created_since_epoch;
-      // In POSIX seconds, since epoch. This is used to compare database
-      // versions.
+  // In POSIX seconds, since epoch. This is used to compare database
+  // versions.
   7: optional PosixEpochTime expire_time;
-      // If set, the DB is due to be expired at the specified time.
-      // Clients should switch to a newer version of the DB.
+  // If set, the DB is due to be expired at the specified time.
+  // Clients should switch to a newer version of the DB.
   8: DatabaseProperties properties;
-      // Arbitrary metadata about this DB. Properties prefixed by
-      // "glean."  are reserved for use by Glean itself.
+  // Arbitrary metadata about this DB. Properties prefixed by
+  // "glean."  are reserved for use by Glean itself.
   9: optional PosixEpochTime completed;
-      // If the DB is complete, this is the time when the DB was
-      // marked completed.
+// If the DB is complete, this is the time when the DB was
+// marked completed.
 }
 
 struct PredicateStats {
@@ -394,12 +395,12 @@ union FinishResponse {
   2: BatchRetry retry;
 } (hs.nonempty)
 
-
 struct Worker {
   1: string name;
 }
 
-struct Success {}
+struct Success {
+}
 struct Failure {
   1: string message;
 }
@@ -414,127 +415,128 @@ struct UserQueryCont {
   4: i64 nextId;
   5: i32 version; // internal continuation version
   6: i64 hash; // internal continuation hash
-  7: optional binary returnType // angle return type
-  8: list<i64> pids // pids to expand in the results
+  7: optional binary returnType; // angle return type
+  8: list<i64> pids; // pids to expand in the results
 }
 
 enum QuerySyntax {
-  JSON = 1   // JSON query syntax
-  ANGLE = 2  // Glean's query language
+  JSON = 1, // JSON query syntax
+  ANGLE = 2, // Glean's query language
 } (hs.nounknown)
 
 struct UserQueryOptions {
   1: bool no_base64_binary = false;
-      // DEPRECATED
+  // DEPRECATED
   2: bool expand_results = true;
-      // DEPRECATED
+  // DEPRECATED
 
   3: bool recursive = false;
-      // If true, then the query will fetch all nested facts recursively.
-      // Note: it's easy to accidentally fetch a *lot* of data this way.
-      // Consider using expand_results=false with recursive=true.
+  // If true, then the query will fetch all nested facts recursively.
+  // Note: it's easy to accidentally fetch a *lot* of data this way.
+  // Consider using expand_results=false with recursive=true.
 
   4: optional i64 max_results;
-      // If set, do not return more than this many results.  If there
-      // may be more results to return, results_cont is set in the
-      // UserQueryResults struct.
-      //
-      // NOTE: if you don't set max_results, the server might impose a
-      // default max_results value. You can override the default by
-      // specifying one here.
+  // If set, do not return more than this many results.  If there
+  // may be more results to return, results_cont is set in the
+  // UserQueryResults struct.
+  //
+  // NOTE: if you don't set max_results, the server might impose a
+  // default max_results value. You can override the default by
+  // specifying one here.
 
-  8: optional i64 max_bytes
-      // If set, do not return more than this many bytes.  If there
-      // may be more results to return, results_cont is set in the
-      // UserQueryResults struct.
-      //
-      // NOTE: if you don't set max_bytes, the server might impose a
-      // default max_bytes value. You can override the default by
-      // specifying one here.
+  8: optional i64 max_bytes;
+  // If set, do not return more than this many bytes.  If there
+  // may be more results to return, results_cont is set in the
+  // UserQueryResults struct.
+  //
+  // NOTE: if you don't set max_bytes, the server might impose a
+  // default max_bytes value. You can override the default by
+  // specifying one here.
 
-  10: optional i64 max_time_ms
-      // If set, return partial results with a continuation if the
-      // query is still running after this amount of time (in
-      // milliseconds).
-      //
-      // NOTE: if you don't set max_time_ms, the server might impose a
-      // default max_time_ms value. You can override the default by
-      // specifying one here, although note that your query might time
-      // out in the network layer if you specify a larger timeout than
-      // the network request timeout.
+  10: optional i64 max_time_ms;
+  // If set, return partial results with a continuation if the
+  // query is still running after this amount of time (in
+  // milliseconds).
+  //
+  // NOTE: if you don't set max_time_ms, the server might impose a
+  // default max_time_ms value. You can override the default by
+  // specifying one here, although note that your query might time
+  // out in the network layer if you specify a larger timeout than
+  // the network request timeout.
 
   5: optional UserQueryCont continuation;
-      // continue a previous query.
+  // continue a previous query.
 
-      // DEPRECATED
+  // DEPRECATED
   6: bool use_bytecode = false;
 
-      // choose the syntax for the query
+  // choose the syntax for the query
   7: QuerySyntax syntax = JSON;
 
-      // derive facts of "stored" type, and store them in the database
+  // derive facts of "stored" type, and store them in the database
   9: bool store_derived_facts = false;
 
-      // populate the facts_searched field of UserQueryStats
+  // populate the facts_searched field of UserQueryStats
   11: bool collect_facts_searched = false;
 
-      // debugging options
+  // debugging options
   12: QueryDebugOptions debug;
 
-      // do not send the results with the response.
-      // Saves the server the work of encoding and sending the response
-      // through the wire.
+  // do not send the results with the response.
+  // Saves the server the work of encoding and sending the response
+  // through the wire.
   13: bool omit_results = false;
 }
 
 struct QueryDebugOptions {
-    // dump the Intermediate Representation (IR) of the query after
-    // flattening and expansion of derived predicates.
+  // dump the Intermediate Representation (IR) of the query after
+  // flattening and expansion of derived predicates.
   1: bool ir = false;
 
-    // dump the compiled bytecode for the query
+  // dump the compiled bytecode for the query
   2: bool bytecode = false;
 }
 
 # Encode results using Glean's internal binary representation
-struct UserQueryEncodingBin {}
+struct UserQueryEncodingBin {
+}
 
 # Encode results as JSON
 struct UserQueryEncodingJSON {
   1: bool expand_results = false;
-      // If true, then when a query specifies fetching nested facts,
-      // those facts will be expanded in-place in the result facts.
-      // If false, the nested facts are returned in the nestedFacts field
-      // of UserQueryResults.
-      //
-      // Note that using 'true' here (the default) can lead to a much
-      // larger result if the same facts are referred to in multiple
-      // places. However, it may be more convenient for the caller to
-      // have a single data structure rather than having to glue together
-      // the nested facts manually.
-      //
-      // Some clients (in particular Haskell) set expand_results=false
-      // and do the stitching-together automatically, so the result
-      // is a data structure with internal sharing of repeated facts.
+  // If true, then when a query specifies fetching nested facts,
+  // those facts will be expanded in-place in the result facts.
+  // If false, the nested facts are returned in the nestedFacts field
+  // of UserQueryResults.
+  //
+  // Note that using 'true' here (the default) can lead to a much
+  // larger result if the same facts are referred to in multiple
+  // places. However, it may be more convenient for the caller to
+  // have a single data structure rather than having to glue together
+  // the nested facts manually.
+  //
+  // Some clients (in particular Haskell) set expand_results=false
+  // and do the stitching-together automatically, so the result
+  // is a data structure with internal sharing of repeated facts.
   2: bool no_base64_binary = false;
-      // Set to true if your client does not base64-encode the Thrift
-      // "binary" type in JSON.  This is needed in the following cases:
-      // - If your client is Python. The Python Thrift implementation is
-      //   broken and doesn't base64-encode the binary type.
-      // - If you're writing JSON directly (instead of generating it
-      //   from the Thrift types). In that case dealing with strings
-      //   is easier if you don't have to use base64 encoding. This is
-      //   how queries via the Glean shell work, for example.
-      // However, note that if you use this option then non-UTF8 data
-      // in a binary type may not be returned correctly, or you may
-      // encounter errors.
+// Set to true if your client does not base64-encode the Thrift
+// "binary" type in JSON.  This is needed in the following cases:
+// - If your client is Python. The Python Thrift implementation is
+//   broken and doesn't base64-encode the binary type.
+// - If you're writing JSON directly (instead of generating it
+//   from the Thrift types). In that case dealing with strings
+//   is easier if you don't have to use base64 encoding. This is
+//   how queries via the Glean shell work, for example.
+// However, note that if you use this option then non-UTF8 data
+// in a binary type may not be returned correctly, or you may
+// encounter errors.
 
 }
 
 # Encode results as Thrift Compact
 struct UserQueryEncodingCompact {
   1: bool expand_results = false;
-      // See expand_results in UserQueryEncodingJSON
+// See expand_results in UserQueryEncodingJSON
 }
 
 # How to encode query results
@@ -557,29 +559,34 @@ struct DerivePredicateQuery {
 # A predicate is derived through multiple queries. These options work per query.
 struct DerivePredicateOptions {
   1: optional i64 max_results_per_query;
-      // maximum number of results to be batched for writing
+  // maximum number of results to be batched for writing
   2: optional i64 max_bytes_per_query;
-      // maximum number of bytes to be batched for writing
+  // maximum number of bytes to be batched for writing
   3: optional i64 max_time_ms_per_query;
-      // maximum amount of time executing each batch
+// maximum amount of time executing each batch
 }
 
 struct DerivePredicateResponse {
-  1 : Handle handle;
+  1: Handle handle;
 }
 
-exception NotAStoredPredicate {}
+exception NotAStoredPredicate {
+}
 
-exception UnknownDerivationHandle {}
+exception UnknownDerivationHandle {
+}
 
-exception UnknownPredicate {}
+exception UnknownPredicate {
+}
 
-exception PredicateAlreadyComplete {}
+exception PredicateAlreadyComplete {
+}
 
-exception PredicateAlreadyBeingDerived {}
+exception PredicateAlreadyBeingDerived {
+}
 
 exception IncompleteDependencies {
-  1: list<PredicateRef> incomplete
+  1: list<PredicateRef> incomplete;
 }
 
 union DerivationProgress {
@@ -591,7 +598,8 @@ struct DerivationOngoing {
   1: UserQueryStats stats;
 }
 
-struct DerivationComplete {}
+struct DerivationComplete {
+}
 
 union DerivationStatus {
   1: DerivationOngoing ongoing;
@@ -600,70 +608,70 @@ union DerivationStatus {
 
 struct UserQuery {
   1: string predicate;
-      // Name of the predicate to query
-      // (only necessary when using JSON query syntax)
-  2: string (hs.type = "ByteString")  query;
-      // Query string; syntax specified by UserQueryOptions.syntax
+  // Name of the predicate to query
+  // (only necessary when using JSON query syntax)
+  2: string (hs.type = "ByteString") query;
+  // Query string; syntax specified by UserQueryOptions.syntax
   3: optional Version predicate_version;
-      // If provided, and if the version requested is different from
-      // the predicate version in the DB, the server will attempt to
-      // translate the results into the desired format. If this isn't
-      // possible, an Exception will be thrown.
-      // If omitted, defaults to the latest version of this predicate
-      // in the schema version.
+  // If provided, and if the version requested is different from
+  // the predicate version in the DB, the server will attempt to
+  // translate the results into the desired format. If this isn't
+  // possible, an Exception will be thrown.
+  // If omitted, defaults to the latest version of this predicate
+  // in the schema version.
   4: optional Version schema_version;
-      // If supplied, then any unversioned predicates in the query are
-      // resolved using this version of the "all" schema. Otherwise, they
-      // are resolved to the latest version of the "all" schema.
+  // If supplied, then any unversioned predicates in the query are
+  // resolved using this version of the "all" schema. Otherwise, they
+  // are resolved to the latest version of the "all" schema.
   5: optional UserQueryOptions options;
 
   6: list<UserQueryEncoding> encodings = [];
-      // Acceptable encodings for the results in order of preference. The server
-      // guarantees to return one of these encodings or fail.
+  // Acceptable encodings for the results in order of preference. The server
+  // guarantees to return one of these encodings or fail.
   7: optional UserQueryClientInfo client_info;
-      // Information about who is making the call
+// Information about who is making the call
 }
 
 struct UserQueryStats {
   // 1: deprecated
   2: i64 num_facts;
-       // the number of individual facts returned in the result
+  // the number of individual facts returned in the result
   3: i64 elapsed_ns;
-       // elapsed time to serve the request
+  // elapsed time to serve the request
   4: i64 allocated_bytes;
-       // bytes allocated by the server
-  5: optional map<Id,i64> facts_searched;
-       // number of facts of each predicate searched. Use getSchemaInfo
-       // to map Id to PredicateRef.
+  // bytes allocated by the server
+  5: optional map<Id, i64> facts_searched;
+  // number of facts of each predicate searched. Use getSchemaInfo
+  // to map Id to PredicateRef.
   6: optional i64 compile_time_ns;
-       // time to compile the query
+  // time to compile the query
   7: optional i64 bytecode_size;
-       // size of the compiled bytecode
+  // size of the compiled bytecode
   8: optional i64 execute_time_ns;
-       // time to execute the compiled query
+  // time to execute the compiled query
   9: i64 result_count;
-       // the number of top-level facts in the result. Not counting nested facts.
+// the number of top-level facts in the result. Not counting nested facts.
 }
 
 # Results in Glean's internal binary representation
 struct UserQueryResultsBin {
   1: UserQueryEncodingBin encoding;
-  2: map<Id,Fact> facts;
-  3: map<Id,Fact> nestedFacts;
+  2: map<Id, Fact> facts;
+  3: map<Id, Fact> nestedFacts;
 }
 
 # Results in JSON
 struct UserQueryResultsJSON {
   1: UserQueryEncodingJSON encoding;
   2: list<json> facts;
-  3: map<Id,json> nestedFacts;
+  3: map<Id, json> nestedFacts;
 }
 
 # Results in Thrift Compact
 struct UserQueryResultsCompact {
   1: UserQueryEncodingCompact encoding;
   2: list<binary> facts;
-  3: map<Id,binary> nestedFacts;
+  3: map<Id, binary> nestedFacts;
 }
 
 # Encoded query results
@@ -675,32 +683,32 @@ union UserQueryEncodedResults {
 
 struct UserQueryResults {
   1: list<json> facts;
-      // DEPRECATED
+  // DEPRECATED
 
   2: optional UserQueryStats stats;
-      // Stats about the query
+  // Stats about the query
 
-  3: map<Id,json> nestedFacts;
-      // DEPRECATED
+  3: map<Id, json> nestedFacts;
+  // DEPRECATED
 
   5: optional UserQueryCont continuation;
-      // Set if max_results was set in the UserQueryOptions, and
-      // there were additional results not returned.
+  // Set if max_results was set in the UserQueryOptions, and
+  // there were additional results not returned.
 
   6: list<string> diagnostics;
-      // Diagnostics from the query engine that may help if your
-      // query didn't return the expected results.
+  // Diagnostics from the query engine that may help if your
+  // query didn't return the expected results.
 
   7: UserQueryEncodedResults results;
-      // Results.
+  // Results.
 
   8: optional Handle handle;
-      // When store_derived_facts=True, and there were facts to write,
-      // the writes are queued and this field contains the Handle
-      // to pass to finishBatch to poll for completion.
+  // When store_derived_facts=True, and there were facts to write,
+  // the writes are queued and this field contains the Handle
+  // to pass to finishBatch to poll for completion.
 
   9: optional string type;
-      // The inferred type of the query
+// The inferred type of the query
 }
 
 struct FactQuery {
@@ -711,15 +719,15 @@ struct FactQuery {
 
 struct UserQueryFacts {
   1: list<FactQuery> facts;
-    // Note: in the case of userQueryFacts, the length of the 'facts'
-    // list in the returned UserQueryResults is guaranteed to be the
-    // same length as this list.
+  // Note: in the case of userQueryFacts, the length of the 'facts'
+  // list in the returned UserQueryResults is guaranteed to be the
+  // same length as this list.
   3: optional Version schema_version; // see UserQuery
   4: optional UserQueryOptions options;
   5: list<UserQueryEncoding> encodings = [];
-    // Acceptable encodings for the results in order of preference.
+  // Acceptable encodings for the results in order of preference.
   6: optional UserQueryClientInfo client_info;
-      // Information about who is making the call
+// Information about who is making the call
 }
 
 struct UserQueryClientInfo {
@@ -728,14 +736,14 @@ struct UserQueryClientInfo {
   2: optional string unixname;
   // User making the query
   3: string application;
-  // Name of program making the query.
+// Name of program making the query.
 }
 
 struct ListDatabases {
   1: bool includeBackups = false;
-    // If true, also queries the backup server for the databases that
-    // are available to restore from backup. This will therefore take
-    // longer than just listing the local databases.
+// If true, also queries the backup server for the databases that
+// are available to restore from backup. This will therefore take
+// longer than just listing the local databases.
 }
 
 struct ListDatabasesResult {
@@ -754,7 +762,7 @@ struct JsonFactBatch {
   1: PredicateRef predicate;
   2: list<json> facts;
   3: optional string unit;
-    // the unit that owns these facts, if known.
+// the unit that owns these facts, if known.
 }
 
 struct SendJsonBatch {
@@ -774,29 +782,29 @@ struct SendJsonBatchResponse {
 // How to fill a database
 union KickOffFill {
   1: string recipes;
-    // Use the recipe set with the given name
+  // Use the recipe set with the given name
 
   2: WorkHandle writeHandle;
-    // Create a taskless DB which can be written to with the given handle
+  // Create a taskless DB which can be written to with the given handle
 
   3: WriteFromScribe scribe;
-    // Read from a scribe category to fill the database
+// Read from a scribe category to fill the database
 }
 
 struct KickOff {
   1: Repo repo;
-    // What DB to kick off
+  // What DB to kick off
 
   2: optional KickOffFill fill;
-    // How to fill the DB - nothing means that the name of the recipe set
-    // is the name of the repo
+  // How to fill the DB - nothing means that the name of the recipe set
+  // is the name of the repo
 
   3: DatabaseProperties properties;
-    // Arbitrary metadata about this DB. Properties prefixed by
-    // "glean."  are reserved for use by Glean itself.
+  // Arbitrary metadata about this DB. Properties prefixed by
+  // "glean."  are reserved for use by Glean itself.
 
   4: optional Dependencies dependencies;
-    // What this DB depends on.
+// What this DB depends on.
 }
 
 struct KickOffResponse {
@@ -808,57 +816,55 @@ struct UpdatePropertiesResponse {
 
 # A chunk of work that can be executed
 struct Work {
-
   1: Repo repo;
-    // Repository
+  // Repository
 
   2: string task;
-    // Task name
+  // Task name
 
   3: i32 parcelIndex;
-    // Index of the work parcel within the task (cf. Recipe.parcels)
+  // Index of the work parcel within the task (cf. Recipe.parcels)
 
   4: i32 parcelCount;
-    // Total number of work parcels in the task
+  // Total number of work parcels in the task
 
   5: WorkHandle handle;
-    // Unique handle
+// Unique handle
 }
 
 struct GetWork {
   1: i32 timeout = 20;
-    // How long to wait for work (in seconds)
+  // How long to wait for work (in seconds)
 
   2: list<string> tasks;
-    // Tasks we are interested in.  Each entry is a regex which is
-    // matched against the available tasks. To match a task exactly, use
-    // "^name$" and escape any special regex characters inside name.
+  // Tasks we are interested in.  Each entry is a regex which is
+  // matched against the available tasks. To match a task exactly, use
+  // "^name$" and escape any special regex characters inside name.
 
   3: string runner;
-    // Machine or task that will be executing the work (for display only)
+  // Machine or task that will be executing the work (for display only)
 
   4: optional Work previous;
-    // Work we've done right before (for optimising work assignments)
+// Work we've done right before (for optimising work assignments)
 }
 
 struct WorkAvailable {
-
   1: Work work;
-    // The work
+  // The work
 
   2: i32 attempt;
-    // How often the parcel has been retried
+  // How often the parcel has been retried
 
   3: optional i32 heartbeat;
-    // How often to ping the server via workHeartbeat (in seconds)
+  // How often to ping the server via workHeartbeat (in seconds)
 
   4: DatabaseProperties properties;
-    // Properties of the database this work is for
+// Properties of the database this work is for
 }
 
 struct WorkUnavailable {
   1: i32 pause;
-    // How long to wait before calling getWork again (in seconds)
+// How long to wait before calling getWork again (in seconds)
 }
 
 union GetWorkResponse {
@@ -899,7 +905,7 @@ struct ValidateSchema {
 }
 
 struct PredicateStatsOpts {
-  1: bool excludeBase = true
+  1: bool excludeBase = true;
 }
 
 service GleanService extends fb303.FacebookService {
@@ -913,8 +919,7 @@ service GleanService extends fb303.FacebookService {
   // Check that a schema is valid, throws an exception if not.  Used
   // to verify a schema against the server before making it the
   // default.
-  void validateSchema(1: ValidateSchema v)
-    throws(1: Exception e);
+  void validateSchema(1: ValidateSchema v) throws (1: Exception e);
 
   // Send a batch of fact. See the comments on ComputedBatch.
   SendResponse sendBatch(1: ComputedBatch batch);
@@ -922,92 +927,123 @@ service GleanService extends fb303.FacebookService {
   // Get the substitution for the given handle (obtained via a previous
   // sendBatch) if no writes are outstanding for it. The server forgets the
   // handle after this operation.
-  FinishResponse finishBatch(1: Handle handle)
-    throws(1: UnknownBatchHandle e);
+  FinishResponse finishBatch(1: Handle handle) throws (1: UnknownBatchHandle e);
 
   // Write a batch of facts in JSON format. The call will queue the
   // writes and return immediately. If the caller sets remember=true,
   // then they can later request the result by passing the returned
   // handle to finishBatch.
-  SendJsonBatchResponse sendJsonBatch(1: Repo repo, 2: SendJsonBatch s)
-    throws(1: Exception e, 2: Retry r);
+  SendJsonBatchResponse sendJsonBatch(1: Repo repo, 2: SendJsonBatch s) throws (
+    1: Exception e,
+    2: Retry r,
+  );
 
   // Kick off a database; does nothing if the DB already exists
-  KickOffResponse kickOff(1: KickOff request)
-    throws(1: UnknownDatabase u, 2: InvalidDependency e)
+  KickOffResponse kickOff(1: KickOff request) throws (
+    1: UnknownDatabase u,
+    2: InvalidDependency e,
+  );
 
   // Add, update, or delete DatabaseProperties for the given Repo.
   UpdatePropertiesResponse updateProperties(
-      1: Repo repo,
-      2: DatabaseProperties set_ = {},
-      3: list<string> unset = []
-    ) throws(1: Exception e, 2: UnknownDatabase u);
+    1: Repo repo,
+    2: DatabaseProperties set_ = {},
+    3: list<string> unset = [],
+  ) throws (1: Exception e, 2: UnknownDatabase u);
 
   // Get a work parcel
-  GetWorkResponse getWork(1: GetWork request)
-    throws(1: Exception e);
+  GetWorkResponse getWork(1: GetWork request) throws (1: Exception e);
 
   // Tell the server that the work parcel is no longer being worked on. The
   // server will then reschedule it as appropriate. This does not count as a
   // retry.
-  void workCancelled(1: WorkCancelled request)
-    throws(1: Exception e, 2: AbortWork a);
+  void workCancelled(1: WorkCancelled request) throws (
+    1: Exception e,
+    2: AbortWork a,
+  );
 
   // Tell the server that work is still ongoing. This needs to be done
   // periodically as indicated by WorkAvailable.heartbeat.
-  void workHeartbeat(1: WorkHeartbeat request)
-    throws(1: Exception e, 2: AbortWork a);
+  void workHeartbeat(1: WorkHeartbeat request) throws (
+    1: Exception e,
+    2: AbortWork a,
+  );
 
   // Tell the server that work has finished, either successfully or
   // unsuccessfully. If this is the final task and the server still
   // has pending writes, it will fail with Retry.
-  void workFinished(1: WorkFinished request)
-    throws(1: Exception e, 2: AbortWork a, 3: Retry r);
+  void workFinished(1: WorkFinished request) throws (
+    1: Exception e,
+    2: AbortWork a,
+    3: Retry r,
+  );
 
   // Return Fact 0 "" "" when nothing found
   Fact queryFact(1: Repo repo, 2: Id id);
-
 
   // Get lower and upper bounds on fact ids in the database. The database is
   // guaranteed to have no fact ids < start or >= finish and fact ids within
   // the range will be reasonably dense. There is no guarantee that they are
   // consecutive or that a fact with id start exists.
-  FactIdRange factIdRange(1: Repo repo) throws(1: Exception e);
+  FactIdRange factIdRange(1: Repo repo) throws (1: Exception e);
 
   // DEPRECATED
-  Id firstFreeId(1: Repo repo) throws(1: Exception e);
+  Id firstFreeId(1: Repo repo) throws (1: Exception e);
 
   map<Id, PredicateStats> predicateStats(
-    1: Repo repo, 2: PredicateStatsOpts opts
-  ) throws(1: Exception e);
+    1: Repo repo,
+    2: PredicateStatsOpts opts,
+  ) throws (1: Exception e);
 
   ListDatabasesResult listDatabases(1: ListDatabases l);
-  GetDatabaseResult getDatabase(1: Repo repo)
-    throws(1: Exception e, 2: UnknownDatabase u);
-  DeleteDatabaseResult deleteDatabase(1: Repo repo)
-    throws(1: Exception e, 2: UnknownDatabase u);
+  GetDatabaseResult getDatabase(1: Repo repo) throws (
+    1: Exception e,
+    2: UnknownDatabase u,
+  );
+  DeleteDatabaseResult deleteDatabase(1: Repo repo) throws (
+    1: Exception e,
+    2: UnknownDatabase u,
+  );
 
-  void restore(1: string locator)
-    throws(1: InvalidLocator e);
+  void restore(1: string locator) throws (1: InvalidLocator e);
 
-  UserQueryResults userQueryFacts(1: Repo repo, 2: UserQueryFacts q)
-    throws(1: Exception e, 3: BadQuery b);
+  UserQueryResults userQueryFacts(1: Repo repo, 2: UserQueryFacts q) throws (
+    1: Exception e,
+    3: BadQuery b,
+  );
 
-  UserQueryResults userQuery(1: Repo repo, 2: UserQuery q)
-    throws(1: Exception e, 3: BadQuery b, 4: Retry r);
+  UserQueryResults userQuery(1: Repo repo, 2: UserQuery q) throws (
+    1: Exception e,
+    3: BadQuery b,
+    4: Retry r,
+  );
 
-  DerivationStatus deriveStored(1: Repo repo, 2: DerivePredicateQuery q)
-    throws(1: Exception e, 2: NotAStoredPredicate n, 3: UnknownPredicate u,
-           4: IncompleteDependencies d);
+  DerivationStatus deriveStored(
+    1: Repo repo,
+    2: DerivePredicateQuery q,
+  ) throws (
+    1: Exception e,
+    2: NotAStoredPredicate n,
+    3: UnknownPredicate u,
+    4: IncompleteDependencies d,
+  );
 
-  DerivePredicateResponse derivePredicate(1: Repo repo, 2: DerivePredicateQuery q)
-    throws(1: Exception e, 5: NotAStoredPredicate n, 6: UnknownPredicate u,
-           7: PredicateAlreadyComplete p, 8: IncompleteDependencies d
-           9: PredicateAlreadyBeingDerived a);
+  DerivePredicateResponse derivePredicate(
+    1: Repo repo,
+    2: DerivePredicateQuery q,
+  ) throws (
+    1: Exception e,
+    5: NotAStoredPredicate n,
+    6: UnknownPredicate u,
+    7: PredicateAlreadyComplete p,
+    8: IncompleteDependencies d,
+    9: PredicateAlreadyBeingDerived a,
+  );
 
-  DerivationProgress pollDerivation(1: Handle h)
-    throws(1: Exception e, 2: UnknownDerivationHandle h);
-
+  DerivationProgress pollDerivation(1: Handle h) throws (
+    1: Exception e,
+    2: UnknownDerivationHandle h,
+  );
 }
 
 struct PredicateAnnotation {

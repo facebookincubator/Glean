@@ -18,12 +18,12 @@ struct FileXRef {
 union Decl {
   1: cxx1.FunctionDefinition fun_def;
   2: cxx1.FunctionDeclaration fun_decl;
-    // Function declarations that are not definitions.
+  // Function declarations that are not definitions.
   3: cxx1.RecordDefinition rec_def;
   4: cxx1.RecordDeclaration rec_decl;
-    // Record declarations that are not definitions.
+  // Record declarations that are not definitions.
   5: hs.FunctionDefinition hs_fun_def;
-    // Haskell definitions
+  // Haskell definitions
   6: cxx1.VariableDeclaration var_decl;
   7: cxx1.EnumDefinition enum_def;
   8: cxx1.EnumDeclaration enum_decl;
@@ -43,10 +43,10 @@ struct FindDeclsResult {
 
 struct FindDeclsQuery {
   1: string user_id;
-    // Unique identifier for the client searching.
+  // Unique identifier for the client searching.
   2: string query;
   3: bool refs;
-    // Fetch cross references.
+// Fetch cross references.
 }
 
 struct FunctionCall {
@@ -82,26 +82,29 @@ struct FindLocalGraphResult {
 
 struct FindLocalGraphQuery {
   1: string user_id;
-    // Unique identifier for the client searching.
+  // Unique identifier for the client searching.
   2: i64 fun_id;
   3: i32 max_funs;
-    // Maximal number of declarations in the returned graph.
+// Maximal number of declarations in the returned graph.
 }
 
 struct SearchQuery {
   1: string query;
-    // The query string. This is interpreted in a language-sensitive
-    // way, e.g. C++ will interpret foo::bar as a search for symbol
-    // foo in namespace bar.
+  // The query string. This is interpreted in a language-sensitive
+  // way, e.g. C++ will interpret foo::bar as a search for symbol
+  // foo in namespace bar.
   2: bool case_sensitive = true;
   3: optional list<src.Language> languages;
-    // if set, limit the search results to these languages
+// if set, limit the search results to these languages
 } (hs.prefix = "")
 
 service SearchService extends glean.GleanService {
-  FindDeclsResult findDecls(1: glean.Repo repo, 2: FindDeclsQuery q)
-    throws(1: glean.Exception e);
+  FindDeclsResult findDecls(1: glean.Repo repo, 2: FindDeclsQuery q) throws (
+    1: glean.Exception e,
+  );
 
-  FindLocalGraphResult findLocalGraph(1: glean.Repo repo,
-    2: FindLocalGraphQuery q);
+  FindLocalGraphResult findLocalGraph(
+    1: glean.Repo repo,
+    2: FindLocalGraphQuery q,
+  );
 }

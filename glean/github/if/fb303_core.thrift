@@ -8,7 +8,7 @@ enum fb303_status {
 }
 
 service BaseService {
-  fb303_status getStatus() (priority='IMPORTANT')
-  string getName()
-  i64 aliveSince() (priority = 'IMPORTANT')
+  fb303_status getStatus() (priority = 'IMPORTANT');
+  string getName();
+  i64 aliveSince() (priority = 'IMPORTANT');
 }

@@ -4,27 +4,27 @@ namespace cpp2 facebook.glean.thrift.internal
 namespace hs Glean
 
 struct KeyIterator {
-  1: i64 type
-  2: string key
-  3: i64 prefix_size
-  4: bool first
+  1: i64 type;
+  2: string key;
+  3: i64 prefix_size;
+  4: bool first;
 }
 
 struct SubroutineState {
-  1: binary code
-  2: i64 entry
-  3: i64 inputs
-  4: list<i64> locals
-  5: list<string> literals
+  1: binary code;
+  2: i64 entry;
+  3: i64 inputs;
+  4: list<i64> locals;
+  5: list<string> literals;
 }
 
 struct QueryCont {
-  1: list<KeyIterator> iters
-  2: list<string> outputs
-  3: SubroutineState sub
+  1: list<KeyIterator> iters;
+  2: list<string> outputs;
+  3: SubroutineState sub;
   // 4: deprecated, do not use
-  5: i64 pid
-  6: optional Subroutine traverse
+  5: i64 pid;
+  6: optional Subroutine traverse;
 }
 
 // Types for serialising/deserialising inventories. See comments in
