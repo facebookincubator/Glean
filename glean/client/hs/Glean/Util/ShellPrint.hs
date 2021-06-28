@@ -214,3 +214,9 @@ instance ShellFormat [Thrift.Database] where
     vcat $ concatMap f $ sortOn Thrift.database_created_since_epoch dbs
     where f db = [shellFormatText ctx db, text "    "]
   shellFormatJson ctx dbs = J.toJSON $ map (shellFormatJson ctx) dbs
+
+instance ShellFormat v => ShellFormat [(Thrift.Database, [(String, v)])] where
+  shellFormatText ctx dbs =
+    vcat $ concatMap f $ sortOn (Thrift.database_created_since_epoch . fst) dbs
+    where f x = [shellFormatText ctx x, text "    "]
+  shellFormatJson ctx dbs = J.toJSON $ map (shellFormatJson ctx) dbs
