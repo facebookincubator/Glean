@@ -9,7 +9,7 @@ perform a variety of admin tasks on databases, and also do one-off
 queries.
 
 The `glean` tool accepts all the [common
-options](running) to specify how to connect to access
+options](running#common-options) to specify how to connect to access
 the databases.
 
 The available commands are as follows:

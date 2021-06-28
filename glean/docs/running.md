@@ -5,13 +5,7 @@ sidebar_label: Running the Tools
 ---
 
 import {fbContent, OssOnly, FbInternalOnly} from 'internaldocs-fb-helpers';
-
-export const Alt = ({children, internal, external}) => (
-  fbContent({
-     internal: <code>{internal}</code>,
-     external: <code>{external}</code>
-  })
-);
+import {Alt} from '@site/utils.js';
 
 ## Configuration files
 
@@ -55,16 +49,20 @@ whatever method you need for accessing config files.
 
 </OssOnly>
 
-<OssOnly>
 
 ## Common options
+
+All the Glean tools (`glean`, `glean-server`, `glean-shell`) accept
+the following options.
+
+<OssOnly>
 
 * `--config-dir DIR`<br />
 The base directory where [configuration files](#configuration-files) are read from.
 
 </OssOnly>
 
-## Connecting to a remote server
+### Connecting to a remote server
 
 <FbInternalOnly>
 
@@ -97,7 +95,7 @@ FB-only: whether to use shards when connecting to a host in the tier.
 
 </FbInternalOnly>
 
-## Using local databases
+### Using local databases
 
 * `--db-root DIR`<br />
 The path where Glean databases are stored.
@@ -109,7 +107,7 @@ The location of the schema definition. This can either be:
     All the files with the extension `.angle` under `DIR` (or in
     subdirectories) will be read.
   * `file:FILE` or `config:PATH`<br/>
-    A single file, which can be created by running `gen-schema --dir DIR --source FILE`<br />
+    A single file, which can be created from the source files in `DIR` by running `gen-schema --dir DIR --source FILE`<br />
     If you are running a fleet of Glean servers, you would normally
     sync schema changes across the fleet by putting the schema
     in `config:schema`.
@@ -155,7 +153,7 @@ this doesn't do anything yet).
 
 </OssOnly>
 
-## Testing options
+### Testing options
 
 * `--db-schema-override`<br />
 The current schema will override the schema in the

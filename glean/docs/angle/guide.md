@@ -100,7 +100,7 @@ facts> example.Class _
 { "id": 1024, "key": { "name": "Pet", "line": 10 } }
 ```
 
-We’ll introduce more kinds of pattern in the following sections. The full list of patterns can be found in [Angle Reference](https://www.internalfb.com/intern/wiki/Glean/Query/Angle/Reference/).
+We’ll introduce more kinds of pattern in the following sections. The full list of patterns can be found in [Angle Reference](reference).
 
 ## Matching nested facts
 

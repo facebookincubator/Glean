@@ -22,8 +22,7 @@ JSON-encoded Thrift.
 
 Facebook internal: the Thrift types for the schema are automatically
 generated into
-[[https://phabricator.intern.facebook.com/diffusion/FBS/browse/master/fbcode/glean/schema
-| fbcode/glean/schema]], and those files are automatically sync'd to
+[fbcode/glean/schema](https://phabricator.intern.facebook.com/diffusion/FBS/browse/master/fbcode/glean/schema), and those files are automatically sync'd to
 www too.
 
 </FbInternalOnly>

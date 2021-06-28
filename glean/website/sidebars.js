@@ -33,13 +33,30 @@ module.exports = {
                ]
            },
            {
-               'Angle': [
-                   'angle/intro',
-                   'angle/guide',
-                   'angle/efficiency',
-                   'angle/advanced',
-                   'angle/debugging',
-                   'angle/reference',
+               'Querying': [
+                   'query/intro',
+                   {
+                       'Angle': [
+                           'angle/intro',
+                           'angle/guide',
+                           'angle/efficiency',
+                           'angle/advanced',
+                           'angle/debugging',
+                           'angle/reference',
+                           ...fbInternalOnly(['angle/fb/examples']),
+                           'angle/style',
+                       ],
+                   },
+                   {
+                       'APIs': [
+                           'query/api/haskell',
+                           ...fbInternalOnly(['query/api/fb/hack']),
+                           ...fbInternalOnly(['query/api/fb/python']),
+                           ...fbInternalOnly(['query/api/fb/rust']),
+                           ...fbInternalOnly(['query/api/fb/cpp']),
+                       ],
+                   },
+                   ...fbInternalOnly(['query/fb/thrift']),
                ],
            },
            'derived',

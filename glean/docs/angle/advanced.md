@@ -26,7 +26,7 @@ facts> P where C = { name = "Fish" } : example.Class; example.Parent { C, P }
 { "id": 1024, "key": { "name": "Pet", "line": 10 } }
 ```
 
-Here we used `{ name = "Fish" } : example.Class` to tell Angle the expected type of the pattern. You should read the colon as "has type", and the type can be any valid Angle type, for details see [[Glean/Schema/#syntax-of-types | Syntax of types]].
+Here we used `{ name = "Fish" } : example.Class` to tell Angle the expected type of the pattern. You should read the colon as "has type", and the type can be any valid Angle type, for details see [Built-in types](../schema/types).
 
 ## Explicit fact IDs
 
@@ -43,7 +43,7 @@ facts> $1026 : example.Class
 { "id": 1026, "key": { "name": "Fish", "line": 30 } }
 ```
 
-the syntax is `$<fact ID>`, but you will often want to use it with a [[#type-signatures | type signature]], as `$<fact ID> : <predicate>`.
+the syntax is `$<fact ID>`, but you will often want to use it with a [type signature](#types-and-signatures), as `$<fact ID> : <predicate>`.
 
 If you get the predicate wrong, Glean will complain:
 
