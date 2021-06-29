@@ -529,7 +529,10 @@ library client-hs
           Glean.Write
           Glean.Haxl
           Glean.Repo
+          Glean.Util.ShellPrint
     build-depends:
+        pretty,
+        aeson-pretty,
         glean:if-glean-hs,
         glean:util,
         glean:core,
