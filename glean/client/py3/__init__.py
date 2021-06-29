@@ -288,7 +288,9 @@ class GleanClient:
             raise
 
         if resp.type != FinishResponse.Type.subst:
+            # pyre-fixme[61]: `resp` may not be initialized here.
             self._last_write_error = str(resp)
+        # pyre-fixme[61]: `resp` may not be initialized here.
         return resp
 
     async def _sendJsonBatch(
