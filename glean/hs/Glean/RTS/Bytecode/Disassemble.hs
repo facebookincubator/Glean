@@ -28,7 +28,7 @@ disassemble name sub =
     | (i,lit) <- zip [0 :: Int ..] subLiterals ]
   ++
   [ "  %" <> Text.pack (show i) <> " = " <> Text.pack (show c)
-    | (i,c) <- zip [subInputs+1 ..] (V.toList subConstants) ]
+    | (i,c) <- zip [subInputs..] (V.toList subConstants) ]
   ++
   [ "" ]
   ++ code ++
