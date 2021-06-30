@@ -68,8 +68,7 @@ template<typename F> void concurrently(F&& f) {
   mutex.lock();
   for (size_t t = 0; t < 8; ++t) {
     threads.push_back(std::thread([&mutex,t,&f] {
-      mutex.lock_shared();
-      mutex.unlock_shared();
+      std::ignore = std::shared_lock{mutex};
       f(t);
     }));
   }
