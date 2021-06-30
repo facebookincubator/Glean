@@ -89,28 +89,8 @@ predicate HaskellFileDirectXRefs:
 # Deprecated language-agnostic API (v2)
 
 # deprecated
-# usage: https://fburl.com/scuba/glean_server/ikx3jonh
-predicate FileEntities:
-  {
-    file: src.File,
-    decl: Declaration,
-    entity: code.Entity,
-  }
-  { File, { Name, File, Span }, Entity} where
-    FileEntityLocations { File, { Name, File, { span = Span }}, Entity }
-
-# deprecated
-# usage: https://fburl.com/scuba/glean_server/klkte66n
-predicate Resolve:
-  {
-    decl: Declaration,
-    entity: code.Entity,
-  }
-  { { Name, File, Span }, Entity } where
-    ResolveLocation { { Name, File, { span = Span }}, Entity }
-
-# deprecated
-# usage: https://fburl.com/scuba/glean_server/fjkzcdgp
+# usage: https://fburl.com/scuba/glean_server/y7dgmyvw
+# note: bento/bigcode started using this method
 predicate FileEntityXRefs:
   {
     file: src.File,
@@ -684,28 +664,8 @@ predicate HaskellFileDirectXRefs:
 # Deprecated language-agnostic API (v2)
 
 # deprecated
-# usage: https://fburl.com/scuba/glean_server/ikx3jonh
-predicate FileEntities:
-  {
-    file: src.File,
-    decl: Declaration,
-    entity: code.Entity,
-  }
-  { File, { Name, File, Span }, Entity} where
-    FileEntityLocations { File, { Name, File, { span = Span }}, Entity }
-
-# deprecated
-# usage: https://fburl.com/scuba/glean_server/klkte66n
-predicate Resolve:
-  {
-    decl: Declaration,
-    entity: code.Entity,
-  }
-  { { Name, File, Span }, Entity } where
-    ResolveLocation { { Name, File, { span = Span }}, Entity }
-
-# deprecated
-# usage: https://fburl.com/scuba/glean_server/fjkzcdgp
+# usage: https://fburl.com/scuba/glean_server/y7dgmyvw
+# note: bento/bigcode started using this method
 predicate FileEntityXRefs:
   {
     file: src.File,
