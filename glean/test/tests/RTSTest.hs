@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 module RTSTest where
 

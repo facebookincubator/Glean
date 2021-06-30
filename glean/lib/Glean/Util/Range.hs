@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE NamedFieldPuns #-}
 -- | There are several concepts of ranges to convert between.
 module Glean.Util.Range

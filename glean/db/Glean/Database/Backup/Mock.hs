@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 --
 -- | A Glean Backup provider that just copies files to somewhere in
 -- the filesystem, for testing purposes.

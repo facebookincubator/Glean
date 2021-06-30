@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE NamedFieldPuns, DefaultSignatures, TypeFamilyDependencies #-}
 {-# LANGUAGE UndecidableInstances #-} -- class QueryDefDecl
 module Glean.Util.Same

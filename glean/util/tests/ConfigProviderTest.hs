@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module ConfigProviderTest (main) where
 
 import Control.Concurrent

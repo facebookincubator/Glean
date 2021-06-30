@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- | run with
 --
 -- > ./hyperlink --port=8080

@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 #include "glean/interprocess/cpp/worklist.h"
 
 #include <thread>

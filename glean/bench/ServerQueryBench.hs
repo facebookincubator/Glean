@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- | Run query benchmarks against a spawned or existing server.
 --
 -- For each benchmark, this script will do 'cfgWarmup' warm-up queries and then

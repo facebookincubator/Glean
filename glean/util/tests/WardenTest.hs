@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module WardenTest (main) where
 
 import Control.Concurrent.Async

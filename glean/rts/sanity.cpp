@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 #include "glean/rts/sanity.h"
 #include <gflags/gflags.h>
 

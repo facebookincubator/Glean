@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module DbPropertiesTest (main) where
 
 import Control.Monad

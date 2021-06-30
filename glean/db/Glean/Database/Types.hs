@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module Glean.Database.Types (
   Writing(..), OpenDB(..), DBState(..),
   Write(..),

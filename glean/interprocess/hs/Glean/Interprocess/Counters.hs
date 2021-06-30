@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module Glean.Interprocess.Counters (
   Counters, withTemp, get, set
 ) where

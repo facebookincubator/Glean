@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- | Utilities for writing data to Glean
 module Glean.Write
   ( parseRef

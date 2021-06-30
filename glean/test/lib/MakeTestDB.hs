@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module MakeTestDB (main) where
 
 import System.Environment

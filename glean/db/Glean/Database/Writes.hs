@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- | Server-side write queue implementation.  Currently this is just a
 -- layer that makes every write operation asynchronous with support
 -- for polling the status of a previous write.

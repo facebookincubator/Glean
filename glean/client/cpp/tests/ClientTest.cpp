@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 #include <gtest/gtest.h>
 #include <vector>
 #include <ext/stdio_filebuf.h>

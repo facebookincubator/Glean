@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE CPP, ApplicativeDo, TypeApplications, AllowAmbiguousTypes #-}
 
 module GleanCLI (main) where

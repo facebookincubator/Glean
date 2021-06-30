@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module Glean.Datasource.Scribe.Write
   ( scribeWriteBatches
   ) where

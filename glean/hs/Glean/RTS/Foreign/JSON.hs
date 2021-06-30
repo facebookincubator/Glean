@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module Glean.RTS.Foreign.JSON
   ( Dyn, Value(..), withParsed, unfold
   , ByteStringRef(..), getUTF8

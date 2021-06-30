@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module WorkerTest (main) where
 
 import Control.Concurrent.STM (atomically)

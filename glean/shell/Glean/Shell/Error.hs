@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- | Format Angle errors to dispay in the terminal
 module Glean.Shell.Error
   ( Ann

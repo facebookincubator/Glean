@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 #include <folly/gen/Base.h>
 #include "glean/cpp/glean.h"
 #include "glean/rts/sanity.h"

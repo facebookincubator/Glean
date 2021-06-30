@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 #define TEST(x) ((x)+1)
 
 namespace facebook {

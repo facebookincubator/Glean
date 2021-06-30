@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE ApplicativeDo, NamedFieldPuns #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 module Glean.Shell (main)

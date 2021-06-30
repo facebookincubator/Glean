@@ -1,4 +1,5 @@
--- Copyright 2004-present Facebook. All Rights Reserved.
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- Note: UnboxedTuples needed for deriving Prim
 {-# LANGUAGE GeneralizedNewtypeDeriving, TypeInType, UnboxedTuples #-}
   -- | This does not import Glean modules at all

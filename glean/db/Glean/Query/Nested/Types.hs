@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- | Types for nested (JSON) queries
 module Glean.Query.Nested.Types
   ( Nested(..)

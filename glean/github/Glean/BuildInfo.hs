@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module Glean.BuildInfo (module Glean.BuildInfo) where
 
 import Data.Text (Text)

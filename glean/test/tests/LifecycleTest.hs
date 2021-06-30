@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module LifecycleTest (main) where
 
 import Control.Concurrent.Async

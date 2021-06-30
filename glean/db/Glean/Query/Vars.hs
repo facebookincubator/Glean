@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- | Collecting the variables mentioned by a term
 module Glean.Query.Vars (
     VarSet,

@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE RecursiveDo #-}
 module Glean.RTS.Typecheck
   ( CompiledTypecheck

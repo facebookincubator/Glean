@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 #include "glean/ffi/memory.h"
 #include "glean/ffi/wrap.h"
 #include "glean/rts/json.h"

@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module TestRunner (module TestRunner) where
 
 import Control.Monad

@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module Glean.RTS.Bytecode.Code
   ( MonadInsn(..)
   , Code

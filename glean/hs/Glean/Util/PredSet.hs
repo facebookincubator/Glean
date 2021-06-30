@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 -- | A tagged intset to keep the type of keys clear.  Mainly intended for
 -- Glean predicates.

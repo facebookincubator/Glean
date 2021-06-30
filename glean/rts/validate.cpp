@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 #include "glean/rts/binary.h"
 #include "glean/rts/validate.h"
 

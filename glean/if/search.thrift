@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 include "glean/if/glean.thrift"
 include "glean/schema/thrift/cxx1.thrift"
 include "glean/schema/thrift/hs.thrift"

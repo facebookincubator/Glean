@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {- | Generate thrift/Haskell/C++ headers from a Glean schema
 
 This script is run automatically via Buck custom_rule()s, see

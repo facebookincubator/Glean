@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 #pragma once
 
 #include "glean/if/gen-cpp2/glean_constants.h"

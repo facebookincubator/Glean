@@ -1,5 +1,6 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE ApplicativeDo, NamedFieldPuns #-}
--- Copyright 2004-present Facebook. All Rights Reserved.
 
 module Glean.Write.Options
   ( sendQueueOptions

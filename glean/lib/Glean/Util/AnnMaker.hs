@@ -1,4 +1,5 @@
--- Copyright 2004-present Facebook. All Rights Reserved.
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE NamedFieldPuns #-}
 -- | 'AnnMaker' hides creation of references and annotations (useful for
 -- pretty printing).

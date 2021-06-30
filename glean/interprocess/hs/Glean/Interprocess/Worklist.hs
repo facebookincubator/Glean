@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module Glean.Interprocess.Worklist
   ( Worker, Worklist, Range(..), withTemp, get, next, peek, doNext
   ) where

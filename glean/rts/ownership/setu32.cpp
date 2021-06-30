@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 #include "glean/rts/ownership/setu32.h"
 
 #include <xxhash.h>

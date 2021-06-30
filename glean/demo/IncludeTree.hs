@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE ApplicativeDo, RecordWildCards #-}
 -- | Explain how every file has been imported, by all possible paths,
 -- from the root file.

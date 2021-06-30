@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- | Utilities for working with Glean.Angle.Types
 module Glean.Schema.Util
   ( unit

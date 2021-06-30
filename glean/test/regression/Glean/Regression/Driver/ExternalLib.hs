@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE ApplicativeDo #-}
 -- | Provide support for building 'Generator' for indexing into a Glean repo
 -- for tests

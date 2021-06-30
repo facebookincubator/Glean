@@ -1,4 +1,5 @@
--- Copyright 2004-present Facebook. All Rights Reserved.
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE ApplicativeDo, NamedFieldPuns #-}
 -- | Library for running indexer (using ExternalLib)
 -- and running unit tests on the resulting Repo

@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- TODO: Refactor this and Glean.Database.Index into sensible bits
 module Glean.Database.Index (
   kickOffDatabase, listDatabases,

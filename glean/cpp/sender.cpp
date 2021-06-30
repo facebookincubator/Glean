@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 #include "glean/cpp/sender.h"
 
 #include <folly/FileUtil.h>

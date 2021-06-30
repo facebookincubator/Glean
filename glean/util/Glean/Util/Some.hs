@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE ConstraintKinds #-}
 module Glean.Util.Some (Some(..)) where
 

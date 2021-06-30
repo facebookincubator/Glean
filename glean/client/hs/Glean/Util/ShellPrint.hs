@@ -1,5 +1,6 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE TypeApplications #-}
--- Copyright 2004-present Facebook. All Rights Reserved.
 
 module Glean.Util.ShellPrint
   ( ShellFormat(..)

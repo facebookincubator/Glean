@@ -1,4 +1,5 @@
--- Copyright 2004-present Facebook. All Rights Reserved.
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE TypeFamilies #-}
 -- | Useful for options, parsing, see
 -- <http://reasonablypolymorphic.com/blog/higher-kinded-data/>

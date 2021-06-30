@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE DeriveFunctor, DeriveFoldable, DeriveTraversable #-}
 module Glean.Shell.Types (
   Parse(..), Statement(..), JSONQuery(..), AngleQuery(..),

@@ -1,4 +1,5 @@
--- Copyright 2004-present Facebook. All Rights Reserved.
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 
 -- | Support @Glean.Pretty.*@ modules, "Glean.Pretty.Styles",
 -- and "Glean.Util.AnnMaker".

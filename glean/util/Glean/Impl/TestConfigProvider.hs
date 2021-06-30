@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- | A ConfigProvider for testing. It uses a temporary directory on the
 -- filesystem, and supports setting configs programmatically.
 

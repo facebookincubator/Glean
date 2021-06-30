@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- | Converting between Repo and String/Text
 module Glean.Repo.Text
   ( showRepo

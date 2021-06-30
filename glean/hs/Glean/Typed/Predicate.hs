@@ -1,4 +1,5 @@
--- Copyright 2004-present Facebook. All Rights Reserved.
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE TypeApplications #-}
 
 -- | Support for working with Thrift-generated predicate types

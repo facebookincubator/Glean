@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE ApplicativeDo #-}
 module Glean.Backend.Remote
   ( Backend(..)

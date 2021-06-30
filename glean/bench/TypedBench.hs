@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE TypeApplications #-}
 
 -- | Benchmarks decoding of Glean binary data in Haskell

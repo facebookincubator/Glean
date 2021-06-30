@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE ApplicativeDo, TypeApplications #-}
 
 -- Example Glean client to demonstrate creating a DB and writing some

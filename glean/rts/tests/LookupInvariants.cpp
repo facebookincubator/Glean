@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 #include "glean/ffi/wrap.h"
 #include "glean/rts/fact.h"
 #include "glean/rts/lookup.h"

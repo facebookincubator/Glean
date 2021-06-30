@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module Glean.Database.Stats (
   Stats, new, Bump, bump, tick,
   mutatorLatency, mutatorInput, mutatorThroughput, mutatorDedupedThroughput,

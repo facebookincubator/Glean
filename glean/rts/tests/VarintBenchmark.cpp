@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 #include <iostream>
 
 #include <common/init/Init.h>

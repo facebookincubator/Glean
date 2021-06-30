@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module ServiceData.GlobalStats (module ServiceData.GlobalStats) where
 
 import Data.ByteString (ByteString)

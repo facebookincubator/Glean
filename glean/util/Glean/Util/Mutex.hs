@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module Glean.Util.Mutex (
   Mutex, newMutex, withMutex, withMutex_, tryWithMutex
 ) where

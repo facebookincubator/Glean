@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE NamedFieldPuns #-}
 -- | Tiny demonstration of calling the SyntaxHighlighter service (Pygments)
 --

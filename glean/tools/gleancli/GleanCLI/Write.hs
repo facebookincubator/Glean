@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE ApplicativeDo #-}
 module GleanCLI.Write (WriteCommand, FinishCommand) where
 

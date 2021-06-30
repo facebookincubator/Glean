@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 #include "glean/rts/binary.h"
 #include "glean/rts/bytecode/subroutine.h"
 #include "glean/rts/id.h"

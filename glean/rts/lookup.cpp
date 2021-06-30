@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 #include "glean/rts/lookup.h"
 #include "glean/rts/error.h"
 

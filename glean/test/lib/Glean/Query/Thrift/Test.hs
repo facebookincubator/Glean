@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE ConstraintKinds, NamedFieldPuns #-}
 
 -- | Query API for testing only.  See "Glean.Query.Thrift" for the real API.

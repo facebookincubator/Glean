@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 include "glean/github/if/fb303.thrift"
 include "glean/config/recipes/recipes.thrift"
 include "glean/config/server/server_config.thrift"

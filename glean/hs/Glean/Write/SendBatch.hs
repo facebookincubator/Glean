@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- |
 -- This layer provides synchronous writing on top of the lower-level
 -- asynchronous write API, by doing polling and waiting as necessary.

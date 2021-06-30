@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module CatalogTest (main) where
 
 import Control.Concurrent.MVar

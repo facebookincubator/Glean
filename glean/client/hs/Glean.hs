@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 --
 -- | Interface providing everything that clients of a Glean server should need.
 -- To use a local database store, see "Glean.LocalOrRemote".

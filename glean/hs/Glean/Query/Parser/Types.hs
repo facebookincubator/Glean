@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE DeriveFunctor, DeriveTraversable #-}
 module Glean.Query.Parser.Types
   ( P

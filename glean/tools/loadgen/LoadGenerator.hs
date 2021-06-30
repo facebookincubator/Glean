@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {- |
 
 A very simple load generator to test the Glean server's behaviour

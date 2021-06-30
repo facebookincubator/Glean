@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- | Simple 'Storable'-based append buffers in 'IO' and 'ST'.
 --
 -- The main properties are amortised constant 'push' and constant GC cost.

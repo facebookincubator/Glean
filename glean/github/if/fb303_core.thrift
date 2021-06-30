@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 enum fb303_status {
   DEAD = 0,
   STARTING = 1,

@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE NamedFieldPuns #-}
 module Glean.Util.Time
 ( -- * Util.TimeSec

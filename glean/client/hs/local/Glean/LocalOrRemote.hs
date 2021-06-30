@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 --
 -- | Connecting to a Glean server or a local database store.
 --

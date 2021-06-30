@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- | Types corresponding to an abstract tailer. A tailer
 -- implementation is expected to have this API:
 --

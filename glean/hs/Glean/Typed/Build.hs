@@ -1,4 +1,5 @@
--- Copyright 2004-present Facebook. All Rights Reserved.
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE OverloadedStrings #-}
 -- | This splits out the RTSType encoding and decoding from Typed.hs
 module Glean.Typed.Build

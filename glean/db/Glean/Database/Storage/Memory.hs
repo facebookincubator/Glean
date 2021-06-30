@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- | This is a very incomplete skeleton of an in-memory storage backend.
 -- at the moment it is only usable for tests which don't produce or query
 -- facts.

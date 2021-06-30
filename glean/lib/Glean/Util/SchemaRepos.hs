@@ -1,4 +1,5 @@
--- Copyright 2004-present Facebook. All Rights Reserved.
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE DeriveTraversable #-}
 -- | To help configure and resolve the 'Glean.Repo' for queries about
 -- a well-known schema.

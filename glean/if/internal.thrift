@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 include "glean/if/glean.thrift"
 
 namespace cpp2 facebook.glean.thrift.internal

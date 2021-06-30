@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module Glean.Write.Async (
   Sender, SendQueueSettings(..), SendQueueEvent(..), withSender,
   senderQueue,

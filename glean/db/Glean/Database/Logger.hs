@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- {-# OPTIONS_GHC -Wno-unused-do-bind #-}
 module Glean.Database.Logger (
   logDBStatistics

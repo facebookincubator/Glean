@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module LookupTest (main) where
 
 import Foreign.C.String (CString)

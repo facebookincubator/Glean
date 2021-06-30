@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- | A value that may change over time, and that we can observe efficiently.
 module Glean.Util.Observed
   ( ObserveMonad(..)

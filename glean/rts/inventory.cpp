@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 #include "glean/if/gen-cpp2/internal_types.h"
 #include "glean/rts/bytecode/subroutine.h"
 #include "glean/rts/fact.h"

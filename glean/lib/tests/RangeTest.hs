@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- | Can you write a binary search?
 module RangeTest
   ( main

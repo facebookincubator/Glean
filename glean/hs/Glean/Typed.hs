@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- |
 -- Support for working with strongly-typed Glean data.
 --

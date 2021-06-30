@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE TypeApplications, QuasiQuotes #-}
 module JSONWriteTest (main) where
 

@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module Glean.Util.Bisect (
   Bisect(..), BisectM, execBisectM, bisect
 ) where

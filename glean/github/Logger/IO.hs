@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module Logger.IO (module Logger.IO) where
 
 import Glean.Impl.ConfigProvider

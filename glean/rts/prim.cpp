@@ -1,4 +1,5 @@
-// Copyright 2004-present Facebook. All Rights Reserved.
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 
 #include "glean/rts/prim.h"
 #include "glean/rts/binary.h"

@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module Logger.GleanDatabaseStats (module Logger.GleanDatabaseStats) where
 
 import Data.Monoid

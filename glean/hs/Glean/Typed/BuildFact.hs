@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE AllowAmbiguousTypes, TypeApplications, CPP #-}
 module Glean.Typed.BuildFact
   ( NewFact(newFact,withUnit), makeFact, makeFact_, makeFactV, makeFactV_

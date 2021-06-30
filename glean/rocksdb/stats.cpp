@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 #include "glean/rocksdb/stats.h"
 
 #include <folly/synchronization/Hazptr.h>

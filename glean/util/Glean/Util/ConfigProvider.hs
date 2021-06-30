@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE AllowAmbiguousTypes, TypeFamilyDependencies #-}
 module Glean.Util.ConfigProvider
   ( ConfigProvider(..)

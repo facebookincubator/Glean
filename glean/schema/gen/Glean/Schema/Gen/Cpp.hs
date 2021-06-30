@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- | Generate C++ client types from the Glean schema
 
 {-# LANGUAGE NamedFieldPuns, OverloadedStrings #-}

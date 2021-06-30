@@ -1,4 +1,5 @@
--- Copyright 2004-present Facebook. All Rights Reserved.
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 
 -- | Support the original @SymId@ based on @QueryCodeEntity@
 module Glean.Util.EntityUtils

@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE DeriveTraversable, GeneralizedNewtypeDeriving #-}
 -- | A tagged intmap to keep the type of keys clear.  Mainly intended for
 -- Glean predicates.

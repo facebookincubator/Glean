@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module Glean.Util.Future (
   Executor, sequentialExecutor, forkingExecutor,
   Future, exception, spawn, spawn_, await, awaitCatch

@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 #include "glean/client/cpp/GleanClient.h"
 #include "common/init/Init.h"
 #include "common/network/NetworkUtil.h"

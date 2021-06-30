@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE StandaloneDeriving #-}
 module Glean.Impl.ThriftService
   ( ThriftService

@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- | Support for using the Glean Haxl datasource with an arbitrary
 -- Glean Backend, either local or remote.
 module Haxl.DataSource.Glean.Backend

@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE AllowAmbiguousTypes, TypeApplications #-}
 
 {- | This is mostly intended to measure the performance of serialisation but

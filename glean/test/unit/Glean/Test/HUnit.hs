@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# OPTIONS_GHC -Wno-orphans #-}
 module Glean.Test.HUnit
   ( assertThrows

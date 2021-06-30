@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE ApplicativeDo #-}
 -- | Make a regression test out of a 'Driver'
 module Glean.Regression.Test

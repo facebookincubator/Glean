@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module Logger.GleanServer (module Logger.GleanServer) where
 
 import Data.Monoid

@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- | An implementation of ConfigProvider that uses files on the local
 -- filesystem, watching for changes using INotify.
 

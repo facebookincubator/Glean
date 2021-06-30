@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE TypeOperators #-}
 module Glean.FFI (
   GleanFFIError, ffiErrorMessage, call,

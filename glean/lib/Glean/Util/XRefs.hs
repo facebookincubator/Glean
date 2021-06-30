@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module Glean.Util.XRefs (collectXRefTargets) where
 
 import Data.Ord

@@ -1,4 +1,5 @@
--- Copyright 2004-present Facebook. All Rights Reserved.
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE NamedFieldPuns, RecordWildCards, ApplicativeDo #-}
 {-# LANGUAGE DeriveGeneric, TypeApplications #-}
 -- | Library of re-usable tools for looking at the buck facts, Locators, and

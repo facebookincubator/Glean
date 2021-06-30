@@ -1,5 +1,6 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 {-# LANGUAGE TypeApplications, ConstraintKinds #-}
--- Copyright 2004-present Facebook. All Rights Reserved.
 
 -- | The 'Cxx.Declaration' type has so many cases.  Try to capture some
 -- using 'IsDeclaration' so we can reuse them.

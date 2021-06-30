@@ -1,4 +1,5 @@
--- Copyright 2004-present Facebook. All Rights Reserved.
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 
 -- | Pure functions for doc block formatting as 'ByteString' (typically UTF-8)
 module Glean.DocBlock.TrimLogic

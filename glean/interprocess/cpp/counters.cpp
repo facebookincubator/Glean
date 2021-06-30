@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 #include "glean/ffi/wrap.h"
 #include "glean/interprocess/cpp/counters.h"
 #include "glean/interprocess/cpp/counters_ffi.h"

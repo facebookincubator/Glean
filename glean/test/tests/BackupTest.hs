@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module BackupTest (main) where
 
 import Control.Concurrent.STM

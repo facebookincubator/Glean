@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 /*
  * A very simple types C++ interface to Glean batches.
  *

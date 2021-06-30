@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module Glean.RTS.Foreign.LookupCache
  ( LookupCache, new, clear, withCache
  , Stats, StatValues, Stat(..)

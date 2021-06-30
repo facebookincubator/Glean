@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module Glean.Bytecode.Generate.Instruction
   ( Insn(..)
   , Arg(..), Usage(..)

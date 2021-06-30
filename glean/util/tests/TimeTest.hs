@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- | I do not trust leap seconds and other time issues, so I test them
 module TimeTest
   ( main

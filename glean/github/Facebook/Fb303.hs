@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 module Facebook.Fb303
   ( Fb303State(..)
   , newFb303

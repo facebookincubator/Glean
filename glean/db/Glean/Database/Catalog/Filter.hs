@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 -- | This module implements a simple query language for Catalog entries. The
 -- main goal is to have something that can be used for in-memory parts and SQL
 -- databases.

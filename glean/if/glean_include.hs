@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 import Data.Text.Prettyprint.Doc
 
 instance Pretty PredicateRef where

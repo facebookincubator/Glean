@@ -1,3 +1,5 @@
+// Copyright (c) Facebook, Inc. and its affiliates.
+
 #include "glean/rts/define.h"
 
 #include <folly/container/F14Map.h>

@@ -1,4 +1,5 @@
--- Copyright 2004-present Facebook. All Rights Reserved.
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 
 -- | Simple first-in, first-out cache holding a limited number of MonadIO
 -- results.  This is ideal for repeated operations that expensive and
