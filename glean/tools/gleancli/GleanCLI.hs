@@ -23,6 +23,7 @@ import Util.IO
 import Util.TimeSec
 import Util.OptParse
 import System.IO
+import System.Exit (exitWith, ExitCode(..))
 
 import qualified Glean hiding (options)
 import qualified Glean.LocalOrRemote as Glean
@@ -63,6 +64,7 @@ plugins =
   , plugin @FinishCommand
   , plugin @UnfinishCommand
   , plugin @ListCommand
+  , plugin @StatusCommand
   , plugin @DumpCommand
   , plugin @DeleteCommand
   , plugin @DeriveCommand
@@ -156,6 +158,48 @@ instance Plugin ListCommand where
     let format = fromMaybe (if isTTY then TTY else PlainText) listFormat
     t0 <- now
     putStrLn $ shellPrint False format t0 dbs
+
+data StatusCommand
+  = Status
+      { statusRepo :: Repo
+      , statusFormat :: Maybe ShellPrintFormat
+      , statusSetExitCode :: Bool
+      }
+
+instance Plugin StatusCommand where
+  parseCommand =
+    commandParser "status"
+      (progDesc "Get the status of a db")
+      $ do
+      statusRepo <- repoOpts
+      statusFormat <- shellFormatOpt
+      statusSetExitCode <- switch
+        (  short 'e'
+        <> help "Set an error status code if the db is not complete"
+        )
+      return Status{..}
+
+  runCommand _ _ backend Status{..} = do
+    db <-
+      Thrift.getDatabaseResult_database <$>
+        Glean.getDatabase backend statusRepo
+    isTTY <- hIsTerminalDevice stdout
+    t0 <- now
+    let format = fromMaybe (if isTTY then TTY else PlainText) statusFormat
+    putStrLn $ shellPrint False format t0 db
+    when statusSetExitCode $ case exitCode db of
+      ExitFailure code -> exitWith $ ExitFailure code
+      _ -> return ()
+    where
+    exitCode db = case Thrift.database_status db of
+      Just Thrift.DatabaseStatus_Complete -> ExitSuccess
+      Nothing -> ExitFailure 100
+      Just Thrift.DatabaseStatus_Incomplete -> ExitFailure 101
+      Just Thrift.DatabaseStatus_Restoring -> ExitFailure 102
+      Just Thrift.DatabaseStatus_Broken -> ExitFailure 103
+      Just Thrift.DatabaseStatus_Restorable -> ExitFailure 104
+      Just Thrift.DatabaseStatus_Finalizing -> ExitFailure 105
+      Just Thrift.DatabaseStatus_Missing -> ExitFailure 106
 
 data DumpCommand
   = Dump
