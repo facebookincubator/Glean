@@ -17,16 +17,16 @@ import styles from './styles.module.css';
 
 const features = [
   {
-    title: 'Feature 1',
-    description: <>Description of Feature 1</>,
+    title: 'Rich types',
+    description: <>Store detailed information about code</>,
   },
   {
-    title: 'Feature 2',
-    description: <>Description of Feature 2</>,
+    title: 'Compact storage',
+    description: <>Store data about code at scale</>,
   },
   {
-    title: 'Feature 3',
-    description: <>Description of Feature 3</>,
+    title: 'Efficient queries',
+    description: <>Build experiences with deep insights from code</>,
   },
 ];
 
@@ -65,7 +65,7 @@ function Home() {
           <div className={styles.buttons}>
             <Link
               className={clsx(
-                'button button--outline button--secondary button--lg',
+                'button button--outline button--secondary button--lg glean',
                 styles.buttons,
               )}
               to={useBaseUrl('docs/introduction')}>

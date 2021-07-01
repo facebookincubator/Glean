@@ -12,7 +12,7 @@ const {fbContent} = require('internaldocs-fb-helpers');
 module.exports = {
   title: 'Glean',
   tagline:
-    'System for collecting, deriving and working with facts about source code',
+    'System for collecting, deriving and querying facts about source code',
   url: 'https://glean.software',
   baseUrl: '/',
   onBrokenLinks: 'throw',
