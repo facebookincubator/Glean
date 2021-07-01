@@ -87,3 +87,6 @@ glean-shell --service localhost:12345
 
 The commands work exactly the same as with local databases, but now it
 would also work over the network.
+
+## Hyperlink demo
+hyperlink --db-root /gleandb --db-schema dir:/glean-code/glean/schema/source --repo react --root /react-code --http 8888
