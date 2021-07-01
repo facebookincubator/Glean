@@ -1,3 +1,5 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
 packages:
     hsthrift/common/util/fb-util.cabal
     hsthrift/common/github/fb-stubs.cabal

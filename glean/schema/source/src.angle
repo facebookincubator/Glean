@@ -1,3 +1,5 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
 schema src.1 {
 
 # Relative path to source file, starts with subdir, e.g. fbcode or fbobjc,

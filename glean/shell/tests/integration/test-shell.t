@@ -1,3 +1,5 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
   $ source "$TESTDIR/setup.sh"
   Creating DB using handle fbcode:glean/tools/gleancli:glean@.* (re)
 

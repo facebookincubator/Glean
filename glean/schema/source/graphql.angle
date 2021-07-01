@@ -1,3 +1,5 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
 schema graphql.1 {
 
 predicate Argument :

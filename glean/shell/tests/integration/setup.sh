@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Copyright (c) Facebook, Inc. and its affiliates.
+
 mkdir "$TMPDIR/db"
 
 "$SERVER" \

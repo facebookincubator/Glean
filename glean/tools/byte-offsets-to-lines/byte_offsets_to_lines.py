@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # pyre-strict
 
+# Copyright (c) Facebook, Inc. and its affiliates.
 
 import argparse
 from typing import List, Tuple
