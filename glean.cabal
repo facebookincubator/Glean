@@ -789,6 +789,7 @@ executable glean-shell
     hs-source-dirs: glean/shell
     main-is: Glean/Shell.hs
     other-modules:
+        Glean.Shell.Error
         Glean.Shell.Index
         Glean.Shell.Terminal
         Glean.Shell.Types
@@ -808,6 +809,7 @@ executable glean-shell
         haskeline >=0.7.3 && <0.8,
         json,
         monad-control,
+        prettyprinter-ansi-terminal,
         split
 
 
