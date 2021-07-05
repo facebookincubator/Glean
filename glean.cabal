@@ -44,10 +44,12 @@ common fb-haskell
         TypeFamilies
         TypeSynonymInstances
         NondecreasingIndentation
-  ghc-options: -threaded
   if flag(opt)
      ghc-options: -O2
      cxx-options: -O3 -march=haswell
+
+common exe
+  ghc-options: -threaded
 
 flag opt
      default: False
@@ -668,7 +670,7 @@ library haxl-datasource
         thrift-haxl
 
 executable gen-schema
-    import: fb-haskell, deps
+    import: fb-haskell, deps, exe
     main-is: Glean/Schema/Gen/Main.hs
     hs-source-dirs: glean/schema/gen
     ghc-options: -main-is Glean.Schema.Gen.Main
@@ -702,7 +704,7 @@ library bytecode
         Glean.Bytecode.Decode
 
 executable gen-bytecode-cpp
-    import: fb-haskell, deps
+    import: fb-haskell, deps, exe
     main-is: Glean/Bytecode/Generate/Cpp.hs
     hs-source-dirs: glean/bytecode/gen
     ghc-options: -main-is Glean.Bytecode.Generate.Cpp
@@ -711,7 +713,7 @@ executable gen-bytecode-cpp
         glean:bytecode-instruction
 
 executable gen-bytecode-hs
-    import: fb-haskell, deps
+    import: fb-haskell, deps, exe
     main-is: Glean/Bytecode/Generate/Haskell.hs
     hs-source-dirs: glean/bytecode/gen
     ghc-options: -main-is Glean.Bytecode.Generate.Haskell
@@ -769,7 +771,7 @@ library test-unit
         Glean.Test.Mock
 
 executable glean-server
-    import: fb-haskell, deps
+    import: fb-haskell, deps, exe
     hs-source-dirs: glean/server
     main-is: Glean/Server.hs
     ghc-options: -main-is Glean.Server
@@ -792,7 +794,7 @@ executable glean-server
         thrift-server
 
 executable glean-shell
-    import: fb-haskell, deps
+    import: fb-haskell, deps, exe
     hs-source-dirs: glean/shell
     main-is: Glean/Shell.hs
     other-modules:
@@ -820,7 +822,7 @@ executable glean-shell
 
 
 executable glean
-    import: fb-haskell, deps
+    import: fb-haskell, deps, exe
     hs-source-dirs: glean/tools/gleancli
     main-is: GleanCLI.hs
     other-modules:
@@ -847,7 +849,7 @@ executable glean
         split,
 
 executable glean-search
-    import: fb-haskell, deps
+    import: fb-haskell, deps, exe
     hs-source-dirs: glean/tools/search
     main-is: Search.hs
     ghc-options: -main-is Search
@@ -862,7 +864,7 @@ executable glean-search
         aeson-pretty,
 
 executable glean-hyperlink
-    import: fb-haskell, deps
+    import: fb-haskell, deps, exe
     hs-source-dirs: glean/demo
     main-is: Hyperlink.hs
     ghc-options: -main-is Hyperlink
@@ -951,7 +953,7 @@ library bench-lib
 --         ... etc.
 
 common test
-    import: fb-haskell, deps
+    import: fb-haskell, deps, exe
     hs-source-dirs: glean/test/tests
     build-depends:
         glean:test-lib,
