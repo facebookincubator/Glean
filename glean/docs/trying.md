@@ -5,6 +5,7 @@ sidebar_label: Trying Glean
 ---
 
 import {OssOnly, FbInternalOnly} from 'internaldocs-fb-helpers';
+import {SrcFile,SrcFileLink} from '@site/utils';
 
 We provide a Docker image containing a pre-built set of Glean binaries
 that you can try out.  These images are built automatically by a
@@ -19,7 +20,7 @@ docker pull ghcr.io/facebookincubator/glean/demo:latest
 Run it:
 
 ```
-docker run -it ghcr.io/facebookincubator/glean/demo:latest
+docker run -it -p 8888:8888 ghcr.io/facebookincubator/glean/demo:latest
 ```
 
 :::info
@@ -89,4 +90,28 @@ The commands work exactly the same as with local databases, but now it
 would also work over the network.
 
 ## Hyperlink demo
-hyperlink --db-root /gleandb --db-schema dir:/glean-code/glean/schema/source --repo react --root /react-code --http 8888
+
+We have a small demo showing how Glean can enable code navigation. The <SrcFileLink file="glean/demo/Hyperlink.hs">glean-hyperlink</SrcFileLink> tool
+creates a webserver that serves hyperlinked source code using data
+from a specified Glean database.
+
+We can navigate the React source code as follows. First start the
+Glean server:
+
+```
+glean-server --db-root /gleandb --schema /glean-code/glean/schema/source --port 12345
+```
+
+Next start the Hyperlink server:
+
+```
+glean-hyperlink --service localhost:12345 --repo react --root /react-code --http 8888
+```
+
+Now navigate to `http://localhost:8888` in your browser, and you
+should see a list of source files. Click on a file, and navigate
+around the code by clicking on a symbol reference to jump to its
+definition.  Try something substantial like
+`react-dom/src/client/ReactDOMComponent.js` [http://localhost:8888/packages/react-dom/src/client/ReactDOMComponent.js]
+- note how Glean is accurately linking both local and imported
+symbols.
