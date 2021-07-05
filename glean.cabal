@@ -1076,6 +1076,7 @@ test-suite lifecycle
     main-is: LifecycleTest.hs
     ghc-options: -main-is LifecycleTest
     build-depends:
+        glean:client-hs,
         glean:stubs,
         glean:core,
         glean:db,
