@@ -150,30 +150,34 @@ codeMarkupHyperlinks :: Text.Text -> Glean.Haxl w [Hyperlink]
 codeMarkupHyperlinks path = do
   xrefs <- Glean.search_ $ Angle.data_ $
     var $ \x -> x `where_` [
-      wild .= predicate @CodeMarkup.FileEntityXRefs (
+      wild .= predicate @CodeMarkup.FileEntityXRefLocations (
         rec $
           field @"file" (string path) $
           field @"xref" x
         end)
       ]
 
-  hyperlinks <- forM xrefs $ \CodeMarkup.DirectXRef{..} -> do
-    file <- Glean.keyOf (CodeMarkup.declaration_file directXRef_target)
+  hyperlinks <- forM xrefs $ \CodeMarkup.XRefLocation{..} -> do
+    file <- Glean.keyOf (CodeMarkup.location_file xRefLocation_target)
     let
-      start = fromIntegral $ Glean.unNat $
-        Src.byteSpan_start directXRef_source
-      length = fromIntegral $ Glean.unNat $
-        Src.byteSpan_length directXRef_source
+      (start,length) = case xRefLocation_source of
+        CodeMarkup.RangeSpan_span span ->
+          ( fromIntegral $ Glean.unNat $ Src.byteSpan_start span
+          , fromIntegral $ Glean.unNat $ Src.byteSpan_length span
+          )
+        _ -> (0,0)
     return Hyperlink
       { hlBegin = start
       , hlEnd = start + length
       , hlTarget = Target
         { targetKind = Text.encodeUtf8 $
-            CodeMarkup.declaration_name directXRef_target
+            CodeMarkup.location_name xRefLocation_target
         , targetPath = Text.encodeUtf8 file
         , targetLoc = TargetByteOffset $
-            fromIntegral (Glean.unNat (Src.byteSpan_start (
-              CodeMarkup.declaration_span directXRef_target)))
+            case CodeMarkup.location_location xRefLocation_target of
+              CodeMarkup.RangeSpan_span span ->
+                fromIntegral (Glean.unNat (Src.byteSpan_start span))
+              _ -> 0
         }
       }
 
