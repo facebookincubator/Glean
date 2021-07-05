@@ -84,7 +84,7 @@ mergeSchemaTest = TestCase $
             {P,N} where P = glean.test.Predicate { nat = N }
         }
 
-        schema all.3 : all.2, mergetest.1 {}
+        schema all.4 : all.3, mergetest.1 {}
       |]
 
     -- query the existing DB using the extended schema
