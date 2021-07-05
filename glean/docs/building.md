@@ -27,27 +27,70 @@ Additional per-distribution setup follows.
 
 ### Ubuntu
 
-Install the dependencies of hsthrift that can be found in this
+Install prerequisite packages. (many of these are dependencies of
+hsthrift; an up to date list can be found in the
 [Dockerfile](https://github.com/facebookincubator/hsthrift/blob/master/.github/workflows/Dockerfile)
-for the base image.
-
-Additionally:
+that we use for building the base image for CI).
 
 ```
-sudo apt-get install librocksdb-dev libxxhash-dev
+sudo apt-get install \
+    g++ \
+    cmake \
+    bison flex \
+    git cmake \
+    libzstd-dev \
+    libboost-all-dev \
+    libevent-dev \
+    libdouble-conversion-dev \
+    libgoogle-glog-dev \
+    libgflags-dev \
+    libiberty-dev \
+    liblz4-dev \
+    liblzma-dev \
+    libsnappy-dev \
+    make \
+    zlib1g-dev \
+    binutils-dev \
+    libjemalloc-dev \
+    libssl-dev \
+    pkg-config \
+    libunwind-dev \
+    libsodium-dev \
+    curl \
+    libpcre3-dev \
+    libmysqlclient-dev \
+    libfftw3-dev \
+    librocksdb-dev \
+    libxxhash-dev
 ```
 
 ### Fedora
 
-Install prerequisite packages (TODO)
-
-Install RocksDB from source:
+Install prerequisite packages:
 
 ```
-git clone git@github.com:facebook/rocksdb.git
-mkdir build && cd build
-cmake .. -DBUILD_SHARED_LIBS=ON
-make && sudo make install
+sudo dnf install \
+    g++ \
+    make \
+    cmake \
+    binutils \
+    bison flex \
+    curl \
+    libzstd-devel \
+    boost-devel \
+    libevent-devel \
+    double-conversion-devel \
+    glog-devel \
+    gflags-devel \
+    zlib-devel \
+    openssl-devel \
+    libunwind-devel \
+    libsodium-devel \
+    pcre-devel \
+    community-mysql-devel \
+    fftw-devel \
+    rocksdb-devel \
+    xxhash-devel
 ```
 
 ## Building
