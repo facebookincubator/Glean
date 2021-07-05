@@ -23,3 +23,5 @@ DB=example/0
     create --repo "$DB" \
     "$EXAMPLE/facts.glean" \
     --finish
+
+export GLOG_minloglevel=10
