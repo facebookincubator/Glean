@@ -111,7 +111,7 @@ predicate DeclarationWithName :
 
 Using this predicate requires no magic on the part of the client, they just query for the `cxx1.DeclarationWithName` predicate in exactly the same way as they would for other predicates, and the Glean query server returns the appropriate facts.
 
-## Derived predicates for schema migration {#migration}
+## Derived predicates for schema migration
 
 One important use case for derived predicates is to make it possible to change the schema without breaking things.
 
