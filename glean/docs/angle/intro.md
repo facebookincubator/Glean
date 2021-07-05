@@ -6,6 +6,24 @@ sidebar_label: Introduction
 
 import {OssOnly, FbInternalOnly} from 'internaldocs-fb-helpers';
 
-Angle is Glean’s schema and query language.
+Angle is Glean’s schema and query language.  It is a declarative query
+language based on logic programming and Datalog, and is designed to be
+particularly suited for finding and extracting data from Glean.
 
-TODO
+To give you a flavour of the query language, here is how we could
+return the names of all the member declarations defined in a
+Javascript file `project/myfile.js`:
+
+```
+N where
+  flow.FileDeclaration {
+    file = "project/myfile.js",
+    declaration = {
+      memberDecl = {
+        name = N
+      }
+    }
+  }
+```
+
+To learn about Angle, start with the [Guide](guide).
