@@ -4,10 +4,11 @@
 
 mkdir "$TMPDIR/db"
 
+export GLOG_minloglevel=10
+
 "$SERVER" \
     --db-root "$TMPDIR/db" \
     --write-port "$TMPDIR/port" \
-    --minloglevel=2 \
     --schema "$EXAMPLE/schema" &
 
 SERVER_PID=$!
@@ -24,4 +25,3 @@ DB=example/0
     "$EXAMPLE/facts.glean" \
     --finish
 
-export GLOG_minloglevel=10
