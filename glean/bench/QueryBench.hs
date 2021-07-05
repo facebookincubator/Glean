@@ -65,10 +65,12 @@ main = benchmarkMain $ \run -> withBenchDB 100000 $ \env repo -> do
     compile2 :: Query Codemarkup.EntityUses
     compile2 = angleData @Codemarkup.EntityUses $
       [s|
-        codemarkup.Resolve {
+        codemarkup.ResolveLocation {
           entity = E,
-          decl = { span = { length = 6, start = 1308 },
-          file = "foo" }
+          location = {
+            location = { span = { length = 6, start = 1308 } },
+            file = "foo"
+          }
         };
         codemarkup.EntityUses { target = E }
       |]
