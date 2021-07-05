@@ -805,7 +805,6 @@ executable glean-shell
         glean:client-hs,
         glean:client-hs-local,
         glean:util,
-        glean:lib,
         haskeline >=0.7.3 && <0.8,
         json,
         monad-control,
