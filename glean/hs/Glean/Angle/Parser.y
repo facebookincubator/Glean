@@ -59,6 +59,7 @@ import Glean.Angle.Types (AngleVersion, SourcePat, SourceStatement, SourceQuery,
   '}'           { L _ (Token _ T_RightCurly) }
   '='           { L _ (Token _ T_Equals) }
   '!=='         { L _ (Token _ T_NotEquals) }
+  '!='          { L _ (Token _ T_NotEqualsSingle) }
   '>'           { L _ (Token _ T_GreaterThan) }
   '>='          { L _ (Token _ T_GreaterThanOrEquals) }
   '<'           { L _ (Token _ T_LessThan) }
@@ -101,6 +102,7 @@ pattern
 gen :: { SourcePat }
 gen
   : plus  { $1 }
+  | plus '!=' plus   { App (s $1 $3) (Variable (sspan $2) "prim.neExpr") [$1, $3] }
   | plus '!==' plus  { App (s $1 $3) (Variable (sspan $2) "prim.neNat") [$1, $3] }
   | plus '>' plus    { App (s $1 $3) (Variable (sspan $2) "prim.gtNat") [$1, $3] }
   | plus '>=' plus   { App (s $1 $3) (Variable (sspan $2) "prim.geNat") [$1, $3] }

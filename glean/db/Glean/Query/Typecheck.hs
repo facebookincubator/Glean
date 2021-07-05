@@ -12,6 +12,7 @@ module Glean.Query.Typecheck
 import Control.Monad.Except
 import Control.Monad.State
 import Data.Char
+import Data.Maybe
 import qualified Data.HashMap.Strict as HashMap
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashSet as HashSet
@@ -800,13 +801,14 @@ oneBranch pat ta = do
     extBinds = HashSet.intersection (tcBindings stateA) visible
   return (a, extUses, extBinds)
 
-
 data PrimArgType
   -- | Check a primitive operation argument matches.
   = Check Type
   -- | First infer the type using `inferExpr` and then check. The string is a
   -- comment on what the function is checking for debugging purposes.
   | InferAndCheck (Type -> Bool) String
+  -- | Check that all arguments are of the same type.
+  | CheckAllEqual
 
 primInferAndCheck
   :: IsSrcSpan s
@@ -815,18 +817,34 @@ primInferAndCheck
   -> PrimOp
   -> [PrimArgType]
   -> T [TcPat]
-primInferAndCheck span args primOp argTys = do
-  when (length args /= length argTys) $
-    primInferAndCheckError span primOp $ "expected " ++ show (length argTys)
-      ++ " arguments, found " ++ show (length args)
-  zipWithM (checkArg primOp) args argTys
+primInferAndCheck span args primOp argTys =
+  reverse . map fst <$> checkArgs [] args argTys
   where
-    checkArg :: IsSrcSpan s => PrimOp -> SourcePat' s -> PrimArgType -> T TcPat
-    checkArg _ arg (Check argTy) = typecheckPattern ContextExpr argTy arg
-    checkArg primOp arg (InferAndCheck argCheck debugString) = do
+    checkArgs :: IsSrcSpan s =>
+      [(TcPat, Type)] -> [SourcePat' s] -> [PrimArgType] -> T [(TcPat, Type)]
+    checkArgs acc [] [] = return acc
+    checkArgs acc (arg:args) (check:pats) = do
+      let prevArgTy = snd <$> listToMaybe acc
+      (arg', argTy) <- checkArg prevArgTy arg check
+      let acc' = (arg', argTy) : acc
+      checkArgs acc' args pats
+    checkArgs _ _ _ =
+        primInferAndCheckError span primOp
+          $ "expected " ++ show (length argTys)
+          ++ " arguments, found " ++ show (length args)
+
+    checkArg :: IsSrcSpan s =>
+      Maybe Type -> SourcePat' s -> PrimArgType -> T (TcPat, Type)
+    checkArg _ arg (Check argTy) =
+      (,argTy) <$> typecheckPattern ContextExpr argTy arg
+    checkArg _ arg (InferAndCheck argCheck debugString) = do
       (arg', argTy) <- inferExpr ContextExpr arg
       unless (argCheck argTy) $ primInferAndCheckError span primOp debugString
-      return arg'
+      return (arg', argTy)
+    checkArg prevTy arg CheckAllEqual = case prevTy of
+      Nothing -> inferExpr ContextExpr arg
+      Just argTy -> (,argTy) <$> typecheckPattern ContextExpr argTy arg
+
 
 primInferAndCheckError :: IsSrcSpan s => s -> PrimOp -> String -> T b
 primInferAndCheckError span primOp debugString =
@@ -864,6 +882,12 @@ primitives = HashMap.fromList
   , ("prim.leNat", binaryNatOp PrimOpLeNat)
   , ("prim.neNat", binaryNatOp PrimOpNeNat)
   , ("prim.addNat", binaryNatArith PrimOpAddNat)
+  , ("prim.neExpr"
+    , ( PrimOpNeExpr
+      , [CheckAllEqual, CheckAllEqual]
+      , unit
+      )
+    )
   ]
   where
     polyArray (Schema.Array _) = True

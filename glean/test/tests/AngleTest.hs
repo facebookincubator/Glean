@@ -623,6 +623,25 @@ angleTest modify = dbTestCase $ \env repo -> do
   print r
   assertEqual "angle - N !== 2 in predicate" 4 (length r)
 
+  r <- runQuery_ env repo $ angleData @() "\"a\" != \"b\""
+  print r
+  assertEqual "angle - inequality - \"a\" != \"b\"" 1 (length r)
+
+  r <- runQuery_ env repo $ modify $
+    angleData @(Glean.Test.KitchenSink, Glean.Test.KitchenSink)
+    [s|
+      { A, B } where
+        glean.test.Predicate A;
+        glean.test.Predicate B;
+        A != B;
+    |]
+  print r
+  all <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
+    "glean.test.Predicate _;"
+  let uniques = length all
+      uniquePairs = uniques * (uniques - 1)
+  assertEqual "angle - inequality - type != type" uniquePairs (length r)
+
   r <- runQuery_ env repo $ angleData @Nat "prim.addNat 23 31"
   print r
   assertEqual "angle - prim.addNat 23 31" [54] (map unNat r)

@@ -172,6 +172,7 @@ data PrimOp
   | PrimOpLeNat
   | PrimOpNeNat
   | PrimOpAddNat
+  | PrimOpNeExpr
   deriving (Eq, Show)
 
 data Var = Var
@@ -750,6 +751,22 @@ compileStatements
       compileGen (PrimCall PrimOpLeNat [p, q]) maybeReg inner =
         compileGenNumericPrim p q maybeReg inner $ \a b fail ->
           jumpIfGt a b fail
+
+      compileGen (PrimCall PrimOpNeExpr [p, q]) maybeReg inner = mdo
+        case cmpWordPat vars p of
+          Just cmp ->
+            local $ \q' ->
+            compileTermGen q vars (Just q') $
+            cmp (castRegister q') ok
+          Nothing ->
+            withTerm vars q $ \q' ->
+            cmpOutputPat vars q' (preProcessPat p) ok
+        jump fail
+        ok <- label
+        whenJust maybeReg (resetOutput . castRegister)
+        r <- inner
+        fail <- label
+        return r
 
       compileGen (PrimCall _prim _args) Nothing inner = inner
       compileGen (PrimCall PrimOpAddNat [p, q]) (Just reg) inner =
@@ -1555,3 +1572,4 @@ instance Pretty PrimOp where
   pretty PrimOpLeNat = "prim.leNat"
   pretty PrimOpNeNat = "prim.neNat"
   pretty PrimOpAddNat = "prim.addNat"
+  pretty PrimOpNeExpr = "prim.neExpr"

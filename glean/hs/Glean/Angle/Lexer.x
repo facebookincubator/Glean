@@ -84,6 +84,7 @@ tokens :-
   "}"           { basicToken T_RightCurly }
   "="           { basicToken T_Equals }
   "!=="         { basicToken T_NotEquals }
+  "!="          { basicToken T_NotEqualsSingle }
   ">"           { basicToken T_GreaterThan }
   ">="          { basicToken T_GreaterThanOrEquals }
   "<"           { basicToken T_LessThan }
@@ -145,6 +146,7 @@ data TokenType
   | T_RightCurly
   | T_Equals
   | T_NotEquals
+  | T_NotEqualsSingle
   | T_GreaterThan
   | T_GreaterThanOrEquals
   | T_LessThan
