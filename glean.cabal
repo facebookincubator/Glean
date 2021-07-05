@@ -54,6 +54,8 @@ common exe
 flag opt
      default: False
 
+flag benchmarks
+     default: False
 
 common deps
     build-depends:
@@ -879,6 +881,70 @@ executable glean-hyperlink
         warp
 
 -- -----------------------------------------------------------------------------
+-- Benchmarks
+
+library bench-util
+    import: fb-haskell, deps
+    hs-source-dirs: glean/bench/lib
+    exposed-modules:
+        Glean.Util.Benchmark
+    build-depends:
+        glean:stubs,
+        criterion
+
+executable query-bench
+    import: fb-haskell, deps, exe
+    if !flag(benchmarks)
+       buildable: False
+    hs-source-dirs: glean/bench
+    main-is: QueryBench.hs
+    other-modules: BenchDB
+    ghc-options: -main-is QueryBench
+    build-depends:
+        glean:bench-util,
+        glean:client-hs,
+        glean:core,
+        glean:db,
+        glean:if-glean-hs,
+        glean:schema,
+        glean:test-lib,
+        glean:util,
+        criterion
+
+executable rename-bench
+    import: fb-haskell, deps, exe
+    if !flag(benchmarks)
+       buildable: False
+    hs-source-dirs: glean/bench
+    main-is: RenameBench.hs
+    ghc-options: -main-is RenameBench
+    build-depends:
+        glean:bench-util,
+        glean:core,
+        glean:db,
+        glean:schema,
+        glean:test-lib,
+        glean:util,
+        criterion
+
+executable user-query-bench
+    import: fb-haskell, deps, exe
+    if !flag(benchmarks)
+       buildable: False
+    hs-source-dirs: glean/bench
+    main-is: UserQueryBench.hs
+    ghc-options: -main-is UserQueryBench
+    build-depends:
+        glean:bench-util,
+        glean:client-hs,
+        glean:db,
+        glean:if-glean-hs,
+        glean:schema,
+        glean:test-lib,
+        glean:util,
+        criterion
+
+-- -----------------------------------------------------------------------------
 -- Tests
 
 library test-lib
@@ -886,6 +952,7 @@ library test-lib
     visibility: private
     hs-source-dirs: glean/test/lib
     exposed-modules:
+        TestBatch
         TestDB
         TestData
         Glean.Database.Catalog.Test
