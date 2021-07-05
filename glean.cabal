@@ -45,6 +45,13 @@ common fb-haskell
         TypeSynonymInstances
         NondecreasingIndentation
   ghc-options: -threaded
+  if flag(opt)
+     ghc-options: -O2
+     cxx-options: -O3 -march=haswell
+
+flag opt
+     default: False
+
 
 common deps
     build-depends:
