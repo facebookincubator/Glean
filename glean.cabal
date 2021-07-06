@@ -1117,6 +1117,18 @@ test-suite dbjanitor
         glean:config,
         glean:util
 
+test-suite dbderive
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: DbDeriveTest.hs
+    ghc-options: -main-is DbDeriveTest
+    build-depends:
+        glean:client-hs,
+        glean:db,
+        glean:if-glean-hs,
+        glean:schema,
+        glean:stubs
+
 test-suite backup
     import: test
     type: exitcode-stdio-1.0
