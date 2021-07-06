@@ -1,8 +1,25 @@
+#
+# This Makefile is quite primitive, it's just about enough to build
+# everything for CI, but for development we'll want something better
+# eventually.
+#
+# To build everything: type "make"
+#
+# To run the tests, type "make test"
+#
+# Re-running "make" will regenerate a bunch of things. That's because
+# the Makefile is dumb and doesn't know much about the dependencies of
+# the generated files. However, re-running make shouldn't actually
+# recompile any code if nothing changed; the Thrift compiler won't
+# overwrite files that haven't changed, so Cabal won't have to rebuild
+# anything.
+#
+
 CABAL_BIN=cabal
 PWD := $(shell /bin/pwd)
 CABAL = $(CABAL_BIN) --project-file=$(PWD)/cabal.project
 
-THRIFT_COMPILE = $(CABAL) new-run exe:thrift-compiler --
+THRIFT_COMPILE = $(CABAL) run exe:thrift-compiler --
 
 BYTECODE_GEN= \
 	glean/rts/bytecode/gen/evaluate.h \
@@ -27,7 +44,7 @@ $(BYTECODE_GEN) &: $(BYTECODE_SRCS)
 
 .PHONY: test
 test::
-	$(CABAL) new-test glean:tests
+	$(CABAL) test glean:tests
 
 SCHEMAS= \
 	buck \
@@ -72,31 +89,27 @@ gen-schema ::
 		--thrift glean/schema \
 		--hs glean/schema \
 
+THRIFT_GLEAN= \
+	glean/github/if/fb303.thrift \
+	glean/github/if/fb303_core.thrift \
+	glean/if/glean.thrift \
+	glean/config/recipes/recipes.thrift \
+	glean/config/recipes/recipes.thrift \
+	glean/config/server/server_config.thrift \
+	glean/config/service.thrift \
+	glean/config/client/client_config.thrift
+
 .PHONY: thrift-glean-hs
-thrift-glean-hs ::
-	$(THRIFT_COMPILE) --hs glean/github/if/fb303.thrift \
-		-o glean/github/if
-	$(THRIFT_COMPILE) --hs glean/github/if/fb303_core.thrift \
-		-o glean/github/if
-	$(THRIFT_COMPILE) --hs glean/if/glean.thrift \
-		-o glean/if
+thrift-glean-hs:
+	for f in $(THRIFT_GLEAN); do \
+		$(THRIFT_COMPILE) --hs $$f -o $$(dirname $$f); \
+	done
+	# internal goes in a subdir, so do it separately
 	$(THRIFT_COMPILE) --hs glean/if/internal.thrift \
 		-o glean/if/internal
-	$(THRIFT_COMPILE) --hs \
-		glean/config/recipes/recipes.thrift \
-		-o glean/config/recipes
-	$(THRIFT_COMPILE) --hs \
-		glean/config/server/server_config.thrift \
-		-o glean/config/server
-	$(THRIFT_COMPILE) --hs \
-		glean/config/service.thrift \
-		-o glean/config
-	$(THRIFT_COMPILE) --hs \
-		glean/config/client/client_config.thrift \
-		-o glean/config/client
 
 .PHONY: thrift-schema-hs
-thrift-schema-hs::
+thrift-schema-hs:
 	for s in $(SCHEMAS); do \
 		$(THRIFT_COMPILE) --hs \
 			glean/schema/thrift/$$s.thrift \
@@ -109,24 +122,20 @@ thrift-schema-hs::
 	$(THRIFT_COMPILE) --hs glean/if/search.thrift \
 		-o glean/if/search
 
+THRIFT_CPP= \
+	glean/config/recipes/recipes.thrift \
+	glean/config/server/server_config.thrift \
+	glean/if/glean.thrift \
+	glean/if/internal.thrift \
+	glean/github/if/fb303_core.thrift \
+	glean/github/if/fb303.thrift
+
 .PHONY: thrift-cpp
-thrift-cpp::
+thrift-cpp: thrift-hsthrift-cpp
+	for f in $(THRIFT_CPP); do \
+		thrift1 -I . --gen mstch_cpp2 -o $$(dirname $$f) $$f; \
+	done
+
+.PHONY: thrift-hsthrift-cpp
+thrift-hsthrift-cpp::
 	(cd hsthrift && make CABAL="$(CABAL)" thrift-cpp)
-	thrift1 -I . --gen mstch_cpp2 \
-		-o glean/config/recipes \
-		glean/config/recipes/recipes.thrift
-	thrift1 -I . --gen mstch_cpp2 \
-		-o glean/config/server \
-		glean/config/server/server_config.thrift
-	thrift1 -I . -I .. --gen mstch_cpp2 \
-		-o glean/if \
-		glean/if/glean.thrift
-	thrift1 -I . -I .. --gen mstch_cpp2 \
-		-o glean/if \
-		glean/if/internal.thrift
-	thrift1 -I . -I .. --gen mstch_cpp2 \
-		-o glean/github/if \
-		glean/github/if/fb303_core.thrift
-	thrift1 -I . -I .. --gen mstch_cpp2 \
-		-o glean/github/if \
-		glean/github/if/fb303.thrift
