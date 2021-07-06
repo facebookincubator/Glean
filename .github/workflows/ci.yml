@@ -22,11 +22,6 @@ jobs:
       - name: Populate hackage index
         run: cabal update
       - name: Build hsthrift/Glean
-        run: |
-          make thrift
-          make gen-bytecode
-          make gen-schema
-          make thrift-schema-hs
-          make glean
+        run: make
       - name: Run Glean tests
         run: make test

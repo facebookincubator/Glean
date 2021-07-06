@@ -4,13 +4,28 @@ CABAL = $(CABAL_BIN) --project-file=$(PWD)/cabal.project
 
 THRIFT_COMPILE = $(CABAL) new-run exe:thrift-compiler --
 
+BYTECODE_GEN= \
+	glean/rts/bytecode/gen/evaluate.h \
+	glean/rts/bytecode/gen/instruction.h \
+	glean/hs/Glean/Bytecode/Gen/Instruction.hs \
+	glean/hs/Glean/Bytecode/Gen/Issue.hs \
+	glean/hs/Glean/Bytecode/Gen/Version.hs
+
+BYTECODE_SRCS= \
+	$(wildcard glean/bytecode/*/Glean/Bytecode/*/*.hs) \
+	$(wildcard glean/bytecode/Glean/Bytecode/*.hs)
+
+all:: thrift $(BYTECODE_GEN) gen-schema thrift-schema-hs glean
+
+.PHONY: glean
 glean::
-	$(CABAL) new-build glean
+	$(CABAL) build glean glean-shell glean-server glean-hyperlink
 
-gen-bytecode::
-	$(CABAL) new-run gen-bytecode-cpp -- --install_dir=glean/rts
-	$(CABAL) new-run gen-bytecode-hs -- --install_dir=glean/hs
+$(BYTECODE_GEN) &: $(BYTECODE_SRCS)
+	$(CABAL) run gen-bytecode-cpp -- --install_dir=glean/rts
+	$(CABAL) run gen-bytecode-hs -- --install_dir=glean/hs
 
+.PHONY: test
 test::
 	$(CABAL) new-test glean:tests
 
@@ -40,19 +55,24 @@ SCHEMAS= \
 	src \
 	sys
 
+.PHONY: thrift
 thrift:: thrift-cpp thrift-hs
 
+.PHONY: thrift-hs
 thrift-hs:: thrift-hsthrift-hs thrift-glean-hs
 
+.PHONY: thrift-hsthrift-hs
 thrift-hsthrift-hs ::
 	(cd hsthrift && make CABAL="$(CABAL)" thrift-hs)
 
+.PHONY: gen-schema
 gen-schema ::
 	$(CABAL) run glean:gen-schema -- \
 		--dir glean/schema/source \
 		--thrift glean/schema \
 		--hs glean/schema \
 
+.PHONY: thrift-glean-hs
 thrift-glean-hs ::
 	$(THRIFT_COMPILE) --hs glean/github/if/fb303.thrift \
 		-o glean/github/if
@@ -75,6 +95,7 @@ thrift-glean-hs ::
 		glean/config/client/client_config.thrift \
 		-o glean/config/client
 
+.PHONY: thrift-schema-hs
 thrift-schema-hs::
 	for s in $(SCHEMAS); do \
 		$(THRIFT_COMPILE) --hs \
@@ -88,6 +109,7 @@ thrift-schema-hs::
 	$(THRIFT_COMPILE) --hs glean/if/search.thrift \
 		-o glean/if/search
 
+.PHONY: thrift-cpp
 thrift-cpp::
 	(cd hsthrift && make CABAL="$(CABAL)" thrift-cpp)
 	thrift1 -I . --gen mstch_cpp2 \

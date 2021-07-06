@@ -1,5 +1,5 @@
 FROM ghcr.io/facebookincubator/hsthrift/ci-base:latest
-RUN apt-get install -y ghc-8.10.2 librocksdb-dev wget unzip
+RUN apt-get install -y ghc-8.10.2 librocksdb-dev libxxhash-dev wget unzip
 RUN cabal update
 RUN mkdir /glean-code
 ADD ./install_deps.sh /glean-code/
@@ -11,8 +11,7 @@ ADD ./Makefile  /glean-code/
 ADD ./glean.cabal /glean-code/
 ADD ./LICENSE /glean-code/
 ADD ./Setup.hs /glean-code/
-RUN make thrift && make gen-bytecode && make gen-schema && make thrift-schema-hs
-RUN cabal new-build --project-file=cabal.project exe:glean exe:shell exe:hyperlink
+RUN make
 RUN cp $(cabal exec --project-file=cabal.project -- which glean) ~/.cabal/bin/
 RUN cp $(cabal exec --project-file=cabal.project -- which glean-shell) ~/.cabal/bin/
 RUN cp $(cabal exec --project-file=cabal.project -- which glean-server) ~/.cabal/bin/
@@ -36,5 +35,8 @@ RUN glean --db-root /gleandb --db-schema dir:/glean-code/glean/schema/source der
 RUN glean --db-root /gleandb --db-schema dir:/glean-code/glean/schema/source finish --repo react/0
 
 # can then run:
-#   hyperlink --db-root /gleandb --db-schema dir:/glean-code/glean/schema/source --repo react --root /react-code --http 8888
+#
+#   glean-server --db-root /gleandb --schema /glean-code/glean/schema/source --port 12345 &
+#   glean-hyperlink --service localhost:12345 --repo react --root /react-code --http 8888
+#
 # from within the image
