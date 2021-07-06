@@ -102,6 +102,12 @@ instance Plugin RestoreCommand where
               threadDelay 1000000 >> wait locator
             | database_status db == Just DatabaseStatus_Complete ->
               return ()
+            | database_status db == Just DatabaseStatus_Missing -> do
+              putStrLn $
+                "Some of this DB's dependencies are missing. " <>
+                "You may want to restore those as well"
+              -- TODO: List missing dependencies
+              return ()
             | otherwise ->
               die 1 $ "error: unexpected database status: " <>
                 show (database_status db)
