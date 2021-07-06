@@ -128,11 +128,7 @@ install its dependencies:
 Build everything:
 
 ```
-make thrift
-make gen-bytecode
-make gen-schema
-make thrift-schema-hs
-make glean
+make
 ```
 
 If everything worked, the tests should pass:
