@@ -1163,4 +1163,24 @@ predicate ContainerChild :
   }
   stored
   { Parent, Child } where hack.ContainerParent { container=Child, parent=Parent }
+
+# Derived overrides base; only includes methods annotated with
+# the <<__Override>> attribute
+predicate MethodOverrides :
+  {
+    derived : MethodDeclaration,
+    base : MethodDeclaration,
+  }
+
+# hack.MethodsOverrides can look up from derived to base; reverse this
+# here to look up from base to derived
+predicate MethodOverridden :
+  {
+    base : MethodDeclaration,
+    derived : MethodDeclaration,
+  }
+  stored
+  {Base, Derived}
+  where
+    hack.MethodOverrides{derived = Derived, base = Base}
 }
