@@ -14,7 +14,6 @@ $ ./example --service localhost:25052 some/File.h 11007
 
 module Example where
 
-import Data.Default
 import qualified Data.Set as Set
 import Data.String
 import Options.Applicative
@@ -25,8 +24,6 @@ import qualified Glean
 import Glean.Angle as Angle
 import Glean.Impl.ConfigProvider
 import qualified Glean.Schema.Cxx1.Types as Cxx
-import Glean.Schema.Query.Src.Types as Query.Src hiding (ByteRange(..))
-import Glean.Schema.Query.Cxx1.Types as Query.Cxx
 import Glean.Util.ConfigProvider
 import Glean.Util.Range
 import Glean.Util.XRefs
@@ -88,20 +85,4 @@ doQuery backend Config{..} repo = do
       rec $
         field @"xmap" (rec (field @"file" (fromString cfgFile) end))
       end
-  printResults results
-
-  -- Query using Thrift query types
-  --   [-] Very verbose and hard to write
-  --   [-] Limited to simple nested queries
-  --   [+] Typechecked at compile time
-  --   [-] Can build queries programmatically, but hard due to verbosity
-  --   [+] Does not break when the schema changes
-  results <- Glean.runQuery_ backend repo $ Glean.query $
-    FileXRefs_with_key def
-     { Query.Cxx.fileXRefs_key_xmap =
-        Just (Query.Cxx.FileXRefMap_with_key def
-          { Query.Cxx.fileXRefMap_key_file =
-              Just (Query.Src.File_with_key (fromString cfgFile))
-          })
-     }
   printResults results
