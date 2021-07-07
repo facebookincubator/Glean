@@ -1,3 +1,6 @@
+![ci](https://github.com/facebookincubator/Glean/actions/workflows/ci.yml/badge.svg)
+![demo](https://github.com/facebookincubator/Glean/actions/workflows/glean-docker.yml/badge.svg)
+
 # Glean
 
 [Glean home](https://glean.software) | [Documentation](https://glean.software/docs)
