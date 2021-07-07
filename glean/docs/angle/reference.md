@@ -151,8 +151,8 @@ Angle supports a few primitive operations. The argument(s) to a primitive operat
 
 &nbsp;&nbsp;*term* `>` *term* <br />
 &nbsp;&nbsp;*term* `>=` *term* <br />
-&nbsp;&nbsp;*term* `&lt;` *term* <br />
-&nbsp;&nbsp;*term* `&lt;=` *term* <br />
+&nbsp;&nbsp;*term* `<` *term* <br />
+&nbsp;&nbsp;*term* `<=` *term* <br />
 &nbsp;&nbsp;*term* `!==` *term* <br />
 
 > Standard numerical comparisons. These work on values of type `nat` only, and they have value `{}` if the comparison succeeds, otherwise they fail (in the same way as a predicate match fails if there are no facts that match the pattern).
