@@ -139,7 +139,7 @@ Terms have the following forms:
 
 ## Primitives
 
-Angle supports a few primitive operations. The argument(s) to a primitive operation must always be fully defined; they cannot be patterns or a wildcards.
+Angle supports a few primitive operations. The argument(s) to a primitive operation must always be fully defined; they cannot be patterns or wildcards.
 
 &nbsp;&nbsp;`prim.toLower` (S : string) : string
 
@@ -153,6 +153,10 @@ Angle supports a few primitive operations. The argument(s) to a primitive operat
 &nbsp;&nbsp;*term* `>=` *term* <br />
 &nbsp;&nbsp;*term* `&lt;` *term* <br />
 &nbsp;&nbsp;*term* `&lt;=` *term* <br />
-&nbsp;&nbsp;*term* `!=` *term* <br />
+&nbsp;&nbsp;*term* `!==` *term* <br />
 
 > Standard numerical comparisons. These work on values of type `nat` only, and they have value `{}` if the comparison succeeds, otherwise they fail (in the same way as a predicate match fails if there are no facts that match the pattern).
+
+&nbsp;&nbsp;*term* `!=` *term*
+
+> Standard comparison between two terms of any type. It has a value of `{}` if the comparison succeeds, otherwise it fails in the same way as a predicate match fails if there are no facts that match the pattern.
