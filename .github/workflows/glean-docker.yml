@@ -1,6 +1,11 @@
 name: Glean demo Docker image
 on:
-  # https://docs.github.com/en/actions/reference/events-that-trigger-workflows#scheduled-events
+  # Manual trigger:
+  #   https://docs.github.com/en/actions/reference/events-that-trigger-workflows#workflow_dispatch
+  workflow_dispatch:
+
+  # Scheduled trigger:
+  #   https://docs.github.com/en/actions/reference/events-that-trigger-workflows#scheduled-events
   schedule:
     - cron: '0 1 * * mon' # every monday at 1am
 
