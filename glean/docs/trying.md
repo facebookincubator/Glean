@@ -112,6 +112,7 @@ Now navigate to `http://localhost:8888` in your browser, and you
 should see a list of source files. Click on a file, and navigate
 around the code by clicking on a symbol reference to jump to its
 definition.  Try something substantial like
-`react-dom/src/client/ReactDOMComponent.js` [http://localhost:8888/packages/react-dom/src/client/ReactDOMComponent.js]
-- note how Glean is accurately linking both local and imported
+`react-dom/src/client/ReactDOMComponent.js`
+(http://localhost:8888/packages/react-dom/src/client/ReactDOMComponent.js) -
+note how Glean is accurately linking both local and imported
 symbols.
