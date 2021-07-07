@@ -940,13 +940,21 @@ data GotLines = Stop | Go String
 -- collected into 'cont' for clear error reporting.
 data ManyLines = ManyLines { whole :: [String], cont :: [String]}
 
--- | Detect (odd number of) ending backslashes (REPL and command line).
+-- | Check if line should continue onto the next line
+-- Detect (odd number of) ending backslashes (REPL and command line).
 -- If found then remove last backslash and return 'Cont' otherwise
+-- if the line ends in ';' or '|' return 'Cont' otherwise
 -- return input unchanged as 'Whole'
-endBS :: String -> OneLine
-endBS s = let bs = odd . length . takeWhile ('\\' ==) . reverse $ s
-          in if bs then Cont (init s)
-             else Whole s
+shouldCont :: String -> OneLine
+shouldCont s =
+  if cont then Cont s' else Whole s
+  where
+    bs = odd . length . takeWhile ('\\' ==) $ revS
+    revS = reverse s
+    cont = bs || semi || vert
+    semi = ";" `isPrefixOf` revS
+    vert = "|" `isPrefixOf` revS
+    s' = if bs then init s else s
 
 -- | Parse sequence of lines (from command line) for ending backslashes.
 -- This converts zero or more partial Cont lines that end in a Whole line into
@@ -955,7 +963,7 @@ endBS s = let bs = odd . length . takeWhile ('\\' ==) . reverse $ s
 -- syntax error) as the 'cont' list of 'ManyLines'
 manyWhole :: [String] -> ManyLines
 manyWhole = foldl' go (ManyLines [] []) where
-  go ml x = case endBS x of
+  go ml x = case shouldCont x of
     Whole s -> let fullLine = unwords (cont ml ++ [s]) -- pending cont plus s
                    newWhole = whole ml ++ [fullLine] -- append complete line
                in ml{whole = newWhole, cont = []} -- no pending cont lines now
@@ -978,7 +986,7 @@ getInputLines = Repl $ getLines prompt1 []
       maybeLine <- Haskeline.getInputLine =<< prompt
       case maybeLine of
         Nothing -> return Stop  -- stop on ^D or EOF
-        Just sIn -> case endBS sIn of
+        Just sIn -> case shouldCont sIn of
           Whole s -> return (Go (intercalate "\n" (reverse (s:prior))))
           Cont c -> getLines prompt2 (c:prior)
 
