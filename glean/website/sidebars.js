@@ -66,6 +66,13 @@ module.exports = {
            'shell',
            'server',
            'cli',
+           {
+               'Indexers': [
+                   'indexer/intro',
+                   'indexer/flow',
+                   'indexer/hack',
+               ],
+           },
        ],
   },
 };
