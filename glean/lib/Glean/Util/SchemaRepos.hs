@@ -77,7 +77,7 @@ defaultSchemaRepos = SchemaRepos
   { cxxRepo = ["fbsource"]
   , hsRepo = ["fbsource-hs", "sigma_haxlanalyser"]
   , javaRepo = ["fbsource.fbandroid"]
-  , hackRepo = ["www"]
+  , hackRepo = ["www.hack"]
   , pythonRepo = ["instagram.server"]
   }
 
