@@ -66,21 +66,21 @@
        ^
   [1]
 
-  $ query "B = 1; 1 = B;"
-  [>] B = 1; 1 = B; (re)
+  $ query "B = 1; 1 = B"
+  [>] B = 1; 1 = B (re)
   the last statement should be an expression: B = 1; 1 = B
        
-  1 |  B = 1; 1 = B;
+  1 |  B = 1; 1 = B
               ^
   [1]
 
-  $ query "A = 1; B = A[..];"
-  [>] A = 1; B = A[[]..[]]; (re)
+  $ query "A = 1; B = A[..]"
+  [>] A = 1; B = A[[]..[]] (re)
   type error in array element generator:
       expression: A
       does not have an array type
        
-  1 |  A = 1; B = A[..];
+  1 |  A = 1; B = A[..]
                   ^^^^^
   [1]
 
@@ -94,23 +94,23 @@
                     ^
   [1]
 
-  $ query "{ w = A } : { n : nat | s : nat };"
-  [>] { w = A } : { n : nat | s : nat }; (re)
+  $ query "{ w = A } : { n : nat | s : nat }"
+  [>] { w = A } : { n : nat | s : nat } (re)
   unknown alt: w
       pattern: A
       expected type: { n : nat | s : nat | }
        
-  1 |  { w = A } : { n : nat | s : nat };
+  1 |  { w = A } : { n : nat | s : nat }
              ^
   [1]
 
-  $ query "{} : { n : nat | s : nat };"
-  [>] {} : { n : nat | s : nat }; (re)
+  $ query "{} : { n : nat | s : nat }"
+  [>] {} : { n : nat | s : nat } (re)
   matching on a sum type should have the form { field = pattern }
       pattern: {}
       expected type: { n : nat | s : nat | }
        
-  1 |  {} : { n : nat | s : nat };
+  1 |  {} : { n : nat | s : nat }
        ^^
   [1]
 
@@ -133,7 +133,7 @@
        ^
   [1]
 
-  $ query "A\n  where\n\n\n\n\n\n A = {\n what = "what"\n };"
+  $ query "A\n  where\n\n\n\n\n\n A = {\n what = "what"\n }"
   [>] A (re)
    where
   
@@ -143,7 +143,7 @@
   
    A = {
    what = what
-   };
+   }
   can't infer the type of: {what = what}
       try adding a type annotation like ({what = what} : T)
       or reverse the statement (Q = P instead of P = Q)
@@ -151,6 +151,6 @@
    7 |  
    8 |>  A = {
    9 |>  what = what
-  10 |>  };
+  10 |>  }
         
   [1]
