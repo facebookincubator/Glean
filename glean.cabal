@@ -130,7 +130,8 @@ library stubs
     build-depends:
         glean:if-fb303-hs,
         mangle,
-        thrift-server
+        thrift-server,
+        template-haskell
 
 library tailer
     import: fb-haskell, deps
