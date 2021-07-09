@@ -5,13 +5,16 @@
 -- databases.
 --
 -- This is very much work in progress.
+{-# LANGUAGE DeriveAnyClass, DerivingStrategies #-}
 module Glean.Database.Catalog.Filter
   ( Locality(..)
+  , EntryStatus(..)
   , Filter
   , Item(..)
   , Value
   , Order(..)
   , everythingF
+  , queryableF
   , (.==.)
   , inF
   , notInF
@@ -38,6 +41,7 @@ import Data.List (sortOn)
 import Data.Maybe
 import Data.Ord (Down(..))
 import Data.Text (Text)
+import GHC.Generics hiding (Meta)
 
 import Glean.Database.Meta
 import Glean.Types (Repo(..))
@@ -47,10 +51,27 @@ import qualified Glean.Types as Thrift
 data Locality = Local | Restoring | Cloud
   deriving(Eq,Ord,Enum,Bounded,Show)
 
+-- The status of a stacked database, ordered by increasing severity
+data EntryStatus
+  = EntryComplete
+  | EntryIncomplete
+  | EntryBroken
+  | EntryRestoring
+  | EntryMissing
+  deriving (Eq,Ord,Show,Generic,Hashable)
+
+instance Semigroup EntryStatus where
+  (<>) = max
+
+instance Monoid EntryStatus where
+  mempty = EntryComplete
+
+
 data Item = Item
   { itemRepo :: Repo
   , itemLocality :: Locality
   , itemMeta :: Meta
+  , itemStatus :: EntryStatus
   } deriving(Show)
 
 -- | A field that can be used in queries
@@ -90,11 +111,14 @@ completenessTag Thrift.Finalizing{} = CompletenessFinalizing
 completenessV :: Value CompletenessTag
 completenessV = Value (completenessTag . metaCompleteness . itemMeta)
 
+entryStatusV :: Value EntryStatus
+entryStatusV = Value itemStatus
+
 backedUpV :: Value Bool
 backedUpV = Value (isJust . metaBackup . itemMeta)
 
 newtype Filter a = Filter (S.State [Item] a)
-  deriving(Functor,Applicative,Monad)
+  deriving newtype (Functor,Applicative,Monad)
 
 runFilter :: Filter () -> [Item] -> [Item]
 runFilter (Filter m) = S.execState m
@@ -107,6 +131,9 @@ filter_ = modify . filter
 
 everythingF :: Filter ()
 everythingF = return ()
+
+queryableF :: Filter ()
+queryableF = notInF entryStatusV $ HashSet.fromList [EntryMissing]
 
 -- | Require that a field has a specific value
 (.==.) :: Eq a => Value a -> a -> Filter ()

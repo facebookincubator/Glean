@@ -78,7 +78,7 @@ runDatabaseJanitor env = do
     allDBs :: [Item]
     allDBs =
       localAndRestoring ++
-        [ Item repo Cloud meta   -- DBs we could restore
+        [ Item repo Cloud meta EntryMissing -- DBs we could restore
         | (repo, meta) <- backups
         , repo `notElem` map itemRepo localAndRestoring  ]
 
@@ -99,7 +99,7 @@ runDatabaseJanitor env = do
 
     missingDependencies = any isNothing $ concatMap dependencies keep
     delete =
-      [ repo | Item repo Local _ <- allDBs, repo `notElem` map itemRepo keep ]
+      [ repo | Item repo Local _ _ <- allDBs, repo `notElem` map itemRepo keep ]
     fetch = filter ((==Cloud) . itemLocality) keep
 
   when missingDependencies $ logInfo "some dbs are missing dependencies"

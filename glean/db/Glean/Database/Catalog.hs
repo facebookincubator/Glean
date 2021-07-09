@@ -64,21 +64,6 @@ data Entry = Entry
   , entryExpiring :: TVar (Maybe UTCTime)
   }
 
--- The status of a stacked database, ordered by increasing severity
-data EntryStatus
-  = EntryComplete
-  | EntryIncomplete
-  | EntryBroken
-  | EntryRestoring
-  | EntryMissing
-  deriving (Eq,Ord,Show)
-
-instance Semigroup EntryStatus where
-  (<>) = max
-
-instance Monoid EntryStatus where
-  mempty = EntryComplete
-
 -- | All databases known to the 'Catalog'
 data Entries = Entries
   { entriesLive :: HashMap Repo Entry
@@ -348,10 +333,16 @@ list cat locs f = do
   Entries{..} <- getEntries cat
   fmap (runFilter f . concat) $ forM locs $ \loc -> do
     xs <- case loc of
-      Local -> mapM (readTVar . entryMeta) entriesLive
-      Restoring -> return entriesRestoring
+      Local ->
+        mapM fn entriesLive
+        where
+          fn entry = do
+            status <- (readTVar . entryStatus) entry
+            meta <- (readTVar . entryMeta) entry
+            return (status, meta)
+      Restoring -> return $ fmap (EntryRestoring,) entriesRestoring
       Cloud -> return mempty
-    return [Item repo loc meta | (repo, meta) <- HashMap.toList xs]
+    return [Item repo loc meta status | (repo, (status, meta)) <- HashMap.toList xs]
 
 -- | Check if a database exists in the catalog
 exists :: Catalog -> [Locality] -> Repo -> STM Bool

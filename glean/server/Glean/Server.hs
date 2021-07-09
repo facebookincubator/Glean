@@ -95,7 +95,7 @@ dbUpdateNotifierThread Env{..} callback = doPeriodically (seconds 30) $ do
     go current
 
   list = HashSet.fromList . map Catalog.itemRepo
-    <$> Catalog.list envCatalog [Catalog.Local] Catalog.everythingF
+    <$> Catalog.list envCatalog [Catalog.Local] Catalog.queryableF
 
   updated = do
     dbs <- atomically list
