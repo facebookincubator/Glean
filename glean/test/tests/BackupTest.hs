@@ -80,7 +80,8 @@ withTestEnv dbs init_server_cfg action evb cfgAPI backupdir =
         }
 
   withDatabases evb config cfgAPI $ \env -> do
-    mapM_ (makeDB env) dbs
+    now <- getCurrentTime
+    mapM_ (makeDB env now) dbs
     action TestEnv
       { testEnv = env
       , testBackup = Backup.Mock.mockSite backupdir
@@ -103,13 +104,12 @@ expectFinalize repos = parallel
   [ opt (want Waiting) <> wants [ FinalizeStarted repo, FinalizeFinished repo ]
   | repo <- repos ]
 
-makeDB :: Env -> (Repo, Bool, Int) -> IO ()
-makeDB env (repo, good, age) = do
+makeDB :: Env -> UTCTime -> (Repo, Bool, Int) -> IO ()
+makeDB env now (repo, good, age) = do
   KickOffResponse False <- kickOffDatabase env def
     { kickOff_repo = repo
     , kickOff_fill = Just $ KickOffFill_writeHandle ""
     }
-  now <- getCurrentTime
   let created t = addUTCTime (negate (fromIntegral t)) now
   void $ atomically $ Catalog.modifyMeta (envCatalog env) repo $ \meta ->
     return meta { metaCreated = utcTimeToPosixEpochTime (created age) }
