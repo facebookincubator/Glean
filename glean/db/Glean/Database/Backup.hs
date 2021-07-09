@@ -28,6 +28,7 @@ import System.Directory
 import System.FilePath
 
 import Util.Control.Exception
+import Util.Graph
 import Util.IO (safeRemovePathForcibly)
 import Util.Log
 
@@ -129,7 +130,7 @@ getTodo env@Env{..} sinbin = getFinalize <|> getRestore <|> getBackup
 --   - restore the DB which is currently the most stale; that is
 --     where the newest, complete, local DB of the same repo is the oldest
 bestRestore :: [Item] -> [Item] -> [Item]
-bestRestore restoring avail = sortBy order restoring
+bestRestore restoring avail = depsFirst (sortBy order restoring)
   where
     -- stalest first, and then most recent if none are stale
     order a b =
@@ -149,6 +150,15 @@ bestRestore restoring avail = sortBy order restoring
           where
             tlocal = metaCreated (itemMeta local)
             tbackup = metaCreated (itemMeta backup)
+
+    -- ensure we're restoring dependencies of a stacked DB first, if
+    -- they need restoring.
+    depsFirst items = postorder items itemRepo itemDeps
+      where
+      itemDeps item = case metaDependencies (itemMeta item) of
+        Nothing -> []
+        Just (Dependencies_stacked repo) -> [repo]
+        Just (Dependencies_pruned Pruned{..}) -> [pruned_base]
 
 data Staleness
   = NoLocalDb
