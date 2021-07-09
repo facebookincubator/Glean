@@ -63,6 +63,7 @@ trimCodeEntity = \case
       Java.Entity_class_ x -> trim x
 
     trimHs = \case
+      Hs.Entity_definition x -> trim x
       Hs.Entity_function_ x -> trim x
       Hs.Entity_class_ x -> trim x
 

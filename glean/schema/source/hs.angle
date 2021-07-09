@@ -42,6 +42,7 @@ predicate ModuleDefinitions :
     functionDefinitions : [FunctionDefinition],
   }
 
+# Definition location by identifier string
 predicate DefinitionName : string
 
 predicate Definition :
@@ -78,6 +79,38 @@ predicate Definition :
     name : DefinitionName,
     source : src.FileLocation,
   }
+
+
+# Type of "entities" that have a definition location
+# to match code.hs.angle:Entity
+type DefinitionEntity =
+  {
+    definition : Definition |
+    function_ : FunctionDefinition |
+    class_ : Class |
+  }
+
+# Index by file.
+predicate FileDefinition:
+  {
+    file : src.File,
+    defn : DefinitionEntity,
+  } stored
+  { File, { definition = Defn } }
+    where
+      Defn = Definition { source = { File, _ } }
+
+# From an entity, find name and location
+predicate DefinitionLocation:
+  {
+    defn: DefinitionEntity,
+    name: string,
+    source: src.FileLocation,
+  }
+  { Entity, Name, { File, Span }}
+    where
+      { definition = { DefinitionName Name, { File, Span }} } = Entity;
+
 
 type XRefTarget =
   {
