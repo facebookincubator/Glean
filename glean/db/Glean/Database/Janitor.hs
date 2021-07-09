@@ -110,12 +110,14 @@ runDatabaseJanitor env = do
         repoRetention config_retention $ Thrift.repo_name repo
     expireDatabase (fromIntegral <$> retention_expire_delay) env repo
 
-  fetching <- forM fetch $ \Item{..} ->
-    ifRestoreRepo env 0 itemRepo $ \prefix site -> do
+  restores <- fmap catMaybes $ forM fetch $ \Item{..} ->
+    ifRestoreRepo env Nothing itemRepo $ \prefix site -> do
       logInfo $ "Restoring: " ++ showRepo itemRepo ++
         " ("  ++ showNominalDiffTime (dbAge t itemMeta) ++ " old)"
-      restoreDatabase_ env prefix site itemRepo
-      return 1
+      Just <$> restoreDatabase_ env prefix site itemRepo
+  -- register all the restoring DBs together in a single transaction,
+  -- so that the backup thread can't jump in early and pick one
+  atomically $ sequence_ restores
 
   forM_ byRepo $ \(repoNm, dbs) -> do
     let prefix = "glean.db." <> Text.encodeUtf8 repoNm
@@ -127,9 +129,9 @@ runDatabaseJanitor env = do
         itemLocality == Local
         && completenessStatus itemMeta == Thrift.DatabaseStatus_Complete)
       repoKeep
-    void $ setCounter (prefix <> ".restoring") $ sum fetching + length (filter
-      (\Item{..} -> itemLocality == Restoring)
-      dbs)
+    void $ setCounter (prefix <> ".restoring") $
+      length restores +
+      length (filter (\Item{..} -> itemLocality == Restoring) dbs)
     void $ setCounter (prefix <> ".indexing") $ length $ filter
       (\Item{..} ->
         itemLocality == Local

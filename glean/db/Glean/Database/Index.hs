@@ -484,15 +484,21 @@ restoreDatabase :: Env -> Text -> IO ()
 restoreDatabase env loc
   | Just (prefix, site, repo) <-
       Backup.fromRepoLocator (envBackupBackends env) loc =
-        restoreDatabase_ env prefix site repo
+        atomically =<< restoreDatabase_ env prefix site repo
   | otherwise = throwIO $
       Thrift.InvalidLocator $ "invalid locator '" <> loc <>  "'"
 
-restoreDatabase_ :: Backup.Site site => Env -> Text -> site -> Repo -> IO ()
+restoreDatabase_
+  :: Backup.Site site
+  => Env
+  -> Text
+  -> site
+  -> Repo
+  -> IO (STM ())
 restoreDatabase_ Env{..} prefix site repo = do
   props <- Backup.inspect site repo
   case metaFromProps loc props of
-    Right meta -> atomically $ Catalog.startRestoring envCatalog repo meta
+    Right meta -> return $ Catalog.startRestoring envCatalog repo meta
     Left err -> dbError repo $ concat
       ["invalid metadata in backup '", Text.unpack loc, "': ", err]
   where
