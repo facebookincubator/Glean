@@ -8,7 +8,7 @@
 {-# LANGUAGE DeriveAnyClass, DerivingStrategies #-}
 module Glean.Database.Catalog.Filter
   ( Locality(..)
-  , EntryStatus(..)
+  , ItemStatus(..)
   , Filter
   , Item(..)
   , Value
@@ -52,26 +52,26 @@ data Locality = Local | Restoring | Cloud
   deriving(Eq,Ord,Enum,Bounded,Show)
 
 -- The status of a stacked database, ordered by increasing severity
-data EntryStatus
-  = EntryComplete
-  | EntryIncomplete
-  | EntryBroken
-  | EntryRestoring
-  | EntryMissing
+data ItemStatus
+  = ItemComplete
+  | ItemIncomplete
+  | ItemBroken
+  | ItemRestoring
+  | ItemMissing
   deriving (Eq,Ord,Show,Generic,Hashable)
 
-instance Semigroup EntryStatus where
+instance Semigroup ItemStatus where
   (<>) = max
 
-instance Monoid EntryStatus where
-  mempty = EntryComplete
+instance Monoid ItemStatus where
+  mempty = ItemComplete
 
 
 data Item = Item
   { itemRepo :: Repo
   , itemLocality :: Locality
   , itemMeta :: Meta
-  , itemStatus :: EntryStatus
+  , itemStatus :: ItemStatus
   } deriving(Show)
 
 -- | A field that can be used in queries
@@ -111,7 +111,7 @@ completenessTag Thrift.Finalizing{} = CompletenessFinalizing
 completenessV :: Value CompletenessTag
 completenessV = Value (completenessTag . metaCompleteness . itemMeta)
 
-entryStatusV :: Value EntryStatus
+entryStatusV :: Value ItemStatus
 entryStatusV = Value itemStatus
 
 backedUpV :: Value Bool
@@ -133,7 +133,9 @@ everythingF :: Filter ()
 everythingF = return ()
 
 queryableF :: Filter ()
-queryableF = notInF entryStatusV $ HashSet.fromList [EntryMissing]
+queryableF =
+  inF entryStatusV $
+    HashSet.fromList [ItemComplete, ItemIncomplete, ItemBroken]
 
 -- | Require that a field has a specific value
 (.==.) :: Eq a => Value a -> a -> Filter ()

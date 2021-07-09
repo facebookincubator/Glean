@@ -51,8 +51,8 @@ import qualified Glean.Types as Thrift
 -- | Catalog entry
 data Entry = Entry
   { entryRepo :: Repo
-  , entryStatus :: TVar EntryStatus
-      -- ^ This is the combined status of this db and the entry status of its
+  , entryStatus :: TVar ItemStatus
+      -- ^ This is the combined status of this db and the entryStatus of its
       -- dependencies. Sent with restorable status as 'Thrift.DatabaseStatus'.
   , entryMeta :: TVar Meta
   , entryDirty :: TVar Bool
@@ -100,7 +100,7 @@ instance Exception EntryAlreadyExists
 
 mkEntry :: Repo -> Meta -> STM Entry
 mkEntry repo meta = Entry repo
-  <$> newTVar EntryMissing
+  <$> newTVar ItemMissing
   <*> newTVar meta
   <*> newTVar False
   <*> newTVar False
@@ -117,8 +117,8 @@ recalculateStatus Catalog{..} entry = do
     Just Entries{..} -> do
       let
         missingStatus repo | repo `HashMap.member` entriesRestoring =
-          EntryRestoring
-        missingStatus _ = EntryMissing
+          ItemRestoring
+        missingStatus _ = ItemMissing
 
         dependencies = case metaDependencies meta of
           Just (Thrift.Dependencies_stacked repo) -> [repo]
@@ -133,11 +133,11 @@ recalculateStatus Catalog{..} entry = do
             HashMap.adjust (filter (entryRepo entry /=)) dep
 
       let
-        entryStatusFor :: Thrift.Completeness -> EntryStatus
-        entryStatusFor Thrift.Complete{} = EntryComplete
-        entryStatusFor Thrift.Incomplete{} = EntryIncomplete
-        entryStatusFor Thrift.Broken{} = EntryBroken
-        entryStatusFor Thrift.Finalizing{} = EntryComplete
+        itemStatusFor :: Thrift.Completeness -> ItemStatus
+        itemStatusFor Thrift.Complete{} = ItemComplete
+        itemStatusFor Thrift.Incomplete{} = ItemIncomplete
+        itemStatusFor Thrift.Broken{} = ItemBroken
+        itemStatusFor Thrift.Finalizing{} = ItemComplete
         -- Report Finalizing as Complete: the DB is ready to be queried,
         -- the finalize steps are administrative only and don't change
         -- anything observable.
@@ -150,7 +150,7 @@ recalculateStatus Catalog{..} entry = do
       oldStatus <- readTVar $ entryStatus entry
       let
         status = if live then
-            entryStatusFor $ metaCompleteness meta
+            itemStatusFor $ metaCompleteness meta
           else
             missingStatus $ entryRepo entry
         newStatus = mconcat $ status:dependencyStatuses
@@ -167,12 +167,12 @@ recalculateDepsStatus Catalog{..} repo = do
     \dep -> forM_ (entries >>= HashMap.lookup dep . entriesLive) $
       \entry -> recalculateStatus Catalog{..} entry
 
-entryDatabaseStatus :: EntryStatus -> Thrift.DatabaseStatus
-entryDatabaseStatus EntryComplete = Thrift.DatabaseStatus_Complete
-entryDatabaseStatus EntryIncomplete = Thrift.DatabaseStatus_Incomplete
-entryDatabaseStatus EntryRestoring = Thrift.DatabaseStatus_Restoring
-entryDatabaseStatus EntryBroken = Thrift.DatabaseStatus_Broken
-entryDatabaseStatus EntryMissing = Thrift.DatabaseStatus_Missing
+itemDatabaseStatus :: ItemStatus -> Thrift.DatabaseStatus
+itemDatabaseStatus ItemComplete = Thrift.DatabaseStatus_Complete
+itemDatabaseStatus ItemIncomplete = Thrift.DatabaseStatus_Incomplete
+itemDatabaseStatus ItemRestoring = Thrift.DatabaseStatus_Restoring
+itemDatabaseStatus ItemBroken = Thrift.DatabaseStatus_Broken
+itemDatabaseStatus ItemMissing = Thrift.DatabaseStatus_Missing
 
 dirtyEntry :: Catalog -> Entry -> STM ()
 dirtyEntry cat entry = do
@@ -334,15 +334,18 @@ list cat locs f = do
   fmap (runFilter f . concat) $ forM locs $ \loc -> do
     xs <- case loc of
       Local ->
-        mapM fn entriesLive
+        mapM statusAndMeta entriesLive
         where
-          fn entry = do
-            status <- (readTVar . entryStatus) entry
-            meta <- (readTVar . entryMeta) entry
+          statusAndMeta :: Entry -> STM (ItemStatus, Meta)
+          statusAndMeta Entry{..} = do
+            status <- readTVar entryStatus
+            meta <- readTVar entryMeta
             return (status, meta)
-      Restoring -> return $ fmap (EntryRestoring,) entriesRestoring
+      Restoring -> return $ fmap (ItemRestoring,) entriesRestoring
       Cloud -> return mempty
-    return [Item repo loc meta status | (repo, (status, meta)) <- HashMap.toList xs]
+    return $
+      [ Item repo loc meta status
+      | (repo, (status, meta)) <- HashMap.toList xs]
 
 -- | Check if a database exists in the catalog
 exists :: Catalog -> [Locality] -> Repo -> STM Bool
@@ -455,7 +458,7 @@ getLocalDatabases cat = do
       status <- readTVar $ entryStatus entry
       return Thrift.GetDatabaseResult
         { getDatabaseResult_database = metaToThriftDatabase
-            (entryDatabaseStatus status)
+            (itemDatabaseStatus status)
             exp
             repo
             meta

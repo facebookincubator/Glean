@@ -78,7 +78,7 @@ runDatabaseJanitor env = do
     allDBs :: [Item]
     allDBs =
       localAndRestoring ++
-        [ Item repo Cloud meta EntryMissing -- DBs we could restore
+        [ Item repo Cloud meta ItemMissing -- DBs we could restore
         | (repo, meta) <- backups
         , repo `notElem` map itemRepo localAndRestoring  ]
 
