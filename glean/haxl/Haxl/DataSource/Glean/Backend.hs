@@ -26,7 +26,7 @@ syncGet
   -> Repo
   -> PerformFetch GleanGet
 syncGet env repo = SyncFetch $ \requests -> do
-  results <- userQueryFacts env repo (mkRequest requests)
+  results <- userQueryFacts env repo (mkRequest Nothing requests)
   putResults results requests
 
 

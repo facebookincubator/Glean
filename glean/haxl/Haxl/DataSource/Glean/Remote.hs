@@ -38,7 +38,7 @@ initGlobalState backend repo =  do
     )
 
 remoteFetch :: ThriftBackend -> Repo -> PerformFetch GleanGet
-remoteFetch (ThriftBackend config evb ts _) repo =
+remoteFetch (ThriftBackend config evb ts clientInfo) repo =
   BackgroundFetch $ \requests -> do
   let
     ts' = case clientConfig_use_shards config of
@@ -66,8 +66,7 @@ remoteFetch (ThriftBackend config evb ts _) repo =
       (\p c ct s r o x -> send_userQueryFacts p c ct s r o repo x)
       sendCob
       (recvCob . recv_userQueryFacts)
-      (mkRequest requests)
-
+      (mkRequest (Just clientInfo) requests)
 
 putException :: SomeException -> [BlockedFetch a] -> IO ()
 putException ex requests =
@@ -75,7 +74,8 @@ putException ex requests =
 
 
 remoteQuery :: ThriftBackend -> Repo -> PerformFetch GleanQuery
-remoteQuery (ThriftBackend config evb ts _) repo = BackgroundFetch $ mapM_ fetch
+remoteQuery (ThriftBackend config evb ts clientInfo) repo =
+  BackgroundFetch $ mapM_ fetch
   where
   ts' = case clientConfig_use_shards config of
     NO_SHARDS -> ts
@@ -85,7 +85,15 @@ remoteQuery (ThriftBackend config evb ts _) repo = BackgroundFetch $ mapM_ fetch
 
   fetch :: BlockedFetch GleanQuery -> IO ()
   fetch (BlockedFetch (QueryReq q stream) rvar) =
-    runRemoteQuery evb repo q ts' (if stream then Just id else Nothing) rvar
+    runRemoteQuery evb repo q' ts' acc rvar
+    where
+      q' = withClientInfo clientInfo q
+      acc = if stream then Just id else Nothing
+
+  withClientInfo :: UserQueryClientInfo -> Query q -> Query q
+  withClientInfo info (Query q d) = Query q' d
+    where
+      q' = q { userQuery_client_info = Just info }
 
 
 runRemoteQuery

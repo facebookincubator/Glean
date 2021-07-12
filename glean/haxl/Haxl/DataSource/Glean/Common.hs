@@ -79,8 +79,8 @@ intId :: IdOf p -> Id
 intId id = fromIntegral (fromFid (idOf id))
 
 
-mkRequest :: [BlockedFetch GleanGet] -> UserQueryFacts
-mkRequest requests = def
+mkRequest :: Maybe UserQueryClientInfo -> [BlockedFetch GleanGet] -> UserQueryFacts
+mkRequest minfo requests = def
   { userQueryFacts_facts = map toFactQuery requests
   , userQueryFacts_options = Just def
     { userQueryOptions_expand_results = False
@@ -88,6 +88,7 @@ mkRequest requests = def
     , userQueryOptions_max_results =
        Just (fromIntegral (length requests)) }
   , userQueryFacts_encodings = [UserQueryEncoding_bin def]
+  , userQueryFacts_client_info = minfo
   }
   where
     toFactQuery :: BlockedFetch GleanGet -> FactQuery
