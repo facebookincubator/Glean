@@ -344,12 +344,13 @@ enum DatabaseStatus {
 struct Database {
   1: Repo repo;
 
-  2: string created;
+  // deprecated: 2
   // deprecated: 3
 
   // The status of this database including dependencies
   4: DatabaseStatus status;
 
+  // The backup location of the database, if it is backed up
   5: optional string location;
 
   // In POSIX seconds, since epoch. This is used to compare database

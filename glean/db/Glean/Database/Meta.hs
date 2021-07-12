@@ -21,9 +21,7 @@ import Data.HashMap.Strict (HashMap)
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Text (Text)
-import qualified Data.Text as Text
 import Data.Time (UTCTime, NominalDiffTime, diffUTCTime)
-import qualified Data.Time.Format as Time
 import Data.Time.Clock.POSIX
 
 import Thrift.Protocol.JSON
@@ -82,9 +80,6 @@ metaToThriftDatabase
   -> Database
 metaToThriftDatabase status expire repo Meta{..} = Database
   { database_repo = repo
-  , database_created = Text.pack
-      $ Time.formatTime Time.defaultTimeLocale "%FT%XZ"
-      $ posixEpochTimeToUTCTime metaCreated
   , database_status = status
   , database_location = metaBackup
   , database_created_since_epoch = metaCreated
