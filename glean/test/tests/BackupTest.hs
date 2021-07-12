@@ -7,6 +7,7 @@ import Control.Monad
 import Data.Default
 import qualified Data.HashSet as HashSet
 import Data.List
+import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Time.Clock
 import System.IO.Temp
@@ -47,8 +48,28 @@ data TestEnv = forall site. Backup.Site site => TestEnv
   , testEvents :: TQueue Event
   }
 
+data TestDbSpec = TestDbSpec
+  { _testDbRepo :: Repo
+  , _testDbGood :: Bool
+  , _testDbAge :: Int
+  , _testDbDeps :: Maybe Dependencies
+  }
+
+goodDb :: Text -> Text -> TestDbSpec
+goodDb name hash = TestDbSpec (Repo name hash) True 0 Nothing
+
+badDb :: Text -> Text -> TestDbSpec
+badDb name hash = TestDbSpec (Repo name hash) False 0 Nothing
+
+goodDbAge :: Text -> Text -> Int -> TestDbSpec
+goodDbAge name hash age = TestDbSpec (Repo name hash) True age Nothing
+
+goodDbAgeDeps :: Text -> Text -> Int -> Dependencies -> TestDbSpec
+goodDbAgeDeps name hash age deps =
+  TestDbSpec (Repo name hash) True age (Just deps)
+
 withTestEnv
-  :: [(Repo, Bool, Int)]
+  :: [TestDbSpec]
   -> (ServerTypes.Config -> ServerTypes.Config)
   -> (TestEnv -> IO ())
   -> EventBaseDataplane
@@ -104,11 +125,12 @@ expectFinalize repos = parallel
   [ opt (want Waiting) <> wants [ FinalizeStarted repo, FinalizeFinished repo ]
   | repo <- repos ]
 
-makeDB :: Env -> UTCTime -> (Repo, Bool, Int) -> IO ()
-makeDB env now (repo, good, age) = do
+makeDB :: Env -> UTCTime -> TestDbSpec -> IO ()
+makeDB env now (TestDbSpec repo good age deps) = do
   KickOffResponse False <- kickOffDatabase env def
     { kickOff_repo = repo
     , kickOff_fill = Just $ KickOffFill_writeHandle ""
+    , kickOff_dependencies = deps
     }
   let created t = addUTCTime (negate (fromIntegral t)) now
   void $ atomically $ Catalog.modifyMeta (envCatalog env) repo $ \meta ->
@@ -129,24 +151,24 @@ basicBackupTest = TestCase $ withTest $ withTestEnv
   id
   $ \TestEnv{..} -> do
     expect testEvents $ mconcat
-      [ expectFinalize [repo | (repo, True, _) <- repos] ]
+      [ expectFinalize [repo | TestDbSpec repo True _ _ <- repos] ]
     testUpdConfig $ \scfg -> scfg
       { config_backup = (config_backup scfg)
           { databaseBackupPolicy_allowed = HashSet.fromList ["test"] } }
     expect testEvents $ mconcat
-      [ expectBackups [repo | (repo, True, _) <- repos]
+      [ expectBackups [repo | TestDbSpec repo True _ _ <- repos]
       , want Waiting ]
 
     backups <- Backup.enumerate testBackup
     assertEqual "repos"
-      (sort [repo | (repo, True, _) <- repos])
+      (sort [repo | TestDbSpec repo True _ _ <- repos])
       (sort [repo | (repo, _) <- backups])
   where
-    repos :: [(Repo, Bool, Int)]
+    repos :: [TestDbSpec]
     repos =
-      [ (Repo "test" "1", True, 0)
-      , (Repo "test" "2", False, 0)
-      , (Repo "test" "3", True, 0) ]
+      [ goodDb "test" "1"
+      , badDb "test" "2"
+      , goodDb "test" "3" ]
 
 allowedTest :: Test
 allowedTest = TestCase $ withTest $ withTestEnv
@@ -154,21 +176,22 @@ allowedTest = TestCase $ withTest $ withTestEnv
   id
   $ \TestEnv{..} -> do
     expect testEvents $ mconcat
-      [ expectFinalize [repo | (repo, True, _) <- repos] ]
+      [ expectFinalize [repo | TestDbSpec repo True _ _ <- repos] ]
     testUpdConfig $ \scfg -> scfg
       { config_backup = (config_backup scfg)
           { databaseBackupPolicy_allowed = HashSet.fromList ["bar"] }}
     expect testEvents $ mconcat
-      [ expectBackups [repo | (repo, True, _) <- repos, repo_name repo == "bar"]
+      [ expectBackups [repo | TestDbSpec repo True _ _ <- repos,
+          repo_name repo == "bar"]
       , want Waiting ]
   where
-    repos :: [(Repo, Bool, Int)]
+    repos :: [TestDbSpec]
     repos =
-      [ (Repo "foo" "1", True, 0)
-      , (Repo "bar" "2", True, 0)
-      , (Repo "foo" "3", True, 0)
-      , (Repo "baz" "4", True, 0)
-      , (Repo "bar" "5", True, 0) ]
+      [ goodDb "foo" "1"
+      , goodDb "bar" "2"
+      , goodDb "foo" "3"
+      , goodDb "baz" "4"
+      , goodDb "bar" "5" ]
 
 restoreOrderTest :: Test
 restoreOrderTest = TestCase $ withTest $ withTestEnv
@@ -176,17 +199,17 @@ restoreOrderTest = TestCase $ withTest $ withTestEnv
   id
   $ \TestEnv{..} -> do
     expect testEvents $ mconcat
-      [ expectFinalize [repo | (repo, True, _) <- repos] ]
+      [ expectFinalize [repo | TestDbSpec repo True _ _ <- repos] ]
     testUpdConfig $ \scfg -> scfg
       { config_backup = (config_backup scfg)
           { databaseBackupPolicy_allowed =
               HashSet.fromList ["bar","foo","baz"] }}
     expect testEvents $ mconcat
-      [ expectBackups [repo | (repo, True, _) <- repos ]
+      [ expectBackups [repo | TestDbSpec repo True _ _ <- repos ]
       , want Waiting ]
 
     -- delete all the repos and run the janitor to start restoring
-    forM_ repos $ \(repo, _, _) -> deleteDatabase testEnv repo
+    forM_ repos $ \(TestDbSpec repo _ _ _) -> deleteDatabase testEnv repo
     testUpdConfig $ \scfg -> scfg
       { config_restore = def { databaseRestorePolicy_enabled = True } }
     runDatabaseJanitor testEnv
@@ -222,16 +245,19 @@ restoreOrderTest = TestCase $ withTest $ withTestEnv
     -- newest restorable for each repo:
     --    Repo "foo" "1", True, 2
     --    Repo "bar" "2", True, 1
-    -- none stale, bar/2 is the newest
+    -- none stale, bar/2 is the newest, but it depends on foo/1, so
+    -- we should restore that first.
+    expect testEvents $ expectRestore [ Repo "foo" "1" ]
     expect testEvents $ expectRestore [ Repo "bar" "2" ]
   where
-    repos :: [(Repo, Bool, Int)]
+    repos :: [TestDbSpec]
     repos =
-      [ (Repo "foo" "1", True, 2)
-      , (Repo "bar" "2", True, 1)
-      , (Repo "foo" "3", True, 1)
-      , (Repo "baz" "4", True, 3)
-      , (Repo "bar" "5", True, 0) ]
+      [ goodDbAge "foo" "1" 2
+      , goodDbAge "foo" "3" 1
+      , goodDbAgeDeps "bar" "2" 1 (Dependencies_stacked (Repo "foo" "1"))
+      , goodDbAge "bar" "5" 0
+      , goodDbAge "baz" "4" 3
+      ]
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
