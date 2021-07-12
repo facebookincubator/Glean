@@ -75,7 +75,7 @@ instance Plugin RestoreCommand where
         case [ (database_repo, locator)
              | Glean.Database{..} <- listDatabasesResult_databases
              , repo_name database_repo == repoName
-             , Just t <- [database_created_since_epoch]
+             , let t = database_created_since_epoch
              , day == utctDay (posixSecondsToUTCTime $ fromIntegral $
                  Glean.unPosixEpochTime t)
              , Just locator <- [database_location] ] of
@@ -98,11 +98,11 @@ instance Plugin RestoreCommand where
             die 1 $ "error: server claims " <> Text.unpack locator <>
               " is not being restored"
           [db]
-            | database_status db == Just Glean.DatabaseStatus_Restoring ->
+            | database_status db == Glean.DatabaseStatus_Restoring ->
               threadDelay 1000000 >> wait locator
-            | database_status db == Just DatabaseStatus_Complete ->
+            | database_status db == DatabaseStatus_Complete ->
               return ()
-            | database_status db == Just DatabaseStatus_Missing -> do
+            | database_status db == DatabaseStatus_Missing -> do
               putStrLn $
                 "Some of this DB's dependencies are missing. " <>
                 "You may want to restore those as well"

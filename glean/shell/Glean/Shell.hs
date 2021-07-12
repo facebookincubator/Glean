@@ -634,7 +634,7 @@ reloadCmd = do
       Thrift.GetDatabaseResult{..} <- withBackend $ \be ->
         liftIO $ Glean.getDatabase be repo
       case Thrift.database_status getDatabaseResult_database of
-        Just Thrift.DatabaseStatus_Complete -> return ()
+        Thrift.DatabaseStatus_Complete -> return ()
         _otherwise -> output $ vcat
           [ "WARNING: the current database is writable, so its schema will not"
           , "be updated. To use the new schema, complete the current database"

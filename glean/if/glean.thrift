@@ -343,23 +343,30 @@ enum DatabaseStatus {
 
 struct Database {
   1: Repo repo;
-  2: optional string created;
+
+  2: string created;
   // deprecated: 3
-  4: optional DatabaseStatus status;
+
   // The status of this database including dependencies
+  4: DatabaseStatus status;
+
   5: optional string location;
-  6: optional PosixEpochTime created_since_epoch;
+
   // In POSIX seconds, since epoch. This is used to compare database
   // versions.
-  7: optional PosixEpochTime expire_time;
+  6: PosixEpochTime created_since_epoch;
+
   // If set, the DB is due to be expired at the specified time.
   // Clients should switch to a newer version of the DB.
-  8: DatabaseProperties properties;
+  7: optional PosixEpochTime expire_time;
+
   // Arbitrary metadata about this DB. Properties prefixed by
   // "glean."  are reserved for use by Glean itself.
+  8: DatabaseProperties properties;
+
+  // If the DB is complete, this is the time when the DB was
+  // marked completed.
   9: optional PosixEpochTime completed;
-// If the DB is complete, this is the time when the DB was
-// marked completed.
 }
 
 struct PredicateStats {

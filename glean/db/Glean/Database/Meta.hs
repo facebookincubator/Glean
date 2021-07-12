@@ -82,13 +82,12 @@ metaToThriftDatabase
   -> Database
 metaToThriftDatabase status expire repo Meta{..} = Database
   { database_repo = repo
-  , database_created = Just
-      $ Text.pack
+  , database_created = Text.pack
       $ Time.formatTime Time.defaultTimeLocale "%FT%XZ"
       $ posixEpochTimeToUTCTime metaCreated
-  , database_status = Just status
+  , database_status = status
   , database_location = metaBackup
-  , database_created_since_epoch = Just metaCreated
+  , database_created_since_epoch = metaCreated
   , database_expire_time = utcTimeToPosixEpochTime <$> expire
   , database_properties = metaProperties
   , database_completed = case metaCompleteness of

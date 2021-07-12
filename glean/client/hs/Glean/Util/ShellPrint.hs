@@ -107,32 +107,19 @@ instance ShellFormat Thrift.DatabaseStatus where
         Thrift.DatabaseStatus_Restorable -> "RESTORABLE"
         Thrift.DatabaseStatus_Missing -> "MISSING"
 
-instance ShellFormat (Maybe Thrift.DatabaseStatus) where
-  shellFormatText ctx status =
-    maybe
-      (parens "unknown")
-      (shellFormatText ctx)
-      status
-  shellFormatJson ctx status =
-    maybe
-      (J.toJSON @String "UNKNOWN")
-      (shellFormatJson ctx)
-      status
-
 instance ShellFormat Thrift.Repo where
   shellFormatText _ctx repo = text (showRepo repo)
   shellFormatJson _ctx repo = J.toJSON (showRepo repo)
 
-statusColour :: Maybe Thrift.DatabaseStatus -> Color
+statusColour :: Thrift.DatabaseStatus -> Color
 statusColour status = case status of
-  Just Thrift.DatabaseStatus_Complete -> Green
-  Just Thrift.DatabaseStatus_Finalizing -> Green
-  Just Thrift.DatabaseStatus_Incomplete -> Blue
-  Just Thrift.DatabaseStatus_Restoring -> Black
-  Just Thrift.DatabaseStatus_Broken -> Red
-  Just Thrift.DatabaseStatus_Restorable -> Black
-  Just Thrift.DatabaseStatus_Missing -> Black
-  Nothing -> Red
+  Thrift.DatabaseStatus_Complete -> Green
+  Thrift.DatabaseStatus_Finalizing -> Green
+  Thrift.DatabaseStatus_Incomplete -> Blue
+  Thrift.DatabaseStatus_Restoring -> Black
+  Thrift.DatabaseStatus_Broken -> Red
+  Thrift.DatabaseStatus_Restorable -> Black
+  Thrift.DatabaseStatus_Missing -> Black
 
 instance ShellFormat Thrift.Database where
   shellFormatText ctx db = shellFormatText ctx (db, []::[(String, Void)])
@@ -143,9 +130,7 @@ instance ShellFormat v => ShellFormat (Thrift.Database, [(String, v)]) where
     [ annotate (statusColour status) (shellFormatText ctx repo)
         <+> shellFormatText ctx status
       , nest 2 $ vcat $
-        [ "Created:" <+> showWhen t
-        | Just t <- [Thrift.database_created_since_epoch db]
-        ]
+        [ "Created:" <+> showWhen (Thrift.database_created_since_epoch db) ]
         ++
         [ "Completed:" <+> showWhen t
         | Just t <- [Thrift.database_completed db]
@@ -156,7 +141,7 @@ instance ShellFormat v => ShellFormat (Thrift.Database, [(String, v)]) where
         ++
         [ "Backup:" <+> text (Text.unpack loc)
         | ctxVerbose ||
-          Thrift.database_status db == Just Thrift.DatabaseStatus_Restorable
+          Thrift.database_status db == Thrift.DatabaseStatus_Restorable
         , Just loc <- [Thrift.database_location db]
         ]
         ++
@@ -191,7 +176,7 @@ instance ShellFormat v => ShellFormat (Thrift.Database, [(String, v)]) where
   shellFormatJson ctx (db, extras) = J.object $
     [ "repo" .= shellFormatJson ctx repo
     , "status" .= shellFormatJson ctx status
-    , "created" .= jsonMaybeTime (Thrift.database_created_since_epoch db)
+    , "created" .= jsonTime (Thrift.database_created_since_epoch db)
     , "completed" .= jsonMaybeTime (Thrift.database_completed db)
     , "backup" .= maybe J.Null J.toJSON (Thrift.database_location db)
     , "expires" .= jsonMaybeTime (Thrift.database_expire_time db)

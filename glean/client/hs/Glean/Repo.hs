@@ -53,9 +53,9 @@ getLatestRepos backend keepName = do
     -- still downloading DBs.
 
     ok Database{..} =
-      (database_status == Just DatabaseStatus_Complete
+      (database_status == DatabaseStatus_Complete
         || usingShards backend &&
-           database_status == Just DatabaseStatus_Restoring) &&
+           database_status == DatabaseStatus_Restoring) &&
       keepName (repo_name database_repo) &&
       isNothing database_expire_time
   xss <- groupSortOn (repo_name . database_repo) . filter ok <$>
@@ -68,8 +68,8 @@ getLatestRepos backend keepName = do
             -- DBs younger than this are ignored, to give the DB a chance to
             -- propagate to all servers.
           oldEnough db
-            | Just created <- fromIntegral . unPosixEpochTime <$>
-              database_created_since_epoch db
+            | created <- fromIntegral $ unPosixEpochTime $
+                database_created_since_epoch db
             = now - created >= minDbAge
             | otherwise
             = False
@@ -103,7 +103,7 @@ getLatestRepo backend name = do
 checkRestorableAvailable :: Backend be => be -> [Database] -> IO (Maybe Repo)
 checkRestorableAvailable _ [] = return Nothing
 checkRestorableAvailable backend (Database{..}:dbs)
-  | database_status /= Just DatabaseStatus_Restoring =
+  | database_status /= DatabaseStatus_Restoring =
     return (Just database_repo)
   | not (usingShards backend) =
     checkRestorableAvailable backend dbs

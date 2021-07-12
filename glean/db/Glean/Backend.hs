@@ -321,7 +321,7 @@ instance Backend Database.Env where
   hasDatabase env repo = do
     Thrift.GetDatabaseResult Thrift.Database{..} _ <- getDatabase env repo
     return $ case database_status of
-      Just Thrift.DatabaseStatus_Restorable -> False
+      Thrift.DatabaseStatus_Restorable -> False
       _ -> True
 
   maybeRemote _ = Nothing

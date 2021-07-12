@@ -289,7 +289,7 @@ backupRestoreTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
       dbs <- Catalog.getLocalDatabases $ envCatalog env
       let should_wait Thrift.GetDatabaseResult
               {getDatabaseResult_database = Thrift.Database{..}} =
-            database_status == Just DatabaseStatus_Complete
+            database_status == DatabaseStatus_Complete
             && isNothing database_location
       when (any should_wait dbs) retry
 
@@ -325,7 +325,7 @@ backupRestoreTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
         let
           available =
             [ db | db <- dbs
-            , database_status db == Just Thrift.DatabaseStatus_Complete ]
+            , database_status db == Thrift.DatabaseStatus_Complete ]
         when (length dbs < 2 || length available < 2) waitForRestore
 
   r <- timeout (60*1000000) $ waitForRestore

@@ -190,9 +190,8 @@ stackedDbsTest = TestCase $ withMemCatalog $ \_ cat -> do
     status cat repo = do
       result <- atomically $ Catalog.getLocalDatabase cat repo
       case result of
-        Just GetDatabaseResult{getDatabaseResult_database=db} -> do
-          let Just dbStatus = database_status db
-          return dbStatus
+        Just GetDatabaseResult{getDatabaseResult_database=db} ->
+          return (database_status db)
         Nothing -> throwIO TestError
 
 writeWhileCommitting :: Test

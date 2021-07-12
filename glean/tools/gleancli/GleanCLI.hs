@@ -192,14 +192,13 @@ instance Plugin StatusCommand where
       _ -> return ()
     where
     exitCode db = case Thrift.database_status db of
-      Just Thrift.DatabaseStatus_Complete -> ExitSuccess
-      Nothing -> ExitFailure 100
-      Just Thrift.DatabaseStatus_Incomplete -> ExitFailure 101
-      Just Thrift.DatabaseStatus_Restoring -> ExitFailure 102
-      Just Thrift.DatabaseStatus_Broken -> ExitFailure 103
-      Just Thrift.DatabaseStatus_Restorable -> ExitFailure 104
-      Just Thrift.DatabaseStatus_Finalizing -> ExitFailure 105
-      Just Thrift.DatabaseStatus_Missing -> ExitFailure 106
+      Thrift.DatabaseStatus_Complete -> ExitSuccess
+      Thrift.DatabaseStatus_Incomplete -> ExitFailure 101
+      Thrift.DatabaseStatus_Restoring -> ExitFailure 102
+      Thrift.DatabaseStatus_Broken -> ExitFailure 103
+      Thrift.DatabaseStatus_Restorable -> ExitFailure 104
+      Thrift.DatabaseStatus_Finalizing -> ExitFailure 105
+      Thrift.DatabaseStatus_Missing -> ExitFailure 106
 
 data DumpCommand
   = Dump
