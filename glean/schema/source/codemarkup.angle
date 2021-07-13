@@ -747,7 +747,8 @@ predicate EntityUses:
     HackEntityUses { Entity, File, Span } |
     FlowEntityUses { Entity, File, Span } |
     PythonEntityUses { Entity, File, Span } |
-    CxxEntityUses { Entity, File, Span }
+    CxxEntityUses { Entity, File, Span } |
+    HaskellEntityUses { Entity, File, Span }
 
 # Private language instances
 
@@ -1109,6 +1110,17 @@ predicate HackEntityUses:
     hack.TargetUses { target = { declaration = D }, file = File, uses = Uses };
     Spans = prim.relToAbsByteSpans Uses;
     Span = Spans[..];
+
+predicate HaskellEntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  { { hs = { definition = Def } }, File, SrcSpan } where
+    hs.TargetUses {target = Def, file = File, uses = Spans};
+    SrcSpan = Spans[..];
+
 
 predicate FlowEntityUses:
   {
