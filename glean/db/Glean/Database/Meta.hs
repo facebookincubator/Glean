@@ -28,6 +28,7 @@ import Thrift.Protocol.JSON
 import Util.TimeSec
 
 import Glean.ServerConfig.Types (DBVersion(..))
+import Glean.Internal.Types
 import Glean.Types
 
 -- | Produce DB metadata

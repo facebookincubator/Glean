@@ -216,6 +216,7 @@ library if-internal-hs
     exposed-modules:
         Glean.Internal.Types
     build-depends:
+        glean:config,
         glean:if-glean-hs
 
 library if-search-hs
@@ -965,6 +966,7 @@ library test-lib
         glean:schema,
         glean:config,
         glean:if-glean-hs,
+        glean:if-internal-hs,
         glean:stubs,
         glean:test-unit,
         glean:util
@@ -1114,6 +1116,7 @@ test-suite dbjanitor
         glean:core,
         glean:db,
         glean:if-glean-hs,
+        glean:if-internal-hs,
         glean:schema,
         glean:config,
         glean:util
@@ -1127,6 +1130,7 @@ test-suite dbderive
         glean:client-hs,
         glean:db,
         glean:if-glean-hs,
+        glean:if-internal-hs,
         glean:schema,
         glean:stubs
 
@@ -1154,6 +1158,7 @@ test-suite catalog
         glean:core,
         glean:db,
         glean:if-glean-hs,
+        glean:if-internal-hs,
         QuickCheck,
         quickcheck-io,
         glean:util
@@ -1169,6 +1174,7 @@ test-suite lifecycle
         glean:core,
         glean:db,
         glean:if-glean-hs,
+        glean:if-internal-hs,
         glean:util,
         QuickCheck,
         quickcheck-io,

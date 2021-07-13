@@ -22,6 +22,7 @@ import Glean hiding (derivePredicate, deriveStored)
 import Glean.Init
 import Glean.Database.Types
 import qualified Glean.Database.Catalog as Catalog
+import Glean.Internal.Types hiding (Predicate)
 import Glean.Types as Thrift
 import Glean.Test.HUnit
 import qualified Glean.Schema.GleanTest.Types as Glean.Test

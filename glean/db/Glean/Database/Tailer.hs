@@ -43,6 +43,7 @@ import Glean.Database.Repo
 import Glean.Database.Stuff (lookupActiveDatabase, withActiveDatabase)
 import Glean.Database.Types
 import Glean.Database.Writes
+import Glean.Internal.Types
 import Glean.Tailer
 import Glean.Tailer.Types
 import Glean.Types hiding (Database, Exception)

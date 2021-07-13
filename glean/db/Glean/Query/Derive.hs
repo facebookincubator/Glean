@@ -36,6 +36,7 @@ import Glean.Database.Schema.Types
 import Glean.Database.Stuff
 import Glean.Database.Types as Database
 import Glean.Database.Writes
+import Glean.Internal.Types hiding (Predicate)
 import qualified Glean.Query.UserQuery as UserQuery
 import Glean.Query.Typecheck.Types
 import Glean.Query.Codegen

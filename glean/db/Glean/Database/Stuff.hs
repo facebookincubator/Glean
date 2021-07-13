@@ -53,6 +53,7 @@ import Glean.RTS.Foreign.Subst (Subst)
 import qualified Glean.RTS.Foreign.Subst as Subst
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types (Repo)
+import qualified Glean.Internal.Types as Thrift
 import qualified Glean.Types as Thrift
 import Glean.Util.Metric
 import Glean.Util.Mutex

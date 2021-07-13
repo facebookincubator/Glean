@@ -45,6 +45,7 @@ import GHC.Generics hiding (Meta)
 
 import Glean.Database.Meta
 import Glean.Types (Repo(..))
+import qualified Glean.Internal.Types as Thrift
 import qualified Glean.Types as Thrift
 
 -- | How a DB is available

@@ -46,6 +46,7 @@ import Glean.Database.Types
 import Glean.Database.Work.Controller
 import Glean.Database.Work.Heartbeat
 import Glean.Database.Work.Queue
+import Glean.Internal.Types as Thrift
 import Glean.Recipes.Types (Executor(..), Recipe(..))
 import Glean.Types as Thrift
 import Glean.Util.Time
