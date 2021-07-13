@@ -142,4 +142,13 @@ type XReference =
     target : XRefTarget,
     spans : [src.ByteSpan],
   }
+
+predicate TargetUses:
+  {
+    target: Definition,
+    file: src.File,
+    uses: [src.ByteSpan]
+  } stored {{name = DefN}, File, Uses} where
+  FileXRefMap {file = File, refs = Refs};
+  {target = {definition = DefN}, spans = Uses} = Refs[..];
 }
