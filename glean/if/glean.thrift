@@ -122,24 +122,7 @@ struct Task {
   2: TaskState state;
 }
 
-struct DatabaseBroken {
-  1: string task;
-  2: string reason;
-}
-
 typedef map<recipes.TaskName, Task> (hs.type = "HashMap") Tasks
-
-// This is a legacy data structure which will be replaced soon
-union DatabaseIncomplete {
-  1: Tasks tasks;
-}
-
-struct DatabaseComplete {
-  1: PosixEpochTime time;
-}
-
-struct DatabaseFinalizing {
-}
 
 union ScribeStart {
   1: string start_time;
@@ -178,14 +161,6 @@ struct WriteFromScribe {
 // how to choose a bucket; omit for no bucket
 }
 
-// The status of data being written into a DB
-union Completeness {
-  1: DatabaseIncomplete incomplete;
-  3: DatabaseComplete complete;
-  4: DatabaseBroken broken;
-  5: DatabaseFinalizing finalizing;
-} (hs.prefix = "", hs.nonempty)
-
 typedef map<string, string> (hs.type = "HashMap") DatabaseProperties
 
 // A Stacked DB that views only a portion of the underlying DB
@@ -200,31 +175,6 @@ union Dependencies {
   1: Repo stacked; // TODO remove?
   2: Pruned pruned;
 } (hs.nonempty)
-
-// Information about a database stored by Glean.
-struct Meta {
-  1: server_config.DBVersion metaVersion;
-  // Database version
-
-  2: PosixEpochTime metaCreated;
-  // When was the database created
-
-  3: Completeness metaCompleteness;
-  // Completeness status
-
-  4: optional string metaBackup;
-  // Backup status
-
-  5: DatabaseProperties metaProperties;
-  // Arbitrary metadata about this DB. Properties prefixed by
-  // "glean."  are reserved for use by Glean itself.
-
-  6: optional Dependencies metaDependencies;
-  // What this DB depends on.
-
-  7: list<PredicateRef> metaCompletePredicates;
-// Whether all facts for a predicate have already been inserted.
-} (hs.prefix = "")
 
 // -----------------------------------------------------------------------------
 // Thrift API

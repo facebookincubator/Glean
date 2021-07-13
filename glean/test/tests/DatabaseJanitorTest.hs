@@ -41,6 +41,7 @@ import Glean.Impl.ConfigProvider
 import Glean.Init
 import Glean.RTS.Types (lowestFid)
 import Glean.ServerConfig.Types as ServerTypes
+import Glean.Internal.Types
 import Glean.Types as Thrift
 import Glean.Util.ConfigProvider
 import Glean.Util.ThriftSource as ThriftSource

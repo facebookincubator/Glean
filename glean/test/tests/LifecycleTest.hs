@@ -30,6 +30,7 @@ import Glean.Database.Stuff
 import Glean.Database.Test
 import Glean.Database.Types
 import Glean.Init
+import Glean.Internal.Types
 import Glean.Test.HUnit
 import Glean.Test.Mock
 import Glean.Types hiding (Exception)

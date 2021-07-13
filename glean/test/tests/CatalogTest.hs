@@ -29,6 +29,7 @@ import Glean.Init
 import Glean.Test.HUnit
 import Glean.Repo.Text
 import Glean.Test.Mock
+import Glean.Internal.Types
 import Glean.Types hiding (Exception)
 
 repos :: [Repo]

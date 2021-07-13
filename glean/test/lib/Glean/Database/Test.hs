@@ -38,6 +38,7 @@ import qualified Glean.Database.Storage.Memory as Memory
 import Glean.Database.Stuff
 import Glean.Database.Types
 import Glean.Impl.ConfigProvider ()
+import qualified Glean.Internal.Types as Thrift
 import Glean.Recipes.Types (Recipes)
 import qualified Glean.Recipes.Types as Recipes
 import Glean.Schema.Resolve

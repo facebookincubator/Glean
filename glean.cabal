@@ -216,6 +216,7 @@ library if-internal-hs
     exposed-modules:
         Glean.Internal.Types
     build-depends:
+        glean:config,
         glean:if-glean-hs
 
 library if-search-hs

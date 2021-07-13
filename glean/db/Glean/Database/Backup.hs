@@ -46,6 +46,7 @@ import Glean.Database.Schema.Types
 import Glean.Database.Storage
 import Glean.ServerConfig.Types (DatabaseBackupPolicy(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
+import Glean.Internal.Types as Thrift
 import Glean.Types as Thrift
 import Glean.Util.Some
 import Glean.Util.Observed as Observed

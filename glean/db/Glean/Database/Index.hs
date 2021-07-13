@@ -57,6 +57,7 @@ import Glean.Database.Writes
 import qualified Glean.Recipes.Types as Recipes
 import Glean.RTS.Foreign.Lookup (firstFreeId)
 import Glean.Database.Schema (toSchemaInfo)
+import Glean.Internal.Types
 import Glean.RTS.Types (lowestFid)
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types hiding (Database)
