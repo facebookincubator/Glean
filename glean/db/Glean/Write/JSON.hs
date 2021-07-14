@@ -29,7 +29,8 @@ import TextShow hiding (Builder)
 
 import Thrift.Protocol.JSON.Base64
 
-import Glean.Database.Stuff
+import Glean.Database.Open
+import Glean.Database.Write.Batch
 import Glean.Database.Types as Database
 import Glean.FFI (invoke)
 import qualified Glean.FFI as FFI

@@ -23,10 +23,10 @@ import qualified Glean.Database.Backup.Manifold as Backup
 import qualified Glean.Database.Backup.Mock as Backup
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Config
-import Glean.Database.Index
+import Glean.Database.Close
 import Glean.Database.Janitor
 import qualified Glean.Database.Stats as Stats
-import Glean.Database.Stuff
+import Glean.Database.Open
 import Glean.Database.Types
 import Glean.Database.Work
 import Glean.Database.Work.Heartbeat

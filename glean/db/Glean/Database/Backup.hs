@@ -21,6 +21,7 @@ import qualified Data.Map as Map
 import Data.Maybe
 import Data.Ord
 import Data.Text (Text)
+import qualified Data.Text as Text
 import Data.Time (getCurrentTime)
 import Data.Typeable (Typeable)
 import GHC.Generics hiding (Meta)
@@ -36,14 +37,16 @@ import Glean.Database.Backup.Backend as Backend
 import Glean.Database.Backup.Locator
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Catalog.Filter
+import Glean.Database.Data (storeSchema)
 import qualified Glean.Database.Logger as Logger
 import Glean.Database.Meta
 import Glean.Database.Repo
 import qualified Glean.Database.Storage as Storage
-import Glean.Database.Stuff (withOpenDatabase, thinSchema, schemaUpdated)
+import Glean.Database.Open (withOpenDatabase, schemaUpdated)
 import Glean.Database.Types
-import Glean.Database.Schema.Types
+import Glean.Database.Schema
 import Glean.Database.Storage
+import Glean.Repo.Text
 import Glean.ServerConfig.Types (DatabaseBackupPolicy(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Internal.Types as Thrift
@@ -304,6 +307,13 @@ doFinalize env@Env{..} repo =
   where
     say log s = log $ inRepo repo $ "finalize: " ++ s
 
+thinSchema :: Repo -> OpenDB -> IO ()
+thinSchema repo OpenDB{..} = do
+  stats <- Storage.predicateStats odbHandle
+  let (newSchemaInfo, names) = thinSchemaInfo odbSchema stats
+  storeSchema odbHandle newSchemaInfo
+  logInfo $ "thinned schema for " <> showRepo repo <> " contains " <>
+    intercalate ", " (map Text.unpack names)
 
 -- | Back up databases forever.
 backuper :: Env -> IO ()

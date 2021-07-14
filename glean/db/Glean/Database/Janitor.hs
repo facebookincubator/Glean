@@ -26,10 +26,13 @@ import Util.TimeSec (timeDiff)
 
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Catalog.Filter
-import Glean.Database.Index
+import Glean.Database.Close
+import Glean.Database.Delete
+import Glean.Database.List
 import Glean.Database.Meta
 import Glean.Database.Repo
-import Glean.Database.Stuff
+import Glean.Database.Restore
+import Glean.Database.Open
 import Glean.Database.Types
 import Glean.Repo.Text
 import qualified Glean.ServerConfig.Types as ServerConfig
@@ -37,6 +40,7 @@ import Glean.Types hiding (Database)
 import qualified Glean.Types as Thrift
 import Glean.Util.Observed as Observed
 import Glean.Util.Time
+
 
 runDatabaseJanitor :: Env -> IO ()
 runDatabaseJanitor env = do
@@ -53,7 +57,7 @@ runDatabaseJanitor env = do
 
   -- Make sure the most recent DB for each repo name is open
   forM_ mostRecent $ \repo ->
-    whenM (atomically $ databaseClosed env repo)
+    whenM (atomically $ isDatabaseClosed env repo)
       $ void
       $ tryAll
       $ logExceptions (inRepo repo)
@@ -114,7 +118,7 @@ runDatabaseJanitor env = do
     ifRestoreRepo env Nothing itemRepo $ \prefix site -> do
       logInfo $ "Restoring: " ++ showRepo itemRepo ++
         " ("  ++ showNominalDiffTime (dbAge t itemMeta) ++ " old)"
-      Just <$> restoreDatabase_ env prefix site itemRepo
+      Just <$> restoreDatabaseFromSite env prefix site itemRepo
   -- register all the restoring DBs together in a single transaction,
   -- so that the backup thread can't jump in early and pick one
   atomically $ sequence_ restores
@@ -215,7 +219,8 @@ fetchBackups env = do
     fetch now = do
       logInfo "fetching restorable databases list"
       atomically $ writeTVar (envLastBackupsSync env) (Just now)
-      Just . concatMap HashMap.toList <$> forRestoreSitesM env mempty listRestorable
+      Just . concatMap HashMap.toList <$>
+        forRestoreSitesM env mempty listRestorable
 
 -- Group databases by repository name
 byRepoName :: [Item] -> [(Text, [Item])]

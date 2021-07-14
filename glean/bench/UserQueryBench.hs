@@ -17,9 +17,10 @@ import Data.Proxy
 import qualified Data.Text as Text
 
 import Glean
-import Glean.Database.Stuff
+import Glean.Database.Open
 import Glean.Database.Test
 import Glean.Database.Types (Env)
+import Glean.Database.Write.Batch
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.Src.Types as Src
 import Glean.Types

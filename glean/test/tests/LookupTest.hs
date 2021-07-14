@@ -7,7 +7,7 @@ import Test.HUnit
 
 import TestRunner
 
-import Glean.Database.Stuff (readDatabase)
+import Glean.Database.Open (readDatabase)
 import Glean.FFI
 import Glean.Init
 import Glean.RTS.Foreign.Lookup

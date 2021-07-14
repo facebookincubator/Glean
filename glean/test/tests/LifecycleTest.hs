@@ -24,9 +24,11 @@ import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Catalog.Filter
 import Glean.Database.Catalog.Test
 import Glean.Database.Config
-import Glean.Database.Index
+import Glean.Database.Close
+import Glean.Database.Create
+import Glean.Database.Open
+import Glean.Database.Delete
 import Glean.Database.Storage.Memory (newStorage)
-import Glean.Database.Stuff
 import Glean.Database.Test
 import Glean.Database.Types
 import Glean.Init
@@ -164,28 +166,28 @@ closeIdle :: Test
 closeIdle = TestCase $ withTEnv $ \TEnv{..} -> do
   mkDB tEnv repo1
   withOpenDatabase tEnv repo1 $ \_ -> return ()
-  assert $ not <$> databaseClosed tEnv repo1
+  assert $ not <$> isDatabaseClosed tEnv repo1
   -- make sure we release the use count correctly
   assertThrows "" TestError $
     withOpenDatabase tEnv repo1 (\_ -> throwIO TestError)
 
   closeIdleDatabase tEnv repo1 0
-  assert $ databaseClosed tEnv repo1
+  assert $ isDatabaseClosed tEnv repo1
 
 closeUsed :: Test
 closeUsed = TestCase $ withTEnv $ \TEnv{..} -> do
   mkDB tEnv repo1
   withOpenDatabase tEnv repo1 $ \_ -> return ()
-  assert $ not <$> databaseClosed tEnv repo1
+  assert $ not <$> isDatabaseClosed tEnv repo1
 
   withOpenDatabase tEnv repo1 $ \_ -> closeIdleDatabase tEnv repo1 0
-  assert $ not <$> databaseClosed tEnv repo1
+  assert $ not <$> isDatabaseClosed tEnv repo1
 
 deleteOpen :: Test
 deleteOpen = TestCase $ withTEnv $ \TEnv{..} -> do
   mkDB tEnv repo1
   withOpenDatabase tEnv repo1 $ \_ -> return ()
-  assert $ not <$> databaseClosed tEnv repo1
+  assert $ not <$> isDatabaseClosed tEnv repo1
 
   deleteDatabase tEnv repo1
   atomically $ do
@@ -210,7 +212,7 @@ kickOffWhileDeleting :: Test
 kickOffWhileDeleting = TestCase $ withTEnv $ \TEnv{..} -> do
   mkDB tEnv repo1
   withOpenDatabase tEnv repo1 $ \_ -> return ()
-  assert $ not <$> databaseClosed tEnv repo1
+  assert $ not <$> isDatabaseClosed tEnv repo1
 
   v1 <- newEmptyMVar
   v2 <- newEmptyMVar
@@ -225,7 +227,7 @@ useWhileDeleting :: Test
 useWhileDeleting = TestCase $ withTEnv $ \TEnv{..} -> do
   mkDB tEnv repo1
   withOpenDatabase tEnv repo1 $ \_ -> return ()
-  assert $ not <$> databaseClosed tEnv repo1
+  assert $ not <$> isDatabaseClosed tEnv repo1
 
   v1 <- newEmptyMVar
   v2 <- newEmptyMVar

@@ -475,7 +475,12 @@ library db
         Glean.Database.Data
         Glean.Database.Env
         Glean.Database.Exception
-        Glean.Database.Index
+        Glean.Database.Open
+        Glean.Database.Close
+        Glean.Database.Restore
+        Glean.Database.Delete
+        Glean.Database.Create
+        Glean.Database.List
         Glean.Database.Janitor
         Glean.Database.Logger
         Glean.Database.Meta
@@ -486,7 +491,6 @@ library db
         Glean.Database.Storage
         Glean.Database.Storage.Memory
         Glean.Database.Storage.RocksDB
-        Glean.Database.Stuff
         Glean.Database.Tailer
         Glean.Database.Types
         Glean.Database.Validate
@@ -495,6 +499,7 @@ library db
         Glean.Database.Work
         Glean.Database.Work.Queue
         Glean.Database.Writes
+        Glean.Database.Write.Batch
         Glean.Write.JSON
         Glean.Query.BindOrder
         Glean.Query.Codegen

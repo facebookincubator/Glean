@@ -50,9 +50,12 @@ import Glean.ClientConfig.Types (ClientConfig(..))
 import qualified Glean.Database.Catalog as Catalog
 import qualified Glean.Database.Config as Database
 import qualified Glean.Database.Env as Database
-import qualified Glean.Database.Index as Database
 import qualified Glean.Database.Storage as Storage
-import Glean.Database.Stuff
+import qualified Glean.Database.Create as Database
+import qualified Glean.Database.Delete as Database
+import Glean.Database.Open as Database
+import qualified Glean.Database.List as Database
+import qualified Glean.Database.Restore as Database
 import qualified Glean.Database.Types as Database
 import qualified Glean.Database.Work as Database
 import qualified Glean.Database.Writes as Database

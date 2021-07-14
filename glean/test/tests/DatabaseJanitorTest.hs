@@ -28,13 +28,14 @@ import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Config
 import Glean.Database.Data
 import Glean.Database.Env
-import Glean.Database.Index
 import Glean.Database.Janitor
 import Glean.Database.Meta
 import Glean.Database.Repo
 import qualified Glean.Database.Storage as Storage
 import qualified Glean.Database.Storage.RocksDB as RocksDB
-import Glean.Database.Stuff (databaseClosed, withOpenDatabase)
+import Glean.Database.Close
+import Glean.Database.List
+import Glean.Database.Open (isDatabaseClosed, withOpenDatabase)
 import Glean.Database.Types
 import Glean.Database.Schema
 import Glean.Impl.ConfigProvider
@@ -346,7 +347,7 @@ backupRestoreTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
     (sort $ map repo_hash repos)
 
   areClosed <- atomically
-    $ liftM2 (&&) (databaseClosed env db1) (databaseClosed env db3)
+    $ liftM2 (&&) (isDatabaseClosed env db1) (isDatabaseClosed env db3)
   assertBool "dbs available but closed after restore" areClosed
 
 
@@ -360,16 +361,16 @@ openNewestTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
     newestDb = Repo "test" "0001"
     oldestDb = Repo "test" "0005"
 
-  newestClosed <- atomically $ databaseClosed env newestDb
-  oldestClosed <- atomically $ databaseClosed env oldestDb
+  newestClosed <- atomically $ isDatabaseClosed env newestDb
+  oldestClosed <- atomically $ isDatabaseClosed env oldestDb
 
   assertBool "newest closed before" newestClosed
   assertBool "oldest closed before" oldestClosed
 
   runDatabaseJanitor env
 
-  newestOpen <- atomically $ not <$> databaseClosed env newestDb
-  oldestStillClosed <- atomically $ databaseClosed env oldestDb
+  newestOpen <- atomically $ not <$> isDatabaseClosed env newestDb
+  oldestStillClosed <- atomically $ isDatabaseClosed env oldestDb
 
   assertBool "newest open after" newestOpen
   assertBool "oldest closed after" oldestStillClosed
@@ -388,8 +389,8 @@ closeIdleDBsTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   withOpenDatabase env normalDb (\_ -> return ())
   withOpenDatabase env blackListedDb (\_ -> return ())
 
-  normalDbOpen <- atomically $ not <$> databaseClosed env normalDb
-  blackListedDbOpen <- atomically $ not <$> databaseClosed env blackListedDb
+  normalDbOpen <- atomically $ not <$> isDatabaseClosed env normalDb
+  blackListedDbOpen <- atomically $ not <$> isDatabaseClosed env blackListedDb
 
   assertBool "regular DB open before" normalDbOpen
   assertBool "blacklisted DB open before" blackListedDbOpen
@@ -397,9 +398,9 @@ closeIdleDBsTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   -- Close all available DBs unless blacklisted
   closeIdleDatabases env (seconds 0) [blackListedDb]
 
-  normalDbClosed <- atomically $ databaseClosed env normalDb
+  normalDbClosed <- atomically $ isDatabaseClosed env normalDb
   blackListedDbStillOpen <- atomically
-    $ not <$> databaseClosed env blackListedDb
+    $ not <$> isDatabaseClosed env blackListedDb
 
   assertBool "regular DB closed after" normalDbClosed
   assertBool "blacklisted DB open after" blackListedDbStillOpen

@@ -33,7 +33,7 @@ import qualified Glean.RTS.Term as Term
 import Glean.Angle.Types as A
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Schema.Types
-import Glean.Database.Stuff
+import Glean.Database.Open
 import Glean.Database.Types as Database
 import Glean.Database.Writes
 import Glean.Internal.Types hiding (Predicate)

@@ -24,7 +24,7 @@ import TestRunner
 import Util.Testing
 
 import qualified Glean.Database.Catalog as Catalog
-import Glean.Database.Index (kickOffDatabase)
+import Glean.Database.Create (kickOffDatabase)
 import Glean.Database.Storage.Memory (newStorage)
 import Glean.Database.Test (withTestEnv, setRecipes)
 import Glean.Database.Types (Env(..))

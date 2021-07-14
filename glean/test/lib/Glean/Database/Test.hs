@@ -35,7 +35,7 @@ import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Config
 import Glean.Database.Env
 import qualified Glean.Database.Storage.Memory as Memory
-import Glean.Database.Stuff
+import Glean.Database.Write.Batch
 import Glean.Database.Types
 import Glean.Impl.ConfigProvider ()
 import qualified Glean.Internal.Types as Thrift

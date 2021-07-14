@@ -41,7 +41,7 @@ import Glean.Database.Catalog.Filter
 import Glean.Database.Exception
 import Glean.Database.Meta
 import Glean.Database.Repo
-import Glean.Database.Stuff (lookupActiveDatabase)
+import Glean.Database.Open (lookupActiveDatabase)
 import Glean.Database.Types
 import Glean.Database.Work.Controller
 import Glean.Database.Work.Heartbeat
