@@ -577,7 +577,6 @@ library schema
     hs-source-dirs:
         glean/schema/hs
         glean/schema/thrift/gen-hs2
-        glean/schema/thrift/query/gen-hs2
     exposed-modules:
         Glean.Schema.Buck
         Glean.Schema.Builtin
@@ -626,6 +625,17 @@ library schema
         Glean.Schema.SearchPp.Types
         Glean.Schema.Src.Types
         Glean.Schema.Sys.Types
+    build-depends:
+        glean:if-glean-hs,
+        glean:config,
+        glean:core,
+
+library schema-query
+    import: fb-haskell, deps
+    visibility: public
+    hs-source-dirs:
+        glean/schema/thrift/query/gen-hs2
+    exposed-modules:
         Glean.Schema.Query.Buck.Types
         Glean.Schema.Query.Builtin.Types
         Glean.Schema.Query.Code.Types
@@ -654,6 +664,7 @@ library schema
         glean:if-glean-hs,
         glean:config,
         glean:core,
+        glean:schema,
 
 -- library clang-test-xref
 --     import: fb-haskell, deps
@@ -769,6 +780,7 @@ library lib
         glean:if-glean-hs,
         glean:if-search-hs,
         glean:schema,
+        glean:schema-query,
         glean:util,
         split
 
@@ -914,6 +926,7 @@ executable query-bench
         glean:db,
         glean:if-glean-hs,
         glean:schema,
+        glean:schema-query,
         glean:test-lib,
         glean:util,
         criterion
@@ -1046,6 +1059,7 @@ test-suite jsonquery
         glean:db,
         glean:if-glean-hs,
         glean:schema,
+        glean:schema-query,
         glean:config,
 
 test-suite angle
