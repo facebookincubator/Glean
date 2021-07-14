@@ -28,9 +28,9 @@ import Util.String.Quasi
 
 import Glean.Angle.Types (latestAngleVersion)
 import Glean.Backend
+import Glean.Database.Open
 import Glean.Database.Config
 import Glean.Database.Env
-import Glean.Database.Stuff
 import Glean.Database.Test
 import Glean.Database.Types
 import Glean.Impl.TestConfigProvider

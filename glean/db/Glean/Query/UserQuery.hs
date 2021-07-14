@@ -51,7 +51,7 @@ import qualified Glean.Angle.Parser as Angle
 import Glean.Angle.Types hiding (Type, FieldDef)
 import qualified Glean.Angle.Types as Angle
 import Glean.Database.Schema.Types
-import Glean.Database.Stuff
+import Glean.Database.Open
 import Glean.Database.Types as Database
 import Glean.Database.Writes
 import Glean.FFI

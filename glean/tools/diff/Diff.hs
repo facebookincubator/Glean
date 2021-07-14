@@ -14,7 +14,7 @@ import Glean (Repo(..))
 import qualified Glean.Database.Config as Database
 import qualified Glean.Database.Env as Database
 import Glean.Database.Schema (schemaInventory)
-import Glean.Database.Stuff (readDatabase)
+import Glean.Database.Open (readDatabase)
 import Glean.Database.Types
 import Glean.FFI (invoke, with)
 import Glean.RTS.Foreign.Inventory (Inventory)

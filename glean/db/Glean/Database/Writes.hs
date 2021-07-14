@@ -58,7 +58,8 @@ import Util.Defer
 import Util.Log
 import Util.STM
 
-import Glean.Database.Stuff
+import Glean.Database.Open
+import Glean.Database.Write.Batch
 import Glean.Database.Types
 import qualified Glean.RTS.Foreign.Subst as Subst
 import qualified Glean.ServerConfig.Types as ServerConfig

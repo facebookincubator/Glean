@@ -10,8 +10,9 @@ import qualified Data.Text as Text
 
 import Glean
 import qualified Glean.Backend as Backend
-import Glean.Database.Stuff
 import Glean.Database.Test (withEmptyTestDB)
+import Glean.Database.Open
+import Glean.Database.Write.Batch
 import qualified Glean.Schema.Sys.Types as Sys
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.GleanTest.Types as Glean.Test

@@ -40,7 +40,7 @@ import Util.Text
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Exception
 import Glean.Database.Repo
-import Glean.Database.Stuff (lookupActiveDatabase, withActiveDatabase)
+import Glean.Database.Open (lookupActiveDatabase, withActiveDatabase)
 import Glean.Database.Types
 import Glean.Database.Writes
 import Glean.Internal.Types

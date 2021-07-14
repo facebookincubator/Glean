@@ -8,7 +8,7 @@ module Glean.Database.Validate
 
 import Glean.Database.Schema
 import qualified Glean.Database.Storage as Storage
-import Glean.Database.Stuff (readDatabase, withOpenDatabase)
+import Glean.Database.Open (readDatabase, withOpenDatabase)
 import Glean.Database.Types (Env, OpenDB(..))
 import Glean.RTS.Foreign.Inventory (Validate(..))
 import qualified Glean.RTS.Foreign.Inventory as Inventory
