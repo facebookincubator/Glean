@@ -3,6 +3,7 @@
 {-# LANGUAGE ApplicativeDo #-}
 module GleanCLI.Finish (FinishCommand, finished) where
 
+import Control.Monad
 import Control.Exception
 import Data.Default
 import Data.Maybe
@@ -16,6 +17,7 @@ import GleanCLI.Common
 import GleanCLI.Types
 
 import Glean
+import qualified Glean.LocalOrRemote as Glean
 import Glean.Types as Thrift
 
 data FinishCommand
@@ -25,6 +27,7 @@ data FinishCommand
       , task :: Maybe Text
       , parcel :: Maybe Int
       , failure :: Maybe Text
+      , allowZeroFacts :: Bool
       }
 
 instance Plugin FinishCommand where
@@ -47,9 +50,18 @@ instance Plugin FinishCommand where
         <> metavar "MESSAGE"
         )
       finishHandle <- handleOpt
+      allowZeroFacts <- switch
+        (  long "allow-zero-facts"
+        <> help "Allow creating a db without any facts"
+        )
       return Finish{..}
 
-  runCommand _ _ backend Finish{..} =
+  runCommand _ _ backend Finish{..} = do
+    when (not allowZeroFacts) $ do
+      stats <- Glean.predicateStats backend finishRepo Glean.ExcludeBase
+      when (null stats) $
+        die 6
+          "finish: Database has no facts. Use --allow-zero-facts to allow this"
     finished backend finishRepo finishHandle task parcel failure
 
 finished
