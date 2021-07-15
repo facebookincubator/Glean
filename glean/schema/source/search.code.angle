@@ -1,52 +1,5 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema search.code.2 {
-import code.12
-import code.hack.3
-import code.python.1
-import flow.3
-import hack.5
-import python.3
-import search.hack.6
-
-predicate SearchByName:
-  {
-    name: string,
-    entity: code.Entity,
-  }
-  { Name, Entity } where
-  PythonSearchByName {Name, Entity} |
-  HackSearchByName {Name, Entity} |
-  FlowSearchByName {Name, Entity}
-
-
-predicate HackSearchByName:
-  {
-    name: string,
-    entity: code.Entity,
-  }
-  { Name, { hack = { decl = D }}} where
-  search.hack.SearchByName { name = hack.Name Name, decl = D };
-
-predicate PythonSearchByName:
-  {
-    name: string,
-    entity: code.Entity,
-  }
-  { Name, { python = { decl = D }}} where
-  python.DeclarationWithLocalName { local_name = python.Name Name, declaration = D };
-  python.NonImportDeclaration D;
-
-predicate FlowSearchByName:
-  {
-    name: string,
-    entity: code.Entity,
-  }
-  { Name, { flow = { decl = D }}} where
-  flow.SearchByName { name = flow.Name Name, decl = D};
-
-}
-
 schema search.code.3 {
 import code.13
 import code.hack.3
