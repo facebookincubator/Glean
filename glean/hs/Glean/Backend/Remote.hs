@@ -100,6 +100,7 @@ class Backend a where
   pollDerivation :: a -> Thrift.Handle -> IO Thrift.DerivationProgress
 
   kickOffDatabase :: a -> Thrift.KickOff -> IO Thrift.KickOffResponse
+  finalizeDatabase :: a -> Thrift.Repo -> IO Thrift.FinalizeResponse
 
   updateProperties
     :: a
@@ -181,6 +182,7 @@ instance Backend (Some Backend) where
   pollDerivation (Some backend) = pollDerivation backend
 
   kickOffDatabase (Some backend) = kickOffDatabase backend
+  finalizeDatabase (Some backend) = finalizeDatabase backend
   updateProperties (Some backend) = updateProperties backend
   getWork (Some backend) = getWork backend
   workCancelled (Some backend) = workCancelled backend
@@ -309,6 +311,8 @@ instance Backend ThriftBackend where
     GleanService.pollDerivation handle
 
   kickOffDatabase t rq = withoutShard t $ GleanService.kickOff rq
+  finalizeDatabase t rq = withoutShard t $ GleanService.finalize rq
+
   updateProperties t repo set unset =
     withoutShard t $
       GleanService.updateProperties repo set unset

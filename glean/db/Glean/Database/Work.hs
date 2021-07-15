@@ -11,6 +11,8 @@ module Glean.Database.Work
   , reapHeartbeats
   , failTask
   , unfinishDatabase
+  , finalizeDatabase
+  , finalizeWait
   ) where
 
 import Control.Applicative
@@ -310,7 +312,8 @@ updateParcel env ParcelInfo{..} time state = do
             -- outstanding writes, so we'll ask the client to retry
             -- the request later.
             when (active /= 0 || not empty) $
-              throwM $ Retry 10
+              throwM $ Exception
+                "workFinished called but there are queued writes"
             writeTVar (dbState db) $ Open odb { odbWriting = Nothing }
           _ -> return ()
 
@@ -478,3 +481,24 @@ reapHeartbeats env = forever $ do
         Right _ -> return ()
         Left (_ :: SomeException) -> return ()
   threadDelay $ heartbeatFrequency * 2 * 1000000
+
+-- | Poll for finalization of a database
+finalizeDatabase :: Env -> Repo -> IO FinalizeResponse
+finalizeDatabase env repo = do
+  atomically $ do
+    meta <- Catalog.readMeta (envCatalog env) repo
+    case metaCompleteness meta of
+      Finalizing{} -> throwM $ Retry 1.0
+      Broken b -> throwM $ Exception $ databaseBroken_reason b
+      _ -> return ()
+  return FinalizeResponse{}
+
+-- | Wait for finalization of a database. Use for local DBs only.
+finalizeWait :: Env -> Repo -> IO ()
+finalizeWait env repo =
+  atomically $ do
+    meta <- Catalog.readMeta (envCatalog env) repo
+    case metaCompleteness meta of
+      Finalizing{} -> retry
+      Broken b -> throwM $ Exception $ databaseBroken_reason b
+      _ -> return ()

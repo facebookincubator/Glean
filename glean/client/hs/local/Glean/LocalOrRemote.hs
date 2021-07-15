@@ -33,11 +33,11 @@ module Glean.LocalOrRemote
   , BackendKind(..)
 
   -- * Misc
-  , StackedDbOpts(..)
   , validate
   , Validate(..)
   , computeOwnership
   , dumpJsonToFile
+  , finalize
   ) where
 
 import Control.Monad.Extra
@@ -46,9 +46,11 @@ import Data.IORef
 import System.IO
 import Text.Printf
 
+import qualified Glean
 import Glean.Backend
 import Glean.Dump
 import Glean.Database.Validate
+import Glean.Database.Work (finalizeWait)
 import Glean.Types
 
 -- | Write facts to a file in JSON format suitable for parsing using
@@ -75,3 +77,10 @@ dumpJsonToFile backend repo file =
         predicateRef_name predicateRef_version
       BC.hPutStrLn hdl (BC.intercalate ",\n" jsonFactBatch_facts)
       hPutStrLn hdl "]}"
+
+finalize :: LocalOrRemote backend => backend -> Repo -> IO ()
+finalize backend repo =
+  case backendKind backend of
+    -- finalizeWait is faster than polling if we have local DBs.
+    BackendEnv env -> finalizeWait env repo
+    _ -> Glean.finalize backend repo

@@ -60,6 +60,7 @@ module Glean
   , Pruned(..)
   , Dependencies(..)
   , PosixEpochTime(..)
+  , StackedDbOpts(..)
 
   -- * Repositories
   , Repo(..)
@@ -150,6 +151,7 @@ module Glean
 
   -- * Writing
   , fillDatabase
+  , finalize
   , basicWriter
   , FactBuilder
   , makeFact

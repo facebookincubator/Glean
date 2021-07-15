@@ -5,14 +5,18 @@ module Glean.Write
   ( parseRef
   , parseJsonFactBatches
   , fillDatabase
+  , finalize
   ) where
 
+import Control.Concurrent
+import Control.Exception
 import Control.Monad.Extra
 import Data.Aeson
 import qualified Data.Aeson.Types as Aeson
 import Data.ByteString (ByteString)
 import qualified Data.ByteString.Lazy.Char8 as LB
 import Data.Default
+import Data.Either
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Vector as Vector
@@ -71,20 +75,39 @@ fillDatabase
   -> IO b
     -- ^ Caller-supplied action to write data into the DB.
   -> IO b
-fillDatabase env repo handle ifexists action = tryBracket
-  (do
+fillDatabase env repo handle ifexists action =
+  tryBracket create finish (const action)
+  where
+  create = do
     r <- kickOffDatabase env def
       { kickOff_repo = repo
       , kickOff_fill = Just $ KickOffFill_writeHandle handle
       }
-    when (kickOffResponse_alreadyExists r) ifexists)
-  (\_ e -> workFinished env WorkFinished
-    { workFinished_work = def
-        { work_repo = repo
-        , work_handle = handle
-        }
-    , workFinished_outcome = case e of
-        Left ex -> Outcome_failure (Failure (showt ex))
-        Right _ -> Outcome_success def
-    })
-  $ const action
+    when (kickOffResponse_alreadyExists r) ifexists
+
+  finish _ e = do
+    workFinished env WorkFinished
+      { workFinished_work = def
+          { work_repo = repo
+          , work_handle = handle
+          }
+      , workFinished_outcome = case e of
+          Left ex -> Outcome_failure (Failure (showt ex))
+          Right _ -> Outcome_success def
+      }
+    when (isRight e) $ finalize env repo
+
+-- | Wait for a database to finish finalizing and enter the "complete"
+-- state after all writing has finished. Before the database is
+-- complete, it may be queried but a stacked database cannot be
+-- created on top of it.
+finalize :: Backend a => a -> Repo -> IO ()
+finalize env repo = loop
+  where
+  loop = do
+    r <- try $ finalizeDatabase env repo
+    case r of
+      Right{} -> return ()
+      Left (Retry n) -> do
+        threadDelay (truncate (n * 1000000))
+        loop

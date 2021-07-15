@@ -3,8 +3,8 @@
 {-# LANGUAGE ApplicativeDo #-}
 module GleanCLI.Finish (FinishCommand, finished) where
 
-import Control.Monad
 import Control.Exception
+import Control.Monad
 import Data.Default
 import Data.Maybe
 import Data.Text (Text)
@@ -17,7 +17,7 @@ import GleanCLI.Common
 import GleanCLI.Types
 
 import Glean
-import qualified Glean.LocalOrRemote as Glean
+import Glean.LocalOrRemote
 import Glean.Types as Thrift
 
 data FinishCommand
@@ -65,7 +65,7 @@ instance Plugin FinishCommand where
     finished backend finishRepo finishHandle task parcel failure
 
 finished
-  :: Glean.Backend b
+  :: LocalOrRemote b
   => b
   -> Repo
   -> Text -- ^ handle
@@ -92,3 +92,8 @@ finished backend repo handle task parcel failure = do
          "  operations have not completed yet. Please ensure that\n" <>
          "  all writing operations have completed before invoking\n" <>
          "  'glean finish'"
+
+  -- If the client needs to create a stacked DB on top of this one, it
+  -- will fail unless we wait for the DB to finish finalizing first.
+  when (isNothing failure) $
+    Glean.LocalOrRemote.finalize backend repo

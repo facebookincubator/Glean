@@ -355,6 +355,9 @@ union FinishResponse {
   2: BatchRetry retry;
 } (hs.nonempty)
 
+struct FinalizeResponse {
+}
+
 struct Worker {
   1: string name;
 }
@@ -937,6 +940,12 @@ service GleanService extends fb303.FacebookService {
     2: AbortWork a,
     3: Retry r,
   );
+
+  // Wait for a DB to be complete, after the last workFinished
+  // call. If finalization failed, this will throw an Exception with
+  // the failure reason. If finalization is still in progress, this
+  // will throw Retry.
+  FinalizeResponse finalize(1: Repo repo) throws (1: Exception e, 3: Retry r);
 
   // Return Fact 0 "" "" when nothing found
   Fact queryFact(1: Repo repo, 2: Id id);

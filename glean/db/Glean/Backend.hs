@@ -202,6 +202,11 @@ instance Backend LoggingBackend where
       (runLogRepo "kickOffDatabase" env $ Thrift.kickOff_repo rq)
       (const mempty) $
       kickOffDatabase env rq
+  finalizeDatabase (LoggingBackend env) repo =
+    loggingAction
+      (runLogRepo "finalizeDatabase" env repo)
+      (const mempty) $
+      finalizeDatabase env repo
   updateProperties (LoggingBackend env) repo set unset =
     loggingAction
       (runLogRepo "updateProperties" env repo)
@@ -301,6 +306,7 @@ instance Backend Database.Env where
     =<< atomically (Catalog.getLocalDatabase (Database.envCatalog env) repo)
 
   kickOffDatabase = Database.kickOffDatabase
+  finalizeDatabase = Database.finalizeDatabase
   updateProperties env repo set unset = do
     Database.updateProperties env repo set unset
     return def
