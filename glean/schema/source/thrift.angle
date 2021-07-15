@@ -32,4 +32,38 @@ predicate ServiceName : { name : QualName, locName : Loc }
 predicate Constant : { name : QualName, locName : Loc }
 
 predicate EnumValue : { enum_ : NamedType, name : Identifier, locName : Loc }
+
+type Declaration = XRefTarget
+
+type XRefTarget =
+  {
+    include_ : File |
+    named : NamedDecl |
+    exception_ : ExceptionName |
+    service_ : ServiceName |
+    constant : Constant |
+    enumValue : EnumValue |
+  }
+
+predicate FileDeclaration : { file: File, decl: Declaration }
+
+type XRef = { locRef : Loc, target : XRefTarget }
+
+type Target = { locTarget : Loc, target : XRefTarget }
+
+predicate FileXRefs :
+  {
+    file : File,
+    targets : [Target],
+    xrefs : [XRef],
+  }
+
+predicate DeclarationNameSpan :
+  {
+    decl: Declaration,
+    name: Identifier,
+    file: File,
+    span: Loc,
+  }
+
 }
