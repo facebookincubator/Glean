@@ -1,0 +1,270 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+# schema docmarkup is for structured information about comments
+# Once this is stable enough, perhaps merge with schema codemarkup
+schema docmarkup.2 {
+
+import code.12
+import cxx1.4
+import hack.5
+import java.4
+import src.1
+
+
+##############################################################################
+# Special Documentation Attributes, parsed from a comment
+
+# The DocAttrKey
+# Example: For C| /// @somename My value.
+# has a DocAttrKey of "somename"
+predicate DocAttrKey : string
+
+# The DocAttrValue string can be multiline, with included newlines.
+# Example: For C| /// @somename My value.
+# has a DocAttrValue of "My value."
+type DocAttrValue = string
+
+# A single annotation inside a doc block comment
+predicate DocAttr :
+  {
+    key : DocAttrKey,
+    value : DocAttrValue,
+  }
+
+# Order of the list matches the order in the source comment.
+# DocAttrKey may occur more than once.
+type DocAttrs = [DocAttr]
+
+# This EntityDocAttr looks up the special documentation comment attributes
+predicate EntityDocAttr : code.Entity -> DocAttrs
+
+##############################################################################
+# Additional derived predicates about DocAttr
+
+# Lookup all entities that contain a given DocAttrKey (and any DocAttrValue)
+predicate EntityByDocAttrKey :
+  {
+    key : DocAttrKey,
+    entity: code.Entity
+  }
+  stored { Key, IC } where
+    EntityDocAttr IC -> DAS;
+    {key = Key} = DAS[..];
+
+##############################################################################
+# Combining annotations from comments or custom language syntax
+
+# Language-agnostic annotation. The Annotations can come from doc block comments
+# or language specific syntax
+#
+# Array order from original indexer is significant
+#
+# TODO : once they are supported as predicates, add python decorators
+type GeneralAnnotations = {
+  doc : DocAttrs |
+  hack : [hack.UserAttribute] |
+  java : [java.Annotation] |
+}
+
+# Derived view mapping language-agnostic symbol to language-agnostic annotation.
+#
+# The entity key may not be unique, for instance a hack class might
+# have both {doc : DocAttrs} and {hack : [hack.UserAttribute]} annotations.
+#
+# The GeneralAnnotations alternatives will be non-empty.
+predicate EntityAnnotations :
+  {
+    entity : code.Entity,
+    annotations : GeneralAnnotations
+  }
+  { Entity, Annotations } where
+    Annotations =
+      ( EntityDocAttr Entity -> Attrs;
+        { doc = Attrs } : GeneralAnnotations
+      )
+      |
+      ( { hack = { decl = D } } = Entity;
+        Attrs =
+          ( {container={class_=X}} = D;
+            hack.ClassDefinition{declaration = X, attributes = A}; A ) |
+          ( {container={interface_=X}} = D;
+            hack.InterfaceDefinition{declaration = X, attributes = A}; A ) |
+          ( {container={trait=X}} = D;
+            hack.TraitDefinition{declaration = X, attributes = A}; A ) |
+          ( {container={enum_=X}} = D;
+            hack.EnumDefinition{declaration = X, attributes = A}; A ) |
+          ( {function_ = X} = D;
+            hack.FunctionDefinition{declaration = X, attributes = A}; A ) |
+          ( {method = X} = D;
+            hack.MethodDefinition{declaration = X, attributes = A}; A ) |
+          ( {property_ = X} = D;
+            hack.PropertyDefinition{declaration = X, attributes = A}; A ) |
+          ( {typeConst = X} = D;
+            hack.TypeConstDefinition{declaration = X, attributes = A}; A ) |
+          ( {typedef_ = X} = D;
+            hack.TypedefDefinition{declaration = X, attributes = A}; A );
+        1 <= prim.length Attrs;
+        { hack = Attrs }
+      )
+      |
+      ( { java = {class_ = D } } = Entity;
+        { annotations = Annots } = D;
+        1 <= prim.length Annots;
+        { java = Annots }
+      )
+
+##############################################################################
+# Comment indexing support
+
+# Derived query to collect all comments, represented by file and span
+predicate EntityComments :
+  {
+    entity : code.Entity,
+    file : src.File,
+    span : src.ByteSpan,
+  }
+  {E, F, S} where
+    (
+      cxx1.DeclarationComment{ declaration = D, file = F, span = S };
+      E = code.Entity{ cxx = {decl = D} };
+    ) | (
+      hack.DeclarationComment{ declaration = D, file = F, span = S };
+      E = code.Entity{ hack = {decl = D} };
+    )
+
+} # end docmarkup.2
+
+
+# schema docmarkup is for structured information about comments
+# Once this is stable enough, perhaps merge with schema codemarkup
+schema docmarkup.3 {
+
+import code.13
+import cxx1.4
+import hack.5
+import java.4
+import src.1
+
+
+##############################################################################
+# Special Documentation Attributes, parsed from a comment
+
+# The DocAttrKey
+# Example: For C| /// @somename My value.
+# has a DocAttrKey of "somename"
+predicate DocAttrKey : string
+
+# The DocAttrValue string can be multiline, with included newlines.
+# Example: For C| /// @somename My value.
+# has a DocAttrValue of "My value."
+type DocAttrValue = string
+
+# A single annotation inside a doc block comment
+predicate DocAttr :
+  {
+    key : DocAttrKey,
+    value : DocAttrValue,
+  }
+
+# Order of the list matches the order in the source comment.
+# DocAttrKey may occur more than once.
+type DocAttrs = [DocAttr]
+
+# This EntityDocAttr looks up the special documentation comment attributes
+predicate EntityDocAttr : code.Entity -> DocAttrs
+
+##############################################################################
+# Additional derived predicates about DocAttr
+
+# Lookup all entities that contain a given DocAttrKey (and any DocAttrValue)
+predicate EntityByDocAttrKey :
+  {
+    key : DocAttrKey,
+    entity: code.Entity
+  }
+  stored { Key, IC } where
+    EntityDocAttr IC -> DAS;
+    {key = Key} = DAS[..];
+
+##############################################################################
+# Combining annotations from comments or custom language syntax
+
+# Language-agnostic annotation. The Annotations can come from doc block comments
+# or language specific syntax
+#
+# Array order from original indexer is significant
+#
+# TODO : once they are supported as predicates, add python decorators
+type GeneralAnnotations = {
+  doc : DocAttrs |
+  hack : [hack.UserAttribute] |
+  java : [java.Annotation] |
+}
+
+# Derived view mapping language-agnostic symbol to language-agnostic annotation.
+#
+# The entity key may not be unique, for instance a hack class might
+# have both {doc : DocAttrs} and {hack : [hack.UserAttribute]} annotations.
+#
+# The GeneralAnnotations alternatives will be non-empty.
+predicate EntityAnnotations :
+  {
+    entity : code.Entity,
+    annotations : GeneralAnnotations
+  }
+  { Entity, Annotations } where
+    Annotations =
+      ( EntityDocAttr Entity -> Attrs;
+        { doc = Attrs } : GeneralAnnotations
+      )
+      |
+      ( { hack = { decl = D } } = Entity;
+        Attrs =
+          ( {container={class_=X}} = D;
+            hack.ClassDefinition{declaration = X, attributes = A}; A ) |
+          ( {container={interface_=X}} = D;
+            hack.InterfaceDefinition{declaration = X, attributes = A}; A ) |
+          ( {container={trait=X}} = D;
+            hack.TraitDefinition{declaration = X, attributes = A}; A ) |
+          ( {container={enum_=X}} = D;
+            hack.EnumDefinition{declaration = X, attributes = A}; A ) |
+          ( {function_ = X} = D;
+            hack.FunctionDefinition{declaration = X, attributes = A}; A ) |
+          ( {method = X} = D;
+            hack.MethodDefinition{declaration = X, attributes = A}; A ) |
+          ( {property_ = X} = D;
+            hack.PropertyDefinition{declaration = X, attributes = A}; A ) |
+          ( {typeConst = X} = D;
+            hack.TypeConstDefinition{declaration = X, attributes = A}; A ) |
+          ( {typedef_ = X} = D;
+            hack.TypedefDefinition{declaration = X, attributes = A}; A );
+        1 <= prim.length Attrs;
+        { hack = Attrs }
+      )
+      |
+      ( { java = {class_ = D } } = Entity;
+        { annotations = Annots } = D;
+        1 <= prim.length Annots;
+        { java = Annots }
+      )
+
+##############################################################################
+# Comment indexing support
+
+# Derived query to collect all comments, represented by file and span
+predicate EntityComments :
+  {
+    entity : code.Entity,
+    file : src.File,
+    span : src.ByteSpan,
+  }
+  {E, F, S} where
+    (
+      cxx1.DeclarationComment{ declaration = D, file = F, span = S };
+      E = code.Entity{ cxx = {decl = D} };
+    ) | (
+      hack.DeclarationComment{ declaration = D, file = F, span = S };
+      E = code.Entity{ hack = {decl = D} };
+    )
+
+} # end docmarkup.3

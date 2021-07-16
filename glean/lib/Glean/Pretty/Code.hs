@@ -18,6 +18,5 @@ instance Pretty Code.Entity where
   pretty (Entity_pp ent) = pretty ent
   pretty (Entity_java ent) = pretty ent
   pretty (Entity_hs ent) = pretty ent
-  pretty (Entity_python _ent) = mempty -- TODO
   pretty (Entity_hack ent) = pretty ent
-  pretty (Entity_flow _ent) = mempty -- TODO
+  pretty _ent = mempty

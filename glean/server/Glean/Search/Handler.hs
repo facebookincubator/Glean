@@ -74,9 +74,7 @@ entityRefsToDeclRefs results =
   entityToDecl (Code.Entity_java javaEnt) = javaEntToDecl javaEnt
   entityToDecl (Code.Entity_hs hsEnt) = hsEntToDecl hsEnt
   entityToDecl (Code.Entity_pp decl) = [Decl_macro_decl decl]
-  entityToDecl (Code.Entity_python _) = []
-  entityToDecl (Code.Entity_hack _) = []
-  entityToDecl (Code.Entity_flow _) = []
+  entityToDecl _ = []
 
   javaEntToDecl (Java.Entity_class_ decl) = [Decl_java_class_decl decl]
 

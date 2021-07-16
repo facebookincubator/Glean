@@ -40,6 +40,7 @@ trimCodeEntity = \case
     Code.Entity_python x -> Code.Entity_python $ trimPython x
     Code.Entity_hack x -> Code.Entity_hack $ trimHack x
     Code.Entity_flow x -> Code.Entity_flow $ trimFlow x
+    _ -> error "trimCodeEntity: unimplemented language case"
   where
     trim :: (Predicate child, SumBranches child parent) => child -> parent
     trim = injectBranch . justId . getId
