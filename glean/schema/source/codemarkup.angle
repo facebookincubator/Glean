@@ -168,7 +168,8 @@ predicate ResolveLocation:
     PythonResolveLocation { Location, Entity } |
     FlowResolveLocation { Location, Entity } |
     CxxResolveLocation { Location, Entity } |
-    HaskellResolveLocation { Location, Entity }
+    HaskellResolveLocation { Location, Entity } |
+    RustResolveLocation { Location, Entity }
 
 # Finding xrefs. All references in a file and their targets
 predicate FileEntityXRefLocations:
@@ -280,6 +281,7 @@ predicate CxxResolveTraceLocation:
       Entity = code.Entity { pp = Define };
     )
 
+# Resolve sigma/Haskell locations
 predicate HaskellResolveLocation:
   {
     location: Location,
@@ -289,6 +291,18 @@ predicate HaskellResolveLocation:
     hs.FileDefinition { File, Defn };
     hs.DefinitionLocation { Defn, Name, { File , Span }};
     Entity = code.Entity { hs = Defn };
+
+# Resolve Rust entities by location
+predicate RustResolveLocation:
+  {
+    location: Location,
+    entity: code.Entity,
+  }
+  { { Name, File, { span = Span } }, Entity } where
+    rust.FileDefinition { File, Defn };
+    rust.DefLocation { Defn, File, Span };
+    rust.DefinitionName { Defn, rust.Name Name };
+    Entity = code.Entity { rust = { definition = Defn } };
 
 # Finding references in a file
 

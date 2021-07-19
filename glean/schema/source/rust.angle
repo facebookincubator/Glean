@@ -171,6 +171,41 @@ predicate DefLocation :
     span : src.ByteSpan,
   }
 
+# Map file to all Defs defined in that file
+predicate FileDefinition:
+  {
+    file: src.File,
+    def_: Def,
+  } stored
+  { File, Def } where
+    DefLocation { def_ = Def, file = File }
+
+# Lookup short local identifier by definition
+predicate DefinitionName:
+  {
+    def_: Def,
+    name: Name,
+  }
+  { Def, Name } where
+    { const_ = { name = QName } } |
+    { enum_ = { name = QName } } |
+    { field = { name = QName } } |
+    { foreign_function = { name = QName } } |
+    { foreign_static = { name = QName } } |
+    { function_ = { name = QName } } |
+    { local = { name = QName } } |
+    { method = { name = QName } } |
+    { module = { name = QName } } |
+    { static_ = { name = QName } } |
+    { struct_ = { name = QName } } |
+    { struct_variant = { name = QName } } |
+    { trait = { name = QName } } |
+    { tuple_variant = { name = QName } } |
+    { type = { name = QName } } |
+    { type = { name = QName } } |
+    { union_ = { name = QName } } = Def;
+    { local_name = Name } = QName;
+
 # The location of an Impl relative to the repo root.
 predicate ImplLocation :
   {
