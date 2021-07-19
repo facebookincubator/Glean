@@ -10,7 +10,6 @@ import Data.Default
 import Data.Foldable
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Map.Strict as Map
-import Data.Maybe
 import Data.List (sort, isInfixOf)
 import Data.List.Split
 import Data.Proxy
@@ -20,9 +19,7 @@ import Options.Applicative
 
 import Util.EventBase
 import Util.IO
-import Util.TimeSec
 import Util.OptParse
-import System.IO
 import System.Exit (exitWith, ExitCode(..))
 
 import qualified Glean hiding (options)
@@ -154,10 +151,7 @@ instance Plugin ListCommand where
       xs = Thrift.listDatabasesResult_databases r
       dbs = filter f xs
       f db = null listDbNames || any (repoFilter db) listDbNames
-    isTTY <- hIsTerminalDevice stdout
-    let format = fromMaybe (if isTTY then TTY else PlainText) listFormat
-    t0 <- now
-    putStrLn $ shellPrint False format t0 dbs
+    putShellPrintLn listFormat dbs
 
 data StatusCommand
   = Status
@@ -183,10 +177,7 @@ instance Plugin StatusCommand where
     db <-
       Thrift.getDatabaseResult_database <$>
         Glean.getDatabase backend statusRepo
-    isTTY <- hIsTerminalDevice stdout
-    t0 <- now
-    let format = fromMaybe (if isTTY then TTY else PlainText) statusFormat
-    putStrLn $ shellPrint False format t0 db
+    putShellPrintLn statusFormat db
     when statusSetExitCode $ case exitCode db of
       ExitFailure code -> exitWith $ ExitFailure code
       _ -> return ()

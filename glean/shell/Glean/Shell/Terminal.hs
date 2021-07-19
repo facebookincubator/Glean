@@ -1,42 +1,15 @@
 -- Copyright (c) Facebook, Inc. and its affiliates.
 
 module Glean.Shell.Terminal
-  ( getWidth
-  , withPager
+  ( withPager
   ) where
 
 import Control.Concurrent.Async
 import Control.Concurrent.MVar
 import Control.Exception
 import Control.Monad
-import System.Exit
 import System.IO
 import System.Process
-import System.Timeout
-
-import Util.Control.Exception (catchAll)
-
--- | Get the terminal width
-getWidth :: IO (Maybe Int)
-getWidth = fmap join $
-  -- FIXME: This is a terrible way to get the terminal size but we don't
-  -- seem to have any packages which can do this.
-  System.Timeout.timeout 100000
-    (withCreateProcess
-      (proc "stty" ["size"]){std_out = CreatePipe, std_err = CreatePipe}
-      (\_ (Just outh) (Just errh) ph -> do
-          out <- hGetContents outh
-          err <- hGetContents errh
-          length out `seq` length err `seq` return ()
-          hClose outh
-          hClose errh
-          ex <- waitForProcess ph
-          return $ case ex of
-            ExitSuccess
-              | [[(_,"")],[(w,"")]] <- map reads $ words out -> Just w
-            _ -> Nothing
-      ))
-  `catchAll` \_ -> return Nothing
 
 -- | Spawn a pager (currently hard-coded as `less` with some flags) and pass its
 -- stdin handle to the action. The pager is spawned in parallel to the action

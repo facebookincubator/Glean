@@ -5,26 +5,40 @@
 module Glean.Util.ShellPrint
   ( ShellFormat(..)
   , ShellPrintFormat(..)
+  , PrintOpts(..)
+  , getTerminalWidth
+  , hPutShellPrintLn
+  , putShellPrintLn
   , shellFormatOpt
   , shellPrint
   ) where
 
 import Prelude hiding ((<>))
 
+import Control.Monad (join)
 import Data.Aeson
 import qualified Data.Aeson as J
 import qualified Data.Aeson.Encode.Pretty as J
 import qualified Data.ByteString.Lazy.Char8 as BS
 import Data.Char
+import Data.Maybe
+import Data.Text (Text)
 import qualified Data.Text as Text
+import qualified Data.Text.Prettyprint.Doc.Render.Terminal as Pretty
 import qualified Data.HashMap.Strict as HashMap
 import Data.Time.Clock.POSIX
 import Data.List hiding (span)
 import Data.Void
 import Options.Applicative as O
-import System.Console.ANSI
-import Text.PrettyPrint.Annotated.HughesPJ
+import Data.Text.Prettyprint.Doc
+import System.Exit
+import System.IO
+import System.Process
+import System.Timeout
+import Prettyprinter.Render.Terminal
+import Util.Control.Exception (catchAll)
 import Util.TimeSec
+
 
 import qualified Glean.Types as Thrift
 import Glean.Backend.Remote (dbShard)
@@ -56,27 +70,64 @@ shellFormatOpt =
     , O.help "Output format"
     ]
 
-shellPrint :: ShellFormat a => Bool -> ShellPrintFormat -> Time -> a -> String
-shellPrint ctxVerbose ctxFormat ctxNow x =
-  case ctxFormat of
-    Json ->
-      BS.unpack $
-      J.encodePretty $
-      shellFormatJson Context{..} x
-    TTY ->
-      renderText
-        (\c -> setSGRCode [SetColor Foreground Vivid c])
-        (const $ setSGRCode [Reset])
-    PlainText -> renderText mempty mempty
+data PrintOpts = PrintOpts
+  { poVerbose :: Bool
+  , poFormat :: ShellPrintFormat
+  , poNow :: Time
+  , poWidth :: Maybe PageWidth
+  }
+
+putShellPrintLn :: ShellFormat a => Maybe ShellPrintFormat -> a -> IO ()
+putShellPrintLn = hPutShellPrintLn stdout
+
+hPutShellPrintLn
+  :: ShellFormat a
+  => Handle
+  -> Maybe ShellPrintFormat
+  -> a
+  -> IO ()
+hPutShellPrintLn outh opt x = do
+  tty <- hIsTerminalDevice stdout
+  now <- utcTimeToPOSIXSeconds <$> getCurrentTime
+  width <- fromMaybe 80 <$> getTerminalWidth
+  let
+    t0 = Time (round now)
+    format = fromMaybe (if tty then TTY else PlainText) opt
+    opts = PrintOpts
+      { poVerbose = False
+      , poFormat = format
+      , poNow = t0
+      , poWidth = Just $ AvailablePerLine width 1
+      }
+  shellPrint outh opts x
+
+shellPrint :: ShellFormat a => Handle -> PrintOpts -> a -> IO ()
+shellPrint handle PrintOpts{..} x =
+  Pretty.renderIO handle sds
   where
-    renderText colourStart colourEnd =
-      renderDecorated
-        colourStart
-        colourEnd
-        (shellFormatText Context{..} x)
+    sds =
+      layoutPretty layout $ doc <> hardline
+    doc = case poFormat of
+      Json ->
+        pretty $
+        BS.unpack $
+        J.encodePretty $
+        shellFormatJson context x
+      TTY -> shellFormatText context x
+      PlainText -> unAnnotate $ shellFormatText context x
+    context = Context
+      { ctxFormat = poFormat
+      , ctxNow = poNow
+      , ctxVerbose = poVerbose
+      }
+    layout = LayoutOptions
+      { layoutPageWidth = fromMaybe Unbounded poWidth
+      }
+
+type Ann = AnsiStyle
 
 class ShellFormat a where
-    shellFormatText :: Context -> a -> Doc Color
+    shellFormatText :: Context -> a -> Doc Ann
     shellFormatJson :: Context -> a -> Value
 
 instance ShellFormat Void where
@@ -84,7 +135,7 @@ instance ShellFormat Void where
   shellFormatJson _ctx v = case v of
 
 instance ShellFormat String where
-  shellFormatText _ctx s = text s
+  shellFormatText _ctx s = pretty s
   shellFormatJson _ctx s = J.toJSON s
 
 instance ShellFormat Thrift.DatabaseStatus where
@@ -108,7 +159,7 @@ instance ShellFormat Thrift.DatabaseStatus where
         Thrift.DatabaseStatus_Missing -> "MISSING"
 
 instance ShellFormat Thrift.Repo where
-  shellFormatText _ctx repo = text (showRepo repo)
+  shellFormatText _ctx repo = pretty (showRepo repo)
   shellFormatJson _ctx repo = J.toJSON (showRepo repo)
 
 statusColour :: Thrift.DatabaseStatus -> Color
@@ -121,52 +172,54 @@ statusColour status = case status of
   Thrift.DatabaseStatus_Restorable -> Black
   Thrift.DatabaseStatus_Missing -> Black
 
+statusStyle :: Thrift.DatabaseStatus -> AnsiStyle
+statusStyle = color . statusColour
+
 instance ShellFormat Thrift.Database where
   shellFormatText ctx db = shellFormatText ctx (db, []::[(String, Void)])
   shellFormatJson ctx db = shellFormatJson ctx (db, []::[(String, Void)])
 
 instance ShellFormat v => ShellFormat (Thrift.Database, [(String, v)]) where
-  shellFormatText ctx@Context{..} (db, extras) = vcat
-    [ annotate (statusColour status) (shellFormatText ctx repo)
-        <+> shellFormatText ctx status
-      , nest 2 $ vcat $
-        [ "Created:" <+> showWhen (Thrift.database_created_since_epoch db) ]
-        ++
-        [ "Completed:" <+> showWhen t
-        | Just t <- [Thrift.database_completed db]
-        ]
-        ++
-        [ text key <> ":" <+> shellFormatText ctx value
-        | (key, value) <- extras]
-        ++
-        [ "Backup:" <+> text (Text.unpack loc)
-        | ctxVerbose ||
-          Thrift.database_status db == Thrift.DatabaseStatus_Restorable
-        , Just loc <- [Thrift.database_location db]
-        ]
-        ++
-        [ "Expires in:" <+> text (Text.unpack (ppTimeSpan timeSpan))
-        | ctxVerbose
-        , Just expiresEpochTime <-
-            [Thrift.unPosixEpochTime <$> Thrift.database_expire_time db]
-        , let expires = Time $ fromIntegral expiresEpochTime
-        , let timeSpan = expires `timeDiff` ctxNow
-        ]
-        ++
-        [ "Shard:" <+> text (Text.unpack (dbShard repo))
-        | ctxVerbose
-        ]
-        ++
-        [ nest 2 $ text (Text.unpack name) <> ":" <+> text (Text.unpack value)
-        | ctxVerbose
-        , (name,value) <- sortOn fst $
-            HashMap.toList (Thrift.database_properties db)
-        ]
+  shellFormatText ctx@Context{..} (db, extras) = nest 2 $ vsep $
+    [ annotate (statusStyle status) (shellFormatText ctx repo)
+      <+> shellFormatText ctx status]
+    ++
+    [ "Created:" <+> showWhen (Thrift.database_created_since_epoch db) ]
+    ++
+    [ "Completed:" <+> showWhen t
+    | Just t <- [Thrift.database_completed db]
+    ]
+    ++
+    [ pretty key <> ":" <+> shellFormatText ctx value
+    | (key, value) <- extras]
+    ++
+    [ "Backup:" <+> pretty loc
+    | ctxVerbose ||
+      Thrift.database_status db == Thrift.DatabaseStatus_Restorable
+    , Just loc <- [Thrift.database_location db]
+    ]
+    ++
+    [ "Expires in:" <+> pretty (ppTimeSpan timeSpan)
+    | ctxVerbose
+    , Just expiresEpochTime <-
+        [Thrift.unPosixEpochTime <$> Thrift.database_expire_time db]
+    , let expires = Time $ fromIntegral expiresEpochTime
+    , let timeSpan = expires `timeDiff` ctxNow
+    ]
+    ++
+    [ "Shard:" <+> pretty (dbShard repo)
+    | ctxVerbose
+    ]
+    ++
+    [ nest 2 $ pretty name <> ":" <+> pretty value
+    | ctxVerbose
+    , (name,value) <- sortOn fst $
+        HashMap.toList (Thrift.database_properties db)
     ]
     where
       showWhen (Thrift.PosixEpochTime t) =
-        text (show (posixSecondsToUTCTime (fromIntegral t))) <+>
-          parens (text (Text.unpack age) <+> "ago")
+        pretty (show (posixSecondsToUTCTime (fromIntegral t))) <+>
+          parens (pretty (Text.unpack age) <+> "ago")
         where
           age = ppTimeSpanWithGranularity Hour $
             ctxNow `timeDiff` Time (fromIntegral t)
@@ -197,12 +250,34 @@ instance ShellFormat v => ShellFormat (Thrift.Database, [(String, v)]) where
 
 instance ShellFormat [Thrift.Database] where
   shellFormatText ctx dbs =
-    vcat $ concatMap f $ sortOn Thrift.database_created_since_epoch dbs
-    where f db = [shellFormatText ctx db, text "    "]
+    vsep $ concatMap f $ sortOn Thrift.database_created_since_epoch dbs
+    where f db = [shellFormatText ctx db, pretty ("    "::Text)]
   shellFormatJson ctx dbs = J.toJSON $ map (shellFormatJson ctx) dbs
 
 instance ShellFormat v => ShellFormat [(Thrift.Database, [(String, v)])] where
   shellFormatText ctx dbs =
-    vcat $ concatMap f $ sortOn (Thrift.database_created_since_epoch . fst) dbs
-    where f x = [shellFormatText ctx x, text "    "]
+    vsep $ concatMap f $ sortOn (Thrift.database_created_since_epoch . fst) dbs
+    where f x = [shellFormatText ctx x, pretty ("    "::Text)]
   shellFormatJson ctx dbs = J.toJSON $ map (shellFormatJson ctx) dbs
+
+-- | Get the terminal width
+getTerminalWidth :: IO (Maybe Int)
+getTerminalWidth = fmap join $
+  -- FIXME: This is a terrible way to get the terminal size but we don't
+  -- seem to have any packages which can do this.
+  System.Timeout.timeout 100000
+    (withCreateProcess
+      (proc "stty" ["size"]){std_out = CreatePipe, std_err = CreatePipe}
+      (\_ (Just outh) (Just errh) ph -> do
+          out <- hGetContents outh
+          err <- hGetContents errh
+          length out `seq` length err `seq` return ()
+          hClose outh
+          hClose errh
+          ex <- waitForProcess ph
+          return $ case ex of
+            ExitSuccess
+              | [[(_,"")],[(w,"")]] <- map reads $ words out -> Just w
+            _ -> Nothing
+      ))
+  `catchAll` \_ -> return Nothing

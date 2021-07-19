@@ -156,6 +156,24 @@ output doc = do
     $ (if isTTY then id else Pretty.unAnnotate)
     $ doc <> hardline
 
+outputShellPrint :: Bool -> ShellFormat a => a -> Eval ()
+outputShellPrint verbose x = do
+  ShellState{..} <- getState
+  out <- liftIO $ readMVar outputHandle
+  now <- liftIO $ utcTimeToPOSIXSeconds <$> getCurrentTime
+  let
+    t0 = Time (round now)
+    format = if isTTY then TTY else PlainText
+    opts = PrintOpts
+      { poVerbose = verbose
+      , poFormat = format
+      , poNow = t0
+      , poWidth = pageWidth
+      }
+  liftIO $ do
+    shellPrint out opts x
+    hPutStrLn out ""
+
 newtype Repl a = Repl
   { unRepl :: Haskeline.InputT Eval a
   }
@@ -273,15 +291,8 @@ getDatabases all filterStr = do
 displayDatabases:: Bool -> Bool -> String -> Eval ()
 displayDatabases all verbose filterStr = do
   dbs <- getDatabases all filterStr
-  now <- liftIO $ utcTimeToPOSIXSeconds <$> getCurrentTime
-  state <- getState
-  outh <- liftIO $ readMVar $ outputHandle state
-  liftIO $ forM_ (sortOn Thrift.database_created_since_epoch dbs) $ \db -> do
-    let t0 = Time (round now)
-    let format = if isTTY state then TTY else PlainText
-    hPutStrLn outh $ shellPrint verbose format t0 db
-    hPutStrLn outh ""
-
+  forM_ (sortOn Thrift.database_created_since_epoch dbs) $
+    outputShellPrint verbose
 
 dbCmd :: String -> Eval ()
 dbCmd "" = do
@@ -484,7 +495,7 @@ withTTY action = do
     page_width <- case preset_width of
       Just w -> return w
       Nothing -> do
-        width <- fromMaybe 80 <$> liftIO getWidth
+        width <- fromMaybe 80 <$> liftIO getTerminalWidth
         return $ AvailablePerLine width 1
     let without_pager f = Just <$> f outh
     r <- liftIO $ (if pager state then withPager else without_pager) $
