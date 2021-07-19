@@ -5,7 +5,6 @@ module Glean.Server (main) where
 import Control.Concurrent
 import Control.Concurrent.Async (withAsync)
 import Control.Concurrent.STM
-import Control.Exception
 import Control.Monad
 import Data.HashSet (HashSet)
 import qualified Data.HashSet as HashSet
@@ -18,7 +17,6 @@ import System.Exit (die)
 import Facebook.Fb303
 import Facebook.Service
 import Fb303Core.Types
-import Thrift.Processor
 import qualified Thrift.Server.CppServer as CppServer
 import Thrift.Server.Types
 import Util.Control.Exception
@@ -30,9 +28,6 @@ import qualified Glean.Database.Catalog as Catalog
 import qualified Glean.Database.Catalog.Filter as Catalog
 import Glean.Database.Env
 import Glean.Database.Types
-#if FACEBOOK
-import qualified Glean.Search.Handler as SearchHandler
-#endif
 import qualified Glean.Handler as GleanHandler
 import Glean.Server.Config as Config
 import Glean.Server.Shard
@@ -57,19 +52,6 @@ databasesUpdatedCallback evb shardKey currentShards dbs = swallow $ do
     else do
       updateShards evb shardKey newShards
       return (Just newShards)
-
-withHandler
-  :: Config
-  -> GleanHandler.State
-  -> (forall s. Processor s => (forall r. s r -> IO r) -> IO a)
-  -> IO a
-withHandler cfg state cont =
-  case cfgHandler cfg of
-    "glean" -> cont $ GleanHandler.handler state
-#if FACEBOOK
-    "search" -> cont $ SearchHandler.searchHandler state
-#endif
-    _ -> throwIO $ ErrorCall "--handler: invalid value"
 
 -- The 'dbUpdateNotifierThread' will sit in a loop waiting for changes
 -- to the local databases (using STM retry to detect changes).  When
@@ -146,9 +128,8 @@ main =
         when (isNothing l) retry
       setAlive server
 
-  withHandler cfg state $ \handler ->
-    withBackgroundFacebookServiceDeferredAlive
-      (GleanHandler.fb303State state)
-      handler
-      defaultOptions{ desiredPort = cfgPort cfg }
-      (\server -> waitForAlive server >> waitForTerminateSignals)
+  withBackgroundFacebookServiceDeferredAlive
+    (GleanHandler.fb303State state)
+    (GleanHandler.handler state)
+    defaultOptions{ desiredPort = cfgPort cfg }
+    (\server -> waitForAlive server >> waitForTerminateSignals)

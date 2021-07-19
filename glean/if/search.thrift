@@ -99,14 +99,3 @@ struct SearchQuery {
   3: optional list<src.Language> languages;
 // if set, limit the search results to these languages
 } (hs.prefix = "")
-
-service SearchService extends glean.GleanService {
-  FindDeclsResult findDecls(1: glean.Repo repo, 2: FindDeclsQuery q) throws (
-    1: glean.Exception e,
-  );
-
-  FindLocalGraphResult findLocalGraph(
-    1: glean.Repo repo,
-    2: FindLocalGraphQuery q,
-  );
-}
