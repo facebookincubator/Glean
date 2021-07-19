@@ -973,9 +973,13 @@ getInputLines = Repl $ getLines prompt1 []
     prompt2 = promptWith "| "
 
     getLines prompt prior = do
-      maybeLine <- Haskeline.getInputLine =<< prompt
+      maybeLine <-
+        Haskeline.handle (\(e::IOError) -> do
+          liftIO $ hPrint stderr e
+          return Nothing) $
+          Haskeline.getInputLine =<< prompt
       case maybeLine of
-        Nothing -> return Stop  -- stop on ^D or EOF
+        Nothing -> return Stop  -- stop on IOError, ^D or EOF
         Just sIn -> case shouldCont sIn of
           Whole s -> return (Go (intercalate "\n" (reverse (s:prior))))
           Cont c -> getLines prompt2 (c:prior)
