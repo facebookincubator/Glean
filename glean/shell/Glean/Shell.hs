@@ -34,7 +34,6 @@ import Data.Time.Clock
 import Data.Time.Clock.POSIX
 import qualified Options.Applicative as O
 import Options.Applicative hiding (help)
-import Util.Timing
 import qualified System.Console.Haskeline as Haskeline
 import System.Environment (lookupEnv)
 import System.FilePath ((</>), takeBaseName)
@@ -241,33 +240,13 @@ displayStatistics arg =
     ref <- maybe (Left id) Right <$> lookupPid (Pid id)
     return (ref,stats)
   let
-    totalSizeBytes = foldl' (+) 0 $ map (Thrift.predicateStats_size . snd) preds
-  output $ vsep
-    [ nest 2 $ vsep
-        [ case ref of
-            Left id -> pretty id
-            Right pref -> pretty pref
-        , "count:" <+> pretty (Thrift.predicateStats_count stats)
-        , "size: " <+> pretty (getSizeInfo
-             (Thrift.predicateStats_size stats) totalSizeBytes)
-        ]
-      | (ref,stats) <- sortOn fst preds
-      , null arg ||
+    filterPred :: Either Thrift.Id PredicateRef -> Bool
+    filterPred ref =
+      null arg ||
           case ref of
             Right pref -> arg `isPrefixOf` show (pretty pref)
             Left _ -> False
-    ]
-
-  when (null arg) $
-    output $ vcat [ "", "Total size: " <> pretty (showAllocs totalSizeBytes) ]
-
-getSizeInfo :: Int64 -> Int64 -> String
-getSizeInfo bytes total =
-  printf "%d (%s) %.4f%%" bytes humanReadableSize percentage_x
-    where
-      percentage_x :: Double
-      percentage_x = 100 * fromIntegral bytes / fromIntegral total
-      humanReadableSize = showAllocs bytes
+  outputShellPrint (null arg) (filterPred, preds)
 
 getDatabases
   :: Bool -- ^ Include DBs that can be restored from backups

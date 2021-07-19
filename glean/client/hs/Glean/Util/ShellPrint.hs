@@ -15,12 +15,13 @@ module Glean.Util.ShellPrint
 
 import Prelude hiding ((<>))
 
-import Control.Monad (join)
+import Control.Monad
 import Data.Aeson
 import qualified Data.Aeson as J
 import qualified Data.Aeson.Encode.Pretty as J
 import qualified Data.ByteString.Lazy.Char8 as BS
 import Data.Char
+import Data.Int
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -31,6 +32,7 @@ import Data.List hiding (span)
 import Data.Void
 import Options.Applicative as O
 import Data.Text.Prettyprint.Doc
+import Text.Printf hiding (parseFormat)
 import System.Exit
 import System.IO
 import System.Process
@@ -38,6 +40,7 @@ import System.Timeout
 import Prettyprinter.Render.Terminal
 import Util.Control.Exception (catchAll)
 import Util.TimeSec
+import Util.Timing
 
 
 import qualified Glean.Types as Thrift
@@ -259,6 +262,44 @@ instance ShellFormat v => ShellFormat [(Thrift.Database, [(String, v)])] where
     vsep $ concatMap f $ sortOn (Thrift.database_created_since_epoch . fst) dbs
     where f x = [shellFormatText ctx x, pretty ("    "::Text)]
   shellFormatJson ctx dbs = J.toJSON $ map (shellFormatJson ctx) dbs
+
+type PredicateStatsList =
+  [(Either Thrift.Id Thrift.PredicateRef, Thrift.PredicateStats)]
+type PredicateStatsFilter =
+  Either Thrift.Id Thrift.PredicateRef -> Bool
+
+instance ShellFormat (PredicateStatsFilter, PredicateStatsList) where
+  shellFormatText Context{..} (filterPred, preds) = vcat $
+    vsep
+      [ nest 2 $ vsep
+          [ case ref of
+              Left id -> pretty id
+              Right pref -> pretty pref
+          , "count:" <+> pretty (Thrift.predicateStats_count stats)
+          , "size: " <+> pretty (getSizeInfo
+              (Thrift.predicateStats_size stats) totalSizeBytes)
+          ]
+      | (ref, stats) <- sortOn fst $ filter (filterPred . fst) preds
+      ]
+    :
+    if not ctxVerbose then [] else
+    [ ""
+    , "Total size: " <> pretty (showAllocs totalSizeBytes)
+    ]
+    where
+      totalSizeBytes =
+        foldl' (+) 0 $ map (Thrift.predicateStats_size . snd) preds
+
+  shellFormatJson _ (filterPred, preds) =
+    J.toJSON $ filter (filterPred . fst) preds
+
+getSizeInfo :: Int64 -> Int64 -> String
+getSizeInfo bytes total =
+  printf "%d (%s) %.4f%%" bytes humanReadableSize percentage_x
+    where
+      percentage_x :: Double
+      percentage_x = 100 * fromIntegral bytes / fromIntegral total
+      humanReadableSize = showAllocs bytes
 
 -- | Get the terminal width
 getTerminalWidth :: IO (Maybe Int)
