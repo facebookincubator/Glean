@@ -567,6 +567,7 @@ library client-hs-local
     build-depends:
         glean:if-glean-hs,
         glean:core,
+        glean:client-hs,
         glean:db,
 
 
