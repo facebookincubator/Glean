@@ -183,7 +183,8 @@ predicate FileEntityXRefLocations:
     FlowFileEntityXRefLocations { File, XRef, Entity } |
     PythonFileEntityXRefLocations { File, XRef, Entity } |
     CxxFileEntityXRefLocations { File, XRef, Entity } |
-    HaskellFileEntityXRefLocations { File, XRef, Entity }
+    HaskellFileEntityXRefLocations { File, XRef, Entity } |
+    RustFileEntityXRefLocations { File, XRef, Entity }
 
 # Find references to a language entity
 predicate EntityUses:
@@ -538,7 +539,7 @@ predicate CxxFileEntityTracePPXRefLocations:
     { Name, TargetFile, { range = TargetRange } } = Target : Location;
     { target = Target, source = { range = SrcRange }} = XRef;
 
-
+# XRefs in sigma/Haskell
 predicate HaskellFileEntityXRefLocations:
   {
     file: src.File,
@@ -561,6 +562,30 @@ predicate HaskellFileEntityXRefLocations:
     Location = Location { TargetName, TargetFile, { span = TargetSpan }};
 
     Entity = code.Entity { hs = { definition = Def }};
+
+# file xrefs for Rust
+predicate RustFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: XRefLocation,
+    entity: code.Entity,
+  }
+  { File, { TargetLocation, { span = SrcSpan } }, Entity } where
+    rust.FileXRefs { File, XRefs };
+    { TargetDef, SrcSpans } = XRefs[..];
+    SrcSpan = SrcSpans[..];
+
+    # workaroud T96159670 , do local refs only
+    TargetFile = File;
+
+    rust.DefLocation { TargetDef, TargetFile, TargetSpan };
+    rust.DefinitionName { TargetDef, rust.Name Name };
+    { Name, TargetFile, { span = TargetSpan }} = TargetLocation;
+    Entity = code.Entity { rust = { definition = TargetDef } };
+
+#
+# Language entity uses
+#
 
 predicate HackEntityUses:
   {
