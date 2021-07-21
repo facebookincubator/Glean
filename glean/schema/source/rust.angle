@@ -231,4 +231,15 @@ predicate FileXRefs :
     xrefs : [XRef],
   }
 
+# Uses of a defintion (inverse of xrefs)
+predicate DefinitionUses:
+  {
+    def_: Def,
+    file: src.File,
+    spans: [src.ByteSpan],
+  } stored
+  { Def, File, Spans } where
+    FileXRefs { File, XRefs };
+    { Def, Spans } = XRefs[..];
+
 }

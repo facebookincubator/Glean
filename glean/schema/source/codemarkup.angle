@@ -198,7 +198,8 @@ predicate EntityUses:
     FlowEntityUses { Entity, File, Span } |
     PythonEntityUses { Entity, File, Span } |
     CxxEntityUses { Entity, File, Span } |
-    HaskellEntityUses { Entity, File, Span }
+    HaskellEntityUses { Entity, File, Span } |
+    RustEntityUses { Entity, File, Span }
 
 # Private language instances
 
@@ -608,7 +609,6 @@ predicate HaskellEntityUses:
     hs.TargetUses {target = Def, file = File, uses = Spans};
     SrcSpan = Spans[..];
 
-
 predicate FlowEntityUses:
   {
     target: code.Entity,
@@ -639,5 +639,15 @@ predicate CxxEntityUses:
   ({ { cxx = { enumerator = E } }, File, Span } where
     cxx1.TargetUses { { enumerator = E } , File, Spans };
     Span = Spans[..])
+
+predicate RustEntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  { { rust = { definition = Def } }, File, Span } where
+    rust.DefinitionUses { Def, File, Spans };
+    Span = Spans[..];
 
 }
