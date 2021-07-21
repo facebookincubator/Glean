@@ -36,14 +36,14 @@ buck run glean/shell:shell -- <query>
 
 <FbInternalOnly>
 
-There are APIs in [Hack](api/fb/hack), [Python](api/fb/python),
-[Rust](api/fb/rust), and [Haskell](api/haskell).
+There are APIs in [Hack](api/fb/hack.md), [Python](api/fb/python.md),
+[Rust](api/fb/rust.md), and [Haskell](api/haskell.md).
 
 </FbInternalOnly>
 
 <OssOnly>
 
-There is currently only a [Haskell](api/haskell) API; APIs in other
+There is currently only a [Haskell](api/haskell.md) API; APIs in other
 languages are coming soon.
 
 </OssOnly>
@@ -52,7 +52,7 @@ All client layers are wrappers around the [Thrift API](#thrift).
 
 The results of queries will be returned as instances of the Thrift
 types in `glean/schema/thrift` that are generated automatically from
-the [schema](../schema/basic).
+the [schema](../schema/basic.md).
 
 The client layers provide a few useful things over the raw Thrift API:
 * Connecting to the most recent database for a given repository;

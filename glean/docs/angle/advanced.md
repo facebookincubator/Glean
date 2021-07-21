@@ -26,7 +26,7 @@ facts> P where C = { name = "Fish" } : example.Class; example.Parent { C, P }
 { "id": 1024, "key": { "name": "Pet", "line": 10 } }
 ```
 
-Here we used `{ name = "Fish" } : example.Class` to tell Angle the expected type of the pattern. You should read the colon as "has type", and the type can be any valid Angle type, for details see [Built-in types](../schema/types).
+Here we used `{ name = "Fish" } : example.Class` to tell Angle the expected type of the pattern. You should read the colon as "has type", and the type can be any valid Angle type, for details see [Built-in types](../schema/types.md).
 
 ## Explicit fact IDs
 

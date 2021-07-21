@@ -45,6 +45,6 @@ Examples of code using these types:
 `glean-shell --db-root ~/local/gleandb --schema glean/schema/source`<br/>
 If you don't already have a `~/local/gleandb` for storing local DBs, create it with `mkdir ~/local/gleandb`.
 
-3. Test it with some example data: see [Loading a DB from JSON in the shell](../write#loading-a-db-from-json-in-the-shell).
+3. Test it with some example data: see [Loading a DB from JSON in the shell](../write.md#loading-a-db-from-json-in-the-shell).
 
 4. Iterate as necessary, using `:reload` in the shell to reload the schema.

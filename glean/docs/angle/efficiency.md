@@ -27,7 +27,7 @@ predicate Parent :
   }
 ```
 
-We should think of this as a mapping from `child` to `parent`. Glean won’t stop you writing a query for `{ parent = ... }`, but such a query will examine all of the `example.Parent` facts in the database. We can see how many facts are searched for our query using `:profile full` in the shell (see [debugging](debugging) for more details):
+We should think of this as a mapping from `child` to `parent`. Glean won’t stop you writing a query for `{ parent = ... }`, but such a query will examine all of the `example.Parent` facts in the database. We can see how many facts are searched for our query using `:profile full` in the shell (see [debugging](debugging.md) for more details):
 
 ```
 facts> :profile full
@@ -42,7 +42,7 @@ This tells us that although it found the 2 results we expected, it searched all 
 
 ## Making queries efficient using a derived predicate
 
-What if we wanted to efficiently map from `parent` to `child`? That’s easy to accomplish using a *derived predicate*. We’re going to define a new predicate with a different field ordering, and automatically generate the facts of our new predicate by deriving them from the facts of the existing predicate.  For full details see [Derived Predicates](../derived), what follows will be a walkthrough showing how to use a derived predicate to make our queries more efficient.
+What if we wanted to efficiently map from `parent` to `child`? That’s easy to accomplish using a *derived predicate*. We’re going to define a new predicate with a different field ordering, and automatically generate the facts of our new predicate by deriving them from the facts of the existing predicate.  For full details see [Derived Predicates](../derived.md), what follows will be a walkthrough showing how to use a derived predicate to make our queries more efficient.
 
 First we’ll define our derived predicate in the schema, like this:
 

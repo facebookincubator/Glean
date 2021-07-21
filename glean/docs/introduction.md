@@ -25,24 +25,24 @@ Glean consists of the following components:
   Angle](angle/intro)**.  Angle is a logic language with similarities
   to Datalog, but with extensions that make it suitable for building
   complex queries over Glean data[^2].  Like in Datalog, Glean can
-  derive new facts automatically by [defining rules](derived) using
+  derive new facts automatically by [defining rules](derived.md) using
   Angle.
 
-* A **[server](server)** that manages multiple databases on disk, and
+* A **[server](server.md)** that manages multiple databases on disk, and
   serves requests from clients to create, write, and query
   databases. The server currently uses Thrift, but there's no reason
   there couldn't also be servers exposing other protocols in the
   future.  The server is designed to be deployed at scale, serving
   replicated databases to large numbers of clients.
 
-* An **[interactive shell](shell)** where you can type queries and explore
+* An **[interactive shell](shell.md)** where you can type queries and explore
   the data.
 
-* A **[command-line tool](cli)** for creating, writing, and querying
+* A **[command-line tool](cli.md)** for creating, writing, and querying
   databases, either directly or by connecting to the server.
 
 * Several **<SrcFileLink file="glean/schema/source">example schemas</SrcFileLink>** for common programming languages, and
-  **[indexers](indexer/intro)** for some of those.  Note that Glean
+  **[indexers](indexer/intro.md)** for some of those.  Note that Glean
   doesn't force all the data into a single schema; there can be
   arbitrary amounts of language-specific detail in the schema for each
   language. Language-neutral abstractions can be built by <SrcFileLink

@@ -9,7 +9,7 @@ import {SrcFile,SrcFileLink} from '@site/utils';
 
 The Javascript/Flow indexer is built into the
 [Flow](https://github.com/facebook/flow/) system.  It's also included
-in the [Glean demo Docker image](../trying) to try out.
+in the [Glean demo Docker image](../trying.md) to try out.
 
 ## Run the indexer
 

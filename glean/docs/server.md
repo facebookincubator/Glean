@@ -16,7 +16,7 @@ Where `<dir>` is where your Glean databases are stored, `<port>` is
 the port number, and `<schema>` is the directory containing the schema
 sources.
 
-The Glean server accepts all the common options described in [Common options](running#common-options), and additionally:
+The Glean server accepts all the common options described in [Common options](running.md#common-options), and additionally:
 
 * `--port PORT`<br />
 Port number to listen on.

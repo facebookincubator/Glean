@@ -105,7 +105,7 @@ glean.workFinished(my_repo, db_handle, success_or_failure)
 
 ### JSON format
 
-The JSON format for Glean data is described in [Thrift and JSON](schema/thrift).
+The JSON format for Glean data is described in [Thrift and JSON](schema/thrift.md).
 
 Here's an example of JSON data for writing to Glean:
 

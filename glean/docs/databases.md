@@ -24,8 +24,8 @@ The name and hash together uniquely identify a database. This is written `<name>
 
 ## Working with local databases
 
-Most Glean tools (in particular the [shell](shell) and the [CLI
-tool](cli)) can work either by talking to a [Glean server](server) or
+Most Glean tools (in particular the [shell](shell.md) and the [CLI
+tool](cli.md)) can work either by talking to a [Glean server](server.md) or
 accessing databases on the local filesystem directly. The access
 method is chosen by these command-line flags:
 
@@ -40,14 +40,14 @@ The default for all commands is `--service glean.query.prod`, so all requests go
 
 </FbInternalOnly>
 
-To use the [shell](shell) with local databases, you can do:
+To use the [shell](shell.md) with local databases, you can do:
 
 ```lang=sh
 mkdir /tmp/glean
 glean-shell --db-root /tmp/glean
 ```
 
-To run a server, see [Running the Glean Server](server).
+To run a server, see [Running the Glean Server](server.md).
 
 ## Lifecycle of a database
 
@@ -64,7 +64,7 @@ like this:
 * At this point the database is in the **Incomplete** state. Queries
 are supported in this state, and always reflect the current contents.
 
-* Facts are written to the database using the methods described in [Writing data to Glean](write), and finally the database is closed by invoking `glean --service <write-server> finish <args>` or the appropriate Thrift method.
+* Facts are written to the database using the methods described in [Writing data to Glean](write.md), and finally the database is closed by invoking `glean --service <write-server> finish <args>` or the appropriate Thrift method.
 
 * The database is now in the **Complete** state.
 

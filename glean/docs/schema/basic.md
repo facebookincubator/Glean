@@ -34,7 +34,7 @@ where
 * `ValueType` is the *value type*
 
 `KeyType` and `ValueType` are types; the type language is described in
-[Built-in Types](types).
+[Built-in Types](types.md).
 
 Every *fact* in predicate P has:
 
@@ -50,5 +50,5 @@ predicates have all their information in the key.
 You can think of Glean as like a key/value store: we can look up a key
 `K` in predicate `P` and get back value `V.` We can also query for
 *patterns* that match multiple keys, and get back all the facts that
-match the pattern. More about this when we talk about [Angle](../angle/intro)
+match the pattern. More about this when we talk about [Angle](../angle/intro.md)
 queries.
