@@ -226,8 +226,6 @@ library if-search-hs
         glean/if/search/gen-hs2
     exposed-modules:
         Glean.Search.Types
-        Glean.Search.SearchService.Client
-        Glean.Search.SearchService.Service
     build-depends:
         glean:config,
         glean:if-glean-hs,
@@ -556,7 +554,8 @@ library client-hs
         glean:util,
         glean:core,
         glean:config,
-        glean:haxl-datasource
+        glean:haxl-datasource,
+        prettyprinter-ansi-terminal
 
 library client-hs-local
     import: fb-haskell, deps
