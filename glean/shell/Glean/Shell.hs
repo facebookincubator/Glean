@@ -1,6 +1,6 @@
 -- Copyright (c) Facebook, Inc. and its affiliates.
 
-{-# LANGUAGE ApplicativeDo, NamedFieldPuns #-}
+{-# LANGUAGE ApplicativeDo, NamedFieldPuns, QuantifiedConstraints #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 module Glean.Shell (main)
 where
@@ -155,8 +155,8 @@ output doc = do
     $ (if isTTY then id else Pretty.unAnnotate)
     $ doc <> hardline
 
-outputShellPrint :: Bool -> ShellFormat a => a -> Eval ()
-outputShellPrint verbose x = do
+outputShellPrint :: ShellPrint a => a -> Eval ()
+outputShellPrint x = do
   ShellState{..} <- getState
   out <- liftIO $ readMVar outputHandle
   now <- liftIO $ utcTimeToPOSIXSeconds <$> getCurrentTime
@@ -164,8 +164,7 @@ outputShellPrint verbose x = do
     t0 = Time (round now)
     format = if isTTY then TTY else PlainText
     opts = PrintOpts
-      { poVerbose = verbose
-      , poFormat = format
+      { poFormat = format
       , poNow = t0
       , poWidth = pageWidth
       }
@@ -246,7 +245,8 @@ displayStatistics arg =
           case ref of
             Right pref -> arg `isPrefixOf` show (pretty pref)
             Left _ -> False
-  outputShellPrint (null arg) (filterPred, preds)
+  outputShellPrint $ (filterPred, preds)
+    `withFormatOpts` if null arg then StatsShowTotal else StatsHideTotal
 
 getDatabases
   :: Bool -- ^ Include DBs that can be restored from backups
@@ -270,8 +270,9 @@ getDatabases all filterStr = do
 displayDatabases:: Bool -> Bool -> String -> Eval ()
 displayDatabases all verbose filterStr = do
   dbs <- getDatabases all filterStr
-  forM_ (sortOn Thrift.database_created_since_epoch dbs) $
-    outputShellPrint verbose
+  forM_ (sortOn Thrift.database_created_since_epoch dbs) $ \db ->
+    outputShellPrint $ db
+      `withFormatOpts` if verbose then DbDescribe else DbSummarise
 
 dbCmd :: String -> Eval ()
 dbCmd "" = do

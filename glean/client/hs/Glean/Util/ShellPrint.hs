@@ -1,9 +1,17 @@
 -- Copyright (c) Facebook, Inc. and its affiliates.
 
-{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE
+  TypeApplications
+, QuantifiedConstraints
+, ConstraintKinds
+, UndecidableInstances
+#-}
 
 module Glean.Util.ShellPrint
-  ( ShellFormat(..)
+  ( DbVerbosity(..)
+  , StatsVerbosity(..)
+  , ShellFormat(..)
+  , ShellPrint
   , ShellPrintFormat(..)
   , PrintOpts(..)
   , getTerminalWidth
@@ -11,6 +19,7 @@ module Glean.Util.ShellPrint
   , putShellPrintLn
   , shellFormatOpt
   , shellPrint
+  , withFormatOpts
   ) where
 
 import Prelude hiding ((<>))
@@ -54,8 +63,7 @@ data ShellPrintFormat
   deriving (Eq,Show)
 
 data Context = Context
-  { ctxVerbose :: Bool
-  , ctxFormat :: ShellPrintFormat
+  { ctxFormat :: ShellPrintFormat
   , ctxNow :: Time
   }
 
@@ -74,17 +82,20 @@ shellFormatOpt =
     ]
 
 data PrintOpts = PrintOpts
-  { poVerbose :: Bool
-  , poFormat :: ShellPrintFormat
+  { poFormat :: ShellPrintFormat
   , poNow :: Time
   , poWidth :: Maybe PageWidth
   }
 
-putShellPrintLn :: ShellFormat a => Maybe ShellPrintFormat -> a -> IO ()
+type ShellPrint a = forall o. ShellFormat o a
+
+putShellPrintLn
+  :: ShellPrint a
+  => Maybe ShellPrintFormat -> a -> IO ()
 putShellPrintLn = hPutShellPrintLn stdout
 
 hPutShellPrintLn
-  :: ShellFormat a
+  :: ShellPrint a
   => Handle
   -> Maybe ShellPrintFormat
   -> a
@@ -97,14 +108,15 @@ hPutShellPrintLn outh opt x = do
     t0 = Time (round now)
     format = fromMaybe (if tty then TTY else PlainText) opt
     opts = PrintOpts
-      { poVerbose = False
-      , poFormat = format
+      { poFormat = format
       , poNow = t0
       , poWidth = Just $ AvailablePerLine width 1
       }
   shellPrint outh opts x
 
-shellPrint :: ShellFormat a => Handle -> PrintOpts -> a -> IO ()
+shellPrint
+  :: forall a. (forall o. ShellFormat o a)
+  => Handle -> PrintOpts -> a -> IO ()
 shellPrint handle PrintOpts{..} x =
   Pretty.renderIO handle sds
   where
@@ -115,13 +127,14 @@ shellPrint handle PrintOpts{..} x =
         pretty $
         BS.unpack $
         J.encodePretty $
-        shellFormatJson context x
-      TTY -> shellFormatText context x
-      PlainText -> unAnnotate $ shellFormatText context x
+        shellFormatJson context () x
+      TTY ->
+        shellFormatText context () x
+      PlainText ->
+        unAnnotate $ shellFormatText context () x
     context = Context
       { ctxFormat = poFormat
       , ctxNow = poNow
-      , ctxVerbose = poVerbose
       }
     layout = LayoutOptions
       { layoutPageWidth = fromMaybe Unbounded poWidth
@@ -129,20 +142,31 @@ shellPrint handle PrintOpts{..} x =
 
 type Ann = AnsiStyle
 
-class ShellFormat a where
-    shellFormatText :: Context -> a -> Doc Ann
-    shellFormatJson :: Context -> a -> Value
+-- | Format data of type 'a' with format options of type 'o'
+class ShellFormat o a where
+    shellFormatText
+      :: Context -> o -> a -> Doc Ann
+    shellFormatJson
+      :: Context -> o -> a -> Value
 
-instance ShellFormat Void where
-  shellFormatText _ctx v = case v of
-  shellFormatJson _ctx v = case v of
+data WithFormatOpts o a = WithFormatOpts a o
+instance ShellFormat o a => ShellFormat d (WithFormatOpts o a) where
+  shellFormatText ctx _ (WithFormatOpts x opts) = shellFormatText ctx opts x
+  shellFormatJson ctx _ (WithFormatOpts x opts) = shellFormatJson ctx opts x
 
-instance ShellFormat String where
-  shellFormatText _ctx s = pretty s
-  shellFormatJson _ctx s = J.toJSON s
+withFormatOpts :: ShellFormat o a => a -> o -> WithFormatOpts o a
+withFormatOpts = WithFormatOpts
 
-instance ShellFormat Thrift.DatabaseStatus where
-  shellFormatText _ctx status =
+instance ShellFormat o Void where
+  shellFormatText _ctx _ v = case v of
+  shellFormatJson _ctx _ v = case v of
+
+instance ShellFormat o String where
+  shellFormatText _ctx _ s = pretty s
+  shellFormatJson _ctx _ s = J.toJSON s
+
+instance ShellFormat o Thrift.DatabaseStatus where
+  shellFormatText _ctx _ status =
     case status of
       Thrift.DatabaseStatus_Complete -> parens "complete"
       Thrift.DatabaseStatus_Finalizing -> parens "finalizing"
@@ -151,7 +175,7 @@ instance ShellFormat Thrift.DatabaseStatus where
       Thrift.DatabaseStatus_Broken -> parens "broken"
       Thrift.DatabaseStatus_Restorable -> parens "restorable"
       Thrift.DatabaseStatus_Missing -> parens "missing deps"
-  shellFormatJson _ctx status = J.toJSON @String $
+  shellFormatJson _ctx _ status = J.toJSON @String $
       case status of
         Thrift.DatabaseStatus_Complete -> "COMPLETE"
         Thrift.DatabaseStatus_Finalizing -> "FINALIZING"
@@ -161,9 +185,9 @@ instance ShellFormat Thrift.DatabaseStatus where
         Thrift.DatabaseStatus_Restorable -> "RESTORABLE"
         Thrift.DatabaseStatus_Missing -> "MISSING"
 
-instance ShellFormat Thrift.Repo where
-  shellFormatText _ctx repo = pretty (showRepo repo)
-  shellFormatJson _ctx repo = J.toJSON (showRepo repo)
+instance ShellFormat o Thrift.Repo where
+  shellFormatText _ctx _ repo = pretty (showRepo repo)
+  shellFormatJson _ctx _ repo = J.toJSON (showRepo repo)
 
 statusColour :: Thrift.DatabaseStatus -> Color
 statusColour status = case status of
@@ -178,120 +202,134 @@ statusColour status = case status of
 statusStyle :: Thrift.DatabaseStatus -> AnsiStyle
 statusStyle = color . statusColour
 
-instance ShellFormat Thrift.Database where
-  shellFormatText ctx db = shellFormatText ctx (db, []::[(String, Void)])
-  shellFormatJson ctx db = shellFormatJson ctx (db, []::[(String, Void)])
+data DbVerbosity
+  = DbSummarise
+  | DbDescribe
+  deriving (Eq)
 
-instance ShellFormat v => ShellFormat (Thrift.Database, [(String, v)]) where
-  shellFormatText ctx@Context{..} (db, extras) = nest 2 $ vsep $
-    [ annotate (statusStyle status) (shellFormatText ctx repo)
-      <+> shellFormatText ctx status]
-    ++
-    [ "Created:" <+> showWhen (Thrift.database_created_since_epoch db) ]
-    ++
-    [ "Completed:" <+> showWhen t
-    | Just t <- [Thrift.database_completed db]
-    ]
-    ++
-    [ pretty key <> ":" <+> shellFormatText ctx value
-    | (key, value) <- extras]
-    ++
-    [ "Backup:" <+> pretty loc
-    | ctxVerbose ||
-      Thrift.database_status db == Thrift.DatabaseStatus_Restorable
-    , Just loc <- [Thrift.database_location db]
-    ]
-    ++
-    [ "Expires in:" <+> pretty (ppTimeSpan timeSpan)
-    | ctxVerbose
-    , Just expiresEpochTime <-
-        [Thrift.unPosixEpochTime <$> Thrift.database_expire_time db]
-    , let expires = Time $ fromIntegral expiresEpochTime
-    , let timeSpan = expires `timeDiff` ctxNow
-    ]
-    ++
-    [ "Shard:" <+> pretty (dbShard repo)
-    | ctxVerbose
-    ]
-    ++
-    [ nest 2 $ pretty name <> ":" <+> pretty value
-    | ctxVerbose
-    , (name,value) <- sortOn fst $
-        HashMap.toList (Thrift.database_properties db)
-    ]
-    where
-      showWhen (Thrift.PosixEpochTime t) =
-        pretty (show (posixSecondsToUTCTime (fromIntegral t))) <+>
-          parens (pretty (Text.unpack age) <+> "ago")
-        where
-          age = ppTimeSpanWithGranularity Hour $
-            ctxNow `timeDiff` Time (fromIntegral t)
+instance ShellFormat DbVerbosity Thrift.Database where
+  shellFormatText ctx opts db =
+    shellFormatText ctx opts (db, []::[(String, Void)])
+  shellFormatJson ctx opts db =
+    shellFormatJson ctx opts (db, []::[(String, Void)])
 
-      status = Thrift.database_status db
-      repo = Thrift.database_repo db
-  shellFormatJson ctx (db, extras) = J.object $
-    [ "repo" .= shellFormatJson ctx repo
-    , "status" .= shellFormatJson ctx status
-    , "created" .= jsonTime (Thrift.database_created_since_epoch db)
-    , "completed" .= jsonMaybeTime (Thrift.database_completed db)
-    , "backup" .= maybe J.Null J.toJSON (Thrift.database_location db)
-    , "expires" .= jsonMaybeTime (Thrift.database_expire_time db)
-    , "shard" .= J.toJSON (dbShard $ Thrift.database_repo db)
-    ] ++
-    [ jsonKeyFrom key .= shellFormatJson ctx value
-    | (key, value) <- extras]
-    where
-      status = Thrift.database_status db
-      repo = Thrift.database_repo db
-      jsonMaybeTime = maybe J.Null jsonTime
-      jsonTime (Thrift.PosixEpochTime t) =
-        J.toJSON $ posixSecondsToUTCTime (fromIntegral t)
-      jsonKeyFrom s = Text.pack $ map f s
-        where
-          f ' ' = '_'
-          f c = toLower c
+instance (ShellFormat DbVerbosity v)
+  => ShellFormat DbVerbosity (Thrift.Database, [(String, v)]) where
+    shellFormatText ctx@Context{..} opts (db, extras) = nest 2 $ vsep $
+      [ annotate (statusStyle status) (shellFormatText ctx () repo)
+        <+> shellFormatText ctx () status]
+      ++
+      [ "Created:" <+> showWhen (Thrift.database_created_since_epoch db) ]
+      ++
+      [ "Completed:" <+> showWhen t
+      | Just t <- [Thrift.database_completed db]
+      ]
+      ++
+      [ pretty key <> ":" <+> shellFormatText ctx opts value
+      | (key, value) <- extras]
+      ++
+      [ "Backup:" <+> pretty loc
+      | verbosity == DbDescribe ||
+        Thrift.database_status db == Thrift.DatabaseStatus_Restorable
+      , Just loc <- [Thrift.database_location db]
+      ]
+      ++
+      [ "Expires in:" <+> pretty (ppTimeSpan timeSpan)
+      | verbosity == DbDescribe
+      , Just expiresEpochTime <-
+          [Thrift.unPosixEpochTime <$> Thrift.database_expire_time db]
+      , let expires = Time $ fromIntegral expiresEpochTime
+      , let timeSpan = expires `timeDiff` ctxNow
+      ]
+      ++
+      [ "Shard:" <+> pretty (dbShard repo)
+      | verbosity == DbDescribe
+      ]
+      ++
+      [ nest 2 $ pretty name <> ":" <+> pretty value
+      | verbosity == DbDescribe
+      , (name,value) <- sortOn fst $
+          HashMap.toList (Thrift.database_properties db)
+      ]
+      where
+        showWhen (Thrift.PosixEpochTime t) =
+          pretty (show (posixSecondsToUTCTime (fromIntegral t))) <+>
+            parens (pretty (Text.unpack age) <+> "ago")
+          where
+            age = ppTimeSpanWithGranularity Hour $
+              ctxNow `timeDiff` Time (fromIntegral t)
 
-instance ShellFormat [Thrift.Database] where
-  shellFormatText ctx dbs =
+        status = Thrift.database_status db
+        repo = Thrift.database_repo db
+        verbosity = opts
+    shellFormatJson ctx opts (db, extras) = J.object $
+      [ "repo" .= shellFormatJson ctx () repo
+      , "status" .= shellFormatJson ctx () status
+      , "created" .= jsonTime (Thrift.database_created_since_epoch db)
+      , "completed" .= jsonMaybeTime (Thrift.database_completed db)
+      , "backup" .= maybe J.Null J.toJSON (Thrift.database_location db)
+      , "expires" .= jsonMaybeTime (Thrift.database_expire_time db)
+      , "shard" .= J.toJSON (dbShard $ Thrift.database_repo db)
+      ] ++
+      [ jsonKeyFrom key .= shellFormatJson ctx opts value
+      | (key, value) <- extras]
+      where
+        status = Thrift.database_status db
+        repo = Thrift.database_repo db
+        jsonMaybeTime = maybe J.Null jsonTime
+        jsonTime (Thrift.PosixEpochTime t) =
+          J.toJSON $ posixSecondsToUTCTime (fromIntegral t)
+        jsonKeyFrom s = Text.pack $ map f s
+          where
+            f ' ' = '_'
+            f c = toLower c
+
+instance ShellFormat DbVerbosity [Thrift.Database] where
+  shellFormatText ctx opts dbs =
     vsep $ concatMap f $ sortOn Thrift.database_created_since_epoch dbs
-    where f db = [shellFormatText ctx db, pretty ("    "::Text)]
-  shellFormatJson ctx dbs = J.toJSON $ map (shellFormatJson ctx) dbs
+    where f db = [shellFormatText ctx opts db, pretty ("    "::Text)]
+  shellFormatJson ctx v dbs = J.toJSON $ map (shellFormatJson ctx v) dbs
 
-instance ShellFormat v => ShellFormat [(Thrift.Database, [(String, v)])] where
-  shellFormatText ctx dbs =
-    vsep $ concatMap f $ sortOn (Thrift.database_created_since_epoch . fst) dbs
-    where f x = [shellFormatText ctx x, pretty ("    "::Text)]
-  shellFormatJson ctx dbs = J.toJSON $ map (shellFormatJson ctx) dbs
+instance (ShellFormat DbVerbosity v)
+  => ShellFormat DbVerbosity [(Thrift.Database, [(String, v)])] where
+    shellFormatText ctx opts dbs = vsep $ concatMap f $
+      sortOn (Thrift.database_created_since_epoch . fst) dbs
+      where f x = [shellFormatText ctx opts x, pretty ("    "::Text)]
+    shellFormatJson ctx v dbs = J.toJSON $ map (shellFormatJson ctx v) dbs
 
-type PredicateStatsList =
+type PredStatsList =
   [(Either Thrift.Id Thrift.PredicateRef, Thrift.PredicateStats)]
-type PredicateStatsFilter =
+type PredStatsFilter =
   Either Thrift.Id Thrift.PredicateRef -> Bool
 
-instance ShellFormat (PredicateStatsFilter, PredicateStatsList) where
-  shellFormatText Context{..} (filterPred, preds) = vcat $
-    vsep
-      [ nest 2 $ vsep
-          [ case ref of
-              Left id -> pretty id
-              Right pref -> pretty pref
-          , "count:" <+> pretty (Thrift.predicateStats_count stats)
-          , "size: " <+> pretty (getSizeInfo
-              (Thrift.predicateStats_size stats) totalSizeBytes)
-          ]
-      | (ref, stats) <- sortOn fst $ filter (filterPred . fst) preds
-      ]
-    :
-    if not ctxVerbose then [] else
-    [ ""
-    , "Total size: " <> pretty (showAllocs totalSizeBytes)
-    ]
-    where
-      totalSizeBytes =
-        foldl' (+) 0 $ map (Thrift.predicateStats_size . snd) preds
+data StatsVerbosity
+  = StatsHideTotal
+  | StatsShowTotal
+  deriving (Eq)
 
-  shellFormatJson _ (filterPred, preds) =
-    J.toJSON $ filter (filterPred . fst) preds
+instance ShellFormat StatsVerbosity (PredStatsFilter, PredStatsList) where
+    shellFormatText Context{..} opts (filterPred, preds) = vsep $
+        [ nest 2 $ vsep
+            [ case ref of
+                Left id -> pretty id
+                Right pref -> pretty pref
+            , "count:" <+> pretty (Thrift.predicateStats_count stats)
+            , "size: " <+> pretty (getSizeInfo
+                (Thrift.predicateStats_size stats) totalSizeBytes)
+            ]
+        | (ref, stats) <- sortOn fst $ filter (filterPred . fst) preds
+        ] ++
+        if verbosity /= StatsShowTotal then [] else
+        [ ""
+        , "Total size: " <> pretty (showAllocs totalSizeBytes)
+        ]
+      where
+        verbosity = opts
+        totalSizeBytes =
+          foldl' (+) 0 $ map (Thrift.predicateStats_size . snd) preds
+
+    shellFormatJson _ _ (filterPred, preds) =
+      J.toJSON $ filter (filterPred . fst) preds
 
 getSizeInfo :: Int64 -> Int64 -> String
 getSizeInfo bytes total =

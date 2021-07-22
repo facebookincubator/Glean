@@ -151,7 +151,7 @@ instance Plugin ListCommand where
       xs = Thrift.listDatabasesResult_databases r
       dbs = filter f xs
       f db = null listDbNames || any (repoFilter db) listDbNames
-    putShellPrintLn listFormat dbs
+    putShellPrintLn listFormat $ dbs `withFormatOpts` DbSummarise
 
 data StatusCommand
   = Status
@@ -177,7 +177,7 @@ instance Plugin StatusCommand where
     db <-
       Thrift.getDatabaseResult_database <$>
         Glean.getDatabase backend statusRepo
-    putShellPrintLn statusFormat db
+    putShellPrintLn statusFormat $ db `withFormatOpts` DbSummarise
     when statusSetExitCode $ case exitCode db of
       ExitFailure code -> exitWith $ ExitFailure code
       _ -> return ()
