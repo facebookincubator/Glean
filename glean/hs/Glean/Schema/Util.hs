@@ -16,6 +16,7 @@ module Glean.Schema.Util
   , showPredicateRef
   , NameSpaces
   , splitDot
+  , SourceRef(..)
   ) where
 
 import Data.Text (Text)

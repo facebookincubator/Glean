@@ -27,7 +27,6 @@ import Util.Control.Exception
 import Glean.Backend.Remote
 import Glean.Types hiding (Value)
 import Glean.Schema.Util
-import Glean.Angle.Types
 
 parsePredicate :: Value -> Aeson.Parser PredicateRef
 parsePredicate = withText "predicate" $ \txt -> do

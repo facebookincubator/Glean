@@ -5,12 +5,13 @@
 module GleanCLI (main) where
 
 import Control.Monad
+import qualified Data.Bifunctor
 import qualified Data.ByteString as B
 import Data.Default
 import Data.Foldable
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Map.Strict as Map
-import Data.List (sort, isInfixOf)
+import Data.List (isInfixOf)
 import Data.List.Split
 import Data.Proxy
 import Data.Text (Text)
@@ -25,6 +26,7 @@ import System.Exit (exitWith, ExitCode(..))
 import qualified Glean hiding (options)
 import qualified Glean.LocalOrRemote as Glean
 import qualified Glean.Database.Work as Database
+import Glean.Schema.Util
 import Glean.Types as Thrift hiding (ValidateSchema)
 import qualified Glean.Types as Thrift
 import Glean.Util.ConfigProvider
@@ -285,6 +287,8 @@ data StatsCommand
       { statsRepo :: Repo
       , perPredicate :: Bool
       , excludeBase :: Bool
+      , statsPredicates :: [Text]
+      , statsFormat :: Maybe ShellPrintFormat
       }
 
 instance Plugin StatsCommand where
@@ -293,39 +297,32 @@ instance Plugin StatsCommand where
       statsRepo <- repoOpts
       perPredicate <- switch ( long "per-predicate" )
       excludeBase <- switch ( long "exclude-base" )
+      statsPredicates <- many $ strArgument (metavar "PREDICATE")
+      statsFormat <- shellFormatOpt
       return Stats{..}
 
   runCommand _ _ backend Stats{..} = do
-    stats <- Map.toList <$>
+    xs <- Map.toList <$>
       Glean.predicateStats backend statsRepo
         (if excludeBase then Glean.ExcludeBase else Glean.IncludeBase)
-    let totalCount = sum [ predicateStats_count
-          | (_name, PredicateStats{..}) <- stats ]
-        totalSize = sum [ predicateStats_size
-          | (_name, PredicateStats{..}) <- stats ]
-    putStrLn $ unwords
-      ["total:"
-      , show (length stats)
-      , "predicates"
-      , show totalCount
-      , "facts"
-      , show totalSize
-      , "bytes" ]
-    when perPredicate $ do
-      SchemaInfo{..} <- Glean.getSchemaInfo backend statsRepo
-      let format (pid, Thrift.PredicateStats{..}) =
-            let Just PredicateRef{..} =
-                  Map.lookup pid schemaInfo_predicateIds
-                name = Text.unpack predicateRef_name <> "."
-                        <> show predicateRef_version
-            in unwords
-              [ "predicate:"
-              , name
-              , show predicateStats_count
-              , "facts"
-              , show predicateStats_size
-              , "bytes" ]
-      mapM_ putStrLn (sort (map format stats))
+    schemaInfo <- Glean.getSchemaInfo backend statsRepo
+    let
+      matchRefs = parseRef <$> statsPredicates
+      preds = map (Data.Bifunctor.first (lookupPid schemaInfo)) xs
+      filterPred :: Either Thrift.Id PredicateRef -> Bool
+      filterPred ref =
+        (perPredicate && null xs) ||
+            case ref of
+              Right pref -> any (predicateMatches pref) matchRefs
+              Left _ -> False
+    putShellPrintLn statsFormat $ (filterPred, preds) `withFormatOpts` StatsShowTotal
+    where
+      lookupPid SchemaInfo{..} pid =
+        maybe (Left pid) Right $
+          Map.lookup pid schemaInfo_predicateIds
+      predicateMatches PredicateRef{..} SourceRef{..} =
+          predicateRef_name == sourceRefName &&
+          maybe True (== predicateRef_version) sourceRefVersion
 
 data OwnershipCommand
   = Ownership
