@@ -11,7 +11,7 @@ The following guide will explain Angle from first principles, leading you throug
 
 If you want to try the examples for yourself, or experiment with
 changes to the example schema, you should first follow the
-instructions in [Walkthrough](../walkthrough) to get set up.
+instructions in [Walkthrough](../walkthrough.md) to get set up.
 
 <FbInternalOnly>
 
@@ -21,7 +21,7 @@ There are also [examples of using Angle](https://www.internalfb.com/intern/wiki/
 
 ## Just the facts
 
-Data in Glean is described by a *schema*, which we normally put in a file with the extension `angle`. For the purposes of this guide we’ll use the example schema in `example.angle`. Full details about defining schemas can be found in [Schemas](../schema/basic). The `example.angle` file contains a schema definition like this:
+Data in Glean is described by a *schema*, which we normally put in a file with the extension `angle`. For the purposes of this guide we’ll use the example schema in `example.angle`. Full details about defining schemas can be found in [Schemas](../schema/basic.md). The `example.angle` file contains a schema definition like this:
 
 ```lang=angle
 schema example.1 {
@@ -86,7 +86,7 @@ Your patterns should normally match fields at the *beginning* of the
 record, because facts in the database are indexed by a prefix of the
 fields. Matching a field in the middle of the record works by scanning
 all the facts, which could be expensive. We’ll get into this in more
-detail in [Query Efficiency](efficiency).
+detail in [Query Efficiency](efficiency.md).
 
 :::
 
@@ -100,7 +100,7 @@ facts> example.Class _
 { "id": 1024, "key": { "name": "Pet", "line": 10 } }
 ```
 
-We’ll introduce more kinds of pattern in the following sections. The full list of patterns can be found in [Angle Reference](reference).
+We’ll introduce more kinds of pattern in the following sections. The full list of patterns can be found in [Angle Reference](reference.md).
 
 ## Matching nested facts
 

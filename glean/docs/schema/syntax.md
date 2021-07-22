@@ -20,7 +20,7 @@ schema java.1 {
 
 The name of the schema will be also used as the *namespace* for the
 generated Thrift types. You'll notice that each schema gets a separate
-generated [Thrift file](thrift) for working with the data in your code.
+generated [Thrift file](thrift.md) for working with the data in your code.
 
 ## Predicates
 
@@ -35,7 +35,7 @@ where
 * `KeyType` is the *key type*
 * `ValueType` is the *value type*
 
-For example, the example schema that we saw in the [Introduction](../introduction)
+For example, the example schema that we saw in the [Introduction](../introduction.md)
 contains the `Class` predicate:
 
 ```
@@ -136,7 +136,7 @@ type Loc = {
 
 Types cannot be recursive or mutually recursive. If you want a
 recursive type, the cycle must go through at least one predicate. For
-more details, see [Recursion](recursion).
+more details, see [Recursion](recursion.md).
 
 :::
 
@@ -189,7 +189,7 @@ inheritance declarations.
 
 Names take the form of a dot-separated sequence of alphanumeric words. For example, `sys.Blob`, `clang.File`, or `cxx.objc.Name`. The words up to the last dot are the *namespace*, the final word is the *name*.
 
-See [Names](../angle/reference#names) for full details.
+See [Names](../angle/reference.md#names) for full details.
 
 Briefly:
 * Namespaces (schema names) are dot-separated sequences of identifiers each beginning with a lower-case letter

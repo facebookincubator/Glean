@@ -31,7 +31,7 @@ You can read the query as
 > There is a fact OutTarget {F,T} for every fact TargetOut {T,F}
 
 The query can be any arbitrary Angle query; the syntax is described in
-[Angle Guide](angle/guide). The only requirement is that the values
+[Angle Guide](angle/guide.md). The only requirement is that the values
 produced by the query must match the key type of the predicate being
 defined.
 
@@ -263,4 +263,4 @@ When you're done, the next section describes how to get your derived predicate i
 
 Derived predicates are defined directly in the schema, so the process
 for adding them is exactly the same as modifying the schema, described
-over in [Schema Workflow](schema/workflow).
+over in [Schema Workflow](schema/workflow.md).

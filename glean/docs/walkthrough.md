@@ -6,8 +6,8 @@ sidebar_label: Walkthrough
 
 import {OssOnly, FbInternalOnly} from 'internaldocs-fb-helpers';
 
-We can play with Glean using the [shell](shell). You can do this
-directly from the [Docker image](trying) if you want, or [Build Glean
+We can play with Glean using the [shell](shell.md). You can do this
+directly from the [Docker image](trying.md) if you want, or [Build Glean
 from source](building) first.
 
 To try experiments we can work with a local schema definition and
@@ -33,5 +33,5 @@ data using `:load <file>` in the shell:
 facts>
 ```
 
-Now head over to [Angle Guide](angle/guide) to try some example
+Now head over to [Angle Guide](angle/guide.md) to try some example
 queries and learn about how the query language works.

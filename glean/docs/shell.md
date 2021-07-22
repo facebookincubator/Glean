@@ -6,9 +6,9 @@ sidebar_label: Using the Shell
 
 The shell is an interactive tool in which you can
 
-* Experiment with [Angle queries](angle/guide)
+* Experiment with [Angle queries](angle/guide.md)
 * Explore the data in a Glean database
-* Experiment with schema changes and [derived predicates](derived)
+* Experiment with schema changes and [derived predicates](derived.md)
 * Create experimental databases and query them
 
 ## Invoking the shell
@@ -47,7 +47,7 @@ See [shell options](#shell-options) for more command-line options.
 * List the available databases with `:list`
 * Select a database with `:db NAME`
 * See the contents of the database with `:stat`
-* Type queries in [Angle](angle/guide) to see the results.
+* Type queries in [Angle](angle/guide.md) to see the results.
 
 ## Shell options
 
@@ -109,7 +109,7 @@ Show only a count of query results, not the results themselves
 * `:more`<br />
 Fetch more results from the previous query
 * `:profile [off|summary|full]`<br />
-Show query profiling information; see [Query Debugging](angle/debugging).
+Show query profiling information; see [Query Debugging](angle/debugging.md).
 * `:reload`<br />
 Reload the schema (when using `--schema`). This command is useful when
 making changes to the schema, including [derived

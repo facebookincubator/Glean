@@ -34,7 +34,7 @@ What's in the image?
 
 :::
 
-Start the Glean [shell](shell):
+Start the Glean [shell](shell.md):
 
 ```
 glean-shell --db-root /gleandb --schema /glean-code/glean/schema/source

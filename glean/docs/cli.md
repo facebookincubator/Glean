@@ -67,7 +67,7 @@ Specifies the name and hash of the database
 
 ### `glean derive`
 
-Derive and store a predicate. See [Derived Predicates](derived).
+Derive and store a predicate. See [Derived Predicates](derived.md).
 
 * `--page-bytes BYTES`<br />
 Maximum number of bytes per page

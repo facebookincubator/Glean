@@ -14,8 +14,8 @@ for querying data or for writing facts.
 
 The Thrift types also have a JSON representation, which can be read
 and written directly. When you perform queries in the
-[shell](../shell), the results are printed as JSON-encoded Thrift;
-when you [write data to Glean](../write) it can be in the form of
+[shell](../shell.md), the results are printed as JSON-encoded Thrift;
+when you [write data to Glean](../write.md) it can be in the form of
 JSON-encoded Thrift.
 
 <FbInternalOnly>

@@ -26,4 +26,4 @@ N where
   }
 ```
 
-To learn about Angle, start with the [Guide](guide).
+To learn about Angle, start with the [Guide](guide.md).
