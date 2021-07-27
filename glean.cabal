@@ -46,7 +46,11 @@ common fb-haskell
         NondecreasingIndentation
   if flag(opt)
      ghc-options: -O2
-     cxx-options: -O3 -march=haswell
+
+common fb-cpp
+  cxx-options: -std=c++17 -march=haswell
+  if flag(opt)
+     cxx-options: -O3
 
 common exe
   ghc-options: -threaded
@@ -113,7 +117,7 @@ common hsc2hs-cpp
     hsc2hs-options: --cc=g++ --lflag=-lstdc++ --cflag=-D__HSC2HS__=1 --cflag=-std=c++17
 
 library stubs
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: public
     hs-source-dirs: glean/github
     exposed-modules:
@@ -134,7 +138,7 @@ library stubs
         template-haskell
 
 library tailer
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: private
     hs-source-dirs: glean/github
     exposed-modules:
@@ -143,7 +147,7 @@ library tailer
         glean:util
 
 library logger
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: private
     hs-source-dirs: glean/github
     exposed-modules:
@@ -154,7 +158,7 @@ library logger
         glean:util
 
 library config
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: public
     include-dirs: .
     hs-source-dirs:
@@ -173,7 +177,7 @@ library config
     pkgconfig-depends: libfolly
 
 library defaultconfigs
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: private
     hs-source-dirs: glean/github
     exposed-modules:
@@ -183,7 +187,7 @@ library defaultconfigs
         glean:util
 
 library if-fb303-hs
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: public
     hs-source-dirs:
         glean/github/if/gen-hs2
@@ -196,7 +200,7 @@ library if-fb303-hs
         Fb303.FacebookService.Service
 
 library if-glean-hs
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: public
     hs-source-dirs:
         glean/if/gen-hs2
@@ -209,7 +213,7 @@ library if-glean-hs
         glean:if-fb303-hs
 
 library if-internal-hs
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: public
     hs-source-dirs:
         glean/if/internal/gen-hs2
@@ -220,7 +224,7 @@ library if-internal-hs
         glean:if-glean-hs
 
 library if-search-hs
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: public
     hs-source-dirs:
         glean/if/search/gen-hs2
@@ -233,7 +237,7 @@ library if-search-hs
 --        fb303
 
 library if-fb303-cpp
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: public
     include-dirs: .
     cxx-sources:
@@ -243,7 +247,7 @@ library if-fb303-cpp
         glean/github/if/gen-cpp2/fb303_data.cpp
 
 library if-glean-cpp
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: public
     cxx-sources:
         glean/if/gen-cpp2/glean_types.cpp
@@ -253,7 +257,7 @@ library if-glean-cpp
         glean:config
 
 library if-internal-cpp
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: public
     cxx-sources:
         glean/if/gen-cpp2/internal_types.cpp
@@ -264,7 +268,7 @@ library if-internal-cpp
         glean:config
 
 library ffi
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: private
     include-dirs: .
     cxx-sources:
@@ -273,7 +277,7 @@ library ffi
         glean:if-glean-cpp
 
 library rts
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: private
     include-dirs: .
     cxx-sources:
@@ -300,13 +304,13 @@ library rts
         glean/rts/validate.cpp
         glean/rts/bytecode/subroutine.cpp
     pkgconfig-depends: libfolly, libunwind, libglog, icu-uc, gflags, libxxhash
-    cxx-options: -std=c++17 -DOSS=1 -mavx2 -mlzcnt
+    cxx-options: -DOSS=1
     build-depends:
         glean:if-internal-cpp,
         glean:ffi
 
 library rocksdb
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: private
     cxx-sources:
         glean/rocksdb/ffi.cpp
@@ -314,7 +318,7 @@ library rocksdb
     -- -fno-rtti is needed because RocksDB is compiled with it, and we
     -- get linker errors for references to missing typeinfo symbols if
     -- we don't.
-    cxx-options: -fno-rtti -std=c++17
+    cxx-options: -fno-rtti
     extra-libraries: rocksdb
     build-depends:
         glean:rocksdb-stats,
@@ -323,17 +327,16 @@ library rocksdb
 
 -- This needs to be separate from rocksdb because it can't be compiled with -fno-rtti
 library rocksdb-stats
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: private
     cxx-sources:
         glean/rocksdb/stats.cpp
-    cxx-options: -std=c++17
     build-depends:
         glean:rts,
         glean:ffi
 
 library util
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: public
     hs-source-dirs: glean/util
     exposed-modules:
@@ -369,7 +372,7 @@ library util
         network
 
 library core
-    import: fb-haskell, deps, hsc2hs-cpp
+    import: fb-haskell, fb-cpp, deps, hsc2hs-cpp
     visibility: public
     hs-source-dirs: glean/hs
     default-extensions: CPP
@@ -455,7 +458,7 @@ library core
         glean:rocksdb,
 
 library db
-    import: fb-haskell, deps, hsc2hs-cpp
+    import: fb-haskell, fb-cpp, deps, hsc2hs-cpp
     visibility: public
     hs-source-dirs: glean/db
     default-extensions: CPP
@@ -537,7 +540,7 @@ library db
 
 
 library client-hs
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: public
     hs-source-dirs: glean/client/hs
     exposed-modules:
@@ -558,7 +561,7 @@ library client-hs
         prettyprinter-ansi-terminal
 
 library client-hs-local
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: public
     hs-source-dirs: glean/client/hs/local
     exposed-modules:
@@ -571,7 +574,7 @@ library client-hs-local
 
 
 library schema
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: public
     hs-source-dirs:
         glean/schema/hs
@@ -630,7 +633,7 @@ library schema
         glean:core,
 
 library schema-query
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: public
     hs-source-dirs:
         glean/schema/thrift/query/gen-hs2
@@ -666,14 +669,14 @@ library schema-query
         glean:schema,
 
 -- library clang-test-xref
---     import: fb-haskell, deps
+--     import: fb-haskell, fb-cpp, deps
 --     visibility: public
 --     hs-source-dirs: lang/clang
 --     exposed-modules:
 --         Glean.Clang.Test.XRef
 
 library haxl-datasource
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     hs-source-dirs: glean/haxl
     exposed-modules:
         Haxl.DataSource.Glean
@@ -689,7 +692,7 @@ library haxl-datasource
         thrift-haxl
 
 executable gen-schema
-    import: fb-haskell, deps, exe
+    import: fb-haskell, fb-cpp, deps, exe
     main-is: Glean/Schema/Gen/Main.hs
     hs-source-dirs: glean/schema/gen
     ghc-options: -main-is Glean.Schema.Gen.Main
@@ -706,7 +709,7 @@ executable gen-schema
         aeson-pretty
 
 library bytecode-instruction
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: private
     hs-source-dirs: glean/bytecode/def
     exposed-modules:
@@ -715,7 +718,7 @@ library bytecode-instruction
         glean:bytecode
 
 library bytecode
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: private
     hs-source-dirs: glean/bytecode
     exposed-modules:
@@ -723,7 +726,7 @@ library bytecode
         Glean.Bytecode.Decode
 
 executable gen-bytecode-cpp
-    import: fb-haskell, deps, exe
+    import: fb-haskell, fb-cpp, deps, exe
     main-is: Glean/Bytecode/Generate/Cpp.hs
     hs-source-dirs: glean/bytecode/gen
     ghc-options: -main-is Glean.Bytecode.Generate.Cpp
@@ -732,7 +735,7 @@ executable gen-bytecode-cpp
         glean:bytecode-instruction
 
 executable gen-bytecode-hs
-    import: fb-haskell, deps, exe
+    import: fb-haskell, fb-cpp, deps, exe
     main-is: Glean/Bytecode/Generate/Haskell.hs
     hs-source-dirs: glean/bytecode/gen
     ghc-options: -main-is Glean.Bytecode.Generate.Haskell
@@ -741,7 +744,7 @@ executable gen-bytecode-hs
         glean:bytecode-instruction
 
 library lib
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: public
     hs-source-dirs: glean/lib
     exposed-modules:
@@ -784,14 +787,14 @@ library lib
         split
 
 library test-unit
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     hs-source-dirs: glean/test/unit
     exposed-modules:
         Glean.Test.HUnit
         Glean.Test.Mock
 
 executable glean-server
-    import: fb-haskell, deps, exe
+    import: fb-haskell, fb-cpp, deps, exe
     hs-source-dirs: glean/server
     main-is: Glean/Server.hs
     ghc-options: -main-is Glean.Server
@@ -814,7 +817,7 @@ executable glean-server
         thrift-server
 
 executable glean-shell
-    import: fb-haskell, deps, exe
+    import: fb-haskell, fb-cpp, deps, exe
     hs-source-dirs: glean/shell
     main-is: Glean/Shell.hs
     other-modules:
@@ -842,7 +845,7 @@ executable glean-shell
 
 
 executable glean
-    import: fb-haskell, deps, exe
+    import: fb-haskell, fb-cpp, deps, exe
     hs-source-dirs: glean/tools/gleancli
     main-is: GleanCLI.hs
     other-modules:
@@ -869,7 +872,7 @@ executable glean
         split,
 
 executable glean-search
-    import: fb-haskell, deps, exe
+    import: fb-haskell, fb-cpp, deps, exe
     hs-source-dirs: glean/tools/search
     main-is: Search.hs
     ghc-options: -main-is Search
@@ -884,7 +887,7 @@ executable glean-search
         aeson-pretty,
 
 executable glean-hyperlink
-    import: fb-haskell, deps, exe
+    import: fb-haskell, fb-cpp, deps, exe
     hs-source-dirs: glean/demo
     main-is: Hyperlink.hs
     ghc-options: -main-is Hyperlink
@@ -902,7 +905,7 @@ executable glean-hyperlink
 -- Benchmarks
 
 library bench-util
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     hs-source-dirs: glean/bench/lib
     exposed-modules:
         Glean.Util.Benchmark
@@ -911,7 +914,7 @@ library bench-util
         criterion
 
 executable query-bench
-    import: fb-haskell, deps, exe
+    import: fb-haskell, fb-cpp, deps, exe
     if !flag(benchmarks)
        buildable: False
     hs-source-dirs: glean/bench
@@ -931,7 +934,7 @@ executable query-bench
         criterion
 
 executable rename-bench
-    import: fb-haskell, deps, exe
+    import: fb-haskell, fb-cpp, deps, exe
     if !flag(benchmarks)
        buildable: False
     hs-source-dirs: glean/bench
@@ -947,7 +950,7 @@ executable rename-bench
         criterion
 
 executable user-query-bench
-    import: fb-haskell, deps, exe
+    import: fb-haskell, fb-cpp, deps, exe
     if !flag(benchmarks)
        buildable: False
     hs-source-dirs: glean/bench
@@ -967,7 +970,7 @@ executable user-query-bench
 -- Tests
 
 library test-lib
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: private
     hs-source-dirs: glean/test/lib
     exposed-modules:
@@ -989,7 +992,7 @@ library test-lib
         glean:util
 
 library bench-lib
-    import: fb-haskell, deps
+    import: fb-haskell, fb-cpp, deps
     visibility: private
     hs-source-dirs: glean/bench
     exposed-modules:
@@ -1017,7 +1020,7 @@ library bench-lib
 --         glean:schema
 --
 -- library test-compact
---     import: fb-haskell, deps
+--     import: fb-haskell, fb-cpp, deps
 --     visibility: private
 --     include-dirs: .
 --     cxx-sources:
@@ -1027,7 +1030,7 @@ library bench-lib
 --         schema-cpp
 --
 -- library schema-cpp
---     import: fb-haskell, deps
+--     import: fb-haskell, fb-cpp, deps
 --     visibility: private
 --     include-dirs: .
 --     cxx-sources:
@@ -1040,7 +1043,7 @@ library bench-lib
 --         ... etc.
 
 common test
-    import: fb-haskell, deps, exe
+    import: fb-haskell, fb-cpp, deps, exe
     hs-source-dirs: glean/test/tests
     build-depends:
         glean:test-lib,
