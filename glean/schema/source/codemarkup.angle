@@ -171,6 +171,20 @@ predicate ResolveLocation:
     HaskellResolveLocation { Location, Entity } |
     RustResolveLocation { Location, Entity }
 
+predicate EntityLocation:
+  {
+    entity: code.Entity,
+    location: Location,
+  }
+  { Entity, Location } where
+    HackEntityLocation { Entity, Location } |
+    PythonEntityLocation { Entity, Location } |
+    FlowEntityLocation { Entity, Location } |
+    CxxEntityLocation { Entity, Location } |
+    PPEntityLocation { Entity, Location } |
+    HaskellEntityLocation { Entity, Location } |
+    RustEntityLocation { Entity, Location }
+
 # Finding xrefs. All references in a file and their targets
 predicate FileEntityXRefLocations:
   {
@@ -305,6 +319,69 @@ predicate RustResolveLocation:
     rust.DefLocation { Defn, File, Span };
     rust.DefinitionName { Defn, rust.Name Name };
     Entity = code.Entity { rust = { definition = Defn } };
+
+# Finding entities' locations
+
+predicate HackEntityLocation:
+  {
+    entity: code.Entity,
+    location: Location,
+  }
+  { { hack = { decl = D } }, { Name, File, { span = Span } } } where
+    hack.DeclarationLocation { declaration = D, file = File, span = Span };
+    hack.DeclarationName D -> (hack.Name Name);
+
+predicate PythonEntityLocation:
+  {
+    entity: code.Entity,
+    location: Location,
+  }
+  { { python = { decl = D } }, { Name, File, { span = Span } } } where
+    python.DeclarationLocation { declaration = D, file = File, span = Span };
+    python.DeclarationToName D -> (python.Name Name);
+
+predicate FlowEntityLocation:
+  {
+    entity: code.Entity,
+    location: Location,
+  }
+  { { flow = { decl = D } }, { Name, File, { span = Span } } } where
+    flow.DeclarationLocation { decl = D, file = File, span = Span };
+    flow.DeclarationNameSpan { decl = D, name = flow.Name Name, span = Span };
+
+predicate CxxEntityLocation:
+  {
+    entity: code.Entity,
+    location: Location,
+  }
+  { { cxx = { decl = D } }, { Name, File, { range = Range } } } where
+    cxx1.DeclarationLocation { decl = D, source = Range, name = cxx1.Name Name };
+    { file = File } = Range;
+
+predicate PPEntityLocation:
+  {
+    entity: code.Entity,
+    location: Location,
+  }
+  { { pp = D }, { Name, File, { range = Range } } } where
+    cxx1.PPDefineLocation { D, Name, File, Range};
+
+predicate HaskellEntityLocation:
+  {
+    entity: code.Entity,
+    location: Location,
+  }
+  { { hs = D }, { Name, File, { span = Span } } } where
+    hs.DefinitionLocation { D, Name, { File, Span } };
+
+predicate RustEntityLocation:
+  {
+    entity: code.Entity,
+    location: Location,
+  }
+  { { rust = { definition = D } }, { Name, File, { span = Span } } } where
+    rust.DefLocation { D, File, Span };
+    rust.DefinitionName { D, rust.Name Name };
 
 # Finding references in a file
 
