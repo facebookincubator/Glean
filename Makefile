@@ -54,6 +54,8 @@ SCHEMAS= \
 	code_hack \
 	code_hs \
 	code_java \
+	code_rust \
+	code_thrift \
 	codemarkup \
 	code_python \
 	code \
@@ -66,11 +68,13 @@ SCHEMAS= \
 	java \
 	pp1 \
 	python \
+	rust \
 	search_cxx \
 	search_hack \
 	search_pp \
 	src \
-	sys
+	sys \
+	thrift \
 
 .PHONY: thrift
 thrift:: thrift-cpp thrift-hs
