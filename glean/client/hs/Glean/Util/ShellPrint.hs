@@ -2,7 +2,6 @@
 
 {-# LANGUAGE
   TypeApplications
-, QuantifiedConstraints
 , ConstraintKinds
 , UndecidableInstances
 #-}
@@ -87,7 +86,10 @@ data PrintOpts = PrintOpts
   , poWidth :: Maybe PageWidth
   }
 
-type ShellPrint a = forall o. ShellFormat o a
+type ShellPrint a = ShellFormat () a
+  -- we might prefer this to be "forall o . ShellFormat o a" but that
+  -- requires QuantifiedConstraints which isn't available until GHC 8.6.x
+  -- and we're keeping GHC 8.4.x compatibility for now.
 
 putShellPrintLn
   :: ShellPrint a
@@ -115,7 +117,7 @@ hPutShellPrintLn outh opt x = do
   shellPrint outh opts x
 
 shellPrint
-  :: forall a. (forall o. ShellFormat o a)
+  :: forall a. ShellFormat () a
   => Handle -> PrintOpts -> a -> IO ()
 shellPrint handle PrintOpts{..} x =
   Pretty.renderIO handle sds
