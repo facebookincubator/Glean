@@ -978,6 +978,21 @@ executable user-query-bench
         glean:util,
         criterion
 
+executable makefact-bench
+    import: fb-haskell, deps, exe
+    if !flag(benchmarks)
+       buildable: False
+    hs-source-dirs: glean/bench
+    main-is: MakeFactBench.hs
+    ghc-options: -main-is MakeFactBench
+    build-depends:
+        glean:bench-util,
+        glean:client-hs,
+        glean:core,
+        glean:schema,
+        glean:test-lib,
+        criterion
+
 -- -----------------------------------------------------------------------------
 -- Tests
 
