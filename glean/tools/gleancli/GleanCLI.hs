@@ -289,6 +289,7 @@ data StatsCommand
       , excludeBase :: Bool
       , statsPredicates :: [Text]
       , statsFormat :: Maybe ShellPrintFormat
+      , statsSetExitCode :: Bool
       }
 
 instance Plugin StatsCommand where
@@ -299,6 +300,11 @@ instance Plugin StatsCommand where
       excludeBase <- switch ( long "exclude-base" )
       statsPredicates <- many $ strArgument (metavar "PREDICATE")
       statsFormat <- shellFormatOpt
+      statsSetExitCode <- switch
+        (  short 'e'
+        <> help
+           "Set an error status code if there are no facts for the predicate(s)"
+        )
       return Stats{..}
 
   runCommand _ _ backend Stats{..} = do
@@ -311,11 +317,14 @@ instance Plugin StatsCommand where
       preds = map (Data.Bifunctor.first (lookupPid schemaInfo)) xs
       filterPred :: Either Thrift.Id PredicateRef -> Bool
       filterPred ref =
-        (perPredicate && null xs) ||
-            case ref of
-              Right pref -> any (predicateMatches pref) matchRefs
-              Left _ -> False
-    putShellPrintLn statsFormat $ (filterPred, preds) `withFormatOpts` StatsShowTotal
+        (perPredicate && null matchRefs) || refMatches ref
+      refMatches (Right pref) = any (predicateMatches pref) matchRefs
+      refMatches (Left _) = False
+    putShellPrintLn statsFormat $
+      (filterPred, preds) `withFormatOpts` StatsShowTotal
+    when statsSetExitCode $
+      when (not $ any (refMatches . fst) preds) $
+        exitWith $ ExitFailure 100
     where
       lookupPid SchemaInfo{..} pid =
         maybe (Left pid) Right $
