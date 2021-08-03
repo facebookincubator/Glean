@@ -50,7 +50,7 @@ data WriteCommand
       , finish :: Bool
       , properties :: [(Text,Text)]
       , writeMaxConcurrency :: Int
-      , experimentalFasterWriting :: Maybe Glean.SendAndRebaseQueueSettings
+      , useLocalCache :: Maybe Glean.SendAndRebaseQueueSettings
       }
 
 instance Plugin WriteCommand where
@@ -70,7 +70,7 @@ instance Plugin WriteCommand where
           )
         writeHandle <- handleOpt
         writeMaxConcurrency <- maxConcurrencyOpt
-        experimentalFasterWriting <- experimentalFasterWritingOptions
+        useLocalCache <- useLocalCacheOptions
         return Write{create=True, ..}
 
     readProperty :: ReadM (Text,Text)
@@ -94,7 +94,7 @@ instance Plugin WriteCommand where
         finish <- finishOpt
         writeHandle <- handleOpt
         writeMaxConcurrency <- maxConcurrencyOpt
-        experimentalFasterWriting <- experimentalFasterWritingOptions
+        useLocalCache <- useLocalCacheOptions
         return Write{create=False, properties=[], dependencies=Nothing, ..}
 
     finishOpt = switch
@@ -124,13 +124,15 @@ instance Plugin WriteCommand where
         , scribeCompress = compress
         }
 
-    experimentalFasterWritingOptions
+    useLocalCacheOptions
       :: Parser (Maybe Glean.SendAndRebaseQueueSettings)
-    experimentalFasterWritingOptions = do
-        experimentalFasterWritingFlag <-
-          switch (long "experimental-faster-writing")
+    useLocalCacheOptions = do
+        useLocalCacheFlag <- switch
+          (  long "use-local-cache"
+          <> help "use a cache to rebase facts locally"
+          )
         sendAndRebaseQueue <- Glean.sendAndRebaseQueueOptions
-        return $ if experimentalFasterWritingFlag then
+        return $ if useLocalCacheFlag then
             Just sendAndRebaseQueue
         else
           Nothing
@@ -195,14 +197,14 @@ instance Plugin WriteCommand where
             writeFiles
             writeMaxConcurrency
             scribe
-            experimentalFasterWriting)
+            useLocalCache)
     where
-    write repo files max Nothing (Just fasterWriting) = do
+    write repo files max Nothing (Just useLocalCache) = do
       schemaInfo <- Glean.getSchemaInfo backend repo
       dbSchema <- fromSchemaInfo schemaInfo readWriteContent
       logMessages <- newTQueueIO
       let inventory = schemaInventory dbSchema
-      Glean.withSendAndRebaseQueue backend repo inventory fasterWriting $
+      Glean.withSendAndRebaseQueue backend repo inventory useLocalCache $
         \queue ->
           streamWithThrow max (forM_ files) $ \file -> do
             r <- Foreign.CPP.Dynamic.parseJSON =<< B.readFile file
@@ -218,7 +220,7 @@ instance Plugin WriteCommand where
             return ()
       atomically (flushTQueue logMessages) >>= mapM_ putStrLn
 
-    write repo files max scribe _fasterWriting = do
+    write repo files max scribe Nothing = do
       streamWithThrow max (forM_ files) $
         \file -> do
           r <- Foreign.CPP.Dynamic.parseJSON =<< B.readFile file
@@ -238,6 +240,9 @@ instance Plugin WriteCommand where
                     Nothing -> Nothing)
                   batches
                   scribeCompress
+
+    write _repo _files _max (Just _scribe) (Just _useLocalCache)  =
+      die 3 "Cannot use a local cache with scribe"
 
     resultToFailure Right{} = Nothing
     resultToFailure (Left err) = Just (show err)
