@@ -36,18 +36,10 @@ genSchemaHS _version preddefs typedefs =
   ] ++
   [ ("hs" </> "Glean" </> "Schema" </>
       Text.unpack (Text.concat (map cap1 namespaces)) <.> "hs",
-    genAllPredicates namespaces predIndices preds)
+    genAllPredicates namespaces preds)
   | (namespaces, (_deps, preds, _types)) <- schemas
   ]
   where
-    -- each predicate gets a unique Id (its "index") which is used to
-    -- lookup the Pid quickly when writing facts. These indices must
-    -- be globally unique across all schemas.
-    predIndices = HashMap.fromList
-      [ (predicateDefRef pred, ix)
-      | (pred, ix) <- zip preddefs [0..]
-      ]
-
     schemas = HashMap.toList declsPerNamespace
     declsPerNamespace =
       addNamespaceDependencies $ sortDeclsByNamespace preddefs typedefs
@@ -62,9 +54,7 @@ genSchemaHS _version preddefs typedefs =
     doGen mode preds types = concat gen ++ reverse extra
       where
       (gen :: [[Text]], extra :: [Text]) = runM mode [] namePolicy typedefs $ do
-         ps <- forM preds $ \pred -> do
-           let ix = fromJust $ HashMap.lookup (predicateDefRef pred) predIndices
-           genPredicate mode ix pred
+         ps <- mapM (genPredicate mode) preds
          ts <- mapM (genType mode) types
          return (ps ++ ts)
 
@@ -97,25 +87,23 @@ genTargets info =
 
 genAllPredicates
   :: NameSpaces
-  -> HashMap PredicateRef Int
   -> [PredicateDef]
   -> Text
-genAllPredicates namespace indices preds = Text.unlines $
+genAllPredicates namespace preds = Text.unlines $
   [ "-- @" <> "generated"
   , "module Glean.Schema." <>
     Text.concat (map cap1 namespace) <> " (allPredicates) where"
   , ""
   , "import Glean.Types"
   , ""
-  , "allPredicates :: [(PredicateRef, Int)]"
+  , "allPredicates :: [PredicateRef]"
   , "allPredicates ="
   ] ++
   indentLines (encsep "[ " ", " "]"
     [ "(PredicateRef \"" <> predicateRef_name ref <> "\" " <>
-         showt (predicateRef_version ref) <> ", " <> showt ix <> ")"
+         showt (predicateRef_version ref) <> ")"
     | pred <- preds
     , let ref = predicateDefRef pred
-    , Just ix <- [HashMap.lookup ref indices]
     ])
   where
     encsep start _ end [] = [start <> end]
@@ -282,8 +270,8 @@ haskellTy_ withId mode genSub here t = case t of
   Enumerated _ -> shareTypeDef mode genSub here t
 
 
-genPredicate :: Mode -> Int -> PredicateDef -> M [Text]
-genPredicate mode index PredicateDef{..}
+genPredicate :: Mode -> PredicateDef -> M [Text]
+genPredicate mode PredicateDef{..}
   | provided (predicateRef_name predicateDefRef) = return []
   | otherwise = do
     pName <- predicateName predicateDefRef
@@ -327,7 +315,6 @@ genPredicate mode index PredicateDef{..}
           [ "getName _proxy " =@ "Glean.PredicateRef " <>
                 Text.pack (show glean_name) <> -- adds quotes, does escaping
                 showt (predicateRef_version predicateDefRef)
-          , "getIndex _proxy " =@ Text.pack (show index)
           , "getId = Glean.IdOf . Glean.Fid . " <> field_id
           , "mkFact (Glean.IdOf (Glean.Fid x)) k "
               <> (if has_value then "v" else "_")

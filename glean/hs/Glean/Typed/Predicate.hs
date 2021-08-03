@@ -18,13 +18,17 @@ module Glean.Typed.Predicate
   , SumBranches(..)
   ) where
 
+import Control.Concurrent
 import Control.Exception
+import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
+import Data.IORef
 import qualified Data.Map as Map
 import Data.Proxy
 import Data.Text (Text)
 import Data.Vector.Primitive (Vector)
 import qualified Data.Vector.Primitive as Vector
+import System.IO.Unsafe
 import TextShow
 
 import Glean.RTS.Types (invalidPid)
@@ -55,11 +59,16 @@ class (Type (KeyType p), Type (ValueType p)) => Predicate p where
   type ValueType p
   type ValueType p = ()
   getName :: proxy p -> PredicateRef
-  getIndex :: proxy p -> PredicateIndex
   mkFact :: IdOf p -> Maybe (KeyType p) -> Maybe (ValueType p) -> p
   getId :: p -> IdOf p
   getFactKey :: p -> Maybe (KeyType p)
   getFactValue :: p -> Maybe (ValueType p)
+
+  -- A unique integer per predicate, used for fast lookup of Pids when
+  -- writing facts.
+  getIndex :: proxy p -> PredicateIndex
+  getIndex = const (predicateIndex (getName (Proxy :: Proxy p)))
+    -- this should be computed once and cached per predicate type
 
 justId :: Predicate p => IdOf p -> p
 justId x = mkFact x Nothing Nothing
@@ -93,17 +102,35 @@ instance HasPredicates Predicates where
 
 -- | The type of @allPredicates@ generated for each schema. To get this,
 -- import the generated module for the schema, e.g. @Glean.Schema.Src@.
-type SchemaPredicates = [(PredicateRef, PredicateIndex)]
+type SchemaPredicates = [PredicateRef]
+
+predicateIndex :: PredicateRef -> Int
+predicateIndex ref =
+  unsafeDupablePerformIO $ do
+    modifyMVar predicateIndices $ \hm ->
+      case HashMap.lookup ref hm of
+        Nothing -> do
+          n <- atomicModifyIORef' predicateNextIndex (\x -> (x+1, x+1))
+          return (HashMap.insert ref n hm, n)
+        Just n -> return (hm, n)
+
+{-# NOINLINE predicateIndices #-}
+predicateIndices :: MVar (HashMap PredicateRef Int)
+predicateIndices = unsafePerformIO $ newMVar HashMap.empty
+
+{-# NOINLINE predicateNextIndex #-}
+predicateNextIndex :: IORef Int
+predicateNextIndex = unsafePerformIO $ newIORef 0
 
 makePredicates :: [SchemaPredicates] -> SchemaInfo -> Predicates
 makePredicates schemas info = Predicates $
-  (Vector.//)
-    (Vector.replicate (maxIx+1) invalidPid)
-    [ (ix, HashMap.lookupDefault invalidPid ref ref_ids)
-    | (ref, ix) <- concat schemas
-    ]
+  (Vector.//) (Vector.replicate (maxIx+1) invalidPid) assocs
   where
-    maxIx = maximum $ map snd $ concat schemas
+    maxIx = maximum $ map fst assocs
+    assocs =
+      [ (predicateIndex ref, HashMap.lookupDefault invalidPid ref ref_ids)
+      | ref <- concat schemas
+      ]
     ref_ids = HashMap.fromList
       [(ref, Pid id) | (id,ref) <- Map.toList $ schemaInfo_predicateIds info]
 
