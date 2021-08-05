@@ -59,6 +59,7 @@ data ShellPrintFormat
   = TTY
   | PlainText
   | Json
+  | CompactJson
   deriving (Eq,Show)
 
 data Context = Context
@@ -70,13 +71,14 @@ parseFormat :: String -> Maybe ShellPrintFormat
 parseFormat "tty" = Just TTY
 parseFormat "plain" = Just PlainText
 parseFormat "json" = Just Json
+parseFormat "compact-json" = Just CompactJson
 parseFormat _ = Nothing
 
 shellFormatOpt :: Parser (Maybe ShellPrintFormat)
 shellFormatOpt =
   O.optional $ O.option (maybeReader parseFormat) $ mconcat
     [ O.long "format"
-    , O.metavar "(tty|plain|json)"
+    , O.metavar "(tty|plain|json|compact-json)"
     , O.help "Output format"
     ]
 
@@ -125,6 +127,11 @@ shellPrint handle PrintOpts{..} x =
     sds =
       layoutPretty layout $ doc <> hardline
     doc = case poFormat of
+      CompactJson ->
+        pretty $
+        BS.unpack $
+        J.encode $
+        shellFormatJson context () x
       Json ->
         pretty $
         BS.unpack $
