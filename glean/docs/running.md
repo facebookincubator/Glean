@@ -13,7 +13,7 @@ Glean tools use some configuration files. Mostly these are optional,
 if you don't provide the file then a set of defaults will be assumed.
 
 Config files are represented as JSON-encoded Thrift values. Each
-configuaration file has a corresponding Thrift definition file, which
+configuration file has a corresponding Thrift definition file, which
 we'll link to in the docs below.
 
 The location of a config file is specified by a command line
