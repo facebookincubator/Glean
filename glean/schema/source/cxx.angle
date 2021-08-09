@@ -1007,6 +1007,7 @@ predicate ObjContainerIdName :
     ( { categoryImplementation = { categoryName = Name  } } = Id)
 
 # General purpose Declaration to shortname Name
+# Todo: be careful not to filter out things here
 predicate DeclarationLocation :
   {
     decl : Declaration,
@@ -1027,8 +1028,8 @@ predicate DeclarationLocation :
     ( { enum_ = X } = Decl;
       X = EnumDeclaration { source = Range, name = { name = Name }}) |
     ( { function_ = X } = Decl;
-      X = FunctionDeclaration { source = Range, name = QName };
-      QName = FunctionQName { name = { name = Name }}) |
+      FunctionDeclaration { source = Range, name = { FName, _ } } = X;
+      FunctionDeclarationName { FName, Name }) |
     ( { variable = X } = Decl;
       X = VariableDeclaration { source = Range, name = { name = Name }}) |
     ( { objcContainer = X } = Decl;
@@ -1042,6 +1043,25 @@ predicate DeclarationLocation :
       X = ObjcPropertyDeclaration { source = Range, name = Name }) |
     ( { typeAlias = X } = Decl;
       X = TypeAliasDeclaration { source = Range, name = { name = Name }})
+
+# short name for function declarations
+predicate FunctionDeclarationName:
+  { fname : FunctionName
+  , name : Name
+  }
+  { FName, Name } where
+     # common case, ordinary names
+    ( { name = Name } = FName ) |
+    ( { operator_ = OpNameStr } = FName;
+      Name = Name OpNameStr; ) |
+    ( { literalOperator = OpNameStr } = FName;
+      Name = Name OpNameStr; ) |
+    ( { constructor = _ } = FName;
+      Name = Name "constructor"; ) |
+    ( { destructor = _ } = FName;
+      Name = Name "destructor"; ) |
+    ( { conversionOperator = Type TypeStr } = FName;
+      Name = Name TypeStr; )
 
 # All uses of preprocessor #defines in a file, as xrefs
 predicate FilePPUseXRefs:
