@@ -1017,7 +1017,7 @@ predicate DeclarationLocation :
   { Decl, Range, Name } where
     ( { namespace_ = X } = Decl;
       X = NamespaceDeclaration { source = Range, name = QName };
-      QName = NamespaceQName { name = { just = Name }}) |
+      NamespaceDeclarationName { QName, Name }) |
     ( { usingDeclaration = X } = Decl;
       X = UsingDeclaration { source = Range, name = QName };
       QName = FunctionQName { name = { name = Name }}) |
@@ -1062,6 +1062,15 @@ predicate FunctionDeclarationName:
       Name = Name "destructor"; ) |
     ( { conversionOperator = Type TypeStr } = FName;
       Name = Name TypeStr; )
+
+# short name for namespace declarations
+predicate NamespaceDeclarationName:
+  { qname : NamespaceQName
+  , name : Name
+  }
+  { QName, Name } where
+    ( NamespaceQName { name = { just = Name }} = QName ) |
+    ( NamespaceQName { name = nothing } = QName; Name = Name "anonymous" )
 
 # All uses of preprocessor #defines in a file, as xrefs
 predicate FilePPUseXRefs:
