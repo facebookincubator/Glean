@@ -30,3 +30,5 @@ schema all.3 :
   sys.1,
   thrift.4,
 {}
+
+schema all.4 : thrift.5, all.3 {}

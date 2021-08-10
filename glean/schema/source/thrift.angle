@@ -67,3 +67,6 @@ predicate DeclarationNameSpan :
   }
 
 }
+
+schema thrift.5 : thrift.4 {
+}
