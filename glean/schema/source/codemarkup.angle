@@ -144,7 +144,27 @@ type XRefLocation =
     source: RangeSpan
   }
 
+# Tags for entities, so clients can distinguish them.
+# Based on https://microsoft.github.io/language-server-protocol/specifications/specification-3-17/#symbolKind
+type SymbolKind =
+  enum {
+    Package | Type | Value | File | Module | Namespace | Class_ | Method | Property |
+    Field | Constructor | Enum | Interface | Function | Variable | Constant | String |
+    Number | Boolean | Array | Object_ | Key | Null | Enumerator | Struct | Event |
+    Operator | TypeParameter | Union | Macro
+  }
+
 # Public language-agnostic API
+
+# Associates an entity with a symbol kind.
+predicate EntityKind:
+  {
+    entity: code.Entity,
+    kind: SymbolKind,
+  }
+  { Entity, Kind } where
+    PythonEntityKind { Entity, Kind } |
+    CxxEntityKind { Entity, Kind }
 
 # All entities defined in a src.File and their locations
 predicate FileEntityLocations:
@@ -726,5 +746,60 @@ predicate RustEntityUses:
   { { rust = { definition = Def } }, File, Span } where
     rust.DefinitionUses { Def, File, Spans };
     Span = Spans[..];
+
+#
+# Language-specific symbol kinds
+#
+
+predicate NonImportPythonDeclarationKind:
+  {
+    declaration: python.Declaration,
+    kind: SymbolKind,
+  }
+  { D, Kind } where
+    ({cls = _} = D; Kind = Class_ : SymbolKind ) |
+    ({func = _} = D; Kind = Function : SymbolKind ) | # TODO: methods
+    ({module = _} = D; Kind = Module : SymbolKind ) |
+    ({variable = _} = D; Kind = Variable : SymbolKind )
+
+predicate PythonEntityKind:
+  {
+    entity: code.Entity,
+    kind: SymbolKind,
+  }
+  { { python = { decl = D } }, Kind } where
+    NonImportPythonDeclarationKind { D, Kind } |
+    ({imp = {from_name = FN}} = D;
+      python.DeclarationWithName { FN, Imported };
+      NonImportPythonDeclarationKind { Imported, Kind }
+    )
+
+predicate CxxEntityKind:
+  {
+    entity: code.Entity,
+    kind: SymbolKind,
+  }
+  { { cxx = CxxD }, Kind } where
+    ({ decl = D } = CxxD;
+    ({ namespace_ = _ } = D; Kind = (Namespace : SymbolKind) ) |
+    ({ usingDeclaration = _ } = D; Kind = (Namespace : SymbolKind) ) |
+    ({ enum_ = _ } = D; Kind = (Enum : SymbolKind) ) |
+    ({ function_ = _ } = D; Kind = (Function : SymbolKind) ) |
+    ({ variable = _ } = D; Kind = (Variable : SymbolKind) ) |
+    ({ objcMethod = _ } = D; Kind = (Method : SymbolKind) ) |
+    ({ objcProperty = _ } = D; Kind = (Property : SymbolKind) ) |
+    ({ typeAlias = _ } = D; Kind = (Class_ : SymbolKind) ) |
+    # TODO: objc containers, using directives
+    ({ record_ = R } = D;
+      ({ kind = { struct_ = _ } } = R; Kind = (Struct : SymbolKind) ) |
+      ({ kind = { class_ = _ } } = R; Kind = (Class_ : SymbolKind) ) |
+      ({ kind = { union_ = _ } } = R; Kind = (Union : SymbolKind) )
+    )
+    ) |
+    ({ enumerator = _ } = CxxD;
+      Kind = (Enumerator : SymbolKind)
+    )
+    # TODO: definitions
+
 
 }
