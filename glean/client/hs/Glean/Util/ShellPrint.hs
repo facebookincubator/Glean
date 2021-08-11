@@ -8,7 +8,7 @@
 
 module Glean.Util.ShellPrint
   ( DbVerbosity(..)
-  , StatsVerbosity(..)
+  , StatsFormatOpts(..)
   , ShellFormat(..)
   , ShellPrint
   , ShellPrintFormat(..)
@@ -311,12 +311,13 @@ type PredStatsList =
 type PredStatsFilter =
   Either Thrift.Id Thrift.PredicateRef -> Bool
 
-data StatsVerbosity
-  = StatsHideTotal
-  | StatsShowTotal
+data StatsFormatOpts = StatsFormatOpts
+  { showTotal :: Bool
+  , sortBySize :: Bool
+  }
   deriving (Eq)
 
-instance ShellFormat StatsVerbosity (PredStatsFilter, PredStatsList) where
+instance ShellFormat StatsFormatOpts (PredStatsFilter, PredStatsList) where
     shellFormatText Context{..} opts (filterPred, preds) = vsep $
         [ nest 2 $ vsep
             [ case ref of
@@ -326,16 +327,22 @@ instance ShellFormat StatsVerbosity (PredStatsFilter, PredStatsList) where
             , "size: " <+> pretty (getSizeInfo
                 (Thrift.predicateStats_size stats) totalSizeBytes)
             ]
-        | (ref, stats) <- sortOn fst $ filter (filterPred . fst) preds
+        | (ref, stats) <- sort $ filter (filterPred . fst) preds
         ] ++
-        if verbosity /= StatsShowTotal then [] else
-        [ ""
-        , "Total size: " <> pretty (showAllocs totalSizeBytes)
-        ]
+        if showTotal opts then
+          [ ""
+          , "Total size: " <> pretty (showAllocs totalSizeBytes)
+          ]
+        else
+          []
       where
-        verbosity = opts
+        predicate_size = Thrift.predicateStats_size . snd
         totalSizeBytes =
-          foldl' (+) 0 $ map (Thrift.predicateStats_size . snd) preds
+          foldl' (+) 0 $ map predicate_size preds
+        sort = if sortBySize opts then
+          sortOn $ negate . predicate_size
+        else
+          sortOn fst
 
     shellFormatJson _ _ (filterPred, preds) =
       J.toJSON $ filter (filterPred . fst) preds

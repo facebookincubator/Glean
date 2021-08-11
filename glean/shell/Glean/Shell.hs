@@ -238,15 +238,23 @@ displayStatistics arg =
   preds <- forM (Map.toList xs) $ \(id,stats) -> do
     ref <- maybe (Left id) Right <$> lookupPid (Pid id)
     return (ref,stats)
+  let args = words arg
+  (sortBySize, predicate) <- case args of
+    [] -> return (False, "")
+    ["-s"] -> return (True, "")
+    [predicate] -> return (False, predicate)
+    ["-s", predicate] -> return (True, predicate)
+    _ -> liftIO $ throwIO $ ErrorCall "syntax: :statistics [-s] [<predicate>]"
   let
     filterPred :: Either Thrift.Id PredicateRef -> Bool
     filterPred ref =
-      null arg ||
+      null predicate ||
           case ref of
-            Right pref -> arg `isPrefixOf` show (pretty pref)
+            Right pref -> predicate `isPrefixOf` show (pretty pref)
             Left _ -> False
-  outputShellPrint $ (filterPred, preds)
-    `withFormatOpts` if null arg then StatsShowTotal else StatsHideTotal
+  let showTotal = null predicate
+  let format = StatsFormatOpts { showTotal, sortBySize }
+  outputShellPrint $ (filterPred, preds) `withFormatOpts` format
 
 getDatabases
   :: Bool -- ^ Include DBs that can be restored from backups
@@ -402,8 +410,9 @@ helptext mode = vcat
             "Show query profiling information")
       , ("reload",
             "Reload the schema (when using --schema)")
-      , ("statistics [<predicate>]",
-            "Show statistics for the current database")
+      , ("statistics [-s] [<predicate>]",
+            "Show statistics for the current database, "
+            <> "sorted by decreasing size when using -s")
       , ("quit",
             "Exit the shell")
       ]

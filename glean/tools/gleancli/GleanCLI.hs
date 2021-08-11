@@ -320,8 +320,11 @@ instance Plugin StatsCommand where
         (perPredicate && null matchRefs) || refMatches ref
       refMatches (Right pref) = any (predicateMatches pref) matchRefs
       refMatches (Left _) = False
+      statsFormatOpts = StatsFormatOpts {
+        showTotal = True,
+        sortBySize = False }
     putShellPrintLn statsFormat $
-      (filterPred, preds) `withFormatOpts` StatsShowTotal
+      (filterPred, preds) `withFormatOpts` statsFormatOpts
     when statsSetExitCode $
       when (not $ any (refMatches . fst) preds) $
         exitWith $ ExitFailure 100
