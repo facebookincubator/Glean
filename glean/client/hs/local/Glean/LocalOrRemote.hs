@@ -38,6 +38,7 @@ module Glean.LocalOrRemote
   , computeOwnership
   , dumpJsonToFile
   , finalize
+  , serializeInventory
   ) where
 
 import Control.Monad.Extra

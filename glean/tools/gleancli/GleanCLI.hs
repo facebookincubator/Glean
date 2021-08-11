@@ -17,6 +17,7 @@ import Data.Proxy
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Options.Applicative
+import System.IO
 
 import Util.EventBase
 import Util.IO
@@ -74,6 +75,7 @@ plugins =
   , plugin @StatsCommand
   , plugin @OwnershipCommand
   , plugin @SetPropertyCommand
+  , plugin @WriteSerializedInventoryCommand
 #if FACEBOOK
   , plugin @FacebookPlugin
 #endif
@@ -372,3 +374,21 @@ instance Plugin SetPropertyCommand where
   runCommand _ _ backend SetProperty{..} =
     void $ Glean.updateProperties backend setPropRepo
       (HashMap.fromList properties) []
+
+data WriteSerializedInventoryCommand
+  = WriteSerializedInventory
+      { writeSerializedInventoryRepo :: Repo
+      , outputFile :: FilePath
+      }
+
+instance Plugin WriteSerializedInventoryCommand where
+  parseCommand =
+    commandParser "write-serialized-inventory" (progDesc "") $ do
+      writeSerializedInventoryRepo <- repoOpts
+      outputFile <- strArgument (metavar "OUTPUT_FILE")
+      return WriteSerializedInventory{..}
+
+  runCommand _ _ backend WriteSerializedInventory{..} = do
+    inventory <- Glean.serializeInventory backend writeSerializedInventoryRepo
+    withFile outputFile WriteMode $ \hdl -> do
+      B.hPutStr hdl inventory

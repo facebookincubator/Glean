@@ -25,11 +25,13 @@ module Glean.Backend
 
     -- * Schemas
   , loadDbSchema
+  , serializeInventory
 ) where
 
 import Control.Applicative
 import Control.Concurrent.STM (atomically)
 import Control.Exception
+import Data.ByteString (ByteString)
 import qualified Data.ByteString as ByteString
 import Data.Coerce (coerce)
 import Data.Default
@@ -63,6 +65,7 @@ import Glean.Impl.ConfigProvider
 import qualified Glean.Query.UserQuery as UserQuery
 import qualified Glean.Query.Derive as Derive
 import Glean.RTS (Fid(..), Pid(..))
+import qualified Glean.RTS.Foreign.Inventory as Inventory
 import qualified Glean.RTS.Foreign.Lookup as Lookup
 import Glean.Database.Schema
 import qualified Glean.Types as Thrift
@@ -342,6 +345,15 @@ loadDbSchema :: Backend a => a -> Thrift.Repo -> IO DbSchema
 loadDbSchema backend repo = do
   info <- getSchemaInfo backend repo
   fromSchemaInfo info readWriteContent
+
+serializeInventory
+  :: Backend backend
+  => backend
+  -> Thrift.Repo
+  -> IO ByteString
+serializeInventory backend repo = do
+  dbSchema <- loadDbSchema backend repo
+  return $ Inventory.serialize $ schemaInventory dbSchema
 
 -- -----------------------------------------------------------------------------
 -- Logging
