@@ -1,0 +1,12 @@
+schema code.pp.1 {
+import pp1.1
+import src.1
+
+type Entity =
+  {
+    define : pp1.Define | # referred to by pp1.Use facts
+    undef : pp1.Undef |
+    include_ : src.File | # referred to by pp1.Include facts
+  }
+
+}
