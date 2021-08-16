@@ -68,7 +68,7 @@ pollDerivation env handle = do
         }
   derivation@Derivation{..} <- deriveStoredImpl env noLogging repo query
   case derivationError of
-    Just err -> throwIO err
+    Just (_, err) -> throwIO err
     Nothing -> do
       elapsed <- getElapsedTime derivationStart
       return $ if isFinished derivation
@@ -76,7 +76,8 @@ pollDerivation env handle = do
         else Thrift.DerivationProgress_ongoing derivationStats
           { userQueryStats_elapsed_ns = fromIntegral $ toDiffMicros elapsed }
 
-type LogResult = Either SomeException Thrift.UserQueryStats -> IO ()
+type LogResult =
+  Either (DiffTimePoints, SomeException) Thrift.UserQueryStats -> IO ()
 
 noLogging :: LogResult
 noLogging = const mempty
@@ -100,7 +101,7 @@ deriveStored
 deriveStored env log repo query = do
   d@Derivation{..} <- deriveStoredImpl env log repo query
   case derivationError of
-    Just err -> throwIO err
+    Just (_, err) -> throwIO err
     Nothing -> return $
       if isFinished d
          then Thrift.DerivationStatus_complete def
@@ -110,8 +111,10 @@ deriveStored env log repo query = do
 logResult :: LogResult -> Derivation -> IO ()
 logResult log Derivation{..} =
   log $ case derivationError of
-    Just err -> Left err
     Nothing -> Right derivationStats
+    Just (errTime, err) ->
+      let duration = diffTimePoints derivationStart errTime in
+      Left (duration, err)
 
 -- | Start predicate derivation or return a completed/ongoing one if it exists
 deriveStoredImpl
@@ -159,7 +162,9 @@ deriveStoredImpl env@Env{..} log repo Thrift.DerivePredicateQuery{..} =
     onErr pred e = do
       logError $ "Failed derivation of " <>
         Text.unpack (showPredicateRef pred) <> ": " <> show e
-      void $ overDerivation env repo pred (\d -> d { derivationError = Just e })
+      now <- getTimePoint
+      void $ overDerivation env repo pred
+        (\d -> d { derivationError = Just (now, e) })
       throwIO e
 
     getPredicateRef :: DbSchema -> IO PredicateRef
@@ -431,13 +436,15 @@ finishDerivation env@Env{..} log repo pred = do
       d { derivationPendingWrites = pendingWrites
         , derivationError =
             derivationError d
-            <|> either Just (const Nothing) finished
+            <|> case finished of
+                  Left err -> Just (now, err)
+                  Right _ -> Nothing
             <|> if null pendingWrites
                 then Nothing
-                else Just (toException FinishedWithPendingWrites)
+                else Just (now, toException FinishedWithPendingWrites)
         , derivationStats = (derivationStats d)
             { userQueryStats_elapsed_ns = fromIntegral
-                $ toDiffMicros
+                $ toDiffNanos
                 $ diffTimePoints (derivationStart d) now
             }
         }

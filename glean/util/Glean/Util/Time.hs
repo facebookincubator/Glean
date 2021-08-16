@@ -10,9 +10,9 @@ module Glean.Util.Time
   -- * time point differences
 , TimePoint(..), DiffTimePoints(..), getTimePoint
 , diffTimePoints, addDiffTimePoints, getElapsedTime, addToTimePoint
-, toDiffMillis, toDiffMicros, toDiffSeconds
+, toDiffMillis, toDiffMicros, toDiffNanos, toDiffSeconds
   -- * utils
-, delay, seconds, minutes, hours
+, delay, nanoseconds, seconds, minutes, hours
 ) where
 
 import Control.Concurrent
@@ -22,7 +22,7 @@ import qualified Data.Text.Prettyprint.Doc as P
 import qualified Data.Time.Clock as TC ( UTCTime, NominalDiffTime )
 import Data.Time.Clock.POSIX ( posixSecondsToUTCTime, POSIXTime )
 import Data.Time.Format ( defaultTimeLocale, formatTime )
-import qualified System.Clock as SC ( getTime, Clock(..), TimeSpec(..) )
+import qualified System.Clock as SC
 
 import Util.TimeSec
   ( Time(..), TimeSpan(..), toUTCTime, fromUTCTime, ppTimeSpan )
@@ -109,12 +109,19 @@ toDiffMicros (DiffTimePoints SC.TimeSpec{sec,nsec}) =
   1000000 * fromIntegral sec +
     (round :: Rational -> Int) (fromIntegral nsec % 1000)
 
+toDiffNanos :: DiffTimePoints -> Int
+toDiffNanos (DiffTimePoints SC.TimeSpec{sec,nsec}) =
+  1000000000 * fromIntegral sec + fromIntegral nsec
+
 toDiffSeconds :: DiffTimePoints -> Double
 toDiffSeconds (DiffTimePoints SC.TimeSpec{sec,nsec}) =
   fromIntegral sec + 1e-9 * fromIntegral nsec
 
 delay :: DiffTimePoints -> IO ()
 delay = threadDelay . toDiffMicros
+
+nanoseconds :: Int -> DiffTimePoints
+nanoseconds n = DiffTimePoints (SC.fromNanoSecs (fromIntegral n))
 
 seconds :: Int -> DiffTimePoints
 seconds s = DiffTimePoints (SC.TimeSpec (fromIntegral s) 0)

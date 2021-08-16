@@ -167,7 +167,7 @@ data Derivation = Derivation
   , derivationQueryingFinished :: Bool
   , derivationStats :: Thrift.UserQueryStats
   , derivationPendingWrites :: [Thrift.Handle]
-  , derivationError :: Maybe SomeException
+  , derivationError :: Maybe (TimePoint, SomeException)
   , derivationHandle :: Thrift.Handle
   }
 

@@ -61,6 +61,7 @@ module Glean
   , Dependencies(..)
   , PosixEpochTime(..)
   , StackedDbOpts(..)
+  , LogDerivationResult
 
   -- * Repositories
   , Repo(..)

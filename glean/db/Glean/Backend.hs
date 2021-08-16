@@ -71,6 +71,7 @@ import Glean.Database.Schema
 import qualified Glean.Types as Thrift
 import Glean.Util.Observed as Observed
 import Glean.Util.ThriftSource as ThriftSource
+import Glean.Util.Time
 
 import Glean.Backend.Remote hiding (options, optionsLong)
 import qualified Glean.Backend.Remote as Remote
@@ -485,10 +486,10 @@ runLogDerivePredicate cmd env repo Thrift.DerivePredicateQuery {..} log =
 
 runLogDerivationResult
   :: Database.Env
-  -> (Either SomeException Thrift.UserQueryStats -> IO ())
+  -> LogDerivationResult
   -> Thrift.Repo
   -> Thrift.DerivePredicateQuery
-  -> Either SomeException Thrift.UserQueryStats
+  -> Either (DiffTimePoints, SomeException) Thrift.UserQueryStats
   -> IO ()
 runLogDerivationResult env log repo Thrift.DerivePredicateQuery{..} res = do
   log res
@@ -498,8 +499,12 @@ runLogDerivationResult env log repo Thrift.DerivePredicateQuery{..} res = do
         derivePredicateQuery_predicate_version
     , maybe mempty logQueryClientInfo derivePredicateQuery_client_info
     , case res of
-        Left err -> failureLog err
+        Left (_,err) -> failureLog err
         Right stats -> successLog <> logQueryStats stats
+    , timeLog $ toDiffSeconds $ case res of
+        Left (duration, _) -> duration
+        Right Thrift.UserQueryStats{..} ->
+          nanoseconds (fromIntegral userQueryStats_elapsed_ns)
     ]
 
 logDerivationProgress :: Thrift.DerivationProgress -> GleanServerLogger

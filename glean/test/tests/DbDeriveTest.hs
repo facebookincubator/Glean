@@ -9,7 +9,6 @@ import Test.HUnit
 import Util.String.Quasi
 import Data.Proxy
 import Control.Concurrent
-import Control.Exception
 import Control.Monad
 import Control.Concurrent.Async
 import qualified Data.HashMap.Strict as HashMap
@@ -170,7 +169,7 @@ testDeriveStoredLogging = dbTestCaseWritable $ \env repo -> do
 
 deriveStored
   :: forall p. Predicate p
-  => (Either SomeException Thrift.UserQueryStats -> IO ())
+  => Glean.LogDerivationResult
   -> Env
   -> Repo
   -> Proxy p

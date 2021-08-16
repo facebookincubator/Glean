@@ -32,6 +32,7 @@ module Glean.Backend.Remote
   , usingShards
   , clientInfo
 
+  , LogDerivationResult
   ) where
 
 import Control.Applicative
@@ -66,6 +67,7 @@ import Glean.Util.Some
 import Glean.Username (getUsername)
 import Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.ThriftService
+import Glean.Util.Time (DiffTimePoints)
 import Glean.Impl.ThriftService
 
 data StackedDbOpts
@@ -149,7 +151,9 @@ class Backend a where
   -- | If this is a remote backend, get its ThriftBackend.
   maybeRemote :: a -> Maybe ThriftBackend
 
-type LogDerivationResult = Either SomeException Thrift.UserQueryStats -> IO ()
+-- | The exception includes the length of time from start to error
+type LogDerivationResult =
+  Either (DiffTimePoints, SomeException) Thrift.UserQueryStats -> IO ()
 
 -- | A remote Glean service, supports the operations of 'Backend'.
 data ThriftBackend = ThriftBackend
