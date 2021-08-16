@@ -1084,6 +1084,7 @@ predicate FilePPUseXRefs:
     FilePPUseTraceXRefs { File, Trace, SrcRange, Define };
 
 # All uses of preprocessor #defines in a file, as xrefs, for a specific trace
+# (deprecated)
 predicate FilePPUseTraceXRefs:
   {
     file: src.File,
@@ -1101,6 +1102,7 @@ predicate FilePPUseTraceXRefs:
     Define = pp1.Define { macro = Macro, source = { file = TargetFile } };
 
 # Definition location for a pp1.Define
+# (deprecated)
 predicate PPDefineLocation :
   {
     define : pp1.Define,
@@ -1111,5 +1113,52 @@ predicate PPDefineLocation :
   { Define, Name, File, Range } where
     { pp1.Macro Name , Range } = Define;
     { file = File } = Range;
+
+# Type of targets of pp xrefs (shape of code.pp.angle:Entity)
+type PpEntity =
+  {
+    define : pp1.Define |
+    undef : pp1.Undef |
+    include_ : src.File |
+  }
+
+# C preprocessor entities xrefs in this file
+predicate FilePPTraceXRefs:
+  {
+    file: src.File,
+    trace: cxx1.Trace,
+    source: src.Range,
+    ppEntity: PpEntity,
+  }
+  { File, Trace, SrcRange, Entity } where
+    Trace = cxx1.Trace { file = File, preprocessor = { events = PPEvents } };
+    PPEvent = PPEvents[..];
+    # Uses are xrefs to #define entities
+    ( { SrcRange, Entity } where
+      { use = Use } = PPEvent;
+      { Macro, _, { just = { file = TargetFile }}, _, SrcRange } = Use;
+      Define = pp1.Define { Macro, { file = TargetFile } };
+      { define = Define } = Entity ) |
+
+    # #includes are xrefs to src.Files
+    ( { SrcRange, Entity } where
+      { include_ = { Include , _ }  } = PPEvent;
+      { TargetFile, _, SrcRange  } = Include;
+      { include_ = TargetFile } = Entity; )
+
+# Definition location for a pp1.Define
+predicate PPEntityLocation :
+  {
+    entity : PpEntity,
+    name : string,
+    file : src.File,
+    range : src.Range,
+  }
+  ({ { define = Define }, Name, File, Range } where
+    { pp1.Macro Name, Range } = Define;
+    { file = File } = Range ) |
+  ({ { include_ = File }, Name, File, Range } where
+    src.File Name = File;
+    Range = { File, 1, 1, 1, 1 } )
 
 } # end schema cxx1.4

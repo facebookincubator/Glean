@@ -625,7 +625,7 @@ predicate CxxFileEntityPPXRefLocations:
     Trace = cxx1.Trace { file = File };
     CxxFileEntityTracePPXRefLocations { File, Trace, XRef, Entity };
 
-# C preprocessor uses of #defines as xrefs, for a specific trace
+# C preprocessor uses of #defines and #includes.
 # N.B. uses are keyed by traces, not xmaps, for PP
 predicate CxxFileEntityTracePPXRefLocations:
   {
@@ -635,11 +635,10 @@ predicate CxxFileEntityTracePPXRefLocations:
     entity: code.Entity,
   }
   { File, Trace, XRef, Entity } where
-    cxx1.FilePPUseTraceXRefs { File, Trace, SrcRange, Define };
-    cxx1.PPDefineLocation { Define, Name, TargetFile, TargetRange };
-    { Name, TargetFile, { range = TargetRange } } = Target : Location;
-    { target = Target, source = { range = SrcRange }} = XRef;
-    Entity = code.Entity { pp = { define = Define } };
+    cxx1.FilePPTraceXRefs { File, Trace, SrcRange, PpEntity };
+    cxx1.PPEntityLocation { PpEntity, Name, TargetFile, TargetRange };
+    {{ Name , TargetFile, {range = TargetRange}}, { range = SrcRange }} = XRef;
+    Entity = code.Entity { pp = PpEntity };
 
 # XRefs in sigma/Haskell
 predicate HaskellFileEntityXRefLocations:
