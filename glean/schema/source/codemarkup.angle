@@ -178,6 +178,17 @@ predicate FileEntityLocations:
     ResolveLocation { Location, Entity };
     Location { file = File } = Location;
 
+# All entities defined in a src.File, and their kinds
+predicate FileEntityKinds:
+  {
+    file: src.File,
+    entity: code.Entity,
+    kind: SymbolKind,
+  }
+  { File, Entity, Kind } where
+    FileEntityLocations { File, _, Entity };
+    EntityKind { Entity, Kind };
+
 # Map a location to the Entity declared there
 predicate ResolveLocation:
   {
@@ -220,6 +231,17 @@ predicate FileEntityXRefLocations:
     CxxFileEntityXRefLocations { File, XRef, Entity } |
     HaskellFileEntityXRefLocations { File, XRef, Entity } |
     RustFileEntityXRefLocations { File, XRef, Entity }
+
+# Finding xrefs. All references in a file, and their kinds
+predicate FileEntityXRefKinds:
+  {
+    file: src.File,
+    entity: code.Entity,
+    kind: SymbolKind,
+  }
+  { File, Entity, Kind } where
+    FileEntityXRefLocations { File, _, Entity };
+    EntityKind { Entity, Kind };
 
 # Find references to a language entity
 predicate EntityUses:
