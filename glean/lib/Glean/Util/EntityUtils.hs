@@ -15,6 +15,7 @@ import Glean.Schema.CodeHack.Types as Hack
 import Glean.Schema.CodeFlow.Types as Flow
 import Glean.Schema.CodeHs.Types as Hs
 import Glean.Schema.CodeJava.Types as Java
+import Glean.Schema.CodePp.Types as Pp
 import Glean.Schema.CodePython.Types as Python
 import Glean.Schema.Hack.Types as Hack
 import Glean.Schema.Flow.Types as Flow
@@ -22,6 +23,7 @@ import Glean.Schema.Python.Types as Python
 import Glean.Schema.Query.Code.Types as Query.Code
 import Glean.Schema.Query.CodeCxx.Types as Query.Code.Cxx
 import Glean.Schema.Query.CodeJava.Types as Query.Code.Java
+import Glean.Schema.Query.CodePp.Types as Query.Code.Pp
 import Glean.Schema.Query.Cxx1.Types as Query.Cxx
 import Glean.Schema.Query.Java.Types as Query.Java
 import Glean.Schema.Query.Pp1.Types as Query.Pp
@@ -34,7 +36,7 @@ import Glean.Util.Declarations (applyDeclaration)
 trimCodeEntity :: Code.Entity -> Code.Entity
 trimCodeEntity = \case
     Code.Entity_cxx x -> Code.Entity_cxx $ trimCxx x
-    Code.Entity_pp x -> trim x
+    Code.Entity_pp x -> Code.Entity_pp $ trimPp x
     Code.Entity_java x -> Code.Entity_java $ trimJava x
     Code.Entity_hs x -> Code.Entity_hs $ trimHs x
     Code.Entity_python x -> Code.Entity_python $ trimPython x
@@ -44,6 +46,11 @@ trimCodeEntity = \case
   where
     trim :: (Predicate child, SumBranches child parent) => child -> parent
     trim = injectBranch . justId . getId
+
+    trimPp = \case
+      Pp.Entity_define x -> trim x
+      Pp.Entity_undef x -> trim x
+      Pp.Entity_include_ x -> trim x
 
     trimCxx = \case
       Cxx.Entity_decl x -> Cxx.Entity_decl $
@@ -141,6 +148,14 @@ instance Prune Query.Code.Entity where
       -- Hack: Nothing to do, declarations are already just
       -- fully-qualified names and don't have any extraneous stuff
     , Query.Code.entity_any = False
+    }
+
+instance Prune Query.Code.Pp.Entity where
+  prune Query.Code.Pp.Entity{..} = Query.Code.Pp.Entity
+    { entity_define = fmap prune entity_define
+    , entity_undef = Nothing
+    , entity_include_ = Nothing
+    , entity_any = False
     }
 
 instance Prune Query.Code.Cxx.Entity where

@@ -42,6 +42,7 @@ import Glean.Schema.Code.Types as Code
 import Glean.Schema.CodeCxx.Types as Cxx
 import Glean.Schema.CodeHack.Types as Hack
 import Glean.Schema.CodeHs.Types as Hs
+import Glean.Schema.CodePp.Types as Pp
 import Glean.Schema.Cxx1.Types as Cxx
 import Glean.Schema.Hack.Types as Hack
 import Glean.Schema.SearchCxx.Types as Cxx
@@ -332,7 +333,7 @@ findCxxDecls lim backend repo SearchQuery{..} refs = do
       let entities = map Pp.searchByName_key_entity results
       -- TargetUses doesn't have macro xrefs yet
       return
-        [ EntityRefs repo (Code.Entity_pp ent) []
+        [ EntityRefs repo (Code.Entity_pp (Pp.Entity_define ent)) []
         | ent <- entities ]
 
   Glean.runHaxl backend repo $

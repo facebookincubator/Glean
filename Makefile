@@ -57,6 +57,7 @@ SCHEMAS= \
 	code_rust \
 	code_thrift \
 	codemarkup \
+	code_pp \
 	code_python \
 	code \
 	cxx1 \

@@ -14,6 +14,7 @@ import Data.Foldable ( asum )
 import qualified Glean
 import Glean.Schema.Code.Types as Code
 import Glean.Schema.CodeCxx.Types as Cxx
+import Glean.Schema.CodePp.Types as Pp
 import Glean.Schema.CodeHack.Types as Hack
 import Glean.Schema.CodeHs.Types as Hs
 import Glean.Schema.CodeJava.Types as Java
@@ -25,6 +26,7 @@ import Glean.Schema.Query.Code.Types as Query.Code
 import Glean.Schema.Query.CodeCxx.Types as Query.Code.Cxx
 import Glean.Schema.Query.CodeHack.Types as Query.Code.Hack
 import Glean.Schema.Query.CodeHs.Types as Query.Code.Hs
+import Glean.Schema.Query.CodePp.Types as Query.Code.Pp
 import Glean.Schema.Query.CodePython.Types as Query.Code.Python
 import Glean.Schema.Query.CodeJava.Types as Query.Code.Java
 import Glean.Schema.Query.Cxx1.Types as Query.Cxx
@@ -121,11 +123,22 @@ runEntityQuery
 runEntityQuery elq Query.Code.Entity{..} =
   fmap concat . sequence $
   [ branchId (queryIdCxxEntity elq) entity_cxx
-  , branchId elq entity_pp
+  , branchId (queryIdPpEntity elq) entity_pp
   , branchId (queryIdJavaEntity elq) entity_java
   , branchId (queryIdHsEntity elq) entity_hs
   , branchId (queryIdPythonEntity elq) entity_python
   , branchId (queryIdHackEntity elq) entity_hack
+  ]
+
+queryIdPpEntity
+  :: ExecuteLeafQuery
+  -> Query.Code.Pp.Entity
+  -> IO [Pp.Entity]
+queryIdPpEntity elq Query.Code.Pp.Entity{..} =
+  fmap concat . sequence $
+  [ branchId elq entity_define
+  , branchId elq entity_undef
+  , branchId elq entity_include_
   ]
 
 queryIdCxxEntity

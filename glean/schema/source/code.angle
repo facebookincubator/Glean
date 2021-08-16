@@ -1,20 +1,20 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema code.14 {
+schema code.15 {
 import code.cxx.3
 import code.java.3
 import code.hack.3
 import code.flow.2
 import code.hs.2
+import code.pp.1
 import code.python.1
 import code.rust.1
 import code.thrift.1
-import pp1.1
 
 type Entity =
   {
     cxx : code.cxx.Entity |
-    pp : pp1.Define |
+    pp : code.pp.Entity |
     java : code.java.Entity |
     hs : code.hs.Entity |
     python : code.python.Entity |

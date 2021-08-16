@@ -34,6 +34,7 @@ import Glean.Pretty.Search ()
 import Glean.Schema.Code.Types as Code
 import Glean.Schema.CodeCxx.Types as Cxx
 import Glean.Schema.CodeJava.Types as Java
+import Glean.Schema.CodePp.Types as Pp
 import Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.Java.Types as Java
 import Glean.Schema.Src.Types
@@ -354,7 +355,7 @@ declToRange :: Code.Entity -> Maybe Range
 declToRange decl =
   case decl of
     Code.Entity_cxx cxx -> cxxEntityToRange cxx
-    Code.Entity_pp defn -> srcRange <$> getFactKey defn
+    Code.Entity_pp (Pp.Entity_define defn) -> srcRange <$> getFactKey defn
     Code.Entity_java (Java.Entity_class_ decl) ->
       locRange . Java.classDeclaration_key_loc <$> getFactKey decl
     _ -> Nothing
