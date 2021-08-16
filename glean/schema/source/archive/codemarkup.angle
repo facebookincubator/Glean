@@ -570,8 +570,9 @@ predicate CxxFileEntityTraceFixedXRefLocations:
 
     # .. go through fixed declarations
     ({ XRef, Entity } where
-      cxx1.FixedXRef { { declaration = Decl }, Spans } = Fixeds[..];
+      cxx1.FixedXRef { { declaration = Decl }, Uses } = Fixeds[..];
       cxx1.DeclarationLocation { Decl, Range, cxx1.Name Name };
+      Spans = prim.relToAbsByteSpans Uses;
       Span = Spans[..];
       { file = TargetFile } = Range;
       { { Name, TargetFile, { range = Range } }, { span = Span }} = XRef;
@@ -711,10 +712,12 @@ predicate CxxEntityUses:
     span: src.ByteSpan,
   }
   ({ { cxx = { decl = D } }, File, Span } where
-    cxx1.TargetUses { { declaration = D } , File, Spans };
+    cxx1.TargetUses { { declaration = D }, File, Uses };
+    Spans = prim.relToAbsByteSpans Uses;
     Span = Spans[..]) |
   ({ { cxx = { enumerator = E } }, File, Span } where
-    cxx1.TargetUses { { enumerator = E } , File, Spans };
+    cxx1.TargetUses { { enumerator = E }, File, Uses };
+    Spans = prim.relToAbsByteSpans Uses;
     Span = Spans[..])
 
 predicate RustEntityUses:
