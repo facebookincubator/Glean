@@ -459,7 +459,8 @@ logQueryResults Thrift.UserQueryResults{..} = mconcat
 
 logQueryStats :: Thrift.UserQueryStats -> GleanServerLogger
 logQueryStats Thrift.UserQueryStats{..} = mconcat
-  [ Logger.setFacts (fromIntegral userQueryStats_num_facts)
+  [ Logger.setResults (fromIntegral userQueryStats_result_count)
+  , Logger.setFacts (fromIntegral userQueryStats_num_facts)
   , maybe mempty (Logger.setBytecodeSize . fromIntegral)
       userQueryStats_bytecode_size
   , maybe mempty (Logger.setCompileTimeUs . fromIntegral . (`quot` 1000))
