@@ -398,15 +398,19 @@ runDerivation env repo pred query = do
         }
 
     mergeStats a b =
-      let add f = f a + f b in
-      -- compile_time and bytecode_size do not accumulate. We take the last one.
+      let add f = f a + f b
+          addMaybe f = liftA2 (+) (f a) (f b)
+      in
+      -- bytecode_size does not accumulate. We take the last one.
       b
-        { userQueryStats_num_facts = add userQueryStats_num_facts
+        { userQueryStats_compile_time_ns =
+            addMaybe userQueryStats_compile_time_ns
+        , userQueryStats_num_facts = add userQueryStats_num_facts
         , userQueryStats_allocated_bytes = add userQueryStats_allocated_bytes
         , userQueryStats_facts_searched = userQueryStats_facts_searched a
             <> userQueryStats_facts_searched b
-        , userQueryStats_execute_time_ns = Just $ add
-            $ fromMaybe 0 . userQueryStats_execute_time_ns
+        , userQueryStats_execute_time_ns =
+            addMaybe userQueryStats_execute_time_ns
         , userQueryStats_result_count = add userQueryStats_result_count
         }
 
