@@ -327,8 +327,11 @@ instance Plugin StatsCommand where
         sortBySize = False }
     putShellPrintLn statsFormat $
       (filterPred, preds) `withFormatOpts` statsFormatOpts
-    when statsSetExitCode $
-      when (not $ any (refMatches . fst) preds) $
+    when (not $ any (refMatches . fst) preds) $ do
+      hPutStrLn stderr $ Text.unpack $
+        "No facts found for: "
+        <> Text.intercalate "," (map showSourceRef matchRefs)
+      when statsSetExitCode $
         exitWith $ ExitFailure 100
     where
       lookupPid SchemaInfo{..} pid =
