@@ -395,10 +395,28 @@ type Definition =
     typedef_ : TypedefDefinition |
   }
 
+# Occurrences are symbols referenced where the class definition could not
+# be found. Expect the class name to be a special name like
+# HH_FIXME\MISSING_TYPE_IN_HIERARCHY
+predicate MethodOccurrence :
+  {
+    name: Name,
+    className: maybe Name,
+  }
+
+# Where possible we will store references to MethodDefinitions. However
+# if a method is dynamically invoked then we only know the method name
+# not the container so we will store it as an occurrence
+type Occurrence =
+  {
+    method : MethodOccurrence |
+  }
+
 # Code that is referenced elsewhere
 type XRefTarget =
   {
     declaration : Declaration |
+    occurrence : Occurrence |
   }
 
 # References to target code
