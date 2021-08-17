@@ -82,7 +82,7 @@ List available databases, and restorable backups, which match `NAME`.
 * `:index LANGUAGE DIR`<br/>
 Index some source code for `LANGUAGE` in directory `DIR`, creating a
 new database. This command is only available with the `--db-root`
-option. Currently the only supported language is `flow`.
+option. Currently the only supported languages are `flow` and `hack`.
 * `:debug off|[-]ir|[-]bytecode|all`<br/>
 Enable query debugging; `:debug ir` shows the intermediate
 representation of the query after optimisation; `:debug

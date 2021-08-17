@@ -27,19 +27,25 @@ import Glean
 import Glean.Shell.Types
 import Glean.Write
 
+data Language = Flow | Hack
+
+runIndexer :: Language -> String -> String -> IO ()
+runIndexer lang dir outputDir = case lang of
+  Flow -> callProcess "flow"
+    [ "glean", dir , "--output-dir", outputDir , "--write-root", "." ]
+  Hack -> callProcess "hh_server"
+    [ dir , "--write-symbol-info", outputDir ]
+
 indexCmd :: String -> Eval ()
 indexCmd str
-  | ["flow", dir] <- words str = indexFlow dir
+  | ["flow", dir] <- words str = index Flow dir
+  | ["hack", dir] <- words str = index Hack dir
   | otherwise = liftIO $ throwIO $ ErrorCall
-    "syntax:  :index flow <dir>"
+    "syntax:  :index flow|hack <dir>"
   where
-  indexFlow dir = do
+    index lang dir =
       withSystemTempDirectory' "glean-shell" $ \tmp -> do
-        liftIO $ callProcess "flow"
-          [ "glean"
-          , dir
-          , "--output-dir", tmp
-          , "--write-root", "." ]
+        liftIO $ runIndexer lang dir tmp
         files <- liftIO $ listDirectory tmp
         let name = Text.pack (takeBaseName dir)
         hash <- pickHash name

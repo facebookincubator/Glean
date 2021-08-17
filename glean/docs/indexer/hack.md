@@ -27,6 +27,14 @@ The generated files can be ingested into a Glean database using [`glean create`]
 
 Several predicates should be derived after indexing. For each `stored` predicate in the [schema](#schema) you should [`glean derive`](../cli#glean-derive) the predicate.
 
+## In the shell
+
+Hack source can also be indexed directly from the Glean shell:
+
+```
+:index hack DIR
+```
+
 ## Schema
 
 The schema is in <SrcFile file="glean/schema/source/hack.angle" />
