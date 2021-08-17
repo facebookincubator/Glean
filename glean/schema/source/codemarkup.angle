@@ -165,7 +165,8 @@ predicate EntityKind:
   }
   { Entity, Kind } where
     PythonEntityKind { Entity, Kind } |
-    CxxEntityKind { Entity, Kind }
+    CxxEntityKind { Entity, Kind } |
+    PpEntityKind { Entity, Kind }
 
 # All entities defined in a src.File and their locations
 predicate FileEntityLocations:
@@ -828,5 +829,14 @@ predicate CxxEntityKind:
     )
     # TODO: definitions
 
+predicate PpEntityKind:
+  {
+    entity: code.Entity,
+    kind: SymbolKind,
+  }
+  { { pp = Decl }, Kind } where
+    ({ define = _ } = Decl; Kind = (Macro : SymbolKind) ) |
+    ({ undef = _ } = Decl; Kind = (Macro : SymbolKind) ) |
+    ({ include_ = _ } = Decl; Kind = (File : SymbolKind) )
 
 }
