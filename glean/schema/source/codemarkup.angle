@@ -786,9 +786,17 @@ predicate NonImportPythonDeclarationKind:
   }
   { D, Kind } where
     ({cls = _} = D; Kind = Class_ : SymbolKind ) |
-    ({func = _} = D; Kind = Function : SymbolKind ) | # TODO: methods
     ({module = _} = D; Kind = Module : SymbolKind ) |
-    ({variable = _} = D; Kind = Variable : SymbolKind )
+    ({func = _} = D;
+      python.ContainingTopLevelDeclaration { D, C };
+      ({module = _} = C; Kind = Function : SymbolKind ) |
+      ({cls = _} = C; Kind = Method : SymbolKind ) |
+      ({func = _} = C; Kind = Function : SymbolKind )) |  # these are locals
+    ({variable = _} = D;
+      python.ContainingTopLevelDeclaration { D, C };
+      ({module = _} = C; Kind = Variable : SymbolKind ) |
+      ({cls = _} = C; Kind = Field : SymbolKind ) |
+      ({func = _} = C; Kind = Variable : SymbolKind ))  # these are locals
 
 predicate PythonEntityKind:
   {
