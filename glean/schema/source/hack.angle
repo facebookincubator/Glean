@@ -416,7 +416,7 @@ type Occurrence =
 type XRefTarget =
   {
     declaration : Declaration |
-    occurrence : Occurrence |
+    # occurrence : Occurrence | # needs version bump
   }
 
 # References to target code
