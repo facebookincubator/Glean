@@ -612,17 +612,35 @@ predicate CxxFileEntityTraceFixedXRefLocations:
   { File, Trace, XRef, Entity } where
     cxx1.FileXRefMap { file = File, fixed = Fixeds } = Trace;
     cxx1.FileXRefs { Trace, _ };
+    cxx1.FixedXRef { XRefTarget, Uses } = Fixeds[..];
+    CxxXRefTargetLocation { XRefTarget, Entity, cxx1.Name Name, Range };
+    Spans = prim.relToAbsByteSpans Uses;
+    Span = Spans[..];
+    { file = TargetFile } = Range;
+    { { Name, TargetFile, { range = Range } }, { span = Span }} = XRef;
 
-    # .. go through fixed declarations
-    ({ XRef, Entity } where
-      cxx1.FixedXRef { { declaration = Decl }, Uses } = Fixeds[..];
-      cxx1.DeclarationLocation { Decl, Range, cxx1.Name Name };
-      Spans = prim.relToAbsByteSpans Uses;
-      Span = Spans[..];
-      { file = TargetFile } = Range;
-      { { Name, TargetFile, { range = Range } }, { span = Span }} = XRef;
+# Helper to (partially) process XRefTargets to entities and xrefs
+predicate CxxXRefTargetLocation:
+  {
+    target: cxx1.XRefTarget,
+    entity: code.Entity,
+    name: cxx1.Name,
+    range: src.Range,
+  }
+  { XRefTarget, Entity, Name, Range } where
+    # fixed declaration entities
+    ( { declaration = Decl } = XRefTarget;
+      cxx1.DeclarationLocation { Decl, Range, Name };
       code.Entity { cxx = { decl = Decl }} = Entity;
+    ) | (
+    # fixed enumerator entities
+      { enumerator = Enum } = XRefTarget;
+      { Name, _, Range } = Enum;
+      code.Entity { cxx = { enumerator = Enum }} = Entity;
     )
+    # objSelector -- not an entity type
+    # unknown -- just a file and a point in the file tbd
+    # indirect -- can't implement due to recursion
 
 # "Variable" external XRefs only, for a specific trace (FileXRefMap)
 # todo: we should really zip these in Angle and export them as XRefLocations
