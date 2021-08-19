@@ -19,6 +19,7 @@ module Glean.Query.Angle
   , data_
   , nat
   , byte
+  , enum
   , string
   , stringPrefix
   , byteArray
@@ -45,6 +46,7 @@ module Glean.Query.Angle
   , TFields(..)
   , HasFields
   , HasField
+  , AngleEnum(..)
   ) where
 
 import Control.Monad.State.Strict
@@ -183,6 +185,19 @@ nat w = Angle (pure (Nat DSL w))
 
 byte :: Word8 -> Angle Byte
 byte w = Angle (pure (Nat DSL (fromIntegral w)))
+
+-- | HACK: A typeclass to represent enums generated from Angle. This is used
+-- to splice values of these Angle-generated Thrift enum values back into Angle
+-- queries.
+--
+-- Ideally implementations of these should be codegenerated or we should come
+-- up with a better way of embedding enum values in this DSL.
+class AngleEnum a where
+  type AngleEnumTy a
+  enumName :: a -> Text
+
+enum :: AngleEnum a => a -> Angle (AngleEnumTy a)
+enum e = Angle (pure (Variable DSL (enumName e)))
 
 stringPrefix :: Text -> Angle Text
 stringPrefix t = Angle (pure (StringPrefix DSL t))
