@@ -399,7 +399,7 @@ runDerivation env repo pred query = do
 
     mergeStats a b =
       let add f = f a + f b
-          addMaybe f = liftA2 (+) (f a) (f b)
+          addMaybe f = liftA2 (+) (f a) (f b) <|> f a <|> f b
       in
       -- bytecode_size does not accumulate. We take the last one.
       b
