@@ -75,7 +75,7 @@ newtype FromSchemaRepos =
 defaultSchemaRepos :: SchemaRepos [RepoName]
 defaultSchemaRepos = SchemaRepos
   { cxxRepo = ["fbsource"]
-  , hsRepo = ["fbsource-hs", "sigma_haxlanalyser"]
+  , hsRepo = ["fbsource-hs", "sigma_hiedb"]
   , javaRepo = ["fbsource.fbandroid"]
   , hackRepo = ["www.hack"]
   , pythonRepo = ["instagram.server"]
