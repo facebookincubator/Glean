@@ -1072,6 +1072,42 @@ predicate NamespaceDeclarationName:
     ( NamespaceQName { name = { just = Name }} = QName ) |
     ( NamespaceQName { name = nothing } = QName; Name = Name "anonymous" )
 
+# Mirror of type in code.cxx.angle
+type DefinitionEntity =
+  {
+    record_ : cxx1.RecordDefinition |
+    function_ : cxx1.FunctionDefinition |
+    enum_ : cxx1.EnumDefinition |
+    objcMethod : cxx1.ObjcMethodDefinition |
+    objcContainer : cxx1.ObjcContainerDefinition |
+    variable : cxx1.VariableDeclaration |
+    namespace_ : cxx1.NamespaceDefinition |
+  }
+
+# Short name and location of a definition (via its embedded declaration)
+# N.B. This isn't the inverse of DeclToDef (use DeclFamily for that), this
+# just unwraps a Definition to get at its root declaration value
+predicate DefToBaseDecl:
+  {
+    defn : DefinitionEntity,
+    decl : Declaration,
+  }
+  { Defn, Decl } where
+    ( { record_ = { declaration = X } } = Defn;
+      Decl = Declaration { record_ = X } ) |
+    ( { function_ = { declaration = X } } = Defn;
+      Decl = Declaration { function_ = X } ) |
+    ( { enum_ = { declaration = X } } = Defn;
+      Decl = Declaration { enum_ = X } ) |
+    ( { objcMethod = ObjcMethodDefinition X } = Defn;
+      Decl = Declaration { objcMethod = X } ) |
+    ( { objcContainer = { declaration = X } } = Defn;
+      Decl = Declaration { objcContainer = X } ) |
+    ( { variable = X } = Defn;
+      Decl = Declaration { variable = X } ) |
+    ( { namespace_ = { declaration = X } } = Defn;
+      Decl = Declaration { namespace_ = X } )
+
 # All uses of preprocessor #defines in a file, as xrefs
 predicate FilePPUseXRefs:
   {
