@@ -12,6 +12,7 @@ import cxx1.4
 import pp1.1
 import thrift.4
 import rust.1
+import code.cxx.3
 
 # Deprecated types
 
@@ -641,6 +642,42 @@ predicate CxxXRefTargetLocation:
     # objSelector -- not an entity type
     # unknown -- just a file and a point in the file tbd
     # indirect -- can't implement due to recursion
+
+#
+# Find xrefs associated with decls in this file / trace
+#
+# For all base decls in a file computed xrefs for the defn targets
+# where the defn target is a unique new xref
+predicate CxxFileEntityTraceDeclToDefXRefLocations:
+  {
+    file: src.File,
+    trace: cxx1.Trace,
+    xref: XRefLocation,
+    entity: code.Entity,
+  }
+  { File, Trace, XRef, Entity } where
+    Trace = cxx1.Trace { File, cxx1.Declarations Decls, _ };
+    Decl = Decls[..];
+    CxxDeclToDefXRefTargetLocation { Decl, Entity, Location };
+    cxx1.DeclarationSrcRange { Decl, SrcRange };
+    { Location, { range = SrcRange }} = XRef;
+
+# For a given Decl, it might have a base Defn, build an entity for that
+# Iff the target is not the same as the source Decl
+predicate CxxDeclToDefXRefTargetLocation:
+  {
+    decl: cxx1.Declaration,
+    entity: code.Entity,
+    location: Location
+  }
+  { Decl1, Entity, Location } where
+    code.cxx.DeclToDef { Decl1, Defn };
+    cxx1.DefToBaseDecl { Defn , Decl2 };
+    Decl1 != Decl2; # Filter out (many) self refs
+    cxx1.DeclarationLocation { Decl2, Range, cxx1.Name Name };
+    { file = TargetFile } = Range;
+    { Name, TargetFile, { range = Range } } = Location;
+    code.Entity { cxx = { defn = Defn }} = Entity;
 
 # "Variable" external XRefs only, for a specific trace (FileXRefMap)
 # todo: we should really zip these in Angle and export them as XRefLocations
