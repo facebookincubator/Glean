@@ -64,12 +64,14 @@ instance Plugin QueryCommand where
         <> metavar "MILLISECONDS"
         <> help "Override the default query timeout"
         )
+      omitResults <- switch $ long "omit-results"
+        <> help (
+          "don't print results; " <>
+          "use with --stats to get a count of results")
       query <- strArgument
         ( metavar "QUERY"
         <> help "query to execute ('@file' to read from file, '-' for stdin)"
         )
-      omitResults <- switch $ long "omit-results"
-        <> help "don't print results; use with --stat to get a count of results"
       return Query{..}
 
   runCommand _ _ backend Query{..} = do

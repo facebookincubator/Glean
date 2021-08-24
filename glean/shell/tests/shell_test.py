@@ -11,7 +11,7 @@ from libfb.py.pathutils import find_path_in_fbcode_bin, find_path_in_fbcode_dir
 from libfb.py.testutil import BaseFacebookTestCase
 
 
-SHELL_PATH = find_path_in_fbcode_bin("glean/shell/shell")
+GLEAN_PATH = find_path_in_fbcode_bin("glean/tools/gleancli/glean")
 MKTESTDB_PATH = find_path_in_fbcode_bin("glean/test/lib/make_test_db")
 SCHEMA_PATH = find_path_in_fbcode_dir("glean/schema/source")
 EXAMPLE_SCHEMA_PATH = find_path_in_fbcode_dir("glean/example/schema")
@@ -46,10 +46,13 @@ class GleanShellTest(BaseFacebookTestCase):
             schema_args = ["--schema=" + schema]
 
         cls.process = pexpect.spawn(
-            SHELL_PATH,
+            GLEAN_PATH,
             logfile=sys.stdout,
             encoding="utf8",
-            args=["--db-root=" + cls.tmpdir + "/db"] + db_args + schema_args,
+            args=["--db-root=" + cls.tmpdir + "/db"]
+            + schema_args
+            + ["shell"]
+            + db_args,
         )
 
         if db is None:

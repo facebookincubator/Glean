@@ -52,7 +52,7 @@ whatever method you need for accessing config files.
 
 ## Common options
 
-All the Glean tools (`glean`, `glean-server`, `glean-shell`) accept
+All the Glean tools (`glean`, `glean-server`) accept
 the following options.
 
 <OssOnly>

@@ -34,7 +34,7 @@ A database can be created by a client using any of these methods:
 
 1. Programmatically, using one of the APIs listed in [APIs for Writing](#apis-for-writing).
 2. On the command line: invoke the `glean` command-line tool to send data in JSON format, see [ Creating a database using the command line](#creating-a-database-usin).
-3. In the shell, use `glean-shell --db-root=<dir>` and then use the command `:load` to create a DB from a JSON file. See [ Loading a DB from JSON in the shell](#loading-a-db-from-json-i).
+3. In the shell, use `glean shell --db-root=<dir>` and then use the command `:load` to create a DB from a JSON file. See [ Loading a DB from JSON in the shell](#loading-a-db-from-json-i).
 
 <FbInternalOnly>
 
@@ -159,7 +159,7 @@ The shell is useful for experimenting with creating a DB from JSON data directly
 
 ```
 $ mkdir /tmp/glean
-$ glean-shell --db-root /tmp/glean
+$ glean shell --db-root /tmp/glean
 Glean Shell, dev mode
 type :help for help.
 no fbsource database availabe
@@ -213,7 +213,7 @@ There is a default retention policy for databases created this way; for details 
 To create a database from a single file of JSON facts:
 
 ```
-glean --service <write-server> create --finish --repo <name>/<hash> <filename>
+glean create --service <write-server> --finish --repo <name>/<hash> <filename>
 ```
 where
 
@@ -236,16 +236,16 @@ where
 If the file is more than, say, 100MB, this operation will probably time out sending the data to the server. To send large amounts of data you need to batch it up into multiple files, and then send it like this:
 
 ```
-glean --service <write-server> create --repo <name>/<hash>
-glean --service <write-server> write --repo <name>/<hash> <filename1>
-glean --service <write-server> write --repo <name>/<hash> <filename2>
+glean create --service <write-server> --repo <name>/<hash>
+glean write --service <write-server> --repo <name>/<hash> <filename1>
+glean write --service <write-server> --repo <name>/<hash> <filename2>
 ...
-glean --service <write-server> finish --repo <name>/<hash>
+glean finish --service <write-server> --repo <name>/<hash>
 ```
 To find out if your DB made it:
 
 ```
-glean-shell --service <write-server> :list
+glean shell --service <write-server> :list
 ```
 This will list the DBs available on the write server.
 

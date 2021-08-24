@@ -831,19 +831,19 @@ executable glean-server
         json,
         thrift-server
 
-executable glean-shell
-    import: fb-haskell, fb-cpp, deps, exe
+library shell-lib
+    import: fb-haskell, fb-cpp, deps
     hs-source-dirs: glean/shell
-    main-is: Glean/Shell.hs
-    other-modules:
+    exposed-modules:
+        Glean.Shell
         Glean.Shell.Error
         Glean.Shell.Index
         Glean.Shell.Terminal
         Glean.Shell.Types
-    ghc-options: -main-is Glean.Shell -pgml g++
     default-extensions: CPP
     extra-libraries: stdc++
     build-depends:
+        glean:cli-types,
         glean:if-glean-hs,
         glean:stubs,
         glean:config,
@@ -859,6 +859,15 @@ executable glean-shell
         split
 
 
+library cli-types
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs: glean/tools/gleancli/plugin
+    exposed-modules:
+        GleanCLI.Types
+    build-depends:
+        glean:client-hs-local,
+        glean:util,
+
 executable glean
     import: fb-haskell, fb-cpp, deps, exe
     hs-source-dirs: glean/tools/gleancli
@@ -869,15 +878,16 @@ executable glean
         GleanCLI.Finish
         GleanCLI.Query
         GleanCLI.Restore
-        GleanCLI.Types
         GleanCLI.Write
     ghc-options: -main-is GleanCLI
     extra-libraries: stdc++
     build-depends:
+        glean:cli-types,
         glean:client-hs,
         glean:client-hs-local,
         glean:db,
         glean:if-glean-hs,
+        glean:shell-lib,
         glean:stubs,
         glean:config,
         glean:core,

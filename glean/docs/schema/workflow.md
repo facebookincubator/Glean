@@ -42,7 +42,7 @@ Examples of code using these types:
 1. Modify the source files in <SrcFile file="glean/schema/source" />
 
 2. Start up the shell locally using your schema:<br/>
-`glean-shell --db-root ~/local/gleandb --schema glean/schema/source`<br/>
+`glean shell --db-root ~/local/gleandb --schema glean/schema/source`<br/>
 If you don't already have a `~/local/gleandb` for storing local DBs, create it with `mkdir ~/local/gleandb`.
 
 3. Test it with some example data: see [Loading a DB from JSON in the shell](../write.md#loading-a-db-from-json-in-the-shell).

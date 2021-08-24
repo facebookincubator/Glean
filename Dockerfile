@@ -13,7 +13,6 @@ ADD ./LICENSE /glean-code/
 ADD ./Setup.hs /glean-code/
 RUN make
 RUN cp $(cabal exec --project-file=cabal.project -- which glean) ~/.cabal/bin/
-RUN cp $(cabal exec --project-file=cabal.project -- which glean-shell) ~/.cabal/bin/
 RUN cp $(cabal exec --project-file=cabal.project -- which glean-server) ~/.cabal/bin/
 RUN cp $(cabal exec --project-file=cabal.project -- which glean-hyperlink) ~/.cabal/bin/
 RUN glean --help

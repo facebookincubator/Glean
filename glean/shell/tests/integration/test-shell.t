@@ -3,7 +3,7 @@
   $ source "$TESTDIR/setup.sh"
   Creating DB using handle fbcode:glean/tools/gleancli:glean@.* (re)
 
-  $ function query { "$SHELL" --service "::1:$PORT" --db "$DB" "$(echo -e $1)" ; }
+  $ function query { "$GLEAN" --service "::1:$PORT" shell --db "$DB" "$(echo -e $1)" ; }
 
   $ query "example.Class _"
   [>] example.Class _ (re)

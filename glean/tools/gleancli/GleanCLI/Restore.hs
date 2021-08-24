@@ -37,7 +37,7 @@ instance Plugin RestoreCommand where
     where
       locator = strArgument
         (  metavar "LOCATOR"
-        <> help "DB location, see :list-all in glean-shell"
+        <> help "DB location, see :list-all in glean shell"
         )
       what =
         (RestoreLocator <$> locator) <|>

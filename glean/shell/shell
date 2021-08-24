@@ -1,0 +1,13 @@
+#! /bin/sh
+
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+# Temporary shim as we migrate from glean-shell as a separate binary
+# to "glean shell".
+echo "***"
+echo "*** NOTE: please invoke glean-shell as 'glean shell'."
+echo "*** The glean-shell command will go away in the future."
+echo "***"
+echo ""
+DIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+exec "$DIR"/glean shell "$@"

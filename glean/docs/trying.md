@@ -37,7 +37,7 @@ What's in the image?
 Start the Glean [shell](shell.md):
 
 ```
-glean-shell --db-root /gleandb --schema /glean-code/glean/schema/source
+glean shell --db-root /gleandb --schema /glean-code/glean/schema/source
 ```
 
 You should see:
@@ -83,7 +83,7 @@ glean-server --db-root /gleandb --schema /glean-code/glean/schema/source --port 
 And now the shell can connect to the server:
 
 ```
-glean-shell --service localhost:12345
+glean shell --service localhost:12345
 ```
 
 The commands work exactly the same as with local databases, but now it

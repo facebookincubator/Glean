@@ -4,6 +4,7 @@
 
 module GleanCLI (main) where
 
+import Control.Exception
 import Control.Monad
 import qualified Data.Bifunctor
 import qualified Data.ByteString as B
@@ -18,20 +19,25 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 import Options.Applicative
 import System.IO
+import System.Environment
 
+import Util.Control.Exception
 import Util.EventBase
 import Util.IO
 import Util.OptParse
 import System.Exit (exitWith, ExitCode(..))
 
 import qualified Glean hiding (options)
+import Glean.Init
 import qualified Glean.LocalOrRemote as Glean
 import qualified Glean.Database.Work as Database
 import Glean.Schema.Util
 import Glean.Types as Thrift hiding (ValidateSchema)
 import qualified Glean.Types as Thrift
+import Glean.Impl.ConfigProvider
 import Glean.Util.ConfigProvider
 import Glean.Util.ShellPrint
+import Glean.Shell
 
 import GleanCLI.Common
 import GleanCLI.Derive
@@ -76,15 +82,29 @@ plugins =
   , plugin @OwnershipCommand
   , plugin @SetPropertyCommand
   , plugin @WriteSerializedInventoryCommand
+  , plugin @ShellCommand
 #if FACEBOOK
   , plugin @FacebookPlugin
 #endif
   ]
 
-options :: ParserInfo Config
-options = info (parser <**> helper)
+options :: ParserInfo (Config, ConfigOptions ConfigAPI)
+options = info (((,) <$> parser <*> configOptions) <**> helper <**> helpAll)
   (fullDesc <> progDesc "Create, manipulate and query Glean databases")
   where
+#if MIN_VERSION_optparse_applicative(0,16,0)
+    parseError = ShowHelpText Nothing
+#else
+    parseError = ShowHelpText
+#endif
+
+    helpAll :: Parser (a -> a)
+    helpAll = abortOption parseError $ mconcat
+      [ long "help-all"
+      , help "Show all possible options."
+      , hidden
+      ]
+
     parser :: Parser Config
     parser = do
       cfgService <- Glean.options
@@ -94,14 +114,22 @@ options = info (parser <**> helper)
         ]
       return Config{..}
 
+
 main :: IO ()
-main =
-  withConfigOptions options $ \(Config{..}, cfgOpts) ->
-  withEventBaseDataplane $ \evb ->
-  withConfigProvider cfgOpts $ \cfgAPI ->
-  Glean.withBackendWithDefaultOptions evb cfgAPI cfgService $ \backend -> do
-    case cfgCommand of
-      PluginCommand c -> runCommand evb cfgAPI backend c
+main = do
+  ((Config{..}, cfgOpts), leftOverArgs) <- do
+    args <- getArgs
+    r <- tryAll $ partialParse (prefs subparserInline) options args
+    case r of
+      Left e -> withGflags ["--help" | "--help-all" <- args] $ throwIO e
+      Right r -> return r
+
+  case cfgCommand of
+    PluginCommand c ->
+      withGflags (argTransform c leftOverArgs) $
+      withEventBaseDataplane $ \evb ->
+      withConfigProvider cfgOpts $ \cfgAPI ->
+      withService evb cfgAPI cfgService c
 
 
 -- -----------------------------------------------------------------------------

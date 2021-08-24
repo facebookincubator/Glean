@@ -18,7 +18,7 @@ want to play along with the examples, you can do so as follows:
 mkdir /tmp/glean
 mkdir /tmp/glean/db
 mkdir /tmp/glean/schema
-glean-shell --db-root /tmp/glean/db --schema /tmp/glean/schema
+glean shell --db-root /tmp/glean/db --schema /tmp/glean/schema
 ```
 
 Put the [example

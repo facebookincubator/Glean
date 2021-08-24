@@ -2,8 +2,9 @@
 
 {-# LANGUAGE ApplicativeDo, NamedFieldPuns #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
-module Glean.Shell (main)
-where
+module Glean.Shell
+  ( ShellCommand
+  ) where
 
 import Control.Concurrent
 import Control.Exception hiding (evaluate)
@@ -47,9 +48,9 @@ import qualified Text.JSON as JSON
 import Text.Parsec (runParser)
 import TextShow
 
-import Util.EventBase
 import Util.JSON.Pretty ()
 import Util.List
+import Util.OptParse
 import Util.String
 import Util.Text
 import Util.TimeSec
@@ -61,9 +62,7 @@ import Glean.Database.Schema.Types (DbSchema(..))
 import Glean.Database.Schema (newDbSchema, readWriteContent)
 import Glean.Database.Config (parseSchemaDir)
 import qualified Glean.Database.Config as DB (Config(..))
-import Glean.Init
-import Glean.LocalOrRemote (Service(..), withBackendWithDefaultOptions)
-import qualified Glean.LocalOrRemote as Glean
+import Glean.LocalOrRemote as Glean hiding (options)
 import Glean.RTS.Types (Pid(..), Fid(..))
 import Glean.RTS.Foreign.Query (interruptRunningQueries)
 import Glean.Schema.Resolve
@@ -74,7 +73,6 @@ import Glean.Shell.Terminal
 import Glean.Shell.Types
 import Glean.Shell.Error (Ann, BadQuery(..), prettyBadQuery)
 import qualified Glean.Types as Thrift
-import Glean.Util.ConfigProvider
 #if FACEBOOK
 import Glean.Util.CxxXRef
 #endif
@@ -82,23 +80,21 @@ import Glean.Util.ShellPrint
 import Glean.Util.Some
 import qualified Glean.Util.ThriftSource as ThriftSource
 
+import GleanCLI.Types
+
 data Config = Config
-  { cfgService :: Service
-  , cfgDatabase :: Maybe String
+  { cfgDatabase :: Maybe String
   , cfgQuery :: [String]
   , cfgMode :: ShellMode
   , cfgLimit :: Int64
   , cfgWidth :: Maybe Int
   , cfgPager :: Bool
-  , cfgVerbose :: Maybe Int
   }
 
-options :: ConfigProvider cfg => ParserInfo (Config, ConfigOptions cfg)
-options = info (O.helper <*> liftA2 (,) parser configOptions) fullDesc
+options :: Parser Config
+options = commandParser "shell" (progDesc "Start the Glean shell") parser
   where
-    parser :: Parser Config
     parser = do
-      cfgService <- Glean.options
       cfgDatabase <- optional $ strOption
         (  long "db"
         <> metavar "NAME"
@@ -129,12 +125,6 @@ options = info (O.helper <*> liftA2 (,) parser configOptions) fullDesc
       cfgPager <- switch
         (  long "pager"
         <> O.help "Use a pager for displaying long output"
-        )
-      cfgVerbose <- optional $ option auto
-        (  long "verbose"
-        <> short 'v'
-        <> metavar "N"
-        <> O.help "Enbable debug logging at level N"
         )
       return Config{..}
      where
@@ -1170,12 +1160,12 @@ evalMain cfg = do
             output $ prettyBadQuery e
             liftIO exitFailure
 
-setupLocalSchema :: Config -> IO (Config, Maybe (Eval ()))
-setupLocalSchema cfg = do
-  case cfgService cfg of
-    Remote{} -> return (cfg, Nothing)
+setupLocalSchema :: Glean.Service -> IO (Glean.Service, Maybe (Eval ()))
+setupLocalSchema service = do
+  case service of
+    Remote{} -> return (service, Nothing)
     Local dbConfig logging -> case DB.cfgSchemaDir dbConfig of
-      Nothing -> return (cfg, Nothing)
+      Nothing -> return (service, Nothing)
       Just dir -> do
         schema <- parseSchemaDir dir
           `catch` \(e :: ErrorCall) -> do
@@ -1208,48 +1198,45 @@ setupLocalSchema cfg = do
             , DB.cfgSchemaOverride = True }
 
         return
-          ( cfg { cfgService = Local dbConfig' logging }
+          ( Local dbConfig' logging
           , Just updateSchema
           )
 
-main :: IO ()
-main = do
-  (cfg, cfgOpts) <- execParser options
-  glog_v <- lookupEnv "GLOG_v"
-  let
-    gflags
-      | Just n <- cfgVerbose cfg = ["--v=" <> show n]
-      | isNothing glog_v = ["--minloglevel=2"]
-        -- default: warnings and above only
-      | otherwise = []
-  withGflags gflags $ do
-  withEventBaseDataplane $ \evb ->
-    withConfigProvider cfgOpts $ \cfgAPI -> do
-      (cfg, updateSchema) <- setupLocalSchema cfg
-      withBackendWithDefaultOptions evb cfgAPI (cfgService cfg) $ \be -> do
-      withSystemTempFile "scratch-query.angle" $ \q handle -> do
-        hClose handle
-        client_info <- clientInfo
-        tty <- hIsTerminalDevice stdout
-        outh <- newMVar stdout
-        State.evalStateT (unEval $ evalMain cfg) ShellState
-          { backend = Some be
-          , repo = Nothing
-          , mode = cfgMode cfg
-          , schemas = Schemas HashMap.empty 0 []
-          , schemaInfo = def
-          , limit = cfgLimit cfg
-          , timeout = Just 10000      -- Sensible default for fresh shell.
-          , stats = SummaryStats
-          , lastSchemaQuery = Nothing
-          , updateSchema = updateSchema
-          , isTTY = tty
-          , pageWidth =
-              (\n -> if n == 0 then Unbounded else AvailablePerLine n 1)
-              <$> cfgWidth cfg
-          , outputHandle = outh
-          , pager = cfgPager cfg
-          , debug = def
-          , client_info = client_info
-          , query_file = q
-          }
+type ShellCommand = Config
+
+instance Plugin ShellCommand where
+  parseCommand = options
+
+  argTransform _ args
+    | "-v" `elem` args = args
+    | otherwise = "--minloglevel=2" : args
+
+  withService evb cfgAPI service cfg = do
+    (service', updateSchema) <- setupLocalSchema service
+    Glean.withBackendWithDefaultOptions evb cfgAPI service' $ \backend -> do
+    withSystemTempFile "scratch-query.angle" $ \q handle -> do
+      hClose handle
+      client_info <- clientInfo
+      tty <- hIsTerminalDevice stdout
+      outh <- newMVar stdout
+      State.evalStateT (unEval $ evalMain cfg) ShellState
+        { backend = Some backend
+        , repo = Nothing
+        , mode = cfgMode cfg
+        , schemas = Schemas HashMap.empty 0 []
+        , schemaInfo = def
+        , limit = cfgLimit cfg
+        , timeout = Just 10000      -- Sensible default for fresh shell.
+        , stats = SummaryStats
+        , lastSchemaQuery = Nothing
+        , updateSchema = updateSchema
+        , isTTY = tty
+        , pageWidth =
+            (\n -> if n == 0 then Unbounded else AvailablePerLine n 1)
+            <$> cfgWidth cfg
+        , outputHandle = outh
+        , pager = cfgPager cfg
+        , debug = def
+        , client_info = client_info
+        , query_file = q
+        }

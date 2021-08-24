@@ -36,7 +36,7 @@ all:: thrift $(BYTECODE_GEN) gen-schema thrift-schema-hs glean
 
 .PHONY: glean
 glean::
-	$(CABAL) build glean glean-shell glean-server glean-hyperlink
+	$(CABAL) build glean glean-server glean-hyperlink
 
 $(BYTECODE_GEN) &: $(BYTECODE_SRCS)
 	$(CABAL) run gen-bytecode-cpp -- --install_dir=glean/rts

@@ -52,7 +52,7 @@ This is a mapping from `Target` to `File` (see [Efficient matching of facts](ang
 Using the `glean` command-line tool, you direct the server to compute and store the facts for a predicate like this:
 
 ```lang=shell
-glean --service <write-server> derive buck.TargetOut
+glean derive --service <write-server> buck.TargetOut
 ```
 
 Replacing `<write-server>` with the appropriate name of the write
@@ -73,7 +73,7 @@ as finished.
 You can derive multiple predicates together:
 
 ```lang=shell
-glean --service <write-server> derive <predicate> <predicate> ...
+glean derive --service <write-server> <predicate> <predicate> ...
 ```
 
 But note that these predicates must be independent; they cannot depend
@@ -220,7 +220,7 @@ mkdir ~/local/gleandb
 Download the DB you want to test with:
 
 ```lang=shell
-glean --db-root ~/local/gleandb restore --repo-name fbsource --date 2021-04-29
+glean restore --db-root ~/local/gleandb --repo-name fbsource --date 2021-04-29
 ```
 
 (replace `fbsource` and the date as appropriate). This may take a while.
@@ -237,7 +237,7 @@ Obtain the DB you want to test with, let's assume you put it in
 Start the shell with the local DB and schema:
 
 ```lang=shell
-glean-shell --db-root ~/local/gleandb --schema glean/schema/source
+glean shell --db-root ~/local/gleandb --schema glean/schema/source
 ```
 
 Add `--db-schema-override` if you are working on an existing predicate and want your version to override the schema in the DB.
