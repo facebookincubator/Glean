@@ -698,6 +698,21 @@ predicate CxxFileEntityTraceVariableXRefLocations:
     cxx1.FileXRefMap { file = File, variable = ByteSpanSpans } = Trace;
     cxx1.FileXRefs { Trace, Targets };
 
+# Bulk fetch any definitions associated with the external decls in the trace
+predicate CxxFileEntityTraceVariableXRefDeclToDefs:
+  {
+    trace: cxx1.FileXRefMap,
+    source: cxx1.Declaration, # used to identify the source
+    entity: code.Entity, # enough stuff to build a xreflocation
+    location: Location,
+  }
+  { Trace, Decl, Entity, Location } where
+    cxx1.FileXRefs { Trace, Targets };
+    # decls
+    # todo:  more cases: recursion: indirect xrefs could be decls too
+    { declaration = Decl } = Targets[..];
+    CxxDeclToDefXRefTargetLocation { Decl, Entity, Location };
+
 # C preprocessor uses of #defines as xrefs
 predicate CxxFileEntityPPXRefLocations:
   {
