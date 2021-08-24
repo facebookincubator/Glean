@@ -908,26 +908,34 @@ predicate CxxEntityKind:
     kind: SymbolKind,
   }
   { { cxx = CxxD }, Kind } where
-    ({ decl = D } = CxxD;
-    ({ namespace_ = _ } = D; Kind = (Namespace : SymbolKind) ) |
-    ({ usingDeclaration = _ } = D; Kind = (Namespace : SymbolKind) ) |
-    ({ enum_ = _ } = D; Kind = (Enum : SymbolKind) ) |
-    ({ function_ = _ } = D; Kind = (Function : SymbolKind) ) |
-    ({ variable = _ } = D; Kind = (Variable : SymbolKind) ) |
-    ({ objcMethod = _ } = D; Kind = (Method : SymbolKind) ) |
-    ({ objcProperty = _ } = D; Kind = (Property : SymbolKind) ) |
-    ({ typeAlias = _ } = D; Kind = (Class_ : SymbolKind) ) |
+    ({ decl = Decl } = CxxD;
+     CxxDeclKind { Decl, Kind }) |
+    ({ enumerator = _ } = CxxD;
+     Kind = (Enumerator : SymbolKind)) |
+    ({ defn = Defn } = CxxD;
+     cxx1.DefToBaseDecl { Defn, Decl };
+     CxxDeclKind { Decl, Kind }; )
+
+predicate CxxDeclKind:
+  {
+    decl: cxx1.Declaration,
+    kind: SymbolKind,
+  }
+  { Decl, Kind } where
+    ({ namespace_ = _ } = Decl; Kind = (Namespace : SymbolKind) ) |
+    ({ usingDeclaration = _ } = Decl; Kind = (Namespace : SymbolKind) ) |
+    ({ enum_ = _ } = Decl; Kind = (Enum : SymbolKind) ) |
+    ({ function_ = _ } = Decl; Kind = (Function : SymbolKind) ) |
+    ({ variable = _ } = Decl; Kind = (Variable : SymbolKind) ) |
+    ({ objcMethod = _ } = Decl; Kind = (Method : SymbolKind) ) |
+    ({ objcProperty = _ } = Decl; Kind = (Property : SymbolKind) ) |
+    ({ typeAlias = _ } = Decl; Kind = (Class_ : SymbolKind) ) |
     # TODO: objc containers, using directives
-    ({ record_ = R } = D;
+    ({ record_ = R } = Decl;
       ({ kind = { struct_ = _ } } = R; Kind = (Struct : SymbolKind) ) |
       ({ kind = { class_ = _ } } = R; Kind = (Class_ : SymbolKind) ) |
       ({ kind = { union_ = _ } } = R; Kind = (Union : SymbolKind) )
     )
-    ) |
-    ({ enumerator = _ } = CxxD;
-      Kind = (Enumerator : SymbolKind)
-    )
-    # TODO: definitions
 
 predicate PpEntityKind:
   {
