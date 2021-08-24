@@ -698,6 +698,22 @@ predicate CxxFileEntityTraceVariableXRefLocations:
     cxx1.FileXRefMap { file = File, variable = ByteSpanSpans } = Trace;
     cxx1.FileXRefs { Trace, Targets };
 
+# Bulk fetch any declaration locations associated with the xref targets
+# Rather than O(n) calls to map over the external target xrefs,
+# we can bulk-fetch all locations in one go, saving a lot of calls
+predicate CxxFileEntityTraceVariableXRefDeclLocations:
+  {
+    trace: cxx1.FileXRefMap,
+    source: cxx1.Declaration, # used to identify the source
+    location: Location,
+  }
+  { Trace, Decl, Location } where
+    cxx1.FileXRefs { Trace, Targets };
+    { declaration = Decl } = Targets[..];
+    cxx1.DeclarationLocation { Decl, Range, cxx1.Name Name };
+    { file = TargetFile } = Range;
+    { Name, TargetFile, { range = Range } } = Location;
+
 # Bulk fetch any definitions associated with the external decls in the trace
 predicate CxxFileEntityTraceVariableXRefDeclToDefs:
   {
