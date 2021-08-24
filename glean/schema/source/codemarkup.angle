@@ -614,29 +614,35 @@ predicate CxxFileEntityTraceFixedXRefLocations:
     cxx1.FileXRefMap { file = File, fixed = Fixeds } = Trace;
     cxx1.FileXRefs { Trace, _ };
     cxx1.FixedXRef { XRefTarget, Uses } = Fixeds[..];
-    CxxXRefTargetLocation { XRefTarget, Entity, cxx1.Name Name, Range };
+    CxxXRefTargetLocation { XRefTarget, Entity, Location };
     Spans = prim.relToAbsByteSpans Uses;
     Span = Spans[..];
-    { file = TargetFile } = Range;
-    { { Name, TargetFile, { range = Range } }, { span = Span }} = XRef;
+    { Location, { span = Span }} = XRef;
 
 # Helper to (partially) process XRefTargets to entities and xrefs
 predicate CxxXRefTargetLocation:
   {
     target: cxx1.XRefTarget,
     entity: code.Entity,
-    name: cxx1.Name,
-    range: src.Range,
+    location: Location,
   }
-  { XRefTarget, Entity, Name, Range } where
+  { XRefTarget, Entity, Location } where
     # fixed declaration entities
     ( { declaration = Decl } = XRefTarget;
-      cxx1.DeclarationLocation { Decl, Range, Name };
+      cxx1.DeclarationLocation { Decl, Range, cxx1.Name Name };
+      { file = TargetFile } = Range;
+      { Name, TargetFile, { range = Range } } = Location;
       code.Entity { cxx = { decl = Decl }} = Entity;
+    ) | (
+    # or jump through the decl sometimes to a def
+      { declaration = Decl } = XRefTarget;
+      CxxDeclToDefXRefTargetLocation { Decl, Entity, Location };
     ) | (
     # fixed enumerator entities
       { enumerator = Enum } = XRefTarget;
-      { Name, _, Range } = Enum;
+      { cxx1.Name Name, _, Range } = Enum;
+      { file = TargetFile } = Range;
+      { Name, TargetFile, { range = Range } } = Location;
       code.Entity { cxx = { enumerator = Enum }} = Entity;
     )
     # objSelector -- not an entity type
