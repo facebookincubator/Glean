@@ -32,7 +32,7 @@ method is chosen by these command-line flags:
 * `--service <tier>` or `--service <host>:<port>`  Connect to a remote Glean server.
 * `--db-root <dir>`  Use databases stored locally in the directory `<dir>`
 
-These flags are accepted by all the Glean command-line tools, including `glean` and `glean-shell`.
+These flags are accepted by all the Glean command-line tools, including `glean`.
 
 <FbInternalOnly>
 
@@ -44,7 +44,7 @@ To use the [shell](shell.md) with local databases, you can do:
 
 ```lang=sh
 mkdir /tmp/glean
-glean-shell --db-root /tmp/glean
+glean shell --db-root /tmp/glean
 ```
 
 To run a server, see [Running the Glean Server](server.md).
@@ -59,12 +59,12 @@ like this:
 
 <OssOnly>
 
-* The job invokes `glean --service <write-server> kickoff <args>` to create the database.
+* The job invokes `glean kickoff --service <write-server> <args>` to create the database.
 
 * At this point the database is in the **Incomplete** state. Queries
 are supported in this state, and always reflect the current contents.
 
-* Facts are written to the database using the methods described in [Writing data to Glean](write.md), and finally the database is closed by invoking `glean --service <write-server> finish <args>` or the appropriate Thrift method.
+* Facts are written to the database using the methods described in [Writing data to Glean](write.md), and finally the database is closed by invoking `glean finish --service <write-server> <args>` or the appropriate Thrift method.
 
 * The database is now in the **Complete** state.
 

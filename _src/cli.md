@@ -117,7 +117,7 @@ Don't print results; use with `--stat` to get a count of results
 Restore a database from backup.
 
 * `LOCATOR`<br />
-DB location, see `:list-all` in glean-shell
+DB location, see `:list-all` in glean shell.
 
 Alternatively the DB to restore can be specified by:
 

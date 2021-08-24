@@ -16,7 +16,7 @@ The shell is an interactive tool in which you can
 <FbInternalOnly>
 
 ```
-glean-shell
+glean shell
 ```
 
 will start the shell, connect to the Glean query service and load up
@@ -27,13 +27,13 @@ the `fbsource` database.
 <OssOnly>
 
 ```
-glean-shell --service HOST:PORT
+glean shell --service HOST:PORT
 ```
 
 to connect to a server, or
 
 ```
-glean-shell --db-root DIR
+glean shell --db-root DIR
 ```
 
 to use local databases from directory `DIR`.
