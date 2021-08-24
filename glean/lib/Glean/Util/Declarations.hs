@@ -26,11 +26,10 @@ module Glean.Util.Declarations
   , getDeclId
   ) where
 
-import Data.Default
 import Data.Int (Int64)
 import Data.Proxy
 import Data.Kind (Constraint)
-import Data.List.Extra
+import Data.List.Extra (foldl')
 import Data.List.NonEmpty (NonEmpty)
 import Data.Typeable
 import Data.Text (Text)
@@ -40,7 +39,6 @@ import Glean.Angle
 import Glean.Schema.Cxx1.Types as Cxx -- gen
 import Glean.Schema.Src.Types as Src -- gen
 import Glean.Schema.Query.Cxx1.Types as Q.Cxx -- gen
-import Glean.Schema.Query.Src.Types as Q.Src -- gen
 import Glean.Typed.Id (IdOf(..), Fid(..))
 import Glean.Typed.Predicate (Predicate(..), SumBranches(..))
 import Glean.Typed.Query
@@ -175,47 +173,56 @@ declarationSrcRange = applyDeclaration (fmap srcRange . getFactKey)
 getDeclId :: Cxx.Declaration -> Int64
 getDeclId = applyDeclaration (fromFid . idOf . getId)
 
--- -----------------------------------------------------------------------------
-
 -- | Input list of names is in human order (outermost name at head of list).
 -- Empty @""@ names are interpreted as anonymous namespaces components.
--- The result is @Nothing@ if and only if the input list is @[]@.
-queryNamespace :: IdOf Src.File -> [Text] -> Maybe Q.Cxx.NamespaceDeclaration
-queryNamespace sfId = \case
-  [] ->  Nothing
-  (outer:rest) -> Just $ Q.Cxx.NamespaceDeclaration_with_key def
-    { Q.Cxx.namespaceDeclaration_key_name = Just $
-        foldl' addNamespace (outerNamespaceOf outer) rest
-    , Q.Cxx.namespaceDeclaration_key_source = Just $ def
-      { Q.Src.range_file = Just (toQueryId sfId) } }
+queryNamespace
+  :: IdOf Src.File -> Text -> [Text] -> Angle Cxx.NamespaceDeclaration
+queryNamespace sfId outer rest =
+  predicate @Cxx.NamespaceDeclaration $
+    rec $
+      field @"name" (foldl' addNamespace init rest) $
+      field @"source" (
+        rec $
+          field @"file" (asPredicate (factId sfId))
+        end)
+    end
   where
+    init :: Angle Cxx.NamespaceQName_key
+    init =
+        rec $
+          field @"name" (nqnOf outer) $
+          field @"parent" nothing
+        end
     -- Empty names mean anonymous which are encoded as Nothing
-    nqnnOf "" = def{ Q.Cxx.namespaceQName_name_nothing = Just def }
-    nqnnOf name = def{ Q.Cxx.namespaceQName_name_just = Just $
-      Q.Cxx.Name_with_key name }
-    outerNamespaceOf outer = Q.Cxx.NamespaceQName_with_key def
-      { Q.Cxx.namespaceQName_key_name = Just (nqnnOf outer)
-      , Q.Cxx.namespaceQName_key_parent = Just def
-        { Q.Cxx.namespaceQName_parent_nothing = Just def } }
-    addNamespace parent name = Q.Cxx.NamespaceQName_with_key def
-      { Q.Cxx.namespaceQName_key_name = Just (nqnnOf name)
-      , Q.Cxx.namespaceQName_key_parent = Just def
-        { Q.Cxx.namespaceQName_parent_just = Just parent } }
+    nqnOf :: Text -> Angle (Maybe Text)
+    nqnOf "" = nothing
+    nqnOf name = just $ string name
+    addNamespace :: Angle Cxx.NamespaceQName_key -> Text ->
+      Angle Cxx.NamespaceQName_key
+    addNamespace angle text =
+      rec $
+        field @"name" (nqnOf text) $
+        field @"parent" (just angle)
+      end
 
 -- | Provide the 'Cxx.NamespaceQName' from 'queryNamespace' and the record name
 -- to get query to look for matching facts.
 queryRecord
-  :: IdOf Src.File -> IdOf Cxx.NamespaceQName -> Text
-  -> Q.Cxx.RecordDeclaration
-queryRecord sfId nqnId name = Q.Cxx.RecordDeclaration_with_key def
-  { Q.Cxx.recordDeclaration_key_name = Just $ Q.Cxx.QName_with_key def
-    { Q.Cxx.qName_key_name = Just $ Q.Cxx.Name_with_key name
-    , Q.Cxx.qName_key_scope = Just def
-      { Q.Cxx.scope_namespace_ = Just (toQueryId nqnId) } }
-  , Q.Cxx.recordDeclaration_key_source = Just $ def
-      { Q.Src.range_file = Just (toQueryId sfId) } }
-
--- -----------------------------------------------------------------------------
+ :: IdOf Src.File -> IdOf Cxx.NamespaceQName -> Text
+ -> Angle Cxx.RecordDeclaration
+queryRecord sfId nqnId name =
+  predicate @Cxx.RecordDeclaration $
+    rec $
+      field @"name" (
+        rec $
+          field @"name" (string name) $
+          field @"scope" (alt @"namespace_" (asPredicate (factId nqnId)))
+        end) $
+      field @"source" (
+        rec $
+          field @"file" (asPredicate (factId sfId))
+        end)
+    end
 
 -- | Reduction of Cxx.ObjcContainerId where we only want its name
 data ObjcContainerName = ObjcContainerNameId Cxx.ObjcCategoryId
