@@ -101,7 +101,7 @@ Terms have the following forms:
 
 &nbsp;&nbsp; *string* `..` *term*<br />
 
-> matches both a prefix and a suffix of a string
+> matches a prefix and the rest of the string
 
 &nbsp;&nbsp; `{` *field* `=` *term* `,` ... `}`<br />
 
