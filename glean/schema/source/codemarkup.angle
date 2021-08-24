@@ -652,8 +652,9 @@ predicate CxxXRefTargetLocation:
 #
 # Find xrefs associated with decls in this file / trace
 #
-# For all base decls in a file computed xrefs for the defn targets
-# where the defn target is a unique new xref
+# For decls, compute unique xrefs to defns
+# For defns, compute unique xrefs to decls (decl families)
+#
 predicate CxxFileEntityTraceDeclToDefXRefLocations:
   {
     file: src.File,
@@ -664,7 +665,11 @@ predicate CxxFileEntityTraceDeclToDefXRefLocations:
   { File, Trace, XRef, Entity } where
     Trace = cxx1.Trace { File, cxx1.Declarations Decls, _ };
     Decl = Decls[..];
-    CxxDeclToDefXRefTargetLocation { Decl, Entity, Location };
+    # Get xrefs from decl to defn ,and defn back to decl family
+    ({ Entity, Location } where
+      CxxDeclToDefXRefTargetLocation { Decl, Entity, Location } |
+      CxxDefToDeclFamilyXRefTargetLocation { Decl, Entity, Location }
+    );
     cxx1.DeclarationSrcRange { Decl, SrcRange };
     { Location, { range = SrcRange }} = XRef;
 
@@ -684,6 +689,22 @@ predicate CxxDeclToDefXRefTargetLocation:
     { file = TargetFile } = Range;
     { Name, TargetFile, { range = Range } } = Location;
     code.Entity { cxx = { defn = Defn }} = Entity;
+
+# For a given Decl, find any DeclFamily entries
+# We will turn these into xrefs
+predicate CxxDefToDeclFamilyXRefTargetLocation:
+  {
+    decl: cxx1.Declaration,
+    entity: code.Entity,
+    location: Location,
+  }
+  { Decl1, Entity, Location } where
+    cxx1.DeclFamilyOf { decl = Decl1, family = Decl2 };
+    Decl1 != Decl2; # filter out many self-refs
+    cxx1.DeclarationLocation { Decl2, Range, cxx1.Name Name };
+    { file = TargetFile } = Range;
+    { Name, TargetFile, { range = Range } } = Location;
+    code.Entity { cxx = { decl = Decl2 }} = Entity;
 
 # "Variable" external XRefs only, for a specific trace (FileXRefMap)
 # todo: we should really zip these in Angle and export them as XRefLocations
