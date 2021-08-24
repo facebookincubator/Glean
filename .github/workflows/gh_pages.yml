@@ -3,7 +3,7 @@ name: gh-pages
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     types:
       - opened
@@ -28,7 +28,7 @@ jobs:
       run: echo "The time was ${{ steps.build.outputs.time }}"
 
     - name: Deploy
-      if: github.event_name == 'push'  # only deploy the website when pushing to master
+      if: github.event_name == 'push'  # only deploy the website when pushing to main
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
           ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
