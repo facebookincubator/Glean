@@ -42,8 +42,8 @@ The order is mostly irrelevant; `A = B` is equivalent to `B = A`, except that ty
 ## Names
 
 Glean uses the following classes of names:
-* A *schema name*, e.g. `search.cxx`, of the form *name*[.*name*]*. By convention, the components of a schema name begin with a lower-case letter.
-* A *predicate name*, e.g. `cxx.Name.1` of the form *schema*.*predicate*[.*version*]. By convention, *predicate* begins with an upper-case letter. The version can often be omitted, in which case it defaults depending on the context: in a query it defaults to the most recent version, in a schema there is always only one version of a predicate visible in any given scope.
+* A *schema name*, e.g. `example.schema`, of the form *name*[.*name*]*. By convention, the components of a schema name begin with a lower-case letter.
+* A *predicate name*, e.g. `example.schema.Predicate.1` of the form *schema*.*predicate*[.*version*]. By convention, *predicate* begins with an upper-case letter. The version can often be omitted, in which case it defaults depending on the context: in a query it defaults to the most recent version, in a schema there is always only one version of a predicate visible in any given scope.
 * A *field name*, e.g. `declaration`, used to identify fields of a record, or alternatives of a sum type or enumeration.  A field name **must begin with a lower-case letter**.
 * A *variable*, e.g. `X`. Variables **must begin with an upper-case letter** to distinguish them from field names.
 
