@@ -66,7 +66,7 @@ API</SrcFileLink>.
 
 The two methods for querying are
 
-* `userQuery` - general queries returning an aribtrary number of results
+* `userQuery` - general queries returning an arbitrary number of results
 * `userQueryFacts` - fetch the definition of a single fact given its ID
 
 Queries are in Angle syntax, and results are encoded as JSON or Thrift
