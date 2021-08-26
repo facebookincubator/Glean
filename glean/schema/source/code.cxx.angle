@@ -1,0 +1,85 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema code.cxx.3 {
+import cxx1.4
+
+type Entity =
+  {
+    decl : cxx1.Declaration |
+    defn : Definition |
+    enumerator : cxx1.Enumerator |
+  }
+
+type Definition =
+  {
+    record_ : cxx1.RecordDefinition |
+    function_ : cxx1.FunctionDefinition |
+    enum_ : cxx1.EnumDefinition |
+    objcMethod : cxx1.ObjcMethodDefinition |
+    objcContainer : cxx1.ObjcContainerDefinition |
+    variable : cxx1.VariableDeclaration |
+    namespace_ : cxx1.NamespaceDefinition |
+  }
+
+
+# Map from any declaration to its definition(s), either through its
+# DeclFamily or directly from itself.
+#
+# For 'decl' of type VariableDeclaration this contains only 'def' only with
+# VariableKind @GlobalVariable@ with @definition = true@ (from the 'decl' or
+# its family). Thus this predicate does not contain any VariableKind of
+# {field : Field} or {ivar : ObjcIVar}.
+predicate DeclToDef :
+  {
+    decl : cxx1.Declaration,
+    defn : Definition,
+  }
+  {Decl, Def}
+  where
+  FamDecl = Decl |
+    (
+      D where
+      cxx1.DeclToFamily{decl = Decl, family = DF};
+      DF = cxx1.DeclFamily F;
+      D = F[..]
+    );
+  Def =
+    (
+      Definition{record_ = { declaration = DD} }
+      where
+      {record_ = _} = Decl;
+      {record_ = DD} = FamDecl
+    ) | (
+      Definition{function_ = {declaration = DD}}
+      where
+      {function_ = _} = Decl;
+      {function_ = DD} = FamDecl;
+    ) | (
+      Definition{enum_ = {declaration = DD}}
+      where
+      {enum_ = _} = Decl;
+      {enum_ = DD} = FamDecl;
+    ) | (
+      Definition{objcMethod = cxx1.ObjcMethodDefinition DD}
+      where
+      {objcMethod = _} = Decl;
+      {objcMethod = DD} = FamDecl;
+    ) | (
+      Definition{objcContainer = {declaration = DD}}
+      where
+      {objcContainer = _} = Decl;
+      {objcContainer = DD} = FamDecl;
+    ) | (
+      Definition{namespace_ = {declaration = DD}}
+      where
+      {namespace_ = _} = Decl;
+      {namespace_ = DD} = FamDecl;
+    ) | (
+      Definition{variable = DD}
+      where
+      {variable = _} = Decl;
+      {variable = DD} = FamDecl;
+      DD = cxx1.VariableDeclaration {kind = {global_ = {definition = true}}}
+    )
+
+} # end schema

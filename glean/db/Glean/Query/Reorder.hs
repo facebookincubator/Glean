@@ -1,0 +1,842 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+{-# LANGUAGE DerivingStrategies #-}
+
+module Glean.Query.Reorder
+  ( reorder
+  ) where
+
+import Control.Monad.Except
+import Control.Monad.State
+import qualified Data.ByteString as ByteString
+import Data.IntMap (IntMap)
+import qualified Data.IntMap as IntMap
+import Data.IntSet (IntSet)
+import qualified Data.IntSet as IntSet
+import qualified Data.List.NonEmpty as NonEmpty
+import Data.Maybe
+import Data.Text (Text)
+import qualified Data.Text as Text
+import Data.Text.Prettyprint.Doc hiding ((<>))
+
+import Glean.Query.BindOrder
+import Glean.Query.Codegen
+import Glean.Query.Flatten.Types hiding (fresh)
+import Glean.Query.Vars
+import Glean.RTS.Term as RTS hiding (Match(..))
+import Glean.RTS.Types as RTS
+import qualified Glean.Database.Schema.Types as Schema
+
+{-
+Reordering pass
+---------------
+
+INPUT
+
+A FlattenedQuery, in which the statements are grouped:
+
+  P where group; ...; group
+
+a group is a set of statements that may be reordered:
+
+  group ::= [ stmt, ..., stmt ]
+
+and a stmt is
+
+  stmt ::= P = generator
+        |  !( group; ..; group )
+        |  ( ( group; ..; group ) | ... | (group; ..; group) )
+
+generator has the form
+  - a term
+  - a fact generator
+  - an array generator
+  - a call to a primitive
+
+Patterns contain no nested generators at this point, everything has
+been lifted to statements by the flattening pass.
+
+
+OUTPUT
+
+The same, except that the groups have been flattened and we just have
+sequences of statements.
+
+In addition, the output has valid binding. Namely:
+
+  - MatchBind will occur before MatchVar for a given variable, where "before"
+    means "left-to-right top-to-bottom".
+
+  - There are no MatchBind or MatchWild in an expression context. These are:
+    - patterns on the rhs of a statement
+    - the head of the query
+    - the array of an array generator
+    - arguments to a primitive call
+
+
+HOW?
+
+Note first that the pass might FAIL if it can't find a way to express
+the query such that it satisfies the above constraints.  For example,
+there's no way to make
+
+   _ = _
+
+valid.  Similarly, there's no way to make
+
+   X = Y
+
+valid if neither X nor Y is bound by anything. However, if X or Y can
+be bound by a later statement, then it might be possible to reorder
+statements to make this valid.
+
+In general, establishing correct binding could mean
+  - re-ordering statements
+  - flipping statements from P = Q to Q = P
+
+Moreover, removing generators and or-patterns on the left will also
+require some transformations.
+
+For now, the pass does nothing clever: no reordering and limited
+flipping. More cleverness will be added later.
+
+-}
+
+
+reorder :: Schema.DbSchema -> FlattenedQuery -> Except Text CodegenQuery
+reorder dbSchema QueryWithInfo{..} =
+  withExcept (\(e, _) -> Text.pack $ show $
+    vcat [pretty e, nest 2 $ vcat [ "in:", pretty qiQuery]]) qi
+  where
+    qi = do
+      (q, ReorderState{..}) <-
+        flip runStateT (initialReorderState qiNumVars dbSchema) $
+          reorderQuery qiQuery
+      return (QueryWithInfo q roNextVar qiReturnType)
+
+reorderQuery :: FlatQuery -> R CgQuery
+reorderQuery (FlatQuery pat _ stmts) = do
+  stmts' <- reorderGroups stmts
+  pat' <- fixVars IsExpr pat
+  return (CgQuery pat' stmts')
+
+reorderGroups :: [FlatStatementGroup] -> R [CgStatement]
+reorderGroups groups = withVisibleVarsFrom groups $ do
+  Scope scope <- gets roScope
+  stmts <- go scope groups
+  reorderStmts stmts
+  where
+    go _ [] = return []
+    go scope (group : groups) = do
+      stmts <- reorderStmtGroup scope group
+      let scope' = vars stmts `IntSet.union` scope
+      rest <- go scope' groups
+      return (stmts <> rest)
+
+withVisibleVarsFrom :: [FlatStatementGroup] -> R a -> R a
+withVisibleVarsFrom stmts act = do
+  s0 <- get
+  modify $ \s -> s { roVisible = roVisible s0 <> visibleVars stmts }
+  res <- act
+  modify $ \s -> s { roVisible = roVisible s0 }
+  return res
+
+{-
+Note [Optimising statement groups]
+
+A nested fact match in Angle compiles to a group of statements. For
+example
+
+   P { _, Q "abc" }
+
+after flattening yields the group of statements
+
+   P { _, X }
+   X = Q "abc"
+
+The purpose of reorderStmtGroup is to find a good ordering for the
+statements in the group.
+
+Things that we take into acccount are:
+- A match with at most one result (point query) should probably be done early
+- A match that never fails should probably be done late
+- If a statement binds something that makes another statement more
+  efficient, choose the ordering to exploit that
+
+The algorithm is:
+
+- construct a graph where the nodes are statements and
+  - for each lookup statement (X = pred pat) (A)
+  - for each statement that mentions X (B)
+  - if pat is irrefutable
+    - edge A -> B
+  - if pat is a point match
+    - edge B -> A
+  - else, if X occurs in a prefix position in B
+    - edge B -> A
+  - else
+    - edge A -> B
+- render the postorder traversal of this graph
+
+-}
+
+reorderStmtGroup :: VarSet -> FlatStatementGroup -> R [FlatStatement]
+reorderStmtGroup scope stmts = do
+  let
+    nodes = zip [(0::Int)..] (NonEmpty.toList stmts)
+
+    -- statements, numbered from zero, and with the set of variables
+    -- mentioned anywhere in the statement.
+    withVars :: [(Int, VarSet, FlatStatement)]
+    withVars =
+      [ (n, vars stmt `IntSet.difference` scope, stmt)
+      | (n, stmt) <- nodes
+      ]
+
+    -- statements in this group that are candidates for reordering
+    -- (X = pred pat)
+    --
+    -- The goal of this pass is to establish, for each candidate C of
+    -- the form "X = pred pat" and each statement S that mentions X,
+    -- whether C should go before or after S.
+    candidates =
+      [ (n, x, xs, matchType, stmt)
+      | (n, xs, stmt) <- withVars
+      , Just (x, matchType) <- [isCandidate stmt]
+      ]
+
+    -- Just X if the statement will compile to a fact lookup if X is bound.
+    -- This is conservative and only matches simple cases, but it's enough
+    -- to spot statements generated when we flatten a nested generator.
+    -- At this point we also classify the match according to whether it
+    -- matches at most one thing, matches everything, or something else
+    -- (PatternMatch).
+    isCandidate
+      (FlatStatement _ (Ref v) (FactGenerator _ key _))
+      | Just (Var _ x _) <- matchVar v =
+        Just (x, classifyPattern lhsScope key) -- TODO lookupScope here is wrong
+    isCandidate _ = Nothing
+
+    lhsVars = IntSet.unions $
+       IntSet.fromList [ x | (_, x, _, _, _) <- candidates ] :
+       [ xs | (_, xs, FlatDisjunction{}) <- withVars ]
+       -- we'll consider variables mentioned by disjunctions as
+       -- bound. There's a liberal amount of guesswork going on here
+       -- because we don't know how the disjunction should be ordered
+       -- with respect to the other statements and it might depend on
+       -- the ordering of the statements within the disjunction
+       -- itself.
+
+    -- for classifyPattern we want to consider the variables on the
+    -- lhs of the candidates as bound. e.g.
+    --
+    --   X = pred { Y, _ }
+    --   Y = ...
+    --
+    -- we want to consider { Y, _ } as a prefix match and put the
+    -- binding of Y first.
+    lhsScope = scope `IntSet.union` lhsVars
+
+    -- for each statements in this group, find the variables that
+    -- the statement mentions in a prefix position.
+    uses =
+      [ (n, xs, prefixVars lhsVars scope stmt, stmt)
+      | (n, xs, stmt) <- withVars
+      ]
+
+    -- classify each candidate (X = pred P) according to whether it
+    -- will be a lookup (X is bound) or a search (X is unbound).
+    --
+    -- If X = pred P is a lookup, then we want all the vars bound by P
+    -- to also be lookups, because a lookup is O(1). So this property
+    -- is propagated transitively.
+    --
+    -- * start from the set of bound vars,
+    -- * add vars that are in non-prefix positions, or where P is a full scan
+    -- * add vars from the rhs of all these candidates
+    -- * keep going until we're done
+    initialLookupVars = IntSet.unions
+      [ scope
+      , IntSet.fromList slowSearches
+      , IntSet.fromList nonPrefixVars
+      ]
+      where
+        slowSearches = [ x | (_, x, _, PatternSearchesAll, _) <- candidates ]
+        nonPrefixVars =
+          [ x
+          | (_, _, prefix, stmt) <- uses
+          , let lhs = case isCandidate stmt of
+                  Just (x,_) -> Just x
+                  Nothing -> Nothing
+          , x <- IntSet.toList (boundVars stmt)
+            -- NB. we want variables that this statement can *bind*,
+            -- not all the variables it mentions.
+          , Just x /= lhs && not (x `IntSet.member` prefix)
+          ]
+
+    candidateMap = IntMap.fromListWith (++)
+      [ (n, [stmt]) | stmt@(_,n,_,_,_) <- candidates ]
+
+    lookupVars = go (IntSet.toList initialLookupVars) IntSet.empty
+      where
+      go [] vars = vars
+      go (x:xs) vars
+        | x `IntSet.member` vars = go xs vars
+        | otherwise = go (new ++ xs) (IntSet.insert x vars)
+        where
+        new = concat [ IntSet.toList ys | (_, _, ys, _, _) <- stmts ]
+          where stmts = IntMap.findWithDefault [] x candidateMap
+
+    -- find the statements that mention X
+    usesOf x = IntMap.lookup x m
+      where
+      m = IntMap.fromListWith (++)
+        [ (x, [(n,ys,stmt)])
+        | (n, xs, ys, stmt) <- uses
+        , x <- IntSet.toList xs
+        ]
+  visible <- gets roVisible
+  let
+    edges :: IntMap [(Int,FlatStatement)]
+    edges = IntMap.fromListWith (++)
+      [ if
+          | PatternMatchesOne <- matchType -> (use, [(lookup,lookupStmt)])
+            -- a point match: always do these first
+          | isUnresolved visible scope useStmt -> (use, [(lookup,lookupStmt)])
+            -- if the use is undefined at this point, put the lookup first
+          | x `IntSet.member` lookupVars -> (lookup, [(use, useStmt)])
+            -- we want X to be a lookup: do it after the use of X
+          | otherwise -> (use, [(lookup,lookupStmt)])
+            -- otherwise put the candidate before the use
+      | (lookup, x, _, matchType, lookupStmt) <- candidates
+      , Just uses <- [usesOf x]
+      , (use, _, useStmt) <- uses
+      , use /= lookup
+      ]
+  -- order the statements and then recursively reorder nested groups
+  return $ map snd $ postorderDfs nodes edges
+
+{-
+After reordering groups, we perform some further obvious reorderings.
+
+Note that here we're technically changing the order of statements that
+the user wrote, so we better know what we're doing, because the user
+has no control over this and we won't be able to manually fix the
+Angle code to work around anything that the optimiser gets wrong.
+
+So here we will:
+
+1. Hoist a filter (P = Q) that is resolved (either P or Q is known)
+
+This is important when we expand a derived predicate
+
+    X = pred K
+
+and the predicate is defined as 'Q where S', we typically generate
+
+    X = Y where S; Y = K; Y = Q
+
+(see Glean/Query/Expand.hs).
+
+If unification doesn't deal with the X = K, Y = Q statements, then we
+might need to hoist them ahead of S (or coversely, if we generated
+them in the other order, on some occasions we might need to sink
+them to avoid unresolved variables).
+
+2. Sink a statement that is unresolved (P = Q where neither P nor Q is known)
+
+This avoids "cannot resolve" errors that we can fix by reordering statements.
+-}
+
+{- Note [Reordering negations]
+
+A negated subquery doesn't bind values to variables in its enclosing scope.
+
+This means that if a variable is unbound in the evaluation of a negation it
+will behave as a wildcard. This has implications for variables that will be
+bound later as it means that the order of statements can change the meaning
+of the query.
+
+Consider the following query:
+
+  K where !(Q A); P A;
+
+As it stands it will be equivalent to
+
+  K where !(Q _); P A;
+
+Which will fail if there is any Q fact in the database.
+If we invert the order of statements it will only fail if there were
+specifically a `Q A` fact in the database.
+
+  K where P A; !(Q A);
+
+To ensure consistent semantics regardless of the order of statements in the
+source query we always move negated subqueries after the binding of all
+variables from the parent scope that it uses.
+-}
+
+reorderStmts :: [FlatStatement] -> R [CgStatement]
+reorderStmts stmts = iterate stmts
+  where
+  iterate [] = return []
+  iterate [x] = reorderStmt x
+  iterate stmts = do
+    Scope scope <- gets roScope
+    visible <- gets roVisible
+    let (chosen, rest) = choose visible scope stmts
+    cgChosen <- reorderStmt chosen
+    cgRest <- iterate rest
+    return (cgChosen <> cgRest)
+
+  choose
+    :: Visible
+    -> VarSet
+    -> [FlatStatement]
+    -> (FlatStatement,[FlatStatement])
+  choose visible scope stmts = lift [] stmts
+    where
+    lift _ [] = sink [] stmts
+    lift notPicked (stmt : stmts) =
+      if isResolvedFilter visible scope stmt
+        then (stmt, reverse notPicked <> stmts)
+        else lift (stmt : notPicked) stmts
+
+    sink unresolved [] =
+      case reverse unresolved of
+        one : rest -> (one, rest)
+        [] -> error "sink"
+    sink unresolved (stmt : stmts)
+      | isUnresolved visible scope stmt = sink (stmt : unresolved) stmts
+      | otherwise = (stmt, reverse unresolved ++ stmts)
+
+-- | True if the statement is O(1) and resolved
+isResolvedFilter :: Visible -> VarSet -> FlatStatement -> Bool
+isResolvedFilter _ _ (FlatStatement _ _ ArrayElementGenerator{}) = False
+  -- an ArrayElementGenerator is not O(1)
+isResolvedFilter visible scope stmt = isReadyFilter visible scope stmt False
+
+-- | True if the statement is unresolved in the given scope
+isUnresolved
+  :: Visible  -- ^ all vars from the enclosing scope, bound and unbound.
+  -> VarSet  -- ^ vars bound so far
+  -> FlatStatement
+  -> Bool
+isUnresolved visible scope stmt = not (isReadyFilter visible scope stmt True)
+
+isReadyFilter :: Visible -> VarSet -> FlatStatement -> Bool -> Bool
+isReadyFilter _ scope (FlatStatement _ lhs (TermGenerator rhs)) _ =
+  all (`IntSet.member` scope) (IntSet.toList (vars lhs)) ||
+  all (`IntSet.member` scope) (IntSet.toList (vars rhs))
+isReadyFilter _ scope (FlatStatement _ _ (ArrayElementGenerator _ arr)) _ =
+  all (`IntSet.member` scope) (IntSet.toList (vars arr))
+isReadyFilter _ scope (FlatStatement _ _ (PrimCall _ args)) _ =
+  all (`IntSet.member` scope) (IntSet.toList (vars args))
+isReadyFilter visible scope (FlatNegation stmtss) notFilter =
+  all (all isReady) stmtss && hasAllNonLocalsBound
+  where
+    hasAllNonLocalsBound = nonLocal `IntSet.isSubsetOf` scope
+    nonLocal = allVars `IntSet.intersection` unVisible visible
+    allVars = foldMap (foldMap vars) stmtss
+    isReady stmt = isReadyFilter visible scope stmt notFilter
+isReadyFilter _ _ _ notFilter = notFilter
+
+data PatternMatch
+  = PatternSearchesAll
+    -- ^ no prefix; looks at all the facts
+  | PatternMatchesOne
+    -- ^ point-match: matches at most one value
+  | PatternMatchesSome
+    -- ^ neither of the above
+
+-- | Classify a pattern according to the cases in 'PatternMatch'
+classifyPattern
+  :: VarSet -- ^ variables in scope
+  -> Term (Match () Var)
+  -> PatternMatch
+classifyPattern scope t = fromMaybe PatternMatchesOne (go False t end)
+  where
+  go
+    :: Bool -- non-empty fixed prefix seen?
+    -> Term (Match () Var)
+    -> (Bool -> Maybe PatternMatch)  -- cont
+    -> Maybe PatternMatch
+       -- Nothing -> pattern was empty
+       -- Just p -> non-empty pattern of kind p
+  go pref t r = case t of
+    Byte{} -> fixed r
+    Nat{} -> fixed r
+    Array xs -> termSeq pref xs r
+    ByteArray{} -> fixed r
+    Tuple xs -> termSeq pref xs r
+    Alt _ t -> fixed (\pref -> go pref t r)
+    String{} -> fixed r
+    Ref m -> case m of
+      MatchWild{} -> wild pref
+      MatchNever{} -> Just PatternMatchesSome
+      MatchFid{} -> fixed r
+      MatchBind (Var _ v _) -> var v
+      MatchVar (Var _ v _) -> var v
+      MatchAnd a b ->
+        case (go pref a end, go pref b end) of
+          (Nothing, _) -> r False
+          (_, Nothing) -> r False
+          (Just PatternMatchesOne, _) -> r True
+          (_, Just PatternMatchesOne) -> r True
+          (Just PatternMatchesSome, _) -> Just PatternMatchesSome -- stop here
+          (_, Just PatternMatchesSome) -> Just PatternMatchesSome -- stop here
+          (Just PatternSearchesAll, Just PatternSearchesAll) ->
+             Just PatternSearchesAll -- stop here
+      MatchPrefix s t
+        | not (ByteString.null s) -> fixed (\pref' -> go pref' t r)
+        | otherwise -> go pref t r
+      MatchSum{} -> Just PatternMatchesSome -- TODO conservative
+      MatchExt{} -> Just PatternMatchesSome
+    where
+    var v
+      | v `IntSet.member` scope = fixed r
+      | otherwise = wild pref
+
+  -- we've seen a bit of fixed pattern
+  fixed r = r True
+
+  -- we've seen a bit of wild pattern
+  wild nonEmptyPrefix
+    | nonEmptyPrefix = Just PatternMatchesSome -- stop here
+    | otherwise = Just PatternSearchesAll -- stop here
+
+  -- end of the pattern
+  end nonEmptyPrefix
+    | nonEmptyPrefix = Just PatternMatchesOne
+    | otherwise = Nothing
+
+  termSeq pref [] r = r pref
+  termSeq pref (x:xs) r = go pref x (\pref -> termSeq pref xs r)
+
+
+-- | Determine the set of variables that occur in a prefix position in
+-- a pattern.
+prefixVars
+  :: VarSet
+     -- ^ bound variables that we're interested in
+  -> VarSet
+     -- ^ bound variables that we're not interested in
+  -> FlatStatement
+  -> VarSet
+prefixVars lookups scope stmt = prefixVarsStmt stmt
+  where
+  prefixVarsStmt (FlatStatement _ _ (FactGenerator _ key _)) =
+      prefixVarsTerm key IntSet.empty
+  prefixVarsStmt (FlatStatement _ _ _) = IntSet.empty
+  prefixVarsStmt (FlatNegation stmtss) = prefixVarsStmts stmtss
+  prefixVarsStmt (FlatDisjunction stmtsss) = foldMap prefixVarsStmts stmtsss
+
+  prefixVarsStmts :: [FlatStatementGroup] -> VarSet
+  prefixVarsStmts stmtss =
+    IntSet.unions
+      [ prefixVarsStmt stmt
+      | stmts <- stmtss
+      , stmt <- NonEmpty.toList stmts
+      ]
+
+  prefixVarsTerm :: Term (Match () Var) -> VarSet -> VarSet
+  prefixVarsTerm t r = case t of
+    Byte{} -> r
+    Nat{} -> r
+    Array xs -> foldr prefixVarsTerm r xs
+    ByteArray{} -> r
+    Tuple xs -> foldr prefixVarsTerm r xs
+    Alt _ t -> prefixVarsTerm t r
+    String{} -> r
+    Ref m -> prefixVarsMatch m r
+
+  prefixVarsMatch :: Match () Var -> VarSet -> VarSet
+  prefixVarsMatch m r = case m of
+    MatchWild{} -> IntSet.empty
+    MatchNever{} -> IntSet.empty
+    MatchFid{} -> r
+    MatchBind (Var _ v _) -> var v
+    MatchVar (Var _ v _) -> var v
+    MatchAnd a b -> prefixVarsTerm a r `IntSet.union` prefixVarsTerm b r
+    MatchPrefix _ t -> prefixVarsTerm t r
+    MatchSum alts -> IntSet.unions (map (`prefixVarsTerm` r) (catMaybes alts))
+    MatchExt{} -> IntSet.empty
+    where
+    var v
+      -- already bound: we're still in the prefix
+      | v `IntSet.member` scope = r
+      -- one of the lookups in this group: add to our list of prefix vars
+      | v `IntSet.member` lookups = IntSet.insert v r
+      -- unbound: this is the end of the prefix
+      | otherwise = IntSet.empty
+
+postorderDfs :: forall a. [(Int,a)] -> IntMap [(Int,a)] -> [(Int,a)]
+postorderDfs nodes edges = go IntSet.empty nodes (\_ -> [])
+  where
+  go :: IntSet -> [(Int,a)] -> (IntSet -> [(Int,a)]) -> [(Int,a)]
+  go seen [] cont = cont seen
+  go seen ((n,a):xs) cont
+    | n `IntSet.member` seen = go seen xs cont
+    | otherwise = go (IntSet.insert n seen) children
+        (\seen -> (n,a) : go seen xs cont)
+    where
+    children = IntMap.findWithDefault [] n edges
+
+-- | Decide whether to flip a statement or not.
+--
+-- For a statement P = Q we will try both P = Q and Q = P to find a
+-- form that has valid binding (no unbound variables or wildcards in
+-- expressions).
+--
+-- There's a bit of delicacy around which one we try first. Choosing
+-- the right one may lead to better code. For example:
+--
+--    cxx.Name "foo" = X
+--
+-- if X is bound, we can choose whether to flip or not. But if we
+-- don't flip this, the generator on the left will be bound separately
+-- by toCgStatement to give
+--
+--    Y = X
+--    Y = cxx.Name "foo"
+--
+-- it would be better to flip the original statement to give
+--
+--    X = cxx.Name "foo"
+--
+-- More generally, if we have generators on the left but not the
+-- right, we should probably flip.  If we have generators on both
+-- sides, let's conservatively try not flipping first.
+--
+reorderStmt :: FlatStatement -> R [CgStatement]
+reorderStmt stmt@(FlatStatement ty lhs gen)
+  | Just flip <- canFlip =
+    noflip `catchErrorRestore` \e ->
+      flip `catchErrorRestore` \e' ->
+        attemptBindFromType e noflip `catchErrorRestore` \_ ->
+          attemptBindFromType e' flip `catchErrorRestore` \_ ->
+            giveUp e
+  -- If this statement can't be flipped, we may still need to bind
+  -- unbound variables:
+  | otherwise =
+    noflip `catchErrorRestore` \e ->
+      attemptBindFromType e noflip `catchErrorRestore` \_ ->
+         giveUp e
+  where
+  catchErrorRestore x f = do
+    state0 <- get
+    let restore = put state0
+    x `catchError` \e -> restore >> f e
+
+  noflip = toCgStatement (FlatStatement ty lhs gen)
+  canFlip
+    | TermGenerator rhs <- gen
+    = Just $ toCgStatement (FlatStatement ty rhs (TermGenerator lhs))
+    | otherwise
+    = Nothing
+
+  giveUp (s, e) =
+    throwError (errMsg s, e)
+  errMsg s = Text.pack $ show $ vcat
+    [ nest 2 $ vcat ["cannot resolve:", pretty stmt]
+    , nest 2 $ vcat ["because:", pretty s]
+    ]
+
+  -- In general if we have X = Y where both X and Y are unbound (or LHS = RHS
+  -- containing unbound variables on both sides) then we have no choice
+  -- but to return an error message. However in the specific case that we
+  -- know the type of X or Y is a predicate then we can add the statement
+  -- X = p _ to bind it and retry.
+  --
+  -- Termination is guarenteed as we strictly decrease the number of unbound
+  -- variables each time
+  attemptBindFromType e f
+    | (_, Just (UnboundVariable var@(Var ty _ _))) <- e
+    , RTS.PredicateRep pid <- RTS.repType ty = tryBindPredicate var pid
+    | otherwise =
+      throwError e
+    where
+    tryBindPredicate var pid = do
+      state <- get
+      details <- case Schema.lookupPid pid $ roDbSchema state of
+          Nothing ->
+            lift $ throwError
+              ( "internal error: bindUnboundPredicates: " <>
+                  Text.pack (show pid)
+              , Nothing )
+
+          Just details@Schema.PredicateDetails{} -> do return details
+
+      bind var
+      stmts <- f `catchErrorRestore` \e' -> attemptBindFromType e' f
+      let
+        pid = Schema.predicatePid details
+        ref = Schema.predicateRef details
+        p = PidRef pid ref
+        tyKey = Schema.predicateKeyType details
+        tyValue = Schema.predicateValueType details
+        pat =
+          FactGenerator p
+            (Ref (MatchWild tyKey))
+            (Ref (MatchWild tyValue))
+      -- V = p {key=_, value=_}
+      -- LHS = RHS
+      return $ CgStatement (Ref (MatchBind var)) pat : stmts
+
+-- fallback: just convert other statements to CgStatement
+reorderStmt stmt = toCgStatement stmt
+
+
+toCgStatement :: FlatStatement -> R [CgStatement]
+toCgStatement (FlatStatement _ lhs gen) = do
+  gen' <- fixVars IsExpr gen -- NB. do this first!
+  lhs' <- fixVars IsPat lhs
+  return [CgStatement lhs' gen']
+toCgStatement (FlatNegation stmts) =
+  withinNegation $ do
+    stmts' <- reorderGroups stmts
+    return [CgNegation stmts']
+toCgStatement (FlatDisjunction [stmts]) =
+  reorderGroups stmts
+toCgStatement (FlatDisjunction stmtss) = do
+  cg <- intersectBindings stmtss
+  return [CgDisjunction cg]
+  where
+  intersectBindings [] = return []
+  intersectBindings rs = do
+    scope0 <- gets roScope
+    let
+      doOne r = do
+        modify $ \state -> state { roScope = scope0 }
+        a <- reorderGroups r
+        scope <- gets roScope
+        return (a,scope)
+    results <- mapM doOne rs
+    let intersectScope = foldr1 IntSet.intersection (map (unScope.snd) results)
+    as' <- forM results $ \(a,scope) ->
+      renameAlt (unScope scope `IntSet.difference` intersectScope) a
+    modify $ \state -> state { roScope = Scope intersectScope }
+    return as'
+
+  -- Rename local variables in each branch of |. See Note [local variables].
+  renameAlt :: IntSet -> [CgStatement] -> R [CgStatement]
+  renameAlt vars stmts = do
+    let n = IntSet.size vars
+    state@ReorderState{..} <- get
+    put state { roNextVar = roNextVar + n }
+    let env = IntMap.fromList (zip (IntSet.toList vars) [ roNextVar .. ])
+    return (map (fmap (rename env)) stmts)
+    where
+    rename :: IntMap Int -> Var -> Var
+    rename env v@(Var ty x nm) = case IntMap.lookup x env of
+      Nothing -> v
+      Just y -> Var ty y nm
+
+withinNegation :: R a -> R a
+withinNegation act = do
+  before <- get
+  modify $ \s -> s { roNegationEnclosingVisible = roVisible before }
+  res <- act
+  modify $ \s -> s
+    { roNegationEnclosingVisible = roNegationEnclosingVisible before }
+  return res
+
+{- Note [local variables]
+
+This is a legit query:
+
+  X = "a" | (X where cxx.Name X)
+
+This looks dodgy because X only appears in one branch on the rhs, but
+in fact it's fine:
+* (X where cxx.Name X) is reasonable
+* "a" | (X where cxx.Name X) is reasonable, but doesn't bind X
+* therefore in X = "a" | (X where cxx.Name X), the X on the left is binding.
+
+You might think "let's reject it".  But even if the user didn't write
+it like this, We might end up here after query optimisation, e.g. it
+can start as
+
+  X = "a" | (Z where cxx.Name Z)
+
+and then unification will replace [X/Z]. Should we avoid doing that?
+It seems hard to avoid while still doing all the useful optimisation
+we want. e.g. in
+
+  X = cxx.Name "foo"
+  { X, Y } = { N, cxx.RecordDeclaraiton { name = N } } | ...
+
+we'd really like N to unify with X.
+
+So, let's just make it work.  If we do the naive thing and map X to a
+variable _0, the codegen will see
+
+  _0:string = "a" | (_0 where cxx.Name _0:string)
+
+and it will generate bogus code, because the value we build in _0 on
+the left depends on a value in _0 on the right.
+
+To fix this we need to identify variables that are local to one side
+of | and rename them so they can't clash with variables mentioned
+elsewhere.  A "local" variable is one that isn't bound by both
+branches of |.
+-}
+
+
+fixVars :: FixBindOrder a => IsPat -> a -> R a
+fixVars isPat p = do
+  state <- get
+  let scope = roScope state
+      noBind = NoBind $ unVisible (roNegationEnclosingVisible state)
+  (p', scope') <-
+    lift $
+      withExcept (\err -> (errMsg err, Just err)) $
+      runFixBindOrder scope noBind (fixBindOrder isPat p)
+  modify $ \state -> state { roScope = scope' }
+  return p'
+  where
+    errMsg err = case err of
+      UnboundVariable v@(Var _ _ nm) ->
+        "unbound variable: " <> fromMaybe (Text.pack $ show v) nm
+      CannotUseWildcardInExpr -> "cannot use a wildcard in an expression"
+
+
+data ReorderState = ReorderState
+  { roNextVar :: !Int
+  , roScope :: Scope
+  , roDbSchema :: Schema.DbSchema
+  , roVisible :: Visible
+    -- ^ all variables that will be visible in this scope
+  , roNegationEnclosingVisible :: Visible
+    -- ^ visible vars minus vars from the current negated subquery
+  }
+
+type R a = StateT ReorderState (Except (Text, Maybe FixBindOrderError)) a
+
+newtype Visible = Visible { unVisible :: VarSet }
+  deriving newtype (Semigroup, Monoid)
+
+initialReorderState :: Int -> Schema.DbSchema -> ReorderState
+initialReorderState nextVar dbSchema = ReorderState
+  { roNextVar = nextVar
+  , roScope = Scope IntSet.empty
+  , roDbSchema = dbSchema
+  , roVisible = Visible mempty
+  , roNegationEnclosingVisible = mempty
+  }
+
+bind :: Var -> R ()
+bind (Var _ v _) = modify $ \state ->
+  state { roScope = Scope (IntSet.insert v (unScope (roScope state))) }
+
+-- | Variables that are bound in the enclosing scope of these statements.
+-- Does not include:
+--  - variables that only appear inside a negated subquery
+--  - variables that don't appear in all branches of a disjunction
+visibleVars :: [FlatStatementGroup] -> Visible
+visibleVars stmtss = foldMap (foldMap stmtScope) stmtss
+  where
+    stmtScope = \case
+      FlatNegation{} -> Visible mempty
+      s@FlatStatement{} -> Visible (vars s)
+      -- only count variables that appear in all branches of the disjunction
+      FlatDisjunction ss -> foldMap visibleVars ss

@@ -1,0 +1,520 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema flow.3 {
+import src.1
+
+predicate Module: {
+  file: src.File |
+  builtin |
+  lib: string |
+  noSource |
+  string_: string |
+}
+
+predicate FileOfStringModule: {
+  file: src.File,
+  string_: string,
+}
+
+predicate StringToFileModule: {
+  string_: string,
+  file: src.File,
+}
+  stored { S, F } where FileOfStringModule { F, S }
+
+predicate Range: {
+  module : Module,
+  span: src.ByteSpan,
+}
+
+predicate Name: string
+predicate Type: string
+predicate Documentation: Range
+
+predicate Declaration: {
+  name: Name,
+  loc: Range,
+}
+
+predicate DeclarationInfo: {
+  declaration: Declaration,
+  type: Type,
+  documentation: maybe Documentation,
+}
+
+# connects a variable to its declaration within the same file
+predicate LocalDeclarationReference: {
+  declaration: Declaration,
+  loc: Range,
+}
+
+predicate MemberDeclaration: {
+  name: Name,
+  loc: Range,
+}
+
+predicate MemberDeclarationReference: {
+  memberDeclaration: MemberDeclaration,
+  loc: Range,
+}
+
+predicate MemberDeclarationInfo: {
+  memberDeclaration: MemberDeclaration,
+  type: Type,
+  documentation: maybe Documentation,
+}
+
+predicate Export: {
+  commonJS |              # module.exports
+  commonJSMember: Name |  # module.exports.foo
+  named: Name |           # export { foo }
+  default_ |              # export default
+  star: Module |          # export * from 'module'
+}
+predicate ModuleExport: {
+  module: Module,
+  export_: Export,
+}
+
+# indicates that a declaration is an import statement
+predicate ImportDeclaration: {
+  declaration: Declaration,
+  import_: {
+    moduleExport: ModuleExport |
+    moduleNamespace: Module |
+  }
+}
+
+# associates an exported symbol with where in the module the symbol was declared
+predicate SourceOfExport: {
+  moduleExport: ModuleExport,
+  source: {
+    declaration: Declaration |
+    memberDeclaration: MemberDeclaration |
+    moduleExport: ModuleExport |
+    moduleNamespace: Module |
+  },
+}
+
+predicate TypeDeclaration: {
+  name: Name,
+  loc: Range,
+}
+
+predicate TypeDeclarationReference: {
+  typeDeclaration: TypeDeclaration,
+  loc: Range,
+}
+
+predicate TypeDeclarationInfo: {
+  typeDeclaration: TypeDeclaration,
+  type: Type,
+  documentation: maybe Documentation,
+}
+
+predicate TypeExport: {
+  named: Name |   # export type
+  star: Module |  # export
+}
+predicate ModuleTypeExport: {
+  module: Module,
+  typeExport: TypeExport,
+}
+
+predicate TypeImportDeclaration: {
+  typeDeclaration: TypeDeclaration,
+  import_: {
+    type: ModuleTypeExport |
+    typeof_: ModuleExport |
+    moduleTypeof: Module |
+  }
+}
+
+predicate SourceOfTypeExport: {
+  moduleTypeExport: ModuleTypeExport,
+  source: {
+    typeDeclaration: TypeDeclaration |
+    moduleTypeExport: ModuleTypeExport |
+    moduleNamespace: Module |
+  }
+}
+
+# Maps a src.File to the references within it. This is derived
+# automatically from the other references, and is used to provide
+# language-neutral reference info via the codemarkup schema.
+predicate FileXRef : {
+  file : src.File,
+  ref : XRef
+}
+  stored
+  ( { F, { localRef = L }} where
+    L = LocalDeclarationReference { loc = Loc };
+    { module = Mod } = Loc;
+    { file = F } = Mod ) |
+  ( { F, { memberRef = M }} where
+    M = MemberDeclarationReference { loc = Loc } ;
+    { module = Mod } = Loc;
+    { file = F } = Mod ) |
+  ( { F, { typeRef = T }} where
+    T = TypeDeclarationReference { loc = Loc };
+    { module = Mod } = Loc;
+    { file = F } = Mod )
+
+type XRef = {
+  localRef : LocalDeclarationReference |
+  memberRef : MemberDeclarationReference |
+  typeRef : TypeDeclarationReference |
+}
+
+# Reverse XRefs: local find-references for a declaration
+predicate DeclarationUses :
+  {
+    target : flow.SomeDeclaration,
+    file : src.File,
+    use : src.ByteSpan
+  }
+  ( { target = { localDecl = D }, file = F, use = Span } where
+    LocalDeclarationReference { declaration = D, loc = Range };
+    { module = { file = F } , span = Span } = Range ) |
+  ( { target = { memberDecl = D }, file = F, use = Span } where
+    MemberDeclarationReference { memberDeclaration = D, loc = Range };
+    { module = { file = F }, span = Span } = Range ) |
+  ( { target = { typeDecl = D }, file = F, use = Span } where
+    TypeDeclarationReference { typeDeclaration = D, loc = Range };
+    { module = { file = F }, span = Span } = Range )
+
+# Maps a src.File to the declarations it contains. This is derived
+# automatically from the declarations, and is used to provide
+# language-neutral declaration info via the codemarkup schema.
+predicate FileDeclaration: {
+  file : src.File,
+  declaration : SomeDeclaration
+}
+  stored
+  ( { F, { localDecl = D } } where
+    D = Declaration { loc = Loc };
+    { module = Mod } = Loc;
+    { file = F }  = Mod ) |
+  ( { F, { memberDecl = D } } where
+    D = MemberDeclaration { loc = Loc };
+    { module = Mod } = Loc;
+    { file = F }  = Mod ) |
+  ( { F, { typeDecl = D } } where
+    D = TypeDeclaration { loc = Loc };
+    { module = Mod } = Loc;
+    { file = F }  = Mod )
+
+type SomeDeclaration = {
+  localDecl : Declaration |
+  memberDecl : MemberDeclaration |
+  typeDecl : TypeDeclaration |
+}
+
+# Search for decl by strings, precisely. We might need to store these
+predicate SearchByName :
+  {
+    name : flow.Name,
+    decl : flow.SomeDeclaration
+  }
+  ({ name = N, decl = { localDecl = D } } where
+    D = flow.Declaration { name = N };
+  ) |
+  ({ name = N, decl = { memberDecl = D } } where
+    D = flow.MemberDeclaration { name = N };
+  ) |
+  ({ name = N, decl = { typeDecl = D } } where
+    D = flow.TypeDeclaration { name = N };
+  )
+
+# Search by Name and string code for the Module
+predicate SearchByModule :
+  {
+    string_: string,
+    name : flow.Name,
+    decl : flow.SomeDeclaration
+  }
+  { S, N, D } where
+    StringToFileModule { S, F };
+    FileDeclaration { F, D };
+    ({ localDecl = { name = N } } |
+     { memberDecl = { name = N } } |
+     { typeDecl = { name = N }}) = D;
+
+# Lookup a declaration knowing its name and its file
+# Should be O(1)
+predicate SearchByFileModule :
+  {
+    file : src.File,
+    name : flow.Name,
+    decl : flow.SomeDeclaration
+  }
+  { file = F, name = N, decl = D } where
+    ({ localDecl = { name = N } } |
+     { memberDecl = { name = N } } |
+     { typeDecl = { name = N }}) = D;
+    FileDeclaration { F, D };
+
+# For types exported from .flow files the Haste short name is mapped to the
+# .flow file via the ModuleTypeExport facts
+predicate SearchTypeByModuleExport :
+  {
+    string_: string,
+    name : flow.Name,
+    decl : flow.SomeDeclaration
+  }
+  { S, N, { typeDecl = D } } where
+    StringToFileModule { S, F };
+    MTE = ModuleTypeExport { module = { file = F } };
+    SourceOfTypeExport { MTE, { typeDeclaration = D } };
+    { name = N } = D;
+
+# Location of a SomeDeclaration
+predicate DeclarationLocation :
+  {
+    decl: SomeDeclaration,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  ( { decl = { localDecl = D }, file = F, span = S } where
+    Declaration { loc = { module = { file = F }, span = S } } = D ) |
+  ( { decl = { memberDecl = D }, file = F, span = S } where
+    MemberDeclaration { loc = { module = { file = F }, span = S } } = D ) |
+  ( { decl = { typeDecl = D }, file = F, span = S } where
+    TypeDeclaration { loc = { module = { file = F }, span = S } } = D )
+
+#
+# Working across module import/export boundaries
+#
+
+predicate FlowXRefDeclInfo :
+  {
+    ref : XRef,
+    srcLoc : Range,
+    name : Name,
+    targetLoc : Range,
+    entity : SomeDeclaration,
+  }
+  { XRef, SrcLoc, Name, TargetLoc, Decl }
+  where
+  (
+    { localRef = { declaration = D, loc = SrcLoc }} = XRef;
+    { name = Name, loc = TargetLoc } = D;
+    Decl = SomeDeclaration { localDecl = D };
+  ) | (
+    { memberRef = { memberDeclaration = D, loc = SrcLoc }} = XRef;
+    { name = Name, loc = TargetLoc } = D;
+    Decl = SomeDeclaration { memberDecl = D };
+  ) | (
+    { typeRef = { typeDeclaration = D, loc = SrcLoc }} = XRef;
+    { name = Name, loc = TargetLoc } = D;
+    Decl = SomeDeclaration { typeDecl = D };
+  );
+
+predicate FlowSameModule :
+  {
+    left : flow.Module,
+    right : flow.Module
+  }
+  { Left, Right } where
+    ( { string_ = S } = Left;
+      StringToFileModule { string_ = S, file = F };
+      Right = flow.Module { file = F } ) |
+    ( { file = F } = Left;
+      flow.FileOfStringModule { file = F, string_ = S };
+      Right = flow.Module { string_ = S } )
+
+# Map a declaration to a module namespace entity
+predicate FlowModuleNamespaceXRef :
+  {
+    local : Declaration,
+    entity : SomeEntity,
+    file : src.File
+  }
+  { Local, { module_ = { file = File }}, File }
+  where
+    ImportDeclaration {
+      declaration = Local,
+      import_ = { moduleNamespace = M } };
+    { file = File } = M | (N where FlowSameModule { M, N });
+
+# Mostly we need declarations, but occasionally we need modules
+# Synonym for code.flow.Entity
+type SomeEntity =
+  {
+    decl : flow.SomeDeclaration |
+    module_ : flow.Module |
+  }
+
+#
+# If a local declaration is an import, find the corresponding
+# flow.SourceOfExport
+#
+predicate FlowModuleExportLocation :
+  {
+    local : ModuleExport,
+    entity : SomeEntity,
+    file : src.File,
+    span : src.ByteSpan
+  }
+  { ModuleExport, Entity, File, Span }
+  where
+    { module = M, export_ = E } = ModuleExport;
+    Mod = M | (N where FlowSameModule { M, N });
+    SourceOfExport {
+      moduleExport = { module = Mod, export_ = E },
+      source = Source };
+    (
+      { declaration = D } = Source;
+      { loc = Loc } = D;
+      { decl = { localDecl = D } } = Entity
+    ) | (
+      { memberDeclaration = D } = Source;
+      { loc = Loc } = D;
+      { decl = { memberDecl = D } } = Entity
+    );
+    { span = Span, module = { file = File } } = Loc;
+    # TODO: moduleExport, moduleNamespace
+
+predicate FlowTypeExportLocation :
+  {
+    moduleTypeExport : ModuleTypeExport,
+    entity : SomeEntity,
+    file : src.File,
+    span : src.ByteSpan
+  }
+  { ModuleTypeExport, { decl = { typeDecl = D }}, File, Span } where
+    { module = M, typeExport = TE } = ModuleTypeExport;
+    Mod = M | (N where FlowSameModule { M, N });
+    SourceOfTypeExport {
+      moduleTypeExport = { module = Mod, typeExport = TE },
+      source = { typeDeclaration = D }};
+    { loc = Loc } = D;
+    { span = Span, module = { file = File } } = Loc;
+
+predicate FlowCompatibleModuleExport :
+  {
+    left : ModuleExport,
+    right : ModuleExport
+  }
+  { Left, Right } where
+    Left = { module = M, export_ = E } : ModuleExport;
+    ExportRight = (
+        { commonJS = {} } = E;
+        Export { default_ = {} }
+      ) | (
+        { default_ = {} } = E;
+        Export { commonJS = {} }
+      ) | (
+        { named = Name } = E;
+        Export { commonJSMember = Name }
+      ) | (
+        { commonJSMember = Name } = E;
+        Export { named = Name }
+      );
+    Right = { module = M, export_ = ExportRight } : ModuleExport;
+
+#
+# Map an import declaration to the location of its original definition
+# Grab the target definition file and span while we're here
+#
+predicate FlowImportXRef :
+  {
+    local : Declaration,
+    entity : SomeEntity,
+    targetFile : src.File,
+    targetSpan : src.ByteSpan
+  }
+  { Local, Entity, TargetFile, TargetSpan } where
+    (
+      ImportDeclaration {
+        declaration = Local,
+        import_ = { moduleExport = E } };
+      ModuleExport = E | (F where FlowCompatibleModuleExport { E, F });
+      FlowModuleExportLocation { ModuleExport, Entity, TargetFile, TargetSpan };
+    ) | (
+      FlowModuleNamespaceXRef { Local, Entity, TargetFile };
+      TargetSpan = { 0, 0 }
+    );
+
+# Map an import type declaration to the location of its original definition
+predicate FlowTypeImportXRef :
+  {
+    local : TypeDeclaration,
+    entity : SomeEntity,
+    targetFile : src.File,
+    targetSpan : src.ByteSpan
+  }
+  { TypeDecl, Entity, TargetFile, TargetSpan } where
+    TypeImportDeclaration {
+      typeDeclaration = TypeDecl,
+      import_ = Import
+    };
+    (
+      { type = MTE } = Import;
+      FlowTypeExportLocation { MTE, Entity, TargetFile, TargetSpan };
+    ) | (
+      { typeof_ = ModuleExport } = Import;
+      FlowModuleExportLocation { ModuleExport, Entity, TargetFile, TargetSpan };
+    )
+
+# Inverse map of definition entities to their import declarations
+# Useful for fast lookup of import decl occurences of an exported value
+predicate FlowEntityImportUses :
+  {
+    target: SomeEntity,
+    local: Declaration,
+  }
+  stored
+  { TargetDecl , Decl } where
+    FlowImportXRef { local = Decl, entity = TargetDecl };
+
+# Inverse map of type definition entities to their import declarations
+predicate FlowTypeEntityImportUses :
+  {
+    target: SomeEntity,
+    local: TypeDeclaration,
+  }
+  stored
+  { TargetDecl, TypeDecl } where
+    FlowTypeImportXRef { local = TypeDecl, entity = TargetDecl };
+
+# Associate entities with all their refernces:
+# - local references
+# - remote import declarations
+# - remote references to those import declarations
+predicate FlowEntityUsesAll :
+  {
+    target: SomeEntity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  # local uses in same file as definition including members
+  ({ { decl = D }, File, Span } where
+    DeclarationUses { target = D, file = File, use = Span }) |
+  # type imports and references to them
+  ({ Entity, File, Span } where
+    FlowTypeEntityImportUses { Entity, Import };
+    ({ File, Span } where
+      DeclarationLocation { { typeDecl = Import }, File, Span } |
+      DeclarationUses { { typeDecl = Import }, File, Span }
+    )) |
+  # or value imports and their references
+  ({ Entity, File, Span } where
+    FlowEntityImportUses { Entity, Import };
+    ({ File, Span } where
+      DeclarationLocation { { localDecl = Import }, File, Span } |
+      DeclarationUses { { localDecl = Import }, File, Span }
+    ))
+
+# Useful lookup from declaration to name and span. See also DeclarationLocation
+predicate DeclarationNameSpan:
+  {
+    decl: flow.SomeDeclaration,
+    name: flow.Name,
+    span: src.ByteSpan
+  }
+  { { localDecl = { name = Name, loc = { span = Span }}}, Name, Span } |
+  { { memberDecl = { name = Name, loc = { span = Span }}}, Name, Span } |
+  { { typeDecl = { name = Name, loc = { span = Span }}}, Name, Span }
+
+}

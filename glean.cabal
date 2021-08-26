@@ -1,0 +1,1352 @@
+cabal-version:       3.6
+
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
+name:                glean
+version:             0.1.0.0
+synopsis: A system for collecting, deriving and working with facts
+          about source code.
+homepage:            https://github.com/facebookincubator/Glean
+bug-reports:         https://github.com/facebookincubator/Glean/issues
+license:             BSD-3-Clause
+license-file:        LICENSE
+author:              Facebook, Inc.
+maintainer:          Glean-team@fb.com
+copyright:           (c) Facebook, All Rights Reserved
+build-type:          Simple
+extra-source-files:  CHANGELOG.md
+
+common fb-haskell
+    default-language: Haskell2010
+    default-extensions:
+        BangPatterns
+        BinaryLiterals
+        DataKinds
+        DeriveDataTypeable
+        DeriveGeneric
+        EmptyCase
+        ExistentialQuantification
+        FlexibleContexts
+        FlexibleInstances
+        GADTs
+        GeneralizedNewtypeDeriving
+        LambdaCase
+        MultiParamTypeClasses
+        MultiWayIf
+        NoMonomorphismRestriction
+        OverloadedStrings
+        PatternSynonyms
+        RankNTypes
+        RecordWildCards
+        ScopedTypeVariables
+        StandaloneDeriving
+        TupleSections
+        TypeFamilies
+        TypeSynonymInstances
+        NondecreasingIndentation
+  if flag(opt)
+     ghc-options: -O2
+
+common fb-cpp
+  cxx-options: -std=c++17 -march=haswell
+  if flag(opt)
+     cxx-options: -O3
+
+common exe
+  ghc-options: -threaded
+
+flag opt
+     default: False
+
+flag benchmarks
+     default: False
+
+common deps
+    build-depends:
+        fb-util,
+        thrift-cpp-channel,
+        thrift-lib,
+        HUnit,
+        safe,
+        scientific,
+        text-show,
+        uuid,
+        extra,
+        aeson,
+        data-default,
+        temporary,
+        clock,
+        STMonadTrans,
+        utf8-string,
+        optparse-applicative,
+        ansi-terminal,
+        json,
+        regex-base,
+        regex-pcre,
+        base >=4.11.1 && <4.15,
+        array ^>=0.5.2.0,
+        async ^>=2.2.1,
+        attoparsec ^>=0.13.2.3,
+        unordered-containers ^>=0.2.9.0,
+        containers,
+        contravariant ^>=1.5,
+        text ^>=1.2.3.0,
+        bytestring ^>=0.10.8.2,
+        vector ^>=0.12.0.1,
+        transformers ^>=0.5.5.0,
+        network-uri ^>=2.6.1.0,
+        stm ^>=2.5.0.0,
+        directory ^>=1.3.1.5,
+        filepath ^>=1.4.2,
+        exceptions ^>=0.10.0,
+        mtl ^>=2.2.2,
+        unix ^>=2.7.2.2,
+        process ^>=1.6.3.0,
+        prettyprinter >=1.2.1 && <1.7,
+        time >=1.8.0.2 && <1.12,
+        binary ^>=0.8.5.1,
+        deepseq ^>=1.4.3.0,
+        hashable >=1.2.7.0 && <1.4,
+        tar ^>=0.5.1.0,
+        ghc-prim >=0.5.2.0 && <0.7,
+        parsec ^>=3.1.13.0,
+        haxl >= 2.1.2.0 && < 2.4,
+        hinotify ^>= 0.4.1
+
+common hsc2hs-cpp
+    hsc2hs-options: --cc=g++ --lflag=-lstdc++ --cflag=-D__HSC2HS__=1 --cflag=-std=c++17
+
+library stubs
+    import: fb-haskell, fb-cpp, deps
+    visibility: public
+    hs-source-dirs: glean/github
+    exposed-modules:
+        Facebook.Fb303
+        Facebook.Service
+        Glean.BuildInfo
+        Glean.Datasource.Scribe.Write
+        Glean.Init
+        Glean.Server.Shard
+        Glean.Username
+        ServiceData.Types
+        ServiceData.GlobalStats
+        TestRunner
+    build-depends:
+        glean:if-fb303-hs,
+        mangle,
+        thrift-server,
+        template-haskell
+
+library tailer
+    import: fb-haskell, fb-cpp, deps
+    visibility: private
+    hs-source-dirs: glean/github
+    exposed-modules:
+        Glean.Tailer
+    build-depends:
+        glean:util
+
+library logger
+    import: fb-haskell, fb-cpp, deps
+    visibility: private
+    hs-source-dirs: glean/github
+    exposed-modules:
+        Logger.IO
+        Logger.GleanDatabaseStats
+        Logger.GleanServer
+    build-depends:
+        glean:util
+
+library config
+    import: fb-haskell, fb-cpp, deps
+    visibility: public
+    include-dirs: .
+    hs-source-dirs:
+        glean/config/gen-hs2
+        glean/config/recipes/gen-hs2
+        glean/config/server/gen-hs2
+        glean/config/client/gen-hs2
+    cxx-sources:
+        glean/config/recipes/gen-cpp2/recipes_types.cpp
+        glean/config/recipes/gen-cpp2/recipes_data.cpp
+    exposed-modules:
+        Glean.Recipes.Types
+        Glean.Service.Types
+        Glean.ClientConfig.Types
+        Glean.ServerConfig.Types
+    pkgconfig-depends: libfolly
+
+library defaultconfigs
+    import: fb-haskell, fb-cpp, deps
+    visibility: private
+    hs-source-dirs: glean/github
+    exposed-modules:
+        Glean.DefaultConfigs
+    build-depends:
+        glean:config,
+        glean:util
+
+library if-fb303-hs
+    import: fb-haskell, fb-cpp, deps
+    visibility: public
+    hs-source-dirs:
+        glean/github/if/gen-hs2
+    exposed-modules:
+        Fb303Core.Types
+        Fb303Core.BaseService.Client
+        Fb303Core.BaseService.Service
+        Fb303.Types
+        Fb303.FacebookService.Client
+        Fb303.FacebookService.Service
+
+library if-glean-hs
+    import: fb-haskell, fb-cpp, deps
+    visibility: public
+    hs-source-dirs:
+        glean/if/gen-hs2
+    exposed-modules:
+        Glean.Types
+        Glean.GleanService.Client
+        Glean.GleanService.Service
+    build-depends:
+        glean:config,
+        glean:if-fb303-hs
+
+library if-internal-hs
+    import: fb-haskell, fb-cpp, deps
+    visibility: public
+    hs-source-dirs:
+        glean/if/internal/gen-hs2
+    exposed-modules:
+        Glean.Internal.Types
+    build-depends:
+        glean:config,
+        glean:if-glean-hs
+
+library if-search-hs
+    import: fb-haskell, fb-cpp, deps
+    visibility: public
+    hs-source-dirs:
+        glean/if/search/gen-hs2
+    exposed-modules:
+        Glean.Search.Types
+    build-depends:
+        glean:config,
+        glean:if-glean-hs,
+        glean:schema
+--        fb303
+
+library if-fb303-cpp
+    import: fb-haskell, fb-cpp, deps
+    visibility: public
+    include-dirs: .
+    cxx-sources:
+        glean/github/if/gen-cpp2/fb303_core_types.cpp
+        glean/github/if/gen-cpp2/fb303_core_data.cpp
+        glean/github/if/gen-cpp2/fb303_types.cpp
+        glean/github/if/gen-cpp2/fb303_data.cpp
+
+library if-glean-cpp
+    import: fb-haskell, fb-cpp, deps
+    visibility: public
+    cxx-sources:
+        glean/if/gen-cpp2/glean_types.cpp
+        glean/if/gen-cpp2/glean_data.cpp
+    build-depends:
+        glean:if-fb303-cpp,
+        glean:config
+
+library if-internal-cpp
+    import: fb-haskell, fb-cpp, deps
+    visibility: public
+    cxx-sources:
+        glean/if/gen-cpp2/internal_types.cpp
+        glean/if/gen-cpp2/internal_data.cpp
+    build-depends:
+        glean:if-fb303-cpp,
+        glean:if-glean-cpp,
+        glean:config
+
+library ffi
+    import: fb-haskell, fb-cpp, deps
+    visibility: private
+    include-dirs: .
+    cxx-sources:
+        glean/ffi/ffi.cpp
+    build-depends:
+        glean:if-glean-cpp
+
+library rts
+    import: fb-haskell, fb-cpp, deps
+    visibility: private
+    include-dirs: .
+    cxx-sources:
+        glean/rts/binary.cpp
+        glean/rts/cache.cpp
+        glean/rts/define.cpp
+        glean/rts/error.cpp
+        glean/rts/fact.cpp
+        glean/rts/factset.cpp
+        glean/rts/ffi.cpp
+        glean/rts/inventory.cpp
+        glean/rts/json.cpp
+        glean/rts/lookup.cpp
+        glean/rts/nat.cpp
+        glean/rts/ownership.cpp
+        glean/rts/ownership/setu32.cpp
+        glean/rts/ownership/uset.cpp
+        glean/rts/prim.cpp
+        glean/rts/query.cpp
+        glean/rts/sanity.cpp
+        glean/rts/string.cpp
+        glean/rts/substitution.cpp
+        glean/rts/thrift.cpp
+        glean/rts/validate.cpp
+        glean/rts/bytecode/subroutine.cpp
+    pkgconfig-depends: libfolly, libunwind, libglog, icu-uc, gflags, libxxhash
+    cxx-options: -DOSS=1
+    build-depends:
+        glean:if-internal-cpp,
+        glean:ffi
+
+library rocksdb
+    import: fb-haskell, fb-cpp, deps
+    visibility: private
+    cxx-sources:
+        glean/rocksdb/ffi.cpp
+        glean/rocksdb/rocksdb.cpp
+    -- -fno-rtti is needed because RocksDB is compiled with it, and we
+    -- get linker errors for references to missing typeinfo symbols if
+    -- we don't.
+    cxx-options: -fno-rtti
+    extra-libraries: rocksdb
+    build-depends:
+        glean:rocksdb-stats,
+        glean:rts,
+        glean:ffi
+
+-- This needs to be separate from rocksdb because it can't be compiled with -fno-rtti
+library rocksdb-stats
+    import: fb-haskell, fb-cpp, deps
+    visibility: private
+    cxx-sources:
+        glean/rocksdb/stats.cpp
+    build-depends:
+        glean:rts,
+        glean:ffi
+
+library util
+    import: fb-haskell, fb-cpp, deps
+    visibility: public
+    hs-source-dirs: glean/util
+    exposed-modules:
+        Glean.Database.Backup.Backend
+        Glean.Impl.ThriftService
+        Glean.Impl.ConfigProvider
+        Glean.Impl.TestConfigProvider
+        Glean.Tailer.Types
+        Glean.Util.Bisect
+        Glean.Util.ConfigProvider
+        Glean.Util.Cacher
+        Glean.Util.HKD
+        Glean.Util.IO
+        Glean.Util.Metric
+        Glean.Util.Mutex
+        Glean.Util.Observed
+        Glean.Util.Periodic
+        Glean.Util.Process
+        Glean.Util.Service
+        Glean.Util.Some
+        Glean.Util.ThriftService
+        Glean.Util.ThriftSource
+        Glean.Util.Throttle
+        Glean.Util.Time
+        Glean.Util.Trace
+        Glean.Util.ValueBuffer
+        Glean.Util.Warden
+    build-depends:
+        glean:stubs,
+        glean:config,
+        glean:if-glean-hs,
+        primitive,
+        network
+
+library core
+    import: fb-haskell, fb-cpp, deps, hsc2hs-cpp
+    visibility: public
+    hs-source-dirs: glean/hs
+    default-extensions: CPP
+    hsc2hs-options: --cflag=-DOSS=1
+
+    exposed-modules:
+        Glean.FFI
+
+        Glean.RTS
+        Glean.RTS.Builder
+        Glean.RTS.Bytecode.Code
+        Glean.RTS.Bytecode.Disassemble
+        Glean.RTS.Bytecode.MonadInsn
+        Glean.RTS.Constants
+        Glean.RTS.Foreign.Bytecode
+        Glean.RTS.Foreign.Define
+        Glean.RTS.Foreign.FactSet
+        Glean.RTS.Foreign.Inventory
+        Glean.RTS.Foreign.JSON
+        Glean.RTS.Foreign.LookupCache
+        Glean.RTS.Foreign.Lookup
+        Glean.RTS.Foreign.Ownership
+        Glean.RTS.Foreign.Query
+        Glean.RTS.Foreign.Stacked
+        Glean.RTS.Foreign.Subst
+        Glean.RTS.Foreign.Thrift
+        Glean.RTS.Foreign.Typecheck
+        Glean.RTS.Term
+        Glean.RTS.Traverse
+        Glean.RTS.Typecheck
+        Glean.RTS.Types
+
+        -- generated by bytecode-gen-hs
+        Glean.RTS.Bytecode.Gen.Instruction
+        Glean.RTS.Bytecode.Gen.Issue
+        Glean.RTS.Bytecode.Gen.Version
+
+        Glean.Typed
+        Glean.Typed.Binary
+        Glean.Typed.Build
+        Glean.Typed.BuildFact
+        Glean.Typed.Fact
+        Glean.Typed.Id
+        Glean.Typed.Predicate
+        Glean.Typed.Prim
+        Glean.Typed.Query
+
+        Glean.Query.Thrift
+        Glean.Query.Thrift.Internal
+
+        Glean.Write.Async
+        Glean.Write.Options
+        Glean.Write.SendBatch
+        Glean.Write.SendQueue
+        Glean.Write.SendAndRebaseQueue
+
+        Glean.Angle.Lexer
+        Glean.Angle.Parser
+        Glean.Angle.Types
+        Glean.Query.Angle
+        Glean.Query.Types
+        Glean.Repo.Text
+        Glean.Schema.Resolve
+        Glean.Schema.Util
+
+        Glean.Backend.Remote
+
+        Glean.Util.PredMap
+        Glean.Util.PredSet
+
+    build-tool-depends: alex:alex, happy:happy
+    build-depends:
+        glean:bytecode,
+        glean:config,
+        glean:defaultconfigs,
+        glean:util,
+        glean:if-glean-hs,
+        glean:if-internal-hs,
+        glean:ffi,
+        glean:rts,
+        glean:stubs,
+        glean:tailer,
+        glean:rocksdb,
+
+library db
+    import: fb-haskell, fb-cpp, deps, hsc2hs-cpp
+    visibility: public
+    hs-source-dirs: glean/db
+    default-extensions: CPP
+
+    exposed-modules:
+        Glean.Database.Backup
+        Glean.Database.Backup.Locator
+        Glean.Database.Backup.Mock
+        Glean.Database.Catalog.Filter
+        Glean.Database.Catalog
+        Glean.Database.Catalog.Local.Files
+        Glean.Database.Catalog.Store
+        Glean.Database.Config
+        Glean.Database.Data
+        Glean.Database.Env
+        Glean.Database.Exception
+        Glean.Database.Open
+        Glean.Database.Close
+        Glean.Database.Restore
+        Glean.Database.Delete
+        Glean.Database.Create
+        Glean.Database.List
+        Glean.Database.Janitor
+        Glean.Database.Logger
+        Glean.Database.Meta
+        Glean.Database.Repo
+        Glean.Database.Schema
+        Glean.Database.Schema.Types
+        Glean.Database.Stats
+        Glean.Database.Storage
+        Glean.Database.Storage.Memory
+        Glean.Database.Storage.RocksDB
+        Glean.Database.Tailer
+        Glean.Database.Types
+        Glean.Database.Validate
+        Glean.Database.Work.Controller
+        Glean.Database.Work.Heartbeat
+        Glean.Database.Work
+        Glean.Database.Work.Queue
+        Glean.Database.Writes
+        Glean.Database.Write.Batch
+        Glean.Write.JSON
+        Glean.Query.BindOrder
+        Glean.Query.Codegen
+        Glean.Query.Expand
+        Glean.Query.Flatten
+        Glean.Query.Flatten.Types
+        Glean.Query.Opt
+        Glean.Query.Reorder
+        Glean.Query.Typecheck
+        Glean.Query.Typecheck.Types
+        Glean.Query.Vars
+
+        Glean.Query.JSON
+        Glean.Query.Nested.Types
+
+        Glean.Query.Derive
+        Glean.Query.Nested
+        Glean.Query.Nested.Compile
+        Glean.Query.UserQuery
+
+        Glean.Backend
+        Glean.Dump
+
+    build-depends:
+        glean:bytecode,
+        glean:config,
+        glean:core,
+        glean:defaultconfigs,
+        glean:util,
+        glean:if-glean-hs,
+        glean:if-internal-hs,
+        glean:ffi,
+        glean:rts,
+        glean:logger,
+        glean:stubs,
+        glean:tailer,
+        glean:rocksdb,
+
+
+library client-hs
+    import: fb-haskell, fb-cpp, deps
+    visibility: public
+    hs-source-dirs: glean/client/hs
+    exposed-modules:
+          Glean
+          Glean.Angle
+          Glean.Write
+          Glean.Haxl
+          Glean.Repo
+          Glean.Util.ShellPrint
+    build-depends:
+        pretty,
+        aeson-pretty,
+        glean:if-glean-hs,
+        glean:util,
+        glean:core,
+        glean:config,
+        glean:haxl-datasource,
+        prettyprinter-ansi-terminal
+
+library client-hs-local
+    import: fb-haskell, fb-cpp, deps
+    visibility: public
+    hs-source-dirs: glean/client/hs/local
+    exposed-modules:
+        Glean.LocalOrRemote
+    build-depends:
+        glean:if-glean-hs,
+        glean:core,
+        glean:client-hs,
+        glean:db,
+
+
+library schema
+    import: fb-haskell, fb-cpp, deps
+    visibility: public
+    hs-source-dirs:
+        glean/schema/hs
+        glean/schema/thrift/gen-hs2
+    exposed-modules:
+        Glean.Schema.Buck
+        Glean.Schema.Builtin
+        Glean.Schema.Code
+        Glean.Schema.CodeCxx
+        Glean.Schema.CodeHack
+        Glean.Schema.CodeHs
+        Glean.Schema.CodeJava
+        Glean.Schema.Codemarkup
+        Glean.Schema.CodePp
+        Glean.Schema.CodePython
+        Glean.Schema.CodeRust
+        Glean.Schema.CodeThrift
+        Glean.Schema.Cxx1
+        Glean.Schema.Flow
+        Glean.Schema.GleanTest
+        Glean.Schema.Graphql
+        Glean.Schema.Hack
+        Glean.Schema.Hs
+        Glean.Schema.Java
+        Glean.Schema.Pp1
+        Glean.Schema.Python
+        Glean.Schema.Rust
+        Glean.Schema.SearchCxx
+        Glean.Schema.SearchHack
+        Glean.Schema.SearchPp
+        Glean.Schema.Src
+        Glean.Schema.Sys
+        Glean.Schema.Thrift
+        Glean.Schema.Buck.Types
+        Glean.Schema.Builtin.Types
+        Glean.Schema.Code.Types
+        Glean.Schema.CodeCxx.Types
+        Glean.Schema.CodeFlow.Types
+        Glean.Schema.CodeHack.Types
+        Glean.Schema.CodeHs.Types
+        Glean.Schema.CodeJava.Types
+        Glean.Schema.CodeRust.Types
+        Glean.Schema.CodeThrift.Types
+        Glean.Schema.Codemarkup.Types
+        Glean.Schema.CodePp.Types
+        Glean.Schema.CodePython.Types
+        Glean.Schema.Cxx1.Types
+        Glean.Schema.Flow.Types
+        Glean.Schema.GleanTest.Types
+        Glean.Schema.Graphql.Types
+        Glean.Schema.Hack.Types
+        Glean.Schema.Hs.Types
+        Glean.Schema.Java.Types
+        Glean.Schema.Pp1.Types
+        Glean.Schema.Python.Types
+        Glean.Schema.Rust.Types
+        Glean.Schema.SearchCxx.Types
+        Glean.Schema.SearchHack.Types
+        Glean.Schema.SearchPp.Types
+        Glean.Schema.Src.Types
+        Glean.Schema.Sys.Types
+        Glean.Schema.Thrift.Types
+    build-depends:
+        glean:if-glean-hs,
+        glean:config,
+        glean:core,
+
+library schema-query
+    import: fb-haskell, fb-cpp, deps
+    visibility: public
+    hs-source-dirs:
+        glean/schema/thrift/query/gen-hs2
+    exposed-modules:
+        Glean.Schema.Query.Buck.Types
+        Glean.Schema.Query.Builtin.Types
+        Glean.Schema.Query.Code.Types
+        Glean.Schema.Query.CodeCxx.Types
+        Glean.Schema.Query.CodeFlow.Types
+        Glean.Schema.Query.CodeHack.Types
+        Glean.Schema.Query.CodeHs.Types
+        Glean.Schema.Query.CodeJava.Types
+        Glean.Schema.Query.CodeRust.Types
+        Glean.Schema.Query.CodeThrift.Types
+        Glean.Schema.Query.Codemarkup.Types
+        Glean.Schema.Query.CodePp.Types
+        Glean.Schema.Query.CodePython.Types
+        Glean.Schema.Query.Cxx1.Types
+        Glean.Schema.Query.Flow.Types
+        Glean.Schema.Query.GleanTest.Types
+        Glean.Schema.Query.Graphql.Types
+        Glean.Schema.Query.Hack.Types
+        Glean.Schema.Query.Hs.Types
+        Glean.Schema.Query.Java.Types
+        Glean.Schema.Query.Pp1.Types
+        Glean.Schema.Query.Python.Types
+        Glean.Schema.Query.Rust.Types
+        Glean.Schema.Query.SearchCxx.Types
+        Glean.Schema.Query.SearchHack.Types
+        Glean.Schema.Query.SearchPp.Types
+        Glean.Schema.Query.Src.Types
+        Glean.Schema.Query.Sys.Types
+        Glean.Schema.Query.Thrift.Types
+    build-depends:
+        glean:if-glean-hs,
+        glean:config,
+        glean:core,
+        glean:schema,
+
+-- library clang-test-xref
+--     import: fb-haskell, fb-cpp, deps
+--     visibility: public
+--     hs-source-dirs: lang/clang
+--     exposed-modules:
+--         Glean.Clang.Test.XRef
+
+library haxl-datasource
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs: glean/haxl
+    exposed-modules:
+        Haxl.DataSource.Glean
+        Haxl.DataSource.Glean.Backend
+        Haxl.DataSource.Glean.Common
+        Haxl.DataSource.Glean.Remote
+    build-depends:
+        glean:config,
+        glean:core,
+        glean:db,
+        glean:if-glean-hs,
+        glean:util,
+        thrift-haxl
+
+executable gen-schema
+    import: fb-haskell, fb-cpp, deps, exe
+    main-is: Glean/Schema/Gen/Main.hs
+    hs-source-dirs: glean/schema/gen
+    ghc-options: -main-is Glean.Schema.Gen.Main
+    other-modules:
+        Glean.Schema.Gen.HackJson,
+        Glean.Schema.Gen.Utils,
+        Glean.Schema.Gen.Cpp,
+        Glean.Schema.Gen.Haskell,
+        Glean.Schema.Gen.Thrift
+    build-depends:
+        glean:core,
+        glean:db,
+        glean:config,
+        aeson-pretty
+
+library bytecode-instruction
+    import: fb-haskell, fb-cpp, deps
+    visibility: private
+    hs-source-dirs: glean/bytecode/def
+    exposed-modules:
+        Glean.Bytecode.Generate.Instruction
+    build-depends:
+        glean:bytecode
+
+library bytecode
+    import: fb-haskell, fb-cpp, deps
+    visibility: private
+    hs-source-dirs: glean/bytecode
+    exposed-modules:
+        Glean.Bytecode.Types
+        Glean.Bytecode.Decode
+
+executable gen-bytecode-cpp
+    import: fb-haskell, fb-cpp, deps, exe
+    main-is: Glean/Bytecode/Generate/Cpp.hs
+    hs-source-dirs: glean/bytecode/gen
+    ghc-options: -main-is Glean.Bytecode.Generate.Cpp
+    build-depends:
+        glean:bytecode,
+        glean:bytecode-instruction
+
+executable gen-bytecode-hs
+    import: fb-haskell, fb-cpp, deps, exe
+    main-is: Glean/Bytecode/Generate/Haskell.hs
+    hs-source-dirs: glean/bytecode/gen
+    ghc-options: -main-is Glean.Bytecode.Generate.Haskell
+    build-depends:
+        glean:bytecode,
+        glean:bytecode-instruction
+
+library lib
+    import: fb-haskell, fb-cpp, deps
+    visibility: public
+    hs-source-dirs: glean/lib
+    exposed-modules:
+        Glean.Pretty.Code
+        Glean.Pretty.Cxx
+        Glean.Pretty.CxxAnn
+        Glean.Pretty.Hack
+        Glean.Pretty.HackAnn
+        Glean.Pretty.Hs
+        Glean.Pretty.Java
+        Glean.Pretty.Src
+        Glean.Pretty.Search
+        Glean.Pretty.Shared
+        Glean.Pretty.Style
+        Glean.Pretty.Styles
+        Glean.Search.EntityQuery
+        Glean.Search.Graph
+        Glean.Search.Search
+        Glean.Derive
+        Glean.Util.AnnMaker
+        Glean.Util.CxxXRef
+        Glean.Util.Declarations
+        Glean.Util.URI
+        Glean.Util.Range
+        Glean.Util.XRefs
+        Glean.Util.Same
+        Glean.Util.SchemaRepos
+        -- TODO: move into facebook/ ?
+        -- Glean.Util.Buck
+        Glean.Write.SimpleAsync
+    build-depends:
+        glean:client-hs,
+        glean:core,
+        glean:db,
+        glean:if-glean-hs,
+        glean:if-search-hs,
+        glean:schema,
+        glean:schema-query,
+        glean:util,
+        split
+
+library test-unit
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs: glean/test/unit
+    exposed-modules:
+        Glean.Test.HUnit
+        Glean.Test.Mock
+
+executable glean-server
+    import: fb-haskell, fb-cpp, deps, exe
+    hs-source-dirs: glean/server
+    main-is: Glean/Server.hs
+    ghc-options: -main-is Glean.Server
+    default-extensions: CPP
+    other-modules:
+        Glean.Handler
+        Glean.Server.Config
+    extra-libraries: stdc++
+    build-depends:
+        glean:client-hs,
+        glean:if-fb303-hs,
+        glean:if-glean-hs,
+        glean:stubs,
+        glean:config,
+        glean:core,
+        glean:db,
+        glean:util,
+        haskeline >=0.7.3 && <0.8,
+        json,
+        thrift-server
+
+library shell-lib
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs: glean/shell
+    exposed-modules:
+        Glean.Shell
+        Glean.Shell.Error
+        Glean.Shell.Index
+        Glean.Shell.Terminal
+        Glean.Shell.Types
+    default-extensions: CPP
+    extra-libraries: stdc++
+    build-depends:
+        glean:cli-types,
+        glean:if-glean-hs,
+        glean:stubs,
+        glean:config,
+        glean:core,
+        glean:db,
+        glean:client-hs,
+        glean:client-hs-local,
+        glean:util,
+        haskeline >=0.7.3 && <0.8,
+        json,
+        monad-control,
+        prettyprinter-ansi-terminal,
+        split
+
+
+library cli-types
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs: glean/tools/gleancli/plugin
+    exposed-modules:
+        GleanCLI.Types
+    build-depends:
+        glean:client-hs-local,
+        glean:util,
+
+executable glean
+    import: fb-haskell, fb-cpp, deps, exe
+    hs-source-dirs: glean/tools/gleancli
+    main-is: GleanCLI.hs
+    other-modules:
+        GleanCLI.Common
+        GleanCLI.Derive
+        GleanCLI.Finish
+        GleanCLI.Query
+        GleanCLI.Restore
+        GleanCLI.Write
+    ghc-options: -main-is GleanCLI
+    extra-libraries: stdc++
+    build-depends:
+        glean:cli-types,
+        glean:client-hs,
+        glean:client-hs-local,
+        glean:db,
+        glean:if-glean-hs,
+        glean:shell-lib,
+        glean:stubs,
+        glean:config,
+        glean:core,
+        glean:lib,
+        glean:util,
+        json,
+        split,
+
+executable glean-search
+    import: fb-haskell, fb-cpp, deps, exe
+    hs-source-dirs: glean/tools/search
+    main-is: Search.hs
+    ghc-options: -main-is Search
+    extra-libraries: stdc++
+    build-depends:
+        glean:client-hs,
+        glean:lib,
+        glean:schema,
+        glean:stubs,
+        glean:util,
+        glean:if-search-hs,
+        aeson-pretty,
+
+executable glean-hyperlink
+    import: fb-haskell, fb-cpp, deps, exe
+    hs-source-dirs: glean/demo
+    main-is: Hyperlink.hs
+    ghc-options: -main-is Hyperlink
+    extra-libraries: stdc++
+    build-depends:
+        glean:lib,
+        glean:schema,
+        glean:util,
+        glean:client-hs,
+        http-types,
+        wai,
+        warp
+
+-- -----------------------------------------------------------------------------
+-- Benchmarks
+
+library bench-util
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs: glean/bench/lib
+    exposed-modules:
+        Glean.Util.Benchmark
+    build-depends:
+        glean:stubs,
+        criterion
+
+executable query-bench
+    import: fb-haskell, fb-cpp, deps, exe
+    if !flag(benchmarks)
+       buildable: False
+    hs-source-dirs: glean/bench
+    main-is: QueryBench.hs
+    other-modules: BenchDB
+    ghc-options: -main-is QueryBench
+    build-depends:
+        glean:bench-util,
+        glean:client-hs,
+        glean:core,
+        glean:db,
+        glean:if-glean-hs,
+        glean:schema,
+        glean:schema-query,
+        glean:test-lib,
+        glean:util,
+        criterion
+
+executable rename-bench
+    import: fb-haskell, fb-cpp, deps, exe
+    if !flag(benchmarks)
+       buildable: False
+    hs-source-dirs: glean/bench
+    main-is: RenameBench.hs
+    ghc-options: -main-is RenameBench
+    build-depends:
+        glean:bench-util,
+        glean:core,
+        glean:db,
+        glean:schema,
+        glean:test-lib,
+        glean:util,
+        criterion
+
+executable user-query-bench
+    import: fb-haskell, fb-cpp, deps, exe
+    if !flag(benchmarks)
+       buildable: False
+    hs-source-dirs: glean/bench
+    main-is: UserQueryBench.hs
+    ghc-options: -main-is UserQueryBench
+    build-depends:
+        glean:bench-util,
+        glean:client-hs,
+        glean:db,
+        glean:if-glean-hs,
+        glean:schema,
+        glean:test-lib,
+        glean:util,
+        criterion
+
+executable makefact-bench
+    import: fb-haskell, deps, exe
+    if !flag(benchmarks)
+       buildable: False
+    hs-source-dirs: glean/bench
+    main-is: MakeFactBench.hs
+    ghc-options: -main-is MakeFactBench
+    build-depends:
+        glean:bench-util,
+        glean:client-hs,
+        glean:core,
+        glean:schema,
+        glean:test-lib,
+        criterion
+
+-- -----------------------------------------------------------------------------
+-- Tests
+
+library test-lib
+    import: fb-haskell, fb-cpp, deps
+    visibility: private
+    hs-source-dirs: glean/test/lib
+    exposed-modules:
+        TestBatch
+        TestDB
+        TestData
+        Glean.Database.Catalog.Test
+        Glean.Database.Test
+        Glean.Query.Thrift.Test
+    build-depends:
+        glean:core,
+        glean:db,
+        glean:schema,
+        glean:config,
+        glean:if-glean-hs,
+        glean:if-internal-hs,
+        glean:stubs,
+        glean:test-unit,
+        glean:util
+
+library bench-lib
+    import: fb-haskell, fb-cpp, deps
+    visibility: private
+    hs-source-dirs: glean/bench
+    exposed-modules:
+        BenchDB
+    build-depends:
+        glean:client-hs,
+        glean:core,
+        glean:db,
+        glean:schema,
+        glean:test-lib,
+
+-- Skip this one: it depends on the C++ code for the schema, and we
+-- don't want to generate and compile all that just for this one test.
+--
+-- test-suite encoding
+--     import: test
+--     type: exitcode-stdio-1.0
+--     main-is: EncodingTest.hs
+--     ghc-options: -main-is EncodingTest
+--     build-depends:
+--         base16-bytestring,
+--         test-compact,
+--         glean:stubs,
+--         glean:core,
+--         glean:schema
+--
+-- library test-compact
+--     import: fb-haskell, fb-cpp, deps
+--     visibility: private
+--     include-dirs: .
+--     cxx-sources:
+--         glean/test/cpp/compact.cpp
+--     build-depends:
+--         glean:ffi,
+--         schema-cpp
+--
+-- library schema-cpp
+--     import: fb-haskell, fb-cpp, deps
+--     visibility: private
+--     include-dirs: .
+--     cxx-sources:
+--         glean/schema/gen-cpp2/glean_test_types.cpp
+--         glean/schema/gen-cpp2/glean_test_data.cpp
+--         glean/schema/gen-cpp2/builtin_types.cpp
+--         glean/schema/gen-cpp2/builtin_data.cpp
+--         glean/schema/gen-cpp2/sys_types.cpp
+--         glean/schema/gen-cpp2/sys_data.cpp
+--         ... etc.
+
+common test
+    import: fb-haskell, fb-cpp, deps, exe
+    hs-source-dirs: glean/test/tests
+    build-depends:
+        glean:test-lib,
+        glean:test-unit,
+        HUnit,
+
+test-suite jsonquery
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: JSONQueryTest.hs
+    ghc-options: -main-is JSONQueryTest
+    build-depends:
+        glean:stubs,
+        glean:core,
+        glean:db,
+        glean:if-glean-hs,
+        glean:schema,
+        glean:schema-query,
+        glean:config,
+
+test-suite angle
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: AngleTest.hs
+    ghc-options: -main-is AngleTest
+    build-depends:
+        glean:stubs,
+        glean:core,
+        glean:db,
+        glean:if-glean-hs,
+        glean:schema
+
+test-suite timeout
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: TimeoutTest.hs
+    ghc-options: -main-is TimeoutTest
+    build-depends:
+        glean:client-hs,
+        glean:stubs,
+        glean:core,
+        glean:schema,
+        glean:bench-lib
+
+test-suite jsonwrite
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: JSONWriteTest.hs
+    ghc-options: -main-is JSONWriteTest
+    build-depends:
+        glean:client-hs,
+        glean:stubs,
+        glean:core,
+        glean:db,
+        glean:if-glean-hs,
+        glean:schema,
+
+test-suite rtstest
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: RTSTest.hs
+    ghc-options: -main-is RTSTest
+    build-depends:
+        glean:client-hs,
+        glean:stubs,
+        glean:core,
+        glean:schema,
+        glean:config,
+        glean:if-glean-hs,
+        QuickCheck,
+        quickcheck-text,
+
+test-suite rts-json
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: RTSJSONTest.hs
+    ghc-options: -main-is RTSJSONTest
+    build-depends:
+        glean:stubs,
+        glean:core,
+        QuickCheck,
+        quickcheck-text,
+
+test-suite dbjanitor
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: DatabaseJanitorTest.hs
+    ghc-options: -main-is DatabaseJanitorTest
+    build-depends:
+        glean:stubs,
+        glean:core,
+        glean:db,
+        glean:if-glean-hs,
+        glean:if-internal-hs,
+        glean:schema,
+        glean:config,
+        glean:util
+
+test-suite dbderive
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: DbDeriveTest.hs
+    ghc-options: -main-is DbDeriveTest
+    build-depends:
+        glean:client-hs,
+        glean:db,
+        glean:if-glean-hs,
+        glean:if-internal-hs,
+        glean:schema,
+        glean:stubs
+
+test-suite backup
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: BackupTest.hs
+    ghc-options: -main-is BackupTest
+    build-depends:
+        glean:stubs,
+        glean:core,
+        glean:db,
+        glean:if-glean-hs,
+        glean:schema,
+        glean:config,
+        glean:util
+
+test-suite catalog
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: CatalogTest.hs
+    ghc-options: -main-is CatalogTest
+    build-depends:
+        glean:stubs,
+        glean:core,
+        glean:db,
+        glean:if-glean-hs,
+        glean:if-internal-hs,
+        QuickCheck,
+        quickcheck-io,
+        glean:util
+
+test-suite lifecycle
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: LifecycleTest.hs
+    ghc-options: -main-is LifecycleTest
+    build-depends:
+        glean:client-hs,
+        glean:stubs,
+        glean:core,
+        glean:db,
+        glean:if-glean-hs,
+        glean:if-internal-hs,
+        glean:util,
+        QuickCheck,
+        quickcheck-io,
+
+test-suite worker
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: WorkerTest.hs
+    ghc-options: -main-is WorkerTest
+    build-depends:
+        glean:stubs,
+        glean:core,
+        glean:db,
+        glean:if-glean-hs,
+        glean:schema,
+        glean:config,
+        QuickCheck,
+
+test-suite shard
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: TestShard.hs
+    ghc-options: -main-is TestShard
+    build-depends:
+        glean:stubs,
+        glean:core,
+        glean:if-glean-hs,
+
+test-suite dbproperties
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: DbPropertiesTest.hs
+    ghc-options: -main-is DbPropertiesTest
+    build-depends:
+        glean:client-hs,
+        glean:stubs,
+        glean:core,
+
+test-suite parser
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: ParserTest.hs
+    ghc-options: -main-is ParserTest
+    build-depends:
+        glean:stubs,
+        glean:core,
+
+test-suite schematest
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: SchemaTest.hs
+    ghc-options: -main-is SchemaTest
+    build-depends:
+        glean:stubs,
+        glean:core,
+        glean:db,
+        glean:config,
+        glean:if-glean-hs,
+        glean:util,
+
+test-suite inventory
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: InventoryTest.hs
+    ghc-options: -main-is InventoryTest
+    build-depends:
+        glean:stubs,
+        glean:core,
+        glean:db
+
+test-suite external-controller
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: ExternalControllerTest.hs
+    ghc-options: -main-is ExternalControllerTest
+    build-depends:
+        glean:stubs,
+        glean:core,
+        glean:db,
+        glean:if-glean-hs,
+        glean:config
+
+test-suite continuation
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: ContinuationTest.hs
+    ghc-options: -main-is ContinuationTest
+    build-depends:
+        glean:stubs,
+        glean:core,
+        glean:if-glean-hs,
+        glean:schema
+
+test-suite lookup
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: LookupTest.hs
+    ghc-options: -main-is LookupTest
+    cxx-sources: glean/rts/tests/LookupInvariants.cpp
+    build-depends:
+        glean:stubs,
+        glean:core,
+        glean:db
+
+test-suite incremental
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: IncrementalTest.hs
+    ghc-options: -main-is IncrementalTest
+    build-depends:
+        glean:stubs,
+        glean:client-hs,
+        glean:core,
+        glean:schema

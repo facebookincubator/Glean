@@ -1,0 +1,11 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema code.python.1 {
+import python.2
+
+type Entity =
+  {
+    decl : python.Declaration |
+  }
+
+}

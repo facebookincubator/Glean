@@ -1,0 +1,10 @@
+*~
+*.save[0-9]*
+dist-newstyle
+gen-hs2
+gen-cpp2
+glean/hs/Glean/RTS/Bytecode/Gen
+glean/rts/bytecode/gen
+glean/schema/hs
+glean/schema/thrift
+glean/schema/v[0-9]*

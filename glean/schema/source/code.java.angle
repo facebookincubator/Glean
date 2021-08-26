@@ -1,0 +1,31 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema code.java.1 {
+import java.2
+
+type Entity =
+  {
+    class_ : java.ClassDeclaration |
+  }
+
+}
+
+schema code.java.2 {
+import java.3
+
+type Entity =
+  {
+    class_ : java.ClassDeclaration |
+  }
+
+}
+
+schema code.java.3 {
+import java.4
+
+type Entity =
+  {
+    class_ : java.ClassDeclaration |
+  }
+
+}

@@ -1,0 +1,16 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema builtin.1 {
+
+# The empty record type
+type Unit = {}
+
+}
+
+schema sys.1 {
+
+# DEPRECATED: use string and/or your own predicate.
+# (Used as name storage, usually utf8 encoded text)
+predicate Blob : [byte]
+
+}

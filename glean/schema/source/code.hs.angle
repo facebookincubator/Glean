@@ -1,0 +1,13 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema code.hs.2 {
+import hs.2
+
+type Entity =
+  {
+    definition : hs.Definition |
+    function_ : hs.FunctionDefinition |
+    class_ : hs.Class |
+  }
+
+}

@@ -1,0 +1,18 @@
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
+packages:
+    hsthrift/common/util/fb-util.cabal
+    hsthrift/common/github/fb-stubs.cabal
+    hsthrift/common/mangle/mangle.cabal
+    hsthrift/cpp-channel/thrift-cpp-channel.cabal
+    hsthrift/lib/thrift-lib.cabal
+    hsthrift/server/thrift-server.cabal
+    hsthrift/compiler/thrift-compiler.cabal
+    hsthrift/haxl/thrift-haxl.cabal
+    hsthrift/tests/thrift-tests.cabal
+    glean.cabal
+
+tests: True
+
+-- necessary to use a haskeline <0.8 with GHCs that ship with base >= 4.14
+allow-newer: haskeline:base

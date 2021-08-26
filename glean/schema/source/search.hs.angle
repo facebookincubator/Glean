@@ -1,0 +1,17 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema search.hs.3 {
+  import code.15
+  import code.hs.2
+  import hs.2
+
+  predicate SearchByName:
+    {
+      name: string,
+      entity: code.Entity,
+    } { Name, {hs = E}} where
+    E =
+      code.hs.Entity { definition = {name = hs.DefinitionName Name }} |
+      code.hs.Entity {function_ = {name = hs.FunctionName Name}} |
+      code.hs.Entity {class_ = {name = hs.ClassName Name}};
+}

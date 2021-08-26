@@ -1,0 +1,26 @@
+[
+{
+   "predicate": "glean.test.Expr",
+   "facts" : [ {
+      "key": {
+        "lam": {
+          "var_": { "key": "x" },
+          "body": { "key": {
+            "ap": {
+              "fun": { "key": {
+                "ap": {
+                  "fun": { "key": { "prim": { "key": "+" }}},
+                  "arg": { "key": { "var_": { "key": "x"} }}
+                }}},
+              "arg": { "key": { "lit": 1 }}
+            }
+          }}
+        }
+      }}
+   ]
+},
+{
+    "predicate":  { "name" : "glean.test.Expr", "version": 1 },
+    "facts" : []
+}
+]

@@ -1,0 +1,56 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+# An example schema used in the Angle documentation
+
+schema example.1 {
+
+predicate Class :
+  {
+     name : string,
+     line : nat,
+  }
+
+predicate Parent :
+  {
+     child : Class,
+     parent : Class,
+  }
+
+predicate Child :
+  {
+     parent : Class,
+     child : Class,
+  }
+  stored
+  { P, C } where Parent { C, P }
+
+predicate Has :
+  { 
+    class_ : Class,
+    has : Member,
+    access : enum { Public | Private },
+  }
+
+predicate Member :
+  {
+    method : { name : string, doc : maybe string } |
+    variable : { name : string }
+  }
+
+predicate FileClasses :
+  {
+    file : string,
+    classes : [Class]
+  }        
+
+predicate Reference :
+  { file : string, line : nat, column : nat } -> Class
+
+}
+
+#
+# This tells Glean how to resolve predicates without explicit
+# versions. For example "example.Class" will resolve to
+# "example.Class.1".
+#
+schema all.1 : example.1 {}

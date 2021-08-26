@@ -1,0 +1,30 @@
+[
+{
+    "predicate": "glean.test.StringPair",
+    "facts" : [ {
+        "key": {
+            "fst": "a",
+            "snd": "b"
+        }
+    },
+    {
+        "key": {
+            "fst": "b",
+            "snd": "a"
+        }
+    },
+    {
+        "key": {
+            "fst": "c",
+            "snd": "d"
+        }
+    },
+    {
+        "key": {
+            "fst": "e",
+            "snd": "e"
+        }
+    }
+    ]
+}
+]

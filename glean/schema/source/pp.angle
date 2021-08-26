@@ -1,0 +1,41 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema pp1.1 {
+import src.1
+
+# Preprocessor #include
+predicate Include :
+  {
+    file : src.File,       # file being included
+    path : src.ByteRange,  # span of the file path in the source
+    source : src.Range,    # where #include statement occurs
+  }
+
+# Preprocessor macro
+predicate Macro : string
+
+# Preprocessor #define
+predicate Define :
+  {
+    macro : Macro,
+    source : src.Range,
+  }
+
+# Preprocessor #undef
+predicate Undef :
+  {
+    macro : Macro,
+    source : src.Range,
+  }
+
+# Preprocessor macro use
+predicate Use :
+  {
+    macro : Macro,
+    name : src.ByteRange,        # macro name at use site
+    definition : maybe src.Loc,  # xref to the macro definition
+    expand : bool,               # expansion or defined check?
+    source : src.Range,          # entire term including args
+  }
+
+}

@@ -1,0 +1,420 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema python.1 {
+import builtin.1
+import src.1
+
+predicate Name: string
+predicate Type: string
+
+# Records that a class exists with the given fully qualified name.
+predicate ClassDeclaration:
+  {
+    name: Name,
+    bases: maybe [Name],  # unused, see ClassDefinition below
+  }
+# Records that a function exists with the given fully qualified name.
+# The function can be a global, local, or a class method.
+predicate FunctionDeclaration: { name: Name }
+# Records that a variable exists with the given fully qualified name.
+# This variable can be global, or scoped to a class.
+predicate VariableDeclaration: { name: Name }
+# Records that a Python module exists with a given fully qualified name.
+predicate Module: { name: Name }
+
+} # python.1
+
+schema python.2 : python.1 {
+
+import builtin.1
+import src.1
+
+# A structured name.
+predicate SName:
+  {
+    local_name: Name,
+    parent: maybe SName,
+  }
+
+predicate NameToSName: Name -> SName
+predicate SNameToName: SName -> Name
+  stored SN -> N where NameToSName N -> SN
+
+# Allows efficient queries for modules by structured name.
+predicate ModuleBySName: SName -> Module
+  stored SN -> M where SNameToName SN -> N; Module {name = N} = M
+
+predicate ModuleDefinition:
+  {
+    module: Module,
+    docstring: maybe Docstring,
+  }
+
+# Allows efficient queries for classes by structured name
+predicate ClassBySName: SName -> ClassDeclaration
+  stored SN -> C where SNameToName SN -> N; ClassDeclaration {name = N} = C
+
+# Represents details about a class with a particular name.
+predicate ClassDefinition:
+  {
+    declaration: ClassDeclaration,
+    # nothing means the indexer doesn't support detecting these features
+    bases: maybe [ClassDeclaration],
+    keywords: maybe [Parameter],  # metaclass parameters
+    decorators: maybe [Decorator],
+    docstring: maybe Docstring,
+  }
+
+# Allows efficient queries for functions by structured name.
+predicate FunctionBySName: SName -> FunctionDeclaration
+  stored SN -> F where SNameToName SN -> N; FunctionDeclaration {name = N} = F
+
+# Represents details about a function with a particular name.
+predicate FunctionDefinition:
+  {
+    declaration: FunctionDeclaration,
+    is_async: bool,
+    returns: maybe Type,
+    params: [Parameter],  # "regular" parameters (can be pos or kwarg)
+    # nothing means the indexer doesn't support detecting these features
+    posonly_params: maybe [Parameter],
+    kwonly_params: maybe [Parameter],
+    star_arg: maybe Parameter,  # *args
+    star_kwarg: maybe Parameter,  # **kwargs
+    decorators: maybe [Decorator],
+    docstring: maybe Docstring,
+  }
+
+# Allows efficient queries for variables by structured name.
+predicate VariableBySName: SName -> VariableDeclaration
+  stored SN -> V where SNameToName SN -> N; VariableDeclaration {name = N} = V
+
+# Represents details about a variable.
+predicate VariableDefinition:
+  {
+    declaration: VariableDeclaration,
+    type: maybe Type,
+  }
+
+type Parameter =
+  {
+    name: Name,
+    type: maybe Type,
+    # value is only filled out for metaclass parameters
+    # (see the `keywords` field in `ClassDefinition`)
+    value: maybe string,
+  }
+
+# Decorators can be arbitrary expressions, this just records their string
+# representation.
+type Decorator = string
+predicate DocstringContent: string
+type Docstring =
+  {
+    location: src.ByteSpan,
+  }
+
+# A concrete symbol being imported.
+# A single import statement that pulls in multiple names generates multiple
+# facts of this predicate. Star imports are not represented.
+predicate ImportStatement:
+  {
+    # fully qualified name of the imported symbol
+    from_name: Name,
+    # fully qualified name that is the effect of the import statement
+    as_name: Name,
+  }
+
+type Declaration =
+  {
+    cls: ClassDeclaration |
+    func: FunctionDeclaration |
+    variable: VariableDeclaration |
+    imp: ImportStatement |
+    module: Module |
+  }
+
+# The location of a Declaration relative to the repo root.
+predicate DeclarationLocation:
+  {
+    declaration: Declaration,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+
+# A cross reference, or access to a symbol.
+# This type captures a variable access with the LOAD expression
+# context in the Python AST. This type is only valid in the context
+# of a FileXRefs predicate. `target` is a fully qualified name.
+type XRefViaName =
+    {
+        target: Name,
+        source: src.ByteSpan,
+    }
+
+# Collects all reference to names in a single file.
+# There is only one fact of this predicate per source file in the repo.
+predicate XRefsViaNameByFile:
+    {
+        file: src.File,
+        xrefs: [XRefViaName],
+    }
+
+# All uses of a declaration in a particular file.
+# This predicate does not follow references, so if a symbol is used through
+# a chain of imports, only the first hop will be present as a fact.
+# Querying this predicate by declaration is an efficient way to find immediate
+# references to
+predicate DeclarationUses:
+  {
+    declaration: Declaration,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  stored {Decl, File, Span} where
+  XRefsViaNameByFile { File, XRefs };
+  { target = Name, source = Span } = XRefs[..];
+  DeclarationByName Name -> Decl;
+
+# This is a variant of TargetUses, but it allows efficient queries per file.
+# It's useful for finding all outgoing references from a file
+# (e.g. for click-to-definition).
+predicate FileDirectXRefs:
+  {
+    file: src.File,
+    xrefs: [DirectXRef],
+  }
+
+predicate DirectXRefsByFile:
+  {
+    file: src.File,
+    xref: DirectXRef,
+  }
+  {File, XRef} where
+  XRefsViaNameByFile { File, XRefsViaName };
+  { target = Name, source = Source } = XRefsViaName[..];
+  DeclarationByName Name -> Decl;
+  XRef = DirectXRef {target = Decl, source = Source};
+
+type DirectXRef =
+  {
+    target: Declaration,
+    source: src.ByteSpan,
+  }
+
+
+predicate DeclarationToName: Declaration -> Name
+  D -> N where
+    ({cls = { name = N }} = D) |
+    ({func = { name = N }} = D) |
+    ({variable = { name = N }} = D) |
+    ({imp = { as_name = N }} = D) |
+    ({module = { name = N }} = D)
+
+
+# This is a variant of DeclarationLocation. It allows for efficient queries
+# by file.
+predicate DeclarationsByFile:
+  {
+    file: src.File,
+    span: src.ByteSpan,
+    declaration: Declaration,
+  }
+  stored {File, Span, Declaration} where
+  DeclarationLocation { Declaration, File, Span }
+
+# Search for a declaration by (fully qualified) name.
+predicate DeclarationWithName:
+  {
+    name: Name,
+    declaration: Declaration,
+  }
+  {N, D} where
+  D = (
+    Declaration { cls = { name = N }}
+  ) | (
+    Declaration { func = { name = N }}
+  ) | (
+    Declaration { variable = { name = N }}
+  ) | (
+    ImportStatementByName { as_name = N, from_name = F };
+    Declaration { imp = { from_name = F, as_name = N }}
+  ) | (
+    Declaration { module = { name = N }}
+  )
+
+predicate NonImportDeclaration: Declaration
+  D where
+  { cls = _ } |
+  { func = _ } |
+  { variable = _ } |
+  { module = _ } = D
+
+#### DEPRECATED SECTION
+
+# DEPRECATED: use ImportStatementByAsName.3
+# This is the inverse of ImportStatement. It allows for efficient queries
+# by alias.
+predicate ImportStatementByName:
+  {
+    as_name: Name,
+    from_name: Name,
+  }
+  stored {AsName, FromName} where ImportStatement {FromName, AsName}
+
+# DEPRECATED: use DeclarationWithName
+# Search for a declaration by (fully qualified) name.
+predicate DeclarationByName: Name -> Declaration
+  N -> D where
+  D = (
+    Declaration { cls = { name = N }}
+  ) | (
+    Declaration { func = { name = N }}
+  ) | (
+    Declaration { variable = { name = N }}
+  ) | (
+    ImportStatementByName { as_name = N, from_name = F };
+    Declaration { imp = { from_name = F, as_name = N }}
+  ) | (
+    Declaration { module = { name = N }}
+  )
+
+# DEPRECATED: use DeclarationWithSName
+# Search for a declaration by structured name
+predicate DeclarationBySName: SName -> Declaration
+  N -> D where
+  D = (
+    ClassBySName N -> C;
+    Declaration { cls = C }
+  ) | (
+    FunctionBySName N -> F;
+    Declaration { func = F }
+  ) | (
+    VariableBySName N -> V;
+    Declaration { variable = V }
+  ) | (
+    ModuleBySName N -> M;
+    Declaration { module = M }
+  )
+
+} # python.2
+
+schema python.3 : python.2 {
+import src.1
+
+# This is the inverse of ImportStatement. It allows for efficient queries
+# by alias. Note that multiple ImportStatements might have the same
+# alias, so this must be a record and not Name -> ImportStatement.
+predicate ImportStatementByAsName:
+  {
+    name: Name,
+    import_: ImportStatement
+  } stored { Name, I } where
+  ImportStatement { as_name = Name } = I
+
+# Same as ImportStatementByAsName, but for structured names.
+predicate ImportStatementByAsSName:
+  {
+     sname: SName,
+     import_: ImportStatement
+  }
+  { AsSName, I } where
+  SNameToName AsSName -> AsName;
+  ImportStatementByAsName { AsName, I }
+
+# Look up declarations with exact SNames
+predicate DeclarationWithSName:
+  {
+    sname: SName,
+    declaration: Declaration,
+  }
+  {SN, D} where
+  SNameToName SN -> N;
+  DeclarationWithName {N, D};
+
+# map from a declaration to the closest top level declaration
+# useful as we operate a lot of analysis on the top level declarations
+predicate ContainingTopLevelDeclaration:
+  {
+    declaration: Declaration,
+    container: Declaration,
+  }
+
+# Quickly find declarations defined at the module level
+# The dead code automation operates at this level
+predicate IsTopLevelDeclaration: Declaration
+  D where
+    ContainingTopLevelDeclaration {D, C};
+    {module = _} = C;
+
+# Find which  declaration references declaration
+predicate DeclarationReference:
+  {
+    target : Declaration,
+    source : Declaration
+  }
+  { target = T, source = S } where
+    python.DeclarationUses {declaration=T, file=F, span=LittleSpan};
+    python.DeclarationsByFile {declaration=S, file=F, span=BigSpan};
+    src.ByteSpanContains {byteSpan=BigSpan, contains=LittleSpan}
+
+predicate DeclarationWithLocalName:
+  {
+    local_name: Name,
+    declaration: Declaration,
+  }
+  {LN, D} where
+  SN = SName {local_name = LN};
+  DeclarationWithSName {SN, D};
+
+type Definition =
+  {
+    cls: ClassDefinition |
+    func: FunctionDefinition |
+    variable: VariableDefinition |
+    module: ModuleDefinition |
+  }
+
+# The location of a Definition relative to the repo root.
+# The span here includes the body and the decorators (if present)
+predicate DefinitionLocation:
+  {
+    definition: Definition,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+
+# This is a variant of DefinitionLocation. It allows for efficient queries
+# by file.
+predicate DefinitionsByFile:
+  {
+    file: src.File,
+    span: src.ByteSpan,
+    definition: Definition,
+  }
+  stored {File, Span, Definition} where
+  DefinitionLocation { Definition, File, Span }
+
+# Map from a Definition to the corresponding Declaration
+predicate DefinitionDeclaration:
+  {
+    definition: Definition,
+    declaration: Declaration,
+  }
+  {Def, Decl} where
+  ({ cls = { declaration = CD } } = Def; Decl = python.Declaration { cls = CD }) |
+  ({ func = { declaration = FD } } = Def; Decl = python.Declaration { func = FD }) |
+  ({ module = { module = MD } } = Def; Decl = python.Declaration { module = MD }) |
+  ({ variable = { declaration = VD } } = Def; Decl = python.Declaration { variable = VD });
+
+# Inverse of DefinitionDeclaration, maps the Declaration to a corresponding Definition
+predicate DeclarationDefinition:
+  {
+    declaration: Declaration,
+    definition: Definition,
+  }
+  stored { Decl, Def } where
+  python.Definition Def;
+  python.DefinitionDeclaration { Def, Decl };
+
+} # python.3

@@ -1,0 +1,11 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema code.rust.1 {
+import rust.1
+
+type Entity =
+  {
+    definition : rust.Def |
+  }
+
+}

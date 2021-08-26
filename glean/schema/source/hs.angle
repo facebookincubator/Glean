@@ -1,0 +1,154 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema hs.1 {
+import src.1
+
+# Identifies a package, e.g. 'base-4.11.1.0'
+predicate PackageId : string
+
+# E.g. 'Data.Maybe'
+predicate ModuleName : string
+
+# Uniquely identifies a module and its source
+predicate Module :
+  {
+    packageId : PackageId,
+    moduleName : ModuleName,
+    source : src.File,
+  }
+
+# Uniquely identifies a module and its source. For internal source files,
+# so there is no 'PackageId'
+predicate SourceModule :
+  {
+    moduleName : ModuleName,
+    source : src.File,
+  }
+
+# Unqualified function name
+predicate FunctionName : string
+
+# Code range in which the function body is defined
+predicate FunctionDefinition :
+  {
+    name : FunctionName,
+    source : src.Range,
+  }
+
+# Lists all the module definitions
+predicate ModuleDefinitions :
+  {
+    module : Module,
+    functionDefinitions : [FunctionDefinition],
+  }
+
+# Definition location by identifier string
+predicate DefinitionName : string
+
+predicate Definition :
+  {
+    name : DefinitionName,
+    source : src.Range,
+  }
+
+# Just a string for now; we don't record this info at the moment.
+predicate Type : string
+
+predicate ClassName : string
+
+# We don't record this at the moment, only the instances.
+predicate Class :
+  {
+    name : ClassName,
+    source : src.Range,
+  }
+
+predicate ClassInstance :
+  {
+    typeclass : ClassName,
+    instance : Type,
+    source : src.Range,
+  }
+}
+
+schema hs.2: hs.1 {
+import src.1
+
+predicate Definition :
+  {
+    name : DefinitionName,
+    source : src.FileLocation,
+  }
+
+
+# Type of "entities" that have a definition location
+# to match code.hs.angle:Entity
+type DefinitionEntity =
+  {
+    definition : Definition |
+    function_ : FunctionDefinition |
+    class_ : Class |
+  }
+
+# Index by file.
+predicate FileDefinition:
+  {
+    file : src.File,
+    defn : DefinitionEntity,
+  } stored
+  { File, { definition = Defn } }
+    where
+      Defn = Definition { source = { File, _ } }
+
+# From an entity, find name and location
+predicate DefinitionLocation:
+  {
+    defn: DefinitionEntity,
+    name: string,
+    source: src.FileLocation,
+  }
+  { Entity, Name, { File, Span }}
+    where
+      { definition = { DefinitionName Name, { File, Span }} } = Entity;
+
+
+type XRefTarget =
+  {
+    # type : hs.Type |
+    definition : hs.DefinitionName |
+    typeclass : hs.ClassName |
+    hs_module : hs.ModuleName |
+  }
+
+# Cross references, for code exploration integrations
+# DEPRECATED
+predicate XRef :
+  {
+    loc : src.FileLocation,
+    ref : XRefTarget,
+
+  }
+
+# Cross-references per file, for code exploration integrations
+predicate FileXRefMap :
+  {
+    file : src.File,
+    refs : [XReference],
+  }
+
+# Cross-references in a file, for code exploration integrations
+type XReference =
+  {
+    target : XRefTarget,
+    spans : [src.ByteSpan],
+  }
+
+predicate TargetUses:
+  {
+    target: Definition,
+    file: src.File,
+    uses: [src.ByteSpan]
+  } stored {{name = DefN}, File, Uses} where
+  FileXRefMap {file = File, refs = Refs};
+  {target = {definition = DefN}, spans = Uses} = Refs[..];
+}

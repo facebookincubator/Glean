@@ -1,0 +1,274 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema glean.test.1 {
+import sys.1
+
+# Named enumerated type for testing
+type Enum = enum { red | green | blue }
+
+# Named sum type for testing
+type Sum =
+  {
+    mon : byte |
+    tue : nat |
+    wed : bool |
+  }
+
+# Named record type for testing
+type Rec =
+  {
+    alpha : Enum,
+    beta : Sum,
+  }
+
+type ArrayByte = [byte]
+type ArrayNat = [nat]
+type ArrayBool = [bool]
+type ArrayString = [string]
+
+predicate Predicate : KitchenSink
+
+# Type for testing all the different Glean types
+type KitchenSink =
+  {
+    byt : byte,
+    nat : nat,
+    array_of_byte : [byte],
+    array_of_nat : [nat],
+    record_ : { a : byte, b : nat },
+    sum_ : { c : byte | d : nat },
+    named_record_ : Rec,
+    named_sum_ : Sum,
+    named_enum_ : Enum,
+    pred : sys.Blob,
+    maybe_ : maybe {},
+    bool_ : bool,
+    string_ : string,
+  }
+
+# A pair of strings
+predicate StringPair : { fst : string, snd : string }
+
+# Reverse glean.test.StringPair
+predicate RevStringPair : { fst : string, snd : string }
+  {A,B} where StringPair {B,A}
+
+# Stored version of RevStringPair
+predicate StoredRevStringPair : { fst : string, snd : string }
+  stored {A,B} where StringPair {B,A}
+
+predicate StoredRevStringPairWithA : { fst: string, snd: string }
+  stored {A,B} where A="a"; StoredRevStringPair {B,A}
+
+# stored predicate depending on non-stored one
+predicate StoredRevStringPairWithRev : { fst: string, snd: string }
+  stored {A,B} where RevStringPair {B,A}
+
+# Stored predicate with query statement containing an alternative
+predicate StoredRevStringPairSum : { fst: string, snd: string }
+  stored { A, A } where
+  (StoredRevStringPair{A,_}) | (StoredRevStringPairWithA{A,_})
+
+# Reverse glean.test.StringPair
+predicate RevStringPairRec : { fst : string, snd : string }
+  { fst = A, snd = B } where StringPair { fst = B, snd = A }
+
+# Reverse glean.test.StringPair twice
+predicate RevRevStringPair : { fst : string, snd : string }
+  {A,B} where RevStringPair {B,A}
+
+# find a dual pair of StringPairs
+predicate DualStringPair : { fst : StringPair, snd : StringPair }
+  {P,Q} where
+    P = StringPair {A,B};
+    Q = StringPair {B,A}
+
+# StringPair with identical fields
+predicate ReflStringPair : string
+  A where StringPair {A,A}
+
+# find a sequence of two StringPair edges from A to B via C
+predicate ViaStringPair : { fst : string, snd : string }
+  {A,B} where StringPair {A,C}; StringPair {C,B}
+
+# Nested derived predicate
+predicate RevStringPairs : { x : string, r : RevStringPair }
+  {X,R} where R = RevStringPair {_,X}
+
+# A union of string pairs
+type WrappedStringPair = { wrapped : StringPair }
+
+# First of either side of EitherStringPair
+ predicate StringPairBox :
+   {
+     box: StringPair,
+   }
+   { box=X } where
+     # A statement with multiple unbound variables on both sides
+     [{wrapped = X }:WrappedStringPair, {wrapped = Y }:WrappedStringPair] = [P:WrappedStringPair, Q];
+     X=Y;
+     P=Q
+
+# A stored predicate with no facts
+predicate EmptyStoredStringPair : { fst: string, snd: string }
+  stored
+  {C,D} where
+    A = StringPair {"a",_};
+    B = StringPair {"b",_};
+    A = B;
+    A = StringPair {C,D};
+
+# If Y is bound, then it is matched against "a", but if Y is unbound
+# then it will become bound to "a".
+predicate Unbound : { x : string, y : string }
+  {X,Y} where "a" = Y; RevStringPair {X,Y}
+
+# A query that requires either X or Y to be bound
+predicate Unbound2 : { x : string, y : string }
+  {X,Y} where X = Y; RevStringPair {X,Y}
+
+predicate IsThree : nat
+  3
+
+predicate IsGlean : string
+  "glean"
+
+# sum type in a derived predicate head
+predicate MatchOneAlt : { x : Sum, y : nat }
+  { { tue = N }, N } where N = 3
+
+predicate LeftOr : { x : string, y : nat }
+  { X, Y } where
+  { X, Y } =
+    ( ({ X, (1 where X = "cat")} ) |
+    ({ X, (2 where X = "dog")} )
+    where
+    _ = 3
+    )
+
+predicate LeftOr2 : { x : string, y : nat }
+  ( ({ X, (1 where X = "cat")} ) |
+    ({ X, (2 where X = "dog")} )
+    where
+    _ = 3
+  )
+
+predicate SameString : { x : string, y : string }
+  { X, X } where X = [ "a", "b", "c" ] [..]
+
+# A variable name
+predicate Name : string
+
+predicate Expr :
+  {
+    var_ : Name |
+    lit : nat |
+    prim : Name |
+    ap : { fun : Expr, arg : Expr } |
+    lam : { var_ : Name, body : Expr } |
+  }
+
+# A key-value pair
+predicate KeyValue :
+  { kstring : string, knat : nat }
+  -> { vnat : nat, vstring : string }
+
+# Derived from a key-value predicate
+predicate DerivedKeyValue :
+  { kstring : string, knat : nat, vnat : nat, vstring : string }
+  {KS,KN,VN,VS} where KeyValue {KS,KN} -> {VN,VS}
+
+# And back again
+predicate DerivedKeyValue2 :
+  { kstring : string, knat : nat } -> { vnat : nat, vstring : string }
+  {KS,KN} -> {VN,VS} where DerivedKeyValue {KS,KN,VN,VS}
+
+} # glean.test.1
+
+
+schema glean.test.4 : glean.test.1 {
+import sys.1
+import code.cxx.3   # for Entity
+import pp1.1        # for Entity
+
+# Type for testing all the different Glean types
+type KitchenSink =
+  {
+    byt : byte,
+    nat : nat,
+    bool_ : bool,
+    string_ : string,
+    pred : sys.Blob,
+    maybe_ : maybe {},
+    record_ : { a : byte, b : nat },
+    sum_ : {
+      c : Predicate |  # recursive predicate reference
+      d : sys.Blob
+    },
+    enum_ : enum { e | f | g },
+    named_record_ : Rec,
+    named_sum_ : Sum,
+    named_enum_ : Enum,
+    array_of_byte : [byte],
+    array_of_nat : [nat],
+    array_of_bool : [bool],
+    array_of_string : [string],
+    array_of_pred : [Predicate],
+    array_of_named_record : [Rec],
+    array_of_named_sum : [Sum],
+    array_of_named_enum : [Enum],
+    # FIXME: we currently don't support directly nested arrays (T60313773)
+    array2_of_byte : [ArrayByte],
+    array2_of_nat : [ArrayNat],
+    array2_of_bool : [ArrayBool],
+    array2_of_string : [ArrayString],
+   }
+
+predicate Predicate : KitchenSink
+
+# Test direct ref to another fact
+predicate Ref : Predicate
+predicate RefRef : Ref
+
+# Simple graph types
+predicate Node : { label : string }
+predicate Edge : { parent : Node, child : Node }
+
+# Recursive binary tree (DAG) type
+predicate Tree :
+  {
+    node : string,
+    left : maybe Tree,
+    right : maybe Tree
+  }
+
+# Predicates to test reordering of nested structures
+predicate EdgeWrapper : { edge : Edge }
+
+type EdgeSum = {
+    fst : EdgeWrapper |
+    snd : EdgeWrapper |
+  }
+
+# Make a partial verion of code.Entity to test SymId encode/decode
+type Entity =
+  {
+    cxx : code.cxx.Entity |
+    pp : pp1.Define |
+  }
+
+predicate nothingTest : { a: maybe string, b: nat }
+  { nothing, 3 }
+
+# Predicates to test recursive expansion of nested keys
+predicate TreeToTree : Tree -> Tree
+
+# Predicates to test recursive expansion of nested values
+predicate Foo : string -> Bar
+
+predicate Bar : string -> Qux
+
+predicate Qux : string
+
+predicate FooToFoo : Foo -> Foo
+}

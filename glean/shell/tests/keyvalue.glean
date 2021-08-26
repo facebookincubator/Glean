@@ -1,0 +1,26 @@
+[
+{
+   "predicate": "glean.test.KeyValue",
+   "facts" : [ {
+      "key": {
+          "kstring" : "hello",
+          "knat" : 3
+      },
+      "value": {
+          "vnat" : 4,
+          "vstring": "bye"
+      }
+   },
+   {
+      "key": {
+          "kstring" : "foo",
+          "knat" : 5
+      },
+      "value": {
+          "vnat" : 6,
+          "vstring": "bar"
+      }
+   }
+   ]
+}
+]

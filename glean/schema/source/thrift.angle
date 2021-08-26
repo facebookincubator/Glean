@@ -1,0 +1,72 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+# This is a stub version of the Thrift schema, until we can separate
+# out the internal parts of the current Thrift schema.
+schema thrift.4 {
+import src.1
+
+type Loc =
+  {
+    startLine : nat,
+    startCol : nat,
+    endLine : nat,
+    endCol : nat,
+  }
+
+predicate File : src.File
+
+predicate Identifier : string
+
+predicate QualName : { file : File, name : Identifier }
+
+type NamedKind = enum { typedef_ | enum_ | struct_ | union_ }
+
+type NamedType = { name : QualName, kind : NamedKind }
+
+predicate NamedDecl : { name : NamedType, locName : Loc }
+
+predicate ExceptionName : { name : QualName, locName : Loc }
+
+predicate ServiceName : { name : QualName, locName : Loc }
+
+predicate Constant : { name : QualName, locName : Loc }
+
+predicate EnumValue : { enum_ : NamedType, name : Identifier, locName : Loc }
+
+type Declaration = XRefTarget
+
+type XRefTarget =
+  {
+    include_ : File |
+    named : NamedDecl |
+    exception_ : ExceptionName |
+    service_ : ServiceName |
+    constant : Constant |
+    enumValue : EnumValue |
+  }
+
+predicate FileDeclaration : { file: File, decl: Declaration }
+
+type XRef = { locRef : Loc, target : XRefTarget }
+
+type Target = { locTarget : Loc, target : XRefTarget }
+
+predicate FileXRefs :
+  {
+    file : File,
+    targets : [Target],
+    xrefs : [XRef],
+  }
+
+predicate DeclarationNameSpan :
+  {
+    decl: Declaration,
+    name: Identifier,
+    file: File,
+    span: Loc,
+  }
+
+}
+
+schema thrift.5 : thrift.4 {
+}
