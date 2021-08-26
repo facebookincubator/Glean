@@ -447,3 +447,32 @@ The boolean type `bool` is a special case of an `enum`, defined like this:
 ```lang=angle
 type bool = enum { false | true }
 ```
+
+## Negation
+
+If we want results that do not match a certain criterion, we can use `!` to
+specify a subquery that should fail. A subquery fails if it doesn't return any
+result.
+
+For example, we can find classes that don't have methods
+
+```lang=angle
+facts> C where C = example.Class _; !(example.Has { class_ = C, has = { method = _ } })
+{ "id": 1026, "key": { "name": "Fish", "line": 30 } }
+{ "id": 1027, "key": { "name": "Goldfish", "line": 40 } }
+{ "id": 1025, "key": { "name": "Lizard", "line": 20 } }
+```
+
+Or we could find the maximum element in an array
+
+```lang=angle
+facts> X where Values = [5,1,2,3]; X = Values[..]; !(Y = Values[..]; Y > X);
+{ "id": 1091, "key": 5 }
+```
+
+The query asks for the `X` for which given all values of `Y` *none* is greater
+than it.  If `Y = Values[..]` were outside of the negation, the meaning would
+be give me all `X` for which there is *at least one* `Y` that is not greater
+than it. The answer to that would be all elements.
+
+Note that this is different from the `!` prefix in the shell that recursively expands facts in the results.
