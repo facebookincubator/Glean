@@ -349,16 +349,16 @@ type SomeEntity =
 # If a local declaration is an import, find the corresponding
 # flow.SourceOfExport
 #
-predicate FlowModuleExportLocation :
+predicate FlowExportLocation :
   {
-    local : ModuleExport,
+    module : Module,
+    export_ : Export,
     entity : SomeEntity,
     file : src.File,
     span : src.ByteSpan
   }
-  { ModuleExport, Entity, File, Span }
+  { M, E, Entity, File, Span }
   where
-    { module = M, export_ = E } = ModuleExport;
     Mod = M | (N where FlowSameModule { M, N });
     SourceOfExport {
       moduleExport = { module = Mod, export_ = E },
@@ -391,27 +391,15 @@ predicate FlowTypeExportLocation :
     { loc = Loc } = D;
     { span = Span, module = { file = File } } = Loc;
 
-predicate FlowCompatibleModuleExport :
+predicate FlowCompatibleExport :
   {
-    left : ModuleExport,
-    right : ModuleExport
+    left : Export,
+    right : Export
   }
-  { Left, Right } where
-    Left = { module = M, export_ = E } : ModuleExport;
-    ExportRight = (
-        { commonJS = {} } = E;
-        Export { default_ = {} }
-      ) | (
-        { default_ = {} } = E;
-        Export { commonJS = {} }
-      ) | (
-        { named = Name } = E;
-        Export { commonJSMember = Name }
-      ) | (
-        { commonJSMember = Name } = E;
-        Export { named = Name }
-      );
-    Right = { module = M, export_ = ExportRight } : ModuleExport;
+  { { commonJS = {} }, { default_ = {} } } |
+  { { default_ = {} }, { commonJS = {} } } |
+  { { named = Name }, { commonJSMember = Name } } |
+  { { commonJSMember = Name }, { named = Name } }
 
 #
 # Map an import declaration to the location of its original definition
@@ -428,9 +416,10 @@ predicate FlowImportXRef :
     (
       ImportDeclaration {
         declaration = Local,
-        import_ = { moduleExport = E } };
-      ModuleExport = E | (F where FlowCompatibleModuleExport { E, F });
-      FlowModuleExportLocation { ModuleExport, Entity, TargetFile, TargetSpan };
+        import_ = { moduleExport = ME } };
+      { module = M, export_ = E } = ME;
+      Export = E | (F where FlowCompatibleExport { E, F });
+      FlowExportLocation { M, Export, Entity, TargetFile, TargetSpan };
     ) | (
       FlowModuleNamespaceXRef { Local, Entity, TargetFile };
       TargetSpan = { 0, 0 }
@@ -454,7 +443,8 @@ predicate FlowTypeImportXRef :
       FlowTypeExportLocation { MTE, Entity, TargetFile, TargetSpan };
     ) | (
       { typeof_ = ModuleExport } = Import;
-      FlowModuleExportLocation { ModuleExport, Entity, TargetFile, TargetSpan };
+      { module = M, export_ = E } = ModuleExport;
+      FlowExportLocation { M, E, Entity, TargetFile, TargetSpan };
     )
 
 # Inverse map of definition entities to their import declarations
