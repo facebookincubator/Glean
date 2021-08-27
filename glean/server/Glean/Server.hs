@@ -128,8 +128,19 @@ main =
         when (isNothing l) retry
       setAlive server
 
-  withBackgroundFacebookServiceDeferredAlive
-    (GleanHandler.fb303State state)
-    (GleanHandler.handler state)
-    defaultOptions{ desiredPort = cfgPort cfg }
-    (\server -> waitForAlive server >> waitForTerminateSignals)
+    waitToStart server = waitForAlive server >> waitForTerminateSignals
+    opts = defaultOptions{ desiredPort = cfgPort cfg }
+
+  if cfgEnableIndexing cfg
+    then
+      withBackgroundFacebookServiceDeferredAlive
+        (GleanHandler.fb303State state)
+        (GleanHandler.handlerIndexing state)
+        opts
+        waitToStart
+    else
+      withBackgroundFacebookServiceDeferredAlive
+        (GleanHandler.fb303State state)
+        (GleanHandler.handler state)
+        opts
+        waitToStart

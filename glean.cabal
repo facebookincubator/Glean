@@ -212,6 +212,18 @@ library if-glean-hs
         glean:config,
         glean:if-fb303-hs
 
+library if-index-hs
+    import: fb-haskell, deps
+    visibility: public
+    hs-source-dirs:
+        glean/if/gen-hs2
+    exposed-modules:
+        Index.Types
+        Index.GleanIndexingService.Client
+        Index.GleanIndexingService.Service
+    build-depends:
+        glean:if-glean-hs
+
 library if-internal-hs
     import: fb-haskell, fb-cpp, deps
     visibility: public
@@ -816,12 +828,14 @@ executable glean-server
     default-extensions: CPP
     other-modules:
         Glean.Handler
+        Glean.Index
         Glean.Server.Config
     extra-libraries: stdc++
     build-depends:
         glean:client-hs,
         glean:if-fb303-hs,
         glean:if-glean-hs,
+        glean:if-index-hs,
         glean:stubs,
         glean:config,
         glean:core,
