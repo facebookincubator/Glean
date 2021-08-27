@@ -102,7 +102,7 @@ module.exports = {
       require.resolve('docusaurus-plugin-internaldocs-fb/docusaurus-preset'),
       {
         docs: {
-          path: '../docs',
+          path: './docs',
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl: 'https://www.internalfb.com/intern/diffusion/FBS/browse/master/fbcode/glean/website/'
         },
