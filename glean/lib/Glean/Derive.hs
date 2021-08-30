@@ -31,9 +31,10 @@ derivePredicate backend repo maxBytes maxResults s = loop
     loop = do
       result <- Glean.deriveStored backend (const mempty) repo query
       case result of
-        DerivationStatus_complete{} -> reportComplete
+        DerivationStatus_complete stats ->
+          report "complete" $ derivationComplete_stats stats
         DerivationStatus_ongoing x -> do
-          reportProgress $ derivationOngoing_stats x
+          report "progress" $ derivationOngoing_stats x
           retry loop
 
     query = def
@@ -49,10 +50,7 @@ derivePredicate backend repo maxBytes maxResults s = loop
 
     predicate = unwords [Glean.showRepo repo, Text.unpack $ showSourceRef s]
 
-    reportComplete = vlog 1 $ unwords
-      ["derivation complete:", predicate]
-
-    reportProgress stats = do
+    report status stats = do
       putStrLn $ unwords
         [ Text.unpack $ showSourceRef s
         , ":"
@@ -60,7 +58,12 @@ derivePredicate backend repo maxBytes maxResults s = loop
         , "facts"
         ]
       vlog 1 $ unwords
-        ["derivation progress:", predicate, showUserQueryStats stats]
+        ["derivation"
+        , status
+        , ":"
+        , predicate
+        , showUserQueryStats stats
+        ]
 
     retry :: IO a -> IO a
     retry action = do

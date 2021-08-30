@@ -562,6 +562,7 @@ struct DerivationOngoing {
 }
 
 struct DerivationComplete {
+  1: UserQueryStats stats;
 }
 
 union DerivationStatus {
