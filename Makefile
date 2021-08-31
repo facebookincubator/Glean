@@ -98,6 +98,7 @@ THRIFT_GLEAN= \
 	glean/github/if/fb303.thrift \
 	glean/github/if/fb303_core.thrift \
 	glean/if/glean.thrift \
+	glean/if/index.thrift \
 	glean/config/recipes/recipes.thrift \
 	glean/config/recipes/recipes.thrift \
 	glean/config/server/server_config.thrift \
