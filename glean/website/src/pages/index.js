@@ -51,7 +51,7 @@ function Home() {
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="Security focused static analysis tool for Android and Java applications.">
+      description="System for collecting, deriving and querying facts about source code">
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
         <div className="container">
           <img
