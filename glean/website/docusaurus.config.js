@@ -104,7 +104,11 @@ module.exports = {
         docs: {
           path: './docs',
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://www.internalfb.com/intern/diffusion/FBS/browse/master/fbcode/glean/website/'
+          editUrl: fbContent({
+            internal:
+              'https://www.internalfb.com/intern/diffusion/FBS/browse/master/fbcode/glean/website/',
+            external: 'https://github.com/facebookincubator/Glean/tree/main/glean/website/'
+          }),
         },
         blog: {
           showReadingTime: true,
