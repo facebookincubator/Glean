@@ -169,16 +169,16 @@ class GleanShellQuery(GleanShellTest):
 
         # Match and recursively expand
         output = self.shellCommand(
-            'glean.test.Predicate.4 ! { "pred" : { "key" : "bye" } }'
+            'glean.test.Predicate.4 { "pred" : { "key" : "bye" } }'
         )
         self.assertIn("2 results, 6 facts", output)
 
         # Recursively expand a fact by Id
         self.shellCommand(":limit 1")
-        output = self.shellCommand("cxx1.FunctionName !")
+        output = self.shellCommand("cxx1.FunctionName ")
         fact1 = output[output.find("{ ") : output.rfind("}") + 1]
         j = json.loads(fact1)
-        output = self.shellCommand("!{" + str(j["id"]) + "}")
+        output = self.shellCommand("{" + str(j["id"]) + "}")
         self.assertIn("2 facts", output)
         fact2 = output[output.find("{ ") : output.rfind("}") + 1]
         self.assertEqual(fact1, fact2)
@@ -253,16 +253,16 @@ class GleanShellAngle(GleanShellTest):
 
         # Match and recursively expand
         output = self.shellCommand(
-            '! B = sys.Blob "bye"; glean.test.Predicate.4 { pred = B }'
+            'B = sys.Blob "bye"; glean.test.Predicate.4 { pred = B }'
         )
         self.assertIn("2 results", output)
 
         # Recursively expand a fact by Id
         self.shellCommand(":limit 1")
-        output = self.shellCommand("! cxx1.FunctionName _")
+        output = self.shellCommand("cxx1.FunctionName _")
         fact1 = output[output.find("{ ") : output.rfind("}") + 1]
         j = json.loads(fact1)
-        output = self.shellCommand("!{" + str(j["id"]) + "}")
+        output = self.shellCommand("{" + str(j["id"]) + "}")
         self.assertIn("2 facts", output)
         fact2 = output[output.find("{ ") : output.rfind("}") + 1]
         self.assertEqual(fact1, fact2)

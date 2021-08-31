@@ -392,6 +392,8 @@ helptext mode = vcat
             "Set limit on the number of query results")
       , ("timeout off|<n>",
             "Set the query time budget")
+      , ("expand off|on",
+            "Recursively expand nested facts in the response")
       , ("count <query>",
             "Show only a count of query results, not the results themselves")
       , ("more",
@@ -415,9 +417,6 @@ helpSchema :: Doc ann
 helpSchema = vcat
   [ "Queries (schema mode):"
   , "  {1234}                    Look up a fact by its Id"
-  , "  !{1234}                   Look up a fact and dereference subterms"
-  , "  <predicate> [!] <pat>     Query a predicate for facts matching <pat>"
-  , "                            ('!' means recursively expand nested facts)"
   , ""
   , "Pattern syntax (schema mode):"
   , "  1234                     :: byte or nat"
@@ -432,19 +431,15 @@ helpSchema = vcat
   , ""
   , "Examples:"
   , "  {1234}                                       fetch a fact by its Id"
-  , "  !{1234}                                      fetch a fact and expand"
   , "  pp1.Define                                   all the pp1.Define facts"
   , "  pp1.Define { \"macro\": { \"key\": \"NULL\" } }    every #define of NULL"
-  , "  pp1.Define ! { \"macro\": { \"key\": \"NULL\" } }  with contents expanded"
   ]
 
 helpAngle :: Doc ann
 helpAngle = vcat
   [ "Queries (angle mode):"
   , "  {1234}                    Look up a fact by its Id"
-  , "  !{1234}                   Look up a fact and dereference subterms"
-  , "  [!] <predicate> <pat>     Query a predicate for facts matching <pat>"
-  , "                            ('!' means recursively expand nested facts)"
+  , "  <predicate> <pat>         Query a predicate for facts matching <pat>"
   , ""
   , "Pattern syntax (angle mode):"
   , "  1234                     :: byte or nat"
@@ -459,10 +454,8 @@ helpAngle = vcat
   , ""
   , "Examples:"
   , "  {1234}                                   fetch a fact by its Id"
-  , "  !{1234}                                  fetch a fact and expand"
   , "  pp1.Define _                             all the pp1.Define facts"
   , "  pp1.Define { macro = \"NULL\" }            every #define of NULL"
-  , "  !pp1.Define { macro = \"NULL\" }           with contents expanded"
   ]
 
 withTTY :: Eval a -> Eval (Maybe a)
@@ -506,11 +499,17 @@ evaluate s = do
 
 doJSONStmt :: Statement JSONQuery -> Eval Bool
 doJSONStmt (Command name arg) = doCmd name arg
-doJSONStmt (FactRef bang fid) = userFact bang fid >> return False
-doJSONStmt (Pattern query) = runUserQuery (fromJSONQuery query) >> return False
+doJSONStmt (FactRef fid) = userFact fid >> return False
+doJSONStmt (Pattern query) = do
+  q <- fromJSONQuery query
+  runUserQuery q
+  return False
 
-fromJSONQuery :: JSONQuery -> SchemaQuery
-fromJSONQuery (JSONQuery ide rec stored pat) = SchemaQuery
+fromJSONQuery :: JSONQuery -> Eval SchemaQuery
+fromJSONQuery (JSONQuery ide deprecatedRec stored pat) = do
+  ExpandResults rec <- expandResults <$> getState
+  when deprecatedRec deprecatedExpansionWarning
+  return SchemaQuery
     { sqPredicate = pred
     , sqRecursive = rec
     , sqStored = stored
@@ -531,20 +530,33 @@ fromJSONQuery (JSONQuery ide rec stored pat) = SchemaQuery
 
 doAngleStmt :: Statement AngleQuery -> Eval Bool
 doAngleStmt (Command name arg) = doCmd name arg
-doAngleStmt (FactRef bang fid) = userFact bang fid >> return False
-doAngleStmt (Pattern query)
-  = runUserQuery (fromAngleQuery query) >> return False
+doAngleStmt (FactRef fid) = userFact fid >> return False
+doAngleStmt (Pattern query) = do
+  q <- fromAngleQuery query
+  runUserQuery q
+  return False
 
-fromAngleQuery :: AngleQuery -> SchemaQuery
-fromAngleQuery (AngleQuery rec stored pat) = SchemaQuery
-  { sqPredicate = ""
-  , sqRecursive = rec
-  , sqStored = stored
-  , sqQuery = pat
-  , sqCont = Nothing
-  , sqTransform = Nothing
-  , sqSyntax = Thrift.QuerySyntax_ANGLE
-  , sqOmitResults = False }
+fromAngleQuery :: AngleQuery -> Eval SchemaQuery
+fromAngleQuery (AngleQuery deprecatedRec stored pat) = do
+  ExpandResults rec <- expandResults <$> getState
+  when deprecatedRec deprecatedExpansionWarning
+  return SchemaQuery
+    { sqPredicate = ""
+    , sqRecursive = rec
+    , sqStored = stored
+    , sqQuery = pat
+    , sqCont = Nothing
+    , sqTransform = Nothing
+    , sqSyntax = Thrift.QuerySyntax_ANGLE
+    , sqOmitResults = False }
+
+deprecatedExpansionWarning :: Eval ()
+deprecatedExpansionWarning = output $ vcat
+  [ "WARNING: Deprecated syntax. '!' at the start of a line to "
+    <> "recursively expand facts is deprecated."
+  , "Fact expansion is now enabled by default."
+  , "Use ':expand off' to disable it."
+  ]
 
 data Cmd = Cmd
   { cmdName :: String
@@ -581,6 +593,7 @@ commands =
   , Cmd "profile" (completeWords (pure ["off","summary","full"])) $
       \str _ -> statsCmd str
   , Cmd "timeout" Haskeline.noCompletion $ \str _ -> timeoutCmd str
+  , Cmd "expand" (completeWords (pure ["on", "off"])) $ \str _ -> expandCmd str
   , Cmd "count" Haskeline.noCompletion $ \str _ -> countCmd str
   , Cmd "!restore" Haskeline.noCompletion $ const . restoreDatabase
   , Cmd "!kickoff" Haskeline.noCompletion $ const . kickOff
@@ -708,13 +721,15 @@ countCmd str = do
     ShellJSON -> run fromJSONQuery
     ShellAngle -> run fromAngleQuery
   where
-    run :: Parse query => (query -> SchemaQuery) -> Eval ()
-    run from =
+    run :: Parse query => (query -> Eval SchemaQuery) -> Eval ()
+    run from = do
       case runParser parse () "<input>" str of
         Left err -> do
           output $ "*** Syntax error:" <+> pretty (show err)
           return ()
-        Right query -> runUserQuery (from query) { sqOmitResults = True }
+        Right query -> do
+          q <- from query
+          runUserQuery q { sqOmitResults = True }
 
 statsCmd :: String -> Eval ()
 statsCmd "" = do
@@ -765,8 +780,19 @@ debugCmd str = case words (strip str) of
   bytecodeFlag "-bytecode" = Just False
   bytecodeFlag _ = Nothing
 
-userFact :: Bool -> Glean.Fid -> Eval ()
-userFact bang fid = do
+
+expandCmd :: String -> Eval ()
+expandCmd str = case str of
+  "" -> do
+    ExpandResults expand <- expandResults <$> getState
+    output $ "result expansion is " <> if expand then "on" else "off"
+  "off" -> Eval $ State.modify $ \s -> s { expandResults = ExpandResults False }
+  "on" -> Eval $ State.modify $ \s -> s { expandResults = ExpandResults True }
+  _ -> liftIO $ throwIO $ ErrorCall "syntax: :expand [off|on]"
+
+userFact :: Glean.Fid -> Eval ()
+userFact fid = do
+  ExpandResults rec <- expandResults <$> getState
   Thrift.UserQueryResults{..} <- withRepo $ \repo -> withBackend $ \be ->
     liftIO $ Glean.userQueryFacts be repo $
       def { Thrift.userQueryFacts_facts =
@@ -774,7 +800,7 @@ userFact bang fid = do
           , Thrift.userQueryFacts_options = Just def
             { Thrift.userQueryOptions_no_base64_binary = True
             , Thrift.userQueryOptions_expand_results = True
-            , Thrift.userQueryOptions_recursive = bang }
+            , Thrift.userQueryOptions_recursive = rec }
           }
   Thrift.Fact{..} <- withRepo $ \repo -> withBackend $ \be -> do
     r <- liftIO $ Glean.queryFact be repo (fromFid fid)
@@ -1234,6 +1260,7 @@ instance Plugin ShellCommand where
         , pageWidth =
             (\n -> if n == 0 then Unbounded else AvailablePerLine n 1)
             <$> cfgWidth cfg
+        , expandResults = ExpandResults True
         , outputHandle = outh
         , pager = cfgPager cfg
         , debug = def

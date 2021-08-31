@@ -8,6 +8,7 @@ module Glean.Shell.Types (
   Stats(..),
   ShellState(..),
   Eval(..),
+  ExpandResults(..),
   withBackend,
   getState,
   getRepo,
@@ -39,7 +40,9 @@ import Glean.Util.Some
 data Statement pat
   = Command String String
   | Pattern pat
-  | FactRef Bool Fid
+  | FactRef Fid
+
+newtype ExpandResults = ExpandResults Bool
 
 type Parser = P.Parsec String ()
 
@@ -53,16 +56,14 @@ instance Parse pat => Parse (Statement pat) where
   parse = P.choice [command, P.try factref, ptrn]
     where
       command = split <$> (P.char ':' *> P.getInput <* P.setInput "")
-      ptrn = Pattern <$> parse
-      factref = FactRef
-        <$> P.option False (P.char '!' *> pure True)
-        <*> parse
+      ptrn = Pattern <$>  parse
+      factref = FactRef <$> parse
       split s
         | (cmd,' ':arg) <- break (==' ') s = Command cmd arg
         | otherwise = Command s ""
 
 data AngleQuery = AngleQuery
-  { angleQueryRec :: Bool
+  { angleQueryDeprecatedRec :: Bool
   , angleQueryStored :: Bool
   , angleQuery :: String
   }
@@ -75,7 +76,7 @@ instance Parse AngleQuery where
 
 data JSONQuery = JSONQuery
   { jsonQueryPred :: String
-  , jsonQueryRec :: Bool
+  , jsonQueryDeprecatedRec :: Bool
   , jsonQueryStored :: Bool
   , jsonQuery :: String
   }
@@ -122,6 +123,7 @@ data ShellState = ShellState
   , updateSchema :: Maybe (Eval ())
   , isTTY :: Bool
   , pageWidth :: Maybe PageWidth
+  , expandResults :: ExpandResults
   , pager :: Bool
   , outputHandle :: MVar System.IO.Handle
   , debug :: Thrift.QueryDebugOptions
