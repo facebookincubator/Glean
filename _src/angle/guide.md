@@ -120,7 +120,10 @@ Let’s find what `Fish` inherits from:
 
 ```lang=angle
 facts> example.Parent { child = { name = "Fish" }}
-{ "id": 1029, "key": { "child": { "id": 1026 }, "parent": { "id": 1024 } } }
+{
+  "id": 1029,
+  "key": { "child": { "id": 1026, "key": { "name": "Fish", "line": 30 } }, "parent": { "id": 1024, "key": { "name": "Pet", "line": 10 } } }
+}
 ```
 
 Let’s break this down.
@@ -128,24 +131,17 @@ Let’s break this down.
 * `{ child = { name = "Fish" }}` is a pattern that matches the key type of `Parent`
 * So, looking at the schema, `{ name = "Fish" }` is a pattern that should match the `Class` in the field `child`.
 
-By default Angle queries are “shallow”, meaning they return just the facts that match and not the nested facts. We can see in the above result that the `child` and `parent` fields in the result just contain fact references like `{ "id" : 1026 }`. If we want to see the content of those references, we can ask Glean to recursively expand facts in the results. In the shell this is done by prefixing the query with `!`:
-
-
+By default Angle queries recursively expand facts in the results.  We can see in the above result that the `child` and `parent` fields contain the full facts they point to.  If we want the result to be “shallow”, meaning it contains just the facts that match and not the nested facts, we can ask Glean to not expand the content of those references. In the shell this is done by running the command `:expand off`:
 ```lang=angle
-facts> ! example.Parent { child = { name = "Fish" }}
-{
-  "id": 1029,
-  "key": {
-    "child": { "id": 1026, "key": { "name": "Fish", "line": 30 } },
-    "parent": { "id": 1024, "key": { "name": "Pet", "line": 10 } }
-  }
-}
+facts> :expand off
+facts> example.Parent { child = { name = "Fish" }}
+{ "id": 1029, "key": { "child": { "id": 1026 }, "parent": { "id": 1024 } } }
 ```
 
 We can of course go the other way and find all the children of a class:
 
 ```lang=angle
-facts> !example.Parent { parent = { name = "Pet" }}
+facts> example.Parent { parent = { name = "Pet" }}
 {
   "id": 1028,
   "key": {
@@ -195,7 +191,7 @@ The schema uses `class_` rather than `class` as a field name, because `class` is
 Let’s find classes that have a variable called `fins`:
 
 ```lang=angle
-facts> !example.Has { has = { variable = { name = "fins" }}}
+facts> example.Has { has = { variable = { name = "fins" }}}
 {
   "id": 1036,
   "key": {
@@ -289,7 +285,7 @@ Note that variables must *always* begin with an upper-case letter, while schema 
 The semicolon separates multiple *statements* in a query. When there are multiple statements the results of the query are the facts that match the last statement, in this case the `example.Parent`.  Let’s try it:
 
 ```lang=angle
-facts> ! example.Has { class_ = C, has = { variable = { name = "fins" }}}; example.Parent { child = C }
+facts> example.Has { class_ = C, has = { variable = { name = "fins" }}}; example.Parent { child = C }
 {
   "id": 1029,
   "key": {
@@ -314,7 +310,7 @@ P where
 The general form of the query is *`expression`* `where` *`statements`*, where *`expression`* is an arbitrary expression and each statement is a pattern that matches some facts. The results of the query are the distinct values of *`expression`* for which all the statements match facts in the database.
 
 ```lang=angle
-facts> ! P where example.Has { class_ = C, has = { variable = { name = "fins" }}}; example.Parent { child = C, parent = P }
+facts> P where example.Has { class_ = C, has = { variable = { name = "fins" }}}; example.Parent { child = C, parent = P }
 { "id": 1024, "key": { "name": "Pet", "line": 10 } }
 ```
 
@@ -474,5 +470,3 @@ The query asks for the `X` for which given all values of `Y` *none* is greater
 than it.  If `Y = Values[..]` were outside of the negation, the meaning would
 be give me all `X` for which there is *at least one* `Y` that is not greater
 than it. The answer to that would be all elements.
-
-Note that this is different from the `!` prefix in the shell that recursively expands facts in the results.
