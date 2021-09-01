@@ -5,14 +5,11 @@ module Glean.Handler
   ( Write(..)
   , State(..)
   , handler
-  , handlerIndexing
   ) where
 
-import Glean.Index.GleanIndexingService.Service
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Map as Map
 import Data.Maybe
-import qualified Glean.Index as Index
 
 import Facebook.Fb303
 
@@ -26,11 +23,6 @@ data State = State
   { fb303State :: Fb303State
   , stEnv :: Env
   }
-
-handlerIndexing :: State -> GleanIndexingServiceCommand a -> IO a
-handlerIndexing state req = case req of
-  Index req -> Index.index (stEnv state) req
-  SuperGleanService r -> handler state r
 
 handler :: State -> GleanServiceCommand a -> IO a
 handler State{..} req =
