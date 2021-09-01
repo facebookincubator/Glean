@@ -915,7 +915,7 @@ runUserQuery SchemaQuery
     ++
     if isJust userQueryResults_continuation
       then
-        if length userQueryResults_facts < fromIntegral limit
+        if length userQueryResults_facts < fromIntegral limit && not omitResults
           then
             [ case timeout of
                 Nothing -> "timeout (server-side time limit)"
