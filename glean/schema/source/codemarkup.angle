@@ -736,6 +736,7 @@ predicate CxxFileEntityTraceVariableXRefLocations:
 # Bulk fetch any declaration locations associated with the xref targets
 # Rather than O(n) calls to map over the external target xrefs,
 # we can bulk-fetch all locations in one go, saving a lot of calls
+# (deprecated)
 predicate CxxFileEntityTraceVariableXRefDeclLocations:
   {
     trace: cxx1.FileXRefMap,
@@ -749,7 +750,24 @@ predicate CxxFileEntityTraceVariableXRefDeclLocations:
     { file = TargetFile } = Range;
     { Name, TargetFile, { range = Range } } = Location;
 
+# Bulk fetch any declaration locations associated with the xref targets
+# Rather than O(n) calls to map over the external target xrefs,
+# we can bulk-fetch all locations in one go, saving a lot of calls
+predicate CxxFileEntityXMapVariableXRefDeclLocations:
+  {
+    trace: cxx1.FileXRefs,
+    source: cxx1.Declaration, # used to identify the source
+    location: Location,
+  }
+  { Trace, Decl, Location } where
+    cxx1.FileXRefs { externals = Targets } = Trace;
+    { declaration = Decl } = Targets[..];
+    cxx1.DeclarationLocation { Decl, Range, cxx1.Name Name };
+    { file = TargetFile } = Range;
+    { Name, TargetFile, { range = Range } } = Location;
+
 # Bulk fetch any definitions associated with the external decls in the trace
+# (deprecated)
 predicate CxxFileEntityTraceVariableXRefDeclToDefs:
   {
     trace: cxx1.FileXRefMap,
@@ -759,6 +777,21 @@ predicate CxxFileEntityTraceVariableXRefDeclToDefs:
   }
   { Trace, Decl, Entity, Location } where
     cxx1.FileXRefs { Trace, Targets };
+    # decls
+    # todo:  more cases: recursion: indirect xrefs could be decls too
+    { declaration = Decl } = Targets[..];
+    CxxDeclToDefXRefTargetLocation { Decl, Entity, Location };
+
+# Bulk fetch any definitions associated with the external decls in the filexrefs
+predicate CxxFileEntityXMapVariableXRefDeclToDefs:
+  {
+    trace: cxx1.FileXRefs,
+    source: cxx1.Declaration, # used to identify the source
+    entity: code.Entity, # enough stuff to build a xreflocation
+    location: Location,
+  }
+  { Trace, Decl, Entity, Location } where
+    cxx1.FileXRefs { externals = Targets } = Trace;
     # decls
     # todo:  more cases: recursion: indirect xrefs could be decls too
     { declaration = Decl } = Targets[..];
