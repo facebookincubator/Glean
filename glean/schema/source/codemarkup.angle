@@ -600,6 +600,7 @@ predicate CxxFileEntityFixedXRefLocations:
     CxxFileEntityTraceFixedXRefLocations { File, _, XRef, Entity }
 
 # Fixed C++ xrefs only, for a specific trace (FileXRefMap)
+# (deprecated)
 predicate CxxFileEntityTraceFixedXRefLocations:
   {
     file: src.File,
@@ -610,6 +611,22 @@ predicate CxxFileEntityTraceFixedXRefLocations:
   { File, Trace, XRef, Entity } where
     cxx1.FileXRefMap { file = File, fixed = Fixeds } = Trace;
     cxx1.FileXRefs { Trace, _ };
+    cxx1.FixedXRef { XRefTarget, Uses } = Fixeds[..];
+    CxxXRefTargetLocation { XRefTarget, Entity, Location };
+    Spans = prim.relToAbsByteSpans Uses;
+    Span = Spans[..];
+    { Location, { span = Span }} = XRef;
+
+# Fixed C++ xrefs, keyed by a specific cxx1.FileXRefs fact
+# We will expand any targets as best we can
+predicate CxxFileEntityXMapFixedXRefLocations:
+  {
+    trace: cxx1.FileXRefs,
+    xref: XRefLocation,
+    entity: code.Entity,
+  }
+  { Trace, XRef, Entity } where
+    cxx1.FileXRefs { xmap = { fixed = Fixeds } } = Trace;
     cxx1.FixedXRef { XRefTarget, Uses } = Fixeds[..];
     CxxXRefTargetLocation { XRefTarget, Entity, Location };
     Spans = prim.relToAbsByteSpans Uses;
