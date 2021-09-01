@@ -41,7 +41,7 @@ union FileChange {
 struct IndexRequest {
   1: glean.Repo repo;
   2: Revision base;
-  3: map<FilePath,FileChange> changes;
+  3: map<FilePath, FileChange> changes;
 }
 
 struct IndexResponse {
