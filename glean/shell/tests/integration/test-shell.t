@@ -7,7 +7,7 @@
 
   $ query ":help"
   [>] :help (re)
-  Glean Shell (dev build)
+  Glean Shell.+ (re)
   
   Commands:
     :database [<name>]                Use database <name>
