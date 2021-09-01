@@ -7,7 +7,7 @@ sidebar_label: Hack
 import {OssOnly, FbInternalOnly} from 'internaldocs-fb-helpers';
 import {SrcFile,SrcFileLink} from '@site/utils';
 
-The [Hack](https://hacklang.org/) (PHP) indexer is built into the [Hack
+The [Hack](https://hacklang.org/) indexer is built into the [Hack
 typechecker](https://github.com/facebook/hhvm/tree/master/hphp/hack).
 
 ## Run the indexer
