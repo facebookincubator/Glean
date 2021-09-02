@@ -17,15 +17,12 @@
 
 :root {
   --ifm-color-primary: #2F2E66;
-  --ifm-color-primary-dark: #b86b1f;
-  --ifm-color-primary-darker: #ad651d;
-  --ifm-color-primary-darkest: #8f5318;
-  --ifm-color-primary-light: #dc832a;
-  --ifm-color-primary-lighter: #dd8934;
-  --ifm-color-primary-lightest: #e29b53;
-  --ifm-code-font-size: 95%;
+  --ifm-code-font-size: 90%;
 }
 
+html[data-theme='dark'] {
+  --ifm-color-primary: #aFaEe6;
+}
 
 .docusaurus-highlight-code-line {
   background-color: rgb(72, 77, 91);
