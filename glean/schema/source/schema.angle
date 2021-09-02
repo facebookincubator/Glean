@@ -2,7 +2,7 @@
 
 schema all.3 :
   builtin.1,
-  code.14,
+  code.15,
   code.cxx.3,
   code.flow.2,
   code.hack.3,
@@ -10,7 +10,7 @@ schema all.3 :
   code.java.3,
   code.python.1,
   code.thrift.1,
-  codemarkup.15,
+  codemarkup.16,
   cxx1.4,
   docmarkup.4,
   dyn.1,
