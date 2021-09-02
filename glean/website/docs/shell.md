@@ -104,6 +104,8 @@ results.
 * `:timeout off|MILLISECONDS`<br />
 Set the query time budget. If the time limit expires, the results so
 far are returned, and you can type `:more` to see more results.
+* `:expand off|on`<br />
+Recursively expand nested facts in the response. `on` by default.
 * `:count QUERY`<br />
 Show only a count of query results, not the results themselves
 * `:more`<br />
