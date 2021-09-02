@@ -98,7 +98,6 @@ THRIFT_GLEAN= \
 	glean/github/if/fb303.thrift \
 	glean/github/if/fb303_core.thrift \
 	glean/if/glean.thrift \
-	glean/if/index.thrift \
 	glean/config/recipes/recipes.thrift \
 	glean/config/recipes/recipes.thrift \
 	glean/config/server/server_config.thrift \
@@ -113,6 +112,9 @@ thrift-glean-hs:
 	# internal goes in a subdir, so do it separately
 	$(THRIFT_COMPILE) --hs glean/if/internal.thrift \
 		-o glean/if/internal
+	# index goes in a subdir, so do it separately
+	$(THRIFT_COMPILE) --hs glean/if/index.thrift \
+		-o glean/if/index
 
 .PHONY: thrift-schema-hs
 thrift-schema-hs:

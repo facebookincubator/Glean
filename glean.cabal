@@ -216,7 +216,7 @@ library if-index-hs
     import: fb-haskell, deps
     visibility: public
     hs-source-dirs:
-        glean/if/gen-hs2
+        glean/if/index/gen-hs2
     exposed-modules:
         Glean.Index.Types
         Glean.Index.GleanIndexingService.Client
