@@ -23,6 +23,7 @@
     :limit <n>                        Set limit on the number of query results
     :timeout off|<n>                  Set the query time budget
     :expand off|on                    Recursively expand nested facts in the response
+    :pager off|on                     Enable/disable result paging
     :count <query>                    Show only a count of query results, not the results themselves
     :more                             Fetch more results from the previous query
     :profile [off|summary|full]       Show query profiling information

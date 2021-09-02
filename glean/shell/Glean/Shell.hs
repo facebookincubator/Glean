@@ -394,6 +394,8 @@ helptext mode = vcat
             "Set the query time budget")
       , ("expand off|on",
             "Recursively expand nested facts in the response")
+      , ("pager off|on",
+            "Enable/disable result paging")
       , ("count <query>",
             "Show only a count of query results, not the results themselves")
       , ("more",
@@ -594,6 +596,7 @@ commands =
       \str _ -> statsCmd str
   , Cmd "timeout" Haskeline.noCompletion $ \str _ -> timeoutCmd str
   , Cmd "expand" (completeWords (pure ["on", "off"])) $ \str _ -> expandCmd str
+  , Cmd "pager" (completeWords (pure ["on", "off"])) $ \str _ -> pagerCmd str
   , Cmd "count" Haskeline.noCompletion $ \str _ -> countCmd str
   , Cmd "!restore" Haskeline.noCompletion $ const . restoreDatabase
   , Cmd "!kickoff" Haskeline.noCompletion $ const . kickOff
@@ -789,6 +792,15 @@ expandCmd str = case str of
   "off" -> Eval $ State.modify $ \s -> s { expandResults = ExpandResults False }
   "on" -> Eval $ State.modify $ \s -> s { expandResults = ExpandResults True }
   _ -> liftIO $ throwIO $ ErrorCall "syntax: :expand [off|on]"
+
+pagerCmd :: String -> Eval ()
+pagerCmd str = case str of
+  "" -> do
+    pagerOn <- pager <$> getState
+    output $ "result paging is " <> if pagerOn then "on" else "off"
+  "off" -> Eval $ State.modify $ \s -> s { pager = False }
+  "on" -> Eval $ State.modify $ \s -> s { pager = True }
+  _ -> liftIO $ throwIO $ ErrorCall "syntax: :pager [off|on]"
 
 userFact :: Glean.Fid -> Eval ()
 userFact fid = do
