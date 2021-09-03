@@ -36,6 +36,7 @@ module Glean.Query.Angle
   , factId
   , factIds
   , elementsOf
+  , unit
   , true
   , false
   , just
@@ -70,7 +71,7 @@ import Glean.Angle.Types (SourcePat', SourceType,
 import Glean.Query.Types hiding (Field, SourceStatement)
 import qualified Glean.Query.Types as Angle
 import Glean.Query.Thrift.Internal as Thrift hiding (query)
-import Glean.Schema.Util
+import Glean.Schema.Util hiding (unit)
 import Glean.Typed hiding (end)
 import Glean.Types (Nat, Byte)
 
@@ -349,6 +350,9 @@ elementsOf :: Angle [x] -> Angle x
 elementsOf listOfX = Angle $ do
   xs <- gen listOfX
   return (ElementsOfArray DSL xs)
+
+unit :: Angle ()
+unit = Angle $ pure (Variable DSL "{}")
 
 true :: Angle Bool
 true = Angle $ pure (Variable DSL "true")
