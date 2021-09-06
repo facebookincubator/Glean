@@ -12,7 +12,31 @@ designed for collecting and storing detailed information about code
 structure, and providing access to the data to power tools and
 experiences from online IDE features to offline code analysis.
 
-Glean consists of the following components:
+For example, Glean could answer all the questions you'd expect your
+IDE to answer, accurately and efficiently on a large-scale
+codebase. Things like:
+
+* *Where is the definition of this method?*
+* *Where are all the callers of this function?*
+* *Who inherits from this class?*
+* *What are all the declarations in this file?*
+
+But Glean isn't limited to storing particular kinds of data, or
+answering particular queries. Glean comes with indexers and schemas
+for some languages which support queries like the examples above, but
+you can also define your own schemas and store whatever data you like,
+perhaps augmenting the data that existing indexers collect.  So, for
+example, you could store test coverage data or profiling data.
+
+Glean's powerful query language means that you can build tools around
+complex queries of the underlying data. For example, you could search
+for dead code, write code linters, API migration tools or refactoring
+tools, all by using Glean queries instead of a compiler API to inspect
+the code structure.
+
+## Components
+
+Glean consists of the following:
 
 * An **efficient storage backend** built on
   [RocksDB](https://rocksdb.org/), for storing facts. Facts are
