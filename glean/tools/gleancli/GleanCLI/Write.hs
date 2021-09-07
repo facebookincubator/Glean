@@ -6,7 +6,6 @@ module GleanCLI.Write (WriteCommand, FinishCommand) where
 import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
-import Control.Monad.Extra
 import Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
 import qualified Data.ByteString as B
@@ -14,6 +13,7 @@ import qualified Data.ByteString.Char8 as B8
 import Data.Default
 import Data.Proxy
 import qualified Data.HashMap.Strict as HashMap
+import Data.Maybe
 import Data.List.Split (splitOn)
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -30,7 +30,6 @@ import Util.OptParse
 import Glean hiding (options)
 import Glean.Database.Schema
 import Glean.Datasource.Scribe.Write
-import qualified Glean.LocalOrRemote as Glean
 import Glean.Types as Thrift
 import Glean.Write
 import Glean.Write.JSON ( buildJsonBatch )
@@ -44,6 +43,15 @@ data ScribeOptions = ScribeOptions
   , scribeCompress :: Bool
   }
 
+data FileFormat
+  = JsonFormat
+  | BinaryFormat
+
+parseFileFormat :: String -> Either String FileFormat
+parseFileFormat "json" = Right JsonFormat
+parseFileFormat "binary" = Right BinaryFormat
+parseFileFormat s = Left $ "unknown format: " <> s
+
 data WriteCommand
   = Write
       { writeRepo :: Repo
@@ -56,7 +64,7 @@ data WriteCommand
       , properties :: [(Text,Text)]
       , writeMaxConcurrency :: Int
       , useLocalCache :: Maybe Glean.SendAndRebaseQueueSettings
-      , writeInventory :: Maybe FilePath
+      , writeFileFormat :: FileFormat
       }
 
 instance Plugin WriteCommand where
@@ -77,7 +85,11 @@ instance Plugin WriteCommand where
         writeHandle <- handleOpt
         writeMaxConcurrency <- maxConcurrencyOpt
         useLocalCache <- useLocalCacheOptions
-        return Write{create=True, writeInventory=Nothing, ..}
+        return Write
+          { create=True
+          , writeFileFormat=JsonFormat
+          , ..
+          }
 
     readProperty :: ReadM (Text,Text)
     readProperty = eitherReader $ \str ->
@@ -101,12 +113,23 @@ instance Plugin WriteCommand where
         writeHandle <- handleOpt
         writeMaxConcurrency <- maxConcurrencyOpt
         useLocalCache <- useLocalCacheOptions
-        writeInventory <- optional $ strOption
+        writeInventory :: Maybe String <- optional $ strOption
           (  long "inventory"
           <> metavar "PATH"
-          <> help "Write binary files using this schema inventory"
+          <> help "Deprecated - use file-format instead"
           )
-        return Write{create=False, properties=[], dependencies=Nothing, ..}
+        writeFileFormat <-
+              optional $ option (eitherReader parseFileFormat)
+                ( long "file-format"
+                <> metavar "(json|binary)"
+                <> help "Format of the input files"
+                )
+        return Write{create=False, properties=[], dependencies=Nothing
+          , writeFileFormat =  fromMaybe
+            (if isJust writeInventory then BinaryFormat else JsonFormat)
+            writeFileFormat
+          , ..
+          }
 
     finishOpt = switch
       (  long "finish"
@@ -209,28 +232,23 @@ instance Plugin WriteCommand where
             writeMaxConcurrency
             scribe
             useLocalCache
-            writeInventory)
+            writeFileFormat)
     where
-    write repo files max Nothing (Just useLocalCache) maybeUserInventory = do
+    write repo files max Nothing (Just useLocalCache) fileFormat = do
       schemaInfo <- Glean.getSchemaInfo backend repo
       dbSchema <- fromSchemaInfo schemaInfo readWriteContent
       logMessages <- newTQueueIO
       let inventory = schemaInventory dbSchema
-      whenJust maybeUserInventory $ \ userInventoryFilePath -> do
-        userInventory <- B.readFile userInventoryFilePath
-        actualInventory <- Glean.serializeInventory backend repo
-        when (userInventory /= actualInventory) $
-          die 3 "Schema inventory did not match"
       Glean.withSendAndRebaseQueue backend repo inventory useLocalCache $
         \queue ->
           streamWithThrow max (forM_ files) $ \file -> do
-            batch <- case maybeUserInventory of
-              Just _ -> do -- write from binary
+            batch <- case fileFormat of
+              BinaryFormat -> do
                 r <- B.readFile file
                 case deserializeGen (Proxy :: Proxy Compact) r of
                   Left parseError -> die 3 $ "Parse error: " <> parseError
                   Right result -> return result
-              Nothing -> do -- write from json
+              JsonFormat -> do
                 r <- Foreign.CPP.Dynamic.parseJSON =<< B.readFile file
                 val <- either (throwIO  . ErrorCall . ((file ++ ": ") ++) .
                   Text.unpack) return r
@@ -244,7 +262,7 @@ instance Plugin WriteCommand where
             return ()
       atomically (flushTQueue logMessages) >>= mapM_ putStrLn
 
-    write repo files max scribe Nothing Nothing = do
+    write repo files max scribe Nothing JsonFormat = do
       streamWithThrow max (forM_ files) $
         \file -> do
           r <- Foreign.CPP.Dynamic.parseJSON =<< B.readFile file
@@ -267,7 +285,7 @@ instance Plugin WriteCommand where
 
     write _repo _files _max (Just _scribe) (Just _useLocalCache) _  =
       die 3 "Cannot use a local cache with scribe"
-    write _repo _files _max _ Nothing (Just _inventory) =
+    write _repo _files _max _ Nothing BinaryFormat =
       die 3 "Cannot write binary without using a local cache"
 
     resultToFailure Right{} = Nothing
