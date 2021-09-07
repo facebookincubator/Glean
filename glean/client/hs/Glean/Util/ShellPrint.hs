@@ -174,6 +174,14 @@ instance ShellFormat o String where
   shellFormatText _ctx _ s = pretty s
   shellFormatJson _ctx _ s = J.toJSON s
 
+instance ShellFormat o Thrift.DatabaseProperties where
+  shellFormatText _ctx _ props = vsep
+    [ pretty name <> ":" <+> pretty value
+    | (name,value) <- sortOn fst $
+        HashMap.toList props
+    ]
+  shellFormatJson _ctx _ props = J.toJSON props
+
 instance ShellFormat o Thrift.DatabaseStatus where
   shellFormatText _ctx _ status =
     case status of
@@ -255,10 +263,11 @@ instance (ShellFormat DbVerbosity v)
       | verbosity == DbDescribe
       ]
       ++
-      [ nest 2 $ pretty name <> ":" <+> pretty value
+      [ nest 2 $ vsep
+        [ "Properties:"
+        , shellFormatText ctx () (Thrift.database_properties db)
+        ]
       | verbosity == DbDescribe
-      , (name,value) <- sortOn fst $
-          HashMap.toList (Thrift.database_properties db)
       ]
       where
         showWhen (Thrift.PosixEpochTime t) =

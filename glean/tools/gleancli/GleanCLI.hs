@@ -79,6 +79,7 @@ plugins =
   , plugin @ValidateCommand
   , plugin @ValidateSchemaCommand
   , plugin @StatsCommand
+  , plugin @PropertiesCommand
   , plugin @OwnershipCommand
   , plugin @SetPropertyCommand
   , plugin @WriteSerializedInventoryCommand
@@ -222,6 +223,27 @@ instance Plugin StatusCommand where
       Thrift.DatabaseStatus_Restorable -> ExitFailure 104
       Thrift.DatabaseStatus_Finalizing -> ExitFailure 105
       Thrift.DatabaseStatus_Missing -> ExitFailure 106
+
+data PropertiesCommand
+  = Properties
+      { propertiesRepo :: Repo
+      , propertiesFormat :: Maybe ShellPrintFormat
+      }
+
+instance Plugin PropertiesCommand where
+  parseCommand =
+    commandParser "properties"
+      (progDesc "Get the properties of a db")
+      $ do
+      propertiesRepo <- repoOpts
+      propertiesFormat <- shellFormatOpt
+      return Properties{..}
+
+  runCommand _ _ backend Properties{..} = do
+    db <-
+      Thrift.getDatabaseResult_database <$>
+        Glean.getDatabase backend propertiesRepo
+    putShellPrintLn propertiesFormat $ Thrift.database_properties db
 
 data DumpCommand
   = Dump
