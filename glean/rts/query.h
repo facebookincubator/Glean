@@ -38,7 +38,7 @@ enum class Depth {
   ExpandPartial
 };
 
-QueryResults executeQuery(
+std::unique_ptr<QueryResults> executeQuery(
     Inventory& inventory,
     Define& facts,
     Subroutine& sub,
@@ -52,7 +52,7 @@ QueryResults executeQuery(
     bool wantStats,
     folly::Optional<thrift::internal::QueryCont> restart);
 
-QueryResults restartQuery(
+std::unique_ptr<QueryResults> restartQuery(
     Inventory& inventory,
     Define& facts,
     folly::Optional<uint64_t> maxResults,

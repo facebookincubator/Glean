@@ -117,7 +117,7 @@ struct QueryExecutor {
   //
   // Done; collect and return the final results
   //
-  QueryResults finish();
+  std::unique_ptr<QueryResults> finish();
 
   // ------------------------------------------------------------
   // Below here: query state
@@ -351,7 +351,6 @@ void QueryExecutor::resultWithPid(
         bin.put(val->bytes());
       }
       auto clause = Fact::Clause::from(bin.bytes(), key_size);
-      // TODO: optimise case of no nested fact IDs
       if (traverse) {
         Predicate::runTraverse(*traverse, nestedFact_, clause);
       } else {
@@ -377,29 +376,29 @@ void QueryExecutor::resultWithPid(
 };
 
 
-QueryResults QueryExecutor::finish() {
-  QueryResults res;
-  res.fact_ids = std::move(result_ids);
-  res.fact_pids = std::move(result_pids);
-  res.fact_keys = std::move(result_keys);
-  res.fact_values = std::move(result_values);
-  res.nested_fact_ids = std::move(nested_result_ids);
-  res.nested_fact_pids = std::move(nested_result_pids);
-  res.nested_fact_keys = std::move(nested_result_keys);
-  res.nested_fact_values = std::move(nested_result_values);
+std::unique_ptr<QueryResults> QueryExecutor::finish() {
+  auto res = std::make_unique<QueryResults>();
+  res->fact_ids = std::move(result_ids);
+  res->fact_pids = std::move(result_pids);
+  res->fact_keys = std::move(result_keys);
+  res->fact_values = std::move(result_values);
+  res->nested_fact_ids = std::move(nested_result_ids);
+  res->nested_fact_pids = std::move(nested_result_pids);
+  res->nested_fact_keys = std::move(nested_result_keys);
+  res->nested_fact_values = std::move(nested_result_values);
 
   if (queryCont) {
     std::string out;
     using namespace apache::thrift;
     Serializer<BinaryProtocolReader, BinaryProtocolWriter>::serialize(
         *queryCont, &out);
-    res.continuation = std::move(out);
+    res->continuation = std::move(out);
   };
 
   if (wantStats) {
-    res.stats = std::move(stats);
+    res->stats = std::move(stats);
   }
-  res.elapsed_ns = watch.elapsed().count();
+  res->elapsed_ns = watch.elapsed().count();
   return res;
 }
 
@@ -409,7 +408,7 @@ void interruptRunningQueries() {
   last_interrupt = Clock::now();
 }
 
-QueryResults restartQuery(
+std::unique_ptr<QueryResults> restartQuery(
     Inventory& inventory,
     Define& facts,
     folly::Optional<uint64_t> maxResults,
@@ -464,7 +463,7 @@ QueryResults restartQuery(
 }
 
 
-QueryResults executeQuery (
+std::unique_ptr<QueryResults> executeQuery (
     Inventory& inventory,
     Define& facts,
     Subroutine& sub,

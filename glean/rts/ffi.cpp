@@ -233,7 +233,7 @@ const char *glean_query_execute_compiled(
           reinterpret_cast<Pid*>(expand_pids),
           reinterpret_cast<Pid*>(expand_pids) + num_expand_pids);
     }
-    auto results =
+    *presults =
       executeQuery(
         *inventory,
         *facts,
@@ -247,8 +247,7 @@ const char *glean_query_execute_compiled(
         expandPids,
         want_stats,
         folly::none
-      );
-    *presults = new QueryResults(std::move(results));
+      ).release();
   });
 }
 
@@ -273,7 +272,7 @@ const char *glean_query_restart_compiled(
           reinterpret_cast<Pid*>(expand_pids),
           reinterpret_cast<Pid*>(expand_pids) + num_expand_pids);
     }
-    auto results =
+    *presults =
       restartQuery(
         *inventory,
         *facts,
@@ -284,8 +283,7 @@ const char *glean_query_restart_compiled(
         expandPids,
         want_stats,
         cont, cont_size
-      );
-    *presults = new QueryResults(std::move(results));
+      ).release();
   });
 }
 
