@@ -11,6 +11,9 @@ type Loc = {
   file : File,
   line : nat,
   column : nat,
+   # Each Unicode code point occupies one column, even if it spans multiple
+   # bytes. Combining characters are not taken into account.
+   # A tab character occupies a single column.
 }
 
 # Common source code range type
@@ -42,6 +45,8 @@ predicate FileLines : {
 }
 
 # A span of bytes within a file
+# NB. Byte spans don't assume any conversion of the source code, so CRLF counts
+# as two bytes
 type ByteSpan = {
   start : nat,
   length : nat,
