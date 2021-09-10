@@ -876,6 +876,13 @@ angleDSL modify = dbTestCase $ \env repo -> do
       ]
   assertEqual "angle - DSL 3" [(toNat 1, toNat 2)] results
 
+  results <- runQuery_ env repo $ modify $ Angle.data_ $
+    vars $ \x ->
+      x `where_` [
+        x .= elementsOf (array [nat 1, nat 2, nat 3 ]),
+        not_ [x .= (nat 1 .| nat 3)]
+      ]
+  assertEqual "angle - DSL 4" [toNat 2] results
 
 -- nested patterns
 angleNested :: (forall a . Query a -> Query a) -> Test

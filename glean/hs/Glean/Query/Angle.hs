@@ -12,6 +12,7 @@ module Glean.Query.Angle
   , vars
   , predicate
   , where_
+  , not_
   , (.=)
   , (.|)
   , (.->)
@@ -159,6 +160,12 @@ where_ :: Angle t -> [AngleStatement] -> Angle t
 where_ t stmts = Angle $
   NestedQuery DSL <$>
     (SourceQuery <$> (Just <$> gen t) <*> mapM genStmt stmts)
+
+not_ :: [AngleStatement] -> AngleStatement
+not_ stmts = unit' .= Angle (Negation DSL <$> gen t)
+  where
+    t = unit' `where_` stmts
+    unit' = unit `hasType` "{}"
 
 -- | Build a statement, `A = B`
 (.=) :: Angle t -> Angle t -> AngleStatement
