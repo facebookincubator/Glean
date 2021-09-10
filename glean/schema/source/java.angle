@@ -307,3 +307,53 @@ predicate XRefFile :
     Xref = Xs[..];
 
 }
+
+# Adds imports, enums, packages, groups into top level file predicate
+schema java.5 : java.4 {
+import src.1
+
+#An import, whether specific, an entire package, or static
+predicate ImportDeclaration :
+{
+  name : string,
+  import_on_demand : bool,
+  static_member : maybe string,
+  loc: src.Loc,
+}
+
+type TopDefinition =
+{
+  class_ : ClassDeclaration |
+  interface_ : InterfaceDeclaration |
+  enum_ : EnumDeclaration |
+}
+
+#An enum declaration
+predicate EnumDeclaration :
+{
+  name: QName,
+  annotations : [Annotation],
+  modifiers : [Modifier],
+  implements_ : [Type],
+  variables : [VariableDeclaration],
+  methods : [MethodDeclaration],
+  loc : src.Loc,
+}
+
+#The package specification for a file
+predicate PackageDeclaration :
+{
+  name : string,
+  annotation: [Annotation],
+  loc : src.Loc,
+}
+
+predicate JavaFile :
+{
+  package_ : maybe PackageDeclaration,
+  import_ : [ImportDeclaration],
+  definition : [TopDefinition],
+  file: src.File,
+}
+
+}

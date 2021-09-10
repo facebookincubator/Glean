@@ -29,3 +29,14 @@ type Entity =
   }
 
 }
+
+schema code.java.4 {
+import java.5
+
+type Entity =
+  {
+    class_ : java.ClassDeclaration |
+    import_ : java.ImportDeclaration |
+    file_ : java.JavaFile |
+  }
+}
