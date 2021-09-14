@@ -1,5 +1,10 @@
 -- Copyright (c) Facebook, Inc. and its affiliates.
 
+{- | A Catalog stores metadata about available databases.
+A thread running Glean.Database.Backup.backuper will continuously read the
+state of the catalog to decide which dbs to restore/backup/finalize
+-}
+
 module Glean.Database.Catalog
   ( Catalog
   , Entry
