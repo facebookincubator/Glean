@@ -34,6 +34,8 @@ fromSiteLocator backends s = do
   site <- fromPath backend path
   return (prefix, site)
 
+-- A repo locator has the following form:
+--  backend_name:some/path/repo.name.hash
 fromRepoLocator :: Backends -> Text -> Maybe (Text, Some Site, Repo)
 fromRepoLocator backends loc = do
   let (site_slash, repo_text) = Text.breakOnEnd "/" loc
