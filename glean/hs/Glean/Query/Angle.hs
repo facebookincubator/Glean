@@ -15,6 +15,7 @@ module Glean.Query.Angle
   , not_
   , (.=)
   , (.|)
+  , or_
   , (.->)
   , query
   , data_
@@ -174,6 +175,12 @@ l .= r = AngleStatement $ Angle.SourceStatement <$> gen l <*> gen r
 -- | Build an or-pattern, `A | B`
 (.|) :: Angle a -> Angle a -> Angle a
 a .| b = Angle $ OrPattern DSL <$> gen a <*> gen b
+
+-- | Build an or-pattern between statements
+or_ :: [AngleStatement] -> [AngleStatement] -> Angle ()
+or_ left right = (unit' `where_` left) .| (unit' `where_` right)
+  where
+  unit' = unit `hasType` "{}"
 
 -- | Build a key-value pattern, `A -> B`
 (.->) :: Angle a -> Angle b -> Angle c
