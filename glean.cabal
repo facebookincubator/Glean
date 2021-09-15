@@ -127,12 +127,15 @@ library stubs
         Glean.Datasource.Scribe.Write
         Glean.Init
         Glean.Server.Shard
+        Glean.Index
         Glean.Username
         ServiceData.Types
         ServiceData.GlobalStats
         TestRunner
     build-depends:
         glean:if-fb303-hs,
+        glean:if-glean-hs,
+        glean:if-index-hs,
         mangle,
         thrift-server,
         template-haskell
@@ -828,7 +831,6 @@ executable glean-server
     default-extensions: CPP
     other-modules:
         Glean.Handler
-        Glean.Index
         Glean.Server.Config
     extra-libraries: stdc++
     build-depends:

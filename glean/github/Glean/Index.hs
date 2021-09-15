@@ -4,11 +4,10 @@ module Glean.Index
 
 import qualified Glean.Types as Thrift
 import qualified Glean.Index.Types as Thrift
-import qualified Glean.Database.Types as Database
 import Control.Exception (throwIO)
 
 index
-  :: Database.Env
+  :: a
   -> Thrift.IndexRequest
   -> IO Thrift.IndexResponse
 index _ _ =
