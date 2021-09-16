@@ -2,7 +2,7 @@
 
 {-# LANGUAGE TypeApplications #-}
 module TestDB (
-  withTestDB, dbTestCase, dbTestCaseWritable
+  withTestDB, dbTestCase, dbTestCaseWritable, createTestDB
 ) where
 
 import Data.Either
@@ -29,6 +29,11 @@ afterComplete action env repo = do
 
 withTestDB :: [Setting] -> (Env -> Thrift.Repo -> IO a) -> IO a
 withTestDB settings = withWritableTestDB settings . afterComplete
+
+createTestDB :: Env -> Thrift.Repo -> IO ()
+createTestDB env repo = do
+  kickOffTestDB env repo id
+  writeTestDB env repo testFacts
 
 withWritableTestDB :: [Setting] -> (Env -> Thrift.Repo -> IO a) -> IO a
 withWritableTestDB settings action = withEmptyTestDB settings $ \env repo -> do

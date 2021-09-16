@@ -82,6 +82,8 @@ removeDatabase env@Env{..} repo todo = uninterruptibleMask_ $
           _ -> return ()
         Catalog.delete envCatalog repo
         Storage.delete envStorage repo
+        atomically $ modifyTVar envDerivations $
+          HashMap.filterWithKey (\(repo',_) _ -> repo' /= repo)
         safeRemovePathForcibly $ databasePath envRoot repo
       logInfo $ inRepo repo "deleted"
   `finally` atomically (modifyTVar' envDeleting $ HashMap.delete repo)

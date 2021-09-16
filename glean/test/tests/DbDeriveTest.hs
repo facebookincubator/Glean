@@ -19,6 +19,7 @@ import TestRunner
 import qualified Glean
 import Glean hiding (deriveStored)
 import Glean.Init
+import Glean.Database.Test
 import Glean.Database.Types
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Internal.Types hiding (Predicate)
@@ -38,13 +39,28 @@ testDerivation :: RunDerive -> Test
 testDerivation derive = TestList
   [ TestLabel "deriveTest" $ deriveTest derive
   , TestLabel "completenessTest" $ completenessTest derive
+  , TestLabel "deriveDeleteDeriveTest" $ deriveDeleteDeriveTest derive
   ]
 
 type RunDerive = forall p. Predicate p => Env -> Repo -> Proxy p -> IO Int
 
+-- Test that deleting a DB and re-creating it works
+deriveDeleteDeriveTest :: RunDerive -> Test
+deriveDeleteDeriveTest runDerive = TestLabel "deriveDeleteDerive" $
+  TestCase $ withTestEnv [] $ \env -> do
+    let repo = Thrift.Repo "dbtest-repo" "1"
+    createTestDB env repo
+    deriveTestCases runDerive env repo
+    void $ deleteDatabase env repo
+    createTestDB env repo
+    deriveTestCases runDerive env repo
+
 -- Test deriving stored facts
 deriveTest :: RunDerive -> Test
-deriveTest runDerive = dbTestCaseWritable $ \env repo -> do
+deriveTest runDerive = dbTestCaseWritable (deriveTestCases runDerive)
+
+deriveTestCases :: RunDerive -> Env -> Repo -> IO ()
+deriveTestCases runDerive env repo = do
   let derive :: forall p. Predicate p => Proxy p -> IO Int
       derive = runDerive env repo
   -- initially zero facts
