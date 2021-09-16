@@ -12,7 +12,7 @@ import qualified Data.Text as Text
 import Glean.Angle.Types
 import Glean.Query.Thrift.Internal
 import Glean.Types
-import Glean hiding (derivePredicate)
+import Glean
 import Glean.Schema.Util (showSourceRef)
 import Util.Log
 

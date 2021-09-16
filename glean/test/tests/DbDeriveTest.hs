@@ -17,7 +17,7 @@ import Control.Concurrent.STM
 import TestRunner
 
 import qualified Glean
-import Glean hiding (derivePredicate, deriveStored)
+import Glean hiding (deriveStored)
 import Glean.Init
 import Glean.Database.Types
 import qualified Glean.Database.Catalog as Catalog
@@ -30,8 +30,7 @@ import TestDB
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
-  [ TestLabel "derivePredicate" $ testDerivation derivePredicate
-  , TestLabel "deriveStored" $ testDerivation $ deriveStored $ const mempty
+  [ TestLabel "deriveStored" $ testDerivation $ deriveStored $ const mempty
   , TestLabel "deriveStoredLogging" testDeriveStoredLogging
   ]
 
@@ -140,20 +139,6 @@ completenessTest runDerive = dbTestCaseWritable $ \env repo -> do
   assertEqual "deriveTest -  empty"
     (0, True)
     (derivedCount, pred `elem` complete)
-
-derivePredicate :: Predicate p => Env -> Repo -> Proxy p -> IO Int
-derivePredicate env repo proxy = do
-  DerivePredicateResponse handle <-
-    Glean.derivePredicate env repo $ derivePredicateQuery pred
-  fromIntegral . Thrift.userQueryStats_result_count <$> loop handle
-  where
-    pred = getName proxy
-    loop handle = do
-      progress <- Glean.pollDerivation env handle
-      case progress of
-        Thrift.DerivationProgress_ongoing _ ->
-          threadDelay (ceiling @Double 1e6) >> loop handle
-        Thrift.DerivationProgress_complete  stats -> return stats
 
 testDeriveStoredLogging :: Test
 testDeriveStoredLogging = dbTestCaseWritable $ \env repo -> do

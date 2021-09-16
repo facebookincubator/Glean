@@ -529,10 +529,6 @@ struct DerivePredicateOptions {
 // maximum amount of time executing each batch
 }
 
-struct DerivePredicateResponse {
-  1: Handle handle;
-}
-
 exception NotAStoredPredicate {
 }
 
@@ -996,18 +992,6 @@ service GleanService extends fb303.FacebookService {
     2: NotAStoredPredicate n,
     3: UnknownPredicate u,
     4: IncompleteDependencies d,
-  );
-
-  DerivePredicateResponse derivePredicate(
-    1: Repo repo,
-    2: DerivePredicateQuery q,
-  ) throws (
-    1: Exception e,
-    5: NotAStoredPredicate n,
-    6: UnknownPredicate u,
-    7: PredicateAlreadyComplete p,
-    8: IncompleteDependencies d,
-    9: PredicateAlreadyBeingDerived a,
   );
 
   DerivationProgress pollDerivation(1: Handle h) throws (

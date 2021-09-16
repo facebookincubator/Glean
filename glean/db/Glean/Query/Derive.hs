@@ -1,8 +1,7 @@
 -- Copyright (c) Facebook, Inc. and its affiliates.
 
 module Glean.Query.Derive
-  ( derivePredicate
-  , pollDerivation
+  ( pollDerivation
   , deriveStored
   ) where
 
@@ -43,16 +42,6 @@ import Glean.Types as Thrift hiding (Byte, Nat, Exception)
 import Glean.Util.Observed as Observed
 import Glean.Util.Time
 import Glean.Util.Warden
-
--- | Compute and store the specified derived predicate
-derivePredicate
-  :: Database.Env
-  -> Thrift.Repo
-  -> Thrift.DerivePredicateQuery
-  -> IO Thrift.DerivePredicateResponse
-derivePredicate env repo query = do
-  Derivation{..} <- deriveStoredImpl env noLogging repo query
-  return $ Thrift.DerivePredicateResponse derivationHandle
 
 -- | Check the progress of a derivation
 pollDerivation :: Database.Env -> Thrift.Handle -> IO Thrift.DerivationProgress

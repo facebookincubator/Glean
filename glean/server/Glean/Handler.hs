@@ -87,9 +87,6 @@ handler State{..} req =
     Service.DeriveStored repo pred ->
       Backend.deriveStored backend (const mempty) repo pred
 
-    Service.DerivePredicate repo pred ->
-      Backend.derivePredicate backend repo pred
-
     Service.PollDerivation handle ->
       Backend.pollDerivation backend handle
 

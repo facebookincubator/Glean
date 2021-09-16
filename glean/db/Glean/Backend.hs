@@ -184,12 +184,6 @@ instance Backend LoggingBackend where
       (const mempty)
       (deriveStored env (runLogDerivationResult env log repo q) repo q)
 
-  derivePredicate (LoggingBackend env) repo q =
-    loggingAction
-      (runLogDerivePredicate "derivePredicate" env repo q)
-      (const mempty)
-      (derivePredicate env repo q)
-
   pollDerivation (LoggingBackend env) handle =
     loggingAction (runLogCmd "pollDerivation" env) logDerivationProgress $
       pollDerivation env handle
@@ -302,7 +296,6 @@ instance Backend Database.Env where
   userQuery = UserQuery.userQuery
 
   deriveStored = Derive.deriveStored
-  derivePredicate = Derive.derivePredicate
   pollDerivation = Derive.pollDerivation
 
   listDatabases = Database.listDatabases
