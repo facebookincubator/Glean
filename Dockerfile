@@ -29,6 +29,8 @@ RUN cat /react-code/scripts/flow/config/flowconfig \
 
 FROM ubuntu:20.04 AS demo
 
+LABEL org.opencontainers.image.source="https://github.com/facebookincubator/Glean"
+
 ENV PATH=/glean-demo/bin:$PATH
 ENV LD_LIBRARY_PATH=/usr/local/lib
 
@@ -78,4 +80,4 @@ EXPOSE 8888
 
 ENTRYPOINT ["./docker_entrypoint.sh"]
 
-# docker run -ti -p8888:8888 ghcr.io/facebookincubator/glean/glean-demo
+# docker run -ti -p8888:8888 ghcr.io/facebookincubator/glean/demo
