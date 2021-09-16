@@ -61,10 +61,10 @@ See [Building Glean](https://glean.software/docs/building).
 ## Docker demo
 
 For demo of the react codebase with hyperlinks powered by glean run
-`docker run -ti -p8888:8888 ghcr.io/facebookincubator/glean/glean-demo`
+`docker run -ti -p8888:8888 ghcr.io/facebookincubator/glean/demo`
 
 Try out on your own codebase with a .flowconfig by running
-`docker run -ti -p8888:8888 -v __YOUR_CODE_DIR__:/glean_demo/code ghcr.io/facebookincubator/glean/glean-demo`
+`docker run -ti -p8888:8888 -v __YOUR_CODE_DIR__:/glean_demo/code ghcr.io/facebookincubator/glean/demo`
 
 Play round using the glean binaries in a shell by running
-`docker run -ti -p8888:8888 ghcr.io/facebookincubator/glean/glean-demo shell`
+`docker run -ti -p8888:8888 ghcr.io/facebookincubator/glean/demo shell`
