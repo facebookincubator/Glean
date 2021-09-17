@@ -229,33 +229,47 @@ instance Aeson.ToJSON AngleTypeRepr where
 angleTypeReprFor
   :: Type
   -> ReaderT AngleTypeReprContext (Writer [HackEnum]) AngleTypeRepr
-angleTypeReprFor Byte = return ByteTInt
-angleTypeReprFor Nat = return NatTInt
-angleTypeReprFor String = return StringTString
-angleTypeReprFor (Array ty) = ArrayTVec <$> angleTypeReprFor ty
-angleTypeReprFor (Record fields) =
-  RecordTShape <$> mapM f fields
-  where
-    f FieldDef{..} =
-      (,) fieldDefName <$> angleTypeReprFor fieldDefType
-angleTypeReprFor (Sum fields) =
-  SumTShape <$> mapM f fields
-  where
-    f FieldDef{..} =
-      (,) fieldDefName <$> angleTypeReprFor fieldDefType
 angleTypeReprFor (Predicate ref) = do
   ctx <- ask
   case lookupPredDefKeyValue ctx ref of
-    Just (Record{}, Record []) -> return $
-      PredicateTNamed ref $ classname ctx
-    Just (Sum{}, Record []) -> return $
-      PredicateTNamed ref $ classname ctx
+    -- If the predicate has value of type {} and the key is a String
+    -- avoid wrapping it in a class. This makes writing queries more
+    -- concise
+    Just (String, Record []) ->
+      PredicateT ref (classname ctx) <$> angleTypeInnerReprFor String
+    _ -> angleTypeInnerReprFor (Predicate ref)
+    where
+      lookupPredDefKeyValue ctx pref = do
+        PredicateDef{..} <- HashMap.lookup pref $ ctxPredMap ctx
+        return (predicateDefKeyType, predicateDefValueType)
+      classname AngleTypeReprContext{..} =
+        refClassname $ prefVref ctxPredLatest ref
+angleTypeReprFor ty = angleTypeInnerReprFor ty
+
+angleTypeInnerReprFor
+  :: Type
+  -> ReaderT AngleTypeReprContext (Writer [HackEnum]) AngleTypeRepr
+angleTypeInnerReprFor Byte = return ByteTInt
+angleTypeInnerReprFor Nat = return NatTInt
+angleTypeInnerReprFor String = return StringTString
+angleTypeInnerReprFor (Array ty) = ArrayTVec <$> angleTypeInnerReprFor ty
+angleTypeInnerReprFor (Record fields) =
+  RecordTShape <$> mapM f fields
+  where
+    f FieldDef{..} =
+      (,) fieldDefName <$> angleTypeInnerReprFor fieldDefType
+angleTypeInnerReprFor (Sum fields) =
+  SumTShape <$> mapM f fields
+  where
+    f FieldDef{..} =
+      (,) fieldDefName <$> angleTypeInnerReprFor fieldDefType
+angleTypeInnerReprFor (Predicate ref) = do
+  ctx <- ask
+  case lookupPredDefKeyValue ctx ref of
     Nothing -> return $
       PredicateTNamed ref $ classname ctx
-    -- If the predicate has value of type {} and the key is not a record or sum
-    -- avoid wrapping it in a class
-    Just (k, Record []) ->
-      PredicateT ref (classname ctx) <$> angleTypeReprFor k
+    Just (_k, Record []) -> return $
+      PredicateTNamed ref $ classname ctx
     Just (_k, _v) -> return $
       PredicateTKeyValue ref $ classname ctx
     where
@@ -264,7 +278,7 @@ angleTypeReprFor (Predicate ref) = do
         return (predicateDefKeyType, predicateDefValueType)
       classname AngleTypeReprContext{..} =
         refClassname $ prefVref ctxPredLatest ref
-angleTypeReprFor (NamedType ref) = do
+angleTypeInnerReprFor (NamedType ref) = do
   ctx <- ask
   case lookupTypeDefType ctx ref of
     Just (Enumerated alts) ->
@@ -274,14 +288,14 @@ angleTypeReprFor (NamedType ref) = do
     Just Sum{} -> return $ NamedTypeTNamed ref $ classname ctx
     Just t ->
       NamedTypeTAlias ref (classname ctx) <$>
-        angleTypeReprFor t
+        angleTypeInnerReprFor t
   where
     lookupTypeDefType ctx tref = typeDefType <$>
       HashMap.lookup tref (ctxTypeMap ctx)
     classname AngleTypeReprContext{..} =
       refClassname $ trefVref ctxTypeLatest ref
-angleTypeReprFor (Maybe t) = MaybeTOption <$> angleTypeReprFor t
-angleTypeReprFor (Enumerated alts) = do
+angleTypeInnerReprFor (Maybe t) = MaybeTOption <$> angleTypeInnerReprFor t
+angleTypeInnerReprFor (Enumerated alts) = do
   AngleTypeReprContext{..} <- ask
   let
     enumName =
@@ -290,7 +304,7 @@ angleTypeReprFor (Enumerated alts) = do
     f name = (name, name)
   tell [enum]
   return $ EnumeratedTEnum alts enumName
-angleTypeReprFor Boolean = return BooleanTBool
+angleTypeInnerReprFor Boolean = return BooleanTBool
 
 defFile :: Either PredicateDef TypeDef -> FilePath
 defFile (Left p) = fileFor $ predicateDefName p
