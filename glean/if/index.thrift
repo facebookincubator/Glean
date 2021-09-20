@@ -54,5 +54,8 @@ exception NoIndexerAvailable {
 
 service GleanIndexingService extends glean.GleanService {
   // Create an incremental database based on file changes
-  IndexResponse index(1: IndexRequest request) throws (1: NoIndexerAvailable n);
+  IndexResponse index(1: IndexRequest request) throws (
+    1: NoIndexerAvailable n,
+    2: glean.Exception e,
+  );
 }
