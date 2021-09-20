@@ -792,6 +792,13 @@ angleTest modify = dbTestCase $ \env repo -> do
     |]
   assertEqual "angle - eqType maybe" 1 (length r)
 
+  -- test for bugs in the handling of {} in the code generator
+  r <- runQuery_ env repo $ modify $ recursive $ angleData @()
+    [s|
+       X where (X = {}:{}) | (X = {}:{}); (X = {}:{}) | (X = {}:{})
+    |]
+  assertBool "angle - empty tuples" $
+    let l = length r in l >= 1 && l <= 4
 
 angleArray :: (forall a . Query a -> Query a) -> Test
 angleArray modify = dbTestCase $ \env repo -> do

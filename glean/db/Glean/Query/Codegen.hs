@@ -486,6 +486,11 @@ isWordTy = isWordRep . repType
   isWordRep NatRep = True
   isWordRep _ = False
 
+isEmptyTy :: Type -> Bool
+isEmptyTy ty
+  | TupleRep [] <- repType ty = True
+  | otherwise = False
+
 patIsExactFid
   :: Vector (Register 'Word)
   -> Term (Match () Var)
@@ -1356,11 +1361,15 @@ matchPat vars input inputend fail chunks =
     local $ \id -> do
       inputNat input inputend id
       jumpIfNe id (vars ! var) fail
-  match (QueryVar (Var _ var _)) =
-    local $ \ptr -> local $ \end -> local $ \ok -> do
-      getOutput (castRegister (vars ! var)) ptr end
-      inputShiftBytes input inputend ptr end ok
-      jumpIf0 ok fail
+  match (QueryVar (Var ty var _))
+    | isEmptyTy ty = return ()
+      -- the empty tuple could be represented by a null pointer, so it's
+      -- not safe to do inputShiftBytes anyway.
+    | otherwise =
+      local $ \ptr -> local $ \end -> local $ \ok -> do
+        getOutput (castRegister (vars ! var)) ptr end
+        inputShiftBytes input inputend ptr end ok
+        jumpIf0 ok fail
   match (QueryAnd a b) = do
     local $ \start -> do
       move input start
