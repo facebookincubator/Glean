@@ -48,7 +48,11 @@ struct IndexResponse {
   1: glean.Repo repo;
 }
 
+exception NoIndexerAvailable {
+  1: string message;
+}
+
 service GleanIndexingService extends glean.GleanService {
   // Create an incremental database based on file changes
-  IndexResponse index(1: IndexRequest request);
+  IndexResponse index(1: IndexRequest request) throws (1: NoIndexerAvailable n);
 }
