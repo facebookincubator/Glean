@@ -678,7 +678,11 @@ compileStatements
           where chunks = preProcessPat pat
 
       compile (CgNegation stmts : rest) = mdo
-        compileStatements regs stmts vars $ jump fail
+        local $ \seekLevel -> do
+          currentSeek seekLevel
+          compileStatements regs stmts vars $ do
+            endSeek seekLevel
+            jump fail
         a <- compile rest
         fail <- label
         return a
@@ -1450,6 +1454,11 @@ data QueryRegs s = QueryRegs
      -> Register 'Word
      -> Code ()
 
+    -- | Fetch the current seek token
+  , currentSeek
+     :: Register 'Word
+     -> Code ()
+
     -- | Release the state associated with an iterator token
   , endSeek
      :: Register 'Word
@@ -1513,13 +1522,15 @@ data QueryRegs s = QueryRegs
 generateQueryCode
   :: (forall s . QueryRegs s -> Code ()) -> IO (Subroutine CompiledQuery)
 generateQueryCode f = generate Optimised $
-  \ ((seek_, endSeek_, next_, lookupKey_),
+  \ ((seek_, currentSeek_, endSeek_, next_, lookupKey_),
     (result_, resultWithPid_, newDerivedFact_),
     saveState,
     maxResults, maxBytes) ->
   let
     seek typ ptr end tok =
       callFun_3_1 seek_ typ (castRegister ptr) (castRegister end) tok
+
+    currentSeek tok = callFun_0_1 currentSeek_ tok
 
     endSeek tok = callFun_1_0 endSeek_ tok
 

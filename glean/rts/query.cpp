@@ -46,6 +46,13 @@ struct QueryExecutor {
   IterToken seek(Pid type, folly::ByteRange key);
 
   //
+  // Returns the current seek token, so that the state can be reset in
+  // the future using endSeek(). This is used for implementing
+  // non-local jumps in the generated code.
+  //
+  IterToken currentSeek();
+
+  //
   // Release the state associated with a previous seek() call.
   //
   void endSeek(IterToken token);
@@ -201,11 +208,13 @@ uint64_t QueryExecutor::seek(Pid type, folly::ByteRange key) {
 };
 
 
+uint64_t QueryExecutor::currentSeek() {
+  return iters.size();
+}
+
 void QueryExecutor::endSeek(uint64_t token) {
   DVLOG(5) << "endSeek(" << token << ")";
-  assert(token == iters.size()-1);
-  iters[token].iter.reset(nullptr);
-  while (!iters.empty() && iters.back().iter.get() == nullptr) {
+  while (iters.size() > token) {
     iters.pop_back();
   }
 };
@@ -549,6 +558,11 @@ std::unique_ptr<QueryResults> executeQuery (
                 reinterpret_cast<uint8_t *>(end)));
       };
 
+
+  const std::function<uint64_t()> currentSeek_ = [&]() -> uint64_t {
+    return q.currentSeek();
+  };
+
   const std::function<void(uint64_t)> endSeek_ = [&](uint64_t token) {
     q.endSeek(token);
   };
@@ -620,6 +634,7 @@ std::unique_ptr<QueryResults> executeQuery (
   }
 
   args.push_back(reinterpret_cast<uint64_t>(&seek_));
+  args.push_back(reinterpret_cast<uint64_t>(&currentSeek_));
   args.push_back(reinterpret_cast<uint64_t>(&endSeek_));
   args.push_back(reinterpret_cast<uint64_t>(&next_));
   args.push_back(reinterpret_cast<uint64_t>(&lookupKeyValue_));
