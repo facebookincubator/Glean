@@ -27,9 +27,13 @@ data State = State
   , stEnv :: Env
   }
 
-handlerIndexing :: State -> GleanIndexingServiceCommand a -> IO a
-handlerIndexing state req = case req of
-  Index req -> Index.index (stEnv state) req
+handlerIndexing
+  :: IO Int -- get the port the server is running on
+  -> State
+  -> GleanIndexingServiceCommand a
+  -> IO a
+handlerIndexing getPort state req = case req of
+  Index req -> Index.index getPort (stEnv state) req
   SuperGleanService r -> handler state r
 
 handler :: State -> GleanServiceCommand a -> IO a

@@ -6,8 +6,11 @@ import qualified Glean.Types as Thrift
 import qualified Glean.Index.Types as Thrift
 import Control.Exception (throwIO)
 
+type Port = Int
+
 index
-  :: a
+  :: IO Port
+  -> a
   -> Thrift.IndexRequest
   -> IO Thrift.IndexResponse
 index _ _ =

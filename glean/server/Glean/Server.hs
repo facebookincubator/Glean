@@ -4,6 +4,7 @@ module Glean.Server (main) where
 
 import Control.Concurrent
 import Control.Concurrent.Async (withAsync)
+import Control.Concurrent.STM.TVar
 import Control.Concurrent.STM
 import Control.Monad
 import Data.HashSet (HashSet)
@@ -111,12 +112,14 @@ main =
   let state = GleanHandler.State fb303 databases
 
   logInfo "Starting server"
+  portVar <- newTVarIO Nothing
 
   let
     setAlive server = do
-      let port = show $ CppServer.serverPort server
-      forM_ (cfgWritePort cfg) $ \path -> writeFile path port
-      logInfo $ "server alive on port " ++ port
+      let port = CppServer.serverPort server
+      atomically $ writeTVar portVar (Just port)
+      forM_ (cfgWritePort cfg) $ \path -> writeFile path (show port)
+      logInfo $ "server alive on port " ++ (show port)
       writeIORef (fb303_status fb303) Fb303_status_ALIVE
 
     -- If the janitor is enabled, wait until it has run once to
@@ -131,11 +134,14 @@ main =
     waitToStart server = waitForAlive server >> waitForTerminateSignals
     opts = defaultOptions{ desiredPort = cfgPort cfg }
 
+    getPort =
+      fromMaybe (error "server hasn't started yet") <$> readTVarIO portVar
+
   if cfgEnableIndexing cfg
     then
       withBackgroundFacebookServiceDeferredAlive
         (GleanHandler.fb303State state)
-        (GleanHandler.handlerIndexing state)
+        (GleanHandler.handlerIndexing getPort state)
         opts
         waitToStart
     else

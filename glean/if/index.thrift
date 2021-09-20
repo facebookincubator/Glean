@@ -36,7 +36,7 @@ union FileChange {
   1: FileModified modified;
   2: FileMoved moved;
   3: FileDeleted deleted;
-}
+} (hs.nonempty)
 
 struct IndexRequest {
   1: glean.Repo repo;
