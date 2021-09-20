@@ -202,6 +202,8 @@ uint64_t QueryExecutor::seek(Pid type, folly::ByteRange key) {
 
 
 void QueryExecutor::endSeek(uint64_t token) {
+  DVLOG(5) << "endSeek(" << token << ")";
+  assert(token == iters.size()-1);
   iters[token].iter.reset(nullptr);
   while (!iters.empty() && iters.back().iter.get() == nullptr) {
     iters.pop_back();
@@ -210,6 +212,7 @@ void QueryExecutor::endSeek(uint64_t token) {
 
 
 Fact::Ref QueryExecutor::next(uint64_t token, FactIterator::Demand demand) {
+  assert(token == iters.size()-1);
   if (iters[token].first) {
     iters[token].first = false;
   } else {
