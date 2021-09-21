@@ -13,7 +13,7 @@ index
   -> a
   -> Thrift.IndexRequest
   -> IO Thrift.IndexResponse
-index _ _ =
+index _ _ _ =
 {- do
     if indexer for repo is not available
       error
