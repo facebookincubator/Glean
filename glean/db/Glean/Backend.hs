@@ -50,6 +50,7 @@ import Util.Logger
 
 import Glean.ClientConfig.Types (ClientConfig(..))
 import qualified Glean.Database.Catalog as Catalog
+import qualified Glean.Database.CompletePredicates as Database
 import qualified Glean.Database.Config as Database
 import qualified Glean.Database.Env as Database
 import qualified Glean.Database.Storage as Storage
@@ -235,6 +236,12 @@ instance Backend LoggingBackend where
       (const mempty) $
       workFinished env rq
 
+  completePredicates (LoggingBackend env) repo =
+    loggingAction
+       (runLogRepo "completePredicates" env repo)
+       (const mempty) $
+       completePredicates env repo
+
   restoreDatabase (LoggingBackend env) loc =
     loggingAction (runLogCmd "restoreDatabase" env) (const mempty) $
       restoreDatabase env loc
@@ -311,6 +318,8 @@ instance Backend Database.Env where
   workCancelled = Database.workCancelled
   workHeartbeat = Database.workHeartbeat
   workFinished = Database.workFinished
+
+  completePredicates = Database.completePredicates
 
   restoreDatabase = Database.restoreDatabase
 

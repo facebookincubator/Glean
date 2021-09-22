@@ -105,6 +105,7 @@ makeFakeDB schema root repo dbtime completeness stacked = do
       , metaProperties = HashMap.empty
       , metaDependencies = Thrift.Dependencies_stacked <$> stacked
       , metaCompletePredicates = mempty
+      , metaAxiomComplete = False
       }
   let repoPath = databasePath root repo
   createDirectoryIfMissing True repoPath

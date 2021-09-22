@@ -153,6 +153,7 @@ module Glean
   -- * Writing
   , fillDatabase
   , finalize
+  , completePredicates
   , basicWriter
   , FactBuilder
   , makeFact
@@ -189,7 +190,7 @@ module Glean
   , JsonFactBatch(..)
   ) where
 
-import Glean.Backend.Remote hiding (dbShard)
+import Glean.Backend.Remote hiding (dbShard, completePredicates)
 import Glean.Angle.Lexer
 
 import Glean.Haxl

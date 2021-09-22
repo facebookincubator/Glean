@@ -116,6 +116,8 @@ initEnv evb cfg logger envSchemaSource envRecipeConfig envServerConfig =
 
     envSchemaUpdateSignal <- atomically newEmptyTMVar
 
+    envCompleting <- newTVarIO HashMap.empty
+
     return Env
       { envEventBase = evb
       , envLogger = logger

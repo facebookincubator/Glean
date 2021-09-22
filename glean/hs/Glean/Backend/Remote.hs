@@ -114,6 +114,11 @@ class Backend a where
   workHeartbeat :: a -> Thrift.WorkHeartbeat -> IO ()
   workFinished :: a -> Thrift.WorkFinished -> IO ()
 
+  completePredicates
+    :: a
+    -> Thrift.Repo
+    -> IO Thrift.CompletePredicatesResponse
+
   -- | Request a backed up database (specified via its backup locator) to be
   -- made available. This call doesn't wait until the database actually becomes
   -- available, it only issues the request.
@@ -189,6 +194,7 @@ instance Backend (Some Backend) where
   workCancelled (Some backend) = workCancelled backend
   workHeartbeat (Some backend) = workHeartbeat backend
   workFinished (Some backend) = workFinished backend
+  completePredicates (Some backend) = completePredicates backend
 
   restoreDatabase (Some backend) = restoreDatabase backend
   deleteDatabase (Some backend) = deleteDatabase backend
@@ -321,6 +327,9 @@ instance Backend ThriftBackend where
   workFinished t rq =
     withShard t (Thrift.work_repo $ Thrift.workFinished_work rq)
       $ GleanService.workFinished rq
+
+  completePredicates t repo = withShard t repo $
+    GleanService.completePredicates repo
 
   restoreDatabase t loc =
     withoutShard t $ GleanService.restore loc

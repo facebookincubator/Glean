@@ -6,6 +6,7 @@ module Glean.Write
   , parseJsonFactBatches
   , fillDatabase
   , finalize
+  , completePredicates
   ) where
 
 import Control.Concurrent
@@ -24,7 +25,8 @@ import TextShow
 
 import Util.Control.Exception
 
-import Glean.Backend.Remote
+import Glean.Backend.Remote hiding (completePredicates)
+import qualified Glean.Backend.Remote as Backend
 import Glean.Types hiding (Value)
 import Glean.Schema.Util
 
@@ -101,12 +103,22 @@ fillDatabase env repo handle ifexists action =
 -- complete, it may be queried but a stacked database cannot be
 -- created on top of it.
 finalize :: Backend a => a -> Repo -> IO ()
-finalize env repo = loop
+finalize env repo =
+  void $ untilDone $ finalizeDatabase env repo
+
+-- | Notify the server when non-derived predicates are complete. This
+-- must be called before derivedStored.
+completePredicates :: Backend a => a -> Repo -> IO ()
+completePredicates env repo =
+  void $ untilDone $ Backend.completePredicates env repo
+
+untilDone :: IO a -> IO a
+untilDone io = loop
   where
   loop = do
-    r <- try $ finalizeDatabase env repo
+    r <- try io
     case r of
-      Right{} -> return ()
+      Right a -> return a
       Left (Retry n) -> do
         threadDelay (truncate (n * 1000000))
         loop

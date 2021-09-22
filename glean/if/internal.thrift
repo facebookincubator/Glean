@@ -104,4 +104,9 @@ struct Meta {
 
   // Whether all facts for a predicate have already been inserted.
   7: list<glean.PredicateRef> metaCompletePredicates;
+
+  // Temporary: indicates that all non-derived predicates are complete.
+  // Later we will allow non-derived predicates to be completed separately
+  // and store that information in metaCompletePredicates.
+  8: bool metaAxiomComplete;
 } (hs.prefix = "")

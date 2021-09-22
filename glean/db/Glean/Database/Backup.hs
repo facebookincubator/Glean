@@ -37,6 +37,7 @@ import Glean.Database.Backup.Backend as Backend
 import Glean.Database.Backup.Locator
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Catalog.Filter
+import Glean.Database.CompletePredicates
 import Glean.Database.Data (storeSchema)
 import qualified Glean.Database.Logger as Logger
 import Glean.Database.Meta
@@ -45,7 +46,6 @@ import qualified Glean.Database.Storage as Storage
 import Glean.Database.Open (withOpenDatabase, schemaUpdated)
 import Glean.Database.Types
 import Glean.Database.Schema
-import Glean.Database.Storage
 import Glean.Repo.Text
 import Glean.ServerConfig.Types (DatabaseBackupPolicy(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
@@ -267,10 +267,15 @@ doFinalize env@Env{..} repo =
         say logInfo "optimising"
         Storage.optimize odbHandle
       thinSchema repo odb
-      own <- computeOwnership odbHandle (schemaInventory odbSchema)
-      storeOwnership odbHandle own
+
+    -- If the client didn't explicitly call completePredicates, we'll
+    -- do that now.
+    meta <- atomically $ Catalog.readMeta envCatalog repo
+    when (not (metaAxiomComplete meta)) $ syncCompletePredicates env repo
+
     -- update and re-merge our internal representation of the schema
     schemaUpdated env (Just repo)
+
     time <- getCurrentTime
     atomically $ do
       void $ Catalog.modifyMeta envCatalog repo $ \meta -> return meta

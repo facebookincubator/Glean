@@ -868,6 +868,9 @@ struct PredicateStatsOpts {
   1: bool excludeBase = true;
 }
 
+struct CompletePredicatesResponse {
+}
+
 service GleanService extends fb303.FacebookService {
   // DEPRECATED
   list<Id> getPredicates(1: Repo repo, 2: list<PredicateRef> predicates);
@@ -937,6 +940,19 @@ service GleanService extends fb303.FacebookService {
     2: AbortWork a,
     3: Retry r,
   );
+
+  // Tell the server when non-derived predicates are complete.  This
+  // call must be completed successfully before deriveStored() is
+  // called.
+  //
+  // Note that the process of completing predicates may take some
+  // time, and the call may return Retry multiple times. You can't
+  // call deriveStored() until completePredicates() has returned
+  // successfully.
+  CompletePredicatesResponse completePredicates(
+    1: Repo repo,
+  // later: 2: optional list<PredicateRef> predicates
+  ) throws (1: Exception e, 3: Retry r);
 
   // Wait for a DB to be complete, after the last workFinished
   // call. If finalization failed, this will throw an Exception with

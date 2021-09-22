@@ -88,6 +88,9 @@ handler State{..} req =
     Service.UserQuery repo query ->
       Backend.userQuery backend repo query
 
+    Service.CompletePredicates repo ->
+      Backend.completePredicates backend repo
+
     Service.DeriveStored repo pred ->
       Backend.deriveStored backend (const mempty) repo pred
 
