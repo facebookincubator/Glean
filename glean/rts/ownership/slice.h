@@ -48,7 +48,7 @@ struct Sliced : Lookup {
 
   Id idByKey(Pid type, folly::ByteRange key) override {
     if (auto id = base_->idByKey(type, key)) {
-      if (slice_->visible(ownership_->getUset(id))) {
+      if (slice_->visible(ownership_->getOwner(id))) {
         return id;
       }
     }
@@ -56,7 +56,7 @@ struct Sliced : Lookup {
   }
 
   Pid typeById(Id id) override {
-    if (slice_->visible(ownership_->getUset(id))) {
+    if (slice_->visible(ownership_->getOwner(id))) {
       return base_->typeById(id);
     } else {
       return Pid::invalid();
@@ -88,7 +88,7 @@ struct Sliced : Lookup {
     return FactIterator::filter(
         base_->enumerate(from,upto),
         [&](Id id) {
-          return slice_->visible(ownership_->getUset(id));
+          return slice_->visible(ownership_->getOwner(id));
         });
   }
 
@@ -98,7 +98,7 @@ struct Sliced : Lookup {
     return FactIterator::filter(
         base_->enumerate(from,downto),
         [&](Id id) {
-          return slice_->visible(ownership_->getUset(id));
+          return slice_->visible(ownership_->getOwner(id));
         });
   }
 
@@ -109,7 +109,7 @@ struct Sliced : Lookup {
     return FactIterator::filter(
         base_->seek(type, start, prefix_size),
         [&](Id id) {
-          return slice_->visible(ownership_->getUset(id));
+          return slice_->visible(ownership_->getOwner(id));
         });
   }
 

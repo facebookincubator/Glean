@@ -1112,8 +1112,8 @@ void DatabaseImpl::storeOwnership(ComputedOwnership &ownership) {
 
 struct StoredOwnership : Ownership {
   explicit StoredOwnership(const DatabaseImpl *db) : db_(db) {}
+  UsetId getOwner(Id id) override;
 
-  UsetId getUset(Id id) override;
 
   std::unique_ptr<rts::OwnershipSetIterator> getSetIterator() override;
 
@@ -1125,7 +1125,7 @@ std::unique_ptr<rts::Ownership> DatabaseImpl::getOwnership() {
   return std::make_unique<StoredOwnership>(this);
 }
 
-UsetId StoredOwnership::getUset(Id id) {
+UsetId StoredOwnership::getOwner(Id id) {
   EncodedNat key(id.toWord());
   std::unique_ptr<rocksdb::Iterator> iter(db_->container_.db->NewIterator(
     rocksdb::ReadOptions(), db_->container_.family(Family::factOwners)));

@@ -58,7 +58,7 @@ struct OwnershipSetIterator {
 struct Ownership {
   virtual ~Ownership() {}
 
-  virtual UsetId getUset(Id id) = 0;
+  virtual UsetId getOwner(Id id) = 0;
 
   virtual std::unique_ptr<OwnershipSetIterator> getSetIterator() = 0;
 };
