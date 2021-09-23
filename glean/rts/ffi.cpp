@@ -10,6 +10,7 @@
 #include "glean/rts/id.h"
 #include "glean/rts/lookup.h"
 #include "glean/rts/ownership.h"
+#include "glean/rts/ownership/slice.h"
 #include "glean/rts/query.h"
 #include "glean/rts/sanity.h"
 #include "glean/rts/stacked.h"
