@@ -17,8 +17,6 @@ class Inventory;
 struct Lookup;
 
 using UnitId = uint32_t;
-using MutableUnitSet = folly::compression::MutableEliasFanoCompressedList;
-using UnitSet = folly::compression::EliasFanoCompressedList;
 
 /**
  * Raw ownership data (facts -> unit)
@@ -48,11 +46,13 @@ struct OwnershipUnitIterator {
   // currently supported but should be added.
   virtual folly::Optional<OwnershipUnit> get() = 0;
 };
+using MutableOwnerSet = folly::compression::MutableEliasFanoCompressedList;
+using OwnerSet = folly::compression::EliasFanoCompressedList;
 
 struct OwnershipSetIterator {
   virtual ~OwnershipSetIterator() {}
   virtual size_t size() = 0;
-  virtual folly::Optional<std::pair<UnitId,UnitSet*>> get() = 0;
+  virtual folly::Optional<std::pair<UnitId,OwnerSet*>> get() = 0;
 };
 
 ///
@@ -93,7 +93,7 @@ struct ComputedOwnership {
 
   ComputedOwnership(
         UsetId firstId,
-        std::vector<MutableUnitSet>&& sets,
+        std::vector<MutableOwnerSet>&& sets,
         std::vector<std::pair<Id,UsetId>>&& facts) :
       firstId_(firstId),
       sets_(std::move(sets)),
@@ -102,7 +102,7 @@ struct ComputedOwnership {
   UsetId firstId_;
 
   // Sets, indexed by UsetId starting at firstId_
-  std::vector<MutableUnitSet> sets_;
+  std::vector<MutableOwnerSet> sets_;
 
   // Maps fact Ids to owner sets, represented as intervals
   std::vector<std::pair<Id,UsetId>> facts_;

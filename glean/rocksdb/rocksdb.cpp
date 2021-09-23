@@ -362,7 +362,7 @@ struct ContainerImpl final : Container {
   std::unique_ptr<Database> openDatabase(Id start, int32_t version) && override;
 };
 
-void serializeEliasFano(binary::Output& out, const UnitSet& set) {
+void serializeEliasFano(binary::Output& out, const OwnerSet& set) {
   out.nat(set.size);
   out.nat(set.numLowerBits);
   out.nat(set.upperSizeBytes);
@@ -1048,7 +1048,7 @@ struct DatabaseImpl final : Database {
   void putOwnerSet(
       rocksdb::WriteBatch& batch,
       UsetId id,
-      const UnitSet& set) const {
+      const OwnerSet& set) const {
     binary::Output key;
     key.nat(id);
     binary::Output value;
@@ -1117,7 +1117,7 @@ std::unique_ptr<rts::Ownership> DatabaseImpl::getOwnership() {
         explicit SetIterator(size_t size, std::unique_ptr<rocksdb::Iterator> i)
             : size_(size), iter(std::move(i)) {}
 
-        folly::Optional<std::pair<uint32_t, UnitSet *>> get() override {
+        folly::Optional<std::pair<uint32_t, OwnerSet *>> get() override {
           if (iter->Valid()) {
             binary::Input key(byteRange(iter->key()));
             auto unit = key.trustedNat();
@@ -1135,14 +1135,14 @@ std::unique_ptr<rts::Ownership> DatabaseImpl::getOwnership() {
             set.forwardPointers = set.data.begin() + forwardPointers;
             set.lower = set.data.begin() + lower;
             set.upper = set.data.begin() + upper;
-            return std::pair<uint32_t, UnitSet *>(unit, &set);
+            return std::pair<uint32_t, OwnerSet *>(unit, &set);
           } else {
             return folly::none;
           }
         }
 
         size_t size() override { return size_; }
-        UnitSet set;
+        OwnerSet set;
         size_t size_;
         std::unique_ptr<rocksdb::Iterator> iter;
       };
