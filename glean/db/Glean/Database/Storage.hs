@@ -4,6 +4,7 @@ module Glean.Database.Storage
   ( Mode(..)
   , Storage(..)
   , DBVersion(..)
+  , AxiomOwnership
   , canOpenVersion
   , currentVersion
   , writableVersions
@@ -52,6 +53,10 @@ data Mode
       (Maybe SchemaInfo)  -- initial schema to merge with the configured one
   deriving(Show)
 
+-- | Raw ownership data for axiomatic (non-derived) facts: a mapping
+-- from unit name to ranges of fact IDs.
+type AxiomOwnership = HashMap ByteString (VS.Vector Fid)
+
 -- | An abstract storage for fact database
 class CanLookup (Database s) => Storage s where
   -- | A fact database
@@ -82,7 +87,11 @@ class CanLookup (Database s) => Storage s where
 
   -- | Commit a set of facts to the database. The facts must have the right ids,
   -- they are NOT renamed.
-  commit :: Database s -> FactSet -> HashMap ByteString (VS.Vector Fid) -> IO ()
+  commit
+    :: Database s
+    -> FactSet
+    -> AxiomOwnership
+    -> IO ()
 
   -- | Optimise a database for reading. This is typically done before backup.
   optimize :: Database s -> IO ()
