@@ -486,6 +486,7 @@ library db
         Glean.Database.Catalog
         Glean.Database.Catalog.Local.Files
         Glean.Database.Catalog.Store
+        Glean.Database.CompletePredicates
         Glean.Database.Config
         Glean.Database.Data
         Glean.Database.Env
@@ -890,6 +891,7 @@ executable glean
     main-is: GleanCLI.hs
     other-modules:
         GleanCLI.Common
+        GleanCLI.Complete
         GleanCLI.Derive
         GleanCLI.Finish
         GleanCLI.Query
