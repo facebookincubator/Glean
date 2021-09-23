@@ -191,22 +191,21 @@ struct Fact {
 
 // A collection of facts which can be written to a database.
 struct Batch {
-  1: Id firstId;
   // Id of the first fact in the batch if ids isn't supplied and the boundary
   // between the underlying database and the batch - any fact id >= firstId
   // will be assumed to refer to facts in the batch and will not be looked
   // up in the underlying database.
+  1: Id firstId;
 
-  2: i64 count;
   // Number of facts in the batch.
+  2: i64 count;
 
-  3: binary (cpp.type = "folly::fbstring") facts;
   // Facts encoded in an internal binary format. Facts may only refer to facts
   // which occur before them in this sequence and to facts in the underlying
   // database with ids below firstId. If ids isn't supplied, the facts here
   // are assumed to have sequential ids starting with firstId.
+  3: binary (cpp.type = "folly::fbstring") facts;
 
-  4: optional list<i64> (hs.type = "VectorStorable") ids;
   // If supplied, this list contains the ids for the facts in the batch. It
   // must satisfy the following conditions:
   //
@@ -215,22 +214,23 @@ struct Batch {
   //   - all elements are unique
   //   - ids are reasonably dense (writing the batch to the db will use a
   //     data structure of size O(max id - firstId))
+  4: optional list<i64> (hs.type = "VectorStorable") ids;
 
+  // (optional for now)
+  //
+  // Specifies ownership of the facts in this batch. The list is
+  // really a list of intervals [x1,x2, y1,y2, ... ] representing
+  // the inclusive ranges x1..x2, y1..y2, ... where x1 <= x2, y1 <= y2, ...
+  //
+  // The ranges do not need to be sorted, and can overlap.
+  //
+  // A fact can have an arbitrary number of owners.
+  //
+  // Units do not need to be declared beforehand; a Unit exists if
+  // it is the owner of at least one fact.
   5: map<UnitName, list<Id> (hs.type = "VectorStorable")> (
     hs.type = "HashMap",
   ) owned;
-// (optional for now)
-//
-// Specifies ownership of the facts in this batch. The list is
-// really a list of intervals [x1,x2, y1,y2, ... ] representing
-// the inclusive ranges x1..x2, y1..y2, ... where x1 <= x2, y1 <= y2, ...
-//
-// The ranges do not need to be sorted, and can overlap.
-//
-// A fact can have an arbitrary number of owners.
-//
-// Units do not need to be declared beforehand; a Unit exists if
-// it is the owner of at least one fact.
 }
 
 struct Subst {
