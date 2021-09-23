@@ -164,7 +164,7 @@ instance Storage RocksDB where
     with own $ \own_ptr ->
     invoke $ glean_rocksdb_store_ownership db_ptr own_ptr
 
-  getOwnership db =
+  getOwnership db = fmap Just $
     with db $ \db_ptr ->
     construct $ invoke $ glean_rocksdb_get_ownership db_ptr
 

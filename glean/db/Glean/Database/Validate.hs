@@ -6,6 +6,8 @@ module Glean.Database.Validate
   , computeOwnership
   ) where
 
+import Control.Concurrent.STM
+
 import Glean.Database.Schema
 import qualified Glean.Database.Storage as Storage
 import Glean.Database.Open (readDatabase, withOpenDatabase)
@@ -22,3 +24,5 @@ computeOwnership :: Env -> Repo -> IO ()
 computeOwnership env repo = withOpenDatabase env repo $ \OpenDB{..} -> do
   own <- Storage.computeOwnership odbHandle (schemaInventory odbSchema)
   Storage.storeOwnership odbHandle own
+  newOwn <- Storage.getOwnership odbHandle
+  atomically $ writeTVar odbOwnership newOwn

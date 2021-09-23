@@ -118,10 +118,14 @@ withOpenDBLookup env@Env{..} repo
           repoToText repo <> ": missing base slice"
         Just slice ->
           readDatabase env base_repo $ \baseOdb base -> do
-          own <- case baseOdb of OpenDB{..} -> Storage.getOwnership odbHandle
-          Lookup.withLookup (Ownership.sliced own slice base) $ \sliced ->
-            Lookup.withLookup handle $ \lookup ->
-            Lookup.withLookup (Stacked.stacked sliced lookup) f
+          maybeOwn <- readTVarIO (odbOwnership baseOdb)
+          case maybeOwn of
+            Nothing -> throwIO $ Thrift.Exception $
+              repoToText repo <> ": missing ownership"
+            Just own ->
+              Lookup.withLookup (Ownership.sliced own slice base) $ \sliced ->
+                Lookup.withLookup handle $ \lookup ->
+                Lookup.withLookup (Stacked.stacked sliced lookup) f
 
 
 withWritableDatabase :: Env -> Repo -> (WriteQueue -> IO a) -> IO a
@@ -347,6 +351,7 @@ asyncOpenDB env@Env{..} db@DB{..} version mode deps on_success on_failure =
               _ -> Just <$> setupWriting env handle
             maybeSlice <- baseSlice env deps
             idle <- newTVarIO =<< getTimePoint
+            ownership <- newTVarIO =<< Storage.getOwnership handle
             on_success
             return OpenDB
               { odbHandle = handle
@@ -354,6 +359,7 @@ asyncOpenDB env@Env{..} db@DB{..} version mode deps on_success on_failure =
               , odbSchema = dbSchema
               , odbIdleSince = idle
               , odbBaseSlice = maybeSlice
+              , odbOwnership = ownership
               }
           atomically $ writeTVar dbState $ Open odb
           return odb
@@ -390,9 +396,9 @@ baseSlice env (Just (Thrift.Dependencies_pruned update)) = do
         Nothing -> throwIO $ Thrift.BadQuery $
           "unknown unit: " <> Text.pack (show unit)
         Just uid -> return uid
-    ownership <- Storage.getOwnership odbHandle
-    Just <$> Ownership.slice ownership unitIds
-      (Thrift.pruned_exclude update)
+    maybeOwnership <- readTVarIO odbOwnership
+    forM maybeOwnership $ \ownership ->
+      Ownership.slice ownership unitIds (Thrift.pruned_exclude update)
 baseSlice _ _ =
   return Nothing
 

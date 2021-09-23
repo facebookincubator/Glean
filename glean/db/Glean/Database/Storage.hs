@@ -100,7 +100,13 @@ class CanLookup (Database s) => Storage s where
 
   storeOwnership :: Database s -> ComputedOwnership -> IO ()
 
-  getOwnership :: Database s -> IO Ownership
+  -- | Fetch the 'Ownership' interface for this DB. This is used to
+  -- make a 'Slice' (a view of a subset of the facts in the DB).
+  --
+  -- Can return 'Nothing' if this database backend doesn't support
+  -- ownership. (TODO: support ownership in the memory backend and
+  -- remove this 'Maybe').
+  getOwnership :: Database s -> IO (Maybe Ownership)
 
   getUnitId :: Database s -> ByteString -> IO (Maybe UnitId)
 
