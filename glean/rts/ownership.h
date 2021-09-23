@@ -84,29 +84,29 @@ struct Ownership {
 ///
 // Computed ownership data stored in memory
 //
-struct MemoryOwnership final : Ownership {
-  ~MemoryOwnership() override {
+struct ComputedOwnership {
+  ~ComputedOwnership() {
     for (auto &set: sets_) {
       set.free();
     }
   }
 
-  MemoryOwnership(std::vector<MutableUnitSet>&& sets,
-                  std::vector<UsetId>&& facts) :
-      sets_(std::move(sets)), facts_(std::move(facts)) {}
+  ComputedOwnership(
+        UsetId firstId,
+        std::vector<MutableUnitSet>&& sets,
+        std::vector<std::pair<Id,UsetId>>&& facts) :
+      firstId_(firstId),
+      sets_(std::move(sets)),
+      facts_(std::move(facts)) {}
 
-  UsetId getUset(Id id) override;
+  UsetId firstId_;
 
-  std::unique_ptr<OwnershipSetIterator> getSetIterator() override;
+  // Sets, indexed by UsetId starting at firstId_
+  std::vector<MutableUnitSet> sets_;
 
-  std::vector<MutableUnitSet> sets_; // Sets, indexed by UsetId
-  std::vector<UsetId> facts_; // Owner set for each fact
+  // Maps fact Ids to owner sets, represented as intervals
+  std::vector<std::pair<Id,UsetId>> facts_;
 };
-
-std::unique_ptr<MemoryOwnership> computeOwnership(
-    const Inventory& inventory,
-    Lookup& lookup,
-    OwnershipUnitIterator *iter);
 
 
 std::unique_ptr<Slice> slice(
@@ -196,6 +196,13 @@ struct Sliced : Lookup {
   Slice *slice_;
   Ownership *ownership_;
 };
+/**
+ * Compute ownership data for non-derived facts
+ */
+std::unique_ptr<ComputedOwnership> computeOwnership(
+  const Inventory& inventory,
+  Lookup& lookup,
+  OwnershipUnitIterator *iter);
 
 }
 }

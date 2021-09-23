@@ -5,8 +5,7 @@ module Glean.RTS.Foreign.Ownership
   , compute
   , UnitId(..)
   , Ownership
-  , MemoryOwnership
-  , toOwnership
+  , ComputedOwnership
   , Slice
   , slice
   , sliced
@@ -37,22 +36,19 @@ instance Object Ownership where
   unwrap (Ownership p) = p
   destroy = glean_ownership_free
 
-newtype MemoryOwnership = MemoryOwnership (ForeignPtr MemoryOwnership)
+newtype ComputedOwnership = ComputedOwnership (ForeignPtr ComputedOwnership)
 
-instance Object MemoryOwnership where
-  wrap = MemoryOwnership
-  unwrap (MemoryOwnership p) = p
-  destroy = glean_memory_ownership_free
-
-toOwnership :: MemoryOwnership -> Ownership
-toOwnership (MemoryOwnership fp) = Ownership (castForeignPtr fp)
+instance Object ComputedOwnership where
+  wrap = ComputedOwnership
+  unwrap (ComputedOwnership p) = p
+  destroy = glean_computed_ownership_free
 
 compute
   :: CanLookup a
   => Inventory
   -> a
   -> UnitIterator
-  -> IO MemoryOwnership
+  -> IO ComputedOwnership
 compute inv l iter =
   with inv $ \inv_ptr ->
   withLookup l $ \lookup ->
@@ -98,14 +94,14 @@ foreign import ccall safe glean_ownership_compute
   :: Ptr Inventory
   -> Lookup
   -> UnitIterator
-  -> Ptr (Ptr MemoryOwnership)
+  -> Ptr (Ptr ComputedOwnership)
   -> IO CString
 
 foreign import ccall unsafe "&glean_ownership_free"
    glean_ownership_free :: FunPtr (Ptr Ownership -> IO ())
 
-foreign import ccall unsafe "&glean_ownership_free"
-   glean_memory_ownership_free :: FunPtr (Ptr MemoryOwnership -> IO ())
+foreign import ccall unsafe "&glean_computed_ownership_free"
+   glean_computed_ownership_free :: FunPtr (Ptr ComputedOwnership -> IO ())
 
 foreign import ccall safe glean_slice_compute
   :: Ptr Ownership

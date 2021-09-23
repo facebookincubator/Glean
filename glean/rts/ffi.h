@@ -45,7 +45,7 @@ typedef struct Substitution Substitution;
 typedef struct QueryResults QueryResults;
 typedef struct OwnershipUnitIterator OwnershipUnitIterator;
 typedef struct Ownership Ownership;
-typedef struct MemoryOwnership MemoryOwnership;
+typedef struct ComputedOwnership ComputedOwnership;
 typedef struct Slice Slice;
 typedef struct Sliced Sliced;
 
@@ -499,10 +499,12 @@ const char *glean_ownership_compute(
   Inventory *inventory,
   Lookup *lookup,
   OwnershipUnitIterator *iter,
-  MemoryOwnership **ownership
+  ComputedOwnership **ownership
 );
 
 void glean_ownership_free(Ownership *own);
+
+void glean_computed_ownership_free(ComputedOwnership *own);
 
 const char *glean_slice_compute(
   Ownership *ownership,

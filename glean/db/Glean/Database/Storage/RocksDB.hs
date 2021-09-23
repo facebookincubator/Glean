@@ -311,7 +311,7 @@ foreign import ccall unsafe glean_rocksdb_get_unit_id
 
 foreign import ccall unsafe glean_rocksdb_store_ownership
   :: Ptr (Database RocksDB)
-  -> Ptr MemoryOwnership
+  -> Ptr ComputedOwnership
   -> IO CString
 
 foreign import ccall unsafe glean_rocksdb_get_ownership

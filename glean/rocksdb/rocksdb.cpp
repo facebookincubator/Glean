@@ -3,6 +3,7 @@
 #include <utility>
 
 #include <folly/Range.h>
+#include <folly/experimental/AutoTimer.h>
 
 #include <rocksdb/db.h>
 #include <rocksdb/filter_policy.h>
@@ -360,6 +361,17 @@ struct ContainerImpl final : Container {
 
   std::unique_ptr<Database> openDatabase(Id start, int32_t version) && override;
 };
+
+void serializeEliasFano(binary::Output& out, const UnitSet& set) {
+  out.nat(set.size);
+  out.nat(set.numLowerBits);
+  out.nat(set.upperSizeBytes);
+  out.nat(set.skipPointers - set.data.begin());
+  out.nat(set.forwardPointers - set.data.begin());
+  out.nat(set.lower - set.data.begin());
+  out.nat(set.upper - set.data.begin());
+  out.put(set.data);
+}
 
 struct DatabaseImpl final : Database {
   int64_t db_version;
@@ -1029,60 +1041,57 @@ struct DatabaseImpl final : Database {
     return std::make_unique<UnitIterator>(std::move(iter));
   }
 
-  void storeOwnership(MemoryOwnership &ownership) override;
+  void storeOwnership(ComputedOwnership &ownership) override;
 
   std::unique_ptr<rts::Ownership> getOwnership() override;
+
+  void putOwnerSet(
+      rocksdb::WriteBatch& batch,
+      UsetId id,
+      const UnitSet& set) const {
+    binary::Output key;
+    key.nat(id);
+    binary::Output value;
+    serializeEliasFano(value, set);
+    check(batch.Put(container_.family(Family::ownershipSets), slice(key),
+                    slice(value)));
+  }
 };
 
-void DatabaseImpl::storeOwnership(MemoryOwnership &ownership) {
+void DatabaseImpl::storeOwnership(ComputedOwnership &ownership) {
   container_.requireOpen();
 
-  {
+  if (ownership.sets_.size() > 0) {
+    folly::AutoTimer t("storeOwnership(sets)");
     rocksdb::WriteBatch batch;
 
-    uint32_t id = 0;
-    for (const auto &set : ownership.sets_) {
+    uint32_t id = ownership.firstId_;
+    for (auto &set : ownership.sets_) {
       if ((id % 1000000) == 0) {
         VLOG(1) << "storeOwnership: " << id;
       }
-      binary::Output key;
-      key.nat(id++);
-      binary::Output value;
-      value.nat(set.size);
-      value.nat(set.numLowerBits);
-      value.nat(set.upperSizeBytes);
-      value.nat(set.skipPointers - set.data.begin());
-      value.nat(set.forwardPointers - set.data.begin());
-      value.nat(set.lower - set.data.begin());
-      value.nat(set.upper - set.data.begin());
-      value.put(set.data);
-      check(batch.Put(container_.family(Family::ownershipSets), slice(key),
-                      slice(value)));
+      putOwnerSet(batch, id, set);
+      id++;
     }
-    VLOG(1) << "storeOwnership: writing sets (" << id << ")";
+    VLOG(1) << "storeOwnership: writing sets (" <<
+      ownership.sets_.size() << ")";
     check(container_.db->Write(container_.writeOptions, &batch));
-    VLOG(1) << "storeOwnership: writing done";
   }
 
   {
     rocksdb::WriteBatch batch;
-    UsetId current = INVALID_USET;
-    uint64_t intervals = 0;
     for (uint64_t i = 0; i < ownership.facts_.size(); i++) {
-      auto set = ownership.facts_[i];
-      if (set != current) {
-        binary::Output key, val;
-        key.nat(i);
-        val.nat(set);
-        check(batch.Put(container_.family(Family::factOwners), slice(key),
-                        slice(val)));
-        current = set;
-        intervals++;
-      }
+      auto id = ownership.facts_[i].first;
+      auto usetid = ownership.facts_[i].second;
+      EncodedNat key(id.toWord());
+      EncodedNat val(usetid);
+      check(batch.Put(container_.family(Family::factOwners),
+                      slice(key.byteRange()),
+                      slice(val.byteRange())));
     }
-    VLOG(1) << "storeOwnership: writing facts (" << intervals << " intervals)";
+    VLOG(1) << "storeOwnership: writing facts: " <<
+      ownership.facts_.size() << " intervals";
     check(container_.db->Write(container_.writeOptions, &batch));
-    VLOG(1) << "storeOwnership: writing done";
   }
 }
 

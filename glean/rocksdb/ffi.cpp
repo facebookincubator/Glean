@@ -206,7 +206,7 @@ const char *glean_rocksdb_restore(const char *target, const char *source) {
 
 const char *glean_rocksdb_store_ownership(
   Database *db,
-  MemoryOwnership *ownership) {
+  ComputedOwnership *ownership) {
   return ffi::wrap([=] {
     db->storeOwnership(*ownership);
   });

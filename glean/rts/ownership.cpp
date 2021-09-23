@@ -247,39 +247,6 @@ FOLLY_NOINLINE void completeOwnership(std::vector<Uset *> &facts, Usets& usets,
 
 }
 
-UsetId MemoryOwnership::getUset(Id id) {
-  // facts_.size() might be smaller than the total number of facts
-  // if there were some unowned facts at the end, so we need a
-  // bounds check.
-  return id.toWord() < facts_.size() ? facts_[id.toWord()] : INVALID_USET;
-}
-
-std::unique_ptr<OwnershipSetIterator> MemoryOwnership::getSetIterator() {
-  struct MemorySetIterator : OwnershipSetIterator {
-    MemorySetIterator(uint32_t i, std::vector<MutableUnitSet>& sets) :
-      i_(i), sets_(sets) {}
-
-    size_t size() override { return sets_.size(); }
-
-    folly::Optional<std::pair<UnitId,UnitSet*>> get() override {
-      if (i_ >= sets_.size()) {
-        return folly::none;
-      } else {
-        uint32_t i = i_++;
-        assert(!sets_.empty()); // be gone, linter
-        return std::pair<UnitId,UnitSet*>(
-            i,
-            reinterpret_cast<UnitSet*>(&sets_[i]));
-      }
-    }
-
-    uint32_t i_;
-    std::vector<MutableUnitSet>& sets_;
-  };
-
-  return std::make_unique<MemorySetIterator>(0, sets_);
-}
-
 std::unique_ptr<Slice> slice(
     Ownership *ownership,
     const std::vector<UnitId>& units,
@@ -338,7 +305,7 @@ std::unique_ptr<Slice> slice(
   return std::make_unique<Slice>(std::move(members));
 }
 
-std::unique_ptr<MemoryOwnership> computeOwnership(
+std::unique_ptr<ComputedOwnership> computeOwnership(
     const Inventory& inventory,
     Lookup& lookup,
     OwnershipUnitIterator *iter) {
@@ -353,15 +320,21 @@ std::unique_ptr<MemoryOwnership> computeOwnership(
   completeOwnership(facts, usets, inventory, lookup);
   LOG(INFO) << "finalizing sets";
 
-  std::vector<UsetId> factOwners(facts.size());
+  std::vector<std::pair<Id,UsetId>> factOwners;
+  UsetId current = INVALID_USET;
   for (uint32_t i = Id::lowest().toWord(); i < facts.size(); i++) {
-    factOwners[i] = facts[i] ? facts[i]->id : INVALID_USET;
+    auto usetid = facts[i] ? facts[i]->id : INVALID_USET;
+    if (usetid != current) {
+      factOwners.push_back(std::make_pair(Id::fromWord(i), usetid));
+      current = usetid;
+    }
   }
 
   auto sets = usets.toEliasFano();
   LOG(INFO) << "finished ownership";
 
-  return std::make_unique<MemoryOwnership>(
+  return std::make_unique<ComputedOwnership>(
+      0,
       std::move(sets),
       std::move(factOwners));
 }

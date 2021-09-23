@@ -141,7 +141,7 @@ const char *glean_rocksdb_restore(
 
 const char *glean_rocksdb_store_ownership(
   Database *db,
-  MemoryOwnership *ownership
+  ComputedOwnership *ownership
 );
 
 const char *glean_rocksdb_get_ownership(
