@@ -859,42 +859,38 @@ compileStatements
             return a
 
       -- derived fact where we don't bind the Fid: no need to store it
-      compileGen (DerivedFactGenerator _pid key _) Nothing inner = do
-        compileTermGen key vars Nothing inner
+      compileGen DerivedFactGenerator{} Nothing inner = inner
 
       -- derived fact where we bind the Fid: generate the key and
       -- store the fact in the environment.
       compileGen (DerivedFactGenerator (PidRef pid _) key val)
           (Just resultReg) inner = do
         rpid <- constant (fromIntegral (fromPid pid))
-        let
-          with :: Expr -> (Register 'BinaryOutputPtr -> Code b) -> Code b
-          with term cont = case term of
-            Tuple [] -> do  -- represent unit by null, for efficiency
-              r <- constant 0
-              cont (castRegister r)
-            -- If the query already produces its value into a variable,
-            -- we don't have to copy it.
-            Ref (MatchVar (Var ty v _)) | not (isWordTy ty) ->
-              compileTermGen key vars Nothing $ cont (castRegister (vars ! v))
-            _other ->
-              -- If the result is a word, we will have to copy it into
-              -- an output register before calling newDerivedFact.
-              case cmpWordPat vars term of
-                Nothing ->
-                  output $ \out -> do
-                    compileTermGen term vars (Just out) $ cont out
-                Just _ -> do
-                  local $ \r ->
-                    compileTermGen term vars (Just r) $ do
-                      output $ \out -> do
-                        resetOutput out
-                        outputNat (castRegister r) out
-                        cont out
 
-        with key $ \keyReg ->
-          with val $ \valReg ->
-            newDerivedFact rpid keyReg valReg resultReg
+        let
+          isEmpty (Ref (MatchVar (Var ty _ _))) = isEmptyTy ty
+          isEmpty (Tuple []) = True
+          isEmpty _ = False
+
+        local $ \size -> do
+
+        if
+          | isEmpty val ->
+            withTerm vars key $ \out -> do
+              getOutputSize out size
+              newDerivedFact rpid out size resultReg
+          | isEmpty key ->
+            withTerm vars val $ \out -> do
+              getOutputSize out size
+              newDerivedFact rpid out size resultReg
+          | otherwise ->
+            output $ \out -> do
+              resetOutput out
+              buildTerm out vars key
+              getOutputSize out size
+              buildTerm out vars val
+              newDerivedFact rpid out size resultReg
+
         inner
 
       compileGen (FactGenerator (PidRef pid _) kpat vpat) maybeReg inner = do
@@ -1274,19 +1270,22 @@ withNatTerm vars term andThen = do
     _other ->
       error "withNatTerm: shouldn't happen"
 
+-- | Serialize a term into an output register. A copy is avoided if
+-- the term is already represented by an output register.
 withTerm
   :: Vector (Register 'Word)
   -> Term (Match () Var)
   -> (Register 'BinaryOutputPtr -> Code a)
   -> Code a
-withTerm vars (Ref (MatchVar (Var _ v _))) action =
-  action (castRegister (vars ! v))
+withTerm vars (Ref (MatchVar (Var ty v _))) action
+  | not (isWordTy ty) = action (castRegister (vars ! v))
 withTerm vars term action = do
   output $ \reg -> do
     resetOutput reg
     buildTerm reg vars term
     action reg
 
+-- | Serialize a term into the given output register.
 buildTerm
   :: Register 'BinaryOutputPtr
   -> Vector (Register 'Word)
@@ -1504,7 +1503,7 @@ data QueryRegs s = QueryRegs
   , newDerivedFact
      :: Register 'Word
      -> Register 'BinaryOutputPtr
-     -> Register 'BinaryOutputPtr
+     -> Register 'Word
      -> Register 'Word
      -> Code ()
 

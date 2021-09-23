@@ -78,7 +78,7 @@ struct QueryExecutor {
   //
   // Define a new derived fact, and return its fact ID.
   //
-  Id newDerivedFact(Pid type, binary::Output* key, binary::Output* val);
+  Id newDerivedFact(Pid type, binary::Output* clause, size_t keySize);
 
   //
   // Save the current state of the execution in queryCont
@@ -260,23 +260,8 @@ Pid QueryExecutor::lookupKeyValue(
 Id QueryExecutor::newDerivedFact(
     Pid type,
     binary::Output* key,
-    binary::Output* val) {
-  // TODO: This is a terrible hack to work around the fact that we produce
-  // keys and values in separate blocks for derived facts. We'll fix that
-  // real soon now!
-  Fact::Clause clause;
-  binary::Output buf;
-  if (key) {
-    if (val) {
-      buf.put(key->bytes());
-      buf.put(val->bytes());
-      clause = Fact::Clause::from(buf.bytes(), key->size());
-    } else {
-      clause = Fact::Clause::fromKey(key->bytes());
-    }
-  } else if (val) {
-    clause = Fact::Clause::from(val->bytes(), 0);
-  }
+    size_t keySize) {
+  Fact::Clause clause = Fact::Clause::from(key->bytes(), keySize);
   return facts.define(type, clause);
 };
 
@@ -597,12 +582,12 @@ std::unique_ptr<QueryResults> executeQuery (
             reinterpret_cast<binary::Output *>(vout)).toWord();
       };
 
-  const std::function<uint64_t(uint64_t, uint64_t *, uint64_t *)>
-      newDerivedFact_ = [&](uint64_t type, uint64_t *key, uint64_t *val) {
+  const std::function<uint64_t(uint64_t, uint64_t *, uint64_t)>
+      newDerivedFact_ = [&](uint64_t type, uint64_t *key, uint64_t size) {
         return q.newDerivedFact(
             Pid::fromWord(type),
             reinterpret_cast<binary::Output *>(key),
-            reinterpret_cast<binary::Output *>(val)).toWord();
+            size).toWord();
       };
 
   const std::function<void(uint64_t *, uint64_t *)> saveState_ =
