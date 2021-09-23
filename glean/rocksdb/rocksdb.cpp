@@ -373,6 +373,21 @@ void serializeEliasFano(binary::Output& out, const OwnerSet& set) {
   out.put(set.data);
 }
 
+void deserializeEliasFano(binary::Input& in, OwnerSet& set) {
+  set.size = in.trustedNat();
+  set.numLowerBits = in.trustedNat();
+  set.upperSizeBytes = in.trustedNat();
+  auto skipPointers = in.trustedNat();
+  auto forwardPointers = in.trustedNat();
+  auto lower = in.trustedNat();
+  auto upper = in.trustedNat();
+  set.data = in.bytes();
+  set.skipPointers = set.data.begin() + skipPointers;
+  set.forwardPointers = set.data.begin() + forwardPointers;
+  set.lower = set.data.begin() + lower;
+  set.upper = set.data.begin() + upper;
+}
+
 struct DatabaseImpl final : Database {
   int64_t db_version;
   ContainerImpl container_;
@@ -1095,85 +1110,78 @@ void DatabaseImpl::storeOwnership(ComputedOwnership &ownership) {
   }
 }
 
+struct StoredOwnership : Ownership {
+  explicit StoredOwnership(const DatabaseImpl *db) : db_(db) {}
+
+  UsetId getUset(Id id) override;
+
+  std::unique_ptr<rts::OwnershipSetIterator> getSetIterator() override;
+
+  const DatabaseImpl *db_;
+};
+
 std::unique_ptr<rts::Ownership> DatabaseImpl::getOwnership() {
-  struct StoredOwnership : Ownership {
-    explicit StoredOwnership(const DatabaseImpl *db) : db_(db) {}
-
-    UsetId getUset(Id id) override {
-      EncodedNat key(id.toWord());
-      std::unique_ptr<rocksdb::Iterator> iter(db_->container_.db->NewIterator(
-          rocksdb::ReadOptions(), db_->container_.family(Family::factOwners)));
-
-      iter->SeekForPrev(slice(key.byteRange()));
-      if (!iter->Valid()) {
-        return INVALID_USET;
-      }
-      binary::Input val(byteRange(iter->value()));
-      return val.trustedNat();
-    }
-
-    std::unique_ptr<rts::OwnershipSetIterator> getSetIterator() override {
-      struct SetIterator : rts::OwnershipSetIterator {
-        explicit SetIterator(size_t size, std::unique_ptr<rocksdb::Iterator> i)
-            : size_(size), iter(std::move(i)) {}
-
-        folly::Optional<std::pair<uint32_t, OwnerSet *>> get() override {
-          if (iter->Valid()) {
-            binary::Input key(byteRange(iter->key()));
-            auto unit = key.trustedNat();
-            binary::Input val(byteRange(iter->value()));
-            iter->Next();
-            set.size = val.trustedNat();
-            set.numLowerBits = val.trustedNat();
-            set.upperSizeBytes = val.trustedNat();
-            auto skipPointers = val.trustedNat();
-            auto forwardPointers = val.trustedNat();
-            auto lower = val.trustedNat();
-            auto upper = val.trustedNat();
-            set.data = val.bytes();
-            set.skipPointers = set.data.begin() + skipPointers;
-            set.forwardPointers = set.data.begin() + forwardPointers;
-            set.lower = set.data.begin() + lower;
-            set.upper = set.data.begin() + upper;
-            return std::pair<uint32_t, OwnerSet *>(unit, &set);
-          } else {
-            return folly::none;
-          }
-        }
-
-        size_t size() override { return size_; }
-        OwnerSet set;
-        size_t size_;
-        std::unique_ptr<rocksdb::Iterator> iter;
-      };
-
-      std::unique_ptr<rocksdb::Iterator> iter(db_->container_.db->NewIterator(
-          rocksdb::ReadOptions(),
-          db_->container_.family(Family::ownershipSets)));
-
-      if (!iter) {
-        rts::error("rocksdb: couldn't allocate ownership set iterator");
-      }
-
-      size_t size;
-
-      iter->SeekToLast();
-      if (!iter->Valid()) {
-        size = 0;
-      } else {
-        binary::Input key(byteRange(iter->key()));
-        size = key.trustedNat() + 1;
-      }
-
-      iter->SeekToFirst();
-      return std::make_unique<SetIterator>(size, std::move(iter));
-    }
-
-    const DatabaseImpl *db_;
-  };
-
   container_.requireOpen();
   return std::make_unique<StoredOwnership>(this);
+}
+
+UsetId StoredOwnership::getUset(Id id) {
+  EncodedNat key(id.toWord());
+  std::unique_ptr<rocksdb::Iterator> iter(db_->container_.db->NewIterator(
+    rocksdb::ReadOptions(), db_->container_.family(Family::factOwners)));
+
+  iter->SeekForPrev(slice(key.byteRange()));
+  if (!iter->Valid()) {
+    return INVALID_USET;
+  }
+  binary::Input val(byteRange(iter->value()));
+  return val.trustedNat();
+}
+
+std::unique_ptr<rts::OwnershipSetIterator> StoredOwnership::getSetIterator() {
+  struct SetIterator : rts::OwnershipSetIterator {
+    explicit SetIterator(size_t size, std::unique_ptr<rocksdb::Iterator> i)
+        : size_(size), iter(std::move(i)) {}
+
+    folly::Optional<std::pair<uint32_t, OwnerSet *>> get() override {
+      if (iter->Valid()) {
+        binary::Input key(byteRange(iter->key()));
+        auto unit = key.trustedNat();
+        binary::Input val(byteRange(iter->value()));
+        iter->Next();
+        deserializeEliasFano(val, set);
+        return std::pair<uint32_t, OwnerSet *>(unit, &set);
+      } else {
+        return folly::none;
+      }
+    }
+
+    size_t size() override { return size_; }
+    OwnerSet set;
+    size_t size_;
+    std::unique_ptr<rocksdb::Iterator> iter;
+  };
+
+  std::unique_ptr<rocksdb::Iterator> iter(db_->container_.db->NewIterator(
+    rocksdb::ReadOptions(),
+    db_->container_.family(Family::ownershipSets)));
+
+  if (!iter) {
+    rts::error("rocksdb: couldn't allocate ownership set iterator");
+  }
+
+  size_t size;
+
+  iter->SeekToLast();
+  if (!iter->Valid()) {
+    size = 0;
+  } else {
+    binary::Input key(byteRange(iter->key()));
+    size = key.trustedNat() + 1;
+  }
+
+  iter->SeekToFirst();
+  return std::make_unique<SetIterator>(size, std::move(iter));
 }
 
 std::unique_ptr<Database> ContainerImpl::openDatabase(
