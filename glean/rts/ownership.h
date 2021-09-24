@@ -13,39 +13,8 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
-class Inventory;
-struct Lookup;
-
 using UnitId = uint32_t;
 
-/**
- * Raw ownership data (facts -> unit)
- */
-struct OwnershipUnit {
-  /** Id range */
-  struct Ids {
-    /** First id in range */
-    Id start;
-
-    /** Last id in range */
-    Id finish;
-  };
-
-  /** The ownership unit that the facts belong to. */
-  UnitId unit;
-
-  /** Fact ids owner by the unit. */
-  folly::Range<const Ids *> ids;
-};
-
-struct OwnershipUnitIterator {
-  virtual ~OwnershipUnitIterator() {}
-
-  // `OwnershipUnit`s are expected to be produced in strictly ascending order of
-  // `unit`. Returning more that one `OwnershipUnit` for a `unit` isn't
-  // currently supported but should be added.
-  virtual folly::Optional<OwnershipUnit> get() = 0;
-};
 using MutableOwnerSet = folly::compression::MutableEliasFanoCompressedList;
 using OwnerSet = folly::compression::EliasFanoCompressedList;
 
@@ -55,11 +24,16 @@ struct OwnershipSetIterator {
   virtual folly::Optional<std::pair<UsetId,SetExpr<const OwnerSet*>>> get() = 0;
 };
 
+///
+// Interface for reading ownership data.
+//
 struct Ownership {
   virtual ~Ownership() {}
 
+  // Return the ownership expression for a fact Id
   virtual UsetId getOwner(Id id) = 0;
 
+  // Iterate through all the ownership expressions
   virtual std::unique_ptr<OwnershipSetIterator> getSetIterator() = 0;
 };
 
@@ -90,6 +64,38 @@ struct ComputedOwnership {
   // Maps fact Ids to owner sets, represented as intervals
   std::vector<std::pair<Id,UsetId>> facts_;
 };
+
+
+/**
+ * Raw ownership data (facts -> unit)
+ */
+struct OwnershipUnit {
+  /** Id range */
+  struct Ids {
+    /** First id in range */
+    Id start;
+
+    /** Last id in range */
+    Id finish;
+  };
+
+  /** The ownership unit that the facts belong to. */
+  UnitId unit;
+
+  /** Fact ids owner by the unit. */
+  folly::Range<const Ids *> ids;
+};
+
+struct OwnershipUnitIterator {
+  virtual ~OwnershipUnitIterator() {}
+
+  // `OwnershipUnit`s are expected to be produced in strictly
+  // ascending order of `unit`.
+  virtual folly::Optional<OwnershipUnit> get() = 0;
+};
+
+class Inventory;
+struct Lookup;
 
 /**
  * Compute ownership data for non-derived facts
