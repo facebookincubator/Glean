@@ -101,8 +101,8 @@ bool SetU32::operator==(const SetU32& other) const {
 }
 
 
-uint64_t SetU32::hash() const {
-  return vec_hash(sparse, vec_hash(dense, vec_hash(hdrs)));
+uint64_t SetU32::hash(uint64_t seed) const {
+  return vec_hash(sparse, vec_hash(dense, vec_hash(hdrs, seed)));
 }
 
 SetU32::Sizes SetU32::sizes() const {

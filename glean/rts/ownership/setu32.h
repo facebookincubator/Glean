@@ -259,7 +259,7 @@ public:
     return !(*this == other);
   }
 
-  uint64_t hash() const;
+  uint64_t hash(uint64_t seed) const;
 
   Sizes sizes() const;
   Sizes capacities() const;

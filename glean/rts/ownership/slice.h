@@ -17,13 +17,19 @@ namespace rts {
 // A Slice only makes sense in the context of a particular DB.
 //
 struct Slice {
-  explicit Slice(std::vector<bool> set) : set_(std::move(set)) {}
+  explicit Slice(UsetId first, std::vector<bool> set) :
+      first_(first), set_(std::move(set)) {}
 
   bool visible(UsetId uset) {
-    return uset != INVALID_USET ? set_[uset] : false;
+    if (uset == INVALID_USET) {
+      return false;
+    }
+    assert(uset >= first_ && uset - first_ < set_.size());
+    return set_[uset - first_];
   }
 
  private:
+  UsetId first_;
   std::vector<bool> set_;
 };
 
@@ -32,7 +38,7 @@ struct Slice {
 // that should be included/excluded.
 //
 std::unique_ptr<Slice> slice(
-    Ownership *ownership,
+    Ownership& ownership,
     const std::vector<UnitId>& units, // must be sorted
     bool exclude);
 

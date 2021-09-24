@@ -1063,10 +1063,12 @@ struct DatabaseImpl final : Database {
   void putOwnerSet(
       rocksdb::WriteBatch& batch,
       UsetId id,
+      SetOp op,
       const OwnerSet& set) const {
     binary::Output key;
     key.nat(id);
     binary::Output value;
+    value.nat(op);
     serializeEliasFano(value, set);
     check(batch.Put(container_.family(Family::ownershipSets), slice(key),
                     slice(value)));
@@ -1081,11 +1083,11 @@ void DatabaseImpl::storeOwnership(ComputedOwnership &ownership) {
     rocksdb::WriteBatch batch;
 
     uint32_t id = ownership.firstId_;
-    for (auto &set : ownership.sets_) {
+    for (auto &exp : ownership.sets_) {
       if ((id % 1000000) == 0) {
         VLOG(1) << "storeOwnership: " << id;
       }
-      putOwnerSet(batch, id, set);
+      putOwnerSet(batch, id, exp.op, exp.set);
       id++;
     }
     VLOG(1) << "storeOwnership: writing sets (" <<
@@ -1114,7 +1116,6 @@ struct StoredOwnership : Ownership {
   explicit StoredOwnership(const DatabaseImpl *db) : db_(db) {}
   UsetId getOwner(Id id) override;
 
-
   std::unique_ptr<rts::OwnershipSetIterator> getSetIterator() override;
 
   const DatabaseImpl *db_;
@@ -1138,27 +1139,35 @@ UsetId StoredOwnership::getOwner(Id id) {
   return val.trustedNat();
 }
 
-std::unique_ptr<rts::OwnershipSetIterator> StoredOwnership::getSetIterator() {
+std::unique_ptr<rts::OwnershipSetIterator>
+StoredOwnership::getSetIterator() {
   struct SetIterator : rts::OwnershipSetIterator {
-    explicit SetIterator(size_t size, std::unique_ptr<rocksdb::Iterator> i)
-        : size_(size), iter(std::move(i)) {}
+    explicit SetIterator(size_t first, size_t size,
+                         std::unique_ptr<rocksdb::Iterator> i)
+        : first_(first), size_(size), iter(std::move(i)) {}
 
-    folly::Optional<std::pair<uint32_t, OwnerSet *>> get() override {
+    folly::Optional<std::pair<UsetId, SetExpr<const OwnerSet *>>> get()
+      override {
       if (iter->Valid()) {
         binary::Input key(byteRange(iter->key()));
-        auto unit = key.trustedNat();
+        auto usetid = key.trustedNat();
         binary::Input val(byteRange(iter->value()));
         iter->Next();
-        deserializeEliasFano(val, set);
-        return std::pair<uint32_t, OwnerSet *>(unit, &set);
+        exp.op = static_cast<SetOp>(val.trustedNat());
+        deserializeEliasFano(val, exp.set);
+        return std::pair<uint32_t, SetExpr<const OwnerSet *>>(
+            usetid, { exp.op, &exp.set });
       } else {
         return folly::none;
       }
     }
 
-    size_t size() override { return size_; }
-    OwnerSet set;
-    size_t size_;
+    std::pair<size_t,size_t> sizes() const override {
+      return { first_, size_ };
+    }
+
+    SetExpr<OwnerSet> exp;
+    size_t first_, size_;
     std::unique_ptr<rocksdb::Iterator> iter;
   };
 
@@ -1170,18 +1179,28 @@ std::unique_ptr<rts::OwnershipSetIterator> StoredOwnership::getSetIterator() {
     rts::error("rocksdb: couldn't allocate ownership set iterator");
   }
 
-  size_t size;
+  size_t first, last, size;
 
   iter->SeekToLast();
   if (!iter->Valid()) {
-    size = 0;
+    last = 0;
   } else {
     binary::Input key(byteRange(iter->key()));
-    size = key.trustedNat() + 1;
+    last = key.trustedNat();
   }
 
   iter->SeekToFirst();
-  return std::make_unique<SetIterator>(size, std::move(iter));
+  if (!iter->Valid()) {
+    first = 0;
+    size = 0;
+  } else {
+    binary::Input key(byteRange(iter->key()));
+    first = key.trustedNat();
+    size = last - first + 1;
+  }
+
+  return std::make_unique<SetIterator>(
+      first, size, std::move(iter));
 }
 
 std::unique_ptr<Database> ContainerImpl::openDatabase(

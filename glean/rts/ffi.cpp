@@ -874,7 +874,7 @@ const char *glean_slice_compute(
   return ffi::wrap([=] {
     auto vec = std::vector<uint32_t>(unit_ids, unit_ids + unit_ids_size);
     std::sort(vec.begin(), vec.end());
-    *result = slice(ownership, vec, exclude != 0).release();
+    *result = slice(*ownership, vec, exclude != 0).release();
   });
 }
 

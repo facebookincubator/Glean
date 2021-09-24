@@ -15,16 +15,42 @@ namespace rts {
 using UsetId = uint32_t;
 constexpr UsetId INVALID_USET = 0xffffffff;
 
+using SetOp = enum { Or, And };
+
+/**
+ * A set expression
+ *
+ * Elements of the set are
+ *    0 ... MAX_UNIT_ID   : units
+ *    MAX_UNIT_ID+1 ...   : sets
+ *
+ * facts with this owner set are visible if and only if:
+ *     Or => any of the members of the set are visible
+ *     And => all the members of the set are visible
+ */
+template<typename Set>
+struct SetExpr {
+  SetOp op;
+  Set set;
+
+  bool operator==(const SetExpr<Set>& other) const& {
+    return op == other.op && set == other.set;
+  }
+};
+
 /**
  * A "unique" set stored by `Usets` below. This is a `SetU32` with a memoized
  * hash, a ref count and some administrative data used by the ownership
  * algorithms. It should probably be given a more sane interface.
  */
 struct Uset {
-  explicit Uset(SetU32 s, uint32_t r = 0) : set(std::move(s)), refs(r) {}
+  explicit Uset(SetU32 s, uint32_t r = 0) :
+      exp({ Or, std::move(s) }), refs(r) {}
+  explicit Uset(SetU32 s, SetOp op = Or, uint32_t r = 0) :
+      exp({ op, std::move(s) }), refs(r) {}
 
   void rehash() {
-    hash = set.hash();
+    hash = exp.set.hash(exp.op); // don't forget to include op in the hash
   }
 
   void use(int32_t n) {
@@ -46,7 +72,7 @@ struct Uset {
   }
 
   /** The set */
-  SetU32 set;
+  SetExpr<SetU32> exp;
 
   /** The set's hash which must be memoized explicitly via `rehash`. */
   size_t hash;
@@ -71,7 +97,7 @@ struct Uset {
 
   struct Eq {
     bool operator()(const Uset *x, const Uset *y) const {
-      return x == y || x->set == y->set;
+      return x == y || x->exp == y->exp;
     }
   };
 
@@ -81,15 +107,20 @@ struct Uset {
       return x->hash;
     }
   };
+
+  using MutableEliasFanoList = SetU32::MutableEliasFanoList;
+  SetExpr<MutableEliasFanoList> toEliasFano();
 };
 
 /**
  * Container for `Usets` which guarantees to store each set exactly once.
  */
 struct Usets {
-  Usets() = default;
+  explicit Usets(uint32_t firstId)
+      : firstId(firstId), nextId(firstId) {}
 
-  Usets(Usets&& other) {
+  Usets(Usets&& other) noexcept
+      : firstId(other.firstId), nextId(other.nextId) {
     std::swap(usets, other.usets);
     stats = other.stats;
   }
@@ -117,9 +148,9 @@ struct Usets {
     entry->rehash();
     const auto [p, added] = usets.insert(entry);
     if (added) {
-      entry->set.shrink_to_fit();
+      entry->exp.set.shrink_to_fit();
       ++stats.adds;
-      stats.bytes += entry->set.bytes();
+      stats.bytes += entry->exp.set.bytes();
       return entry;
     } else {
       ++stats.dups;
@@ -136,17 +167,19 @@ struct Usets {
     return p;
   }
 
-  Uset *add(SetU32 set, uint32_t refs) {
+  Uset *add(SetU32 set, uint32_t refs = 0) {
     return add(std::unique_ptr<Uset>(new Uset(std::move(set), refs)));
   }
 
+  // only when both sets have the same op
   Uset *merge(Uset *left, Uset *right) {
     SetU32 set;
-    auto res = SetU32::merge(set, left->set, right->set);
+    assert(left->exp.op == right->exp.op);
+    auto res = SetU32::merge(set, left->exp.set, right->exp.set);
     if (res == &set) {
       return add(std::move(set), 1);
     } else {
-      auto& r = res == &left->set ? left : right;
+      auto& r = res == &left->exp.set ? left : right;
       use(r, 1);
       return r;
     }
@@ -162,7 +195,7 @@ struct Usets {
     if (uset->refs == 0) {
       assert(!uset->promoted());
       usets.erase(uset);
-      stats.bytes -= uset->set.bytes();
+      stats.bytes -= uset->exp.set.bytes();
       delete uset;
     }
   }
@@ -191,13 +224,18 @@ struct Usets {
     return stats;
   }
 
-  using EliasFanoList = SetU32::MutableEliasFanoList;
-  std::vector<EliasFanoList> toEliasFano();
+  UsetId getFirstId() const { return firstId; }
+
+  UsetId getNextId() const { return nextId; }
+
+  using MutableEliasFanoList = SetU32::MutableEliasFanoList;
+  std::vector<SetExpr<MutableEliasFanoList>> toEliasFano();
 
 private:
   folly::F14FastSet<Uset *, Uset::Hash, Uset::Eq> usets;
   Stats stats;
-  UsetId nextId = 0;
+  const UsetId firstId;
+  UsetId nextId;
 };
 
 }

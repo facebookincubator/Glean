@@ -11,6 +11,7 @@
 #include <folly/container/F14Map.h>
 #include <folly/container/F14Set.h>
 #include <folly/Hash.h>
+#include <folly/experimental/AutoTimer.h>
 #include <folly/experimental/EliasFanoCoding.h>
 
 #include <immintrin.h>
@@ -36,13 +37,15 @@ namespace {
  * OwnershipUnitIterator and populates the TrieArray with it, making
  * a FactId -> Set(Unit) mapping.
  */
-FOLLY_NOINLINE TrieArray<Uset> fillOwnership(OwnershipUnitIterator* iter) {
+FOLLY_NOINLINE TrieArray<Uset> fillOwnership(
+    OwnershipUnitIterator* iter,
+    uint32_t& numUnits) {
   struct Stats {
     size_t units = 0;
     size_t intervals = 0;
 
-    void bump(size_t us, size_t is) {
-      units += us;
+    void bump(size_t curUnits, size_t is) {
+      units = curUnits;
       const auto old_intervals = intervals;
       intervals += is;
       if ((old_intervals / 5000000) != (intervals / 5000000)) {
@@ -59,6 +62,7 @@ FOLLY_NOINLINE TrieArray<Uset> fillOwnership(OwnershipUnitIterator* iter) {
 
   TrieArray<Uset> utrie;
   uint32_t last_unit = 0;
+  uint32_t max_unit = 0;
   Stats stats;
   while(const auto d = iter->get()) {
     const auto data = d.value();
@@ -72,34 +76,37 @@ FOLLY_NOINLINE TrieArray<Uset> fillOwnership(OwnershipUnitIterator* iter) {
           if (prev->refs == refs) {
             // Do an in-place append if possible (determined via reference
             // count).
-            prev->set.append(data.unit);
+            prev->exp.set.append(data.unit);
             return prev;
           } else {
-            auto entry = std::make_unique<Uset>(SetU32(prev->set, SetU32::copy_capacity), refs);
-            entry->set.append(data.unit);
+            auto entry = std::make_unique<Uset>(
+                SetU32(prev->exp.set, SetU32::copy_capacity), refs);
+            entry->exp.set.append(data.unit);
             prev->refs -= refs;
             return entry.release();
           }
         } else {
           auto entry = std::make_unique<Uset>(SetU32(), refs);
-          entry->set.append(data.unit);
+          entry->exp.set.append(data.unit);
           return entry.release();
         }
       }
     );
 
-    stats.bump(stats.units == 0 || data.unit > last_unit ? 1 : 0, data.ids.size());
+    max_unit = std::max(data.unit, max_unit);
+    stats.bump(max_unit, data.ids.size());
     last_unit = data.unit;
   }
 
   stats.dump();
 
+  numUnits = max_unit + 1;
   return utrie;
 }
 
 /** Move the sets from the trie to `Usets`. */
-FOLLY_NOINLINE Usets collectUsets(TrieArray<Uset>& utrie) {
-  Usets usets;
+FOLLY_NOINLINE Usets collectUsets(uint32_t numUnits, TrieArray<Uset>& utrie) {
+  Usets usets(numUnits);
   size_t visits = 0;
   utrie.foreach([&](Uset *entry) -> Uset* {
     ++visits;
@@ -251,16 +258,20 @@ std::unique_ptr<ComputedOwnership> computeOwnership(
     const Inventory& inventory,
     Lookup& lookup,
     OwnershipUnitIterator *iter) {
-  LOG(INFO) << "filling ownership";
-  auto utrie = fillOwnership(iter);
-  LOG(INFO) << "collecting units";
-  auto usets = collectUsets(utrie);
+  uint32_t numUnits;
+  folly::AutoTimer t("computeOwnership");
+  LOG(INFO) << "computing ownership";
+  auto utrie = fillOwnership(iter,numUnits);
+  t.log("fillOwnership");
+  auto usets = collectUsets(numUnits,utrie);
+  t.log("collectUsets");
   // TODO: Should `completeOwnership` work with the trie rather than a
   // flat vector?
   auto facts = utrie.flatten();
-  LOG(INFO) << "completing ownership (" << facts.size() << ")";
+
+  LOG(INFO) << "completing ownership: " << facts.size() << " facts";
   completeOwnership(facts, usets, inventory, lookup);
-  LOG(INFO) << "finalizing sets";
+  t.log("completeOwnership");
 
   std::vector<std::pair<Id,UsetId>> factOwners;
   UsetId current = INVALID_USET;
@@ -273,10 +284,9 @@ std::unique_ptr<ComputedOwnership> computeOwnership(
   }
 
   auto sets = usets.toEliasFano();
-  LOG(INFO) << "finished ownership";
 
   return std::make_unique<ComputedOwnership>(
-      0,
+      usets.getFirstId(),
       std::move(sets),
       std::move(factOwners));
 }

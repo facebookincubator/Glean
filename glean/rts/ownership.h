@@ -51,8 +51,8 @@ using OwnerSet = folly::compression::EliasFanoCompressedList;
 
 struct OwnershipSetIterator {
   virtual ~OwnershipSetIterator() {}
-  virtual size_t size() = 0;
-  virtual folly::Optional<std::pair<UnitId,OwnerSet*>> get() = 0;
+  virtual std::pair<size_t,size_t> sizes() const = 0;
+  virtual folly::Optional<std::pair<UsetId,SetExpr<const OwnerSet*>>> get() = 0;
 };
 
 struct Ownership {
@@ -70,13 +70,13 @@ struct Ownership {
 struct ComputedOwnership {
   ~ComputedOwnership() {
     for (auto &set: sets_) {
-      set.free();
+      set.set.free();
     }
   }
 
   ComputedOwnership(
         UsetId firstId,
-        std::vector<MutableOwnerSet>&& sets,
+        std::vector<SetExpr<MutableOwnerSet>>&& sets,
         std::vector<std::pair<Id,UsetId>>&& facts) :
       firstId_(firstId),
       sets_(std::move(sets)),
@@ -85,7 +85,7 @@ struct ComputedOwnership {
   UsetId firstId_;
 
   // Sets, indexed by UsetId starting at firstId_
-  std::vector<MutableOwnerSet> sets_;
+  std::vector<SetExpr<MutableOwnerSet>> sets_;
 
   // Maps fact Ids to owner sets, represented as intervals
   std::vector<std::pair<Id,UsetId>> facts_;
