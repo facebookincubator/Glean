@@ -1,0 +1,64 @@
+{
+  "name": "glean",
+  "description": "Adds support for Glean development.",
+  "displayName": "Glean development Support",
+  "author": "oncall+code_indexing@xmail.facebook.com",
+  "repository": {
+    "url": "https://github.com/facebookincubator/Glean"
+  },
+  "version": "0.0.2",
+  "publisher": "Facebook",
+  "engines": {
+    "vscode": "^1.15.0"
+  },
+  "extensionKind": [
+    "ui"
+  ],
+  "icon": "resources/glean-icon.png",
+  "categories": [
+    "Programming Languages"
+  ],
+  "activationEvents": [
+    "onLanguage:angle"
+  ],
+  "webpackEntryPoints": {
+    "extension": {
+      "glean": {
+        "input": "./vscode-extensions/fb-glean/src/extension.tsx",
+        "output": "./vscode-extensions/fb-glean/src/extension.js"
+      }
+    }
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "angle",
+        "aliases": [
+          "Angle",
+          "Glean"
+        ],
+        "configuration": "./syntaxes/angle.configuration.json",
+        "extensions": [
+          ".angle"
+        ]
+      }
+    ],
+    "grammars": [
+      {
+        "language": "angle",
+        "scopeName": "source.angle",
+        "path": "./syntaxes/angle.grammar.json"
+      }
+    ]
+  },
+  "main": "./src/extension",
+  "dependencies": {
+    "log4js": "6.2.1",
+    "nuclide-commons": "0.0.0",
+    "nuclide-logging": "0.0.0"
+  },
+  "devDependencies": {
+    "vscode": "1.1.21"
+  },
+  "extensionDependencies": []
+}

@@ -1,0 +1,153 @@
+{
+  "scopeName": "source.angle",
+  "fileTypes": [".angle"],
+  "patterns": [
+    {
+      "include": "#expression"
+    }
+  ],
+  "repository": {
+    "expression": {
+      "patterns": [
+        {"include": "#letter-keywords"},
+        {"include": "#control-keywords"},
+        {"include": "#strings"},
+        {"include": "#numeric"},
+        {"include": "#paren-expression"},
+        {"include": "#brace-expression"},
+        {"include": "#square-paren-expression"},
+        {"include": "#comments"},
+        {"include": "#other-decalrations"},
+        {"include": "#predicate-decalrations"},
+        {"include": "#import-decalrations"}
+      ]
+    },
+    "letter-keywords": {
+      "match": "\\b(bool|byte|enum|maybe|nat|string)\\b",
+      "captures": {
+        "1": {
+          "name": "keyword.letter"
+        }
+      }
+    },
+    "control-keywords": {
+      "match": "\\b(stored|where)\\b",
+      "captures": {
+        "1": {
+          "name": "keyword.control"
+        }
+      }
+    },
+    "numeric": {
+      "match": "[0-9\\.]+",
+      "captures": {
+        "0": {
+          "name": "constant.numeric"
+        }
+      }
+    },
+    "strings": {
+      "name": "string.quoted.double",
+      "begin": "\\s*+((\"))",
+      "end": "\\s*+(?:((\"))|(\n))",
+      "beginCaptures": {
+        "1": {
+          "name": "string.quoted.double"
+        },
+        "2": {
+          "name": "punctuation.definition.string.begin"
+        }
+      },
+      "endCaptures": {
+        "1": {
+          "name": "string.quoted.double"
+        },
+        "2": {
+          "name": "punctuation.definition.string.end"
+        },
+        "3": {
+          "name": "invalid.illegal.newline"
+        }
+      }
+    },
+    "paren-expression": {
+      "begin": "\\(",
+      "end": "\\)",
+      "beginCaptures": {
+        "0": {"name": "punctuation.paren.open"}
+      },
+      "endCaptures": {
+        "0": {"name": "punctuation.paren.close"}
+      },
+      "name": "expression.group",
+      "patterns": [{"include": "#expression"}]
+    },
+    "brace-expression": {
+      "begin": "\\{",
+      "end": "\\}",
+      "beginCaptures": {
+        "0": {"name": "punctuation.paren.open"}
+      },
+      "endCaptures": {
+        "0": {"name": "punctuation.paren.close"}
+      },
+      "name": "expression.group",
+      "patterns": [{"include": "#expression"}]
+    },
+    "square-paren-expression": {
+      "begin": "\\[",
+      "end": "\\]",
+      "beginCaptures": {
+        "0": {"name": "punctuation.paren.open"}
+      },
+      "endCaptures": {
+        "0": {"name": "punctuation.paren.close"}
+      },
+      "name": "expression.group",
+      "patterns": [{"include": "#expression"}]
+    },
+    "comments": {
+      "begin": "\\#",
+      "captures": {
+        "0": {
+          "name": "punctuation.definition.comment"
+        }
+      },
+      "end": "\\n",
+      "name": "comment.block"
+    },
+    "other-decalrations": {
+      "match": "\\b(schema|type)\\s+([A-Za-z\\-\\_0-9\\.]+)\\b",
+      "captures": {
+        "1": {
+          "name": "keyword.letter"
+        },
+        "2": {
+          "name": "variable.other"
+        }
+      }
+    },
+    "import-decalrations": {
+      "match": "\\b(import)\\s+([A-Za-z\\-\\_0-9\\.]+)\\b",
+      "captures": {
+        "1": {
+          "name": "keyword.control"
+        },
+        "2": {
+          "name": "variable.other"
+        }
+      }
+    },
+    "predicate-decalrations": {
+      "match": "\\b(predicate)\\s+([A-Za-z\\-\\_0-9\\.]+)\\b",
+      "captures": {
+        "1": {
+          "name": "keyword.letter"
+        },
+        "2": {
+          "name": "entity.name.function"
+        }
+      }
+    }
+  }
+}
