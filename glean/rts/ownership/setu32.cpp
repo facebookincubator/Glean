@@ -417,7 +417,7 @@ const SetU32 *SetU32::merge(SetU32& result, const SetU32& left, const SetU32& ri
   }
 }
 
-SetU32::EliasFanoList SetU32::toEliasFano() {
+SetU32::MutableEliasFanoList SetU32::toEliasFano() {
   auto upperBound = this->upper();
   size_t size = this->size();
   folly::compression::EliasFanoEncoderV2<uint32_t, uint32_t> encoder(
@@ -428,6 +428,16 @@ SetU32::EliasFanoList SetU32::toEliasFano() {
     encoder.add(elt);
   });
   return encoder.finish();
+}
+
+SetU32 SetU32::fromEliasFano(const EliasFanoList& list) {
+  SetU32 set;
+  auto reader = EliasFanoReader<
+    folly::compression::EliasFanoEncoderV2<uint32_t,uint32_t>>(list);
+  while (reader.next()) {
+    set.append(reader.value());
+  }
+  return set;
 }
 
 void SetU32::dump(SetU32 &set) {

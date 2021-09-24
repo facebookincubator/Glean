@@ -191,7 +191,7 @@ struct Usets {
     return stats;
   }
 
-  using EliasFanoList = SetU32::EliasFanoList;
+  using EliasFanoList = SetU32::MutableEliasFanoList;
   std::vector<EliasFanoList> toEliasFano();
 
 private:

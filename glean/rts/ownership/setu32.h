@@ -365,8 +365,6 @@ public:
    */
   static const SetU32 *merge(SetU32& result, const SetU32& left, const SetU32& right);
 
-  using EliasFanoList = folly::compression::MutableEliasFanoCompressedList;
-  EliasFanoList toEliasFano();
   template<typename F>
   void foreach(F&& f) const {
     for (auto &block : *this) {
@@ -396,6 +394,11 @@ public:
     }
   }
 
+  using MutableEliasFanoList =
+    folly::compression::MutableEliasFanoCompressedList;
+  using EliasFanoList = folly::compression::EliasFanoCompressedList;
+  MutableEliasFanoList toEliasFano();
+  static SetU32 fromEliasFano(const EliasFanoList& list);
 
   static void dump(SetU32 &);
 
