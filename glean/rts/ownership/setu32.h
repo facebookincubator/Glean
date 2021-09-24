@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cstring>
+#include <set>
 #include <tuple>
 #include <vector>
 #include <folly/Optional.h>
@@ -349,6 +350,14 @@ public:
   /// Append a new value which must be >= the largest value in the set
   void append(uint32_t value);
 
+  static SetU32 from(const std::set<uint32_t>& set) {
+    SetU32 setu32;
+    for (auto elt : set) {
+      setu32.append(elt);
+    }
+    return setu32;
+  }
+
   /**
    * Merge two sets. If `right` is a subset of `left` or vice versa, returns a
    * pointer to the superset. Otherwise, stores the result in `result` and
@@ -358,6 +367,35 @@ public:
 
   using EliasFanoList = folly::compression::MutableEliasFanoCompressedList;
   EliasFanoList toEliasFano();
+  template<typename F>
+  void foreach(F&& f) const {
+    for (auto &block : *this) {
+      auto id = block.hdr.id() << 8;
+      switch (block.hdr.type()) {
+        case SetU32::Hdr::Sparse: {
+          for (uint32_t i = 0; i < block.hdr.sparseLen(); i++) {
+            f(id | block.sparse[i]);
+          }
+          break;
+        }
+        case SetU32::Hdr::Dense: {
+          for (uint32_t i = 0; i < 256; i++) {
+            if (block.dense->contains(i)) {
+              f(id | i);
+            }
+          }
+          break;
+        }
+        case SetU32::Hdr::Full: {
+          for (uint32_t i = 0; i < 256; i++) {
+            f(id | i);
+          }
+          break;
+        }
+      }
+    }
+  }
+
 
   static void dump(SetU32 &);
 

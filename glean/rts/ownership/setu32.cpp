@@ -424,34 +424,9 @@ SetU32::EliasFanoList SetU32::toEliasFano() {
       size, upperBound);
 
   VLOG(5) << "upper=" << upperBound << ", size=" << size;
-  for (auto &block : *this) {
-    auto id = block.hdr.id() << 8;
-    switch (block.hdr.type()) {
-      case SetU32::Hdr::Sparse: {
-        for (uint32_t i = 0; i < block.hdr.sparseLen(); i++) {
-          VLOG(5) << "add(sparse): " << (id | block.sparse[i]);
-          encoder.add(id | block.sparse[i]);
-        }
-        break;
-      }
-      case SetU32::Hdr::Dense: {
-        for (uint32_t i = 0; i < 256; i++) {
-          if (block.dense->contains(i)) {
-            VLOG(5) << "add(dense): " << (id | i);
-            encoder.add(id | i);
-          }
-        }
-        break;
-      }
-      case SetU32::Hdr::Full: {
-        for (uint32_t i = 0; i < 256; i++) {
-          VLOG(5) << "add(full): " << (id | i);
-          encoder.add(id | i);
-        }
-        break;
-      }
-    }
-  }
+  foreach([&](uint32_t elt) {
+    encoder.add(elt);
+  });
   return encoder.finish();
 }
 
