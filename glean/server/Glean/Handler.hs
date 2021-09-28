@@ -25,15 +25,15 @@ import Glean.Types as Thrift
 data State = State
   { fb303State :: Fb303State
   , stEnv :: Env
+  , stPort :: IO Int -- ^ get the port the server is running on
   }
 
 handlerIndexing
-  :: IO Int -- get the port the server is running on
-  -> State
+  :: State
   -> GleanIndexingServiceCommand a
   -> IO a
-handlerIndexing getPort state req = case req of
-  Index req -> Index.index getPort (stEnv state) req
+handlerIndexing state req = case req of
+  Index r -> Index.index (stPort state) (stEnv state) r
   SuperGleanService r -> handler state r
 
 handler :: State -> GleanServiceCommand a -> IO a

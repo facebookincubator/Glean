@@ -109,7 +109,6 @@ main =
   withShardsUpdater evb cfg databases $ do
 
   fb303 <- newFb303 "gleandriver"
-  let state = GleanHandler.State fb303 databases
 
   logInfo "Starting server"
   portVar <- newTVarIO Nothing
@@ -137,11 +136,13 @@ main =
     getPort =
       fromMaybe (error "server hasn't started yet") <$> readTVarIO portVar
 
+  let state = GleanHandler.State fb303 databases getPort
+
   if cfgEnableIndexing cfg
     then
       withBackgroundFacebookServiceDeferredAlive
         (GleanHandler.fb303State state)
-        (GleanHandler.handlerIndexing getPort state)
+        (GleanHandler.handlerIndexing state)
         opts
         waitToStart
     else
