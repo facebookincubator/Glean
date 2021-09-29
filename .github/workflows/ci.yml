@@ -31,3 +31,19 @@ jobs:
         run: make
       - name: Run Glean tests
         run: make test
+  vscode:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install Node
+        uses: actions/setup-node@v2
+      - name: Build VS Code extension
+        run: npx vsce package
+        working-directory: glean/vscode
+      - name: Archive .vsix extension file
+        uses: actions/upload-artifact@v2
+        with:
+          name: glean-vsix
+          path: |
+            glean/vscode/*.vsix
