@@ -262,31 +262,39 @@ instance Plugin WriteCommand where
             return ()
       atomically (flushTQueue logMessages) >>= mapM_ putStrLn
 
+    write repo files max Nothing Nothing BinaryFormat =
+      streamWithThrow max (forM_ files) $ \file -> do
+        handleAll (\e -> do throwIO $ ErrorCall $ file <> ": " <> show e) $ do
+          r <- B.readFile file
+          batch <- case deserializeGen (Proxy :: Proxy Compact) r of
+            Left parseError -> die 3 $ "Parse error: " <> parseError
+            Right result -> return result
+          void $ Glean.sendBatch backend repo batch
+
     write repo files max scribe Nothing JsonFormat = do
-      streamWithThrow max (forM_ files) $
-        \file -> do
-          r <- Foreign.CPP.Dynamic.parseJSON =<< B.readFile file
-          val <- either (throwIO  . ErrorCall . ((file ++ ": ") ++) .
-            Text.unpack) return r
-          batches <- case Aeson.parse parseJsonFactBatches val of
-            Aeson.Error str -> throwIO $ ErrorCall $ file ++ ": " ++ str
-            Aeson.Success x -> return x
-          case scribe of
-            Nothing -> void $ Glean.sendJsonBatch backend repo batches Nothing
-            Just ScribeOptions
-              { writeFromScribe = WriteFromScribe{..}, .. } ->
-                scribeWriteBatches
-                  writeFromScribe_category
-                  (case writeFromScribe_bucket of
-                    Just (PickScribeBucket_bucket n) -> Just (fromIntegral n)
-                    Nothing -> Nothing)
-                  batches
-                  scribeCompress
+      streamWithThrow max (forM_ files) $ \file -> do
+        r <- Foreign.CPP.Dynamic.parseJSON =<< B.readFile file
+        val <- either (throwIO  . ErrorCall . ((file ++ ": ") ++) .
+          Text.unpack) return r
+        batches <- case Aeson.parse parseJsonFactBatches val of
+          Aeson.Error str -> throwIO $ ErrorCall $ file ++ ": " ++ str
+          Aeson.Success x -> return x
+        case scribe of
+          Nothing -> void $ Glean.sendJsonBatch backend repo batches Nothing
+          Just ScribeOptions
+            { writeFromScribe = WriteFromScribe{..}, .. } ->
+              scribeWriteBatches
+                writeFromScribe_category
+                (case writeFromScribe_bucket of
+                  Just (PickScribeBucket_bucket n) -> Just (fromIntegral n)
+                  Nothing -> Nothing)
+                batches
+                scribeCompress
 
     write _repo _files _max (Just _scribe) (Just _useLocalCache) _  =
       die 3 "Cannot use a local cache with scribe"
-    write _repo _files _max _ Nothing BinaryFormat =
-      die 3 "Cannot write binary without using a local cache"
+    write _repo _files _max (Just _scribe) Nothing BinaryFormat  =
+      die 3 "Cannot use binary format with scribe"
 
     resultToFailure Right{} = Nothing
     resultToFailure (Left err) = Just (show err)
