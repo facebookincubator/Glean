@@ -8,10 +8,17 @@ module Glean.Write.Options
   , writerOptions
   ) where
 
+import Control.Exception
+import qualified Data.ByteString as B
 import Data.Default (def)
 import qualified Options.Applicative as O
+import System.IO
+import Text.Printf
 
-import Glean.Write.Async (WriterSettings(..))
+import Thrift.Protocol.Compact
+import Util.Log
+
+import Glean.Write.Async (WriterSettings(..), WriterEvent(..))
 import Glean.Write.SendQueue (SendQueueSettings(..))
 import Glean.Write.SendAndRebaseQueue (SendAndRebaseQueueSettings(..))
 
@@ -67,4 +74,24 @@ writerOptions = do
     <> O.value 30000000
     <> O.showDefault
     <> O.help "maximum size of Thrift batch (in bytes)"
-  return def{writerMaxSize}
+  writerDump <- O.optional $ O.strOption $
+    O.long "dump-batches"
+    <> O.metavar "DIR"
+    <> O.help ("also dump all batches in binary format to DIR. " <>
+      "The files can be used with 'glean write --file-format=binary'")
+  return def
+    { writerMaxSize = writerMaxSize
+    , writerLog = logBatch writerDump
+    }
+  where
+    logBatch dump (WriterPushing batch)
+      | Just dir <- dump = do
+        let serialized = serializeCompact batch
+        bracket
+          (openTempFile dir "batch.bin")
+          (hClose . snd)
+          $ \(f,h) -> do
+            logInfo $ printf "dumping batch (%d bytes) to %s"
+              (B.length serialized) f
+            B.hPut h serialized
+    logBatch _ _ = return ()
