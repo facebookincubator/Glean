@@ -153,6 +153,9 @@ std::unique_ptr<FactIterator> FactSet::seek(
 }
 
 Id FactSet::define(Pid type, Fact::Clause clause, Id) {
+  if (clause.key_size > Fact::MAX_KEY_SIZE) {
+    error("key too large: {}", clause.key_size);
+  }
   const auto next_id = firstFreeId();
   auto fact = Fact::create({next_id, type, clause});
   auto& key_map = keys[type];
