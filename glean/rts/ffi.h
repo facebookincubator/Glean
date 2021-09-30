@@ -44,6 +44,7 @@ typedef struct Predicate Predicate;
 typedef struct Substitution Substitution;
 typedef struct QueryResults QueryResults;
 typedef struct OwnershipUnitIterator OwnershipUnitIterator;
+typedef struct DerivedFactOwnershipIterator DerivedFactOwnershipIterator;
 typedef struct Ownership Ownership;
 typedef struct DefineOwnership DefineOwnership;
 typedef struct ComputedOwnership ComputedOwnership;
@@ -185,6 +186,7 @@ void glean_lookupcache_anchor_free(
 const char *glean_query_execute_compiled(
   Inventory *inventory,
   Define *facts,
+  DefineOwnership *ownership,
   SharedSubroutine *sub,
   uint64_t pid,
   SharedSubroutine *traverse,
@@ -201,6 +203,7 @@ const char *glean_query_execute_compiled(
 const char *glean_query_restart_compiled(
   Inventory *inventory,
   Define *facts,
+  DefineOwnership *ownership,
   void *cont,
   int64_t cont_size,
   uint64_t max_results,
@@ -496,6 +499,10 @@ void glean_ownership_unit_iterator_free(
   OwnershipUnitIterator *
 );
 
+void glean_derived_fact_ownership_iterator_free(
+  DerivedFactOwnershipIterator *
+);
+
 const char *glean_ownership_compute(
   Inventory *inventory,
   Lookup *lookup,
@@ -538,6 +545,12 @@ const char *glean_define_ownership_subst(
 );
 
 void glean_define_ownershiop_free(DefineOwnership *def);
+
+const char *glean_derived_ownership_compute(
+  Ownership *own,
+  DerivedFactOwnershipIterator *iter,
+  ComputedOwnership **result
+);
 
 #ifdef __cplusplus
 }

@@ -29,6 +29,7 @@ import Util.Log
 import Glean.Angle.Types as A
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Schema.Types
+import Glean.Database.Storage as Storage
 import Glean.Database.Open
 import Glean.Database.Types as Database
 import Glean.Database.Writes
@@ -39,7 +40,9 @@ import Glean.Query.Codegen
 import Glean.Schema.Util
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types as Thrift hiding (Byte, Nat, Exception)
+import qualified Glean.Types as Thrift
 import Glean.Util.Observed as Observed
+import Glean.Util.Mutex
 import Glean.Util.Time
 import Glean.Util.Warden
 
@@ -361,6 +364,7 @@ finishDerivation env@Env{..} log repo pred = do
   now <- getTimePoint
   derivation <- overDerivation env repo pred $ withProgress now finished
   logResult log derivation
+  when (isNothing (derivationError derivation)) finishOwnership
   return derivation
   where
     finishedWrites :: Derivation -> IO (Either SomeException [Thrift.Handle])
@@ -386,6 +390,24 @@ finishDerivation env@Env{..} log repo pred = do
                 $ diffTimePoints (derivationStart d) now
             }
         }
+
+    finishOwnership = do
+      withOpenDatabase env repo $ \OpenDB{..} -> do
+        writing <- case odbWriting of
+          Nothing -> throwIO $ Thrift.Exception "finishOwnership: read only"
+          Just writing -> return writing
+        details <- case lookupPredicateRef pred odbSchema of
+          Nothing -> throwIO $ Thrift.Exception "finishOwnership: no pid"
+          Just details -> return details
+        maybeOwnership <- readTVarIO odbOwnership
+        -- we need the write lock while computing the final ownership,
+        -- because we might write new ownership sets to the DB. This
+        -- step should hopefully be fast though (TOOD: measure)
+        forM_ maybeOwnership $ \ownership ->
+          withMutex (wrLock writing) $ \_ -> do
+            computed <- Storage.computeDerivedOwnership odbHandle ownership
+              (predicatePid details)
+            Storage.storeOwnership odbHandle computed
 
 getDerivation :: Database.Env -> Repo -> PredicateRef -> STM Derivation
 getDerivation env repo pred = do

@@ -62,6 +62,7 @@ import Glean.Database.Open
 import Glean.Database.Write.Batch
 import Glean.Database.Types
 import qualified Glean.RTS.Foreign.Subst as Subst
+import Glean.RTS.Foreign.Ownership (DefineOwnership)
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types as Thrift hiding (Database, Exception)
 import Glean.Write.JSON
@@ -247,8 +248,8 @@ reportQueueSizes repo repoQueueCount repoQueueSize totalQueueSize mLatency = do
       addStatValueType ("glean.db.write.queue_ms." <> repoB)
         elapsedMilliSeconds Avg
 
-enqueueBatch :: Env -> ComputedBatch -> IO SendResponse
-enqueueBatch env@Env{..} ComputedBatch{..} = do
+enqueueBatch :: Env -> ComputedBatch -> Maybe DefineOwnership -> IO SendResponse
+enqueueBatch env@Env{..} ComputedBatch{..} ownership = do
   -- NOTE: we use UUIDs here rather than, say, consecutive
   -- numbers because we want to avoid conflicts when the
   -- server restarts/crashes
@@ -256,7 +257,8 @@ enqueueBatch env@Env{..} ComputedBatch{..} = do
 
   let size = ByteString.length (batch_facts computedBatch_batch)
   r <- try $ enqueueWrite env computedBatch_repo size $
-    writeDatabase env computedBatch_repo computedBatch_batch
+    writeDatabase env computedBatch_repo
+      (WriteContent computedBatch_batch ownership)
   case r of
     -- ToDo: make sendBatch use Retry exceptions instead of results too
     Left (Retry n) ->

@@ -7,14 +7,16 @@ module Glean.Database.Validate
   ) where
 
 import Control.Concurrent.STM
+import Control.Exception
 
 import Glean.Database.Schema
 import qualified Glean.Database.Storage as Storage
 import Glean.Database.Open (readDatabase, withOpenDatabase)
-import Glean.Database.Types (Env, OpenDB(..))
+import Glean.Database.Types
 import Glean.RTS.Foreign.Inventory (Validate(..))
 import qualified Glean.RTS.Foreign.Inventory as Inventory
-import Glean.Types (Repo)
+import Glean.Types (Repo, Exception(..))
+import Glean.Util.Mutex
 
 validate :: Env -> Repo -> Validate -> IO ()
 validate env repo val = readDatabase env repo $ \odb db ->
@@ -23,6 +25,10 @@ validate env repo val = readDatabase env repo $ \odb db ->
 computeOwnership :: Env -> Repo -> IO ()
 computeOwnership env repo = withOpenDatabase env repo $ \OpenDB{..} -> do
   own <- Storage.computeOwnership odbHandle (schemaInventory odbSchema)
-  Storage.storeOwnership odbHandle own
+  case odbWriting of
+    Nothing -> throwIO $ Exception "computeOwnership: read only"
+    Just writing -> withMutex (wrLock writing) $ const $
+      Storage.storeOwnership odbHandle own
+  -- read the StoredOwnership now to update it with the computed sets
   newOwn <- Storage.getOwnership odbHandle
   atomically $ writeTVar odbOwnership newOwn

@@ -110,6 +110,14 @@ class CanLookup (Database s) => Storage s where
 
   getUnitId :: Database s -> ByteString -> IO (Maybe UnitId)
 
+  addDefineOwnership :: Database s -> DefineOwnership -> IO ()
+
+  computeDerivedOwnership
+    :: Database s
+    -> Ownership
+    -> Pid
+    -> IO ComputedOwnership
+
   -- | Backup a database. The scratch directory which can be used for storing
   -- intermediate files is guaranteed to be empty and will be deleted after
   -- the operation completes.

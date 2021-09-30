@@ -153,6 +153,13 @@ const char *glean_rocksdb_add_define_ownership(
   Database *db,
   DefineOwnership *define
 );
+
+const char *glean_rocksdb_get_derived_fact_ownership_iterator(
+  Database *db,
+  uint64_t pid,
+  DerivedFactOwnershipIterator **iter
+);
+
 #ifdef __cplusplus
 }
 }

@@ -7,6 +7,7 @@ module Glean.Query.UserQuery
   ) where
 
 import Control.Applicative
+import Control.Concurrent.STM
 import Control.DeepSeq
 import Control.Exception
 import Control.Monad
@@ -66,6 +67,7 @@ import qualified Glean.RTS.Foreign.Bytecode as Bytecode
 import Glean.RTS.Foreign.FactSet (FactSet)
 import qualified Glean.RTS.Foreign.FactSet as FactSet
 import Glean.RTS.Foreign.Lookup
+import Glean.RTS.Foreign.Ownership
 import Glean.RTS.Foreign.Query
 import Glean.RTS.Foreign.Stacked (stacked)
 import Glean.RTS.Types (Type, FieldDef, PidRef(..), ExpandedType(..))
@@ -411,7 +413,7 @@ userQueryFactsImpl
     bracket
       (compileQueryFacts userQueryFacts_facts)
       (release . compiledQuerySub) $ \sub ->
-        executeCompiled schemaInventory stack sub limits
+        executeCompiled schemaInventory Nothing stack sub limits
 
   stats <- getStats qResults
 
@@ -555,13 +557,20 @@ userQueryImpl
     derived <- FactSet.new nextId
     let stack = stacked lookup derived
 
+    defineOwners <- if stored
+      then do
+        maybeOwnership <- readTVarIO (odbOwnership odb)
+        forM maybeOwnership $ \ownership ->
+          newDefineOwnership ownership predicatePid
+      else return Nothing
+
     ( qResults@QueryResults{..}
       , queryDiag
       , bytecodeSize) <-
       case cont of
         Right ucont -> do
           let binaryCont = Thrift.userQueryCont_continuation ucont
-          results <- restartCompiled schemaInventory stack
+          results <- restartCompiled schemaInventory defineOwners stack
             (Just predicatePid) limits binaryCont
           return (results, [], B.length binaryCont)
 
@@ -571,8 +580,10 @@ userQueryImpl
               [ "bytecode:\n" <> Text.unlines
                 (disassemble "Query" $ compiledQuerySub sub)
               | Thrift.queryDebugOptions_bytecode debug ]
+
           bracket (compileQuery query) (release . compiledQuerySub) $ \sub -> do
-            results <- executeCompiled schemaInventory stack sub limits
+            results <- executeCompiled schemaInventory defineOwners
+              stack sub limits
             diags <- evaluate $ force (bytecodeDiag sub) -- don't keep sub alive
             sz <- evaluate $ Bytecode.size (compiledQuerySub sub)
             return (results, diags, sz)
@@ -581,7 +592,7 @@ userQueryImpl
     -- return the handle.
     maybeWriteHandle <-
       if stored
-        then writeDerivedFacts env repo derived
+        then writeDerivedFacts env repo derived defineOwners
         else return Nothing
 
     userCont <- case queryResultsCont of
@@ -647,7 +658,7 @@ userQueryImpl
       pred = predicateRef_name predicateRef <> "." <>
           showt (predicateRef_version predicateRef)
 
-      mkResults pids derived qResults@QueryResults{..} = do
+      mkResults pids derived qResults@QueryResults{..} defineOwners = do
         userCont <- case queryResultsCont of
           Nothing -> return Nothing
           Just bs -> do
@@ -662,7 +673,7 @@ userQueryImpl
         -- return the handle.
         maybeWriteHandle <-
           if stored
-            then writeDerivedFacts env repo derived
+            then writeDerivedFacts env repo derived defineOwners
             else return Nothing
         return Results
           { resFacts = Vector.toList queryResultsFacts
@@ -684,6 +695,13 @@ userQueryImpl
           | Thrift.userQueryOptions_recursive opts = limits0
           | otherwise = limits0 { queryDepth = ExpandPartial pids }
 
+    defineOwners <- if stored
+      then do
+        maybeOwnership <- readTVarIO (odbOwnership odb)
+        forM maybeOwnership $ \ownership ->
+          newDefineOwnership ownership predicatePid
+      else return Nothing
+
     results <- case Thrift.userQueryOptions_continuation opts of
       Just ucont@Thrift.UserQueryCont{..} -> do
         nextId <- if userQueryCont_nextId > 0
@@ -693,9 +711,9 @@ userQueryImpl
         let stack = stacked lookup derived
             pids = Set.fromList $ Pid <$> userQueryCont_pids
             limits = getLimits pids
-        qResults <- restartCompiled schemaInventory stack (Just predicatePid)
-          limits (Thrift.userQueryCont_continuation ucont)
-        mkResults pids derived qResults
+        qResults <- restartCompiled schemaInventory defineOwners stack
+          (Just predicatePid) limits (Thrift.userQueryCont_continuation ucont)
+        mkResults pids derived qResults defineOwners
 
       Nothing -> do
         let
@@ -721,8 +739,9 @@ userQueryImpl
             derived <- FactSet.new nextId
             let stack = stacked lookup derived
             qResults <- bracket (compileQuery gens) (release . compiledQuerySub)
-              $ \sub -> executeCompiled schemaInventory stack sub limits
-            mkResults pids derived qResults
+              $ \sub -> executeCompiled schemaInventory defineOwners stack
+                sub limits
+            mkResults pids derived qResults defineOwners
 
         -- 1. Decode the JSON
         pat <- case Aeson.eitherDecode (LB.fromStrict userQuery_query) of
@@ -825,8 +844,13 @@ mkQueryRuntimeOptions Thrift.UserQueryOptions{..} ServerConfig.Config{..} =
     }
 
 
-writeDerivedFacts :: Env -> Thrift.Repo -> FactSet -> IO (Maybe Thrift.Handle)
-writeDerivedFacts env repo derived = do
+writeDerivedFacts
+  :: Env
+  -> Thrift.Repo
+  -> FactSet
+  -> Maybe DefineOwnership
+  -> IO (Maybe Thrift.Handle)
+writeDerivedFacts env repo derived owned = do
   batch <- FactSet.serialize derived
   if Thrift.batch_count batch == 0
     then return Nothing
@@ -835,6 +859,7 @@ writeDerivedFacts env repo derived = do
         { computedBatch_repo = repo
         , computedBatch_remember = True
         , computedBatch_batch = batch }
+        owned
       case resp of
         Thrift.SendResponse_handle handle -> return (Just handle)
         Thrift.SendResponse_retry (Thrift.BatchRetry s) ->

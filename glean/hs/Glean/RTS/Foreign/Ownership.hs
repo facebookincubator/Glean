@@ -4,12 +4,18 @@ module Glean.RTS.Foreign.Ownership
   ( UnitIterator
   , compute
   , UnitId(..)
+  , UsetId(..)
   , Ownership
   , ComputedOwnership
   , Slice
   , slice
   , sliced
   , Sliced
+  , newDefineOwnership
+  , DefineOwnership
+  , substDefineOwnership
+  , DerivedFactOwnershipIterator
+  , computeDerivedOwnership
   ) where
 
 import Control.Exception
@@ -20,6 +26,8 @@ import Foreign.C
 import Glean.FFI
 import Glean.RTS.Foreign.Inventory (Inventory)
 import Glean.RTS.Foreign.Lookup
+import Glean.RTS.Foreign.Subst
+import Glean.RTS.Types
 
 newtype UnitIterator = UnitIterator (Ptr UnitIterator)
   deriving(Storable)
@@ -27,7 +35,13 @@ newtype UnitIterator = UnitIterator (Ptr UnitIterator)
 instance Static UnitIterator where
   destroyStatic = glean_ownership_unit_iterator_free
 
+-- | Id of a unit
 newtype UnitId = UnitId Word32
+  deriving (Storable)
+
+-- | Id of an ownership set
+newtype UsetId = UsetId Word32
+  deriving (Storable)
 
 newtype Ownership = Ownership (ForeignPtr Ownership)
 
@@ -87,13 +101,70 @@ instance CanLookup base => CanLookup (Sliced base) where
       glean_sliced_free
       f
 
+newtype DefineOwnership = DefineOwnership (ForeignPtr DefineOwnership)
+
+instance Object DefineOwnership where
+  wrap = DefineOwnership
+  unwrap (DefineOwnership p) = p
+  destroy = glean_define_ownership_free
+
+newDefineOwnership :: Ownership -> Pid -> IO DefineOwnership
+newDefineOwnership ownership (Pid pid) =
+  with ownership $ \ownership_ptr ->
+    construct $ invoke $
+      glean_new_define_ownership ownership_ptr (fromIntegral pid)
+
+substDefineOwnership :: DefineOwnership -> Subst -> IO ()
+substDefineOwnership define subst =
+  with define $ \define_ptr ->
+  with subst $ \subst_ptr ->
+    invoke $ glean_define_ownership_subst define_ptr subst_ptr
+
+newtype DerivedFactOwnershipIterator =
+  DerivedFactOwnershipIterator (Ptr DerivedFactOwnershipIterator)
+  deriving(Storable)
+
+instance Static DerivedFactOwnershipIterator where
+  destroyStatic = glean_derived_fact_ownership_iterator_free
+
+computeDerivedOwnership
+  :: Ownership
+  -> DerivedFactOwnershipIterator
+  -> IO ComputedOwnership
+computeDerivedOwnership ownership iter =
+  with ownership $ \ownership_ptr ->
+    construct $ invoke $ glean_derived_ownership_compute ownership_ptr iter
+
+foreign import ccall unsafe glean_new_define_ownership
+  :: Ptr Ownership
+  -> Word64
+  -> Ptr (Ptr DefineOwnership)
+  -> IO CString
+
+foreign import ccall unsafe "&glean_define_ownership_free"
+  glean_define_ownership_free :: FunPtr (Ptr DefineOwnership -> IO ())
+
+foreign import ccall unsafe glean_define_ownership_subst
+  :: Ptr DefineOwnership
+  -> Ptr Subst
+  -> IO CString
+
 foreign import ccall unsafe glean_ownership_unit_iterator_free
   :: UnitIterator -> IO ()
+
+foreign import ccall unsafe glean_derived_fact_ownership_iterator_free
+  :: DerivedFactOwnershipIterator -> IO ()
 
 foreign import ccall safe glean_ownership_compute
   :: Ptr Inventory
   -> Lookup
   -> UnitIterator
+  -> Ptr (Ptr ComputedOwnership)
+  -> IO CString
+
+foreign import ccall safe glean_derived_ownership_compute
+  :: Ptr Ownership
+  -> DerivedFactOwnershipIterator
   -> Ptr (Ptr ComputedOwnership)
   -> IO CString
 

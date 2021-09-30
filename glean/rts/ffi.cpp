@@ -215,6 +215,7 @@ void glean_interrupt_running_queries() {
 const char *glean_query_execute_compiled(
     Inventory *inventory,
     Define *facts,
+    DefineOwnership *ownership,
     SharedSubroutine *sub,
     uint64_t pid,
     SharedSubroutine *traverse,
@@ -238,6 +239,7 @@ const char *glean_query_execute_compiled(
       executeQuery(
         *inventory,
         *facts,
+        ownership,
         *(sub->value),
         Pid::fromWord(pid),
         traverse ? traverse->value : nullptr,
@@ -255,6 +257,7 @@ const char *glean_query_execute_compiled(
 const char *glean_query_restart_compiled(
     Inventory *inventory,
     Define *facts,
+    DefineOwnership *ownership,
     void *cont,
     int64_t cont_size,
     uint64_t max_results,
@@ -277,6 +280,7 @@ const char *glean_query_restart_compiled(
       restartQuery(
         *inventory,
         *facts,
+        ownership,
         max_results == 0 ? folly::none : folly::Optional<uint64_t>(max_results),
         max_bytes == 0 ? folly::none : folly::Optional<uint64_t>(max_bytes),
         max_time_ms == 0 ? folly::none : folly::Optional<uint64_t>(max_time_ms),
@@ -846,6 +850,11 @@ void glean_ownership_unit_iterator_free(OwnershipUnitIterator *iter) {
   ffi::free_(iter);
 }
 
+void glean_derived_fact_ownership_iterator_free(
+  DerivedFactOwnershipIterator *iter) {
+  ffi::free_(iter);
+}
+
 const char *glean_ownership_compute(
     Inventory *inventory,
     Lookup *lookup,
@@ -897,6 +906,36 @@ void glean_sliced_free(Sliced *sliced) {
   ffi::free_(sliced);
 }
 
+const char *glean_new_define_ownership(
+  Ownership *own,
+  int64_t pid,
+  DefineOwnership **result
+) {
+  return ffi::wrap([=] {
+    *result = new DefineOwnership(own,Pid::fromWord(pid));
+  });
+}
+
+const char *glean_define_ownership_subst(
+  DefineOwnership *define,
+  const Substitution *subst) {
+  return ffi::wrap([=] {
+    define->subst(*subst);
+  });
+}
+
+void glean_define_ownership_free(DefineOwnership *def) {
+  ffi::free_(def);
+}
+
+const char *glean_derived_ownership_compute(
+  Ownership *own,
+  DerivedFactOwnershipIterator *iter,
+  ComputedOwnership **result) {
+  return ffi::wrap([=] {
+    *result = computeDerivedOwnership(*own, iter).release();
+  });
+}
 
 }
 }

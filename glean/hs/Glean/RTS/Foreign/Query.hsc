@@ -31,6 +31,7 @@ import Glean.FFI
 import Glean.RTS.Foreign.Bytecode
 import Glean.RTS.Foreign.Define
 import Glean.RTS.Foreign.Inventory
+import Glean.RTS.Foreign.Ownership
 import Glean.RTS.Traverse
 import Glean.RTS.Types (Fid(..), Pid(..))
 import Glean.Types as Thrift
@@ -80,14 +81,17 @@ data CompiledQuery = CompiledQuery
 executeCompiled
   :: CanDefine a
   => Inventory
+  -> Maybe DefineOwnership
   -> a
   -> CompiledQuery
   -> QueryRuntimeOptions
   -> IO QueryResults
-executeCompiled inventory facts CompiledQuery{..} QueryRuntimeOptions{..} =
+executeCompiled inventory ownership facts
+    CompiledQuery{..} QueryRuntimeOptions{..} =
   withDefine facts $ \facts_ptr ->
   with inventory $ \inventory_ptr ->
   with compiledQuerySub $ \sub_ptr ->
+  maybe ($ nullPtr) with ownership $ \ownership_ptr ->
   let
     maxr = fromIntegral (fromMaybe 0 queryMaxResults)
     maxb = fromIntegral (fromMaybe 0 queryMaxBytes)
@@ -102,6 +106,7 @@ executeCompiled inventory facts CompiledQuery{..} QueryRuntimeOptions{..} =
     (invoke $ \presults -> glean_query_execute_compiled
       inventory_ptr
       facts_ptr
+      ownership_ptr
       sub_ptr
       (maybe 0 (fromIntegral . fromPid) compiledQueryResultPid)
       traversal_ptr
@@ -118,15 +123,18 @@ executeCompiled inventory facts CompiledQuery{..} QueryRuntimeOptions{..} =
 restartCompiled
   :: CanDefine a
   => Inventory
+  -> Maybe DefineOwnership
   -> a
   -> Maybe Pid
   -> QueryRuntimeOptions
   -> ByteString   -- serialized thrift::internal::QueryCont
   -> IO QueryResults
-restartCompiled inventory facts pid QueryRuntimeOptions{..} serializedCont =
+restartCompiled inventory ownership facts pid
+    QueryRuntimeOptions{..} serializedCont =
   withDefine facts $ \facts_ptr ->
   with inventory $ \inventory_ptr ->
   unsafeWithBytes serializedCont $ \cont_ptr cont_size ->
+  maybe ($ nullPtr) with ownership $ \ownership_ptr ->
   let
     maxr = fromIntegral (fromMaybe 0 queryMaxResults)
     maxb = fromIntegral (fromMaybe 0 queryMaxBytes)
@@ -137,6 +145,7 @@ restartCompiled inventory facts pid QueryRuntimeOptions{..} serializedCont =
     (invoke $ \presults -> glean_query_restart_compiled
       inventory_ptr
       facts_ptr
+      ownership_ptr
       cont_ptr
       cont_size
       maxr
@@ -240,6 +249,7 @@ depth_ExpandPartial =
 foreign import ccall safe glean_query_execute_compiled
   :: Ptr Inventory
   -> Define
+  -> Ptr DefineOwnership
   -> Ptr (Subroutine CompiledQuery)
   -> Word64 -- pid
   -> Ptr (Subroutine CompiledTraversal) -- traverse
@@ -256,6 +266,7 @@ foreign import ccall safe glean_query_execute_compiled
 foreign import ccall safe glean_query_restart_compiled
   :: Ptr Inventory
   -> Define
+  -> Ptr DefineOwnership
   -> Ptr () -- cont
   -> CSize  -- cont_size
   -> Word64 -- max_results

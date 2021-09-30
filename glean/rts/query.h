@@ -6,6 +6,7 @@
 
 #include "glean/rts/factset.h"
 #include "glean/rts/inventory.h"
+#include "glean/rts/ownership/derived.h"
 #include "glean/if/gen-cpp2/internal_types.h"
 
 #ifdef OSS
@@ -41,6 +42,7 @@ enum class Depth {
 std::unique_ptr<QueryResults> executeQuery(
     Inventory& inventory,
     Define& facts,
+    DefineOwnership* ownership,
     Subroutine& sub,
     Pid pid,
     std::shared_ptr<Subroutine> traverse,
@@ -55,6 +57,7 @@ std::unique_ptr<QueryResults> executeQuery(
 std::unique_ptr<QueryResults> restartQuery(
     Inventory& inventory,
     Define& facts,
+    DefineOwnership* ownership,
     folly::Optional<uint64_t> maxResults,
     folly::Optional<uint64_t> maxBytes,
     folly::Optional<uint64_t> maxTime,

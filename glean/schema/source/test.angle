@@ -234,6 +234,13 @@ predicate RefRef : Ref
 predicate Node : { label : string }
 predicate Edge : { parent : Node, child : Node }
 
+# For testing derived predicate ownership:
+predicate RevEdge : { child : Node, parent : Node }
+  stored { A, B } where Edge { B, A }
+
+predicate SkipRevEdge : { child : Node, grandparent : Node }
+  stored { A, C } where RevEdge { A, B }; RevEdge { B, C }
+
 # Recursive binary tree (DAG) type
 predicate Tree :
   {

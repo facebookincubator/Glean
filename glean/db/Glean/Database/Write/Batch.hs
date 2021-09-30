@@ -1,7 +1,8 @@
 -- Copyright (c) Facebook, Inc. and its affiliates.
 
 module Glean.Database.Write.Batch
-  ( syncWriteDatabase
+  ( WriteContent(..)
+  , syncWriteDatabase
   , writeDatabase
   ) where
 
@@ -26,6 +27,7 @@ import qualified Glean.RTS.Foreign.FactSet as FactSet
 import Glean.RTS.Foreign.Inventory (Inventory)
 import qualified Glean.RTS.Foreign.Lookup as Lookup
 import qualified Glean.RTS.Foreign.LookupCache as LookupCache
+import Glean.RTS.Foreign.Ownership as Ownership
 import Glean.RTS.Foreign.Subst (Subst)
 import qualified Glean.RTS.Foreign.Subst as Subst
 import Glean.Types (Repo)
@@ -33,6 +35,11 @@ import qualified Glean.Types as Thrift
 import Glean.Util.Metric
 import Glean.Util.Mutex
 
+-- | What we are going to write into the DB
+data WriteContent = WriteContent
+  { writeBatch :: Thrift.Batch
+  , writeOwnership :: Maybe DefineOwnership
+  }
 
 syncWriteDatabase
   :: Env
@@ -41,15 +48,15 @@ syncWriteDatabase
   -> IO Subst
 syncWriteDatabase env repo batch = do
   point <- beginTick 1
-  writeDatabase env repo batch point
+  writeDatabase env repo (WriteContent batch Nothing) point
 
 writeDatabase
   :: Env
   -> Repo
-  -> Thrift.Batch
+  -> WriteContent
   -> Point
   -> IO Subst
-writeDatabase env repo factBatch latency =
+writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
   readDatabase env repo $ \OpenDB{..} lookup ->
   case odbWriting of
     Just writing -> do
@@ -79,12 +86,17 @@ writeDatabase env repo factBatch latency =
                   updateLookupCacheStats env
                   let !is = Subst.substIntervals subst . coerce <$>
                         Thrift.batch_owned batch
+                  forM_ maybeOwn $ \ownBatch ->
+                    Ownership.substDefineOwnership ownBatch subst
                   logExceptions (\s -> inRepo repo $ "commit error: " ++ s)
                     $ when (not $ envMockWrites env)
                     $ do
                         mem <- fromIntegral <$> FactSet.factMemory facts
-                        Stats.tick (envStats env) Stats.commitThroughput mem $
-                          Storage.commit odbHandle facts is
+                        Stats.tick (envStats env)
+                          Stats.commitThroughput mem $ do
+                            Storage.commit odbHandle facts is
+                            forM_ maybeOwn $ \ownBatch ->
+                              Storage.addDefineOwnership odbHandle ownBatch
                   return subst
                 )
 
@@ -119,12 +131,14 @@ writeDatabase env repo factBatch latency =
               deduped_batch <- FactSet.serialize deduped_facts
               let !is = coerce . Subst.substIntervals dsubst . coerce
                     <$> Thrift.batch_owned factBatch
+              forM_ maybeOwn $ \ownBatch ->
+                Ownership.substDefineOwnership ownBatch dsubst
               -- And now write it do the DB, deduplicating again
               wsubst <- withMutex (wrLock writing) $ const $
                 do_write True deduped_batch { Thrift.batch_owned = is }
               return $ dsubst <> wsubst
             )
-    Nothing -> dbError repo "can't write to a read only database"
+    Nothing -> dbError repo "can't write to a read only database (1)"
   where
     batch_size = fromIntegral . BS.length . Thrift.batch_facts
 

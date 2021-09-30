@@ -153,9 +153,10 @@ struct QueryExecutor {
 
   Inventory &inventory;
   Define &facts;
+  DefineOwnership* ownership;
+    // if null, don't compute ownership of derived facts
   Subroutine &sub;
   Pid pid;
-
   // expanding nested facts
   std::shared_ptr<Subroutine> traverse;
   Depth depth;
@@ -191,6 +192,7 @@ struct QueryExecutor {
     // remember the type and current key so that we can capture the
     // state of this iterator for a continuation.
     Pid type;
+    Id id;
     size_t prefix_size;
     bool first;
   };
@@ -203,7 +205,7 @@ uint64_t QueryExecutor::seek(Pid type, folly::ByteRange key) {
   auto token = iters.size();
   DVLOG(5) << "seek(" << type.toWord() << ") = " << token;
   iters.emplace_back(Iter{facts.seek(type, key, key.size()),
-                          type, key.size(), true});
+                          type, Id::invalid(), key.size(), true});
   return static_cast<uint64_t>(token);
 };
 
@@ -228,8 +230,11 @@ Fact::Ref QueryExecutor::next(uint64_t token, FactIterator::Demand demand) {
     iters[token].iter->next();
   }
   auto res = iters[token].iter->get(demand);
-  if (wantStats && res) {
-    stats[iters[token].type.toWord()]++;
+  if (res) {
+    iters[token].id = res.id;
+    if (wantStats) {
+      stats[iters[token].type.toWord()]++;
+    }
   }
   DVLOG(5) << "next(" << token << ") = " << (res ? res.id.toWord() : 0);
   return res;
@@ -262,7 +267,31 @@ Id QueryExecutor::newDerivedFact(
     binary::Output* key,
     size_t keySize) {
   Fact::Clause clause = Fact::Clause::from(key->bytes(), keySize);
-  return facts.define(type, clause);
+  auto id = facts.define(type, clause);
+
+  // If we are going to store this derived fact in the DB, we need to
+  // know its ownership set, which is determined by the facts it was
+  // derived from.
+  if (ownership) {
+    std::set<UsetId> owners;
+
+    // The Ids can only be facts that we already have computed owners for.
+    for (const auto& iter : iters) {
+      if (iter.id != Id::invalid()) {
+        auto owner = ownership->getOwner(iter.id);
+        if (owner == INVALID_USET) {
+          LOG(ERROR) << "fact " << iter.id.toWord() << " has no owner";
+        } else {
+          owners.insert(owner);
+        }
+      }
+    }
+    if (owners.size() > 0) {
+      ownership->derivedFrom(id, owners);
+    }
+  }
+
+  return id;
 };
 
 
@@ -408,6 +437,7 @@ void interruptRunningQueries() {
 std::unique_ptr<QueryResults> restartQuery(
     Inventory& inventory,
     Define& facts,
+    DefineOwnership* ownership,
     folly::Optional<uint64_t> maxResults,
     folly::Optional<uint64_t> maxBytes,
     folly::Optional<uint64_t> maxTime,
@@ -447,6 +477,7 @@ std::unique_ptr<QueryResults> restartQuery(
   return executeQuery(
       inventory,
       facts,
+      ownership,
       sub,
       pid,
       traverse,
@@ -463,6 +494,7 @@ std::unique_ptr<QueryResults> restartQuery(
 std::unique_ptr<QueryResults> executeQuery (
     Inventory& inventory,
     Define& facts,
+    DefineOwnership* ownership,
     Subroutine& sub,
     Pid pid,
     std::shared_ptr<Subroutine> traverse,
@@ -478,6 +510,7 @@ std::unique_ptr<QueryResults> executeQuery (
     .inventory = inventory,
     .facts = facts,
     .sub = sub,
+    .ownership = ownership,
     .pid = pid,
     .traverse = traverse,
     .depth = depth,
@@ -500,6 +533,7 @@ std::unique_ptr<QueryResults> executeQuery (
   if (restart) {
     for (auto& savedIter : *restart->iters_ref()) {
       std::unique_ptr<FactIterator> iter;
+      Id id;
       if (const auto type = Pid::fromThrift(*savedIter.type_ref())) {
         auto key = binary::byteRange(*savedIter.key_ref());
         iter = facts.seek(type, key, savedIter.get_prefix_size());
@@ -507,12 +541,15 @@ std::unique_ptr<QueryResults> executeQuery (
         if (!res || res.key() != key) {
           error("restart iter didn't find a key");
         }
+        id = res.id;
       } else {
         // We serialized a finished iterator
         iter = std::make_unique<EmptyIterator>();
+        id = Id::invalid();
       }
       q.iters.emplace_back(QueryExecutor::Iter{std::move(iter),
           Pid::fromWord(*savedIter.type_ref()),
+          id,
           static_cast<size_t>(savedIter.get_prefix_size()),
           *savedIter.first_ref()});
     }

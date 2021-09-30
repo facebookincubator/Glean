@@ -3,6 +3,8 @@
 {-# LANGUAGE TypeApplications #-}
 module IncrementalTest (main) where
 
+import Control.Monad
+import Data.ByteString (ByteString)
 import Data.Default
 import Data.List
 import Test.HUnit
@@ -10,12 +12,62 @@ import Test.HUnit
 import TestRunner
 
 import Glean hiding (query)
+import Glean.Write (parseRef)
 import Glean.Angle
 import Glean.Init
+import Glean.Database.Types
 import Glean.Database.Test
+import Glean.Derive
 import qualified Glean.Schema.GleanTest as Glean.Test
 import qualified Glean.Schema.GleanTest.Types as Glean.Test
 
+
+{-
+     a
+    / \
+   b   c
+    \ /
+     d
+
+owners:
+  nodes:
+   A: a, b, c, d
+   B: b, d
+   C: c, d
+   D: d
+  edges:
+   A: ab, ac
+   B: bd
+   C: cd,
+-}
+mkGraph :: Env -> Repo -> IO ()
+mkGraph env repo =
+  writeFactsIntoDB env repo [ Glean.Test.allPredicates ] $ do
+    d <- withUnit "D" $
+      makeFact @Glean.Test.Node (Glean.Test.Node_key "d")
+    c <- withUnit "C" $ do
+      c <- makeFact @Glean.Test.Node (Glean.Test.Node_key "c")
+      makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key c d)
+      return c
+    b <- withUnit "B" $ do
+      b <- makeFact @Glean.Test.Node (Glean.Test.Node_key "b")
+      makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key b d)
+      return b
+    withUnit "A" $ do
+      a <- makeFact @Glean.Test.Node (Glean.Test.Node_key "a")
+      makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key a b)
+      makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key a c)
+
+incrementalDB :: Env -> Repo -> Repo -> [ByteString] -> IO Repo
+incrementalDB env base inc prune = do
+  kickOffTestDB env inc $ \kickOff ->
+    kickOff { kickOff_dependencies = Just $
+      Dependencies_pruned def {
+        pruned_base = base,
+        pruned_units = prune,
+        pruned_exclude = True
+      } }
+  return inc
 
 incrementalTest :: Test
 incrementalTest = TestCase $
@@ -24,34 +76,13 @@ incrementalTest = TestCase $
   withTestEnv [] $ \env -> do
     let base = Repo "base" "0"
     kickOffTestDB env base id
-    writeFactsIntoDB env base [ Glean.Test.allPredicates ] $ do
-      d <- withUnit "D" $
-        makeFact @Glean.Test.Node (Glean.Test.Node_key "d")
-      c <- withUnit "C" $ do
-        c <- makeFact @Glean.Test.Node (Glean.Test.Node_key "c")
-        makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key c d)
-        return c
-      b <- withUnit "B" $ do
-        b <- makeFact @Glean.Test.Node (Glean.Test.Node_key "b")
-        makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key b d)
-        return b
-      withUnit "A" $ do
-        a <- makeFact @Glean.Test.Node (Glean.Test.Node_key "a")
-        makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key a b)
-        makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key a c)
+    mkGraph env base
     completeTestDB env base
 
     -- ------------------------------------------------------------------
     -- exclude unit A
 
-    let inc = Repo "base-inc" "0"
-    kickOffTestDB env inc $ \kickOff ->
-      kickOff { kickOff_dependencies = Just $
-        Dependencies_pruned def {
-          pruned_base = base,
-          pruned_units = ["A"],
-          pruned_exclude = True
-        } }
+    inc <- incrementalDB env base (Repo "base-inc" "0") ["A"]
     completeTestDB env inc
 
     -- node "a" does not exist
@@ -68,14 +99,7 @@ incrementalTest = TestCase $
     -- ------------------------------------------------------------------
     -- exclude unit D
 
-    let inc = Repo "base-inc" "1"
-    kickOffTestDB env inc $ \kickOff ->
-      kickOff { kickOff_dependencies = Just $
-        Dependencies_pruned def {
-          pruned_base = base,
-          pruned_units = ["D"],
-          pruned_exclude = True
-        } }
+    inc <- incrementalDB env base (Repo "base-inc" "1") ["D"]
     completeTestDB env inc
 
     -- edges from "b"/"c" to "d" (and therefore node "d") still exist
@@ -87,14 +111,7 @@ incrementalTest = TestCase $
     -- ------------------------------------------------------------------
     -- exclude all units
 
-    let inc = Repo "base-inc" "2"
-    kickOffTestDB env inc $ \kickOff ->
-      kickOff { kickOff_dependencies = Just $
-        Dependencies_pruned def {
-          pruned_base = base,
-          pruned_units = ["A","B","C","D"],
-          pruned_exclude = True
-        } }
+    inc <- incrementalDB env base (Repo "base-inc" "2") ["A","B","C","D"]
     completeTestDB env inc
 
     -- no nodes exist
@@ -105,14 +122,7 @@ incrementalTest = TestCase $
     -- ------------------------------------------------------------------
     -- exclude A and B, add some new facts
 
-    let inc = Repo "base-inc" "3"
-    kickOffTestDB env inc $ \kickOff ->
-      kickOff { kickOff_dependencies = Just $
-        Dependencies_pruned def {
-          pruned_base = base,
-          pruned_units = ["A","B"],
-          pruned_exclude = True
-        } }
+    inc <- incrementalDB env base (Repo "base-inc" "3") ["A","B"]
 
     -- the new graph will be
     --              B
@@ -174,14 +184,7 @@ dupSetTest = TestCase $
         makeFact_ @Glean.Test.Node (Glean.Test.Node_key "bb")
     completeTestDB env base
 
-    let inc = Repo "base-inc" "0"
-    kickOffTestDB env inc $ \kickOff ->
-      kickOff { kickOff_dependencies = Just $
-        Dependencies_pruned def {
-          pruned_base = base,
-          pruned_units = ["B"],
-          pruned_exclude = True
-        } }
+    inc <- incrementalDB env base (Repo "base-inc" "0") ["B"]
 
     results <- runQuery_ env inc $ query $
       predicate @Glean.Test.Node wild
@@ -210,14 +213,7 @@ orphanTest = TestCase $
     completeTestDB env base
 
     -- exclude all of B, C, D
-    let inc = Repo "base-inc" "0"
-    kickOffTestDB env inc $ \kickOff ->
-      kickOff { kickOff_dependencies = Just $
-        Dependencies_pruned def {
-          pruned_base = base,
-          pruned_units = ["B","C","D"],
-          pruned_exclude = True
-        } }
+    inc <- incrementalDB env base (Repo "base-inc" "0") ["B","C","D"]
 
     -- no nodes should exist
     results <- runQuery_ env inc $ query $
@@ -231,14 +227,7 @@ orphanTest = TestCase $
     assertEqual "orphan 1" [] results
 
     -- exclude just B
-    let inc = Repo "base-inc" "1"
-    kickOffTestDB env inc $ \kickOff ->
-      kickOff { kickOff_dependencies = Just $
-        Dependencies_pruned def {
-          pruned_base = base,
-          pruned_units = ["B"],
-          pruned_exclude = True
-        } }
+    inc <- incrementalDB env base (Repo "base-inc" "1") ["B"]
 
     -- 2 nodes now
     results <- runQuery_ env inc $ query $
@@ -251,10 +240,65 @@ orphanTest = TestCase $
         (rec $ field @"child" (rec $ field @"label" (string "d") end) end)
     assertEqual "orphan 3" 1 (length results)
 
+deriveTest :: Test
+deriveTest = TestCase $
+  withTestEnv [] $ \env -> do
+    let base = Repo "base" "0"
+    kickOffTestDB env base id
+    mkGraph env base
+    void $ completePredicates env base
+
+    derivePredicate env base Nothing Nothing (parseRef "glean.test.RevEdge")
+    derivePredicate env base Nothing Nothing (parseRef "glean.test.SkipRevEdge")
+
+    completeTestDB env base
+
+    -- should have two RevEdges, d->b and d->c
+    results <- runQuery_ env base $ query $
+      predicate @Glean.Test.RevEdge
+        (rec $ field @"child" (rec $ field @"label" (string "d") end) end)
+    assertEqual "derived 1" 2 (length results)
+
+    -- We have one SkipRevEdge fact, d->a
+    results <- runQuery_ env base $ query $
+      predicate @Glean.Test.SkipRevEdge wild
+    assertEqual "derived 2" 1 (length results)
+
+    inc <- incrementalDB env base (Repo "base-inc" "1") ["B"]
+
+    -- should have pruned the RevEdge from d->b
+    results <- runQuery_ env inc $ query $
+      predicate @Glean.Test.RevEdge
+        (rec $ field @"child" (rec $ field @"label" (string "d") end) end)
+    assertEqual "derived 3" 1 (length results)
+
+    -- The SkipRevEdge fact d->a should be visible if
+    --    (A && B) || (A && C)
+
+    -- visible if we hide B
+    results <- runQuery_ env inc $ query $
+      predicate @Glean.Test.SkipRevEdge wild
+    assertEqual "derived 4" 1 (length results)
+
+    -- invisible if we hide A
+    inc <- incrementalDB env base (Repo "base-inc" "2") ["A"]
+
+    results <- runQuery_ env inc $ query $
+      predicate @Glean.Test.SkipRevEdge wild
+    assertEqual "derived 5" 0 (length results)
+
+    -- visible if we hide D
+    inc <- incrementalDB env base (Repo "base-inc" "3") ["D"]
+
+    results <- runQuery_ env inc $ query $
+      predicate @Glean.Test.SkipRevEdge wild
+    assertEqual "derived 6" 1 (length results)
+
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "incrementalTest" incrementalTest
   , TestLabel "dupSetTest" dupSetTest
   , TestLabel "orphanTest" orphanTest
+  , TestLabel "deriveTest" deriveTest
   ]

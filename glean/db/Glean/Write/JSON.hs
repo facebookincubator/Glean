@@ -66,7 +66,7 @@ writeJsonBatch
 writeJsonBatch env repo SendJsonBatch{..} tick = do
   dbSchema <- withOpenDatabase env repo (return . Database.odbSchema)
   batch <- buildJsonBatch dbSchema sendJsonBatch_options sendJsonBatch_batches
-  _ <- writeDatabase env repo batch tick
+  _ <- writeDatabase env repo (WriteContent batch Nothing) tick
   return ()
 
 buildJsonBatch
@@ -92,7 +92,7 @@ writeJsonBatchByteString env repo pred facts opts tick = do
   dbSchema <- withOpenDatabase env repo (return . Database.odbSchema)
   batch <- withFactBuilder $ \builder ->
     writeFacts dbSchema opts builder pred facts Nothing{-TODO-}
-  void $ writeDatabase env repo batch tick
+  void $ writeDatabase env repo (WriteContent batch Nothing) tick
 
 writeFacts
   :: DbSchema

@@ -151,7 +151,6 @@ instance Storage RocksDB where
         VS.unsafeWith facts $ \facts_ptr ->
         f (unit_ptr, unit_size, facts_ptr, fromIntegral $ VS.length facts)
 
-
   optimize db = withContainer db $ invoke . glean_rocksdb_container_optimize
 
   computeOwnership db inv =
@@ -175,6 +174,20 @@ instance Storage RocksDB where
       if w64 > 0xffffffff
         then return Nothing
         else return (Just (UnitId (fromIntegral w64)))
+
+  addDefineOwnership db define =
+    with db $ \db_ptr->
+    with define $ \define_ptr ->
+      invoke $ glean_rocksdb_add_define_ownership db_ptr define_ptr
+
+  computeDerivedOwnership db ownership (Pid pid) =
+    with db $ \db_ptr ->
+    using
+      (invoke $
+        glean_rocksdb_get_derived_fact_ownership_iterator
+          db_ptr
+          (fromIntegral pid)) $
+      Ownership.computeDerivedOwnership ownership
 
   backup db scratch process = do
     createDirectoryIfMissing True path
@@ -317,4 +330,15 @@ foreign import ccall unsafe glean_rocksdb_store_ownership
 foreign import ccall unsafe glean_rocksdb_get_ownership
   :: Ptr (Database RocksDB)
   -> Ptr (Ptr Ownership)
+  -> IO CString
+
+foreign import ccall unsafe glean_rocksdb_add_define_ownership
+  :: Ptr (Database RocksDB)
+  -> Ptr DefineOwnership
+  -> IO CString
+
+foreign import ccall unsafe glean_rocksdb_get_derived_fact_ownership_iterator
+  :: Ptr (Database RocksDB)
+  -> Word64
+  -> Ptr Ownership.DerivedFactOwnershipIterator
   -> IO CString

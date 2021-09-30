@@ -327,7 +327,7 @@ instance Backend Database.Env where
     Database.deleteDatabase env repo
     return def
 
-  enqueueBatch env cbatch = Database.enqueueBatch env cbatch
+  enqueueBatch env cbatch = Database.enqueueBatch env cbatch Nothing
   enqueueJsonBatch env cbatch = Database.enqueueJsonBatch env cbatch
   pollBatch env handle = Database.pollBatch env handle
 
