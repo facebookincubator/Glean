@@ -298,4 +298,35 @@ predicate TargetIndexer :
     target : Target
   }
 
+# The name of an attribute. Allows for enumerating all supported attributes
+predicate AttributeName : string
+
+# Represents a single key -> value mapping in a dictionary-like attribute.
+# {"a": "b"} is represented with
+# AttributeMapping { "a", {str = "b"} }
+# {"a": ["b", "c"]} maps to
+# AttributeMapping { "a", {sequence = [{str = "b"}, {str = "c"}] }
+# {"a": {"b": "c"}} maps to
+# AttributeMapping { "a", {mapping = {"b", {str = "c"}}} }
+type AttributeMapping =
+  {
+    key : string,
+    value : AttributeValue,
+  }
+
+predicate AttributeValue :
+  {
+    str : string |
+    sequence : [AttributeValue] |
+    mapping : AttributeMapping |
+  }
+
+# Maps a target and an attribute name to its value
+predicate TargetAttribute :
+  {
+    target : Target,
+    attribute : AttributeName,
+    values : AttributeValue,
+  }
+
 } # end schema buck.3
