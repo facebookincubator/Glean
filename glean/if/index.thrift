@@ -53,7 +53,9 @@ exception NoIndexerAvailable {
 }
 
 service GleanIndexingService extends glean.GleanService {
-  // Create an incremental database based on file changes
+  // Trigger the creation of an incremental database based on file changes
+  // Calls to glean.finalize are required to check when the database is ready
+  // for use.
   IndexResponse index(1: IndexRequest request) throws (
     1: NoIndexerAvailable n,
     2: glean.Exception e,
