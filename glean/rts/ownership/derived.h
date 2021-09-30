@@ -49,6 +49,13 @@ struct DerivedFactOwnershipIterator {
   virtual folly::Optional<DerivedFactOwnership> get() = 0;
 };
 
+///
+// Compute ownership data for derived facts
+//
+std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
+  Ownership& ownership,
+  DerivedFactOwnershipIterator *iter);
+
 }
 }
 }
