@@ -1075,6 +1075,55 @@ struct DatabaseImpl final : Database {
       ownership_unit_counters.end(),  new_count, 1);
   }
 
+  std::unique_ptr<rts::DerivedFactOwnershipIterator>
+    getDerivedFactOwnershipIterator(Pid pid) override {
+    struct DerivedFactIterator : rts::DerivedFactOwnershipIterator {
+      explicit DerivedFactIterator(
+          Pid pid, std::unique_ptr<rocksdb::Iterator> i)
+        : pid_(pid), iter(std::move(i))
+      {}
+
+      folly::Optional<DerivedFactOwnership> get() override {
+        if (iter->Valid()) {
+          binary::Input key(byteRange(iter->key()));
+          auto pid = key.trustedNat();
+          if (pid != pid_.toWord()) {
+            return {};
+          }
+          const auto val = iter->value();
+          const size_t elts = val.size() /
+            (sizeof(uint32_t) + sizeof(uint64_t));
+          const Id* ids = reinterpret_cast<const Id *>(val.data());
+          const UsetId* owners = reinterpret_cast<const UsetId *>(
+              val.data() + elts * sizeof(uint64_t));
+          iter->Next();
+          return rts::DerivedFactOwnership{
+            { ids, elts },
+            { owners, elts }
+          };
+        } else {
+          return folly::none;
+        }
+      }
+
+      Pid pid_;
+      std::unique_ptr<rocksdb::Iterator> iter;
+    };
+
+    std::unique_ptr<rocksdb::Iterator> iter(
+      container_.db->NewIterator(
+        rocksdb::ReadOptions(),
+        container_.family(Family::ownershipDerivedRaw)));
+
+    if (!iter) {
+      rts::error("rocksdb: couldn't allocate derived ownership iterator");
+    }
+
+    EncodedNat key(pid.toWord());
+    iter->Seek(slice(key.byteRange()));
+    return std::make_unique<DerivedFactIterator>(pid, std::move(iter));
+  }
+
   std::unique_ptr<rts::OwnershipUnitIterator>
       getOwnershipUnitIterator() override {
     struct UnitIterator : rts::OwnershipUnitIterator {

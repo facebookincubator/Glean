@@ -37,6 +37,18 @@ struct DefineOwnership {
   std::vector<Uset*> newSets_;
 };
 
+struct DerivedFactOwnership {
+  folly::Range<const Id*> ids;
+  folly::Range<const UsetId*> owners;
+};
+
+struct DerivedFactOwnershipIterator {
+  virtual ~DerivedFactOwnershipIterator() {}
+
+  // Note: the result is only valid until the next call to get()
+  virtual folly::Optional<DerivedFactOwnership> get() = 0;
+};
+
 }
 }
 }
