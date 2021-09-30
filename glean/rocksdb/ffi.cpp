@@ -220,6 +220,13 @@ const char *glean_rocksdb_get_ownership(
   });
 }
 
+const char *glean_rocksdb_add_define_ownership(
+  Database *db,
+  DefineOwnership *define) {
+  return ffi::wrap([=] {
+    db->addDefineOwnership(*define);
+  });
+}
 
 }
 }

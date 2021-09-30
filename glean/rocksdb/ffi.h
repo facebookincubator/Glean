@@ -149,6 +149,10 @@ const char *glean_rocksdb_get_ownership(
   Ownership **ownership
 );
 
+const char *glean_rocksdb_add_define_ownership(
+  Database *db,
+  DefineOwnership *define
+);
 #ifdef __cplusplus
 }
 }

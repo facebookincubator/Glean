@@ -45,6 +45,7 @@ typedef struct Substitution Substitution;
 typedef struct QueryResults QueryResults;
 typedef struct OwnershipUnitIterator OwnershipUnitIterator;
 typedef struct Ownership Ownership;
+typedef struct DefineOwnership DefineOwnership;
 typedef struct ComputedOwnership ComputedOwnership;
 typedef struct Slice Slice;
 typedef struct Sliced Sliced;
@@ -524,6 +525,19 @@ const char *glean_make_sliced(
 );
 
 void glean_sliced_free(Sliced *sliced);
+
+const char *glean_new_define_ownership(
+  Ownership *own,
+  int64_t pid,
+  DefineOwnership **result
+);
+
+const char *glean_define_ownership_subst(
+  DefineOwnership *define,
+  const Substitution *subst
+);
+
+void glean_define_ownershiop_free(DefineOwnership *def);
 
 #ifdef __cplusplus
 }

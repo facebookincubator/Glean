@@ -35,8 +35,13 @@ struct Ownership {
 
   // Iterate through all the ownership expressions
   virtual std::unique_ptr<OwnershipSetIterator> getSetIterator() = 0;
-};
 
+  // Next unused set ID
+  virtual UsetId nextSetId() = 0;
+
+  // Look up a set, can return INVALID_USET if it doesn't exist
+  virtual UsetId lookupSet(Uset*) = 0;
+};
 
 ///
 // Computed ownership data stored in memory

@@ -171,6 +171,17 @@ struct Usets {
     return add(std::unique_ptr<Uset>(new Uset(std::move(set), refs)));
   }
 
+
+  Uset *lookup(Uset *entry) const {
+    entry->rehash();
+    auto it = usets.find(entry);
+    if (it != usets.end()) {
+      return *it;
+    } else {
+      return nullptr;
+    }
+  }
+
   // only when both sets have the same op
   Uset *merge(Uset *left, Uset *right) {
     SetU32 set;

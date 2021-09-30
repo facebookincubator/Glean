@@ -23,6 +23,10 @@ struct TestOwnership final : Ownership {
                 std::vector<UsetId>&& facts) :
       firstId_(firstId), sets_(std::move(sets)), facts_(std::move(facts)) {}
 
+  UsetId nextSetId() override {
+    return firstId_ + sets_.size();
+  }
+
   UsetId getOwner(Id id) override {
     // facts_.size() might be smaller than the total number of facts
     // if there were some unowned facts at the end, so we need a
@@ -31,6 +35,10 @@ struct TestOwnership final : Ownership {
   }
 
   std::unique_ptr<OwnershipSetIterator> getSetIterator() override;
+
+  UsetId lookupSet(Uset*) override {
+    LOG(FATAL) << "unimplemented: lookupSet";
+  }
 
   UsetId firstId_;
   std::vector<SetExpr<MutableOwnerSet>> sets_; // Sets, indexed by UsetId

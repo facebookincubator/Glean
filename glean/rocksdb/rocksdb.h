@@ -6,6 +6,7 @@
 #include "glean/rts/factset.h"
 #include "glean/rts/lookup.h"
 #include "glean/rts/ownership.h"
+#include "glean/rts/ownership/derived.h"
 #include "glean/rts/stats.h"
 #include "glean/rts/store.h"
 
@@ -83,9 +84,13 @@ struct Database : rts::Lookup {
   };
 
   virtual void commit(rts::FactSet& facts) = 0;
+
   virtual void addOwnership(const std::vector<OwnershipSet>& ownership) = 0;
   virtual std::unique_ptr<rts::OwnershipUnitIterator>
     getOwnershipUnitIterator() = 0;
+
+  virtual void addDefineOwnership(rts::DefineOwnership& def) = 0;
+
   virtual folly::Optional<uint32_t> getUnitId(folly::ByteRange) = 0;
 
   virtual void storeOwnership(rts::ComputedOwnership &ownership) = 0;

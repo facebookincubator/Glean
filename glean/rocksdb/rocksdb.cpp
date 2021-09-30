@@ -3,6 +3,7 @@
 #include <utility>
 
 #include <folly/Range.h>
+#include <folly/container/F14Map.h>
 #include <folly/experimental/AutoTimer.h>
 
 #include <rocksdb/db.h>
@@ -19,6 +20,7 @@
 #include "glean/rts/binary.h"
 #include "glean/rts/factset.h"
 #include "glean/rts/nat.h"
+#include "glean/rts/ownership/setu32.h"
 
 namespace facebook {
 namespace glean {
@@ -101,6 +103,7 @@ public:
   static const Family meta;
   static const Family ownershipUnits;
   static const Family ownershipRaw;
+  static const Family ownershipDerivedRaw;
   static const Family ownershipSets;
   static const Family factOwners;
 
@@ -138,6 +141,8 @@ const Family Family::meta("meta", [](auto&) {});
 const Family Family::ownershipUnits("ownershipUnits", [](auto& opts) {
   opts.OptimizeForPointLookup(100); });
 const Family Family::ownershipRaw("ownershipRaw", [](auto&) {});
+const Family Family::ownershipDerivedRaw("ownershipDerivedRaw", [](auto& opts) {
+  opts.inplace_update_support = false; });
 const Family Family::ownershipSets("ownershipSets", [](auto& opts){
   opts.inplace_update_support = false; });
 const Family Family::factOwners("factOwners", [](auto& opts){
@@ -395,6 +400,11 @@ struct DatabaseImpl final : Database {
   Id next_id;
   AtomicPredicateStats stats_;
   std::vector<size_t> ownership_unit_counters;
+  folly::F14FastMap<uint64_t,size_t> ownership_derived_counters;
+
+  // Cached ownership sets, only used when writing.
+  // TODO: initialize this lazily
+  std::unique_ptr<Usets> usets_;
 
   explicit DatabaseImpl(ContainerImpl c, Id start, int64_t version)
       : container_(std::move(c)) {
@@ -426,6 +436,8 @@ struct DatabaseImpl final : Database {
 
     stats_.set(loadStats());
     ownership_unit_counters = loadOwnershipUnitCounters();
+    ownership_derived_counters = loadOwnershipDerivedCounters();
+    usets_ = loadOwnershipSets();
   }
 
   DatabaseImpl(const DatabaseImpl&) = delete;
@@ -523,6 +535,51 @@ struct DatabaseImpl final : Database {
     }
 
     return result;
+  }
+
+  folly::F14FastMap<uint64_t,size_t> loadOwnershipDerivedCounters() {
+    container_.requireOpen();
+    folly::F14FastMap<uint64_t,size_t> result;
+
+    std::unique_ptr<rocksdb::Iterator> iter(
+      container_.db->NewIterator(
+        rocksdb::ReadOptions(),
+        container_.family(Family::ownershipDerivedRaw)));
+
+    if (!iter) {
+      rts::error("rocksdb: couldn't allocate iterator");
+    }
+
+    for (iter->SeekToFirst(); iter->Valid(); iter->Next()) {
+      binary::Input key(byteRange(iter->key()));
+      auto pid = key.trustedNat();
+      const auto [i,_] = result.insert({pid,0});
+      ++i->second;
+    }
+
+    VLOG(1) << "derived fact owners for " << result.size() << " pids";
+    return result;
+  }
+
+  std::unique_ptr<Usets> loadOwnershipSets() {
+    folly::AutoTimer t("loadOwnershipSets");
+
+    auto iter = this->getSetIterator();
+    auto [first,size] = iter->sizes();
+
+    auto usets = std::make_unique<Usets>(first + size);
+
+    while (const auto pair = iter->get()) {
+      auto set = SetU32::fromEliasFano(*pair->second.set);
+      auto p = usets->add(std::move(set),0);
+      p->id = pair->first;
+    }
+    auto stats = usets->statistics();
+
+    LOG(INFO) << "loadOwnershipSets loaded " << stats.adds << " sets, " <<
+      stats.bytes << " bytes";
+
+    return usets;
   }
 
   folly::Optional<uint32_t> getUnitId(folly::ByteRange unit) override {
@@ -1060,6 +1117,10 @@ struct DatabaseImpl final : Database {
 
   std::unique_ptr<rts::Ownership> getOwnership() override;
 
+  std::unique_ptr<rts::OwnershipSetIterator> getSetIterator();
+
+  void addDefineOwnership(DefineOwnership& define) override;
+
   void putOwnerSet(
       rocksdb::WriteBatch& batch,
       UsetId id,
@@ -1095,7 +1156,11 @@ void DatabaseImpl::storeOwnership(ComputedOwnership &ownership) {
     check(container_.db->Write(container_.writeOptions, &batch));
   }
 
-  {
+  // ToDo: just update usets_, don't load the whole thing
+  usets_ = loadOwnershipSets();
+
+  if (ownership.facts_.size() > 0) {
+    folly::AutoTimer t("storeOwnership(facts)");
     rocksdb::WriteBatch batch;
     for (uint64_t i = 0; i < ownership.facts_.size(); i++) {
       auto id = ownership.facts_[i].first;
@@ -1113,12 +1178,29 @@ void DatabaseImpl::storeOwnership(ComputedOwnership &ownership) {
 }
 
 struct StoredOwnership : Ownership {
-  explicit StoredOwnership(const DatabaseImpl *db) : db_(db) {}
+  explicit StoredOwnership(DatabaseImpl *db) : db_(db) {}
+
   UsetId getOwner(Id id) override;
 
-  std::unique_ptr<rts::OwnershipSetIterator> getSetIterator() override;
+  UsetId nextSetId() override {
+    return db_->usets_->getNextId();
+  }
 
-  const DatabaseImpl *db_;
+  UsetId lookupSet(Uset* uset) override {
+    auto existing = db_->usets_->lookup(uset);
+    if (existing) {
+      return existing->id;
+    } else {
+      return INVALID_USET;
+    }
+  }
+
+  std::unique_ptr<rts::OwnershipSetIterator> getSetIterator() override {
+    return db_->getSetIterator();
+  }
+
+ private:
+  DatabaseImpl *db_;
 };
 
 std::unique_ptr<rts::Ownership> DatabaseImpl::getOwnership() {
@@ -1139,8 +1221,96 @@ UsetId StoredOwnership::getOwner(Id id) {
   return val.trustedNat();
 }
 
+void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
+  folly::AutoTimer t("addDefineOwnership");
+  container_.requireOpen();
+
+  LOG(INFO) << "addDefineOwnership: " << def.owners_.size() << " facts, " <<
+    def.usets_.size() << " sets";
+
+  if (def.newSets_.size() > 0) {
+
+    folly::F14FastMap<UsetId,UsetId> substitution;
+    auto subst = [&](uint32_t old) -> uint32_t {
+      auto n = substitution.find(old);
+      if (n == substitution.end()) {
+        return old;
+      } else {
+        return n->second;
+      }
+    };
+
+    rocksdb::WriteBatch batch;
+    size_t numNewSets = 0;
+
+    for (auto uset : def.newSets_) {
+      std::set<UsetId> s;
+      uset->exp.set.foreach([&](uint32_t elt) {
+        s.insert(subst(elt));
+      });
+      SetU32 set = SetU32::from(s);
+
+      auto newUset = std::make_unique<Uset>(std::move(set), uset->exp.op, 0);
+      auto p = newUset.get();
+      auto oldId = uset->id;
+      auto q = usets_->add(std::move(newUset));
+      if (p == q) {
+        usets_->promote(p);
+        auto ownerset = p->toEliasFano();
+        putOwnerSet(batch, p->id, ownerset.op, ownerset.set);
+        ownerset.set.free();
+        numNewSets++;
+      }
+      VLOG(2) << "rebased set " << oldId << " -> " << q->id;
+      substitution[oldId] = q->id;
+    }
+    VLOG(1) << "addDefineOwnership: writing sets (" << numNewSets << ")";
+    check(container_.db->Write(container_.writeOptions, &batch));
+
+    for (auto& owner : def.owners_) {
+      owner = subst(owner);
+    }
+  }
+
+  // ownershipDerivedRaw :: (Pid,nat) -> vector<int64_t>
+  //
+  // Similarly to ownershipRaw, this is basically just an
+  // append-only log. The nat in the key is a per-Pid counter that
+  // we bump by one each time we add another batch of data for a
+  // Pid.
+
+  binary::Output key;
+  key.nat(def.pid_.toWord());
+  const auto [it, _] = ownership_derived_counters.insert(
+      {def.pid_.toWord(), 0});
+  key.nat(it->second++);
+
+  rocksdb::WriteBatch batch;
+
+  binary::Output val;
+
+  val.bytes(
+      def.ids_.data(),
+      def.ids_.size() *
+      sizeof(std::remove_reference<decltype(def.ids_)>::type::value_type));
+  val.bytes(
+      def.owners_.data(),
+      def.owners_.size() *
+      sizeof(std::remove_reference<decltype(def.owners_)>::type::value_type));
+
+  check(batch.Put(
+            container_.family(Family::ownershipDerivedRaw),
+            slice(key),
+            slice(val)));
+
+  check(container_.db->Write(container_.writeOptions, &batch));
+
+  VLOG(1) << "addDefineOwnership wrote " << def.ids_.size() <<
+    " entries for pid " << def.pid_.toWord();
+}
+
 std::unique_ptr<rts::OwnershipSetIterator>
-StoredOwnership::getSetIterator() {
+  DatabaseImpl::getSetIterator() {
   struct SetIterator : rts::OwnershipSetIterator {
     explicit SetIterator(size_t first, size_t size,
                          std::unique_ptr<rocksdb::Iterator> i)
@@ -1171,9 +1341,9 @@ StoredOwnership::getSetIterator() {
     std::unique_ptr<rocksdb::Iterator> iter;
   };
 
-  std::unique_ptr<rocksdb::Iterator> iter(db_->container_.db->NewIterator(
-    rocksdb::ReadOptions(),
-    db_->container_.family(Family::ownershipSets)));
+  std::unique_ptr<rocksdb::Iterator> iter(container_.db->NewIterator(
+      rocksdb::ReadOptions(),
+      container_.family(Family::ownershipSets)));
 
   if (!iter) {
     rts::error("rocksdb: couldn't allocate ownership set iterator");
