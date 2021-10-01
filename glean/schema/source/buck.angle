@@ -318,7 +318,7 @@ predicate AttributeValue :
   {
     str : string |
     sequence : [AttributeValue] |
-    mapping : AttributeMapping |
+    mapping : [AttributeMapping] |
   }
 
 # Maps a target and an attribute name to its value
@@ -326,7 +326,7 @@ predicate TargetAttribute :
   {
     target : Target,
     attribute : AttributeName,
-    values : AttributeValue,
+    value : AttributeValue,
   }
 
 } # end schema buck.3
