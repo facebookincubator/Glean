@@ -3,6 +3,9 @@
 include "glean/if/glean.thrift"
 
 namespace hs Glean
+namespace py3 glean
+namespace rust glean
+namespace cpp2 facebook.glean.thrift
 
 struct Revision {
   1: string hash;
