@@ -1,6 +1,6 @@
 ---
 id: intro
-title: Introduction
+title: Angle Introduction
 sidebar_label: Introduction
 ---
 
