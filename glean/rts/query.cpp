@@ -509,8 +509,8 @@ std::unique_ptr<QueryResults> executeQuery (
   QueryExecutor q {
     .inventory = inventory,
     .facts = facts,
-    .sub = sub,
     .ownership = ownership,
+    .sub = sub,
     .pid = pid,
     .traverse = traverse,
     .depth = depth,

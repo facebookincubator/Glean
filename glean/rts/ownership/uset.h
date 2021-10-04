@@ -15,7 +15,7 @@ namespace rts {
 using UsetId = uint32_t;
 constexpr UsetId INVALID_USET = 0xffffffff;
 
-using SetOp = enum { Or, And };
+enum SetOp { Or, And };
 
 /**
  * A set expression
