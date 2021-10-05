@@ -18,17 +18,6 @@
   "categories": [
     "Programming Languages"
   ],
-  "activationEvents": [
-    "onLanguage:angle"
-  ],
-  "webpackEntryPoints": {
-    "extension": {
-      "glean": {
-        "input": "./vscode-extensions/fb-glean/src/extension.tsx",
-        "output": "./vscode-extensions/fb-glean/src/extension.js"
-      }
-    }
-  },
   "contributes": {
     "languages": [
       {
@@ -51,12 +40,7 @@
       }
     ]
   },
-  "main": "./src/extension",
-  "dependencies": {
-    "log4js": "6.2.1",
-    "nuclide-commons": "0.0.0",
-    "nuclide-logging": "0.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "vscode": "1.1.21"
   },
