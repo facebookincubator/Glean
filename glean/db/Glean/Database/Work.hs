@@ -103,6 +103,11 @@ unfinishDatabase env@Env{..} repo writeHandle = do
                 Thrift.Incomplete $
                   Thrift.DatabaseIncomplete_tasks $ tasksFromManual writeHandle
             }
+          Thrift.Finalizing{} -> return oldmeta
+            { Thrift.metaCompleteness =
+                Thrift.Incomplete $
+                  Thrift.DatabaseIncomplete_tasks $ tasksFromManual writeHandle
+            }
           someState -> throwM $ Thrift.Exception
             (  "Cannot unfinish a database in state: "
             <> showCompleteness someState)
