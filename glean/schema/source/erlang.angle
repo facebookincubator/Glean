@@ -1,0 +1,108 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+# much of this schema is cargo-culted from ./python.angle
+
+schema erlang.1 {
+import src.1
+
+# Collects all reference to names in a single file.
+# There is only one fact of this predicate per source file in the repo.
+predicate XRefsViaFqnByFile :
+  {
+    file : src.File,
+    xrefs : [XRefViaFqn],
+  }
+
+predicate FunctionDeclaration :
+  {
+    fqn : Fqn,
+    file : src.File,
+    span : src.ByteSpan,
+  }
+
+## types
+
+type Declaration =
+  {
+    func : FunctionDeclaration |
+  }
+
+# fully-qualified name
+type Fqn =
+  {
+    module : string,
+    name : string,
+    arity : nat,
+  }
+
+# A cross reference, or access to a symbol
+type XRefViaFqn =
+  {
+    target : Fqn,
+    source : src.ByteSpan,
+  }
+
+## derived predicates
+
+predicate DeclarationWithFqn :
+  {
+    fqn : Fqn,
+    declaration : Declaration
+  }
+  {F, D} where
+  D = (
+    Declaration { func = { fqn = F } }
+  )
+
+predicate DeclarationToFqn: Declaration -> Fqn
+D -> Fqn where
+{func = { fqn = Fqn }} = D
+
+# All uses of a declaration in a particular file.
+# This predicate does not follow references, so if a symbol is used through
+# a chain of imports, only the first hop will be present as a fact.
+# Querying this predicate by declaration is an efficient way to find immediate
+# references
+predicate DeclarationUses :
+  {
+    declaration : Declaration,
+    file : src.File,
+    span : src.ByteSpan,
+  }
+  stored {Decl, File, Span} where
+  XRefsViaFqnByFile { File, XRefs };
+  { target = Fqn, source = Span } = XRefs[..];
+  DeclarationWithFqn { fqn = Fqn, declaration = Decl };
+
+predicate DeclarationsByFile :
+  {
+  file : src.File,
+  span : src.ByteSpan,
+  declaration : Declaration,
+  }
+  stored {File, Span, D} where
+  D = (
+    Declaration { func = { file = File, span = Span } }
+  )
+
+predicate DeclarationLocation :
+  {
+  declaration : Declaration,
+  file : src.File,
+  span : src.ByteSpan,
+  }
+  {D, File, Span} where
+  D = (
+    Declaration { func = { file = File, span = Span } }
+  )
+
+predicate DeclarationReference :
+  {
+    target : Declaration,
+    source : Declaration
+  }
+  { target = T, source = S } where
+  DeclarationUses {declaration=T, file=F, span=LittleSpan};
+  DeclarationsByFile {declaration=S, file=F, span=BigSpan};
+  src.ByteSpanContains {byteSpan=BigSpan, contains=LittleSpan}
+}
