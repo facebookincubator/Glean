@@ -14,7 +14,7 @@ import Test.HUnit
 import TestRunner
 
 import qualified Glean
-import Derive.Types (DerivePass(..))
+import Derive.Lib (DerivePass(..))
 import Glean.Clang.Test.DerivePass as Derive
 import Glean.Init
 import Glean.Regression.Test
