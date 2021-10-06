@@ -430,9 +430,6 @@ struct UserQueryOptions {
   5: optional UserQueryCont continuation;
   // continue a previous query.
 
-  // DEPRECATED
-  6: bool use_bytecode = false;
-
   // choose the syntax for the query
   7: QuerySyntax syntax = JSON;
 
