@@ -2,7 +2,7 @@
 
 {-# LANGUAGE TypeApplications #-}
 module TestDB (
-  withTestDB, dbTestCase, dbTestCaseWritable, createTestDB
+  withTestDB, withWritableTestDB, dbTestCase, dbTestCaseWritable, createTestDB
 ) where
 
 import Data.Either

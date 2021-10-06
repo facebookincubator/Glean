@@ -83,6 +83,12 @@ predicate DualStringPair : { fst : StringPair, snd : StringPair }
     P = StringPair {A,B};
     Q = StringPair {B,A}
 
+# stored version of DualStringPair
+predicate StoredDualStringPair : { fst : StringPair, snd : StringPair }
+  stored {P,Q} where
+    P = StringPair {A,B};
+    Q = StringPair {B,A}
+
 # StringPair with identical fields
 predicate ReflStringPair : string
   A where StringPair {A,A}

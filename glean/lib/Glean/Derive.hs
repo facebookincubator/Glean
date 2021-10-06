@@ -24,9 +24,10 @@ derivePredicate
   -> Maybe Int64  -- ^ page size (bytes)
   -> Maybe Int64  -- ^ page size (results)
   -> SourceRef    -- ^ predicate to derive
+  -> Maybe ParallelDerivation -- ^ how to derive in parallel
   -> IO ()
 
-derivePredicate backend repo maxBytes maxResults s = loop
+derivePredicate backend repo maxBytes maxResults s parallel = loop
   where
     loop = do
       result <- Glean.deriveStored backend (const mempty) repo query
@@ -44,6 +45,7 @@ derivePredicate backend repo maxBytes maxResults s = loop
         { derivePredicateOptions_max_results_per_query = maxResults
         , derivePredicateOptions_max_bytes_per_query = maxBytes
         }
+      , derivePredicateQuery_parallel = parallel
       }
 
     SourceRef name version = s

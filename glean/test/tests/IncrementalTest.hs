@@ -248,8 +248,10 @@ deriveTest = TestCase $
     mkGraph env base
     void $ completePredicates env base
 
-    derivePredicate env base Nothing Nothing (parseRef "glean.test.RevEdge")
-    derivePredicate env base Nothing Nothing (parseRef "glean.test.SkipRevEdge")
+    derivePredicate env base Nothing Nothing
+      (parseRef "glean.test.RevEdge") Nothing
+    derivePredicate env base Nothing Nothing
+      (parseRef "glean.test.SkipRevEdge") Nothing
 
     completeTestDB env base
 

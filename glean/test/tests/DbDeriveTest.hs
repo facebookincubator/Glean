@@ -31,7 +31,8 @@ import TestDB
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
-  [ TestLabel "deriveStored" $ testDerivation $ deriveStored $ const mempty
+  [ TestLabel "deriveStored" $ testDerivation $ deriveSerial $ const mempty
+  , TestLabel "deriveParallel" deriveParallelTest
   , TestLabel "deriveStoredLogging" testDeriveStoredLogging
   ]
 
@@ -58,6 +59,20 @@ deriveDeleteDeriveTest runDerive = TestLabel "deriveDeleteDerive" $
 -- Test deriving stored facts
 deriveTest :: RunDerive -> Test
 deriveTest runDerive = dbTestCaseWritable (deriveTestCases runDerive)
+
+deriveParallelTest :: Test
+deriveParallelTest = TestLabel "deriveParallelTest" $
+  TestCase $ withWritableTestDB [] $ \env repo -> do
+    derivedCount <-
+      deriveParallel (const mempty) env repo
+        (Proxy @Glean.Test.StoredDualStringPair)
+        (ParallelDerivation
+          { parallelDerivation_outer_predicate = "glean.test.StringPair"
+          , parallelDerivation_inner_query =
+              "glean.test.StoredDualStringPair { fst = X }"
+          , parallelDerivation_min_batch_size = Just 1
+          })
+    assertEqual "deriveParallelTest" 4 derivedCount
 
 deriveTestCases :: RunDerive -> Env -> Repo -> IO ()
 deriveTestCases runDerive env repo = do
@@ -162,11 +177,31 @@ testDeriveStoredLogging = dbTestCaseWritable $ \env repo -> do
   let log _ = atomically $ modifyTVar' tvar (+ 1)
 
   -- The result is logged once and only once.
-  mapConcurrently_ (deriveStored log env repo)
-      $ replicate 10 $ Proxy @Glean.Test.StoredRevStringPairWithRev
+  replicateM_ 10 $
+    deriveSerial log env repo $ Proxy @Glean.Test.StoredRevStringPairWithRev
   logCalls <- readTVarIO tvar
   assertEqual "deriveStoredLogging - logs once" 1 logCalls
 
+
+deriveSerial
+  :: forall p. Predicate p
+  => Glean.LogDerivationResult
+  -> Env
+  -> Repo
+  -> Proxy p
+  -> IO Int
+deriveSerial log env repo proxy = deriveStored log env repo proxy Nothing
+
+deriveParallel
+  :: forall p. Predicate p
+  => Glean.LogDerivationResult
+  -> Env
+  -> Repo
+  -> Proxy p
+  -> ParallelDerivation
+  -> IO Int
+deriveParallel log env repo proxy par =
+  deriveStored log env repo proxy (Just par)
 
 deriveStored
   :: forall p. Predicate p
@@ -174,21 +209,26 @@ deriveStored
   -> Env
   -> Repo
   -> Proxy p
+  -> Maybe ParallelDerivation
   -> IO Int
-deriveStored log env repo proxy = do
+deriveStored log env repo proxy par = do
   () <- loop
   length <$> runQuery_ env repo (allFacts @p)
   where
     pred = getName proxy
     loop = do
       res <- Glean.deriveStored env log repo
-        $ derivePredicateQuery pred
+        $ derivePredicateQuery pred par
       case res of
         DerivationStatus_ongoing _ -> threadDelay (ceiling @Double 1e6) >> loop
         DerivationStatus_complete _ -> return ()
 
-derivePredicateQuery :: PredicateRef -> Thrift.DerivePredicateQuery
-derivePredicateQuery (PredicateRef name version) = def
+derivePredicateQuery
+  :: PredicateRef
+  -> Maybe Thrift.ParallelDerivation
+  -> Thrift.DerivePredicateQuery
+derivePredicateQuery (PredicateRef name version) par = def
   { derivePredicateQuery_predicate = name
   , derivePredicateQuery_predicate_version = Just version
+  , derivePredicateQuery_parallel = par
   }

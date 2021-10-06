@@ -514,6 +514,46 @@ struct DerivePredicateQuery {
   4: optional UserQueryClientInfo client_info;
   // Information about who is making the call
   5: optional DerivePredicateOptions options;
+  // How to parallelise derivation
+  6: optional ParallelDerivation parallel;
+}
+
+// Derivation can be parallelised by partitioning over the range of an
+// another predicate.  For instance, if you have a derived predicate like
+//
+//   predicate P : { a : A, b : B }
+//      stored ...
+//
+// you could parallelise the derivation by partitioning over the facts
+// of either A or B.  e.g. if we pick A, then we would specify
+//
+//   outer_predicate = "A"
+//   inner_query = "P { a = X }"
+//
+// ("X" is a magic variable that will be bound to the facts of A when
+// the query is performed by the server)
+//
+// Derivation then works by partitioning the facts of A into chunks,
+// and running the query in parallel on the chunks of A facts.  The
+// size of chunks and the degree of parallelism are chosen by the
+// server, but you can give a minimum chunk size by setting
+// min_batch_size.
+//
+// Note that you could break things by specifying an inner_query that
+// doesn't yield all the facts of the predicate. Don't do that.
+struct ParallelDerivation {
+  // The predicate to partition over, e.g. "src.File"
+  1: string outer_predicate;
+
+  // The query to derive the facts, e.g. "python.DeclarationUses { file = X }"
+  // The magic variable "X" will be bound to each fact of the outer_predicate,
+  // and the query will be performed in parallel on batches of outer_predicate
+  // facts.
+  2: string inner_query;
+
+  // minimum number of outer_predicate facts processed in each batch
+  // (default: 1).
+  3: optional i64 min_batch_size;
 }
 
 # A predicate is derived through multiple queries. These options work per query.

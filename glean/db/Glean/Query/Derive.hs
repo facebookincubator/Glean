@@ -17,12 +17,17 @@ import Data.Foldable
 import qualified Data.Set as Set
 import qualified Data.HashMap.Strict as HashMap
 import Data.List ((\\))
+import qualified Data.List as List
+import qualified Data.Map as Map
 import Data.Maybe
 import qualified Data.Text as Text
 import Data.Traversable (for)
 import qualified Data.Text.Encoding as Text
 import qualified Data.UUID as UUID
 import qualified Data.UUID.V4 as UUID
+import TextShow
+
+import Control.Concurrent.Stream
 import Util.Control.Exception
 import Util.Log
 
@@ -113,10 +118,12 @@ deriveStoredImpl
   -> Thrift.Repo
   -> Thrift.DerivePredicateQuery
   -> IO Derivation
-deriveStoredImpl env@Env{..} log repo Thrift.DerivePredicateQuery{..} =
-  readDatabase env repo $ \odb _ -> do
-  let schema = odbSchema odb
-  pred <- getPredicateRef schema
+deriveStoredImpl env@Env{..} log repo req@Thrift.DerivePredicateQuery{..} = do
+  readDatabase env repo $ \OpenDB{..} _ -> do
+  let sourceRef = SourceRef
+        derivePredicateQuery_predicate
+        derivePredicateQuery_predicate_version
+  pred <- predicateRef <$> getPredicate env repo odbSchema sourceRef
   handle <- UUID.toText <$> UUID.nextRandom
   now <- getTimePoint
 
@@ -126,7 +133,7 @@ deriveStoredImpl env@Env{..} log repo Thrift.DerivePredicateQuery{..} =
     case running of
       Just derivation -> return $ return derivation
       Nothing -> do
-        checkConstraints schema pred
+        checkConstraints odbSchema pred
         let new = newDerivation now handle
         save env repo pred new
         return $ handleAll (onErr pred) $ unmask $ do
@@ -145,7 +152,7 @@ deriveStoredImpl env@Env{..} log repo Thrift.DerivePredicateQuery{..} =
     kickOff :: PredicateRef -> IO ()
     kickOff pred = do
       spawn_ envWarden $ handleAll (onErr pred) $ do
-        runDerivation env repo pred $ query pred
+        runDerivation env repo pred req
         enqueueCheckpoint env repo $ void $ finishDerivation env log repo pred
 
     onErr :: PredicateRef -> SomeException -> IO a
@@ -156,24 +163,6 @@ deriveStoredImpl env@Env{..} log repo Thrift.DerivePredicateQuery{..} =
       void $ overDerivation env repo pred
         (\d -> d { derivationError = Just (now, e) })
       throwIO e
-
-    getPredicateRef :: DbSchema -> IO PredicateRef
-    getPredicateRef schema = do
-      dbSchemaVersion <- getDbSchemaVersion env repo
-      let
-        schemaVersion =
-          maybe LatestSchemaAll SpecificSchemaAll $
-            envSchemaVersion <|> dbSchemaVersion
-
-        mdetails = lookupPredicate
-            (SourceRef derivePredicateQuery_predicate
-              derivePredicateQuery_predicate_version)
-            schemaVersion
-            schema
-
-      case mdetails of
-        Nothing -> throwIO Thrift.UnknownPredicate
-        Just details -> return $ predicateRef details
 
     checkConstraints :: DbSchema -> PredicateRef -> STM ()
     checkConstraints schema pred = do
@@ -190,31 +179,22 @@ deriveStoredImpl env@Env{..} log repo Thrift.DerivePredicateQuery{..} =
         unless (null incomplete) $
           throwSTM $ Thrift.IncompleteDependencies incomplete
 
-    query pred = def
-      { userQuery_predicate = derivePredicateQuery_predicate
-      , userQuery_predicate_version = derivePredicateQuery_predicate_version
-      , userQuery_query = Text.encodeUtf8 $ showPredicateRef pred <> " _"
-      , userQuery_options = Just opts
-      , userQuery_encodings = []
-      }
+getPredicate
+  :: Env
+  -> Thrift.Repo
+  -> DbSchema
+  -> SourceRef
+  -> IO PredicateDetails
+getPredicate env repo schema ref = do
+  dbSchemaVersion <- getDbSchemaVersion env repo
+  let
+    schemaVersion =
+      maybe LatestSchemaAll SpecificSchemaAll $
+        envSchemaVersion env <|> dbSchemaVersion
 
-    opts = def
-      { userQueryOptions_expand_results = False
-      , userQueryOptions_syntax = QuerySyntax_ANGLE
-      , userQueryOptions_store_derived_facts = True
-      , userQueryOptions_max_bytes = maxBytes
-      , userQueryOptions_max_results = maxResults
-      , userQueryOptions_max_time_ms = maxTime
-      , userQueryOptions_omit_results = True
-      , userQueryOptions_continuation = Nothing
-      }
-
-    maxBytes = derivePredicateQuery_options
-      >>= derivePredicateOptions_max_bytes_per_query
-    maxResults = derivePredicateQuery_options
-      >>= derivePredicateOptions_max_results_per_query
-    maxTime = derivePredicateQuery_options
-      >>= derivePredicateOptions_max_time_ms_per_query
+  case lookupPredicate ref schemaVersion schema of
+    Nothing -> throwIO Thrift.UnknownPredicate
+    Just details -> return details
 
 overDerivation
   :: Database.Env
@@ -299,23 +279,123 @@ runDerivation
   :: Database.Env
   -> Thrift.Repo
   -> PredicateRef
-  -> Thrift.UserQuery
+  -> Thrift.DerivePredicateQuery
   -> IO ()
-runDerivation env repo pred query = do
-  config <- Observed.get (envServerConfig env)
-  readDatabase env repo $ \schema lookup -> do
-  let
-    loop q = do
-      result <- try $ UserQuery.userQueryWrites env schema config lookup repo q
+runDerivation env repo pred Thrift.DerivePredicateQuery{..} = do
+  readDatabase env repo $ \odb@OpenDB{..} lookup ->
+    case derivePredicateQuery_parallel of
+      Nothing -> deriveQuery odb lookup (query (allFacts pred))
+      Just par -> parallelDerivation odb lookup par
+
+  where
+    deriveQuery odb lookup q = do
+      config <- Observed.get (envServerConfig env)
+      result <- try $ UserQuery.userQueryWrites env odb config lookup repo q
       case result of
-        Left Thrift.Retry{..} -> retry retry_seconds (loop q)
+        Left Thrift.Retry{..} ->
+          retry retry_seconds (deriveQuery odb lookup q)
         Right res@(_, mcont, _) -> do
           addProgress res
           case mcont of
-            Just cont -> loop $ query `withCont`cont
+            Just cont -> deriveQuery odb lookup $ q `withCont` cont
             Nothing -> return ()
-  loop query
-  where
+
+    parallelDerivation odb lookup ParallelDerivation{..} = do
+      outerPred <- getPredicate env repo (odbSchema odb)
+        (parseRef parallelDerivation_outer_predicate)
+
+      -- find the number of facts of outer_predicate
+      stats <- withOpenDatabaseStack env repo $ \Database.OpenDB{..} ->
+        Storage.predicateStats odbHandle
+      let
+        statsFor pred =
+          maybe 0 predicateStats_count . List.lookup (predicatePid pred)
+        numFacts = sum $ map (statsFor outerPred) stats
+
+      -- figure out what our batch size is going to be
+      numCapabilities <- getNumCapabilities
+      let
+        -- leave some cores free to run writer threads and other requests
+        parallelism = max 1 ((numCapabilities * 7) `quot` 10)
+
+        -- aim for this many jobs, to have a reasonable granularity
+        -- and keep the pipeline full.
+        jobs = parallelism * 10
+
+        -- don't make huge queries
+        maxBatchSize = 10000
+
+        batchSize =
+          min maxBatchSize $
+          max (fromMaybe 0 parallelDerivation_min_batch_size) $
+          numFacts `quot` fromIntegral jobs
+
+      -- producer will get batches of outer_predicate facts, worker
+      -- will derive for each batch.
+      let
+        producer :: ([Id] -> IO ()) -> IO ()
+        producer enqueue = loop (outerQuery outerPred batchSize)
+          where
+          loop q = do
+            results <- UserQuery.userQuery env repo q
+            case userQueryResults_results results of
+              UserQueryEncodedResults_bin UserQueryResultsBin{..} ->
+                enqueue (Map.keys userQueryResultsBin_facts)
+              _ -> throwIO $ ErrorCall "outer query failure"
+            case userQueryResults_continuation results of
+              Nothing -> return ()
+              Just cont -> loop (q `withCont` cont)
+
+        worker :: [Id] -> IO ()
+        worker fids =
+          deriveQuery odb lookup
+            (query (outer <> parallelDerivation_inner_query))
+          where
+          outer =
+            "X = ([" <>
+            Text.intercalate "," (map showFact fids) <>
+            "] : [" <> parallelDerivation_outer_predicate <> "])[..];"
+          showFact i = "$" <> showt i
+
+      streamWithThrow parallelism producer worker
+
+    allFacts ref = showPredicateRef ref <> " _"
+
+    outerQuery pred batchSize = def
+      { userQuery_query = Text.encodeUtf8 $ allFacts (predicateRef pred)
+      , userQuery_encodings = [UserQueryEncoding_bin def]
+      , userQuery_options = Just def
+        { userQueryOptions_syntax = QuerySyntax_ANGLE
+        , userQueryOptions_max_results = Just batchSize
+        }
+      }
+
+    query q = def
+      { userQuery_predicate = derivePredicateQuery_predicate
+      , userQuery_predicate_version = derivePredicateQuery_predicate_version
+      , userQuery_query = Text.encodeUtf8 q
+      , userQuery_options = Just opts
+      , userQuery_encodings = []
+      }
+
+    opts = def
+      { userQueryOptions_expand_results = False
+      , userQueryOptions_syntax = QuerySyntax_ANGLE
+      , userQueryOptions_store_derived_facts = True
+      , userQueryOptions_max_bytes = maxBytes
+      , userQueryOptions_max_results = maxResults
+      , userQueryOptions_max_time_ms = maxTime
+      , userQueryOptions_omit_results = True
+      , userQueryOptions_continuation = Nothing
+      }
+
+    maxBytes = derivePredicateQuery_options
+      >>= derivePredicateOptions_max_bytes_per_query
+    maxResults = derivePredicateQuery_options
+      >>= derivePredicateOptions_max_results_per_query
+    maxTime = derivePredicateQuery_options
+      >>= derivePredicateOptions_max_time_ms_per_query
+
     retry :: Double -> IO a -> IO a
     retry secs action = do
       threadDelay $ round $ max secs 1 * 1000000
