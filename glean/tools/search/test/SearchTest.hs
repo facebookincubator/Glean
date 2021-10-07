@@ -323,10 +323,16 @@ main = do
               _ -> False
 
           search "prop1" "objc property" $ \r ->
-            -- For some reason we get a method and a property...
-            case sort r of
-              [ Entity_cxx (Entity_decl Declaration_objcMethod{}),
-                Entity_cxx (Entity_decl Declaration_objcProperty{}) ] -> True
+            case (sort r, platform) of
+              -- For some reason we get a method and a property...
+              ([ Entity_cxx (Entity_decl Declaration_objcMethod{}),
+                Entity_cxx (Entity_decl Declaration_objcProperty{})],
+                 "platform009") -> True
+              -- llvm12-based indexer returns one extra method (property setter)
+              ([ Entity_cxx (Entity_decl Declaration_objcMethod{}),
+                Entity_cxx (Entity_decl Declaration_objcMethod{}),
+                Entity_cxx (Entity_decl Declaration_objcProperty{})],
+                "platform009-clang-12" ) -> True
               _ -> False
 
           -- TODO: protocol
