@@ -258,12 +258,9 @@ doFinalize :: Env -> Repo -> IO Bool
 doFinalize env@Env{..} repo =
   do
     atomically $ notify envListener $ FinalizeStarted repo
-    policy <- ServerConfig.config_backup <$> Observed.get envServerConfig
+    config <- Observed.get envServerConfig
     withOpenDatabase env repo $ \odb@OpenDB{..} -> do
-      -- Only optimize when we're going to backup this DB. This might not
-      -- be what we want in general, but it speeds up tests.
-      when (repo_name repo `HashSet.member`
-             databaseBackupPolicy_allowed policy) $ do
+      when (ServerConfig.config_compact_on_completion config) $ do
         say logInfo "optimising"
         Storage.optimize odbHandle
       thinSchema repo odb
