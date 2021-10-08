@@ -80,8 +80,8 @@ namespace {
 struct Family {
 private:
   template<typename F>
-  Family(const char *n, F&& o)
-    : index(families.size()), name(n), options(std::forward<F>(o))
+  Family(const char *n, F&& o, bool keep_ = true)
+    : index(families.size()), name(n), options(std::forward<F>(o)), keep(keep_)
   {
     families.push_back(this);
   }
@@ -95,6 +95,11 @@ public:
   size_t index;
   const char *name;
   std::function<void(rocksdb::ColumnFamilyOptions&)> options;
+
+  // Whether to keep this column family after the DB is complete. If
+  // keep = false, then the contents of the column family will be
+  // deleted before compaction.
+  bool keep = true;
 
   static const Family admin;
   static const Family entities;
@@ -140,9 +145,9 @@ const Family Family::stats("stats", [](auto& opts) {
 const Family Family::meta("meta", [](auto&) {});
 const Family Family::ownershipUnits("ownershipUnits", [](auto& opts) {
   opts.OptimizeForPointLookup(100); });
-const Family Family::ownershipRaw("ownershipRaw", [](auto&) {});
+const Family Family::ownershipRaw("ownershipRaw", [](auto&) {}, false);
 const Family Family::ownershipDerivedRaw("ownershipDerivedRaw", [](auto& opts) {
-  opts.inplace_update_support = false; });
+  opts.inplace_update_support = false; }, false);
 const Family Family::ownershipSets("ownershipSets", [](auto& opts){
   opts.inplace_update_support = false; });
 const Family Family::factOwners("factOwners", [](auto& opts){
@@ -162,6 +167,7 @@ const char *admin_names[] = {
 
 struct ContainerImpl final : Container {
   Mode mode;
+  rocksdb::Options options;
   rocksdb::WriteOptions writeOptions;
   std::unique_ptr<rocksdb::DB> db;
   std::vector<rocksdb::ColumnFamilyHandle *> families;
@@ -171,7 +177,7 @@ struct ContainerImpl final : Container {
       Mode m,
       folly::Optional<std::shared_ptr<Cache>> cache) {
     mode = m;
-    rocksdb::Options options;
+
     if (mode == Mode::Create ) {
       options.error_if_exists = true;
       options.create_if_missing = true;
@@ -336,8 +342,22 @@ struct ContainerImpl final : Container {
   }
 
   void optimize() override {
-    for (auto handle : families) {
-      if (handle) {
+    for (uint32_t i = 0; i < families.size(); i++) {
+      auto family = Family::family(i);
+      auto handle = families[i];
+      if (handle && family) {
+        if (!family->keep) {
+          // delete the contents of this column family
+          check(db->DropColumnFamily(handle));
+          db->DestroyColumnFamilyHandle(handle);
+          rocksdb::ColumnFamilyOptions opts(options);
+          family->options(opts);
+          check(db->CreateColumnFamily(
+            opts,
+            family->name,
+            &handle));
+          families[i] = handle;
+        }
         const auto nlevels = db->NumberLevels(handle);
         if (nlevels != 2) {
           rocksdb::CompactRangeOptions copts;

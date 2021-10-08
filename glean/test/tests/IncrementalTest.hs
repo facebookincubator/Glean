@@ -242,7 +242,7 @@ orphanTest = TestCase $
 
 deriveTest :: Test
 deriveTest = TestCase $
-  withTestEnv [] $ \env -> do
+  withTestEnv [setCompactOnCompletion] $ \env -> do
     let base = Repo "base" "0"
     kickOffTestDB env base id
     mkGraph env base
