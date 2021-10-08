@@ -318,6 +318,10 @@ struct Database {
   // If the DB is complete, this is the time when the DB was
   // marked completed.
   9: optional PosixEpochTime completed;
+
+  // If present, this is the time when the source data was read.
+  // This should always be earlier than created time.
+  10: optional PosixEpochTime repo_hash_time;
 }
 
 struct PredicateStats {
@@ -801,7 +805,10 @@ struct KickOff {
   // "glean."  are reserved for use by Glean itself.
 
   4: optional Dependencies dependencies;
-// What this DB depends on.
+  // What this DB depends on.
+
+  5: optional PosixEpochTime repo_hash_time;
+// The timestamp of the repo hash of this db.
 }
 
 struct KickOffResponse {

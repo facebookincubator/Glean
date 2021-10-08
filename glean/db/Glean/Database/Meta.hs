@@ -90,6 +90,7 @@ metaToThriftDatabase status expire repo Meta{..} = Database
   , database_completed = case metaCompleteness of
       Complete (DatabaseComplete time) -> Just time
       _ -> Nothing
+  , database_repo_hash_time = Nothing
   }
 
 metaToProps :: Meta -> Map String String
