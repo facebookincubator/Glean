@@ -280,7 +280,7 @@ Id QueryExecutor::newDerivedFact(
       if (iter.id != Id::invalid()) {
         auto owner = ownership->getOwner(iter.id);
         if (owner == INVALID_USET) {
-          LOG(ERROR) << "fact " << iter.id.toWord() << " has no owner";
+          VLOG(1) << "fact " << iter.id.toWord() << " has no owner";
         } else {
           owners.insert(owner);
         }
