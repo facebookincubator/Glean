@@ -1,0 +1,400 @@
+[
+  "@generated",
+  {
+    "key": {
+      "declaration": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "f" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": {
+                "returns": { "key": "void" },
+                "parameters": [
+                  { "name": { "key": "x1" }, "type": { "key": "int" } }
+                ]
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 43,
+              "columnBegin": 1,
+              "lineEnd": 47,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 893, "length": 48 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "m1" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "T" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "int" },
+            "kind": {
+              "global_": { "kind": 2, "attribute": 0, "definition": false }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 22,
+              "columnBegin": 3,
+              "lineEnd": 22,
+              "columnEnd": 15
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 418, "length": 57 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "m1" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "T" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "int" },
+            "kind": {
+              "global_": { "kind": 2, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 36,
+              "columnBegin": 1,
+              "lineEnd": 36,
+              "columnEnd": 9
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 759, "length": 51 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "m2" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "T" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "int" },
+            "kind": {
+              "global_": { "kind": 2, "attribute": 0, "definition": false }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 25,
+              "columnBegin": 3,
+              "lineEnd": 25,
+              "columnEnd": 15
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 495, "length": 50 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "m2" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "T" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "int" },
+            "kind": {
+              "global_": { "kind": 2, "attribute": 1, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 39,
+              "columnBegin": 1,
+              "lineEnd": 39,
+              "columnEnd": 16
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 822, "length": 51 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "m3" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "T" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "int" },
+            "kind": {
+              "global_": { "kind": 2, "attribute": 1, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 28,
+              "columnBegin": 3,
+              "lineEnd": 28,
+              "columnEnd": 22
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 565, "length": 64 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "m4" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "T" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "const int" },
+            "kind": {
+              "global_": { "kind": 2, "attribute": 2, "definition": false }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 31,
+              "columnBegin": 3,
+              "lineEnd": 31,
+              "columnEnd": 29
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 656, "length": 67 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "v1" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "int" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": false }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 5,
+              "columnBegin": 1,
+              "lineEnd": 5,
+              "columnEnd": 13
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 53, "length": 55 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "v1" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "int" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 8,
+              "columnBegin": 1,
+              "lineEnd": 8,
+              "columnEnd": 6
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 124, "length": 48 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "v2" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "int" },
+            "kind": {
+              "global_": { "kind": 1, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 11,
+              "columnBegin": 1,
+              "lineEnd": 11,
+              "columnEnd": 13
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 181, "length": 55 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "v3" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "int" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 1, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 14,
+              "columnBegin": 1,
+              "lineEnd": 14,
+              "columnEnd": 13
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 252, "length": 55 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "v4" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "const int" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 2, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 17,
+              "columnBegin": 1,
+              "lineEnd": 17,
+              "columnEnd": 20
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 323, "length": 58 }
+    }
+  }
+]

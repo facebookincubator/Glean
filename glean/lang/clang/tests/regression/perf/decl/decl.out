@@ -1,0 +1,56 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": {
+        "key": {
+          "name": { "key": { "name": { "key": "f2" } } },
+          "scope": { "namespace_": { "key": { "name": { "key": "n" } } } }
+        }
+      },
+      "signature": {
+        "key": {
+          "returns": { "key": "void" },
+          "parameters": [
+            { "name": { "key": "x" }, "type": { "key": "bool" } },
+            { "name": { "key": "y" }, "type": { "key": "int" } }
+          ]
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 5,
+        "columnBegin": 1,
+        "lineEnd": 5,
+        "columnEnd": 22
+      }
+    }
+  },
+  {
+    "key": {
+      "name": {
+        "key": {
+          "name": { "key": { "name": { "key": "f3" } } },
+          "scope": { "namespace_": { "key": { "name": { "key": "n" } } } }
+        }
+      },
+      "signature": {
+        "key": {
+          "returns": { "key": "void" },
+          "parameters": [
+            { "name": { "key": "" }, "type": { "key": "int" } },
+            { "name": { "key": "" }, "type": { "key": "char" } },
+            { "name": { "key": "" }, "type": { "key": "char" } }
+          ]
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 6,
+        "columnBegin": 1,
+        "lineEnd": 6,
+        "columnEnd": 24
+      }
+    }
+  }
+]

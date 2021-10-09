@@ -1,0 +1,31 @@
+[
+  "@generated",
+  {
+    "key": {
+      "base": {
+        "key": {
+          "id": { "interface_": { "key": "TestSuperclass" } },
+          "source": {
+            "file": { "key": "test.h" },
+            "lineBegin": 3,
+            "columnBegin": 1,
+            "lineEnd": 4,
+            "columnEnd": 4
+          }
+        }
+      },
+      "declaration": {
+        "key": {
+          "id": { "interface_": { "key": "TestSubclass" } },
+          "source": {
+            "file": { "key": "test.h" },
+            "lineBegin": 6,
+            "columnBegin": 1,
+            "lineEnd": 7,
+            "columnEnd": 4
+          }
+        }
+      }
+    }
+  }
+]

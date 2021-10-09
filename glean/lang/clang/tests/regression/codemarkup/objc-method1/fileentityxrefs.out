@@ -1,0 +1,127 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.mm" },
+      "xref": {
+        "target": {
+          "name": "Foo",
+          "file": { "key": "test.mm" },
+          "location": {
+            "range": {
+              "file": { "key": "test.mm" },
+              "lineBegin": 1,
+              "columnBegin": 1,
+              "lineEnd": 5,
+              "columnEnd": 4
+            }
+          }
+        },
+        "source": { "span": { "start": 80, "length": 3 } }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "objcContainer": {
+              "key": {
+                "id": { "protocol": { "key": "Foo" } },
+                "source": {
+                  "file": { "key": "test.mm" },
+                  "lineBegin": 1,
+                  "columnBegin": 1,
+                  "lineEnd": 5,
+                  "columnEnd": 4
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.mm" },
+      "xref": {
+        "target": {
+          "name": "Foo",
+          "file": { "key": "test.mm" },
+          "location": {
+            "range": {
+              "file": { "key": "test.mm" },
+              "lineBegin": 1,
+              "columnBegin": 1,
+              "lineEnd": 5,
+              "columnEnd": 4
+            }
+          }
+        },
+        "source": { "span": { "start": 151, "length": 3 } }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "objcContainer": {
+              "key": {
+                "id": { "protocol": { "key": "Foo" } },
+                "source": {
+                  "file": { "key": "test.mm" },
+                  "lineBegin": 1,
+                  "columnBegin": 1,
+                  "lineEnd": 5,
+                  "columnEnd": 4
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.mm" },
+      "xref": {
+        "target": {
+          "name": "foo",
+          "file": { "key": "test.mm" },
+          "location": {
+            "range": {
+              "file": { "key": "test.mm" },
+              "lineBegin": 12,
+              "columnBegin": 3,
+              "lineEnd": 12,
+              "columnEnd": 13
+            }
+          }
+        },
+        "source": { "span": { "start": 231, "length": 3 } }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "foo" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "id<Foo>" },
+                "kind": { "ivar": { "synthesize": false } },
+                "source": {
+                  "file": { "key": "test.mm" },
+                  "lineBegin": 12,
+                  "columnBegin": 3,
+                  "lineEnd": 12,
+                  "columnEnd": 13
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

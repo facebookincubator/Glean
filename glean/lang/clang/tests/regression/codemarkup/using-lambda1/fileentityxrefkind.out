@@ -1,0 +1,27 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "namespace_": {
+              "key": {
+                "name": { "key": { "name": { "key": "N1" } } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 1,
+                  "columnBegin": 1,
+                  "lineEnd": 5,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "kind": 5
+    }
+  }
+]

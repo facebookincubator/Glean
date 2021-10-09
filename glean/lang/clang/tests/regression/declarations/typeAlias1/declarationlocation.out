@@ -1,0 +1,183 @@
+[
+  "@generated",
+  {
+    "key": {
+      "decl": {
+        "objcContainer": {
+          "key": {
+            "id": { "protocol": { "key": "Foo" } },
+            "source": {
+              "file": { "key": "test.mm" },
+              "lineBegin": 1,
+              "columnBegin": 1,
+              "lineEnd": 2,
+              "columnEnd": 4
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.mm" },
+        "lineBegin": 1,
+        "columnBegin": 1,
+        "lineEnd": 2,
+        "columnEnd": 4
+      },
+      "name": { "key": "Foo" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "T" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "int" },
+            "kind": 0,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 3,
+              "columnBegin": 1,
+              "lineEnd": 3,
+              "columnEnd": 13
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 3,
+        "columnBegin": 1,
+        "lineEnd": 3,
+        "columnEnd": 13
+      },
+      "name": { "key": "T" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "U" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "T" },
+            "kind": 1,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 4,
+              "columnBegin": 1,
+              "lineEnd": 4,
+              "columnEnd": 11
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 4,
+        "columnBegin": 1,
+        "lineEnd": 4,
+        "columnEnd": 11
+      },
+      "name": { "key": "U" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "U" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "id<Foo>" },
+            "kind": 1,
+            "source": {
+              "file": { "key": "test.mm" },
+              "lineBegin": 4,
+              "columnBegin": 1,
+              "lineEnd": 4,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.mm" },
+        "lineBegin": 4,
+        "columnBegin": 1,
+        "lineEnd": 4,
+        "columnEnd": 1
+      },
+      "name": { "key": "U" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "x" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "T" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 6,
+              "columnBegin": 1,
+              "lineEnd": 6,
+              "columnEnd": 3
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 6,
+        "columnBegin": 1,
+        "lineEnd": 6,
+        "columnEnd": 3
+      },
+      "name": { "key": "x" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "y" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "U" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 7,
+              "columnBegin": 1,
+              "lineEnd": 7,
+              "columnEnd": 3
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 7,
+        "columnBegin": 1,
+        "lineEnd": 7,
+        "columnEnd": 3
+      },
+      "name": { "key": "y" }
+    }
+  }
+]

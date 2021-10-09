@@ -1,0 +1,120 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "events": [
+        {
+          "include_": {
+            "include_": {
+              "key": {
+                "file": { "key": "test.h" },
+                "path": { "begin": 81, "end": 89 },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 3,
+                  "columnBegin": 1,
+                  "lineEnd": 3,
+                  "columnEnd": 16
+                }
+              }
+            },
+            "trace": {
+              "key": {
+                "file": { "key": "test.h" },
+                "declarations": {
+                  "key": [
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "str1" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "char *const" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 0,
+                              "definition": false
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.h" },
+                            "lineBegin": 4,
+                            "columnBegin": 1,
+                            "lineEnd": 4,
+                            "columnEnd": 23
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "str2" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "char *const" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 0,
+                              "definition": false
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.h" },
+                            "lineBegin": 5,
+                            "columnBegin": 1,
+                            "lineEnd": 5,
+                            "columnEnd": 23
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "str3" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "char *const" },
+                          "kind": {
+                            "global_": {
+                              "kind": 0,
+                              "attribute": 0,
+                              "definition": false
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.h" },
+                            "lineBegin": 6,
+                            "columnBegin": 1,
+                            "lineEnd": 6,
+                            "columnEnd": 23
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "preprocessor": {
+                  "key": { "file": { "key": "test.h" }, "events": [ ] }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+]

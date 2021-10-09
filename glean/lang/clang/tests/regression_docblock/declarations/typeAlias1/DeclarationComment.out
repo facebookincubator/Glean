@@ -1,0 +1,51 @@
+[
+  "@generated",
+  {
+    "key": {
+      "declaration": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "T" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "int" },
+            "kind": 0,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 5,
+              "columnBegin": 1,
+              "lineEnd": 5,
+              "columnEnd": 13
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 53, "length": 62 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "U" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "T" },
+            "kind": 1,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 1,
+              "lineEnd": 9,
+              "columnEnd": 11
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 132, "length": 60 }
+    }
+  }
+]

@@ -1,0 +1,101 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "xrefs": [
+        {
+          "range": { "begin": 36, "end": 44 },
+          "target": {
+            "declaration": {
+              "objcContainer": {
+                "key": {
+                  "id": { "interface_": { "key": "Protocol" } },
+                  "source": {
+                    "file": { "key": "<builtin>" },
+                    "lineBegin": 1,
+                    "columnBegin": 1,
+                    "lineEnd": 1,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 86, "end": 87 },
+          "target": {
+            "declaration": {
+              "objcContainer": {
+                "key": {
+                  "id": { "interface_": { "key": "J" } },
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 1,
+                    "columnBegin": 1,
+                    "lineEnd": 3,
+                    "columnEnd": 4
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 99, "end": 112 },
+          "target": {
+            "declaration": {
+              "objcMethod": {
+                "key": {
+                  "selector": { "key": [ "checkProtocol" ] },
+                  "container": { "interface_": { "key": "J" } },
+                  "signature": {
+                    "key": {
+                      "returns": { "key": "void" },
+                      "parameters": [
+                        {
+                          "name": { "key": "f" },
+                          "type": { "key": "Protocol *" }
+                        }
+                      ]
+                    }
+                  },
+                  "isInstance": true,
+                  "isOptional": false,
+                  "isAccessor": false,
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 2,
+                    "columnBegin": 1,
+                    "lineEnd": 2,
+                    "columnEnd": 36
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 113, "end": 122 },
+          "target": {
+            "declaration": {
+              "objcContainer": {
+                "key": {
+                  "id": { "protocol": { "key": "Foo" } },
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 5,
+                    "columnBegin": 1,
+                    "lineEnd": 6,
+                    "columnEnd": 4
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+]

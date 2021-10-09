@@ -1,0 +1,36 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "xrefs": [
+        {
+          "range": { "begin": 135, "end": 137 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "_i" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "type": { "key": "int" },
+                  "kind": { "ivar": { "synthesize": false } },
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 2,
+                    "columnBegin": 3,
+                    "lineEnd": 2,
+                    "columnEnd": 8
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+]

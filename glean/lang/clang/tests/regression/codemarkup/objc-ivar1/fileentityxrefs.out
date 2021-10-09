@@ -1,0 +1,49 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "xref": {
+        "target": {
+          "name": "_i",
+          "file": { "key": "test.m" },
+          "location": {
+            "range": {
+              "file": { "key": "test.m" },
+              "lineBegin": 2,
+              "columnBegin": 3,
+              "lineEnd": 2,
+              "columnEnd": 8
+            }
+          }
+        },
+        "source": { "span": { "start": 135, "length": 2 } }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "_i" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "ivar": { "synthesize": false } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 2,
+                  "columnBegin": 3,
+                  "lineEnd": 2,
+                  "columnEnd": 8
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

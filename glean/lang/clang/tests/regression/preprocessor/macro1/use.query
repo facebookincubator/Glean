@@ -1,0 +1,6 @@
+query: pp1.Use _
+transform:
+  - sort
+  - - [key, source, file, key]
+    - [key, source]
+    - [key, macro, key]

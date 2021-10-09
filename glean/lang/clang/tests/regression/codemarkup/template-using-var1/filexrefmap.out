@@ -1,0 +1,40 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "fixed": [
+        {
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N1" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 1,
+                    "columnBegin": 1,
+                    "lineEnd": 8,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [
+            { "offset": 217, "length": 2 },
+            { "offset": 94, "length": 2 }
+          ]
+        }
+      ],
+      "variable": [
+        [ { "offset": 235, "length": 3 }, { "offset": 38, "length": 3 } ],
+        [ { "offset": 247, "length": 3 } ],
+        [ { "offset": 260, "length": 3 } ],
+        [ { "offset": 334, "length": 3 }, { "offset": 38, "length": 3 } ],
+        [ { "offset": 346, "length": 3 } ],
+        [ { "offset": 359, "length": 3 } ]
+      ]
+    }
+  }
+]

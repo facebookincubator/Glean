@@ -1,0 +1,137 @@
+[
+  "@generated",
+  {
+    "key": {
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "bar" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": {
+                "returns": { "key": "void" },
+                "parameters": [
+                  { "name": { "key": "selector" }, "type": { "key": "SEL" } }
+                ]
+              }
+            },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 5,
+              "columnBegin": 1,
+              "lineEnd": 8,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.m" },
+        "lineBegin": 5,
+        "columnBegin": 1,
+        "lineEnd": 8,
+        "columnEnd": 1
+      },
+      "name": { "key": "bar" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "call" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": {
+                "returns": { "key": "void" },
+                "parameters": [
+                  { "name": { "key": "s" }, "type": { "key": "J *" } }
+                ]
+              }
+            },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 10,
+              "columnBegin": 1,
+              "lineEnd": 15,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.m" },
+        "lineBegin": 10,
+        "columnBegin": 1,
+        "lineEnd": 15,
+        "columnEnd": 1
+      },
+      "name": { "key": "call" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "objcContainer": {
+          "key": {
+            "id": { "interface_": { "key": "J" } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 1,
+              "columnBegin": 1,
+              "lineEnd": 3,
+              "columnEnd": 4
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.m" },
+        "lineBegin": 1,
+        "columnBegin": 1,
+        "lineEnd": 3,
+        "columnEnd": 4
+      },
+      "name": { "key": "J" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "SEL" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "SEL *" },
+            "kind": 0,
+            "source": {
+              "file": { "key": "<builtin>" },
+              "lineBegin": 1,
+              "columnBegin": 1,
+              "lineEnd": 1,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "<builtin>" },
+        "lineBegin": 1,
+        "columnBegin": 1,
+        "lineEnd": 1,
+        "columnEnd": 1
+      },
+      "name": { "key": "SEL" }
+    }
+  }
+]

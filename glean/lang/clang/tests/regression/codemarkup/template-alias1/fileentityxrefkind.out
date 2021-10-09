@@ -1,0 +1,123 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "main.cpp" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "S" }, "scope": { "global_": { } } }
+                },
+                "kind": { "struct_": { } },
+                "source": {
+                  "file": { "key": "main.cpp" },
+                  "lineBegin": 2,
+                  "columnBegin": 1,
+                  "lineEnd": 2,
+                  "columnEnd": 11
+                }
+              }
+            }
+          }
+        }
+      },
+      "kind": 24
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.cpp" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "typeAlias": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "F1" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "T" },
+                "kind": 1,
+                "source": {
+                  "file": { "key": "main.cpp" },
+                  "lineBegin": 4,
+                  "columnBegin": 22,
+                  "lineEnd": 4,
+                  "columnEnd": 33
+                }
+              }
+            }
+          }
+        }
+      },
+      "kind": 6
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.cpp" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "typeAlias": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "F2" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": 1,
+                "source": {
+                  "file": { "key": "main.cpp" },
+                  "lineBegin": 5,
+                  "columnBegin": 22,
+                  "lineEnd": 5,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      },
+      "kind": 6
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.cpp" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "typeAlias": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "F3" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "S<T>" },
+                "kind": 1,
+                "source": {
+                  "file": { "key": "main.cpp" },
+                  "lineBegin": 6,
+                  "columnBegin": 22,
+                  "lineEnd": 6,
+                  "columnEnd": 36
+                }
+              }
+            }
+          }
+        }
+      },
+      "kind": 6
+    }
+  }
+]

@@ -1,0 +1,150 @@
+[
+  "@generated",
+  {
+    "key": {
+      "declaration": {
+        "enum_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "Global" },
+                "scope": { "global_": { } }
+              }
+            },
+            "isScoped": false,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 25,
+              "columnBegin": 1,
+              "lineEnd": 25,
+              "columnEnd": 26
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 380, "length": 59 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "enum_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "GlobalClass" },
+                "scope": { "global_": { } }
+              }
+            },
+            "isScoped": true,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 31,
+              "columnBegin": 1,
+              "lineEnd": 31,
+              "columnEnd": 40
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 469, "length": 71 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "enum_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "InU" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "U" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "isScoped": false,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 13,
+              "columnBegin": 3,
+              "lineEnd": 13,
+              "columnEnd": 25
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 173, "length": 60 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "enum_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "InUClass" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "U" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "isScoped": true,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 18,
+              "columnBegin": 3,
+              "lineEnd": 18,
+              "columnEnd": 39
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 263, "length": 71 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "U" }, "scope": { "global_": { } } }
+            },
+            "kind": { "struct_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 8,
+              "columnBegin": 1,
+              "lineEnd": 19,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 53, "length": 106 }
+    }
+  }
+]

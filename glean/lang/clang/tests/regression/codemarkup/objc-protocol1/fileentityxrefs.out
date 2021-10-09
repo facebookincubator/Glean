@@ -1,0 +1,81 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "xref": {
+        "target": {
+          "name": "Foo",
+          "file": { "key": "test.m" },
+          "location": {
+            "range": {
+              "file": { "key": "test.m" },
+              "lineBegin": 5,
+              "columnBegin": 1,
+              "lineEnd": 6,
+              "columnEnd": 4
+            }
+          }
+        },
+        "source": { "span": { "start": 113, "length": 9 } }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "objcContainer": {
+              "key": {
+                "id": { "protocol": { "key": "Foo" } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 5,
+                  "columnBegin": 1,
+                  "lineEnd": 6,
+                  "columnEnd": 4
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "xref": {
+        "target": {
+          "name": "J",
+          "file": { "key": "test.m" },
+          "location": {
+            "range": {
+              "file": { "key": "test.m" },
+              "lineBegin": 1,
+              "columnBegin": 1,
+              "lineEnd": 3,
+              "columnEnd": 4
+            }
+          }
+        },
+        "source": { "span": { "start": 86, "length": 1 } }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "objcContainer": {
+              "key": {
+                "id": { "interface_": { "key": "J" } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 1,
+                  "columnBegin": 1,
+                  "lineEnd": 3,
+                  "columnEnd": 4
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

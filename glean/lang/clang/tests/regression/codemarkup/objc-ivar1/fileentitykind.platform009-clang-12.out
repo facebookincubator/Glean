@@ -1,0 +1,126 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "objcMethod": {
+              "key": {
+                "selector": { "key": [ "i" ] },
+                "container": { "implementation": { "key": "J" } },
+                "signature": {
+                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                },
+                "isInstance": true,
+                "isOptional": false,
+                "isAccessor": true,
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 11,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 13
+                }
+              }
+            }
+          }
+        }
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "objcMethod": {
+              "key": {
+                "selector": { "key": [ "i" ] },
+                "container": { "interface_": { "key": "J" } },
+                "signature": {
+                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                },
+                "isInstance": true,
+                "isOptional": false,
+                "isAccessor": true,
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 5,
+                  "columnBegin": 35,
+                  "lineEnd": 5,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "objcProperty": {
+              "key": {
+                "name": { "key": "i" },
+                "container": { "interface_": { "key": "J" } },
+                "type": { "key": "int" },
+                "isInstance": true,
+                "isOptional": false,
+                "isReadOnly": false,
+                "isAtomic": false,
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 5,
+                  "columnBegin": 1,
+                  "lineEnd": 5,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      },
+      "kind": 8
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "_i" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "ivar": { "synthesize": false } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 2,
+                  "columnBegin": 3,
+                  "lineEnd": 2,
+                  "columnEnd": 8
+                }
+              }
+            }
+          }
+        }
+      },
+      "kind": 14
+    }
+  }
+]

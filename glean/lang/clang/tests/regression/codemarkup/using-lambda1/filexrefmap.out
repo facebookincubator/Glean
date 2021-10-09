@@ -1,0 +1,148 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "fixed": [
+        {
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N1" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 1,
+                    "columnBegin": 1,
+                    "lineEnd": 5,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [
+            { "offset": 93, "length": 2 },
+            { "offset": 88, "length": 2 }
+          ]
+        },
+        {
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "operator_": "operator()" } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": { "name": { "key": "g" } }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "method": {
+                    "isVirtual": false,
+                    "isConst": true,
+                    "isVolatile": false,
+                    "refQualifier": 0
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 8,
+                    "columnBegin": 18,
+                    "lineEnd": 11,
+                    "columnEnd": 3
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [ { "offset": 118, "length": 2 } ]
+        },
+        {
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "operator_": "operator()" } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": { "name": { "key": "h" } }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": {
+                      "returns": { "key": "auto" },
+                      "parameters": [
+                        { "name": { "key": "" }, "type": { "key": "auto" } }
+                      ]
+                    }
+                  },
+                  "method": {
+                    "isVirtual": false,
+                    "isConst": true,
+                    "isVolatile": false,
+                    "refQualifier": 0
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 16,
+                    "columnBegin": 22,
+                    "lineEnd": 19,
+                    "columnEnd": 3
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [
+            { "offset": 206, "length": 3 },
+            { "offset": 10, "length": 4 }
+          ]
+        }
+      ],
+      "variable": [
+        [ { "offset": 101, "length": 3 } ],
+        [ { "offset": 189, "length": 3 } ]
+      ]
+    }
+  }
+]

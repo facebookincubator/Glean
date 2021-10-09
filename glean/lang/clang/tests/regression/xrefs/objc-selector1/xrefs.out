@@ -1,0 +1,149 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "xrefs": [
+        {
+          "range": { "begin": 36, "end": 39 },
+          "target": {
+            "declaration": {
+              "typeAlias": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "SEL" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "type": { "key": "SEL *" },
+                  "kind": 0,
+                  "source": {
+                    "file": { "key": "<builtin>" },
+                    "lineBegin": 1,
+                    "columnBegin": 1,
+                    "lineEnd": 1,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 65, "end": 68 },
+          "target": {
+            "declaration": {
+              "typeAlias": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "SEL" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "type": { "key": "SEL *" },
+                  "kind": 0,
+                  "source": {
+                    "file": { "key": "<builtin>" },
+                    "lineBegin": 1,
+                    "columnBegin": 1,
+                    "lineEnd": 1,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 104, "end": 105 },
+          "target": {
+            "declaration": {
+              "objcContainer": {
+                "key": {
+                  "id": { "interface_": { "key": "J" } },
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 1,
+                    "columnBegin": 1,
+                    "lineEnd": 3,
+                    "columnEnd": 4
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 147, "end": 150 },
+          "target": {
+            "declaration": {
+              "typeAlias": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "SEL" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "type": { "key": "SEL *" },
+                  "kind": 0,
+                  "source": {
+                    "file": { "key": "<builtin>" },
+                    "lineBegin": 1,
+                    "columnBegin": 1,
+                    "lineEnd": 1,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 155, "end": 169 },
+          "target": { "objcSelector": { "key": [ "foo" ] } }
+        },
+        {
+          "range": { "begin": 176, "end": 189 },
+          "target": {
+            "declaration": {
+              "objcMethod": {
+                "key": {
+                  "selector": { "key": [ "checkSelector" ] },
+                  "container": { "interface_": { "key": "J" } },
+                  "signature": {
+                    "key": {
+                      "returns": { "key": "void" },
+                      "parameters": [
+                        {
+                          "name": { "key": "selector" },
+                          "type": { "key": "SEL" }
+                        }
+                      ]
+                    }
+                  },
+                  "isInstance": true,
+                  "isOptional": false,
+                  "isAccessor": false,
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 2,
+                    "columnBegin": 1,
+                    "lineEnd": 2,
+                    "columnEnd": 36
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 190, "end": 204 },
+          "target": { "objcSelector": { "key": [ "foo" ] } }
+        }
+      ]
+    }
+  }
+]

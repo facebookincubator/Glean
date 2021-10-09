@@ -1,0 +1,10 @@
+# Should not iterate through all the cxx1.FunctionDeclaration facts
+query: |
+  cxx1.FunctionDeclaration {
+    name = { 
+      name = { name = "f2" | "f3" }, 
+      scope = { namespace_ = { name = { just = "n" } } } },
+    source = { file = "test.cpp" }
+  }
+perf: true
+transform: [gensort, []]

@@ -1,0 +1,59 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "fixed": [
+        {
+          "target": {
+            "declaration": {
+              "objcContainer": {
+                "key": {
+                  "id": { "interface_": { "key": "I" } },
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 1,
+                    "columnBegin": 1,
+                    "lineEnd": 5,
+                    "columnEnd": 4
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [
+            { "offset": 42, "length": 1 },
+            { "offset": 17, "length": 1 }
+          ]
+        },
+        {
+          "target": {
+            "declaration": {
+              "objcMethod": {
+                "key": {
+                  "selector": { "key": [ "foo" ] },
+                  "container": { "interface_": { "key": "I" } },
+                  "signature": {
+                    "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                  },
+                  "isInstance": false,
+                  "isOptional": false,
+                  "isAccessor": false,
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 3,
+                    "columnBegin": 1,
+                    "lineEnd": 3,
+                    "columnEnd": 11
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [ { "offset": 61, "length": 3 } ]
+        }
+      ],
+      "variable": [ ]
+    }
+  }
+]

@@ -1,0 +1,108 @@
+[
+  "@generated",
+  {
+    "key": {
+      "declaration": {
+        "key": {
+          "id": { "implementation": { "key": "I" } },
+          "source": {
+            "file": { "key": "test.m" },
+            "lineBegin": 7,
+            "columnBegin": 1,
+            "lineEnd": 13,
+            "columnEnd": 1
+          }
+        }
+      },
+      "protocols": [ ],
+      "members": {
+        "key": [
+          {
+            "objcMethod": {
+              "key": {
+                "selector": { "key": [ "f1" ] },
+                "container": { "implementation": { "key": "I" } },
+                "signature": {
+                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                },
+                "isInstance": true,
+                "isOptional": false,
+                "isAccessor": false,
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 10,
+                  "columnBegin": 1,
+                  "lineEnd": 12,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "key": {
+          "id": { "interface_": { "key": "I" } },
+          "source": {
+            "file": { "key": "test.m" },
+            "lineBegin": 1,
+            "columnBegin": 1,
+            "lineEnd": 5,
+            "columnEnd": 4
+          }
+        }
+      },
+      "protocols": [ ],
+      "members": {
+        "key": [
+          {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "v1" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "ivar": { "synthesize": false } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 2,
+                  "columnBegin": 3,
+                  "lineEnd": 2,
+                  "columnEnd": 8
+                }
+              }
+            }
+          },
+          {
+            "objcMethod": {
+              "key": {
+                "selector": { "key": [ "f1" ] },
+                "container": { "interface_": { "key": "I" } },
+                "signature": {
+                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                },
+                "isInstance": true,
+                "isOptional": false,
+                "isAccessor": false,
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 4,
+                  "columnBegin": 1,
+                  "lineEnd": 4,
+                  "columnEnd": 10
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]

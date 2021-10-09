@@ -1,0 +1,37 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "fixed": [
+        {
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "_i" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "type": { "key": "int" },
+                  "kind": { "ivar": { "synthesize": false } },
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 2,
+                    "columnBegin": 3,
+                    "lineEnd": 2,
+                    "columnEnd": 8
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [ { "offset": 135, "length": 2 } ]
+        }
+      ],
+      "variable": [ ]
+    }
+  }
+]

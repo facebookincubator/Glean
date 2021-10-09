@@ -1,0 +1,6 @@
+query: |
+  {Decl1, Decl2} where
+    codemarkup.FileEntityLocations { entity = { cxx = { decl = Decl1 } } };
+    code.cxx.DeclToDef { Decl1, Defn };
+    cxx1.DefToBaseDecl { Defn, Decl2 };
+transform: [gensort, []]

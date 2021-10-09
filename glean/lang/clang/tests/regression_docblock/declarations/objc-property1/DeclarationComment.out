@@ -1,0 +1,93 @@
+[
+  "@generated",
+  {
+    "key": {
+      "declaration": {
+        "objcContainer": {
+          "key": {
+            "id": { "implementation": { "key": "A" } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 25,
+              "columnBegin": 1,
+              "lineEnd": 29,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "file": { "key": "test.m" },
+      "span": { "start": 283, "length": 74 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "objcContainer": {
+          "key": {
+            "id": { "interface_": { "key": "A" } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 5,
+              "columnBegin": 1,
+              "lineEnd": 19,
+              "columnEnd": 4
+            }
+          }
+        }
+      },
+      "file": { "key": "test.m" },
+      "span": { "start": 0, "length": 69 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "objcProperty": {
+          "key": {
+            "name": { "key": "i" },
+            "container": { "interface_": { "key": "A" } },
+            "type": { "key": "int" },
+            "isInstance": true,
+            "isOptional": false,
+            "isReadOnly": false,
+            "isAtomic": false,
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 17,
+              "columnBegin": 1,
+              "lineEnd": 17,
+              "columnEnd": 35
+            }
+          }
+        }
+      },
+      "file": { "key": "test.m" },
+      "span": { "start": 170, "length": 68 }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "_i" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "int" },
+            "kind": { "ivar": { "synthesize": false } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 10,
+              "columnBegin": 3,
+              "lineEnd": 10,
+              "columnEnd": 8
+            }
+          }
+        }
+      },
+      "file": { "key": "test.m" },
+      "span": { "start": 87, "length": 69 }
+    }
+  }
+]

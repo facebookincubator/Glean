@@ -1,0 +1,30 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "fixed": [
+        {
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N1" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 1,
+                    "columnBegin": 1,
+                    "lineEnd": 5,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [ { "offset": 49, "length": 2 } ]
+        }
+      ],
+      "variable": [ [ { "offset": 87, "length": 1 } ] ]
+    }
+  }
+]

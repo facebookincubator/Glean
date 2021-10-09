@@ -1,0 +1,217 @@
+[
+  "@generated",
+  {
+    "key": {
+      "sources": [
+        {
+          "objcContainer": {
+            "key": {
+              "id": { "implementation": { "key": "I" } },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "file": { "key": "test.m" },
+                "lineBegin": 10,
+                "lineEnd": 28
+              }
+            }
+          }
+        },
+        {
+          "objcMethod": {
+            "key": {
+              "container": { "implementation": { "key": "I" } },
+              "isAccessor": false,
+              "isInstance": true,
+              "isOptional": false,
+              "selector": { "key": [ "", "f4a" ] },
+              "signature": {
+                "key": {
+                  "parameters": [
+                    { "name": { "key": "x" }, "type": { "key": "int" } },
+                    { "name": { "key": "y" }, "type": { "key": "int" } }
+                  ],
+                  "returns": { "key": "int" }
+                }
+              },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "file": { "key": "test.m" },
+                "lineBegin": 24,
+                "lineEnd": 26
+              }
+            }
+          }
+        }
+      ],
+      "target": {
+        "objcMethod": {
+          "key": {
+            "container": { "interface_": { "key": "I" } },
+            "isAccessor": false,
+            "isInstance": true,
+            "isOptional": false,
+            "selector": { "key": [ "f3a", "f3b" ] },
+            "signature": {
+              "key": {
+                "parameters": [
+                  { "name": { "key": "x" }, "type": { "key": "int" } },
+                  { "name": { "key": "y" }, "type": { "key": "int" } }
+                ],
+                "returns": { "key": "int" }
+              }
+            },
+            "source": {
+              "columnBegin": 1,
+              "columnEnd": 33,
+              "file": { "key": "test.m" },
+              "lineBegin": 5,
+              "lineEnd": 5
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "sources": [
+        {
+          "objcContainer": {
+            "key": {
+              "id": { "implementation": { "key": "I" } },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "file": { "key": "test.m" },
+                "lineBegin": 10,
+                "lineEnd": 28
+              }
+            }
+          }
+        },
+        {
+          "objcMethod": {
+            "key": {
+              "container": { "implementation": { "key": "I" } },
+              "isAccessor": false,
+              "isInstance": true,
+              "isOptional": false,
+              "selector": { "key": [ "f2" ] },
+              "signature": {
+                "key": {
+                  "parameters": [
+                    { "name": { "key": "x" }, "type": { "key": "int" } }
+                  ],
+                  "returns": { "key": "int" }
+                }
+              },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "file": { "key": "test.m" },
+                "lineBegin": 16,
+                "lineEnd": 18
+              }
+            }
+          }
+        }
+      ],
+      "target": {
+        "objcMethod": {
+          "key": {
+            "container": { "interface_": { "key": "I" } },
+            "isAccessor": false,
+            "isInstance": true,
+            "isOptional": false,
+            "selector": { "key": [ "f1" ] },
+            "signature": {
+              "key": { "parameters": [ ], "returns": { "key": "int" } }
+            },
+            "source": {
+              "columnBegin": 1,
+              "columnEnd": 10,
+              "file": { "key": "test.m" },
+              "lineBegin": 3,
+              "lineEnd": 3
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "sources": [
+        {
+          "objcContainer": {
+            "key": {
+              "id": { "implementation": { "key": "I" } },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "file": { "key": "test.m" },
+                "lineBegin": 10,
+                "lineEnd": 28
+              }
+            }
+          }
+        },
+        {
+          "objcMethod": {
+            "key": {
+              "container": { "implementation": { "key": "I" } },
+              "isAccessor": false,
+              "isInstance": true,
+              "isOptional": false,
+              "selector": { "key": [ "f3a", "f3b" ] },
+              "signature": {
+                "key": {
+                  "parameters": [
+                    { "name": { "key": "x" }, "type": { "key": "int" } },
+                    { "name": { "key": "y" }, "type": { "key": "int" } }
+                  ],
+                  "returns": { "key": "int" }
+                }
+              },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "file": { "key": "test.m" },
+                "lineBegin": 20,
+                "lineEnd": 22
+              }
+            }
+          }
+        }
+      ],
+      "target": {
+        "objcMethod": {
+          "key": {
+            "container": { "interface_": { "key": "I" } },
+            "isAccessor": false,
+            "isInstance": true,
+            "isOptional": false,
+            "selector": { "key": [ "f2" ] },
+            "signature": {
+              "key": {
+                "parameters": [
+                  { "name": { "key": "x" }, "type": { "key": "int" } }
+                ],
+                "returns": { "key": "int" }
+              }
+            },
+            "source": {
+              "columnBegin": 1,
+              "columnEnd": 19,
+              "file": { "key": "test.m" },
+              "lineBegin": 4,
+              "lineEnd": 4
+            }
+          }
+        }
+      }
+    }
+  }
+]

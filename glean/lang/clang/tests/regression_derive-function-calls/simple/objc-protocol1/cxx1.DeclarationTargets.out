@@ -1,0 +1,170 @@
+[
+  "@generated",
+  {
+    "key": {
+      "source": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "call" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": {
+                "parameters": [
+                  { "name": { "key": "s" }, "type": { "key": "J *" } }
+                ],
+                "returns": { "key": "void" }
+              }
+            },
+            "source": {
+              "columnBegin": 1,
+              "columnEnd": 1,
+              "file": { "key": "test.m" },
+              "lineBegin": 8,
+              "lineEnd": 11
+            }
+          }
+        }
+      },
+      "targets": [
+        {
+          "objcContainer": {
+            "key": {
+              "id": { "interface_": { "key": "J" } },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 4,
+                "file": { "key": "test.m" },
+                "lineBegin": 1,
+                "lineEnd": 3
+              }
+            }
+          }
+        },
+        {
+          "objcContainer": {
+            "key": {
+              "id": { "protocol": { "key": "Foo" } },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 4,
+                "file": { "key": "test.m" },
+                "lineBegin": 5,
+                "lineEnd": 6
+              }
+            }
+          }
+        },
+        {
+          "objcMethod": {
+            "key": {
+              "container": { "interface_": { "key": "J" } },
+              "isAccessor": false,
+              "isInstance": true,
+              "isOptional": false,
+              "selector": { "key": [ "checkProtocol" ] },
+              "signature": {
+                "key": {
+                  "parameters": [
+                    { "name": { "key": "f" }, "type": { "key": "Protocol *" } }
+                  ],
+                  "returns": { "key": "void" }
+                }
+              },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 36,
+                "file": { "key": "test.m" },
+                "lineBegin": 2,
+                "lineEnd": 2
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "objcContainer": {
+          "key": {
+            "id": { "interface_": { "key": "J" } },
+            "source": {
+              "columnBegin": 1,
+              "columnEnd": 4,
+              "file": { "key": "test.m" },
+              "lineBegin": 1,
+              "lineEnd": 3
+            }
+          }
+        }
+      },
+      "targets": [
+        {
+          "objcContainer": {
+            "key": {
+              "id": { "interface_": { "key": "Protocol" } },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "file": { "key": "<builtin>" },
+                "lineBegin": 1,
+                "lineEnd": 1
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "source": {
+        "objcMethod": {
+          "key": {
+            "container": { "interface_": { "key": "J" } },
+            "isAccessor": false,
+            "isInstance": true,
+            "isOptional": false,
+            "selector": { "key": [ "checkProtocol" ] },
+            "signature": {
+              "key": {
+                "parameters": [
+                  { "name": { "key": "f" }, "type": { "key": "Protocol *" } }
+                ],
+                "returns": { "key": "void" }
+              }
+            },
+            "source": {
+              "columnBegin": 1,
+              "columnEnd": 36,
+              "file": { "key": "test.m" },
+              "lineBegin": 2,
+              "lineEnd": 2
+            }
+          }
+        }
+      },
+      "targets": [
+        {
+          "objcContainer": {
+            "key": {
+              "id": { "interface_": { "key": "Protocol" } },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "file": { "key": "<builtin>" },
+                "lineBegin": 1,
+                "lineEnd": 1
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+]

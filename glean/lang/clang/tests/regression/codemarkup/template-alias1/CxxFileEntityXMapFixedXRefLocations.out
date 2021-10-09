@@ -1,0 +1,643 @@
+[
+  "@generated",
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "main.cpp" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "main.cpp" },
+                            "lineBegin": 2,
+                            "columnBegin": 1,
+                            "lineEnd": 2,
+                            "columnEnd": 11
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 139, "length": 1 } ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "F1" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "T" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "main.cpp" },
+                            "lineBegin": 4,
+                            "columnBegin": 22,
+                            "lineEnd": 4,
+                            "columnEnd": 33
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 146, "length": 2 } ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "F2" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "main.cpp" },
+                            "lineBegin": 5,
+                            "columnBegin": 22,
+                            "lineEnd": 5,
+                            "columnEnd": 35
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 157, "length": 2 } ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "F3" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "S<T>" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "main.cpp" },
+                            "lineBegin": 6,
+                            "columnBegin": 22,
+                            "lineEnd": 6,
+                            "columnEnd": 36
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 168, "length": 2 } ]
+                }
+              ],
+              "variable": [ ]
+            }
+          },
+          "externals": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "F1",
+          "file": { "key": "main.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "main.cpp" },
+              "lineBegin": 4,
+              "columnBegin": 22,
+              "lineEnd": 4,
+              "columnEnd": 33
+            }
+          }
+        },
+        "source": { "span": { "start": 146, "length": 2 } }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "typeAlias": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "F1" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "T" },
+                "kind": 1,
+                "source": {
+                  "file": { "key": "main.cpp" },
+                  "lineBegin": 4,
+                  "columnBegin": 22,
+                  "lineEnd": 4,
+                  "columnEnd": 33
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "main.cpp" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "main.cpp" },
+                            "lineBegin": 2,
+                            "columnBegin": 1,
+                            "lineEnd": 2,
+                            "columnEnd": 11
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 139, "length": 1 } ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "F1" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "T" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "main.cpp" },
+                            "lineBegin": 4,
+                            "columnBegin": 22,
+                            "lineEnd": 4,
+                            "columnEnd": 33
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 146, "length": 2 } ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "F2" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "main.cpp" },
+                            "lineBegin": 5,
+                            "columnBegin": 22,
+                            "lineEnd": 5,
+                            "columnEnd": 35
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 157, "length": 2 } ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "F3" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "S<T>" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "main.cpp" },
+                            "lineBegin": 6,
+                            "columnBegin": 22,
+                            "lineEnd": 6,
+                            "columnEnd": 36
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 168, "length": 2 } ]
+                }
+              ],
+              "variable": [ ]
+            }
+          },
+          "externals": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "F2",
+          "file": { "key": "main.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "main.cpp" },
+              "lineBegin": 5,
+              "columnBegin": 22,
+              "lineEnd": 5,
+              "columnEnd": 35
+            }
+          }
+        },
+        "source": { "span": { "start": 157, "length": 2 } }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "typeAlias": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "F2" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": 1,
+                "source": {
+                  "file": { "key": "main.cpp" },
+                  "lineBegin": 5,
+                  "columnBegin": 22,
+                  "lineEnd": 5,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "main.cpp" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "main.cpp" },
+                            "lineBegin": 2,
+                            "columnBegin": 1,
+                            "lineEnd": 2,
+                            "columnEnd": 11
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 139, "length": 1 } ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "F1" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "T" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "main.cpp" },
+                            "lineBegin": 4,
+                            "columnBegin": 22,
+                            "lineEnd": 4,
+                            "columnEnd": 33
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 146, "length": 2 } ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "F2" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "main.cpp" },
+                            "lineBegin": 5,
+                            "columnBegin": 22,
+                            "lineEnd": 5,
+                            "columnEnd": 35
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 157, "length": 2 } ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "F3" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "S<T>" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "main.cpp" },
+                            "lineBegin": 6,
+                            "columnBegin": 22,
+                            "lineEnd": 6,
+                            "columnEnd": 36
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 168, "length": 2 } ]
+                }
+              ],
+              "variable": [ ]
+            }
+          },
+          "externals": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "F3",
+          "file": { "key": "main.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "main.cpp" },
+              "lineBegin": 6,
+              "columnBegin": 22,
+              "lineEnd": 6,
+              "columnEnd": 36
+            }
+          }
+        },
+        "source": { "span": { "start": 168, "length": 2 } }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "typeAlias": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "F3" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "S<T>" },
+                "kind": 1,
+                "source": {
+                  "file": { "key": "main.cpp" },
+                  "lineBegin": 6,
+                  "columnBegin": 22,
+                  "lineEnd": 6,
+                  "columnEnd": 36
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "main.cpp" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "main.cpp" },
+                            "lineBegin": 2,
+                            "columnBegin": 1,
+                            "lineEnd": 2,
+                            "columnEnd": 11
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 139, "length": 1 } ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "F1" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "T" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "main.cpp" },
+                            "lineBegin": 4,
+                            "columnBegin": 22,
+                            "lineEnd": 4,
+                            "columnEnd": 33
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 146, "length": 2 } ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "F2" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "main.cpp" },
+                            "lineBegin": 5,
+                            "columnBegin": 22,
+                            "lineEnd": 5,
+                            "columnEnd": 35
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 157, "length": 2 } ]
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "F3" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "S<T>" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "main.cpp" },
+                            "lineBegin": 6,
+                            "columnBegin": 22,
+                            "lineEnd": 6,
+                            "columnEnd": 36
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "ranges": [ { "offset": 168, "length": 2 } ]
+                }
+              ],
+              "variable": [ ]
+            }
+          },
+          "externals": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "S",
+          "file": { "key": "main.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "main.cpp" },
+              "lineBegin": 2,
+              "columnBegin": 1,
+              "lineEnd": 2,
+              "columnEnd": 11
+            }
+          }
+        },
+        "source": { "span": { "start": 139, "length": 1 } }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "S" }, "scope": { "global_": { } } }
+                },
+                "kind": { "struct_": { } },
+                "source": {
+                  "file": { "key": "main.cpp" },
+                  "lineBegin": 2,
+                  "columnBegin": 1,
+                  "lineEnd": 2,
+                  "columnEnd": 11
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

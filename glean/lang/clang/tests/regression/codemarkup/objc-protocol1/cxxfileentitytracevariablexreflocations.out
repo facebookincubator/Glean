@@ -1,0 +1,107 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "trace": {
+        "key": {
+          "file": { "key": "test.m" },
+          "fixed": [
+            {
+              "target": {
+                "declaration": {
+                  "objcContainer": {
+                    "key": {
+                      "id": { "interface_": { "key": "J" } },
+                      "source": {
+                        "file": { "key": "test.m" },
+                        "lineBegin": 1,
+                        "columnBegin": 1,
+                        "lineEnd": 3,
+                        "columnEnd": 4
+                      }
+                    }
+                  }
+                }
+              },
+              "ranges": [ { "offset": 86, "length": 1 } ]
+            },
+            {
+              "target": {
+                "declaration": {
+                  "objcMethod": {
+                    "key": {
+                      "selector": { "key": [ "checkProtocol" ] },
+                      "container": { "interface_": { "key": "J" } },
+                      "signature": {
+                        "key": {
+                          "returns": { "key": "void" },
+                          "parameters": [
+                            {
+                              "name": { "key": "f" },
+                              "type": { "key": "Protocol *" }
+                            }
+                          ]
+                        }
+                      },
+                      "isInstance": true,
+                      "isOptional": false,
+                      "isAccessor": false,
+                      "source": {
+                        "file": { "key": "test.m" },
+                        "lineBegin": 2,
+                        "columnBegin": 1,
+                        "lineEnd": 2,
+                        "columnEnd": 36
+                      }
+                    }
+                  }
+                }
+              },
+              "ranges": [ { "offset": 99, "length": 13 } ]
+            },
+            {
+              "target": {
+                "declaration": {
+                  "objcContainer": {
+                    "key": {
+                      "id": { "protocol": { "key": "Foo" } },
+                      "source": {
+                        "file": { "key": "test.m" },
+                        "lineBegin": 5,
+                        "columnBegin": 1,
+                        "lineEnd": 6,
+                        "columnEnd": 4
+                      }
+                    }
+                  }
+                }
+              },
+              "ranges": [ { "offset": 113, "length": 9 } ]
+            }
+          ],
+          "variable": [ [ { "offset": 36, "length": 8 } ] ]
+        }
+      },
+      "spans": [ [ { "offset": 36, "length": 8 } ] ],
+      "targets": [
+        {
+          "declaration": {
+            "objcContainer": {
+              "key": {
+                "id": { "interface_": { "key": "Protocol" } },
+                "source": {
+                  "file": { "key": "<builtin>" },
+                  "lineBegin": 1,
+                  "columnBegin": 1,
+                  "lineEnd": 1,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+]

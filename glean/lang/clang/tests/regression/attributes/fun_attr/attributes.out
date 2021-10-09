@@ -1,0 +1,103 @@
+[
+  "@generated",
+  {
+    "key": {
+      "attr": { "key": "annotate(\"Hello\")" },
+      "declaration": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": { "name": { "key": "f2" } } },
+              "scope": { "global_": { } }
+            }
+          },
+          "signature": {
+            "key": { "returns": { "key": "void" }, "parameters": [ ] }
+          },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 6,
+            "columnBegin": 1,
+            "lineEnd": 7,
+            "columnEnd": 9
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "attr": { "key": "annotate(\"OnRender\")" },
+      "declaration": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": { "name": { "key": "render" } } },
+              "scope": { "global_": { } }
+            }
+          },
+          "signature": {
+            "key": { "returns": { "key": "void" }, "parameters": [ ] }
+          },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 11,
+            "columnBegin": 1,
+            "lineEnd": 12,
+            "columnEnd": 13
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "attr": { "key": "annotate(\"Test\")" },
+      "declaration": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": { "name": { "key": "f2" } } },
+              "scope": { "global_": { } }
+            }
+          },
+          "signature": {
+            "key": { "returns": { "key": "void" }, "parameters": [ ] }
+          },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 6,
+            "columnBegin": 1,
+            "lineEnd": 7,
+            "columnEnd": 9
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "attr": { "key": "cpu_specific(ivybridge)" },
+      "declaration": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": { "name": { "key": "f1" } } },
+              "scope": { "global_": { } }
+            }
+          },
+          "signature": {
+            "key": { "returns": { "key": "void" }, "parameters": [ ] }
+          },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 3,
+            "columnBegin": 1,
+            "lineEnd": 4,
+            "columnEnd": 9
+          }
+        }
+      }
+    }
+  }
+]

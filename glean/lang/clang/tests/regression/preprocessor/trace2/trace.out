@@ -1,0 +1,113 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "events": [
+        {
+          "include_": {
+            "include_": {
+              "key": {
+                "file": { "key": "test.h" },
+                "path": { "begin": 62, "end": 70 },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 3,
+                  "columnBegin": 1,
+                  "lineEnd": 3,
+                  "columnEnd": 17
+                }
+              }
+            },
+            "trace": {
+              "key": {
+                "file": { "key": "test.h" },
+                "declarations": { "key": [ ] },
+                "preprocessor": {
+                  "key": {
+                    "file": { "key": "test.h" },
+                    "events": [
+                      {
+                        "define": {
+                          "key": {
+                            "macro": { "key": "F" },
+                            "source": {
+                              "file": { "key": "test.h" },
+                              "lineBegin": 4,
+                              "columnBegin": 9,
+                              "lineEnd": 4,
+                              "columnEnd": 9
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "use": {
+            "key": {
+              "macro": { "key": "F" },
+              "name": { "begin": 71, "end": 72 },
+              "definition": {
+                "file": { "key": "test.h" },
+                "line": 4,
+                "column": 9
+              },
+              "expand": true,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 4,
+                "columnBegin": 1,
+                "lineEnd": 4,
+                "columnEnd": 17
+              }
+            }
+          }
+        },
+        {
+          "include_": {
+            "include_": {
+              "key": {
+                "file": { "key": "test.h" },
+                "path": { "begin": 99, "end": 107 },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 5,
+                  "columnBegin": 1,
+                  "lineEnd": 5,
+                  "columnEnd": 17
+                }
+              }
+            }
+          }
+        },
+        {
+          "use": {
+            "key": {
+              "macro": { "key": "F" },
+              "name": { "begin": 108, "end": 109 },
+              "definition": {
+                "file": { "key": "test.h" },
+                "line": 4,
+                "column": 9
+              },
+              "expand": true,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 6,
+                "columnBegin": 1,
+                "lineEnd": 6,
+                "columnEnd": 17
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+]

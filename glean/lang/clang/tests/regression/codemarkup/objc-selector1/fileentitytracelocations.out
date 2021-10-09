@@ -1,0 +1,476 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "trace": {
+        "key": {
+          "file": { "key": "test.m" },
+          "declarations": {
+            "key": [
+              {
+                "objcContainer": {
+                  "key": {
+                    "id": { "interface_": { "key": "J" } },
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 1,
+                      "columnBegin": 1,
+                      "lineEnd": 3,
+                      "columnEnd": 4
+                    }
+                  }
+                }
+              },
+              {
+                "objcMethod": {
+                  "key": {
+                    "selector": { "key": [ "checkSelector" ] },
+                    "container": { "interface_": { "key": "J" } },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "void" },
+                        "parameters": [
+                          {
+                            "name": { "key": "selector" },
+                            "type": { "key": "SEL" }
+                          }
+                        ]
+                      }
+                    },
+                    "isInstance": true,
+                    "isOptional": false,
+                    "isAccessor": false,
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 2,
+                      "columnBegin": 1,
+                      "lineEnd": 2,
+                      "columnEnd": 36
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "bar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "void" },
+                        "parameters": [
+                          {
+                            "name": { "key": "selector" },
+                            "type": { "key": "SEL" }
+                          }
+                        ]
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 5,
+                      "columnBegin": 1,
+                      "lineEnd": 8,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "call" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "void" },
+                        "parameters": [
+                          { "name": { "key": "s" }, "type": { "key": "J *" } }
+                        ]
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 10,
+                      "columnBegin": 1,
+                      "lineEnd": 15,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "preprocessor": {
+            "key": { "file": { "key": "test.m" }, "events": [ ] }
+          }
+        }
+      },
+      "location": {
+        "name": "J",
+        "file": { "key": "test.m" },
+        "location": {
+          "range": {
+            "file": { "key": "test.m" },
+            "lineBegin": 1,
+            "columnBegin": 1,
+            "lineEnd": 3,
+            "columnEnd": 4
+          }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "objcContainer": {
+              "key": {
+                "id": { "interface_": { "key": "J" } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 1,
+                  "columnBegin": 1,
+                  "lineEnd": 3,
+                  "columnEnd": 4
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "trace": {
+        "key": {
+          "file": { "key": "test.m" },
+          "declarations": {
+            "key": [
+              {
+                "objcContainer": {
+                  "key": {
+                    "id": { "interface_": { "key": "J" } },
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 1,
+                      "columnBegin": 1,
+                      "lineEnd": 3,
+                      "columnEnd": 4
+                    }
+                  }
+                }
+              },
+              {
+                "objcMethod": {
+                  "key": {
+                    "selector": { "key": [ "checkSelector" ] },
+                    "container": { "interface_": { "key": "J" } },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "void" },
+                        "parameters": [
+                          {
+                            "name": { "key": "selector" },
+                            "type": { "key": "SEL" }
+                          }
+                        ]
+                      }
+                    },
+                    "isInstance": true,
+                    "isOptional": false,
+                    "isAccessor": false,
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 2,
+                      "columnBegin": 1,
+                      "lineEnd": 2,
+                      "columnEnd": 36
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "bar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "void" },
+                        "parameters": [
+                          {
+                            "name": { "key": "selector" },
+                            "type": { "key": "SEL" }
+                          }
+                        ]
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 5,
+                      "columnBegin": 1,
+                      "lineEnd": 8,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "call" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "void" },
+                        "parameters": [
+                          { "name": { "key": "s" }, "type": { "key": "J *" } }
+                        ]
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 10,
+                      "columnBegin": 1,
+                      "lineEnd": 15,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "preprocessor": {
+            "key": { "file": { "key": "test.m" }, "events": [ ] }
+          }
+        }
+      },
+      "location": {
+        "name": "bar",
+        "file": { "key": "test.m" },
+        "location": {
+          "range": {
+            "file": { "key": "test.m" },
+            "lineBegin": 5,
+            "columnBegin": 1,
+            "lineEnd": 8,
+            "columnEnd": 1
+          }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "bar" } } },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "void" },
+                    "parameters": [
+                      {
+                        "name": { "key": "selector" },
+                        "type": { "key": "SEL" }
+                      }
+                    ]
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 5,
+                  "columnBegin": 1,
+                  "lineEnd": 8,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "trace": {
+        "key": {
+          "file": { "key": "test.m" },
+          "declarations": {
+            "key": [
+              {
+                "objcContainer": {
+                  "key": {
+                    "id": { "interface_": { "key": "J" } },
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 1,
+                      "columnBegin": 1,
+                      "lineEnd": 3,
+                      "columnEnd": 4
+                    }
+                  }
+                }
+              },
+              {
+                "objcMethod": {
+                  "key": {
+                    "selector": { "key": [ "checkSelector" ] },
+                    "container": { "interface_": { "key": "J" } },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "void" },
+                        "parameters": [
+                          {
+                            "name": { "key": "selector" },
+                            "type": { "key": "SEL" }
+                          }
+                        ]
+                      }
+                    },
+                    "isInstance": true,
+                    "isOptional": false,
+                    "isAccessor": false,
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 2,
+                      "columnBegin": 1,
+                      "lineEnd": 2,
+                      "columnEnd": 36
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "bar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "void" },
+                        "parameters": [
+                          {
+                            "name": { "key": "selector" },
+                            "type": { "key": "SEL" }
+                          }
+                        ]
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 5,
+                      "columnBegin": 1,
+                      "lineEnd": 8,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "call" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "void" },
+                        "parameters": [
+                          { "name": { "key": "s" }, "type": { "key": "J *" } }
+                        ]
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 10,
+                      "columnBegin": 1,
+                      "lineEnd": 15,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "preprocessor": {
+            "key": { "file": { "key": "test.m" }, "events": [ ] }
+          }
+        }
+      },
+      "location": {
+        "name": "call",
+        "file": { "key": "test.m" },
+        "location": {
+          "range": {
+            "file": { "key": "test.m" },
+            "lineBegin": 10,
+            "columnBegin": 1,
+            "lineEnd": 15,
+            "columnEnd": 1
+          }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "call" } } },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "void" },
+                    "parameters": [
+                      { "name": { "key": "s" }, "type": { "key": "J *" } }
+                    ]
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 10,
+                  "columnBegin": 1,
+                  "lineEnd": 15,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

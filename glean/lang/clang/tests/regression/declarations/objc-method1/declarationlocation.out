@@ -1,0 +1,59 @@
+[
+  "@generated",
+  {
+    "key": {
+      "decl": {
+        "objcContainer": {
+          "key": {
+            "id": { "interface_": { "key": "I" } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 1,
+              "columnBegin": 1,
+              "lineEnd": 8,
+              "columnEnd": 4
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.m" },
+        "lineBegin": 1,
+        "columnBegin": 1,
+        "lineEnd": 8,
+        "columnEnd": 4
+      },
+      "name": { "key": "I" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "id" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "id" },
+            "kind": 0,
+            "source": {
+              "file": { "key": "<builtin>" },
+              "lineBegin": 1,
+              "columnBegin": 1,
+              "lineEnd": 1,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "<builtin>" },
+        "lineBegin": 1,
+        "columnBegin": 1,
+        "lineEnd": 1,
+        "columnEnd": 1
+      },
+      "name": { "key": "id" }
+    }
+  }
+]

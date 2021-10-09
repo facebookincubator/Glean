@@ -1,0 +1,74 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "xrefs": [
+        {
+          "range": { "begin": 42, "end": 43 },
+          "target": {
+            "declaration": {
+              "objcContainer": {
+                "key": {
+                  "id": { "interface_": { "key": "I" } },
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 1,
+                    "columnBegin": 1,
+                    "lineEnd": 5,
+                    "columnEnd": 4
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 59, "end": 60 },
+          "target": {
+            "declaration": {
+              "objcContainer": {
+                "key": {
+                  "id": { "interface_": { "key": "I" } },
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 1,
+                    "columnBegin": 1,
+                    "lineEnd": 5,
+                    "columnEnd": 4
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 61, "end": 64 },
+          "target": {
+            "declaration": {
+              "objcMethod": {
+                "key": {
+                  "selector": { "key": [ "foo" ] },
+                  "container": { "interface_": { "key": "I" } },
+                  "signature": {
+                    "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                  },
+                  "isInstance": false,
+                  "isOptional": false,
+                  "isAccessor": false,
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 3,
+                    "columnBegin": 1,
+                    "lineEnd": 3,
+                    "columnEnd": 11
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+]

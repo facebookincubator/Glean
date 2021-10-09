@@ -1,0 +1,227 @@
+[
+  "@generated",
+  {
+    "key": {
+      "tuplefield0": {
+        "enum_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "X" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N1" } } }
+                }
+              }
+            },
+            "isScoped": false,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 3,
+              "columnBegin": 1,
+              "lineEnd": 3,
+              "columnEnd": 21
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "enum_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "X" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N1" } } }
+                }
+              }
+            },
+            "isScoped": false,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 3,
+              "columnBegin": 1,
+              "lineEnd": 3,
+              "columnEnd": 21
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "enum_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "Y" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N1" } } }
+                }
+              }
+            },
+            "isScoped": true,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 4,
+              "columnBegin": 1,
+              "lineEnd": 4,
+              "columnEnd": 27
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "enum_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "Y" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N1" } } }
+                }
+              }
+            },
+            "isScoped": true,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 4,
+              "columnBegin": 1,
+              "lineEnd": 4,
+              "columnEnd": 27
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "bar" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 15,
+              "columnBegin": 1,
+              "lineEnd": 21,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "bar" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 15,
+              "columnBegin": 1,
+              "lineEnd": 21,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "foo" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 8,
+              "columnBegin": 1,
+              "lineEnd": 13,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "foo" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 8,
+              "columnBegin": 1,
+              "lineEnd": 13,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "namespace_": {
+          "key": {
+            "name": { "key": { "name": { "key": "N1" } } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 1,
+              "columnBegin": 1,
+              "lineEnd": 6,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "namespace_": {
+          "key": {
+            "name": { "key": { "name": { "key": "N1" } } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 1,
+              "columnBegin": 1,
+              "lineEnd": 6,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  }
+]

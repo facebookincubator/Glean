@@ -1,0 +1,79 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "fixed": [
+        {
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N1" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 1,
+                    "columnBegin": 1,
+                    "lineEnd": 6,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [
+            { "offset": 103, "length": 2 },
+            { "offset": 45, "length": 2 },
+            { "offset": 16, "length": 2 }
+          ]
+        },
+        {
+          "target": {
+            "enumerator": {
+              "key": {
+                "name": { "key": "Y1" },
+                "enumeration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "Y" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "N1" } } }
+                        }
+                      }
+                    },
+                    "isScoped": true,
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 4,
+                      "columnBegin": 1,
+                      "lineEnd": 4,
+                      "columnEnd": 27
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 4,
+                  "columnBegin": 16,
+                  "lineEnd": 4,
+                  "columnEnd": 17
+                }
+              }
+            }
+          },
+          "ranges": [
+            { "offset": 119, "length": 2 },
+            { "offset": 64, "length": 2 }
+          ]
+        }
+      ],
+      "variable": [
+        [ { "offset": 110, "length": 2 } ],
+        [ { "offset": 116, "length": 1 } ],
+        [ { "offset": 174, "length": 2 } ],
+        [ { "offset": 180, "length": 1 } ]
+      ]
+    }
+  }
+]

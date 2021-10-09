@@ -1,0 +1,150 @@
+[
+  "@generated",
+  {
+    "key": {
+      "decl": {
+        "objcContainer": {
+          "key": {
+            "id": { "implementation": { "key": "J" } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 9,
+              "columnBegin": 1,
+              "lineEnd": 18,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.m" },
+        "lineBegin": 9,
+        "columnBegin": 1,
+        "lineEnd": 18,
+        "columnEnd": 1
+      },
+      "name": { "key": "J" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "objcContainer": {
+          "key": {
+            "id": { "interface_": { "key": "J" } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 1,
+              "columnBegin": 1,
+              "lineEnd": 7,
+              "columnEnd": 4
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.m" },
+        "lineBegin": 1,
+        "columnBegin": 1,
+        "lineEnd": 7,
+        "columnEnd": 4
+      },
+      "name": { "key": "J" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "objcMethod": {
+          "key": {
+            "selector": { "key": [ "i" ] },
+            "container": { "interface_": { "key": "J" } },
+            "signature": {
+              "key": { "returns": { "key": "int" }, "parameters": [ ] }
+            },
+            "isInstance": true,
+            "isOptional": false,
+            "isAccessor": true,
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 5,
+              "columnBegin": 35,
+              "lineEnd": 5,
+              "columnEnd": 35
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.m" },
+        "lineBegin": 5,
+        "columnBegin": 35,
+        "lineEnd": 5,
+        "columnEnd": 35
+      },
+      "name": { "key": "i" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "objcProperty": {
+          "key": {
+            "name": { "key": "i" },
+            "container": { "interface_": { "key": "J" } },
+            "type": { "key": "int" },
+            "isInstance": true,
+            "isOptional": false,
+            "isReadOnly": false,
+            "isAtomic": false,
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 5,
+              "columnBegin": 1,
+              "lineEnd": 5,
+              "columnEnd": 35
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.m" },
+        "lineBegin": 5,
+        "columnBegin": 1,
+        "lineEnd": 5,
+        "columnEnd": 35
+      },
+      "name": { "key": "i" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "_i" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "int" },
+            "kind": { "ivar": { "synthesize": false } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 2,
+              "columnBegin": 3,
+              "lineEnd": 2,
+              "columnEnd": 8
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.m" },
+        "lineBegin": 2,
+        "columnBegin": 3,
+        "lineEnd": 2,
+        "columnEnd": 8
+      },
+      "name": { "key": "_i" }
+    }
+  }
+]

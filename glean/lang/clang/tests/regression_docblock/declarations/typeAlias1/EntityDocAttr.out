@@ -1,0 +1,69 @@
+[
+  "@generated",
+  {
+    "key": {
+      "cxx": {
+        "decl": {
+          "typeAlias": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "T" }, "scope": { "global_": { } } }
+              },
+              "type": { "key": "int" },
+              "kind": 0,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 5,
+                "columnBegin": 1,
+                "lineEnd": 5,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": [
+      {
+        "key": {
+          "key": { "key": "testname" },
+          "value": "declarations/typeAlias1"
+        }
+      },
+      { "key": { "key": { "key": "test" }, "value": "typedef int T;" } }
+    ]
+  },
+  {
+    "key": {
+      "cxx": {
+        "decl": {
+          "typeAlias": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "U" }, "scope": { "global_": { } } }
+              },
+              "type": { "key": "T" },
+              "kind": 1,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 1,
+                "lineEnd": 9,
+                "columnEnd": 11
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": [
+      {
+        "key": {
+          "key": { "key": "testname" },
+          "value": "declarations/typeAlias1"
+        }
+      },
+      { "key": { "key": { "key": "test" }, "value": "using U = T;" } }
+    ]
+  }
+]

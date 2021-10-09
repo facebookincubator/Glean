@@ -1,0 +1,249 @@
+[
+  "@generated",
+  {
+    "key": {
+      "declaration": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": "A" },
+              "scope": {
+                "local": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "calcSomething" } } },
+                    "scope": { "global_": { } }
+                  }
+                }
+              }
+            }
+          },
+          "kind": { "struct_": { } },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 6,
+            "columnBegin": 5,
+            "lineEnd": 14,
+            "columnEnd": 5
+          }
+        }
+      },
+      "bases": [ ],
+      "members": {
+        "key": [
+          {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "blah" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "A" },
+                            "scope": {
+                              "local": {
+                                "key": {
+                                  "name": {
+                                    "key": {
+                                      "name": { "key": "calcSomething" }
+                                    }
+                                  },
+                                  "scope": { "global_": { } }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 11,
+                  "columnBegin": 9,
+                  "lineEnd": 13,
+                  "columnEnd": 9
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": "B" },
+              "scope": {
+                "local": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "calcSomething" } } },
+                    "scope": { "global_": { } }
+                  }
+                }
+              }
+            }
+          },
+          "kind": { "struct_": { } },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 16,
+            "columnBegin": 5,
+            "lineEnd": 18,
+            "columnEnd": 5
+          }
+        }
+      },
+      "bases": [ ],
+      "members": { "key": [ ] }
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": "ExplictMethods" },
+              "scope": {
+                "local": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "calcSomething" } } },
+                    "scope": { "global_": { } }
+                  }
+                }
+              }
+            }
+          },
+          "kind": { "struct_": { } },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 23,
+            "columnBegin": 5,
+            "lineEnd": 33,
+            "columnEnd": 5
+          }
+        }
+      },
+      "bases": [ ],
+      "members": {
+        "key": [
+          {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "constructor": { } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "ExplictMethods" },
+                            "scope": {
+                              "local": {
+                                "key": {
+                                  "name": {
+                                    "key": {
+                                      "name": { "key": "calcSomething" }
+                                    }
+                                  },
+                                  "scope": { "global_": { } }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 26,
+                  "columnBegin": 9,
+                  "lineEnd": 28,
+                  "columnEnd": 9
+                }
+              }
+            }
+          },
+          {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "destructor": { } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "ExplictMethods" },
+                            "scope": {
+                              "local": {
+                                "key": {
+                                  "name": {
+                                    "key": {
+                                      "name": { "key": "calcSomething" }
+                                    }
+                                  },
+                                  "scope": { "global_": { } }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 30,
+                  "columnBegin": 9,
+                  "lineEnd": 32,
+                  "columnEnd": 9
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]

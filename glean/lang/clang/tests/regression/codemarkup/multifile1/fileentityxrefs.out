@@ -1,0 +1,63 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "a.h",
+          "file": { "key": "a.h" },
+          "location": {
+            "range": {
+              "file": { "key": "a.h" },
+              "lineBegin": 1,
+              "columnBegin": 1,
+              "lineEnd": 1,
+              "columnEnd": 1
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 6,
+            "columnBegin": 1,
+            "lineEnd": 6,
+            "columnEnd": 14
+          }
+        }
+      },
+      "entity": { "pp": { "include_": { "key": "a.h" } } }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "a.h",
+          "file": { "key": "a.h" },
+          "location": {
+            "range": {
+              "file": { "key": "a.h" },
+              "lineBegin": 1,
+              "columnBegin": 1,
+              "lineEnd": 1,
+              "columnEnd": 1
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 15,
+            "columnBegin": 1,
+            "lineEnd": 15,
+            "columnEnd": 14
+          }
+        }
+      },
+      "entity": { "pp": { "include_": { "key": "a.h" } } }
+    }
+  }
+]

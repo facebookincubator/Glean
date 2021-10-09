@@ -1,0 +1,180 @@
+[
+  "@generated",
+  {
+    "key": {
+      "cxx": {
+        "decl": {
+          "enum_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Global" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "isScoped": false,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 25,
+                "columnBegin": 1,
+                "lineEnd": 25,
+                "columnEnd": 26
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": [
+      {
+        "key": { "key": { "key": "testname" }, "value": "declarations/enum1" }
+      },
+      { "key": { "key": { "key": "ype" }, "value": "enum Global" } }
+    ]
+  },
+  {
+    "key": {
+      "cxx": {
+        "decl": {
+          "enum_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "GlobalClass" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "isScoped": true,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 31,
+                "columnBegin": 1,
+                "lineEnd": 31,
+                "columnEnd": 40
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": [
+      {
+        "key": { "key": { "key": "testname" }, "value": "declarations/enum1" }
+      },
+      { "key": { "key": { "key": "type" }, "value": "enum class GlobalClass" } }
+    ]
+  },
+  {
+    "key": {
+      "cxx": {
+        "decl": {
+          "enum_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "InU" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "U" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "isScoped": false,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 13,
+                "columnBegin": 3,
+                "lineEnd": 13,
+                "columnEnd": 25
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": [
+      {
+        "key": { "key": { "key": "testname" }, "value": "declarations/enum1" }
+      },
+      { "key": { "key": { "key": "type" }, "value": "enum InU" } }
+    ]
+  },
+  {
+    "key": {
+      "cxx": {
+        "decl": {
+          "enum_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "InUClass" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "U" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "isScoped": true,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 18,
+                "columnBegin": 3,
+                "lineEnd": 18,
+                "columnEnd": 39
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": [
+      {
+        "key": { "key": { "key": "testname" }, "value": "declarations/enum1" }
+      },
+      { "key": { "key": { "key": "type" }, "value": "enum class InUClass" } }
+    ]
+  },
+  {
+    "key": {
+      "cxx": {
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "U" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 8,
+                "columnBegin": 1,
+                "lineEnd": 19,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": [
+      {
+        "key": { "key": { "key": "testname" }, "value": "declarations/enum1" }
+      },
+      { "key": { "key": { "key": "type" }, "value": "struct U" } }
+    ]
+  }
+]

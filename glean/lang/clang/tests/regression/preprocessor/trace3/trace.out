@@ -1,0 +1,553 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "events": [
+        {
+          "include_": {
+            "include_": {
+              "key": {
+                "file": { "key": "foo.h" },
+                "path": { "begin": 62, "end": 69 },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 3,
+                  "columnBegin": 1,
+                  "lineEnd": 3,
+                  "columnEnd": 16
+                }
+              }
+            },
+            "trace": {
+              "key": {
+                "file": { "key": "foo.h" },
+                "declarations": { "key": [ ] },
+                "preprocessor": {
+                  "key": {
+                    "file": { "key": "foo.h" },
+                    "events": [
+                      {
+                        "use": {
+                          "key": {
+                            "macro": { "key": "BAR_1" },
+                            "name": { "begin": 61, "end": 66 },
+                            "expand": false,
+                            "source": {
+                              "file": { "key": "foo.h" },
+                              "lineBegin": 3,
+                              "columnBegin": 9,
+                              "lineEnd": 3,
+                              "columnEnd": 14
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "define": {
+                          "key": {
+                            "macro": { "key": "BAR_1" },
+                            "source": {
+                              "file": { "key": "foo.h" },
+                              "lineBegin": 4,
+                              "columnBegin": 9,
+                              "lineEnd": 4,
+                              "columnEnd": 13
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "include_": {
+                          "include_": {
+                            "key": {
+                              "file": { "key": "bar.h" },
+                              "path": { "begin": 97, "end": 104 },
+                              "source": {
+                                "file": { "key": "foo.h" },
+                                "lineBegin": 6,
+                                "columnBegin": 1,
+                                "lineEnd": 6,
+                                "columnEnd": 16
+                              }
+                            }
+                          },
+                          "trace": {
+                            "key": {
+                              "file": { "key": "bar.h" },
+                              "declarations": { "key": [ ] },
+                              "preprocessor": {
+                                "key": {
+                                  "file": { "key": "bar.h" },
+                                  "events": [
+                                    {
+                                      "use": {
+                                        "key": {
+                                          "macro": { "key": "BAR_1" },
+                                          "name": { "begin": 60, "end": 65 },
+                                          "definition": {
+                                            "file": { "key": "foo.h" },
+                                            "line": 4,
+                                            "column": 9
+                                          },
+                                          "expand": false,
+                                          "source": {
+                                            "file": { "key": "bar.h" },
+                                            "lineBegin": 3,
+                                            "columnBegin": 8,
+                                            "lineEnd": 3,
+                                            "columnEnd": 13
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "define": {
+                                        "key": {
+                                          "macro": { "key": "FOO_1" },
+                                          "source": {
+                                            "file": { "key": "bar.h" },
+                                            "lineBegin": 4,
+                                            "columnBegin": 9,
+                                            "lineEnd": 4,
+                                            "columnEnd": 13
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "use": {
+                                        "key": {
+                                          "macro": { "key": "BAR_2" },
+                                          "name": { "begin": 95, "end": 100 },
+                                          "expand": false,
+                                          "source": {
+                                            "file": { "key": "bar.h" },
+                                            "lineBegin": 7,
+                                            "columnBegin": 8,
+                                            "lineEnd": 7,
+                                            "columnEnd": 13
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "use": {
+                          "key": {
+                            "macro": { "key": "BAR_2" },
+                            "name": { "begin": 113, "end": 118 },
+                            "expand": false,
+                            "source": {
+                              "file": { "key": "foo.h" },
+                              "lineBegin": 7,
+                              "columnBegin": 9,
+                              "lineEnd": 7,
+                              "columnEnd": 14
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "define": {
+                          "key": {
+                            "macro": { "key": "BAR_2" },
+                            "source": {
+                              "file": { "key": "foo.h" },
+                              "lineBegin": 8,
+                              "columnBegin": 9,
+                              "lineEnd": 8,
+                              "columnEnd": 13
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "include_": {
+                          "include_": {
+                            "key": {
+                              "file": { "key": "bar.h" },
+                              "path": { "begin": 149, "end": 156 },
+                              "source": {
+                                "file": { "key": "foo.h" },
+                                "lineBegin": 10,
+                                "columnBegin": 1,
+                                "lineEnd": 10,
+                                "columnEnd": 16
+                              }
+                            }
+                          },
+                          "trace": {
+                            "key": {
+                              "file": { "key": "bar.h" },
+                              "declarations": { "key": [ ] },
+                              "preprocessor": {
+                                "key": {
+                                  "file": { "key": "bar.h" },
+                                  "events": [
+                                    {
+                                      "use": {
+                                        "key": {
+                                          "macro": { "key": "BAR_1" },
+                                          "name": { "begin": 60, "end": 65 },
+                                          "definition": {
+                                            "file": { "key": "foo.h" },
+                                            "line": 4,
+                                            "column": 9
+                                          },
+                                          "expand": false,
+                                          "source": {
+                                            "file": { "key": "bar.h" },
+                                            "lineBegin": 3,
+                                            "columnBegin": 8,
+                                            "lineEnd": 3,
+                                            "columnEnd": 13
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "define": {
+                                        "key": {
+                                          "macro": { "key": "FOO_1" },
+                                          "source": {
+                                            "file": { "key": "bar.h" },
+                                            "lineBegin": 4,
+                                            "columnBegin": 9,
+                                            "lineEnd": 4,
+                                            "columnEnd": 13
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "use": {
+                                        "key": {
+                                          "macro": { "key": "BAR_2" },
+                                          "name": { "begin": 95, "end": 100 },
+                                          "definition": {
+                                            "file": { "key": "foo.h" },
+                                            "line": 8,
+                                            "column": 9
+                                          },
+                                          "expand": false,
+                                          "source": {
+                                            "file": { "key": "bar.h" },
+                                            "lineBegin": 7,
+                                            "columnBegin": 8,
+                                            "lineEnd": 7,
+                                            "columnEnd": 13
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "define": {
+                                        "key": {
+                                          "macro": { "key": "FOO_2" },
+                                          "source": {
+                                            "file": { "key": "bar.h" },
+                                            "lineBegin": 8,
+                                            "columnBegin": 9,
+                                            "lineEnd": 8,
+                                            "columnEnd": 13
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "include_": {
+            "include_": {
+              "key": {
+                "file": { "key": "foo.h" },
+                "path": { "begin": 79, "end": 86 },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 4,
+                  "columnBegin": 1,
+                  "lineEnd": 4,
+                  "columnEnd": 16
+                }
+              }
+            },
+            "trace": {
+              "key": {
+                "file": { "key": "foo.h" },
+                "declarations": { "key": [ ] },
+                "preprocessor": {
+                  "key": {
+                    "file": { "key": "foo.h" },
+                    "events": [
+                      {
+                        "use": {
+                          "key": {
+                            "macro": { "key": "BAR_1" },
+                            "name": { "begin": 61, "end": 66 },
+                            "definition": {
+                              "file": { "key": "foo.h" },
+                              "line": 4,
+                              "column": 9
+                            },
+                            "expand": false,
+                            "source": {
+                              "file": { "key": "foo.h" },
+                              "lineBegin": 3,
+                              "columnBegin": 9,
+                              "lineEnd": 3,
+                              "columnEnd": 14
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "include_": {
+                          "include_": {
+                            "key": {
+                              "file": { "key": "bar.h" },
+                              "path": { "begin": 97, "end": 104 },
+                              "source": {
+                                "file": { "key": "foo.h" },
+                                "lineBegin": 6,
+                                "columnBegin": 1,
+                                "lineEnd": 6,
+                                "columnEnd": 16
+                              }
+                            }
+                          },
+                          "trace": {
+                            "key": {
+                              "file": { "key": "bar.h" },
+                              "declarations": { "key": [ ] },
+                              "preprocessor": {
+                                "key": {
+                                  "file": { "key": "bar.h" },
+                                  "events": [
+                                    {
+                                      "use": {
+                                        "key": {
+                                          "macro": { "key": "BAR_1" },
+                                          "name": { "begin": 60, "end": 65 },
+                                          "definition": {
+                                            "file": { "key": "foo.h" },
+                                            "line": 4,
+                                            "column": 9
+                                          },
+                                          "expand": false,
+                                          "source": {
+                                            "file": { "key": "bar.h" },
+                                            "lineBegin": 3,
+                                            "columnBegin": 8,
+                                            "lineEnd": 3,
+                                            "columnEnd": 13
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "define": {
+                                        "key": {
+                                          "macro": { "key": "FOO_1" },
+                                          "source": {
+                                            "file": { "key": "bar.h" },
+                                            "lineBegin": 4,
+                                            "columnBegin": 9,
+                                            "lineEnd": 4,
+                                            "columnEnd": 13
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "use": {
+                                        "key": {
+                                          "macro": { "key": "BAR_2" },
+                                          "name": { "begin": 95, "end": 100 },
+                                          "definition": {
+                                            "file": { "key": "foo.h" },
+                                            "line": 8,
+                                            "column": 9
+                                          },
+                                          "expand": false,
+                                          "source": {
+                                            "file": { "key": "bar.h" },
+                                            "lineBegin": 7,
+                                            "columnBegin": 8,
+                                            "lineEnd": 7,
+                                            "columnEnd": 13
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "define": {
+                                        "key": {
+                                          "macro": { "key": "FOO_2" },
+                                          "source": {
+                                            "file": { "key": "bar.h" },
+                                            "lineBegin": 8,
+                                            "columnBegin": 9,
+                                            "lineEnd": 8,
+                                            "columnEnd": 13
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "use": {
+                          "key": {
+                            "macro": { "key": "BAR_2" },
+                            "name": { "begin": 113, "end": 118 },
+                            "definition": {
+                              "file": { "key": "foo.h" },
+                              "line": 8,
+                              "column": 9
+                            },
+                            "expand": false,
+                            "source": {
+                              "file": { "key": "foo.h" },
+                              "lineBegin": 7,
+                              "columnBegin": 9,
+                              "lineEnd": 7,
+                              "columnEnd": 14
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "include_": {
+                          "include_": {
+                            "key": {
+                              "file": { "key": "bar.h" },
+                              "path": { "begin": 149, "end": 156 },
+                              "source": {
+                                "file": { "key": "foo.h" },
+                                "lineBegin": 10,
+                                "columnBegin": 1,
+                                "lineEnd": 10,
+                                "columnEnd": 16
+                              }
+                            }
+                          },
+                          "trace": {
+                            "key": {
+                              "file": { "key": "bar.h" },
+                              "declarations": { "key": [ ] },
+                              "preprocessor": {
+                                "key": {
+                                  "file": { "key": "bar.h" },
+                                  "events": [
+                                    {
+                                      "use": {
+                                        "key": {
+                                          "macro": { "key": "BAR_1" },
+                                          "name": { "begin": 60, "end": 65 },
+                                          "definition": {
+                                            "file": { "key": "foo.h" },
+                                            "line": 4,
+                                            "column": 9
+                                          },
+                                          "expand": false,
+                                          "source": {
+                                            "file": { "key": "bar.h" },
+                                            "lineBegin": 3,
+                                            "columnBegin": 8,
+                                            "lineEnd": 3,
+                                            "columnEnd": 13
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "define": {
+                                        "key": {
+                                          "macro": { "key": "FOO_1" },
+                                          "source": {
+                                            "file": { "key": "bar.h" },
+                                            "lineBegin": 4,
+                                            "columnBegin": 9,
+                                            "lineEnd": 4,
+                                            "columnEnd": 13
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "use": {
+                                        "key": {
+                                          "macro": { "key": "BAR_2" },
+                                          "name": { "begin": 95, "end": 100 },
+                                          "definition": {
+                                            "file": { "key": "foo.h" },
+                                            "line": 8,
+                                            "column": 9
+                                          },
+                                          "expand": false,
+                                          "source": {
+                                            "file": { "key": "bar.h" },
+                                            "lineBegin": 7,
+                                            "columnBegin": 8,
+                                            "lineEnd": 7,
+                                            "columnEnd": 13
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "define": {
+                                        "key": {
+                                          "macro": { "key": "FOO_2" },
+                                          "source": {
+                                            "file": { "key": "bar.h" },
+                                            "lineBegin": 8,
+                                            "columnBegin": 9,
+                                            "lineEnd": 8,
+                                            "columnEnd": 13
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+]

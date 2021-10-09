@@ -1,0 +1,80 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "events": [
+        {
+          "define": {
+            "key": {
+              "macro": { "key": "IFDEF1" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 3,
+                "columnBegin": 9,
+                "lineEnd": 3,
+                "columnEnd": 14
+              }
+            }
+          }
+        },
+        {
+          "define": {
+            "key": {
+              "macro": { "key": "IFDEF2" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 4,
+                "columnBegin": 9,
+                "lineEnd": 4,
+                "columnEnd": 14
+              }
+            }
+          }
+        },
+        {
+          "use": {
+            "key": {
+              "macro": { "key": "IFDEF1" },
+              "name": { "begin": 91, "end": 97 },
+              "definition": {
+                "file": { "key": "test.cpp" },
+                "line": 3,
+                "column": 9
+              },
+              "expand": false,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 6,
+                "columnBegin": 8,
+                "lineEnd": 6,
+                "columnEnd": 14
+              }
+            }
+          }
+        },
+        {
+          "use": {
+            "key": {
+              "macro": { "key": "IFDEF2" },
+              "name": { "begin": 139, "end": 145 },
+              "definition": {
+                "file": { "key": "test.cpp" },
+                "line": 4,
+                "column": 9
+              },
+              "expand": false,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 12,
+                "columnBegin": 9,
+                "lineEnd": 12,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+]

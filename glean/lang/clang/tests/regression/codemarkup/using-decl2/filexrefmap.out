@@ -1,0 +1,113 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "fixed": [
+        {
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N0" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 14,
+                    "columnBegin": 1,
+                    "lineEnd": 18,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [
+            { "offset": 227, "length": 2 },
+            { "offset": 14, "length": 2 },
+            { "offset": 14, "length": 2 },
+            { "offset": 34, "length": 2 },
+            { "offset": 14, "length": 2 }
+          ]
+        },
+        {
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N1" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 28,
+                    "columnBegin": 1,
+                    "lineEnd": 33,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [
+            { "offset": 337, "length": 2 },
+            { "offset": 14, "length": 2 },
+            { "offset": 14, "length": 2 },
+            { "offset": 37, "length": 2 },
+            { "offset": 38, "length": 2 },
+            { "offset": 37, "length": 2 },
+            { "offset": 44, "length": 2 },
+            { "offset": 66, "length": 2 },
+            { "offset": 57, "length": 2 },
+            { "offset": 45, "length": 2 },
+            { "offset": 45, "length": 2 },
+            { "offset": 37, "length": 2 },
+            { "offset": 40, "length": 2 }
+          ]
+        },
+        {
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "N2" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 52,
+                    "columnBegin": 1,
+                    "lineEnd": 77,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [
+            { "offset": 666, "length": 2 },
+            { "offset": 45, "length": 2 }
+          ]
+        }
+      ],
+      "variable": [
+        [ { "offset": 385, "length": 2 }, { "offset": 184, "length": 2 } ],
+        [
+          { "offset": 406, "length": 2 },
+          { "offset": 185, "length": 2 },
+          { "offset": 224, "length": 2 }
+        ],
+        [
+          { "offset": 424, "length": 2 },
+          { "offset": 204, "length": 2 },
+          { "offset": 42, "length": 2 }
+        ],
+        [
+          { "offset": 444, "length": 2 },
+          { "offset": 204, "length": 2 },
+          { "offset": 45, "length": 2 }
+        ],
+        [ { "offset": 461, "length": 2 }, { "offset": 254, "length": 2 } ],
+        [ { "offset": 481, "length": 2 }, { "offset": 257, "length": 2 } ],
+        [ { "offset": 498, "length": 2 } ],
+        [ { "offset": 525, "length": 2 } ],
+        [ { "offset": 792, "length": 2 } ]
+      ]
+    }
+  }
+]

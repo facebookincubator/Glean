@@ -1,0 +1,99 @@
+[
+  "@generated",
+  {
+    "key": {
+      "declaration1": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "f" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": { "parameters": [ ], "returns": { "key": "void" } }
+            },
+            "source": {
+              "columnBegin": 1,
+              "columnEnd": 8,
+              "file": { "key": "f.h" },
+              "lineBegin": 3,
+              "lineEnd": 3
+            }
+          }
+        }
+      },
+      "declaration2": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "f" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": { "parameters": [ ], "returns": { "key": "void" } }
+            },
+            "source": {
+              "columnBegin": 1,
+              "columnEnd": 1,
+              "file": { "key": "f.cpp" },
+              "lineBegin": 5,
+              "lineEnd": 7
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "declaration1": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "f" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": { "parameters": [ ], "returns": { "key": "void" } }
+            },
+            "source": {
+              "columnBegin": 1,
+              "columnEnd": 8,
+              "file": { "key": "f.h" },
+              "lineBegin": 3,
+              "lineEnd": 3
+            }
+          }
+        }
+      },
+      "declaration2": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "f" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": { "parameters": [ ], "returns": { "key": "void" } }
+            },
+            "source": {
+              "columnBegin": 1,
+              "columnEnd": 8,
+              "file": { "key": "g.cpp" },
+              "lineBegin": 3,
+              "lineEnd": 3
+            }
+          }
+        }
+      }
+    }
+  }
+]

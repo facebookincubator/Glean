@@ -1,0 +1,68 @@
+[
+  "@generated",
+  {
+    "key": {
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "call" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": {
+                "returns": { "key": "int" },
+                "parameters": [
+                  { "name": { "key": "x" }, "type": { "key": "I *" } }
+                ]
+              }
+            },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 7,
+              "columnBegin": 1,
+              "lineEnd": 10,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.m" },
+        "lineBegin": 7,
+        "columnBegin": 1,
+        "lineEnd": 10,
+        "columnEnd": 1
+      },
+      "name": { "key": "call" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "objcContainer": {
+          "key": {
+            "id": { "interface_": { "key": "I" } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 1,
+              "columnBegin": 1,
+              "lineEnd": 5,
+              "columnEnd": 4
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.m" },
+        "lineBegin": 1,
+        "columnBegin": 1,
+        "lineEnd": 5,
+        "columnEnd": 4
+      },
+      "name": { "key": "I" }
+    }
+  }
+]

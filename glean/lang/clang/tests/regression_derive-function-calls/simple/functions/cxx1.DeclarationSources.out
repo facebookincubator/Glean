@@ -1,0 +1,127 @@
+[
+  "@generated",
+  {
+    "key": {
+      "sources": [
+        {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "bar" } } },
+                  "scope": { "global_": { } }
+                }
+              },
+              "signature": {
+                "key": {
+                  "parameters": [
+                    { "name": { "key": "x" }, "type": { "key": "int" } }
+                  ],
+                  "returns": { "key": "int" }
+                }
+              },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "file": { "key": "three.cpp" },
+                "lineBegin": 7,
+                "lineEnd": 9
+              }
+            }
+          }
+        }
+      ],
+      "target": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "foo" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": {
+                "parameters": [
+                  { "name": { "key": "x" }, "type": { "key": "int" } }
+                ],
+                "returns": { "key": "int" }
+              }
+            },
+            "source": {
+              "columnBegin": 1,
+              "columnEnd": 1,
+              "file": { "key": "three.cpp" },
+              "lineBegin": 3,
+              "lineEnd": 5
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "sources": [
+        {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "main" } } },
+                  "scope": { "global_": { } }
+                }
+              },
+              "signature": {
+                "key": {
+                  "parameters": [
+                    {
+                      "name": { "key": "_unused" },
+                      "type": { "key": "char **" }
+                    },
+                    { "name": { "key": "x" }, "type": { "key": "int" } }
+                  ],
+                  "returns": { "key": "int" }
+                }
+              },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "file": { "key": "three.cpp" },
+                "lineBegin": 11,
+                "lineEnd": 13
+              }
+            }
+          }
+        }
+      ],
+      "target": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "bar" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": {
+                "parameters": [
+                  { "name": { "key": "x" }, "type": { "key": "int" } }
+                ],
+                "returns": { "key": "int" }
+              }
+            },
+            "source": {
+              "columnBegin": 1,
+              "columnEnd": 1,
+              "file": { "key": "three.cpp" },
+              "lineBegin": 7,
+              "lineEnd": 9
+            }
+          }
+        }
+      }
+    }
+  }
+]

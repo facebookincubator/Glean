@@ -1,0 +1,332 @@
+[
+  "@generated",
+  { "key": [ ] },
+  {
+    "key": [
+      {
+        "namespace_": {
+          "key": {
+            "name": { "key": { "name": { "key": "N1" } } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 3,
+              "columnBegin": 1,
+              "lineEnd": 9,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      {
+        "namespace_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "IN1" },
+                "parent": { "key": { "name": { "key": "N1" } } }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 4,
+              "columnBegin": 3,
+              "lineEnd": 6,
+              "columnEnd": 3
+            }
+          }
+        }
+      },
+      {
+        "namespace_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "IIN1" },
+                "parent": {
+                  "key": {
+                    "name": { "key": "IN1" },
+                    "parent": { "key": { "name": { "key": "N1" } } }
+                  }
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 5,
+              "columnBegin": 5,
+              "lineEnd": 5,
+              "columnEnd": 21
+            }
+          }
+        }
+      },
+      {
+        "namespace_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "IN2" },
+                "parent": { "key": { "name": { "key": "N1" } } }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 8,
+              "columnBegin": 3,
+              "lineEnd": 8,
+              "columnEnd": 18
+            }
+          }
+        }
+      },
+      {
+        "namespace_": {
+          "key": {
+            "name": { "key": { "name": { "key": "T1" } } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 11,
+              "columnBegin": 1,
+              "lineEnd": 19,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      {
+        "usingDirective": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "N1" }, "scope": { "global_": { } } }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 13,
+              "columnBegin": 1,
+              "lineEnd": 13,
+              "columnEnd": 18
+            }
+          }
+        }
+      },
+      {
+        "usingDirective": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "IN1" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N1" } } }
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 14,
+              "columnBegin": 1,
+              "lineEnd": 14,
+              "columnEnd": 23
+            }
+          }
+        }
+      },
+      {
+        "usingDirective": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "IIN1" },
+                "scope": {
+                  "namespace_": {
+                    "key": {
+                      "name": { "key": "IN1" },
+                      "parent": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 15,
+              "columnBegin": 1,
+              "lineEnd": 15,
+              "columnEnd": 29
+            }
+          }
+        }
+      },
+      {
+        "usingDirective": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "IIN1" },
+                "scope": {
+                  "namespace_": {
+                    "key": {
+                      "name": { "key": "IN1" },
+                      "parent": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 16,
+              "columnBegin": 1,
+              "lineEnd": 16,
+              "columnEnd": 20
+            }
+          }
+        }
+      },
+      {
+        "usingDirective": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "IN2" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N1" } } }
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 17,
+              "columnBegin": 1,
+              "lineEnd": 17,
+              "columnEnd": 19
+            }
+          }
+        }
+      },
+      {
+        "namespace_": {
+          "key": {
+            "name": { "key": { "name": { "key": "T2" } } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 23,
+              "columnBegin": 1,
+              "lineEnd": 31,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      {
+        "usingDirective": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "N1" }, "scope": { "global_": { } } }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 25,
+              "columnBegin": 1,
+              "lineEnd": 25,
+              "columnEnd": 18
+            }
+          }
+        }
+      },
+      {
+        "usingDirective": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "IN1" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N1" } } }
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 26,
+              "columnBegin": 1,
+              "lineEnd": 26,
+              "columnEnd": 23
+            }
+          }
+        }
+      },
+      {
+        "usingDirective": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "IIN1" },
+                "scope": {
+                  "namespace_": {
+                    "key": {
+                      "name": { "key": "IN1" },
+                      "parent": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 27,
+              "columnBegin": 1,
+              "lineEnd": 27,
+              "columnEnd": 29
+            }
+          }
+        }
+      },
+      {
+        "usingDirective": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "IIN1" },
+                "scope": {
+                  "namespace_": {
+                    "key": {
+                      "name": { "key": "IN1" },
+                      "parent": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 28,
+              "columnBegin": 1,
+              "lineEnd": 28,
+              "columnEnd": 20
+            }
+          }
+        }
+      },
+      {
+        "usingDirective": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "IN2" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N1" } } }
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 29,
+              "columnBegin": 1,
+              "lineEnd": 29,
+              "columnEnd": 19
+            }
+          }
+        }
+      }
+    ]
+  }
+]

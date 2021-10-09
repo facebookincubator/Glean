@@ -1,0 +1,176 @@
+[
+  "@generated",
+  {
+    "key": {
+      "cxx": {
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "f1" } } },
+                  "scope": { "global_": { } }
+                }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 8,
+                "columnBegin": 1,
+                "lineEnd": 8,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": [
+      { "key": { "key": { "key": "testname" }, "value": "declarations/fun1" } },
+      { "key": { "key": { "key": "type" }, "value": "void f1" } }
+    ]
+  },
+  {
+    "key": {
+      "cxx": {
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "f2" } } },
+                  "scope": { "global_": { } }
+                }
+              },
+              "signature": {
+                "key": {
+                  "returns": { "key": "void" },
+                  "parameters": [
+                    { "name": { "key": "x" }, "type": { "key": "bool" } },
+                    { "name": { "key": "y" }, "type": { "key": "int" } }
+                  ]
+                }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 13,
+                "columnBegin": 1,
+                "lineEnd": 13,
+                "columnEnd": 22
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": [
+      { "key": { "key": { "key": "testname" }, "value": "declarations/fun1" } },
+      { "key": { "key": { "key": "type" }, "value": "void f2" } }
+    ]
+  },
+  {
+    "key": {
+      "cxx": {
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "f3" } } },
+                  "scope": { "global_": { } }
+                }
+              },
+              "signature": {
+                "key": {
+                  "returns": { "key": "void" },
+                  "parameters": [
+                    { "name": { "key": "" }, "type": { "key": "int" } },
+                    { "name": { "key": "" }, "type": { "key": "char" } },
+                    { "name": { "key": "" }, "type": { "key": "char" } }
+                  ]
+                }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 18,
+                "columnBegin": 1,
+                "lineEnd": 18,
+                "columnEnd": 24
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": [
+      { "key": { "key": { "key": "testname" }, "value": "declarations/fun1" } },
+      { "key": { "key": { "key": "type" }, "value": "void f3" } }
+    ]
+  },
+  {
+    "key": {
+      "cxx": {
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "f4" } } },
+                  "scope": { "global_": { } }
+                }
+              },
+              "signature": {
+                "key": { "returns": { "key": "int" }, "parameters": [ ] }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 23,
+                "columnBegin": 1,
+                "lineEnd": 23,
+                "columnEnd": 8
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": [
+      { "key": { "key": { "key": "testname" }, "value": "declarations/fun1" } },
+      { "key": { "key": { "key": "type" }, "value": "int f4" } }
+    ]
+  },
+  {
+    "key": {
+      "cxx": {
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "f5" } } },
+                  "scope": { "global_": { } }
+                }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 28,
+                "columnBegin": 1,
+                "lineEnd": 28,
+                "columnEnd": 16
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": [
+      { "key": { "key": { "key": "testname" }, "value": "declarations/fun1" } },
+      { "key": { "key": { "key": "type" }, "value": "static void f5" } }
+    ]
+  }
+]
