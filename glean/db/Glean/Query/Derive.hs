@@ -440,11 +440,13 @@ finishDerivation
   -> PredicateRef
   -> IO Derivation
 finishDerivation env@Env{..} log repo pred = do
-  finished <- finishedWrites =<< atomically (getDerivation env repo pred)
+  derivation <- atomically (getDerivation env repo pred)
+  finished <- finishedWrites derivation
+  when (isNothing (derivationError derivation) && isRight finished)
+    finishOwnership
   now <- getTimePoint
   derivation <- overDerivation env repo pred $ withProgress now finished
   logResult log derivation
-  when (isNothing (derivationError derivation)) finishOwnership
   return derivation
   where
     finishedWrites :: Derivation -> IO (Either SomeException [Thrift.Handle])
