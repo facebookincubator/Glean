@@ -70,8 +70,7 @@ struct DatabaseComplete {
   1: glean.PosixEpochTime time;
 }
 
-struct DatabaseFinalizing {
-}
+struct DatabaseFinalizing {}
 
 // The status of data being written into a DB
 union Completeness {

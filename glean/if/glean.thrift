@@ -89,8 +89,7 @@ struct ParcelRunning {
 }
 
 // successfully finished
-struct ParcelFinished {
-}
+struct ParcelFinished {}
 
 // The current state of a work parcel
 union ParcelState {
@@ -100,8 +99,7 @@ union ParcelState {
 }
 
 // waiting for dependencies to finish
-struct TaskWaiting {
-}
+struct TaskWaiting {}
 
 struct TaskRunning {
   1: list<ParcelState> (hs.type = "Vector") parcels;
@@ -270,8 +268,7 @@ exception InvalidDependency {
   3: string reason;
 }
 
-exception UnknownBatchHandle {
-}
+exception UnknownBatchHandle {}
 
 enum DatabaseStatus {
   // database is available and complete:
@@ -359,15 +356,13 @@ union FinishResponse {
   2: BatchRetry retry;
 } (hs.nonempty)
 
-struct FinalizeResponse {
-}
+struct FinalizeResponse {}
 
 struct Worker {
   1: string name;
 }
 
-struct Success {
-}
+struct Success {}
 struct Failure {
   1: string message;
 }
@@ -462,8 +457,7 @@ struct QueryDebugOptions {
 }
 
 # Encode results using Glean's internal binary representation
-struct UserQueryEncodingBin {
-}
+struct UserQueryEncodingBin {}
 
 # Encode results as JSON
 struct UserQueryEncodingJSON {
@@ -570,20 +564,15 @@ struct DerivePredicateOptions {
 // maximum amount of time executing each batch
 }
 
-exception NotAStoredPredicate {
-}
+exception NotAStoredPredicate {}
 
-exception UnknownDerivationHandle {
-}
+exception UnknownDerivationHandle {}
 
-exception UnknownPredicate {
-}
+exception UnknownPredicate {}
 
-exception PredicateAlreadyComplete {
-}
+exception PredicateAlreadyComplete {}
 
-exception PredicateAlreadyBeingDerived {
-}
+exception PredicateAlreadyBeingDerived {}
 
 exception IncompleteDependencies {
   1: list<PredicateRef> incomplete;
@@ -756,8 +745,7 @@ struct GetDatabaseResult {
   2: optional Tasks tasks;
 }
 
-struct DeleteDatabaseResult {
-}
+struct DeleteDatabaseResult {}
 
 struct JsonFactBatch {
   1: PredicateRef predicate;
@@ -815,8 +803,7 @@ struct KickOffResponse {
   1: bool alreadyExists;
 }
 
-struct UpdatePropertiesResponse {
-}
+struct UpdatePropertiesResponse {}
 
 # A chunk of work that can be executed
 struct Work {
@@ -912,8 +899,7 @@ struct PredicateStatsOpts {
   1: bool excludeBase = true;
 }
 
-struct CompletePredicatesResponse {
-}
+struct CompletePredicatesResponse {}
 
 service GleanService extends fb303.FacebookService {
   // DEPRECATED

@@ -33,8 +33,7 @@ struct FileMoved {
   2: list<Diff> diffs;
 }
 
-struct FileDeleted {
-}
+struct FileDeleted {}
 
 union FileChange {
   1: FileModified modified;
