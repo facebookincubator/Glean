@@ -21,7 +21,7 @@ that are needed for building Glean.
 
 * [GHC](https://www.haskell.org/ghc/). To see which versions Glean is tested with, check the current [ci.yml](https://github.com/facebookincubator/Glean/blob/master/.github/workflows/ci.yml) script.
 
-* Cabal/cabal-install. Unfortunately because hsthrift currently depends on features that are not in a released version of Cabal (3.6+), you have to build it from source, see https://github.com/facebookincubator/hsthrift#building-and-testing
+* Cabal/cabal-install version 3.6 or later (older versions won't work).
 
 Additional per-distribution setup follows.
 
