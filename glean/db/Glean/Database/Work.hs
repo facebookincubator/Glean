@@ -23,6 +23,7 @@ import Control.Monad
 import Control.Monad.Catch
 import Data.Default
 import qualified Data.HashMap.Strict as HashMap
+import Data.Int
 import Data.Map (Map)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
@@ -31,6 +32,7 @@ import qualified Data.Text as Text
 import Data.Time (UTCTime, getCurrentTime)
 import qualified Data.UUID as UUID
 import qualified Data.UUID.V4 as UUID
+import Data.Vector (Vector)
 import qualified Data.Vector as Vector
 import TextShow
 
@@ -49,7 +51,7 @@ import Glean.Database.Work.Controller
 import Glean.Database.Work.Heartbeat
 import Glean.Database.Work.Queue
 import Glean.Internal.Types as Thrift
-import Glean.Recipes.Types (Executor(..), Recipe(..))
+import Glean.Recipes.Types (Executor(..), Recipe(..), TaskName)
 import Glean.Types as Thrift
 import Glean.Util.Time
 
@@ -59,27 +61,61 @@ import Glean.Util.Observed as Observed
 
 -- | Resume work which stopped when the previous 'Env' shut down.
 resumeWork :: Env -> IO ()
-resumeWork env = immediately $ do
-  metas <- lift $ Catalog.list (envCatalog env) [Local] $
-    statusV .==. DatabaseStatus_Incomplete
-  forM_ metas $ \Item{..} ->
-    case metaCompleteness itemMeta of
-      Incomplete (DatabaseIncomplete_tasks tasks) ->
-        forM_ (HashMap.toList tasks) (\(name, Task{..}) ->
-            case task_state of
-              TaskState_running (TaskRunning parcels) ->
-                controller resumeTask Context
-                  { ctxEnv = env
-                  , ctxRepo = itemRepo
-                  , ctxTask = name
-                  , ctxRecipe = task_recipe
-                  , ctxWorkFinished = workFinished
-                  }
-                parcels
-              _ -> return ())
-        `catch` \err -> do
-          new_meta <- failTask itemMeta err
-          lift $ Catalog.writeMeta (envCatalog env) itemRepo new_meta
+resumeWork env =  do
+  timepoint <- getTimePoint
+  immediately $ do
+    metas <- lift $ Catalog.list (envCatalog env) [Local] $
+      statusV .==. DatabaseStatus_Incomplete
+    forM_ metas $ \Item{..} ->
+      case metaCompleteness itemMeta of
+        Incomplete (DatabaseIncomplete_tasks tasks) ->
+          forM_ (HashMap.toList tasks) (\(name, task@Task{..}) -> do
+              case task_state of
+                TaskState_running (TaskRunning parcels) -> do
+                  controller resumeTask Context
+                    { ctxEnv = env
+                    , ctxRepo = itemRepo
+                    , ctxTask = name
+                    , ctxRecipe = task_recipe
+                    , ctxWorkFinished = workFinished
+                    }
+                    parcels
+                  lift $ resumeHeartbeats
+                    timepoint env itemRepo name task parcels
+                _ -> return ())
+          `catch` \err -> do
+            new_meta <- failTask itemMeta err
+            lift $ Catalog.writeMeta (envCatalog env) itemRepo new_meta
+        _ -> return ()
+
+-- | Resume listening for heartbeats from running workers when the
+-- server is restarted.
+resumeHeartbeats
+  :: TimePoint
+  -> Env
+  -> Repo
+  -> TaskName
+  -> Task
+  -> Vector ParcelState
+  -> STM ()
+resumeHeartbeats timepoint env repo name task parcels =
+  forM_ (zip [0..] (Vector.toList parcels)) $ \(index, parcel) ->
+    case parcel of
+      ParcelState_running ParcelRunning{..} -> do
+        let parcel = Parcel
+              { parcelRepo = repo
+              , parcelTask = name
+              , parcelIndex = index
+              }
+            info = ParcelInfo
+              { piRepo = repo
+              , piTask = task
+              , piParcels = parcels
+              , piParcel = parcel
+              , piState = parcels Vector.! index
+              }
+            work = parcelWork info parcelRunning_handle
+        void $ listenForHeartbeat timepoint env task work
       _ -> return ()
 
 -- | Change a database's state from Complete to Incomplete.
@@ -358,32 +394,14 @@ getWork env@Env{..} Thrift.GetWork{..} = do
             ParcelState_waiting (ParcelWaiting retries), ..} -> do
             props <- metaProperties <$>
               now (Catalog.readMeta envCatalog $ parcelRepo parcel)
+            let handle = UUID.toText uuid
             updateParcel env info time $ ParcelState_running def
               { parcelRunning_retries = retries
-              , parcelRunning_handle = UUID.toText uuid
+              , parcelRunning_handle = handle
               , parcelRunning_runner = getWork_runner
               }
-            let work = Thrift.Work
-                  { work_repo = parcelRepo parcel
-                  , work_task = parcelTask parcel
-                  , work_parcelIndex = fromIntegral $ parcelIndex parcel
-                  , work_parcelCount =
-                      fromIntegral $ recipe_parcels $ task_recipe piTask
-                  , work_handle = UUID.toText uuid
-                  }
-
-                heartbeat = case recipe_heartbeat $ task_recipe piTask of
-                  0 -> Nothing
-                  n -> Just n
-
-            forM_ heartbeat $ \n -> lift $ void $ expectHeartbeat
-              envHeartbeats
-              work
-              $ addToTimePoint timepoint
-                  $ seconds
-                  $ fromIntegral
-                  $ heartbeatTimeout
-                  $ fromIntegral n
+            let work = parcelWork info handle
+            heartbeat <- lift $ listenForHeartbeat timepoint env piTask work
             return $ Thrift.GetWorkResponse_available
               Thrift.WorkAvailable
                 { workAvailable_work = work
@@ -398,6 +416,40 @@ getWork env@Env{..} Thrift.GetWork{..} = do
         Thrift.WorkUnavailable{ workUnavailable_pause = 30 }
 
   immediately $ grab <|> return unavailable
+
+-- | Start listening for a heartbeat from the worker for a given parcel
+listenForHeartbeat
+  :: TimePoint
+  -> Env
+  -> Task
+  -> Thrift.Work
+  -> STM (Maybe Int32)
+listenForHeartbeat timepoint env task work = do
+  forM_ heartbeat $ \n -> void $ expectHeartbeat
+    (envHeartbeats env)
+    work
+    $ addToTimePoint timepoint
+        $ seconds
+        $ fromIntegral
+        $ heartbeatTimeout
+        $ fromIntegral n
+  return heartbeat
+  where
+  heartbeat = case recipe_heartbeat $ task_recipe task of
+    0 -> Nothing
+    n -> Just n
+
+parcelWork :: ParcelInfo -> WorkHandle -> Thrift.Work
+parcelWork info handle = Thrift.Work
+  { work_repo = parcelRepo parcel
+  , work_task = parcelTask parcel
+  , work_parcelIndex = fromIntegral $ parcelIndex parcel
+  , work_parcelCount =
+      fromIntegral $ recipe_parcels $ task_recipe (piTask info)
+  , work_handle = handle
+  }
+  where
+  parcel = piParcel info
 
 fromThriftWork :: Thrift.Work -> Parcel
 fromThriftWork work = Parcel
