@@ -102,6 +102,7 @@ union ParcelState {
 struct TaskWaiting {}
 
 struct TaskRunning {
+  // ParcelState for parcels [0,1..n-1] where n is Recipe.parcels.
   1: list<ParcelState> (hs.type = "Vector") parcels;
 }
 
@@ -814,7 +815,8 @@ struct Work {
   // Task name
 
   3: i32 parcelIndex;
-  // Index of the work parcel within the task (cf. Recipe.parcels)
+  // Index of the work parcel within the task (cf. Recipe.parcels).
+  // The first parcel is parcelIndex 0.
 
   4: i32 parcelCount;
   // Total number of work parcels in the task
