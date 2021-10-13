@@ -1,0 +1,355 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "A",
+      "entity": {
+        "cxx": {
+          "enumerator": {
+            "key": {
+              "name": { "key": "A" },
+              "enumeration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "E" },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N1" } } }
+                      }
+                    }
+                  },
+                  "isScoped": false,
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 3,
+                    "columnBegin": 1,
+                    "lineEnd": 3,
+                    "columnEnd": 18
+                  }
+                }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 3,
+                "columnBegin": 10,
+                "lineEnd": 3,
+                "columnEnd": 10
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "B",
+      "entity": {
+        "cxx": {
+          "enumerator": {
+            "key": {
+              "name": { "key": "B" },
+              "enumeration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "E" },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N1" } } }
+                      }
+                    }
+                  },
+                  "isScoped": false,
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 3,
+                    "columnBegin": 1,
+                    "lineEnd": 3,
+                    "columnEnd": 18
+                  }
+                }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 3,
+                "columnBegin": 13,
+                "lineEnd": 3,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "C",
+      "entity": {
+        "cxx": {
+          "enumerator": {
+            "key": {
+              "name": { "key": "C" },
+              "enumeration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "E" },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N1" } } }
+                      }
+                    }
+                  },
+                  "isScoped": false,
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 3,
+                    "columnBegin": 1,
+                    "lineEnd": 3,
+                    "columnEnd": 18
+                  }
+                }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 3,
+                "columnBegin": 16,
+                "lineEnd": 3,
+                "columnEnd": 16
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "E",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "enum_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "E" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "isScoped": false,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 3,
+                  "columnBegin": 1,
+                  "lineEnd": 3,
+                  "columnEnd": 18
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "bar",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "bar" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N41" } } }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 56,
+                  "columnBegin": 1,
+                  "lineEnd": 58,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "bar",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "bar" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N42" } } }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 67,
+                  "columnBegin": 1,
+                  "lineEnd": 69,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "foo" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N21" } } }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 12,
+                  "columnBegin": 1,
+                  "lineEnd": 14,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "foo" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N22" } } }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 23,
+                  "columnBegin": 1,
+                  "lineEnd": 25,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "foo" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N31" } } }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 34,
+                  "columnBegin": 1,
+                  "lineEnd": 36,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "foo" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N32" } } }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 45,
+                  "columnBegin": 1,
+                  "lineEnd": 47,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

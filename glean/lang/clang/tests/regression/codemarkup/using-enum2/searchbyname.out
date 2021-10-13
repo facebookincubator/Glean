@@ -1,0 +1,235 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "X",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "enum_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "X" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "N3" },
+                          "parent": {
+                            "key": {
+                              "name": { "key": "N2" },
+                              "parent": { "key": { "name": { "key": "N1" } } }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "isScoped": false,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 13,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 33
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "X1",
+      "entity": {
+        "cxx": {
+          "enumerator": {
+            "key": {
+              "name": { "key": "X1" },
+              "enumeration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "X" },
+                      "scope": {
+                        "namespace_": {
+                          "key": {
+                            "name": { "key": "N3" },
+                            "parent": {
+                              "key": {
+                                "name": { "key": "N2" },
+                                "parent": { "key": { "name": { "key": "N1" } } }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "isScoped": false,
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 13,
+                    "columnBegin": 1,
+                    "lineEnd": 13,
+                    "columnEnd": 33
+                  }
+                }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 13,
+                "columnBegin": 10,
+                "lineEnd": 13,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "X2",
+      "entity": {
+        "cxx": {
+          "enumerator": {
+            "key": {
+              "name": { "key": "X2" },
+              "enumeration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "X" },
+                      "scope": {
+                        "namespace_": {
+                          "key": {
+                            "name": { "key": "N3" },
+                            "parent": {
+                              "key": {
+                                "name": { "key": "N2" },
+                                "parent": { "key": { "name": { "key": "N1" } } }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "isScoped": false,
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 13,
+                    "columnBegin": 1,
+                    "lineEnd": 13,
+                    "columnEnd": 33
+                  }
+                }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 13,
+                "columnBegin": 18,
+                "lineEnd": 13,
+                "columnEnd": 23
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "X3",
+      "entity": {
+        "cxx": {
+          "enumerator": {
+            "key": {
+              "name": { "key": "X3" },
+              "enumeration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "X" },
+                      "scope": {
+                        "namespace_": {
+                          "key": {
+                            "name": { "key": "N3" },
+                            "parent": {
+                              "key": {
+                                "name": { "key": "N2" },
+                                "parent": { "key": { "name": { "key": "N1" } } }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "isScoped": false,
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 13,
+                    "columnBegin": 1,
+                    "lineEnd": 13,
+                    "columnEnd": 33
+                  }
+                }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 13,
+                "columnBegin": 26,
+                "lineEnd": 13,
+                "columnEnd": 31
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "foo" } } },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "O1" },
+                          "parent": { "key": { "name": { "key": "N1" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 20,
+                  "columnBegin": 1,
+                  "lineEnd": 20,
+                  "columnEnd": 18
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

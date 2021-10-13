@@ -1,0 +1,62 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "I",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "objcContainer": {
+              "key": {
+                "id": { "interface_": { "key": "I" } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 1,
+                  "columnBegin": 1,
+                  "lineEnd": 6,
+                  "columnEnd": 4
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "call",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "call" } } },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "int" },
+                    "parameters": [
+                      { "name": { "key": "x" }, "type": { "key": "I *" } }
+                    ]
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 8,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

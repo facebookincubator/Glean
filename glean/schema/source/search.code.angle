@@ -1,16 +1,21 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema search.code.5 {
+schema search.code.6 {
+
 import code.15
+import code.cxx.3
 import code.hack.3
 import code.python.1
+import cxx1.4
 import flow.3
 import hack.5
-import python.3
 import pp1.1
+import python.3
 import rust.1
-import thrift.4
+import search.cxx.4
 import search.hack.6
+import search.hs.3
+import thrift.4
 
 # global entity search by identifier name (or prefix)
 predicate SearchByName:
@@ -19,9 +24,15 @@ predicate SearchByName:
     entity: code.Entity,
   }
   { Name, Entity } where
-  PythonSearchByName {Name, Entity} |
-  HackSearchByName {Name, Entity} |
-  FlowSearchByName {Name, Entity}
+  PythonSearchByName { Name, Entity } |
+  HackSearchByName { Name, Entity } |
+  FlowSearchByName { Name, Entity } |
+  CxxSearchByName { Name, Entity } |
+  HsSearchByName { Name, Entity }
+
+#
+# Language-specific identifier search
+#
 
 predicate HackSearchByName:
   {
@@ -47,5 +58,21 @@ predicate FlowSearchByName:
   }
   { Name, { flow = { decl = D }}} where
   flow.SearchByName { name = flow.Name Name, decl = D};
+
+predicate CxxSearchByName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { Name, { cxx = E }} where
+  search.cxx.SearchByNameAndScope { name = cxx1.Name Name, entity = E }
+
+predicate HsSearchByName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { Name, E } where
+  search.hs.SearchByName { name = Name, entity = E }
 
 }
