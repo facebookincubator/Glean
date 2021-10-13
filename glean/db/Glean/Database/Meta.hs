@@ -3,6 +3,7 @@
 {-# OPTIONS_GHC -Wno-orphans #-}
 module Glean.Database.Meta
   ( Meta(..)
+  , DBTimestamp(..)
   , newMeta
   , showCompleteness
   , completenessStatus
@@ -31,17 +32,23 @@ import Glean.ServerConfig.Types (DBVersion(..))
 import Glean.Internal.Types
 import Glean.Types
 
+data DBTimestamp = DBTimestamp
+  { timestampCreated :: UTCTime
+  , timestampRepoHash :: Maybe UTCTime
+  }
+
 -- | Produce DB metadata
 newMeta
   :: DBVersion -- ^ DB version
-  -> UTCTime -- ^ creation time
+  -> DBTimestamp -- ^ creation time and repo hash time
   -> Completeness -- ^ write status
   -> DatabaseProperties -- ^ user properties
   -> Maybe Dependencies -- ^ stacked
   -> Meta
-newMeta version created completeness properties deps = Meta
+newMeta version timestamp completeness properties deps = Meta
   { metaVersion = version
-  , metaCreated = utcTimeToPosixEpochTime created
+  , metaCreated = utcTimeToPosixEpochTime $ timestampCreated timestamp
+  , metaRepoHashTime = utcTimeToPosixEpochTime <$> timestampRepoHash timestamp
   , metaCompleteness = completeness
   , metaProperties = properties
   , metaBackup = Nothing
@@ -90,7 +97,7 @@ metaToThriftDatabase status expire repo Meta{..} = Database
   , database_completed = case metaCompleteness of
       Complete (DatabaseComplete time) -> Just time
       _ -> Nothing
-  , database_repo_hash_time = Nothing
+  , database_repo_hash_time = metaRepoHashTime
   }
 
 metaToProps :: Meta -> Map String String

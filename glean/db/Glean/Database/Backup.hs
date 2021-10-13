@@ -152,8 +152,13 @@ bestRestore restoring avail = depsFirst (sortBy order restoring)
           | tlocal > tbackup -> LocalDbNewer
           | otherwise -> LocalDbOlder tlocal
           where
-            tlocal = metaCreated (itemMeta local)
-            tbackup = metaCreated (itemMeta backup)
+            tlocal = timestamp local
+            tbackup = timestamp backup
+            repoHashTime = metaRepoHashTime . itemMeta
+            creationTime = metaCreated . itemMeta
+            timestamp item = fromMaybe (creationTime item) (repoHashTime item)
+            -- ^ prefer the exact repoHash time if we have it, otherwise use the
+            -- creationTime as the best guess we have
 
     -- ensure we're restoring dependencies of a stacked DB first, if
     -- they need restoring.

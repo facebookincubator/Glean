@@ -100,6 +100,7 @@ makeFakeDB schema root repo dbtime completeness stacked = do
     meta = Meta
       { metaVersion = Storage.currentVersion
       , metaCreated = utcTimeToPosixEpochTime dbtime
+      , metaRepoHashTime = Nothing
       , metaCompleteness = completeness dbtime
       , metaBackup = Nothing
       , metaProperties = HashMap.empty

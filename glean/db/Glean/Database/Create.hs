@@ -67,7 +67,7 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
       -- NOTE: We don't want to load recipes (which might fail) if we don't
       -- need them.
       state <- completenessFromFill get_recipes kickOff_repo kickOff_fill
-      time <- envGetCreationTime
+      creationTime <- envGetCreationTime
       serverProps <- serverProperties
       fbServerProps <- facebookServerProperties
       let
@@ -77,6 +77,11 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
           , fbServerProps
           , scribeProperties kickOff_fill
           ]
+        time = DBTimestamp
+          { timestampCreated = creationTime
+          , timestampRepoHash =
+              posixEpochTimeToUTCTime <$> kickOff_repo_hash_time
+          }
       version <-
         fromMaybe Storage.currentVersion . ServerConfig.config_db_create_version
         <$> Observed.get envServerConfig

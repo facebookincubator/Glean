@@ -108,4 +108,8 @@ struct Meta {
   // Later we will allow non-derived predicates to be completed separately
   // and store that information in metaCompletePredicates.
   8: bool metaAxiomComplete;
+
+  // If present, this is the time when the source data was read.
+  // This should always be earlier than created time.
+  9: optional glean.PosixEpochTime metaRepoHashTime;
 } (hs.prefix = "")
