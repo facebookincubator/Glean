@@ -3,7 +3,7 @@
 schema search.cxx.1 {
 import cxx1.4
 
-# Declataions with no scope
+# Declarations with no scope
 predicate GlobalDeclarationWithName :
   {
     name : cxx1.Name,
@@ -15,7 +15,7 @@ predicate GlobalDeclarationWithName :
     (
       cxx1.Declaration
         {
-          objcContainer = 
+          objcContainer =
             {
               id =
                 { protocol = N } |
@@ -60,16 +60,16 @@ predicate SearchByNameAndScope :
     entity : code.cxx.Entity,
   }
   {N, Scope, Entity} where
-    ( 
+    (
       # Several things use QName, so share the query for it
       Q = cxx1.QName { name = N, scope = Scope };
-      Entity = 
+      Entity =
         code.cxx.Entity { decl = { record_ = { name = Q }}}  |
         code.cxx.Entity { decl = { variable = { name = Q }}} |
         code.cxx.Entity { decl = { typeAlias = { name = Q }}} |
         code.cxx.Entity { decl = { enum_ = { name = Q }}};
     ) | (
-      D = cxx1.FunctionDeclaration  
+      D = cxx1.FunctionDeclaration
         { name = { name = { name = N }, scope = Scope } };
       Entity = code.cxx.Entity { decl = { function_ = D } }
     ) | (
@@ -107,7 +107,7 @@ predicate EntityUses :
     uses : cxx1.TargetUses
   }
   { E, U } where
-    ( 
+    (
       code.cxx.Entity { decl = D } = E;
       U = cxx1.TargetUses { target = { declaration = D } }
     ) | (

@@ -12,6 +12,7 @@ import rust.1
 import thrift.4
 import search.hack.6
 
+# global entity search by identifier name (or prefix)
 predicate SearchByName:
   {
     name: string,
@@ -21,7 +22,6 @@ predicate SearchByName:
   PythonSearchByName {Name, Entity} |
   HackSearchByName {Name, Entity} |
   FlowSearchByName {Name, Entity}
-
 
 predicate HackSearchByName:
   {
