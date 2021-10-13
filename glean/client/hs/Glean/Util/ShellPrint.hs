@@ -236,6 +236,10 @@ instance (ShellFormat DbVerbosity v)
       [ annotate (statusStyle status) (shellFormatText ctx () repo)
         <+> shellFormatText ctx () status]
       ++
+      [ "Source:" <+> showWhen t
+      | Just t <- [Thrift.database_repo_hash_time db]
+      ]
+      ++
       [ "Created:" <+> showWhen (Thrift.database_created_since_epoch db) ]
       ++
       [ "Completed:" <+> showWhen t
