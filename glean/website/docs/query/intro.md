@@ -16,16 +16,22 @@ changes, and exploring the data.
 
 <FbInternalOnly>
 
-To run the REPL to try queries interactively:
+To try queries interactively run the REPL with:
 
 ```lang=shell
-buck run glean/shell:shell
+glean shell
+```
+
+or build it from source
+
+```lang=shell
+buck run //glean/tools/gleancli:glean -- shell
 ```
 
 To make a single query:
 
 ```lang=shell
-buck run glean/shell:shell -- <query>
+glean shell <query>
 ```
 
 </FbInternalOnly>
