@@ -379,7 +379,7 @@ instance Plugin StatsCommand where
         sortBySize = False }
     putShellPrintLn statsFormat $
       (filterPred, preds) `withFormatOpts` statsFormatOpts
-    when (not $ all (refMatches . fst) preds) $ do
+    when (not $ any (refMatches . fst) preds) $ do
       hPutStrLn stderr $ Text.unpack $
         "No facts found for: "
         <> Text.intercalate "," (map showSourceRef matchRefs)
