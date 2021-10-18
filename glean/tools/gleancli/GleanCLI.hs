@@ -367,22 +367,27 @@ instance Plugin StatsCommand where
         (if excludeBase then Glean.ExcludeBase else Glean.IncludeBase)
     schemaInfo <- Glean.getSchemaInfo backend statsRepo
     let
-      matchRefs = parseRef <$> statsPredicates
+      matchRefsArgs = parseRef <$> statsPredicates
       preds = map (Data.Bifunctor.first (lookupPid schemaInfo)) xs
       filterPred :: Either Thrift.Id PredicateRef -> Bool
       filterPred ref =
-        (perPredicate && null matchRefs) || refMatches ref
-      refMatches (Right pref) = any (predicateMatches pref) matchRefs
-      refMatches (Left _) = False
+        (perPredicate && null matchRefsArgs) -- argument given and
+        || any (refMatches ref) matchRefsArgs -- reference matches argument
+      refMatches (Right lhs) rhs = predicateMatches lhs rhs
+      refMatches (Left _) _ = False
       statsFormatOpts = StatsFormatOpts {
         showTotal = True,
         sortBySize = False }
+      refIsPresent ref =
+        any ((`refMatches` ref) . fst) preds
+      matchRefsArgsNotPresent =
+        filter (not . refIsPresent) matchRefsArgs
     putShellPrintLn statsFormat $
       (filterPred, preds) `withFormatOpts` statsFormatOpts
-    when (not $ any (refMatches . fst) preds) $ do
-      hPutStrLn stderr $ Text.unpack $
-        "No facts found for: "
-        <> Text.intercalate "," (map showSourceRef matchRefs)
+    when (not $ null matchRefsArgsNotPresent) $ do
+      forM_ matchRefsArgsNotPresent $ \ref -> do
+        hPutStrLn stderr $ Text.unpack $
+          "No facts found for: " <> showSourceRef ref
       when statsSetExitCode $
         exitWith $ ExitFailure 100
     where
