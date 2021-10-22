@@ -69,6 +69,7 @@ DEFINE_string(counter_file, "", "PATH to stats counter file");
 DEFINE_string(counters, "", "comma-separated list of NAME@N");
 DEFINE_bool(suppress_diagnostics, false, "suppress all Clang diagnostics");
 DEFINE_bool(fail_on_error, false, "immediately fail on compilation errors");
+DEFINE_bool(index_on_error, false, "index files that have compilation errors");
 DEFINE_string(clang_arguments, "", "arguments to pass to Clang");
 DEFINE_bool(clang_no_pch, false, "disable PCH");
 DEFINE_bool(clang_no_modules, false, "disable modules");
@@ -383,7 +384,6 @@ struct SourceIndexer {
   const Config& config;
   Batch<SCHEMA> batch;
   CDB cdb;
-  std::unique_ptr<clang::DiagnosticConsumer> diagnostic;
 
   explicit SourceIndexer(Config& cfg)
     : config(cfg)
@@ -518,7 +518,7 @@ private:
     }
 
     std::unique_ptr<clang::ASTConsumer> CreateASTConsumer(
-        clang::CompilerInstance&, clang::StringRef) override {
+        clang::CompilerInstance& ci, clang::StringRef) override {
       CHECK(db);
       return facebook::glean::clangx::newASTConsumer(db.get());
     }

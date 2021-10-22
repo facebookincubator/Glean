@@ -8,6 +8,7 @@
 #include "folly/MapUtil.h"
 #include "folly/ScopeGuard.h"
 #include "glean/lang/clang/ast.h"
+#include "glean/lang/clang/index.h"
 
 // This file implements the Clang AST traversal.
 
@@ -2387,6 +2388,12 @@ struct ASTConsumer : public clang::ASTConsumer {
   explicit ASTConsumer(ClangDB* d) : db(d) {}
 
   void HandleTranslationUnit (clang::ASTContext &ctx) override {
+    // Clang is sometimes generating a bogus AST when there are
+    // compilation errors (even for parts of the AST that should be
+    // unrelated to the error) so this is a workaround.
+    if (ctx.getDiagnostics().getClient()->getNumErrors() > 0 && !FLAGS_index_on_error) {
+      return;
+    }
     ASTVisitor visitor(db, ctx);
     VLOG(1) << "traversing";
     visitor.TraverseDecl(ctx.getTranslationUnitDecl());
