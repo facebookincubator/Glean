@@ -31,12 +31,15 @@ import Glean hiding (options)
 import Glean.Database.Schema
 import Glean.Datasource.Scribe.Write
 import Glean.Types as Thrift
+import Glean.Util.Time
 import Glean.Write
 import Glean.Write.JSON ( buildJsonBatch )
 
 import GleanCLI.Common
 import GleanCLI.Finish
 import GleanCLI.Types
+import Data.Time.Clock (UTCTime)
+import Glean.Database.Meta (utcTimeToPosixEpochTime)
 
 data ScribeOptions = ScribeOptions
   { writeFromScribe :: WriteFromScribe
@@ -55,6 +58,7 @@ parseFileFormat s = Left $ "unknown format: " <> s
 data WriteCommand
   = Write
       { writeRepo :: Repo
+      , writeRepoTime :: Maybe UTCTime
       , writeHandle :: Text
       , writeFiles :: [FilePath]
       , create :: Bool
@@ -73,6 +77,11 @@ instance Plugin WriteCommand where
     createCmd =
       commandParser "create" (progDesc "Create a new database") $ do
         writeRepo <- repoOpts
+        writeRepoTime <- optional $ option readTime
+          (  long "repo-hash-time"
+          <> metavar "yyyy-mm-ddThh:mm:ssZ"
+          <> help "Set properties when creating a DB"
+          )
         writeFiles <- fileArgs
         finish <- finishOpt
         scribe <- Just <$> scribeOptions <|> pure Nothing
@@ -96,6 +105,13 @@ instance Plugin WriteCommand where
       case break (=='=') str of
         (name, '=':value) -> Right (Text.pack name, Text.pack value)
         _other -> Left "--property: expecting NAME=VALUE"
+
+    readTime :: ReadM UTCTime
+    readTime = eitherReader $ \str ->
+      case readUTC $ Text.pack str of
+        Just value -> Right value
+        Nothing ->
+          Left "expecting time e.g. 2021-01-01T12:30:00Z"
 
     writeCmd =
       commandParser "write" (progDesc "Write facts to a database") $ do
@@ -124,8 +140,10 @@ instance Plugin WriteCommand where
                 <> metavar "(json|binary)"
                 <> help "Format of the input files"
                 )
-        return Write{create=False, properties=[], dependencies=Nothing
-          , writeFileFormat =  fromMaybe
+        return Write
+          { create=False, writeRepoTime=Nothing
+          , properties=[], dependencies=Nothing
+          , writeFileFormat = fromMaybe
             (if isJust writeInventory then BinaryFormat else JsonFormat)
             writeFileFormat
           , ..
@@ -214,6 +232,8 @@ instance Plugin WriteCommand where
                         { writeFromScribe_writeHandle = writeHandle }
                 , kickOff_properties = HashMap.fromList properties
                 , kickOff_dependencies = dependencies
+                , kickOff_repo_hash_time =
+                    utcTimeToPosixEpochTime <$> writeRepoTime
                 }
             when alreadyExists $ die 3 "DB create failure: already exists"
        )

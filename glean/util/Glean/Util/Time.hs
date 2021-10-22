@@ -6,7 +6,7 @@ module Glean.Util.Time
   module Util.TimeSec
   -- * absolute time
 , EpochClock(..), getEpochTime, toEpochSeconds
-, epochClockToUTCTime, showUTC, showEpochTime, showNominalDiffTime
+, epochClockToUTCTime, showUTC, readUTC, showEpochTime, showNominalDiffTime
   -- * time point differences
 , TimePoint(..), DiffTimePoints(..), getTimePoint
 , diffTimePoints, addDiffTimePoints, getElapsedTime, addToTimePoint
@@ -21,7 +21,7 @@ import qualified Data.Text as T
 import qualified Data.Text.Prettyprint.Doc as P
 import qualified Data.Time.Clock as TC ( UTCTime, NominalDiffTime )
 import Data.Time.Clock.POSIX ( posixSecondsToUTCTime, POSIXTime )
-import Data.Time.Format ( defaultTimeLocale, formatTime )
+import Data.Time.Format ( defaultTimeLocale, formatTime, parseTimeM )
 import qualified System.Clock as SC
 
 import Util.TimeSec
@@ -54,6 +54,9 @@ epochClockToUTCTime (EpochClock SC.TimeSpec{sec, nsec}) =
 -- We want to log RFC 3339 format
 showUTC :: TC.UTCTime -> T.Text
 showUTC = T.pack . formatTime defaultTimeLocale "%FT%X%QZ"
+
+readUTC :: T.Text -> Maybe TC.UTCTime
+readUTC = parseTimeM True defaultTimeLocale "%FT%X%QZ" . T.unpack
 
 -- | We want to log RFC 3339 format
 showEpochTime :: EpochClock -> T.Text
