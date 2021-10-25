@@ -518,7 +518,7 @@ private:
     }
 
     std::unique_ptr<clang::ASTConsumer> CreateASTConsumer(
-        clang::CompilerInstance& ci, clang::StringRef) override {
+        clang::CompilerInstance&, clang::StringRef) override {
       CHECK(db);
       return facebook::glean::clangx::newASTConsumer(db.get());
     }
