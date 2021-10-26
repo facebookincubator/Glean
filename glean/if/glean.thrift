@@ -320,6 +320,9 @@ struct Database {
   // If present, this is the time when the source data was read.
   // This should always be earlier than created time.
   10: optional PosixEpochTime repo_hash_time;
+
+  // What this DB depends on.
+  11: optional Dependencies dependencies;
 }
 
 struct PredicateStats {

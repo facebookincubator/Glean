@@ -202,6 +202,18 @@ instance ShellFormat o Thrift.DatabaseStatus where
         Thrift.DatabaseStatus_Restorable -> "RESTORABLE"
         Thrift.DatabaseStatus_Missing -> "MISSING"
 
+instance ShellFormat o Thrift.Dependencies where
+  shellFormatText _ctx _ dependency =
+    case dependency of
+      Thrift.Dependencies_stacked repo -> pretty (showRepo repo)
+      Thrift.Dependencies_pruned (Thrift.Pruned baseRepo _ _)
+        -> pretty (showRepo baseRepo)
+  shellFormatJson _ctx _ dependency =
+    case dependency of
+      Thrift.Dependencies_stacked repo -> J.toJSON (showRepo repo)
+      Thrift.Dependencies_pruned (Thrift.Pruned baseRepo _ _)
+        -> J.toJSON (showRepo baseRepo)
+
 instance ShellFormat o Thrift.Repo where
   shellFormatText _ctx _ repo = pretty (showRepo repo)
   shellFormatJson _ctx _ repo = J.toJSON (showRepo repo)
@@ -248,6 +260,10 @@ instance (ShellFormat DbVerbosity v)
       ++
       [ pretty key <> ":" <+> shellFormatText ctx opts value
       | (key, value) <- extras]
+      ++
+      [ "Dependencies:" <+> shellFormatText ctx () dependency
+      | Just dependency <- [Thrift.database_dependencies db]
+      ]
       ++
       [ "Backup:" <+> pretty loc
       | verbosity == DbDescribe ||

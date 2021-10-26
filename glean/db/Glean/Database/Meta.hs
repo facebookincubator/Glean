@@ -98,6 +98,7 @@ metaToThriftDatabase status expire repo Meta{..} = Database
       Complete (DatabaseComplete time) -> Just time
       _ -> Nothing
   , database_repo_hash_time = metaRepoHashTime
+  , database_dependencies = metaDependencies
   }
 
 metaToProps :: Meta -> Map String String
