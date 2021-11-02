@@ -350,7 +350,12 @@ struct Config {
 
   static std::unique_ptr<clang::DiagnosticConsumer> diagnosticConsumer() {
     if (FLAGS_suppress_diagnostics) {
-      return std::make_unique<clang::IgnoringDiagConsumer>();
+      // It's important to use the default DiagnosticConsumer rather
+      // than IgnoringDiagConsumer, because IgnoringDiagConsumer
+      // doesn't even count the errors. ClangTool::run() will always
+      // return true when using IgnoringDiagConsumer, because it looks
+      // at getNumErrors().
+      return std::make_unique<clang::DiagnosticConsumer>();
     } else {
       return {};
     }
