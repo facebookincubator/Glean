@@ -329,4 +329,69 @@ predicate TargetAttribute :
     value : AttributeValue,
   }
 
+
+# The following predicates and types, add locations
+# to Targets and define cross references.
+#
+# The terminology is a bit inconsistent w.r.t the buck doc.
+# A Target is called a "build rule" in the doc, and a
+# a Locator is called a "build target".
+#
+# To be clear, the following is a Target.
+#
+# cpp_library(
+#     name = "cpp",
+#     srcs = [
+#         "glean.cpp",
+#         "sender.cpp",
+#     ],
+# )
+#
+# The span goes from `c` to `)`
+#
+
+predicate TargetLocation:
+{
+  locator : Locator,
+  file: src.File,
+  span: src.ByteSpan,
+}
+
+# Locators of targets defined in a file
+predicate FileTarget:
+{
+    file : src.File,
+    locator : Locator,
+}
+
+# Entities which can be referenced elsewhere, currently
+# these are the buck targets (identified by their locator).
+type XRefDestination = {
+  locator : Locator |
+}
+
+type XRef =
+  {
+    destination : XRefDestination,
+    ranges : [src.ByteSpan],
+  }
+
+# Cross-references to a target within a file.
+predicate FileXRefs:
+  {
+    file : src.File,
+    xrefs : [XRef],
+  }
+
+# Uses of a Buck target (inverse of xrefs)
+predicate TargetUses:
+  {
+    locator: Locator,
+    file: src.File,
+    spans: [src.ByteSpan],
+  } stored
+  { Locator, File, Spans } where
+    FileXRefs { File, XRefs };
+    { { locator = Locator }, Spans } = XRefs[..];
+
 } # end schema buck.3
