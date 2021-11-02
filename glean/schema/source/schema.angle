@@ -33,3 +33,4 @@ schema all.3 :
 {}
 
 schema all.4 : thrift.5, all.3 {}
+schema all.5 : codemarkup.17, search.code.7, docmarkup.6, search.hs.4, all.4 {}

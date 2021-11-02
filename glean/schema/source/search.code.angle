@@ -1,8 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema search.code.6 {
-
-import code.15
+schema search.code.7 {
+import code.16
 import code.cxx.3
 import code.hack.3
 import code.python.1

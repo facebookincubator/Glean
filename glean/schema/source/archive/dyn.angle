@@ -2,8 +2,8 @@
 
 # Language-agnostic schema for modelling dynamic dispatch. This is useful for capturing
 # usages or references of symbols that can't be inferred via static analysis.
-schema dyn.2 {
-import code.16
+schema dyn.1 {
+import code.15
 import src.1
 
 type Usage = enum {
