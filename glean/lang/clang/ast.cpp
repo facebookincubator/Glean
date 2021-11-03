@@ -2124,12 +2124,27 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   // When using macros, the SourceLocation refers to the post expansion location.
   // This is not useful to users who are looking at the pre-expansion location in
   // their code.
-  clang::SourceLocation fixMacroLocation(const clang::SourceLocation& Loc) {
-    if (db.sourceManager().isMacroArgExpansion(Loc)) {
-      return db.sourceManager().getSpellingLoc(Loc);
-    } else {
-      return db.sourceManager().getExpansionLoc(Loc);
+  clang::SourceLocation fixMacroLocation(clang::SourceLocation loc) {
+    const auto& srcMgr = db.sourceManager();
+    if (!srcMgr.isMacroArgExpansion(loc)) {
+      return srcMgr.getExpansionLoc(loc);
     }
+    // If a macro arg is a result of a paste, its spelling is in scratch space.
+    //
+    // #define PASTE(x,y) x##y
+    // #define MACRO(x) x
+    //
+    // MACRO(PASTE(foo,bar))
+    //
+    // If this is the case, we walk up the parent context
+    // since there can be several level of token pasting.
+    if (srcMgr.isWrittenInScratchSpace(srcMgr.getSpellingLoc(loc))) {
+      do {
+        loc = srcMgr.getImmediateMacroCallerLoc(loc);
+      } while (srcMgr.isWrittenInScratchSpace(srcMgr.getSpellingLoc(loc)));
+      return srcMgr.getExpansionLoc(loc);
+    }
+    return srcMgr.getSpellingLoc(loc);
   }
 
   bool VisitDeclRefExpr(const clang::DeclRefExpr* expr) {
