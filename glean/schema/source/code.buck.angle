@@ -1,0 +1,10 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema code.buck.1 {
+import buck.3
+
+type Entity =
+  {
+    locator : buck.Locator |
+  }
+}

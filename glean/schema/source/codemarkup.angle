@@ -1,9 +1,9 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.17 {
+schema codemarkup.18 {
 import src.1
 import python.3
-import code.16
+import code.17
 import code.flow.2
 import hs.2
 import hack.5
@@ -13,6 +13,8 @@ import pp1.1
 import thrift.4
 import rust.1
 import code.cxx.3
+import code.buck.1
+import buck.3
 
 # Deprecated types
 
@@ -200,7 +202,8 @@ predicate ResolveLocation:
     FlowResolveLocation { Location, Entity } |
     CxxResolveLocation { Location, Entity } |
     HaskellResolveLocation { Location, Entity } |
-    RustResolveLocation { Location, Entity }
+    RustResolveLocation { Location, Entity } |
+    BuckResolveLocation { Location, Entity }
 
 predicate EntityLocation:
   {
@@ -214,7 +217,8 @@ predicate EntityLocation:
     CxxEntityLocation { Entity, Location } |
     PPEntityLocation { Entity, Location } |
     HaskellEntityLocation { Entity, Location } |
-    RustEntityLocation { Entity, Location }
+    RustEntityLocation { Entity, Location } |
+    BuckEntityLocation { Entity, Location }
 
 # Finding xrefs. All references in a file and their targets
 predicate FileEntityXRefLocations:
@@ -229,7 +233,8 @@ predicate FileEntityXRefLocations:
     PythonFileEntityXRefLocations { File, XRef, Entity } |
     CxxFileEntityXRefLocations { File, XRef, Entity } |
     HaskellFileEntityXRefLocations { File, XRef, Entity } |
-    RustFileEntityXRefLocations { File, XRef, Entity }
+    RustFileEntityXRefLocations { File, XRef, Entity } |
+    BuckFileEntityXRefLocations { File, XRef, Entity }
 
 # Finding xrefs. All references in a file, and their kinds
 predicate FileEntityXRefKinds:
@@ -255,7 +260,8 @@ predicate EntityUses:
     PythonEntityUses { Entity, File, Span } |
     CxxEntityUses { Entity, File, Span } |
     HaskellEntityUses { Entity, File, Span } |
-    RustEntityUses { Entity, File, Span }
+    RustEntityUses { Entity, File, Span } |
+    BuckEntityUses { Entity, File, Span }
 
 # Private language instances
 
@@ -362,6 +368,17 @@ predicate RustResolveLocation:
     rust.DefinitionName { Defn, rust.Name Name };
     Entity = code.Entity { rust = { definition = Defn } };
 
+predicate BuckResolveLocation:
+  {
+    location: Location,
+    entity: code.Entity,
+  }
+  { { Name, File, { span = Span } }, Entity } where
+    buck.FileTarget { File, Locator };
+    buck.TargetLocation { Locator, File, Span };
+    Locator = buck.Locator { name = Name };
+    Entity = code.Entity { buck = { locator = Locator } };
+
 # Finding entities' locations
 
 predicate HackEntityLocation:
@@ -425,6 +442,16 @@ predicate RustEntityLocation:
   { { rust = { definition = D } }, { Name, File, { span = Span } } } where
     rust.DefLocation { D, File, Span };
     rust.DefinitionName { D, rust.Name Name };
+
+predicate BuckEntityLocation:
+  {
+    entity: code.Entity,
+    location: Location,
+  }
+ { { buck = { locator = L } }, { Name, File, { span = Span } } }
+  where buck.TargetLocation { L, File, Span };
+  { name = Name } = L;
+
 
 # Finding references in a file
 
@@ -867,6 +894,22 @@ predicate RustFileEntityXRefLocations:
     { Name, TargetFile, { span = TargetSpan }} = TargetLocation;
     Entity = code.Entity { rust = { definition = TargetDef } };
 
+predicate BuckFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: XRefLocation,
+    entity: code.Entity,
+  }
+  { File, { LocatorLocation, { span = SrcSpan } }, Entity } where
+    buck.FileXRefs { File, XRefs };
+    { XRefLocator, SrcSpans } = XRefs[..];
+    SrcSpan = SrcSpans[..];
+    { locator = Locator } = XRefLocator;
+    { name = Name } = Locator;
+    buck.TargetLocation { Locator, TargetFile, LocatorSpan };
+    { Name, TargetFile, { span = LocatorSpan }} = LocatorLocation;
+    Entity = code.Entity { buck = { locator = Locator } };
+
 #
 # Language entity uses
 #
@@ -935,6 +978,15 @@ predicate RustEntityUses:
     rust.DefinitionUses { Def, File, Spans };
     Span = Spans[..];
 
+predicate BuckEntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  { { buck = { locator = Locator } }, File, Span } where
+    buck.TargetUses { Locator, File, Spans };
+    Span = Spans[..];
 #
 # Language-specific symbol kinds
 #
