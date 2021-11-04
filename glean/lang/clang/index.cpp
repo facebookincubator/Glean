@@ -514,6 +514,7 @@ private:
 
     bool BeginSourceFileAction(clang::CompilerInstance& ci) override {
       if (config->diagnostics) {
+        config->diagnostics->clear();
         ci.getDiagnostics().setClient(config->diagnostics, false);
       }
       db = std::make_unique<ClangDB>(config->env, ci);
