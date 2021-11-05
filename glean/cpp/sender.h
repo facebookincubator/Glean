@@ -3,7 +3,6 @@
 #pragma once
 
 #include "glean/cpp/glean.h"
-#include "glean/if/gen-cpp2/GleanServiceAsyncClient.h"
 
 namespace facebook {
 namespace glean {
@@ -38,7 +37,7 @@ struct Sender {
 
 // A Sender which sends data synchronously via Thrift.
 std::unique_ptr<Sender> thriftSender(
-  std::unique_ptr<thrift::GleanServiceAsyncClient> client,
+  const std::string& service,
   const std::string& repo_name,
   const std::string& repo_hash,
   double min_retry_delay,

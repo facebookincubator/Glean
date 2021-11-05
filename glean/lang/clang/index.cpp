@@ -16,28 +16,23 @@
 #include <folly/Conv.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/FileUtil.h>
+#include <folly/json.h>
 #include <folly/Range.h>
 
 #if FACEBOOK
-#include "common/fbwhoami/FbWhoAmI.h"
 #include "common/init/Init.h"
 #endif
 #include "thrift/lib/cpp/transport/TTransportException.h"
 
 #include "glean/cpp/glean.h"
 #include "glean/cpp/sender.h"
-#include "glean/if/gen-cpp2/GleanServiceAsyncClient.h"
 #include "glean/interprocess/cpp/counters.h"
 #include "glean/interprocess/cpp/worklist.h"
+#include "glean/lang/clang/action.h"
 #include "glean/lang/clang/ast.h"
 #include "glean/lang/clang/preprocessor.h"
 #include "glean/rts/binary.h"
 #include "glean/rts/inventory.h"
-
-#if FACEBOOK
-#include "glean/facebook/lang/clang/logger.h"
-#include "glean/facebook/lang/clang/service.h"
-#endif
 
 DEFINE_string(service, "", "TIER or HOST:PORT of Glean server");
 DEFINE_string(dump, "", "dump the produce batch to file at PATH");
@@ -88,68 +83,6 @@ namespace {
 
 using namespace facebook::glean;
 using namespace facebook::glean::clangx;
-
-struct ActionLogger {
-  using Clock = std::chrono::steady_clock;
-  explicit ActionLogger(const std::string& name, bool log = true) {
-    enabled = log;
-    if (enabled) {
-      logger
-#if FACEBOOK
-        .setClusterRegion(facebook::FbWhoAmI::getRegion())
-#endif
-        .setTask(FLAGS_task)
-        .setRequest(FLAGS_request)
-        .setRepo(FLAGS_repo_name)
-        .setRevision(FLAGS_repo_hash)
-        .setProcess(FLAGS_worker_index)
-        .setCommand(name);
-      if (!FLAGS_origin.empty()) {
-        logger.setOrigin(FLAGS_origin);
-      }
-      if (!FLAGS_cwd_subdir.empty()) {
-        logger.setSubdir(FLAGS_cwd_subdir);
-      }
-      start = Clock::now();
-    }
-  }
-
-  ~ActionLogger() {
-    if (enabled) {
-      try {
-        logger.setTimeElapsedMS(
-          std::chrono::duration_cast<std::chrono::milliseconds>(
-            Clock::now() - start).count());
-        // need to set it to something, otherwise logger complains
-        logger.setTimeElapsed(0);
-        if (auto p = std::current_exception()) {
-          auto wrapper = folly::exception_wrapper(p);
-          logger
-            .setSuccess(false)
-            .setError(wrapper.what().toStdString());
-        } else {
-          logger.setSuccess(true);
-        }
-        LOG_VIA_LOGGER_ASYNC(logger);
-      } catch(const std::exception& e) {
-        LOG(ERROR) << "while logging to logger: " << e.what();
-      } catch(...) {
-        LOG(ERROR) << "unknown error while logging to logger";
-      }
-    }
-  }
-
-  bool enabled;
-  Clock::time_point start;
-  Logger logger;
-};
-
-struct SourceFile {
-  std::string target;
-  folly::Optional<std::string> platform;
-  std::string dir;
-  std::string file;
-};
 
 #define LOG_CFG(level,config) LOG(level) << (config).log_pfx
 
@@ -266,7 +199,7 @@ struct Config {
       }
 
       sender = thriftSender(
-        service(FLAGS_service),
+        FLAGS_service,
         FLAGS_repo_name,
         FLAGS_repo_hash,
         10,          // hardcode min_retry_delay for now
@@ -339,9 +272,16 @@ struct Config {
     }
   }
 
-  template<typename F> auto log(const std::string& name, F&& f) {
-    ActionLogger logger(name, should_log);
-    return f(logger.logger);
+  ActionLogger logger(const std::string &name) {
+    return ActionLogger(name,
+                        FLAGS_task,
+                        FLAGS_request,
+                        FLAGS_repo_name,
+                        FLAGS_repo_hash,
+                        FLAGS_worker_index,
+                        FLAGS_origin,
+                        FLAGS_cwd_subdir,
+                        should_log);
   }
 
   [[noreturn]] void fail(const std::string& msg) const {
@@ -663,18 +603,11 @@ int main(int argc, char **argv) {
     const auto buf_stats = indexer.batch.bufferStats();
     const auto cache_stats = indexer.batch.cacheStats();
     try {
-      bool ok = config.log("clang/index", [&](auto& logger) {
-        logger
-          .setTarget(source.target)
-          .setPlatform(source.platform)
-          .setFile(source.file);
-        bool ok = indexer.index(source);
-        logger
-          .setCompileError(!ok)
-          .setFactBufferSize(buf_stats.memory)
-          .setFactCacheSize(cache_stats.facts.memory);
-        return ok;
-      });
+      bool ok = config
+        .logger("clang/index")
+        .log_index(source, buf_stats, cache_stats, [&]() {
+          return indexer.index(source);
+        });
       if (!ok && FLAGS_fail_on_error) {
         LOG(ERROR) << "compilation failed for " << source.file;
         error_exit = true;
@@ -701,7 +634,7 @@ int main(int argc, char **argv) {
         LOG_CFG(INFO,config)
           << "fact buffer size " << buf_stats.memory << ", waiting";
       }
-      config.log(wait ? "clang/wait" : "clang/send", [&](auto&) {
+      config.logger(wait ? "clang/wait" : "clang/send").log([&]() {
         config.sender->rebaseAndSend(indexer.batch.base(), wait);
       });
     }
@@ -727,7 +660,7 @@ int main(int argc, char **argv) {
 
   if (!FLAGS_dry_run) {
     LOG_CFG(INFO,config) << "flushing";
-    config.log("clang/flush", [&](auto&) {
+    config.logger("clang/flush").log([&]() {
       config.sender->flush(indexer.batch.base());
     });
   }

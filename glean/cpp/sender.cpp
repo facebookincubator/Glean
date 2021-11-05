@@ -1,11 +1,16 @@
 // Copyright (c) Facebook, Inc. and its affiliates.
 
 #include "glean/cpp/sender.h"
+#include "glean/if/gen-cpp2/GleanServiceAsyncClient.h"
 
 #include <folly/FileUtil.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/futures/Retrying.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+
+#if FACEBOOK
+#include "glean/facebook/cpp/service.h"
+#endif
 
 namespace facebook {
 namespace glean {
@@ -174,13 +179,13 @@ private:
 }
 
 std::unique_ptr<Sender> thriftSender(
-    std::unique_ptr<thrift::GleanServiceAsyncClient> client,
+    const std::string& service,
     const std::string& repo_name,
     const std::string& repo_hash,
     double min_retry_delay,
     size_t max_errors) {
   return std::make_unique<ThriftSender>(
-    std::move(client),
+    cpp::service(service),
     ThriftSender::Config{
       repo_name, repo_hash, min_retry_delay, max_errors
     }
