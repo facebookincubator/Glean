@@ -536,7 +536,7 @@ private:
   struct FrontendActionFactory : public clang::tooling::FrontendActionFactory {
     explicit FrontendActionFactory(const ClangCfg *cfg) : config(cfg) {}
 
-#if LLVM_VERSION_MAJOR >= 12
+#if LLVM_VERSION_MAJOR >= 11
     std::unique_ptr<clang::FrontendAction> create() override {
       return std::unique_ptr<clang::FrontendAction>(new FrontendAction(config));
     }

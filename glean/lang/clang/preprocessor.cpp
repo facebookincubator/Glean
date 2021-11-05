@@ -27,12 +27,12 @@ struct PPCallbacks final : public clang::PPCallbacks {
     }
   }
 
-#if LLVM_VERSION_MAJOR >= 12
+#if LLVM_VERSION_MAJOR >= 11
   void FileSkipped(
       const clang::FileEntryRef& entry,
       const clang::Token&,
       clang::SrcMgr::CharacteristicKind) override {
-    db.skipFile(last_include, entry);
+    db.skipFile(last_include, &entry.getFileEntry());
     last_include.reset();
   }
 #else
