@@ -420,7 +420,7 @@ const SetU32 *SetU32::merge(SetU32& result, const SetU32& left, const SetU32& ri
 SetU32::MutableEliasFanoList SetU32::toEliasFano() {
   auto upperBound = this->upper();
   size_t size = this->size();
-  folly::compression::EliasFanoEncoderV2<uint32_t, uint32_t> encoder(
+  folly::compression::EliasFanoEncoder<uint32_t, uint32_t> encoder(
       size, upperBound);
 
   VLOG(5) << "upper=" << upperBound << ", size=" << size;
@@ -432,8 +432,9 @@ SetU32::MutableEliasFanoList SetU32::toEliasFano() {
 
 SetU32 SetU32::fromEliasFano(const EliasFanoList& list) {
   SetU32 set;
-  auto reader = EliasFanoReader<
-    folly::compression::EliasFanoEncoderV2<uint32_t,uint32_t>>(list);
+  auto reader =
+      EliasFanoReader<folly::compression::EliasFanoEncoder<uint32_t, uint32_t>>(
+          list);
   while (reader.next()) {
     set.append(reader.value());
   }

@@ -18,7 +18,7 @@ std::unique_ptr<Slice> slice(
   folly::AutoTimer t("slice");
 
   auto iter = ownership.getSetIterator();
-  using Reader = EliasFanoReader<EliasFanoEncoderV2<uint32_t,uint32_t>>;
+  using Reader = EliasFanoReader<EliasFanoEncoder<uint32_t, uint32_t>>;
 
   auto p = iter->sizes();
   auto first = p.first, size = p.second;

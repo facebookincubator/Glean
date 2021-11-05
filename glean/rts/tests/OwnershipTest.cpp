@@ -88,7 +88,7 @@ void checkVisibility(
   auto sl = slice(ownership, units, exclude);
 
   using Reader = folly::compression::EliasFanoReader<
-    folly::compression::EliasFanoEncoderV2<uint32_t,uint32_t>>;
+      folly::compression::EliasFanoEncoder<uint32_t, uint32_t>>;
 
   auto anyMember = [&](Reader &reader, bool member) {
     bool any = false;
