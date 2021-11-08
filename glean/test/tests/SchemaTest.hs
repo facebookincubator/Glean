@@ -83,13 +83,11 @@ mergeSchemaTest = TestCase $
           predicate JustNat : { predicate : glean.test.Predicate, nat : nat }
             {P,N} where P = glean.test.Predicate { nat = N }
         }
-
-        schema all.4 : all.3, mergetest.1 {}
       |]
 
     -- query the existing DB using the extended schema
     withTestEnv [setRoot root, setSchemaPath newSchemaFile] $ \env -> do
-       r <- try $ angleQuery env repo "mergetest.JustNat _"
+       r <- try $ angleQuery env repo "mergetest.JustNat.1 _"
        print (r :: Either BadQuery UserQueryResults)
        assertBool "merge" $ case r of
          Right UserQueryResults{..} -> length userQueryResults_facts == 4
