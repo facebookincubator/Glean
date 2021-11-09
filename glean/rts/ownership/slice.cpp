@@ -2,8 +2,8 @@
 
 #include <algorithm>
 
-#include <folly/experimental/AutoTimer.h>
 #include "glean/rts/ownership/slice.h"
+#include "glean/rts/timer.h"
 
 namespace facebook {
 namespace glean {
@@ -15,7 +15,7 @@ std::unique_ptr<Slice> slice(
     Ownership& ownership,
     const std::vector<UsetId>& units,
     bool exclude) {
-  folly::AutoTimer t("slice");
+  auto t = makeAutoTimer("slice");
 
   auto iter = ownership.getSetIterator();
   using Reader = EliasFanoReader<EliasFanoEncoder<uint32_t, uint32_t>>;

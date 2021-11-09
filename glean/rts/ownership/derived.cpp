@@ -1,9 +1,9 @@
 // Copyright (c) Facebook, Inc. and its affiliates.
 
 #include <folly/container/F14Map.h>
-#include <folly/experimental/AutoTimer.h>
 
 #include "glean/rts/ownership/derived.h"
+#include "glean/rts/timer.h"
 
 namespace facebook {
 namespace glean {
@@ -53,7 +53,7 @@ void DefineOwnership::subst(const Substitution& subst) {
 std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
   Ownership& ownership,
   DerivedFactOwnershipIterator *iter) {
-  folly::AutoTimer t("computeDerivedOwnership");
+  auto t = makeAutoTimer("computeDerivedOwnership");
   LOG(INFO) << "computing derived ownership";
 
   // Here we are identifying facts that were derived multiple

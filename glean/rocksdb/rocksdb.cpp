@@ -4,7 +4,6 @@
 
 #include <folly/Range.h>
 #include <folly/container/F14Map.h>
-#include <folly/experimental/AutoTimer.h>
 
 #include <rocksdb/db.h>
 #include <rocksdb/filter_policy.h>
@@ -21,6 +20,7 @@
 #include "glean/rts/factset.h"
 #include "glean/rts/nat.h"
 #include "glean/rts/ownership/setu32.h"
+#include "glean/rts/timer.h"
 
 namespace facebook {
 namespace glean {
@@ -582,7 +582,7 @@ struct DatabaseImpl final : Database {
   }
 
   std::unique_ptr<Usets> loadOwnershipSets() {
-    folly::AutoTimer t("loadOwnershipSets");
+    auto t = makeAutoTimer("loadOwnershipSets");
 
     auto iter = this->getSetIterator();
     auto [first,size] = iter->sizes();
@@ -1209,7 +1209,7 @@ void DatabaseImpl::storeOwnership(ComputedOwnership &ownership) {
   container_.requireOpen();
 
   if (ownership.sets_.size() > 0) {
-    folly::AutoTimer t("storeOwnership(sets)");
+    auto t = makeAutoTimer("storeOwnership(sets)");
     rocksdb::WriteBatch batch;
 
     uint32_t id = ownership.firstId_;
@@ -1229,7 +1229,7 @@ void DatabaseImpl::storeOwnership(ComputedOwnership &ownership) {
   usets_ = loadOwnershipSets();
 
   if (ownership.facts_.size() > 0) {
-    folly::AutoTimer t("storeOwnership(facts)");
+    auto t = makeAutoTimer("storeOwnership(facts)");
     rocksdb::WriteBatch batch;
     for (uint64_t i = 0; i < ownership.facts_.size(); i++) {
       auto id = ownership.facts_[i].first;
@@ -1291,10 +1291,10 @@ UsetId StoredOwnership::getOwner(Id id) {
 }
 
 void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
-  folly::AutoTimer t("addDefineOwnership");
+  auto t = makeAutoTimer("addDefineOwnership");
   container_.requireOpen();
 
-  LOG(INFO) << "addDefineOwnership: " << def.owners_.size() << " facts, " <<
+  VLOG(1) << "addDefineOwnership: " << def.owners_.size() << " facts, " <<
     def.usets_.size() << " sets";
 
   if (def.newSets_.size() > 0) {

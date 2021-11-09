@@ -7,11 +7,11 @@
 #include "glean/rts/ownership/setu32.h"
 #include "glean/rts/ownership/triearray.h"
 #include "glean/rts/ownership/uset.h"
+#include "glean/rts/timer.h"
 
 #include <folly/container/F14Map.h>
 #include <folly/container/F14Set.h>
 #include <folly/Hash.h>
-#include <folly/experimental/AutoTimer.h>
 #include <folly/experimental/EliasFanoCoding.h>
 
 #include <immintrin.h>
@@ -259,7 +259,7 @@ std::unique_ptr<ComputedOwnership> computeOwnership(
     Lookup& lookup,
     OwnershipUnitIterator *iter) {
   uint32_t numUnits;
-  folly::AutoTimer t("computeOwnership");
+  auto t = makeAutoTimer("computeOwnership");
   LOG(INFO) << "computing ownership";
   auto utrie = fillOwnership(iter,numUnits);
   t.log("fillOwnership");
