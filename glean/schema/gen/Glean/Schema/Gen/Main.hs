@@ -121,12 +121,15 @@ main = do
 
 -- | Remove source location information from a schema's AST
 rmLocSchemas :: SourceSchemas_ a -> SourceSchemas_ ()
-rmLocSchemas (SourceSchemas version schemas) =
-  SourceSchemas version (rmLocSchema <$> schemas)
+rmLocSchemas (SourceSchemas version schemas evolves) =
+  SourceSchemas version (rmLocSchema <$> schemas) (rmLocEvolves <$> evolves)
   where
     rmLocSchema :: SourceSchema_ a -> SourceSchema_ ()
     rmLocSchema (SourceSchema name inherits decls) =
       SourceSchema name inherits $ rmLocDecl <$> decls
+
+    rmLocEvolves :: SourceEvolves_ a -> SourceEvolves_ ()
+    rmLocEvolves (SourceEvolves _ a b) = SourceEvolves () a b
 
     rmLocDecl :: SourceDecl_ a -> SourceDecl_ ()
     rmLocDecl = \case

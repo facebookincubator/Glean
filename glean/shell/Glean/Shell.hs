@@ -1208,7 +1208,7 @@ setupLocalSchema service = do
         schema <- parseSchemaDir dir
           `catch` \(e :: ErrorCall) -> do
             print e
-            return $ (SourceSchemas 0 [], Schemas HashMap.empty 0 [])
+            return $ (SourceSchemas 0 [] [], Schemas HashMap.empty 0 [])
         (schemaTS, update) <- ThriftSource.mutable schema
         let
           updateSchema :: Eval ()

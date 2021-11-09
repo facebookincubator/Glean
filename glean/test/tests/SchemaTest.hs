@@ -634,6 +634,22 @@ deriveDefault = TestCase $
          _ -> False
     deleteDB repo2
 
+schemaEvolves :: [Test]
+schemaEvolves =
+  [ TestLabel "schemaEvolves" $ TestCase $ do
+    withSchema latestAngleVersion
+      [s|
+        schema test.1 {}
+        schema test.2 {}
+        schema test.2 evolves test.1
+      |]
+      $ \r ->
+      assertBool "schemaEvolves - parsing" $
+        case r of
+          Right _ -> True
+          Left _ -> False
+  ]
+
 schemaNegation :: [Test]
 schemaNegation =
   [ TestLabel "negation - derived" $ TestCase $ do
@@ -785,3 +801,4 @@ main = withUnitTest $ testRunner $ TestList $
   , TestLabel "thinSchema" thinSchemaTest
   , TestLabel "schemaUnversioned" schemaUnversioned
   ] ++ schemaNegation
+    ++ schemaEvolves

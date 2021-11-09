@@ -12,6 +12,7 @@ import Control.Monad.Except
 import Data.ByteString (ByteString)
 import qualified Data.ByteString.Char8 as B
 import qualified Data.ByteString.Lazy.Char8 as LB
+import Data.Either (partitionEithers)
 import Data.Maybe
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
@@ -43,6 +44,7 @@ import Glean.Angle.Types (AngleVersion, SourcePat, SourceStatement, SourceQuery,
   'stored'      { L _ (Token _ T_Stored) }
   'type'        { L _ (Token _ T_Type) }
   'where'       { L _ (Token _ T_QueryDef) }
+  'evolves'     { L _ (Token _ T_Evolves) }
 
   '++'          { L _ (Token _ T_Append) }
   '..'          { L _ (Token _ T_DotDot) }
@@ -170,8 +172,16 @@ NAT : NAT_ { let L span (Token _ (T_NatLit val)) = $1 in L span val }
 -- -----------------------------------------------------------------------------
 -- Schema
 
-schemas :: { [Schema.SourceSchema] }
-schemas : list(schemadef)  { $1 }
+schemas :: { [Either Schema.SourceEvolves Schema.SourceSchema] }
+schemas
+  : schemas schemadef { Right $2 : $1 }
+  | schemas evolves { Left $2 : $1 }
+  | {- empty -}  { [] }
+
+evolves :: { Schema.SourceEvolves }
+evolves
+  : 'schema' name 'evolves' name
+    { Schema.SourceEvolves (s $1 $4) (lval $2) (lval $4) }
 
 schemadef :: { Schema.SourceSchema }
 schemadef
@@ -338,8 +348,12 @@ parseSchema bs
   parseWith bs ver =
     runAlex (LB.fromStrict bs) $ do
       setVersion ver
-      src <- schema
-      return Schema.SourceSchemas { srcAngleVersion = ver, srcSchemas = src }
+      (srcEvolves, srcSchemas) <- partitionEithers <$> schema
+      return Schema.SourceSchemas
+        { srcAngleVersion = ver
+        , srcSchemas = reverse srcSchemas
+        , srcEvolves = srcEvolves
+        }
 
 type P a = Alex a
 

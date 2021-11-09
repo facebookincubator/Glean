@@ -26,6 +26,7 @@ module Glean.Angle.Types
   , DeriveWhen(..)
   , SourceSchema
   , SourceSchemas
+  , SourceEvolves
   , SourceDecl
   , SourceRef(..)
   , SourceType
@@ -41,6 +42,7 @@ module Glean.Angle.Types
   , SourceQuery'
   , SourceDerivingInfo'
   , SourceSchemas_(..)
+  , SourceEvolves_(..)
   , SourceSchema_(..)
   , SourceDecl_(..)
   ) where
@@ -167,12 +169,20 @@ type SourcePredicateDef = SourcePredicateDef' SrcSpan
 type SourceDerivingInfo = SourceDerivingInfo' SrcSpan
 type SourceSchemas = SourceSchemas_ SrcSpan
 type SourceSchema = SourceSchema_ SrcSpan
+type SourceEvolves = SourceEvolves_ SrcSpan
 type SourceDecl = SourceDecl_ SrcSpan
 
 type Type = Type_ PredicateRef TypeRef
 type FieldDef = FieldDef_ PredicateRef TypeRef
 type TypeDef = TypeDef_ PredicateRef TypeRef
 type PredicateDef = PredicateDef_ PredicateRef TypeRef SourceQuery
+
+data SourceEvolves_ s = SourceEvolves
+  { evolvesSpan :: s
+  , evolvesOld :: Name
+  , evolvesNew :: Name
+  }
+  deriving (Eq)
 
 -- | A 'schema' declaration
 data SourceSchema_ s = SourceSchema
@@ -185,6 +195,7 @@ data SourceSchema_ s = SourceSchema
 data SourceSchemas_ s = SourceSchemas
   { srcAngleVersion :: AngleVersion
   , srcSchemas :: [SourceSchema_ s]
+  , srcEvolves :: [SourceEvolves_ s]
   }
   deriving (Eq)
 
