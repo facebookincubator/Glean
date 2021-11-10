@@ -318,6 +318,7 @@ library rts
         glean/rts/string.cpp
         glean/rts/substitution.cpp
         glean/rts/thrift.cpp
+        glean/rts/timer.cpp
         glean/rts/validate.cpp
         glean/rts/bytecode/subroutine.cpp
     pkgconfig-depends: libfolly, libunwind, libglog, icu-uc, gflags, libxxhash
