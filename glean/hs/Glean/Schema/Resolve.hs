@@ -45,6 +45,8 @@ data Schemas = Schemas
   , schemasCurrentVersion :: Version
   , schemasResolved :: [ResolvedSchema]
     -- ^ Resolved schemas in dependency order
+  , schemasEvolvedBy :: HashMap Name Name
+    -- ^ value evolves key
   }
 
 -- | A single schema
@@ -80,7 +82,12 @@ resolveSchema SourceSchemas{..} = runExcept $ do
       | schema <- srcSchemas ]
       where
       outNames SourceSchema{..} =
-        schemaInherits ++ [ name | SourceImport name <- schemaDecls ]
+        schemaInherits
+        ++ [ name | SourceImport name <- schemaDecls ]
+        ++ HashMap.lookupDefault [] schemaName evolves
+
+    evolves = HashMap.fromListWith (++)
+      [ (new, [old]) | SourceEvolves _ new old <- srcEvolves ]
 
     resolveSchemas env [] = return env
     resolveSchemas env (AcyclicSCC one : rest) = do
@@ -89,6 +96,26 @@ resolveSchema SourceSchemas{..} = runExcept $ do
     resolveSchemas _ (CyclicSCC some : _) = throwError $
       "cycle in schema definitions between: " <>
         Text.intercalate ", " (map schemaName some)
+
+    -- Check whether any schema is evolved by multiple schemas.
+    -- If 'B evolves A' and 'C evolves A', when a query for A comes we won't
+    -- know whether to serve facts from C or from B. Therefore we disallow
+    -- multiple schemas to evolve a single one.
+    checkMultipleEvolves old newList =
+      case newList of
+        [new] -> return new
+        _ ->
+          let squotes s = "'" <> s <> "'" in
+          throwError $ "multiple schemas evolve "
+            <> squotes old
+            <> ": "
+            <> Text.unwords (map squotes newList)
+
+  evolvedBy :: HashMap Name Name
+      <- HashMap.traverseWithKey checkMultipleEvolves
+      $ HashMap.fromListWith (++)
+      $ concatMap (\(new, oldlist) -> map (,pure new) oldlist)
+      $ HashMap.toList evolves
 
   -- Resolve all the references in each individual schema
   finalEnv <- resolveSchemas HashMap.empty sccs
@@ -140,6 +167,7 @@ resolveSchema SourceSchemas{..} = runExcept $ do
         [ resolved
         | AcyclicSCC one <- sccs
         , Just resolved <- [HashMap.lookup (schemaName one) finalEnv ] ]
+    , schemasEvolvedBy = evolvedBy
     }
 
 

@@ -1208,7 +1208,7 @@ setupLocalSchema service = do
         schema <- parseSchemaDir dir
           `catch` \(e :: ErrorCall) -> do
             print e
-            return $ (SourceSchemas 0 [] [], Schemas HashMap.empty 0 [])
+            return (SourceSchemas 0 [] [], Schemas mempty 0 [] mempty)
         (schemaTS, update) <- ThriftSource.mutable schema
         let
           updateSchema :: Eval ()
@@ -1261,7 +1261,7 @@ instance Plugin ShellCommand where
         { backend = Some backend
         , repo = Nothing
         , mode = cfgMode cfg
-        , schemas = Schemas HashMap.empty 0 []
+        , schemas = Schemas mempty 0 [] mempty
         , schemaInfo = def
         , limit = cfgLimit cfg
         , timeout = Just 10000      -- Sensible default for fresh shell.

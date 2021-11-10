@@ -636,15 +636,49 @@ deriveDefault = TestCase $
 
 schemaEvolves :: [Test]
 schemaEvolves =
-  [ TestLabel "schemaEvolves" $ TestCase $ do
+  [ TestLabel "schemaEvolves - cycle" $ TestCase $ do
+    -- no cycles created by evolves
     withSchema latestAngleVersion
       [s|
         schema test.1 {}
         schema test.2 {}
         schema test.2 evolves test.1
+        schema test.1 evolves test.2
       |]
       $ \r ->
-      assertBool "schemaEvolves - parsing" $
+      assertBool "throws cycle error" $
+        case r of
+          Left err -> "cycle" `isInfixOf` show err
+          Right _ -> False
+
+  , TestLabel "schemaEvolves - many to one" $ TestCase $ do
+    -- multiple schemas cannot evolve the same schema
+    withSchema latestAngleVersion
+      [s|
+        schema test.1 {}
+        schema test.2 {}
+        schema test.3 {}
+        schema test.2 evolves test.1
+        schema test.3 evolves test.1
+      |]
+      $ \r ->
+      assertBool "many may not evolve one" $
+        case r of
+          Left err -> "multiple schemas evolve 'test.1'" `isInfixOf` show err
+          Right _ -> False
+
+  , TestLabel "schemaEvolves - one to many" $ TestCase $ do
+    -- one schema can evolve multiple other schemas
+    withSchema latestAngleVersion
+      [s|
+        schema test.1 {}
+        schema test.2 {}
+        schema test.3 {}
+        schema test.3 evolves test.1
+        schema test.3 evolves test.2
+      |]
+      $ \r ->
+      assertBool "one may evolve many" $
         case r of
           Right _ -> True
           Left _ -> False
