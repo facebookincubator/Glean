@@ -1,0 +1,34 @@
+schema lionhead.lionizer.5 {
+  import docmarkup.5
+  import cxx1.4
+  import code.cxx.3
+
+# Search by key or by key and value
+predicate FindFunction :
+  {
+    key : docmarkup.DocAttrKey,
+    value : docmarkup.DocAttrValue,
+    declaration : cxx1.FunctionDeclaration,
+  }
+  {Key, Value, F} where
+    docmarkup.EntityByDocAttrKey{key = Key, entity = E};
+    docmarkup.EntityDocAttr E -> VS;
+    {cxx = { decl = {function_ = F}}} = E;
+    V = VS[..];
+    {key = Key, value = Value} = V;
+
+# Search by key or by key and value. Will return no results if it cannot find
+# the cxx1.FunctionDefinition (try FindFunction instead).
+predicate FindFunctionWithDef :
+  {
+    key : docmarkup.DocAttrKey,
+    value : docmarkup.DocAttrValue,
+    declaration : cxx1.FunctionDeclaration,
+    definition : cxx1.FunctionDefinition,
+  }
+  {Key, Value, F, Def} where
+    FindFunction{key = Key, value = Value, declaration = F};
+    code.cxx.DeclToDef{decl = {function_ = F}, defn = D};
+    {function_ = Def} = D;
+
+} # end lionhead.lionizer.5
