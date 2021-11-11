@@ -56,6 +56,7 @@ SCHEMAS= \
 	code_java \
 	code_rust \
 	code_thrift \
+	code_buck \
 	codemarkup \
 	code_pp \
 	code_python \
