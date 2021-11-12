@@ -23,7 +23,78 @@
         "lineEnd": 8,
         "columnEnd": 4
       },
-      "name": { "key": "I" }
+      "name": "I"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "objcMethod": {
+          "key": {
+            "selector": { "key": [ "f1" ] },
+            "container": { "interface_": { "key": "I" } },
+            "signature": {
+              "key": { "returns": { "key": "int" }, "parameters": [ ] }
+            },
+            "isInstance": true,
+            "isOptional": false,
+            "isAccessor": false,
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 3,
+              "columnBegin": 1,
+              "lineEnd": 3,
+              "columnEnd": 10
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.m" },
+        "lineBegin": 3,
+        "columnBegin": 1,
+        "lineEnd": 3,
+        "columnEnd": 10
+      },
+      "name": "f1"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "objcMethod": {
+          "key": {
+            "selector": { "key": [ "f2" ] },
+            "container": { "interface_": { "key": "I" } },
+            "signature": {
+              "key": {
+                "returns": { "key": "id" },
+                "parameters": [
+                  { "name": { "key": "x" }, "type": { "key": "int" } }
+                ]
+              }
+            },
+            "isInstance": true,
+            "isOptional": false,
+            "isAccessor": false,
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 4,
+              "columnBegin": 1,
+              "lineEnd": 4,
+              "columnEnd": 18
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.m" },
+        "lineBegin": 4,
+        "columnBegin": 1,
+        "lineEnd": 4,
+        "columnEnd": 18
+      },
+      "name": "f2"
     }
   },
   {
@@ -53,7 +124,7 @@
         "lineEnd": 1,
         "columnEnd": 1
       },
-      "name": { "key": "id" }
+      "name": "id"
     }
   }
 ]

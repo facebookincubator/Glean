@@ -1,2 +1,2 @@
-query: cxx1.DeclarationLocation _
+query: cxx1.DeclarationLocationName _
 transform: [gensort, []]

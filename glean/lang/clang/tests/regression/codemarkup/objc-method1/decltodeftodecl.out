@@ -153,5 +153,51 @@
         }
       }
     }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "objcMethod": {
+          "key": {
+            "selector": { "key": [ "fooBar" ] },
+            "container": { "implementation": { "key": "Bar" } },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "isInstance": true,
+            "isOptional": false,
+            "isAccessor": false,
+            "source": {
+              "file": { "key": "test.mm" },
+              "lineBegin": 22,
+              "columnBegin": 1,
+              "lineEnd": 25,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "objcMethod": {
+          "key": {
+            "selector": { "key": [ "fooBar" ] },
+            "container": { "implementation": { "key": "Bar" } },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "isInstance": true,
+            "isOptional": false,
+            "isAccessor": false,
+            "source": {
+              "file": { "key": "test.mm" },
+              "lineBegin": 22,
+              "columnBegin": 1,
+              "lineEnd": 25,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
   }
 ]

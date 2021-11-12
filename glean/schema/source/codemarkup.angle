@@ -335,7 +335,7 @@ predicate CxxResolveTraceLocation:
     # regular decls
     ({ Str, Range, Entity } where
       Decl = Decls[..];
-      cxx1.DeclarationLocation { Decl, Range, cxx1.Name Str };
+      cxx1.DeclarationLocationName { Decl, Range, Str };
       Entity = code.Entity { cxx = { decl = Decl } };
     ) |
     ## preprocessor #defines
@@ -414,7 +414,7 @@ predicate CxxEntityLocation:
     location: Location,
   }
   { { cxx = { decl = D } }, { Name, File, { range = Range } } } where
-    cxx1.DeclarationLocation { decl = D, source = Range, name = cxx1.Name Name };
+    cxx1.DeclarationLocationName { decl = D, source = Range, name = Name };
     { file = File } = Range;
 
 predicate PPEntityLocation:
@@ -670,7 +670,7 @@ predicate CxxXRefTargetLocation:
   { XRefTarget, Entity, Location } where
     # fixed declaration entities
     ( { declaration = Decl } = XRefTarget;
-      cxx1.DeclarationLocation { Decl, Range, cxx1.Name Name };
+      cxx1.DeclarationLocationName { Decl, Range, Name };
       { file = TargetFile } = Range;
       { Name, TargetFile, { range = Range } } = Location;
       code.Entity { cxx = { decl = Decl }} = Entity;
@@ -726,7 +726,7 @@ predicate CxxDeclToDefXRefTargetLocation:
     code.cxx.DeclToDef { Decl1, Defn };
     cxx1.DefToBaseDecl { Defn , Decl2 };
     Decl1 != Decl2; # Filter out (many) self refs
-    cxx1.DeclarationLocation { Decl2, Range, cxx1.Name Name };
+    cxx1.DeclarationLocationName { Decl2, Range, Name };
     { file = TargetFile } = Range;
     { Name, TargetFile, { range = Range } } = Location;
     code.Entity { cxx = { defn = Defn }} = Entity;
@@ -742,7 +742,7 @@ predicate CxxDefToDeclFamilyXRefTargetLocation:
   { Decl1, Entity, Location } where
     cxx1.DeclFamilyOf { decl = Decl1, family = Decl2 };
     Decl1 != Decl2; # filter out many self-refs
-    cxx1.DeclarationLocation { Decl2, Range, cxx1.Name Name };
+    cxx1.DeclarationLocationName { Decl2, Range, Name };
     { file = TargetFile } = Range;
     { Name, TargetFile, { range = Range } } = Location;
     code.Entity { cxx = { decl = Decl2 }} = Entity;
@@ -773,7 +773,7 @@ predicate CxxFileEntityTraceVariableXRefDeclLocations:
   { Trace, Decl, Location } where
     cxx1.FileXRefs { Trace, Targets };
     { declaration = Decl } = Targets[..];
-    cxx1.DeclarationLocation { Decl, Range, cxx1.Name Name };
+    cxx1.DeclarationLocationName { Decl, Range, Name };
     { file = TargetFile } = Range;
     { Name, TargetFile, { range = Range } } = Location;
 
@@ -789,7 +789,7 @@ predicate CxxFileEntityXMapVariableXRefDeclLocations:
   { Trace, Decl, Location } where
     cxx1.FileXRefs { externals = Targets } = Trace;
     { declaration = Decl } = Targets[..];
-    cxx1.DeclarationLocation { Decl, Range, cxx1.Name Name };
+    cxx1.DeclarationLocationName { Decl, Range, Name };
     { file = TargetFile } = Range;
     { Name, TargetFile, { range = Range } } = Location;
 

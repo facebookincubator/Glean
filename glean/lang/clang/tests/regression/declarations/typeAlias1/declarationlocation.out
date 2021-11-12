@@ -23,7 +23,7 @@
         "lineEnd": 2,
         "columnEnd": 4
       },
-      "name": { "key": "Foo" }
+      "name": "Foo"
     }
   },
   {
@@ -53,7 +53,7 @@
         "lineEnd": 3,
         "columnEnd": 13
       },
-      "name": { "key": "T" }
+      "name": "T"
     }
   },
   {
@@ -83,7 +83,7 @@
         "lineEnd": 4,
         "columnEnd": 11
       },
-      "name": { "key": "U" }
+      "name": "U"
     }
   },
   {
@@ -113,7 +113,7 @@
         "lineEnd": 4,
         "columnEnd": 1
       },
-      "name": { "key": "U" }
+      "name": "U"
     }
   },
   {
@@ -145,7 +145,7 @@
         "lineEnd": 6,
         "columnEnd": 3
       },
-      "name": { "key": "x" }
+      "name": "x"
     }
   },
   {
@@ -177,7 +177,7 @@
         "lineEnd": 7,
         "columnEnd": 3
       },
-      "name": { "key": "y" }
+      "name": "y"
     }
   }
 ]

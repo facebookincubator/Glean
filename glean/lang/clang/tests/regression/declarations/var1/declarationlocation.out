@@ -36,7 +36,64 @@
         "lineEnd": 23,
         "columnEnd": 1
       },
-      "name": { "key": "f" }
+      "name": "f"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "operator_": "operator()" } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "" },
+                        "scope": {
+                          "local": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "f" } } },
+                              "scope": { "global_": { } }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": true,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 22,
+              "columnBegin": 8,
+              "lineEnd": 22,
+              "columnEnd": 11
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 22,
+        "columnBegin": 8,
+        "lineEnd": 22,
+        "columnEnd": 11
+      },
+      "name": "operator()"
     }
   },
   {
@@ -75,7 +132,7 @@
         "lineEnd": 22,
         "columnEnd": 3
       },
-      "name": { "key": "" }
+      "name": ""
     }
   },
   {
@@ -104,7 +161,7 @@
         "lineEnd": 14,
         "columnEnd": 1
       },
-      "name": { "key": "T" }
+      "name": "T"
     }
   },
   {
@@ -149,7 +206,7 @@
         "lineEnd": 10,
         "columnEnd": 15
       },
-      "name": { "key": "m1" }
+      "name": "m1"
     }
   },
   {
@@ -194,7 +251,7 @@
         "lineEnd": 16,
         "columnEnd": 9
       },
-      "name": { "key": "m1" }
+      "name": "m1"
     }
   },
   {
@@ -239,7 +296,7 @@
         "lineEnd": 11,
         "columnEnd": 15
       },
-      "name": { "key": "m2" }
+      "name": "m2"
     }
   },
   {
@@ -284,7 +341,7 @@
         "lineEnd": 17,
         "columnEnd": 16
       },
-      "name": { "key": "m2" }
+      "name": "m2"
     }
   },
   {
@@ -329,7 +386,7 @@
         "lineEnd": 12,
         "columnEnd": 22
       },
-      "name": { "key": "m3" }
+      "name": "m3"
     }
   },
   {
@@ -374,7 +431,7 @@
         "lineEnd": 13,
         "columnEnd": 29
       },
-      "name": { "key": "m4" }
+      "name": "m4"
     }
   },
   {
@@ -406,7 +463,7 @@
         "lineEnd": 3,
         "columnEnd": 13
       },
-      "name": { "key": "v1" }
+      "name": "v1"
     }
   },
   {
@@ -438,7 +495,7 @@
         "lineEnd": 4,
         "columnEnd": 6
       },
-      "name": { "key": "v1" }
+      "name": "v1"
     }
   },
   {
@@ -470,7 +527,7 @@
         "lineEnd": 5,
         "columnEnd": 13
       },
-      "name": { "key": "v2" }
+      "name": "v2"
     }
   },
   {
@@ -502,7 +559,7 @@
         "lineEnd": 6,
         "columnEnd": 13
       },
-      "name": { "key": "v3" }
+      "name": "v3"
     }
   },
   {
@@ -534,7 +591,7 @@
         "lineEnd": 7,
         "columnEnd": 20
       },
-      "name": { "key": "v4" }
+      "name": "v4"
     }
   }
 ]

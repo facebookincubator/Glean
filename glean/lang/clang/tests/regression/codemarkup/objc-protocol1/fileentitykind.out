@@ -36,5 +36,44 @@
       },
       "kind": 13
     }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "objcMethod": {
+              "key": {
+                "selector": { "key": [ "checkProtocol" ] },
+                "container": { "interface_": { "key": "J" } },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "void" },
+                    "parameters": [
+                      {
+                        "name": { "key": "f" },
+                        "type": { "key": "Protocol *" }
+                      }
+                    ]
+                  }
+                },
+                "isInstance": true,
+                "isOptional": false,
+                "isAccessor": false,
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 2,
+                  "columnBegin": 1,
+                  "lineEnd": 2,
+                  "columnEnd": 36
+                }
+              }
+            }
+          }
+        }
+      },
+      "kind": 7
+    }
   }
 ]

@@ -63,5 +63,51 @@
         }
       }
     }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "objcMethod": {
+          "key": {
+            "selector": { "key": [ "testMethod" ] },
+            "container": { "implementation": { "key": "J" } },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "isInstance": true,
+            "isOptional": false,
+            "isAccessor": false,
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 13,
+              "columnBegin": 1,
+              "lineEnd": 16,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "objcMethod": {
+          "key": {
+            "selector": { "key": [ "testMethod" ] },
+            "container": { "implementation": { "key": "J" } },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "isInstance": true,
+            "isOptional": false,
+            "isAccessor": false,
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 13,
+              "columnBegin": 1,
+              "lineEnd": 16,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
   }
 ]

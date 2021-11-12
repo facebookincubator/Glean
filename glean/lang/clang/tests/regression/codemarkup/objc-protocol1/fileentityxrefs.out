@@ -77,5 +77,59 @@
         }
       }
     }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "xref": {
+        "target": {
+          "name": "checkProtocol",
+          "file": { "key": "test.m" },
+          "location": {
+            "range": {
+              "file": { "key": "test.m" },
+              "lineBegin": 2,
+              "columnBegin": 1,
+              "lineEnd": 2,
+              "columnEnd": 36
+            }
+          }
+        },
+        "source": { "span": { "start": 99, "length": 13 } }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "objcMethod": {
+              "key": {
+                "selector": { "key": [ "checkProtocol" ] },
+                "container": { "interface_": { "key": "J" } },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "void" },
+                    "parameters": [
+                      {
+                        "name": { "key": "f" },
+                        "type": { "key": "Protocol *" }
+                      }
+                    ]
+                  }
+                },
+                "isInstance": true,
+                "isOptional": false,
+                "isAccessor": false,
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 2,
+                  "columnBegin": 1,
+                  "lineEnd": 2,
+                  "columnEnd": 36
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 ]

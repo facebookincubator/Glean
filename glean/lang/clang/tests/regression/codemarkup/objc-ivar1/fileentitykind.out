@@ -37,6 +37,73 @@
       "entity": {
         "cxx": {
           "decl": {
+            "objcMethod": {
+              "key": {
+                "selector": { "key": [ "setI" ] },
+                "container": { "interface_": { "key": "J" } },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "void" },
+                    "parameters": [
+                      { "name": { "key": "i" }, "type": { "key": "int" } }
+                    ]
+                  }
+                },
+                "isInstance": true,
+                "isOptional": false,
+                "isAccessor": true,
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 5,
+                  "columnBegin": 35,
+                  "lineEnd": 5,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "objcMethod": {
+              "key": {
+                "selector": { "key": [ "testMethod" ] },
+                "container": { "implementation": { "key": "J" } },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "isInstance": true,
+                "isOptional": false,
+                "isAccessor": false,
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 13,
+                  "columnBegin": 1,
+                  "lineEnd": 16,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "entity": {
+        "cxx": {
+          "decl": {
             "objcProperty": {
               "key": {
                 "name": { "key": "i" },

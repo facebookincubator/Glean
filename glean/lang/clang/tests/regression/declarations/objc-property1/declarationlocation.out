@@ -23,7 +23,7 @@
         "lineEnd": 13,
         "columnEnd": 1
       },
-      "name": { "key": "A" }
+      "name": "A"
     }
   },
   {
@@ -49,7 +49,7 @@
         "lineEnd": 7,
         "columnEnd": 4
       },
-      "name": { "key": "A" }
+      "name": "A"
     }
   },
   {
@@ -82,7 +82,45 @@
         "lineEnd": 5,
         "columnEnd": 35
       },
-      "name": { "key": "i" }
+      "name": "i"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "objcMethod": {
+          "key": {
+            "selector": { "key": [ "setI" ] },
+            "container": { "interface_": { "key": "A" } },
+            "signature": {
+              "key": {
+                "returns": { "key": "void" },
+                "parameters": [
+                  { "name": { "key": "i" }, "type": { "key": "int" } }
+                ]
+              }
+            },
+            "isInstance": true,
+            "isOptional": false,
+            "isAccessor": true,
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 5,
+              "columnBegin": 35,
+              "lineEnd": 5,
+              "columnEnd": 35
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.m" },
+        "lineBegin": 5,
+        "columnBegin": 35,
+        "lineEnd": 5,
+        "columnEnd": 35
+      },
+      "name": "setI"
     }
   },
   {
@@ -114,7 +152,7 @@
         "lineEnd": 5,
         "columnEnd": 35
       },
-      "name": { "key": "i" }
+      "name": "i"
     }
   },
   {
@@ -144,7 +182,7 @@
         "lineEnd": 2,
         "columnEnd": 8
       },
-      "name": { "key": "_i" }
+      "name": "_i"
     }
   }
 ]

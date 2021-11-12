@@ -3,6 +3,216 @@
   {
     "key": {
       "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "constructor": { } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "U" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 5,
+              "columnBegin": 3,
+              "lineEnd": 5,
+              "columnEnd": 5
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 5,
+        "columnBegin": 3,
+        "lineEnd": 5,
+        "columnEnd": 5
+      },
+      "name": "constructor"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "constructor": { } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "U" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": {
+                "returns": { "key": "void" },
+                "parameters": [
+                  { "name": { "key": "" }, "type": { "key": "const U &" } }
+                ]
+              }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 6,
+              "columnBegin": 3,
+              "lineEnd": 6,
+              "columnEnd": 13
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 6,
+        "columnBegin": 3,
+        "lineEnd": 6,
+        "columnEnd": 13
+      },
+      "name": "constructor"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "destructor": { } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "A" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "method": {
+              "isVirtual": true,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 11,
+              "columnBegin": 3,
+              "lineEnd": 11,
+              "columnEnd": 18
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 11,
+        "columnBegin": 3,
+        "lineEnd": 11,
+        "columnEnd": 18
+      },
+      "name": "destructor"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "operator_": "operator=" } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "U" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": {
+                "returns": { "key": "U &" },
+                "parameters": [
+                  { "name": { "key": "" }, "type": { "key": "const U &" } }
+                ]
+              }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 7,
+              "columnBegin": 3,
+              "lineEnd": 7,
+              "columnEnd": 24
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 7,
+        "columnBegin": 3,
+        "lineEnd": 7,
+        "columnEnd": 24
+      },
+      "name": "operator="
+    }
+  },
+  {
+    "key": {
+      "decl": {
         "record_": {
           "key": {
             "name": {
@@ -26,7 +236,7 @@
         "lineEnd": 12,
         "columnEnd": 1
       },
-      "name": { "key": "A" }
+      "name": "A"
     }
   },
   {
@@ -55,7 +265,7 @@
         "lineEnd": 16,
         "columnEnd": 1
       },
-      "name": { "key": "B" }
+      "name": "B"
     }
   },
   {
@@ -84,7 +294,7 @@
         "lineEnd": 3,
         "columnEnd": 11
       },
-      "name": { "key": "T" }
+      "name": "T"
     }
   },
   {
@@ -113,7 +323,7 @@
         "lineEnd": 8,
         "columnEnd": 1
       },
-      "name": { "key": "U" }
+      "name": "U"
     }
   },
   {
@@ -156,7 +366,7 @@
         "lineEnd": 15,
         "columnEnd": 5
       },
-      "name": { "key": "u" }
+      "name": "u"
     }
   }
 ]
