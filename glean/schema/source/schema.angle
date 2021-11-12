@@ -34,4 +34,36 @@ schema all.3 :
 
 schema all.4 : thrift.5, all.3 {}
 schema all.5 : codemarkup.17, search.code.7, docmarkup.6, search.hs.4, all.4 {}
-schema all.6 : code.buck.1, code.17, codemarkup.18, search.code.8, docmarkup.7, search.hs.5, all.5 {}
+schema all.6 :
+  builtin.1,
+  code.17,
+  code.buck.1,
+  code.cxx.3,
+  code.flow.2,
+  code.hack.3,
+  code.hs.2,
+  code.java.3,
+  code.python.1,
+  code.thrift.1,
+  codemarkup.18,
+  cxx1.4,
+  docmarkup.7,
+  dyn.1,
+  flow.3,
+  glean.test.4,
+  graphql.1,
+  hack.5,
+  hs.2,
+  java.5,
+  pp1.1,
+  python.3,
+  rust.1,
+  search.code.8,
+  search.cxx.4,
+  search.hack.6,
+  search.hs.5,
+  search.pp.2,
+  src.1,
+  sys.1,
+  thrift.5,
+{}
