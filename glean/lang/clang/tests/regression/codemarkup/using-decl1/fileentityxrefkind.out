@@ -29,9 +29,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 4,
+                  "lineBegin": 12,
                   "columnBegin": 1,
-                  "lineEnd": 4,
+                  "lineEnd": 12,
                   "columnEnd": 20
                 }
               }
@@ -68,9 +68,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 3,
+                  "lineBegin": 11,
                   "columnBegin": 1,
-                  "lineEnd": 3,
+                  "lineEnd": 11,
                   "columnEnd": 11
                 }
               }
@@ -106,9 +106,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
+                  "lineBegin": 17,
                   "columnBegin": 13,
-                  "lineEnd": 9,
+                  "lineEnd": 17,
                   "columnEnd": 32
                 }
               }
@@ -140,9 +140,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 16,
+                  "lineBegin": 24,
                   "columnBegin": 1,
-                  "lineEnd": 16,
+                  "lineEnd": 24,
                   "columnEnd": 8
                 }
               }
@@ -164,9 +164,9 @@
                 "name": { "key": { "name": { "key": "N1" } } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 14,
+                  "lineBegin": 22,
                   "columnBegin": 1,
-                  "lineEnd": 18,
+                  "lineEnd": 26,
                   "columnEnd": 1
                 }
               }
@@ -188,9 +188,9 @@
                 "name": { "key": { "name": { "key": "N2" } } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 37,
+                  "lineBegin": 45,
                   "columnBegin": 1,
-                  "lineEnd": 62,
+                  "lineEnd": 70,
                   "columnEnd": 1
                 }
               }

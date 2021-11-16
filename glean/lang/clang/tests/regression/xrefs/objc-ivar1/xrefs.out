@@ -5,7 +5,7 @@
       "file": { "key": "test.m" },
       "xrefs": [
         {
-          "range": { "begin": 135, "end": 137 },
+          "range": { "begin": 354, "end": 356 },
           "target": {
             "declaration": {
               "variable": {
@@ -20,9 +20,9 @@
                   "kind": { "ivar": { "synthesize": false } },
                   "source": {
                     "file": { "key": "test.m" },
-                    "lineBegin": 2,
+                    "lineBegin": 10,
                     "columnBegin": 3,
-                    "lineEnd": 2,
+                    "lineEnd": 10,
                     "columnEnd": 8
                   }
                 }

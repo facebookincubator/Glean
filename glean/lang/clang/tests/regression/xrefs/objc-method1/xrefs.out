@@ -5,7 +5,7 @@
       "file": { "key": "test.mm" },
       "xrefs": [
         {
-          "range": { "begin": 80, "end": 83 },
+          "range": { "begin": 299, "end": 302 },
           "target": {
             "declaration": {
               "objcContainer": {
@@ -13,9 +13,9 @@
                   "id": { "protocol": { "key": "Foo" } },
                   "source": {
                     "file": { "key": "test.mm" },
-                    "lineBegin": 1,
+                    "lineBegin": 9,
                     "columnBegin": 1,
-                    "lineEnd": 5,
+                    "lineEnd": 13,
                     "columnEnd": 4
                   }
                 }
@@ -24,7 +24,7 @@
           }
         },
         {
-          "range": { "begin": 99, "end": 105 },
+          "range": { "begin": 318, "end": 324 },
           "target": {
             "declaration": {
               "objcMethod": {
@@ -45,9 +45,9 @@
                   "isAccessor": false,
                   "source": {
                     "file": { "key": "test.mm" },
-                    "lineBegin": 3,
+                    "lineBegin": 11,
                     "columnBegin": 1,
-                    "lineEnd": 3,
+                    "lineEnd": 11,
                     "columnEnd": 42
                   }
                 }
@@ -56,7 +56,7 @@
           }
         },
         {
-          "range": { "begin": 109, "end": 118 },
+          "range": { "begin": 328, "end": 337 },
           "target": {
             "declaration": {
               "objcMethod": {
@@ -77,9 +77,9 @@
                   "isAccessor": false,
                   "source": {
                     "file": { "key": "test.mm" },
-                    "lineBegin": 3,
+                    "lineBegin": 11,
                     "columnBegin": 1,
-                    "lineEnd": 3,
+                    "lineEnd": 11,
                     "columnEnd": 42
                   }
                 }
@@ -88,7 +88,7 @@
           }
         },
         {
-          "range": { "begin": 151, "end": 154 },
+          "range": { "begin": 370, "end": 373 },
           "target": {
             "declaration": {
               "objcContainer": {
@@ -96,9 +96,9 @@
                   "id": { "protocol": { "key": "Foo" } },
                   "source": {
                     "file": { "key": "test.mm" },
-                    "lineBegin": 1,
+                    "lineBegin": 9,
                     "columnBegin": 1,
-                    "lineEnd": 5,
+                    "lineEnd": 13,
                     "columnEnd": 4
                   }
                 }
@@ -107,7 +107,7 @@
           }
         },
         {
-          "range": { "begin": 231, "end": 234 },
+          "range": { "begin": 450, "end": 453 },
           "target": {
             "declaration": {
               "variable": {
@@ -122,9 +122,9 @@
                   "kind": { "ivar": { "synthesize": false } },
                   "source": {
                     "file": { "key": "test.mm" },
-                    "lineBegin": 12,
+                    "lineBegin": 20,
                     "columnBegin": 3,
-                    "lineEnd": 12,
+                    "lineEnd": 20,
                     "columnEnd": 13
                   }
                 }
@@ -133,7 +133,7 @@
           }
         },
         {
-          "range": { "begin": 235, "end": 241 },
+          "range": { "begin": 454, "end": 460 },
           "target": {
             "declaration": {
               "objcMethod": {
@@ -154,9 +154,9 @@
                   "isAccessor": false,
                   "source": {
                     "file": { "key": "test.mm" },
-                    "lineBegin": 3,
+                    "lineBegin": 11,
                     "columnBegin": 1,
-                    "lineEnd": 3,
+                    "lineEnd": 11,
                     "columnEnd": 42
                   }
                 }
@@ -165,7 +165,7 @@
           }
         },
         {
-          "range": { "begin": 245, "end": 254 },
+          "range": { "begin": 464, "end": 473 },
           "target": {
             "declaration": {
               "objcMethod": {
@@ -186,9 +186,9 @@
                   "isAccessor": false,
                   "source": {
                     "file": { "key": "test.mm" },
-                    "lineBegin": 3,
+                    "lineBegin": 11,
                     "columnBegin": 1,
-                    "lineEnd": 3,
+                    "lineEnd": 11,
                     "columnEnd": 42
                   }
                 }

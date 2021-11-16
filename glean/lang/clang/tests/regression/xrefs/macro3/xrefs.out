@@ -5,7 +5,7 @@
       "file": { "key": "test.cpp" },
       "xrefs": [
         {
-          "range": { "begin": 236, "end": 241 },
+          "range": { "begin": 402, "end": 407 },
           "target": {
             "declaration": {
               "function_": {
@@ -21,9 +21,9 @@
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 10,
+                    "lineBegin": 16,
                     "columnBegin": 1,
-                    "lineEnd": 10,
+                    "lineEnd": 16,
                     "columnEnd": 16
                   }
                 }
@@ -32,7 +32,7 @@
           }
         },
         {
-          "range": { "begin": 265, "end": 270 },
+          "range": { "begin": 431, "end": 436 },
           "target": {
             "declaration": {
               "function_": {
@@ -48,9 +48,9 @@
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 10,
+                    "lineBegin": 16,
                     "columnBegin": 1,
-                    "lineEnd": 10,
+                    "lineEnd": 16,
                     "columnEnd": 16
                   }
                 }
@@ -59,7 +59,7 @@
           }
         },
         {
-          "range": { "begin": 294, "end": 299 },
+          "range": { "begin": 460, "end": 465 },
           "target": {
             "declaration": {
               "function_": {
@@ -75,9 +75,9 @@
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 10,
+                    "lineBegin": 16,
                     "columnBegin": 1,
-                    "lineEnd": 10,
+                    "lineEnd": 16,
                     "columnEnd": 16
                   }
                 }
@@ -86,7 +86,7 @@
           }
         },
         {
-          "range": { "begin": 316, "end": 328 },
+          "range": { "begin": 482, "end": 494 },
           "target": {
             "declaration": {
               "function_": {
@@ -102,9 +102,9 @@
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 10,
+                    "lineBegin": 16,
                     "columnBegin": 1,
-                    "lineEnd": 10,
+                    "lineEnd": 16,
                     "columnEnd": 16
                   }
                 }

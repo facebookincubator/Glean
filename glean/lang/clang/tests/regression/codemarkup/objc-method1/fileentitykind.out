@@ -24,9 +24,9 @@
                 },
                 "source": {
                   "file": { "key": "test.mm" },
-                  "lineBegin": 7,
+                  "lineBegin": 15,
                   "columnBegin": 1,
-                  "lineEnd": 9,
+                  "lineEnd": 17,
                   "columnEnd": 1
                 }
               }
@@ -55,9 +55,9 @@
                 "isAccessor": false,
                 "source": {
                   "file": { "key": "test.mm" },
-                  "lineBegin": 22,
+                  "lineBegin": 30,
                   "columnBegin": 1,
-                  "lineEnd": 25,
+                  "lineEnd": 33,
                   "columnEnd": 1
                 }
               }
@@ -86,9 +86,9 @@
                 "kind": { "ivar": { "synthesize": false } },
                 "source": {
                   "file": { "key": "test.mm" },
-                  "lineBegin": 12,
+                  "lineBegin": 20,
                   "columnBegin": 3,
-                  "lineEnd": 12,
+                  "lineEnd": 20,
                   "columnEnd": 13
                 }
               }

@@ -12,9 +12,9 @@
                   "name": { "key": { "name": { "key": "N1" } } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 1,
+                    "lineBegin": 9,
                     "columnBegin": 1,
-                    "lineEnd": 5,
+                    "lineEnd": 13,
                     "columnEnd": 1
                   }
                 }
@@ -22,7 +22,7 @@
             }
           },
           "ranges": [
-            { "offset": 93, "length": 2 },
+            { "offset": 312, "length": 2 },
             { "offset": 88, "length": 2 }
           ]
         },
@@ -67,16 +67,16 @@
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 8,
+                    "lineBegin": 16,
                     "columnBegin": 18,
-                    "lineEnd": 11,
+                    "lineEnd": 19,
                     "columnEnd": 3
                   }
                 }
               }
             }
           },
-          "ranges": [ { "offset": 118, "length": 2 } ]
+          "ranges": [ { "offset": 337, "length": 2 } ]
         },
         {
           "target": {
@@ -124,9 +124,9 @@
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 16,
+                    "lineBegin": 24,
                     "columnBegin": 22,
-                    "lineEnd": 19,
+                    "lineEnd": 27,
                     "columnEnd": 3
                   }
                 }
@@ -134,14 +134,14 @@
             }
           },
           "ranges": [
-            { "offset": 206, "length": 3 },
+            { "offset": 425, "length": 3 },
             { "offset": 10, "length": 4 }
           ]
         }
       ],
       "variable": [
-        [ { "offset": 101, "length": 3 } ],
-        [ { "offset": 189, "length": 3 } ]
+        [ { "offset": 320, "length": 3 } ],
+        [ { "offset": 408, "length": 3 } ]
       ]
     }
   }

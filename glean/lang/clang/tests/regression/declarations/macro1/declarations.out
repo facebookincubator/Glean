@@ -9,9 +9,9 @@
             "name": { "key": { "name": { "key": "N1" } } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 7,
+              "lineBegin": 13,
               "columnBegin": 1,
-              "lineEnd": 12,
+              "lineEnd": 18,
               "columnEnd": 1
             }
           }
@@ -34,9 +34,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 9,
+              "lineBegin": 15,
               "columnBegin": 1,
-              "lineEnd": 9,
+              "lineEnd": 15,
               "columnEnd": 5
             }
           }
@@ -59,9 +59,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 10,
+              "lineBegin": 16,
               "columnBegin": 1,
-              "lineEnd": 10,
+              "lineEnd": 16,
               "columnEnd": 6
             }
           }
@@ -73,9 +73,9 @@
             "name": { "key": { "name": { "key": "N2" } } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 18,
+              "lineBegin": 24,
               "columnBegin": 1,
-              "lineEnd": 24,
+              "lineEnd": 30,
               "columnEnd": 1
             }
           }
@@ -95,9 +95,9 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 20,
+              "lineBegin": 26,
               "columnBegin": 1,
-              "lineEnd": 20,
+              "lineEnd": 26,
               "columnEnd": 8
             }
           }
@@ -128,9 +128,9 @@
             "kind": { "field": { "mutable_": false } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 20,
+              "lineBegin": 26,
               "columnBegin": 1,
-              "lineEnd": 20,
+              "lineEnd": 26,
               "columnEnd": 8
             }
           }
@@ -161,9 +161,9 @@
             "kind": { "field": { "mutable_": false } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 20,
+              "lineBegin": 26,
               "columnBegin": 1,
-              "lineEnd": 20,
+              "lineEnd": 26,
               "columnEnd": 8
             }
           }
@@ -183,9 +183,9 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 21,
+              "lineBegin": 27,
               "columnBegin": 1,
-              "lineEnd": 21,
+              "lineEnd": 27,
               "columnEnd": 9
             }
           }
@@ -216,9 +216,9 @@
             "kind": { "field": { "mutable_": false } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 21,
+              "lineBegin": 27,
               "columnBegin": 1,
-              "lineEnd": 21,
+              "lineEnd": 27,
               "columnEnd": 9
             }
           }
@@ -249,9 +249,9 @@
             "kind": { "field": { "mutable_": false } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 21,
+              "lineBegin": 27,
               "columnBegin": 1,
-              "lineEnd": 21,
+              "lineEnd": 27,
               "columnEnd": 9
             }
           }
@@ -271,9 +271,9 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 22,
+              "lineBegin": 28,
               "columnBegin": 1,
-              "lineEnd": 22,
+              "lineEnd": 28,
               "columnEnd": 39
             }
           }
@@ -304,9 +304,9 @@
             "kind": { "field": { "mutable_": false } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 22,
+              "lineBegin": 28,
               "columnBegin": 1,
-              "lineEnd": 22,
+              "lineEnd": 28,
               "columnEnd": 39
             }
           }
@@ -337,9 +337,9 @@
             "kind": { "field": { "mutable_": false } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 22,
+              "lineBegin": 28,
               "columnBegin": 1,
-              "lineEnd": 22,
+              "lineEnd": 28,
               "columnEnd": 39
             }
           }
@@ -370,9 +370,9 @@
             "kind": { "field": { "mutable_": false } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 22,
+              "lineBegin": 28,
               "columnBegin": 1,
-              "lineEnd": 22,
+              "lineEnd": 28,
               "columnEnd": 39
             }
           }
@@ -384,9 +384,9 @@
             "name": { "key": { "name": { "key": "N3" } } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 31,
+              "lineBegin": 37,
               "columnBegin": 1,
-              "lineEnd": 36,
+              "lineEnd": 42,
               "columnEnd": 1
             }
           }
@@ -406,9 +406,9 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 33,
+              "lineBegin": 39,
               "columnBegin": 1,
-              "lineEnd": 33,
+              "lineEnd": 39,
               "columnEnd": 16
             }
           }
@@ -439,9 +439,9 @@
             "kind": { "field": { "mutable_": false } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 33,
+              "lineBegin": 39,
               "columnBegin": 9,
-              "lineEnd": 33,
+              "lineEnd": 39,
               "columnEnd": 13
             }
           }
@@ -461,9 +461,9 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 34,
+              "lineBegin": 40,
               "columnBegin": 1,
-              "lineEnd": 34,
+              "lineEnd": 40,
               "columnEnd": 17
             }
           }
@@ -494,9 +494,9 @@
             "kind": { "field": { "mutable_": false } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 34,
+              "lineBegin": 40,
               "columnBegin": 10,
-              "lineEnd": 34,
+              "lineEnd": 40,
               "columnEnd": 14
             }
           }
@@ -508,9 +508,9 @@
             "name": { "key": { "name": { "key": "N4" } } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 38,
+              "lineBegin": 44,
               "columnBegin": 1,
-              "lineEnd": 43,
+              "lineEnd": 49,
               "columnEnd": 1
             }
           }
@@ -530,9 +530,9 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 40,
+              "lineBegin": 46,
               "columnBegin": 1,
-              "lineEnd": 40,
+              "lineEnd": 46,
               "columnEnd": 18
             }
           }
@@ -563,9 +563,9 @@
             "kind": { "field": { "mutable_": false } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 40,
+              "lineBegin": 46,
               "columnBegin": 9,
-              "lineEnd": 40,
+              "lineEnd": 46,
               "columnEnd": 13
             }
           }
@@ -585,9 +585,9 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 41,
+              "lineBegin": 47,
               "columnBegin": 1,
-              "lineEnd": 41,
+              "lineEnd": 47,
               "columnEnd": 19
             }
           }
@@ -618,9 +618,9 @@
             "kind": { "field": { "mutable_": false } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 41,
+              "lineBegin": 47,
               "columnBegin": 10,
-              "lineEnd": 41,
+              "lineEnd": 47,
               "columnEnd": 14
             }
           }

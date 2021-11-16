@@ -14,9 +14,9 @@
                     "name": { "key": { "name": { "key": "N1" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 7,
+                      "lineEnd": 15,
                       "columnEnd": 1
                     }
                   }
@@ -43,9 +43,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 22,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 33
                     }
                   }
@@ -72,9 +72,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 22,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 33
                     }
                   }
@@ -101,9 +101,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 4,
+                      "lineBegin": 12,
                       "columnBegin": 1,
-                      "lineEnd": 4,
+                      "lineEnd": 12,
                       "columnEnd": 30
                     }
                   }
@@ -115,9 +115,9 @@
                     "name": { "key": { "name": { "key": "N2" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 9,
+                      "lineBegin": 17,
                       "columnBegin": 1,
-                      "lineEnd": 17,
+                      "lineEnd": 25,
                       "columnEnd": 1
                     }
                   }
@@ -134,9 +134,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 10,
+                      "lineBegin": 18,
                       "columnBegin": 1,
-                      "lineEnd": 10,
+                      "lineEnd": 18,
                       "columnEnd": 18
                     }
                   }
@@ -158,9 +158,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 12,
+                      "lineBegin": 20,
                       "columnBegin": 1,
-                      "lineEnd": 16,
+                      "lineEnd": 24,
                       "columnEnd": 1
                     }
                   }
@@ -172,9 +172,9 @@
                     "name": { "key": { "name": { "key": "N3" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 19,
+                      "lineBegin": 27,
                       "columnBegin": 1,
-                      "lineEnd": 28,
+                      "lineEnd": 36,
                       "columnEnd": 1
                     }
                   }
@@ -193,9 +193,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 21,
+                      "lineBegin": 29,
                       "columnBegin": 1,
-                      "lineEnd": 21,
+                      "lineEnd": 29,
                       "columnEnd": 11
                     }
                   }
@@ -217,9 +217,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 23,
+                      "lineBegin": 31,
                       "columnBegin": 1,
-                      "lineEnd": 27,
+                      "lineEnd": 35,
                       "columnEnd": 1
                     }
                   }
@@ -238,9 +238,9 @@
         "location": {
           "range": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 1,
+            "lineBegin": 9,
             "columnBegin": 1,
-            "lineEnd": 7,
+            "lineEnd": 15,
             "columnEnd": 1
           }
         }
@@ -253,9 +253,9 @@
                 "name": { "key": { "name": { "key": "N1" } } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 1,
+                  "lineBegin": 9,
                   "columnBegin": 1,
-                  "lineEnd": 7,
+                  "lineEnd": 15,
                   "columnEnd": 1
                 }
               }
@@ -279,9 +279,9 @@
                     "name": { "key": { "name": { "key": "N1" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 7,
+                      "lineEnd": 15,
                       "columnEnd": 1
                     }
                   }
@@ -308,9 +308,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 22,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 33
                     }
                   }
@@ -337,9 +337,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 22,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 33
                     }
                   }
@@ -366,9 +366,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 4,
+                      "lineBegin": 12,
                       "columnBegin": 1,
-                      "lineEnd": 4,
+                      "lineEnd": 12,
                       "columnEnd": 30
                     }
                   }
@@ -380,9 +380,9 @@
                     "name": { "key": { "name": { "key": "N2" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 9,
+                      "lineBegin": 17,
                       "columnBegin": 1,
-                      "lineEnd": 17,
+                      "lineEnd": 25,
                       "columnEnd": 1
                     }
                   }
@@ -399,9 +399,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 10,
+                      "lineBegin": 18,
                       "columnBegin": 1,
-                      "lineEnd": 10,
+                      "lineEnd": 18,
                       "columnEnd": 18
                     }
                   }
@@ -423,9 +423,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 12,
+                      "lineBegin": 20,
                       "columnBegin": 1,
-                      "lineEnd": 16,
+                      "lineEnd": 24,
                       "columnEnd": 1
                     }
                   }
@@ -437,9 +437,9 @@
                     "name": { "key": { "name": { "key": "N3" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 19,
+                      "lineBegin": 27,
                       "columnBegin": 1,
-                      "lineEnd": 28,
+                      "lineEnd": 36,
                       "columnEnd": 1
                     }
                   }
@@ -458,9 +458,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 21,
+                      "lineBegin": 29,
                       "columnBegin": 1,
-                      "lineEnd": 21,
+                      "lineEnd": 29,
                       "columnEnd": 11
                     }
                   }
@@ -482,9 +482,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 23,
+                      "lineBegin": 31,
                       "columnBegin": 1,
-                      "lineEnd": 27,
+                      "lineEnd": 35,
                       "columnEnd": 1
                     }
                   }
@@ -503,9 +503,9 @@
         "location": {
           "range": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 10,
+            "lineBegin": 18,
             "columnBegin": 1,
-            "lineEnd": 10,
+            "lineEnd": 18,
             "columnEnd": 18
           }
         }
@@ -523,9 +523,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 10,
+                  "lineBegin": 18,
                   "columnBegin": 1,
-                  "lineEnd": 10,
+                  "lineEnd": 18,
                   "columnEnd": 18
                 }
               }
@@ -549,9 +549,9 @@
                     "name": { "key": { "name": { "key": "N1" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 7,
+                      "lineEnd": 15,
                       "columnEnd": 1
                     }
                   }
@@ -578,9 +578,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 22,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 33
                     }
                   }
@@ -607,9 +607,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 22,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 33
                     }
                   }
@@ -636,9 +636,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 4,
+                      "lineBegin": 12,
                       "columnBegin": 1,
-                      "lineEnd": 4,
+                      "lineEnd": 12,
                       "columnEnd": 30
                     }
                   }
@@ -650,9 +650,9 @@
                     "name": { "key": { "name": { "key": "N2" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 9,
+                      "lineBegin": 17,
                       "columnBegin": 1,
-                      "lineEnd": 17,
+                      "lineEnd": 25,
                       "columnEnd": 1
                     }
                   }
@@ -669,9 +669,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 10,
+                      "lineBegin": 18,
                       "columnBegin": 1,
-                      "lineEnd": 10,
+                      "lineEnd": 18,
                       "columnEnd": 18
                     }
                   }
@@ -693,9 +693,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 12,
+                      "lineBegin": 20,
                       "columnBegin": 1,
-                      "lineEnd": 16,
+                      "lineEnd": 24,
                       "columnEnd": 1
                     }
                   }
@@ -707,9 +707,9 @@
                     "name": { "key": { "name": { "key": "N3" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 19,
+                      "lineBegin": 27,
                       "columnBegin": 1,
-                      "lineEnd": 28,
+                      "lineEnd": 36,
                       "columnEnd": 1
                     }
                   }
@@ -728,9 +728,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 21,
+                      "lineBegin": 29,
                       "columnBegin": 1,
-                      "lineEnd": 21,
+                      "lineEnd": 29,
                       "columnEnd": 11
                     }
                   }
@@ -752,9 +752,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 23,
+                      "lineBegin": 31,
                       "columnBegin": 1,
-                      "lineEnd": 27,
+                      "lineEnd": 35,
                       "columnEnd": 1
                     }
                   }
@@ -773,9 +773,9 @@
         "location": {
           "range": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 9,
+            "lineBegin": 17,
             "columnBegin": 1,
-            "lineEnd": 17,
+            "lineEnd": 25,
             "columnEnd": 1
           }
         }
@@ -788,9 +788,9 @@
                 "name": { "key": { "name": { "key": "N2" } } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
+                  "lineBegin": 17,
                   "columnBegin": 1,
-                  "lineEnd": 17,
+                  "lineEnd": 25,
                   "columnEnd": 1
                 }
               }
@@ -814,9 +814,9 @@
                     "name": { "key": { "name": { "key": "N1" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 7,
+                      "lineEnd": 15,
                       "columnEnd": 1
                     }
                   }
@@ -843,9 +843,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 22,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 33
                     }
                   }
@@ -872,9 +872,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 22,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 33
                     }
                   }
@@ -901,9 +901,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 4,
+                      "lineBegin": 12,
                       "columnBegin": 1,
-                      "lineEnd": 4,
+                      "lineEnd": 12,
                       "columnEnd": 30
                     }
                   }
@@ -915,9 +915,9 @@
                     "name": { "key": { "name": { "key": "N2" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 9,
+                      "lineBegin": 17,
                       "columnBegin": 1,
-                      "lineEnd": 17,
+                      "lineEnd": 25,
                       "columnEnd": 1
                     }
                   }
@@ -934,9 +934,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 10,
+                      "lineBegin": 18,
                       "columnBegin": 1,
-                      "lineEnd": 10,
+                      "lineEnd": 18,
                       "columnEnd": 18
                     }
                   }
@@ -958,9 +958,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 12,
+                      "lineBegin": 20,
                       "columnBegin": 1,
-                      "lineEnd": 16,
+                      "lineEnd": 24,
                       "columnEnd": 1
                     }
                   }
@@ -972,9 +972,9 @@
                     "name": { "key": { "name": { "key": "N3" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 19,
+                      "lineBegin": 27,
                       "columnBegin": 1,
-                      "lineEnd": 28,
+                      "lineEnd": 36,
                       "columnEnd": 1
                     }
                   }
@@ -993,9 +993,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 21,
+                      "lineBegin": 29,
                       "columnBegin": 1,
-                      "lineEnd": 21,
+                      "lineEnd": 29,
                       "columnEnd": 11
                     }
                   }
@@ -1017,9 +1017,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 23,
+                      "lineBegin": 31,
                       "columnBegin": 1,
-                      "lineEnd": 27,
+                      "lineEnd": 35,
                       "columnEnd": 1
                     }
                   }
@@ -1038,9 +1038,9 @@
         "location": {
           "range": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 19,
+            "lineBegin": 27,
             "columnBegin": 1,
-            "lineEnd": 28,
+            "lineEnd": 36,
             "columnEnd": 1
           }
         }
@@ -1053,9 +1053,9 @@
                 "name": { "key": { "name": { "key": "N3" } } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 19,
+                  "lineBegin": 27,
                   "columnBegin": 1,
-                  "lineEnd": 28,
+                  "lineEnd": 36,
                   "columnEnd": 1
                 }
               }
@@ -1079,9 +1079,9 @@
                     "name": { "key": { "name": { "key": "N1" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 7,
+                      "lineEnd": 15,
                       "columnEnd": 1
                     }
                   }
@@ -1108,9 +1108,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 22,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 33
                     }
                   }
@@ -1137,9 +1137,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 22,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 33
                     }
                   }
@@ -1166,9 +1166,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 4,
+                      "lineBegin": 12,
                       "columnBegin": 1,
-                      "lineEnd": 4,
+                      "lineEnd": 12,
                       "columnEnd": 30
                     }
                   }
@@ -1180,9 +1180,9 @@
                     "name": { "key": { "name": { "key": "N2" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 9,
+                      "lineBegin": 17,
                       "columnBegin": 1,
-                      "lineEnd": 17,
+                      "lineEnd": 25,
                       "columnEnd": 1
                     }
                   }
@@ -1199,9 +1199,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 10,
+                      "lineBegin": 18,
                       "columnBegin": 1,
-                      "lineEnd": 10,
+                      "lineEnd": 18,
                       "columnEnd": 18
                     }
                   }
@@ -1223,9 +1223,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 12,
+                      "lineBegin": 20,
                       "columnBegin": 1,
-                      "lineEnd": 16,
+                      "lineEnd": 24,
                       "columnEnd": 1
                     }
                   }
@@ -1237,9 +1237,9 @@
                     "name": { "key": { "name": { "key": "N3" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 19,
+                      "lineBegin": 27,
                       "columnBegin": 1,
-                      "lineEnd": 28,
+                      "lineEnd": 36,
                       "columnEnd": 1
                     }
                   }
@@ -1258,9 +1258,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 21,
+                      "lineBegin": 29,
                       "columnBegin": 1,
-                      "lineEnd": 21,
+                      "lineEnd": 29,
                       "columnEnd": 11
                     }
                   }
@@ -1282,9 +1282,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 23,
+                      "lineBegin": 31,
                       "columnBegin": 1,
-                      "lineEnd": 27,
+                      "lineEnd": 35,
                       "columnEnd": 1
                     }
                   }
@@ -1303,9 +1303,9 @@
         "location": {
           "range": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 3,
+            "lineBegin": 11,
             "columnBegin": 22,
-            "lineEnd": 3,
+            "lineEnd": 11,
             "columnEnd": 33
           }
         }
@@ -1333,9 +1333,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 3,
+                  "lineBegin": 11,
                   "columnBegin": 22,
-                  "lineEnd": 3,
+                  "lineEnd": 11,
                   "columnEnd": 33
                 }
               }
@@ -1359,9 +1359,9 @@
                     "name": { "key": { "name": { "key": "N1" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 7,
+                      "lineEnd": 15,
                       "columnEnd": 1
                     }
                   }
@@ -1388,9 +1388,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 22,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 33
                     }
                   }
@@ -1417,9 +1417,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 22,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 33
                     }
                   }
@@ -1446,9 +1446,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 4,
+                      "lineBegin": 12,
                       "columnBegin": 1,
-                      "lineEnd": 4,
+                      "lineEnd": 12,
                       "columnEnd": 30
                     }
                   }
@@ -1460,9 +1460,9 @@
                     "name": { "key": { "name": { "key": "N2" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 9,
+                      "lineBegin": 17,
                       "columnBegin": 1,
-                      "lineEnd": 17,
+                      "lineEnd": 25,
                       "columnEnd": 1
                     }
                   }
@@ -1479,9 +1479,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 10,
+                      "lineBegin": 18,
                       "columnBegin": 1,
-                      "lineEnd": 10,
+                      "lineEnd": 18,
                       "columnEnd": 18
                     }
                   }
@@ -1503,9 +1503,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 12,
+                      "lineBegin": 20,
                       "columnBegin": 1,
-                      "lineEnd": 16,
+                      "lineEnd": 24,
                       "columnEnd": 1
                     }
                   }
@@ -1517,9 +1517,9 @@
                     "name": { "key": { "name": { "key": "N3" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 19,
+                      "lineBegin": 27,
                       "columnBegin": 1,
-                      "lineEnd": 28,
+                      "lineEnd": 36,
                       "columnEnd": 1
                     }
                   }
@@ -1538,9 +1538,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 21,
+                      "lineBegin": 29,
                       "columnBegin": 1,
-                      "lineEnd": 21,
+                      "lineEnd": 29,
                       "columnEnd": 11
                     }
                   }
@@ -1562,9 +1562,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 23,
+                      "lineBegin": 31,
                       "columnBegin": 1,
-                      "lineEnd": 27,
+                      "lineEnd": 35,
                       "columnEnd": 1
                     }
                   }
@@ -1583,9 +1583,9 @@
         "location": {
           "range": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 3,
+            "lineBegin": 11,
             "columnBegin": 22,
-            "lineEnd": 3,
+            "lineEnd": 11,
             "columnEnd": 33
           }
         }
@@ -1613,9 +1613,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 3,
+                  "lineBegin": 11,
                   "columnBegin": 22,
-                  "lineEnd": 3,
+                  "lineEnd": 11,
                   "columnEnd": 33
                 }
               }
@@ -1639,9 +1639,9 @@
                     "name": { "key": { "name": { "key": "N1" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 7,
+                      "lineEnd": 15,
                       "columnEnd": 1
                     }
                   }
@@ -1668,9 +1668,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 22,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 33
                     }
                   }
@@ -1697,9 +1697,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 22,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 33
                     }
                   }
@@ -1726,9 +1726,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 4,
+                      "lineBegin": 12,
                       "columnBegin": 1,
-                      "lineEnd": 4,
+                      "lineEnd": 12,
                       "columnEnd": 30
                     }
                   }
@@ -1740,9 +1740,9 @@
                     "name": { "key": { "name": { "key": "N2" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 9,
+                      "lineBegin": 17,
                       "columnBegin": 1,
-                      "lineEnd": 17,
+                      "lineEnd": 25,
                       "columnEnd": 1
                     }
                   }
@@ -1759,9 +1759,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 10,
+                      "lineBegin": 18,
                       "columnBegin": 1,
-                      "lineEnd": 10,
+                      "lineEnd": 18,
                       "columnEnd": 18
                     }
                   }
@@ -1783,9 +1783,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 12,
+                      "lineBegin": 20,
                       "columnBegin": 1,
-                      "lineEnd": 16,
+                      "lineEnd": 24,
                       "columnEnd": 1
                     }
                   }
@@ -1797,9 +1797,9 @@
                     "name": { "key": { "name": { "key": "N3" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 19,
+                      "lineBegin": 27,
                       "columnBegin": 1,
-                      "lineEnd": 28,
+                      "lineEnd": 36,
                       "columnEnd": 1
                     }
                   }
@@ -1818,9 +1818,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 21,
+                      "lineBegin": 29,
                       "columnBegin": 1,
-                      "lineEnd": 21,
+                      "lineEnd": 29,
                       "columnEnd": 11
                     }
                   }
@@ -1842,9 +1842,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 23,
+                      "lineBegin": 31,
                       "columnBegin": 1,
-                      "lineEnd": 27,
+                      "lineEnd": 35,
                       "columnEnd": 1
                     }
                   }
@@ -1863,9 +1863,9 @@
         "location": {
           "range": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 4,
+            "lineBegin": 12,
             "columnBegin": 1,
-            "lineEnd": 4,
+            "lineEnd": 12,
             "columnEnd": 30
           }
         }
@@ -1893,9 +1893,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 4,
+                  "lineBegin": 12,
                   "columnBegin": 1,
-                  "lineEnd": 4,
+                  "lineEnd": 12,
                   "columnEnd": 30
                 }
               }
@@ -1919,9 +1919,9 @@
                     "name": { "key": { "name": { "key": "N1" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 7,
+                      "lineEnd": 15,
                       "columnEnd": 1
                     }
                   }
@@ -1948,9 +1948,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 22,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 33
                     }
                   }
@@ -1977,9 +1977,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 22,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 33
                     }
                   }
@@ -2006,9 +2006,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 4,
+                      "lineBegin": 12,
                       "columnBegin": 1,
-                      "lineEnd": 4,
+                      "lineEnd": 12,
                       "columnEnd": 30
                     }
                   }
@@ -2020,9 +2020,9 @@
                     "name": { "key": { "name": { "key": "N2" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 9,
+                      "lineBegin": 17,
                       "columnBegin": 1,
-                      "lineEnd": 17,
+                      "lineEnd": 25,
                       "columnEnd": 1
                     }
                   }
@@ -2039,9 +2039,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 10,
+                      "lineBegin": 18,
                       "columnBegin": 1,
-                      "lineEnd": 10,
+                      "lineEnd": 18,
                       "columnEnd": 18
                     }
                   }
@@ -2063,9 +2063,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 12,
+                      "lineBegin": 20,
                       "columnBegin": 1,
-                      "lineEnd": 16,
+                      "lineEnd": 24,
                       "columnEnd": 1
                     }
                   }
@@ -2077,9 +2077,9 @@
                     "name": { "key": { "name": { "key": "N3" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 19,
+                      "lineBegin": 27,
                       "columnBegin": 1,
-                      "lineEnd": 28,
+                      "lineEnd": 36,
                       "columnEnd": 1
                     }
                   }
@@ -2098,9 +2098,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 21,
+                      "lineBegin": 29,
                       "columnBegin": 1,
-                      "lineEnd": 21,
+                      "lineEnd": 29,
                       "columnEnd": 11
                     }
                   }
@@ -2122,9 +2122,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 23,
+                      "lineBegin": 31,
                       "columnBegin": 1,
-                      "lineEnd": 27,
+                      "lineEnd": 35,
                       "columnEnd": 1
                     }
                   }
@@ -2143,9 +2143,9 @@
         "location": {
           "range": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 21,
+            "lineBegin": 29,
             "columnBegin": 1,
-            "lineEnd": 21,
+            "lineEnd": 29,
             "columnEnd": 11
           }
         }
@@ -2165,9 +2165,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
+                  "lineBegin": 29,
                   "columnBegin": 1,
-                  "lineEnd": 21,
+                  "lineEnd": 29,
                   "columnEnd": 11
                 }
               }
@@ -2191,9 +2191,9 @@
                     "name": { "key": { "name": { "key": "N1" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 7,
+                      "lineEnd": 15,
                       "columnEnd": 1
                     }
                   }
@@ -2220,9 +2220,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 22,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 33
                     }
                   }
@@ -2249,9 +2249,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 22,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 33
                     }
                   }
@@ -2278,9 +2278,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 4,
+                      "lineBegin": 12,
                       "columnBegin": 1,
-                      "lineEnd": 4,
+                      "lineEnd": 12,
                       "columnEnd": 30
                     }
                   }
@@ -2292,9 +2292,9 @@
                     "name": { "key": { "name": { "key": "N2" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 9,
+                      "lineBegin": 17,
                       "columnBegin": 1,
-                      "lineEnd": 17,
+                      "lineEnd": 25,
                       "columnEnd": 1
                     }
                   }
@@ -2311,9 +2311,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 10,
+                      "lineBegin": 18,
                       "columnBegin": 1,
-                      "lineEnd": 10,
+                      "lineEnd": 18,
                       "columnEnd": 18
                     }
                   }
@@ -2335,9 +2335,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 12,
+                      "lineBegin": 20,
                       "columnBegin": 1,
-                      "lineEnd": 16,
+                      "lineEnd": 24,
                       "columnEnd": 1
                     }
                   }
@@ -2349,9 +2349,9 @@
                     "name": { "key": { "name": { "key": "N3" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 19,
+                      "lineBegin": 27,
                       "columnBegin": 1,
-                      "lineEnd": 28,
+                      "lineEnd": 36,
                       "columnEnd": 1
                     }
                   }
@@ -2370,9 +2370,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 21,
+                      "lineBegin": 29,
                       "columnBegin": 1,
-                      "lineEnd": 21,
+                      "lineEnd": 29,
                       "columnEnd": 11
                     }
                   }
@@ -2394,9 +2394,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 23,
+                      "lineBegin": 31,
                       "columnBegin": 1,
-                      "lineEnd": 27,
+                      "lineEnd": 35,
                       "columnEnd": 1
                     }
                   }
@@ -2415,9 +2415,9 @@
         "location": {
           "range": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 12,
+            "lineBegin": 20,
             "columnBegin": 1,
-            "lineEnd": 16,
+            "lineEnd": 24,
             "columnEnd": 1
           }
         }
@@ -2440,9 +2440,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 12,
+                  "lineBegin": 20,
                   "columnBegin": 1,
-                  "lineEnd": 16,
+                  "lineEnd": 24,
                   "columnEnd": 1
                 }
               }
@@ -2466,9 +2466,9 @@
                     "name": { "key": { "name": { "key": "N1" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 7,
+                      "lineEnd": 15,
                       "columnEnd": 1
                     }
                   }
@@ -2495,9 +2495,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 22,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 33
                     }
                   }
@@ -2524,9 +2524,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 22,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 33
                     }
                   }
@@ -2553,9 +2553,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 4,
+                      "lineBegin": 12,
                       "columnBegin": 1,
-                      "lineEnd": 4,
+                      "lineEnd": 12,
                       "columnEnd": 30
                     }
                   }
@@ -2567,9 +2567,9 @@
                     "name": { "key": { "name": { "key": "N2" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 9,
+                      "lineBegin": 17,
                       "columnBegin": 1,
-                      "lineEnd": 17,
+                      "lineEnd": 25,
                       "columnEnd": 1
                     }
                   }
@@ -2586,9 +2586,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 10,
+                      "lineBegin": 18,
                       "columnBegin": 1,
-                      "lineEnd": 10,
+                      "lineEnd": 18,
                       "columnEnd": 18
                     }
                   }
@@ -2610,9 +2610,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 12,
+                      "lineBegin": 20,
                       "columnBegin": 1,
-                      "lineEnd": 16,
+                      "lineEnd": 24,
                       "columnEnd": 1
                     }
                   }
@@ -2624,9 +2624,9 @@
                     "name": { "key": { "name": { "key": "N3" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 19,
+                      "lineBegin": 27,
                       "columnBegin": 1,
-                      "lineEnd": 28,
+                      "lineEnd": 36,
                       "columnEnd": 1
                     }
                   }
@@ -2645,9 +2645,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 21,
+                      "lineBegin": 29,
                       "columnBegin": 1,
-                      "lineEnd": 21,
+                      "lineEnd": 29,
                       "columnEnd": 11
                     }
                   }
@@ -2669,9 +2669,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 23,
+                      "lineBegin": 31,
                       "columnBegin": 1,
-                      "lineEnd": 27,
+                      "lineEnd": 35,
                       "columnEnd": 1
                     }
                   }
@@ -2690,9 +2690,9 @@
         "location": {
           "range": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 23,
+            "lineBegin": 31,
             "columnBegin": 1,
-            "lineEnd": 27,
+            "lineEnd": 35,
             "columnEnd": 1
           }
         }
@@ -2715,9 +2715,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 23,
+                  "lineBegin": 31,
                   "columnBegin": 1,
-                  "lineEnd": 27,
+                  "lineEnd": 35,
                   "columnEnd": 1
                 }
               }

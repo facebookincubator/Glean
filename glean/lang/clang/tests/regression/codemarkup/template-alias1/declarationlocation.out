@@ -11,9 +11,9 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "main.cpp" },
-              "lineBegin": 2,
+              "lineBegin": 10,
               "columnBegin": 1,
-              "lineEnd": 2,
+              "lineEnd": 10,
               "columnEnd": 11
             }
           }
@@ -21,9 +21,9 @@
       },
       "source": {
         "file": { "key": "main.cpp" },
-        "lineBegin": 2,
+        "lineBegin": 10,
         "columnBegin": 1,
-        "lineEnd": 2,
+        "lineEnd": 10,
         "columnEnd": 11
       },
       "name": { "key": "S" }
@@ -41,9 +41,9 @@
             "kind": 1,
             "source": {
               "file": { "key": "main.cpp" },
-              "lineBegin": 4,
+              "lineBegin": 12,
               "columnBegin": 22,
-              "lineEnd": 4,
+              "lineEnd": 12,
               "columnEnd": 33
             }
           }
@@ -51,9 +51,9 @@
       },
       "source": {
         "file": { "key": "main.cpp" },
-        "lineBegin": 4,
+        "lineBegin": 12,
         "columnBegin": 22,
-        "lineEnd": 4,
+        "lineEnd": 12,
         "columnEnd": 33
       },
       "name": { "key": "F1" }
@@ -71,9 +71,9 @@
             "kind": 1,
             "source": {
               "file": { "key": "main.cpp" },
-              "lineBegin": 5,
+              "lineBegin": 13,
               "columnBegin": 22,
-              "lineEnd": 5,
+              "lineEnd": 13,
               "columnEnd": 35
             }
           }
@@ -81,9 +81,9 @@
       },
       "source": {
         "file": { "key": "main.cpp" },
-        "lineBegin": 5,
+        "lineBegin": 13,
         "columnBegin": 22,
-        "lineEnd": 5,
+        "lineEnd": 13,
         "columnEnd": 35
       },
       "name": { "key": "F2" }
@@ -101,9 +101,9 @@
             "kind": 1,
             "source": {
               "file": { "key": "main.cpp" },
-              "lineBegin": 6,
+              "lineBegin": 14,
               "columnBegin": 22,
-              "lineEnd": 6,
+              "lineEnd": 14,
               "columnEnd": 36
             }
           }
@@ -111,9 +111,9 @@
       },
       "source": {
         "file": { "key": "main.cpp" },
-        "lineBegin": 6,
+        "lineBegin": 14,
         "columnBegin": 22,
-        "lineEnd": 6,
+        "lineEnd": 14,
         "columnEnd": 36
       },
       "name": { "key": "F3" }
@@ -133,9 +133,9 @@
             },
             "source": {
               "file": { "key": "main.cpp" },
-              "lineBegin": 8,
+              "lineBegin": 16,
               "columnBegin": 1,
-              "lineEnd": 8,
+              "lineEnd": 16,
               "columnEnd": 9
             }
           }
@@ -143,9 +143,9 @@
       },
       "source": {
         "file": { "key": "main.cpp" },
-        "lineBegin": 8,
+        "lineBegin": 16,
         "columnBegin": 1,
-        "lineEnd": 8,
+        "lineEnd": 16,
         "columnEnd": 9
       },
       "name": { "key": "x" }
@@ -165,9 +165,9 @@
             },
             "source": {
               "file": { "key": "main.cpp" },
-              "lineBegin": 9,
+              "lineBegin": 17,
               "columnBegin": 1,
-              "lineEnd": 9,
+              "lineEnd": 17,
               "columnEnd": 9
             }
           }
@@ -175,9 +175,9 @@
       },
       "source": {
         "file": { "key": "main.cpp" },
-        "lineBegin": 9,
+        "lineBegin": 17,
         "columnBegin": 1,
-        "lineEnd": 9,
+        "lineEnd": 17,
         "columnEnd": 9
       },
       "name": { "key": "y" }
@@ -197,9 +197,9 @@
             },
             "source": {
               "file": { "key": "main.cpp" },
-              "lineBegin": 10,
+              "lineBegin": 18,
               "columnBegin": 1,
-              "lineEnd": 10,
+              "lineEnd": 18,
               "columnEnd": 9
             }
           }
@@ -207,9 +207,9 @@
       },
       "source": {
         "file": { "key": "main.cpp" },
-        "lineBegin": 10,
+        "lineBegin": 18,
         "columnBegin": 1,
-        "lineEnd": 10,
+        "lineEnd": 18,
         "columnEnd": 9
       },
       "name": { "key": "z" }

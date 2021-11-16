@@ -5,7 +5,7 @@
       "file": { "key": "test.m" },
       "xrefs": [
         {
-          "range": { "begin": 36, "end": 44 },
+          "range": { "begin": 255, "end": 263 },
           "target": {
             "declaration": {
               "objcContainer": {
@@ -24,7 +24,7 @@
           }
         },
         {
-          "range": { "begin": 86, "end": 87 },
+          "range": { "begin": 305, "end": 306 },
           "target": {
             "declaration": {
               "objcContainer": {
@@ -32,9 +32,9 @@
                   "id": { "interface_": { "key": "J" } },
                   "source": {
                     "file": { "key": "test.m" },
-                    "lineBegin": 1,
+                    "lineBegin": 9,
                     "columnBegin": 1,
-                    "lineEnd": 3,
+                    "lineEnd": 11,
                     "columnEnd": 4
                   }
                 }
@@ -43,7 +43,7 @@
           }
         },
         {
-          "range": { "begin": 99, "end": 112 },
+          "range": { "begin": 318, "end": 331 },
           "target": {
             "declaration": {
               "objcMethod": {
@@ -66,9 +66,9 @@
                   "isAccessor": false,
                   "source": {
                     "file": { "key": "test.m" },
-                    "lineBegin": 2,
+                    "lineBegin": 10,
                     "columnBegin": 1,
-                    "lineEnd": 2,
+                    "lineEnd": 10,
                     "columnEnd": 36
                   }
                 }
@@ -77,7 +77,7 @@
           }
         },
         {
-          "range": { "begin": 113, "end": 122 },
+          "range": { "begin": 332, "end": 341 },
           "target": {
             "declaration": {
               "objcContainer": {
@@ -85,9 +85,9 @@
                   "id": { "protocol": { "key": "Foo" } },
                   "source": {
                     "file": { "key": "test.m" },
-                    "lineBegin": 5,
+                    "lineBegin": 13,
                     "columnBegin": 1,
-                    "lineEnd": 6,
+                    "lineEnd": 14,
                     "columnEnd": 4
                   }
                 }

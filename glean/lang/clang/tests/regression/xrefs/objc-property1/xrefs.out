@@ -5,7 +5,7 @@
       "file": { "key": "test.m" },
       "xrefs": [
         {
-          "range": { "begin": 68, "end": 69 },
+          "range": { "begin": 287, "end": 288 },
           "target": {
             "declaration": {
               "objcContainer": {
@@ -13,9 +13,9 @@
                   "id": { "interface_": { "key": "I" } },
                   "source": {
                     "file": { "key": "test.m" },
-                    "lineBegin": 1,
+                    "lineBegin": 9,
                     "columnBegin": 1,
-                    "lineEnd": 6,
+                    "lineEnd": 14,
                     "columnEnd": 4
                   }
                 }
@@ -24,7 +24,7 @@
           }
         },
         {
-          "range": { "begin": 80, "end": 83 },
+          "range": { "begin": 299, "end": 302 },
           "target": {
             "declaration": {
               "objcMethod": {
@@ -44,9 +44,9 @@
                   "isAccessor": false,
                   "source": {
                     "file": { "key": "test.m" },
-                    "lineBegin": 4,
+                    "lineBegin": 12,
                     "columnBegin": 1,
-                    "lineEnd": 4,
+                    "lineEnd": 12,
                     "columnEnd": 24
                   }
                 }
@@ -55,7 +55,7 @@
           }
         },
         {
-          "range": { "begin": 93, "end": 96 },
+          "range": { "begin": 312, "end": 315 },
           "target": {
             "declaration": {
               "objcMethod": {
@@ -70,9 +70,9 @@
                   "isAccessor": false,
                   "source": {
                     "file": { "key": "test.m" },
-                    "lineBegin": 3,
+                    "lineBegin": 11,
                     "columnBegin": 1,
-                    "lineEnd": 3,
+                    "lineEnd": 11,
                     "columnEnd": 11
                   }
                 }
@@ -81,7 +81,7 @@
           }
         },
         {
-          "range": { "begin": 93, "end": 96 },
+          "range": { "begin": 312, "end": 315 },
           "target": {
             "declaration": {
               "objcMethod": {
@@ -101,9 +101,9 @@
                   "isAccessor": false,
                   "source": {
                     "file": { "key": "test.m" },
-                    "lineBegin": 4,
+                    "lineBegin": 12,
                     "columnBegin": 1,
-                    "lineEnd": 4,
+                    "lineEnd": 12,
                     "columnEnd": 24
                   }
                 }
@@ -112,7 +112,7 @@
           }
         },
         {
-          "range": { "begin": 114, "end": 117 },
+          "range": { "begin": 333, "end": 336 },
           "target": {
             "declaration": {
               "objcMethod": {
@@ -127,9 +127,9 @@
                   "isAccessor": false,
                   "source": {
                     "file": { "key": "test.m" },
-                    "lineBegin": 3,
+                    "lineBegin": 11,
                     "columnBegin": 1,
-                    "lineEnd": 3,
+                    "lineEnd": 11,
                     "columnEnd": 11
                   }
                 }

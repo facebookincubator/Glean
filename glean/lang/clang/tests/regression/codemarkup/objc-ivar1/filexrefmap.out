@@ -19,16 +19,16 @@
                   "kind": { "ivar": { "synthesize": false } },
                   "source": {
                     "file": { "key": "test.m" },
-                    "lineBegin": 2,
+                    "lineBegin": 10,
                     "columnBegin": 3,
-                    "lineEnd": 2,
+                    "lineEnd": 10,
                     "columnEnd": 8
                   }
                 }
               }
             }
           },
-          "ranges": [ { "offset": 135, "length": 2 } ]
+          "ranges": [ { "offset": 354, "length": 2 } ]
         }
       ],
       "variable": [ ]

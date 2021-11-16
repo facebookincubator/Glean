@@ -9,9 +9,9 @@
         "location": {
           "range": {
             "file": { "key": "test.mm" },
-            "lineBegin": 11,
+            "lineBegin": 19,
             "columnBegin": 1,
-            "lineEnd": 15,
+            "lineEnd": 23,
             "columnEnd": 4
           }
         }
@@ -24,9 +24,9 @@
                 "id": { "interface_": { "key": "Bar" } },
                 "source": {
                   "file": { "key": "test.mm" },
-                  "lineBegin": 11,
+                  "lineBegin": 19,
                   "columnBegin": 1,
-                  "lineEnd": 15,
+                  "lineEnd": 23,
                   "columnEnd": 4
                 }
               }
@@ -45,9 +45,9 @@
         "location": {
           "range": {
             "file": { "key": "test.mm" },
-            "lineBegin": 17,
+            "lineBegin": 25,
             "columnBegin": 1,
-            "lineEnd": 27,
+            "lineEnd": 35,
             "columnEnd": 1
           }
         }
@@ -60,9 +60,9 @@
                 "id": { "implementation": { "key": "Bar" } },
                 "source": {
                   "file": { "key": "test.mm" },
-                  "lineBegin": 17,
+                  "lineBegin": 25,
                   "columnBegin": 1,
-                  "lineEnd": 27,
+                  "lineEnd": 35,
                   "columnEnd": 1
                 }
               }
@@ -81,9 +81,9 @@
         "location": {
           "range": {
             "file": { "key": "test.mm" },
-            "lineBegin": 1,
+            "lineBegin": 9,
             "columnBegin": 1,
-            "lineEnd": 5,
+            "lineEnd": 13,
             "columnEnd": 4
           }
         }
@@ -96,9 +96,9 @@
                 "id": { "protocol": { "key": "Foo" } },
                 "source": {
                   "file": { "key": "test.mm" },
-                  "lineBegin": 1,
+                  "lineBegin": 9,
                   "columnBegin": 1,
-                  "lineEnd": 5,
+                  "lineEnd": 13,
                   "columnEnd": 4
                 }
               }
@@ -117,9 +117,9 @@
         "location": {
           "range": {
             "file": { "key": "test.mm" },
-            "lineBegin": 12,
+            "lineBegin": 20,
             "columnBegin": 3,
-            "lineEnd": 12,
+            "lineEnd": 20,
             "columnEnd": 13
           }
         }
@@ -139,9 +139,9 @@
                 "kind": { "ivar": { "synthesize": false } },
                 "source": {
                   "file": { "key": "test.mm" },
-                  "lineBegin": 12,
+                  "lineBegin": 20,
                   "columnBegin": 3,
-                  "lineEnd": 12,
+                  "lineEnd": 20,
                   "columnEnd": 13
                 }
               }
@@ -160,9 +160,9 @@
         "location": {
           "range": {
             "file": { "key": "test.mm" },
-            "lineBegin": 22,
+            "lineBegin": 30,
             "columnBegin": 1,
-            "lineEnd": 25,
+            "lineEnd": 33,
             "columnEnd": 1
           }
         }
@@ -182,9 +182,9 @@
                 "isAccessor": false,
                 "source": {
                   "file": { "key": "test.mm" },
-                  "lineBegin": 22,
+                  "lineBegin": 30,
                   "columnBegin": 1,
-                  "lineEnd": 25,
+                  "lineEnd": 33,
                   "columnEnd": 1
                 }
               }
@@ -203,9 +203,9 @@
         "location": {
           "range": {
             "file": { "key": "test.mm" },
-            "lineBegin": 7,
+            "lineBegin": 15,
             "columnBegin": 1,
-            "lineEnd": 9,
+            "lineEnd": 17,
             "columnEnd": 1
           }
         }
@@ -231,9 +231,9 @@
                 },
                 "source": {
                   "file": { "key": "test.mm" },
-                  "lineBegin": 7,
+                  "lineBegin": 15,
                   "columnBegin": 1,
-                  "lineEnd": 9,
+                  "lineEnd": 17,
                   "columnEnd": 1
                 }
               }

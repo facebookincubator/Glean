@@ -7,9 +7,9 @@
           "id": { "implementation": { "key": "I" } },
           "source": {
             "file": { "key": "test.m" },
-            "lineBegin": 7,
+            "lineBegin": 15,
             "columnBegin": 1,
-            "lineEnd": 13,
+            "lineEnd": 21,
             "columnEnd": 1
           }
         }
@@ -30,9 +30,9 @@
                 "isAccessor": false,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 10,
+                  "lineBegin": 18,
                   "columnBegin": 1,
-                  "lineEnd": 12,
+                  "lineEnd": 20,
                   "columnEnd": 1
                 }
               }
@@ -49,9 +49,9 @@
           "id": { "interface_": { "key": "I" } },
           "source": {
             "file": { "key": "test.m" },
-            "lineBegin": 1,
+            "lineBegin": 9,
             "columnBegin": 1,
-            "lineEnd": 5,
+            "lineEnd": 13,
             "columnEnd": 4
           }
         }
@@ -72,9 +72,9 @@
                 "kind": { "ivar": { "synthesize": false } },
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 2,
+                  "lineBegin": 10,
                   "columnBegin": 3,
-                  "lineEnd": 2,
+                  "lineEnd": 10,
                   "columnEnd": 8
                 }
               }
@@ -93,9 +93,9 @@
                 "isAccessor": false,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 4,
+                  "lineBegin": 12,
                   "columnBegin": 1,
-                  "lineEnd": 4,
+                  "lineEnd": 12,
                   "columnEnd": 10
                 }
               }

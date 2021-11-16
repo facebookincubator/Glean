@@ -12,16 +12,16 @@
                   "id": { "interface_": { "key": "J" } },
                   "source": {
                     "file": { "key": "test.m" },
-                    "lineBegin": 1,
+                    "lineBegin": 9,
                     "columnBegin": 1,
-                    "lineEnd": 3,
+                    "lineEnd": 11,
                     "columnEnd": 4
                   }
                 }
               }
             }
           },
-          "ranges": [ { "offset": 104, "length": 1 } ]
+          "ranges": [ { "offset": 323, "length": 1 } ]
         },
         {
           "target": {
@@ -46,25 +46,25 @@
                   "isAccessor": false,
                   "source": {
                     "file": { "key": "test.m" },
-                    "lineBegin": 2,
+                    "lineBegin": 10,
                     "columnBegin": 1,
-                    "lineEnd": 2,
+                    "lineEnd": 10,
                     "columnEnd": 36
                   }
                 }
               }
             }
           },
-          "ranges": [ { "offset": 176, "length": 13 } ]
+          "ranges": [ { "offset": 395, "length": 13 } ]
         }
       ],
       "variable": [
         [
-          { "offset": 36, "length": 3 },
+          { "offset": 255, "length": 3 },
           { "offset": 29, "length": 3 },
           { "offset": 82, "length": 3 }
         ],
-        [ { "offset": 155, "length": 14 }, { "offset": 35, "length": 14 } ]
+        [ { "offset": 374, "length": 14 }, { "offset": 35, "length": 14 } ]
       ]
     }
   }

@@ -18,9 +18,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 3,
+              "lineBegin": 11,
               "columnBegin": 1,
-              "lineEnd": 3,
+              "lineEnd": 11,
               "columnEnd": 20
             }
           }
@@ -28,9 +28,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 3,
+        "lineBegin": 11,
         "columnBegin": 1,
-        "lineEnd": 3,
+        "lineEnd": 11,
         "columnEnd": 20
       },
       "name": { "key": "foo" }
@@ -52,9 +52,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 7,
+              "lineBegin": 15,
               "columnBegin": 1,
-              "lineEnd": 13,
+              "lineEnd": 21,
               "columnEnd": 1
             }
           }
@@ -62,9 +62,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 7,
+        "lineBegin": 15,
         "columnBegin": 1,
-        "lineEnd": 13,
+        "lineEnd": 21,
         "columnEnd": 1
       },
       "name": { "key": "g" }
@@ -86,9 +86,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 15,
+              "lineBegin": 23,
               "columnBegin": 1,
-              "lineEnd": 22,
+              "lineEnd": 30,
               "columnEnd": 1
             }
           }
@@ -96,9 +96,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 15,
+        "lineBegin": 23,
         "columnBegin": 1,
-        "lineEnd": 22,
+        "lineEnd": 30,
         "columnEnd": 1
       },
       "name": { "key": "h" }
@@ -112,9 +112,9 @@
             "name": { "key": { "name": { "key": "N1" } } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 1,
+              "lineBegin": 9,
               "columnBegin": 1,
-              "lineEnd": 5,
+              "lineEnd": 13,
               "columnEnd": 1
             }
           }
@@ -122,9 +122,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 1,
+        "lineBegin": 9,
         "columnBegin": 1,
-        "lineEnd": 5,
+        "lineEnd": 13,
         "columnEnd": 1
       },
       "name": { "key": "N1" }
@@ -142,45 +142,6 @@
                   "local": {
                     "key": {
                       "name": { "key": { "name": { "key": "g" } } },
-                      "scope": { "global_": { } }
-                    }
-                  }
-                }
-              }
-            },
-            "kind": { "class_": { } },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 8,
-              "columnBegin": 14,
-              "lineEnd": 8,
-              "columnEnd": 14
-            }
-          }
-        }
-      },
-      "source": {
-        "file": { "key": "test.cpp" },
-        "lineBegin": 8,
-        "columnBegin": 14,
-        "lineEnd": 8,
-        "columnEnd": 14
-      },
-      "name": { "key": "" }
-    }
-  },
-  {
-    "key": {
-      "decl": {
-        "record_": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": "" },
-                "scope": {
-                  "local": {
-                    "key": {
-                      "name": { "key": { "name": { "key": "h" } } },
                       "scope": { "global_": { } }
                     }
                   }
@@ -211,29 +172,40 @@
   {
     "key": {
       "decl": {
-        "usingDirective": {
+        "record_": {
           "key": {
             "name": {
-              "key": { "name": { "key": "N1" }, "scope": { "global_": { } } }
+              "key": {
+                "name": { "key": "" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "h" } } },
+                      "scope": { "global_": { } }
+                    }
+                  }
+                }
+              }
             },
+            "kind": { "class_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 9,
-              "columnBegin": 5,
-              "lineEnd": 9,
-              "columnEnd": 22
+              "lineBegin": 24,
+              "columnBegin": 14,
+              "lineEnd": 24,
+              "columnEnd": 14
             }
           }
         }
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 9,
-        "columnBegin": 5,
-        "lineEnd": 9,
-        "columnEnd": 22
+        "lineBegin": 24,
+        "columnBegin": 14,
+        "lineEnd": 24,
+        "columnEnd": 14
       },
-      "name": { "key": "N1" }
+      "name": { "key": "" }
     }
   },
   {
@@ -259,6 +231,34 @@
         "lineBegin": 17,
         "columnBegin": 5,
         "lineEnd": 17,
+        "columnEnd": 22
+      },
+      "name": { "key": "N1" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "usingDirective": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "N1" }, "scope": { "global_": { } } }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 25,
+              "columnBegin": 5,
+              "lineEnd": 25,
+              "columnEnd": 22
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 25,
+        "columnBegin": 5,
+        "lineEnd": 25,
         "columnEnd": 22
       },
       "name": { "key": "N1" }

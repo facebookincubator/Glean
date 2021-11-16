@@ -9,9 +9,9 @@
               "id": { "implementation": { "key": "A" } },
               "source": {
                 "file": { "key": "test.m" },
-                "lineBegin": 25,
+                "lineBegin": 33,
                 "columnBegin": 1,
-                "lineEnd": 29,
+                "lineEnd": 37,
                 "columnEnd": 1
               }
             }
@@ -38,9 +38,9 @@
               "id": { "interface_": { "key": "A" } },
               "source": {
                 "file": { "key": "test.m" },
-                "lineBegin": 5,
+                "lineBegin": 13,
                 "columnBegin": 1,
-                "lineEnd": 19,
+                "lineEnd": 27,
                 "columnEnd": 4
               }
             }
@@ -73,9 +73,9 @@
               "isAtomic": false,
               "source": {
                 "file": { "key": "test.m" },
-                "lineBegin": 17,
+                "lineBegin": 25,
                 "columnBegin": 1,
-                "lineEnd": 17,
+                "lineEnd": 25,
                 "columnEnd": 35
               }
             }
@@ -106,9 +106,9 @@
               "kind": { "ivar": { "synthesize": false } },
               "source": {
                 "file": { "key": "test.m" },
-                "lineBegin": 10,
+                "lineBegin": 18,
                 "columnBegin": 3,
-                "lineEnd": 10,
+                "lineEnd": 18,
                 "columnEnd": 8
               }
             }

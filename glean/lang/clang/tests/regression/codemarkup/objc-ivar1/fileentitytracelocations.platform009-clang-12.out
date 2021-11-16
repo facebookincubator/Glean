@@ -14,9 +14,9 @@
                     "id": { "interface_": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 7,
+                      "lineEnd": 15,
                       "columnEnd": 4
                     }
                   }
@@ -35,9 +35,9 @@
                     "kind": { "ivar": { "synthesize": false } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 2,
+                      "lineBegin": 10,
                       "columnBegin": 3,
-                      "lineEnd": 2,
+                      "lineEnd": 10,
                       "columnEnd": 8
                     }
                   }
@@ -55,9 +55,9 @@
                     "isAtomic": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 1,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -76,9 +76,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 35,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -102,9 +102,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 35,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -116,9 +116,9 @@
                     "id": { "implementation": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 9,
+                      "lineBegin": 17,
                       "columnBegin": 1,
-                      "lineEnd": 18,
+                      "lineEnd": 26,
                       "columnEnd": 1
                     }
                   }
@@ -137,9 +137,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 11,
+                      "lineBegin": 19,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 13
                     }
                   }
@@ -163,9 +163,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 11,
+                      "lineBegin": 19,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 13
                     }
                   }
@@ -184,9 +184,9 @@
                     "isAccessor": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 13,
+                      "lineBegin": 21,
                       "columnBegin": 1,
-                      "lineEnd": 16,
+                      "lineEnd": 24,
                       "columnEnd": 1
                     }
                   }
@@ -205,9 +205,9 @@
         "location": {
           "range": {
             "file": { "key": "test.m" },
-            "lineBegin": 1,
+            "lineBegin": 9,
             "columnBegin": 1,
-            "lineEnd": 7,
+            "lineEnd": 15,
             "columnEnd": 4
           }
         }
@@ -220,9 +220,9 @@
                 "id": { "interface_": { "key": "J" } },
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 1,
+                  "lineBegin": 9,
                   "columnBegin": 1,
-                  "lineEnd": 7,
+                  "lineEnd": 15,
                   "columnEnd": 4
                 }
               }
@@ -246,9 +246,9 @@
                     "id": { "interface_": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 7,
+                      "lineEnd": 15,
                       "columnEnd": 4
                     }
                   }
@@ -267,9 +267,9 @@
                     "kind": { "ivar": { "synthesize": false } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 2,
+                      "lineBegin": 10,
                       "columnBegin": 3,
-                      "lineEnd": 2,
+                      "lineEnd": 10,
                       "columnEnd": 8
                     }
                   }
@@ -287,9 +287,9 @@
                     "isAtomic": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 1,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -308,9 +308,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 35,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -334,9 +334,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 35,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -348,9 +348,9 @@
                     "id": { "implementation": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 9,
+                      "lineBegin": 17,
                       "columnBegin": 1,
-                      "lineEnd": 18,
+                      "lineEnd": 26,
                       "columnEnd": 1
                     }
                   }
@@ -369,9 +369,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 11,
+                      "lineBegin": 19,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 13
                     }
                   }
@@ -395,9 +395,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 11,
+                      "lineBegin": 19,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 13
                     }
                   }
@@ -416,9 +416,9 @@
                     "isAccessor": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 13,
+                      "lineBegin": 21,
                       "columnBegin": 1,
-                      "lineEnd": 16,
+                      "lineEnd": 24,
                       "columnEnd": 1
                     }
                   }
@@ -437,9 +437,9 @@
         "location": {
           "range": {
             "file": { "key": "test.m" },
-            "lineBegin": 9,
+            "lineBegin": 17,
             "columnBegin": 1,
-            "lineEnd": 18,
+            "lineEnd": 26,
             "columnEnd": 1
           }
         }
@@ -452,9 +452,9 @@
                 "id": { "implementation": { "key": "J" } },
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 9,
+                  "lineBegin": 17,
                   "columnBegin": 1,
-                  "lineEnd": 18,
+                  "lineEnd": 26,
                   "columnEnd": 1
                 }
               }
@@ -478,9 +478,9 @@
                     "id": { "interface_": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 7,
+                      "lineEnd": 15,
                       "columnEnd": 4
                     }
                   }
@@ -499,9 +499,9 @@
                     "kind": { "ivar": { "synthesize": false } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 2,
+                      "lineBegin": 10,
                       "columnBegin": 3,
-                      "lineEnd": 2,
+                      "lineEnd": 10,
                       "columnEnd": 8
                     }
                   }
@@ -519,9 +519,9 @@
                     "isAtomic": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 1,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -540,9 +540,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 35,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -566,9 +566,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 35,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -580,9 +580,9 @@
                     "id": { "implementation": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 9,
+                      "lineBegin": 17,
                       "columnBegin": 1,
-                      "lineEnd": 18,
+                      "lineEnd": 26,
                       "columnEnd": 1
                     }
                   }
@@ -601,9 +601,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 11,
+                      "lineBegin": 19,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 13
                     }
                   }
@@ -627,9 +627,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 11,
+                      "lineBegin": 19,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 13
                     }
                   }
@@ -648,9 +648,9 @@
                     "isAccessor": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 13,
+                      "lineBegin": 21,
                       "columnBegin": 1,
-                      "lineEnd": 16,
+                      "lineEnd": 24,
                       "columnEnd": 1
                     }
                   }
@@ -669,9 +669,9 @@
         "location": {
           "range": {
             "file": { "key": "test.m" },
-            "lineBegin": 2,
+            "lineBegin": 10,
             "columnBegin": 3,
-            "lineEnd": 2,
+            "lineEnd": 10,
             "columnEnd": 8
           }
         }
@@ -691,9 +691,9 @@
                 "kind": { "ivar": { "synthesize": false } },
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 2,
+                  "lineBegin": 10,
                   "columnBegin": 3,
-                  "lineEnd": 2,
+                  "lineEnd": 10,
                   "columnEnd": 8
                 }
               }
@@ -717,9 +717,9 @@
                     "id": { "interface_": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 7,
+                      "lineEnd": 15,
                       "columnEnd": 4
                     }
                   }
@@ -738,9 +738,9 @@
                     "kind": { "ivar": { "synthesize": false } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 2,
+                      "lineBegin": 10,
                       "columnBegin": 3,
-                      "lineEnd": 2,
+                      "lineEnd": 10,
                       "columnEnd": 8
                     }
                   }
@@ -758,9 +758,9 @@
                     "isAtomic": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 1,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -779,9 +779,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 35,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -805,9 +805,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 35,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -819,9 +819,9 @@
                     "id": { "implementation": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 9,
+                      "lineBegin": 17,
                       "columnBegin": 1,
-                      "lineEnd": 18,
+                      "lineEnd": 26,
                       "columnEnd": 1
                     }
                   }
@@ -840,9 +840,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 11,
+                      "lineBegin": 19,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 13
                     }
                   }
@@ -866,9 +866,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 11,
+                      "lineBegin": 19,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 13
                     }
                   }
@@ -887,9 +887,9 @@
                     "isAccessor": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 13,
+                      "lineBegin": 21,
                       "columnBegin": 1,
-                      "lineEnd": 16,
+                      "lineEnd": 24,
                       "columnEnd": 1
                     }
                   }
@@ -908,9 +908,9 @@
         "location": {
           "range": {
             "file": { "key": "test.m" },
-            "lineBegin": 5,
+            "lineBegin": 13,
             "columnBegin": 1,
-            "lineEnd": 5,
+            "lineEnd": 13,
             "columnEnd": 35
           }
         }
@@ -929,9 +929,9 @@
                 "isAtomic": false,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 5,
+                  "lineBegin": 13,
                   "columnBegin": 1,
-                  "lineEnd": 5,
+                  "lineEnd": 13,
                   "columnEnd": 35
                 }
               }
@@ -955,9 +955,9 @@
                     "id": { "interface_": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 7,
+                      "lineEnd": 15,
                       "columnEnd": 4
                     }
                   }
@@ -976,9 +976,9 @@
                     "kind": { "ivar": { "synthesize": false } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 2,
+                      "lineBegin": 10,
                       "columnBegin": 3,
-                      "lineEnd": 2,
+                      "lineEnd": 10,
                       "columnEnd": 8
                     }
                   }
@@ -996,9 +996,9 @@
                     "isAtomic": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 1,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -1017,9 +1017,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 35,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -1043,9 +1043,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 35,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -1057,9 +1057,9 @@
                     "id": { "implementation": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 9,
+                      "lineBegin": 17,
                       "columnBegin": 1,
-                      "lineEnd": 18,
+                      "lineEnd": 26,
                       "columnEnd": 1
                     }
                   }
@@ -1078,9 +1078,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 11,
+                      "lineBegin": 19,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 13
                     }
                   }
@@ -1104,9 +1104,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 11,
+                      "lineBegin": 19,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 13
                     }
                   }
@@ -1125,9 +1125,9 @@
                     "isAccessor": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 13,
+                      "lineBegin": 21,
                       "columnBegin": 1,
-                      "lineEnd": 16,
+                      "lineEnd": 24,
                       "columnEnd": 1
                     }
                   }
@@ -1146,9 +1146,9 @@
         "location": {
           "range": {
             "file": { "key": "test.m" },
-            "lineBegin": 5,
+            "lineBegin": 13,
             "columnBegin": 35,
-            "lineEnd": 5,
+            "lineEnd": 13,
             "columnEnd": 35
           }
         }
@@ -1168,9 +1168,9 @@
                 "isAccessor": true,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 5,
+                  "lineBegin": 13,
                   "columnBegin": 35,
-                  "lineEnd": 5,
+                  "lineEnd": 13,
                   "columnEnd": 35
                 }
               }
@@ -1194,9 +1194,9 @@
                     "id": { "interface_": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 7,
+                      "lineEnd": 15,
                       "columnEnd": 4
                     }
                   }
@@ -1215,9 +1215,9 @@
                     "kind": { "ivar": { "synthesize": false } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 2,
+                      "lineBegin": 10,
                       "columnBegin": 3,
-                      "lineEnd": 2,
+                      "lineEnd": 10,
                       "columnEnd": 8
                     }
                   }
@@ -1235,9 +1235,9 @@
                     "isAtomic": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 1,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -1256,9 +1256,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 35,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -1282,9 +1282,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 35,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -1296,9 +1296,9 @@
                     "id": { "implementation": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 9,
+                      "lineBegin": 17,
                       "columnBegin": 1,
-                      "lineEnd": 18,
+                      "lineEnd": 26,
                       "columnEnd": 1
                     }
                   }
@@ -1317,9 +1317,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 11,
+                      "lineBegin": 19,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 13
                     }
                   }
@@ -1343,9 +1343,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 11,
+                      "lineBegin": 19,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 13
                     }
                   }
@@ -1364,9 +1364,9 @@
                     "isAccessor": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 13,
+                      "lineBegin": 21,
                       "columnBegin": 1,
-                      "lineEnd": 16,
+                      "lineEnd": 24,
                       "columnEnd": 1
                     }
                   }
@@ -1385,9 +1385,9 @@
         "location": {
           "range": {
             "file": { "key": "test.m" },
-            "lineBegin": 11,
+            "lineBegin": 19,
             "columnBegin": 1,
-            "lineEnd": 11,
+            "lineEnd": 19,
             "columnEnd": 13
           }
         }
@@ -1407,9 +1407,9 @@
                 "isAccessor": true,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 11,
+                  "lineBegin": 19,
                   "columnBegin": 1,
-                  "lineEnd": 11,
+                  "lineEnd": 19,
                   "columnEnd": 13
                 }
               }
@@ -1433,9 +1433,9 @@
                     "id": { "interface_": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 7,
+                      "lineEnd": 15,
                       "columnEnd": 4
                     }
                   }
@@ -1454,9 +1454,9 @@
                     "kind": { "ivar": { "synthesize": false } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 2,
+                      "lineBegin": 10,
                       "columnBegin": 3,
-                      "lineEnd": 2,
+                      "lineEnd": 10,
                       "columnEnd": 8
                     }
                   }
@@ -1474,9 +1474,9 @@
                     "isAtomic": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 1,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -1495,9 +1495,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 35,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -1521,9 +1521,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 35,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -1535,9 +1535,9 @@
                     "id": { "implementation": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 9,
+                      "lineBegin": 17,
                       "columnBegin": 1,
-                      "lineEnd": 18,
+                      "lineEnd": 26,
                       "columnEnd": 1
                     }
                   }
@@ -1556,9 +1556,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 11,
+                      "lineBegin": 19,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 13
                     }
                   }
@@ -1582,9 +1582,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 11,
+                      "lineBegin": 19,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 13
                     }
                   }
@@ -1603,9 +1603,9 @@
                     "isAccessor": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 13,
+                      "lineBegin": 21,
                       "columnBegin": 1,
-                      "lineEnd": 16,
+                      "lineEnd": 24,
                       "columnEnd": 1
                     }
                   }
@@ -1624,9 +1624,9 @@
         "location": {
           "range": {
             "file": { "key": "test.m" },
-            "lineBegin": 5,
+            "lineBegin": 13,
             "columnBegin": 35,
-            "lineEnd": 5,
+            "lineEnd": 13,
             "columnEnd": 35
           }
         }
@@ -1651,9 +1651,9 @@
                 "isAccessor": true,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 5,
+                  "lineBegin": 13,
                   "columnBegin": 35,
-                  "lineEnd": 5,
+                  "lineEnd": 13,
                   "columnEnd": 35
                 }
               }
@@ -1677,9 +1677,9 @@
                     "id": { "interface_": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 7,
+                      "lineEnd": 15,
                       "columnEnd": 4
                     }
                   }
@@ -1698,9 +1698,9 @@
                     "kind": { "ivar": { "synthesize": false } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 2,
+                      "lineBegin": 10,
                       "columnBegin": 3,
-                      "lineEnd": 2,
+                      "lineEnd": 10,
                       "columnEnd": 8
                     }
                   }
@@ -1718,9 +1718,9 @@
                     "isAtomic": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 1,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -1739,9 +1739,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 35,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -1765,9 +1765,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 35,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -1779,9 +1779,9 @@
                     "id": { "implementation": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 9,
+                      "lineBegin": 17,
                       "columnBegin": 1,
-                      "lineEnd": 18,
+                      "lineEnd": 26,
                       "columnEnd": 1
                     }
                   }
@@ -1800,9 +1800,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 11,
+                      "lineBegin": 19,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 13
                     }
                   }
@@ -1826,9 +1826,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 11,
+                      "lineBegin": 19,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 13
                     }
                   }
@@ -1847,9 +1847,9 @@
                     "isAccessor": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 13,
+                      "lineBegin": 21,
                       "columnBegin": 1,
-                      "lineEnd": 16,
+                      "lineEnd": 24,
                       "columnEnd": 1
                     }
                   }
@@ -1868,9 +1868,9 @@
         "location": {
           "range": {
             "file": { "key": "test.m" },
-            "lineBegin": 11,
+            "lineBegin": 19,
             "columnBegin": 1,
-            "lineEnd": 11,
+            "lineEnd": 19,
             "columnEnd": 13
           }
         }
@@ -1895,9 +1895,9 @@
                 "isAccessor": true,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 11,
+                  "lineBegin": 19,
                   "columnBegin": 1,
-                  "lineEnd": 11,
+                  "lineEnd": 19,
                   "columnEnd": 13
                 }
               }
@@ -1921,9 +1921,9 @@
                     "id": { "interface_": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 7,
+                      "lineEnd": 15,
                       "columnEnd": 4
                     }
                   }
@@ -1942,9 +1942,9 @@
                     "kind": { "ivar": { "synthesize": false } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 2,
+                      "lineBegin": 10,
                       "columnBegin": 3,
-                      "lineEnd": 2,
+                      "lineEnd": 10,
                       "columnEnd": 8
                     }
                   }
@@ -1962,9 +1962,9 @@
                     "isAtomic": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 1,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -1983,9 +1983,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 35,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -2009,9 +2009,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 35,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 35
                     }
                   }
@@ -2023,9 +2023,9 @@
                     "id": { "implementation": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 9,
+                      "lineBegin": 17,
                       "columnBegin": 1,
-                      "lineEnd": 18,
+                      "lineEnd": 26,
                       "columnEnd": 1
                     }
                   }
@@ -2044,9 +2044,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 11,
+                      "lineBegin": 19,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 13
                     }
                   }
@@ -2070,9 +2070,9 @@
                     "isAccessor": true,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 11,
+                      "lineBegin": 19,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 13
                     }
                   }
@@ -2091,9 +2091,9 @@
                     "isAccessor": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 13,
+                      "lineBegin": 21,
                       "columnBegin": 1,
-                      "lineEnd": 16,
+                      "lineEnd": 24,
                       "columnEnd": 1
                     }
                   }
@@ -2112,9 +2112,9 @@
         "location": {
           "range": {
             "file": { "key": "test.m" },
-            "lineBegin": 13,
+            "lineBegin": 21,
             "columnBegin": 1,
-            "lineEnd": 16,
+            "lineEnd": 24,
             "columnEnd": 1
           }
         }
@@ -2134,9 +2134,9 @@
                 "isAccessor": false,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 13,
+                  "lineBegin": 21,
                   "columnBegin": 1,
-                  "lineEnd": 16,
+                  "lineEnd": 24,
                   "columnEnd": 1
                 }
               }

@@ -3,14 +3,14 @@
   {
     "key": {
       "macro": { "key": "M1" },
-      "name": { "begin": 69, "end": 71 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 3, "column": 9 },
+      "name": { "begin": 235, "end": 237 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 9, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 5,
+        "lineBegin": 11,
         "columnBegin": 1,
-        "lineEnd": 5,
+        "lineEnd": 11,
         "columnEnd": 2
       }
     }
@@ -18,14 +18,14 @@
   {
     "key": {
       "macro": { "key": "M1" },
-      "name": { "begin": 76, "end": 78 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 3, "column": 9 },
+      "name": { "begin": 242, "end": 244 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 9, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 6,
+        "lineBegin": 12,
         "columnBegin": 1,
-        "lineEnd": 6,
+        "lineEnd": 12,
         "columnEnd": 2
       }
     }
@@ -33,14 +33,14 @@
   {
     "key": {
       "macro": { "key": "ABCD" },
-      "name": { "begin": 106, "end": 110 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 8, "column": 9 },
+      "name": { "begin": 272, "end": 276 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 14, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 10,
+        "lineBegin": 16,
         "columnBegin": 1,
-        "lineEnd": 10,
+        "lineEnd": 16,
         "columnEnd": 8
       }
     }
@@ -48,14 +48,14 @@
   {
     "key": {
       "macro": { "key": "M1" },
-      "name": { "begin": 106, "end": 114 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 3, "column": 9 },
+      "name": { "begin": 272, "end": 280 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 9, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 10,
+        "lineBegin": 16,
         "columnBegin": 1,
-        "lineEnd": 10,
+        "lineEnd": 16,
         "columnEnd": 8
       }
     }
@@ -63,14 +63,14 @@
   {
     "key": {
       "macro": { "key": "ABCD" },
-      "name": { "begin": 116, "end": 120 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 8, "column": 9 },
+      "name": { "begin": 282, "end": 286 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 14, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 11,
+        "lineBegin": 17,
         "columnBegin": 1,
-        "lineEnd": 11,
+        "lineEnd": 17,
         "columnEnd": 8
       }
     }
@@ -78,14 +78,14 @@
   {
     "key": {
       "macro": { "key": "M1" },
-      "name": { "begin": 116, "end": 124 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 3, "column": 9 },
+      "name": { "begin": 282, "end": 290 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 9, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 11,
+        "lineBegin": 17,
         "columnBegin": 1,
-        "lineEnd": 11,
+        "lineEnd": 17,
         "columnEnd": 8
       }
     }
@@ -93,14 +93,14 @@
   {
     "key": {
       "macro": { "key": "ABCD" },
-      "name": { "begin": 204, "end": 217 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 8, "column": 9 },
+      "name": { "begin": 370, "end": 383 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 14, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 19,
+        "lineBegin": 25,
         "columnBegin": 1,
-        "lineEnd": 19,
+        "lineEnd": 25,
         "columnEnd": 13
       }
     }
@@ -108,14 +108,14 @@
   {
     "key": {
       "macro": { "key": "HELLOHELLO" },
-      "name": { "begin": 204, "end": 214 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 13, "column": 9 },
+      "name": { "begin": 370, "end": 380 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 19, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 19,
+        "lineBegin": 25,
         "columnBegin": 1,
-        "lineEnd": 19,
+        "lineEnd": 25,
         "columnEnd": 13
       }
     }
@@ -123,14 +123,14 @@
   {
     "key": {
       "macro": { "key": "M1" },
-      "name": { "begin": 204, "end": 217 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 3, "column": 9 },
+      "name": { "begin": 370, "end": 383 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 9, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 19,
+        "lineBegin": 25,
         "columnBegin": 1,
-        "lineEnd": 19,
+        "lineEnd": 25,
         "columnEnd": 13
       }
     }
@@ -138,14 +138,14 @@
   {
     "key": {
       "macro": { "key": "ABCD" },
-      "name": { "begin": 219, "end": 237 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 8, "column": 9 },
+      "name": { "begin": 385, "end": 403 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 14, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 20,
+        "lineBegin": 26,
         "columnBegin": 1,
-        "lineEnd": 20,
+        "lineEnd": 26,
         "columnEnd": 18
       }
     }
@@ -153,14 +153,14 @@
   {
     "key": {
       "macro": { "key": "HELLOHELLO" },
-      "name": { "begin": 219, "end": 229 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 13, "column": 9 },
+      "name": { "begin": 385, "end": 395 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 19, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 20,
+        "lineBegin": 26,
         "columnBegin": 1,
-        "lineEnd": 20,
+        "lineEnd": 26,
         "columnEnd": 18
       }
     }
@@ -168,14 +168,14 @@
   {
     "key": {
       "macro": { "key": "M1" },
-      "name": { "begin": 219, "end": 237 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 3, "column": 9 },
+      "name": { "begin": 385, "end": 403 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 9, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 20,
+        "lineBegin": 26,
         "columnBegin": 1,
-        "lineEnd": 20,
+        "lineEnd": 26,
         "columnEnd": 18
       }
     }
@@ -183,14 +183,14 @@
   {
     "key": {
       "macro": { "key": "ABCD" },
-      "name": { "begin": 319, "end": 344 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 8, "column": 9 },
+      "name": { "begin": 485, "end": 510 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 14, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 29,
+        "lineBegin": 35,
         "columnBegin": 1,
-        "lineEnd": 29,
+        "lineEnd": 35,
         "columnEnd": 25
       }
     }
@@ -198,14 +198,14 @@
   {
     "key": {
       "macro": { "key": "FOOBAR" },
-      "name": { "begin": 319, "end": 325 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 22, "column": 9 },
+      "name": { "begin": 485, "end": 491 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 28, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 29,
+        "lineBegin": 35,
         "columnBegin": 1,
-        "lineEnd": 29,
+        "lineEnd": 35,
         "columnEnd": 25
       }
     }
@@ -213,14 +213,14 @@
   {
     "key": {
       "macro": { "key": "M1" },
-      "name": { "begin": 319, "end": 344 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 3, "column": 9 },
+      "name": { "begin": 485, "end": 510 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 9, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 29,
+        "lineBegin": 35,
         "columnBegin": 1,
-        "lineEnd": 29,
+        "lineEnd": 35,
         "columnEnd": 25
       }
     }
@@ -228,14 +228,14 @@
   {
     "key": {
       "macro": { "key": "M1" },
-      "name": { "begin": 330, "end": 332 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 3, "column": 9 },
+      "name": { "begin": 496, "end": 498 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 9, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 29,
+        "lineBegin": 35,
         "columnBegin": 12,
-        "lineEnd": 29,
+        "lineEnd": 35,
         "columnEnd": 13
       }
     }
@@ -243,14 +243,14 @@
   {
     "key": {
       "macro": { "key": "ABCD" },
-      "name": { "begin": 336, "end": 340 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 8, "column": 9 },
+      "name": { "begin": 502, "end": 506 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 14, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 29,
+        "lineBegin": 35,
         "columnBegin": 18,
-        "lineEnd": 29,
+        "lineEnd": 35,
         "columnEnd": 24
       }
     }
@@ -258,14 +258,14 @@
   {
     "key": {
       "macro": { "key": "ABCD" },
-      "name": { "begin": 346, "end": 391 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 8, "column": 9 },
+      "name": { "begin": 512, "end": 557 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 14, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 30,
+        "lineBegin": 36,
         "columnBegin": 1,
-        "lineEnd": 30,
+        "lineEnd": 36,
         "columnEnd": 45
       }
     }
@@ -273,14 +273,14 @@
   {
     "key": {
       "macro": { "key": "FOOBAR" },
-      "name": { "begin": 346, "end": 352 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 22, "column": 9 },
+      "name": { "begin": 512, "end": 518 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 28, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 30,
+        "lineBegin": 36,
         "columnBegin": 1,
-        "lineEnd": 30,
+        "lineEnd": 36,
         "columnEnd": 45
       }
     }
@@ -288,14 +288,14 @@
   {
     "key": {
       "macro": { "key": "M1" },
-      "name": { "begin": 346, "end": 391 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 3, "column": 9 },
+      "name": { "begin": 512, "end": 557 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 9, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 30,
+        "lineBegin": 36,
         "columnBegin": 1,
-        "lineEnd": 30,
+        "lineEnd": 36,
         "columnEnd": 45
       }
     }
@@ -303,14 +303,14 @@
   {
     "key": {
       "macro": { "key": "HELLOHELLO" },
-      "name": { "begin": 358, "end": 368 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 13, "column": 9 },
+      "name": { "begin": 524, "end": 534 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 19, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 30,
+        "lineBegin": 36,
         "columnBegin": 13,
-        "lineEnd": 30,
+        "lineEnd": 36,
         "columnEnd": 25
       }
     }
@@ -318,14 +318,14 @@
   {
     "key": {
       "macro": { "key": "HELLOHELLO" },
-      "name": { "begin": 375, "end": 385 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 13, "column": 9 },
+      "name": { "begin": 541, "end": 551 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 19, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 30,
+        "lineBegin": 36,
         "columnBegin": 30,
-        "lineEnd": 30,
+        "lineEnd": 36,
         "columnEnd": 42
       }
     }
@@ -333,14 +333,14 @@
   {
     "key": {
       "macro": { "key": "M1" },
-      "name": { "begin": 410, "end": 413 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 3, "column": 9 },
+      "name": { "begin": 576, "end": 579 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 9, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 34,
+        "lineBegin": 40,
         "columnBegin": 1,
-        "lineEnd": 34,
+        "lineEnd": 40,
         "columnEnd": 3
       }
     }
@@ -348,14 +348,14 @@
   {
     "key": {
       "macro": { "key": "XYZ" },
-      "name": { "begin": 410, "end": 413 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 32, "column": 9 },
+      "name": { "begin": 576, "end": 579 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 38, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 34,
+        "lineBegin": 40,
         "columnBegin": 1,
-        "lineEnd": 34,
+        "lineEnd": 40,
         "columnEnd": 3
       }
     }
@@ -363,14 +363,14 @@
   {
     "key": {
       "macro": { "key": "ABCD" },
-      "name": { "begin": 445, "end": 448 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 8, "column": 9 },
+      "name": { "begin": 611, "end": 614 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 14, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 38,
+        "lineBegin": 44,
         "columnBegin": 1,
-        "lineEnd": 38,
+        "lineEnd": 44,
         "columnEnd": 3
       }
     }
@@ -378,14 +378,14 @@
   {
     "key": {
       "macro": { "key": "M1" },
-      "name": { "begin": 445, "end": 448 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 3, "column": 9 },
+      "name": { "begin": 611, "end": 614 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 9, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 38,
+        "lineBegin": 44,
         "columnBegin": 1,
-        "lineEnd": 38,
+        "lineEnd": 44,
         "columnEnd": 3
       }
     }
@@ -393,14 +393,14 @@
   {
     "key": {
       "macro": { "key": "ZYX" },
-      "name": { "begin": 445, "end": 448 },
-      "definition": { "file": { "key": "test.cpp" }, "line": 36, "column": 9 },
+      "name": { "begin": 611, "end": 614 },
+      "definition": { "file": { "key": "test.cpp" }, "line": 42, "column": 9 },
       "expand": true,
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 38,
+        "lineBegin": 44,
         "columnBegin": 1,
-        "lineEnd": 38,
+        "lineEnd": 44,
         "columnEnd": 3
       }
     }

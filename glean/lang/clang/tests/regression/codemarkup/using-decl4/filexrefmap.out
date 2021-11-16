@@ -22,16 +22,16 @@
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 7,
+                    "lineBegin": 15,
                     "columnBegin": 1,
-                    "lineEnd": 7,
+                    "lineEnd": 15,
                     "columnEnd": 31
                   }
                 }
               }
             }
           },
-          "ranges": [ { "offset": 148, "length": 2 } ]
+          "ranges": [ { "offset": 367, "length": 2 } ]
         },
         {
           "target": {
@@ -51,16 +51,16 @@
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 8,
+                    "lineBegin": 16,
                     "columnBegin": 1,
-                    "lineEnd": 8,
+                    "lineEnd": 16,
                     "columnEnd": 31
                   }
                 }
               }
             }
           },
-          "ranges": [ { "offset": 202, "length": 2 } ]
+          "ranges": [ { "offset": 421, "length": 2 } ]
         },
         {
           "target": {
@@ -95,9 +95,9 @@
                   "kind": { "struct_": { } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 14,
+                    "lineBegin": 22,
                     "columnBegin": 3,
-                    "lineEnd": 14,
+                    "lineEnd": 22,
                     "columnEnd": 15
                   }
                 }
@@ -105,7 +105,7 @@
             }
           },
           "ranges": [
-            { "offset": 269, "length": 3 },
+            { "offset": 488, "length": 3 },
             { "offset": 13, "length": 3 },
             { "offset": 53, "length": 3 },
             { "offset": 188, "length": 3 },
@@ -134,9 +134,9 @@
                   "kind": { "struct_": { } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 13,
+                    "lineBegin": 21,
                     "columnBegin": 1,
-                    "lineEnd": 17,
+                    "lineEnd": 25,
                     "columnEnd": 1
                   }
                 }
@@ -144,7 +144,7 @@
             }
           },
           "ranges": [
-            { "offset": 277, "length": 3 },
+            { "offset": 496, "length": 3 },
             { "offset": 53, "length": 3 },
             { "offset": 206, "length": 3 },
             { "offset": 76, "length": 3 },
@@ -174,9 +174,9 @@
                   "kind": { "struct_": { } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 5,
+                    "lineBegin": 13,
                     "columnBegin": 1,
-                    "lineEnd": 5,
+                    "lineEnd": 13,
                     "columnEnd": 13
                   }
                 }
@@ -184,7 +184,7 @@
             }
           },
           "ranges": [
-            { "offset": 299, "length": 3 },
+            { "offset": 518, "length": 3 },
             { "offset": 251, "length": 3 },
             { "offset": 204, "length": 3 },
             { "offset": 14, "length": 3 },
@@ -204,9 +204,9 @@
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 3,
+                    "lineBegin": 11,
                     "columnBegin": 1,
-                    "lineEnd": 21,
+                    "lineEnd": 29,
                     "columnEnd": 1
                   }
                 }
@@ -214,7 +214,7 @@
             }
           },
           "ranges": [
-            { "offset": 356, "length": 2 },
+            { "offset": 575, "length": 2 },
             { "offset": 598, "length": 2 }
           ]
         },
@@ -226,9 +226,9 @@
                   "name": { "key": { "name": { "key": "N1" } } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 1,
+                    "lineBegin": 9,
                     "columnBegin": 1,
-                    "lineEnd": 25,
+                    "lineEnd": 33,
                     "columnEnd": 1
                   }
                 }
@@ -236,7 +236,7 @@
             }
           },
           "ranges": [
-            { "offset": 418, "length": 2 },
+            { "offset": 637, "length": 2 },
             { "offset": 532, "length": 2 }
           ]
         },
@@ -248,21 +248,21 @@
                   "name": { "key": { "name": { "key": "M1" } } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 27,
+                    "lineBegin": 35,
                     "columnBegin": 1,
-                    "lineEnd": 27,
+                    "lineEnd": 35,
                     "columnEnd": 31
                   }
                 }
               }
             }
           },
-          "ranges": [ { "offset": 488, "length": 2 } ]
+          "ranges": [ { "offset": 707, "length": 2 } ]
         }
       ],
       "variable": [
         [
-          { "offset": 304, "length": 3 },
+          { "offset": 523, "length": 3 },
           { "offset": 36, "length": 3 },
           { "offset": 236, "length": 3 },
           { "offset": 183, "length": 3 },
@@ -271,12 +271,12 @@
           { "offset": 35, "length": 3 }
         ],
         [
-          { "offset": 518, "length": 3 },
+          { "offset": 737, "length": 3 },
           { "offset": 9, "length": 3 },
           { "offset": 218, "length": 3 }
         ],
         [
-          { "offset": 677, "length": 6 },
+          { "offset": 896, "length": 6 },
           { "offset": 218, "length": 6 },
           { "offset": 220, "length": 6 }
         ]

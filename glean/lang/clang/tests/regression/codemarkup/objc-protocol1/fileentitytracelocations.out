@@ -14,9 +14,9 @@
                     "id": { "interface_": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 4
                     }
                   }
@@ -43,9 +43,9 @@
                     "isAccessor": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 2,
+                      "lineBegin": 10,
                       "columnBegin": 1,
-                      "lineEnd": 2,
+                      "lineEnd": 10,
                       "columnEnd": 36
                     }
                   }
@@ -57,9 +57,9 @@
                     "id": { "protocol": { "key": "Foo" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 1,
-                      "lineEnd": 6,
+                      "lineEnd": 14,
                       "columnEnd": 4
                     }
                   }
@@ -84,9 +84,9 @@
                     },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 8,
+                      "lineBegin": 16,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 1
                     }
                   }
@@ -105,9 +105,9 @@
         "location": {
           "range": {
             "file": { "key": "test.m" },
-            "lineBegin": 5,
+            "lineBegin": 13,
             "columnBegin": 1,
-            "lineEnd": 6,
+            "lineEnd": 14,
             "columnEnd": 4
           }
         }
@@ -120,9 +120,9 @@
                 "id": { "protocol": { "key": "Foo" } },
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 5,
+                  "lineBegin": 13,
                   "columnBegin": 1,
-                  "lineEnd": 6,
+                  "lineEnd": 14,
                   "columnEnd": 4
                 }
               }
@@ -146,9 +146,9 @@
                     "id": { "interface_": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 4
                     }
                   }
@@ -175,9 +175,9 @@
                     "isAccessor": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 2,
+                      "lineBegin": 10,
                       "columnBegin": 1,
-                      "lineEnd": 2,
+                      "lineEnd": 10,
                       "columnEnd": 36
                     }
                   }
@@ -189,9 +189,9 @@
                     "id": { "protocol": { "key": "Foo" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 1,
-                      "lineEnd": 6,
+                      "lineEnd": 14,
                       "columnEnd": 4
                     }
                   }
@@ -216,9 +216,9 @@
                     },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 8,
+                      "lineBegin": 16,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 1
                     }
                   }
@@ -237,9 +237,9 @@
         "location": {
           "range": {
             "file": { "key": "test.m" },
-            "lineBegin": 1,
+            "lineBegin": 9,
             "columnBegin": 1,
-            "lineEnd": 3,
+            "lineEnd": 11,
             "columnEnd": 4
           }
         }
@@ -252,9 +252,9 @@
                 "id": { "interface_": { "key": "J" } },
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 1,
+                  "lineBegin": 9,
                   "columnBegin": 1,
-                  "lineEnd": 3,
+                  "lineEnd": 11,
                   "columnEnd": 4
                 }
               }
@@ -278,9 +278,9 @@
                     "id": { "interface_": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 4
                     }
                   }
@@ -307,9 +307,9 @@
                     "isAccessor": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 2,
+                      "lineBegin": 10,
                       "columnBegin": 1,
-                      "lineEnd": 2,
+                      "lineEnd": 10,
                       "columnEnd": 36
                     }
                   }
@@ -321,9 +321,9 @@
                     "id": { "protocol": { "key": "Foo" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 1,
-                      "lineEnd": 6,
+                      "lineEnd": 14,
                       "columnEnd": 4
                     }
                   }
@@ -348,9 +348,9 @@
                     },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 8,
+                      "lineBegin": 16,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 1
                     }
                   }
@@ -369,9 +369,9 @@
         "location": {
           "range": {
             "file": { "key": "test.m" },
-            "lineBegin": 8,
+            "lineBegin": 16,
             "columnBegin": 1,
-            "lineEnd": 11,
+            "lineEnd": 19,
             "columnEnd": 1
           }
         }
@@ -397,9 +397,9 @@
                 },
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 8,
+                  "lineBegin": 16,
                   "columnBegin": 1,
-                  "lineEnd": 11,
+                  "lineEnd": 19,
                   "columnEnd": 1
                 }
               }
@@ -423,9 +423,9 @@
                     "id": { "interface_": { "key": "J" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 4
                     }
                   }
@@ -452,9 +452,9 @@
                     "isAccessor": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 2,
+                      "lineBegin": 10,
                       "columnBegin": 1,
-                      "lineEnd": 2,
+                      "lineEnd": 10,
                       "columnEnd": 36
                     }
                   }
@@ -466,9 +466,9 @@
                     "id": { "protocol": { "key": "Foo" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 5,
+                      "lineBegin": 13,
                       "columnBegin": 1,
-                      "lineEnd": 6,
+                      "lineEnd": 14,
                       "columnEnd": 4
                     }
                   }
@@ -493,9 +493,9 @@
                     },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 8,
+                      "lineBegin": 16,
                       "columnBegin": 1,
-                      "lineEnd": 11,
+                      "lineEnd": 19,
                       "columnEnd": 1
                     }
                   }
@@ -514,9 +514,9 @@
         "location": {
           "range": {
             "file": { "key": "test.m" },
-            "lineBegin": 2,
+            "lineBegin": 10,
             "columnBegin": 1,
-            "lineEnd": 2,
+            "lineEnd": 10,
             "columnEnd": 36
           }
         }
@@ -544,9 +544,9 @@
                 "isAccessor": false,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 2,
+                  "lineBegin": 10,
                   "columnBegin": 1,
-                  "lineEnd": 2,
+                  "lineEnd": 10,
                   "columnEnd": 36
                 }
               }

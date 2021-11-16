@@ -9,9 +9,9 @@
             "id": { "protocol": { "key": "Foo" } },
             "source": {
               "file": { "key": "test.mm" },
-              "lineBegin": 1,
+              "lineBegin": 9,
               "columnBegin": 1,
-              "lineEnd": 2,
+              "lineEnd": 10,
               "columnEnd": 4
             }
           }
@@ -27,9 +27,9 @@
             "kind": 1,
             "source": {
               "file": { "key": "test.mm" },
-              "lineBegin": 4,
+              "lineBegin": 12,
               "columnBegin": 1,
-              "lineEnd": 4,
+              "lineEnd": 12,
               "columnEnd": 1
             }
           }
@@ -49,9 +49,9 @@
             "kind": 0,
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 3,
+              "lineBegin": 9,
               "columnBegin": 1,
-              "lineEnd": 3,
+              "lineEnd": 9,
               "columnEnd": 13
             }
           }
@@ -67,9 +67,9 @@
             "kind": 1,
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 4,
+              "lineBegin": 10,
               "columnBegin": 1,
-              "lineEnd": 4,
+              "lineEnd": 10,
               "columnEnd": 11
             }
           }
@@ -87,9 +87,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 6,
+              "lineBegin": 12,
               "columnBegin": 1,
-              "lineEnd": 6,
+              "lineEnd": 12,
               "columnEnd": 3
             }
           }
@@ -107,9 +107,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 7,
+              "lineBegin": 13,
               "columnBegin": 1,
-              "lineEnd": 7,
+              "lineEnd": 13,
               "columnEnd": 3
             }
           }

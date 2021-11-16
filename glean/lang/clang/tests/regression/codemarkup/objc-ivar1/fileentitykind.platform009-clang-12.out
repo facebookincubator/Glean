@@ -18,9 +18,9 @@
                 "isAccessor": true,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 11,
+                  "lineBegin": 19,
                   "columnBegin": 1,
-                  "lineEnd": 11,
+                  "lineEnd": 19,
                   "columnEnd": 13
                 }
               }
@@ -49,9 +49,9 @@
                 "isAccessor": true,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 5,
+                  "lineBegin": 13,
                   "columnBegin": 35,
-                  "lineEnd": 5,
+                  "lineEnd": 13,
                   "columnEnd": 35
                 }
               }
@@ -85,9 +85,9 @@
                 "isAccessor": true,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 11,
+                  "lineBegin": 19,
                   "columnBegin": 1,
-                  "lineEnd": 11,
+                  "lineEnd": 19,
                   "columnEnd": 13
                 }
               }
@@ -121,9 +121,9 @@
                 "isAccessor": true,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 5,
+                  "lineBegin": 13,
                   "columnBegin": 35,
-                  "lineEnd": 5,
+                  "lineEnd": 13,
                   "columnEnd": 35
                 }
               }
@@ -152,9 +152,9 @@
                 "isAccessor": false,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 13,
+                  "lineBegin": 21,
                   "columnBegin": 1,
-                  "lineEnd": 16,
+                  "lineEnd": 24,
                   "columnEnd": 1
                 }
               }
@@ -182,9 +182,9 @@
                 "isAtomic": false,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 5,
+                  "lineBegin": 13,
                   "columnBegin": 1,
-                  "lineEnd": 5,
+                  "lineEnd": 13,
                   "columnEnd": 35
                 }
               }
@@ -213,9 +213,9 @@
                 "kind": { "ivar": { "synthesize": false } },
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 2,
+                  "lineBegin": 10,
                   "columnBegin": 3,
-                  "lineEnd": 2,
+                  "lineEnd": 10,
                   "columnEnd": 8
                 }
               }

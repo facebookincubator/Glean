@@ -9,9 +9,9 @@
         "location": {
           "range": {
             "file": { "key": "test.m" },
-            "lineBegin": 1,
+            "lineBegin": 9,
             "columnBegin": 1,
-            "lineEnd": 6,
+            "lineEnd": 14,
             "columnEnd": 4
           }
         }
@@ -24,9 +24,9 @@
                 "id": { "interface_": { "key": "I" } },
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 1,
+                  "lineBegin": 9,
                   "columnBegin": 1,
-                  "lineEnd": 6,
+                  "lineEnd": 14,
                   "columnEnd": 4
                 }
               }
@@ -45,9 +45,9 @@
         "location": {
           "range": {
             "file": { "key": "test.m" },
-            "lineBegin": 8,
+            "lineBegin": 16,
             "columnBegin": 1,
-            "lineEnd": 13,
+            "lineEnd": 21,
             "columnEnd": 1
           }
         }
@@ -73,9 +73,9 @@
                 },
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 8,
+                  "lineBegin": 16,
                   "columnBegin": 1,
-                  "lineEnd": 13,
+                  "lineEnd": 21,
                   "columnEnd": 1
                 }
               }
@@ -94,9 +94,9 @@
         "location": {
           "range": {
             "file": { "key": "test.m" },
-            "lineBegin": 3,
+            "lineBegin": 11,
             "columnBegin": 1,
-            "lineEnd": 3,
+            "lineEnd": 11,
             "columnEnd": 11
           }
         }
@@ -116,9 +116,9 @@
                 "isAccessor": false,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 3,
+                  "lineBegin": 11,
                   "columnBegin": 1,
-                  "lineEnd": 3,
+                  "lineEnd": 11,
                   "columnEnd": 11
                 }
               }
@@ -137,9 +137,9 @@
         "location": {
           "range": {
             "file": { "key": "test.m" },
-            "lineBegin": 4,
+            "lineBegin": 12,
             "columnBegin": 1,
-            "lineEnd": 4,
+            "lineEnd": 12,
             "columnEnd": 24
           }
         }
@@ -164,9 +164,9 @@
                 "isAccessor": false,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 4,
+                  "lineBegin": 12,
                   "columnBegin": 1,
-                  "lineEnd": 4,
+                  "lineEnd": 12,
                   "columnEnd": 24
                 }
               }

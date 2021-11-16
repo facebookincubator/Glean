@@ -16,16 +16,16 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 8,
+              "lineBegin": 14,
               "columnBegin": 1,
-              "lineEnd": 8,
+              "lineEnd": 14,
               "columnEnd": 9
             }
           }
         }
       },
       "file": { "key": "test.cpp" },
-      "span": { "start": 53, "length": 104 }
+      "span": { "start": 219, "length": 104 }
     }
   },
   {
@@ -50,16 +50,16 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 13,
+              "lineBegin": 19,
               "columnBegin": 1,
-              "lineEnd": 13,
+              "lineEnd": 19,
               "columnEnd": 22
             }
           }
         }
       },
       "file": { "key": "test.cpp" },
-      "span": { "start": 169, "length": 55 }
+      "span": { "start": 335, "length": 55 }
     }
   },
   {
@@ -85,16 +85,16 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 18,
+              "lineBegin": 24,
               "columnBegin": 1,
-              "lineEnd": 18,
+              "lineEnd": 24,
               "columnEnd": 24
             }
           }
         }
       },
       "file": { "key": "test.cpp" },
-      "span": { "start": 249, "length": 55 }
+      "span": { "start": 415, "length": 55 }
     }
   },
   {
@@ -113,16 +113,16 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 23,
+              "lineBegin": 29,
               "columnBegin": 1,
-              "lineEnd": 23,
+              "lineEnd": 29,
               "columnEnd": 8
             }
           }
         }
       },
       "file": { "key": "test.cpp" },
-      "span": { "start": 331, "length": 54 }
+      "span": { "start": 497, "length": 54 }
     }
   },
   {
@@ -141,16 +141,16 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 28,
+              "lineBegin": 34,
               "columnBegin": 1,
-              "lineEnd": 28,
+              "lineEnd": 34,
               "columnEnd": 16
             }
           }
         }
       },
       "file": { "key": "test.cpp" },
-      "span": { "start": 396, "length": 62 }
+      "span": { "start": 562, "length": 62 }
     }
   }
 ]

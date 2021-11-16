@@ -10,14 +10,14 @@
           "location": {
             "range": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 1,
+              "lineBegin": 9,
               "columnBegin": 1,
-              "lineEnd": 3,
+              "lineEnd": 11,
               "columnEnd": 1
             }
           }
         },
-        "source": { "span": { "start": 59, "length": 2 } }
+        "source": { "span": { "start": 278, "length": 2 } }
       },
       "entity": {
         "cxx": {
@@ -27,9 +27,9 @@
                 "name": { "key": { "name": { "key": "N1" } } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 1,
+                  "lineBegin": 9,
                   "columnBegin": 1,
-                  "lineEnd": 3,
+                  "lineEnd": 11,
                   "columnEnd": 1
                 }
               }
@@ -49,14 +49,14 @@
           "location": {
             "range": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 11,
+              "lineBegin": 19,
               "columnBegin": 1,
-              "lineEnd": 13,
+              "lineEnd": 21,
               "columnEnd": 1
             }
           }
         },
-        "source": { "span": { "start": 206, "length": 2 } }
+        "source": { "span": { "start": 425, "length": 2 } }
       },
       "entity": {
         "cxx": {
@@ -66,9 +66,9 @@
                 "name": { "key": { "name": { "key": "N2" } } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
+                  "lineBegin": 19,
                   "columnBegin": 1,
-                  "lineEnd": 13,
+                  "lineEnd": 21,
                   "columnEnd": 1
                 }
               }
@@ -88,14 +88,14 @@
           "location": {
             "range": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 15,
+              "lineBegin": 23,
               "columnBegin": 1,
-              "lineEnd": 17,
+              "lineEnd": 25,
               "columnEnd": 1
             }
           }
         },
-        "source": { "span": { "start": 221, "length": 2 } }
+        "source": { "span": { "start": 440, "length": 2 } }
       },
       "entity": {
         "cxx": {
@@ -105,9 +105,9 @@
                 "name": { "key": { "name": { "key": "N3" } } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 15,
+                  "lineBegin": 23,
                   "columnBegin": 1,
-                  "lineEnd": 17,
+                  "lineEnd": 25,
                   "columnEnd": 1
                 }
               }

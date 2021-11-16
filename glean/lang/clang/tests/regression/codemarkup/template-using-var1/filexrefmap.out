@@ -12,9 +12,9 @@
                   "name": { "key": { "name": { "key": "N1" } } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 1,
+                    "lineBegin": 9,
                     "columnBegin": 1,
-                    "lineEnd": 8,
+                    "lineEnd": 16,
                     "columnEnd": 1
                   }
                 }
@@ -22,18 +22,18 @@
             }
           },
           "ranges": [
-            { "offset": 217, "length": 2 },
+            { "offset": 436, "length": 2 },
             { "offset": 94, "length": 2 }
           ]
         }
       ],
       "variable": [
-        [ { "offset": 235, "length": 3 }, { "offset": 38, "length": 3 } ],
-        [ { "offset": 247, "length": 3 } ],
-        [ { "offset": 260, "length": 3 } ],
-        [ { "offset": 334, "length": 3 }, { "offset": 38, "length": 3 } ],
-        [ { "offset": 346, "length": 3 } ],
-        [ { "offset": 359, "length": 3 } ]
+        [ { "offset": 454, "length": 3 }, { "offset": 38, "length": 3 } ],
+        [ { "offset": 466, "length": 3 } ],
+        [ { "offset": 479, "length": 3 } ],
+        [ { "offset": 553, "length": 3 }, { "offset": 38, "length": 3 } ],
+        [ { "offset": 565, "length": 3 } ],
+        [ { "offset": 578, "length": 3 } ]
       ]
     }
   }

@@ -1,4 +1,10 @@
--- Copyright (c) Facebook, Inc. and its affiliates.
+{-
+  Copyright (c) Facebook, Inc. and its affiliates.
+  All rights reserved.
+
+  This source code is licensed under the BSD-style license found in the
+  LICENSE file in the root directory of this source tree.
+-}
 
 {- | A Catalog stores metadata about available databases.
 A thread running Glean.Database.Backup.backuper will continuously read the

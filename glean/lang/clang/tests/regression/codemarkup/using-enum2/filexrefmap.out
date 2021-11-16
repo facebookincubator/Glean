@@ -17,16 +17,16 @@
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 11,
+                    "lineBegin": 19,
                     "columnBegin": 1,
-                    "lineEnd": 15,
+                    "lineEnd": 23,
                     "columnEnd": 1
                   }
                 }
               }
             }
           },
-          "ranges": [ { "offset": 207, "length": 2 } ]
+          "ranges": [ { "offset": 426, "length": 2 } ]
         },
         {
           "target": {
@@ -46,19 +46,19 @@
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 5,
+                    "lineBegin": 13,
                     "columnBegin": 1,
-                    "lineEnd": 6,
+                    "lineEnd": 14,
                     "columnEnd": 1
                   }
                 }
               }
             }
           },
-          "ranges": [ { "offset": 211, "length": 2 } ]
+          "ranges": [ { "offset": 430, "length": 2 } ]
         }
       ],
-      "variable": [ [ { "offset": 228, "length": 2 } ] ]
+      "variable": [ [ { "offset": 447, "length": 2 } ] ]
     }
   }
 ]

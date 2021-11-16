@@ -24,9 +24,9 @@
                 },
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 8,
+                  "lineBegin": 16,
                   "columnBegin": 1,
-                  "lineEnd": 11,
+                  "lineEnd": 19,
                   "columnEnd": 1
                 }
               }
@@ -63,9 +63,9 @@
                 "isAccessor": false,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 2,
+                  "lineBegin": 10,
                   "columnBegin": 1,
-                  "lineEnd": 2,
+                  "lineEnd": 10,
                   "columnEnd": 36
                 }
               }

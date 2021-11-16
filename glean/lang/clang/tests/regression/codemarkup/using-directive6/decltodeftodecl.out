@@ -18,9 +18,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 11,
+              "lineBegin": 19,
               "columnBegin": 1,
-              "lineEnd": 13,
+              "lineEnd": 21,
               "columnEnd": 1
             }
           }
@@ -42,7 +42,39 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 11,
+              "lineBegin": 19,
+              "columnBegin": 1,
+              "lineEnd": 21,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "namespace_": {
+          "key": {
+            "name": { "key": { "name": { "key": "N1" } } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 1,
+              "lineEnd": 13,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "namespace_": {
+          "key": {
+            "name": { "key": { "name": { "key": "N1" } } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
               "columnBegin": 1,
               "lineEnd": 13,
               "columnEnd": 1
@@ -60,9 +92,9 @@
             "name": { "key": { "name": { "key": "N1" } } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 1,
+              "lineBegin": 17,
               "columnBegin": 1,
-              "lineEnd": 5,
+              "lineEnd": 23,
               "columnEnd": 1
             }
           }
@@ -74,41 +106,9 @@
             "name": { "key": { "name": { "key": "N1" } } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 1,
+              "lineBegin": 17,
               "columnBegin": 1,
-              "lineEnd": 5,
-              "columnEnd": 1
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "tuplefield0": {
-        "namespace_": {
-          "key": {
-            "name": { "key": { "name": { "key": "N1" } } },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 9,
-              "columnBegin": 1,
-              "lineEnd": 15,
-              "columnEnd": 1
-            }
-          }
-        }
-      },
-      "tuplefield1": {
-        "namespace_": {
-          "key": {
-            "name": { "key": { "name": { "key": "N1" } } },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 9,
-              "columnBegin": 1,
-              "lineEnd": 15,
+              "lineEnd": 23,
               "columnEnd": 1
             }
           }
@@ -132,9 +132,9 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 3,
+              "lineBegin": 11,
               "columnBegin": 1,
-              "lineEnd": 3,
+              "lineEnd": 11,
               "columnEnd": 11
             }
           }
@@ -154,9 +154,9 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 3,
+              "lineBegin": 11,
               "columnBegin": 1,
-              "lineEnd": 3,
+              "lineEnd": 11,
               "columnEnd": 11
             }
           }

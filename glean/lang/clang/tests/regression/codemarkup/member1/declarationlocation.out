@@ -21,9 +21,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 7,
+              "lineBegin": 15,
               "columnBegin": 1,
-              "lineEnd": 7,
+              "lineEnd": 15,
               "columnEnd": 13
             }
           }
@@ -31,9 +31,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 7,
+        "lineBegin": 15,
         "columnBegin": 1,
-        "lineEnd": 7,
+        "lineEnd": 15,
         "columnEnd": 13
       },
       "name": { "key": "bar" }
@@ -60,9 +60,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 19,
+              "lineBegin": 27,
               "columnBegin": 1,
-              "lineEnd": 23,
+              "lineEnd": 31,
               "columnEnd": 1
             }
           }
@@ -70,9 +70,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 19,
+        "lineBegin": 27,
         "columnBegin": 1,
-        "lineEnd": 23,
+        "lineEnd": 31,
         "columnEnd": 1
       },
       "name": { "key": "baz" }
@@ -110,9 +110,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 12,
+              "lineBegin": 20,
               "columnBegin": 3,
-              "lineEnd": 16,
+              "lineEnd": 24,
               "columnEnd": 3
             }
           }
@@ -120,9 +120,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 12,
+        "lineBegin": 20,
         "columnBegin": 3,
-        "lineEnd": 16,
+        "lineEnd": 24,
         "columnEnd": 3
       },
       "name": { "key": "foo" }
@@ -139,9 +139,9 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 9,
+              "lineBegin": 17,
               "columnBegin": 1,
-              "lineEnd": 17,
+              "lineEnd": 25,
               "columnEnd": 1
             }
           }
@@ -149,9 +149,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 9,
+        "lineBegin": 17,
         "columnBegin": 1,
-        "lineEnd": 17,
+        "lineEnd": 25,
         "columnEnd": 1
       },
       "name": { "key": "Foo" }
@@ -168,9 +168,9 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 1,
+              "lineBegin": 9,
               "columnBegin": 1,
-              "lineEnd": 5,
+              "lineEnd": 13,
               "columnEnd": 1
             }
           }
@@ -178,9 +178,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 1,
+        "lineBegin": 9,
         "columnBegin": 1,
-        "lineEnd": 5,
+        "lineEnd": 13,
         "columnEnd": 1
       },
       "name": { "key": "Ptr" }
@@ -211,9 +211,9 @@
             "kind": { "field": { "mutable_": false } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 10,
+              "lineBegin": 18,
               "columnBegin": 3,
-              "lineEnd": 10,
+              "lineEnd": 18,
               "columnEnd": 9
             }
           }
@@ -221,9 +221,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 10,
+        "lineBegin": 18,
         "columnBegin": 3,
-        "lineEnd": 10,
+        "lineEnd": 18,
         "columnEnd": 9
       },
       "name": { "key": "ptr" }
@@ -254,9 +254,9 @@
             "kind": { "field": { "mutable_": false } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 2,
+              "lineBegin": 10,
               "columnBegin": 3,
-              "lineEnd": 2,
+              "lineEnd": 10,
               "columnEnd": 13
             }
           }
@@ -264,9 +264,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 2,
+        "lineBegin": 10,
         "columnBegin": 3,
-        "lineEnd": 2,
+        "lineEnd": 10,
         "columnEnd": 13
       },
       "name": { "key": "value" }

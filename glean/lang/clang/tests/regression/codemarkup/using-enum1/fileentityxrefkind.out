@@ -11,9 +11,9 @@
                 "name": { "key": { "name": { "key": "N1" } } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 1,
+                  "lineBegin": 9,
                   "columnBegin": 1,
-                  "lineEnd": 6,
+                  "lineEnd": 14,
                   "columnEnd": 1
                 }
               }
@@ -45,18 +45,18 @@
                   "isScoped": true,
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 4,
+                    "lineBegin": 12,
                     "columnBegin": 1,
-                    "lineEnd": 4,
+                    "lineEnd": 12,
                     "columnEnd": 27
                   }
                 }
               },
               "source": {
                 "file": { "key": "test.cpp" },
-                "lineBegin": 4,
+                "lineBegin": 12,
                 "columnBegin": 16,
-                "lineEnd": 4,
+                "lineEnd": 12,
                 "columnEnd": 17
               }
             }

@@ -8,16 +8,16 @@
             "id": { "interface_": { "key": "I" } },
             "source": {
               "file": { "key": "test.m" },
-              "lineBegin": 5,
+              "lineBegin": 13,
               "columnBegin": 1,
-              "lineEnd": 28,
+              "lineEnd": 36,
               "columnEnd": 4
             }
           }
         }
       },
       "file": { "key": "test.m" },
-      "span": { "start": 0, "length": 67 }
+      "span": { "start": 219, "length": 67 }
     }
   },
   {
@@ -35,16 +35,16 @@
             "isAccessor": false,
             "source": {
               "file": { "key": "test.m" },
-              "lineBegin": 11,
+              "lineBegin": 19,
               "columnBegin": 1,
-              "lineEnd": 11,
+              "lineEnd": 19,
               "columnEnd": 10
             }
           }
         }
       },
       "file": { "key": "test.m" },
-      "span": { "start": 82, "length": 58 }
+      "span": { "start": 301, "length": 58 }
     }
   },
   {
@@ -67,16 +67,16 @@
             "isAccessor": false,
             "source": {
               "file": { "key": "test.m" },
-              "lineBegin": 16,
+              "lineBegin": 24,
               "columnBegin": 1,
-              "lineEnd": 16,
+              "lineEnd": 24,
               "columnEnd": 18
             }
           }
         }
       },
       "file": { "key": "test.m" },
-      "span": { "start": 152, "length": 59 }
+      "span": { "start": 371, "length": 59 }
     }
   },
   {
@@ -100,16 +100,16 @@
             "isAccessor": false,
             "source": {
               "file": { "key": "test.m" },
-              "lineBegin": 21,
+              "lineBegin": 29,
               "columnBegin": 1,
-              "lineEnd": 21,
+              "lineEnd": 29,
               "columnEnd": 32
             }
           }
         }
       },
       "file": { "key": "test.m" },
-      "span": { "start": 231, "length": 65 }
+      "span": { "start": 450, "length": 65 }
     }
   },
   {
@@ -133,16 +133,16 @@
             "isAccessor": false,
             "source": {
               "file": { "key": "test.m" },
-              "lineBegin": 26,
+              "lineBegin": 34,
               "columnBegin": 1,
-              "lineEnd": 26,
+              "lineEnd": 34,
               "columnEnd": 29
             }
           }
         }
       },
       "file": { "key": "test.m" },
-      "span": { "start": 330, "length": 60 }
+      "span": { "start": 549, "length": 60 }
     }
   }
 ]

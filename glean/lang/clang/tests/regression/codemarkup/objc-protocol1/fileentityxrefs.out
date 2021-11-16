@@ -10,14 +10,14 @@
           "location": {
             "range": {
               "file": { "key": "test.m" },
-              "lineBegin": 5,
+              "lineBegin": 13,
               "columnBegin": 1,
-              "lineEnd": 6,
+              "lineEnd": 14,
               "columnEnd": 4
             }
           }
         },
-        "source": { "span": { "start": 113, "length": 9 } }
+        "source": { "span": { "start": 332, "length": 9 } }
       },
       "entity": {
         "cxx": {
@@ -27,9 +27,9 @@
                 "id": { "protocol": { "key": "Foo" } },
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 5,
+                  "lineBegin": 13,
                   "columnBegin": 1,
-                  "lineEnd": 6,
+                  "lineEnd": 14,
                   "columnEnd": 4
                 }
               }
@@ -49,14 +49,14 @@
           "location": {
             "range": {
               "file": { "key": "test.m" },
-              "lineBegin": 1,
+              "lineBegin": 9,
               "columnBegin": 1,
-              "lineEnd": 3,
+              "lineEnd": 11,
               "columnEnd": 4
             }
           }
         },
-        "source": { "span": { "start": 86, "length": 1 } }
+        "source": { "span": { "start": 305, "length": 1 } }
       },
       "entity": {
         "cxx": {
@@ -66,9 +66,9 @@
                 "id": { "interface_": { "key": "J" } },
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 1,
+                  "lineBegin": 9,
                   "columnBegin": 1,
-                  "lineEnd": 3,
+                  "lineEnd": 11,
                   "columnEnd": 4
                 }
               }
@@ -88,14 +88,14 @@
           "location": {
             "range": {
               "file": { "key": "test.m" },
-              "lineBegin": 2,
+              "lineBegin": 10,
               "columnBegin": 1,
-              "lineEnd": 2,
+              "lineEnd": 10,
               "columnEnd": 36
             }
           }
         },
-        "source": { "span": { "start": 99, "length": 13 } }
+        "source": { "span": { "start": 318, "length": 13 } }
       },
       "entity": {
         "cxx": {
@@ -120,9 +120,9 @@
                 "isAccessor": false,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 2,
+                  "lineBegin": 10,
                   "columnBegin": 1,
-                  "lineEnd": 2,
+                  "lineEnd": 10,
                   "columnEnd": 36
                 }
               }

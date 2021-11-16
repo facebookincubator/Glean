@@ -12,9 +12,9 @@
                   "name": { "key": { "name": { "key": "N0" } } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 14,
+                    "lineBegin": 22,
                     "columnBegin": 1,
-                    "lineEnd": 18,
+                    "lineEnd": 26,
                     "columnEnd": 1
                   }
                 }
@@ -22,7 +22,7 @@
             }
           },
           "ranges": [
-            { "offset": 227, "length": 2 },
+            { "offset": 446, "length": 2 },
             { "offset": 14, "length": 2 },
             { "offset": 14, "length": 2 },
             { "offset": 34, "length": 2 },
@@ -37,9 +37,9 @@
                   "name": { "key": { "name": { "key": "N1" } } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 28,
+                    "lineBegin": 36,
                     "columnBegin": 1,
-                    "lineEnd": 33,
+                    "lineEnd": 41,
                     "columnEnd": 1
                   }
                 }
@@ -47,7 +47,7 @@
             }
           },
           "ranges": [
-            { "offset": 337, "length": 2 },
+            { "offset": 556, "length": 2 },
             { "offset": 14, "length": 2 },
             { "offset": 14, "length": 2 },
             { "offset": 37, "length": 2 },
@@ -70,9 +70,9 @@
                   "name": { "key": { "name": { "key": "N2" } } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 52,
+                    "lineBegin": 60,
                     "columnBegin": 1,
-                    "lineEnd": 77,
+                    "lineEnd": 85,
                     "columnEnd": 1
                   }
                 }
@@ -80,33 +80,33 @@
             }
           },
           "ranges": [
-            { "offset": 666, "length": 2 },
+            { "offset": 885, "length": 2 },
             { "offset": 45, "length": 2 }
           ]
         }
       ],
       "variable": [
-        [ { "offset": 385, "length": 2 }, { "offset": 184, "length": 2 } ],
+        [ { "offset": 604, "length": 2 }, { "offset": 184, "length": 2 } ],
         [
-          { "offset": 406, "length": 2 },
+          { "offset": 625, "length": 2 },
           { "offset": 185, "length": 2 },
           { "offset": 224, "length": 2 }
         ],
         [
-          { "offset": 424, "length": 2 },
+          { "offset": 643, "length": 2 },
           { "offset": 204, "length": 2 },
           { "offset": 42, "length": 2 }
         ],
         [
-          { "offset": 444, "length": 2 },
+          { "offset": 663, "length": 2 },
           { "offset": 204, "length": 2 },
           { "offset": 45, "length": 2 }
         ],
-        [ { "offset": 461, "length": 2 }, { "offset": 254, "length": 2 } ],
-        [ { "offset": 481, "length": 2 }, { "offset": 257, "length": 2 } ],
-        [ { "offset": 498, "length": 2 } ],
-        [ { "offset": 525, "length": 2 } ],
-        [ { "offset": 792, "length": 2 } ]
+        [ { "offset": 680, "length": 2 }, { "offset": 254, "length": 2 } ],
+        [ { "offset": 700, "length": 2 }, { "offset": 257, "length": 2 } ],
+        [ { "offset": 717, "length": 2 } ],
+        [ { "offset": 744, "length": 2 } ],
+        [ { "offset": 1011, "length": 2 } ]
       ]
     }
   }

@@ -12,9 +12,9 @@
                   "name": { "key": { "name": { "key": "N1" } } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 1,
+                    "lineBegin": 9,
                     "columnBegin": 1,
-                    "lineEnd": 6,
+                    "lineEnd": 14,
                     "columnEnd": 1
                   }
                 }
@@ -22,7 +22,7 @@
             }
           },
           "ranges": [
-            { "offset": 103, "length": 2 },
+            { "offset": 322, "length": 2 },
             { "offset": 45, "length": 2 },
             { "offset": 16, "length": 2 }
           ]
@@ -45,34 +45,34 @@
                     "isScoped": true,
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 4,
+                      "lineBegin": 12,
                       "columnBegin": 1,
-                      "lineEnd": 4,
+                      "lineEnd": 12,
                       "columnEnd": 27
                     }
                   }
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 4,
+                  "lineBegin": 12,
                   "columnBegin": 16,
-                  "lineEnd": 4,
+                  "lineEnd": 12,
                   "columnEnd": 17
                 }
               }
             }
           },
           "ranges": [
-            { "offset": 119, "length": 2 },
+            { "offset": 338, "length": 2 },
             { "offset": 64, "length": 2 }
           ]
         }
       ],
       "variable": [
-        [ { "offset": 110, "length": 2 } ],
-        [ { "offset": 116, "length": 1 } ],
-        [ { "offset": 174, "length": 2 } ],
-        [ { "offset": 180, "length": 1 } ]
+        [ { "offset": 329, "length": 2 } ],
+        [ { "offset": 335, "length": 1 } ],
+        [ { "offset": 393, "length": 2 } ],
+        [ { "offset": 399, "length": 1 } ]
       ]
     }
   }

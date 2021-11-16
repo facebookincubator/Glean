@@ -8,9 +8,9 @@
             "id": { "interface_": { "key": "I" } },
             "source": {
               "file": { "key": "test.m" },
-              "lineBegin": 1,
+              "lineBegin": 9,
               "columnBegin": 1,
-              "lineEnd": 8,
+              "lineEnd": 16,
               "columnEnd": 4
             }
           }
@@ -18,9 +18,9 @@
       },
       "source": {
         "file": { "key": "test.m" },
-        "lineBegin": 1,
+        "lineBegin": 9,
         "columnBegin": 1,
-        "lineEnd": 8,
+        "lineEnd": 16,
         "columnEnd": 4
       },
       "name": "I"
@@ -41,9 +41,9 @@
             "isAccessor": false,
             "source": {
               "file": { "key": "test.m" },
-              "lineBegin": 3,
+              "lineBegin": 11,
               "columnBegin": 1,
-              "lineEnd": 3,
+              "lineEnd": 11,
               "columnEnd": 10
             }
           }
@@ -51,9 +51,9 @@
       },
       "source": {
         "file": { "key": "test.m" },
-        "lineBegin": 3,
+        "lineBegin": 11,
         "columnBegin": 1,
-        "lineEnd": 3,
+        "lineEnd": 11,
         "columnEnd": 10
       },
       "name": "f1"
@@ -79,9 +79,9 @@
             "isAccessor": false,
             "source": {
               "file": { "key": "test.m" },
-              "lineBegin": 4,
+              "lineBegin": 12,
               "columnBegin": 1,
-              "lineEnd": 4,
+              "lineEnd": 12,
               "columnEnd": 18
             }
           }
@@ -89,9 +89,9 @@
       },
       "source": {
         "file": { "key": "test.m" },
-        "lineBegin": 4,
+        "lineBegin": 12,
         "columnBegin": 1,
-        "lineEnd": 4,
+        "lineEnd": 12,
         "columnEnd": 18
       },
       "name": "f2"

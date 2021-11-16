@@ -20,9 +20,9 @@
           "kind": { "struct_": { } },
           "source": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 6,
+            "lineBegin": 12,
             "columnBegin": 5,
-            "lineEnd": 14,
+            "lineEnd": 20,
             "columnEnd": 5
           }
         }
@@ -71,9 +71,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
+                  "lineBegin": 17,
                   "columnBegin": 9,
-                  "lineEnd": 13,
+                  "lineEnd": 19,
                   "columnEnd": 9
                 }
               }
@@ -103,9 +103,9 @@
           "kind": { "struct_": { } },
           "source": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 16,
+            "lineBegin": 22,
             "columnBegin": 5,
-            "lineEnd": 18,
+            "lineEnd": 24,
             "columnEnd": 5
           }
         }
@@ -134,9 +134,9 @@
           "kind": { "struct_": { } },
           "source": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 23,
+            "lineBegin": 29,
             "columnBegin": 5,
-            "lineEnd": 33,
+            "lineEnd": 39,
             "columnEnd": 5
           }
         }
@@ -185,9 +185,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 26,
+                  "lineBegin": 32,
                   "columnBegin": 9,
-                  "lineEnd": 28,
+                  "lineEnd": 34,
                   "columnEnd": 9
                 }
               }
@@ -234,9 +234,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 30,
+                  "lineBegin": 36,
                   "columnBegin": 9,
-                  "lineEnd": 32,
+                  "lineEnd": 38,
                   "columnEnd": 9
                 }
               }

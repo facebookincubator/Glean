@@ -12,16 +12,16 @@
                   "id": { "interface_": { "key": "I" } },
                   "source": {
                     "file": { "key": "test.m" },
-                    "lineBegin": 1,
+                    "lineBegin": 9,
                     "columnBegin": 1,
-                    "lineEnd": 6,
+                    "lineEnd": 14,
                     "columnEnd": 4
                   }
                 }
               }
             }
           },
-          "ranges": [ { "offset": 68, "length": 1 } ]
+          "ranges": [ { "offset": 287, "length": 1 } ]
         },
         {
           "target": {
@@ -43,9 +43,9 @@
                   "isAccessor": false,
                   "source": {
                     "file": { "key": "test.m" },
-                    "lineBegin": 4,
+                    "lineBegin": 12,
                     "columnBegin": 1,
-                    "lineEnd": 4,
+                    "lineEnd": 12,
                     "columnEnd": 24
                   }
                 }
@@ -53,7 +53,7 @@
             }
           },
           "ranges": [
-            { "offset": 80, "length": 3 },
+            { "offset": 299, "length": 3 },
             { "offset": 13, "length": 3 }
           ]
         },
@@ -72,9 +72,9 @@
                   "isAccessor": false,
                   "source": {
                     "file": { "key": "test.m" },
-                    "lineBegin": 3,
+                    "lineBegin": 11,
                     "columnBegin": 1,
-                    "lineEnd": 3,
+                    "lineEnd": 11,
                     "columnEnd": 11
                   }
                 }
@@ -82,7 +82,7 @@
             }
           },
           "ranges": [
-            { "offset": 93, "length": 3 },
+            { "offset": 312, "length": 3 },
             { "offset": 21, "length": 3 }
           ]
         }

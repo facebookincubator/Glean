@@ -20,16 +20,16 @@
                       },
                       "source": {
                         "file": { "key": "test.cpp" },
-                        "lineBegin": 11,
+                        "lineBegin": 19,
                         "columnBegin": 1,
-                        "lineEnd": 15,
+                        "lineEnd": 23,
                         "columnEnd": 1
                       }
                     }
                   }
                 }
               },
-              "ranges": [ { "offset": 207, "length": 2 } ]
+              "ranges": [ { "offset": 426, "length": 2 } ]
             },
             {
               "target": {
@@ -49,22 +49,22 @@
                       },
                       "source": {
                         "file": { "key": "test.cpp" },
-                        "lineBegin": 5,
+                        "lineBegin": 13,
                         "columnBegin": 1,
-                        "lineEnd": 6,
+                        "lineEnd": 14,
                         "columnEnd": 1
                       }
                     }
                   }
                 }
               },
-              "ranges": [ { "offset": 211, "length": 2 } ]
+              "ranges": [ { "offset": 430, "length": 2 } ]
             }
           ],
-          "variable": [ [ { "offset": 228, "length": 2 } ] ]
+          "variable": [ [ { "offset": 447, "length": 2 } ] ]
         }
       },
-      "spans": [ [ { "offset": 228, "length": 2 } ] ],
+      "spans": [ [ { "offset": 447, "length": 2 } ] ],
       "targets": [
         {
           "indirect": {
@@ -87,9 +87,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 19,
+                      "lineBegin": 27,
                       "columnBegin": 1,
-                      "lineEnd": 19,
+                      "lineEnd": 27,
                       "columnEnd": 22
                     }
                   }
@@ -124,18 +124,18 @@
                         "isScoped": false,
                         "source": {
                           "file": { "key": "test.cpp" },
-                          "lineBegin": 13,
+                          "lineBegin": 21,
                           "columnBegin": 1,
-                          "lineEnd": 13,
+                          "lineEnd": 21,
                           "columnEnd": 33
                         }
                       }
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 13,
+                      "lineBegin": 21,
                       "columnBegin": 10,
-                      "lineEnd": 13,
+                      "lineEnd": 21,
                       "columnEnd": 15
                     }
                   }

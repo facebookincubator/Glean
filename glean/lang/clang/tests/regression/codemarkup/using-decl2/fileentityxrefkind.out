@@ -11,9 +11,9 @@
                 "name": { "key": { "name": { "key": "N0" } } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 14,
+                  "lineBegin": 22,
                   "columnBegin": 1,
-                  "lineEnd": 18,
+                  "lineEnd": 26,
                   "columnEnd": 1
                 }
               }
@@ -35,9 +35,9 @@
                 "name": { "key": { "name": { "key": "N1" } } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 28,
+                  "lineBegin": 36,
                   "columnBegin": 1,
-                  "lineEnd": 33,
+                  "lineEnd": 41,
                   "columnEnd": 1
                 }
               }
@@ -59,9 +59,9 @@
                 "name": { "key": { "name": { "key": "N2" } } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 52,
+                  "lineBegin": 60,
                   "columnBegin": 1,
-                  "lineEnd": 77,
+                  "lineEnd": 85,
                   "columnEnd": 1
                 }
               }

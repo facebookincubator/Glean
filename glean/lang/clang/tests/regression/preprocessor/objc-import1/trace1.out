@@ -9,12 +9,12 @@
             "include_": {
               "key": {
                 "file": { "key": "test.h" },
-                "path": { "begin": 81, "end": 89 },
+                "path": { "begin": 227, "end": 235 },
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 3,
+                  "lineBegin": 9,
                   "columnBegin": 1,
-                  "lineEnd": 3,
+                  "lineEnd": 9,
                   "columnEnd": 16
                 }
               }
@@ -43,9 +43,9 @@
                           },
                           "source": {
                             "file": { "key": "test.h" },
-                            "lineBegin": 4,
+                            "lineBegin": 10,
                             "columnBegin": 1,
-                            "lineEnd": 4,
+                            "lineEnd": 10,
                             "columnEnd": 23
                           }
                         }
@@ -70,9 +70,9 @@
                           },
                           "source": {
                             "file": { "key": "test.h" },
-                            "lineBegin": 5,
+                            "lineBegin": 11,
                             "columnBegin": 1,
-                            "lineEnd": 5,
+                            "lineEnd": 11,
                             "columnEnd": 23
                           }
                         }
@@ -97,9 +97,9 @@
                           },
                           "source": {
                             "file": { "key": "test.h" },
-                            "lineBegin": 6,
+                            "lineBegin": 12,
                             "columnBegin": 1,
-                            "lineEnd": 6,
+                            "lineEnd": 12,
                             "columnEnd": 23
                           }
                         }

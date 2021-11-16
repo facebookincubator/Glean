@@ -5,7 +5,7 @@
       "file": { "key": "test.m" },
       "xrefs": [
         {
-          "range": { "begin": 36, "end": 39 },
+          "range": { "begin": 255, "end": 258 },
           "target": {
             "declaration": {
               "typeAlias": {
@@ -31,7 +31,7 @@
           }
         },
         {
-          "range": { "begin": 65, "end": 68 },
+          "range": { "begin": 284, "end": 287 },
           "target": {
             "declaration": {
               "typeAlias": {
@@ -57,7 +57,7 @@
           }
         },
         {
-          "range": { "begin": 104, "end": 105 },
+          "range": { "begin": 323, "end": 324 },
           "target": {
             "declaration": {
               "objcContainer": {
@@ -65,9 +65,9 @@
                   "id": { "interface_": { "key": "J" } },
                   "source": {
                     "file": { "key": "test.m" },
-                    "lineBegin": 1,
+                    "lineBegin": 9,
                     "columnBegin": 1,
-                    "lineEnd": 3,
+                    "lineEnd": 11,
                     "columnEnd": 4
                   }
                 }
@@ -76,7 +76,7 @@
           }
         },
         {
-          "range": { "begin": 147, "end": 150 },
+          "range": { "begin": 366, "end": 369 },
           "target": {
             "declaration": {
               "typeAlias": {
@@ -102,11 +102,11 @@
           }
         },
         {
-          "range": { "begin": 155, "end": 169 },
+          "range": { "begin": 374, "end": 388 },
           "target": { "objcSelector": { "key": [ "foo" ] } }
         },
         {
-          "range": { "begin": 176, "end": 189 },
+          "range": { "begin": 395, "end": 408 },
           "target": {
             "declaration": {
               "objcMethod": {
@@ -129,9 +129,9 @@
                   "isAccessor": false,
                   "source": {
                     "file": { "key": "test.m" },
-                    "lineBegin": 2,
+                    "lineBegin": 10,
                     "columnBegin": 1,
-                    "lineEnd": 2,
+                    "lineEnd": 10,
                     "columnEnd": 36
                   }
                 }
@@ -140,7 +140,7 @@
           }
         },
         {
-          "range": { "begin": 190, "end": 204 },
+          "range": { "begin": 409, "end": 423 },
           "target": { "objcSelector": { "key": [ "foo" ] } }
         }
       ]

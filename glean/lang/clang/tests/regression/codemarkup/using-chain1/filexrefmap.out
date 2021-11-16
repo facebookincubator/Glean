@@ -12,16 +12,16 @@
                   "name": { "key": { "name": { "key": "N1" } } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 1,
+                    "lineBegin": 9,
                     "columnBegin": 1,
-                    "lineEnd": 7,
+                    "lineEnd": 15,
                     "columnEnd": 1
                   }
                 }
               }
             }
           },
-          "ranges": [ { "offset": 77, "length": 2 } ]
+          "ranges": [ { "offset": 296, "length": 2 } ]
         },
         {
           "target": {
@@ -31,9 +31,9 @@
                   "name": { "key": { "name": { "key": "N2" } } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 9,
+                    "lineBegin": 17,
                     "columnBegin": 1,
-                    "lineEnd": 13,
+                    "lineEnd": 21,
                     "columnEnd": 1
                   }
                 }
@@ -41,7 +41,7 @@
             }
           },
           "ranges": [
-            { "offset": 107, "length": 2 },
+            { "offset": 326, "length": 2 },
             { "offset": 14, "length": 2 }
           ]
         },
@@ -53,21 +53,21 @@
                   "name": { "key": { "name": { "key": "N3" } } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 15,
+                    "lineBegin": 23,
                     "columnBegin": 1,
-                    "lineEnd": 20,
+                    "lineEnd": 28,
                     "columnEnd": 1
                   }
                 }
               }
             }
           },
-          "ranges": [ { "offset": 165, "length": 2 } ]
+          "ranges": [ { "offset": 384, "length": 2 } ]
         }
       ],
       "variable": [
-        [ { "offset": 170, "length": 2 } ],
-        [ { "offset": 184, "length": 2 } ]
+        [ { "offset": 389, "length": 2 } ],
+        [ { "offset": 403, "length": 2 } ]
       ]
     }
   }

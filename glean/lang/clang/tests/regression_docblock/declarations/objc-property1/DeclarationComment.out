@@ -8,16 +8,16 @@
             "id": { "implementation": { "key": "A" } },
             "source": {
               "file": { "key": "test.m" },
-              "lineBegin": 25,
+              "lineBegin": 33,
               "columnBegin": 1,
-              "lineEnd": 29,
+              "lineEnd": 37,
               "columnEnd": 1
             }
           }
         }
       },
       "file": { "key": "test.m" },
-      "span": { "start": 283, "length": 74 }
+      "span": { "start": 502, "length": 74 }
     }
   },
   {
@@ -28,16 +28,16 @@
             "id": { "interface_": { "key": "A" } },
             "source": {
               "file": { "key": "test.m" },
-              "lineBegin": 5,
+              "lineBegin": 13,
               "columnBegin": 1,
-              "lineEnd": 19,
+              "lineEnd": 27,
               "columnEnd": 4
             }
           }
         }
       },
       "file": { "key": "test.m" },
-      "span": { "start": 0, "length": 69 }
+      "span": { "start": 219, "length": 69 }
     }
   },
   {
@@ -54,16 +54,16 @@
             "isAtomic": false,
             "source": {
               "file": { "key": "test.m" },
-              "lineBegin": 17,
+              "lineBegin": 25,
               "columnBegin": 1,
-              "lineEnd": 17,
+              "lineEnd": 25,
               "columnEnd": 35
             }
           }
         }
       },
       "file": { "key": "test.m" },
-      "span": { "start": 170, "length": 68 }
+      "span": { "start": 389, "length": 68 }
     }
   },
   {
@@ -78,16 +78,16 @@
             "kind": { "ivar": { "synthesize": false } },
             "source": {
               "file": { "key": "test.m" },
-              "lineBegin": 10,
+              "lineBegin": 18,
               "columnBegin": 3,
-              "lineEnd": 10,
+              "lineEnd": 18,
               "columnEnd": 8
             }
           }
         }
       },
       "file": { "key": "test.m" },
-      "span": { "start": 87, "length": 69 }
+      "span": { "start": 306, "length": 69 }
     }
   }
 ]

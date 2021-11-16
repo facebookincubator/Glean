@@ -14,9 +14,9 @@
                     "id": { "interface_": { "key": "I" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 4
                     }
                   }
@@ -35,9 +35,9 @@
                     "isAccessor": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 1,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 11
                     }
                   }
@@ -62,9 +62,9 @@
                     },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 7,
+                      "lineBegin": 15,
                       "columnBegin": 1,
-                      "lineEnd": 10,
+                      "lineEnd": 18,
                       "columnEnd": 1
                     }
                   }
@@ -83,9 +83,9 @@
         "location": {
           "range": {
             "file": { "key": "test.m" },
-            "lineBegin": 1,
+            "lineBegin": 9,
             "columnBegin": 1,
-            "lineEnd": 5,
+            "lineEnd": 13,
             "columnEnd": 4
           }
         }
@@ -98,9 +98,9 @@
                 "id": { "interface_": { "key": "I" } },
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 1,
+                  "lineBegin": 9,
                   "columnBegin": 1,
-                  "lineEnd": 5,
+                  "lineEnd": 13,
                   "columnEnd": 4
                 }
               }
@@ -124,9 +124,9 @@
                     "id": { "interface_": { "key": "I" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 4
                     }
                   }
@@ -145,9 +145,9 @@
                     "isAccessor": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 1,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 11
                     }
                   }
@@ -172,9 +172,9 @@
                     },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 7,
+                      "lineBegin": 15,
                       "columnBegin": 1,
-                      "lineEnd": 10,
+                      "lineEnd": 18,
                       "columnEnd": 1
                     }
                   }
@@ -193,9 +193,9 @@
         "location": {
           "range": {
             "file": { "key": "test.m" },
-            "lineBegin": 7,
+            "lineBegin": 15,
             "columnBegin": 1,
-            "lineEnd": 10,
+            "lineEnd": 18,
             "columnEnd": 1
           }
         }
@@ -221,9 +221,9 @@
                 },
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 7,
+                  "lineBegin": 15,
                   "columnBegin": 1,
-                  "lineEnd": 10,
+                  "lineEnd": 18,
                   "columnEnd": 1
                 }
               }
@@ -247,9 +247,9 @@
                     "id": { "interface_": { "key": "I" } },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 1,
+                      "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 5,
+                      "lineEnd": 13,
                       "columnEnd": 4
                     }
                   }
@@ -268,9 +268,9 @@
                     "isAccessor": false,
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 3,
+                      "lineBegin": 11,
                       "columnBegin": 1,
-                      "lineEnd": 3,
+                      "lineEnd": 11,
                       "columnEnd": 11
                     }
                   }
@@ -295,9 +295,9 @@
                     },
                     "source": {
                       "file": { "key": "test.m" },
-                      "lineBegin": 7,
+                      "lineBegin": 15,
                       "columnBegin": 1,
-                      "lineEnd": 10,
+                      "lineEnd": 18,
                       "columnEnd": 1
                     }
                   }
@@ -316,9 +316,9 @@
         "location": {
           "range": {
             "file": { "key": "test.m" },
-            "lineBegin": 3,
+            "lineBegin": 11,
             "columnBegin": 1,
-            "lineEnd": 3,
+            "lineEnd": 11,
             "columnEnd": 11
           }
         }
@@ -338,9 +338,9 @@
                 "isAccessor": false,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 3,
+                  "lineBegin": 11,
                   "columnBegin": 1,
-                  "lineEnd": 3,
+                  "lineEnd": 11,
                   "columnEnd": 11
                 }
               }

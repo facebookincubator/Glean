@@ -14,9 +14,9 @@
                 "kind": { "struct_": { } },
                 "source": {
                   "file": { "key": "main.cpp" },
-                  "lineBegin": 2,
+                  "lineBegin": 10,
                   "columnBegin": 1,
-                  "lineEnd": 2,
+                  "lineEnd": 10,
                   "columnEnd": 11
                 }
               }
@@ -45,9 +45,9 @@
                 "kind": 1,
                 "source": {
                   "file": { "key": "main.cpp" },
-                  "lineBegin": 4,
+                  "lineBegin": 12,
                   "columnBegin": 22,
-                  "lineEnd": 4,
+                  "lineEnd": 12,
                   "columnEnd": 33
                 }
               }
@@ -76,9 +76,9 @@
                 "kind": 1,
                 "source": {
                   "file": { "key": "main.cpp" },
-                  "lineBegin": 5,
+                  "lineBegin": 13,
                   "columnBegin": 22,
-                  "lineEnd": 5,
+                  "lineEnd": 13,
                   "columnEnd": 35
                 }
               }
@@ -107,9 +107,9 @@
                 "kind": 1,
                 "source": {
                   "file": { "key": "main.cpp" },
-                  "lineBegin": 6,
+                  "lineBegin": 14,
                   "columnBegin": 22,
-                  "lineEnd": 6,
+                  "lineEnd": 14,
                   "columnEnd": 36
                 }
               }

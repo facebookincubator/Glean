@@ -32,9 +32,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 4,
+              "lineBegin": 10,
               "columnBegin": 3,
-              "lineEnd": 4,
+              "lineEnd": 10,
               "columnEnd": 7
             }
           }
@@ -42,9 +42,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 4,
+        "lineBegin": 10,
         "columnBegin": 3,
-        "lineEnd": 4,
+        "lineEnd": 10,
         "columnEnd": 7
       },
       "name": "constructor"
@@ -87,9 +87,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 5,
+              "lineBegin": 11,
               "columnBegin": 3,
-              "lineEnd": 5,
+              "lineEnd": 11,
               "columnEnd": 17
             }
           }
@@ -97,9 +97,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 5,
+        "lineBegin": 11,
         "columnBegin": 3,
-        "lineEnd": 5,
+        "lineEnd": 11,
         "columnEnd": 17
       },
       "name": "constructor"
@@ -137,9 +137,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 8,
+              "lineBegin": 14,
               "columnBegin": 3,
-              "lineEnd": 8,
+              "lineEnd": 14,
               "columnEnd": 17
             }
           }
@@ -147,9 +147,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 8,
+        "lineBegin": 14,
         "columnBegin": 3,
-        "lineEnd": 8,
+        "lineEnd": 14,
         "columnEnd": 17
       },
       "name": "bool"
@@ -194,9 +194,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 9,
+              "lineBegin": 15,
               "columnBegin": 3,
-              "lineEnd": 9,
+              "lineEnd": 15,
               "columnEnd": 33
             }
           }
@@ -204,9 +204,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 9,
+        "lineBegin": 15,
         "columnBegin": 3,
-        "lineEnd": 9,
+        "lineEnd": 15,
         "columnEnd": 33
       },
       "name": "const unsigned int *"
@@ -244,9 +244,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 6,
+              "lineBegin": 12,
               "columnBegin": 3,
-              "lineEnd": 6,
+              "lineEnd": 12,
               "columnEnd": 8
             }
           }
@@ -254,9 +254,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 6,
+        "lineBegin": 12,
         "columnBegin": 3,
-        "lineEnd": 6,
+        "lineEnd": 12,
         "columnEnd": 8
       },
       "name": "destructor"
@@ -283,9 +283,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 15,
+              "lineBegin": 21,
               "columnBegin": 1,
-              "lineEnd": 15,
+              "lineEnd": 21,
               "columnEnd": 34
             }
           }
@@ -293,9 +293,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 15,
+        "lineBegin": 21,
         "columnBegin": 1,
-        "lineEnd": 15,
+        "lineEnd": 21,
         "columnEnd": 34
       },
       "name": "operator\"\"_foo"
@@ -338,9 +338,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 11,
+              "lineBegin": 17,
               "columnBegin": 3,
-              "lineEnd": 11,
+              "lineEnd": 17,
               "columnEnd": 22
             }
           }
@@ -348,9 +348,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 11,
+        "lineBegin": 17,
         "columnBegin": 3,
-        "lineEnd": 11,
+        "lineEnd": 17,
         "columnEnd": 22
       },
       "name": "operator+"
@@ -388,9 +388,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 12,
+              "lineBegin": 18,
               "columnBegin": 3,
-              "lineEnd": 12,
+              "lineEnd": 18,
               "columnEnd": 19
             }
           }
@@ -398,9 +398,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 12,
+        "lineBegin": 18,
         "columnBegin": 3,
-        "lineEnd": 12,
+        "lineEnd": 18,
         "columnEnd": 19
       },
       "name": "operator--"
@@ -443,9 +443,9 @@
             },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 10,
+              "lineBegin": 16,
               "columnBegin": 3,
-              "lineEnd": 10,
+              "lineEnd": 16,
               "columnEnd": 22
             }
           }
@@ -453,9 +453,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 10,
+        "lineBegin": 16,
         "columnBegin": 3,
-        "lineEnd": 10,
+        "lineEnd": 16,
         "columnEnd": 22
       },
       "name": "operator="
@@ -472,9 +472,9 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 3,
+              "lineBegin": 9,
               "columnBegin": 1,
-              "lineEnd": 13,
+              "lineEnd": 19,
               "columnEnd": 1
             }
           }
@@ -482,9 +482,9 @@
       },
       "source": {
         "file": { "key": "test.cpp" },
-        "lineBegin": 3,
+        "lineBegin": 9,
         "columnBegin": 1,
-        "lineEnd": 13,
+        "lineEnd": 19,
         "columnEnd": 1
       },
       "name": "Foo"

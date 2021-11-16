@@ -13,9 +13,9 @@
           "isAtomic": false,
           "source": {
             "file": { "key": "test.m" },
-            "lineBegin": 5,
+            "lineBegin": 13,
             "columnBegin": 1,
-            "lineEnd": 5,
+            "lineEnd": 13,
             "columnEnd": 35
           }
         }
@@ -29,9 +29,9 @@
           "kind": { "ivar": { "synthesize": false } },
           "source": {
             "file": { "key": "test.m" },
-            "lineBegin": 2,
+            "lineBegin": 10,
             "columnBegin": 3,
-            "lineEnd": 2,
+            "lineEnd": 10,
             "columnEnd": 8
           }
         }

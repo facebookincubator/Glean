@@ -16,9 +16,9 @@
                           "id": { "interface_": { "key": "I" } },
                           "source": {
                             "file": { "key": "test.m" },
-                            "lineBegin": 1,
+                            "lineBegin": 9,
                             "columnBegin": 1,
-                            "lineEnd": 5,
+                            "lineEnd": 13,
                             "columnEnd": 4
                           }
                         }
@@ -26,7 +26,7 @@
                     }
                   },
                   "ranges": [
-                    { "offset": 42, "length": 1 },
+                    { "offset": 261, "length": 1 },
                     { "offset": 17, "length": 1 }
                   ]
                 },
@@ -48,16 +48,16 @@
                           "isAccessor": false,
                           "source": {
                             "file": { "key": "test.m" },
-                            "lineBegin": 3,
+                            "lineBegin": 11,
                             "columnBegin": 1,
-                            "lineEnd": 3,
+                            "lineEnd": 11,
                             "columnEnd": 11
                           }
                         }
                       }
                     }
                   },
-                  "ranges": [ { "offset": 61, "length": 3 } ]
+                  "ranges": [ { "offset": 280, "length": 3 } ]
                 }
               ],
               "variable": [ ]
@@ -73,14 +73,14 @@
           "location": {
             "range": {
               "file": { "key": "test.m" },
-              "lineBegin": 1,
+              "lineBegin": 9,
               "columnBegin": 1,
-              "lineEnd": 5,
+              "lineEnd": 13,
               "columnEnd": 4
             }
           }
         },
-        "source": { "span": { "start": 42, "length": 1 } }
+        "source": { "span": { "start": 261, "length": 1 } }
       },
       "entity": {
         "cxx": {
@@ -90,9 +90,9 @@
                 "id": { "interface_": { "key": "I" } },
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 1,
+                  "lineBegin": 9,
                   "columnBegin": 1,
-                  "lineEnd": 5,
+                  "lineEnd": 13,
                   "columnEnd": 4
                 }
               }
@@ -118,9 +118,9 @@
                           "id": { "interface_": { "key": "I" } },
                           "source": {
                             "file": { "key": "test.m" },
-                            "lineBegin": 1,
+                            "lineBegin": 9,
                             "columnBegin": 1,
-                            "lineEnd": 5,
+                            "lineEnd": 13,
                             "columnEnd": 4
                           }
                         }
@@ -128,7 +128,7 @@
                     }
                   },
                   "ranges": [
-                    { "offset": 42, "length": 1 },
+                    { "offset": 261, "length": 1 },
                     { "offset": 17, "length": 1 }
                   ]
                 },
@@ -150,16 +150,16 @@
                           "isAccessor": false,
                           "source": {
                             "file": { "key": "test.m" },
-                            "lineBegin": 3,
+                            "lineBegin": 11,
                             "columnBegin": 1,
-                            "lineEnd": 3,
+                            "lineEnd": 11,
                             "columnEnd": 11
                           }
                         }
                       }
                     }
                   },
-                  "ranges": [ { "offset": 61, "length": 3 } ]
+                  "ranges": [ { "offset": 280, "length": 3 } ]
                 }
               ],
               "variable": [ ]
@@ -175,14 +175,14 @@
           "location": {
             "range": {
               "file": { "key": "test.m" },
-              "lineBegin": 1,
+              "lineBegin": 9,
               "columnBegin": 1,
-              "lineEnd": 5,
+              "lineEnd": 13,
               "columnEnd": 4
             }
           }
         },
-        "source": { "span": { "start": 59, "length": 1 } }
+        "source": { "span": { "start": 278, "length": 1 } }
       },
       "entity": {
         "cxx": {
@@ -192,9 +192,9 @@
                 "id": { "interface_": { "key": "I" } },
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 1,
+                  "lineBegin": 9,
                   "columnBegin": 1,
-                  "lineEnd": 5,
+                  "lineEnd": 13,
                   "columnEnd": 4
                 }
               }
@@ -220,9 +220,9 @@
                           "id": { "interface_": { "key": "I" } },
                           "source": {
                             "file": { "key": "test.m" },
-                            "lineBegin": 1,
+                            "lineBegin": 9,
                             "columnBegin": 1,
-                            "lineEnd": 5,
+                            "lineEnd": 13,
                             "columnEnd": 4
                           }
                         }
@@ -230,7 +230,7 @@
                     }
                   },
                   "ranges": [
-                    { "offset": 42, "length": 1 },
+                    { "offset": 261, "length": 1 },
                     { "offset": 17, "length": 1 }
                   ]
                 },
@@ -252,16 +252,16 @@
                           "isAccessor": false,
                           "source": {
                             "file": { "key": "test.m" },
-                            "lineBegin": 3,
+                            "lineBegin": 11,
                             "columnBegin": 1,
-                            "lineEnd": 3,
+                            "lineEnd": 11,
                             "columnEnd": 11
                           }
                         }
                       }
                     }
                   },
-                  "ranges": [ { "offset": 61, "length": 3 } ]
+                  "ranges": [ { "offset": 280, "length": 3 } ]
                 }
               ],
               "variable": [ ]
@@ -277,14 +277,14 @@
           "location": {
             "range": {
               "file": { "key": "test.m" },
-              "lineBegin": 3,
+              "lineBegin": 11,
               "columnBegin": 1,
-              "lineEnd": 3,
+              "lineEnd": 11,
               "columnEnd": 11
             }
           }
         },
-        "source": { "span": { "start": 61, "length": 3 } }
+        "source": { "span": { "start": 280, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -301,9 +301,9 @@
                 "isAccessor": false,
                 "source": {
                   "file": { "key": "test.m" },
-                  "lineBegin": 3,
+                  "lineBegin": 11,
                   "columnBegin": 1,
-                  "lineEnd": 3,
+                  "lineEnd": 11,
                   "columnEnd": 11
                 }
               }

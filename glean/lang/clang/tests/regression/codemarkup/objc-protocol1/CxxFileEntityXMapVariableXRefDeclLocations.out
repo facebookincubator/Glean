@@ -16,16 +16,16 @@
                           "id": { "interface_": { "key": "J" } },
                           "source": {
                             "file": { "key": "test.m" },
-                            "lineBegin": 1,
+                            "lineBegin": 9,
                             "columnBegin": 1,
-                            "lineEnd": 3,
+                            "lineEnd": 11,
                             "columnEnd": 4
                           }
                         }
                       }
                     }
                   },
-                  "ranges": [ { "offset": 86, "length": 1 } ]
+                  "ranges": [ { "offset": 305, "length": 1 } ]
                 },
                 {
                   "target": {
@@ -50,16 +50,16 @@
                           "isAccessor": false,
                           "source": {
                             "file": { "key": "test.m" },
-                            "lineBegin": 2,
+                            "lineBegin": 10,
                             "columnBegin": 1,
-                            "lineEnd": 2,
+                            "lineEnd": 10,
                             "columnEnd": 36
                           }
                         }
                       }
                     }
                   },
-                  "ranges": [ { "offset": 99, "length": 13 } ]
+                  "ranges": [ { "offset": 318, "length": 13 } ]
                 },
                 {
                   "target": {
@@ -69,19 +69,19 @@
                           "id": { "protocol": { "key": "Foo" } },
                           "source": {
                             "file": { "key": "test.m" },
-                            "lineBegin": 5,
+                            "lineBegin": 13,
                             "columnBegin": 1,
-                            "lineEnd": 6,
+                            "lineEnd": 14,
                             "columnEnd": 4
                           }
                         }
                       }
                     }
                   },
-                  "ranges": [ { "offset": 113, "length": 9 } ]
+                  "ranges": [ { "offset": 332, "length": 9 } ]
                 }
               ],
-              "variable": [ [ { "offset": 36, "length": 8 } ] ]
+              "variable": [ [ { "offset": 255, "length": 8 } ] ]
             }
           },
           "externals": [
