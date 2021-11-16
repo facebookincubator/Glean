@@ -1,0 +1,37 @@
+[
+  "@generated",
+  {
+    "key": {
+      "key": { "key": "LionizerInit" },
+      "value": "test_init_type_t",
+      "declaration": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": { "name": { "key": "f1" } } },
+              "scope": { "global_": { } }
+            }
+          },
+          "signature": {
+            "key": {
+              "returns": { "key": "void" },
+              "parameters": [
+                {
+                  "name": { "key": "test_init_var" },
+                  "type": { "key": "test_init_type_t" }
+                }
+              ]
+            }
+          },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 9,
+            "columnBegin": 1,
+            "lineEnd": 11,
+            "columnEnd": 1
+          }
+        }
+      }
+    }
+  }
+]
