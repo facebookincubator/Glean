@@ -314,10 +314,15 @@ mkDbSchema override getPids dbContent source base addition = do
       maxPid = maybe lowestPid (Pid . fromIntegral . fst)
         (IntMap.lookupMax byId)
 
-      mkPredicatesByName predicates = HashMap.fromList
+      mkPredicatesByName predicates = HashMap.fromListWith latest
         [ (predicateRef_name ref, deets)
         | ref <- predicates
         , Just deets@PredicateDetails{..} <- [HashMap.lookup ref byRef] ]
+        where
+        latest a b
+          | predicateRef_version (predicateRef a) >
+            predicateRef_version (predicateRef b) = a
+          | otherwise = b
 
       mkSchemaTypesByName types = HashMap.fromList
         [ (typeRef_name ref, deets)
