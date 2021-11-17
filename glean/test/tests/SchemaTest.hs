@@ -640,9 +640,9 @@ deriveDefault = TestCase $
          _ -> False
     deleteDB repo2
 
-schemaEvolves :: [Test]
-schemaEvolves =
-  [ TestLabel "schemaEvolves - cycle" $ TestCase $ do
+schemaEvolves :: Test
+schemaEvolves = TestList
+  [ TestLabel "cycles are errors" $ TestCase $ do
     -- no cycles created by evolves
     withSchema latestAngleVersion
       [s|
@@ -657,7 +657,7 @@ schemaEvolves =
           Left err -> "cycle" `isInfixOf` show err
           Right _ -> False
 
-  , TestLabel "schemaEvolves - many to one" $ TestCase $ do
+  , TestLabel "many may not evolve one" $ TestCase $ do
     -- multiple schemas cannot evolve the same schema
     withSchema latestAngleVersion
       [s|
@@ -668,12 +668,12 @@ schemaEvolves =
         schema test.3 evolves test.1
       |]
       $ \r ->
-      assertBool "many may not evolve one" $
+      assertBool "throws multiple schemas evolve error" $
         case r of
-          Left err -> "multiple schemas evolve 'test.1'" `isInfixOf` show err
+          Left err -> "multiple schemas evolve test.1" `isInfixOf` show err
           Right _ -> False
 
-  , TestLabel "schemaEvolves - one to many" $ TestCase $ do
+  , TestLabel "one may evolve many" $ TestCase $ do
     -- one schema can evolve multiple other schemas
     withSchema latestAngleVersion
       [s|
@@ -684,7 +684,230 @@ schemaEvolves =
         schema test.3 evolves test.2
       |]
       $ \r ->
-      assertBool "one may evolve many" $
+      assertBool "succeeds creating schema" $
+        case r of
+          Right _ -> True
+          Left _ -> False
+
+  , TestLabel "can add field" $ TestCase $ do
+    withSchema latestAngleVersion
+      [s|
+        schema test.1 {
+          predicate P : { a : nat }
+        }
+        schema test.2 {
+          predicate P : { a : nat, b: string }
+        }
+        schema test.2 evolves test.1
+      |]
+      $ \r ->
+      assertBool "succeeds creating schema" $
+        case r of
+          Right _ -> True
+          Left _ -> False
+
+  , TestLabel "cannot remove field" $ TestCase $ do
+    withSchema latestAngleVersion
+      [s|
+        schema test.1 {
+          predicate P : { a : nat, b: string }
+        }
+        schema test.2 {
+          predicate P : { a : nat }
+        }
+        schema test.2 evolves test.1
+      |]
+      $ \r ->
+      assertBool "throws error stating missing field" $
+        case r of
+          Left err ->
+            "cannot evolve predicate test.P: field missing: b"
+            `isInfixOf` show err
+          Right _ -> False
+
+  , TestLabel "can change order of fields" $ TestCase $ do
+    withSchema latestAngleVersion
+      [s|
+        schema test.1 {
+          predicate P : { a : nat, b: string }
+        }
+        schema test.2 {
+          predicate P : { b: string, a : nat }
+        }
+        schema test.2 evolves test.1
+      |]
+      $ \r ->
+      assertBool "succeeds creating schema" $
+        case r of
+          Right _ -> True
+          Left _ -> False
+
+   , TestLabel "can add predicate" $ TestCase $ do
+    withSchema latestAngleVersion
+      [s|
+        schema test.1 {
+          predicate P : { a : nat }
+        }
+        schema test.2 {
+          predicate P : { a : nat }
+          predicate Q : { a : nat }
+        }
+        schema test.2 evolves test.1
+      |]
+      $ \r ->
+      assertBool "succeeds creating schema" $
+        case r of
+          Right _ -> True
+          Left _ -> False
+
+  , TestLabel "cannot remove predicate" $ TestCase $ do
+    withSchema latestAngleVersion
+      [s|
+        schema test.1 {
+          predicate P : { a : nat, b: string }
+        }
+        schema test.2 {}
+        schema test.2 evolves test.1
+      |]
+      $ \r ->
+      assertBool "errors stating missing predicate" $
+        case r of
+          Left err -> "missing evolved predicate" `isInfixOf` show err
+          Right _ -> False
+
+  , TestLabel "cannot add option" $ TestCase $ do
+    withSchema latestAngleVersion
+      [s|
+        schema test.1 {
+          predicate P : enum { a | b }
+        }
+        schema test.2 {
+          predicate P : enum { a | b | c }
+        }
+        schema test.2 evolves test.1
+      |]
+      $ \r ->
+      assertBool "error states new option" $
+        case r of
+          Left err -> "option added: c" `isInfixOf` show err
+          Right _ -> False
+
+  , TestLabel "cannot remove option" $ TestCase $ do
+    withSchema latestAngleVersion
+      [s|
+        schema test.1 {
+          predicate P : enum { a | b | c }
+        }
+        schema test.2 {
+          predicate P : enum { a | b }
+        }
+        schema test.2 evolves test.1
+      |]
+      $ \r ->
+      assertBool "error states missing option" $
+        case r of
+          Left err ->
+            "option missing: c"
+            `isInfixOf` show err
+          Right _ -> False
+
+
+  , TestLabel "can change order of options" $ TestCase $ do
+    withSchema latestAngleVersion
+      [s|
+        schema test.1 {
+          predicate P : enum { a | b }
+        }
+        schema test.2 {
+          predicate P : enum { b | a }
+        }
+        schema test.2 evolves test.1
+      |]
+      $ \r ->
+      assertBool "succeeds creating schema" $
+        case r of
+          Right _ -> True
+          Left _ -> False
+
+  , TestLabel "types are transparent" $ TestCase $ do
+    withSchema latestAngleVersion
+      [s|
+        schema test.1 {
+          type T = { a : nat }
+          predicate P : T
+        }
+        schema test.2 {
+          predicate P : { a : nat }
+        }
+        schema test.2 evolves test.1
+      |]
+      $ \r ->
+      assertBool "succeeds creating schema" $
+        case r of
+          Right _ -> True
+          Left _ -> False
+
+  , TestLabel "can evolve field types" $ TestCase $ do
+    withSchema latestAngleVersion
+      [s|
+        schema x.1 {
+          predicate P: { a : nat }
+        }
+
+        schema y.1 {
+          import x.1
+          predicate Q: { a : x.P }
+        }
+
+        schema x.2 {
+          predicate P: { a : nat, b : nat }
+        }
+
+        schema y.2 {
+          import x.2
+          predicate Q: { a : x.P }
+        }
+
+        schema x.2 evolves x.1
+        schema y.2 evolves y.1
+      |]
+      $ \r ->
+      assertBool "succeeds creating schema" $
+        case r of
+          Right _ -> True
+          Left _ -> False
+
+  , TestLabel "can evolve field types transitively" $ TestCase $ do
+    withSchema latestAngleVersion
+      [s|
+        schema x.1 {
+          predicate P: { a : nat }
+        }
+
+        schema x.2 {
+          predicate P: { a : nat, b : nat }
+        }
+
+        schema x.3 {
+          predicate P: { a : nat, b : nat, c : nat }
+        }
+
+        schema y.1 {
+          import x.1
+          predicate Q: { a : x.P }
+        }
+
+        schema y.2 {
+          import x.3
+          predicate Q: { a : x.P }
+        }
+
+        schema x.2 evolves x.1
+        schema x.3 evolves x.2
+        schema y.2 evolves y.1
+      |]
+      $ \r ->
+      assertBool "succeeds creating schema" $
         case r of
           Right _ -> True
           Left _ -> False
@@ -840,5 +1063,5 @@ main = withUnitTest $ testRunner $ TestList $
   , TestLabel "deriveDefault" deriveDefault
   , TestLabel "thinSchema" thinSchemaTest
   , TestLabel "schemaUnversioned" schemaUnversioned
+  , TestLabel "schemaEvolves"  schemaEvolves
   ] ++ schemaNegation
-    ++ schemaEvolves
