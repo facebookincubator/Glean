@@ -21,6 +21,7 @@ module Glean.Schema.Resolve
   , LookupResult(..)
   , lookupResultToExcept
   , SchemaRef(..)
+  , schemaRef
   , resolveEvolves
   ) where
 

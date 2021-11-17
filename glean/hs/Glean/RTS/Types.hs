@@ -89,6 +89,9 @@ data PidRef = PidRef Pid PredicateRef
 instance Eq PidRef where
   PidRef a _ == PidRef b _ = a == b
 
+instance Ord PidRef where
+  compare (PidRef a _) (PidRef b _) = compare a b
+
 instance Pretty PidRef where
   pretty (PidRef _ ref) = pretty ref
 

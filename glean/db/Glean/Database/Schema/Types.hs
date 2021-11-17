@@ -26,6 +26,7 @@ import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
+import Data.Map.Strict (Map)
 
 import Glean.Angle.Types as Schema hiding (Type, FieldDef)
 import qualified Glean.Angle.Types as Schema
@@ -43,7 +44,7 @@ data DbSchema = DbSchema
   , predicatesByName :: IntMap (HashMap Name PredicateDetails)
      -- ^ points to the predicate for each name in schema "all"
   , predicatesById :: IntMap PredicateDetails
-  , predicatesEvolved :: HashMap PredicateRef PredicateRef
+  , predicatesEvolved :: Map PidRef PidRef
      -- ^ value evolves key
   , schemaTypesByRef :: HashMap TypeRef TypeDetails
   , schemaTypesByName :: IntMap (HashMap Name TypeDetails)

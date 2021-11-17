@@ -27,7 +27,6 @@ import Control.Arrow (second)
 import Control.Exception
 import Control.Monad
 import Control.Monad.Except
-import Data.Bifunctor (first)
 import Data.ByteString (ByteString)
 import Data.Graph
 import Data.Hashable
@@ -370,7 +369,7 @@ evolvedPredicates
   -> Override
   -> HashMap PredicateRef PredicateDetails
   -> [ResolvedSchema]
-  -> HashMap PredicateRef PredicateRef        -- ^ value evolves key
+  -> Map PidRef PidRef        -- ^ value evolves key
 evolvedPredicates dbContent override byRef resolved =
   foldMap evolve (HashMap.keys evolvedBy)
   where
@@ -379,15 +378,13 @@ evolvedPredicates dbContent override byRef resolved =
 
     -- map each predicate in a schema to a predicate in the schema that
     -- will evolve it.
-    evolve :: SchemaRef -> HashMap PredicateRef PredicateRef
+    evolve :: SchemaRef -> Map PidRef PidRef
     evolve old
       | hasFactsInDb old = mempty
       | otherwise = fromMaybe mempty $ do
-          -- pick first parent with facts in the db
-          new <- find hasFactsInDb (transitiveEvolves old)
-          newSchema <- HashMap.lookup new bySchemaRef
-          oldSchema <- HashMap.lookup old bySchemaRef
-          return $ mapPredicates oldSchema newSchema
+        -- pick first parent schema with facts in the db
+        new <- find hasFactsInDb (transitiveEvolves old)
+        return $ mapPredicates old new
 
     -- given an 'a' returns [b,c...] such that 'b evolves a', 'c evolves b', ...
     transitiveEvolves s =
@@ -397,39 +394,41 @@ evolvedPredicates dbContent override byRef resolved =
 
     hasFactsInDb :: SchemaRef -> Bool
     hasFactsInDb schema = fromMaybe False $ do
-      ResolvedSchema{..} <- HashMap.lookup schema bySchemaRef
       DbReadOnly stats <- return dbContent
-      let factCount pid =
-            maybe 0 predicateStats_count (HashMap.lookup pid stats)
+      let factCount pid = maybe 0 predicateStats_count
+            (HashMap.lookup pid stats)
           hasFacts pid = factCount pid > 0
-          pids =
-            [ predicatePid pred
-            | ref <- HashMap.keys resolvedSchemaPredicates
-            , Just pred <- [HashMap.lookup ref byRef]
-            ]
+          pids = [ pid | PidRef pid _ <- Map.elems (byName schema) ]
       return $ any hasFacts pids
 
-    bySchemaRef :: HashMap SchemaRef ResolvedSchema
-    bySchemaRef = HashMap.fromListWith choose $ withKey <$> resolved
+    mapPredicates
+      :: SchemaRef
+      -> SchemaRef
+      -> Map PidRef PidRef
+    mapPredicates oldRef newRef = Map.fromList
+      [ (old, new)
+      | (name, old) <- Map.toList (byName oldRef)
+      , Just new <- return $ Map.lookup name (byName newRef)
+      ]
+
+    byName :: SchemaRef -> Map Name PidRef
+    byName sref = HashMap.lookupDefault mempty sref byNameMap
+
+    byNameMap :: HashMap SchemaRef (Map Name PidRef)
+    byNameMap = HashMap.fromListWith choose
+      [ (schemaRef schema, toNameToPidRef schema )
+      | schema <- resolved ]
       where
-        withKey r = (schemaRef r, r)
-        schemaRef ResolvedSchema{..} =
-          SchemaRef resolvedSchemaName resolvedSchemaVersion
         choose new old = case override of
           TakeOld -> old
           _ -> new
 
-    mapPredicates
-      :: ResolvedSchema
-      -> ResolvedSchema
-      -> HashMap PredicateRef PredicateRef
-    mapPredicates src dst =
-      HashMap.mapMaybeWithKey toDstPredRef (resolvedSchemaPredicates src)
-      where
-        toDstPredRef (PredicateRef name _) _ =
-          predicateDefRef <$> HashMap.lookup name byName
-        byName = mapKeys predicateRef_name $ resolvedSchemaPredicates dst
-        mapKeys f = HashMap.fromList . map (first f) . HashMap.toList
+    toNameToPidRef :: ResolvedSchema -> Map Name PidRef
+    toNameToPidRef schema = Map.fromList
+      [ (predicateRef_name ref, PidRef (predicatePid details) ref)
+      | ref <- HashMap.keys $ resolvedSchemaPredicates schema
+      , Just details <- return $ HashMap.lookup ref byRef
+      ]
 
 {- Note [Negation in stored predicates]
 
