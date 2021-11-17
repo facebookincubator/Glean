@@ -27,6 +27,7 @@ import Control.Arrow (second)
 import Control.Exception
 import Control.Monad
 import Control.Monad.Except
+import Data.Bifunctor (first)
 import Data.ByteString (ByteString)
 import Data.Graph
 import Data.Hashable
@@ -35,7 +36,7 @@ import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashMap.Lazy as Lazy.HashMap
 import qualified Data.HashSet as HashSet
 import Data.HashSet (HashSet)
-import Data.List (foldl')
+import Data.List (foldl', find)
 import qualified Data.IntMap as IntMap
 import qualified Data.Map as Map
 import Data.Map (Map)
@@ -60,7 +61,6 @@ import Glean.Query.Codegen (QueryWithInfo(..))
 import Glean.Query.Typecheck
 import qualified Glean.Types as Thrift
 import Glean.Types (PredicateStats(..))
-
 
 -- | Used to decide whether to activate 'derive default'
 -- definitions. These take effect for a read-only DB when there are no
@@ -351,11 +351,11 @@ mkDbSchema override getPids dbContent source base addition = do
               | ResolvedSchema{..} <- schemas
               ]
 
-
   return $ DbSchema
     { predicatesByRef = byRef
     , predicatesByName = predicatesByName
     , predicatesById = byId
+    , predicatesEvolved = evolvedPredicates dbContent override byRef resolved
     , schemaTypesByRef = tcEnvTypes env
     , schemaTypesByName = schemaTypesByName
     , schemaInventory = inventory predicates
@@ -364,6 +364,72 @@ mkDbSchema override getPids dbContent source base addition = do
     , schemaMaxPid = maxPid
     , schemaLatestVersion = latestVer
     }
+
+evolvedPredicates
+  :: DbContent
+  -> Override
+  -> HashMap PredicateRef PredicateDetails
+  -> [ResolvedSchema]
+  -> HashMap PredicateRef PredicateRef        -- ^ value evolves key
+evolvedPredicates dbContent override byRef resolved =
+  foldMap evolve (HashMap.keys evolvedBy)
+  where
+    evolvedBy :: HashMap SchemaRef SchemaRef
+    evolvedBy = either (error . show) id (resolveEvolves resolved)
+
+    -- map each predicate in a schema to a predicate in the schema that
+    -- will evolve it.
+    evolve :: SchemaRef -> HashMap PredicateRef PredicateRef
+    evolve old
+      | hasFactsInDb old = mempty
+      | otherwise = fromMaybe mempty $ do
+          -- pick first parent with facts in the db
+          new <- find hasFactsInDb (transitiveEvolves old)
+          newSchema <- HashMap.lookup new bySchemaRef
+          oldSchema <- HashMap.lookup old bySchemaRef
+          return $ mapPredicates oldSchema newSchema
+
+    -- given an 'a' returns [b,c...] such that 'b evolves a', 'c evolves b', ...
+    transitiveEvolves s =
+      case HashMap.lookup s evolvedBy of
+        Just s' -> s' : transitiveEvolves s'
+        Nothing -> []
+
+    hasFactsInDb :: SchemaRef -> Bool
+    hasFactsInDb schema = fromMaybe False $ do
+      ResolvedSchema{..} <- HashMap.lookup schema bySchemaRef
+      DbReadOnly stats <- return dbContent
+      let factCount pid =
+            maybe 0 predicateStats_count (HashMap.lookup pid stats)
+          hasFacts pid = factCount pid > 0
+          pids =
+            [ predicatePid pred
+            | ref <- HashMap.keys resolvedSchemaPredicates
+            , Just pred <- [HashMap.lookup ref byRef]
+            ]
+      return $ any hasFacts pids
+
+    bySchemaRef :: HashMap SchemaRef ResolvedSchema
+    bySchemaRef = HashMap.fromListWith choose $ withKey <$> resolved
+      where
+        withKey r = (schemaRef r, r)
+        schemaRef ResolvedSchema{..} =
+          SchemaRef resolvedSchemaName resolvedSchemaVersion
+        choose new old = case override of
+          TakeOld -> old
+          _ -> new
+
+    mapPredicates
+      :: ResolvedSchema
+      -> ResolvedSchema
+      -> HashMap PredicateRef PredicateRef
+    mapPredicates src dst =
+      HashMap.mapMaybeWithKey toDstPredRef (resolvedSchemaPredicates src)
+      where
+        toDstPredRef (PredicateRef name _) _ =
+          predicateDefRef <$> HashMap.lookup name byName
+        byName = mapKeys predicateRef_name $ resolvedSchemaPredicates dst
+        mapKeys f = HashMap.fromList . map (first f) . HashMap.toList
 
 {- Note [Negation in stored predicates]
 

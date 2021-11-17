@@ -20,6 +20,8 @@ module Glean.Schema.Resolve
   , resolveType
   , LookupResult(..)
   , lookupResultToExcept
+  , SchemaRef(..)
+  , resolveEvolves
   ) where
 
 import Control.Monad.Except
@@ -29,7 +31,7 @@ import Data.ByteString (ByteString)
 import Data.Char
 import Data.Graph
 import Data.Foldable (asum)
-import Data.Hashable
+import Data.Hashable (Hashable)
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashSet as HashSet
@@ -43,8 +45,8 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Text.Prettyprint.Doc hiding (group)
 import Data.Tree
-import TextShow
 import GHC.Generics
+import TextShow
 
 import Glean.Angle.Parser
 import Glean.Angle.Types
@@ -59,8 +61,6 @@ data Schemas = Schemas
   , schemasCurrentVersion :: Version
   , schemasResolved :: [ResolvedSchema]
     -- ^ Resolved schemas in dependency order
-  , schemasEvolvedBy :: HashMap SchemaRef SchemaRef
-    -- ^ value evolves key
   }
 
 -- | A single schema
@@ -70,6 +70,12 @@ data Schema = Schema
   , schemaPredicates :: HashMap Name (Set Version)
   }
   deriving Eq
+
+-- | Identify a schema
+data SchemaRef = SchemaRef Name Version
+  deriving (Eq, Ord, Show, Generic)
+
+instance Hashable SchemaRef
 
 -- | Useful packaging of 'parseSchema' and 'resolveSchema'. Note that
 -- parsing and resolution of a schema is a pure function.
@@ -105,7 +111,8 @@ resolveSchema SourceSchemas{..} = runExcept $ do
 
     resolveSchemas env [] = return env
     resolveSchemas env (AcyclicSCC one : rest) = do
-      resolved <- resolveOneSchema env srcAngleVersion one
+      let schemaEvolves = HashMap.lookupDefault [] (schemaName one) evolves
+      resolved <- resolveOneSchema env srcAngleVersion schemaEvolves one
       resolveSchemas (HashMap.insert (schemaName one) resolved env) rest
     resolveSchemas _ (CyclicSCC some : _) = throwError $
       "cycle in schema definitions between: " <>
@@ -159,19 +166,14 @@ resolveSchema SourceSchemas{..} = runExcept $ do
         | AcyclicSCC one <- sccs
         , Just schema <- [HashMap.lookup (schemaName one) finalEnv ] ]
 
-    evolvesMap = HashMap.fromList
-      [ (toRef new, Set.fromList $ toRef <$> oldList)
-      | (new, oldList) <- HashMap.toList evolves ]
-      where toRef name = schemaRef (finalEnv HashMap.! name)
-
-  evolvedBy <- either throwError return $ resolveEvolves evolvesMap resolved
+  -- Check whether any schema is evolved by multiple schemas.
+  _ <- either throwError return $ resolveEvolves resolved
 
   return Schemas
     { schemasSchemas = HashMap.fromList
         [ (schemaVersion s, s) | s <- allTheSchemas ]
     , schemasCurrentVersion = maximum (map schemaVersion allTheSchemas)
     , schemasResolved = resolved
-    , schemasEvolvedBy = evolvedBy
     }
 
 
@@ -183,21 +185,17 @@ resolveSchema SourceSchemas{..} = runExcept $ do
 -- know whether to serve facts from C or from B. Therefore we disallow
 -- multiple schemas to evolve a single one.
 resolveEvolves
-  :: HashMap SchemaRef (Set SchemaRef)
-  -> [ResolvedSchema] -- ^ in dependency order
+  :: [ResolvedSchema] -- ^ in dependency order
   -> Either Text (HashMap SchemaRef SchemaRef)
-resolveEvolves evolvesMap resolved = do
+resolveEvolves resolved = do
   checkLawfulEvolves
   HashMap.traverseWithKey checkMultipleEvolves
     $ HashMap.fromListWith (++)
     $ concatMap evolvedByResolved resolved
   where
-    evolvedBy new =
-      HashMap.lookupDefault mempty (schemaRef new) evolvesMap
-
     evolvedByResolved new =
         [ (oldRef, [schemaRef new])
-        | oldRef <- Set.toList $ evolvedBy new ]
+        | oldRef <- Set.toList $ resolvedSchemaEvolves new ]
 
     checkMultipleEvolves old newList =
       case nub newList of
@@ -217,7 +215,7 @@ resolveEvolves evolvesMap resolved = do
       foldM_ evolveOneSchema mempty
         [ (new, old)
         | new <- resolved
-        , oldRef <- Set.toList $ evolvedBy new
+        , oldRef <- Set.toList $ resolvedSchemaEvolves new
         , Just old <- [Map.lookup oldRef resolvedByRef]
         ]
 
@@ -279,15 +277,9 @@ evolveOneSchema evolvedBy (new, old) = do
 
     mapKeys f = HashMap.fromList . map (first f) . HashMap.toList
 
--- | Identify a schema
-data SchemaRef = SchemaRef Name Version
-  deriving (Eq, Ord, Show, Generic)
-
 schemaRef :: ResolvedSchema -> SchemaRef
 schemaRef ResolvedSchema{..} =
   SchemaRef resolvedSchemaName resolvedSchemaVersion
-
-instance Hashable SchemaRef
 
 type Environment = HashMap Name ResolvedSchema
 
@@ -309,6 +301,7 @@ data ResolvedSchema = ResolvedSchema
   , resolvedSchemaDeriving :: HashMap PredicateRef SourceDerivingInfo
     -- ^ deriving declarations, for predicates defined in this schema
     -- or an inherited schema.
+  , resolvedSchemaEvolves :: Set SchemaRef
   }
 
 data RefTarget = RefType TypeRef | RefPred PredicateRef
@@ -325,13 +318,18 @@ type Scope = SourceRef -> LookupResult
 resolveOneSchema
   :: Environment
   -> AngleVersion
+  -> [Name]
   -> SourceSchema
   -> Except Text ResolvedSchema
 
-resolveOneSchema env angleVersion SourceSchema{..} =
+resolveOneSchema env angleVersion evolves SourceSchema{..} =
   flip catchError (\e -> throwError $ "In " <> schemaName <> ":\n  " <> e) $ do
   let
     SourceRef namespace maybeVer = parseRef schemaName
+
+    schemaByName name = case HashMap.lookup name env of
+      Nothing -> throwError $ "unknown schema: " <> name
+      Just schema -> return schema
 
   checkNameSpace namespace
 
@@ -341,16 +339,10 @@ resolveOneSchema env angleVersion SourceSchema{..} =
     Just v -> return v
 
   -- All the schemas we're inheriting from
-  inherits <- forM schemaInherits $ \name ->
-    case HashMap.lookup name env of
-      Nothing -> throwError $ "unknown schema: " <> name
-      Just schema -> return schema
+  inherits <- traverse schemaByName schemaInherits
 
   -- All the schemas we imported
-  imports <- forM [ name | SourceImport name <- schemaDecls ] $ \name ->
-    case HashMap.lookup name env of
-      Nothing -> throwError $ "unknown schema: " <> name
-      Just schema -> return schema
+  imports <- traverse schemaByName [ name | SourceImport name <- schemaDecls ]
 
   localPreds <- forM [ p | SourcePredicate p <- schemaDecls ] $
     \def@PredicateDef{..} -> case predicateDefRef of
@@ -534,6 +526,8 @@ resolveOneSchema env angleVersion SourceSchema{..} =
         , not (name `HashSet.member` localPredicateNames)
         ]
 
+  schemaEvolves <- traverse schemaByName evolves
+
   return ResolvedSchema
     { resolvedSchemaName = namespace
     , resolvedSchemaVersion = version
@@ -544,6 +538,7 @@ resolveOneSchema env angleVersion SourceSchema{..} =
     , resolvedSchemaReExportedPredicates = reExportedPredicates
     , resolvedSchemaScope = scope
     , resolvedSchemaDeriving = HashMap.fromList localDeriving
+    , resolvedSchemaEvolves = Set.fromList (schemaRef <$> schemaEvolves)
     }
 
 data FieldMatching = ExactMatch | AllowNew
@@ -567,7 +562,7 @@ backCompatible
   -> HashMap TypeRef TypeDef -- ^ old type definitions
   -> Type                    -- ^ updated type
   -> Type                    -- ^ old type
-  -> Maybe Text
+  -> Maybe Text              -- ^ compatibility error
 backCompatible evolvedBy newTypes oldTypes new old = go new old
   where
     go (NamedType t) old = go (typeDefType $ newTypes HashMap.! t) old

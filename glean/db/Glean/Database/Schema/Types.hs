@@ -43,6 +43,8 @@ data DbSchema = DbSchema
   , predicatesByName :: IntMap (HashMap Name PredicateDetails)
      -- ^ points to the predicate for each name in schema "all"
   , predicatesById :: IntMap PredicateDetails
+  , predicatesEvolved :: HashMap PredicateRef PredicateRef
+     -- ^ value evolves key
   , schemaTypesByRef :: HashMap TypeRef TypeDetails
   , schemaTypesByName :: IntMap (HashMap Name TypeDetails)
      -- ^ points to the type for each name in schema "all"
