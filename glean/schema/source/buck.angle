@@ -329,6 +329,23 @@ predicate TargetAttribute :
     value : AttributeValue,
   }
 
+# Returns all sources and their base_module in a target.
+predicate TargetSourcesBaseModule:
+  {
+    locator: Target,
+    srcs: [File],
+    baseModule: maybe AttributeValue,
+  }
+  { Tgt, Srcs, BM } where
+    TargetSources { target = Tgt, srcs = Srcs };
+    Attr = AttributeName "base_module";
+    (
+      TargetAttribute { Tgt, Attr, V };
+      BM = {just = V};
+    ) | (
+      ! TargetAttribute { target = Tgt, attribute = Attr };
+      BM = (nothing : maybe AttributeValue);
+    )
 
 # The following predicates and types, add locations
 # to Targets and define cross references.
