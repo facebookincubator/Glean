@@ -203,7 +203,8 @@ predicate ResolveLocation:
     CxxResolveLocation { Location, Entity } |
     HaskellResolveLocation { Location, Entity } |
     RustResolveLocation { Location, Entity } |
-    BuckResolveLocation { Location, Entity }
+    BuckResolveLocation { Location, Entity } |
+    ThriftResolveLocation { Location, Entity }
 
 predicate EntityLocation:
   {
@@ -218,7 +219,8 @@ predicate EntityLocation:
     PPEntityLocation { Entity, Location } |
     HaskellEntityLocation { Entity, Location } |
     RustEntityLocation { Entity, Location } |
-    BuckEntityLocation { Entity, Location }
+    BuckEntityLocation { Entity, Location } |
+    ThriftEntityLocation { Entity, Location }
 
 # Finding xrefs. All references in a file and their targets
 predicate FileEntityXRefLocations:
@@ -234,7 +236,8 @@ predicate FileEntityXRefLocations:
     CxxFileEntityXRefLocations { File, XRef, Entity } |
     HaskellFileEntityXRefLocations { File, XRef, Entity } |
     RustFileEntityXRefLocations { File, XRef, Entity } |
-    BuckFileEntityXRefLocations { File, XRef, Entity }
+    BuckFileEntityXRefLocations { File, XRef, Entity } |
+    ThriftFileEntityXRefLocations { File, XRef, Entity }
 
 # Finding xrefs. All references in a file, and their kinds
 predicate FileEntityXRefKinds:
@@ -379,6 +382,19 @@ predicate BuckResolveLocation:
     Locator = buck.Locator { name = Name };
     Entity = code.Entity { buck = { locator = Locator } };
 
+predicate ThriftResolveLocation:
+  {
+    location: Location,
+    entity: code.Entity,
+  }
+  {{ Name, FileS, { range = Range }}, Entity } where
+    FileT = thrift.File FileS;
+    thrift.FileDeclaration { FileT, Declaration };
+    thrift.DeclarationNameSpan { Declaration, Identifier, FileT, {LB, CB, LE, CE} };
+    Identifier = thrift.Identifier Name;
+    { file = FileS, lineBegin = LB, columnBegin = CB, lineEnd = LE, columnEnd = CE } = Range;
+    Entity = code.Entity { thrift = Declaration };
+
 # Finding entities' locations
 
 predicate HackEntityLocation:
@@ -452,6 +468,18 @@ predicate BuckEntityLocation:
   where buck.TargetLocation { L, File, Span };
   { name = Name } = L;
 
+predicate ThriftEntityLocation:
+  {
+    entity: code.Entity,
+    location: Location,
+  }
+ { Entity, { Name, FileS, { range = Range } } } where
+    thrift.DeclarationNameSpan { Declaration, Identifier, FileT, Loc };
+    Entity = code.Entity { thrift = Declaration };
+    Identifier = thrift.Identifier Name;
+    FileT = thrift.File FileS;
+    { LB, CB, LE, CE } = Loc;
+    { lineBegin = LB, columnBegin = CB, lineEnd = LE, columnEnd = CE } = Range;
 
 # Finding references in a file
 
@@ -909,6 +937,26 @@ predicate BuckFileEntityXRefLocations:
     buck.TargetLocation { Locator, TargetFile, LocatorSpan };
     { Name, TargetFile, { span = LocatorSpan }} = LocatorLocation;
     Entity = code.Entity { buck = { locator = Locator } };
+
+predicate ThriftFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: XRefLocation,
+    entity: code.Entity,
+  }
+ { File, { target = TargetLocation, source = { range = SourceRange } }, Entity } where
+  FileT = thrift.File File;
+  thrift.FileXRefs { file = FileT, xrefs = XRefs };
+  { { startLine = LB, startCol = CB, endLine = LE, endCol = CE }  , XRefTarget } = XRefs[..];
+  { file = File, lineBegin = LB, columnBegin = CB, lineEnd = LE, columnEnd = CE } = SourceRange;
+  thrift.DeclarationNameSpan { decl = XRefTarget,
+                               name = thrift.Identifier Name,
+                               file = TargetFileT,
+                               span = { TLB, TCB, TLE, TCE } };
+  TargetFileT = thrift.File TargetFile;
+  TargetRange = {TargetFile, TLB, TCB, TLE, TCE };
+  { name = Name, file = TargetFile, location = { range = TargetRange } } = TargetLocation;
+  Entity = code.Entity { thrift = XRefTarget };
 
 #
 # Language entity uses
