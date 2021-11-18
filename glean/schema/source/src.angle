@@ -94,4 +94,15 @@ type FileLocation = {
   span : ByteSpan,
 }
 
+# IndexFailure reasons supported by Glean
+type IndexFailureReason = enum {
+  CompileError
+}
+
+predicate IndexFailure : {
+  file : File,
+  reason : IndexFailureReason,
+  details : string
+}
+
 }

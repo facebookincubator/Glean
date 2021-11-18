@@ -90,6 +90,17 @@ public:
     }
   }
 
+  void IndexFailure(const clang::ASTContext& ctx) {
+    const auto* client = ctx.getDiagnostics().getClient();
+    batch.fact<Src::IndexFailure>(
+        file(ctx.getSourceManager().getMainFileID()),
+        Src::IndexFailureReason::CompileError,
+        client
+            ? fmt::format(
+                  "{} error(s) occurred while indexing", client->getNumErrors())
+            : "");
+  }
+
   // Names
 
   Fact<Cxx::Name> name(const clang::Token& name) {
