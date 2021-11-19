@@ -269,17 +269,20 @@ doFinalize :: Env -> Repo -> IO Bool
 doFinalize env@Env{..} repo =
   do
     atomically $ notify envListener $ FinalizeStarted repo
+
+    -- If the client didn't explicitly call completePredicates, we'll
+    -- do that now. Do this *before* optimising/compacting, because
+    -- that deletes all the temporary ownership information consumed
+    -- by this pass.
+    meta <- atomically $ Catalog.readMeta envCatalog repo
+    when (not (metaAxiomComplete meta)) $ syncCompletePredicates env repo
+
     config <- Observed.get envServerConfig
     withOpenDatabase env repo $ \odb@OpenDB{..} -> do
       when (ServerConfig.config_compact_on_completion config) $ do
         say logInfo "optimising"
         Storage.optimize odbHandle
       thinSchema repo odb
-
-    -- If the client didn't explicitly call completePredicates, we'll
-    -- do that now.
-    meta <- atomically $ Catalog.readMeta envCatalog repo
-    when (not (metaAxiomComplete meta)) $ syncCompletePredicates env repo
 
     -- update and re-merge our internal representation of the schema
     schemaUpdated env (Just repo)
