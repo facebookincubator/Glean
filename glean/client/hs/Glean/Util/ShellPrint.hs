@@ -366,12 +366,15 @@ instance ShellFormat StatsFormatOpts (PredStatsFilter, PredStatsList) where
         ] ++
         if showTotal opts then
           [ ""
-          , "Total size: " <> pretty (showAllocs totalSizeBytes)
+          , "Total: " <> pretty totalFacts
+              <+> "facts" <+> parens (pretty (showAllocs totalSizeBytes))
           ]
         else
           []
       where
+        predicate_count = Thrift.predicateStats_count . snd
         predicate_size = Thrift.predicateStats_size . snd
+        totalFacts = foldl' (+) 0 $ map predicate_count preds
         totalSizeBytes =
           foldl' (+) 0 $ map predicate_size preds
         sort = if sortBySize opts then

@@ -147,6 +147,9 @@ class GleanShellStatistics(GleanShellTest):
         output = self.shellCommand(":statistics")
         self.assertIsNotNone(re.search("glean.test.Predicate.1\r\n *count: 2", output))
         self.assertIsNotNone(re.search("sys.Blob.1\r\n *count: 2", output))
+        self.assertIsNotNone(
+            re.search("Total: \\d+ facts \\(\\d+\\.\\d+ kB\\)", output)
+        )
 
 
 class GleanShellPredicates(GleanShellTest):
