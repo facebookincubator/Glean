@@ -75,9 +75,9 @@ unique. For example, `:edit` can be abbreviated as `:e`.
 
 * `:database NAME` or `:database NAME/HASH`<br/>
 Use database `NAME` or `NAME/HASH`.
-* `list NAME`<br />
+* `:list NAME`<br />
 List available databases which match `NAME`.
-* `list-all NAME`<br />
+* `:list-all NAME`<br />
 List available databases, and restorable backups, which match `NAME`.
 * `:index LANGUAGE DIR`<br/>
 Index some source code for `LANGUAGE` in directory `DIR`, creating a
