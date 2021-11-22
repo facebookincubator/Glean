@@ -36,11 +36,11 @@ decodeFact
   -> Thrift.Fact                      -- ^ fact to decode
   -> m p
 {-# INLINE decodeFact #-}
-decodeFact x y i (Thrift.Fact _pid k v) = mkFact i
-  <$> (Just <$> decodeWithCache x y decodeRtsValue k)
+decodeFact serialized cache fid (Thrift.Fact _pid k v) = mkFact fid
+  <$> (Just <$> decodeWithCache serialized cache decodeRtsValue k)
   <*> (Just <$> case constantRtsValue of
     Just val -> return val
-    Nothing -> decodeWithCache x y decodeRtsValue v)
+    Nothing -> decodeWithCache serialized cache decodeRtsValue v)
 
 -- | Decode a fact reference inside a fact.
 --
