@@ -215,4 +215,68 @@ unEvolveResults mappings dbschema results@QueryResults{..}
 -- | Create a transformation from a term into another term of a compatible
 -- type.  Returns Nothing if no change is needed.
 mkValueTransformation :: Type -> Type -> Maybe (Value -> Value)
-mkValueTransformation = error "TODO"
+mkValueTransformation from to = go from to
+  where
+    names = map fieldDefName
+    transformsFor from to = Map.fromList
+      [ (name, f)
+      | FieldDef name defFrom <- from
+      , FieldDef nameTo defTo <- to
+      , name == nameTo
+      , Just f <- [go defFrom defTo]
+      ]
+
+    go :: Type -> Type -> Maybe (Value -> Value)
+    go from@(Type.NamedType _) to = go (derefType from) to
+    go from to@(Type.NamedType _) = go from (derefType to)
+    go Type.Byte Type.Byte = Nothing
+    go Type.Nat Type.Nat = Nothing
+    go Type.String Type.String = Nothing
+    go Type.Boolean Type.Boolean = Nothing
+    go (Type.Maybe from) (Type.Maybe to) = go (lowerMaybe from) (lowerMaybe to)
+    go (Type.Predicate _) (Type.Predicate _) = Nothing
+    go (Type.Enumerated from) (Type.Enumerated to) =
+      go (lowerEnum from) (lowerEnum to)
+    go (Type.Array from) (Type.Array to) = do
+      f <- go from to
+      return $ \term -> case term of
+        Array vs -> Array (map f vs)
+        _ -> error $ "expected Array, got " <> show term
+
+    go (Type.Record from) (Type.Record to) =
+      let sameFields = names from == names to
+          transforms = transformsFor from to
+          noChanges = Map.null transforms
+          change name = fromMaybe id $ Map.lookup name transforms
+      in
+      if sameFields && noChanges
+         then Nothing
+         else Just $ \term ->
+          case term of
+            Tuple contents -> Tuple
+              [ change field content
+              | (field, content) <- zip (names to) contents ]
+            _ -> error $ "expected Tuple, got " <> show term
+
+    go (Type.Sum from) (Type.Sum to) =
+      let sameOpts = names from == names to
+          transforms = transformsFor from to
+          noChanges = Map.null transforms
+          altMap = Map.fromList
+              [ (fromAlt, (toAlt, change))
+              | (nameFrom, fromAlt) <- zip (names from) [0..]
+              , (nameTo, toAlt) <- zip (names to) [0..]
+              , nameFrom == nameTo
+              , change <- [ fromMaybe id $ Map.lookup nameFrom transforms ]
+              ]
+      in
+      if sameOpts && noChanges
+        then Nothing
+        else Just $ \term -> case term of
+          Alt n content -> case Map.lookup n altMap of
+            Nothing -> Alt n content
+            Just (n', change) -> Alt n' (change content)
+          _ -> error $ "expected Alt, got " <> show term
+    go from to =
+      error $ "invalid type conversion: "
+        <> show from <> " to " <> show to
