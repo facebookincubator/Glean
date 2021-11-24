@@ -8,22 +8,29 @@
 
 module Glean.Query.Evolve
   ( evolveFlattenedQuery
+  , unEvolveResults
   ) where
 
 import Control.Monad.State (State, runState, modify)
 import Data.List (elemIndex)
 import qualified Data.Map.Strict as Map
 import Data.Map.Strict (Map)
-import Data.Maybe (listToMaybe)
+import qualified Data.IntMap.Strict as IntMap
+import Data.IntMap.Strict (IntMap)
+import Data.Maybe (fromMaybe, listToMaybe)
+import Data.Vector (Vector)
 
 import Glean.Angle.Types (FieldDef_(..), Type_)
 import qualified Glean.Angle.Types as Type
 import Glean.Query.Codegen
 import Glean.Query.Flatten.Types
 import Glean.Database.Schema
+import qualified Glean.RTS as RTS
 import Glean.RTS.Types
-import Glean.RTS.Term (Term(..))
-import Glean.Schema.Util (lowerMaybe, lowerBool, enumFields)
+import Glean.RTS.Term (Value, Term(..))
+import Glean.RTS.Foreign.Query (QueryResults(..))
+import Glean.Schema.Util (lowerMaybe, lowerBool, lowerEnum)
+import qualified Glean.Types as Thrift
 
 evolveFlattenedQuery
   :: DbSchema
@@ -116,8 +123,8 @@ evolveFlattenedQuery dbSchema@DbSchema{..} q = flip runState mempty $ do
         | Type.Enumerated oldAlts <- old
         , Type.Enumerated newAlts <- new ->
             evolvePat
-              (Type.Sum $ enumFields oldAlts)
-              (Type.Sum $ enumFields newAlts)
+              (lowerEnum oldAlts)
+              (lowerEnum newAlts)
               pat
         | Type.Sum oldAlts <- old
         , Type.Sum newAlts <- new
@@ -147,3 +154,65 @@ evolveFlattenedQuery dbSchema@DbSchema{..} q = flip runState mempty $ do
             in
             Tuple (termForField <$> newFields)
       _ -> error "unexpected"
+
+-- | Transform evolved facts into the type the query originally asked for.
+unEvolveResults
+  :: Map PidRef PidRef -- ^ Evolved mappings. key evolved value
+  -> DbSchema
+  -> QueryResults
+  -> QueryResults
+unEvolveResults mappings dbschema results@QueryResults{..}
+  | Map.null mappings = results
+  | otherwise = results
+    { queryResultsFacts = unEvolveFacts queryResultsFacts
+    , queryResultsNestedFacts = unEvolveFacts queryResultsNestedFacts
+    }
+  where
+    unEvolveFacts :: Vector (Fid, Thrift.Fact) -> Vector (Fid, Thrift.Fact)
+    unEvolveFacts = fmap (fmap unEvolveFact)
+
+    unEvolveFact :: Thrift.Fact -> Thrift.Fact
+    unEvolveFact fact@(Thrift.Fact pid _ _) =
+      case IntMap.lookup (fromIntegral pid) transformations of
+        Nothing -> fact
+        Just f -> f fact
+
+    transformations :: IntMap (Thrift.Fact -> Thrift.Fact)
+    transformations = IntMap.fromList
+      [ (pid, f)
+      | (PidRef pidFrom _ , PidRef pidTo _) <- Map.toList mappings
+      , pid <- [fromIntegral $ fromPid pidFrom]
+      , Just f <- return $ do
+          detailsFrom <- lookupPid pidFrom dbschema
+          detailsTo <- lookupPid pidTo dbschema
+          mkFactTransformation detailsFrom detailsTo
+      ]
+
+    mkFactTransformation
+      :: PredicateDetails
+      -> PredicateDetails
+      -> Maybe (Thrift.Fact -> Thrift.Fact)
+    mkFactTransformation from to
+      | Nothing <- mTransformKey
+      , Nothing <- mTransformValue = Nothing
+      | otherwise = Just $ \(Thrift.Fact _ key value) ->
+         Thrift.Fact
+           (fromPid $ predicatePid to)
+           (RTS.fromValue $ overKey $ RTS.toValue keyRep key)
+           (RTS.fromValue $ overValue $ RTS.toValue valueRep value)
+      where
+        overKey = fromMaybe id mTransformKey
+        overValue = fromMaybe id mTransformValue
+        keyRep = repType $ predicateKeyType from
+        valueRep = repType $ predicateValueType from
+        mTransformKey = mkValueTransformation
+          (predicateKeyType from)
+          (predicateKeyType to)
+        mTransformValue = mkValueTransformation
+          (predicateValueType from)
+          (predicateValueType to)
+
+-- | Create a transformation from a term into another term of a compatible
+-- type.  Returns Nothing if no change is needed.
+mkValueTransformation :: Type -> Type -> Maybe (Value -> Value)
+mkValueTransformation = error "TODO"
