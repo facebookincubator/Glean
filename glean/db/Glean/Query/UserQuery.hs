@@ -63,6 +63,7 @@ import Glean.Database.Types as Database
 import Glean.Database.Writes
 import Glean.FFI
 import Glean.Query.Codegen hiding (Match(..))
+import Glean.Query.Evolve
 import Glean.Query.Flatten
 import Glean.Query.Opt
 import Glean.Query.Reorder
@@ -500,7 +501,7 @@ userQueryImpl
                 envSchemaVersion env <|>
                 dbSchemaVersion
 
-          (compileTime, _, query@QueryWithInfo{..}) <- timeIt $
+          (compileTime, _, (query@QueryWithInfo{..}, evolutions)) <- timeIt $
             compileAngleQuery schemaVersion schema userQuery_query stored
           let
             irDiag =
@@ -509,7 +510,7 @@ userQueryImpl
 
             cont = case Thrift.userQueryOptions_continuation opts of
               Just c -> Right c
-              Nothing -> Left query
+              Nothing -> Left (query, evolutions)
 
           return (qiReturnType, compileTime, irDiag, cont)
 
@@ -571,16 +572,24 @@ userQueryImpl
       else return Nothing
 
     ( qResults@QueryResults{..}
+      , evolutions
       , queryDiag
       , bytecodeSize) <-
       case cont of
         Right ucont -> do
           let binaryCont = Thrift.userQueryCont_continuation ucont
-          results <- restartCompiled schemaInventory defineOwners stack
-            (Just predicatePid) limits binaryCont
-          return (results, [], B.length binaryCont)
+              evolutions = toEvolutions $ Thrift.userQueryCont_evolutions ucont
+          results <- unEvolveResults schema evolutions <$>
+            restartCompiled
+              schemaInventory
+              defineOwners
+              stack
+              (Just predicatePid)
+              limits
+              binaryCont
+          return (results, evolutions, [], B.length binaryCont)
 
-        Left query -> do
+        Left (query, evolutions) -> do
           let
             bytecodeDiag sub =
               [ "bytecode:\n" <> Text.unlines
@@ -588,11 +597,11 @@ userQueryImpl
               | Thrift.queryDebugOptions_bytecode debug ]
 
           bracket (compileQuery query) (release . compiledQuerySub) $ \sub -> do
-            results <- executeCompiled schemaInventory defineOwners
-              stack sub limits
+            results <- unEvolveResults schema evolutions <$>
+              executeCompiled schemaInventory defineOwners stack sub limits
             diags <- evaluate $ force (bytecodeDiag sub) -- don't keep sub alive
             sz <- evaluate $ Bytecode.size (compiledQuerySub sub)
-            return (results, diags, sz)
+            return (results, evolutions, diags, sz)
 
     -- If we're storing derived facts, queue them for writing and
     -- return the handle.
@@ -605,7 +614,7 @@ userQueryImpl
       Nothing -> return Nothing
       Just bs -> do
         nextId <- firstFreeId derived
-        return $ Just $ mkUserQueryCont (Right returnType) bs nextId
+        return $ Just $ mkUserQueryCont evolutions (Right returnType) bs nextId
 
     stats <- getStats qResults
 
@@ -669,7 +678,7 @@ userQueryImpl
           Nothing -> return Nothing
           Just bs -> do
             nextId <- firstFreeId derived
-            return $ Just $ mkUserQueryCont (Left pids) bs nextId
+            return $ Just $ mkUserQueryCont mempty (Left pids) bs nextId
 
         stats <- getStats qResults
         when (isJust userCont) $
@@ -793,7 +802,7 @@ compileAngleQuery
   -> DbSchema
   -> ByteString
   -> Bool
-  -> IO CodegenQuery
+  -> IO (CodegenQuery, Evolutions)
 compileAngleQuery ver dbSchema source stored = do
   parsed <- checkBadQuery Text.pack $ Angle.parseQuery source
   vlog 2 $ "parsed query: " <> show (pretty parsed)
@@ -809,8 +818,9 @@ compileAngleQuery ver dbSchema source stored = do
   optimised <- checkBadQuery id $ runExcept $ optimise flattened
   vlog 2 $ "optimised query: " <> show (pretty (qiQuery optimised))
 
-  checkBadQuery id $ runExcept $ reorder dbSchema optimised
   -- no need to vlog, compileQuery will vlog it later
+  reordered <- checkBadQuery id $ runExcept $ reorder dbSchema optimised
+  return (reordered, mempty)
   where
   checkBadQuery :: (err -> Text) -> Either err a -> IO a
   checkBadQuery txt act = case act of
@@ -1136,17 +1146,20 @@ parseQuery dbSchema Thrift.UserQueryOptions{..} details val =
         Nothing -> return Nothing
 
 mkUserQueryCont
-  :: Either (Set Pid) Type
+  :: Evolutions
+  -> Either (Set Pid) Type
   -> ByteString
   -> Fid
   -> Thrift.UserQueryCont
-mkUserQueryCont contInfo cont nextId = hashUserQueryCont $ Thrift.UserQueryCont
+mkUserQueryCont evolutions contInfo cont nextId =
+  hashUserQueryCont $ Thrift.UserQueryCont
   { userQueryCont_continuation = cont
   , userQueryCont_nextId = fromFid nextId
   , userQueryCont_version = fromIntegral Bytecode.version
   , userQueryCont_hash = 0
   , userQueryCont_returnType = returnType
   , userQueryCont_pids = pids
+  , userQueryCont_evolutions = fromEvolutions evolutions
   }
   where
     returnType = case contInfo of

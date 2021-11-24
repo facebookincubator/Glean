@@ -6,9 +6,14 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+  {-# LANGUAGE GeneralisedNewtypeDeriving #-}
+  {-# LANGUAGE DerivingStrategies #-}
 module Glean.Query.Evolve
   ( evolveFlattenedQuery
   , unEvolveResults
+  , Evolutions
+  , fromEvolutions
+  , toEvolutions
   ) where
 
 import Control.Monad.State (State, runState, modify)
@@ -16,6 +21,7 @@ import Data.List (elemIndex)
 import qualified Data.Map.Strict as Map
 import Data.Map.Strict (Map)
 import qualified Data.IntMap.Strict as IntMap
+import Data.Int (Int64)
 import Data.IntMap.Strict (IntMap)
 import Data.Maybe (fromMaybe, listToMaybe)
 import Data.Vector (Vector)
@@ -32,10 +38,27 @@ import Glean.RTS.Foreign.Query (QueryResults(..))
 import Glean.Schema.Util (lowerMaybe, lowerBool, lowerEnum)
 import qualified Glean.Types as Thrift
 
+-- | A map of the predicate transformations performed by evolves.
+-- value was transformed into key
+newtype Evolutions = Evolutions (Map Pid Pid)
+  deriving newtype (Semigroup, Monoid)
+
+toEvolutions :: Map Int64 Int64 -> Evolutions
+toEvolutions = Evolutions . mapKeyAndValue Pid
+
+fromEvolutions :: Evolutions -> Map Int64 Int64
+fromEvolutions (Evolutions e) = mapKeyAndValue fromPid e
+
+mapKeyAndValue :: Ord b => (a -> b) -> Map a a -> Map b b
+mapKeyAndValue f = Map.fromList . map (both f) . Map.toList
+  where both f (a, b) = (f a, f b)
+
+-- | Transform a query such that it operates on the most evolved
+-- version available of the predicates it mentions.
 evolveFlattenedQuery
   :: DbSchema
   -> FlattenedQuery
-  -> (FlattenedQuery, Map PidRef PidRef)
+  -> (FlattenedQuery, Evolutions)
 evolveFlattenedQuery dbSchema@DbSchema{..} q = flip runState mempty $ do
   query <- evolveFlatQuery (qiQuery q)
   return q { qiQuery = query }
@@ -56,9 +79,7 @@ evolveFlattenedQuery dbSchema@DbSchema{..} q = flip runState mempty $ do
 
     evolveGenerator
       :: Generator
-      -> State
-          (Map PidRef PidRef)
-          (Maybe (Pat -> Pat, Generator))
+      -> State Evolutions (Maybe (Pat -> Pat, Generator))
     evolveGenerator gen = case gen of
       -- these only deal with expressions, so there is no
       -- mapping to be done.
@@ -80,8 +101,11 @@ evolveFlattenedQuery dbSchema@DbSchema{..} q = flip runState mempty $ do
                 (predicateValueType oldTy)
                 (predicateValueType newTy)
         return $ do
-          modify (Map.insert new old)
+          modify (addEvolution new old)
           return (evolveKey , FactGenerator new (evolveKey key) (evolveVal val))
+
+    addEvolution new old (Evolutions e) =
+      Evolutions $ Map.insert (pid new) (pid old) e
 
     pid (PidRef x _) = x
 
@@ -155,13 +179,9 @@ evolveFlattenedQuery dbSchema@DbSchema{..} q = flip runState mempty $ do
             Tuple (termForField <$> newFields)
       _ -> error "unexpected"
 
--- | Transform evolved facts into the type the query originally asked for.
-unEvolveResults
-  :: Map PidRef PidRef -- ^ Evolved mappings. key evolved value
-  -> DbSchema
-  -> QueryResults
-  -> QueryResults
-unEvolveResults mappings dbschema results@QueryResults{..}
+-- | Transform evolved facts back into the type the query originally asked for.
+unEvolveResults :: DbSchema -> Evolutions -> QueryResults -> QueryResults
+unEvolveResults dbschema (Evolutions mappings) results@QueryResults{..}
   | Map.null mappings = results
   | otherwise = results
     { queryResultsFacts = unEvolveFacts queryResultsFacts
@@ -180,37 +200,37 @@ unEvolveResults mappings dbschema results@QueryResults{..}
     transformations :: IntMap (Thrift.Fact -> Thrift.Fact)
     transformations = IntMap.fromList
       [ (pid, f)
-      | (PidRef pidFrom _ , PidRef pidTo _) <- Map.toList mappings
-      , pid <- [fromIntegral $ fromPid pidFrom]
+      | (from , to) <- Map.toList mappings
+      , pid <- [fromIntegral $ fromPid from]
       , Just f <- return $ do
-          detailsFrom <- lookupPid pidFrom dbschema
-          detailsTo <- lookupPid pidTo dbschema
+          detailsFrom <- lookupPid from dbschema
+          detailsTo <- lookupPid to dbschema
           mkFactTransformation detailsFrom detailsTo
       ]
 
-    mkFactTransformation
-      :: PredicateDetails
-      -> PredicateDetails
-      -> Maybe (Thrift.Fact -> Thrift.Fact)
-    mkFactTransformation from to
-      | Nothing <- mTransformKey
-      , Nothing <- mTransformValue = Nothing
-      | otherwise = Just $ \(Thrift.Fact _ key value) ->
-         Thrift.Fact
-           (fromPid $ predicatePid to)
-           (RTS.fromValue $ overKey $ RTS.toValue keyRep key)
-           (RTS.fromValue $ overValue $ RTS.toValue valueRep value)
-      where
-        overKey = fromMaybe id mTransformKey
-        overValue = fromMaybe id mTransformValue
-        keyRep = repType $ predicateKeyType from
-        valueRep = repType $ predicateValueType from
-        mTransformKey = mkValueTransformation
-          (predicateKeyType from)
-          (predicateKeyType to)
-        mTransformValue = mkValueTransformation
-          (predicateValueType from)
-          (predicateValueType to)
+mkFactTransformation
+  :: PredicateDetails
+  -> PredicateDetails
+  -> Maybe (Thrift.Fact -> Thrift.Fact)
+mkFactTransformation from to
+  | Nothing <- mTransformKey
+  , Nothing <- mTransformValue = Nothing
+  | otherwise = Just $ \(Thrift.Fact _ key value) ->
+     Thrift.Fact
+       (fromPid $ predicatePid to)
+       (RTS.fromValue $ overKey $ RTS.toValue keyRep key)
+       (RTS.fromValue $ overValue $ RTS.toValue valueRep value)
+  where
+    overKey = fromMaybe id mTransformKey
+    overValue = fromMaybe id mTransformValue
+    keyRep = repType $ predicateKeyType from
+    valueRep = repType $ predicateValueType from
+    mTransformKey = mkValueTransformation
+      (predicateKeyType from)
+      (predicateKeyType to)
+    mTransformValue = mkValueTransformation
+      (predicateValueType from)
+      (predicateValueType to)
 
 -- | Create a transformation from a term into another term of a compatible
 -- type.  Returns Nothing if no change is needed.
