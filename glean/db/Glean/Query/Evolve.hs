@@ -264,19 +264,31 @@ mkValueTransformation from to = go from to
         _ -> error $ "expected Array, got " <> show term
 
     go (Type.Record from) (Type.Record to) =
-      let sameFields = names from == names to
-          transforms = transformsFor from to
-          noChanges = Map.null transforms
-          change name = fromMaybe id $ Map.lookup name transforms
+      let transformsMap = transformsFor from to
+          orderedTransforms =
+            [ (field, transform)
+            | field <- names to
+            , transform <- return $ fromMaybe id $ Map.lookup field transformsMap
+            ]
+          transforms = map snd orderedTransforms
+          sameFieldOrder = and $ zipWith (==) (names from) (names to)
+          noChanges = null transformsMap
+          sameFields = names from == names to
       in
       if sameFields && noChanges
-         then Nothing
-         else Just $ \term ->
-          case term of
-            Tuple contents -> Tuple
-              [ change field content
-              | (field, content) <- zip (names to) contents ]
-            _ -> error $ "expected Tuple, got " <> show term
+      then Nothing
+      else Just $ \term -> case term of
+        Tuple contents | sameFieldOrder -> Tuple
+          [ transform value
+          | (transform, value) <- zip transforms contents
+          ]
+        Tuple contents -> Tuple
+          [ transform content
+          | (field, transform) <- orderedTransforms
+          , Just content <- [lookup field withNames]
+          ]
+          where withNames = zip (names from) contents
+        _ -> error $ "expected Tuple, got " <> show term
 
     go (Type.Sum from) (Type.Sum to) =
       let sameOpts = names from == names to
