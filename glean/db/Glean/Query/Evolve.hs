@@ -35,11 +35,11 @@ import qualified Glean.RTS as RTS
 import Glean.RTS.Types
 import Glean.RTS.Term (Value, Term(..))
 import Glean.RTS.Foreign.Query (QueryResults(..))
-import Glean.Schema.Util (lowerMaybe, lowerBool, lowerEnum)
+import Glean.Schema.Util (lowerMaybe, lowerBool, lowerEnum, tupleSchema)
 import qualified Glean.Types as Thrift
 
 -- | A map of the predicate transformations performed by evolves.
--- value was transformed into key
+-- value was mapped into key
 newtype Evolutions = Evolutions (Map Pid Pid)
   deriving newtype (Semigroup, Monoid)
 
@@ -53,6 +53,12 @@ mapKeyAndValue :: Ord b => (a -> b) -> Map a a -> Map b b
 mapKeyAndValue f = Map.fromList . map (both f) . Map.toList
   where both f (a, b) = (f a, f b)
 
+data EvolveFact = EvolveFact
+  { evolvedPidRef :: PidRef
+  , evolveKey :: Pat -> Pat
+  , evolveValue :: Pat -> Pat
+  }
+
 -- | Transform a query such that it operates on the most evolved
 -- version available of the predicates it mentions.
 evolveFlattenedQuery
@@ -60,20 +66,42 @@ evolveFlattenedQuery
   -> FlattenedQuery
   -> (FlattenedQuery, Evolutions)
 evolveFlattenedQuery dbSchema@DbSchema{..} q = flip runState mempty $ do
-  query <- evolveFlatQuery (qiQuery q)
-  return q { qiQuery = query }
+  evolveQueryWithInfo q
   where
-    evolveFlatQuery (FlatQuery key maybeVal stmts) =
-      FlatQuery key maybeVal <$> traverse evolveFlatStmtGroup stmts
+    evolveQueryWithInfo (QueryWithInfo (FlatQuery key maybeVal stmts) vars ty ) = do
+      (ty', key') <- evolveReturnType ty key
+      stmts' <- traverse evolveFlatStmtGroup stmts
+      return $ QueryWithInfo (FlatQuery key' maybeVal stmts') vars ty'
+
+    evolveReturnType ty pat
+      | Type.Record fields <- derefType ty
+      , [ resultTy, _, _ ] <- map (derefType . fieldDefType) fields
+      , Type.Predicate old <- derefType resultTy
+      , Tuple [p, key, val] <- pat
+      = do
+        mEvolver <- evolverForPredicate old
+        return $ fromMaybe (ty, pat) $ do
+          EvolveFact{..} <- mEvolver
+          PredicateDetails{..} <- lookupPid (pid evolvedPidRef) dbSchema
+          let ty' = tupleSchema
+                [ Type.Predicate evolvedPidRef
+                , predicateKeyType
+                , predicateValueType
+                ]
+              pat' = Tuple [p, evolveKey key, evolveValue val]
+          return (ty', pat')
+      | otherwise = return (ty, pat)
+
     evolveFlatStmtGroup = traverse evolveFlatStmt
+
     evolveFlatStmt = \case
       FlatNegation groups ->
         FlatNegation <$> traverse evolveFlatStmtGroup groups
       FlatDisjunction groupss ->
         FlatDisjunction <$> traverse (traverse evolveFlatStmtGroup) groupss
       FlatStatement ty pat gen -> do
-        evolved <- evolveGenerator gen
-        return $ case evolved of
+        mEvolved <- evolveGenerator gen
+        return $ case mEvolved of
           Nothing -> FlatStatement ty pat gen
           Just (evolve, newGen) -> FlatStatement ty (evolve pat) newGen
 
@@ -90,19 +118,29 @@ evolveFlattenedQuery dbSchema@DbSchema{..} q = flip runState mempty $ do
       -- todo
       DerivedFactGenerator{} -> return Nothing
 
-      FactGenerator old key val -> sequence $ do
-        new <- Map.lookup old predicatesEvolved
-        newTy <- lookupPid (pid new) dbSchema
-        oldTy <- lookupPid (pid old) dbSchema
-        let evolveKey = evolvePat
-                (predicateKeyType oldTy)
-                (predicateKeyType newTy)
-            evolveVal = evolvePat
-                (predicateValueType oldTy)
-                (predicateValueType newTy)
+      FactGenerator old key val -> do
+        mEvolver <- evolverForPredicate old
         return $ do
-          modify (addEvolution new old)
-          return (evolveKey , FactGenerator new (evolveKey key) (evolveVal val))
+          EvolveFact{..} <- mEvolver
+          let new = evolvedPidRef
+              key' = evolveKey key
+              val' = evolveValue val
+          return (evolveKey, FactGenerator new key' val')
+
+    evolverForPredicate :: PidRef -> State Evolutions (Maybe EvolveFact)
+    evolverForPredicate old = sequence $ do
+      new <- Map.lookup old predicatesEvolved
+      newTy <- lookupPid (pid new) dbSchema
+      oldTy <- lookupPid (pid old) dbSchema
+      let evolveKey = evolvePat
+              (predicateKeyType oldTy)
+              (predicateKeyType newTy)
+          evolveValue = evolvePat
+              (predicateValueType oldTy)
+              (predicateValueType newTy)
+      return $ do
+        modify (addEvolution new old)
+        return $ EvolveFact new evolveKey evolveValue
 
     addEvolution new old (Evolutions e) =
       Evolutions $ Map.insert (pid new) (pid old) e
