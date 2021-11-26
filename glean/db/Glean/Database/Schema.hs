@@ -61,9 +61,12 @@ import Glean.Query.Typecheck
 import qualified Glean.Types as Thrift
 import Glean.Types (PredicateStats(..))
 
--- | Used to decide whether to activate 'derive default'
--- definitions. These take effect for a read-only DB when there are no
--- facts of the predicate.
+-- | Used to decide whether to activate 'derive default' definitions and
+-- 'evolves' directives.
+-- 'derive default' takes effect for a read-only DB when there are no
+-- facts of a predicate.
+-- 'evolves' directives take effect for a read-only DB when there are no facts
+-- of any predicate in a schema evolved by another schema.
 data DbContent
   = DbWritable
   | DbReadOnly (HashMap Pid PredicateStats)
@@ -370,7 +373,8 @@ evolvedPredicates
   -> HashMap PredicateRef PredicateDetails
   -> [ResolvedSchema]
   -> Map PidRef PidRef        -- ^ value evolves key
-evolvedPredicates dbContent override byRef resolved =
+evolvedPredicates DbWritable _ _ _ = mempty
+evolvedPredicates (DbReadOnly stats) override byRef resolved =
   foldMap evolve (HashMap.keys evolvedBy)
   where
     evolvedBy :: HashMap SchemaRef SchemaRef
@@ -394,7 +398,6 @@ evolvedPredicates dbContent override byRef resolved =
 
     hasFactsInDb :: SchemaRef -> Bool
     hasFactsInDb schema = fromMaybe False $ do
-      DbReadOnly stats <- return dbContent
       let factCount pid = maybe 0 predicateStats_count
             (HashMap.lookup pid stats)
           hasFacts pid = factCount pid > 0
