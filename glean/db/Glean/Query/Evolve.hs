@@ -24,6 +24,7 @@ import qualified Data.IntMap.Strict as IntMap
 import Data.Int (Int64)
 import Data.IntMap.Strict (IntMap)
 import Data.Maybe (fromMaybe, listToMaybe)
+import qualified Data.Set as Set
 import Data.Vector (Vector)
 
 import Glean.Angle.Types (FieldDef_(..), Type_)
@@ -139,11 +140,21 @@ evolveFlattenedQuery dbSchema@DbSchema{..} q = flip runState mempty $ do
               (predicateValueType oldTy)
               (predicateValueType newTy)
       return $ do
-        modify (addEvolution new old)
+        modify (addEvolutionsFor old)
         return $ EvolveFact new evolveKey evolveValue
 
-    addEvolution new old (Evolutions e) =
-      Evolutions $ Map.insert (pid new) (pid old) e
+    -- add mappings for transitive dependencies to be able
+    -- to transform facts from recursively expanded results.
+    addEvolutionsFor pred (Evolutions evolutions) =
+      Evolutions $ evolutions <> newEvolutions
+      where newEvolutions = Map.fromList $ transitiveEvolves pred
+
+    -- evolves for pred plus all its dependencies
+    transitiveEvolves pred =
+      [ (pid new, pid old)
+      | old <- pred : transitive (predicateDeps dbSchema) pred
+      , Just new <- [Map.lookup old predicatesEvolved]
+      ]
 
     pid (PidRef x _) = x
 
@@ -216,6 +227,36 @@ evolveFlattenedQuery dbSchema@DbSchema{..} q = flip runState mempty $ do
             in
             Tuple (termForField <$> newFields)
       _ -> error "unexpected"
+
+-- All predicates mentioned in a predicate's type.
+-- Does not include predicates from the derivation query.
+predicateDeps :: DbSchema -> PidRef -> [PidRef]
+predicateDeps dbschema (PidRef _ ref) =
+  case lookupPredicateRef ref dbschema of
+    Nothing -> mempty
+    Just PredicateDetails{..} ->
+      typeDeps predicateKeyType <> typeDeps predicateValueType
+  where
+    typeDeps = \case
+      Type.Predicate ref -> [ref]
+      Type.NamedType (ExpandedType _ ty) -> typeDeps ty
+      Type.Record xs -> concatMap (typeDeps  . fieldDefType) xs
+      Type.Sum xs -> concatMap (typeDeps . fieldDefType) xs
+      Type.Array ty -> typeDeps ty
+      Type.Maybe ty -> typeDeps ty
+      Type.Byte -> mempty
+      Type.Nat -> mempty
+      Type.String -> mempty
+      Type.Enumerated _ -> mempty
+      Type.Boolean -> mempty
+
+transitive :: Ord a => (a -> [a]) -> a -> [a]
+transitive next root = Set.elems $ go (next root) mempty
+  where
+    go [] visited = visited
+    go (x:xs) visited
+      | x `Set.member`visited = go xs visited
+      | otherwise = go xs $ go (next x) $ Set.insert x visited
 
 -- | Transform evolved facts back into the type the query originally asked for.
 unEvolveResults :: DbSchema -> Evolutions -> QueryResults -> QueryResults
