@@ -215,8 +215,9 @@ setupSchema Env{..} _ handle (Create _ initial) = do
     Just info ->
       newMergedDbSchema info source currentSchema TakeOld readWriteContent
   storeSchema handle $ toSchemaInfo schema
-  return schema
-setupSchema Env{..} repo handle mode = do
+  return $ allowEvolves envSchemaEnableEvolves schema
+setupSchema Env{..} repo handle mode =
+  allowEvolves envSchemaEnableEvolves <$> do
   stored <- retrieveSchema repo handle
   case stored of
     Just info
@@ -240,6 +241,9 @@ setupSchema Env{..} repo handle mode = do
     Nothing ->
       dbError repo "DB has no stored schema"
 
+allowEvolves :: Bool -> DbSchema  -> DbSchema
+allowEvolves allow dbschema@DbSchema{..} = dbschema
+  { predicatesEvolved = if allow then predicatesEvolved else mempty }
 
 -- | Update the schema for all open DBs when the prevailing schema has
 -- changed.

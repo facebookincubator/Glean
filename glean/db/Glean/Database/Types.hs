@@ -202,6 +202,7 @@ data Env = forall storage. Storage storage => Env
     -- ^ The schema source, and its parsed/resolved form are both cached here.
   , envSchemaOverride :: Bool
   , envSchemaVersion :: Maybe Version
+  , envSchemaEnableEvolves :: Bool
   , envRecipeConfig :: Observed Recipes.Config
   , envServerConfig :: Observed ServerConfig.Config
   , envBackupBackends :: Backup.Backends

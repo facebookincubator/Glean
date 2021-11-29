@@ -815,12 +815,15 @@ compileAngleQuery ver dbSchema source stored = do
     flatten dbSchema latestAngleVersion stored typechecked
   vlog 2 $ "flattened query: " <> show (pretty (qiQuery flattened))
 
-  optimised <- checkBadQuery id $ runExcept $ optimise flattened
+  let (evolved, evolutions) = evolveFlattenedQuery dbSchema flattened
+  vlog 2 $ "evolved query: " <> show (pretty (qiQuery evolved))
+
+  optimised <- checkBadQuery id $ runExcept $ optimise evolved
   vlog 2 $ "optimised query: " <> show (pretty (qiQuery optimised))
 
   -- no need to vlog, compileQuery will vlog it later
   reordered <- checkBadQuery id $ runExcept $ reorder dbSchema optimised
-  return (reordered, mempty)
+  return (reordered, evolutions)
   where
   checkBadQuery :: (err -> Text) -> Either err a -> IO a
   checkBadQuery txt act = case act of
