@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE NamedFieldPuns, DerivingStrategies #-}
 module Glean.RTS (
   Fid(..), lowestFid,
   Pid(..), lowestPid,
@@ -18,7 +18,7 @@ module Glean.RTS (
 
   ByteStringRef(..), unsafeWithByteStringRef, derefByteString,
   MangledStringRef(..), unsafeWithMangledStringRef, demangle,
-  Decoder,  withDecoder,
+  Decoder, DecodingException(..), withDecoder,
   dByte, dNat,
   dTrustedStringRef, dString,
   dArray, dByteStringRef, dBytes,
@@ -50,6 +50,7 @@ import Foreign.Marshal.Alloc
 import Foreign.Ptr
 import Foreign.Storable
 
+import Control.Exception
 import Control.Monad
 import Control.Monad.ST
 import Control.Monad.ST.Unsafe
@@ -133,6 +134,11 @@ data Decoder s = Decoder
   , decoderBuf :: {-# UNPACK #-} !FFI.FFIResultBuf
   }
 
+newtype DecodingException = DecodingException String
+  deriving newtype Show
+
+instance Exception DecodingException
+
 -- | Create a temporary 'Decoder' for a 'ByteString'.
 withDecoder :: ByteString -> (Decoder s -> ST s a) -> ST s a
 withDecoder bs f = unsafeIOToST $
@@ -140,11 +146,17 @@ withDecoder bs f = unsafeIOToST $
   FFI.unsafeWithBytes bs $ \start len ->
   alloca $ \pstart -> do
     poke pstart start
-    unsafeSTToIO $ f Decoder
+    let end = start `plusPtr` fromIntegral len
+    res <- unsafeSTToIO $ f Decoder
       { decoderPtr = pstart
-      , decoderEnd = start `plusPtr` fromIntegral len
+      , decoderEnd = end
       , decoderBuf = buf
       }
+    pos <- peek pstart
+    when (pos /= end) $
+      let extra = show (end `minusPtr` pos) in
+      throwIO $ DecodingException $ "extra "<> extra <>" bytes at end of value"
+    return res
 
 dffi
   :: Storable a
