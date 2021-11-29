@@ -22,7 +22,7 @@ import Data.HashMap.Strict (HashMap)
 import Data.List
 import qualified Data.Map as Map
 import Data.Maybe
-import Data.Text (Text, pack)
+import Data.Text (Text, pack, unpack)
 import Data.Text.Encoding (encodeUtf8)
 import System.FilePath
 import System.IO.Temp
@@ -50,6 +50,7 @@ import qualified Glean.RTS as RTS
 import qualified Glean.RTS.Term as RTS
 import qualified Glean.RTS.Types as RTS
 import Glean.Schema.Resolve
+import Glean.Schema.Util
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types as Thrift
 import Glean.Util.ConfigProvider
@@ -970,6 +971,27 @@ schemaEvolvesTransformations = TestList
         facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef results
         assertEqual "result count" 2 (length facts)
 
+  , TestLabel "change alternative order" $ TestCase $ do
+    withSchemaAndFacts
+      [s|
+        schema x.1 {
+          predicate P: { a : string | b: nat }
+        }
+        schema x.2 {
+          predicate P: { b: nat | a : string }
+        }
+        schema x.2 evolves x.1
+      |]
+      [ mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "key": { "a": "A" } }|]
+          , [s|{ "key": { "b": 1 } }|]
+          ]
+      ]
+      [s| x.P.1 _ |]
+      $ \byRef results -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef results
+        assertEqual "result count" 2 (length facts)
+
   , TestLabel "transform nested facts" $ TestCase $ do
     withSchemaAndFacts
       [s|
@@ -998,6 +1020,178 @@ schemaEvolvesTransformations = TestList
         assertEqual "result count" 2 (length facts)
         nested <- decodeNestedAs (PredicateRef "x.Q" 1) byRef results
         assertEqual "nested count" 2 (length nested)
+
+  , TestLabel "change within type" $ TestCase $ do
+    withSchemaAndFacts
+      [s|
+        schema x.1 {
+          predicate P: T
+          type T = { a: string | b : TT }
+          type TT = { x: nat | y: string }
+        }
+        schema x.2 {
+          predicate P: T
+          type T = { b: TT | a: string }
+          type TT = { y: string | x: nat }
+        }
+        schema x.2 evolves x.1
+      |]
+      [ mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "key": { "a": "A" } }|]
+          , [s|{ "key": { "b": { "x" : 1 } } }|]
+          , [s|{ "key": { "b": { "y" : "B" } } }|]
+          ]
+      ]
+      [s| x.P.1 _ |]
+      $ \byRef results -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef results
+        assertEqual "result count" 3 (length facts)
+
+  , TestLabel "no mapping when schema has facts" $ TestCase $ do
+    withSchemaAndFacts
+      [s|
+        schema x.1 {
+          predicate P : { a : nat }
+        }
+        schema x.2 {
+          predicate P : { a : nat, b: string }
+        }
+        schema x.2 evolves x.1
+      |]
+      [ mkBatch (PredicateRef "x.P" 1)
+          [ [s|{ "key": { "a": 1 } }|]
+          ]
+      , mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "key": { "a": 1, "b": "A" } }|]
+          , [s|{ "key": { "a": 2, "b": "B" } }|]
+          ]
+      ]
+      [s| x.P.1 _ |]
+      $ \byRef results -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef results
+        assertEqual "result count" 1 (length facts)
+
+  , TestLabel "non-evolved derived predicate with imports" $ TestCase $ do
+    withSchemaAndFacts
+      [s|
+        schema x.1 {
+          predicate P : { a : nat }
+        }
+        schema x.2 {
+          predicate P : { a : nat, b: string }
+        }
+        schema x.2 evolves x.1
+        schema y.1 {
+          import x.1
+          predicate Q : { x : x.P }
+            { x = V } where V = x.P _
+        }
+      |]
+      [ mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "key": { "a": 1, "b": "A" } }|]
+          ]
+      ]
+      [s| y.Q.1 _ |]
+      $ \byRef results -> do
+        facts <- decodeResultsAs (PredicateRef "y.Q" 1) byRef results
+        assertEqual "result count" 1 (length facts)
+        nested <- decodeNestedAs (PredicateRef "x.P" 1) byRef results
+        assertEqual "nested count" 1 (length nested)
+
+  , TestLabel "non-evolved derived predicate with inheritance" $ TestCase $ do
+    withSchemaAndFacts
+      [s|
+        schema x.1 {
+          predicate P : { a : nat }
+        }
+        schema x.2 {
+          predicate P : { a : nat, b: string }
+        }
+        schema x.2 evolves x.1
+
+        schema y.1 : x.1 {
+          predicate Q : { x : x.P }
+            { x = V } where V = x.P _
+        }
+      |]
+      [ mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "key": { "a": 1, "b": "A" } }|]
+          ]
+      ]
+      [s| y.Q.1 _ |]
+      $ \byRef results -> do
+        facts <- decodeResultsAs (PredicateRef "y.Q" 1) byRef results
+        assertEqual "result count" 1 (length facts)
+        nested <- decodeNestedAs (PredicateRef "x.P" 1) byRef results
+        assertEqual "nested count" 1 (length nested)
+
+  , TestLabel "query matching order" $ TestCase $ do
+    withSchemaAndFacts
+      [s|
+        schema base.1 {
+          predicate N : nat
+          predicate S : string
+        }
+        schema x.1 : base.1 {
+          predicate P : { a : N, b : S }
+        }
+        schema x.2 : base.1 {
+          predicate P : { b: S, a : N }
+        }
+        schema x.2 evolves x.1
+      |]
+      [ mkBatch (PredicateRef "base.N" 1)
+          [ [s|{ "id": 1, "key": 1 }|]
+          ]
+      , mkBatch (PredicateRef "base.S" 1)
+          [ [s|{ "id": 2, "key": "A" }|]
+          , [s|{ "id": 3, "key": "B" }|]
+          ]
+      , mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "key": { "b": 2, "a": 1 } }|]
+          , [s|{ "key": { "b": 3, "a": 1 } }|]
+          ]
+      ]
+      -- even though x.P.2 first field is base.S, X should be
+      -- bound to the first field of x.P.1 which is base.N.
+      [s| X where { X, _ } = x.P.1 _ |]
+      $ \byRef results -> do
+        facts <- decodeResultsAs (PredicateRef "base.N" 1) byRef results
+        assertEqual "result count" 1 (length facts)
+
+  , TestLabel "query variable" $ TestCase $ do
+    withSchemaAndFacts
+      [s|
+        schema x.1 {
+          predicate P : nat
+          predicate Q : { a: P, b : string }
+        }
+        schema x.2 {
+          predicate P : nat
+          predicate Q : { b: string, a: P }
+        }
+        schema x.2 evolves x.1
+      |]
+      [ mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "id": 1, "key": 1 }|]
+          , [s|{ "id": 2, "key": 2 }|]
+          ]
+      , mkBatch (PredicateRef "x.Q" 2)
+          [ [s|{ "key": { "b": "A", "a": 1 } }|]
+          , [s|{ "key": { "b": "A", "a": 2 } }|]
+          ]
+      ]
+      -- even though x.P.2 first field is base.S, X should be
+      -- bound to the first field of x.P.1 which is base.N.
+      [s| Y where
+            X = x.P.1 _;
+            Y = x.Q.1 { X, _ };
+      |]
+      $ \byRef results -> do
+        facts <- decodeResultsAs (PredicateRef "x.Q" 1) byRef results
+        assertEqual "result count" 2 (length facts)
+        nested <- decodeNestedAs (PredicateRef "x.P" 1) byRef results
+        assertEqual "nested count" 2 (length nested)
   ]
   where
     decodeResultsAs ref byRef results =  do
@@ -1012,8 +1206,10 @@ schemaEvolvesTransformations = TestList
       ty <- keyType ref byRef
       decoded <- sequence <$> mapM (decodeAs ty) keys
       case decoded of
-        Left err -> assertFailure $ "unable to decode: " <> show err
         Right values -> return values
+        Left err ->
+          assertFailure $ "unable to decode "
+          <> unpack (showPredicateRef ref) <> " : " <> show err
 
     binResults :: UserQueryResults -> IO UserQueryResultsBin
     binResults UserQueryResults{..} =
