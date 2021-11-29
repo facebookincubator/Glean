@@ -14,13 +14,16 @@ import qualified Data.ByteString as B
 import Control.Concurrent
 import Control.Exception
 import Control.Monad
+import Data.Bifunctor (first)
 import Data.Default
 import Data.Either
 import qualified Data.HashMap.Strict as HashMap
+import Data.HashMap.Strict (HashMap)
 import Data.List
 import qualified Data.Map as Map
 import Data.Maybe
-import Data.Text (Text)
+import Data.Text (Text, pack)
+import Data.Text.Encoding (encodeUtf8)
 import System.FilePath
 import System.IO.Temp
 import Data.Text.Prettyprint.Doc hiding ((<>))
@@ -39,8 +42,13 @@ import Glean.Database.Config
 import Glean.Database.Env
 import Glean.Database.Test
 import Glean.Database.Types
+import Glean.Database.Schema.Types
+import Glean.Database.Schema
 import Glean.Impl.TestConfigProvider
 import Glean.Init
+import qualified Glean.RTS as RTS
+import qualified Glean.RTS.Term as RTS
+import qualified Glean.RTS.Types as RTS
 import Glean.Schema.Resolve
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types as Thrift
@@ -65,7 +73,8 @@ mkAngleQuery :: ByteString -> UserQuery
 mkAngleQuery q = def
   { userQuery_query = q
   , userQuery_options = Just def
-    { userQueryOptions_syntax = QuerySyntax_ANGLE }
+    { userQueryOptions_syntax = QuerySyntax_ANGLE
+    }
   }
 
 -- Test that we can extend the schema with a derived predicate after
@@ -111,12 +120,18 @@ withSchemaFile version str action = do
 withSchema :: Int -> String -> (Either SomeException () -> IO a) -> IO a
 withSchema version str action =
   withSchemaFile version str $ \root file -> do
-    r <- tryAll $ withEmptyTestDB [setRoot root, setSchemaPath file] $
-      \env repo -> withOpenDatabase env repo $ \_ -> return ()
+    let settings =
+          [ setRoot root
+          , setSchemaPath file
+          , setSchemaEnableEvolves True
+          ]
+    r <- tryAll $
+      withEmptyTestDB settings $ \env repo ->
+      withOpenDatabase env repo $ \_ ->
+        return ()
 
     print (r :: Either SomeException ())
     action r
-
 
 schemaUnversioned :: Test
 schemaUnversioned = TestCase $ do
@@ -913,6 +928,164 @@ schemaEvolves = TestList
           Left _ -> False
   ]
 
+schemaEvolvesTransformations :: Test
+schemaEvolvesTransformations = TestList
+  [ TestLabel "remove field" $ TestCase $ do
+    withSchemaAndFacts
+      [s|
+        schema x.1 {
+          predicate P: { a : nat }
+        }
+        schema x.2 {
+          predicate P: { a : nat, b: string }
+        }
+        schema x.2 evolves x.1
+      |]
+      [ mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "key": { "a": 2, "b": "val" } }|] ]
+      ]
+      [s| x.P.1 _ |]
+      $ \byRef results -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef results
+        assertEqual "result count" 1 (length facts)
+
+  , TestLabel "change field order" $ TestCase $ do
+    withSchemaAndFacts
+      [s|
+        schema x.1 {
+          predicate P: { a : string, b: nat }
+        }
+        schema x.2 {
+          predicate P: { b: nat, a : string }
+        }
+        schema x.2 evolves x.1
+      |]
+      [ mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "key": { "a": "one1", "b": 16 } }|]
+          , [s|{ "key": { "a": "one2", "b": 32 } }|]
+          ]
+      ]
+      [s| x.P.1 _ |]
+      $ \byRef results -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef results
+        assertEqual "result count" 2 (length facts)
+
+  , TestLabel "transform nested facts" $ TestCase $ do
+    withSchemaAndFacts
+      [s|
+        schema x.1 {
+          predicate P: { a : Q }
+          predicate Q: { x: string }
+        }
+        schema x.2 {
+          predicate P: { a: Q, b: string }
+          predicate Q: { x: string, y: nat }
+        }
+        schema x.2 evolves x.1
+      |]
+      [ mkBatch (PredicateRef "x.Q" 2)
+          [ [s|{ "id": 1, "key": { "x": "A", "y": 1 } }|]
+          , [s|{ "id": 2, "key": { "x": "B", "y": 2 } }|]
+          ]
+      , mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "key": { "a": 1, "b": "A" } }|]
+          , [s|{ "key": { "a": 2, "b": "B" } }|]
+          ]
+      ]
+      [s| x.P.1 _ |]
+      $ \byRef results -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef results
+        assertEqual "result count" 2 (length facts)
+        nested <- decodeNestedAs (PredicateRef "x.Q" 1) byRef results
+        assertEqual "nested count" 2 (length nested)
+  ]
+  where
+    decodeResultsAs ref byRef results =  do
+      decodeResultFacts userQueryResultsBin_facts ref byRef results
+
+    decodeNestedAs ref byRef results =
+      decodeResultFacts userQueryResultsBin_nestedFacts ref byRef results
+
+    decodeResultFacts f ref byRef results = do
+      bin <- binResults results
+      let keys = fmap fact_key $ Map.elems $ f bin
+      ty <- keyType ref byRef
+      decoded <- sequence <$> mapM (decodeAs ty) keys
+      case decoded of
+        Left err -> assertFailure $ "unable to decode: " <> show err
+        Right values -> return values
+
+    binResults :: UserQueryResults -> IO UserQueryResultsBin
+    binResults UserQueryResults{..} =
+      case userQueryResults_results of
+        UserQueryEncodedResults_bin b -> return b
+        _ -> assertFailure "wrong encoding"
+
+    keyType
+      :: PredicateRef
+      -> HashMap PredicateRef PredicateDetails
+      -> IO RTS.Type
+    keyType ref byRef = do
+      details <- case HashMap.lookup ref byRef of
+        Just details -> return details
+        Nothing -> assertFailure "invalid ref"
+      return $ predicateKeyType details
+
+    decodeAs :: RTS.Type -> ByteString -> IO (Either String RTS.Value)
+    decodeAs ty bs = do
+      print bs
+      fmap (first showException) $ try $ evaluate
+        $ RTS.toValue (RTS.repType ty) bs
+      where
+        showException (RTS.DecodingException e) = e
+
+withSchemaAndFacts
+  :: String                    -- ^ schema
+  -> [JsonFactBatch]           -- ^ db contents
+  -> Text                      -- ^ query
+  -> (HashMap PredicateRef PredicateDetails -> UserQueryResults -> IO a)
+  -> IO a
+withSchemaAndFacts schema facts query act =
+  withSchemaFile latestAngleVersion schema $ \root file -> do
+  let settings =
+        [ setRoot root
+        , setSchemaPath file
+        , setSchemaEnableEvolves True
+        ]
+  -- create db and write facts
+  repo <- withEmptyTestDB settings $ \env repo -> do
+      void $ sendJsonBatch env repo facts Nothing
+      completeTestDB env repo
+      return repo
+
+  -- get PredicateDetails
+  byRef <- do
+    (sourceSchemas, schemas) <- either error return
+      $ parseAndResolveSchema $ encodeUtf8 $ pack schema
+    dbSchema <- newDbSchema sourceSchemas schemas readWriteContent
+    return $ predicatesByRef dbSchema
+
+  -- open db for querying
+  -- We need to open the db again because schema evolutions are
+  -- only triggered when the db is read-only
+  response <- withTestEnv settings $ \env ->
+    try $ runQuery env repo (encodeUtf8 query)
+
+  print (response :: Either BadQuery UserQueryResults)
+  case response of
+    Left badQuery -> assertFailure $ "BadQuery: " <> show badQuery
+    Right results -> act byRef results
+  where
+    runQuery env repo q = userQuery env repo $ def
+      { userQuery_query = q
+      , userQuery_options = Just def
+        { userQueryOptions_syntax = QuerySyntax_ANGLE
+        , userQueryOptions_recursive = True
+        }
+      , userQuery_encodings = [ UserQueryEncoding_bin def ]
+      }
+
+
 schemaNegation :: [Test]
 schemaNegation =
   [ TestLabel "negation - derived" $ TestCase $ do
@@ -1042,12 +1215,11 @@ thinSchemaTest = TestCase $
     withTestEnv [setRoot root, setSchemaPath schema_v1_file] $ \env -> do
        r <- try $ angleQuery env repo0 "test.P.1 _"
        print (r :: Either BadQuery UserQueryResults)
-       assertBool "thin 1" $ case r of
-         Right UserQueryResults{..} -> length userQueryResults_facts == 1
-         _ -> False
+       assertEqual "thin 1" 1 $ case r of
+         Right UserQueryResults{..} -> length userQueryResults_facts
+         _ -> error "bad query"
 
        void $ deleteDatabase env repo0
-
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList $
@@ -1064,4 +1236,5 @@ main = withUnitTest $ testRunner $ TestList $
   , TestLabel "thinSchema" thinSchemaTest
   , TestLabel "schemaUnversioned" schemaUnversioned
   , TestLabel "schemaEvolves"  schemaEvolves
+  , TestLabel "schemaEvolvesTransformations" schemaEvolvesTransformations
   ] ++ schemaNegation

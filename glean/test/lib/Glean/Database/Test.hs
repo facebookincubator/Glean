@@ -13,6 +13,7 @@ module Glean.Database.Test
   , setSchemaSource
   , setSchemaPath
   , setSchemaVersion
+  , setSchemaEnableEvolves
   , setMemoryStorage
   , setDBVersion
   , setSchemaOverride
@@ -77,6 +78,9 @@ setSchemaPath = setSchemaSource . schemaSourceFile
 
 setSchemaVersion :: Thrift.Version -> Setting
 setSchemaVersion ver cfg = cfg { cfgSchemaVersion = Just ver }
+
+setSchemaEnableEvolves :: Bool -> Setting
+setSchemaEnableEvolves allow cfg = cfg { cfgSchemaEnableEvolves = allow }
 
 setMemoryStorage :: Setting
 setMemoryStorage cfg = cfg{ cfgStorage = \_ _ -> Some <$> Memory.newStorage }
