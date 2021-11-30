@@ -44,13 +44,11 @@ import Data.Default
 import qualified Data.Map as Map
 import Data.Maybe
 import Data.Text (Text)
-import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import qualified Options.Applicative as O
 
 import Logger.GleanServer (GleanServerLogger)
 import qualified Logger.GleanServer as Logger
-import Data.RateLimiterMap
 import Util.EventBase (EventBaseDataplane)
 import Util.Logger
 
@@ -69,6 +67,7 @@ import qualified Glean.Database.Types as Database
 import qualified Glean.Database.Work as Database
 import qualified Glean.Database.Writes as Database
 import Glean.Impl.ConfigProvider
+import Glean.Logger
 import qualified Glean.Query.UserQuery as UserQuery
 import qualified Glean.Query.Derive as Derive
 import Glean.RTS (Fid(..), Pid(..))
@@ -366,26 +365,6 @@ serializeInventory backend repo = do
 
 -- -----------------------------------------------------------------------------
 -- Logging
-
-instance ActionLog GleanServerLogger where
-  successLog = Logger.setSuccess True
-  failureLog ex = mconcat
-    [ Logger.setSuccess False
-    , Logger.setError (Text.pack (show ex))
-    ]
-  timeLog = Logger.setTimeElapsed
-  allocLog = Logger.setAllocatedBytes . fromIntegral
-
-runLogCmd :: Text -> Database.Env -> GleanServerLogger -> IO ()
-runLogCmd cmd env log =
-  whenAllowed (Database.envLoggerRateLimit env) cmd $ \weight ->
-    Logger.runLog (Database.envLogger env) $
-      log <> Logger.setMethod cmd <> Logger.setWeight weight
-
-runLogRepo :: Text -> Database.Env -> Thrift.Repo -> GleanServerLogger -> IO ()
-runLogRepo cmd env Thrift.Repo{..} log =
-  runLogCmd cmd env $
-    log <> Logger.setRepoName repo_name <> Logger.setRepoHash repo_hash
 
 runLogQueryFacts
   :: Text

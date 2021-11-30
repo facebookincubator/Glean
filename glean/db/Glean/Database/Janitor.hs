@@ -28,6 +28,7 @@ import ServiceData.GlobalStats as Stats
 import Util.Control.Exception
 import Util.List
 import Util.Log
+import Util.Logger
 import Util.TimeSec (timeDiff)
 
 import qualified Glean.Database.Catalog as Catalog
@@ -40,6 +41,7 @@ import Glean.Database.Repo
 import Glean.Database.Restore
 import Glean.Database.Open
 import Glean.Database.Types
+import Glean.Logger
 import Glean.Repo.Text
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types hiding (Database)
@@ -49,7 +51,8 @@ import Glean.Util.Time
 
 
 runDatabaseJanitor :: Env -> IO ()
-runDatabaseJanitor env = do
+runDatabaseJanitor env =
+  loggingAction (runLogCmd "janitor" env) (const mempty) $ do
   logInfo "running database janitor"
 
   config@ServerConfig.Config{..} <- Observed.get (envServerConfig env)
@@ -225,8 +228,9 @@ fetchBackups env = do
     fetch now = do
       logInfo "fetching restorable databases list"
       atomically $ writeTVar (envLastBackupsSync env) (Just now)
-      Just . concatMap HashMap.toList <$>
-        forRestoreSitesM env mempty listRestorable
+      loggingAction (runLogCmd "listRestorable" env) (const mempty) $
+        Just . concatMap HashMap.toList <$>
+          forRestoreSitesM env mempty listRestorable
 
 -- Group databases by repository name
 byRepoName :: [Item] -> [(Text, [Item])]

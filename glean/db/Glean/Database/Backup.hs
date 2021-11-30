@@ -38,6 +38,7 @@ import Util.Control.Exception
 import Util.Graph
 import Util.IO (safeRemovePathForcibly)
 import Util.Log
+import Util.Logger
 
 import Glean.Database.Backup.Backend as Backend
 import Glean.Database.Backup.Locator
@@ -52,6 +53,7 @@ import qualified Glean.Database.Storage as Storage
 import Glean.Database.Open (withOpenDatabase, schemaUpdated)
 import Glean.Database.Types
 import Glean.Database.Schema
+import Glean.Logger
 import Glean.Repo.Text
 import Glean.ServerConfig.Types (DatabaseBackupPolicy(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
@@ -218,28 +220,29 @@ doBackup env@Env{..} repo prefix site =
     say log s = log $ inRepo repo $ "backup: " ++ s
 
 doRestore :: Env -> Repo -> Meta -> IO Bool
-doRestore Env{..} repo meta
+doRestore env@Env{..} repo meta
   | Just loc <- metaBackup meta
   , Just (_, Some site, r_repo) <- fromRepoLocator envBackupBackends loc
   , r_repo == repo =
-  do
-    atomically $ notify envListener $ RestoreStarted repo
-    withScratchDirectory envRoot repo $ \scratch -> do
-    say logInfo "starting"
-    say logInfo "downloading"
-    let scratch_restore = scratch </> "restore"
-        scratch_file = scratch </> "file"
-    -- TODO: implement buffered downloads in Manifold client
-    void $ Backend.restore site repo scratch_file
-    bytes <- LBS.readFile scratch_file
-    say logInfo "restoring"
-    createDirectoryIfMissing True scratch_restore
-    Storage.restore envStorage repo scratch_restore bytes
-    say logInfo "adding"
-    Catalog.finishRestoring envCatalog repo
-    atomically $ notify envListener $ RestoreFinished repo
-    say logInfo "finished"
-    return True
+    loggingAction (runLogRepo "restore" env repo) (const mempty) (do
+      atomically $ notify envListener $ RestoreStarted repo
+      withScratchDirectory envRoot repo $ \scratch -> do
+      say logInfo "starting"
+      say logInfo "downloading"
+      let scratch_restore = scratch </> "restore"
+          scratch_file = scratch </> "file"
+      -- TODO: implement buffered downloads in Manifold client
+      void $ Backend.restore site repo scratch_file
+      bytes <- LBS.readFile scratch_file
+      say logInfo "restoring"
+      createDirectoryIfMissing True scratch_restore
+      Storage.restore envStorage repo scratch_restore bytes
+      say logInfo "adding"
+      Catalog.finishRestoring envCatalog repo
+      atomically $ notify envListener $ RestoreFinished repo
+      say logInfo "finished"
+      return True
+  )
   `catch` \exc -> do
     failed <- atomically $ do
       failed <- Catalog.exists envCatalog [Restoring] repo
