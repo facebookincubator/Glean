@@ -124,10 +124,10 @@ runDatabaseJanitor env =
     expireDatabase (fromIntegral <$> retention_expire_delay) env repo
 
   restores <- fmap catMaybes $ forM fetch $ \Item{..} ->
-    ifRestoreRepo env Nothing itemRepo $ \prefix site -> do
+    ifRestoreRepo env Nothing itemRepo $ do
       logInfo $ "Restoring: " ++ showRepo itemRepo ++
         " ("  ++ showNominalDiffTime (dbAge t itemMeta) ++ " old)"
-      Just <$> restoreDatabaseFromSite env prefix site itemRepo
+      return $ Just $ Catalog.startRestoring (envCatalog env) itemRepo itemMeta
   -- register all the restoring DBs together in a single transaction,
   -- so that the backup thread can't jump in early and pick one
   atomically $ sequence_ restores

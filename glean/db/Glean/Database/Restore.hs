@@ -50,18 +50,16 @@ ifRestoreRepo
   :: Env
   -> a
   -> Repo
-  -> (forall site. Backup.Site site => Text -> site -> IO a)
   -> IO a
-ifRestoreRepo env@Env{..} none repo inner = do
+  -> IO a
+ifRestoreRepo Env{..} none repo inner = do
   let repoName = Thrift.repo_name repo
   ServerConfig.DatabaseRestorePolicy{..} <-
     ServerConfig.config_restore <$> Observed.get envServerConfig
-  r <- atomically $ Backup.getSite env repoName
-  case r of
-    Just (prefix, site, _)
-      | (repoName `Set.member` databaseRestorePolicy_override)
-          /= databaseRestorePolicy_enabled -> inner prefix site
-    _ -> return none
+  if (repoName `Set.member` databaseRestorePolicy_override)
+          /= databaseRestorePolicy_enabled
+    then inner
+    else return none
 
 restoreDatabase :: Env -> Text -> IO ()
 restoreDatabase env loc
