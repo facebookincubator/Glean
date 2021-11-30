@@ -13,12 +13,15 @@ import Control.Exception
 import Control.Monad.Extra
 import Data.Default
 import qualified Data.HashMap.Strict as HashMap
+import Data.Maybe
 import Data.Time
 import System.Clock (TimeSpec(..))
+import System.Timeout
 
 import Logger.IO
 import Data.RateLimiterMap
 import Util.EventBase
+import Util.Log
 
 import Glean.Angle.Types (SourceSchemas)
 import qualified Glean.RTS.Foreign.LookupCache as LookupCache
@@ -152,7 +155,14 @@ spawnThreads env = do
   case config_janitor_period of
     Just secs -> Warden.spawn_ (envWarden env)
       $ doPeriodically (seconds (fromIntegral secs))
+        -- a conservative timeout in case the janitor deadlocks for
+        -- some reason.
+      $ withTimeout (fromIntegral secs * 20)
       $ runDatabaseJanitor env
+      where
+        withTimeout t act = do
+          r <- timeout (t * 1000*1000) act
+          when (isNothing r) $ logError "janitor timeout"
     Nothing -> do
       t <- getCurrentTime
       atomically $ writeTVar (envDatabaseJanitor env) $ Just t
