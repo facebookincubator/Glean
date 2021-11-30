@@ -166,7 +166,8 @@ predicate EntityKind:
   { Entity, Kind } where
     PythonEntityKind { Entity, Kind } |
     CxxEntityKind { Entity, Kind } |
-    PpEntityKind { Entity, Kind }
+    PpEntityKind { Entity, Kind } |
+    HackEntityKind { Entity, Kind }
 
 # All entities defined in a src.File and their locations
 predicate FileEntityLocations:
@@ -1114,5 +1115,25 @@ predicate PpEntityKind:
     ({ define = _ } = Decl; Kind = (Macro : SymbolKind) ) |
     ({ undef = _ } = Decl; Kind = (Macro : SymbolKind) ) |
     ({ include_ = _ } = Decl; Kind = (File : SymbolKind) )
+
+predicate HackEntityKind:
+  {
+    entity: code.Entity,
+    kind: SymbolKind,
+  }
+  { {hack = {decl = Decl}}, Kind } where
+    ({ classConst = _ } = Decl; Constant = Kind) |
+    ({ container = { class_ = _ } } = Decl; Class_ = Kind) |
+    ({ container = { enum_ = _ } } = Decl; Enum = Kind) |
+    ({ container = { interface_ = _ } } = Decl; Interface = Kind) |
+    ({ container = { trait = _ } } = Decl; Interface = Kind) |
+    ({ enumerator = _ } = Decl; Enum = Kind) |
+    ({ function_ = _ } = Decl; Function = Kind) |
+    ({ globalConst = _ } = Decl; Constant = Kind) |
+    ({ namespace_ = _ } = Decl; Namespace = Kind) |
+    ({ method = _ } = Decl; Method = Kind) |
+    ({ property_ = _ } = Decl; Property = Kind) |
+    ({ typeConst = _ } = Decl; Type = Kind) |
+    ({ typedef_ = _ } = Decl; Type = Kind)
 
 }
