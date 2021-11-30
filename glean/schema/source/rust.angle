@@ -6,6 +6,14 @@ import src.1
 # A name (identifier)
 predicate Name : string
 
+# Maps lower-case strings to Name, for case-insensitive search
+predicate NameLowerCase:
+  {
+    nameLowerCase: string,
+    name: Name,
+  }
+  stored { prim.toLower Str, N } where N = Name Str
+
 # A qualified, structured name
 predicate QName :
   {

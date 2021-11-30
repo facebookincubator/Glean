@@ -22,6 +22,14 @@ predicate VariableDeclaration: { name: Name }
 # Records that a Python module exists with a given fully qualified name.
 predicate Module: { name: Name }
 
+# Maps lower-case strings to Name, for case-insensitive search
+predicate NameLowerCase:
+  {
+    nameLowerCase: string,
+    name: Name,
+  }
+  stored { prim.toLower Str, N } where N = Name Str
+
 } # python.1
 
 schema python.2 : python.1 {

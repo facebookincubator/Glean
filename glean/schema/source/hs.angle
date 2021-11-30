@@ -9,6 +9,15 @@ predicate PackageId : string
 # E.g. 'Data.Maybe'
 predicate ModuleName : string
 
+# Maps lower-case strings to ModuleName, for case-insensitive search
+predicate ModuleNameLowerCase:
+  {
+    nameLowerCase: string,
+    name: ModuleName,
+  }
+  stored { prim.toLower Str, N } where N = ModuleName Str
+
+
 # Uniquely identifies a module and its source
 predicate Module :
   {
@@ -28,6 +37,15 @@ predicate SourceModule :
 # Unqualified function name
 predicate FunctionName : string
 
+# Maps lower-case strings to FunctionName, for case-insensitive search
+predicate FunctionNameLowerCase:
+  {
+    nameLowerCase: string,
+    name: FunctionName,
+  }
+  stored { prim.toLower Str, N } where N = FunctionName Str
+
+
 # Code range in which the function body is defined
 predicate FunctionDefinition :
   {
@@ -45,6 +63,15 @@ predicate ModuleDefinitions :
 # Definition location by identifier string
 predicate DefinitionName : string
 
+# Maps lower-case strings to DefinitionName, for case-insensitive search
+predicate DefinitionNameLowerCase:
+  {
+    nameLowerCase: string,
+    name: DefinitionName,
+  }
+  stored { prim.toLower Str, N } where N = DefinitionName Str
+
+
 predicate Definition :
   {
     name : DefinitionName,
@@ -55,6 +82,15 @@ predicate Definition :
 predicate Type : string
 
 predicate ClassName : string
+
+# Maps lower-case strings to ClassName, for case-insensitive search
+predicate ClassNameLowerCase:
+  {
+    nameLowerCase: string,
+    name: ClassName,
+  }
+  stored { prim.toLower Str, N } where N = ClassName Str
+
 
 # We don't record this at the moment, only the instances.
 predicate Class :
