@@ -8,6 +8,7 @@ import code.python.1
 import cxx1.4
 import flow.3
 import hack.5
+import hs.2
 import pp1.1
 import python.3
 import rust.1
@@ -29,6 +30,20 @@ predicate SearchByName:
   CxxSearchByName { Name, Entity } |
   HsSearchByName { Name, Entity }
 
+# same as SearchByName but assumes `name` is lowercase. Useful for
+# case-insensitive search
+predicate SearchByLowerCaseName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { Name, Entity } where
+  PythonSearchByLowerCaseName { Name, Entity } |
+  HackSearchByLowerCaseName { Name, Entity } |
+  FlowSearchByLowerCaseName { Name, Entity } |
+  CxxSearchByLowerCaseName { Name, Entity } |
+  HsSearchByLowerCaseName { Name, Entity }
+
 #
 # Language-specific identifier search
 #
@@ -41,6 +56,15 @@ predicate HackSearchByName:
   { Name, { hack = { decl = D }}} where
   search.hack.SearchByName { name = hack.Name Name, decl = D };
 
+predicate HackSearchByLowerCaseName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { Name, Entity } where
+  hack.NameLowerCase { Name, hack.Name NameCase };
+  HackSearchByName { NameCase, Entity };
+
 predicate PythonSearchByName:
   {
     name: string,
@@ -50,6 +74,15 @@ predicate PythonSearchByName:
   python.DeclarationWithLocalName { local_name = python.Name Name, declaration = D };
   python.NonImportDeclaration D;
 
+predicate PythonSearchByLowerCaseName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { Name, Entity } where
+  python.NameLowerCase { Name, python.Name NameCase };
+  PythonSearchByName { NameCase, Entity };
+
 predicate FlowSearchByName:
   {
     name: string,
@@ -57,6 +90,15 @@ predicate FlowSearchByName:
   }
   { Name, { flow = { decl = D }}} where
   flow.SearchByName { name = flow.Name Name, decl = D};
+
+predicate FlowSearchByLowerCaseName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { Name, Entity } where
+  flow.NameLowerCase { Name, flow.Name NameCase };
+  FlowSearchByName { NameCase, Entity };
 
 predicate CxxSearchByName:
   {
@@ -66,6 +108,22 @@ predicate CxxSearchByName:
   { Name, { cxx = E }} where
   search.cxx.SearchByNameAndScope { name = cxx1.Name Name, entity = E }
 
+predicate CxxSearchByLowerCaseName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { Name, Entity } where
+  cxx1.DeclByName { name_lowercase = Name, ident = Id };
+  (
+    { name = cxx1.Name NameCase } = Id;
+    CxxSearchByName { NameCase, Entity };
+  ) | (
+    { selector = Sel } = Id;
+    { cxx = E } = Entity;
+    search.cxx.SearchBySelector { Sel, E };
+  )
+
 predicate HsSearchByName:
   {
     name: string,
@@ -73,5 +131,20 @@ predicate HsSearchByName:
   }
   { Name, E } where
   search.hs.SearchByName { name = Name, entity = E }
+
+predicate HsSearchByLowerCaseName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { Name, Entity } where
+  (
+    hs.ModuleNameLowerCase { Name, hs.ModuleName NameCase } |
+    hs.FunctionNameLowerCase { Name, hs.FunctionName NameCase } |
+    hs.DefinitionNameLowerCase { Name, hs.DefinitionName NameCase } |
+    hs.ClassNameLowerCase { Name, hs.ClassName NameCase }
+  );
+  HsSearchByName { NameCase, Entity };
+
 
 }
