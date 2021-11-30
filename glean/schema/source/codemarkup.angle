@@ -1046,18 +1046,18 @@ predicate NonImportPythonDeclarationKind:
     kind: SymbolKind,
   }
   { D, Kind } where
-    ({cls = _} = D; Kind = Class_ : SymbolKind ) |
-    ({module = _} = D; Kind = Module : SymbolKind ) |
+    ({cls = _} = D; Class_ = Kind ) |
+    ({module = _} = D; Module = Kind ) |
     ({func = _} = D;
       python.ContainingTopLevelDeclaration { D, C };
-      ({module = _} = C; Kind = Function : SymbolKind ) |
-      ({cls = _} = C; Kind = Method : SymbolKind ) |
-      ({func = _} = C; Kind = Function : SymbolKind )) |  # these are locals
+      ({module = _} = C; Function = Kind ) |
+      ({cls = _} = C; Method = Kind ) |
+      ({func = _} = C; Function = Kind )) |  # these are locals
     ({variable = _} = D;
       python.ContainingTopLevelDeclaration { D, C };
-      ({module = _} = C; Kind = Variable : SymbolKind ) |
-      ({cls = _} = C; Kind = Field : SymbolKind ) |
-      ({func = _} = C; Kind = Variable : SymbolKind ))  # these are locals
+      ({module = _} = C; Variable = Kind ) |
+      ({cls = _} = C; Field = Kind ) |
+      ({func = _} = C; Variable = Kind ))  # these are locals
 
 predicate PythonEntityKind:
   {
@@ -1080,7 +1080,7 @@ predicate CxxEntityKind:
     ({ decl = Decl } = CxxD;
      CxxDeclKind { Decl, Kind }) |
     ({ enumerator = _ } = CxxD;
-     Kind = (Enumerator : SymbolKind)) |
+     Enumerator = Kind) |
     ({ defn = Defn } = CxxD;
      cxx1.DefToBaseDecl { Defn, Decl };
      CxxDeclKind { Decl, Kind }; )
@@ -1091,19 +1091,19 @@ predicate CxxDeclKind:
     kind: SymbolKind,
   }
   { Decl, Kind } where
-    ({ namespace_ = _ } = Decl; Kind = (Namespace : SymbolKind) ) |
-    ({ usingDeclaration = _ } = Decl; Kind = (Namespace : SymbolKind) ) |
-    ({ enum_ = _ } = Decl; Kind = (Enum : SymbolKind) ) |
-    ({ function_ = _ } = Decl; Kind = (Function : SymbolKind) ) |
-    ({ variable = _ } = Decl; Kind = (Variable : SymbolKind) ) |
-    ({ objcMethod = _ } = Decl; Kind = (Method : SymbolKind) ) |
-    ({ objcProperty = _ } = Decl; Kind = (Property : SymbolKind) ) |
-    ({ typeAlias = _ } = Decl; Kind = (Class_ : SymbolKind) ) |
+    ({ namespace_ = _ } = Decl; Namespace = Kind ) |
+    ({ usingDeclaration = _ } = Decl; Namespace = Kind ) |
+    ({ enum_ = _ } = Decl; Enum = Kind ) |
+    ({ function_ = _ } = Decl; Function = Kind ) |
+    ({ variable = _ } = Decl; Variable = Kind ) |
+    ({ objcMethod = _ } = Decl; Method = Kind ) |
+    ({ objcProperty = _ } = Decl; Property = Kind ) |
+    ({ typeAlias = _ } = Decl; Class_ = Kind ) |
     # TODO: objc containers, using directives
     ({ record_ = R } = Decl;
-      ({ kind = { struct_ = _ } } = R; Kind = (Struct : SymbolKind) ) |
-      ({ kind = { class_ = _ } } = R; Kind = (Class_ : SymbolKind) ) |
-      ({ kind = { union_ = _ } } = R; Kind = (Union : SymbolKind) )
+      ({ kind = { struct_ = _ } } = R; Struct = Kind ) |
+      ({ kind = { class_ = _ } } = R; Class_ = Kind ) |
+      ({ kind = { union_ = _ } } = R; Union = Kind )
     )
 
 predicate PpEntityKind:
@@ -1112,9 +1112,9 @@ predicate PpEntityKind:
     kind: SymbolKind,
   }
   { { pp = Decl }, Kind } where
-    ({ define = _ } = Decl; Kind = (Macro : SymbolKind) ) |
-    ({ undef = _ } = Decl; Kind = (Macro : SymbolKind) ) |
-    ({ include_ = _ } = Decl; Kind = (File : SymbolKind) )
+    ({ define = _ } = Decl; Macro = Kind ) |
+    ({ undef = _ } = Decl; Macro = Kind ) |
+    ({ include_ = _ } = Decl; File = Kind )
 
 predicate HackEntityKind:
   {
