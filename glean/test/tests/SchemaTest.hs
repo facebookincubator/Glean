@@ -932,7 +932,7 @@ schemaEvolves = TestList
 schemaEvolvesTransformations :: Test
 schemaEvolvesTransformations = TestList
   [ TestLabel "remove field" $ TestCase $ do
-    withSchemaAndFacts
+    withSchemaAndFacts []
       [s|
         schema x.1 {
           predicate P: { a : nat }
@@ -951,7 +951,7 @@ schemaEvolvesTransformations = TestList
         assertEqual "result count" 1 (length facts)
 
   , TestLabel "change field order" $ TestCase $ do
-    withSchemaAndFacts
+    withSchemaAndFacts []
       [s|
         schema x.1 {
           predicate P: { a : string, b: nat }
@@ -972,7 +972,7 @@ schemaEvolvesTransformations = TestList
         assertEqual "result count" 2 (length facts)
 
   , TestLabel "change alternative order" $ TestCase $ do
-    withSchemaAndFacts
+    withSchemaAndFacts []
       [s|
         schema x.1 {
           predicate P: { a : string | b: nat }
@@ -993,7 +993,7 @@ schemaEvolvesTransformations = TestList
         assertEqual "result count" 2 (length facts)
 
   , TestLabel "transform nested facts" $ TestCase $ do
-    withSchemaAndFacts
+    withSchemaAndFacts []
       [s|
         schema x.1 {
           predicate P: { a : Q }
@@ -1022,7 +1022,7 @@ schemaEvolvesTransformations = TestList
         assertEqual "nested count" 2 (length nested)
 
   , TestLabel "change within type" $ TestCase $ do
-    withSchemaAndFacts
+    withSchemaAndFacts []
       [s|
         schema x.1 {
           predicate P: T
@@ -1048,7 +1048,7 @@ schemaEvolvesTransformations = TestList
         assertEqual "result count" 3 (length facts)
 
   , TestLabel "no mapping when schema has facts" $ TestCase $ do
-    withSchemaAndFacts
+    withSchemaAndFacts []
       [s|
         schema x.1 {
           predicate P : { a : nat }
@@ -1072,7 +1072,7 @@ schemaEvolvesTransformations = TestList
         assertEqual "result count" 1 (length facts)
 
   , TestLabel "non-evolved derived predicate with imports" $ TestCase $ do
-    withSchemaAndFacts
+    withSchemaAndFacts []
       [s|
         schema x.1 {
           predicate P : { a : nat }
@@ -1099,7 +1099,7 @@ schemaEvolvesTransformations = TestList
         assertEqual "nested count" 1 (length nested)
 
   , TestLabel "non-evolved derived predicate with inheritance" $ TestCase $ do
-    withSchemaAndFacts
+    withSchemaAndFacts []
       [s|
         schema x.1 {
           predicate P : { a : nat }
@@ -1126,7 +1126,7 @@ schemaEvolvesTransformations = TestList
         assertEqual "nested count" 1 (length nested)
 
   , TestLabel "query matching order" $ TestCase $ do
-    withSchemaAndFacts
+    withSchemaAndFacts []
       [s|
         schema base.1 {
           predicate N : nat
@@ -1160,7 +1160,7 @@ schemaEvolvesTransformations = TestList
         assertEqual "result count" 1 (length facts)
 
   , TestLabel "query variable" $ TestCase $ do
-    withSchemaAndFacts
+    withSchemaAndFacts []
       [s|
         schema x.1 {
           predicate P : nat
@@ -1192,6 +1192,29 @@ schemaEvolvesTransformations = TestList
         assertEqual "result count" 2 (length facts)
         nested <- decodeNestedAs (PredicateRef "x.P" 1) byRef results
         assertEqual "nested count" 2 (length nested)
+
+  , TestLabel "can disable evolves" $ TestCase $ do
+    withSchemaAndFacts [setSchemaEnableEvolves False]
+      [s|
+        schema x.1 {
+          predicate P : nat
+        }
+        schema x.2 {
+          predicate P : nat
+        }
+        schema x.2 evolves x.1
+      |]
+      [ mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "id": 1, "key": 1 }|]
+          , [s|{ "id": 2, "key": 2 }|]
+          ]
+      ]
+      -- even though x.P.2 first field is base.S, X should be
+      -- bound to the first field of x.P.1 which is base.N.
+      [s| x.P.1 _ |]
+      $ \byRef results -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef results
+        assertEqual "result count" 0 (length facts)
   ]
   where
     decodeResultsAs ref byRef results =  do
@@ -1236,18 +1259,19 @@ schemaEvolvesTransformations = TestList
         showException (RTS.DecodingException e) = e
 
 withSchemaAndFacts
-  :: String                    -- ^ schema
+  :: [Setting]
+  -> String                    -- ^ schema
   -> [JsonFactBatch]           -- ^ db contents
   -> Text                      -- ^ query
   -> (HashMap PredicateRef PredicateDetails -> UserQueryResults -> IO a)
   -> IO a
-withSchemaAndFacts schema facts query act =
+withSchemaAndFacts customSettings schema facts query act =
   withSchemaFile latestAngleVersion schema $ \root file -> do
   let settings =
         [ setRoot root
         , setSchemaPath file
         , setSchemaEnableEvolves True
-        ]
+        ] ++ customSettings
   -- create db and write facts
   repo <- withEmptyTestDB settings $ \env repo -> do
       void $ sendJsonBatch env repo facts Nothing

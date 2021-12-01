@@ -501,8 +501,16 @@ userQueryImpl
                 envSchemaVersion env <|>
                 dbSchemaVersion
 
+            enableEvolves =
+              envSchemaEnableEvolves env || config_enable_schema_evolution
+
           (compileTime, _, (query@QueryWithInfo{..}, evolutions)) <- timeIt $
-            compileAngleQuery schemaVersion schema userQuery_query stored
+            compileAngleQuery
+              schemaVersion
+              enableEvolves
+              schema
+              userQuery_query
+              stored
           let
             irDiag =
               [ "ir:\n" <> Text.pack (show (pretty qiQuery))
@@ -800,11 +808,12 @@ userQueryImpl
 compileAngleQuery
   :: SchemaVersion
     -- ^ Schema version to resolve unversioned predicates
+  -> Bool  -- ^ enable evolves
   -> DbSchema
   -> ByteString
   -> Bool
   -> IO (CodegenQuery, Evolutions)
-compileAngleQuery ver dbSchema source stored = do
+compileAngleQuery ver enableEvolves dbSchema source stored = do
   parsed <- checkBadQuery Text.pack $ Angle.parseQuery source
   vlog 2 $ "parsed query: " <> show (pretty parsed)
 
@@ -816,7 +825,10 @@ compileAngleQuery ver dbSchema source stored = do
     flatten dbSchema latestAngleVersion stored typechecked
   vlog 2 $ "flattened query: " <> show (pretty (qiQuery flattened))
 
-  let (evolved, evolutions) = evolveFlattenedQuery dbSchema flattened
+  let (evolved, evolutions) =
+        if enableEvolves
+          then evolveFlattenedQuery dbSchema flattened
+          else (flattened, mempty)
   vlog 2 $ "evolved query: " <> show (pretty (qiQuery evolved))
 
   optimised <- checkBadQuery id $ runExcept $ optimise evolved
