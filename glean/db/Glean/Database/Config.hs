@@ -202,10 +202,10 @@ options = do
   cfgReadOnly <- switch (long "db-read-only")
   cfgMockWrites <- switch (long "db-mock-writes")
   cfgTailerOpts <- Tailer.options
+  cfgSchemaEnableEvolves <- switch (long "db-schema-evolves")
   return Config
     { cfgCatalogStore = cfgCatalogStore def
     , cfgListener = mempty
-    , cfgSchemaEnableEvolves = False
     , .. }
   where
     recipesConfigThriftSource = option (eitherReader ThriftSource.parse)
