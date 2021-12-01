@@ -22,7 +22,7 @@ The Glean server accepts all the common options described in [Common options](ru
 Port number to listen on.
 
 The server watches for changes in any [configuration
-files](running#configuration-files) specified with `config:PATH`,
+files](./running.md#configuration-files) specified with `config:PATH`,
 including the schema.
 
 <Facebook />

@@ -9,9 +9,9 @@ import Daiquery from './fb/daiquery.md';
 import {SrcFile,SrcFileLink} from '@site/utils';
 
 Glean's query language is called **Angle**.  Read the [Angle
-Guide](../angle/guide) to learn about how to write Angle queries.
+Guide](../angle/guide.md) to learn about how to write Angle queries.
 
-The [shell](../shell) can be used for testing queries and schema
+The [shell](../shell.md) can be used for testing queries and schema
 changes, and exploring the data.
 
 <FbInternalOnly>

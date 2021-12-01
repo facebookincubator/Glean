@@ -21,6 +21,7 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'facebookincubator', // Usually your GitHub org/user name.
   projectName: 'glean', // Usually your repo name.
+  trailingSlash: true,
   themeConfig: {
     navbar: {
       title: 'Glean',

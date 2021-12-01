@@ -17,7 +17,7 @@ We’ll cover each of these in the following sections.
 
 The order of fields in the schema matters a lot for efficiency. Glean indexes facts by a prefix of their keys, so if we know the prefix when searching for facts this will be a lot faster. Often this difference is absolutely crucial; the difference is between *O(log n)* and *O(n)*, so when the database is large this can be many orders of magnitude.
 
-For example, the `example.Parent` predicate we saw [earlier](guide#matching-nested-facts) is defined as
+For example, the `example.Parent` predicate we saw [earlier](./guide.md#matching-nested-facts) is defined as
 
 ```lang=angle
 predicate Parent :

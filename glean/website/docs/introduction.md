@@ -46,7 +46,7 @@ Glean consists of the following:
   your code, efficiently and with full type-safety[^1].
 
 * A query engine implementing our **[declarative query language
-  Angle](angle/intro.md)**.  Angle is a logic language with similarities
+  Angle](./angle/intro.md)**.  Angle is a logic language with similarities
   to Datalog, but with extensions that make it suitable for building
   complex queries over Glean data[^2].  Like in Datalog, Glean can
   derive new facts automatically by [defining rules](derived.md) using

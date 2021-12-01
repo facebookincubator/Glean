@@ -51,7 +51,7 @@ See [shell options](#shell-options) for more command-line options.
 
 ## Shell options
 
-The shell accepts all the [common options](running#common-options). Additionally:
+The shell accepts all the [common options](./running.md#common-options). Additionally:
 
 * `QUERY` or `:COMMAND`<br />
 Perform the given `QUERY` or `:COMMAND` and then exit. If multiple
@@ -117,7 +117,7 @@ Show query profiling information; see [Query Debugging](angle/debugging.md).
 * `:reload`<br />
 Reload the schema (when using `--schema`). This command is useful when
 making changes to the schema, including [derived
-predicates](derived). Edit the schema source files, `:reload` and then
+predicates](./derived.md). Edit the schema source files, `:reload` and then
 test your changes.
 * `:statistics [PREDICATE]`<br />
 Show statistics for the current database.

@@ -47,7 +47,7 @@ A database can be created by a client using any of these methods:
 Large indexing jobs are coordinated by the server, using a *recipe* to
 define the various tasks and the dependencies between them.  Recipes
 are defined in the recipes configuration; see the `--recipe-config`
-option in [Common options](running#common-options).
+option in [Common options](./running.md#common-options).
 
 The job proceeds as follows:
 * An indexing job is started by calling the server's `kickOff` Thrift

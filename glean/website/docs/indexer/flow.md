@@ -24,11 +24,11 @@ where
 * `PREFIX` is a prefix to add to the files in the Glean index (this
   can be empty if you don't need a prefix)
 
-The generated files can be ingested into a Glean database using [`glean create`](../cli#glean-create).
+The generated files can be ingested into a Glean database using [`glean create`](../cli.md#glean-create).
 
 ## Derived predicates
 
-Several predicates should be derived after indexing. For each `stored` predicate in the [schema](#schema) you should [`glean derive`](../cli#glean-derive) the predicate.
+Several predicates should be derived after indexing. For each `stored` predicate in the [schema](#schema) you should [`glean derive`](../cli.md#glean-derive) the predicate.
 
 ## In the shell
 
