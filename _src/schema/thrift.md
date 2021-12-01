@@ -7,7 +7,7 @@ sidebar_label: Thrift and JSON
 import {OssOnly, FbInternalOnly} from 'internaldocs-fb-helpers';
 
 The Glean schema is automatically translated into a set of Thrift type
-definitions by the `gen-schema` tool (see [Workflow](workflow)).
+definitions by the `gen-schema` tool (see [Workflow](workflow.md)).
 These Thrift definitions can be used to work with Glean data in your
 client, as native data types in whatever language you're using, either
 for querying data or for writing facts.

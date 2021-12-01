@@ -69,7 +69,7 @@ The shell shows results in JSON format. When you’re making Glean
 queries from code, the results will normally be decoded into native
 data types that you can manipulate directly in whatever language
 you’re using; for more details see [Thrift and
-JSON](../schema/thrift).
+JSON](../schema/thrift.md).
 
 Note that each fact has a unique `id`. This is how Glean identifies facts in its database. As a user you normally won’t have to worry about fact `id`s; you can think of them like memory addresses.
 

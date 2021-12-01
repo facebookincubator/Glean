@@ -45,7 +45,7 @@ predicate TargetOut.1 :
     }
 ```
 
-This is a mapping from `Target` to `File` (see [Efficient matching of facts](angle/efficiency#efficient-matching-of-facts)).  If we want the reverse mapping, from `File` to `Target`, we need a predicate with the fields in the other order, which is exactly what `OutTarget` is. But it would be laborious to write actual code to generate and store these facts in the database, so Glean allows us to define `OutTarget` directly in terms of a query, and it will automatically compute the facts of `OutTarget` and store them in the database.
+This is a mapping from `Target` to `File` (see [Efficient matching of facts](angle/efficiency.md#efficient-matching-of-facts)).  If we want the reverse mapping, from `File` to `Target`, we need a predicate with the fields in the other order, which is exactly what `OutTarget` is. But it would be laborious to write actual code to generate and store these facts in the database, so Glean allows us to define `OutTarget` directly in terms of a query, and it will automatically compute the facts of `OutTarget` and store them in the database.
 
 ### When do the facts get computed and stored?
 
@@ -255,7 +255,7 @@ Test your derived predicate using queries in the shell, use `:reload` to pick up
 The `:timeout` command can be used to change the default query timeout while iterating.
 
 If you run into performance issues, try the techniques in [Debugging
-Queries](angle/debugging).
+Queries](angle/debugging.md).
 
 When you're done, the next section describes how to get your derived predicate into the schema proper.
 

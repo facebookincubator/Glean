@@ -8,7 +8,7 @@ import {OssOnly, FbInternalOnly} from 'internaldocs-fb-helpers';
 
 We can play with Glean using the [shell](shell.md). You can do this
 directly from the [Docker image](trying.md) if you want, or [Build Glean
-from source](building) first.
+from source](./building.md) first.
 
 To try experiments we can work with a local schema definition and
 local database (as opposed to connecting to a Glean server).  If you

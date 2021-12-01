@@ -10,7 +10,7 @@ Typically you want to do most of your debugging in the
 [shell](../shell.md), where you can experiment with queries quickly and
 easily.
 
-If you're writing particularly complex queries, then consider using [Derived Predicates](../derived.md) to structure your query and to allow parts of the query to be re-used. To iterate on derived predicates, see [How do I write and test a derived predicate?](../derived/#how-do-i-write-and-test)
+If you're writing particularly complex queries, then consider using [Derived Predicates](../derived.md) to structure your query and to allow parts of the query to be re-used. To iterate on derived predicates, see [How do I write and test a derived predicate?](../derived.md#how-do-i-write-and-test)
 
 ## Debugging a slow query
 
