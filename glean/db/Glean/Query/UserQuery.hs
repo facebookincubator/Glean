@@ -578,8 +578,9 @@ userQueryImpl
       case cont of
         Right ucont -> do
           let binaryCont = Thrift.userQueryCont_continuation ucont
-              evolutions = toEvolutions $ Thrift.userQueryCont_evolutions ucont
-          results <- unEvolveResults schema evolutions <$>
+              evolutions = toEvolutions schema $
+                Thrift.userQueryCont_evolutions ucont
+          results <- unEvolveResults evolutions <$>
             restartCompiled
               schemaInventory
               defineOwners
@@ -597,7 +598,7 @@ userQueryImpl
               | Thrift.queryDebugOptions_bytecode debug ]
 
           bracket (compileQuery query) (release . compiledQuerySub) $ \sub -> do
-            results <- unEvolveResults schema evolutions <$>
+            results <- unEvolveResults evolutions <$>
               executeCompiled schemaInventory defineOwners stack sub limits
             diags <- evaluate $ force (bytecodeDiag sub) -- don't keep sub alive
             sz <- evaluate $ Bytecode.size (compiledQuerySub sub)

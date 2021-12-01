@@ -9,6 +9,7 @@
 module Glean.Database.Schema.Types
   ( DbSchema(..)
   , PredicateDetails(..)
+  , PredicateEvolution(..)
   , SchemaVersion(..)
   , lookupPredicate
   , lookupPredicateRef
@@ -31,11 +32,13 @@ import Data.Map.Strict (Map)
 import Glean.Angle.Types as Schema hiding (Type, FieldDef)
 import qualified Glean.Angle.Types as Schema
 import Glean.Query.Typecheck.Types
+import Glean.Query.Codegen (Pat)
 import Glean.RTS.Foreign.Bytecode (Subroutine)
 import Glean.RTS.Foreign.Inventory (Inventory)
 import Glean.RTS.Typecheck
 import Glean.RTS.Traverse
 import Glean.RTS.Types (Pid(..), Type, PidRef(..), FieldDef, ExpandedType(..))
+import Glean.Types as Thrift
 import Glean.Schema.Resolve
 
 -- | The Schema used by a DB
@@ -44,7 +47,7 @@ data DbSchema = DbSchema
   , predicatesByName :: IntMap (HashMap Name PredicateDetails)
      -- ^ points to the predicate for each name in schema "all"
   , predicatesById :: IntMap PredicateDetails
-  , predicatesEvolved :: Map PidRef PidRef
+  , predicatesEvolution :: Map PidRef PredicateEvolution
      -- ^ value evolves key
   , schemaTypesByRef :: HashMap TypeRef TypeDetails
   , schemaTypesByName :: IntMap (HashMap Name TypeDetails)
@@ -54,6 +57,25 @@ data DbSchema = DbSchema
   , schemaSource :: SourceSchemas
   , schemaMaxPid :: Pid
   , schemaLatestVersion :: Version
+  }
+
+-- | Information required to transform a query that uses a deprecated predicate
+-- P into one that uses a new predicate P' and then to transform all P' result
+-- facts into P facts to return to the client.
+data PredicateEvolution = PredicateEvolution
+  { evolutionOld :: Pid
+    -- ^ deprecated predicate
+  , evolutionNew :: PredicateDetails
+    -- ^ new version of deprecated predicate
+  , evolutionEvolveKey :: Pat -> Pat
+  , evolutionEvolveValue :: Pat -> Pat
+    -- ^ transform a pattern that matches the old predicate's value into
+    -- one that matches the new predicates's value.
+  , evolutionUnevolve :: Thrift.Fact -> Thrift.Fact
+    -- ^ transform a fact of the new predicate into a fact
+    -- of the original, deprecated predicate.
+  , evolutionNested :: [PidRef]
+    -- ^ transitive dependencies of original predicate
   }
 
 data TypeDetails = TypeDetails

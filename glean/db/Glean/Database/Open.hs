@@ -243,7 +243,7 @@ setupSchema Env{..} repo handle mode =
 
 allowEvolves :: Bool -> DbSchema  -> DbSchema
 allowEvolves allow dbschema@DbSchema{..} = dbschema
-  { predicatesEvolved = if allow then predicatesEvolved else mempty }
+  { predicatesEvolution = if allow then predicatesEvolution else mempty }
 
 -- | Update the schema for all open DBs when the prevailing schema has
 -- changed.

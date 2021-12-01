@@ -49,6 +49,7 @@ import Data.Tuple (swap)
 
 import Glean.RTS.Foreign.Inventory as Inventory
 import Glean.Database.Schema.Types
+import Glean.Database.Schema.Evolve (mkPredicateEvolution)
 import Glean.RTS.Traverse
 import Glean.RTS.Typecheck
 import Glean.RTS.Types as RTS
@@ -357,7 +358,7 @@ mkDbSchema override getPids dbContent source base addition = do
     { predicatesByRef = byRef
     , predicatesByName = predicatesByName
     , predicatesById = byId
-    , predicatesEvolved = evolvedPredicates dbContent override byRef resolved
+    , predicatesEvolution =  mkEvolutions dbContent override byRef resolved
     , schemaTypesByRef = tcEnvTypes env
     , schemaTypesByName = schemaTypesByName
     , schemaInventory = inventory predicates
@@ -367,14 +368,34 @@ mkDbSchema override getPids dbContent source base addition = do
     , schemaLatestVersion = latestVer
     }
 
-evolvedPredicates
+mkEvolutions
   :: DbContent
   -> Override
   -> HashMap PredicateRef PredicateDetails
   -> [ResolvedSchema]
+  -> Map PidRef PredicateEvolution
+mkEvolutions DbWritable _ _ _ = mempty
+mkEvolutions (DbReadOnly stats) override byRef resolved =
+  Map.mapWithKey mkEvolution $
+  evolvedPredicates stats override byRef resolved
+  where
+    mkEvolution old new =
+      mkPredicateEvolution detailsFor old new
+
+    detailsFor (PidRef _ ref) =
+      case HashMap.lookup ref byRef of
+        Just details -> details
+        Nothing -> error $
+          "unknown predicate ref " <> Text.unpack (showPredicateRef ref)
+
+-- ^ Create a map of which predicate is evolved by which
+evolvedPredicates
+  :: HashMap Pid PredicateStats
+  -> Override
+  -> HashMap PredicateRef PredicateDetails
+  -> [ResolvedSchema]
   -> Map PidRef PidRef        -- ^ value evolves key
-evolvedPredicates DbWritable _ _ _ = mempty
-evolvedPredicates (DbReadOnly stats) override byRef resolved =
+evolvedPredicates stats override byRef resolved =
   foldMap evolve (HashMap.keys evolvedBy)
   where
     evolvedBy :: HashMap SchemaRef SchemaRef
