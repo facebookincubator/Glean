@@ -26,17 +26,16 @@ import Glean.Schema.Util (lowerMaybe, lowerBool, lowerEnum)
 import qualified Glean.Types as Thrift
 
 mkPredicateEvolution
-  :: (PidRef -> PredicateDetails)
-  -> PidRef
-  -> PidRef
+  :: (Pid -> PredicateDetails)
+  -> Pid
+  -> Pid
   -> PredicateEvolution
 mkPredicateEvolution detailsFor old new =
   let newDets = detailsFor new
       oldDets = detailsFor old
-      pid (PidRef x _) = x
   in
   PredicateEvolution
-    { evolutionOld = pid old
+    { evolutionOld = old
     , evolutionNew = newDets
     , evolutionEvolveKey =
         evolvePat (predicateKeyType oldDets) (predicateKeyType newDets)
@@ -49,14 +48,14 @@ mkPredicateEvolution detailsFor old new =
 
 -- All predicates mentioned in a predicate's type.
 -- Does not include predicates from the derivation query.
-predicateDeps :: (PidRef -> PredicateDetails) -> PidRef -> [PidRef]
+predicateDeps :: (Pid -> PredicateDetails) -> Pid -> [Pid]
 predicateDeps detailsFor pred =
   typeDeps (predicateKeyType details) <>
     typeDeps (predicateValueType details)
   where
     details = detailsFor pred
     typeDeps = \case
-      Type.Predicate ref -> [ref]
+      Type.Predicate (PidRef pid _) -> [pid]
       Type.NamedType (ExpandedType _ ty) -> typeDeps ty
       Type.Record xs -> concatMap (typeDeps  . fieldDefType) xs
       Type.Sum xs -> concatMap (typeDeps . fieldDefType) xs

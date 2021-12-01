@@ -38,22 +38,20 @@ import qualified Glean.Types as Thrift
 
 -- | A map of the predicate transformations performed by evolves.
 -- value was mapped into key
-newtype Evolutions = Evolutions (Map Pid PredicateEvolution)
+newtype Evolutions = Evolutions (IntMap PredicateEvolution)
   deriving newtype (Semigroup, Monoid)
 
 toEvolutions :: DbSchema -> Map Int64 Int64 -> Evolutions
-toEvolutions dbSchema@DbSchema{..} mappings = Evolutions $ Map.fromList
-  [ (Pid new, evolution)
+toEvolutions DbSchema{..} mappings = Evolutions $ IntMap.fromList
+  [ (fromIntegral new, evolution)
   | (new, old) <- Map.toList mappings
-  , Just oldDets <- [lookupPid (Pid old) dbSchema]
-  , let ref = PidRef (predicatePid oldDets) (predicateRef oldDets)
-  , Just evolution <- [Map.lookup ref predicatesEvolution]
+  , Just evolution <- [IntMap.lookup (fromIntegral old) predicatesEvolution]
   ]
 
 fromEvolutions :: Evolutions -> Map Int64 Int64
 fromEvolutions (Evolutions e) = Map.fromList
-  [ (fromPid new, fromPid evolutionOld)
-  | (new, PredicateEvolution{..}) <- Map.toList e
+  [ (fromIntegral new, fromPid evolutionOld)
+  | (new, PredicateEvolution{..}) <- IntMap.toList e
   ]
 
 -- | Transform a query such that it operates on the most evolved
@@ -65,7 +63,8 @@ evolveFlattenedQuery
 evolveFlattenedQuery DbSchema{..} q = flip runState mempty $ do
   evolveQueryWithInfo q
   where
-    evolveQueryWithInfo (QueryWithInfo (FlatQuery key maybeVal stmts) vars ty ) = do
+    evolveQueryWithInfo (QueryWithInfo q vars ty) = do
+      let FlatQuery key maybeVal stmts = q
       (ty', key') <- evolveReturnType ty key
       stmts' <- traverse evolveFlatStmtGroup stmts
       return $ QueryWithInfo (FlatQuery key' maybeVal stmts') vars ty'
@@ -73,9 +72,10 @@ evolveFlattenedQuery DbSchema{..} q = flip runState mempty $ do
     evolveReturnType ty pat
       | Type.Record fields <- derefType ty
       , [ resultTy, _, _ ] <- map (derefType . fieldDefType) fields
-      , Type.Predicate old <- derefType resultTy
+      , Type.Predicate (PidRef old _) <- derefType resultTy
       , Tuple [p, key, val] <- pat
-      , Just PredicateEvolution{..} <- Map.lookup old predicatesEvolution
+      , Just PredicateEvolution{..} <-
+          IntMap.lookup (intPid old) predicatesEvolution
       = do
         let new = evolutionNew
             ty' = tupleSchema
@@ -88,7 +88,7 @@ evolveFlattenedQuery DbSchema{..} q = flip runState mempty $ do
               , evolutionEvolveKey key
               , evolutionEvolveValue val
               ]
-        modify $ addEvolutionsFor (pidRef new : evolutionNested)
+        modify $ addEvolutionsFor (predicatePid new : evolutionNested)
         return (ty', pat')
       | otherwise = return (ty, pat)
 
@@ -122,31 +122,34 @@ evolveFlattenedQuery DbSchema{..} q = flip runState mempty $ do
       DerivedFactGenerator{} -> return Nothing
 
       FactGenerator old key val ->
-        case Map.lookup old predicatesEvolution of
+        case IntMap.lookup (intPid $ pid old) predicatesEvolution of
           Nothing -> return Nothing
           Just evolution@PredicateEvolution{..} -> do
             let new = pidRef evolutionNew
                 key' = evolutionEvolveKey key
                 val' = evolutionEvolveValue val
-            modify $ addEvolutionsFor (old : evolutionNested)
+            modify $ addEvolutionsFor (pid old : evolutionNested)
             return $ Just (evolution, FactGenerator new key' val')
 
+    pid (PidRef x _) = x
 
-    addEvolutionsFor :: [PidRef] -> Evolutions -> Evolutions
+    intPid = fromIntegral . fromPid
+
+    addEvolutionsFor :: [Pid] -> Evolutions -> Evolutions
     addEvolutionsFor preds (Evolutions evolutions) =
       Evolutions $ evolutions <> newEvolutions
       where
-        newEvolutions = Map.fromList
-          [ (new, evolution)
+        newEvolutions = IntMap.fromList
+          [ (fromIntegral (fromPid new), evolution)
           | old <- preds
-          , Just evolution <- [Map.lookup old predicatesEvolution]
+          , Just evolution <- [IntMap.lookup (intPid old) predicatesEvolution]
           , let new = predicatePid (evolutionNew evolution)
           ]
 
 -- | Transform evolved facts back into the type the query originally asked for.
 unEvolveResults :: Evolutions -> QueryResults -> QueryResults
-unEvolveResults (Evolutions mappings) results@QueryResults{..}
-  | Map.null mappings = results
+unEvolveResults (Evolutions evolutions) results@QueryResults{..}
+  | IntMap.null evolutions = results
   | otherwise = results
     { queryResultsFacts = unEvolveFacts queryResultsFacts
     , queryResultsNestedFacts = unEvolveFacts queryResultsNestedFacts
@@ -157,14 +160,7 @@ unEvolveResults (Evolutions mappings) results@QueryResults{..}
 
     unEvolveFact :: Thrift.Fact -> Thrift.Fact
     unEvolveFact fact@(Thrift.Fact pid _ _) =
-      case IntMap.lookup (fromIntegral pid) transformations of
+      case IntMap.lookup (fromIntegral pid) evolutions of
         Nothing -> fact
-        Just f -> f fact
-
-    transformations :: IntMap (Thrift.Fact -> Thrift.Fact)
-    transformations = IntMap.fromList
-      [ (pid, evolutionUnevolve e)
-      | (from , e) <- Map.toList mappings
-      , pid <- [fromIntegral $ fromPid from]
-      ]
+        Just PredicateEvolution{..} -> evolutionUnevolve  fact
 

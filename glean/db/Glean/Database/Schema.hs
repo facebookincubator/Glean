@@ -37,6 +37,7 @@ import qualified Data.HashSet as HashSet
 import Data.HashSet (HashSet)
 import Data.List (foldl', find)
 import qualified Data.IntMap as IntMap
+import Data.IntMap (IntMap)
 import qualified Data.Map as Map
 import Data.Map (Map)
 import Data.Maybe
@@ -159,7 +160,7 @@ thinSchemaInfo DbSchema{..} predicateStats =
     [ predicateRef pred
     | (pid, stats) <- predicateStats
     , predicateStats_count stats /= 0
-    , Just pred <- [IntMap.lookup (fromIntegral (fromPid pid)) predicatesById]
+    , Just pred <- [IntMap.lookup (fromIntegral $ fromPid pid) predicatesById]
     ]
 
   -- Names of schemas that define one or more non-empty predicates
@@ -358,7 +359,7 @@ mkDbSchema override getPids dbContent source base addition = do
     { predicatesByRef = byRef
     , predicatesByName = predicatesByName
     , predicatesById = byId
-    , predicatesEvolution =  mkEvolutions dbContent override byRef resolved
+    , predicatesEvolution = mkEvolutions dbContent override byId byRef resolved
     , schemaTypesByRef = tcEnvTypes env
     , schemaTypesByName = schemaTypesByName
     , schemaInventory = inventory predicates
@@ -371,22 +372,24 @@ mkDbSchema override getPids dbContent source base addition = do
 mkEvolutions
   :: DbContent
   -> Override
+  -> IntMap PredicateDetails
   -> HashMap PredicateRef PredicateDetails
   -> [ResolvedSchema]
-  -> Map PidRef PredicateEvolution
-mkEvolutions DbWritable _ _ _ = mempty
-mkEvolutions (DbReadOnly stats) override byRef resolved =
-  Map.mapWithKey mkEvolution $
-  evolvedPredicates stats override byRef resolved
+  -> IntMap PredicateEvolution
+mkEvolutions DbWritable _ _ _ _ = mempty
+mkEvolutions (DbReadOnly stats) override byId byRef resolved =
+  IntMap.fromList
+    [ (fromIntegral (fromPid old), mkEvolution old new)
+    | (old, new) <- Map.toList $ evolvedPredicates stats override byRef resolved
+    ]
   where
     mkEvolution old new =
       mkPredicateEvolution detailsFor old new
 
-    detailsFor (PidRef _ ref) =
-      case HashMap.lookup ref byRef of
+    detailsFor pid =
+      case IntMap.lookup (fromIntegral $ fromPid pid) byId of
         Just details -> details
-        Nothing -> error $
-          "unknown predicate ref " <> Text.unpack (showPredicateRef ref)
+        Nothing -> error $ "unknown pid " <> show pid
 
 -- ^ Create a map of which predicate is evolved by which
 evolvedPredicates
@@ -394,7 +397,7 @@ evolvedPredicates
   -> Override
   -> HashMap PredicateRef PredicateDetails
   -> [ResolvedSchema]
-  -> Map PidRef PidRef        -- ^ value evolves key
+  -> Map Pid Pid        -- ^ value evolves key
 evolvedPredicates stats override byRef resolved =
   foldMap evolve (HashMap.keys evolvedBy)
   where
@@ -403,7 +406,7 @@ evolvedPredicates stats override byRef resolved =
 
     -- map each predicate in a schema to a predicate in the schema that
     -- will evolve it.
-    evolve :: SchemaRef -> Map PidRef PidRef
+    evolve :: SchemaRef -> Map Pid Pid
     evolve old
       | hasFactsInDb old = mempty
       | otherwise = fromMaybe mempty $ do
@@ -425,12 +428,14 @@ evolvedPredicates stats override byRef resolved =
           pids = [ pid | PidRef pid _ <- Map.elems (byName schema) ]
       return $ any hasFacts pids
 
+    pid (PidRef x _) = x
+
     mapPredicates
       :: SchemaRef
       -> SchemaRef
-      -> Map PidRef PidRef
+      -> Map Pid Pid
     mapPredicates oldRef newRef = Map.fromList
-      [ (old, new)
+      [ (pid old, pid new)
       | (name, old) <- Map.toList (byName oldRef)
       , Just new <- return $ Map.lookup name (byName newRef)
       ]
