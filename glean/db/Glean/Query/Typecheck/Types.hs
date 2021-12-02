@@ -27,6 +27,7 @@ import Glean.RTS.Term as RTS hiding (Match(..))
 -- 'TcPat' (representational terms), but it doesn't flatten nested
 -- generators, so it leaves the query as a 'SourceQuery'.
 data TcQuery = TcQuery Type TcPat (Maybe TcPat) [TcStatement]
+  deriving Show
 
 instance Pretty TcQuery where
   pretty (TcQuery _ key maybeVal stmts) = case stmts of
@@ -36,11 +37,13 @@ instance Pretty TcQuery where
    head = pretty key <> maybe mempty (\val -> " -> " <> pretty val) maybeVal
 
 data TcStatement = TcStatement Type TcPat TcPat
+  deriving Show
 
 instance Pretty TcStatement where
   pretty (TcStatement _ lhs rhs) = pretty (SourceStatement lhs rhs)
 
 data Typed x = Typed Type x
+  deriving Show
 
 instance Pretty x => Pretty (Typed x) where
   pretty (Typed _ x) = pretty x
@@ -54,6 +57,7 @@ data TcTerm
   | TcQueryGen TcQuery
   | TcNegation [TcStatement]
   | TcPrimCall PrimOp [TcPat]
+  deriving Show
 
 mapExt :: (ext -> ext') -> Match ext var -> Match ext' var
 mapExt f t = case t of
