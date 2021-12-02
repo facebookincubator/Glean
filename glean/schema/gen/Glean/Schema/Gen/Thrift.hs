@@ -88,7 +88,7 @@ genTargets mode slashVn version info =
     , "  py_base_module = \"" <> pyBaseModule mode <> "\","
     , "  rust_crate_name = \"" <> rustCrate <> "\","
     , "  hs_includes = [\"" <> namespace <> "_include.hs\"],"
-    , "  thrift_rust_options = \"serde\","
+    , "  thrift_rust_options = [\"serde\", \"skip_none_serialization\"],"
     , "  thrift_cpp2_options = [" <> Text.intercalate ", " [
       "\"json\"",
       "\"types_cpp_splits=" <> cppSplits <> "\""
