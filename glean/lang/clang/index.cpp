@@ -373,11 +373,7 @@ struct SourceIndexer {
       clang::tooling::CommandLineArguments stripped;
       stripped.reserve(args.size());
       for (size_t i = 0; i < args.size(); ++i) {
-        if ((FLAGS_clang_no_pch && args[i] == "-include-pch")
-            ||(FLAGS_clang_no_modules &&
-                (args[i] == "-fmodules"
-                  || args[i] == "-fcxx-modules"
-                  || boost::starts_with(args[i], "-fmodule-name=")))) {
+        if (FLAGS_clang_no_pch && args[i] == "-include-pch") {
           ++i;  // skip next argument
         } else if (FLAGS_clang_no_pch
                    && args[i] == "-include"
@@ -397,6 +393,11 @@ struct SourceIndexer {
           stripped.push_back(FLAGS_clang_resource_dir);
         } else if (boost::starts_with(args[i], "--cc=")) {
           // skip this flag - llvm complains about it
+        } else if (FLAGS_clang_no_modules &&
+                   (args[i] == "-fmodules"
+                    || args[i] == "-fcxx-modules"
+                    || boost::starts_with(args[i], "-fmodule-name="))) {
+          // skip these
         } else {
           stripped.push_back(args[i]);
         }
