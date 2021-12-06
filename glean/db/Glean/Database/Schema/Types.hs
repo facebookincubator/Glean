@@ -62,7 +62,7 @@ data DbSchema = DbSchema
 -- P into one that uses a new predicate P' and then to transform all P' result
 -- facts into P facts to return to the client.
 data PredicateEvolution = PredicateEvolution
-  { evolutionOld :: Pid
+  { evolutionOld :: PredicateDetails
     -- ^ deprecated predicate
   , evolutionNew :: PredicateDetails
     -- ^ new version of deprecated predicate

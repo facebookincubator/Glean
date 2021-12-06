@@ -30,21 +30,23 @@ mkPredicateEvolution
   -> Pid
   -> Pid
   -> PredicateEvolution
-mkPredicateEvolution detailsFor old new =
-  let newDets = detailsFor new
-      oldDets = detailsFor old
-  in
+mkPredicateEvolution detailsFor oldPid newPid =
   PredicateEvolution
     { evolutionOld = old
-    , evolutionNew = newDets
-    , evolutionEvolveKey =
-        evolvePat (predicateKeyType oldDets) (predicateKeyType newDets)
-    , evolutionEvolveValue =
-        evolvePat (predicateValueType oldDets) (predicateValueType newDets)
+    , evolutionNew = new
+    , evolutionEvolveKey = evolvePat
+        (predicateKeyType old)
+        (predicateKeyType new)
+    , evolutionEvolveValue = evolvePat
+        (predicateValueType old)
+        (predicateValueType new)
     , evolutionUnevolve = fromMaybe id $
-        mkFactTransformation newDets oldDets
-    , evolutionNested = transitive (predicateDeps detailsFor) old
+        mkFactTransformation new old
+    , evolutionNested = transitive (predicateDeps detailsFor) oldPid
     }
+  where
+      new = detailsFor newPid
+      old = detailsFor oldPid
 
 -- All predicates mentioned in a predicate's type.
 -- Does not include predicates from the derivation query.

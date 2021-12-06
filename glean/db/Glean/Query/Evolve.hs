@@ -50,9 +50,10 @@ toEvolutions DbSchema{..} mappings = Evolutions $ IntMap.fromList
 
 fromEvolutions :: Evolutions -> Map Int64 Int64
 fromEvolutions (Evolutions e) = Map.fromList
-  [ (fromIntegral new, fromPid evolutionOld)
+  [ (fromIntegral new, toPid evolutionOld)
   | (new, PredicateEvolution{..}) <- IntMap.toList e
   ]
+  where toPid = fromIntegral . fromPid . predicatePid
 
 -- | Transform a query such that it operates on the most evolved
 -- version available of the predicates it mentions.
