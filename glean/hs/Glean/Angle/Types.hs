@@ -7,6 +7,7 @@
 -}
 
 {-# LANGUAGE DeriveFunctor #-}
+{-# LANGUAGE DeriveFoldable  #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 
 -- | Types representing a source-level schema
@@ -54,6 +55,8 @@ module Glean.Angle.Types
   ) where
 
 import Data.Text.Prettyprint.Doc
+import Data.Bifunctor
+import Data.Bifoldable
 
 import Glean.Query.Types hiding (Nat, String, Array)
 import Glean.Types (PredicateRef(..), TypeRef(..), Version)
@@ -77,7 +80,35 @@ data Type_ pref tref
   | Maybe (Type_ pref tref)  -- maybe T  => { nothing | just : T }
   | Enumerated [Name]        -- enum { a | b } => { a : {}, b : {} }
   | Boolean                  -- bool => { false : {} | true : {} }
-  deriving (Eq, Show)
+  deriving (Eq, Show, Functor, Foldable)
+
+instance Bifunctor Type_ where
+  bimap f g = \case
+    Byte -> Byte
+    Nat -> Nat
+    String -> String
+    Array ty -> Array $ bimap f g ty
+    Record xs -> Record $ bimap f g <$> xs
+    Sum xs -> Sum $ bimap f g <$> xs
+    Predicate pref -> Predicate (f pref)
+    NamedType tref -> NamedType (g tref)
+    Maybe ty -> Maybe (bimap f g ty)
+    Enumerated xs -> Enumerated xs
+    Boolean -> Boolean
+
+instance Bifoldable Type_ where
+  bifoldMap f g = \case
+    Byte -> mempty
+    Nat -> mempty
+    String -> mempty
+    Array ty -> bifoldMap f g ty
+    Record xs -> foldMap (bifoldMap f g) xs
+    Sum xs -> foldMap (bifoldMap f g) xs
+    Predicate pref -> f pref
+    NamedType tref -> g tref
+    Maybe ty -> bifoldMap f g ty
+    Enumerated _ -> mempty
+    Boolean -> mempty
 
 {- Note [Types]
 
@@ -121,7 +152,13 @@ data FieldDef_ pref tref = FieldDef
   { fieldDefName :: Name
   , fieldDefType :: Type_ pref tref
   }
-  deriving (Eq, Show)
+  deriving (Eq, Show, Functor, Foldable)
+
+instance Bifunctor FieldDef_ where
+  bimap f g (FieldDef n ty)  = FieldDef n $ bimap f g ty
+
+instance Bifoldable FieldDef_ where
+  bifoldMap f g (FieldDef _ ty) = bifoldMap f g ty
 
 -- | A definition of a named type
 data TypeDef_ pref tref = TypeDef
