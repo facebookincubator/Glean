@@ -24,6 +24,7 @@ module Glean.Database.Schema
   ) where
 
 import Control.Arrow (second)
+import Control.Applicative ((<|>))
 import Control.Exception
 import Control.Monad
 import Control.Monad.Except
@@ -410,8 +411,13 @@ evolvedPredicates stats override byRef resolved =
     evolve old
       | hasFactsInDb old = mempty
       | otherwise = fromMaybe mempty $ do
-        -- pick first parent schema with facts in the db
-        new <- find hasFactsInDb (transitiveEvolves old)
+        let trans = transitiveEvolves old
+            lastEvolution = listToMaybe $ reverse trans
+        -- Pick first parent schema with facts in the db
+        -- or, if none has facts, the last available evolution.
+        -- The last evolution is used in the case of schemas
+        -- that only have derived predicates.
+        new <- find hasFactsInDb trans <|> lastEvolution
         return $ mapPredicates old new
 
     -- given an 'a' returns [b,c...] such that 'b evolves a', 'c evolves b', ...

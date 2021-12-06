@@ -827,17 +827,11 @@ compileAngleQuery ver enableEvolves dbSchema source stored = do
     typecheck dbSchema latestAngleVersion (Qualified dbSchema ver) parsed
   vlog 2 $ "typechecked query: " <> show (pretty (qiQuery typechecked))
 
-  (flattened, _) <- checkBadQuery id $ runExcept $
+  (flattened, evolutions) <- checkBadQuery id $ runExcept $
     flatten enableEvolves dbSchema latestAngleVersion stored typechecked
   vlog 2 $ "flattened query: " <> show (pretty (qiQuery flattened))
 
-  let (evolved, evolutions) =
-        if enableEvolves
-          then evolveFlattenedQuery dbSchema flattened
-          else (flattened, mempty)
-  vlog 2 $ "evolved query: " <> show (pretty (qiQuery evolved))
-
-  optimised <- checkBadQuery id $ runExcept $ optimise evolved
+  optimised <- checkBadQuery id $ runExcept $ optimise flattened
   vlog 2 $ "optimised query: " <> show (pretty (qiQuery optimised))
 
   -- no need to vlog, compileQuery will vlog it later

@@ -9,8 +9,7 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE DerivingStrategies #-}
 module Glean.Query.Evolve
-  ( evolveFlattenedQuery
-  , evolveTcQuery
+  ( evolveTcQuery
   , evolveType
   , evolutionsFor
   , unEvolveResults
@@ -19,25 +18,24 @@ module Glean.Query.Evolve
   , toEvolutions
   ) where
 
-import Control.Monad.State (State, runState, modify)
+import Data.Bifunctor
+import Data.Bifoldable
 import qualified Data.Map.Strict as Map
 import Data.Map.Strict (Map)
+import Data.Maybe (fromMaybe)
 import qualified Data.IntMap.Strict as IntMap
 import Data.Int (Int64)
 import Data.IntMap.Strict (IntMap)
 import Data.Vector (Vector)
 
-import Glean.Angle.Types (FieldDef_(..))
 import qualified Glean.Angle.Types as Type
 import Glean.Query.Codegen
-import Glean.Query.Flatten.Types
 import Glean.Query.Typecheck.Types
 import Glean.Database.Schema
+import Glean.Database.Schema.Evolve (evolvePat, predicateDeps)
 import Glean.Database.Schema.Types
 import Glean.RTS.Types
-import Glean.RTS.Term (Term(..))
 import Glean.RTS.Foreign.Query (QueryResults(..))
-import Glean.Schema.Util (tupleSchema)
 import qualified Glean.Types as Thrift
 
 -- | A map of the predicate transformations performed by evolves.
@@ -46,10 +44,10 @@ newtype Evolutions = Evolutions (IntMap PredicateEvolution)
   deriving newtype (Semigroup, Monoid)
 
 toEvolutions :: DbSchema -> Map Int64 Int64 -> Evolutions
-toEvolutions DbSchema{..} mappings = Evolutions $ IntMap.fromList
+toEvolutions schema mappings = Evolutions $ IntMap.fromList
   [ (fromIntegral new, evolution)
   | (new, old) <- Map.toList mappings
-  , Just evolution <- [IntMap.lookup (fromIntegral old) predicatesEvolution]
+  , Just evolution <- [lookupEvolution (Pid old) schema]
   ]
 
 fromEvolutions :: Evolutions -> Map Int64 Int64
@@ -59,106 +57,138 @@ fromEvolutions (Evolutions e) = Map.fromList
   ]
   where toPid = fromIntegral . fromPid . predicatePid
 
--- | Transform a query such that it operates on the most evolved
--- version available of the predicates it mentions.
-evolveFlattenedQuery
-  :: DbSchema
-  -> FlattenedQuery
-  -> (FlattenedQuery, Evolutions)
-evolveFlattenedQuery DbSchema{..} q = flip runState mempty $ do
-  evolveQueryWithInfo q
-  where
-    evolveQueryWithInfo (QueryWithInfo q vars ty) = do
-      let FlatQuery key maybeVal stmts = q
-      (ty', key') <- evolveReturnType ty key
-      stmts' <- traverse evolveFlatStmtGroup stmts
-      return $ QueryWithInfo (FlatQuery key' maybeVal stmts') vars ty'
-
-    evolveReturnType ty pat
-      | Type.Record fields <- derefType ty
-      , [ resultTy, _, _ ] <- map (derefType . fieldDefType) fields
-      , Type.Predicate (PidRef old _) <- derefType resultTy
-      , Tuple [p, key, val] <- pat
-      , Just PredicateEvolution{..} <-
-          IntMap.lookup (intPid old) predicatesEvolution
-      = do
-        let new = evolutionNew
-            ty' = tupleSchema
-              [ Type.Predicate (pidRef new)
-              , predicateKeyType new
-              , predicateValueType new
-              ]
-            pat' = Tuple
-              [ p
-              , evolutionEvolveKey key
-              , evolutionEvolveValue val
-              ]
-        modify $ addEvolutionsFor (predicatePid new : evolutionNested)
-        return (ty', pat')
-      | otherwise = return (ty, pat)
-
-    pidRef details = PidRef (predicatePid details) (predicateRef details)
-
-    evolveFlatStmtGroup = traverse evolveFlatStmt
-
-    evolveFlatStmt = \case
-      FlatNegation groups ->
-        FlatNegation <$> traverse evolveFlatStmtGroup groups
-      FlatDisjunction groupss ->
-        FlatDisjunction <$> traverse (traverse evolveFlatStmtGroup) groupss
-      FlatStatement ty pat gen -> do
-        mEvolution <- evolveGenerator gen
-        return $ case mEvolution of
-          Nothing -> FlatStatement ty pat gen
-          Just (PredicateEvolution{..}, newGen) ->
-            FlatStatement ty (evolutionEvolveKey pat) newGen
-
-    evolveGenerator
-      :: Generator
-      -> State Evolutions (Maybe (PredicateEvolution, Generator))
-    evolveGenerator gen = case gen of
-      -- these only deal with expressions, so there is no
-      -- mapping to be done.
-      TermGenerator{} -> return Nothing
-      ArrayElementGenerator{} -> return Nothing
-      PrimCall{} -> return Nothing
-
-      -- todo
-      DerivedFactGenerator{} -> return Nothing
-
-      FactGenerator old key val ->
-        case IntMap.lookup (intPid $ pid old) predicatesEvolution of
-          Nothing -> return Nothing
-          Just evolution@PredicateEvolution{..} -> do
-            let new = pidRef evolutionNew
-                key' = evolutionEvolveKey key
-                val' = evolutionEvolveValue val
-            modify $ addEvolutionsFor (pid old : evolutionNested)
-            return $ Just (evolution, FactGenerator new key' val')
-
-    pid (PidRef x _) = x
-
-    intPid = fromIntegral . fromPid
-
-    addEvolutionsFor :: [Pid] -> Evolutions -> Evolutions
-    addEvolutionsFor preds (Evolutions evolutions) =
-      Evolutions $ evolutions <> newEvolutions
-      where
-        newEvolutions = IntMap.fromList
-          [ (fromIntegral (fromPid new), evolution)
-          | old <- preds
-          , Just evolution <- [IntMap.lookup (intPid old) predicatesEvolution]
-          , let new = predicatePid (evolutionNew evolution)
-          ]
+-- ========================
+-- Evolve TypecheckedQuery
+-- ========================
 
 evolveTcQuery :: DbSchema -> TcQuery -> TcQuery
-evolveTcQuery _ q = q
+evolveTcQuery schema q@(TcQuery ty _ _ _) = evolveTcQuery' ty Nothing q
+  where
+    evolveTcQuery' old mnew (TcQuery _ key mval stmts) =
+      let new = fromMaybe (evolveType schema old) mnew in
+      TcQuery new
+        (evolve old new key)
+        (evolveInnerPat <$> mval)
+        (fmap evolveStmt stmts)
 
-evolveType :: DbSchema -> Type -> Type
-evolveType _ ty = ty
+    evolveStmt (TcStatement old lhs rhs) =
+      let new = evolveType schema old in
+      TcStatement new
+        (evolve old new lhs) -- could this just use evolveInnerPat instead?
+        (evolve old new rhs)
 
+    -- evolve inner structures in a TcPat
+    evolveInnerPat :: TcPat -> TcPat
+    evolveInnerPat = fmap (bimap overTyped overVar)
+      where
+        overTyped :: Typed TcTerm -> Typed TcTerm
+        overTyped (Typed old term) =
+          let new = evolveType schema old in
+          Typed new (evolveTcTerm old new term)
+
+        overVar :: Var -> Var
+        overVar (Var old vid name) =
+          let new = evolveType schema old in
+          Var new vid name
+
+    evolveTcTerm :: Type -> Type -> TcTerm -> TcTerm
+    evolveTcTerm old newish term =
+      let new = evolveType schema newish in
+      case term of
+        TcOr left right -> TcOr (evolve old new left) (evolve old new right)
+        TcFactGen pref key val -> evolveTcFactGen pref key val
+        TcElementsOfArray pat -> TcElementsOfArray $
+          evolve (Type.Array old) (Type.Array new) pat
+        TcQueryGen q -> TcQueryGen $ evolveTcQuery' old (Just new) q
+        TcNegation stmts -> TcNegation $ fmap evolveStmt stmts
+        TcPrimCall op pats -> TcPrimCall op $ evolveInnerPat <$> pats
+
+    evolveTcFactGen :: PidRef -> TcPat -> TcPat -> TcTerm
+    evolveTcFactGen pref key val =
+      case lookupEvolution (pid pref) schema of
+        Just evolution -> do
+          TcFactGen (pidRef $ evolutionNew evolution)
+            (evolveKey evolution key)
+            (evolveValue evolution val)
+        Nothing ->
+          TcFactGen pref
+            (evolveInnerPat key)
+            (evolveInnerPat val)
+
+    evolveKey :: PredicateEvolution -> TcPat -> TcPat
+    evolveKey PredicateEvolution{..} pat = evolve
+      (predicateKeyType evolutionOld)
+      (predicateKeyType evolutionNew)
+      pat
+
+    evolveValue  :: PredicateEvolution -> TcPat -> TcPat
+    evolveValue PredicateEvolution{..} pat = evolve
+      (predicateValueType evolutionOld)
+      (predicateValueType evolutionNew)
+      pat
+
+    evolve :: Type -> Type -> TcPat -> TcPat
+    evolve = evolvePat overTyped overVar
+      where
+        overTyped old newish (Typed _ pat) =
+          let new = evolveType schema newish in
+          Typed new (evolveTcTerm old new pat)
+        overVar _ newish (Var _ vid name) =
+          let new = evolveType schema newish in
+          Var new vid name
+
+-- | Evolutions for type and all transitively nested types
 evolutionsFor :: DbSchema -> Type -> Evolutions
-evolutionsFor _ _ = mempty
+evolutionsFor schema ty =
+  Evolutions $ bifoldMap f (const mempty) ty
+  where
+    calcDeps pid = predicateDeps detailsFor pid
+    detailsFor pid = case lookupPid pid schema of
+      Nothing -> error $ "unknown predicate " <> show pid
+      Just details -> details
+
+    f (PidRef pid _) =
+      IntMap.fromList
+        [ (intPid new, evolution)
+        | old <- deps
+        , Just evolution <- [lookupEvolution old schema ]
+        , let new = predicatePid (evolutionNew evolution)
+        ]
+      where
+        deps = case lookupEvolution pid schema of
+          Nothing -> calcDeps pid
+          Just e -> predicatePid (evolutionOld e) : evolutionNested e
+
+-- | Evolve predicates inside the type but keep its structure.
+evolveType :: DbSchema -> Type -> Type
+evolveType schema ty = evolve ty
+  where
+    evolve ty = bimap overPidRef overExpandedType ty
+
+    overPidRef pref =
+      case lookupEvolution (pid pref) schema of
+        Nothing -> pref
+        Just PredicateEvolution{..} -> pidRef evolutionNew
+
+    overExpandedType (ExpandedType tref ty) =
+      ExpandedType tref (evolve ty)
+
+lookupEvolution :: Pid -> DbSchema -> Maybe PredicateEvolution
+lookupEvolution pid DbSchema{..} =
+  IntMap.lookup (fromIntegral $ fromPid pid) predicatesEvolution
+
+intPid :: Pid -> Int
+intPid = fromIntegral . fromPid
+
+pid :: PidRef -> Pid
+pid (PidRef x _) = x
+
+pidRef :: PredicateDetails -> PidRef
+pidRef details = PidRef (predicatePid details) (predicateRef details)
+
+-- ========================
+-- Unevolve
+-- ========================
 
 -- | Transform evolved facts back into the type the query originally asked for.
 unEvolveResults :: Evolutions -> QueryResults -> QueryResults

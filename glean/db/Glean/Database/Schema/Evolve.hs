@@ -9,9 +9,11 @@
 module Glean.Database.Schema.Evolve
   ( mkPredicateEvolution
   , evolvePat
+  , predicateDeps
   ) where
 
 import Data.List (elemIndex)
+import Data.Bifoldable
 import qualified Data.Map.Strict as Map
 import Data.Maybe (fromMaybe, listToMaybe)
 import qualified Data.Set as Set
@@ -60,18 +62,9 @@ predicateDeps detailsFor pred =
     typeDeps (predicateValueType details)
   where
     details = detailsFor pred
-    typeDeps = \case
-      Type.Predicate (PidRef pid _) -> [pid]
-      Type.NamedType (ExpandedType _ ty) -> typeDeps ty
-      Type.Record xs -> concatMap (typeDeps  . fieldDefType) xs
-      Type.Sum xs -> concatMap (typeDeps . fieldDefType) xs
-      Type.Array ty -> typeDeps ty
-      Type.Maybe ty -> typeDeps ty
-      Type.Byte -> mempty
-      Type.Nat -> mempty
-      Type.String -> mempty
-      Type.Enumerated _ -> mempty
-      Type.Boolean -> mempty
+    typeDeps = bifoldMap overPidRef overExpanded
+    overExpanded (ExpandedType _ ty) = typeDeps ty
+    overPidRef (PidRef pid _) = [pid]
 
 transitive :: Ord a => (a -> [a]) -> a -> [a]
 transitive next root = Set.elems $ go (next root) mempty
