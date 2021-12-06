@@ -8,6 +8,7 @@
 
 module Glean.Database.Schema.Evolve
   ( mkPredicateEvolution
+  , evolvePat
   ) where
 
 import Data.List (elemIndex)
@@ -15,7 +16,7 @@ import qualified Data.Map.Strict as Map
 import Data.Maybe (fromMaybe, listToMaybe)
 import qualified Data.Set as Set
 
-import Glean.Angle.Types (FieldDef_(..), Type_)
+import Glean.Angle.Types (FieldDef_(..))
 import qualified Glean.Angle.Types as Type
 import Glean.Query.Codegen
 import Glean.Database.Schema.Types
@@ -34,10 +35,10 @@ mkPredicateEvolution detailsFor oldPid newPid =
   PredicateEvolution
     { evolutionOld = old
     , evolutionNew = new
-    , evolutionEvolveKey = evolvePat
+    , evolutionEvolveKey = evolve
         (predicateKeyType old)
         (predicateKeyType new)
-    , evolutionEvolveValue = evolvePat
+    , evolutionEvolveValue = evolve
         (predicateValueType old)
         (predicateValueType new)
     , evolutionUnevolve = fromMaybe id $
@@ -47,6 +48,9 @@ mkPredicateEvolution detailsFor oldPid newPid =
   where
       new = detailsFor newPid
       old = detailsFor oldPid
+      evolve old new pat = evolvePat overUnit overVar old new pat
+      overUnit _ _ () = ()
+      overVar _ _ var = var
 
 -- All predicates mentioned in a predicate's type.
 -- Does not include predicates from the derivation query.
@@ -78,20 +82,22 @@ transitive next root = Set.elems $ go (next root) mempty
       | otherwise = go xs $ go (next x) $ Set.insert x visited
 
 evolvePat
-  :: Type_ PidRef ExpandedType
-  -> Type_ PidRef ExpandedType
-  -> Term (Match () Var)
-  -> Term (Match () Var)
-evolvePat old new pat = case pat of
-  Byte _ -> pat
-  Nat _ -> pat
-  ByteArray _ -> pat
-  String _ -> pat
+  :: (Type -> Type -> a -> c)
+  -> (Type -> Type -> b -> d)
+  -> Type
+  -> Type
+  -> Term (Match a b)
+  -> Term (Match c d)
+evolvePat innerL innerR old new pat = case pat of
+  Byte x -> Byte x
+  Nat x -> Nat x
+  ByteArray x -> ByteArray x
+  String x -> String x
   Ref match -> Ref $ case match of
     -- we can keep variable bindings as they are given any value of type T
     -- assigned to a variable will have been changed to type evolved(T).
-    MatchBind _ -> match
-    MatchVar _ -> match
+    MatchBind var -> MatchBind $ innerR old new var
+    MatchVar var -> MatchVar $ innerR old new var
     MatchWild _ -> MatchWild new
     MatchNever _ -> MatchNever new
     MatchFid fid
@@ -99,20 +105,22 @@ evolvePat old new pat = case pat of
       -- unless the type didn't change we will always fail to match.
       | old == new -> MatchFid fid
       | otherwise -> MatchNever new
-    MatchAnd a b -> MatchAnd (evolvePat old new a) (evolvePat old new b)
-    MatchSum mterms -> MatchSum $ map (fmap $ evolvePat old new) mterms
-    MatchPrefix prefix rest -> MatchPrefix prefix $ evolvePat old new rest
-    MatchExt () -> match
+    MatchAnd a b -> MatchAnd
+      (evolve old new a)
+      (evolve old new b)
+    MatchPrefix prefix rest -> MatchPrefix prefix $ evolve old new rest
+    MatchSum mterms -> MatchSum $ fmap (fmap $ evolve old new) mterms
+    MatchExt extra -> MatchExt $ innerL old new extra
   Alt oldIx term
     | Type.Boolean <- old
     , Type.Boolean <- new ->
-        evolvePat lowerBool lowerBool pat
+        evolve lowerBool lowerBool pat
     | Type.Maybe oldTy <- old
     , Type.Maybe newTy <- new ->
-        evolvePat (lowerMaybe oldTy) (lowerMaybe newTy) pat
+        evolve (lowerMaybe oldTy) (lowerMaybe newTy) pat
     | Type.Enumerated oldAlts <- old
     , Type.Enumerated newAlts <- new ->
-        evolvePat
+        evolve
           (lowerEnum oldAlts)
           (lowerEnum newAlts)
           pat
@@ -123,14 +131,14 @@ evolvePat old new pat = case pat of
     , Just newIx <-
         elemIndex (fieldDefName oldAlt) (fieldDefName <$> newAlts)
     , Just newAlt <- newAlts `maybeAt` newIx ->
-        Alt (fromIntegral newIx) $ evolvePat
+        Alt (fromIntegral newIx) $ evolve
           (fieldDefType oldAlt)
           (fieldDefType newAlt)
           term
   Array terms
     | Type.Array oldTy <- old
     , Type.Array newTy <- new ->
-      Array $ evolvePat oldTy newTy <$> terms
+      Array $ evolve oldTy newTy <$> terms
   Tuple terms
     | Type.Record oldFields <- old
     , Type.Record newFields <- new
@@ -139,13 +147,14 @@ evolvePat old new pat = case pat of
               | (FieldDef name oldTy, term) <- zip oldFields terms ]
             termForField  (FieldDef name newTy) =
               case Map.lookup name termsMap of
-                Just (oldTy, term) -> evolvePat oldTy newTy term
+                Just (oldTy, term) -> evolve oldTy newTy term
                 Nothing -> Ref (MatchWild newTy)
         in
-        Tuple (termForField <$> newFields)
+        Tuple $ fmap termForField newFields
   _ -> error "unexpected"
   where
     maybeAt list ix = listToMaybe (drop ix list)
+    evolve = evolvePat innerL innerR
 
 mkFactTransformation
   :: PredicateDetails
