@@ -28,6 +28,7 @@ module Glean.Query.Codegen
 import Control.Exception
 import Control.Monad.Extra (whenJust)
 import Control.Monad.State
+import Data.Bifunctor
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as ByteString
 import Data.Coerce
@@ -229,6 +230,18 @@ data Match ext var
   | MatchExt ext
 
   deriving (Functor, Foldable, Traversable, Show)
+
+instance Bifunctor Match where
+  bimap f g = \case
+    MatchWild x -> MatchWild x
+    MatchNever x -> MatchNever x
+    MatchFid x -> MatchFid x
+    MatchExt ext -> MatchExt (f ext)
+    MatchVar var -> MatchVar (g var)
+    MatchBind var -> MatchBind (g var)
+    MatchAnd a b -> MatchAnd (fmap (bimap f g) a) (fmap (bimap f g) b)
+    MatchPrefix b term -> MatchPrefix b $ fmap (bimap f g) term
+    MatchSum xs -> MatchSum $ map (fmap (fmap (bimap f g))) xs
 
 matchVar :: Match ext var -> Maybe var
 matchVar (MatchVar v) = Just v
