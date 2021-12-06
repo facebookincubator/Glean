@@ -100,14 +100,21 @@ data FlattenState = FlattenState
   , flStack :: [PredicateRef]
     -- ^ Stack of derived predicates, to prevent recursion. (for now,
     -- until we have support for recursion).
+  , flEnableEvolves :: Bool
   }
 
-initialFlattenState :: DbSchema -> Int -> Maybe PredicateRef -> FlattenState
-initialFlattenState dbSchema nextVar deriveStored = FlattenState
+initialFlattenState
+  :: DbSchema
+  -> Int
+  -> Maybe PredicateRef
+  -> Bool
+  -> FlattenState
+initialFlattenState dbSchema nextVar deriveStored enableEvolves = FlattenState
   { flDbSchema = dbSchema
   , flNextVar = nextVar
   , flDeriveStored = deriveStored
   , flStack = []
+  , flEnableEvolves = enableEvolves
   }
 
 type F a = StateT FlattenState (Except Text) a

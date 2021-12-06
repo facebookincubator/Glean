@@ -10,6 +10,9 @@
 {-# LANGUAGE DerivingStrategies #-}
 module Glean.Query.Evolve
   ( evolveFlattenedQuery
+  , evolveTcQuery
+  , evolveType
+  , evolutionsFor
   , unEvolveResults
   , Evolutions
   , fromEvolutions
@@ -28,6 +31,7 @@ import Glean.Angle.Types (FieldDef_(..))
 import qualified Glean.Angle.Types as Type
 import Glean.Query.Codegen
 import Glean.Query.Flatten.Types
+import Glean.Query.Typecheck.Types
 import Glean.Database.Schema
 import Glean.Database.Schema.Types
 import Glean.RTS.Types
@@ -146,6 +150,15 @@ evolveFlattenedQuery DbSchema{..} q = flip runState mempty $ do
           , Just evolution <- [IntMap.lookup (intPid old) predicatesEvolution]
           , let new = predicatePid (evolutionNew evolution)
           ]
+
+evolveTcQuery :: DbSchema -> TcQuery -> TcQuery
+evolveTcQuery _ q = q
+
+evolveType :: DbSchema -> Type -> Type
+evolveType _ ty = ty
+
+evolutionsFor :: DbSchema -> Type -> Evolutions
+evolutionsFor _ _ = mempty
 
 -- | Transform evolved facts back into the type the query originally asked for.
 unEvolveResults :: Evolutions -> QueryResults -> QueryResults

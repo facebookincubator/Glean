@@ -106,7 +106,7 @@ withTestEnv settings action =
   withEventBaseDataplane $ \evb ->
   withConfigProvider defaultConfigOptions $ \cfgAPI -> do
     let
-      dbConfig = foldl' (flip ($))
+      dbConfig = foldl' (\acc f -> f acc)
         def
           { cfgRoot = ""
           , cfgRecipeConfig = ThriftSource.value Recipes.Config

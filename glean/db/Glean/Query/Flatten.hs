@@ -25,6 +25,7 @@ import Glean.Query.Codegen
 import Glean.Query.Expand
 import Glean.Query.Flatten.Types
 import Glean.Query.Typecheck.Types
+import Glean.Query.Evolve (Evolutions, evolveTcQuery, evolveType, evolutionsFor)
 import Glean.RTS.Types as RTS
 import Glean.RTS.Term as RTS hiding (Match(..))
 import Glean.Database.Schema.Types
@@ -34,27 +35,49 @@ import Glean.Schema.Util
 -- | Turn 'TypecheckedQuery' into 'FlattenedQuery', by lifting out
 -- nested generators into statements.
 flatten
-  :: DbSchema
+  :: Bool -- ^ enable evolves
+  -> DbSchema
   -> Schema.AngleVersion
   -> Bool -- ^ derive DerivedAndStored predicates
   -> TypecheckedQuery
-  -> Except Text FlattenedQuery
-flatten dbSchema _ver deriveStored QueryWithInfo{..} = do
-  let deriveStoredPred = case derefType qiReturnType of
-        Schema.Predicate (PidRef _ pref) | deriveStored -> Just pref
-        _ -> Nothing
-  (qi, FlattenState{..}) <-
-    flip runStateT (initialFlattenState dbSchema qiNumVars deriveStoredPred)$ do
-      q <- flattenQuery qiQuery
+  -> Except Text (FlattenedQuery, Evolutions)
+flatten enableEvolves dbSchema _ver deriveStored typechecked = do
+  let returnTy = derefType $ evolveType dbSchema $ qiReturnType typechecked
+      deriveStoredPred =
+        case returnTy of
+          Schema.Predicate (PidRef _ pref) | deriveStored -> Just pref
+          _ -> Nothing
+      state = initialFlattenState
+        dbSchema
+        (qiNumVars typechecked)
+        deriveStoredPred
+        enableEvolves
+  (qi, FlattenState{..}) <- flip runStateT state $ do
+      query <- evolve (qiQuery typechecked)
+      q <- flattenQuery query
         `catchError` \e -> throwError $ e <> " in\n" <>
-           Text.pack (show (pretty qiQuery))
-      (q', ty) <- captureKey dbSchema q (case qiQuery of TcQuery ty _ _ _ -> ty)
+           Text.pack (show (pretty query))
+      (q', ty) <- captureKey dbSchema q (case query of TcQuery ty _ _ _ -> ty)
       nextVar <- gets flNextVar
-      return (QueryWithInfo q' nextVar ty)
+      let evolutions = evolutionsFor dbSchema (qiReturnType typechecked)
+      return (QueryWithInfo q' nextVar ty, evolutions)
   return qi
 
+evolve :: TcQuery -> F TcQuery
+evolve query = do
+  dbSchema <- gets flDbSchema
+  enable <- gets flEnableEvolves
+  return $ if enable
+    then evolveTcQuery dbSchema query
+    else query
+
+evolveTypecheckedQuery :: TypecheckedQuery -> F TypecheckedQuery
+evolveTypecheckedQuery (QueryWithInfo q vars _) = do
+  q'@(TcQuery ty _ _ _) <- evolve q
+  return $ QueryWithInfo q' vars ty
+
 flattenQuery :: TcQuery -> F FlatQuery
-flattenQuery query  = do
+flattenQuery query = do
   (stmts', head', maybeVal) <- flattenQuery' query
   return (FlatQuery head' maybeVal (flattenStmtGroups stmts'))
 
@@ -195,7 +218,8 @@ flattenFactGen pidRef@(PidRef pid _) kpat vpat = do
                return (mempty, FactGenerator pidRef kpat vpat)
           | otherwise -> do
             calling predicateRef $ do
-              query' <- expandDerivedPredicateCall details kpat vpat query
+              qevolved <- evolveTypecheckedQuery query
+              query' <- expandDerivedPredicateCall details kpat vpat qevolved
               (stmts, key, maybeVal) <- flattenQuery' query'
               let val = fromMaybe (Tuple []) maybeVal
               return (stmts, DerivedFactGenerator pidRef key val)

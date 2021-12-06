@@ -501,13 +501,13 @@ userQueryImpl
                 envSchemaVersion env <|>
                 dbSchemaVersion
 
-            enableEvolves =
+            evolves =
               envSchemaEnableEvolves env || config_enable_schema_evolution
 
           (compileTime, _, (query@QueryWithInfo{..}, evolutions)) <- timeIt $
             compileAngleQuery
               schemaVersion
-              enableEvolves
+              evolves
               schema
               userQuery_query
               stored
@@ -682,12 +682,13 @@ userQueryImpl
       pred = predicateRef_name predicateRef <> "." <>
           showt (predicateRef_version predicateRef)
 
-      mkResults pids derived qResults@QueryResults{..} defineOwners = do
+      mkResults pids derived evolutions qResults defineOwners = do
+        let QueryResults{..} = unEvolveResults evolutions qResults
         userCont <- case queryResultsCont of
           Nothing -> return Nothing
           Just bs -> do
             nextId <- firstFreeId derived
-            return $ Just $ mkUserQueryCont mempty (Left pids) bs nextId
+            return $ Just $ mkUserQueryCont evolutions (Left pids) bs nextId
 
         stats <- getStats qResults
         when (isJust userCont) $
@@ -737,7 +738,9 @@ userQueryImpl
             limits = getLimits pids
         qResults <- restartCompiled schemaInventory defineOwners stack
           (Just predicatePid) limits (Thrift.userQueryCont_continuation ucont)
-        mkResults pids derived qResults defineOwners
+        let evolutions = toEvolutions schema $
+              Thrift.userQueryCont_evolutions ucont
+        mkResults pids derived evolutions qResults defineOwners
 
       Nothing -> do
         let
@@ -757,15 +760,18 @@ userQueryImpl
             nextId <- firstFreeId lookup
             let pids = getExpandPids query
                 limits = getLimits pids
-            gens <- case toGenerators schema stored details query of
-              Left err -> throwIO $ Thrift.BadQuery err
-              Right r -> return r
+                evolves =
+                  envSchemaEnableEvolves env || config_enable_schema_evolution
+            (gens, evolutions) <-
+              case toGenerators evolves schema stored details query of
+                Left err -> throwIO $ Thrift.BadQuery err
+                Right r -> return r
             derived <- FactSet.new nextId
             let stack = stacked lookup derived
             qResults <- bracket (compileQuery gens) (release . compiledQuerySub)
               $ \sub -> executeCompiled schemaInventory defineOwners stack
                 sub limits
-            mkResults pids derived qResults defineOwners
+            mkResults pids derived evolutions qResults defineOwners
 
         -- 1. Decode the JSON
         pat <- case Aeson.eitherDecode (LB.fromStrict userQuery_query) of
@@ -821,8 +827,8 @@ compileAngleQuery ver enableEvolves dbSchema source stored = do
     typecheck dbSchema latestAngleVersion (Qualified dbSchema ver) parsed
   vlog 2 $ "typechecked query: " <> show (pretty (qiQuery typechecked))
 
-  flattened <- checkBadQuery id $ runExcept $
-    flatten dbSchema latestAngleVersion stored typechecked
+  (flattened, _) <- checkBadQuery id $ runExcept $
+    flatten enableEvolves dbSchema latestAngleVersion stored typechecked
   vlog 2 $ "flattened query: " <> show (pretty (qiQuery flattened))
 
   let (evolved, evolutions) =
@@ -842,7 +848,6 @@ compileAngleQuery ver enableEvolves dbSchema source stored = do
   checkBadQuery txt act = case act of
     Left str -> throwIO $ Thrift.BadQuery $ txt str
     Right a -> return a
-
 
 -- | Put the nested facts in the right form for the conversion to
 -- (JSON, Compact, Bin).

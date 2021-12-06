@@ -22,6 +22,7 @@ import Glean.Query.Opt
 import Glean.Query.Reorder
 import Glean.Query.Nested.Types
 import Glean.Query.Nested
+import Glean.Query.Evolve
 import Glean.Query.Flatten
 import Glean.Query.Typecheck.Types
 import Glean.RTS.Types
@@ -40,18 +41,24 @@ fresh = do n <- get; put (n+1); return n
 
 -- | Convert a nested query into a TcQuery
 toGenerators
-  :: DbSchema
+  :: Bool -- ^ enable evolves
+  -> DbSchema
   -> Bool -- ^ True <=> derive DerivedAndStored predicates
   -> PredicateDetails
   -> Term (RTS.Match (Nested Fid))
-  -> Either Text CodegenQuery
-toGenerators dbSchema deriveStored details term =
+  -> Either Text (CodegenQuery, Evolutions)
+toGenerators enableEvolves dbSchema deriveStored details term =
   runExcept $ do
     (query, numVars) <- compileResult
     let typechecked = QueryWithInfo query numVars queryTy
-    flat <- flatten dbSchema Angle.latestAngleVersion deriveStored typechecked
+    (flat, evolutions) <- flatten
+      enableEvolves
+      dbSchema
+      Angle.latestAngleVersion
+      deriveStored
+      typechecked
     optimised <- optimise flat
-    reorder dbSchema optimised
+    (,evolutions) <$> reorder dbSchema optimised
   where
   pid = predicatePid details
   ref = predicateRef details
