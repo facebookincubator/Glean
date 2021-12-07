@@ -505,6 +505,7 @@ library db
         Glean.Database.Meta
         Glean.Database.Repo
         Glean.Database.Schema
+        Glean.Database.Schema.Evolve
         Glean.Database.Schema.Types
         Glean.Database.Stats
         Glean.Database.Storage
@@ -522,6 +523,7 @@ library db
         Glean.Write.JSON
         Glean.Query.BindOrder
         Glean.Query.Codegen
+        Glean.Query.Evolve
         Glean.Query.Expand
         Glean.Query.Flatten
         Glean.Query.Flatten.Types
@@ -541,6 +543,7 @@ library db
 
         Glean.Backend
         Glean.Dump
+        Glean.Logger
 
     build-depends:
         glean:bytecode,
