@@ -190,6 +190,33 @@ thrift::Batch FactSet::serialize() const {
   return batch;
 }
 
+///
+// Serialize facts in the order given by the input range. Preconditions:
+//
+// * The order must mention only fact IDs in this set.
+// * The facts in the set cannot refer to each other (because then we
+//   would need to substitute in addition to reordering)
+//
+// The ordering can omit facts or mention facts multiple times,
+// although I'm not sure why you would want to do that.
+//
+thrift::Batch
+FactSet::serializeReorder(folly::Range<const uint64_t *> order) const {
+  binary::Output output;
+  for (auto i : order) {
+    assert(i >= startingId().toWord() &&
+           i - startingId().toWord() < facts.size());
+    facts[i - startingId().toWord()]->serialize(output);
+  }
+
+  thrift::Batch batch;
+  batch.firstId_ref() = startingId().toThrift();
+  batch.count_ref() = size();
+  batch.facts_ref() = output.moveToFbString();
+
+  return batch;
+}
+
 namespace {
 
 std::pair<binary::Output, size_t> substituteFact(

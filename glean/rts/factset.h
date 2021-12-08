@@ -207,6 +207,8 @@ public:
 
   thrift::Batch serialize() const;
 
+  thrift::Batch serializeReorder(folly::Range<const uint64_t*> order) const;
+
   // Substitute all facts in the set and split it into a global and a local part
   // based on the substitution. Facts with Ids that are in the range of the
   // substitution go into the global part - they are moved from the set

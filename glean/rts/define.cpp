@@ -80,7 +80,7 @@ Substitution defineUntrustedBatch(
       subst.setAt(i, id);
 
       if (ids && ids[i]) {
-        idmap[ids[i]] = first + i;
+        idmap[ids[i]] = id;
       }
     } else {
       error("invalid predicate id {}", ty);

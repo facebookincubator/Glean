@@ -12,11 +12,13 @@ module Glean.RTS.Foreign.FactSet
   , factMemory
   , firstFreeId
   , serialize
+  , serializeReorder
   , append
   , rebase
   , renameFacts
   ) where
 
+import Control.Exception
 import Data.Int
 import Data.Vector.Storable as Vector
 import Foreign.C.String
@@ -57,15 +59,27 @@ factMemory facts = fromIntegral <$> with facts glean_factset_fact_memory
 firstFreeId :: FactSet -> IO Fid
 firstFreeId facts = with facts glean_factset_first_free_id
 
-serialize :: FactSet -> IO Thrift.Batch
-serialize facts =
-  with facts $ \facts_ptr -> do
-  (Fid first_id, count, facts_data, facts_size) <-
-    invoke $ glean_factset_serialize facts_ptr
+mkBatch :: IO (Fid, CSize, Ptr (), CSize) -> IO Thrift.Batch
+mkBatch fn = mask_ $ do
+  (Fid first_id, count, facts_data, facts_size) <- fn
   Thrift.Batch first_id (fromIntegral count)
     <$> unsafeMallocedByteString facts_data facts_size
     <*> pure Nothing
     <*> pure mempty
+
+serialize :: FactSet -> IO Thrift.Batch
+serialize facts =
+  with facts $ \facts_ptr -> do
+  mkBatch $ invoke $ glean_factset_serialize facts_ptr
+
+serializeReorder :: FactSet -> Vector Int64 -> IO Thrift.Batch
+serializeReorder facts order =
+  with facts $ \facts_ptr -> do
+  unsafeWith order $ \order_ptr -> do
+    mkBatch $ invoke $ glean_factset_serializeReorder
+      facts_ptr
+      order_ptr
+      (fromIntegral (Vector.length order))
 
 rebase :: Inventory -> Thrift.Subst -> LookupCache -> FactSet -> IO FactSet
 rebase inventory Thrift.Subst{..} cache facts =
@@ -122,6 +136,16 @@ foreign import ccall unsafe glean_factset_define
 
 foreign import ccall unsafe glean_factset_serialize
   :: Ptr FactSet
+  -> Ptr Fid
+  -> Ptr CSize
+  -> Ptr (Ptr ())
+  -> Ptr CSize
+  -> IO CString
+
+foreign import ccall unsafe glean_factset_serializeReorder
+  :: Ptr FactSet
+  -> Ptr Int64
+  -> CSize
   -> Ptr Fid
   -> Ptr CSize
   -> Ptr (Ptr ())

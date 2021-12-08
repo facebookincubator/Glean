@@ -576,7 +576,7 @@ userQueryImpl
       then do
         maybeOwnership <- readTVarIO (odbOwnership odb)
         forM maybeOwnership $ \ownership ->
-          newDefineOwnership ownership predicatePid
+          newDefineOwnership ownership predicatePid nextId
       else return Nothing
 
     ( qResults@QueryResults{..}
@@ -616,7 +616,7 @@ userQueryImpl
     -- return the handle.
     maybeWriteHandle <-
       if stored
-        then writeDerivedFacts env repo derived defineOwners
+        then writeDerivedFacts env repo nextId derived defineOwners
         else return Nothing
 
     userCont <- case queryResultsCont of
@@ -682,7 +682,7 @@ userQueryImpl
       pred = predicateRef_name predicateRef <> "." <>
           showt (predicateRef_version predicateRef)
 
-      mkResults pids derived evolutions qResults defineOwners = do
+      mkResults pids firstId derived evolutions qResults defineOwners = do
         let QueryResults{..} = unEvolveResults evolutions qResults
         userCont <- case queryResultsCont of
           Nothing -> return Nothing
@@ -698,7 +698,7 @@ userQueryImpl
         -- return the handle.
         maybeWriteHandle <-
           if stored
-            then writeDerivedFacts env repo derived defineOwners
+            then writeDerivedFacts env repo firstId derived defineOwners
             else return Nothing
         return Results
           { resFacts = Vector.toList queryResultsFacts
@@ -720,12 +720,13 @@ userQueryImpl
           | Thrift.userQueryOptions_recursive opts = limits0
           | otherwise = limits0 { queryDepth = ExpandPartial pids }
 
-    defineOwners <- if stored
-      then do
-        maybeOwnership <- readTVarIO (odbOwnership odb)
-        forM maybeOwnership $ \ownership ->
-          newDefineOwnership ownership predicatePid
-      else return Nothing
+    let
+      mkDefineOwners nextId = if stored
+        then do
+          maybeOwnership <- readTVarIO (odbOwnership odb)
+          forM maybeOwnership $ \ownership ->
+            newDefineOwnership ownership predicatePid nextId
+        else return Nothing
 
     results <- case Thrift.userQueryOptions_continuation opts of
       Just ucont@Thrift.UserQueryCont{..} -> do
@@ -733,6 +734,7 @@ userQueryImpl
           then return (Fid userQueryCont_nextId)
           else firstFreeId lookup
         derived <- FactSet.new nextId
+        defineOwners <- mkDefineOwners nextId
         let stack = stacked lookup derived
             pids = Set.fromList $ Pid <$> userQueryCont_pids
             limits = getLimits pids
@@ -740,7 +742,7 @@ userQueryImpl
           (Just predicatePid) limits (Thrift.userQueryCont_continuation ucont)
         let evolutions = toEvolutions schema $
               Thrift.userQueryCont_evolutions ucont
-        mkResults pids derived evolutions qResults defineOwners
+        mkResults pids nextId derived evolutions qResults defineOwners
 
       Nothing -> do
         let
@@ -767,11 +769,12 @@ userQueryImpl
                 Left err -> throwIO $ Thrift.BadQuery err
                 Right r -> return r
             derived <- FactSet.new nextId
+            defineOwners <- mkDefineOwners nextId
             let stack = stacked lookup derived
             qResults <- bracket (compileQuery gens) (release . compiledQuerySub)
               $ \sub -> executeCompiled schemaInventory defineOwners stack
                 sub limits
-            mkResults pids derived evolutions qResults defineOwners
+            mkResults pids nextId derived evolutions qResults defineOwners
 
         -- 1. Decode the JSON
         pat <- case Aeson.eitherDecode (LB.fromStrict userQuery_query) of
@@ -878,11 +881,18 @@ mkQueryRuntimeOptions Thrift.UserQueryOptions{..} ServerConfig.Config{..} =
 writeDerivedFacts
   :: Env
   -> Thrift.Repo
+  -> Fid
   -> FactSet
   -> Maybe DefineOwnership
   -> IO (Maybe Thrift.Handle)
-writeDerivedFacts env repo derived owned = do
-  batch <- FactSet.serialize derived
+writeDerivedFacts env repo firstId derived owned = do
+  batch <- case owned of
+    Nothing -> FactSet.serialize derived
+    Just define -> do
+      nextId <- firstFreeId derived
+      order <- defineOwnershipSortByOwner define
+        (fromIntegral (fromFid nextId - fromFid firstId))
+      FactSet.serializeReorder derived order
   if Thrift.batch_count batch == 0
     then return Nothing
     else do

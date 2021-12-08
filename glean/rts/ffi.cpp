@@ -481,6 +481,23 @@ const char *glean_factset_serialize(
   });
 }
 
+const char *glean_factset_serializeReorder(
+  FactSet *facts,
+  uint64_t *order,
+  size_t order_size,
+  int64_t *first_id,
+  size_t *count,
+  void **facts_data,
+  size_t *facts_size) {
+  return ffi::wrap([=] {
+    auto batch = facts->serializeReorder(
+        folly::Range<const uint64_t*>(order,order_size));
+    *first_id = batch.get_firstId();
+    *count = batch.get_count();
+    ffi::clone_bytes(batch.get_facts()).release_to(facts_data, facts_size);
+  });
+}
+
 const char* glean_factset_rebase(
     FactSet* facts,
     const Inventory* inventory,
@@ -915,10 +932,12 @@ void glean_sliced_free(Sliced *sliced) {
 const char *glean_new_define_ownership(
   Ownership *own,
   int64_t pid,
+  int64_t first_id,
   DefineOwnership **result
 ) {
   return ffi::wrap([=] {
-    *result = new DefineOwnership(own,Pid::fromWord(pid));
+    *result = new DefineOwnership(own,Pid::fromWord(pid),
+                                  Id::fromWord(first_id));
   });
 }
 
@@ -927,6 +946,15 @@ const char *glean_define_ownership_subst(
   const Substitution *subst) {
   return ffi::wrap([=] {
     define->subst(*subst);
+  });
+}
+
+const char *glean_define_ownership_sort_by_owner(
+  DefineOwnership *define,
+  uint64_t facts,
+  HsArray<int64_t> *result) {
+  return ffi::wrap([=] {
+    *result = define->sortByOwner(facts);
   });
 }
 

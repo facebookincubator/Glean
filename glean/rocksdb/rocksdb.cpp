@@ -1300,7 +1300,8 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
   auto t = makeAutoTimer("addDefineOwnership");
   container_.requireOpen();
 
-  VLOG(1) << "addDefineOwnership: " << def.owners_.size() << " facts, " <<
+  VLOG(1) << "addDefineOwnership: " <<
+    def.owners_.size() + def.new_owners_.size() << " owners, " <<
     def.usets_.size() << " sets";
 
   if (def.newSets_.size() > 0) {
@@ -1369,9 +1370,17 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
       def.ids_.size() *
       sizeof(std::remove_reference<decltype(def.ids_)>::type::value_type));
   val.bytes(
+      def.new_ids_.data(),
+      def.new_ids_.size() *
+      sizeof(std::remove_reference<decltype(def.new_ids_)>::type::value_type));
+  val.bytes(
       def.owners_.data(),
       def.owners_.size() *
       sizeof(std::remove_reference<decltype(def.owners_)>::type::value_type));
+  val.bytes(
+      def.new_owners_.data(),
+      def.new_owners_.size() *
+      sizeof(std::remove_reference<decltype(def.new_owners_)>::type::value_type));
 
   check(batch.Put(
             container_.family(Family::ownershipDerivedRaw),
@@ -1380,7 +1389,8 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
 
   check(container_.db->Write(container_.writeOptions, &batch));
 
-  VLOG(1) << "addDefineOwnership wrote " << def.ids_.size() <<
+  VLOG(1) << "addDefineOwnership wrote " <<
+    def.ids_.size() + def.new_ids_.size() <<
     " entries for pid " << def.pid_.toWord();
 }
 

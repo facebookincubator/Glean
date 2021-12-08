@@ -13,11 +13,11 @@
 #include <stdlib.h>
 
 #ifdef __cplusplus
-extern "C" {
+#ifdef OSS
+#include <cpp/HsStruct.h>
+#else
+#include <common/hs/util/cpp/HsStruct.h>
 #endif
-
-#ifdef __cplusplus
-}
 #endif
 
 #ifdef __cplusplus
@@ -93,6 +93,12 @@ typedef struct FactCount {
   uint64_t pid;
   uint64_t count;
 } FactCount;
+
+#ifdef __cplusplus
+using FactOrder = HsArray<int64_t>;
+#else
+typedef void FactOrder;
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -310,6 +316,16 @@ Define *glean_factset_define(FactSet *define);
 
 const char *glean_factset_serialize(
   FactSet *facts,
+  int64_t *first_id,
+  size_t *count,
+  void **facts_data,
+  size_t *facts_size
+);
+
+const char *glean_factset_serializeReorder(
+  FactSet *facts,
+  uint64_t *order,
+  size_t order_size,
   int64_t *first_id,
   size_t *count,
   void **facts_data,
@@ -542,12 +558,19 @@ void glean_sliced_free(Sliced *sliced);
 const char *glean_new_define_ownership(
   Ownership *own,
   int64_t pid,
+  int64_t first_id,
   DefineOwnership **result
 );
 
 const char *glean_define_ownership_subst(
   DefineOwnership *define,
   const Substitution *subst
+);
+
+const char *glean_define_ownership_sort_by_owner(
+  DefineOwnership *define,
+  uint64_t facts,
+  FactOrder *result
 );
 
 void glean_define_ownershiop_free(DefineOwnership *def);

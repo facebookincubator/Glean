@@ -6,6 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+#include <numeric>
 #include <folly/container/F14Map.h>
 
 #include "glean/rts/ownership/derived.h"
@@ -46,12 +47,95 @@ void DefineOwnership::derivedFrom(Id id, const std::set<UsetId>& deps) {
       VLOG(2) << "existing set in DB: " << usetid;
     }
   }
-  ids_.push_back(id);
-  owners_.push_back(usetid);
+
+  if (id >= first_id_) {
+    new_ids_.push_back(id);
+    new_owners_.push_back(usetid);
+  } else {
+    ids_.push_back(id);
+    owners_.push_back(usetid);
+  }
+}
+
+std::vector<int64_t> DefineOwnership::sortByOwner(uint64_t facts) {
+  // We have a set of facts in the batch with Ids [first_id, first_id+1, ..]
+  // We want to group these facts by owner, so that facts with the same
+  // owner are adjacent.
+  //
+  // We're going to rearrange the facts and give them new IDs.
+  //
+  // 0. we start with
+  //       ids =    [ 0, 1, 2, 3, 0 ]
+  //       owners = [ C, B, A, B, A ]
+  //  Note that we may have recorded multiple owners for some facts.
+  //
+  // 1. make a vector of owners, indexed by fact ID:
+  //          [ X, B, A, B ]
+  // for a fact that has multiple owners, we'll make up a temporary
+  // new set Id. These are only for sorting purposes, they're not real
+  // set Ids - the real ones are created later in
+  // computeDerivedOwnership().
+  //
+  // e.g. we need a new set ID (let's use X) to represent the owner of
+  // fact 0, because it has multiple owners assigned (C and A).
+
+  std::vector<UsetId> owners(facts, INVALID_USET);
+
+  auto tmpset = usets_.getNextId();
+  for (size_t i = 0; i < new_ids_.size(); i++) {
+    auto ix = new_ids_[i] - first_id_;
+    if (owners[ix] == INVALID_USET) {
+      owners[ix] = new_owners_[i];
+    } else {
+      // this fact has multiple owners, use a new temporary UsetId.
+      owners[ix] = tmpset++;
+    }
+  }
+
+  // 2. make a vector order = [0..facts-1]
+  // this will become the ordering that we return after we sort it.
+
+  std::vector<int64_t> order(facts);
+  std::iota(order.begin(), order.end(), first_id_.toWord());
+
+  // 2. sort order by owner = [ 2, 1, 3, 0 ]
+  //
+  // This is the order in which we will serialize the facts, which
+  // essentially renumbers them. Hence the facts will be renumbered
+  //    2 -> 0
+  //    1 -> 1
+  //    3 -> 2
+  //    0 -> 3
+
+  sort(order.begin(), order.end(), [&](uint64_t a, uint64_t b) {
+    return owners[a - first_id_.toWord()] < owners[b - first_id_.toWord()];
+  });
+
+  // 3. produce a mapping from old fact Ids to new fact Ids
+
+  std::vector<Id> idmap(facts);
+  for (size_t i = 0; i < facts; i++) {
+    idmap[order[i] - first_id_.toWord()] = Id::fromWord(i + first_id_.toWord());
+  }
+
+  // 4. substitute fact IDs in new_ids
+
+  for (size_t i = 0; i < new_ids_.size(); i++) {
+    new_ids_[i] = idmap[new_ids_[i] - first_id_];
+  }
+
+  return order;
+
+  // At this point we must serialize the batch using
+  // serializeReorder(order) so that the facts agree with the IDs used
+  // in this DefineOwnership.
 }
 
 void DefineOwnership::subst(const Substitution& subst) {
   for (auto& id : ids_) {
+    id = subst.subst(id);
+  }
+  for (auto& id : new_ids_) {
     id = subst.subst(id);
   }
 }
@@ -60,7 +144,7 @@ std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
   Ownership& ownership,
   DerivedFactOwnershipIterator *iter) {
   auto t = makeAutoTimer("computeDerivedOwnership");
-  LOG(INFO) << "computing derived ownership";
+  VLOG(1) << "computing derived ownership";
 
   // Here we are identifying facts that were derived multiple
   // different ways.  e.g. if a fact was derived twice with owners A
@@ -75,7 +159,7 @@ std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
       auto id = owners->ids[i].toWord();
       auto owner = owners->owners[i];
       const auto [it, inserted] = factOwners.insert({id, owner});
-      if (inserted) {
+      if (!inserted) {
         const auto [it2, _] = factOwnerSets.insert({id, {it->second}});
         it2->second.insert(owner);
       }
@@ -118,6 +202,9 @@ std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
       current = usetid;
     }
   }
+
+  VLOG(1) << "computing derived ownership: " <<
+    intervals.size() << " intervals";
 
   // Now build a ComputedOwnership that we can return
   return std::make_unique<ComputedOwnership>(

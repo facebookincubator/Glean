@@ -20,14 +20,18 @@ module Glean.RTS.Foreign.Ownership
   , newDefineOwnership
   , DefineOwnership
   , substDefineOwnership
+  , defineOwnershipSortByOwner
   , DerivedFactOwnershipIterator
   , computeDerivedOwnership
   ) where
 
 import Control.Exception
 import Data.Coerce
+import qualified Data.Vector.Storable as VS
 import Foreign hiding (with)
 import Foreign.C
+
+import Foreign.CPP.HsStruct
 
 import Glean.FFI
 import Glean.RTS.Foreign.Inventory (Inventory)
@@ -114,11 +118,13 @@ instance Object DefineOwnership where
   unwrap (DefineOwnership p) = p
   destroy = glean_define_ownership_free
 
-newDefineOwnership :: Ownership -> Pid -> IO DefineOwnership
-newDefineOwnership ownership (Pid pid) =
+newDefineOwnership :: Ownership -> Pid -> Fid -> IO DefineOwnership
+newDefineOwnership ownership (Pid pid) (Fid first_id) =
   with ownership $ \ownership_ptr ->
     construct $ invoke $
-      glean_new_define_ownership ownership_ptr (fromIntegral pid)
+      glean_new_define_ownership ownership_ptr
+        (fromIntegral pid)
+        (fromIntegral first_id)
 
 substDefineOwnership :: DefineOwnership -> Subst -> IO ()
 substDefineOwnership define subst =
@@ -141,8 +147,20 @@ computeDerivedOwnership ownership iter =
   with ownership $ \ownership_ptr ->
     construct $ invoke $ glean_derived_ownership_compute ownership_ptr iter
 
+defineOwnershipSortByOwner
+  :: DefineOwnership
+  -> Int
+  -> IO (VS.Vector Int64)
+defineOwnershipSortByOwner define count =
+  with define $ \define_ptr -> do
+  withDefaultCxxObject $ \arr_ptr -> do
+    invoke $ glean_define_ownership_sort_by_owner define_ptr
+      (fromIntegral count) arr_ptr
+    hsArrayStorable <$> peek (castPtr arr_ptr)
+
 foreign import ccall unsafe glean_new_define_ownership
   :: Ptr Ownership
+  -> Word64
   -> Word64
   -> Ptr (Ptr DefineOwnership)
   -> IO CString
@@ -153,6 +171,12 @@ foreign import ccall unsafe "&glean_define_ownership_free"
 foreign import ccall unsafe glean_define_ownership_subst
   :: Ptr DefineOwnership
   -> Ptr Subst
+  -> IO CString
+
+foreign import ccall unsafe glean_define_ownership_sort_by_owner
+  :: Ptr DefineOwnership
+  -> Word64
+  -> Ptr (HsArray Int64)
   -> IO CString
 
 foreign import ccall unsafe glean_ownership_unit_iterator_free
