@@ -624,7 +624,7 @@ backCompatible types evolvedBy new old = go new old
         compareField (name, new, old) = addLocation <$> go new old
           where
             addLocation err =
-              "in " <> plural optName [] <> " '" <> name <> "', " <> err
+              "in " <> showOpt optName <> " '" <> name <> "', " <> err
 
 
     plural s [_] = showOpt s
