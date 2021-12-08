@@ -212,8 +212,12 @@ resolveEvolves resolved = do
     resolvedByRef :: Map SchemaRef ResolvedSchema
     resolvedByRef = Map.fromList [(schemaRef s, s) | s <- resolved ]
 
+
+    -- Later definitions override earlier ones in case of db overrides
+    types = HashMap.unions $ reverse $ map resolvedSchemaTypes resolved
+
     checkLawfulEvolves =
-      foldM_ evolveOneSchema mempty
+      foldM_ (evolveOneSchema types) mempty
         [ (new, old)
         | new <- resolved
         , oldRef <- Set.toList $ resolvedSchemaEvolves new
@@ -223,11 +227,12 @@ resolveEvolves resolved = do
 -- Check for back compatibility and map each predicate to their evolved
 -- counterpart in the the evolvedBy map
 evolveOneSchema
-  :: HashMap PredicateRef PredicateRef -- ^ all predicate evolutions till now.
+  :: HashMap TypeRef TypeDef           -- ^ all type definitions
+  -> HashMap PredicateRef PredicateRef -- ^ all predicate evolutions till now.
                                        -- value evolves key
   -> (ResolvedSchema, ResolvedSchema)
   -> Either Text (HashMap PredicateRef PredicateRef)
-evolveOneSchema evolvedBy (new, old) = do
+evolveOneSchema types evolvedBy (new, old) = do
   checkBackCompatibility
   return evolvedBy'
   where
@@ -257,10 +262,7 @@ evolveOneSchema evolvedBy (new, old) = do
           "cannot evolve predicate " <> predicateRef_name ref <> ": " <> err
 
     canEvolve :: Type -> Type -> Maybe Text
-    canEvolve = backCompatible
-      evolvedBy'
-      (resolvedSchemaTypes new)
-      (resolvedSchemaTypes old)
+    canEvolve = backCompatible types evolvedBy'
 
     -- add evolves from current schema
     evolvedBy' :: HashMap PredicateRef PredicateRef
@@ -558,16 +560,22 @@ data Opt = Option | Field
 --      evolved-by
 --
 backCompatible
-  :: HashMap PredicateRef PredicateRef -- ^ current evolutions map
-  -> HashMap TypeRef TypeDef -- ^ new type definitions
-  -> HashMap TypeRef TypeDef -- ^ old type definitions
+  :: HashMap TypeRef TypeDef -- ^ type definitions
+  -> HashMap PredicateRef PredicateRef -- ^ current evolutions map
   -> Type                    -- ^ updated type
   -> Type                    -- ^ old type
   -> Maybe Text              -- ^ compatibility error
-backCompatible evolvedBy newTypes oldTypes new old = go new old
+backCompatible types evolvedBy new old = go new old
   where
-    go (NamedType t) old = go (typeDefType $ newTypes HashMap.! t) old
-    go new (NamedType t) = go new (typeDefType $ oldTypes HashMap.! t)
+    get ty = case HashMap.lookup ty types of
+      Just v -> typeDefType v
+      Nothing -> error $ "unknown type " <> show ty
+
+    go (NamedType new) (NamedType old)
+      | new == old = Nothing
+      | otherwise = go (get new) (get old)
+    go (NamedType t) old = go (get t) old
+    go new (NamedType t) = go new (get t)
     go (Maybe new) (Maybe old) = go new old
     go Byte Byte = Nothing
     go Nat Nat = Nothing

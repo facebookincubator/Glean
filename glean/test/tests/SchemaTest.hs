@@ -927,6 +927,32 @@ schemaEvolves = TestList
         case r of
           Right _ -> True
           Left _ -> False
+
+  , TestLabel "handles type imports" $ TestCase $ do
+    withSchema latestAngleVersion
+      [s|
+        schema base.1 {
+          predicate P : nat
+          type T = { a : P }
+        }
+
+        schema x.2  {
+          import base.1
+          predicate Q : { x: base.T }
+        }
+
+        schema x.3 : x.2 {
+          import base.1
+          predicate Q : { x: base.T, y: base.T }
+        }
+
+        schema x.3 evolves x.2
+      |]
+      $ \r ->
+      assertBool "succeeds creating schema" $
+        case r of
+          Right _ -> True
+          Left _ -> False
   ]
 
 schemaEvolvesTransformations :: Test
