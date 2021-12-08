@@ -32,9 +32,10 @@ mkPredicateEvolution
   :: (Pid -> PredicateDetails)
   -> Pid
   -> Pid
-  -> PredicateEvolution
-mkPredicateEvolution detailsFor oldPid newPid =
-  PredicateEvolution
+  -> Maybe PredicateEvolution
+mkPredicateEvolution detailsFor oldPid newPid
+  | oldPid == newPid = Nothing
+  | otherwise = Just PredicateEvolution
     { evolutionOld = old
     , evolutionNew = new
     , evolutionEvolveKey = evolve

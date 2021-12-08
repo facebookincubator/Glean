@@ -380,8 +380,9 @@ mkEvolutions
 mkEvolutions DbWritable _ _ _ _ = mempty
 mkEvolutions (DbReadOnly stats) override byId byRef resolved =
   IntMap.fromList
-    [ (fromIntegral (fromPid old), mkEvolution old new)
+    [ (fromIntegral (fromPid old), evolution)
     | (old, new) <- Map.toList $ evolvedPredicates stats override byRef resolved
+    , Just evolution <- [mkEvolution old new]
     ]
   where
     mkEvolution old new =
@@ -400,39 +401,49 @@ evolvedPredicates
   -> [ResolvedSchema]
   -> Map Pid Pid        -- ^ value evolves key
 evolvedPredicates stats override byRef resolved =
-  foldMap evolve (HashMap.keys evolvedBy)
+  foldMap (uncurry mapPredicates) $ HashMap.toList finalEvolves
   where
-    evolvedBy :: HashMap SchemaRef SchemaRef
-    evolvedBy = either (error . show) id (resolveEvolves resolved)
+    -- as specified by a `schema x evolves y` line
+    directEvolves :: HashMap SchemaRef SchemaRef
+    directEvolves = either (error . show) id (resolveEvolves resolved)
 
-    -- map each predicate in a schema to a predicate in the schema that
-    -- will evolve it.
-    evolve :: SchemaRef -> Map Pid Pid
-    evolve old
-      | hasFactsInDb old = mempty
-      | otherwise = fromMaybe mempty $ do
+    finalEvolves :: HashMap SchemaRef SchemaRef
+    finalEvolves = HashMap.fromList
+      [ (old,  new)
+      | old <- HashMap.keys directEvolves
+      , Just new <- [evolutionForSchema old]
+      ]
+
+    -- map each predicate in a schema to the final schema that will evolve it
+    evolutionForSchema :: SchemaRef -> Maybe SchemaRef
+    evolutionForSchema old
+      | hasFactsInDb old = Nothing
+      | otherwise = do
         let trans = transitiveEvolves old
             lastEvolution = listToMaybe $ reverse trans
         -- Pick first parent schema with facts in the db
         -- or, if none has facts, the last available evolution.
         -- The last evolution is used in the case of schemas
         -- that only have derived predicates.
-        new <- find hasFactsInDb trans <|> lastEvolution
-        return $ mapPredicates old new
+        find hasFactsInDb trans <|> lastEvolution
 
     -- given an 'a' returns [b,c...] such that 'b evolves a', 'c evolves b', ...
     transitiveEvolves s =
-      case HashMap.lookup s evolvedBy of
+      case HashMap.lookup s directEvolves of
         Just s' -> s' : transitiveEvolves s'
         Nothing -> []
 
     hasFactsInDb :: SchemaRef -> Bool
-    hasFactsInDb schema = fromMaybe False $ do
+    hasFactsInDb sref = fromMaybe False $ do
+      schema <- find ((sref ==) . schemaRef) resolved
       let factCount pid = maybe 0 predicateStats_count
             (HashMap.lookup pid stats)
           hasFacts pid = factCount pid > 0
-          pids = [ pid | PidRef pid _ <- Map.elems (byName schema) ]
-      return $ any hasFacts pids
+          definedPreds = map predicatePid
+            $ mapMaybe (`HashMap.lookup` byRef)
+            $ HashMap.keys
+            $ resolvedSchemaPredicates schema
+      return $ any hasFacts definedPreds
 
     pid (PidRef x _) = x
 
@@ -442,26 +453,28 @@ evolvedPredicates stats override byRef resolved =
       -> Map Pid Pid
     mapPredicates oldRef newRef = Map.fromList
       [ (pid old, pid new)
-      | (name, old) <- Map.toList (byName oldRef)
-      , Just new <- return $ Map.lookup name (byName newRef)
+      | (name, old) <- Map.toList (exports oldRef)
+      , Just new <- return $ Map.lookup name (exports newRef)
       ]
 
-    byName :: SchemaRef -> Map Name PidRef
-    byName sref = HashMap.lookupDefault mempty sref byNameMap
+    exports :: SchemaRef -> Map Name PidRef
+    exports sref = HashMap.lookupDefault mempty sref exportsBySchemaRef
 
-    byNameMap :: HashMap SchemaRef (Map Name PidRef)
-    byNameMap = HashMap.fromListWith choose
-      [ (schemaRef schema, toNameToPidRef schema )
+    exportsBySchemaRef :: HashMap SchemaRef (Map Name PidRef)
+    exportsBySchemaRef = HashMap.fromListWith choose
+      [ (schemaRef schema, exportsResolved schema )
       | schema <- resolved ]
       where
         choose new old = case override of
           TakeOld -> old
           _ -> new
 
-    toNameToPidRef :: ResolvedSchema -> Map Name PidRef
-    toNameToPidRef schema = Map.fromList
+    exportsResolved :: ResolvedSchema -> Map Name PidRef
+    exportsResolved schema = Map.fromList
       [ (predicateRef_name ref, PidRef (predicatePid details) ref)
-      | ref <- HashMap.keys $ resolvedSchemaPredicates schema
+      | ref <- HashMap.keys $
+          resolvedSchemaPredicates schema
+          <> resolvedSchemaReExportedPredicates schema
       , Just details <- return $ HashMap.lookup ref byRef
       ]
 

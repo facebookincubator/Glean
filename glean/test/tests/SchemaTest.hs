@@ -953,6 +953,30 @@ schemaEvolves = TestList
         case r of
           Right _ -> True
           Left _ -> False
+
+  , TestLabel "re-exported predicates" $ TestCase $ do
+    withSchema latestAngleVersion
+      [s|
+        schema x.1 {
+          predicate P : { x : nat }
+          predicate Q : { x : P }
+        }
+
+        schema x.2 : x.1  {
+        }
+        schema x.2 evolves x.1
+
+        schema x.3 {
+          predicate P : { x: nat, y: nat }
+          predicate Q : { x: P }
+        }
+        schema x.3 evolves x.2
+      |]
+      $ \r ->
+      assertBool "succeeds creating schema" $
+        case r of
+          Right _ -> True
+          Left _ -> False
   ]
 
 schemaEvolvesTransformations :: Test

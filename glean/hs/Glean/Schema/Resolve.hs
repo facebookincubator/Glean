@@ -264,21 +264,23 @@ evolveOneSchema types evolvedBy (new, old) = do
     canEvolve :: Type -> Type -> Maybe Text
     canEvolve = backCompatible types evolvedBy'
 
-    -- add evolves from current schema
+    -- add evolutions from current schema
     evolvedBy' :: HashMap PredicateRef PredicateRef
     evolvedBy' = foldr addEvolution evolvedBy oldPreds
       where
-        oldPreds = HashMap.keys (resolvedSchemaPredicates old)
+        oldPreds = HashMap.keys (exportedPredicates old)
         addEvolution oldPred acc =
           case HashMap.lookup (predicateRef_name oldPred) newPredsByName of
             Nothing -> acc
             Just newPred -> HashMap.insert oldPred (predicateDefRef newPred) acc
 
-    -- Check that evolved prediates are backward compatible
     newPredsByName :: HashMap Name PredicateDef
-    newPredsByName = mapKeys predicateRef_name (resolvedSchemaPredicates new)
+    newPredsByName = mapKeys predicateRef_name (exportedPredicates new)
 
     mapKeys f = HashMap.fromList . map (first f) . HashMap.toList
+
+    exportedPredicates ResolvedSchema{..} =
+      resolvedSchemaPredicates <> resolvedSchemaReExportedPredicates
 
 schemaRef :: ResolvedSchema -> SchemaRef
 schemaRef ResolvedSchema{..} =
@@ -598,7 +600,9 @@ backCompatible types evolvedBy new old = go new old
     go _ _ = Just "type changed"
 
     -- get most evolved version of a predicate
-    evolved p = maybe p evolved $ HashMap.lookup p evolvedBy
+    evolved p = case HashMap.lookup p evolvedBy of
+      Nothing -> p
+      Just p' -> if p' == p then p else evolved p'
 
     compareFieldList match optName new old =
       case match of
