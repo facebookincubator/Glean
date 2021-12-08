@@ -425,4 +425,11 @@ predicate DeclarationDefinition:
   python.Definition Def;
   python.DefinitionDeclaration { Def, Decl };
 
+# Quickly find definitions defined at the module level
+# The dead code automation operates at this level
+predicate IsTopLevelDefinition: Definition
+  D where
+    python.DefinitionDeclaration {D, Decl};
+    python.IsTopLevelDeclaration Decl;
+
 } # python.3
