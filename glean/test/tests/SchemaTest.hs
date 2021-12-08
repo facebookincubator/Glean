@@ -996,8 +996,8 @@ schemaEvolvesTransformations = TestList
           [ [s|{ "key": { "a": 2, "b": "val" } }|] ]
       ]
       [s| x.P.1 _ |]
-      $ \byRef results -> do
-        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef results
+      $ \byRef response -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
         assertEqual "result count" 1 (length facts)
 
   , TestLabel "change field order" $ TestCase $ do
@@ -1017,8 +1017,8 @@ schemaEvolvesTransformations = TestList
           ]
       ]
       [s| x.P.1 _ |]
-      $ \byRef results -> do
-        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef results
+      $ \byRef response -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
         assertEqual "result count" 2 (length facts)
 
   , TestLabel "change alternative order" $ TestCase $ do
@@ -1038,8 +1038,8 @@ schemaEvolvesTransformations = TestList
           ]
       ]
       [s| x.P.1 _ |]
-      $ \byRef results -> do
-        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef results
+      $ \byRef response -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
         assertEqual "result count" 2 (length facts)
 
   , TestLabel "transform nested facts" $ TestCase $ do
@@ -1065,10 +1065,10 @@ schemaEvolvesTransformations = TestList
           ]
       ]
       [s| x.P.1 _ |]
-      $ \byRef results -> do
-        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef results
+      $ \byRef response -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
         assertEqual "result count" 2 (length facts)
-        nested <- decodeNestedAs (PredicateRef "x.Q" 1) byRef results
+        nested <- decodeNestedAs (PredicateRef "x.Q" 1) byRef response
         assertEqual "nested count" 2 (length nested)
 
   , TestLabel "change within type" $ TestCase $ do
@@ -1093,8 +1093,8 @@ schemaEvolvesTransformations = TestList
           ]
       ]
       [s| x.P.1 _ |]
-      $ \byRef results -> do
-        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef results
+      $ \byRef response -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
         assertEqual "result count" 3 (length facts)
 
   , TestLabel "no mapping when schema has facts" $ TestCase $ do
@@ -1117,8 +1117,8 @@ schemaEvolvesTransformations = TestList
           ]
       ]
       [s| x.P.1 _ |]
-      $ \byRef results -> do
-        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef results
+      $ \byRef response -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
         assertEqual "result count" 1 (length facts)
 
   , TestLabel "non-evolved derived predicate with imports" $ TestCase $ do
@@ -1142,10 +1142,10 @@ schemaEvolvesTransformations = TestList
           ]
       ]
       [s| y.Q.1 _ |]
-      $ \byRef results -> do
-        facts <- decodeResultsAs (PredicateRef "y.Q" 1) byRef results
+      $ \byRef response -> do
+        facts <- decodeResultsAs (PredicateRef "y.Q" 1) byRef response
         assertEqual "result count" 1 (length facts)
-        nested <- decodeNestedAs (PredicateRef "x.P" 1) byRef results
+        nested <- decodeNestedAs (PredicateRef "x.P" 1) byRef response
         assertEqual "nested count" 1 (length nested)
 
   , TestLabel "non-evolved derived predicate with inheritance" $ TestCase $ do
@@ -1169,10 +1169,10 @@ schemaEvolvesTransformations = TestList
           ]
       ]
       [s| y.Q.1 _ |]
-      $ \byRef results -> do
-        facts <- decodeResultsAs (PredicateRef "y.Q" 1) byRef results
+      $ \byRef response -> do
+        facts <- decodeResultsAs (PredicateRef "y.Q" 1) byRef response
         assertEqual "result count" 1 (length facts)
-        nested <- decodeNestedAs (PredicateRef "x.P" 1) byRef results
+        nested <- decodeNestedAs (PredicateRef "x.P" 1) byRef response
         assertEqual "nested count" 1 (length nested)
 
   , TestLabel "query matching order" $ TestCase $ do
@@ -1205,8 +1205,8 @@ schemaEvolvesTransformations = TestList
       -- even though x.P.2 first field is base.S, X should be
       -- bound to the first field of x.P.1 which is base.N.
       [s| X where { X, _ } = x.P.1 _ |]
-      $ \byRef results -> do
-        facts <- decodeResultsAs (PredicateRef "base.N" 1) byRef results
+      $ \byRef response -> do
+        facts <- decodeResultsAs (PredicateRef "base.N" 1) byRef response
         assertEqual "result count" 1 (length facts)
 
   , TestLabel "query variable" $ TestCase $ do
@@ -1235,10 +1235,10 @@ schemaEvolvesTransformations = TestList
             X = x.P.1 _;
             Y = x.Q.1 { X, _ };
       |]
-      $ \byRef results -> do
-        facts <- decodeResultsAs (PredicateRef "x.Q" 1) byRef results
+      $ \byRef response -> do
+        facts <- decodeResultsAs (PredicateRef "x.Q" 1) byRef response
         assertEqual "result count" 2 (length facts)
-        nested <- decodeNestedAs (PredicateRef "x.P" 1) byRef results
+        nested <- decodeNestedAs (PredicateRef "x.P" 1) byRef response
         assertEqual "nested count" 2 (length nested)
 
   , TestLabel "can disable evolves" $ TestCase $ do
@@ -1258,8 +1258,8 @@ schemaEvolvesTransformations = TestList
           ]
       ]
       [s| x.P.1 _ |]
-      $ \byRef results -> do
-        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef results
+      $ \byRef response -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
         assertEqual "result count" 0 (length facts)
 
   , TestLabel "derived pred fields" $ TestCase $ do
@@ -1283,8 +1283,8 @@ schemaEvolvesTransformations = TestList
           ]
       ]
       [s| x.R.1 _ |]
-      $ \byRef results -> do
-        facts <- decodeResultsAs (PredicateRef "x.R" 1) byRef results
+      $ \byRef response -> do
+        facts <- decodeResultsAs (PredicateRef "x.R" 1) byRef response
         assertEqual "result count" 2 (length facts)
 
   , TestLabel "predicate derivation" $ TestCase $ do
@@ -1311,8 +1311,8 @@ schemaEvolvesTransformations = TestList
           ]
       ]
       [s| x.R.1 _ |]
-      $ \byRef results -> do
-        facts <- decodeResultsAs (PredicateRef "x.R" 1) byRef results
+      $ \byRef response -> do
+        facts <- decodeResultsAs (PredicateRef "x.R" 1) byRef response
         assertEqual "result count" 2 (length facts)
 
   , TestLabel "predicate value" $ TestCase $ do
@@ -1337,8 +1337,8 @@ schemaEvolvesTransformations = TestList
           ]
       ]
       [s| P where x.Q.1 _ -> P |]
-      $ \byRef results -> do
-        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef results
+      $ \byRef response -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
         assertEqual "result count" 1 (length facts)
 
   , TestLabel "derived predicate value" $ TestCase $ do
@@ -1362,8 +1362,8 @@ schemaEvolvesTransformations = TestList
           ]
       ]
       [s| P where x.Q.1 _ -> P |]
-      $ \byRef results -> do
-        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef results
+      $ \byRef response -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
         assertEqual "result count" 2 (length facts)
 
   , TestLabel "subquery in primcall" $ TestCase $ do
@@ -1385,8 +1385,8 @@ schemaEvolvesTransformations = TestList
       [s| x.P.1 { X, _ } where
             X = (Y where x.P.1 { Y, _ }) + (Z where x.P.1 { Z, _ })
       |]
-      $ \byRef results -> do
-        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef results
+      $ \byRef response -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
         assertEqual "result count" 1 (length facts)
 
   , TestLabel "array elements" $ TestCase $ do
@@ -1412,8 +1412,8 @@ schemaEvolvesTransformations = TestList
             A = [ x.P.1 { 1, _ }, x.P.1 { 2, _ } ];
             { N, _ } = A[..]
       |]
-      $ \byRef results -> do
-        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef results
+      $ \byRef response -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
         assertEqual "result count" 2 (length facts)
 
   , TestLabel "negation" $ TestCase $ do
@@ -1436,8 +1436,8 @@ schemaEvolvesTransformations = TestList
             X = x.P.1 _;
             !(X = x.P.1 { 1, _ })
       |]
-      $ \byRef results -> do
-        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef results
+      $ \byRef response -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
         assertEqual "result count" 1 (length facts)
 
   , TestLabel "nested derived" $ TestCase $ do
@@ -1469,15 +1469,48 @@ schemaEvolvesTransformations = TestList
       -- We want y.Q to use the implementation from x.P.2
       -- instead of x.P.1.
       [s| y.Q.1 _ |]
-      $ \byRef results -> do
-        facts <- decodeResultsAs (PredicateRef "y.Q" 1) byRef results
+      $ \byRef response -> do
+        facts <- decodeResultsAs (PredicateRef "y.Q" 1) byRef response
         assertEqual "result count" 2 (length facts)
+
+  , TestLabel "multiple evolved, same pred" $ TestCase $ do
+    withSchemaAndFacts []
+      [s|
+        schema x.1 {
+          predicate N : nat
+        }
+        schema x.2 {
+          predicate N : nat
+        }
+        schema x.2 evolves x.1
+
+        schema y.1 {
+          import x.1
+          import x.2
+
+          predicate Q : { x: x.N.1, y: x.N.2 }
+        }
+      |]
+      [ mkBatch (PredicateRef "x.N" 2)
+          [ [s|{ "key": 1 }|]
+          ]
+      ]
+      [s| y.Q.1 _ |]
+      $ \_ response ->
+        case response of
+          Right _ -> assertFailure "expected request to fail"
+          Left badQuery ->
+            assertBool "errors with multple versions of evolved predicate"
+            ("multiple versions of evolved predicates"
+              `isInfixOf` show badQuery)
   ]
   where
-    decodeResultsAs ref byRef results =  do
+    decodeResultsAs _ _ (Left err) = assertFailure $ "BadQuery: " <> show err
+    decodeResultsAs ref byRef (Right results) =  do
       decodeResultFacts userQueryResultsBin_facts ref byRef results
 
-    decodeNestedAs ref byRef results =
+    decodeNestedAs _ _ (Left err) = assertFailure $ "BadQuery: " <> show err
+    decodeNestedAs ref byRef (Right results) = do
       decodeResultFacts userQueryResultsBin_nestedFacts ref byRef results
 
     decodeResultFacts f ref byRef results = do
@@ -1520,7 +1553,9 @@ withSchemaAndFacts
   -> String                    -- ^ schema
   -> [JsonFactBatch]           -- ^ db contents
   -> Text                      -- ^ query
-  -> (HashMap PredicateRef PredicateDetails -> UserQueryResults -> IO a)
+  -> ( HashMap PredicateRef PredicateDetails
+    -> Either BadQuery UserQueryResults
+    -> IO a )
   -> IO a
 withSchemaAndFacts customSettings schema facts query act =
   withSchemaFile latestAngleVersion schema $ \root file -> do
@@ -1549,9 +1584,7 @@ withSchemaAndFacts customSettings schema facts query act =
     try $ runQuery env repo (encodeUtf8 query)
 
   print (response :: Either BadQuery UserQueryResults)
-  case response of
-    Left badQuery -> assertFailure $ "BadQuery: " <> show badQuery
-    Right results -> act byRef results
+  act byRef response
   where
     runQuery env repo q = userQuery env repo $ def
       { userQuery_query = q

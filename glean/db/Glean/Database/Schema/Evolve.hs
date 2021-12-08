@@ -9,7 +9,7 @@
 module Glean.Database.Schema.Evolve
   ( mkPredicateEvolution
   , evolvePat
-  , predicateDeps
+  , transitiveDeps
   ) where
 
 import Data.List (elemIndex)
@@ -46,7 +46,6 @@ mkPredicateEvolution detailsFor oldPid newPid
         (predicateValueType new)
     , evolutionUnevolve = fromMaybe id $
         mkFactTransformation new old
-    , evolutionNested = transitive (predicateDeps detailsFor) oldPid
     }
   where
       new = detailsFor newPid
@@ -55,25 +54,28 @@ mkPredicateEvolution detailsFor oldPid newPid
       overUnit _ _ () = ()
       overVar _ _ var = var
 
--- All predicates mentioned in a predicate's type.
--- Does not include predicates from the derivation query.
-predicateDeps :: (Pid -> PredicateDetails) -> Pid -> [Pid]
-predicateDeps detailsFor pred =
-  typeDeps (predicateKeyType details) <>
-    typeDeps (predicateValueType details)
+transitiveDeps :: (Pid -> PredicateDetails) -> Pid -> [Pid]
+transitiveDeps = transitive . predicateDeps
   where
-    details = detailsFor pred
-    typeDeps = bifoldMap overPidRef overExpanded
-    overExpanded (ExpandedType _ ty) = typeDeps ty
-    overPidRef (PidRef pid _) = [pid]
+    -- All predicates mentioned in a predicate's type.
+    -- Does not include predicates from the derivation query.
+    predicateDeps :: (Pid -> PredicateDetails) -> Pid -> [Pid]
+    predicateDeps detailsFor pred =
+      typeDeps (predicateKeyType details) <>
+        typeDeps (predicateValueType details)
+      where
+        details = detailsFor pred
+        typeDeps = bifoldMap overPidRef overExpanded
+        overExpanded (ExpandedType _ ty) = typeDeps ty
+        overPidRef (PidRef pid _) = [pid]
 
-transitive :: Ord a => (a -> [a]) -> a -> [a]
-transitive next root = Set.elems $ go (next root) mempty
-  where
-    go [] visited = visited
-    go (x:xs) visited
-      | x `Set.member`visited = go xs visited
-      | otherwise = go xs $ go (next x) $ Set.insert x visited
+    transitive :: Ord a => (a -> [a]) -> a -> [a]
+    transitive next root = Set.elems $ go (next root) mempty
+      where
+        go [] visited = visited
+        go (x:xs) visited
+          | x `Set.member`visited = go xs visited
+          | otherwise = go xs $ go (next x) $ Set.insert x visited
 
 evolvePat
   :: (Type -> Type -> a -> c)

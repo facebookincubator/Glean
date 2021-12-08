@@ -59,7 +59,8 @@ flatten enableEvolves dbSchema _ver deriveStored typechecked = do
            Text.pack (show (pretty query))
       (q', ty) <- captureKey dbSchema q (case query of TcQuery ty _ _ _ -> ty)
       nextVar <- gets flNextVar
-      let evolutions = evolutionsFor dbSchema (qiReturnType typechecked)
+      evolutions <- liftEither $
+        evolutionsFor dbSchema (qiReturnType typechecked)
       return (QueryWithInfo q' nextVar ty, evolutions)
   return qi
 

@@ -20,19 +20,25 @@ module Glean.Query.Evolve
 
 import Data.Bifunctor
 import Data.Bifoldable
+import Data.List.Extra (nubOrd)
 import qualified Data.Map.Strict as Map
 import Data.Map.Strict (Map)
-import Data.Maybe (fromMaybe)
+import Data.Maybe (fromMaybe, mapMaybe)
 import qualified Data.IntMap.Strict as IntMap
 import Data.Int (Int64)
 import Data.IntMap.Strict (IntMap)
+import Data.Text (Text)
+import qualified Data.Text as Text
 import Data.Vector (Vector)
+import qualified Data.Set as Set
+import Data.Set (Set)
 
 import qualified Glean.Angle.Types as Type
+import Glean.Schema.Util (showPredicateRef)
 import Glean.Query.Codegen
 import Glean.Query.Typecheck.Types
 import Glean.Database.Schema
-import Glean.Database.Schema.Evolve (evolvePat, predicateDeps)
+import Glean.Database.Schema.Evolve (evolvePat, transitiveDeps)
 import Glean.Database.Schema.Types
 import Glean.RTS.Types
 import Glean.RTS.Foreign.Query (QueryResults(..))
@@ -137,27 +143,55 @@ evolveTcQuery schema q@(TcQuery ty _ _ _) = evolveTcQuery' ty Nothing q
           let new = evolveType schema newish in
           Var new vid name
 
--- | Evolutions for type and all transitively nested types
-evolutionsFor :: DbSchema -> Type -> Evolutions
+-- | Evolutions for a type and all its transitively nested types
+-- It is an error if the type uses multiple old versions of an
+-- evolved predicate.
+evolutionsFor :: DbSchema -> Type -> Either Text Evolutions
 evolutionsFor schema ty =
-  Evolutions $ bifoldMap f (const mempty) ty
+  if null repeated
+  then Right evolutions
+  else Left $ "multiple versions of evolved predicates: "
+      <> Text.unlines (map showRepeated repeated)
   where
-    calcDeps pid = predicateDeps detailsFor pid
     detailsFor pid = case lookupPid pid schema of
       Nothing -> error $ "unknown predicate " <> show pid
       Just details -> details
 
-    f (PidRef pid _) =
-      IntMap.fromList
-        [ (intPid new, evolution)
-        | old <- deps
-        , Just evolution <- [lookupEvolution old schema ]
-        , let new = predicatePid (evolutionNew evolution)
+    inType :: [Pid]
+    inType = getPids ty
+      where getPids = bifoldMap (pure . pid) (getPids . expandType)
+            expandType (ExpandedType _ t) = t
+
+    withDeps :: [Pid]
+    withDeps = nubOrd
+      inType <> concatMap (transitiveDeps detailsFor) inType
+
+    -- values are mapped to the key
+    mappings :: Map Pid (Set Pid)
+    mappings =
+      Map.fromListWith (<>)
+        [ (new, Set.singleton old)
+        | old <- withDeps
+        , let new = case lookupEvolution old schema of
+                Nothing -> old
+                Just e -> predicatePid (evolutionNew e)
         ]
-      where
-        deps = case lookupEvolution pid schema of
-          Nothing -> calcDeps pid
-          Just e -> predicatePid (evolutionOld e) : evolutionNested e
+
+    repeated :: [(Pid, Set Pid)]
+    repeated = Map.toList $ Map.filter ((> 1) . Set.size) mappings
+
+    evolutions :: Evolutions
+    evolutions = Evolutions $ IntMap.fromList
+      [ (new, evolution)
+      | evolution <- mapMaybe (`lookupEvolution` schema) withDeps
+      , let new = intPid $ predicatePid $ evolutionNew evolution
+      ]
+
+    showRepeated :: (Pid, Set Pid) -> Text
+    showRepeated (new, olds) =
+      showRef new <> " evolves "
+      <> Text.intercalate " and " (showRef <$> Set.toList olds)
+      where showRef = showPredicateRef . predicateRef . detailsFor
 
 -- | Evolve predicates inside the type but keep its structure.
 evolveType :: DbSchema -> Type -> Type

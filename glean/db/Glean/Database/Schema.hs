@@ -52,6 +52,7 @@ import Data.Tuple (swap)
 import Glean.RTS.Foreign.Inventory as Inventory
 import Glean.Database.Schema.Types
 import Glean.Database.Schema.Evolve (mkPredicateEvolution)
+import qualified Glean.Database.Schema.Evolve as Evolve
 import Glean.RTS.Traverse
 import Glean.RTS.Typecheck
 import Glean.RTS.Types as RTS
@@ -356,11 +357,18 @@ mkDbSchema override getPids dbContent source base addition = do
               | ResolvedSchema{..} <- schemas
               ]
 
+      dependencies = fmap f byId
+        where
+          f = Set.fromList
+            . Evolve.transitiveDeps (detailsFor byId)
+            . predicatePid
+
   return $ DbSchema
     { predicatesByRef = byRef
     , predicatesByName = predicatesByName
     , predicatesById = byId
     , predicatesEvolution = mkEvolutions dbContent override byId byRef resolved
+    , predicatesDeps = dependencies
     , schemaTypesByRef = tcEnvTypes env
     , schemaTypesByName = schemaTypesByName
     , schemaInventory = inventory predicates
@@ -369,6 +377,12 @@ mkDbSchema override getPids dbContent source base addition = do
     , schemaMaxPid = maxPid
     , schemaLatestVersion = latestVer
     }
+
+detailsFor :: IntMap PredicateDetails -> Pid -> PredicateDetails
+detailsFor byId pid =
+  case IntMap.lookup (fromIntegral $ fromPid pid) byId of
+    Just details -> details
+    Nothing -> error $ "unknown pid " <> show pid
 
 mkEvolutions
   :: DbContent
@@ -386,12 +400,7 @@ mkEvolutions (DbReadOnly stats) override byId byRef resolved =
     ]
   where
     mkEvolution old new =
-      mkPredicateEvolution detailsFor old new
-
-    detailsFor pid =
-      case IntMap.lookup (fromIntegral $ fromPid pid) byId of
-        Just details -> details
-        Nothing -> error $ "unknown pid " <> show pid
+      mkPredicateEvolution (detailsFor byId) old new
 
 -- ^ Create a map of which predicate is evolved by which
 evolvedPredicates

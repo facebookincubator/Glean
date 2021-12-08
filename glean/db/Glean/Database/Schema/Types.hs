@@ -27,6 +27,7 @@ import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
+import Data.Set (Set)
 
 import Glean.Angle.Types as Schema hiding (Type, FieldDef)
 import qualified Glean.Angle.Types as Schema
@@ -48,6 +49,8 @@ data DbSchema = DbSchema
   , predicatesById :: IntMap PredicateDetails
   , predicatesEvolution  :: IntMap PredicateEvolution
      -- ^ value evolves key
+  , predicatesDeps :: IntMap (Set Pid)
+     -- ^ transitive predicate dependencies
   , schemaTypesByRef :: HashMap TypeRef TypeDetails
   , schemaTypesByName :: IntMap (HashMap Name TypeDetails)
      -- ^ points to the type for each name in schema "all"
@@ -73,8 +76,6 @@ data PredicateEvolution = PredicateEvolution
   , evolutionUnevolve :: Thrift.Fact -> Thrift.Fact
     -- ^ transform a fact of the new predicate into a fact
     -- of the original, deprecated predicate.
-  , evolutionNested :: [Pid]
-    -- ^ transitive dependencies of original predicate
   }
 
 data TypeDetails = TypeDetails
