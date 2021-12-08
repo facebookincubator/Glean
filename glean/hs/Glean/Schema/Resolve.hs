@@ -584,8 +584,8 @@ backCompatible types evolvedBy new old = go new old
     go (Array new) (Array old) = go new old
     go (Predicate new) (Predicate old)
       | evolved new /= evolved old = Just
-          $ "type changed from " <> predicateRef_name old
-          <> " to " <> predicateRef_name new
+          $ "type changed from " <> showPredicateRef old
+          <> " to " <> showPredicateRef new
       | otherwise = Nothing
     go (Enumerated new) (Enumerated old) =
       compareFieldList ExactMatch Option new' old'
