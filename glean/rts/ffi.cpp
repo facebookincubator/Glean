@@ -28,6 +28,12 @@
 #include <vector>
 #include <algorithm>
 
+#ifdef OSS
+#include <cpp/HsStruct.h>
+#else
+#include <common/hs/util/cpp/HsStruct.h>
+#endif
+
 using namespace facebook::glean;
 using namespace facebook::glean::rts;
 

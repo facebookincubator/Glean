@@ -13,11 +13,7 @@
 #include <stdlib.h>
 
 #ifdef __cplusplus
-#ifdef OSS
-#include <cpp/HsStruct.h>
-#else
-#include <common/hs/util/cpp/HsStruct.h>
-#endif
+template <typename T> struct HsArray;
 #endif
 
 #ifdef __cplusplus
@@ -58,20 +54,6 @@ typedef struct Slice Slice;
 typedef struct Sliced Sliced;
 
 #ifdef __cplusplus
-}
-}
-}
-#endif
-
-#ifdef __cplusplus
-namespace facebook {
-namespace glean {
-namespace thrift {
-namespace internal {
-#endif
-
-#ifdef __cplusplus
-}
 }
 }
 }
