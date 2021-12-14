@@ -136,8 +136,13 @@ thinSchemaInfo DbSchema{..} predicateStats =
   where
   schemaInfo = Thrift.SchemaInfo
     { schemaInfo_schema =
-        Text.encodeUtf8 $ renderStrict $ layoutCompact $ pretty $
-          schemaSource { srcSchemas = allNeededSchemas }
+        Text.encodeUtf8 $ renderStrict $ layoutCompact $ pretty $ schemaSource
+          { srcSchemas = allNeededSchemas
+          -- schema evolvolutions only work when the older schema contains no
+          -- facts. Thinning will remove the older factless schema and the
+          -- evolution will have no meaning. Therefore we always drop schema
+          -- evolutions.
+          , srcEvolves = [] }
     , schemaInfo_predicateIds = Map.fromList
         [ (fromPid $ predicatePid p, predicateRef p)
         | p <- HashMap.elems predicatesByRef

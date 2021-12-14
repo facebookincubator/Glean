@@ -222,8 +222,8 @@ type PredicateDef = PredicateDef_ PredicateRef TypeRef SourceQuery
 
 data SourceEvolves_ s = SourceEvolves
   { evolvesSpan :: s
-  , evolvesOld :: Name
   , evolvesNew :: Name
+  , evolvesOld :: Name
   }
   deriving (Eq)
 
@@ -279,6 +279,10 @@ instance Pretty SourceRef where
     Nothing -> mempty
     Just ver -> "." <> pretty ver
 
+instance Pretty (SourceEvolves_ s) where
+  pretty (SourceEvolves _ new old) =
+    "schema " <> pretty new <> " evolves " <> pretty old
+
 instance (Pretty pref, Pretty tref) => Pretty (Type_ pref tref) where
   pretty Byte = "byte"
   pretty Nat = "nat"
@@ -328,7 +332,8 @@ instance (Pretty pref, Pretty tref) => Pretty (TypeDef_ pref tref) where
 
 instance Pretty SourceSchemas where
   pretty SourceSchemas{..} = vcat $
-    ("version:" <+> pretty srcAngleVersion) : map pretty srcSchemas
+    ("version:" <+> pretty srcAngleVersion)
+    : map pretty srcSchemas <> map pretty srcEvolves
 
 instance Pretty SourceSchema where
   pretty SourceSchema{..} = vcat

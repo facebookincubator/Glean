@@ -206,9 +206,6 @@ resolveEvolves resolved = do
           <> ": "
           <> Text.unwords (map showSchemaRef newList)
 
-    showSchemaRef (SchemaRef name version) =
-      name <> "." <> Text.pack (show version)
-
     resolvedByRef :: Map SchemaRef ResolvedSchema
     resolvedByRef = Map.fromList [(schemaRef s, s) | s <- resolved ]
 
@@ -223,6 +220,10 @@ resolveEvolves resolved = do
         , oldRef <- Set.toList $ resolvedSchemaEvolves new
         , Just old <- [Map.lookup oldRef resolvedByRef]
         ]
+
+showSchemaRef :: SchemaRef -> Text
+showSchemaRef (SchemaRef name version) =
+  name <> "." <> Text.pack (show version)
 
 -- Check for back compatibility and map each predicate to their evolved
 -- counterpart in the the evolvedBy map
@@ -248,7 +249,7 @@ evolveOneSchema types evolvedBy (new, old) = do
         Just newDef -> return newDef
         Nothing ->
           throwError $ "missing evolved predicate "
-          <> name <> " from " <> resolvedSchemaName old
+          <> name <> " from " <> showSchemaRef (schemaRef old)
 
     evolveDef
       (PredicateDef ref key val _)
