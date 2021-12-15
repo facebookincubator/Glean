@@ -96,11 +96,7 @@ evolvePat innerL innerR old new pat = case pat of
     MatchVar var -> MatchVar $ innerR old new var
     MatchWild _ -> MatchWild new
     MatchNever _ -> MatchNever new
-    MatchFid fid
-      -- we don't want to have a type mismatch on the fact, so
-      -- unless the type didn't change we will always fail to match.
-      | old == new -> MatchFid fid
-      | otherwise -> MatchNever new
+    MatchFid fid -> MatchFid fid
     MatchAnd a b -> MatchAnd
       (evolve old new a)
       (evolve old new b)
