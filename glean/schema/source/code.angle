@@ -1,6 +1,6 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema code.17 {
+schema code.18 {
 import code.cxx.3
 import code.java.3
 import code.hack.3
@@ -11,6 +11,7 @@ import code.python.1
 import code.rust.1
 import code.thrift.2
 import code.buck.1
+import code.erlang.1
 
 type Entity =
   {
@@ -24,5 +25,6 @@ type Entity =
     rust : code.rust.Entity |
     thrift : code.thrift.Entity |
     buck : code.buck.Entity |
+    erlang : code.erlang.Entity |
   }
 }
