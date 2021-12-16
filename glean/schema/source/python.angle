@@ -432,4 +432,27 @@ predicate IsTopLevelDefinition: Definition
     python.DefinitionDeclaration {D, Decl};
     python.IsTopLevelDeclaration Decl;
 
+predicate ImportStarStatement:
+  {
+    from_name: Name,
+    into_module: Module,
+  }
+
+predicate ImportStarLocation:
+  {
+    import_star: ImportStarStatement,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+
+# This is the variant of ImportStarLocation which allows us for querying by file.
+predicate ImportStarsByFile:
+  {
+    file: src.File,
+    span: src.ByteSpan,
+    declaration: ImportStarStatement,
+  }
+  stored {File, Span, ImportStarStatement} where
+  ImportStarLocation { ImportStarStatement, File, Span };
+
 } # python.3
