@@ -1,7 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema search.hs.6 {
-  import code.18
+schema search.hs.5 {
+  import code.17
   import code.hs.2
   import hs.2
 

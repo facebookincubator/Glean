@@ -1,9 +1,9 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.19 {
+schema codemarkup.18 {
 import src.1
 import python.3
-import code.18
+import code.17
 import code.flow.2
 import hs.2
 import hack.5
@@ -15,7 +15,6 @@ import rust.1
 import code.cxx.3
 import code.buck.1
 import buck.3
-import erlang.1
 
 # Deprecated types
 
@@ -168,8 +167,7 @@ predicate EntityKind:
     PythonEntityKind { Entity, Kind } |
     CxxEntityKind { Entity, Kind } |
     PpEntityKind { Entity, Kind } |
-    HackEntityKind { Entity, Kind } |
-    ErlangEntityKind { Entity, Kind };
+    HackEntityKind { Entity, Kind }
 
 # All entities defined in a src.File and their locations
 predicate FileEntityLocations:
@@ -207,8 +205,7 @@ predicate ResolveLocation:
     HaskellResolveLocation { Location, Entity } |
     RustResolveLocation { Location, Entity } |
     BuckResolveLocation { Location, Entity } |
-    ThriftResolveLocation { Location, Entity } |
-    ErlangResolveLocation { Location, Entity };
+    ThriftResolveLocation { Location, Entity }
 
 predicate EntityLocation:
   {
@@ -224,8 +221,7 @@ predicate EntityLocation:
     HaskellEntityLocation { Entity, Location } |
     RustEntityLocation { Entity, Location } |
     BuckEntityLocation { Entity, Location } |
-    ThriftEntityLocation { Entity, Location } |
-    ErlangEntityLocation { Entity, Location };
+    ThriftEntityLocation { Entity, Location }
 
 # Finding xrefs. All references in a file and their targets
 predicate FileEntityXRefLocations:
@@ -242,8 +238,7 @@ predicate FileEntityXRefLocations:
     HaskellFileEntityXRefLocations { File, XRef, Entity } |
     RustFileEntityXRefLocations { File, XRef, Entity } |
     BuckFileEntityXRefLocations { File, XRef, Entity } |
-    ThriftFileEntityXRefLocations { File, XRef, Entity } |
-    ErlangFileEntityXRefLocations { File, XRef, Entity };
+    ThriftFileEntityXRefLocations { File, XRef, Entity }
 
 # Finding xrefs. All references in a file, and their kinds
 predicate FileEntityXRefKinds:
@@ -270,8 +265,7 @@ predicate EntityUses:
     CxxEntityUses { Entity, File, Span } |
     HaskellEntityUses { Entity, File, Span } |
     RustEntityUses { Entity, File, Span } |
-    BuckEntityUses { Entity, File, Span } |
-    ErlangEntityUses { Entity, File, Span };
+    BuckEntityUses { Entity, File, Span }
 
 # Private language instances
 
@@ -402,18 +396,6 @@ predicate ThriftResolveLocation:
     { file = FileS, lineBegin = LB, columnBegin = CB, lineEnd = LE, columnEnd = CE } = Range;
     Entity = code.Entity { thrift = Declaration };
 
-predicate ErlangResolveLocation:
-  {
-    location: Location,
-    entity: code.Entity,
-  }
-  { { Name, File, { span = Span } }, Entity } where
-    # Location.name is weird but we aren't using it for anything yet.
-    # Weirdness is that distinct fucntions foo/1 and foo/2 have same Location.name ("foo").
-    # Use `Name = Fqn.name + str(Fqn.arity)` when primops available so names are "foo/1" and "foo/2"
-    Declaration = erlang.Declaration { func = { fqn = {name = Name}, file = File, span = Span } };
-    Entity = code.Entity { erlang = { decl = Declaration } };
-
 # Finding entities' locations
 
 predicate HackEntityLocation:
@@ -499,16 +481,6 @@ predicate ThriftEntityLocation:
     FileT = thrift.File FileS;
     { LB, CB, LE, CE } = Loc;
     { lineBegin = LB, columnBegin = CB, lineEnd = LE, columnEnd = CE } = Range;
-
-predicate ErlangEntityLocation:
-  {
-    entity: code.Entity,
-    location: Location,
-  }
-  { { erlang = { decl = D } }, { Name, File, { span = Span } } } where
-    erlang.DeclarationLocation { declaration = D, file = File, span = Span };
-    # Location.name here is weird, see ErlangResolveLocation comment
-    { func = erlang.FunctionDeclaration { fqn = {name = Name } , file = _, span = _} } = D;
 
 # Finding references in a file
 
@@ -987,21 +959,6 @@ predicate ThriftFileEntityXRefLocations:
   { name = Name, file = TargetFile, location = { range = TargetRange } } = TargetLocation;
   Entity = code.Entity { thrift = XRefTarget };
 
-predicate ErlangFileEntityXRefLocations:
-  {
-    file: src.File,
-    xref: XRefLocation,
-    entity: code.Entity,
-  }
-  {File, { target = TargetLocation, source = { span = Span } }, Entity} where
-  erlang.XRefsViaFqnByFile { file = File, xrefs = XRefs };
-  { target = Fqn, source = Span } = XRefs[..];
-  erlang.DeclarationWithFqn { fqn = Fqn, declaration = Decl };
-  Entity = code.Entity { erlang = { decl = Decl } };
-  # Location.name here is weird, see ErlangResolveLocation comment
-  { func = { fqn = { name = Name }, file = TargetFile, span = TargetSpan } } = Decl;
-  { Name, TargetFile, { span = TargetSpan }} = TargetLocation;
-
 #
 # Language entity uses
 #
@@ -1079,16 +1036,6 @@ predicate BuckEntityUses:
   { { buck = { locator = Locator } }, File, Span } where
     buck.TargetUses { Locator, File, Spans };
     Span = Spans[..];
-
-predicate ErlangEntityUses:
-  {
-    target: code.Entity,
-    file: src.File,
-    span: src.ByteSpan,
-  }
-  { { erlang = { decl = D } }, File, Span } where
-  erlang.DeclarationUses { declaration = D, file = File, span = Span}
-
 #
 # Language-specific symbol kinds
 #
@@ -1189,12 +1136,4 @@ predicate HackEntityKind:
     ({ typeConst = _ } = Decl; Type = Kind) |
     ({ typedef_ = _ } = Decl; Type = Kind)
 
-predicate ErlangEntityKind:
-  {
-    entity: code.Entity,
-    kind: SymbolKind,
-  }
-  { { erlang = { decl = { func = D} } }, Kind } where
-  Kind = Function: SymbolKind;
-  erlang.FunctionDeclaration {} = D;
 }
