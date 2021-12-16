@@ -1,0 +1,11 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema code.erlang.1 {
+import erlang.1
+
+type Entity =
+  {
+    decl : erlang.Declaration |
+  }
+
+}

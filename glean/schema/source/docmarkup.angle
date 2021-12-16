@@ -2,9 +2,9 @@
 
 # schema docmarkup is for structured information about comments
 # Once this is stable enough, perhaps merge with schema codemarkup
-schema docmarkup.7 {
+schema docmarkup.8 {
 
-import code.17
+import code.18
 import cxx1.4
 import hack.5
 import java.4
