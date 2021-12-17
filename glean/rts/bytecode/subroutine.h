@@ -42,6 +42,18 @@ struct Subroutine {
   std::vector<std::string> literals;
 
   Subroutine() = delete;
+  Subroutine(const std::vector<uint64_t>& code0,
+                  size_t inputs0,
+                  size_t outputs0,
+                  size_t locals0,
+                  const std::vector<uint64_t>& constants0,
+                  const std::vector<std::string>& literals0):
+          code(code0),
+          inputs(inputs0),
+          outputs(outputs0),
+          locals(locals0),
+          constants(constants0),
+          literals(literals0){}
 
   /// Execute the subroutine with the given arguments. The number of arguments
   /// is given by 'inputs'. The arguments are copied to their registers before
