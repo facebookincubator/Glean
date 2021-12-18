@@ -10,17 +10,18 @@ module Glean.Regression.Driver.DocBlock (main) where
 
 import Control.Monad
 
-import qualified Glean.Clang.Test as Clang (driver)
+import qualified Glean.Clang.Test as Clang
 import qualified Glean.DocBlock.Test as DocBlock (driver)
-import Glean.Regression.Config (Driver(..))
-import Glean.Regression.Test (testMain)
+import Glean.Init (withUnitTestOptions)
+import Glean.Regression.Config
+import Glean.Regression.Test
 import Glean.Derive (derivePredicate)
 import Glean.Write (parseRef)
 
-combined :: Driver
-combined = Clang.driver
+combined :: Clang.Options -> Driver
+combined opts = (Clang.driver opts)
   { driverGenerator = \ test backend repo -> do
-      driverGenerator Clang.driver test backend repo
+      driverGenerator (Clang.driver opts) test backend repo
       driverGenerator DocBlock.driver test backend repo
       forM_ passes $ \predicate ->
         derivePredicate backend repo Nothing Nothing predicate Nothing
@@ -31,4 +32,7 @@ combined = Clang.driver
     ]
 
 main :: IO ()
-main = testMain combined
+main =
+  withUnitTestOptions (optionsWith Clang.extOptions) $ \ (mkcfg, ext) -> do
+    cfg <- mkcfg
+    testAll cfg (combined ext)

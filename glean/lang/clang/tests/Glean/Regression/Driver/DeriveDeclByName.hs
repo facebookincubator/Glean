@@ -8,9 +8,8 @@
 
 module Glean.Regression.Driver.DeriveDeclByName (main) where
 
-import Derive.Lib (DerivePass(..))
-import Glean.Clang.Test.DerivePass (driver)
-import Glean.Regression.Test (testMain)
+import Derive.Lib
+import Glean.Clang.Test.DerivePass
 
 main :: IO ()
-main = testMain $ driver [DeriveGeneric "cxx1.DeclByName"]
+main = testDeriver [DeriveGeneric "cxx1.DeclByName"]

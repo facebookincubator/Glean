@@ -22,6 +22,7 @@ import TestRunner
 import qualified Glean
 import Derive.Lib (DerivePass(..))
 import Glean.Clang.Test.DerivePass as Derive
+import Glean.Clang.Test as Clang
 import Glean.Init
 import Glean.Regression.Test
 import Glean.Regression.Config (Driver(..), TestConfig(..))
@@ -42,8 +43,8 @@ data Config = Config
   , cfgRoot :: FilePath  -- ^ parent path of all sources, *.query, golden *.out
   }
 
-options :: FilePath -> ParserInfo Config
-options cwd = info parser fullDesc
+optionsWith :: Parser a -> FilePath -> ParserInfo (Config, a)
+optionsWith ext cwd = info ((,) <$> parser <*> ext) fullDesc
   where
     parser = do
       cfgProjectRoot <- strOption
@@ -54,7 +55,7 @@ options cwd = info parser fullDesc
 main :: IO ()
 main = do
   cwd <- getCurrentDirectory
-  withUnitTestOptions (options cwd) $ \cfg -> do
+  withUnitTestOptions (optionsWith Clang.extOptions cwd) $ \(cfg, ext) -> do
   withSystemTempDirectory "search-test" $ \tmpdir -> do
 
   testRoot <- makeAbsolute (cfgRoot cfg)
@@ -62,7 +63,7 @@ main = do
 
   let
     driver :: Driver
-    driver = Derive.driver [DeriveGeneric "cxx1.DeclByName"]
+    driver = Derive.driver ext [DeriveGeneric "cxx1.DeclByName"]
 
     runTest platform = TestLabel platform $ TestCase $ do
       let
