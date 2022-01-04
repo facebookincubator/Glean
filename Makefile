@@ -50,6 +50,7 @@ SCHEMAS= \
 	buck \
 	builtin \
 	code_cxx \
+	code_erlang \
 	code_flow \
 	code_hack \
 	code_hs \
@@ -62,6 +63,7 @@ SCHEMAS= \
 	code_python \
 	code \
 	cxx1 \
+	erlang \
 	flow \
 	glean_test \
 	graphql \
