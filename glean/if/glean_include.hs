@@ -6,6 +6,10 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-
+// @lint-ignore-every HSMODULEHEADER
+-}
+
 import Data.Text.Prettyprint.Doc
 
 instance Pretty PredicateRef where
