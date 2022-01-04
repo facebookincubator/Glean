@@ -77,13 +77,17 @@ transitiveDeps = transitive . predicateDeps
           | x `Set.member`visited = go xs visited
           | otherwise = go xs $ go (next x) $ Set.insert x visited
 
-evolvePat
-  :: (Type -> Type -> a -> c)
+evolvePat :: (Show a, Show b)
+  => (Type -> Type -> a -> c)
   -> (Type -> Type -> b -> d)
   -> Type
   -> Type
   -> Term (Match a b)
   -> Term (Match c d)
+evolvePat innerL innerR old@(Type.NamedType _) new pat =
+  evolvePat innerL innerR (derefType old) new pat
+evolvePat innerL innerR old new@(Type.NamedType _) pat =
+  evolvePat innerL innerR old (derefType new) pat
 evolvePat innerL innerR old new pat = case pat of
   Byte x -> Byte x
   Nat x -> Nat x

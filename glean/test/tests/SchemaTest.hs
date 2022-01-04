@@ -1416,6 +1416,29 @@ schemaEvolvesTransformations = TestList
         facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
         assertEqual "result count" 2 (length facts)
 
+  , TestLabel "named type inside alts" $ TestCase $ do
+    withSchemaAndFacts []
+      [s|
+        schema x.1 {
+          type T = { a: string, b: nat }
+          predicate P : { x : maybe T }
+        }
+        schema x.2 {
+          type T = { b: nat, a: string }
+          predicate P : { x : maybe T }
+        }
+        schema x.2 evolves x.1
+      |]
+      [ mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "key": { "x": { "a": "A", "b": 1 } } }|]
+          , [s|{ "key": { "x": { "a": "B", "b": 2 } } }|]
+          ]
+      ]
+      [s| x.P.1 { x = { just = { a = _ } } }|]
+      $ \byRef response _ -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
+        assertEqual "result count" 2 (length facts)
+
   , TestLabel "negation" $ TestCase $ do
     withSchemaAndFacts []
       [s|
