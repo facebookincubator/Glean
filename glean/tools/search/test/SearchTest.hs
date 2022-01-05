@@ -1,5 +1,5 @@
 {-
-  Copyright (c) Facebook, Inc. and its affiliates.
+  Copyright (c) Meta Platforms, Inc. and affiliates.
   All rights reserved.
 
   This source code is licensed under the BSD-style license found in the
@@ -340,6 +340,10 @@ main = do
                 Entity_cxx (Entity_decl Declaration_objcMethod{}),
                 Entity_cxx (Entity_decl Declaration_objcProperty{})],
                 "platform009-clang-12" ) -> True
+              ([ Entity_cxx (Entity_decl Declaration_objcMethod{}),
+                Entity_cxx (Entity_decl Declaration_objcMethod{}),
+                Entity_cxx (Entity_decl Declaration_objcProperty{})],
+                "platform010" ) -> True
               _ -> False
 
           -- TODO: protocol
