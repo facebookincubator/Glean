@@ -64,6 +64,18 @@ sudo apt-get install \
     libxxhash-dev
 ```
 
+### Debian
+
+The package dependencies for Debian current are the same as above for Ubuntu, except you may see:
+```
+ Package 'libmysqlclient-dev' has no installation candidate
+```
+Use
+```
+	default-libmysqlclient-dev
+```
+instead.
+
 ### Fedora
 
 Install prerequisite packages:
