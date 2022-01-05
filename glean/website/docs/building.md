@@ -107,7 +107,7 @@ Clone the repository:
 
 ```
 git clone https://github.com/facebookincubator/Glean.git
-cd glean
+cd Glean
 ```
 
 These are necessary so that the Glean build can find the dependencies
