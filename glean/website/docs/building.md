@@ -74,6 +74,10 @@ Use
 ```
 	default-libmysqlclient-dev
 ```
+instead. You also need to install:
+```
+        libfmt-dev
+```
 instead.
 
 ### Fedora
