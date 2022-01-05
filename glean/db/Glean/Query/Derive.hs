@@ -33,7 +33,7 @@ import qualified Data.UUID as UUID
 import qualified Data.UUID.V4 as UUID
 import TextShow
 
-import Control.Concurrent.Stream
+import Control.Concurrent.Stream (streamWithThrow)
 import Util.Control.Exception
 import Util.Log
 
