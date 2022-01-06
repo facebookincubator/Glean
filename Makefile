@@ -32,7 +32,7 @@ BYTECODE_SRCS= \
 	$(wildcard glean/bytecode/*/Glean/Bytecode/*/*.hs) \
 	$(wildcard glean/bytecode/Glean/Bytecode/*.hs)
 
-all:: thrift $(BYTECODE_GEN) gen-schema thrift-schema-hs glean
+all:: cabal-update thrift $(BYTECODE_GEN) gen-schema thrift-schema-hs glean
 
 .PHONY: glean
 glean::
@@ -45,6 +45,11 @@ $(BYTECODE_GEN) &: $(BYTECODE_SRCS)
 .PHONY: test
 test::
 	$(CABAL) test glean:tests
+
+# Before we build HS targets we need to sync the package index
+.PHONY: cabal-update
+cabal-update::
+	$(CABAL) update
 
 SCHEMAS= \
 	buck \
