@@ -78,7 +78,7 @@ main = do
           }
 
       withTestDatabase (driverGenerator driver) testConfig $
-        \backend repo -> do
+        \(backend, repo) -> do
           let repos = mempty{ cxxRepo = [repo] }
               search_ s t f cs = do
                 print (s, cs)
