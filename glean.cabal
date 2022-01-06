@@ -48,7 +48,9 @@ common fb-haskell
      ghc-options: -O2
 
 common fb-cpp
-  cxx-options: -std=c++17 -march=haswell
+  cxx-options: -std=c++17
+  if arch(x86_64)
+     cxx-options: -march=haswell
   if flag(opt)
      cxx-options: -O3
 
@@ -323,6 +325,8 @@ library rts
         glean/rts/bytecode/subroutine.cpp
     pkgconfig-depends: libfolly, libunwind, libglog, icu-uc, gflags, libxxhash
     cxx-options: -DOSS=1
+    if arch(x86_64)
+        cxx-options: -DGLEAN_X86_64
     build-depends:
         glean:if-internal-cpp,
         glean:ffi
