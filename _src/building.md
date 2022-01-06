@@ -64,6 +64,22 @@ sudo apt-get install \
     libxxhash-dev
 ```
 
+### Debian
+
+The package dependencies for Debian current are the same as above for Ubuntu, except you may see:
+```
+ Package 'libmysqlclient-dev' has no installation candidate
+```
+Use
+```
+        default-libmysqlclient-dev
+```
+instead. You also need to install:
+```
+        libfmt-dev
+```
+instead.
+
 ### Fedora
 
 Install prerequisite packages:
@@ -107,7 +123,7 @@ Clone the repository:
 
 ```
 git clone https://github.com/facebookincubator/Glean.git
-cd glean
+cd Glean
 ```
 
 These are necessary so that the Glean build can find the dependencies
