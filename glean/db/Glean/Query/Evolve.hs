@@ -1,5 +1,5 @@
 {-
-  Copyright (c) Facebook, Inc. and its affiliates.
+  Copyright (c) Meta Platforms, Inc. and affiliates.
   All rights reserved.
 
   This source code is licensed under the BSD-style license found in the
@@ -11,6 +11,7 @@
 module Glean.Query.Evolve
   ( evolveTcQuery
   , evolveType
+  , devolveType
   , evolutionsFor
   , unEvolveResults
   , Evolutions
@@ -207,6 +208,20 @@ evolveType schema ty = evolve ty
     overExpandedType (ExpandedType tref ty) =
       ExpandedType tref (evolve ty)
 
+-- | Map predicates from new to old
+devolveType :: Evolutions -> Type -> Type
+devolveType (Evolutions evolutions) ty = devolve ty
+  where
+    devolve ty = bimap overPidRef overExpandedType ty
+
+    overPidRef pref =
+      case IntMap.lookup (fromIntegral $ fromPid $ pid pref) evolutions of
+        Nothing -> pref
+        Just PredicateEvolution{..} -> pidRef evolutionOld
+
+    overExpandedType (ExpandedType tref ty) =
+      ExpandedType tref (devolve ty)
+
 lookupEvolution :: Pid -> DbSchema -> Maybe PredicateEvolution
 lookupEvolution pid DbSchema{..} =
   IntMap.lookup (fromIntegral $ fromPid pid) predicatesEvolution
@@ -240,5 +255,5 @@ unEvolveResults (Evolutions evolutions) results@QueryResults{..}
     unEvolveFact fact@(Thrift.Fact pid _ _) =
       case IntMap.lookup (fromIntegral pid) evolutions of
         Nothing -> fact
-        Just PredicateEvolution{..} -> evolutionUnevolve  fact
+        Just PredicateEvolution{..} -> evolutionUnevolve fact
 

@@ -1,5 +1,5 @@
 {-
-  Copyright (c) Facebook, Inc. and its affiliates.
+  Copyright (c) Meta Platforms, Inc. and affiliates.
   All rights reserved.
 
   This source code is licensed under the BSD-style license found in the
@@ -1550,6 +1550,26 @@ schemaEvolvesTransformations = TestList
         response <- runQuery $ "$" <> pack (show factId) <> " : x.P.1"
         facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
         assertEqual "result count" 1 (length facts)
+
+  , TestLabel "correct return type" $ TestCase $ do
+    withSchemaAndFacts []
+      [s|
+        schema x.1 {
+          predicate P : { x: nat }
+        }
+        schema x.2 {
+          predicate P : { x: nat, y: nat }
+        }
+        schema x.2 evolves x.1
+      |]
+      [ mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "id": 1, "key": { "x": 1, "y": 2 } }|]
+          ]
+      ]
+      [s| x.P.1 _ |]
+      $ \_ (Right results) _ -> do
+        let Just ty = userQueryResults_type results
+        assertEqual "result type" "x.P.1" ty
   ]
   where
     decodeResultsAs _ _ (Left err) = assertFailure $ "BadQuery: " <> show err

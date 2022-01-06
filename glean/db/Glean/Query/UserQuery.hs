@@ -1,5 +1,5 @@
 {-
-  Copyright (c) Facebook, Inc. and its affiliates.
+  Copyright (c) Meta Platforms, Inc. and affiliates.
   All rights reserved.
 
   This source code is licensed under the BSD-style license found in the
@@ -520,7 +520,9 @@ userQueryImpl
               Just c -> Right c
               Nothing -> Left (query, evolutions)
 
-          return (qiReturnType, compileTime, irDiag, cont)
+            returnType = devolveType evolutions qiReturnType
+
+          return (returnType, compileTime, irDiag, cont)
 
     details@PredicateDetails{..} <- case returnType of
       Angle.Record
