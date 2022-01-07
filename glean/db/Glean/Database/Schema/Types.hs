@@ -73,7 +73,7 @@ data PredicateEvolution = PredicateEvolution
   , evolutionEvolveValue :: Pat -> Pat
     -- ^ transform a pattern that matches the old predicate's value into
     -- one that matches the new predicates's value.
-  , evolutionUnevolve :: Thrift.Fact -> Thrift.Fact
+  , evolutionDevolve :: Thrift.Fact -> Thrift.Fact
     -- ^ transform a fact of the new predicate into a fact
     -- of the original, deprecated predicate.
   }

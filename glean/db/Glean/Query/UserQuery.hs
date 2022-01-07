@@ -590,7 +590,7 @@ userQueryImpl
           let binaryCont = Thrift.userQueryCont_continuation ucont
               evolutions = toEvolutions schema $
                 Thrift.userQueryCont_evolutions ucont
-          results <- unEvolveResults evolutions <$>
+          results <- devolveResults evolutions <$>
             restartCompiled
               schemaInventory
               defineOwners
@@ -608,7 +608,7 @@ userQueryImpl
               | Thrift.queryDebugOptions_bytecode debug ]
 
           bracket (compileQuery query) (release . compiledQuerySub) $ \sub -> do
-            results <- unEvolveResults evolutions <$>
+            results <- devolveResults evolutions <$>
               executeCompiled schemaInventory defineOwners stack sub limits
             diags <- evaluate $ force (bytecodeDiag sub) -- don't keep sub alive
             sz <- evaluate $ Bytecode.size (compiledQuerySub sub)
@@ -685,7 +685,7 @@ userQueryImpl
           showt (predicateRef_version predicateRef)
 
       mkResults pids firstId derived evolutions qResults defineOwners = do
-        let QueryResults{..} = unEvolveResults evolutions qResults
+        let QueryResults{..} = devolveResults evolutions qResults
         userCont <- case queryResultsCont of
           Nothing -> return Nothing
           Just bs -> do

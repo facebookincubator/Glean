@@ -44,7 +44,7 @@ mkPredicateEvolution detailsFor oldPid newPid
     , evolutionEvolveValue = evolve
         (predicateValueType old)
         (predicateValueType new)
-    , evolutionUnevolve = fromMaybe id $
+    , evolutionDevolve = fromMaybe id $
         mkFactTransformation new old
     }
   where

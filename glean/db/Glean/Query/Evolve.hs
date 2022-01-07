@@ -13,7 +13,7 @@ module Glean.Query.Evolve
   , evolveType
   , devolveType
   , evolutionsFor
-  , unEvolveResults
+  , devolveResults
   , Evolutions
   , fromEvolutions
   , toEvolutions
@@ -208,20 +208,6 @@ evolveType schema ty = evolve ty
     overExpandedType (ExpandedType tref ty) =
       ExpandedType tref (evolve ty)
 
--- | Map predicates from new to old
-devolveType :: Evolutions -> Type -> Type
-devolveType (Evolutions evolutions) ty = devolve ty
-  where
-    devolve ty = bimap overPidRef overExpandedType ty
-
-    overPidRef pref =
-      case IntMap.lookup (fromIntegral $ fromPid $ pid pref) evolutions of
-        Nothing -> pref
-        Just PredicateEvolution{..} -> pidRef evolutionOld
-
-    overExpandedType (ExpandedType tref ty) =
-      ExpandedType tref (devolve ty)
-
 lookupEvolution :: Pid -> DbSchema -> Maybe PredicateEvolution
 lookupEvolution pid DbSchema{..} =
   IntMap.lookup (fromIntegral $ fromPid pid) predicatesEvolution
@@ -236,24 +222,38 @@ pidRef :: PredicateDetails -> PidRef
 pidRef details = PidRef (predicatePid details) (predicateRef details)
 
 -- ========================
--- Unevolve
+-- Devolve
 -- ========================
 
+-- | Map predicates from new to old
+devolveType :: Evolutions -> Type -> Type
+devolveType (Evolutions evolutions) ty = devolve ty
+  where
+    devolve ty = bimap overPidRef overExpandedType ty
+
+    overPidRef pref =
+      case IntMap.lookup (fromIntegral $ fromPid $ pid pref) evolutions of
+        Nothing -> pref
+        Just PredicateEvolution{..} -> pidRef evolutionOld
+
+    overExpandedType (ExpandedType tref ty) =
+      ExpandedType tref (devolve ty)
+
 -- | Transform evolved facts back into the type the query originally asked for.
-unEvolveResults :: Evolutions -> QueryResults -> QueryResults
-unEvolveResults (Evolutions evolutions) results@QueryResults{..}
+devolveResults :: Evolutions -> QueryResults -> QueryResults
+devolveResults (Evolutions evolutions) results@QueryResults{..}
   | IntMap.null evolutions = results
   | otherwise = results
-    { queryResultsFacts = unEvolveFacts queryResultsFacts
-    , queryResultsNestedFacts = unEvolveFacts queryResultsNestedFacts
+    { queryResultsFacts = devolveFacts queryResultsFacts
+    , queryResultsNestedFacts = devolveFacts queryResultsNestedFacts
     }
   where
-    unEvolveFacts :: Vector (Fid, Thrift.Fact) -> Vector (Fid, Thrift.Fact)
-    unEvolveFacts = fmap (fmap unEvolveFact)
+    devolveFacts :: Vector (Fid, Thrift.Fact) -> Vector (Fid, Thrift.Fact)
+    devolveFacts = fmap (fmap devolveFact)
 
-    unEvolveFact :: Thrift.Fact -> Thrift.Fact
-    unEvolveFact fact@(Thrift.Fact pid _ _) =
+    devolveFact :: Thrift.Fact -> Thrift.Fact
+    devolveFact fact@(Thrift.Fact pid _ _) =
       case IntMap.lookup (fromIntegral pid) evolutions of
         Nothing -> fact
-        Just PredicateEvolution{..} -> evolutionUnevolve fact
+        Just PredicateEvolution{..} -> evolutionDevolve fact
 
