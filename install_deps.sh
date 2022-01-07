@@ -7,6 +7,9 @@
 
 set -e
 
+# Make sure we have updated cabal index before we do anything
+cabal update
+
 git clone https://github.com/facebookincubator/hsthrift.git
 cd hsthrift
 ./install_deps.sh --nuke
