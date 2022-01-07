@@ -1,5 +1,5 @@
 {-
-  Copyright (c) Facebook, Inc. and its affiliates.
+  Copyright (c) Meta Platforms, Inc. and affiliates.
   All rights reserved.
 
   This source code is licensed under the BSD-style license found in the
@@ -312,6 +312,25 @@ mkDbSchema override getPids dbContent source base addition = do
     envStored
     addition
 
+  -- Check the invariant that stored predicates do not make use of
+  -- negation or refer to derived predicates that make use of it.
+  -- See Note [Negation in stored predicates]
+  let
+    usingNegation = usesOfNegation (tcEnvPredicates env)
+    isStored = \case
+      NoDeriving -> True
+      Derive when _ -> case when of
+        DeriveOnDemand -> False
+        DerivedAndStored -> True
+        DeriveIfEmpty -> True
+    usesNegation ref = ref `HashSet.member` usingNegation
+
+  forM_ (tcEnvPredicates env) $ \PredicateDetails{..} ->
+    when (isStored predicateDeriving && usesNegation predicateRef)
+      $ throwIO $ Thrift.Exception
+      $ "negation is not allowed in a stored predicate: "
+      <> showPredicateRef predicateRef
+
   let predicates = HashMap.elems (tcEnvPredicates env)
 
       byId = IntMap.fromList
@@ -583,7 +602,6 @@ typecheckSchema override refToPid dbContent stored
     env = TcEnv
       { tcEnvPredicates = preds
       , tcEnvTypes = types
-      , tcEnvUsesNegation = tcEnvUsesNegation
       }
 
     tcDeriving pred info = runExcept $ do
@@ -663,30 +681,8 @@ typecheckSchema override refToPid dbContent stored
           Derive DerivedAndStored _ -> check
           _ -> return ()
 
-  -- Check the invariant that stored predicates do not make use of
-  -- negation or refer to derived predicates that make use of it.
-  -- See Note [Negation in stored predicates]
-  let
-    usingNegation = usesOfNegation tcEnvUsesNegation finalPreds
-
-    isStored = \case
-      NoDeriving -> True
-      Derive when _ -> case when of
-        DeriveOnDemand -> False
-        DerivedAndStored -> True
-        DeriveIfEmpty -> True
-
-    usesNegation ref = ref `HashSet.member` usingNegation
-
-  forM_ finalPreds $ \PredicateDetails{..} ->
-    when (isStored predicateDeriving && usesNegation predicateRef)
-      $ throwIO $ Thrift.Exception
-      $ "negation is not allowed in a stored predicate: "
-      <> showPredicateRef predicateRef
-
   return env
     { tcEnvPredicates = finalPreds
-    , tcEnvUsesNegation = usingNegation
     }
 
   where
@@ -713,11 +709,10 @@ typecheckSchema override refToPid dbContent stored
     rtsType = mkRtsType lookupType (`HashMap.lookup` refToPid)
 
 usesOfNegation
-  :: HashSet PredicateRef -- ^ predicates from parent schemas that use negation
-  -> HashMap PredicateRef PredicateDetails
+  :: HashMap PredicateRef PredicateDetails
   -> HashSet PredicateRef
-usesOfNegation inheritedUses preds =
-  foldl' recordUseOfNegation inheritedUses derivations
+usesOfNegation preds =
+  foldl' recordUseOfNegation mempty derivations
   where
     recordUseOfNegation usesNegation (predUsesNegation, ref, deps)
       | predUsesNegation || any (`HashSet.member` usesNegation) deps

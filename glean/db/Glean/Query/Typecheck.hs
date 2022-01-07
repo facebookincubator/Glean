@@ -1,5 +1,5 @@
 {-
-  Copyright (c) Facebook, Inc. and its affiliates.
+  Copyright (c) Meta Platforms, Inc. and affiliates.
   All rights reserved.
 
   This source code is licensed under the BSD-style license found in the
@@ -49,11 +49,10 @@ import Glean.Schema.Resolve
 data TcEnv = TcEnv
   { tcEnvTypes :: HashMap TypeRef TypeDetails
   , tcEnvPredicates :: HashMap PredicateRef PredicateDetails
-  , tcEnvUsesNegation :: HashSet PredicateRef
   }
 
 emptyTcEnv :: TcEnv
-emptyTcEnv = TcEnv HashMap.empty HashMap.empty HashSet.empty
+emptyTcEnv = TcEnv HashMap.empty HashMap.empty
 
 -- | Typecheck a 'SourceQuery' which is in terms of schema types and
 -- turn it into a 'TypecheckedQuery' which is in terms of raw Terms,
@@ -70,7 +69,6 @@ typecheck dbSchema ver policy query = do
     tcEnv = TcEnv
       { tcEnvPredicates = predicatesByRef dbSchema
       , tcEnvTypes = schemaTypesByRef dbSchema
-      , tcEnvUsesNegation = mempty
       }
   (q@(TcQuery ty _ _ _), TypecheckState{..}) <-
     let state = initialTypecheckState tcEnv ver policy TcModeQuery in
