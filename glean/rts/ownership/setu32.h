@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include <immintrin.h>
 #include <stdint.h>
 #include <algorithm>
 #include <cassert>
@@ -17,7 +16,13 @@
 #include <tuple>
 #include <vector>
 #include <folly/Optional.h>
+
+#if GLEAN_X86_64 // AVX required
+#include <immintrin.h>
 #include <folly/experimental/EliasFanoCoding.h>
+#else
+#include "glean/rts/ownership/fallbackavx.h"
+#endif
 
 namespace facebook {
 namespace glean {

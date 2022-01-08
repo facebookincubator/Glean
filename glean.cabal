@@ -326,7 +326,7 @@ library rts
     pkgconfig-depends: libfolly, libunwind, libglog, icu-uc, gflags, libxxhash
     cxx-options: -DOSS=1
     if arch(x86_64)
-        cxx-options: -DGLEAN_X86_64
+        cxx-options: -DGLEAN_X86_64=1
     build-depends:
         glean:if-internal-cpp,
         glean:ffi
