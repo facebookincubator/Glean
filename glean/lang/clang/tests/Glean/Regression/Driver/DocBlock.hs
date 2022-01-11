@@ -12,14 +12,15 @@ import Control.Monad
 
 import qualified Glean.Clang.Test as Clang
 import qualified Glean.DocBlock.Test as DocBlock (runIndexer)
+import Glean.Regression.Config
 import Glean.Regression.Indexer
-import Glean.Regression.Options
-import Glean.Regression.Test
+import Glean.Regression.Snapshot.Driver
+import Glean.Regression.Snapshot
 import Glean.Derive (derivePredicate)
 import Glean.Write (parseRef)
 
 indexer :: Indexer Clang.Options
-indexer = Clang.indexer `indexerThen` docblocks
+indexer = driverIndexer Clang.driver `indexerThen` docblocks
   where
   docblocks test backend = do
     DocBlock.runIndexer test backend

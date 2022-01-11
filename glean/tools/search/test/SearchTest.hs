@@ -17,9 +17,7 @@ import Test.HUnit
 import qualified Glean
 import Derive.Lib (DerivePass(..))
 import Glean.Clang.Test.DerivePass as DerivePass
-import Glean.Clang.Test as Clang
-import Glean.Regression.Driver.TestIndex
-import Glean.Regression.Options (Driver(..))
+import Glean.Regression.Test
 import Glean.Schema.CodeCxx.Types as Cxx
 import Glean.Schema.Code.Types as Code
 import Glean.Schema.Cxx1.Types as Cxx
@@ -34,10 +32,8 @@ import Glean.Util.SchemaRepos
 
 main :: IO ()
 main = do
-  let indexer = DerivePass.indexer [DeriveGeneric "cxx1.DeclByName"]
-      groups = driverGroups Clang.driver
-
-  mainTestIndexGeneric indexer groups "search-test" $
+  let driver = DerivePass.driver [DeriveGeneric "cxx1.DeclByName"]
+  mainTestIndexGeneric driver "search-test" $
     \_ platform _ get -> TestCase $ do
 
       (backend, repo) <- get

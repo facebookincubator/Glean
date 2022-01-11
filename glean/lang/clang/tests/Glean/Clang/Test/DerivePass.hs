@@ -7,29 +7,31 @@
 -}
 
 -- | Regression testing, see "Glean.Regression.Test" for Derive.hs
-module Glean.Clang.Test.DerivePass (testDeriver, indexer) where
+module Glean.Clang.Test.DerivePass (testDeriver, driver) where
 
 import Control.Monad
 
 import qualified Glean.Clang.Test as Clang
 import Glean.Regression.Config
-import Glean.Regression.Options
 import Glean.Regression.Indexer
-import Glean.Regression.Test
+import Glean.Regression.Snapshot.Driver
+import Glean.Regression.Snapshot
 
 import Derive.Env (withEnv)
 import Derive.Lib (dispatchDerive, DerivePass, allPredicates)
 import Derive.Types (testConfig)
 
 -- | Run the Clang indexer followed by the specified deriving passes
-indexer :: [DerivePass] -> Indexer Clang.Options
-indexer passesIn = Clang.indexer `indexerThen` derive
+driver :: [DerivePass] -> Driver Clang.Options
+driver passes = Clang.driver { driverIndexer = indexer }
   where
+  indexer = driverIndexer Clang.driver `indexerThen` derive
+
   derive test backend =
-    forM_ passesIn $ \thisPass ->
+    forM_ passes $ \thisPass ->
       -- withTestWriter completes before next pass
       withEnv (testConfig (testRepo test)) allPredicates backend $ \env ->
         dispatchDerive env thisPass
 
 testDeriver :: [DerivePass] -> IO ()
-testDeriver passes = testMain (Clang.driver { driverIndexer = indexer passes })
+testDeriver passes = testMain (driver passes)
