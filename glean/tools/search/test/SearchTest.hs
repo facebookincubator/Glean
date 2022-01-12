@@ -12,20 +12,12 @@ module SearchTest (main) where
 import Data.Default
 import Data.List
 import qualified Data.Text as Text
-import Options.Applicative
-import System.Directory
-import System.IO.Temp
 import Test.HUnit
-
-import TestRunner
 
 import qualified Glean
 import Derive.Lib (DerivePass(..))
-import Glean.Clang.Test.DerivePass as Derive
-import Glean.Clang.Test as Clang
-import Glean.Init
+import Glean.Clang.Test.DerivePass as DerivePass
 import Glean.Regression.Test
-import Glean.Regression.Config (Driver(..), TestConfig(..))
 import Glean.Schema.CodeCxx.Types as Cxx
 import Glean.Schema.Code.Types as Code
 import Glean.Schema.Cxx1.Types as Cxx
@@ -38,329 +30,293 @@ import Glean.Util.Some
 import Glean.Util.SchemaRepos
 
 
-data Config = Config
-  { cfgProjectRoot :: FilePath  -- ^ example: path to fbsource/fcode
-  , cfgRoot :: FilePath  -- ^ parent path of all sources, *.query, golden *.out
-  }
-
-optionsWith :: Parser a -> FilePath -> ParserInfo (Config, a)
-optionsWith ext cwd = info ((,) <$> parser <*> ext) fullDesc
-  where
-    parser = do
-      cfgProjectRoot <- strOption
-        $ long "project-root" <> metavar "PATH" <> value cwd
-      cfgRoot <- strOption $ long "root" <> metavar "PATH" <> value ""
-      return Config{..}
-
 main :: IO ()
 main = do
-  cwd <- getCurrentDirectory
-  withUnitTestOptions (optionsWith Clang.extOptions cwd) $ \(cfg, ext) -> do
-  withSystemTempDirectory "search-test" $ \tmpdir -> do
+  let driver = DerivePass.driver [DeriveGeneric "cxx1.DeclByName"]
+  mainTestIndexGeneric driver "search-test" $
+    \_ platform _ get -> TestCase $ do
 
-  testRoot <- makeAbsolute (cfgRoot cfg)
-  testProjectRoot <- makeAbsolute (cfgProjectRoot cfg)
+      (backend, repo) <- get
 
-  let
-    driver :: Driver
-    driver = Derive.driver ext [DeriveGeneric "cxx1.DeclByName"]
+      let repos = mempty{ cxxRepo = [repo] }
+          search_ s t f cs = do
+            print (s, cs)
+            let q = def { query = s, case_sensitive = cs }
+                lim = Just 100
+            rs <- map decl <$> findEntities lim (Some backend) repos q False
+            putStrLn $ "Result count: " <> show (length rs)
+            print rs
+            assertBool t (f rs)
+            mapM_ (checkQueryRoundtrip backend repo t) rs
+            mapM_ (checkQueryRoundtrip2 backend repo t) rs
 
-    runTest platform = TestLabel platform $ TestCase $ do
-      let
-        testConfig = TestConfig
-          { testRepoName = "test"
-          , testRepoHash = platform
-          , testOutput = tmpdir
-          , testRoot = testRoot
-          , testProjectRoot = testProjectRoot
-          , testGroup = platform
-          , testSchemaVersion = Nothing
-          }
-
-      withTestDatabase (driverGenerator driver) testConfig $
-        \(backend, repo) -> do
-          let repos = mempty{ cxxRepo = [repo] }
-              search_ s t f cs = do
-                print (s, cs)
-                let q = def { query = s, case_sensitive = cs }
-                    lim = Just 100
-                rs <- map decl <$> findEntities lim (Some backend) repos q False
-                putStrLn $ "Result count: " <> show (length rs)
-                print rs
-                assertBool t (f rs)
-                mapM_ (checkQueryRoundtrip backend repo t) rs
-                mapM_ (checkQueryRoundtrip2 backend repo t) rs
-
-              search s t f = do
-                search_ s t f True
-                case Text.breakOnEnd "::" s of
-                  (ns, n) -> do
-                    search_ (ns <> Text.toLower n) t f False
-                    search_ (ns <> Text.toUpper n) t f False
+          search s t f = do
+            search_ s t f True
+            case Text.breakOnEnd "::" s of
+              (ns, n) -> do
+                search_ (ns <> Text.toLower n) t f False
+                search_ (ns <> Text.toUpper n) t f False
 
 {- TODO: broken
 
-          search "facebook" "namespace facebook" $ \r ->
-           case sort r of
-             [ Entity_cxx (Entity_defn Definition_namespace_{}) ] -> True
-             _ -> False
+      search "facebook" "namespace facebook" $ \r ->
+       case sort r of
+         [ Entity_cxx (Entity_defn Definition_namespace_{}) ] -> True
+         _ -> False
 
-          search "glean" "namespace glean" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_defn Definition_namespace_{}) ] -> True
-              _ -> False
+      search "glean" "namespace glean" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_defn Definition_namespace_{}) ] -> True
+          _ -> False
 
-          search "worklist" "namespace worklist" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_defn Definition_namespace_{}) ] -> True
-              _ -> False
+      search "worklist" "namespace worklist" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_defn Definition_namespace_{}) ] -> True
+          _ -> False
 
-          search "glean::worklist" "namespace glean::worklist" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_defn Definition_namespace_{}) ] -> True
-              _ -> False
+      search "glean::worklist" "namespace glean::worklist" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_defn Definition_namespace_{}) ] -> True
+          _ -> False
 
-          search "facebook::glean" "namespace facebook::glean" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_defn Definition_namespace_{}) ] -> True
-              _ -> False
+      search "facebook::glean" "namespace facebook::glean" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_defn Definition_namespace_{}) ] -> True
+          _ -> False
 
-          search "facebook::glean::worklist"
-            "namespace facebook::glean::worlist" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_defn Definition_namespace_{}) ] -> True
-              _ -> False
+      search "facebook::glean::worklist"
+        "namespace facebook::glean::worlist" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_defn Definition_namespace_{}) ] -> True
+          _ -> False
 -}
 
-          search "Counter" "struct Counter" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_defn Definition_record_{}) ] -> True
-              _ -> False
+      search "Counter" "struct Counter" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_defn Definition_record_{}) ] -> True
+          _ -> False
 
-          search "Value" "struct Value" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_defn Definition_record_{}) ] -> True
-              _ -> False
+      search "Value" "struct Value" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_defn Definition_record_{}) ] -> True
+          _ -> False
 
-          search "worklist::Counter" "struct worklist::Counter" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_defn Definition_record_{}) ] -> True
-              _ -> False
+      search "worklist::Counter" "struct worklist::Counter" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_defn Definition_record_{}) ] -> True
+          _ -> False
 
-          search "worklist::Counter::Value"
-            "struct worklist::Counter::Value" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_defn Definition_record_{}) ] -> True
-              _ -> False
+      search "worklist::Counter::Value"
+        "struct worklist::Counter::Value" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_defn Definition_record_{}) ] -> True
+          _ -> False
 
-          search "glean::worklist::Counter"
-            "struct glean::worklist::Counter" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_defn Definition_record_{}) ] -> True
-              _ -> False
+      search "glean::worklist::Counter"
+        "struct glean::worklist::Counter" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_defn Definition_record_{}) ] -> True
+          _ -> False
 
-          search "glean::worklist::Counter::Value"
-            "struct glean::worklist::Counter::Value" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_defn Definition_record_{}) ] -> True
-              _ -> False
+      search "glean::worklist::Counter::Value"
+        "struct glean::worklist::Counter::Value" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_defn Definition_record_{}) ] -> True
+          _ -> False
 
-          search "facebook::glean::worklist::Counter"
-            "struct facebook::glean::worklist::Counter" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_defn Definition_record_{}) ] -> True
-              _ -> False
+      search "facebook::glean::worklist::Counter"
+        "struct facebook::glean::worklist::Counter" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_defn Definition_record_{}) ] -> True
+          _ -> False
 
-          search "facebook::glean::worklist::Counter::Value"
-            "struct facebook::glean::worklist::Counter::Value" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_defn Definition_record_{}) ] -> True
-              _ -> False
+      search "facebook::glean::worklist::Counter::Value"
+        "struct facebook::glean::worklist::Counter::Value" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_defn Definition_record_{}) ] -> True
+          _ -> False
 
-          search "f" "function decl/def" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_decl Declaration_function_{}),
-                Entity_cxx (Entity_defn Definition_function_{}) ] -> True
-              _ -> False
+      search "f" "function decl/def" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_function_{}),
+            Entity_cxx (Entity_defn Definition_function_{}) ] -> True
+          _ -> False
 
-          search "facebook::f" "function decl/def (scoped)" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_decl Declaration_function_{}),
-                Entity_cxx (Entity_defn Definition_function_{}) ] -> True
-              _ -> False
+      search "facebook::f" "function decl/def (scoped)" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_function_{}),
+            Entity_cxx (Entity_defn Definition_function_{}) ] -> True
+          _ -> False
 
-          search "C" "class decl/def" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_decl Declaration_record_{}),
-                Entity_cxx (Entity_defn Definition_record_{}) ] -> True
-              _ -> False
+      search "C" "class decl/def" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_record_{}),
+            Entity_cxx (Entity_defn Definition_record_{}) ] -> True
+          _ -> False
 
-          search "facebook::C" "class decl/def (scoped)" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_decl Declaration_record_{}),
-                Entity_cxx (Entity_defn Definition_record_{}) ] -> True
-              _ -> False
+      search "facebook::C" "class decl/def (scoped)" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_record_{}),
+            Entity_cxx (Entity_defn Definition_record_{}) ] -> True
+          _ -> False
 
-          search "D" "struct decl/def" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_decl Declaration_record_{}),
-                Entity_cxx (Entity_defn Definition_record_{}) ] -> True
-              _ -> False
+      search "D" "struct decl/def" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_record_{}),
+            Entity_cxx (Entity_defn Definition_record_{}) ] -> True
+          _ -> False
 
-          search "facebook::D" "struct decl/def (scoped)" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_decl Declaration_record_{}),
-                Entity_cxx (Entity_defn Definition_record_{}) ] -> True
-              _ -> False
+      search "facebook::D" "struct decl/def (scoped)" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_record_{}),
+            Entity_cxx (Entity_defn Definition_record_{}) ] -> True
+          _ -> False
 
-          search "get" "method decl/def" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_decl Declaration_function_{}),
-                Entity_cxx (Entity_defn Definition_function_{}) ] -> True
-              _ -> False
+      search "get" "method decl/def" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_function_{}),
+            Entity_cxx (Entity_defn Definition_function_{}) ] -> True
+          _ -> False
 
-          search "facebook::C::get" "method decl & def (scoped)" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_decl Declaration_function_{}),
-                Entity_cxx (Entity_defn Definition_function_{}) ] -> True
-              _ -> False
+      search "facebook::C::get" "method decl & def (scoped)" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_function_{}),
+            Entity_cxx (Entity_defn Definition_function_{}) ] -> True
+          _ -> False
 
-          search "TEST" "macro def" $ \r ->
-            case sort r of
-              [ Entity_pp{} ] -> True
-              _ -> False
+      search "TEST" "macro def" $ \r ->
+        case sort r of
+          [ Entity_pp{} ] -> True
+          _ -> False
 
-          -- shouldn't find the macro when we give a namespace
-          search "facebook::TEST" "macro def (scoped)" $ \r ->
-            case r of
-              [] -> True
-              _ -> False
+      -- shouldn't find the macro when we give a namespace
+      search "facebook::TEST" "macro def (scoped)" $ \r ->
+        case r of
+          [] -> True
+          _ -> False
 
-          search "global" "global variable" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_decl Declaration_variable{}),
-                Entity_cxx (Entity_defn Definition_variable{}) ] -> True
-              _ -> False
+      search "global" "global variable" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_variable{}),
+            Entity_cxx (Entity_defn Definition_variable{}) ] -> True
+          _ -> False
 
-          search "facebook::D::x" "public variable (f::D::x)" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_decl Declaration_variable{}) ] -> True
-              _ -> False
+      search "facebook::D::x" "public variable (f::D::x)" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_variable{}) ] -> True
+          _ -> False
 
-          search "D::x" "public variable (D::x)" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_decl Declaration_variable{})] -> True
-              _ -> False
+      search "D::x" "public variable (D::x)" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_variable{})] -> True
+          _ -> False
 
-          search "x" "public variable (x)" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_decl Declaration_variable{})] -> True
-              _ -> False
+      search "x" "public variable (x)" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_variable{})] -> True
+          _ -> False
 
-          search "facebook::C::a" "private variable (f::C::a)" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_decl Declaration_variable{}) ] -> True
-              _ -> False
+      search "facebook::C::a" "private variable (f::C::a)" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_variable{}) ] -> True
+          _ -> False
 
-          search "C::a" "private variable (C::a)" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_decl Declaration_variable{})] -> True
-              _ -> False
+      search "C::a" "private variable (C::a)" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_variable{})] -> True
+          _ -> False
 
-          search "a" "private variable (a)" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_decl Declaration_variable{})] -> True
-              _ -> False
+      search "a" "private variable (a)" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_variable{})] -> True
+          _ -> False
 
-          search "facebook::global" "global variable (scoped)" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_decl Declaration_variable{}),
-                Entity_cxx (Entity_defn Definition_variable{}) ] -> True
-              _ -> False
+      search "facebook::global" "global variable (scoped)" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_variable{}),
+            Entity_cxx (Entity_defn Definition_variable{}) ] -> True
+          _ -> False
 
-          search "T" "type alias" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_decl Declaration_typeAlias{}) ] -> True
-              _ -> False
+      search "T" "type alias" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_typeAlias{}) ] -> True
+          _ -> False
 
-          search "e" "enum" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_defn Definition_enum_{}) ] -> True
-              _ -> False
+      search "e" "enum" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_defn Definition_enum_{}) ] -> True
+          _ -> False
 
-          search "facebook::e" "enum (scoped)" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_defn Definition_enum_{}) ] -> True
-              _ -> False
+      search "facebook::e" "enum (scoped)" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_defn Definition_enum_{}) ] -> True
+          _ -> False
 
-          search "p" "enumerator" $ \r ->
-            case sort r of
-              [ Entity_cxx Entity_enumerator{} ] -> True
-              _ -> False
+      search "p" "enumerator" $ \r ->
+        case sort r of
+          [ Entity_cxx Entity_enumerator{} ] -> True
+          _ -> False
 
-          search "facebook::p" "enumerator (scoped)" $ \r ->
-            case sort r of
-              [ Entity_cxx Entity_enumerator{} ] -> True
-              _ -> False
+      search "facebook::p" "enumerator (scoped)" $ \r ->
+        case sort r of
+          [ Entity_cxx Entity_enumerator{} ] -> True
+          _ -> False
 
-          search "EE" "enum class" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_defn Definition_enum_{}) ] -> True
-              _ -> False
+      search "EE" "enum class" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_defn Definition_enum_{}) ] -> True
+          _ -> False
 
-          search "facebook::EE" "enum class (scoped)" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_defn Definition_enum_{}) ] -> True
-              _ -> False
+      search "facebook::EE" "enum class (scoped)" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_defn Definition_enum_{}) ] -> True
+          _ -> False
 
-          search "EE::r" "enumerator of enum class" $ \r ->
-            case sort r of
-              [ Entity_cxx Entity_enumerator{} ] -> True
-              _ -> False
+      search "EE::r" "enumerator of enum class" $ \r ->
+        case sort r of
+          [ Entity_cxx Entity_enumerator{} ] -> True
+          _ -> False
 
-          search "facebook::EE::r" "enumerator of enum class (scoped)" $ \r ->
-            case sort r of
-              [ Entity_cxx Entity_enumerator{} ] -> True
-              _ -> False
+      search "facebook::EE::r" "enumerator of enum class (scoped)" $ \r ->
+        case sort r of
+          [ Entity_cxx Entity_enumerator{} ] -> True
+          _ -> False
 
-          search "meth1" "objc method" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_decl Declaration_objcMethod{}),
-                Entity_cxx (Entity_defn Definition_objcMethod{}) ] -> True
-              _ -> False
+      search "meth1" "objc method" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_objcMethod{}),
+            Entity_cxx (Entity_defn Definition_objcMethod{}) ] -> True
+          _ -> False
 
-          search "prop1" "objc property" $ \r ->
-            case (sort r, platform) of
-              -- For some reason we get a method and a property...
-              ([ Entity_cxx (Entity_decl Declaration_objcMethod{}),
-                Entity_cxx (Entity_decl Declaration_objcProperty{})],
-                 "platform009") -> True
-              -- llvm12-based indexer returns one extra method (property setter)
-              ([ Entity_cxx (Entity_decl Declaration_objcMethod{}),
-                Entity_cxx (Entity_decl Declaration_objcMethod{}),
-                Entity_cxx (Entity_decl Declaration_objcProperty{})],
-                "platform009-clang-12" ) -> True
-              ([ Entity_cxx (Entity_decl Declaration_objcMethod{}),
-                Entity_cxx (Entity_decl Declaration_objcMethod{}),
-                Entity_cxx (Entity_decl Declaration_objcProperty{})],
-                "platform010" ) -> True
-              _ -> False
+      search "prop1" "objc property" $ \r ->
+        case (sort r, platform) of
+          -- For some reason we get a method and a property...
+          ([ Entity_cxx (Entity_decl Declaration_objcMethod{}),
+            Entity_cxx (Entity_decl Declaration_objcProperty{})],
+             "platform009") -> True
+          -- llvm12-based indexer returns one extra method (property setter)
+          ([ Entity_cxx (Entity_decl Declaration_objcMethod{}),
+            Entity_cxx (Entity_decl Declaration_objcMethod{}),
+            Entity_cxx (Entity_decl Declaration_objcProperty{})],
+            "platform009-clang-12" ) -> True
+          ([ Entity_cxx (Entity_decl Declaration_objcMethod{}),
+            Entity_cxx (Entity_decl Declaration_objcMethod{}),
+            Entity_cxx (Entity_decl Declaration_objcProperty{})],
+            "platform010" ) -> True
+          _ -> False
 
-          -- TODO: protocol
-          search "AA" "objc interface/implementation" $ \r ->
-            length r == 4 &&
-            length (filter (isObjcContainer isInterface) r) == 1 &&
-            length (filter (isObjcContainer isImplementation) r) == 1 &&
-            length (filter (isObjcContainer isCategoryInterface) r) == 1 &&
-            length (filter (isObjcContainer isCategoryImplementation) r) == 1
+      -- TODO: protocol
+      search "AA" "objc interface/implementation" $ \r ->
+        length r == 4 &&
+        length (filter (isObjcContainer isInterface) r) == 1 &&
+        length (filter (isObjcContainer isImplementation) r) == 1 &&
+        length (filter (isObjcContainer isCategoryInterface) r) == 1 &&
+        length (filter (isObjcContainer isCategoryImplementation) r) == 1
 
-          search "_i" "objc variable" $ \r ->
-            case sort r of
-              [ Entity_cxx (Entity_decl Declaration_variable{}) ] -> True
-              _ -> False
-
-
-  testRunner $ TestList (map runTest $ driverGroups driver)
+      search "_i" "objc variable" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_variable{}) ] -> True
+          _ -> False
 
 isObjcContainer :: (Cxx.ObjcContainerId -> Bool) -> Code.Entity -> Bool
 isObjcContainer test
