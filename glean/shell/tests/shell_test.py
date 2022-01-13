@@ -1,4 +1,4 @@
-# Copyright (c) Facebook, Inc. and its affiliates.
+# Copyright (c) Meta Platforms, Inc. and affiliates.
 # All rights reserved.
 #
 # This source code is licensed under the BSD-style license found in the
@@ -110,7 +110,7 @@ class GleanShellReload(GleanShellTest):
         self.shellCommand(":reload", "facts")
 
         # check that we can query for the new derived predicate
-        output = self.shellCommand("example.Foo _", "facts>")
+        output = self.shellCommand("example.Foo.2 _", "facts>")
         self.assertIn("Fish", output)
 
 
