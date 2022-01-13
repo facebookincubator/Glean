@@ -19,6 +19,7 @@ module Glean.Query.Typecheck
 
 import Control.Monad.Except
 import Control.Monad.State
+import Data.Bifoldable
 import Data.Char
 import Data.Maybe
 import qualified Data.HashMap.Strict as HashMap
@@ -965,61 +966,37 @@ varsQuery (SourceQuery head stmts) r =
   where
   varsStmt (SourceStatement a b) r = varsPat a $! varsPat b r
 
--- | Immediate predicate dependencies of a typechecked query
+-- | Capture all predicates that appear in a query
 tcQueryDeps :: TcQuery -> Set PredicateRef
-tcQueryDeps (TcQuery ty _ _ stmts) =
-  typeDeps ty <> foldMap tcStatementDeps stmts
+tcQueryDeps q = Set.fromList $ map getRef (overQuery q)
+  where
+    getRef (PidRef _ ref) = ref
 
-tcStatementDeps :: TcStatement -> Set PredicateRef
-tcStatementDeps (TcStatement ty lhs rhs) =
-  typeDeps ty <> tcPatDeps lhs <> tcPatDeps rhs
+    overQuery :: TcQuery -> [PidRef]
+    overQuery (TcQuery ty _ _ stmts) =
+      overType ty <> foldMap overStatement stmts
 
-tcPatDeps :: TcPat -> Set PredicateRef
-tcPatDeps = \case
-  RTS.Byte _ -> mempty
-  RTS.Nat _ -> mempty
-  RTS.Array xs -> foldMap tcPatDeps xs
-  RTS.ByteArray _ -> mempty
-  RTS.Tuple xs -> foldMap tcPatDeps xs
-  RTS.Alt _ t -> tcPatDeps t
-  RTS.String _ -> mempty
-  RTS.Ref match -> matchDeps match
+    overType :: Type -> [PidRef]
+    overType ty = bifoldMap pure (\(ExpandedType _ ty) -> overType ty) ty
 
-matchDeps :: Match (Typed TcTerm) Var -> Set PredicateRef
-matchDeps = \case
-  MatchWild ty -> typeDeps ty
-  MatchNever ty -> typeDeps ty
-  MatchFid _ -> mempty
-  MatchBind _ -> mempty
-  MatchVar _ -> mempty
-  MatchAnd one two -> tcPatDeps one <> tcPatDeps two
-  MatchPrefix _ x -> tcPatDeps x
-  MatchSum xs -> foldMap tcPatDeps $ catMaybes xs
-  MatchExt (Typed ty tcterm) -> typeDeps ty <> tcTermDeps tcterm
+    overStatement :: TcStatement -> [PidRef]
+    overStatement (TcStatement ty lhs rhs) =
+     overType ty <> overPat lhs <> overPat rhs
 
-tcTermDeps :: TcTerm -> Set PredicateRef
-tcTermDeps = \case
-  TcOr x y -> tcPatDeps x <> tcPatDeps y
-  TcFactGen (PidRef _ pred) x y ->
-    Set.singleton pred <> tcPatDeps x <> tcPatDeps y
-  TcElementsOfArray x -> tcPatDeps x
-  TcQueryGen q -> tcQueryDeps q
-  TcNegation stmts -> foldMap tcStatementDeps stmts
-  TcPrimCall _ xs -> foldMap tcPatDeps xs
+    overPat :: TcPat -> [PidRef]
+    overPat pat = foldMap (bifoldMap overTyped (const mempty)) pat
 
-typeDeps :: Type -> Set PredicateRef
-typeDeps = \case
-  Schema.Byte -> mempty
-  Schema.Nat -> mempty
-  Schema.String -> mempty
-  Schema.Array ty -> typeDeps ty
-  Schema.Record fields -> foldMap (typeDeps . fieldDefType) fields
-  Schema.Sum fields -> foldMap (typeDeps . fieldDefType) fields
-  Schema.Predicate (PidRef _ pred) -> Set.singleton pred
-  Schema.NamedType (ExpandedType _ ty) -> typeDeps ty
-  Schema.Maybe ty -> typeDeps ty
-  Schema.Enumerated _ -> mempty
-  Schema.Boolean -> mempty
+    overTyped :: Typed TcTerm -> [PidRef]
+    overTyped (Typed ty tcTerm) = overType ty <> overTerm tcTerm
+
+    overTerm :: TcTerm -> [PidRef]
+    overTerm = \case
+      TcOr x y -> overPat x <> overPat y
+      TcFactGen pref x y -> pref : overPat x <> overPat y
+      TcElementsOfArray x -> overPat x
+      TcQueryGen q -> overQuery q
+      TcNegation stmts -> foldMap overStatement stmts
+      TcPrimCall _ xs -> foldMap overPat xs
 
 -- | Whether a query uses negation in its definition.
 -- Does not check for transitive uses of negation.

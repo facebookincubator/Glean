@@ -29,6 +29,7 @@ import Control.Exception
 import Control.Monad.Extra (whenJust)
 import Control.Monad.State
 import Data.Bifunctor
+import Data.Bifoldable
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as ByteString
 import Data.Coerce
@@ -242,6 +243,18 @@ instance Bifunctor Match where
     MatchAnd a b -> MatchAnd (fmap (bimap f g) a) (fmap (bimap f g) b)
     MatchPrefix b term -> MatchPrefix b $ fmap (bimap f g) term
     MatchSum xs -> MatchSum $ map (fmap (fmap (bimap f g))) xs
+
+instance Bifoldable Match where
+  bifoldMap f g = \case
+    MatchWild _ -> mempty
+    MatchNever _ -> mempty
+    MatchFid _ -> mempty
+    MatchExt ext -> f ext
+    MatchVar var -> g var
+    MatchBind var -> g var
+    MatchAnd a b -> foldMap (bifoldMap f g) a <> foldMap (bifoldMap f g) b
+    MatchPrefix _ term -> foldMap (bifoldMap f g) term
+    MatchSum xs -> foldMap (foldMap (foldMap (bifoldMap f g))) xs
 
 matchVar :: Match ext var -> Maybe var
 matchVar (MatchVar v) = Just v
