@@ -11,14 +11,11 @@ module Glean.Handler
   ( Write(..)
   , State(..)
   , handler
-  , handlerIndexing
   ) where
 
-import Glean.Index.GleanIndexingService.Service
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Map as Map
 import Data.Maybe
-import qualified Glean.Index as Index
 
 import Facebook.Fb303
 
@@ -31,16 +28,7 @@ import Glean.Types as Thrift
 data State = State
   { fb303State :: Fb303State
   , stEnv :: Env
-  , stPort :: IO Int -- ^ get the port the server is running on
   }
-
-handlerIndexing
-  :: State
-  -> GleanIndexingServiceCommand a
-  -> IO a
-handlerIndexing state req = case req of
-  Index r -> Index.index (stPort state) (stEnv state) r
-  SuperGleanService r -> handler state r
 
 handler :: State -> GleanServiceCommand a -> IO a
 handler State{..} req =
