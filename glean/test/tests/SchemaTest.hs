@@ -384,6 +384,7 @@ changeSchemaTest = TestCase $
             predicate P : { a : string, b : nat }
             predicate Q : { p : P }
           }
+          schema all.1 : test.1 {}
         |]
 
       schema_v1 =
@@ -395,6 +396,7 @@ changeSchemaTest = TestCase $
           schema test.2 : test.1 {
             predicate P : { a : string, b : nat, c : {} }
           }
+          schema all.1 : test.1, test.2 {}
         |]
 
     let repo = Thrift.Repo "schematest" "123"
@@ -450,6 +452,7 @@ writeEphemeralPredicate = TestCase $
             predicate P : { a : string, b : nat }
             predicate Q : { p : P }
           }
+          schema all.1 : test.1 {}
         |]
 
       schema_v1_file = root <> "schema1"
@@ -462,6 +465,8 @@ writeEphemeralPredicate = TestCase $
           schema test.2 : test.1 {
             predicate P : { a : string, b : nat, c : {} }
           }
+
+          schema all.1 : test.1, test.2 {}
         |]
 
     writeFile schema_v0_file schema_v0
@@ -503,6 +508,7 @@ backwardCompatDeriving = TestCase $
             predicate P : { a : string, b : nat }
             predicate Q : { p : P }
           }
+          schema all.1 : test.1 {}
         |]
 
       schema_v1_file = root <> "schema1"
@@ -518,6 +524,7 @@ backwardCompatDeriving = TestCase $
             derive test.P.1
               { A, B } where P.2 { A, B, _ }
           }
+          schema all.1 : test.1 , test.2 {}
         |]
 
     writeFile schema_v0_file schema_v0
@@ -590,6 +597,8 @@ deriveDefault = TestCase $
             derive test.P.2 default
               { A, B, {} } where test.P.1 { A, B }
           }
+
+          schema all.1 : test.1, test.2 {}
         |]
 
     writeFile schema_v0_file schema_v0
@@ -666,6 +675,7 @@ schemaEvolves = TestList
         schema test.2 {}
         schema test.2 evolves test.1
         schema test.1 evolves test.2
+        schema all.1 : test.1, test.2 {}
       |]
       $ \r ->
       assertBool "throws cycle error" $
@@ -682,6 +692,7 @@ schemaEvolves = TestList
         schema test.3 {}
         schema test.2 evolves test.1
         schema test.3 evolves test.1
+        schema all.1 : test.1, test.2, test.3 {}
       |]
       $ \r ->
       assertBool "throws multiple schemas evolve error" $
@@ -698,6 +709,7 @@ schemaEvolves = TestList
         schema test.3 {}
         schema test.3 evolves test.1
         schema test.3 evolves test.2
+        schema all.1 : test.1, test.2, test.3 {}
       |]
       $ \r ->
       assertBool "succeeds creating schema" $
@@ -715,6 +727,7 @@ schemaEvolves = TestList
           predicate P : { a : nat, b: string }
         }
         schema test.2 evolves test.1
+        schema all.1 : test.1, test.2 {}
       |]
       $ \r ->
       assertBool "succeeds creating schema" $
@@ -732,6 +745,7 @@ schemaEvolves = TestList
           predicate P : { a : nat }
         }
         schema test.2 evolves test.1
+        schema all.1 : test.1, test.2 {}
       |]
       $ \r ->
       assertBool "throws error stating missing field" $
@@ -751,6 +765,7 @@ schemaEvolves = TestList
           predicate P : { b: string, a : nat }
         }
         schema test.2 evolves test.1
+        schema all.1 : test.1, test.2 {}
       |]
       $ \r ->
       assertBool "succeeds creating schema" $
@@ -769,6 +784,7 @@ schemaEvolves = TestList
           predicate Q : { a : nat }
         }
         schema test.2 evolves test.1
+        schema all.1 : test.1, test.2 {}
       |]
       $ \r ->
       assertBool "succeeds creating schema" $
@@ -784,6 +800,7 @@ schemaEvolves = TestList
         }
         schema test.2 {}
         schema test.2 evolves test.1
+        schema all.1 : test.1, test.2 {}
       |]
       $ \r ->
       assertBool "errors stating missing predicate" $
@@ -801,6 +818,7 @@ schemaEvolves = TestList
           predicate P : enum { a | b | c }
         }
         schema test.2 evolves test.1
+        schema all.1 : test.1, test.2 {}
       |]
       $ \r ->
       assertBool "error states new option" $
@@ -818,6 +836,7 @@ schemaEvolves = TestList
           predicate P : enum { a | b }
         }
         schema test.2 evolves test.1
+        schema all.1 : test.1, test.2 {}
       |]
       $ \r ->
       assertBool "error states missing option" $
@@ -838,6 +857,7 @@ schemaEvolves = TestList
           predicate P : enum { b | a }
         }
         schema test.2 evolves test.1
+        schema all.1 : test.1, test.2 {}
       |]
       $ \r ->
       assertBool "succeeds creating schema" $
@@ -856,6 +876,7 @@ schemaEvolves = TestList
           predicate P : { a : nat }
         }
         schema test.2 evolves test.1
+        schema all.1 : test.1, test.2 {}
       |]
       $ \r ->
       assertBool "succeeds creating schema" $
@@ -886,6 +907,7 @@ schemaEvolves = TestList
 
         schema x.2 evolves x.1
         schema y.2 evolves y.1
+        schema all.1 : x.1, x.2, y.1, y.2 {}
       |]
       $ \r ->
       assertBool "succeeds creating schema" $
@@ -921,6 +943,7 @@ schemaEvolves = TestList
         schema x.2 evolves x.1
         schema x.3 evolves x.2
         schema y.2 evolves y.1
+        schema all.1 : x.1, x.2, x.3, y.1, y.2 {}
       |]
       $ \r ->
       assertBool "succeeds creating schema" $
@@ -947,6 +970,7 @@ schemaEvolves = TestList
         }
 
         schema x.3 evolves x.2
+        schema all.1 : base.1, x.2, x.3 {}
       |]
       $ \r ->
       assertBool "succeeds creating schema" $
@@ -971,6 +995,7 @@ schemaEvolves = TestList
           predicate Q : { x: P }
         }
         schema x.3 evolves x.2
+        schema all.1 : x.1, x.2, x.3 {}
       |]
       $ \r ->
       assertBool "succeeds creating schema" $
@@ -991,6 +1016,7 @@ schemaEvolvesTransformations = TestList
           predicate P: { a : nat, b: string }
         }
         schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
       |]
       [ mkBatch (PredicateRef "x.P" 2)
           [ [s|{ "key": { "a": 2, "b": "val" } }|] ]
@@ -1010,6 +1036,7 @@ schemaEvolvesTransformations = TestList
           predicate P: { b: nat, a : string }
         }
         schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
       |]
       [ mkBatch (PredicateRef "x.P" 2)
           [ [s|{ "key": { "a": "one1", "b": 16 } }|]
@@ -1031,6 +1058,7 @@ schemaEvolvesTransformations = TestList
           predicate P: { b: nat | a : string }
         }
         schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
       |]
       [ mkBatch (PredicateRef "x.P" 2)
           [ [s|{ "key": { "a": "A" } }|]
@@ -1054,6 +1082,7 @@ schemaEvolvesTransformations = TestList
           predicate Q: { x: string, y: nat }
         }
         schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
       |]
       [ mkBatch (PredicateRef "x.Q" 2)
           [ [s|{ "id": 1, "key": { "x": "A", "y": 1 } }|]
@@ -1085,6 +1114,7 @@ schemaEvolvesTransformations = TestList
           type TT = { y: string | x: nat }
         }
         schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
       |]
       [ mkBatch (PredicateRef "x.P" 2)
           [ [s|{ "key": { "a": "A" } }|]
@@ -1107,6 +1137,7 @@ schemaEvolvesTransformations = TestList
           predicate P : { a : nat, b: string }
         }
         schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
       |]
       [ mkBatch (PredicateRef "x.P" 1)
           [ [s|{ "key": { "a": 1 } }|]
@@ -1136,6 +1167,7 @@ schemaEvolvesTransformations = TestList
           predicate Q : { x : x.P }
             { x = V } where V = x.P _
         }
+        schema all.1 : x.1, x.2, y.1 {}
       |]
       [ mkBatch (PredicateRef "x.P" 2)
           [ [s|{ "key": { "a": 1, "b": "A" } }|]
@@ -1163,6 +1195,7 @@ schemaEvolvesTransformations = TestList
           predicate Q : { x : x.P }
             { x = V } where V = x.P _
         }
+        schema all.1 : x.1, x.2, y.1 {}
       |]
       [ mkBatch (PredicateRef "x.P" 2)
           [ [s|{ "key": { "a": 1, "b": "A" } }|]
@@ -1189,6 +1222,7 @@ schemaEvolvesTransformations = TestList
           predicate P : { b: S, a : N }
         }
         schema x.2 evolves x.1
+        schema all.1 : base.1, x.1, x.2 {}
       |]
       [ mkBatch (PredicateRef "base.N" 1)
           [ [s|{ "id": 1, "key": 1 }|]
@@ -1221,6 +1255,7 @@ schemaEvolvesTransformations = TestList
           predicate Q : { b: string, a: P }
         }
         schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
       |]
       [ mkBatch (PredicateRef "x.P" 2)
           [ [s|{ "id": 1, "key": 1 }|]
@@ -1251,6 +1286,7 @@ schemaEvolvesTransformations = TestList
           predicate P : nat
         }
         schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
       |]
       [ mkBatch (PredicateRef "x.P" 2)
           [ [s|{ "id": 1, "key": 1 }|]
@@ -1276,6 +1312,7 @@ schemaEvolvesTransformations = TestList
             { Y, X } where P { X, Y }
         }
         schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
       |]
       [ mkBatch (PredicateRef "x.P" 2)
           [ [s|{ "key": { "x": 1, "y": "A" } }|]
@@ -1301,6 +1338,7 @@ schemaEvolvesTransformations = TestList
           predicate R : nat A where Q A
         }
         schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
       |]
       [ mkBatch (PredicateRef "x.P" 2)
           [ [s|{ "key": 1 }|]
@@ -1327,6 +1365,7 @@ schemaEvolvesTransformations = TestList
           predicate Q : nat -> P
         }
         schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
       |]
       [ mkBatch (PredicateRef "x.P" 2)
           [ [s|{ "id": 1, "key": { "y": "A", "x": 1 } }|]
@@ -1355,6 +1394,7 @@ schemaEvolvesTransformations = TestList
             X -> Y where Y = P { _, X }
         }
         schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
       |]
       [ mkBatch (PredicateRef "x.P" 2)
           [ [s|{ "key": { "y": "A", "x": 1 } }|]
@@ -1376,6 +1416,7 @@ schemaEvolvesTransformations = TestList
           predicate P : { y : string, x : nat }
         }
         schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
       |]
       [ mkBatch (PredicateRef "x.P" 2)
           [ [s|{ "key": { "y": "A", "x": 1 } }|]
@@ -1399,6 +1440,7 @@ schemaEvolvesTransformations = TestList
           predicate P : { y : string, x : nat }
         }
         schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
       |]
       [ mkBatch (PredicateRef "x.P" 2)
           [ [s|{ "key": { "y": "A", "x": 1 } }|]
@@ -1428,6 +1470,7 @@ schemaEvolvesTransformations = TestList
           predicate P : { x : maybe T }
         }
         schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
       |]
       [ mkBatch (PredicateRef "x.P" 2)
           [ [s|{ "key": { "x": { "a": "A", "b": 1 } } }|]
@@ -1449,6 +1492,7 @@ schemaEvolvesTransformations = TestList
           predicate P : { y : string, x : nat }
         }
         schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
       |]
       [ mkBatch (PredicateRef "x.P" 2)
           [ [s|{ "key": { "y": "A", "x": 1 } }|]
@@ -1480,6 +1524,7 @@ schemaEvolvesTransformations = TestList
         schema y.1 : x.1 {
           predicate Q : nat A where x.P A
         }
+        schema all.1 : base.1, x.1, x.2, y.1 {}
       |]
       [ mkBatch (PredicateRef "base.N" 1)
           [ [s|{ "key": 1 }|]
@@ -1513,6 +1558,7 @@ schemaEvolvesTransformations = TestList
 
           predicate Q : { x: x.N.1, y: x.N.2 }
         }
+        schema all.1 : x.1, x.2, y.1 {}
       |]
       [ mkBatch (PredicateRef "x.N" 2)
           [ [s|{ "key": 1 }|]
@@ -1537,6 +1583,7 @@ schemaEvolvesTransformations = TestList
           predicate P : { x: nat, y: nat }
         }
         schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
       |]
       [ mkBatch (PredicateRef "x.P" 2)
           [ [s|{ "id": 1, "key": { "x": 1, "y": 2 } }|]
@@ -1561,6 +1608,7 @@ schemaEvolvesTransformations = TestList
           predicate P : { x: nat, y: nat }
         }
         schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
       |]
       [ mkBatch (PredicateRef "x.P" 2)
           [ [s|{ "id": 1, "key": { "x": 1, "y": 2 } }|]
@@ -1679,6 +1727,7 @@ schemaNegation =
           predicate Derived : string
             A where Base A; !(A = "x"..);
         }
+        schema all.1 : test.1 {}
       |]
       $ \r ->
       assertBool "schemaNegation - derived" $
@@ -1695,6 +1744,7 @@ schemaNegation =
           predicate Stored : string
             stored A where Base A; !(A = "x"..);
         }
+        schema all.1 : test.1 {}
       |]
       $ \r ->
       assertBool "schemaNegation - stored" $
@@ -1715,6 +1765,7 @@ schemaNegation =
           predicate Stored : string
             stored A where Derived A
         }
+        schema all.1 : test.1 {}
       |]
       $ \r ->
       assertBool "schemaNegation - stored dependency" $
@@ -1732,10 +1783,11 @@ schemaNegation =
           predicate Derived : string
             A where Base A; !(A = "x"..);
         }
-        schema test.2: test.1 {
+        schema test.2 : test.1 {
           predicate Stored : string
             stored A where Derived A
         }
+        schema all.1 : test.1, test.2 {}
       |]
       $ \r ->
       assertBool "schemaNegation - stored dependency cross-schema" $
@@ -1759,6 +1811,8 @@ thinSchemaTest = TestCase $
           schema x.1 {
             predicate P : nat
           }
+
+          schema all.1 : test.1, x.1 {}
         |]
 
       schema_v1_file = root <> "schema1"
@@ -1776,6 +1830,8 @@ thinSchemaTest = TestCase $
             predicate Q : string
               S where P S
           }
+
+          schema all.1 : x.1, x.2 {}
         |]
 
     writeFile schema_v0_file schema_v0

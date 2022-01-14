@@ -39,10 +39,11 @@ import qualified Glean.Database.Storage as Storage
 import Glean.Database.Open
 import Glean.Database.Types
 import Glean.Database.Work
+import Glean.Database.Schema (toSchemaInfo)
 import Glean.Internal.Types
 import qualified Glean.Recipes.Types as Recipes
 import Glean.RTS.Foreign.Lookup (firstFreeId)
-import Glean.Database.Schema (toSchemaInfo)
+import Glean.Schema.Resolve (schemasCurrentVersion)
 import Glean.RTS.Types (lowestFid)
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types hiding (Database)
@@ -76,11 +77,13 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
       creationTime <- envGetCreationTime
       serverProps <- serverProperties
       fbServerProps <- facebookServerProperties
+      schemaProps <- schemaProperties
       let
         allProps = mconcat
           [ kickOff_properties
           , serverProps
           , fbServerProps
+          , schemaProps
           , scribeProperties kickOff_fill
           ]
         time = DBTimestamp
@@ -145,6 +148,11 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
             unmask $ void $ Async.wait opener
             return $ Thrift.KickOffResponse False
   where
+    schemaProperties = do
+      (_,schemas) <- Observed.get envSchemaSource
+      let version = Text.pack $ show $ schemasCurrentVersion schemas
+      return $ HashMap.fromList [ ("glean.schema_version", version) ]
+
     get_recipes name = do
       rcfg <- Recipes.config_recipes <$> Observed.get envRecipeConfig
       case Map.lookup name rcfg of

@@ -36,6 +36,8 @@ import qualified Glean.Database.Catalog.Filter as Catalog
 import Glean.Database.Env
 import Glean.Database.Types
 import qualified Glean.Handler as GleanHandler
+import qualified Glean.Index as Index
+import Glean.Index.GleanIndexingService.Service
 import Glean.Server.Config as Config
 import Glean.Server.Shard
 import Glean.Types as Thrift
@@ -142,13 +144,13 @@ main =
     getPort =
       fromMaybe (error "server hasn't started yet") <$> readTVarIO portVar
 
-  let state = GleanHandler.State fb303 databases getPort
+  let state = GleanHandler.State fb303 databases
 
   if cfgEnableIndexing cfg
     then
       withBackgroundFacebookServiceDeferredAlive
         (GleanHandler.fb303State state)
-        (GleanHandler.handlerIndexing state)
+        (handlerIndexing state getPort)
         opts
         waitToStart
     else
@@ -157,3 +159,12 @@ main =
         (GleanHandler.handler state)
         opts
         waitToStart
+
+handlerIndexing
+  :: GleanHandler.State
+  -> IO Int -- ^ get the port the server is running on
+  -> GleanIndexingServiceCommand a
+  -> IO a
+handlerIndexing state getPort req = case req of
+  Index r -> Index.index getPort (GleanHandler.stEnv state) r
+  SuperGleanService r -> GleanHandler.handler state r
