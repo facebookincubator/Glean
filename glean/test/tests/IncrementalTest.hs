@@ -14,6 +14,8 @@ import Data.ByteString (ByteString)
 import Data.Default
 import Data.List
 import Test.HUnit
+import System.Info
+import System.Exit
 
 import TestRunner
 
@@ -302,9 +304,16 @@ deriveTest = TestCase $
       predicate @Glean.Test.SkipRevEdge wild
     assertEqual "derived 6" 1 (length results)
 
-
 main :: IO ()
-main = withUnitTest $ testRunner $ TestList
+main = do
+  if System.Info.arch == "x86_64"
+    then main_
+    else do
+      putStrLn "Incremental Glean not supported on non-x86_64 (see ownership.{h/cpp})"
+      exitWith (ExitFailure 1)
+
+main_ :: IO ()
+main_ = withUnitTest $ testRunner $ TestList
   [ TestLabel "incrementalTest" incrementalTest
   , TestLabel "dupSetTest" dupSetTest
   , TestLabel "orphanTest" orphanTest
