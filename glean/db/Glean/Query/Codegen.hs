@@ -465,14 +465,13 @@ compileQuery (QueryWithInfo query numVars ty) = do
                 ptrDiff ptr end tmp
                 add tmp len
               return reg
-          local $ \new -> do
-            result idReg resultKeyReg val new
-            jumpIf0 new continue
+          result idReg resultKeyReg val len
+          jumpIf0 len continue
           decrAndJumpIf0 maxResults pause
-          -- check whether we have exceeded maxBytes. We're only
-          -- considering the size of the key, everything else is a
-          -- (hopefully) small constant factor overhead.
-          addConst 8 len  -- for the fact ID
+          -- check whether we have exceeded maxBytes. Note that we
+          -- will return more than max_bytes, but this way we don't
+          -- have to backtrack and regenerate the most recent result
+          -- again in the continuation.
           jumpIfGt len maxBytes pause
           sub len maxBytes
           jump continue

@@ -1380,7 +1380,7 @@ scopingTest = dbTestCase $ \env repo -> do
     _ -> False
 
   r <- runQuery_ env repo $ Angle.query $
-    predicate @Glean.Test.NothingTest wild
+      predicate @Glean.Test.NothingTest wild
   print (r :: [Glean.Test.NothingTest])
   assertEqual "angle - nothingTest" 1 (length r)
 
@@ -1842,6 +1842,22 @@ angleQueryOptions = dbTestCase $ \env repo -> do
   assertEqual "queryOptions - not omitting results" (counts r) (2, 2)
 
 
+limitTest :: Test
+limitTest = dbTestCase $ \env repo -> do
+  (results, truncated) <- runQuery env repo $ limitBytes 30 $ recursive $
+    Angle.query $ predicate @Glean.Test.Edge wild
+  -- each Edge will be
+  --   about 12 bytes for the Edge (8 byte Id + 2 refs @ 2 bytes each)
+  --   about 11 bytes for each Node (8 byte Id + 3 byte string)
+  --   = 33 bytes
+  -- so a limit of 30 bytes should ensure that we're counting the size
+  -- of the nested facts too.
+  assertBool "limitBytes" (length results == 1 && truncated)
+
+  (results, truncated) <- runQuery env repo $ limitBytes 40 $ recursive $
+    Angle.query $ predicate @Glean.Test.Edge wild
+  assertBool "limitBytes" (length results == 2 && truncated)
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "angle" $ angleTest id
@@ -1866,4 +1882,5 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "recExpansion" $ angleRecExpansion id
   , TestLabel "recExpansion/page" $ angleRecExpansion (limit 1)
   , TestLabel "queryOptions" angleQueryOptions
+  , TestLabel "limitBytes" limitTest
   ]

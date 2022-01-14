@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
@@ -101,7 +101,7 @@ struct QueryExecutor {
   //
   // Record a qeury result.
   //
-  void resultWithPid(
+  size_t resultWithPid(
       Id id,
       binary::Output *key,
       binary::Output *val,
@@ -113,14 +113,14 @@ struct QueryExecutor {
   // want the prevailing pid and recursive values.
   //
   // Result is:
-  //   false  if this fact ID was already in the result set
-  //   true   if this fact ID is new
+  //   0   if this fact ID was already in the result set
+  //   >0  if this fact ID is new (result is the size in bytes of the
+  //       fact and all its recursively nested facts that were expanded)
   //
-  bool result(Id id, binary::Output* key, binary::Output* val) {
+  size_t result(Id id, binary::Output* key, binary::Output* val) {
     auto added = results_added.insert(id.toWord());
     if (added.second) {
-      resultWithPid(id, key, val, pid, 0);
-      return 1;
+      return resultWithPid(id, key, val, pid, 0);
     } else {
       DVLOG(5) << "result skipped dup (" << id.toWord() << ")";
       return 0;
@@ -358,7 +358,7 @@ void QueryExecutor::nestedFact(Id id, Pid pid) {
 };
 
 
-void QueryExecutor::resultWithPid(
+size_t QueryExecutor::resultWithPid(
     Id id,
     binary::Output *key,
     binary::Output *val,
@@ -370,9 +370,10 @@ void QueryExecutor::resultWithPid(
   result_keys.emplace_back(key ? key->string() : "");
   result_values.emplace_back(val ? val->string() : "");
   DVLOG(5) << "result added (" << id.toWord() << ")";
+  auto key_size = key ? key->size() : 0;
+  auto val_size = val ? val->size() : 0;
+  size_t bytes = sizeof(Id) + key_size + val_size;
   if (rec || depth != Depth::ResultsOnly) {
-    auto key_size = key ? key->size() : 0;
-    auto val_size = val ? val->size() : 0;
     {
       binary::Output bin;
       bin.expect(key_size + val_size);
@@ -400,11 +401,15 @@ void QueryExecutor::resultWithPid(
         inventory.lookupPredicate(pid_)->traverse(nestedFact_, clause);
         nested_result_ids.emplace_back(id.toWord());
         nested_result_pids.emplace_back(pid_.toWord());
-        nested_result_keys.emplace_back(binary::mkString(clause.key()));
-        nested_result_values.emplace_back(binary::mkString(clause.value()));
+        auto key = binary::mkString(clause.key());
+        auto val = binary::mkString(clause.value());
+        bytes += sizeof(Id) + key.size() + val.size();
+        nested_result_keys.emplace_back(std::move(key));
+        nested_result_values.emplace_back(std::move(val));
       });
     }
   }
+  return bytes;
 };
 
 
