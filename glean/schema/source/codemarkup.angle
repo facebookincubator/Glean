@@ -124,7 +124,10 @@ predicate ToLegacyXRef:
 
 # Public types
 
-# Within a file, the type of symbol locations
+# Within a file, the type of symbol locations.
+# range is used for compatibility with cxx/thrift indexer
+# but new indexers should use the `bytespan` representation.
+# (and should also generate `src.FileLines` fact).
 type RangeSpan =
   {
     span : src.ByteSpan |
