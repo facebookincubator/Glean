@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
@@ -15,12 +15,17 @@
 #include "glean/rts/ownership/uset.h"
 #include "glean/rts/timer.h"
 
+#if __x86_64__ // AVX required
+#include <folly/experimental/EliasFanoCoding.h>
+#include <immintrin.h>
+#else
+#include "glean/rts/ownership/fallbackavx.h"
+#endif
+
 #include <folly/container/F14Map.h>
 #include <folly/container/F14Set.h>
 #include <folly/Hash.h>
-#include <folly/experimental/EliasFanoCoding.h>
 
-#include <immintrin.h>
 #include <xxhash.h>
 
 #include <algorithm>

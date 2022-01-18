@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  * All rights reserved.
  *
  * This source code is licensed under the BSD-style license found in the
@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include <immintrin.h>
 #include <stdint.h>
 #include <algorithm>
 #include <cassert>
@@ -17,7 +16,13 @@
 #include <tuple>
 #include <vector>
 #include <folly/Optional.h>
+
+#if __x86_64__ // AVX required
+#include <immintrin.h>
 #include <folly/experimental/EliasFanoCoding.h>
+#else
+#include "glean/rts/ownership/fallbackavx.h"
+#endif
 
 namespace facebook {
 namespace glean {

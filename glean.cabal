@@ -325,8 +325,6 @@ library rts
         glean/rts/bytecode/subroutine.cpp
     pkgconfig-depends: libfolly, libunwind, libglog, icu-uc, gflags, libxxhash
     cxx-options: -DOSS=1
-    if arch(x86_64)
-        cxx-options: -DGLEAN_X86_64
     build-depends:
         glean:if-internal-cpp,
         glean:ffi
@@ -1377,15 +1375,16 @@ test-suite lookup
         glean:core,
         glean:db
 
-test-suite incremental
-    import: test
-    type: exitcode-stdio-1.0
-    main-is: IncrementalTest.hs
-    ghc-options: -main-is IncrementalTest
-    build-depends:
-        glean:stubs,
-        glean:client-hs,
-        glean:core,
-        glean:db,
-        glean:lib,
-        glean:schema
+if arch(x86_64)
+    test-suite incremental
+        import: test
+        type: exitcode-stdio-1.0
+        main-is: IncrementalTest.hs
+        ghc-options: -main-is IncrementalTest
+        build-depends:
+            glean:stubs,
+            glean:client-hs,
+            glean:core,
+            glean:db,
+            glean:lib,
+            glean:schema
