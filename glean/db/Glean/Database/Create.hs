@@ -150,7 +150,10 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
   where
     schemaProperties = do
       (_,schemas) <- Observed.get envSchemaSource
-      let version = Text.pack $ show $ schemasCurrentVersion schemas
+      currentVersion <- case schemasCurrentVersion schemas of
+        Just ver -> return ver
+        Nothing -> dbError kickOff_repo "missing 'all' schema"
+      let version = Text.pack $ show currentVersion
       return $ HashMap.fromList [ ("glean.schema_version", version) ]
 
     get_recipes name = do

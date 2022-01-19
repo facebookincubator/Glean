@@ -59,7 +59,7 @@ data Schemas = Schemas
     -- ^ These correspond to the schemas named all.<version>. Later we
     -- will move towards using named schemas exclusively rather than
     -- these monolithic schemas.
-  , schemasCurrentVersion :: Version
+  , schemasCurrentVersion :: Maybe Version
   , schemasResolved :: [ResolvedSchema]
     -- ^ Resolved schemas in dependency order
   }
@@ -173,7 +173,10 @@ resolveSchema SourceSchemas{..} = runExcept $ do
   return Schemas
     { schemasSchemas = HashMap.fromList
         [ (schemaVersion s, s) | s <- allTheSchemas ]
-    , schemasCurrentVersion = maximum (map schemaVersion allTheSchemas)
+    , schemasCurrentVersion =
+        if null allTheSchemas
+           then Nothing
+           else Just (maximum $ map schemaVersion allTheSchemas)
     , schemasResolved = resolved
     }
 

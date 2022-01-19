@@ -179,7 +179,11 @@ rmLocSchemas (SourceSchemas version schemas evolves) =
 gen :: Options -> Schemas -> IO ()
 gen Options{..} Schemas{..} = do
   case version of
-    CurrentVersion -> genFor schemasCurrentVersion Nothing
+    CurrentVersion -> do
+      currentVersion <- case schemasCurrentVersion of
+        Just ver -> return ver
+        Nothing -> fail "missing 'all' schema"
+      genFor currentVersion Nothing
     OneVersion v -> genFor v Nothing
     AllVersions ->
       forM_ (HashMap.keys schemasSchemas) $ \v ->
@@ -187,9 +191,7 @@ gen Options{..} Schemas{..} = do
   where
   genFor :: Version -> Maybe FilePath -> IO ()
   genFor ver dir = case HashMap.lookup ver schemasSchemas of
-    Nothing ->
-      fail $ "schema version " ++
-        show schemasCurrentVersion ++ " undefined"
+    Nothing -> fail $ "schema version " ++ show ver ++ " undefined"
     Just Schema{..} -> do
       let
         allTypes = HashMap.unions (map resolvedSchemaTypes schemasResolved)
