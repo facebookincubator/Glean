@@ -1,0 +1,6 @@
+query: |
+  { F, S } where
+    codemarkup.FileEntityLocations { file = "test/es_exports.js.flow", entity = { flow = { decl = D } } };
+    flow.DeclarationLocation { decl = D, file = F, span = S };
+perf: true
+transform: [gensort, []]

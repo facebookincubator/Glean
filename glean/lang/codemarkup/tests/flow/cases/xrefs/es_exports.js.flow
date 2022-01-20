@@ -1,0 +1,23 @@
+/**
+ * (c) Facebook, Inc. and its affiliates. Confidential and proprietary.
+ */
+
+//@flow
+
+let foo: number = 1;
+
+function bor(x: number): number {
+  return x + 1;
+}
+
+class baz {}
+
+let d: string = "string";
+
+export {foo, bor as bar, baz};
+
+export default d;
+
+export type num = number;
+
+export class C {}

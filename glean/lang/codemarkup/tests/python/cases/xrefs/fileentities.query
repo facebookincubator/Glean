@@ -1,0 +1,3 @@
+query: codemarkup.FileEntityLocations { file = "all.py" }
+perf: true
+transform: [normord, []]

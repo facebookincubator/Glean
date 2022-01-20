@@ -1,0 +1,21 @@
+# Checking performance of a hack.ClassDefinition query with an
+# embedded or-pattern. Technically not a codemarkup test, but this was
+# the easiest place to put it.
+#
+# perf results should be:
+#
+#  "hack.ClassDeclaration.5": 2,
+#  "hack.ClassDefinition.5": 2,
+#  "hack.Name.5": 2,
+#  "hack.QName.5": 2
+#
+query: |
+  hack.ClassDefinition { 
+    declaration =  { 
+      name = { 
+        name = "SourceClass" | "SuperClass"
+      }
+    }
+  }
+perf: true
+transform: [gensort, []]

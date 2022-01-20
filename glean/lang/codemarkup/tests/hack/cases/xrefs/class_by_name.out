@@ -1,0 +1,120 @@
+[
+  "@generated",
+  {
+    "key": {
+      "declaration": {
+        "key": { "name": { "key": { "name": { "key": "SourceClass" } } } }
+      },
+      "isAbstract": false,
+      "isFinal": false,
+      "members": [
+        {
+          "typeConst": {
+            "key": {
+              "name": { "key": "T" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "classConst": {
+            "key": {
+              "name": { "key": "BAZ" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "property_": {
+            "key": {
+              "name": { "key": "daz" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "method": {
+            "key": {
+              "name": { "key": "bar" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "extends_": {
+        "key": { "name": { "key": { "name": { "key": "SuperClass" } } } }
+      },
+      "implements_": [ ],
+      "uses": [ ],
+      "attributes": [ ],
+      "typeParams": [ ]
+    }
+  },
+  {
+    "key": {
+      "declaration": {
+        "key": { "name": { "key": { "name": { "key": "SuperClass" } } } }
+      },
+      "isAbstract": false,
+      "isFinal": false,
+      "members": [
+        {
+          "classConst": {
+            "key": {
+              "name": { "key": "BAZ" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SuperClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "method": {
+            "key": {
+              "name": { "key": "superAdd" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SuperClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "implements_": [ ],
+      "uses": [ ],
+      "attributes": [ ],
+      "typeParams": [ ]
+    }
+  }
+]

@@ -1,0 +1,22 @@
+[
+  "@generated",
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceInterface" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/RefClass.php" },
+      "span": { "start": 114, "length": 15 }
+    }
+  }
+]

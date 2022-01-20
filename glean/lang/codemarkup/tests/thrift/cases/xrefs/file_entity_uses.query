@@ -1,0 +1,5 @@
+query: |
+  codemarkup.FileEntityLocations { entity = E };
+  codemarkup.EntityUses { target = E }
+perf: true
+transform: [normord, []]

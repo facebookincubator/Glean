@@ -1,0 +1,12 @@
+# file_entity_uses.perf should be:
+#
+#  "hack.DeclarationLocation.5": 3,
+#  "hack.FileDeclarations.5": 1,
+#  "hack.TargetUses.5": 1,
+#  "src.File.1": 1
+#
+query: |
+  codemarkup.FileEntityLocations { file = "www/SourceInterface.php", entity = E };
+  codemarkup.EntityUses { target = E }
+perf: true
+transform: [gensort, []]

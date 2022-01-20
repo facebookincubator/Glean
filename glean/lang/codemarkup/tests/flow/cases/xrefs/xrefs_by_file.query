@@ -1,0 +1,3 @@
+query: codemarkup.FileEntityXRefLocations { file = "test/imports.js" }
+perf: true
+transform: [gensort, []]

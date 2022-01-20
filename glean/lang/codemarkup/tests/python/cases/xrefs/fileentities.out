@@ -1,0 +1,146 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "all.LocalClass" } } } }
+        }
+      },
+      "file": { "key": "all.py" },
+      "location": {
+        "file": { "key": "all.py" },
+        "location": { "span": { "length": 26, "start": 182 } },
+        "name": "all.LocalClass"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "func": { "key": { "name": { "key": "all.fn" } } } }
+        }
+      },
+      "file": { "key": "all.py" },
+      "location": {
+        "file": { "key": "all.py" },
+        "location": { "span": { "length": 18, "start": 161 } },
+        "name": "all.fn"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "all.Helper" },
+                "from_name": { "key": "lib.HelperClass" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "all.py" },
+      "location": {
+        "file": { "key": "all.py" },
+        "location": { "span": { "length": 11, "start": 126 } },
+        "name": "all.Helper"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "all.big_func" },
+                "from_name": { "key": "big_lib.big_func" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "all.py" },
+      "location": {
+        "file": { "key": "all.py" },
+        "location": { "span": { "length": 8, "start": 92 } },
+        "name": "all.big_func"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "all.big_var" },
+                "from_name": { "key": "big_lib.big_var" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "all.py" },
+      "location": {
+        "file": { "key": "all.py" },
+        "location": { "span": { "length": 7, "start": 102 } },
+        "name": "all.big_var"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "all" } } } }
+        }
+      },
+      "file": { "key": "all.py" },
+      "location": {
+        "file": { "key": "all.py" },
+        "location": { "span": { "length": 292, "start": 0 } },
+        "name": "all"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": { "key": { "name": { "key": "all.__all__" } } }
+          }
+        }
+      },
+      "file": { "key": "all.py" },
+      "location": {
+        "file": { "key": "all.py" },
+        "location": { "span": { "length": 80, "start": 211 } },
+        "name": "all.__all__"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "variable": { "key": { "name": { "key": "all.var" } } } }
+        }
+      },
+      "file": { "key": "all.py" },
+      "location": {
+        "file": { "key": "all.py" },
+        "location": { "span": { "length": 9, "start": 149 } },
+        "name": "all.var"
+      }
+    }
+  }
+]

@@ -1,0 +1,41 @@
+[
+  "@generated",
+  {
+    "key": {
+      "target": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.Input.InputKey.fetchDefault" },
+              "source": {
+                "file": { "key": "Lib/Input/InputKey.hs" },
+                "span": { "start": 1518, "length": 12 }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "Lib/Input/InputKey.hs" },
+      "span": { "start": 1494, "length": 12 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.Input.InputKey.fetchDefault" },
+              "source": {
+                "file": { "key": "Lib/Input/InputKey.hs" },
+                "span": { "start": 1518, "length": 12 }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "Lib/Input/InputKey.hs" },
+      "span": { "start": 1518, "length": 12 }
+    }
+  }
+]

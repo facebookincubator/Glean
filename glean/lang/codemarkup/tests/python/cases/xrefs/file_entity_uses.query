@@ -1,0 +1,11 @@
+# file_entity_uses.perf should be:
+#
+#  "python.DeclarationUses.2": 7,
+#  "python.DeclarationsByFile.2": 5,
+#  "src.File.1": 1
+#
+query: |
+  codemarkup.FileEntityLocations { file = "lib.py", entity = E };
+  codemarkup.EntityUses { target = E }
+perf: true
+transform: [normord, []]

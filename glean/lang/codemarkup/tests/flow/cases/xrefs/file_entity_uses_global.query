@@ -1,0 +1,5 @@
+query: |
+  codemarkup.FileEntityLocations { file = "test/es_exports.js.flow", entity = { flow = E } };
+  flow.FlowEntityUsesAll { target = E }
+perf: true
+transform: [gensort, []]

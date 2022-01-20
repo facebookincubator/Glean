@@ -1,0 +1,103 @@
+[
+  "@generated",
+  {
+    "key": {
+      "target": {
+        "flow": {
+          "decl": {
+            "localDecl": {
+              "key": {
+                "name": { "key": "plus" },
+                "loc": {
+                  "key": {
+                    "module": {
+                      "key": { "file": { "key": "test/cjs_exports.js" } }
+                    },
+                    "span": { "start": 99, "length": 4 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test/cjs_exports.js" },
+      "span": { "start": 225, "length": 4 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "flow": {
+          "decl": {
+            "localDecl": {
+              "key": {
+                "name": { "key": "plus" },
+                "loc": {
+                  "key": {
+                    "module": {
+                      "key": { "file": { "key": "test/cjs_exports.js" } }
+                    },
+                    "span": { "start": 99, "length": 4 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test/imports.js" },
+      "span": { "start": 227, "length": 2 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "flow": {
+          "decl": {
+            "localDecl": {
+              "key": {
+                "name": { "key": "plus" },
+                "loc": {
+                  "key": {
+                    "module": {
+                      "key": { "file": { "key": "test/cjs_exports.js" } }
+                    },
+                    "span": { "start": 99, "length": 4 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test/imports.js" },
+      "span": { "start": 439, "length": 2 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "flow": {
+          "decl": {
+            "localDecl": {
+              "key": {
+                "name": { "key": "x" },
+                "loc": {
+                  "key": {
+                    "module": {
+                      "key": { "file": { "key": "test/cjs_exports.js" } }
+                    },
+                    "span": { "start": 104, "length": 1 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test/cjs_exports.js" },
+      "span": { "start": 124, "length": 1 }
+    }
+  }
+]

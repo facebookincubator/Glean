@@ -1,0 +1,197 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "all.py" },
+      "span": { "length": 3, "start": 115 },
+      "target": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "all.py" },
+      "span": { "length": 8, "start": 222 },
+      "target": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "all.py" },
+      "span": { "length": 8, "start": 271 },
+      "target": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "all.py" },
+      "span": { "length": 11, "start": 126 },
+      "target": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib.py" },
+      "span": { "length": 11, "start": 238 },
+      "target": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib.py" },
+      "span": { "length": 13, "start": 178 },
+      "target": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "span": { "length": 3, "start": 130 },
+      "target": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "span": { "length": 3, "start": 320 },
+      "target": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "span": { "length": 4, "start": 164 },
+      "target": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "lib.func" },
+                "from_name": { "key": "big_lib.big_func" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "span": { "length": 4, "start": 240 },
+      "target": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "lib.func" },
+                "from_name": { "key": "big_lib.big_func" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "span": { "length": 6, "start": 255 },
+      "target": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "span": { "length": 11, "start": 141 },
+      "target": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "span": { "length": 11, "start": 170 },
+      "target": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.helper_func" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "span": { "length": 11, "start": 207 },
+      "target": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.helper_func" } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "span": { "length": 11, "start": 331 },
+      "target": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "span": { "length": 11, "start": 372 },
+      "target": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      }
+    }
+  }
+]

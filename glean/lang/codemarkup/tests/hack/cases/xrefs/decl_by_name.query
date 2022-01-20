@@ -1,0 +1,39 @@
+# This should compile to an efficient query for each declaration type
+# and then just extract the name.
+#
+#  "hack.ClassDeclaration.4": 1,
+#  "hack.InterfaceDeclaration.4": 1,
+#  "hack.Name.4": 3,
+#  "hack.QName.4": 3,
+#  "hack.TraitDeclaration.4": 1
+#
+query: |
+  X0 where                                                                          
+    hack.DeclarationName {                                                    
+      container = {                                                           
+        class_ = hack.ClassDeclaration {                                    
+          name = hack.QName {                                               
+            name = "SourceClass",
+            namespace_ = {nothing = {}}                                       
+          }                                                                   
+        }                                                                     
+      } |                                                                     
+      {
+        interface_ = hack.InterfaceDeclaration {                            
+          name = hack.QName {                                               
+            name = "SourceInterface",
+            namespace_ = {nothing = {}}                                 
+          }                                                                   
+        }                                                                     
+      } |                                                                     
+      {                                                                       
+        trait = hack.TraitDeclaration {                                     
+          name = hack.QName {                                               
+            name = "SourceTrait",
+            namespace_ = {nothing = {}}                                       
+          }                           
+        }                                                                     
+      }
+    } -> X0                               
+perf: true
+transform: [gensort, []]

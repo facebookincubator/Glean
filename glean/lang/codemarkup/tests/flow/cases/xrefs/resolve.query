@@ -1,0 +1,8 @@
+query: |
+  E where
+    codemarkup.ResolveLocation {
+       location = { file = "test/es_exports.js.flow", location = { span = { 90, 3 } } },
+       entity = E
+    };
+perf: true
+transform: [gensort, []]

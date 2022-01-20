@@ -1,0 +1,138 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "location": {
+        "name": "BAZ",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 140, "length": 3 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "classConst": {
+              "key": {
+                "name": { "key": "BAZ" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "location": {
+        "name": "SourceClass",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 94, "length": 11 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceClass" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "location": {
+        "name": "T",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 163, "length": 1 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "typeConst": {
+              "key": {
+                "name": { "key": "T" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "location": {
+        "name": "bar",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 216, "length": 3 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "bar" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "location": {
+        "name": "daz",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 186, "length": 4 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "daz" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

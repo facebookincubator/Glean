@@ -1,0 +1,7 @@
+query: |
+  D where
+    flow.SearchByFileModule {
+       file = "test/es_exports.js.flow", name = "bor", decl = D
+    };
+perf: true
+transform: [gensort, []]

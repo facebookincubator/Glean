@@ -1,0 +1,3 @@
+query: codemarkup.FileEntityXRefs { file = "www/RefClass.php" }
+perf: true
+transform: [gensort, []]

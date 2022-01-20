@@ -1,0 +1,8 @@
+query: |
+  E where
+    codemarkup.ResolveLocation {
+       location = { file = "www/TopLevel.php", location = { span = { 95, 8 } } },
+       entity = E
+    };
+perf: true
+transform: [gensort, []]

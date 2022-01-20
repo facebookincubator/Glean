@@ -1,0 +1,11 @@
+# resolve.perf should be
+#   "python.DeclarationsByFile.2": 1,
+#   "src.File.1": 1
+query: |
+  E where
+    codemarkup.ResolveLocation {
+       location = { file = "lib.py", location = { span = { 63, 70 } } },
+       entity = E
+    };
+perf: true
+transform: [normord, []]
