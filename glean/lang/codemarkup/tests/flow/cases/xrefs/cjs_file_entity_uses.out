@@ -13,7 +13,7 @@
                     "module": {
                       "key": { "file": { "key": "test/cjs_exports.js" } }
                     },
-                    "span": { "start": 99, "length": 4 }
+                    "span": { "start": 240, "length": 4 }
                   }
                 }
               }
@@ -22,7 +22,7 @@
         }
       },
       "file": { "key": "test/cjs_exports.js" },
-      "span": { "start": 225, "length": 4 }
+      "span": { "start": 366, "length": 4 }
     }
   },
   {
@@ -38,7 +38,7 @@
                     "module": {
                       "key": { "file": { "key": "test/cjs_exports.js" } }
                     },
-                    "span": { "start": 99, "length": 4 }
+                    "span": { "start": 240, "length": 4 }
                   }
                 }
               }
@@ -47,7 +47,7 @@
         }
       },
       "file": { "key": "test/imports.js" },
-      "span": { "start": 227, "length": 2 }
+      "span": { "start": 368, "length": 2 }
     }
   },
   {
@@ -63,7 +63,7 @@
                     "module": {
                       "key": { "file": { "key": "test/cjs_exports.js" } }
                     },
-                    "span": { "start": 99, "length": 4 }
+                    "span": { "start": 240, "length": 4 }
                   }
                 }
               }
@@ -72,7 +72,7 @@
         }
       },
       "file": { "key": "test/imports.js" },
-      "span": { "start": 439, "length": 2 }
+      "span": { "start": 580, "length": 2 }
     }
   },
   {
@@ -88,7 +88,7 @@
                     "module": {
                       "key": { "file": { "key": "test/cjs_exports.js" } }
                     },
-                    "span": { "start": 104, "length": 1 }
+                    "span": { "start": 245, "length": 1 }
                   }
                 }
               }
@@ -97,7 +97,7 @@
         }
       },
       "file": { "key": "test/cjs_exports.js" },
-      "span": { "start": 124, "length": 1 }
+      "span": { "start": 265, "length": 1 }
     }
   }
 ]

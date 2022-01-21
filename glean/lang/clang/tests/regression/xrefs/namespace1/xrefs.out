@@ -5,7 +5,7 @@
       "file": { "key": "test.cpp" },
       "xrefs": [
         {
-          "range": { "begin": 319, "end": 322 },
+          "range": { "begin": 321, "end": 324 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -24,7 +24,7 @@
           }
         },
         {
-          "range": { "begin": 324, "end": 325 },
+          "range": { "begin": 326, "end": 327 },
           "target": {
             "declaration": {
               "record_": {
@@ -51,7 +51,7 @@
           }
         },
         {
-          "range": { "begin": 331, "end": 334 },
+          "range": { "begin": 333, "end": 336 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -70,7 +70,7 @@
           }
         },
         {
-          "range": { "begin": 336, "end": 339 },
+          "range": { "begin": 338, "end": 341 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -94,7 +94,7 @@
           }
         },
         {
-          "range": { "begin": 341, "end": 342 },
+          "range": { "begin": 343, "end": 344 },
           "target": {
             "declaration": {
               "record_": {
@@ -126,7 +126,7 @@
           }
         },
         {
-          "range": { "begin": 348, "end": 351 },
+          "range": { "begin": 350, "end": 353 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -145,7 +145,7 @@
           }
         },
         {
-          "range": { "begin": 353, "end": 354 },
+          "range": { "begin": 355, "end": 356 },
           "target": {
             "declaration": {
               "function_": {
@@ -174,7 +174,7 @@
           }
         },
         {
-          "range": { "begin": 360, "end": 363 },
+          "range": { "begin": 362, "end": 365 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -193,7 +193,7 @@
           }
         },
         {
-          "range": { "begin": 365, "end": 368 },
+          "range": { "begin": 367, "end": 370 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -217,7 +217,7 @@
           }
         },
         {
-          "range": { "begin": 370, "end": 371 },
+          "range": { "begin": 372, "end": 373 },
           "target": {
             "declaration": {
               "function_": {

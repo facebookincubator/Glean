@@ -5,7 +5,7 @@
       "file": { "key": "main.cpp" },
       "xrefs": [
         {
-          "range": { "begin": 358, "end": 359 },
+          "range": { "begin": 360, "end": 361 },
           "target": {
             "declaration": {
               "record_": {
@@ -30,7 +30,7 @@
           }
         },
         {
-          "range": { "begin": 365, "end": 367 },
+          "range": { "begin": 367, "end": 369 },
           "target": {
             "declaration": {
               "typeAlias": {
@@ -56,7 +56,7 @@
           }
         },
         {
-          "range": { "begin": 376, "end": 378 },
+          "range": { "begin": 378, "end": 380 },
           "target": {
             "declaration": {
               "typeAlias": {
@@ -82,7 +82,7 @@
           }
         },
         {
-          "range": { "begin": 387, "end": 389 },
+          "range": { "begin": 389, "end": 391 },
           "target": {
             "declaration": {
               "typeAlias": {

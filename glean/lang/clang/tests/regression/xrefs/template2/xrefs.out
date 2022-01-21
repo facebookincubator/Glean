@@ -5,7 +5,7 @@
       "file": { "key": "test.cpp" },
       "xrefs": [
         {
-          "range": { "begin": 323, "end": 324 },
+          "range": { "begin": 325, "end": 326 },
           "target": {
             "declaration": {
               "record_": {
@@ -30,7 +30,7 @@
           }
         },
         {
-          "range": { "begin": 361, "end": 362 },
+          "range": { "begin": 363, "end": 364 },
           "target": {
             "declaration": {
               "record_": {
@@ -55,7 +55,7 @@
           }
         },
         {
-          "range": { "begin": 369, "end": 370 },
+          "range": { "begin": 371, "end": 372 },
           "target": {
             "declaration": {
               "function_": {

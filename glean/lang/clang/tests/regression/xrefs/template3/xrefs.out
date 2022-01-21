@@ -5,7 +5,7 @@
       "file": { "key": "test.cpp" },
       "xrefs": [
         {
-          "range": { "begin": 338, "end": 341 },
+          "range": { "begin": 340, "end": 343 },
           "target": {
             "declaration": {
               "record_": {
@@ -32,7 +32,7 @@
           }
         },
         {
-          "range": { "begin": 342, "end": 345 },
+          "range": { "begin": 344, "end": 347 },
           "target": {
             "declaration": {
               "record_": {
@@ -59,7 +59,7 @@
           }
         },
         {
-          "range": { "begin": 376, "end": 378 },
+          "range": { "begin": 378, "end": 380 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -78,7 +78,7 @@
           }
         },
         {
-          "range": { "begin": 387, "end": 389 },
+          "range": { "begin": 389, "end": 391 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -97,7 +97,7 @@
           }
         },
         {
-          "range": { "begin": 391, "end": 394 },
+          "range": { "begin": 393, "end": 396 },
           "target": {
             "declaration": {
               "record_": {
@@ -124,7 +124,7 @@
           }
         },
         {
-          "range": { "begin": 395, "end": 398 },
+          "range": { "begin": 397, "end": 400 },
           "target": {
             "indirect": {
               "key": {
@@ -180,7 +180,7 @@
           }
         },
         {
-          "range": { "begin": 436, "end": 438 },
+          "range": { "begin": 438, "end": 440 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -199,7 +199,7 @@
           }
         },
         {
-          "range": { "begin": 442, "end": 445 },
+          "range": { "begin": 444, "end": 447 },
           "target": {
             "indirect": {
               "key": {
@@ -253,7 +253,7 @@
           }
         },
         {
-          "range": { "begin": 446, "end": 449 },
+          "range": { "begin": 448, "end": 451 },
           "target": {
             "indirect": {
               "key": {

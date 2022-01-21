@@ -5,7 +5,7 @@
       "file": { "key": "test.cpp" },
       "xrefs": [
         {
-          "range": { "begin": 301, "end": 303 },
+          "range": { "begin": 303, "end": 305 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -24,7 +24,7 @@
           }
         },
         {
-          "range": { "begin": 321, "end": 323 },
+          "range": { "begin": 323, "end": 325 },
           "target": {
             "indirect": {
               "key": {
@@ -73,7 +73,7 @@
           }
         },
         {
-          "range": { "begin": 341, "end": 343 },
+          "range": { "begin": 343, "end": 345 },
           "target": {
             "indirect": {
               "key": {
@@ -129,7 +129,7 @@
           }
         },
         {
-          "range": { "begin": 380, "end": 382 },
+          "range": { "begin": 382, "end": 384 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -148,7 +148,7 @@
           }
         },
         {
-          "range": { "begin": 420, "end": 422 },
+          "range": { "begin": 422, "end": 424 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -167,7 +167,7 @@
           }
         },
         {
-          "range": { "begin": 424, "end": 426 },
+          "range": { "begin": 426, "end": 428 },
           "target": {
             "indirect": {
               "key": {

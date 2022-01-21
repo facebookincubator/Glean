@@ -26,7 +26,7 @@
                     }
                   },
                   "ranges": [
-                    { "offset": 299, "length": 3 },
+                    { "offset": 301, "length": 3 },
                     { "offset": 71, "length": 3 }
                   ]
                 },
@@ -67,7 +67,7 @@
                     }
                   },
                   "ranges": [
-                    { "offset": 318, "length": 6 },
+                    { "offset": 320, "length": 6 },
                     { "offset": 10, "length": 9 },
                     { "offset": 126, "length": 6 },
                     { "offset": 10, "length": 9 }
@@ -97,7 +97,7 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 450, "length": 3 } ]
+                  "ranges": [ { "offset": 452, "length": 3 } ]
                 }
               ],
               "variable": [ ]
@@ -120,7 +120,7 @@
             }
           }
         },
-        "source": { "span": { "start": 299, "length": 3 } }
+        "source": { "span": { "start": 301, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -168,7 +168,7 @@
                     }
                   },
                   "ranges": [
-                    { "offset": 299, "length": 3 },
+                    { "offset": 301, "length": 3 },
                     { "offset": 71, "length": 3 }
                   ]
                 },
@@ -209,7 +209,7 @@
                     }
                   },
                   "ranges": [
-                    { "offset": 318, "length": 6 },
+                    { "offset": 320, "length": 6 },
                     { "offset": 10, "length": 9 },
                     { "offset": 126, "length": 6 },
                     { "offset": 10, "length": 9 }
@@ -239,7 +239,7 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 450, "length": 3 } ]
+                  "ranges": [ { "offset": 452, "length": 3 } ]
                 }
               ],
               "variable": [ ]
@@ -262,7 +262,7 @@
             }
           }
         },
-        "source": { "span": { "start": 370, "length": 3 } }
+        "source": { "span": { "start": 372, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -310,7 +310,7 @@
                     }
                   },
                   "ranges": [
-                    { "offset": 299, "length": 3 },
+                    { "offset": 301, "length": 3 },
                     { "offset": 71, "length": 3 }
                   ]
                 },
@@ -351,7 +351,7 @@
                     }
                   },
                   "ranges": [
-                    { "offset": 318, "length": 6 },
+                    { "offset": 320, "length": 6 },
                     { "offset": 10, "length": 9 },
                     { "offset": 126, "length": 6 },
                     { "offset": 10, "length": 9 }
@@ -381,7 +381,7 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 450, "length": 3 } ]
+                  "ranges": [ { "offset": 452, "length": 3 } ]
                 }
               ],
               "variable": [ ]
@@ -404,7 +404,7 @@
             }
           }
         },
-        "source": { "span": { "start": 450, "length": 3 } }
+        "source": { "span": { "start": 452, "length": 3 } }
       },
       "entity": {
         "cxx": {

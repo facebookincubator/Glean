@@ -26,18 +26,18 @@
                     }
                   },
                   "ranges": [
-                    { "offset": 364, "length": 2 },
+                    { "offset": 366, "length": 2 },
                     { "offset": 71, "length": 2 }
                   ]
                 }
               ],
               "variable": [
-                [ { "offset": 382, "length": 1 } ],
-                [ { "offset": 391, "length": 1 } ],
-                [ { "offset": 399, "length": 1 } ],
-                [ { "offset": 456, "length": 1 } ],
-                [ { "offset": 465, "length": 1 } ],
-                [ { "offset": 473, "length": 1 } ]
+                [ { "offset": 384, "length": 1 } ],
+                [ { "offset": 393, "length": 1 } ],
+                [ { "offset": 401, "length": 1 } ],
+                [ { "offset": 458, "length": 1 } ],
+                [ { "offset": 467, "length": 1 } ],
+                [ { "offset": 475, "length": 1 } ]
               ]
             }
           },
@@ -437,7 +437,7 @@
             }
           }
         },
-        "source": { "span": { "start": 364, "length": 2 } }
+        "source": { "span": { "start": 366, "length": 2 } }
       },
       "entity": {
         "cxx": {
@@ -485,18 +485,18 @@
                     }
                   },
                   "ranges": [
-                    { "offset": 364, "length": 2 },
+                    { "offset": 366, "length": 2 },
                     { "offset": 71, "length": 2 }
                   ]
                 }
               ],
               "variable": [
-                [ { "offset": 382, "length": 1 } ],
-                [ { "offset": 391, "length": 1 } ],
-                [ { "offset": 399, "length": 1 } ],
-                [ { "offset": 456, "length": 1 } ],
-                [ { "offset": 465, "length": 1 } ],
-                [ { "offset": 473, "length": 1 } ]
+                [ { "offset": 384, "length": 1 } ],
+                [ { "offset": 393, "length": 1 } ],
+                [ { "offset": 401, "length": 1 } ],
+                [ { "offset": 458, "length": 1 } ],
+                [ { "offset": 467, "length": 1 } ],
+                [ { "offset": 475, "length": 1 } ]
               ]
             }
           },
@@ -896,7 +896,7 @@
             }
           }
         },
-        "source": { "span": { "start": 435, "length": 2 } }
+        "source": { "span": { "start": 437, "length": 2 } }
       },
       "entity": {
         "cxx": {

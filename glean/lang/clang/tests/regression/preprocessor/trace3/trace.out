@@ -9,7 +9,7 @@
             "include_": {
               "key": {
                 "file": { "key": "foo.h" },
-                "path": { "begin": 228, "end": 235 },
+                "path": { "begin": 230, "end": 237 },
                 "source": {
                   "file": { "key": "test.cpp" },
                   "lineBegin": 9,
@@ -31,7 +31,7 @@
                         "use": {
                           "key": {
                             "macro": { "key": "BAR_1" },
-                            "name": { "begin": 227, "end": 232 },
+                            "name": { "begin": 229, "end": 234 },
                             "expand": false,
                             "source": {
                               "file": { "key": "foo.h" },
@@ -62,7 +62,7 @@
                           "include_": {
                             "key": {
                               "file": { "key": "bar.h" },
-                              "path": { "begin": 263, "end": 270 },
+                              "path": { "begin": 265, "end": 272 },
                               "source": {
                                 "file": { "key": "foo.h" },
                                 "lineBegin": 12,
@@ -84,7 +84,7 @@
                                       "use": {
                                         "key": {
                                           "macro": { "key": "BAR_1" },
-                                          "name": { "begin": 226, "end": 231 },
+                                          "name": { "begin": 228, "end": 233 },
                                           "definition": {
                                             "file": { "key": "foo.h" },
                                             "line": 10,
@@ -119,7 +119,7 @@
                                       "use": {
                                         "key": {
                                           "macro": { "key": "BAR_2" },
-                                          "name": { "begin": 261, "end": 266 },
+                                          "name": { "begin": 263, "end": 268 },
                                           "expand": false,
                                           "source": {
                                             "file": { "key": "bar.h" },
@@ -142,7 +142,7 @@
                         "use": {
                           "key": {
                             "macro": { "key": "BAR_2" },
-                            "name": { "begin": 279, "end": 284 },
+                            "name": { "begin": 281, "end": 286 },
                             "expand": false,
                             "source": {
                               "file": { "key": "foo.h" },
@@ -173,7 +173,7 @@
                           "include_": {
                             "key": {
                               "file": { "key": "bar.h" },
-                              "path": { "begin": 315, "end": 322 },
+                              "path": { "begin": 317, "end": 324 },
                               "source": {
                                 "file": { "key": "foo.h" },
                                 "lineBegin": 16,
@@ -195,7 +195,7 @@
                                       "use": {
                                         "key": {
                                           "macro": { "key": "BAR_1" },
-                                          "name": { "begin": 226, "end": 231 },
+                                          "name": { "begin": 228, "end": 233 },
                                           "definition": {
                                             "file": { "key": "foo.h" },
                                             "line": 10,
@@ -230,7 +230,7 @@
                                       "use": {
                                         "key": {
                                           "macro": { "key": "BAR_2" },
-                                          "name": { "begin": 261, "end": 266 },
+                                          "name": { "begin": 263, "end": 268 },
                                           "definition": {
                                             "file": { "key": "foo.h" },
                                             "line": 14,
@@ -280,7 +280,7 @@
             "include_": {
               "key": {
                 "file": { "key": "foo.h" },
-                "path": { "begin": 245, "end": 252 },
+                "path": { "begin": 247, "end": 254 },
                 "source": {
                   "file": { "key": "test.cpp" },
                   "lineBegin": 10,
@@ -302,7 +302,7 @@
                         "use": {
                           "key": {
                             "macro": { "key": "BAR_1" },
-                            "name": { "begin": 227, "end": 232 },
+                            "name": { "begin": 229, "end": 234 },
                             "definition": {
                               "file": { "key": "foo.h" },
                               "line": 10,
@@ -324,7 +324,7 @@
                           "include_": {
                             "key": {
                               "file": { "key": "bar.h" },
-                              "path": { "begin": 263, "end": 270 },
+                              "path": { "begin": 265, "end": 272 },
                               "source": {
                                 "file": { "key": "foo.h" },
                                 "lineBegin": 12,
@@ -346,7 +346,7 @@
                                       "use": {
                                         "key": {
                                           "macro": { "key": "BAR_1" },
-                                          "name": { "begin": 226, "end": 231 },
+                                          "name": { "begin": 228, "end": 233 },
                                           "definition": {
                                             "file": { "key": "foo.h" },
                                             "line": 10,
@@ -381,7 +381,7 @@
                                       "use": {
                                         "key": {
                                           "macro": { "key": "BAR_2" },
-                                          "name": { "begin": 261, "end": 266 },
+                                          "name": { "begin": 263, "end": 268 },
                                           "definition": {
                                             "file": { "key": "foo.h" },
                                             "line": 14,
@@ -423,7 +423,7 @@
                         "use": {
                           "key": {
                             "macro": { "key": "BAR_2" },
-                            "name": { "begin": 279, "end": 284 },
+                            "name": { "begin": 281, "end": 286 },
                             "definition": {
                               "file": { "key": "foo.h" },
                               "line": 14,
@@ -445,7 +445,7 @@
                           "include_": {
                             "key": {
                               "file": { "key": "bar.h" },
-                              "path": { "begin": 315, "end": 322 },
+                              "path": { "begin": 317, "end": 324 },
                               "source": {
                                 "file": { "key": "foo.h" },
                                 "lineBegin": 16,
@@ -467,7 +467,7 @@
                                       "use": {
                                         "key": {
                                           "macro": { "key": "BAR_1" },
-                                          "name": { "begin": 226, "end": 231 },
+                                          "name": { "begin": 228, "end": 233 },
                                           "definition": {
                                             "file": { "key": "foo.h" },
                                             "line": 10,
@@ -502,7 +502,7 @@
                                       "use": {
                                         "key": {
                                           "macro": { "key": "BAR_2" },
-                                          "name": { "begin": 261, "end": 266 },
+                                          "name": { "begin": 263, "end": 268 },
                                           "definition": {
                                             "file": { "key": "foo.h" },
                                             "line": 14,

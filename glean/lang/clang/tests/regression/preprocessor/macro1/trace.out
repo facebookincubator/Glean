@@ -22,7 +22,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 235, "end": 237 },
+              "name": { "begin": 237, "end": 239 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -43,7 +43,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 242, "end": 244 },
+              "name": { "begin": 244, "end": 246 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -78,7 +78,7 @@
           "use": {
             "key": {
               "macro": { "key": "ABCD" },
-              "name": { "begin": 272, "end": 276 },
+              "name": { "begin": 274, "end": 278 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 14,
@@ -99,7 +99,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 272, "end": 280 },
+              "name": { "begin": 274, "end": 282 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -120,7 +120,7 @@
           "use": {
             "key": {
               "macro": { "key": "ABCD" },
-              "name": { "begin": 282, "end": 286 },
+              "name": { "begin": 284, "end": 288 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 14,
@@ -141,7 +141,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 282, "end": 290 },
+              "name": { "begin": 284, "end": 292 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -176,7 +176,7 @@
           "use": {
             "key": {
               "macro": { "key": "HELLOHELLO" },
-              "name": { "begin": 370, "end": 380 },
+              "name": { "begin": 372, "end": 382 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 19,
@@ -197,7 +197,7 @@
           "use": {
             "key": {
               "macro": { "key": "ABCD" },
-              "name": { "begin": 370, "end": 383 },
+              "name": { "begin": 372, "end": 385 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 14,
@@ -218,7 +218,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 370, "end": 383 },
+              "name": { "begin": 372, "end": 385 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -239,7 +239,7 @@
           "use": {
             "key": {
               "macro": { "key": "ABCD" },
-              "name": { "begin": 370, "end": 383 },
+              "name": { "begin": 372, "end": 385 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 14,
@@ -260,7 +260,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 370, "end": 383 },
+              "name": { "begin": 372, "end": 385 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -281,7 +281,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 370, "end": 383 },
+              "name": { "begin": 372, "end": 385 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -302,7 +302,7 @@
           "use": {
             "key": {
               "macro": { "key": "HELLOHELLO" },
-              "name": { "begin": 385, "end": 395 },
+              "name": { "begin": 387, "end": 397 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 19,
@@ -323,7 +323,7 @@
           "use": {
             "key": {
               "macro": { "key": "ABCD" },
-              "name": { "begin": 385, "end": 403 },
+              "name": { "begin": 387, "end": 405 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 14,
@@ -344,7 +344,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 385, "end": 403 },
+              "name": { "begin": 387, "end": 405 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -365,7 +365,7 @@
           "use": {
             "key": {
               "macro": { "key": "ABCD" },
-              "name": { "begin": 385, "end": 403 },
+              "name": { "begin": 387, "end": 405 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 14,
@@ -386,7 +386,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 385, "end": 403 },
+              "name": { "begin": 387, "end": 405 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -407,7 +407,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 385, "end": 403 },
+              "name": { "begin": 387, "end": 405 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -442,7 +442,7 @@
           "use": {
             "key": {
               "macro": { "key": "FOOBAR" },
-              "name": { "begin": 485, "end": 491 },
+              "name": { "begin": 487, "end": 493 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 28,
@@ -463,7 +463,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 496, "end": 498 },
+              "name": { "begin": 498, "end": 500 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -484,7 +484,7 @@
           "use": {
             "key": {
               "macro": { "key": "ABCD" },
-              "name": { "begin": 502, "end": 506 },
+              "name": { "begin": 504, "end": 508 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 14,
@@ -505,7 +505,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 485, "end": 510 },
+              "name": { "begin": 487, "end": 512 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -526,7 +526,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 485, "end": 510 },
+              "name": { "begin": 487, "end": 512 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -547,7 +547,7 @@
           "use": {
             "key": {
               "macro": { "key": "ABCD" },
-              "name": { "begin": 485, "end": 510 },
+              "name": { "begin": 487, "end": 512 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 14,
@@ -568,7 +568,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 485, "end": 510 },
+              "name": { "begin": 487, "end": 512 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -589,7 +589,7 @@
           "use": {
             "key": {
               "macro": { "key": "FOOBAR" },
-              "name": { "begin": 512, "end": 518 },
+              "name": { "begin": 514, "end": 520 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 28,
@@ -610,7 +610,7 @@
           "use": {
             "key": {
               "macro": { "key": "HELLOHELLO" },
-              "name": { "begin": 524, "end": 534 },
+              "name": { "begin": 526, "end": 536 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 19,
@@ -631,7 +631,7 @@
           "use": {
             "key": {
               "macro": { "key": "ABCD" },
-              "name": { "begin": 512, "end": 557 },
+              "name": { "begin": 514, "end": 559 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 14,
@@ -652,7 +652,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 512, "end": 557 },
+              "name": { "begin": 514, "end": 559 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -673,7 +673,7 @@
           "use": {
             "key": {
               "macro": { "key": "ABCD" },
-              "name": { "begin": 512, "end": 557 },
+              "name": { "begin": 514, "end": 559 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 14,
@@ -694,7 +694,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 512, "end": 557 },
+              "name": { "begin": 514, "end": 559 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -715,7 +715,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 512, "end": 557 },
+              "name": { "begin": 514, "end": 559 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -736,7 +736,7 @@
           "use": {
             "key": {
               "macro": { "key": "HELLOHELLO" },
-              "name": { "begin": 541, "end": 551 },
+              "name": { "begin": 543, "end": 553 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 19,
@@ -757,7 +757,7 @@
           "use": {
             "key": {
               "macro": { "key": "ABCD" },
-              "name": { "begin": 512, "end": 557 },
+              "name": { "begin": 514, "end": 559 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 14,
@@ -778,7 +778,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 512, "end": 557 },
+              "name": { "begin": 514, "end": 559 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -799,7 +799,7 @@
           "use": {
             "key": {
               "macro": { "key": "ABCD" },
-              "name": { "begin": 512, "end": 557 },
+              "name": { "begin": 514, "end": 559 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 14,
@@ -820,7 +820,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 512, "end": 557 },
+              "name": { "begin": 514, "end": 559 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -841,7 +841,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 512, "end": 557 },
+              "name": { "begin": 514, "end": 559 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -862,7 +862,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 512, "end": 557 },
+              "name": { "begin": 514, "end": 559 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -883,7 +883,7 @@
           "use": {
             "key": {
               "macro": { "key": "ABCD" },
-              "name": { "begin": 512, "end": 557 },
+              "name": { "begin": 514, "end": 559 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 14,
@@ -904,7 +904,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 512, "end": 557 },
+              "name": { "begin": 514, "end": 559 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -939,7 +939,7 @@
           "use": {
             "key": {
               "macro": { "key": "XYZ" },
-              "name": { "begin": 576, "end": 579 },
+              "name": { "begin": 578, "end": 581 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 38,
@@ -960,7 +960,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 576, "end": 579 },
+              "name": { "begin": 578, "end": 581 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -995,7 +995,7 @@
           "use": {
             "key": {
               "macro": { "key": "ZYX" },
-              "name": { "begin": 611, "end": 614 },
+              "name": { "begin": 613, "end": 616 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 42,
@@ -1016,7 +1016,7 @@
           "use": {
             "key": {
               "macro": { "key": "ABCD" },
-              "name": { "begin": 611, "end": 614 },
+              "name": { "begin": 613, "end": 616 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 14,
@@ -1037,7 +1037,7 @@
           "use": {
             "key": {
               "macro": { "key": "M1" },
-              "name": { "begin": 611, "end": 614 },
+              "name": { "begin": 613, "end": 616 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,

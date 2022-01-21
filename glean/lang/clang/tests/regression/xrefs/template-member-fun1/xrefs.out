@@ -5,7 +5,7 @@
       "file": { "key": "test.cpp" },
       "xrefs": [
         {
-          "range": { "begin": 361, "end": 362 },
+          "range": { "begin": 363, "end": 364 },
           "target": {
             "declaration": {
               "record_": {
@@ -30,7 +30,7 @@
           }
         },
         {
-          "range": { "begin": 482, "end": 483 },
+          "range": { "begin": 484, "end": 485 },
           "target": {
             "declaration": {
               "record_": {
@@ -55,7 +55,7 @@
           }
         },
         {
-          "range": { "begin": 528, "end": 529 },
+          "range": { "begin": 530, "end": 531 },
           "target": {
             "declaration": {
               "record_": {
@@ -80,7 +80,7 @@
           }
         },
         {
-          "range": { "begin": 575, "end": 576 },
+          "range": { "begin": 577, "end": 578 },
           "target": {
             "declaration": {
               "record_": {
@@ -105,7 +105,7 @@
           }
         },
         {
-          "range": { "begin": 586, "end": 589 },
+          "range": { "begin": 588, "end": 591 },
           "target": {
             "declaration": {
               "function_": {
@@ -142,7 +142,7 @@
           }
         },
         {
-          "range": { "begin": 595, "end": 596 },
+          "range": { "begin": 597, "end": 598 },
           "target": {
             "declaration": {
               "record_": {
@@ -167,7 +167,7 @@
           }
         },
         {
-          "range": { "begin": 606, "end": 609 },
+          "range": { "begin": 608, "end": 611 },
           "target": {
             "declaration": {
               "function_": {
@@ -209,7 +209,7 @@
           }
         },
         {
-          "range": { "begin": 616, "end": 617 },
+          "range": { "begin": 618, "end": 619 },
           "target": {
             "declaration": {
               "record_": {
@@ -234,7 +234,7 @@
           }
         },
         {
-          "range": { "begin": 627, "end": 630 },
+          "range": { "begin": 629, "end": 632 },
           "target": {
             "declaration": {
               "function_": {
@@ -277,7 +277,7 @@
           }
         },
         {
-          "range": { "begin": 640, "end": 641 },
+          "range": { "begin": 642, "end": 643 },
           "target": {
             "declaration": {
               "record_": {
@@ -302,7 +302,7 @@
           }
         },
         {
-          "range": { "begin": 651, "end": 654 },
+          "range": { "begin": 653, "end": 656 },
           "target": {
             "declaration": {
               "function_": {
@@ -345,7 +345,7 @@
           }
         },
         {
-          "range": { "begin": 667, "end": 668 },
+          "range": { "begin": 669, "end": 670 },
           "target": {
             "declaration": {
               "record_": {
@@ -370,7 +370,7 @@
           }
         },
         {
-          "range": { "begin": 675, "end": 678 },
+          "range": { "begin": 677, "end": 680 },
           "target": {
             "declaration": {
               "function_": {
@@ -407,7 +407,7 @@
           }
         },
         {
-          "range": { "begin": 684, "end": 685 },
+          "range": { "begin": 686, "end": 687 },
           "target": {
             "declaration": {
               "record_": {
@@ -432,7 +432,7 @@
           }
         },
         {
-          "range": { "begin": 692, "end": 695 },
+          "range": { "begin": 694, "end": 697 },
           "target": {
             "declaration": {
               "function_": {
@@ -474,7 +474,7 @@
           }
         },
         {
-          "range": { "begin": 702, "end": 703 },
+          "range": { "begin": 704, "end": 705 },
           "target": {
             "declaration": {
               "record_": {
@@ -499,7 +499,7 @@
           }
         },
         {
-          "range": { "begin": 710, "end": 713 },
+          "range": { "begin": 712, "end": 715 },
           "target": {
             "declaration": {
               "function_": {
@@ -542,7 +542,7 @@
           }
         },
         {
-          "range": { "begin": 723, "end": 724 },
+          "range": { "begin": 725, "end": 726 },
           "target": {
             "declaration": {
               "record_": {
@@ -567,7 +567,7 @@
           }
         },
         {
-          "range": { "begin": 731, "end": 734 },
+          "range": { "begin": 733, "end": 736 },
           "target": {
             "declaration": {
               "function_": {
@@ -610,7 +610,7 @@
           }
         },
         {
-          "range": { "begin": 747, "end": 748 },
+          "range": { "begin": 749, "end": 750 },
           "target": {
             "declaration": {
               "record_": {
@@ -635,7 +635,7 @@
           }
         },
         {
-          "range": { "begin": 756, "end": 759 },
+          "range": { "begin": 758, "end": 761 },
           "target": {
             "declaration": {
               "function_": {
@@ -672,7 +672,7 @@
           }
         },
         {
-          "range": { "begin": 765, "end": 766 },
+          "range": { "begin": 767, "end": 768 },
           "target": {
             "declaration": {
               "record_": {
@@ -697,7 +697,7 @@
           }
         },
         {
-          "range": { "begin": 774, "end": 777 },
+          "range": { "begin": 776, "end": 779 },
           "target": {
             "declaration": {
               "function_": {
@@ -739,7 +739,7 @@
           }
         },
         {
-          "range": { "begin": 787, "end": 788 },
+          "range": { "begin": 789, "end": 790 },
           "target": {
             "declaration": {
               "record_": {
@@ -764,7 +764,7 @@
           }
         },
         {
-          "range": { "begin": 796, "end": 799 },
+          "range": { "begin": 798, "end": 801 },
           "target": {
             "declaration": {
               "function_": {
@@ -807,7 +807,7 @@
           }
         },
         {
-          "range": { "begin": 812, "end": 813 },
+          "range": { "begin": 814, "end": 815 },
           "target": {
             "declaration": {
               "record_": {
@@ -832,7 +832,7 @@
           }
         },
         {
-          "range": { "begin": 821, "end": 824 },
+          "range": { "begin": 823, "end": 826 },
           "target": {
             "declaration": {
               "function_": {

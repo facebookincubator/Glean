@@ -36,7 +36,7 @@
           "use": {
             "key": {
               "macro": { "key": "IFDEF1" },
-              "name": { "begin": 257, "end": 263 },
+              "name": { "begin": 259, "end": 265 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 9,
@@ -57,7 +57,7 @@
           "use": {
             "key": {
               "macro": { "key": "IFDEF2" },
-              "name": { "begin": 305, "end": 311 },
+              "name": { "begin": 307, "end": 313 },
               "definition": {
                 "file": { "key": "test.cpp" },
                 "line": 10,

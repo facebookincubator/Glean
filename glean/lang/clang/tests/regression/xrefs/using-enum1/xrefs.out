@@ -5,7 +5,7 @@
       "file": { "key": "test.cpp" },
       "xrefs": [
         {
-          "range": { "begin": 322, "end": 324 },
+          "range": { "begin": 324, "end": 326 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -24,7 +24,7 @@
           }
         },
         {
-          "range": { "begin": 329, "end": 331 },
+          "range": { "begin": 331, "end": 333 },
           "target": {
             "indirect": {
               "key": {
@@ -88,7 +88,7 @@
           }
         },
         {
-          "range": { "begin": 335, "end": 336 },
+          "range": { "begin": 337, "end": 338 },
           "target": {
             "indirect": {
               "key": {
@@ -142,7 +142,7 @@
           }
         },
         {
-          "range": { "begin": 338, "end": 340 },
+          "range": { "begin": 340, "end": 342 },
           "target": {
             "enumerator": {
               "key": {
@@ -179,7 +179,7 @@
           }
         },
         {
-          "range": { "begin": 367, "end": 369 },
+          "range": { "begin": 369, "end": 371 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -198,7 +198,7 @@
           }
         },
         {
-          "range": { "begin": 383, "end": 385 },
+          "range": { "begin": 385, "end": 387 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -217,7 +217,7 @@
           }
         },
         {
-          "range": { "begin": 393, "end": 395 },
+          "range": { "begin": 395, "end": 397 },
           "target": {
             "indirect": {
               "key": {
@@ -283,7 +283,7 @@
           }
         },
         {
-          "range": { "begin": 399, "end": 400 },
+          "range": { "begin": 401, "end": 402 },
           "target": {
             "indirect": {
               "key": {
@@ -339,7 +339,7 @@
           }
         },
         {
-          "range": { "begin": 402, "end": 404 },
+          "range": { "begin": 404, "end": 406 },
           "target": {
             "enumerator": {
               "key": {

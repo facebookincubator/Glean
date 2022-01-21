@@ -9,7 +9,7 @@
       },
       "location": {
         "file": { "key": "all.py" },
-        "location": { "span": { "length": 26, "start": 182 } },
+        "location": { "span": { "length": 26, "start": 319 } },
         "name": "all.LocalClass"
       }
     }
@@ -23,7 +23,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 70, "start": 135 } },
+        "location": { "span": { "length": 70, "start": 272 } },
         "name": "lib.HelperClass"
       }
     }
@@ -37,7 +37,7 @@
       },
       "location": {
         "file": { "key": "all.py" },
-        "location": { "span": { "length": 18, "start": 161 } },
+        "location": { "span": { "length": 18, "start": 298 } },
         "name": "all.fn"
       }
     }
@@ -53,7 +53,7 @@
       },
       "location": {
         "file": { "key": "big_lib/__init__.py" },
-        "location": { "span": { "length": 34, "start": 102 } },
+        "location": { "span": { "length": 34, "start": 239 } },
         "name": "big_lib.big_func"
       }
     }
@@ -69,7 +69,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 47, "start": 158 } },
+        "location": { "span": { "length": 47, "start": 295 } },
         "name": "lib.HelperClass.method"
       }
     }
@@ -85,7 +85,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 43, "start": 208 } },
+        "location": { "span": { "length": 43, "start": 345 } },
         "name": "lib.helper_func"
       }
     }
@@ -99,7 +99,7 @@
       },
       "location": {
         "file": { "key": "main.py" },
-        "location": { "span": { "length": 107, "start": 184 } },
+        "location": { "span": { "length": 107, "start": 321 } },
         "name": "main.f"
       }
     }
@@ -113,7 +113,7 @@
       },
       "location": {
         "file": { "key": "main.py" },
-        "location": { "span": { "length": 112, "start": 294 } },
+        "location": { "span": { "length": 112, "start": 431 } },
         "name": "main.g"
       }
     }
@@ -129,7 +129,7 @@
       },
       "location": {
         "file": { "key": "main.py" },
-        "location": { "span": { "length": 43, "start": 363 } },
+        "location": { "span": { "length": 43, "start": 500 } },
         "name": "main.g.<locals>.h"
       }
     }
@@ -150,7 +150,7 @@
       },
       "location": {
         "file": { "key": "all.py" },
-        "location": { "span": { "length": 11, "start": 126 } },
+        "location": { "span": { "length": 11, "start": 263 } },
         "name": "all.Helper"
       }
     }
@@ -171,7 +171,7 @@
       },
       "location": {
         "file": { "key": "all.py" },
-        "location": { "span": { "length": 8, "start": 92 } },
+        "location": { "span": { "length": 8, "start": 229 } },
         "name": "all.big_func"
       }
     }
@@ -192,7 +192,7 @@
       },
       "location": {
         "file": { "key": "all.py" },
-        "location": { "span": { "length": 7, "start": 102 } },
+        "location": { "span": { "length": 7, "start": 239 } },
         "name": "all.big_var"
       }
     }
@@ -213,7 +213,7 @@
       },
       "location": {
         "file": { "key": "big_lib/relative.py" },
-        "location": { "span": { "length": 8, "start": 102 } },
+        "location": { "span": { "length": 8, "start": 239 } },
         "name": "big_lib.relative.big_func"
       }
     }
@@ -234,7 +234,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 8, "start": 108 } },
+        "location": { "span": { "length": 8, "start": 245 } },
         "name": "lib.func"
       }
     }
@@ -255,7 +255,7 @@
       },
       "location": {
         "file": { "key": "main.py" },
-        "location": { "span": { "length": 11, "start": 141 } },
+        "location": { "span": { "length": 11, "start": 278 } },
         "name": "main.Helper"
       }
     }
@@ -276,7 +276,7 @@
       },
       "location": {
         "file": { "key": "main.py" },
-        "location": { "span": { "length": 11, "start": 331 } },
+        "location": { "span": { "length": 11, "start": 468 } },
         "name": "main.OtherHelper"
       }
     }
@@ -297,7 +297,7 @@
       },
       "location": {
         "file": { "key": "main.py" },
-        "location": { "span": { "length": 8, "start": 108 } },
+        "location": { "span": { "length": 8, "start": 245 } },
         "name": "main.big_func"
       }
     }
@@ -318,7 +318,7 @@
       },
       "location": {
         "file": { "key": "main.py" },
-        "location": { "span": { "length": 4, "start": 164 } },
+        "location": { "span": { "length": 4, "start": 301 } },
         "name": "main.func"
       }
     }
@@ -339,7 +339,7 @@
       },
       "location": {
         "file": { "key": "main.py" },
-        "location": { "span": { "length": 11, "start": 170 } },
+        "location": { "span": { "length": 11, "start": 307 } },
         "name": "main.helper_func"
       }
     }
@@ -353,7 +353,7 @@
       },
       "location": {
         "file": { "key": "all.py" },
-        "location": { "span": { "length": 292, "start": 0 } },
+        "location": { "span": { "length": 429, "start": 0 } },
         "name": "all"
       }
     }
@@ -367,7 +367,7 @@
       },
       "location": {
         "file": { "key": "big_lib/__init__.py" },
-        "location": { "span": { "length": 137, "start": 0 } },
+        "location": { "span": { "length": 274, "start": 0 } },
         "name": "big_lib"
       }
     }
@@ -383,7 +383,7 @@
       },
       "location": {
         "file": { "key": "big_lib/relative.py" },
-        "location": { "span": { "length": 123, "start": 0 } },
+        "location": { "span": { "length": 260, "start": 0 } },
         "name": "big_lib.relative"
       }
     }
@@ -397,7 +397,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 252, "start": 0 } },
+        "location": { "span": { "length": 389, "start": 0 } },
         "name": "lib"
       }
     }
@@ -411,7 +411,7 @@
       },
       "location": {
         "file": { "key": "main.py" },
-        "location": { "span": { "length": 444, "start": 0 } },
+        "location": { "span": { "length": 581, "start": 0 } },
         "name": "main"
       }
     }
@@ -427,7 +427,7 @@
       },
       "location": {
         "file": { "key": "all.py" },
-        "location": { "span": { "length": 80, "start": 211 } },
+        "location": { "span": { "length": 80, "start": 348 } },
         "name": "all.__all__"
       }
     }
@@ -441,7 +441,7 @@
       },
       "location": {
         "file": { "key": "all.py" },
-        "location": { "span": { "length": 9, "start": 149 } },
+        "location": { "span": { "length": 9, "start": 286 } },
         "name": "all.var"
       }
     }
@@ -457,7 +457,7 @@
       },
       "location": {
         "file": { "key": "big_lib/__init__.py" },
-        "location": { "span": { "length": 11, "start": 88 } },
+        "location": { "span": { "length": 11, "start": 225 } },
         "name": "big_lib.big_var"
       }
     }
@@ -473,7 +473,7 @@
       },
       "location": {
         "file": { "key": "main.py" },
-        "location": { "span": { "length": 12, "start": 251 } },
+        "location": { "span": { "length": 12, "start": 388 } },
         "name": "main.f.<locals>.c"
       }
     }

@@ -5,7 +5,7 @@
       "file": { "key": "test.cpp" },
       "xrefs": [
         {
-          "range": { "begin": 361, "end": 363 },
+          "range": { "begin": 363, "end": 365 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -24,7 +24,7 @@
           }
         },
         {
-          "range": { "begin": 370, "end": 372 },
+          "range": { "begin": 372, "end": 374 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -43,7 +43,7 @@
           }
         },
         {
-          "range": { "begin": 374, "end": 377 },
+          "range": { "begin": 376, "end": 379 },
           "target": {
             "declaration": {
               "record_": {
@@ -70,7 +70,7 @@
           }
         },
         {
-          "range": { "begin": 378, "end": 381 },
+          "range": { "begin": 380, "end": 383 },
           "target": {
             "indirect": {
               "key": {
@@ -126,7 +126,7 @@
           }
         },
         {
-          "range": { "begin": 399, "end": 401 },
+          "range": { "begin": 401, "end": 403 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -145,7 +145,7 @@
           }
         },
         {
-          "range": { "begin": 403, "end": 406 },
+          "range": { "begin": 405, "end": 408 },
           "target": {
             "declaration": {
               "function_": {
@@ -174,7 +174,7 @@
           }
         },
         {
-          "range": { "begin": 407, "end": 410 },
+          "range": { "begin": 409, "end": 412 },
           "target": {
             "indirect": {
               "key": {

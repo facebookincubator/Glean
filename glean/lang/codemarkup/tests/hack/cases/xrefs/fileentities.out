@@ -6,7 +6,7 @@
       "location": {
         "name": "BAZ",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 140, "length": 3 } }
+        "location": { "span": { "start": 288, "length": 3 } }
       },
       "entity": {
         "hack": {
@@ -34,7 +34,7 @@
       "location": {
         "name": "SourceClass",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 94, "length": 11 } }
+        "location": { "span": { "start": 242, "length": 11 } }
       },
       "entity": {
         "hack": {
@@ -57,7 +57,7 @@
       "location": {
         "name": "T",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 163, "length": 1 } }
+        "location": { "span": { "start": 311, "length": 1 } }
       },
       "entity": {
         "hack": {
@@ -85,7 +85,7 @@
       "location": {
         "name": "bar",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 216, "length": 3 } }
+        "location": { "span": { "start": 364, "length": 3 } }
       },
       "entity": {
         "hack": {
@@ -113,7 +113,7 @@
       "location": {
         "name": "daz",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 186, "length": 4 } }
+        "location": { "span": { "start": 334, "length": 4 } }
       },
       "entity": {
         "hack": {

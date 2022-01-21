@@ -5,7 +5,7 @@
       "file": { "key": "test.cpp" },
       "xrefs": [
         {
-          "range": { "begin": 426, "end": 428 },
+          "range": { "begin": 428, "end": 430 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -29,7 +29,7 @@
           }
         },
         {
-          "range": { "begin": 430, "end": 432 },
+          "range": { "begin": 432, "end": 434 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -58,7 +58,7 @@
           }
         },
         {
-          "range": { "begin": 447, "end": 449 },
+          "range": { "begin": 449, "end": 451 },
           "target": {
             "indirect": {
               "key": {

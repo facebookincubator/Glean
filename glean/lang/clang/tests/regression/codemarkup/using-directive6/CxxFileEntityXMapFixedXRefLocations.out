@@ -25,10 +25,10 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 268, "length": 2 } ]
+                  "ranges": [ { "offset": 270, "length": 2 } ]
                 }
               ],
-              "variable": [ [ { "offset": 306, "length": 1 } ] ]
+              "variable": [ [ { "offset": 308, "length": 1 } ] ]
             }
           },
           "externals": [
@@ -100,7 +100,7 @@
             }
           }
         },
-        "source": { "span": { "start": 268, "length": 2 } }
+        "source": { "span": { "start": 270, "length": 2 } }
       },
       "entity": {
         "cxx": {

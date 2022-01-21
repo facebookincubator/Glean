@@ -5,7 +5,7 @@
       "file": { "key": "test.m" },
       "xrefs": [
         {
-          "range": { "begin": 255, "end": 263 },
+          "range": { "begin": 257, "end": 265 },
           "target": {
             "declaration": {
               "objcContainer": {
@@ -24,7 +24,7 @@
           }
         },
         {
-          "range": { "begin": 305, "end": 306 },
+          "range": { "begin": 307, "end": 308 },
           "target": {
             "declaration": {
               "objcContainer": {
@@ -43,7 +43,7 @@
           }
         },
         {
-          "range": { "begin": 318, "end": 331 },
+          "range": { "begin": 320, "end": 333 },
           "target": {
             "declaration": {
               "objcMethod": {
@@ -77,7 +77,7 @@
           }
         },
         {
-          "range": { "begin": 332, "end": 341 },
+          "range": { "begin": 334, "end": 343 },
           "target": {
             "declaration": {
               "objcContainer": {

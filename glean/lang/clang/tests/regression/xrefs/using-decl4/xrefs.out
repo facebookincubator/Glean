@@ -5,7 +5,7 @@
       "file": { "key": "test.cpp" },
       "xrefs": [
         {
-          "range": { "begin": 367, "end": 369 },
+          "range": { "begin": 369, "end": 371 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -34,7 +34,7 @@
           }
         },
         {
-          "range": { "begin": 421, "end": 423 },
+          "range": { "begin": 423, "end": 425 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -63,7 +63,7 @@
           }
         },
         {
-          "range": { "begin": 488, "end": 491 },
+          "range": { "begin": 490, "end": 493 },
           "target": {
             "declaration": {
               "record_": {
@@ -107,7 +107,7 @@
           }
         },
         {
-          "range": { "begin": 496, "end": 499 },
+          "range": { "begin": 498, "end": 501 },
           "target": {
             "declaration": {
               "record_": {
@@ -139,7 +139,7 @@
           }
         },
         {
-          "range": { "begin": 501, "end": 504 },
+          "range": { "begin": 503, "end": 506 },
           "target": {
             "declaration": {
               "record_": {
@@ -183,7 +183,7 @@
           }
         },
         {
-          "range": { "begin": 518, "end": 521 },
+          "range": { "begin": 520, "end": 523 },
           "target": {
             "declaration": {
               "record_": {
@@ -215,7 +215,7 @@
           }
         },
         {
-          "range": { "begin": 523, "end": 526 },
+          "range": { "begin": 525, "end": 528 },
           "target": {
             "indirect": {
               "key": {
@@ -293,7 +293,7 @@
           }
         },
         {
-          "range": { "begin": 549, "end": 552 },
+          "range": { "begin": 551, "end": 554 },
           "target": {
             "declaration": {
               "record_": {
@@ -325,7 +325,7 @@
           }
         },
         {
-          "range": { "begin": 554, "end": 557 },
+          "range": { "begin": 556, "end": 559 },
           "target": {
             "declaration": {
               "record_": {
@@ -369,7 +369,7 @@
           }
         },
         {
-          "range": { "begin": 559, "end": 562 },
+          "range": { "begin": 561, "end": 564 },
           "target": {
             "indirect": {
               "key": {
@@ -447,7 +447,7 @@
           }
         },
         {
-          "range": { "begin": 575, "end": 577 },
+          "range": { "begin": 577, "end": 579 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -471,7 +471,7 @@
           }
         },
         {
-          "range": { "begin": 637, "end": 639 },
+          "range": { "begin": 639, "end": 641 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -490,7 +490,7 @@
           }
         },
         {
-          "range": { "begin": 707, "end": 709 },
+          "range": { "begin": 709, "end": 711 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -509,7 +509,7 @@
           }
         },
         {
-          "range": { "begin": 737, "end": 740 },
+          "range": { "begin": 739, "end": 742 },
           "target": {
             "indirect": {
               "key": {
@@ -602,7 +602,7 @@
           }
         },
         {
-          "range": { "begin": 742, "end": 745 },
+          "range": { "begin": 744, "end": 747 },
           "target": {
             "declaration": {
               "record_": {
@@ -646,7 +646,7 @@
           }
         },
         {
-          "range": { "begin": 746, "end": 749 },
+          "range": { "begin": 748, "end": 751 },
           "target": {
             "indirect": {
               "key": {
@@ -739,7 +739,7 @@
           }
         },
         {
-          "range": { "begin": 755, "end": 758 },
+          "range": { "begin": 757, "end": 760 },
           "target": {
             "declaration": {
               "record_": {
@@ -771,7 +771,7 @@
           }
         },
         {
-          "range": { "begin": 760, "end": 763 },
+          "range": { "begin": 762, "end": 765 },
           "target": {
             "declaration": {
               "record_": {
@@ -815,7 +815,7 @@
           }
         },
         {
-          "range": { "begin": 769, "end": 772 },
+          "range": { "begin": 771, "end": 774 },
           "target": {
             "declaration": {
               "record_": {
@@ -847,7 +847,7 @@
           }
         },
         {
-          "range": { "begin": 795, "end": 798 },
+          "range": { "begin": 797, "end": 800 },
           "target": {
             "indirect": {
               "key": {
@@ -925,7 +925,7 @@
           }
         },
         {
-          "range": { "begin": 831, "end": 834 },
+          "range": { "begin": 833, "end": 836 },
           "target": {
             "declaration": {
               "record_": {
@@ -957,7 +957,7 @@
           }
         },
         {
-          "range": { "begin": 896, "end": 902 },
+          "range": { "begin": 898, "end": 904 },
           "target": {
             "indirect": {
               "key": {
@@ -1033,7 +1033,7 @@
           }
         },
         {
-          "range": { "begin": 964, "end": 967 },
+          "range": { "begin": 966, "end": 969 },
           "target": {
             "indirect": {
               "key": {
@@ -1126,7 +1126,7 @@
           }
         },
         {
-          "range": { "begin": 973, "end": 976 },
+          "range": { "begin": 975, "end": 978 },
           "target": {
             "declaration": {
               "record_": {
@@ -1158,7 +1158,7 @@
           }
         },
         {
-          "range": { "begin": 978, "end": 981 },
+          "range": { "begin": 980, "end": 983 },
           "target": {
             "indirect": {
               "key": {
@@ -1236,7 +1236,7 @@
           }
         },
         {
-          "range": { "begin": 987, "end": 990 },
+          "range": { "begin": 989, "end": 992 },
           "target": {
             "declaration": {
               "record_": {
@@ -1268,7 +1268,7 @@
           }
         },
         {
-          "range": { "begin": 1013, "end": 1016 },
+          "range": { "begin": 1015, "end": 1018 },
           "target": {
             "indirect": {
               "key": {
@@ -1346,7 +1346,7 @@
           }
         },
         {
-          "range": { "begin": 1049, "end": 1052 },
+          "range": { "begin": 1051, "end": 1054 },
           "target": {
             "declaration": {
               "record_": {
@@ -1378,7 +1378,7 @@
           }
         },
         {
-          "range": { "begin": 1114, "end": 1120 },
+          "range": { "begin": 1116, "end": 1122 },
           "target": {
             "indirect": {
               "key": {
@@ -1454,7 +1454,7 @@
           }
         },
         {
-          "range": { "begin": 1169, "end": 1171 },
+          "range": { "begin": 1171, "end": 1173 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -1473,7 +1473,7 @@
           }
         },
         {
-          "range": { "begin": 1173, "end": 1175 },
+          "range": { "begin": 1175, "end": 1177 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -1497,7 +1497,7 @@
           }
         },
         {
-          "range": { "begin": 1188, "end": 1191 },
+          "range": { "begin": 1190, "end": 1193 },
           "target": {
             "declaration": {
               "record_": {
@@ -1529,7 +1529,7 @@
           }
         },
         {
-          "range": { "begin": 1193, "end": 1196 },
+          "range": { "begin": 1195, "end": 1198 },
           "target": {
             "declaration": {
               "record_": {
@@ -1573,7 +1573,7 @@
           }
         },
         {
-          "range": { "begin": 1198, "end": 1201 },
+          "range": { "begin": 1200, "end": 1203 },
           "target": {
             "indirect": {
               "key": {
@@ -1651,7 +1651,7 @@
           }
         },
         {
-          "range": { "begin": 1207, "end": 1210 },
+          "range": { "begin": 1209, "end": 1212 },
           "target": {
             "declaration": {
               "record_": {
@@ -1683,7 +1683,7 @@
           }
         },
         {
-          "range": { "begin": 1233, "end": 1236 },
+          "range": { "begin": 1235, "end": 1238 },
           "target": {
             "indirect": {
               "key": {
@@ -1761,7 +1761,7 @@
           }
         },
         {
-          "range": { "begin": 1269, "end": 1272 },
+          "range": { "begin": 1271, "end": 1274 },
           "target": {
             "declaration": {
               "record_": {
@@ -1793,7 +1793,7 @@
           }
         },
         {
-          "range": { "begin": 1334, "end": 1340 },
+          "range": { "begin": 1336, "end": 1342 },
           "target": {
             "indirect": {
               "key": {

@@ -25,7 +25,7 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 258, "length": 2 } ]
+                  "ranges": [ { "offset": 260, "length": 2 } ]
                 },
                 {
                   "target": {
@@ -44,10 +44,10 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 314, "length": 2 } ]
+                  "ranges": [ { "offset": 316, "length": 2 } ]
                 }
               ],
-              "variable": [ [ { "offset": 334, "length": 1 } ] ]
+              "variable": [ [ { "offset": 336, "length": 1 } ] ]
             }
           },
           "externals": [
@@ -123,7 +123,7 @@
             }
           }
         },
-        "source": { "span": { "start": 258, "length": 2 } }
+        "source": { "span": { "start": 260, "length": 2 } }
       },
       "entity": {
         "cxx": {
@@ -170,7 +170,7 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 258, "length": 2 } ]
+                  "ranges": [ { "offset": 260, "length": 2 } ]
                 },
                 {
                   "target": {
@@ -189,10 +189,10 @@
                       }
                     }
                   },
-                  "ranges": [ { "offset": 314, "length": 2 } ]
+                  "ranges": [ { "offset": 316, "length": 2 } ]
                 }
               ],
-              "variable": [ [ { "offset": 334, "length": 1 } ] ]
+              "variable": [ [ { "offset": 336, "length": 1 } ] ]
             }
           },
           "externals": [
@@ -268,7 +268,7 @@
             }
           }
         },
-        "source": { "span": { "start": 314, "length": 2 } }
+        "source": { "span": { "start": 316, "length": 2 } }
       },
       "entity": {
         "cxx": {

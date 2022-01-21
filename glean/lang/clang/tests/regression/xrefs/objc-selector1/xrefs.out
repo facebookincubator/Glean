@@ -5,7 +5,7 @@
       "file": { "key": "test.m" },
       "xrefs": [
         {
-          "range": { "begin": 255, "end": 258 },
+          "range": { "begin": 257, "end": 260 },
           "target": {
             "declaration": {
               "typeAlias": {
@@ -31,7 +31,7 @@
           }
         },
         {
-          "range": { "begin": 284, "end": 287 },
+          "range": { "begin": 286, "end": 289 },
           "target": {
             "declaration": {
               "typeAlias": {
@@ -57,7 +57,7 @@
           }
         },
         {
-          "range": { "begin": 323, "end": 324 },
+          "range": { "begin": 325, "end": 326 },
           "target": {
             "declaration": {
               "objcContainer": {
@@ -76,7 +76,7 @@
           }
         },
         {
-          "range": { "begin": 366, "end": 369 },
+          "range": { "begin": 368, "end": 371 },
           "target": {
             "declaration": {
               "typeAlias": {
@@ -102,11 +102,11 @@
           }
         },
         {
-          "range": { "begin": 374, "end": 388 },
+          "range": { "begin": 376, "end": 390 },
           "target": { "objcSelector": { "key": [ "foo" ] } }
         },
         {
-          "range": { "begin": 395, "end": 408 },
+          "range": { "begin": 397, "end": 410 },
           "target": {
             "declaration": {
               "objcMethod": {
@@ -140,7 +140,7 @@
           }
         },
         {
-          "range": { "begin": 409, "end": 423 },
+          "range": { "begin": 411, "end": 425 },
           "target": { "objcSelector": { "key": [ "foo" ] } }
         }
       ]

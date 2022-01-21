@@ -5,7 +5,7 @@
       "file": { "key": "test.cpp" },
       "xrefs": [
         {
-          "range": { "begin": 446, "end": 448 },
+          "range": { "begin": 448, "end": 450 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -24,7 +24,7 @@
           }
         },
         {
-          "range": { "begin": 460, "end": 462 },
+          "range": { "begin": 462, "end": 464 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -43,7 +43,7 @@
           }
         },
         {
-          "range": { "begin": 474, "end": 476 },
+          "range": { "begin": 476, "end": 478 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -62,7 +62,7 @@
           }
         },
         {
-          "range": { "begin": 494, "end": 496 },
+          "range": { "begin": 496, "end": 498 },
           "target": {
             "indirect": {
               "key": {
@@ -128,7 +128,7 @@
           }
         },
         {
-          "range": { "begin": 511, "end": 513 },
+          "range": { "begin": 513, "end": 515 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -147,7 +147,7 @@
           }
         },
         {
-          "range": { "begin": 515, "end": 517 },
+          "range": { "begin": 517, "end": 519 },
           "target": {
             "declaration": {
               "function_": {
@@ -181,7 +181,7 @@
           }
         },
         {
-          "range": { "begin": 533, "end": 535 },
+          "range": { "begin": 535, "end": 537 },
           "target": {
             "indirect": {
               "key": {
@@ -246,7 +246,7 @@
           }
         },
         {
-          "range": { "begin": 549, "end": 551 },
+          "range": { "begin": 551, "end": 553 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -265,7 +265,7 @@
           }
         },
         {
-          "range": { "begin": 553, "end": 555 },
+          "range": { "begin": 555, "end": 557 },
           "target": {
             "declaration": {
               "function_": {
@@ -298,7 +298,7 @@
           }
         },
         {
-          "range": { "begin": 570, "end": 572 },
+          "range": { "begin": 572, "end": 574 },
           "target": {
             "indirect": {
               "key": {
@@ -359,7 +359,7 @@
           }
         },
         {
-          "range": { "begin": 586, "end": 588 },
+          "range": { "begin": 588, "end": 590 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -378,7 +378,7 @@
           }
         },
         {
-          "range": { "begin": 590, "end": 592 },
+          "range": { "begin": 592, "end": 594 },
           "target": {
             "declaration": {
               "function_": {
@@ -407,7 +407,7 @@
           }
         },
         {
-          "range": { "begin": 607, "end": 609 },
+          "range": { "begin": 609, "end": 611 },
           "target": {
             "indirect": {
               "key": {
@@ -473,7 +473,7 @@
           }
         },
         {
-          "range": { "begin": 630, "end": 632 },
+          "range": { "begin": 632, "end": 634 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -492,7 +492,7 @@
           }
         },
         {
-          "range": { "begin": 634, "end": 636 },
+          "range": { "begin": 636, "end": 638 },
           "target": {
             "declaration": {
               "function_": {
@@ -529,7 +529,7 @@
           }
         },
         {
-          "range": { "begin": 678, "end": 680 },
+          "range": { "begin": 680, "end": 682 },
           "target": {
             "indirect": {
               "key": {
@@ -595,7 +595,7 @@
           }
         },
         {
-          "range": { "begin": 696, "end": 698 },
+          "range": { "begin": 698, "end": 700 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -614,7 +614,7 @@
           }
         },
         {
-          "range": { "begin": 700, "end": 702 },
+          "range": { "begin": 702, "end": 704 },
           "target": {
             "declaration": {
               "function_": {
@@ -648,7 +648,7 @@
           }
         },
         {
-          "range": { "begin": 737, "end": 739 },
+          "range": { "begin": 739, "end": 741 },
           "target": {
             "indirect": {
               "key": {
@@ -713,7 +713,7 @@
           }
         },
         {
-          "range": { "begin": 753, "end": 755 },
+          "range": { "begin": 755, "end": 757 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -732,7 +732,7 @@
           }
         },
         {
-          "range": { "begin": 757, "end": 759 },
+          "range": { "begin": 759, "end": 761 },
           "target": {
             "declaration": {
               "function_": {
@@ -765,7 +765,7 @@
           }
         },
         {
-          "range": { "begin": 775, "end": 777 },
+          "range": { "begin": 777, "end": 779 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -784,7 +784,7 @@
           }
         },
         {
-          "range": { "begin": 779, "end": 781 },
+          "range": { "begin": 781, "end": 783 },
           "target": {
             "indirect": {
               "key": {
@@ -849,7 +849,7 @@
           }
         },
         {
-          "range": { "begin": 798, "end": 800 },
+          "range": { "begin": 800, "end": 802 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -868,7 +868,7 @@
           }
         },
         {
-          "range": { "begin": 802, "end": 804 },
+          "range": { "begin": 804, "end": 806 },
           "target": {
             "declaration": {
               "function_": {
@@ -901,7 +901,7 @@
           }
         },
         {
-          "range": { "begin": 820, "end": 822 },
+          "range": { "begin": 822, "end": 824 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -920,7 +920,7 @@
           }
         },
         {
-          "range": { "begin": 824, "end": 826 },
+          "range": { "begin": 826, "end": 828 },
           "target": {
             "indirect": {
               "key": {
@@ -981,7 +981,7 @@
           }
         },
         {
-          "range": { "begin": 843, "end": 845 },
+          "range": { "begin": 845, "end": 847 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -1000,7 +1000,7 @@
           }
         },
         {
-          "range": { "begin": 847, "end": 849 },
+          "range": { "begin": 849, "end": 851 },
           "target": {
             "declaration": {
               "function_": {
@@ -1029,7 +1029,7 @@
           }
         },
         {
-          "range": { "begin": 880, "end": 882 },
+          "range": { "begin": 882, "end": 884 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -1048,7 +1048,7 @@
           }
         },
         {
-          "range": { "begin": 901, "end": 903 },
+          "range": { "begin": 903, "end": 905 },
           "target": {
             "indirect": {
               "key": {
@@ -1114,7 +1114,7 @@
           }
         },
         {
-          "range": { "begin": 920, "end": 922 },
+          "range": { "begin": 922, "end": 924 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -1133,7 +1133,7 @@
           }
         },
         {
-          "range": { "begin": 924, "end": 926 },
+          "range": { "begin": 926, "end": 928 },
           "target": {
             "declaration": {
               "function_": {
