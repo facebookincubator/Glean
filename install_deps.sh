@@ -15,7 +15,7 @@
 
 set -e
 
-HSTHRIFT_REPO=https://github.com/donsbot/hsthrift.git
+HSTHRIFT_REPO=https://github.com/facebookincubator/hsthrift.git
 
 if test ! -d hsthrift; then
     git clone "${HSTHRIFT_REPO}"
