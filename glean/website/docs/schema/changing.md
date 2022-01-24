@@ -12,7 +12,14 @@ need to read or write data using it.
 
 :::
 
-You can only add new predicates or new versions of predicates, and
+A schema is a contract between indexer, client and server about
+the shape of facts. Schemas are used during the compilation of some clients to
+generate code to build queries and decode facts. Because it is not possible to
+update all running application clients and issue new databases in one atomic
+operation, if we change the shape of a predicate type clients will suddenly
+begin to create type-incorrect queries and become unable to decode facts.
+
+Because of that you can only add new predicates or new versions of predicates, and
 delete old ones. This is to ensure compatibilty between different
 versions of clients and databases: adding new predicates to the schema
 doesn't break existing clients or indexers.
