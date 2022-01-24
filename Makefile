@@ -17,7 +17,34 @@
 
 CABAL_BIN=cabal
 PWD := $(shell /bin/pwd)
-CABAL = $(CABAL_BIN) --project-file=$(PWD)/cabal.project
+CABAL_PROJECT := --project-file=$(PWD)/cabal.project
+
+# Using getdeps.py flavor for hsthrift, we install dependencies locally, so a
+# lot more flags needed
+ifeq ($(BUILD_DEPS),1)
+    empty :=
+    space := $(empty) $(empty)
+    BUILDER := hsthrift/build.sh
+
+    DEPS_INSTALLDIR := $(patsubst %/hsthrift,%,\
+            $(shell $(BUILDER) show-inst-dir hsthrift))
+    DEPS := $(shell $(BUILDER) show-inst-dir hsthrift --recursive)
+    LIBDIRS := $(patsubst %,--extra-lib-dirs=%/lib,$(DEPS))
+    INCLUDEDIRS := $(patsubst %,--extra-include-dirs=%/include,$(DEPS))
+    PKG_CONFIG_PATH := $(subst $(space),:,\
+            $(shell find $(DEPS_INSTALLDIR) -name pkgconfig -type d))
+    LD_LIBRARY_PATH := $(subst $(space),:,$(patsubst %,%/lib,$(DEPS)))
+
+    THRIFT1 := $(patsubst %,%/bin/thrift1,\
+        $(shell $(BUILDER) show-inst-dir fbthrift))
+
+    CABAL=env PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)" \
+          LD_LIBRARY_PATH="$(LD_LIBRARY_PATH)" \
+          $(CABAL_BIN) $(LIBDIRS) $(INCLUDEDIRS) $(CABAL_PROJECT)
+else
+    THRIFT1 := thrift1
+    CABAL = $(CABAL_BIN) $(CABAL_PROJECT)
+endif
 
 THRIFT_COMPILE = $(CABAL) run exe:thrift-compiler --
 
@@ -144,7 +171,7 @@ THRIFT_CPP= \
 .PHONY: thrift-cpp
 thrift-cpp: thrift-hsthrift-cpp
 	for f in $(THRIFT_CPP); do \
-		thrift1 -I . --gen mstch_cpp2 -o $$(dirname $$f) $$f; \
+		$(THRIFT1) -I . --gen mstch_cpp2 -o $$(dirname $$f) $$f; \
 	done
 
 .PHONY: thrift-hsthrift-cpp

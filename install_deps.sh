@@ -7,6 +7,15 @@
 
 set -e
 
-git clone https://github.com/facebookincubator/hsthrift.git
+HSTHRIFT_REPO=https://github.com/donsbot/hsthrift.git
+
+if test ! -d hsthrift; then
+    git clone "${HSTHRIFT_REPO}"
+fi
+
 cd hsthrift
-./install_deps.sh --nuke
+if test "${BUILD_DEPS}" -eq 1; then
+    ./build.sh build --allow-system-packages --only-deps hsthrift
+else
+    ./install_deps.sh --nuke
+fi
