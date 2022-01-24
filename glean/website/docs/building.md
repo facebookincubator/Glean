@@ -114,8 +114,8 @@ sudo dnf install \
 :::warning
 
 The build process currently installs dependencies in
-`/usr/local/lib`. This isn't ideal; we're working on a more
-self-contained build process but it's not ready yet.
+`/usr/local/lib`. The BUILD\_DEPS=1 way (below) avoids this, but is
+experimental.
 
 :::
 
@@ -155,3 +155,26 @@ make test
 
 At this point you can `cabal install` to install the executables into
 `~/.cabal/bin`.
+
+## Building without sudo
+
+Using getdeps,py support we can build C++ dependencies in user space, which
+avoids the requirement for sudo access or additional path variables.
+
+Once you have checked out the Glean repo, continue with:
+
+```
+env BUILD_DEPS=1 ./install_deps.sh
+```
+
+Build everything:
+
+```
+make BUILD_DEPS=1
+```
+
+If everything worked, the tests should pass:
+
+```
+make test BUILD_DEPS=1
+```
