@@ -12,6 +12,8 @@
 # > export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 # > export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig#
 #
+# You will need --sudo passed to ./install_deps.sh
+#
 
 set -e
 
@@ -25,5 +27,5 @@ cd hsthrift
 if test -n "${BUILD_DEPS}" && test "${BUILD_DEPS}" -eq 1; then
     ./build.sh build --allow-system-packages --only-deps hsthrift
 else
-    ./install_deps.sh --nuke --sudo
+    ./install_deps.sh --nuke
 fi
