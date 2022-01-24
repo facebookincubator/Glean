@@ -14,7 +14,7 @@ if test ! -d hsthrift; then
 fi
 
 cd hsthrift
-if test "${BUILD_DEPS}" -eq 1; then
+if test -n "${BUILD_DEPS}" && test "${BUILD_DEPS}" -eq 1; then
     ./build.sh build --allow-system-packages --only-deps hsthrift
 else
     ./install_deps.sh --nuke
