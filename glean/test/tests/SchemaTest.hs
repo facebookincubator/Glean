@@ -371,6 +371,31 @@ schemaUpperCaseField = TestCase $ do
         Left e -> "field names must begin with a lowercase" `isInfixOf` show e
         _ -> False
 
+schemaTypeShadowing :: Test
+schemaTypeShadowing = TestCase $ do
+  withSchemaAndFacts []
+    [s|
+      schema x.1 {
+        type Q = string
+        predicate P : Q
+      }
+      schema x.2 {
+        type Q = nat
+        predicate P: Q
+      }
+      schema all.1 : x.1, x.2 {}
+    |]
+    [ mkBatch (PredicateRef "x.P" 2)
+        [ [s|{ "key": 1 }|]
+        , [s|{ "key": 2 }|]
+        ]
+    ]
+    [s| x.P (x.Q _) |]
+    $ \_ response _ ->
+      case response of
+        Right _ -> assertBool "newest type shadows older one" True
+        Left err -> assertFailure (show err)
+
 fakeSchemaKey :: Text
 fakeSchemaKey = "glean/schema"
 
@@ -1867,6 +1892,7 @@ main = withUnitTest $ testRunner $ TestList $
   , TestLabel "schemaValidation" schemaValidation
   , TestLabel "schemaReservedWord" schemaReservedWord
   , TestLabel "schemaUpperCaseField" schemaUpperCaseField
+  , TestLabel "schemaTypeShadowing" schemaTypeShadowing
   , TestLabel "changeSchema" changeSchemaTest
   , TestLabel "writeEphemeralPredicate" writeEphemeralPredicate
   , TestLabel "backwardCompatDeriving" backwardCompatDeriving

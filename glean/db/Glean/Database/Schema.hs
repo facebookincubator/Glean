@@ -354,10 +354,15 @@ mkDbSchema override getPids dbContent source base addition = do
             predicateRef_version (predicateRef b) = a
           | otherwise = b
 
-      mkSchemaTypesByName types = HashMap.fromList
+      mkSchemaTypesByName types = HashMap.fromListWith latest
         [ (typeRef_name ref, deets)
         | ref <- types
         , Just deets@TypeDetails{..} <- [HashMap.lookup ref (tcEnvTypes env)] ]
+        where
+        latest a b
+          | typeRef_version (typeRef a) >
+            typeRef_version (typeRef b) = a
+          | otherwise = b
 
       -- When a query mentions an unversioned predicate, we use a default
       -- version of the predicate. The default version is whatever is
