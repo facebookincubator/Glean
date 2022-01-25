@@ -160,21 +160,33 @@ At this point you can `cabal install` to install the executables into
 
 Using getdeps,py support we can build C++ dependencies in user space, which
 avoids the requirement for sudo access or additional path variables.
+Dependencies can be installed into $HOME/.glean (for example) or another
+user-supplied path.
 
-Once you have checked out the Glean repo, continue with:
+Check out the Glean repo:
+```
+git clone https://github.com/facebookincubator/Glean.git
+cd Glean
+```
+
+Then build and install dependencies:
+```
+env BUILD_DEPS=1 INSTALL_PREFIX=$HOME/.glean ./install_deps.sh
+```
+
+Build Glean:
 
 ```
-env BUILD_DEPS=1 ./install_deps.sh
-```
-
-Build everything:
-
-```
-make BUILD_DEPS=1
+make BUILD_DEPS=1 INSTALL_PREFIX=$HOME/.glean
 ```
 
 If everything worked, the tests should pass:
 
 ```
-make test BUILD_DEPS=1
+make test BUILD_DEPS=1 INSTALL_PREFIX=$HOME/.glean
+```
+
+To see which ld and pkgconfig paths your user installation will use.
+```
+$ make show-paths BUILD_DEPS=1 INSTALL_PREFIX=$HOME/.glean
 ```

@@ -24,7 +24,13 @@ CABAL_PROJECT := --project-file=$(PWD)/cabal.project
 ifeq ($(BUILD_DEPS),1)
     empty :=
     space := $(empty) $(empty)
-    BUILDER := hsthrift/build.sh
+
+    # set to install deps into e.g. $HOME/.glean
+    ifdef INSTALL_PREFIX
+        BUILDER := hsthrift/build.sh --install-prefix=$(INSTALL_PREFIX)
+    else
+        BUILDER := hsthrift/build.sh
+    endif
 
     DEPS_INSTALLDIR := $(patsubst %/hsthrift,%,\
             $(shell $(BUILDER) show-inst-dir hsthrift))
@@ -76,7 +82,7 @@ test::
 SCHEMAS= \
 	buck \
 	builtin \
-	code_cxx \
+	e_cxx \
 	code_erlang \
 	code_flow \
 	code_hack \
@@ -177,3 +183,9 @@ thrift-cpp: thrift-hsthrift-cpp
 .PHONY: thrift-hsthrift-cpp
 thrift-hsthrift-cpp::
 	(cd hsthrift && make CABAL="$(CABAL)" thrift-cpp)
+
+# show ld paths used in this configuration
+.PHONY: show-paths
+show-paths::
+	@echo export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH)
+	@echo export PKG_CONFIG_PATH=$(PKG_CONFIG_PATH)

@@ -14,10 +14,16 @@
 #
 # You will need --sudo passed to ./install_deps.sh
 #
+# If you set BUIlD_DEPS=1, then deps are installed into GLEAN_INST_PREFIX,
+# default is ~/.glean
+#
+# And set LD_LIBRARY_PATH and PKG_CONFIG_PATH to pick those up.
+#
 
 set -e
 
 HSTHRIFT_REPO=https://github.com/facebookincubator/hsthrift.git
+INSTALL_PREFIX=${HOME}/.glean
 
 if test ! -d hsthrift; then
     git clone "${HSTHRIFT_REPO}"
@@ -25,7 +31,11 @@ fi
 
 cd hsthrift
 if test -n "${BUILD_DEPS}" && test "${BUILD_DEPS}" -eq 1; then
-    ./build.sh build --allow-system-packages --only-deps hsthrift
+    ./build.sh build \
+        --allow-system-packages \
+        --only-deps \
+        --install-prefix="${INSTALL_PREFIX}" \
+        hsthrift
 else
     ./install_deps.sh --nuke
 fi
