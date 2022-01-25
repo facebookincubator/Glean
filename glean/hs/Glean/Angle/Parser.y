@@ -352,7 +352,7 @@ parseSchema bs
       return Schema.SourceSchemas
         { srcAngleVersion = ver
         , srcSchemas = reverse srcSchemas
-        , srcEvolves = srcEvolves
+        , srcEvolves = reverse srcEvolves
         }
 
 type P a = Alex a
