@@ -82,7 +82,7 @@ test::
 SCHEMAS= \
 	buck \
 	builtin \
-	e_cxx \
+	code_cxx \
 	code_erlang \
 	code_flow \
 	code_hack \
