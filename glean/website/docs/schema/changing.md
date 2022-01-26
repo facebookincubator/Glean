@@ -40,7 +40,7 @@ if you're just changing the derivation of a derived predicate, there's no need t
 
 ### Adding new predicates
 
-If you're just adding new predicates or types, then you don't need to add a new schema version.
+If you're just adding new predicates or types, then you don't need to create a new schema version.
 
 ### Deleting predicates
 
@@ -76,7 +76,14 @@ This declaration has the effect of treating queries for `my_schema.1` predicates
 
 The new schema must contain all the predicates of the old schema, either with new versions or old versions, and their definitions must be backwards compatible. We can achieve this by copying the entire content of the old schema into the new one and modifying it there.
 
-Schema evolutions only take effect if there are no facts of the old schema in the database; it is ignored otherwise.
+Now what should Glean do when a client asks for a fact from an old schema?
+- Answer with db facts from the old schema
+- Answer with db facts from the new schema transformed into the old ones.
+
+If there are no facts of the old schema in in the database we will take option 2.
+If the database has any fact at all of the old schema we choose option 1.
+
+That is, schema evolutions only take effect if there are no facts of the old schema in the database; it is ignored otherwise.
 
 As an example suppose we start with the following schemas:
 
