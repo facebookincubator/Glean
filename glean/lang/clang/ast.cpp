@@ -25,17 +25,6 @@ using namespace facebook::glean::cpp;
 
 template<typename T> T identity(T x) { return x; }
 
-template<typename Decl>
-std::string declName(const Decl *decl) {
-  if (auto named = clang::dyn_cast_or_null<clang::NamedDecl>(decl)) {
-    return named->getNameAsString();
-  } else {
-    return "?";
-  }
-}
-
-
-
 /// Track usage of using declarations
 class UsingTracker {
 public:
