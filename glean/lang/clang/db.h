@@ -144,11 +144,6 @@ public:
     FileData *file;
     Src::ByteSpan span;
     Src::Range range;
-
-    bool empty() const {
-      return range.columnBegin == range.columnEnd
-              && range.lineBegin == range.lineEnd;
-    }
   };
 
   void ppevent(
