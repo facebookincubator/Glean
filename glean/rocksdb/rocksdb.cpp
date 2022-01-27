@@ -15,7 +15,7 @@
 #include <rocksdb/filter_policy.h>
 #include <rocksdb/slice_transform.h>
 #include <rocksdb/table.h>
-#include <rocksdb/utilities/backupable_db.h>
+#include <rocksdb/utilities/backup_engine.h>
 
 #include "glean/rocksdb/rocksdb.h"
 #include "glean/rocksdb/stats.h"
@@ -380,7 +380,7 @@ struct ContainerImpl final : Container {
     rocksdb::BackupEngine *p;
     check(rocksdb::BackupEngine::Open(
       rocksdb::Env::Default(),
-      rocksdb::BackupableDBOptions(path),
+      rocksdb::BackupEngineOptions(path),
       &p));
     return std::unique_ptr<rocksdb::BackupEngine>(p);
   }
