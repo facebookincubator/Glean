@@ -17,7 +17,7 @@ that are needed for building Glean.
 ## You will need
 
 * Linux. The build is only tested on Linux so far; we hope to add
-  support for other OSs in the future.
+  support for other OSs in the future. We have tested on x86\_64 and arm64v8.
 
 * [GHC](https://www.haskell.org/ghc/). To see which versions Glean is tested with, check the current [ci.yml](https://github.com/facebookincubator/Glean/blob/master/.github/workflows/ci.yml) script.
 
@@ -111,14 +111,6 @@ sudo dnf install \
 
 ## Building
 
-:::warning
-
-The build process currently installs dependencies in
-`/usr/local/lib`. This isn't ideal; we're working on a more
-self-contained build process but it's not ready yet.
-
-:::
-
 Clone the repository:
 
 ```
@@ -126,22 +118,40 @@ git clone https://github.com/facebookincubator/Glean.git
 cd Glean
 ```
 
-These are necessary so that the Glean build can find the dependencies
-that get installed in `/usr/local/lib`:
+### Build hsthrift and dependencies
+
+Glean depends on hsthrift, fbthrift, folly and some other core libraries.
+We need to set paths to these that the Glean build can find the thrift compiler
+and associated libraries:
+
+```
+export LD_LIBRARY_PATH=$HOME/.hsthrift/lib:$LD_LIBRARY_PATH
+export PKG_CONFIG_PATH=$HOME/lib/pkgconfig
+export PATH=$PATH:$HOME/.hsthrift/bin
+```
+
+Now clone [hsthrift](https://github.com/facebookincubator/hsthrift) and
+install its dependencies:
+```
+./install_deps.sh
+```
+
+If you prefer to install into /usr/local/ and have root privs, set instead:
 
 ```
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 ```
 
-Clone [hsthrift](https://github.com/facebookincubator/hsthrift) and
-install its dependencies:
+and build hsthrift with:
 
 ```
-./install_deps.sh
+env GLEAN_DEPS_WITH_SUDO=1 ./install_deps.sh
 ```
 
-Build everything:
+### Build Glean
+
+Now you can build all the Glean parts:
 
 ```
 make
@@ -155,3 +165,4 @@ make test
 
 At this point you can `cabal install` to install the executables into
 `~/.cabal/bin`.
+

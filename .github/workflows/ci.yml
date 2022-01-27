@@ -24,13 +24,43 @@ jobs:
       - name: Install RocksDB/libxxhash
         run: apt-get install -y librocksdb-dev libxxhash-dev
       - name: Get hsthrift and build/install its dependencies
-        run: ./install_deps.sh
+        run: env GLEAN_DEPS_WITH_SUDO=1 ./install_deps.sh
       - name: Populate hackage index
         run: cabal update
       - name: Build hsthrift/Glean
         run: make
       - name: Run Glean tests
         run: make test
+  ci-nosudo:
+    strategy:
+      fail-fast: false
+      matrix:
+        ghc: [8.10.7]
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/facebookincubator/hsthrift/ci-base:ghcup
+      options: --cpus 2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install GHC ${{ matrix.ghc }}
+        run: ghcup install ghc ${{ matrix.ghc }} --set
+      - name: Install cabal-install 3.6
+        run: ghcup install cabal -u https://downloads.haskell.org/~cabal/cabal-install-3.6.0.0/cabal-install-3.6.0.0-x86_64-linux.tar.xz 3.6.0.0 --set
+      - name: Add GHC and cabal to PATH
+        run: echo "$HOME/.ghcup/bin" >> $GITHUB_PATH
+      - name: Populate hackage index
+        run: cabal update
+      - name: Install RocksDB/libxxhash
+        run: apt-get install -y librocksdb-dev libxxhash-dev
+      - name: Get hsthrift and build/install its dependencies
+        run: ./install_deps.sh
+      - name: Add thrift compiler to path
+        run: echo "$HOME/.hsthrift/bin" >> $GITHUB_PATH
+      - name: Build hsthrift/Glean
+        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make
+      - name: Run Glean tests
+        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make test
   vscode:
     runs-on: ubuntu-latest
     steps:
