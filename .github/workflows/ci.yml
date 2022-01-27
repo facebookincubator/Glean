@@ -49,14 +49,14 @@ jobs:
         run: ghcup install cabal -u https://downloads.haskell.org/~cabal/cabal-install-3.6.0.0/cabal-install-3.6.0.0-x86_64-linux.tar.xz 3.6.0.0 --set
       - name: Add GHC and cabal to PATH
         run: echo "$HOME/.ghcup/bin" >> $GITHUB_PATH
-      - name: Populate hackage index
-        run: cabal update
       - name: Install RocksDB/libxxhash
         run: apt-get install -y librocksdb-dev libxxhash-dev
       - name: Get hsthrift and build/install its dependencies
         run: ./install_deps.sh
       - name: Add thrift compiler to path
         run: echo "$HOME/.hsthrift/bin" >> $GITHUB_PATH
+      - name: Populate hackage index
+        run: cabal update
       - name: Build hsthrift/Glean
         run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make
       - name: Run Glean tests
