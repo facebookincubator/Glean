@@ -1,9 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema graphql.2 {
-import src.1
+schema graphql.1 {
 
-# Core graphql predicates built from the graphql IR
 predicate Argument :
   {
     name: Value,
@@ -59,7 +57,6 @@ predicate Fragment :
     variableDefs: [VariableDef],
     directives: [Directive],
     selectionSet: SelectionSet,
-    loc: src.FileLocation,
   }
 
 predicate Field :
@@ -70,7 +67,6 @@ predicate Field :
     selectionSet: SelectionSet,
     arguments: [Argument],
     alias: maybe Value,
-    loc: src.FileLocation,
   }
 
 predicate FieldDef :
@@ -125,7 +121,6 @@ predicate Query :
     directives: [Directive],
     variableDefs: [VariableDef],
     selectionSet: SelectionSet,
-    loc: src.FileLocation,
   }
 
 predicate ScalarTypeDef :
@@ -158,41 +153,5 @@ predicate VariableDef :
   }
 
 predicate Value : string
-
-# Derived predicates/helpers used to power glass, codesearch, etc.
-type Declaration =
-  {
-    query_ : Query |
-    fragment_ : Fragment |
-    field_ : FieldDef |
-    enum_ : EnumTypeDef |
-    directive_ : DirectiveDef
-  }
-
-predicate DeclarationLocation :
-  {
-    declaration: Declaration,
-    file: src.File,
-    span: src.ByteSpan,
-  }
-  { Decl, File, Span} where
-    ({ query_ = Q } = Decl; Q = Query { loc = { file = File, span = Span} }) |
-    ({ fragment_ = F } = Decl; F = Fragment { loc = { file = File, span = Span} });
-    # TODO (calebtho): add support for declarations located in the schema
-
-predicate FileDeclarations :
-  {
-    file : src.File,
-    span: src.ByteSpan,
-    declaration : Declaration,
-  }
-  stored {File, Span, Decl} where
-  DeclarationLocation { Decl, File, Span};
-
-predicate DeclarationName: Declaration -> Value
-  D -> Value where
-    Value =
-      (N where { query_ = X} = D; { name = N } = X) |
-      (N where { fragment_ = X } = D; { name = N } = X);
 
 }
