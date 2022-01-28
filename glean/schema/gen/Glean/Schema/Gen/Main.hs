@@ -30,6 +30,7 @@ import Control.Exception
 import Control.Monad
 import qualified Data.ByteString.Char8 as BC
 import qualified Data.HashMap.Strict as HashMap
+import Data.List
 import Data.Maybe
 import qualified Data.Set as Set
 import Data.Text.Prettyprint.Doc hiding ((<>))
@@ -67,6 +68,7 @@ data Options = Options
   , input :: Either FilePath FilePath
   , install_dir :: FilePath
   , version :: WhichVersion
+  , omitArchive :: Bool
   }
 
 options :: Parser Options
@@ -81,6 +83,11 @@ options = do
     long "hs" <> metavar "FILE"
   source <- optional $ strOption $
     long "source" <> metavar "FILE"
+  omitArchive <- switch $
+    long "omit-archive" <>
+    help ("ignore .angle files under archive/ directories. " <>
+      "Non-archived schemas should not depend on archived schemas; this " <>
+      "flag is for testing that that property holds.")
   let
     dir = strOption (long "dir" <> metavar "DIR")
     oneFile = strOption (long "input" <> metavar "FILE")
@@ -104,7 +111,10 @@ main = do
       Left one -> BC.readFile one
       Right dir -> do
         files <- listDirectoryRecursive dir
-        catSchemaFiles files
+        catSchemaFiles $
+          if omitArchive opts
+            then filter (not . ("/archive/" `isInfixOf`)) files
+            else files
     (sourceSchemas, schemas) <- case parseAndResolveSchema str of
       Left err -> throwIO $ ErrorCall $ err
       Right schema -> return schema
