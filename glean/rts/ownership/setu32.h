@@ -32,6 +32,129 @@ namespace rts {
  * An implementation of 256-bit bitsets. This uses AVX2, most probably
  * unnecessarily.
  */
+
+namespace impl {
+
+#if __x86_64__ // use AVX
+
+inline bool empty(__m256i value) {
+  return _mm256_testz_si256(value, value);
+}
+
+inline __m256i none() {
+  return _mm256_setzero_si256();
+}
+
+inline __m256i all() {
+  return _mm256_set1_epi32(-1);
+}
+
+inline __m256i single(uint8_t n) {
+  return _mm256_sllv_epi32(
+          _mm256_set1_epi32(1),
+          _mm256_sub_epi32(
+              _mm256_set1_epi32(n),
+              _mm256_set_epi32(224,192,160,128,96,64,32,0)));
+}
+
+inline bool includes(__m256i value, __m256i other) {
+  return _mm256_testc_si256(value, other);
+}
+
+inline size_t count(__m256i value) {
+  const uint64_t* p = reinterpret_cast<const uint64_t*>(&value);
+  // _mm256_popcnt instructions require AVX512
+  return
+    _mm_popcnt_u64(p[0]) +
+    _mm_popcnt_u64(p[1]) +
+    _mm_popcnt_u64(p[2]) +
+    _mm_popcnt_u64(p[3]);
+}
+
+inline uint32_t upper(__m256i value) {
+  const uint64_t* p = reinterpret_cast<const uint64_t*>(&value);
+  auto a = _lzcnt_u64(p[3]);
+  if (a < 64) { return 255 - a; }
+  a = _lzcnt_u64(p[2]);
+  if (a < 64) { return 191 - a; }
+  a = _lzcnt_u64(p[1]);
+  if (a < 64) { return 127 - a; }
+  return (63 - _lzcnt_u64(p[0]));
+}
+
+inline __m256i or_(__m256i value, __m256i other) {
+  return _mm256_or_si256(value, other);
+}
+
+inline __m256i and_(__m256i value, __m256i other) {
+  return _mm256_and_si256(value, other);
+}
+
+inline __m256i xor_(__m256i value, __m256i other) {
+  return _mm256_xor_si256(value, other);
+}
+
+#else // not x86_64
+
+typedef uint32_t __m256i __attribute__((vector_size(32)));
+
+inline bool empty(__m256i value) {
+  return !(value[0] || value[1] || value[2] || value[3] ||
+           value[4] || value[5] || value[6] || value[7]);
+}
+
+inline __m256i none() {
+  return {0, 0, 0, 0, 0, 0, 0, 0};
+}
+
+inline __m256i all() {
+  __m256i v = {0, 0, 0, 0, 0, 0, 0, 0};
+  return ~v;
+}
+
+inline __m256i single(uint8_t n) {
+  __m256i v0 = {224,192,160,128,96,64,32,0}, v1 = {1,1,1,1,1,1,1,1};
+  return v1 << (v0 - n);
+}
+
+inline bool includes(__m256i value, __m256i other) {
+  return empty(~value & other);
+}
+
+inline size_t count(__m256i value) {
+  const uint64_t* p = reinterpret_cast<const uint64_t*>(&value);
+  return
+    __builtin_popcountl(p[0]) +
+    __builtin_popcountl(p[1]) +
+    __builtin_popcountl(p[2]) +
+    __builtin_popcountl(p[3]);
+}
+
+inline uint32_t upper(__m256i value) {
+  const uint64_t* p = reinterpret_cast<const uint64_t*>(&value);
+  if (p[3]) { return 255 - __builtin_clzl(p[3]); }
+  if (p[2]) { return 191 - __builtin_clzl(p[2]); }
+  if (p[1]) { return 127 - __builtin_clzl(p[1]); }
+  if (p[0]) { return 63 - __builtin_clzl(p[0]); }
+  return 0; // undefined
+}
+
+inline __m256i or_(__m256i value, __m256i other) {
+  return value | other;
+}
+
+inline __m256i and_(__m256i value, __m256i other) {
+  return value & other;
+}
+
+inline __m256i xor_(__m256i value, __m256i other) {
+  return value ^ other;
+}
+
+#endif
+
+} // namespace impl
+
 struct Bits256 {
   __m256i value;
 
@@ -44,7 +167,7 @@ struct Bits256 {
 
   /// Check if this set is a superset of the other set
   bool includes(Bits256 other) const {
-    return _mm256_testc_si256(value, other.value);
+    return impl::includes(value, other.value);
   }
 
   bool contains(uint8_t n) const {
@@ -52,7 +175,7 @@ struct Bits256 {
   }
 
   bool empty() const {
-    return _mm256_testz_si256(value, value);
+    return impl::empty(value);
   }
 
   bool operator==(Bits256 other) const {
@@ -64,41 +187,23 @@ struct Bits256 {
   }
 
   static Bits256 none() {
-    return Bits256(_mm256_setzero_si256());
+    return Bits256(impl::none());
   }
 
   static Bits256 all() {
-    return Bits256(_mm256_set1_epi32(-1));
+    return Bits256(impl::all());
   }
 
   static Bits256 single(uint8_t n) {
-    return Bits256(
-      _mm256_sllv_epi32(
-        _mm256_set1_epi32(1),
-        _mm256_sub_epi32(
-          _mm256_set1_epi32(n),
-          _mm256_set_epi32(224,192,160,128,96,64,32,0))));
+    return Bits256(impl::single(n));
   }
 
   size_t count() const {
-    const uint64_t* p = reinterpret_cast<const uint64_t*>(&value);
-    // _mm256_popcnt instructions require AVX512
-    return
-      _mm_popcnt_u64(p[0]) +
-      _mm_popcnt_u64(p[1]) +
-      _mm_popcnt_u64(p[2]) +
-      _mm_popcnt_u64(p[3]);
+    return impl::count(value);
   }
 
   uint32_t upper() const {
-    const uint64_t* p = reinterpret_cast<const uint64_t*>(&value);
-    auto a = _lzcnt_u64(p[3]);
-    if (a < 64) { return 255 - a; }
-    a = _lzcnt_u64(p[2]);
-    if (a < 64) { return 191 - a; }
-    a = _lzcnt_u64(p[1]);
-    if (a < 64) { return 127 - a; }
-    return (63 - _lzcnt_u64(p[0]));
+    return impl::upper(value);
   }
 
   Bits256 with(const uint8_t *vals, uint8_t len) const {
@@ -113,7 +218,7 @@ struct Bits256 {
   }
 
   Bits256 operator|(Bits256 other) const {
-    return Bits256(_mm256_or_si256(value, other.value));
+    return Bits256(impl::or_(value, other.value));
   }
 
   Bits256& operator|=(Bits256 other) {
@@ -122,7 +227,7 @@ struct Bits256 {
   }
 
   Bits256 operator&(Bits256 other) const {
-    return Bits256(_mm256_and_si256(value, other.value));
+    return Bits256(impl::and_(value, other.value));
   }
 
   Bits256& operator&=(Bits256 other) {
@@ -131,7 +236,7 @@ struct Bits256 {
   }
 
   Bits256 operator^(Bits256 other) const {
-    return Bits256(_mm256_xor_si256(value, other.value));
+    return Bits256(impl::xor_(value, other.value));
   }
 
   Bits256& operator^=(Bits256 other) {
