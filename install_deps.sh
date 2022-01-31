@@ -24,6 +24,11 @@
 set -e
 
 HSTHRIFT_REPO=https://github.com/facebookincubator/hsthrift.git
+THREADS=4
+
+case "$1" in
+    --threads) THREADS="$2"; shift; shift;;
+esac
 
 if test ! -d hsthrift; then
     git clone "${HSTHRIFT_REPO}"
@@ -31,7 +36,7 @@ fi
 
 cd hsthrift
 if test -z "${GLEAN_DEPS_WITH_SUDO}"; then
-    ./new_install_deps.sh
+    ./new_install_deps.sh rocksdb --threads "${THREADS}"
 else
     ./install_deps.sh --nuke
 fi
