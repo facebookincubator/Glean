@@ -60,7 +60,6 @@ sudo apt-get install \
     libpcre3-dev \
     libmysqlclient-dev \
     libfftw3-dev \
-    librocksdb-dev \
     libxxhash-dev
 ```
 
@@ -74,11 +73,10 @@ Use
 ```
         default-libmysqlclient-dev
 ```
-instead. You also need to install:
+instead. You may also need to install:
 ```
         libfmt-dev
 ```
-instead.
 
 ### Fedora
 
@@ -105,7 +103,6 @@ sudo dnf install \
     pcre-devel \
     community-mysql-devel \
     fftw-devel \
-    rocksdb-devel \
     xxhash-devel
 ```
 
@@ -120,7 +117,7 @@ cd Glean
 
 ### Build hsthrift and dependencies
 
-Glean depends on hsthrift, fbthrift, folly and some other core libraries.
+Glean depends on hsthrift, fbthrift, folly, rocksdb and some other core libraries.
 We need to set paths to these that the Glean build can find the thrift compiler
 and associated libraries:
 
@@ -131,22 +128,9 @@ export PATH=$PATH:$HOME/.hsthrift/bin
 ```
 
 Now clone [hsthrift](https://github.com/facebookincubator/hsthrift) and
-install its dependencies:
+build and install its dependencies:
 ```
 ./install_deps.sh
-```
-
-If you prefer to install into /usr/local/ and have root privs, set instead:
-
-```
-export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
-export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
-```
-
-and build hsthrift with:
-
-```
-env GLEAN_DEPS_WITH_SUDO=1 ./install_deps.sh
 ```
 
 ### Build Glean
