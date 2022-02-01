@@ -847,65 +847,6 @@ predicate DeclInRecord :
   Decls = Declarations DS;
   Decl = DS[..];
 
-# This is a work-around until RecordDefinition{members} is more
-# complete.
-# See T68843402 for progress on completing this.
-#
-# This is a fallback search, needed because the indexer is not putting all the
-# declarations into Record{members}.
-#
-# The fallback is used to find the record with the right name in the right file.
-#
-# The right name alone is not enough ( consider how many Config, Env,
-# ThriftSource, Backend types we have in Glean ). But the same QName in the same
-# file is accurate enough for a fallback search.  To get more precise the client
-# can compare byte ranges (which angle cannot do).
-predicate DeclImpliesRecord :
-  {
-    decl : Declaration,
-    record : RecordDefinition,
-  }
-  {DeclIn, Record}
-  where
-  DeclFamilyOf{decl=DeclIn, family=Decl};
-
-  {Scope{recordWithAccess={record=QN}}, src.Range{file = File}} =
-    # Declaration{namespace} cannot be in a record
-    # Declaration{objcContainer} cannot be in a record
-    # Declaration{ObjcMethodDeclaration} cannot be in a record
-    # Declaration{ObjcPropertyDeclaration} cannot be in a record
-    (
-      {S, Src} where { usingDeclaration = X } = Decl;
-      UsingDeclaration{name = FQN, source = Src} = X;
-      FunctionQName{scope = S} = FQN;
-    ) | (
-      {S, Src} where { usingDirective = X } = Decl;
-      UsingDirective{name = QN, source = Src} = X;
-      QName{scope = S} = QN
-    ) | (
-      {S, Src} where { record_ = X } = Decl;
-      RecordDeclaration{name = QN, source = Src} = X;
-      QName{scope = S} = QN
-    ) | (
-      {S, Src} where { enum_ = X } = Decl;
-      EnumDeclaration{name = QN, source = Src} = X;
-      QName{scope = S} = QN
-    ) | (
-      {S, Src} where { function_ = X } = Decl;
-      FunctionDeclaration{name = FQN, source = Src} = X;
-      FunctionQName{scope = S} = FQN;
-    ) | (
-      {S, Src} where { variable = X } = Decl;
-      VariableDeclaration{name = QN, source = Src} = X;
-      QName{scope = S} = QN
-    ) | (
-      {S, Src} where { typeAlias = X } = Decl;
-      TypeAliasDeclaration{name = QN, source = Src} = X;
-      QName{scope = S} = QN
-    );
-  Record = RecordDefinition{declaration={name = QN, source = Src}};
-  src.Range{file = File} = Src;
-
 # This allows going from a objc method or property declaration
 # to a definition that contains a family member of the declaration.
 #
