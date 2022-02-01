@@ -25,7 +25,7 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 import Options.Applicative
 
-import Control.Concurrent.Stream (streamWithThrow)
+import Control.Concurrent.Stream (stream)
 import Foreign.CPP.Dynamic (parseJSON)
 import Thrift.Protocol.Compact (Compact)
 import Thrift.Protocol
@@ -267,7 +267,7 @@ instance Plugin WriteCommand where
       let inventory = schemaInventory dbSchema
       Glean.withSendAndRebaseQueue backend repo inventory useLocalCache $
         \queue ->
-          streamWithThrow max (forM_ files) $ \file -> do
+          stream max (forM_ files) $ \file -> do
             batch <- case fileFormat of
               BinaryFormat -> do
                 r <- B.readFile file
@@ -289,7 +289,7 @@ instance Plugin WriteCommand where
       atomically (flushTQueue logMessages) >>= mapM_ putStrLn
 
     write repo files max Nothing Nothing BinaryFormat =
-      streamWithThrow max (forM_ files) $ \file -> do
+      stream max (forM_ files) $ \file -> do
         handleAll (\e -> do throwIO $ ErrorCall $ file <> ": " <> show e) $ do
           r <- B.readFile file
           batch <- case deserializeGen (Proxy :: Proxy Compact) r of
@@ -298,7 +298,7 @@ instance Plugin WriteCommand where
           void $ Glean.sendBatch backend repo batch
 
     write repo files max scribe Nothing JsonFormat = do
-      streamWithThrow max (forM_ files) $ \file -> do
+      stream max (forM_ files) $ \file -> do
         r <- Foreign.CPP.Dynamic.parseJSON =<< B.readFile file
         val <- either (throwIO  . ErrorCall . ((file ++ ": ") ++) .
           Text.unpack) return r

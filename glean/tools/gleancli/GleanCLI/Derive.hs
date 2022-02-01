@@ -14,7 +14,7 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 import Options.Applicative
 
-import Control.Concurrent.Stream (streamWithThrow)
+import Control.Concurrent.Stream (stream)
 import Util.OptParse
 import Util.Text
 
@@ -72,7 +72,7 @@ instance Plugin DeriveCommand where
 
   runCommand _ _ backend Derive{..} =
     let threads = min deriveMaxConcurrency (length predicates) in
-    streamWithThrow threads (forM_ predicates) $ \(pred, parallel) -> do
+    stream threads (forM_ predicates) $ \(pred, parallel) -> do
       derivePredicate backend deriveRepo
         (Just $ fromIntegral $ pageBytes derivePageOptions)
         (fromIntegral <$> pageFacts derivePageOptions)

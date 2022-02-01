@@ -33,7 +33,7 @@ import qualified Data.UUID as UUID
 import qualified Data.UUID.V4 as UUID
 import TextShow
 
-import Control.Concurrent.Stream (streamWithThrow)
+import Control.Concurrent.Stream (stream)
 import Util.Control.Exception
 import Util.Log
 
@@ -363,7 +363,7 @@ runDerivation env repo pred Thrift.DerivePredicateQuery{..} = do
             "] : [" <> parallelDerivation_outer_predicate <> "])[..];"
           showFact i = "$" <> showt i
 
-      streamWithThrow parallelism producer worker
+      stream parallelism producer worker
 
     allFacts ref = showPredicateRef ref <> " _"
 
