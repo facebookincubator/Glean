@@ -1,5 +1,5 @@
 FROM ghcr.io/facebookincubator/hsthrift/ci-base:latest as tools
-RUN apt-get install -y ghc-8.10.2 ninja-build libxxhash-dev wget unzip
+RUN apt-get install -y ghc-8.10.2 ninja-build libfmt-dev libxxhash-dev wget unzip
 RUN cabal update
 RUN mkdir /glean-code
 WORKDIR /glean-code
@@ -13,7 +13,7 @@ ADD ./glean.cabal /glean-code/
 ADD ./LICENSE /glean-code/
 ADD ./Setup.hs /glean-code/
 
-ENV LD_LIBRARY_PATH=/root/.hsthrift/lib
+ENV LD_LIBRARY_PATH=/root/.hsthrift/lib:/usr/local/lib
 ENV PKG_CONFIG_PATH=/root/.hsthrift/lib/pkgconfig
 ENV PATH=$PATH:/root/.hsthrift/bin
 
@@ -37,6 +37,7 @@ FROM ubuntu:20.04 AS demo
 LABEL org.opencontainers.image.source="https://github.com/facebookincubator/Glean"
 
 ENV PATH=/glean-demo/bin:$PATH
+ENV LD_LIBRARY_PATH=/usr/local/lib
 
 RUN apt-get update && apt-get install -y \
     libicu66 \
@@ -44,7 +45,6 @@ RUN apt-get update && apt-get install -y \
     libboost-filesystem1.71.0 \
     libboost-program-options1.71.0 \
     libboost-regex1.71.0 \
-    librocksdb5.17 \
     libunwind8 \
     libgoogle-glog0v5 \
     libssl1.1 \
