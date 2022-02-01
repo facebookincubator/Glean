@@ -1,12 +1,12 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.19 {
+schema codemarkup.20 {
 import src.1
 import python.3
-import code.18
+import code.19
 import code.flow.2
 import hs.2
-import hack.5
+import hack.6
 import flow.3
 import cxx1.4
 import pp1.1
@@ -1201,3 +1201,5 @@ predicate ErlangEntityKind:
   Kind = Function: SymbolKind;
   erlang.FunctionDeclaration {} = D;
 }
+
+schema codemarkup.20 evolves codemarkup.19
