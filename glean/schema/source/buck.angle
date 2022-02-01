@@ -411,4 +411,12 @@ predicate TargetUses:
     FileXRefs { File, XRefs };
     { { locator = Locator }, Spans } = XRefs[..];
 
+predicate Mode : string
+
+predicate TargetModes :
+  {
+    target: Target,
+    mode: [Mode],
+  }
+
 } # end schema buck.3
