@@ -27,6 +27,15 @@ type Entity =
     buck : code.buck.Entity |
     erlang : code.erlang.Entity |
   }
+
+type Annotations =
+  {
+    cxx : code.cxx.Annotations |
+    java : code.java.Annotations |
+    python : code.python.Annotations |
+    hack : code.hack.Annotations |
+    thrift : code.thrift.Annotations |
+  }
 }
 
 schema code.19 evolves code.18

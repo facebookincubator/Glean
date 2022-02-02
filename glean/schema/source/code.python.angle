@@ -8,4 +8,9 @@ type Entity =
     decl : python.Declaration |
   }
 
+type Annotations =
+  {
+    decorators : [python.Decorator] |
+  }
+
 }

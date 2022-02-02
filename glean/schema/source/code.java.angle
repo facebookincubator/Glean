@@ -28,6 +28,10 @@ type Entity =
     class_ : java.ClassDeclaration |
   }
 
+type Annotations =
+  {
+    annotations : [java.Annotation] |
+  }
 }
 
 schema code.java.4 {

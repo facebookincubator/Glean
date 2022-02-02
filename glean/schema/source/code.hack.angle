@@ -7,6 +7,12 @@ type Entity =
   {
     decl : hack.Declaration |
   }
+
+type Annotations =
+  {
+    attributes: [hack.UserAttribute] |
+  }
+
 }
 
 schema code.hack.4 evolves code.hack.3

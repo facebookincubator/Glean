@@ -69,4 +69,14 @@ predicate DeclarationNameSpan :
 }
 
 schema thrift.5 : thrift.4 {
+
+  ### Stubs
+
+  predicate TypeSpecification : {
+    named : NamedType
+  }
+
+  predicate StructuredAnnotation : {
+    type_ : TypeSpecification,
+  }
 }

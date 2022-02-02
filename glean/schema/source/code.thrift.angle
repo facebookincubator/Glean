@@ -13,4 +13,8 @@ type Entity =
     enumValue : thrift.EnumValue |
   }
 
+type Annotations =
+  {
+    annotations : [thrift.StructuredAnnotation] |
+  }
 }

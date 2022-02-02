@@ -82,4 +82,9 @@ predicate DeclToDef :
       DD = cxx1.VariableDeclaration {kind = {global_ = {definition = true}}}
     )
 
+type Annotations =
+  {
+    attributes: [cxx1.Attribute] |
+  }
+
 } # end schema
