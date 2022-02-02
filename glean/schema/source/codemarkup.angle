@@ -1200,6 +1200,41 @@ predicate ErlangEntityKind:
   { { erlang = { decl = { func = D} } }, Kind } where
   Kind = Function: SymbolKind;
   erlang.FunctionDeclaration {} = D;
+
+#
+# Annotations
+#
+
+predicate EntityAnnotations : code.Entity -> code.Annotations
+  E -> A where
+    CxxAnnotation{entity=E, anns=A} |
+    HackAnnotation{entity=E, anns=A}
+
+predicate CxxAnnotation :
+  {
+    entity: code.Entity,
+    anns: code.Annotations,
+  }
+  {{cxx={decl=D}}, {cxx={attributes=As}}} where
+    ({ function_ = Decl } = D; cxx1.FunctionAttribute{declaration=Decl, attr=A}; As=[A]) |
+    ({ function_ = Decl } = D; !cxx1.FunctionAttribute{declaration=Decl}; As=[]:[cxx1.Attribute.4])
+
+
+predicate HackAnnotation :
+  {
+    entity: code.Entity,
+    anns: code.Annotations,
+  }
+  {{hack={decl=D}}, {hack={attributes=A}}} where
+    ({ container = { class_ = Decl } } = D; hack.ClassDefinition{declaration=Decl, attributes=A}) |
+    ({ container = { enum_ = Decl } } = D; hack.EnumDefinition{declaration=Decl, attributes=A}) |
+    ({ container = { interface_ = Decl } } = D; hack.InterfaceDefinition{declaration=Decl, attributes=A}) |
+    ({ container = { trait = Decl } } = D; hack.TraitDefinition{declaration=Decl, attributes=A}) |
+    ({ method = Decl } = D; hack.MethodDefinition{declaration=Decl, attributes=A}) |
+    ({ property_ = Decl } = D; hack.PropertyDefinition{declaration=Decl, attributes=A}) |
+    ({ typeConst = Decl } = D; hack.TypeConstDefinition{declaration=Decl, attributes=A}) |
+    ({ typedef_ = Decl } = D; hack.TypedefDefinition{declaration=Decl, attributes=A})
+
 }
 
 schema codemarkup.20 evolves codemarkup.19
