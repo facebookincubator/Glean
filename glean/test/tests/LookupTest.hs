@@ -8,6 +8,7 @@
 
 module LookupTest (main) where
 
+import Foreign
 import Foreign.C.String (CString)
 import Test.HUnit
 
@@ -24,7 +25,7 @@ checkLookupInvariants :: CanLookup a => a -> IO ()
 checkLookupInvariants x = withLookup x $ invoke . glean_check_lookup_invariants
 
 foreign import ccall safe glean_check_lookup_invariants
-  :: Lookup -> IO CString
+  :: Ptr Lookup -> IO CString
 
 invariantsTest :: Test
 invariantsTest = dbTestCase $ \env repo ->

@@ -45,6 +45,7 @@ instance Object FactSet where
   destroy = glean_factset_free
 
 instance CanLookup FactSet where
+  lookupName _ = "factset"
   withLookup x f = with x $ f . glean_factset_lookup
 
 instance CanDefine FactSet where
@@ -129,7 +130,7 @@ foreign import ccall unsafe glean_factset_first_free_id
   :: Ptr FactSet -> IO Fid
 
 foreign import ccall unsafe glean_factset_lookup
-  :: Ptr FactSet -> Lookup
+  :: Ptr FactSet -> Ptr Lookup
 
 foreign import ccall unsafe glean_factset_define
   :: Ptr FactSet -> Define

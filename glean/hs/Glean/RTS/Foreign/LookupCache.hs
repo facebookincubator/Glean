@@ -44,7 +44,7 @@ withCache base cache f =
   bracket
     (invoke $ glean_lookupcache_anchor_new base_lookup cache_ptr)
     glean_lookupcache_anchor_free
-    f
+    (\p -> f (Lookup p ("anchor:" <> lookupName base)))
 
 -- | The 'Stat' object can be shared between different 'LookupCache's which will
 -- accumulate their statistics into it (cf. 'new').
@@ -150,9 +150,9 @@ foreign import ccall safe glean_lookupcache_clear
   :: Ptr LookupCache -> IO ()
 
 foreign import ccall unsafe glean_lookupcache_anchor_new
-  :: Lookup
+  :: Ptr Lookup
   -> Ptr LookupCache
-  -> Ptr Lookup
+  -> Ptr (Ptr Lookup)
   -> IO CString
 foreign import ccall unsafe glean_lookupcache_anchor_free
-  :: Lookup -> IO ()
+  :: Ptr Lookup -> IO ()

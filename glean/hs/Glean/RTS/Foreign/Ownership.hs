@@ -102,6 +102,7 @@ sliced :: CanLookup base => Ownership -> Slice -> base -> Sliced base
 sliced = Sliced
 
 instance CanLookup base => CanLookup (Sliced base) where
+  lookupName (Sliced _ _ base) = "sliced:" <> lookupName base
   withLookup (Sliced ownership slice base) f =
     withLookup base $ \p_base ->
     with ownership $ \ownership_ptr ->
@@ -187,7 +188,7 @@ foreign import ccall unsafe glean_derived_fact_ownership_iterator_free
 
 foreign import ccall safe glean_ownership_compute
   :: Ptr Inventory
-  -> Lookup
+  -> Ptr Lookup
   -> UnitIterator
   -> Ptr (Ptr ComputedOwnership)
   -> IO CString
@@ -216,11 +217,11 @@ foreign import ccall unsafe "&glean_slice_free"
    glean_slice_free :: FunPtr (Ptr Slice -> IO ())
 
 foreign import ccall unsafe glean_make_sliced
-  :: Lookup
+  :: Ptr Lookup
   -> Ptr Ownership
   -> Ptr Slice
-  -> Ptr Lookup
+  -> Ptr (Ptr Lookup)
   -> IO CString
 
 foreign import ccall unsafe
-   glean_sliced_free :: Lookup -> IO ()
+   glean_sliced_free :: Ptr Lookup -> IO ()

@@ -112,11 +112,11 @@ withOpenDBLookup env@Env{..} repo
     OpenDB{ odbHandle = handle, odbBaseSlice = baseSlice } f = do
   deps <- atomically $ metaDependencies <$> Catalog.readMeta envCatalog repo
   case deps of
-    Nothing -> Lookup.withLookup handle f
+    Nothing -> Lookup.withCanLookup handle f
     Just (Thrift.Dependencies_stacked base_repo) ->
       readDatabase env base_repo $ \_ base ->
-      Lookup.withLookup handle $ \lookup ->
-      Lookup.withLookup (Stacked.stacked base lookup) f
+      Lookup.withCanLookup handle $ \lookup ->
+      Lookup.withCanLookup (Stacked.stacked base lookup) f
     Just (Thrift.Dependencies_pruned update) -> do
       let base_repo = Thrift.pruned_base update
       case baseSlice of
@@ -128,11 +128,11 @@ withOpenDBLookup env@Env{..} repo
           case maybeOwn of
             Nothing -> throwIO $ Thrift.Exception $
               repoToText repo <> ": missing ownership"
-            Just own ->
-              Lookup.withLookup (Ownership.sliced own slice base) $ \sliced ->
-                Lookup.withLookup handle $ \lookup ->
-                Lookup.withLookup (Stacked.stacked sliced lookup) f
-
+            Just own -> do
+              let baseLookup = Ownership.sliced own slice base
+              Lookup.withCanLookup baseLookup $ \sliced ->
+                Lookup.withCanLookup handle $ \lookup ->
+                Lookup.withCanLookup (Stacked.stacked sliced lookup) f
 
 withWritableDatabase :: Env -> Repo -> (WriteQueue -> IO a) -> IO a
 withWritableDatabase env repo action =
@@ -311,10 +311,12 @@ setupWriting Env{..} lookup = do
   mutex <- newMutex ()
   queue <- WriteQueue <$> newTQueueIO <*> newTVarIO 0 <*> newTVarIO 0
     <*> newTVarIO 0 <*> newTVarIO 0
+  anchorName <- newTVarIO Nothing
   return Writing
     { wrLock = mutex
     , wrNextId = next_id
     , wrLookupCache = lookupCache
+    , wrLookupCacheAnchorName = anchorName
     , wrQueue = queue
     }
 

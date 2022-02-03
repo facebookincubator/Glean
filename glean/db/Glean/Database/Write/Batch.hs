@@ -12,11 +12,13 @@ module Glean.Database.Write.Batch
   , writeDatabase
   ) where
 
+import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad.Extra
 import qualified Data.ByteString as BS
 import Data.Coerce
 import Data.IORef
+import qualified Data.Text as Text
 
 import Util.Control.Exception
 
@@ -82,8 +84,8 @@ writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
                 (
                   logExceptions (\s -> inRepo repo $ "rename error: " ++ s) $
                   Stats.tick (envStats env) Stats.renameThroughput real_size $
-                  LookupCache.withCache lookup (wrLookupCache writing) $ \l ->
-                    renameBatch (schemaInventory odbSchema) l writing batch
+                  withLookupCache repo writing lookup $ \cache ->
+                    renameBatch (schemaInventory odbSchema) cache writing batch
                 )
                 (\(facts, _) -> release facts)
                   -- release the FactSet now that we're done with it,
@@ -119,7 +121,7 @@ writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
           next_id <- readIORef $ wrNextId writing
           bracket
             (
-              LookupCache.withCache lookup (wrLookupCache writing) $ \cache ->
+              withLookupCache repo writing lookup $ \cache ->
               -- We need a snapshot here because we don't want lookups to
               -- return fact ids which conflict with ids in the renamed batch.
               Lookup.withSnapshot cache next_id $ \snapshot ->
@@ -147,6 +149,27 @@ writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
     Nothing -> dbError repo "can't write to a read only database (1)"
   where
     batch_size = fromIntegral . BS.length . Thrift.batch_facts
+
+withLookupCache
+  :: Repo
+  -> Writing
+  -> Lookup.Lookup
+  -> (Lookup.Lookup -> IO a)
+  -> IO a
+withLookupCache repo Writing{..} lookup f = do
+  let baseName = Lookup.lookupName lookup
+  join $ atomically $ do
+    maybePrevName <- readTVar wrLookupCacheAnchorName
+    case maybePrevName of
+      Nothing -> do
+        writeTVar wrLookupCacheAnchorName (Just baseName)
+        return (return ())
+      Just prevName
+        | prevName == baseName -> return (return ())
+        | otherwise -> return $ dbError repo $
+          "base lookup mismatch: prev: " <> Text.unpack prevName <>
+          ", new: " <> Text.unpack baseName
+  LookupCache.withCache lookup wrLookupCache f
 
 renameBatch
   :: Lookup.CanLookup l

@@ -12,6 +12,7 @@ module Glean.Database.Storage.RocksDB
   ) where
 
 import qualified Codec.Archive.Tar as Tar
+import Control.Exception
 import Control.Monad
 import qualified Data.HashMap.Strict as HashMap
 import Data.Int
@@ -32,6 +33,7 @@ import Util.IO (safeRemovePathForcibly)
 import Glean.Database.Repo (databasePath)
 import Glean.Database.Storage
 import Glean.FFI
+import Glean.Repo.Text
 import Glean.RTS.Foreign.FactSet (FactSet)
 import Glean.RTS.Foreign.Lookup
   (CanLookup(..), Lookup(..))
@@ -79,7 +81,10 @@ instance Static Container where
   destroyStatic = glean_rocksdb_container_free
 
 instance Storage RocksDB where
-  newtype Database RocksDB = Database (ForeignPtr (Database RocksDB))
+  data Database RocksDB = Database
+    { dbPtr :: ForeignPtr (Database RocksDB)
+    , dbRepo :: Repo
+    }
 
   open rocks repo mode (DBVersion version) = do
     (cmode, start) <- case mode of
@@ -91,9 +96,12 @@ instance Storage RocksDB where
     withCString path $ \cpath ->
       withCache (rocksCache rocks) $ \cache_ptr ->
       using (invoke $ glean_rocksdb_container_open cpath cmode cache_ptr)
-        $ \container ->
-      construct
-        $ invoke $ glean_rocksdb_container_open_database container start version
+        $ \container -> do
+      fp <- mask_ $ do
+        p <- invoke $
+          glean_rocksdb_container_open_database container start version
+        newForeignPtr glean_rocksdb_database_free p
+      return (Database fp repo)
     where
       path = containerPath rocks repo
 
@@ -101,7 +109,7 @@ instance Storage RocksDB where
 
   delete rocks = safeRemovePathForcibly . containerPath rocks
 
-  predicateStats db = with db $ \db_ptr -> do
+  predicateStats db = withForeignPtr (dbPtr db) $ \db_ptr -> do
     (count, pids, counts, sizes) <- invoke $ glean_rocksdb_database_stats db_ptr
     usingMalloced pids $
       usingMalloced counts $
@@ -134,7 +142,7 @@ instance Storage RocksDB where
         then Just <$> unsafeMallocedByteString value_ptr value_size
         else return Nothing
 
-  commit db facts owned = with db $ \db_ptr -> do
+  commit db facts owned = withForeignPtr (dbPtr db) $ \db_ptr -> do
     with facts $ \facts_ptr -> invoke $ glean_rocksdb_commit db_ptr facts_ptr
     when (not $ HashMap.null owned) $
       withMany entry (HashMap.toList owned) $ \xs ->
@@ -160,21 +168,21 @@ instance Storage RocksDB where
   optimize db = withContainer db $ invoke . glean_rocksdb_container_optimize
 
   computeOwnership db inv =
-    with db $ \db_ptr ->
+    withForeignPtr (dbPtr db) $ \db_ptr ->
     using (invoke $ glean_rocksdb_get_ownership_unit_iterator db_ptr) $
     Ownership.compute inv db
 
   storeOwnership db own =
-    with db $ \db_ptr ->
+    withForeignPtr (dbPtr db) $ \db_ptr ->
     with own $ \own_ptr ->
     invoke $ glean_rocksdb_store_ownership db_ptr own_ptr
 
   getOwnership db = fmap Just $
-    with db $ \db_ptr ->
+    withForeignPtr (dbPtr db) $ \db_ptr ->
     construct $ invoke $ glean_rocksdb_get_ownership db_ptr
 
   getUnitId db unit =
-    with db $ \db_ptr->
+    withForeignPtr (dbPtr db) $ \db_ptr ->
     unsafeWithBytes unit $ \unit_ptr unit_size -> do
       w64 <- invoke $ glean_rocksdb_get_unit_id db_ptr unit_ptr unit_size
       if w64 > 0xffffffff
@@ -182,12 +190,12 @@ instance Storage RocksDB where
         else return (Just (UnitId (fromIntegral w64)))
 
   addDefineOwnership db define =
-    with db $ \db_ptr->
+    withForeignPtr (dbPtr db) $ \db_ptr ->
     with define $ \define_ptr ->
       invoke $ glean_rocksdb_add_define_ownership db_ptr define_ptr
 
   computeDerivedOwnership db ownership (Pid pid) =
-    with db $ \db_ptr ->
+    withForeignPtr (dbPtr db) $ \db_ptr ->
     using
       (invoke $
         glean_rocksdb_get_derived_fact_ownership_iterator
@@ -222,16 +230,14 @@ instance Storage RocksDB where
 containerPath :: RocksDB -> Repo -> FilePath
 containerPath RocksDB{..} repo = databasePath rocksRoot repo </> "db"
 
-instance Object (Database RocksDB) where
-  wrap = Database
-  unwrap (Database p) = p
-  destroy = glean_rocksdb_database_free
-
 instance CanLookup (Database RocksDB) where
-  withLookup db f = with db $ f . glean_rocksdb_database_lookup
+  lookupName db = "rocksdb:" <> repoToText (dbRepo db)
+  withLookup db f = withForeignPtr (dbPtr db) $
+    f . glean_rocksdb_database_lookup
 
 withContainer :: Database RocksDB -> (Container -> IO a) -> IO a
-withContainer db f = with db $ f . glean_rocksdb_database_container
+withContainer db f = withForeignPtr (dbPtr db) $
+  f . glean_rocksdb_database_container
 
 foreign import ccall unsafe glean_rocksdb_new_cache
   :: CSize -> Ptr (Ptr Cache) -> IO CString
@@ -287,7 +293,7 @@ foreign import ccall unsafe glean_rocksdb_database_container
   :: Ptr (Database RocksDB) -> Container
 
 foreign import ccall unsafe glean_rocksdb_database_lookup
-  :: Ptr (Database RocksDB) -> Lookup
+  :: Ptr (Database RocksDB) -> Ptr Lookup
 
 foreign import ccall safe glean_rocksdb_commit
   :: Ptr (Database RocksDB)

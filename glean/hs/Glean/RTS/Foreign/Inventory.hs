@@ -197,5 +197,5 @@ foreign import ccall safe glean_validate
   -> CChar
   -> CChar
   -> CSize
-  -> Lookup
+  -> Ptr Lookup
   -> IO CString

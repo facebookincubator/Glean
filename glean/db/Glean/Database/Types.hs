@@ -62,8 +62,9 @@ data Writing = Writing
     -- First free Id in the write pipeline
   , wrNextId :: IORef Fid
 
-    -- Write cache, can't be used concurrently.
+    -- Write cache
   , wrLookupCache :: LookupCache
+  , wrLookupCacheAnchorName :: TVar (Maybe Text)
 
     -- Queue of writes to this DB
   , wrQueue :: WriteQueue

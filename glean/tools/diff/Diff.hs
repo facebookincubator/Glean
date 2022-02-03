@@ -62,4 +62,4 @@ main =
   invoke $ glean_diff inventory_ptr original_ptr new_ptr
 
 foreign import ccall safe glean_diff
-  :: Ptr Inventory -> Lookup -> Lookup -> IO CString
+  :: Ptr Inventory -> Ptr Lookup -> Ptr Lookup -> IO CString

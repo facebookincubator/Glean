@@ -22,6 +22,7 @@ import qualified Data.HashMap.Strict as HashMap
 
 import Glean.Database.Exception
 import Glean.Database.Storage
+import Glean.Repo.Text
 import Glean.RTS.Foreign.FactSet (FactSet)
 import qualified Glean.RTS.Foreign.FactSet as FactSet
 import Glean.RTS.Foreign.Lookup
@@ -93,4 +94,5 @@ instance Storage Memory where
   restore _ repo _ _ = dbError repo "unimplemented 'restore'"
 
 instance CanLookup (Database Memory) where
+  lookupName Database{..} = "memory:" <> repoToText dbRepo
   withLookup = withLookup . dbFacts

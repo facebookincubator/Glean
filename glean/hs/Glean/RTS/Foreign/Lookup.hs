@@ -9,6 +9,7 @@
 module Glean.RTS.Foreign.Lookup
   ( Lookup(..)
   , CanLookup(..)
+  , withCanLookup
   , EmptyLookup(..)
   , startingId
   , firstFreeId
@@ -18,24 +19,32 @@ module Glean.RTS.Foreign.Lookup
 
 import Control.Exception (bracket)
 import Data.Int
+import Data.Text
 import Foreign.C
 import Foreign.Ptr
-import Foreign.Storable
 
 import Glean.FFI
 import Glean.RTS.Types (Fid(..))
 import qualified Glean.Types as Thrift
 
 -- | A reference to a thing we can look up facts in
-newtype Lookup = Lookup (Ptr Lookup)
-  deriving(Storable)
+data Lookup = Lookup
+  { lookupPtr :: Ptr Lookup
+  , lookupName_ :: Text
+  }
 
 -- | Class of things we can look up facts in
 class CanLookup a where
-  withLookup :: a -> (Lookup -> IO b) -> IO b
+  withLookup :: a -> (Ptr Lookup -> IO b) -> IO b
+  lookupName :: a -> Text
 
 instance CanLookup Lookup where
-  withLookup l f = f l
+  withLookup l f = f (lookupPtr l)
+  lookupName = lookupName_
+
+withCanLookup :: CanLookup lookup => lookup -> (Lookup -> IO a) -> IO a
+withCanLookup lookup f =
+  withLookup lookup $ \p -> f (Lookup p (lookupName lookup))
 
 startingId :: CanLookup a => a -> IO Fid
 startingId x = withLookup x $ \l -> invoke $ glean_lookup_starting_id l
@@ -46,6 +55,7 @@ firstFreeId x = withLookup x $ \l -> invoke $ glean_lookup_first_free_id l
 data EmptyLookup = EmptyLookup
 
 instance CanLookup EmptyLookup where
+  lookupName EmptyLookup = "lookup:empty"
   withLookup EmptyLookup f =
     bracket
       (invoke glean_lookup_empty)
@@ -70,24 +80,24 @@ withSnapshot base boundary f =
   bracket
     (invoke $ glean_snapshot_new base_ptr boundary)
     glean_lookup_free
-    f
+    (\p -> f (Lookup p (lookupName base)))
 
 foreign import ccall unsafe glean_lookup_empty
-  :: Ptr Lookup -> IO CString
+  :: Ptr (Ptr Lookup) -> IO CString
 
 foreign import ccall unsafe glean_lookup_free
-  :: Lookup -> IO ()
+  :: Ptr Lookup -> IO ()
 
 foreign import ccall unsafe glean_snapshot_new
-  :: Lookup -> Fid -> Ptr Lookup -> IO CString
+  :: Ptr Lookup -> Fid -> Ptr (Ptr Lookup) -> IO CString
 
 foreign import ccall unsafe glean_lookup_starting_id
-  :: Lookup -> Ptr Fid -> IO CString
+  :: Ptr Lookup -> Ptr Fid -> IO CString
 foreign import ccall unsafe glean_lookup_first_free_id
-  :: Lookup -> Ptr Fid -> IO CString
+  :: Ptr Lookup -> Ptr Fid -> IO CString
 
 foreign import ccall safe glean_lookup_fact
-  :: Lookup
+  :: Ptr Lookup
   -> Fid
   -> Ptr Int64
   -> Ptr (Ptr ())
