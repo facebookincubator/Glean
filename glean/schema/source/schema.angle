@@ -34,5 +34,3 @@ schema all.6 :
   sys.1,
   thrift.5,
 {}
-
-schema all.7 : search.code.10, codemarkup.20, hack.6, code.hack.4, code.19, docmarkup.9, all.6 {}

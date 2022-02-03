@@ -1,12 +1,12 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.20 {
+schema codemarkup.19 {
 import src.1
 import python.3
-import code.19
+import code.18
 import code.flow.2
 import hs.2
-import hack.6
+import hack.5
 import flow.3
 import cxx1.4
 import pp1.1
@@ -1236,5 +1236,3 @@ predicate HackAnnotation :
     ({ typedef_ = Decl } = D; hack.TypedefDefinition{declaration=Decl, attributes=A})
 
 }
-
-schema codemarkup.20 evolves codemarkup.19

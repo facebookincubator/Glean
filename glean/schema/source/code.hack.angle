@@ -1,7 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema code.hack.4 {
-import hack.6
+schema code.hack.3 {
+import hack.5
 
 type Entity =
   {
@@ -14,5 +14,3 @@ type Annotations =
   }
 
 }
-
-schema code.hack.4 evolves code.hack.3
