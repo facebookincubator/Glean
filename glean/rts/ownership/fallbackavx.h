@@ -20,60 +20,6 @@
 #include <folly/experimental/Instructions.h>
 
 /*
- * Stub of immintrin.h needed by glean/rts/ownership
- */
-typedef uint32_t __m256i;
-
-inline int _mm256_testc_si256(__m256i __M, __m256i __V) {
-    return 0;
-}
-
-inline int _mm256_testz_si256(__m256i __M, __m256i __V) {
-    return 0;
-}
-
-inline __m256i _mm256_setzero_si256() {
-    return 0;
-}
-
-inline __m256i _mm256_set1_epi32(int __A) {
-    return 0;
-}
-
-inline __m256i _mm256_sllv_epi32(__m256i __X, __m256i __Y) {
-    return 0;
-}
-
-inline __m256i _mm256_sub_epi32(__m256i __A, __m256i __B) {
-    return 0;
-}
-
-inline __m256i _mm256_set_epi32(int __A, int __B, int __C, int __D, int __E, int __F, int __G, int __H) {
-    return 0;
-}
-
-// AV512
-inline long long _mm_popcnt_u64(unsigned long long __X) {
-    return 0;
-}
-
-inline unsigned long long _lzcnt_u64(unsigned long long __X) {
-    return 0;
-}
-
-inline __m256i _mm256_or_si256(__m256i __A, __m256i __B) {
-    return 0;
-}
-
-inline __m256i _mm256_and_si256(__m256i __A, __m256i __B) {
-    return 0;
-}
-
-inline __m256i _mm256_xor_si256(__m256i __A, __m256i __B) {
-    return 0;
-}
-
-/*
  * Stub of EliasFanoCoding.h API used by Glean
  */
 namespace folly {
