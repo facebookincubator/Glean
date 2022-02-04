@@ -140,13 +140,11 @@ schemaUnversioned = TestCase $ do
     schema =
       [s|
           schema test.1 {
-            predicate P : { a : string, b : nat }
-            predicate Q : { p : P }
+            predicate P : { a : nat }
           }
 
           schema test.2 {
-            predicate P : { a : string, b : nat, c : bool }
-            predicate Q : { p : P }
+            predicate P : { a : nat, b : nat }
           }
 
           schema all.1 : test.1 {}
@@ -156,7 +154,11 @@ schemaUnversioned = TestCase $ do
   let fill env repo =
         void $ sendJsonBatch env repo
           [ mkBatch (PredicateRef "test.P" 1)
-              [ "{ \"key\" : {} }" ]
+              [ [s|{ "key" : { "a": 1 } }|] ]
+          , mkBatch (PredicateRef "test.P" 2)
+              [ [s|{ "key" : { "a": 1, "b": 1 } }|]
+              , [s|{ "key" : { "a": 2, "b": 2 } }|]
+              ]
           ]
           Nothing
 
@@ -173,6 +175,13 @@ schemaUnversioned = TestCase $ do
       void $ updateProperties env repo props []
       fill env repo
       return repo
+    repo3 <- withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
+      let repo = Thrift.Repo "schematest-repo" "3"
+      kickOffTestDB env repo id
+      let props = HashMap.fromList [("glean.schema_version", "3")]
+      void $ updateProperties env repo props []
+      fill env repo
+      return repo
 
     withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
       -- Test that an unversioned query "test.P _" resolves to test.P.2,
@@ -181,7 +190,7 @@ schemaUnversioned = TestCase $ do
       r <- try $ angleQuery env repo1 "test.P _"
       print (r :: Either BadQuery UserQueryResults)
       assertBool "unversioned 1" $ case r of
-        Right UserQueryResults{..} -> null userQueryResults_facts
+        Right UserQueryResults{..} -> length userQueryResults_facts == 2
         _ -> False
 
     withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
@@ -213,6 +222,15 @@ schemaUnversioned = TestCase $ do
       print (r :: Either BadQuery UserQueryResults)
       assertBool "unversioned 3" $ case r of
         Right UserQueryResults{..} -> length userQueryResults_facts == 1
+        _ -> False
+
+    withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
+      -- Test that an unversioned query "test.P _" resolves to test.P.2,
+      -- because the all.3 schema doesn't exist so we pick all.2 by default
+      r <- try $ angleQuery env repo3 "test.P _"
+      print (r :: Either BadQuery UserQueryResults)
+      assertBool "unversioned 4" $ case r of
+        Right UserQueryResults{..} -> length userQueryResults_facts == 2
         _ -> False
 
 

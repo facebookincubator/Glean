@@ -10,6 +10,7 @@ module Glean.Query.UserQuery
   ( userQueryFacts
   , userQuery
   , userQueryWrites
+  , schemaVersionForQuery
   ) where
 
 import Control.Applicative
@@ -86,7 +87,7 @@ import Glean.Query.JSON
 import Glean.Query.Nested
 import Glean.Query.Nested.Compile
 import Glean.Query.Nested.Types
-import Glean.Schema.Resolve (resolveType)
+import Glean.Schema.Resolve (Schemas(..), resolveType)
 import Glean.Schema.Util
 import Glean.Util.Observed as Observed
 import Glean.Query.Typecheck
@@ -483,24 +484,21 @@ userQueryImpl
       stored = Thrift.userQueryOptions_store_derived_facts opts
       debug = Thrift.userQueryOptions_debug opts
 
+    schemaVersion <-
+      schemaVersionForQuery env schema repo userQuery_schema_version
+
     (returnType, compileTime, irDiag, cont) <-
       case Thrift.userQueryOptions_continuation opts of
         Just ucont
           | Just retTy <- Thrift.userQueryCont_returnType ucont -> do
-          (compileTime, _, returnType) <- timeIt $ compileType schema retTy
+          (compileTime, _, returnType) <-
+            timeIt $ compileType schema schemaVersion retTy
           return (returnType, compileTime, [], Right ucont)
 
         -- This is either a new query or the continuation of a query
         -- that returns a temporary predicate.
         _ -> do
-          dbSchemaVersion <- getDbSchemaVersion env repo
           let
-            schemaVersion =
-              maybe LatestSchemaAll SpecificSchemaAll $
-                userQuery_schema_version <|>
-                envSchemaVersion env <|>
-                dbSchemaVersion
-
             evolves =
               envSchemaEnableEvolves env || config_enable_schema_evolution
 
@@ -559,12 +557,8 @@ userQueryImpl
       -- can be a useful way to catch errors in the client.
       -- If the query is not returning whole facts, then the
       -- client should set this field to "".
-      dbSchemaVersion <- getDbSchemaVersion env repo
-      checkPredicatesMatch schema
-        details
-        (SourceRef userQuery_predicate userQuery_predicate_version)
-        (maybe LatestSchemaAll SpecificSchemaAll $
-          envSchemaVersion env <|> dbSchemaVersion)
+      let ref = SourceRef userQuery_predicate userQuery_predicate_version
+      checkPredicatesMatch schema details ref schemaVersion
 
     let limits = mkQueryRuntimeOptions opts config
     nextId <- case Thrift.userQueryOptions_continuation opts of
@@ -664,11 +658,12 @@ userQueryImpl
   Thrift.UserQuery{..} = do
     let schema@DbSchema{..} = odbSchema odb
 
+    schemaVersion <-
+      schemaVersionForQuery env schema repo userQuery_schema_version
+
+    let ref = SourceRef userQuery_predicate userQuery_predicate_version
     details@PredicateDetails{..} <-
-      case lookupPredicate
-          (SourceRef userQuery_predicate userQuery_predicate_version)
-          (maybe LatestSchemaAll SpecificSchemaAll (envSchemaVersion env))
-          schema of
+      case lookupPredicate ref schemaVersion schema of
         Nothing -> throwIO $ Thrift.BadQuery $ mconcat
           [ "unknown predicate: "
           , userQuery_predicate
@@ -814,7 +809,24 @@ userQueryImpl
        then withoutFacts results
        else results
 
-
+schemaVersionForQuery
+  :: Database.Env
+  -> DbSchema
+  -> Thrift.Repo
+  -> Maybe Thrift.Version -- ^ version specified by the client
+  -> IO SchemaVersion
+schemaVersionForQuery env schema repo qversion = do
+  dbSchemaVersion <- getDbSchemaVersion env repo
+  return $ maybe LatestSchemaAll SpecificSchemaAll
+    $ find isAvailable
+    $ catMaybes
+        [ qversion
+        , envSchemaVersion env
+        , dbSchemaVersion
+        ]
+  where
+    isAvailable version =
+      version `HashMap.member` schemasSchemas (schemaSpec schema)
 
 compileAngleQuery
   :: SchemaVersion
@@ -1226,10 +1238,10 @@ hashUserQueryCont Thrift.UserQueryCont{..} = Thrift.UserQueryCont
 serializeType :: Type -> ByteString
 serializeType = Text.encodeUtf8 . renderStrict . layoutCompact . pretty
 
-compileType :: DbSchema -> ByteString -> IO Type
-compileType schema src = do
+compileType :: DbSchema -> SchemaVersion -> ByteString -> IO Type
+compileType schema version src = do
   parsed <- checkParsed $ Angle.parseType src
-  let scope = toScope (Qualified schema LatestSchemaAll)
+  let scope = toScope (Qualified schema version)
   resolved <- checkResolved $ resolveType latestAngleVersion scope parsed
   checkConverted $ dbSchemaRtsType schema resolved
   where

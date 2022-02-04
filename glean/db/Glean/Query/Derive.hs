@@ -192,12 +192,7 @@ getPredicate
   -> SourceRef
   -> IO PredicateDetails
 getPredicate env repo schema ref = do
-  dbSchemaVersion <- getDbSchemaVersion env repo
-  let
-    schemaVersion =
-      maybe LatestSchemaAll SpecificSchemaAll $
-        envSchemaVersion env <|> dbSchemaVersion
-
+  schemaVersion <- UserQuery.schemaVersionForQuery env schema repo Nothing
   case lookupPredicate ref schemaVersion schema of
     Nothing -> throwIO Thrift.UnknownPredicate
     Just details -> return details
