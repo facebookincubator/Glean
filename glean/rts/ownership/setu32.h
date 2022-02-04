@@ -28,6 +28,10 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
+#if !__x86_64__
+typedef uint32_t __m256i __attribute__((vector_size(32)));
+#endif
+
 /**
  * An implementation of 256-bit bitsets. This uses AVX2, most probably
  * unnecessarily.
@@ -96,15 +100,14 @@ inline __m256i xor_(__m256i value, __m256i other) {
 
 #else // not x86_64
 
-typedef uint32_t __m256i __attribute__((vector_size(32)));
-
 inline bool empty(__m256i value) {
   return !(value[0] || value[1] || value[2] || value[3] ||
            value[4] || value[5] || value[6] || value[7]);
 }
 
 inline __m256i none() {
-  return {0, 0, 0, 0, 0, 0, 0, 0};
+  __m256i v = {0, 0, 0, 0, 0, 0, 0, 0};
+  return v;
 }
 
 inline __m256i all() {

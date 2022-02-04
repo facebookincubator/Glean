@@ -1,5 +1,5 @@
 FROM ghcr.io/facebookincubator/hsthrift/ci-base:latest as tools
-RUN apt-get install -y ghc-8.10.2 librocksdb-dev libxxhash-dev wget unzip
+RUN apt-get install -y ghc-8.10.2 ninja-build libfmt-dev libxxhash-dev wget unzip
 RUN cabal update
 RUN mkdir /glean-code
 WORKDIR /glean-code
@@ -12,6 +12,11 @@ ADD ./Makefile  /glean-code/
 ADD ./glean.cabal /glean-code/
 ADD ./LICENSE /glean-code/
 ADD ./Setup.hs /glean-code/
+
+ENV LD_LIBRARY_PATH=/root/.hsthrift/lib:/usr/local/lib
+ENV PKG_CONFIG_PATH=/root/.hsthrift/lib/pkgconfig
+ENV PATH=$PATH:/root/.hsthrift/bin
+
 RUN make
 RUN cp $(cabal exec --project-file=cabal.project -- which glean) ~/.cabal/bin/
 RUN cp $(cabal exec --project-file=cabal.project -- which glean-server) ~/.cabal/bin/
@@ -40,7 +45,6 @@ RUN apt-get update && apt-get install -y \
     libboost-filesystem1.71.0 \
     libboost-program-options1.71.0 \
     libboost-regex1.71.0 \
-    librocksdb5.17 \
     libunwind8 \
     libgoogle-glog0v5 \
     libssl1.1 \
@@ -56,7 +60,7 @@ WORKDIR /glean-demo
 
 RUN mkdir /glean-demo/bin
 
-COPY --from=tools /usr/local/lib /usr/local/lib
+COPY --from=tools /root/.hsthrift/lib /usr/local/lib
 COPY --from=tools /usr/local/bin/flow /usr/local/bin
 COPY --from=tools /root/.cabal/bin/glean /glean-demo/bin
 COPY --from=tools /root/.cabal/bin/glean-server /glean-demo/bin

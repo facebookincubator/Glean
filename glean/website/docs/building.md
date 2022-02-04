@@ -36,8 +36,9 @@ that we use for building the base image for CI).
 sudo apt-get install \
     g++ \
     cmake \
+    ninja-build \
     bison flex \
-    git cmake \
+    git \
     libzstd-dev \
     libboost-all-dev \
     libevent-dev \
@@ -65,18 +66,8 @@ sudo apt-get install \
 
 ### Debian
 
-The package dependencies for Debian current are the same as above for Ubuntu, except you may see:
-```
- Package 'libmysqlclient-dev' has no installation candidate
-```
-Use
-```
-        default-libmysqlclient-dev
-```
-instead. You may also need to install:
-```
-        libfmt-dev
-```
+The package dependencies for Debian current are the same as above for Ubuntu,
+except you need `default-libmysqlclient-dev` instead of `libmysqlclient-dev`.
 
 ### Fedora
 
@@ -87,6 +78,7 @@ sudo dnf install \
     g++ \
     make \
     cmake \
+    ninja-build \
     binutils \
     bison flex \
     curl \
@@ -132,6 +124,8 @@ build and install its dependencies:
 ```
 ./install_deps.sh
 ```
+
+You can speed up builds by passing e.g. `--threads 8` if you have available hardware.
 
 ### Build Glean
 
