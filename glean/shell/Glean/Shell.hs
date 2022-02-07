@@ -931,23 +931,22 @@ runUserQuery SchemaQuery
     , Just m <- [Thrift.userQueryStats_facts_searched stats]
     ]
     ++
-    if isJust userQueryResults_continuation
-      then
-        if length userQueryResults_facts < fromIntegral limit && not omitResults
-          then
+    [ vcat $ if Thrift.userQueryStats_result_count stats < fromIntegral limit
+        then
             [ case timeout of
                 Nothing -> "timeout (server-side time limit)"
                 Just ms ->
                   "timeout (currently " <> pretty ms <> "ms), " <>
                   "use :timeout <ms> to change it"
-            , "Use :more to continue the query."
-            ]
-          else
-            [ "results truncated (current limit " <> pretty limit <> ", " <>
-              "use :limit <n> to change it)"
-            , "Use :more to see more results"
-            ]
-      else []
+           , "Use :more to continue the query." ]
+        else
+          [ "results truncated (current limit " <> pretty limit <> ", " <>
+            "use :limit <n> to change it)"
+          , "Use :more to see more results"
+          ]
+    | isJust userQueryResults_continuation
+    , Just stats <- [userQueryResults_stats]
+    ]
   Eval $ State.modify $ \s ->
     s { lastSchemaQuery = userQueryResults_continuation <&>
       \cont -> SchemaQuery
