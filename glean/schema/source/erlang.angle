@@ -105,4 +105,15 @@ predicate DeclarationReference :
   DeclarationUses {declaration=T, file=F, span=LittleSpan};
   DeclarationsByFile {declaration=S, file=F, span=BigSpan};
   src.ByteSpanContains {byteSpan=BigSpan, contains=LittleSpan}
+
+predicate NameLowerCase :
+  {
+    nameLowercase : string,
+    name : string,
+  }
+  stored
+  { prim.toLower Str, N } where
+   erlang.FunctionDeclaration { fqn = { name = N }};
+   N = Str
+
 }

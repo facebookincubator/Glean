@@ -12,9 +12,11 @@ import hs.2
 import pp1.1
 import python.3
 import rust.1
+import erlang.1
 import search.cxx.4
 import search.hack.6
 import search.hs.6
+import search.erlang.1
 import thrift.4
 
 # global entity search by identifier name (or prefix)
@@ -28,7 +30,8 @@ predicate SearchByName:
   HackSearchByName { Name, Entity } |
   FlowSearchByName { Name, Entity } |
   CxxSearchByName { Name, Entity } |
-  HsSearchByName { Name, Entity }
+  HsSearchByName { Name, Entity } |
+  ErlangSearchByName { Name, Entity }
 
 # same as SearchByName but assumes `name` is lowercase. Useful for
 # case-insensitive search
@@ -43,6 +46,7 @@ predicate SearchByLowerCaseName:
   FlowSearchByLowerCaseName { Name, Entity } |
   CxxSearchByLowerCaseName { Name, Entity } |
   HsSearchByLowerCaseName { Name, Entity }
+  ErlangSearchByLowerCaseName { Name, Entity }
 
 #
 # Language-specific identifier search
@@ -146,5 +150,21 @@ predicate HsSearchByLowerCaseName:
   );
   HsSearchByName { NameCase, Entity };
 
+predicate ErlangSearchByName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { Name, E } where
+  search.erlang.SearchByName { name = Name, entity = E }
+
+predicate ErlangSearchByLowerCaseName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { Name, Entity } where
+  erlang.NameLowerCase { Name, NameCase };
+  ErlangSearchByName { NameCase, Entity }
 
 }
