@@ -13,16 +13,21 @@ jobs:
       image: ghcr.io/donsbot/hsthrift/ci-base:arm64
       options: --cpus 4
     steps:
+      - name: Clean up old container
+        run: |
+          rm -rf "$HOME"/.hsthrift
+          rm -rf "$HOME"/.cabal
+          rm -rf "$HOME"/.ghcup/bin
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Install libxxhash
+        run: apt-get install -y libxxhash-dev
       - name: Install GHC ${{ matrix.ghc }}
-        run: ghcup install ghc ${{ matrix.ghc }} --set
+        run: ghcup install ghc ${{ matrix.ghc }} --set --force
       - name: Install cabal-install 3.6
         run: ghcup install cabal -u https://downloads.haskell.org/~cabal/cabal-install-3.6.0.0/cabal-install-3.6.0.0-aarch64-linux-deb10.tar.xz 3.6.0.0 --set
       - name: Add GHC and cabal to PATH
         run: echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
-      - name: Install libxxhash
-        run: apt-get install -y libxxhash-dev
       - name: Fetch hsthrift and build folly, fizz, wangle, fbthrift, rocksdb
         run: ./install_deps.sh
       - name: Populate hackage index with new packages
