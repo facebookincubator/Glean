@@ -16,15 +16,11 @@ module Glean.Regression.Indexer
   ) where
 
 import Options.Applicative
-import Control.Monad
-import qualified Data.HashMap.Strict as HashMap
-import qualified Data.Text as Text
 import System.Exit
 import System.FilePath
 
 import Glean (fillDatabase)
 import Glean.Backend (Backend)
-import qualified Glean.Backend as Backend
 import Glean.Database.Test
 import Glean.Database.Types (Env)
 import Glean.Regression.Config
@@ -86,12 +82,8 @@ withTestEnvDatabase indexer test action =
   withTestEnv settings $ \backend -> do
   let
     repo = testRepo test
-    setDbVersion ver = void $ Backend.updateProperties backend repo
-      (HashMap.fromList
-        [("glean.schema_version", Text.pack (show ver))
-        ]) []
-  fillDatabase backend repo "" (die "repo already exists") $ do
-    mapM_ setDbVersion $ testSchemaVersion test
+    ver = fromIntegral <$> testSchemaVersion test
+  fillDatabase backend ver repo "" (die "repo already exists") $ do
     indexer test backend
   action backend (testRepo test)
   where

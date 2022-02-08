@@ -78,11 +78,8 @@ pickHash name = withBackend $ \be -> do
 
 load :: Glean.Repo -> [FilePath] -> Eval ()
 load repo files = withBackend $ \be ->  liftIO $ do
-  void $ fillDatabase
-      be
-      repo
-      ""
-      (throwIO $ ErrorCall "database already exists") $
+  let onExisting  = throwIO $ ErrorCall "database already exists"
+  void $ fillDatabase be Nothing repo "" onExisting $
     forM_ files $ \file -> do
       r <- Foreign.CPP.Dynamic.parseJSON =<< B.readFile file
       val <- either (throwIO  . ErrorCall . Text.unpack) return r

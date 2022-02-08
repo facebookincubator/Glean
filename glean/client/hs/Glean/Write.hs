@@ -24,8 +24,10 @@ import Data.ByteString (ByteString)
 import qualified Data.ByteString.Lazy.Char8 as LB
 import Data.Default
 import Data.Either
+import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
 import Data.Text (Text)
+import qualified Data.Text as Text
 import qualified Data.Vector as Vector
 import TextShow
 
@@ -72,6 +74,8 @@ fillDatabase
   :: Backend a
   => a
     -- ^ The backend
+  -> Maybe Version
+    -- ^ The schema version to be used
   -> Repo
     -- ^ The repo to create
   -> Text
@@ -82,13 +86,17 @@ fillDatabase
   -> IO b
     -- ^ Caller-supplied action to write data into the DB.
   -> IO b
-fillDatabase env repo handle ifexists action =
+fillDatabase env mversion repo handle ifexists action =
   tryBracket create finish (const action)
   where
   create = do
     r <- kickOffDatabase env def
       { kickOff_repo = repo
       , kickOff_fill = Just $ KickOffFill_writeHandle handle
+      , kickOff_properties = HashMap.fromList
+          [ ("glean.schema_version", Text.pack $ show version)
+          | Just version <- [mversion]
+          ]
       }
     when (kickOffResponse_alreadyExists r) ifexists
 
