@@ -13,6 +13,7 @@ module Haxl.DataSource.Glean.Common
   , GleanFetcher
   , mkRequest
   , putResults
+  , requestByRepo
   , GleanQuery(..)
   , GleanQueryer
   , putQueryResults
@@ -25,6 +26,8 @@ import Control.Monad
 import Control.Monad.IO.Class
 import Data.Default
 import Data.Hashable
+import Data.HashMap.Strict (HashMap)
+import qualified Data.HashMap.Strict as HashMap
 import qualified Data.IntMap as IntMap
 import Data.IORef
 import qualified Data.Map as Map
@@ -45,40 +48,43 @@ data GleanGet p where
     :: (Typeable p, Show p, Predicate p)
     => {-# UNPACK #-} !(IdOf p)
     -> Bool
+    -> Repo
     -> GleanGet p
   GetKey
     :: (Typeable p, Show p, Predicate p)
     => {-# UNPACK #-} !(IdOf p)
     -> Bool
+    -> Repo
     -> GleanGet (KeyType p)
 
 deriving instance Show (GleanGet a)
 instance ShowP GleanGet where showp = show
 
 instance Eq (GleanGet p) where
-  (Get p rec) == (Get q rec') = p == q && rec == rec'
-  (GetKey (p :: IdOf a) rec) == (GetKey (q :: IdOf b) rec')
-    | Just Refl <- eqT @a @b = p == q && rec == rec'
+  (Get p rec repo) == (Get q rec' repo') =
+    p == q && rec == rec' && repo == repo'
+  (GetKey (p :: IdOf a) rec repo) == (GetKey (q :: IdOf b) rec' repo')
+    | Just Refl <- eqT @a @b = p == q && rec == rec' && repo == repo'
     -- the KeyTypes being equal doesn't tell us that the predicates are
     -- equal, so we need to check that with eqT here.
   _ == _ = False
 
 instance Hashable (GleanGet a) where
-  hashWithSalt salt (Get p rec) =
-    hashWithSalt salt (0::Int, typeOf p, p, rec)
-  hashWithSalt salt (GetKey p rec) =
-    hashWithSalt salt (1::Int, typeOf p, p, rec)
+  hashWithSalt salt (Get p rec repo) =
+    hashWithSalt salt (0::Int, typeOf p, p, rec, repo)
+  hashWithSalt salt (GetKey p rec repo) =
+    hashWithSalt salt (1::Int, typeOf p, p, rec, repo)
 
 instance DataSourceName GleanGet where
   dataSourceName _ = "GleanGet"
 
-type GleanFetcher = Repo -> PerformFetch GleanGet
+type GleanFetcher = PerformFetch GleanGet
 
 instance StateKey GleanGet where
-  data State GleanGet = GleanGetState Repo GleanFetcher
+  data State GleanGet = GleanGetState GleanFetcher
 
 instance DataSource u GleanGet where
-  fetch (GleanGetState repo fetcher) _ _ = fetcher repo
+  fetch (GleanGetState fetcher) _ _ = fetcher
 
 {-# INLINE intId #-}
 intId :: IdOf p -> Id
@@ -98,17 +104,23 @@ mkRequest minfo requests = def
   }
   where
     toFactQuery :: BlockedFetch GleanGet -> FactQuery
-    toFactQuery (BlockedFetch (Get (p :: IdOf p) rec) _) =
+    toFactQuery (BlockedFetch (Get (p :: IdOf p) rec _repo) _) =
       FactQuery
         (intId p)
         (Just (predicateRef_version (getName (Proxy @p))))
         rec
-    toFactQuery (BlockedFetch (GetKey (p :: IdOf p) rec) _) =
+    toFactQuery (BlockedFetch (GetKey (p :: IdOf p) rec _repo) _) =
       FactQuery
         (intId p)
         (Just (predicateRef_version (getName (Proxy @p))))
         rec
 
+requestByRepo :: [BlockedFetch GleanGet] -> HashMap Repo [BlockedFetch GleanGet]
+requestByRepo requests =
+  HashMap.fromListWith (++) $ map (\req -> (repoOf req, [req])) requests
+  where
+    repoOf (BlockedFetch (Get _ _ repo) _) = repo
+    repoOf (BlockedFetch (GetKey _ _ repo) _) = repo
 
 putResults :: UserQueryResults -> [BlockedFetch GleanGet] -> IO ()
 putResults UserQueryResults{..} requests = do
@@ -121,7 +133,7 @@ putResults UserQueryResults{..} requests = do
       [ (fromIntegral id,f)
       | (id,f) <- Map.toList userQueryResultsBin_nestedFacts ]
 
-    decodeResult (BlockedFetch (Get (p :: IdOf p) rec) rvar) = do
+    decodeResult (BlockedFetch (Get (p :: IdOf p) rec _repo) rvar) = do
       let fid = intId p
       case Map.lookup fid userQueryResultsBin_facts of
         Nothing ->
@@ -132,7 +144,7 @@ putResults UserQueryResults{..} requests = do
             (if rec then cacheRef else emptyCacheRef)
             (IdOf (Fid fid)) fact
           putSuccess rvar (unsafeCoerce (fact' :: p))
-    decodeResult (BlockedFetch (GetKey (p :: IdOf p) rec) rvar) = do
+    decodeResult (BlockedFetch (GetKey (p :: IdOf p) rec _repo) rvar) = do
       let fid = intId p
       case Map.lookup fid userQueryResultsBin_facts of
         Nothing ->
@@ -162,6 +174,7 @@ data GleanQuery r where
   QueryReq
     :: (Show q, Typeable q)
     => Query q   -- The query
+    -> Repo
     -> Bool -- stream all results?
     -> GleanQuery ([q], Bool)
 
@@ -169,24 +182,24 @@ deriving instance Show (GleanQuery q)
 instance ShowP GleanQuery where showp = show
 
 instance Eq (GleanQuery r) where
-  QueryReq (q1 :: Query a) s1 == QueryReq (q2 :: Query b) s2
-    | Just Refl <- eqT @a @b = q1 == q2 && s1 == s2
+  QueryReq (q1 :: Query a) repo1 s1 == QueryReq (q2 :: Query b) repo2 s2
+    | Just Refl <- eqT @a @b = q1 == q2 && repo1 == repo2 && s1 == s2
   _ == _ = False
 
 instance Hashable (GleanQuery q) where
-  hashWithSalt salt (QueryReq q s) = hashWithSalt salt (q,s)
+  hashWithSalt salt (QueryReq q s repo) = hashWithSalt salt (q,s,repo)
 
 
 instance DataSourceName GleanQuery where
   dataSourceName _ = "GleanQuery"
 
-type GleanQueryer = Repo -> PerformFetch GleanQuery
+type GleanQueryer = PerformFetch GleanQuery
 
 instance StateKey GleanQuery where
-  data State GleanQuery = GleanQueryState Repo GleanQueryer
+  data State GleanQuery = GleanQueryState GleanQueryer
 
 instance DataSource u GleanQuery where
-  fetch (GleanQueryState repo queryer) _ _ = queryer repo
+  fetch (GleanQueryState queryer) _ _ = queryer
 
 
 putQueryResults

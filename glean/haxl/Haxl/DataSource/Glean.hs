@@ -19,6 +19,7 @@ module Haxl.DataSource.Glean
   , getKeyRecOfId
   , search
   , search_
+  , withRepo
   ) where
 
 import Data.Default
@@ -35,58 +36,74 @@ import Haxl.DataSource.Glean.Common
 
 -- User Interface --------
 
+class HasRepo u where
+  getRepoFromUserEnv :: u -> Repo
+
+instance HasRepo Repo where
+  getRepoFromUserEnv = id
+
+getRepo :: HasRepo u => GenHaxl u w Repo
+getRepo = do
+  userEnv <- env userEnv
+  return $ getRepoFromUserEnv userEnv
+
+withRepo :: HasRepo u => u -> GenHaxl u w a -> GenHaxl u w a
+withRepo userEnv action = do
+  coreEnv <- env id
+  withEnv coreEnv{userEnv=userEnv} action
+
 get, getRec
-  :: (Typeable p, Show p, Predicate p)
+  :: (Typeable p, Show p, Predicate p, HasRepo u)
   => p
   -> GenHaxl u w p
 
-get p = dataFetch $ Get (getId p) False
-getRec p = dataFetch $ Get (getId p) True
+get p = getRepo >>= \repo -> dataFetch $ Get (getId p) False repo
+getRec p = getRepo >>= \repo -> dataFetch $ Get (getId p) True repo
 
 getOfId, getRecOfId
-  :: (Typeable p, Show p, Predicate p)
+  :: (Typeable p, Show p, Predicate p, HasRepo u)
   => IdOf p
   -> GenHaxl u w p
 
-getOfId p = dataFetch $ Get p False
-getRecOfId p = dataFetch $ Get p True
+getOfId p = getRepo >>= \repo -> dataFetch $ Get p False repo
+getRecOfId p = getRepo >>= \repo -> dataFetch $ Get p True repo
 
 getKey, getKeyRec
   :: ( Typeable p, Typeable (KeyType p)
      , Show p, Show (KeyType p)
-     , Predicate p )
+     , Predicate p, HasRepo u )
   => p
   -> GenHaxl u w (KeyType p)
 
-getKey p = dataFetch $ GetKey (getId p) False
-getKeyRec p = dataFetch $ GetKey (getId p) True
+getKey p = getRepo >>= \repo -> dataFetch $ GetKey (getId p) False repo
+getKeyRec p = getRepo >>= \repo -> dataFetch $ GetKey (getId p) True repo
 
 getKeyOfId, getKeyRecOfId
   :: ( Typeable p, Typeable (KeyType p)
      , Show p, Show (KeyType p)
-     , Predicate p )
+     , Predicate p, HasRepo u )
   => IdOf p
   -> GenHaxl u w (KeyType p)
 
-getKeyOfId id = dataFetch $ GetKey id False
-getKeyRecOfId id = dataFetch $ GetKey id True
+getKeyOfId id = getRepo >>= \repo -> dataFetch $ GetKey id False repo
+getKeyRecOfId id = getRepo >>= \repo -> dataFetch $ GetKey id True repo
 
 -- | Perform a query using Glean. Returns the results and a 'Bool'
 -- indicating whether the results were truncated (either by the server
 -- or by an explicit 'limit' applied to the query).
 search
-  :: (Typeable q, Show q)
+  :: (Typeable q, Show q, HasRepo u)
   => Query q
   -> GenHaxl u w ([q], Bool)
-search q = dataFetch $ mkQueryReq q False
+search q = getRepo >>= \repo -> dataFetch $ mkQueryReq repo q False
 
 -- | Like 'search', but returns results only. Always returns all the
 -- results, streaming results from the server if necessary.
 search_
-  :: (Typeable q, Show q)
+  :: (Typeable q, Show q, HasRepo u)
   => Query q
   -> GenHaxl u w [q]
-search_ q = fmap fst $ dataFetch $ mkQueryReq q True
+search_ q = getRepo >>= \repo -> fmap fst $ dataFetch $ mkQueryReq repo q True
 
 
 -- -----------------------------------------------------------------------------
@@ -94,8 +111,9 @@ search_ q = fmap fst $ dataFetch $ mkQueryReq q True
 -- | smart constructor to ensure the query result encoding is set to binary
 mkQueryReq
   :: (Show q, Typeable q)
-  => Query q
+  => Repo
+  -> Query q
   -> Bool
   -> GleanQuery ([q], Bool)
-mkQueryReq (Query q decoder) b = QueryReq (Query q' decoder) b
+mkQueryReq repo (Query q decoder) b = QueryReq (Query q' decoder) repo b
   where q' = q { userQuery_encodings = [UserQueryEncoding_bin def] }

@@ -26,11 +26,11 @@ import Glean.Schema.GleanTest.Types as Glean.Test
 import Glean.Schema.Sys.Types as Sys
 import TestDB
 
-testEnv :: Backend b => b -> Repo -> IO (Env () ())
+testEnv :: Backend b => b -> Repo -> IO (Env Repo ())
 testEnv backend repo = do
-  (state1,stage2) <- initGlobalState backend repo
+  (state1,stage2) <- initGlobalState backend
   let st = stateSet state1 $ stateSet stage2 stateEmpty
-  initEnv st ()
+  initEnv st repo
 
 -- Actual tests ------
 

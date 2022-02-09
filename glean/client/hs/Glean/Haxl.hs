@@ -49,7 +49,7 @@ import Glean.Query.Thrift
 import Glean.Types
 import Glean.Typed
 
-type Haxl = GenHaxl ()
+type Haxl = GenHaxl Repo
 
 -- | Constraints needed for 'query' or 'search' or 'search_' from
 -- "Haxl.DataSource.Glean"
@@ -60,11 +60,11 @@ type HaxlQuery p =
   )
 
 -- | Initialize for Glean queries
-initHaxlEnv :: Backend be => be -> Repo -> IO (Haxl.Env () w)
-initHaxlEnv backend repo = do
-  (state1,state2) <- initGlobalState backend repo
+initHaxlEnv :: Backend be => be -> u -> IO (Haxl.Env u w)
+initHaxlEnv backend e = do
+  (state1,state2) <- initGlobalState backend
   let st = Haxl.stateSet state1 $ Haxl.stateSet state2 Haxl.stateEmpty
-  Haxl.initEnv st ()
+  Haxl.initEnv st e
 
 runHaxl :: Backend be => be -> Repo -> Haxl w a -> IO a
 runHaxl backend repo h = do

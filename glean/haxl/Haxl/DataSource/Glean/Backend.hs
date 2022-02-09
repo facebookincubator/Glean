@@ -12,6 +12,7 @@ module Haxl.DataSource.Glean.Backend
   ( initGlobalState
   ) where
 
+import Control.Monad (forM_)
 import Data.Typeable
 
 import Haxl.Core hiding (Env)
@@ -24,23 +25,24 @@ import Glean.Types
 
 import Haxl.DataSource.Glean.Common
 import qualified Haxl.DataSource.Glean.Remote as Remote
+import qualified Data.HashMap.Strict as HashMap
 
 
 syncGet
   :: Backend b
   => b
-  -> Repo
   -> PerformFetch GleanGet
-syncGet env repo = SyncFetch $ \requests -> do
-  results <- userQueryFacts env repo (mkRequest Nothing requests)
-  putResults results requests
+syncGet env = SyncFetch $ \requests -> do
+  forM_ (HashMap.toList $ requestByRepo requests) $ \(repo, requests) -> do
+    results <- userQueryFacts env repo (mkRequest Nothing requests)
+    putResults results requests
 
 
-syncQuery :: Backend b => b -> Repo -> PerformFetch GleanQuery
-syncQuery env repo = SyncFetch $ mapM_ fetch
+syncQuery :: Backend b => b -> PerformFetch GleanQuery
+syncQuery env = SyncFetch $ mapM_ fetch
   where
     fetch :: BlockedFetch GleanQuery -> IO ()
-    fetch (BlockedFetch (QueryReq q stream) rvar) =
+    fetch (BlockedFetch (QueryReq q repo stream) rvar) =
       runSyncQuery repo env q (if stream then Just id else Nothing) rvar
 
 
@@ -64,13 +66,12 @@ runSyncQuery repo env q@(Query req _) acc rvar = do
 initGlobalState
   :: Backend b
   => b
-  -> Repo
   -> IO (State GleanGet, State GleanQuery)
-initGlobalState backend repo =  do
+initGlobalState backend =  do
   case maybeRemote backend of
-    Just t -> Remote.initGlobalState t repo
+    Just t -> Remote.initGlobalState t
     Nothing ->
       return
-        ( GleanGetState repo (syncGet backend)
-        , GleanQueryState repo (syncQuery backend)
+        ( GleanGetState (syncGet backend)
+        , GleanQueryState(syncQuery backend)
         )
