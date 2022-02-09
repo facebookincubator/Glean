@@ -66,14 +66,14 @@ initHaxlEnv backend e = do
   let st = Haxl.stateSet state1 $ Haxl.stateSet state2 Haxl.stateEmpty
   Haxl.initEnv st e
 
-runHaxl :: Backend be => be -> Repo -> Haxl w a -> IO a
-runHaxl backend repo h = do
-  e <- initHaxlEnv backend repo
+runHaxl :: Backend be => be -> u -> GenHaxl u w a -> IO a
+runHaxl backend u h = do
+  e <- initHaxlEnv backend u
   Haxl.runHaxl e h
 
-runHaxlWithWrites :: Backend be => be -> Repo -> Haxl w a -> IO (a, [w])
-runHaxlWithWrites backend repo h = do
-  e <- initHaxlEnv backend repo
+runHaxlWithWrites :: Backend be => be -> u -> GenHaxl u w a -> IO (a, [w])
+runHaxlWithWrites backend u h = do
+  e <- initHaxlEnv backend u
   Haxl.runHaxlWithWrites e h
 
 -- | if the Fact has a key, return it, otherwise fetch it with 'getKey'
@@ -82,16 +82,16 @@ keyOf
      , Show p, Show (KeyType p)
      , Predicate p )
   => p
-  -> Haxl w (KeyType p)
+  -> GenHaxl Repo w (KeyType p)
 keyOf f = case getFactKey f of
   Nothing -> getKey f
   Just k -> return k
 
 -- | Catch non-asyncronous exceptions inside Haxl, very good for
 -- thrift calls that throw interesting exceptions.
-trySyncHaxl :: Haxl w b -> Haxl w (Either SomeException b)
+trySyncHaxl :: GenHaxl u w b -> GenHaxl u w (Either SomeException b)
 trySyncHaxl act = catchIf isSyncException (Right <$> act) (return . Left)
 
 -- | Search for at most 1 result and return it or Nothing
-getFirstResult :: (Typeable a, Show a) => Query a -> Haxl w (Maybe a)
+getFirstResult :: (Typeable a, Show a) => Query a -> GenHaxl Repo w (Maybe a)
 getFirstResult = fmap (listToMaybe . fst) . search . limit 1

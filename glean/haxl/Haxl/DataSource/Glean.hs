@@ -20,6 +20,7 @@ module Haxl.DataSource.Glean
   , search
   , search_
   , withRepo
+  , HasRepo(..)
   ) where
 
 import Data.Default
