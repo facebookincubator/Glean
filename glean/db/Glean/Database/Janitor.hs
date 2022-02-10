@@ -49,7 +49,14 @@ import qualified Glean.Types as Thrift
 import Glean.Util.Observed as Observed
 import Glean.Util.Time
 
-
+{- |
+The database janitor has the following functions:
+  - ensure the newest db for each repo is open to speed-up queries to it.
+  - close databases that haven't been used in a while.
+  - kick-off downloads of dbs available in remote backups.
+  - delete dbs we don't need any longer.
+  - publish counters of local db states.
+-}
 runDatabaseJanitor :: Env -> IO ()
 runDatabaseJanitor env =
   loggingAction (runLogCmd "janitor" env) (const mempty) $ do
