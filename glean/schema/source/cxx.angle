@@ -518,6 +518,13 @@ predicate DeclToFamily :
     family : DeclFamily,
   }
 
+predicate DeclarationNameSpan :
+  {
+    decl : Declaration,
+    file : src.File,
+    span : src.ByteSpan
+  }
+
 # Generalization of Function call facts, which handles references between
 # any kinds of declarations.
 
@@ -1069,6 +1076,48 @@ predicate NamespaceDeclarationName:
   { QName, Name } where
     ( NamespaceQName { name = { just = Name }} = QName ) |
     ( NamespaceQName { name = nothing } = QName; Name = Name "anonymous" )
+
+predicate DeclarationLocationNameSpan :
+  {
+    decl : Declaration,
+    source : src.Range,
+    name : string,
+    file: src.File,
+    span : src.ByteSpan,
+  }
+  { Decl, Range, NameStr, File, Span } where
+    (
+      ( { namespace_ = X } = Decl;
+        X = NamespaceDeclaration { name = QName, source = Range };
+        NamespaceDeclarationName { QName, Name }) |
+      ( { usingDeclaration = X } = Decl;
+        X = UsingDeclaration { name = QName, source = Range };
+        QName = FunctionQName { name = { name = Name }}) |
+      ( { usingDirective = X } = Decl;
+        X = UsingDirective { name = { name = Name }, source = Range}) |
+      ( { record_ = X } = Decl;
+        X = RecordDeclaration { name = { name = Name }, source = Range }) |
+      ( { enum_ = X } = Decl;
+        X = EnumDeclaration { name = { name = Name }, source = Range }) |
+      ( { variable = X } = Decl;
+        X = VariableDeclaration { name = { name = Name }, source = Range }) |
+      ( { objcContainer = X } = Decl;
+        X = ObjcContainerDeclaration { id = Id, source = Range };
+        ObjContainerIdName { Id, Name }) |
+      ( { objcProperty = X } = Decl;
+        X = ObjcPropertyDeclaration { name = Name, source = Range }) |
+      ( { typeAlias = X } = Decl;
+        X = TypeAliasDeclaration { name = { name = Name }, source = Range });
+      Name = Name NameStr
+    ) | (
+      ( { function_ = X } = Decl;
+        FunctionDeclaration { name = { FName, _ }, source = Range } = X;
+        FunctionDeclarationNameString { FName, NameStr }) |
+      ( { objcMethod = X } = Decl;
+        X = ObjcMethodDeclaration { selector = S, source = Range };
+        S = ObjcSelector [NameStr]; )
+    );
+    DeclarationNameSpan { Decl, File, Span }
 
 # Mirror of type in code.cxx.angle
 type DefinitionEntity =
