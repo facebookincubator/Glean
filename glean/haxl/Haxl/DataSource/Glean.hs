@@ -17,6 +17,7 @@ module Haxl.DataSource.Glean
   , getKeyRec
   , getKeyOfId
   , getKeyRecOfId
+  , haxlRepo
   , search
   , search_
   , withRepo
@@ -43,8 +44,8 @@ class HasRepo u where
 instance HasRepo Repo where
   getRepoFromUserEnv = id
 
-getRepo :: HasRepo u => GenHaxl u w Repo
-getRepo = do
+haxlRepo :: HasRepo u => GenHaxl u w Repo
+haxlRepo = do
   userEnv <- env userEnv
   return $ getRepoFromUserEnv userEnv
 
@@ -58,16 +59,16 @@ get, getRec
   => p
   -> GenHaxl u w p
 
-get p = getRepo >>= \repo -> dataFetch $ Get (getId p) False repo
-getRec p = getRepo >>= \repo -> dataFetch $ Get (getId p) True repo
+get p = haxlRepo >>= \repo -> dataFetch $ Get (getId p) False repo
+getRec p = haxlRepo >>= \repo -> dataFetch $ Get (getId p) True repo
 
 getOfId, getRecOfId
   :: (Typeable p, Show p, Predicate p, HasRepo u)
   => IdOf p
   -> GenHaxl u w p
 
-getOfId p = getRepo >>= \repo -> dataFetch $ Get p False repo
-getRecOfId p = getRepo >>= \repo -> dataFetch $ Get p True repo
+getOfId p = haxlRepo >>= \repo -> dataFetch $ Get p False repo
+getRecOfId p = haxlRepo >>= \repo -> dataFetch $ Get p True repo
 
 getKey, getKeyRec
   :: ( Typeable p, Typeable (KeyType p)
@@ -76,8 +77,8 @@ getKey, getKeyRec
   => p
   -> GenHaxl u w (KeyType p)
 
-getKey p = getRepo >>= \repo -> dataFetch $ GetKey (getId p) False repo
-getKeyRec p = getRepo >>= \repo -> dataFetch $ GetKey (getId p) True repo
+getKey p = haxlRepo >>= \repo -> dataFetch $ GetKey (getId p) False repo
+getKeyRec p = haxlRepo >>= \repo -> dataFetch $ GetKey (getId p) True repo
 
 getKeyOfId, getKeyRecOfId
   :: ( Typeable p, Typeable (KeyType p)
@@ -86,8 +87,8 @@ getKeyOfId, getKeyRecOfId
   => IdOf p
   -> GenHaxl u w (KeyType p)
 
-getKeyOfId id = getRepo >>= \repo -> dataFetch $ GetKey id False repo
-getKeyRecOfId id = getRepo >>= \repo -> dataFetch $ GetKey id True repo
+getKeyOfId id = haxlRepo >>= \repo -> dataFetch $ GetKey id False repo
+getKeyRecOfId id = haxlRepo >>= \repo -> dataFetch $ GetKey id True repo
 
 -- | Perform a query using Glean. Returns the results and a 'Bool'
 -- indicating whether the results were truncated (either by the server
@@ -96,7 +97,7 @@ search
   :: (Typeable q, Show q, HasRepo u)
   => Query q
   -> GenHaxl u w ([q], Bool)
-search q = getRepo >>= \repo -> dataFetch $ mkQueryReq repo q False
+search q = haxlRepo >>= \repo -> dataFetch $ mkQueryReq repo q False
 
 -- | Like 'search', but returns results only. Always returns all the
 -- results, streaming results from the server if necessary.
@@ -104,7 +105,9 @@ search_
   :: (Typeable q, Show q, HasRepo u)
   => Query q
   -> GenHaxl u w [q]
-search_ q = getRepo >>= \repo -> fmap fst $ dataFetch $ mkQueryReq repo q True
+search_ q = haxlRepo >>= \repo -> fmap fst $ dataFetch $ mkQueryReq repo q True
+
+-- -----------------------------------------------------------------------------
 
 
 -- -----------------------------------------------------------------------------

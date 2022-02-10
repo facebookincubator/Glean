@@ -11,6 +11,7 @@ module Glean.Haxl
   ( runHaxl
   , runHaxlWithWrites
   , Haxl
+  , haxlRepo
   , get
   , getRec
   , getKey
@@ -80,9 +81,9 @@ runHaxlWithWrites backend u h = do
 keyOf
   :: ( Typeable p, Typeable (KeyType p)
      , Show p, Show (KeyType p)
-     , Predicate p )
+     , Predicate p, HasRepo u)
   => p
-  -> GenHaxl Repo w (KeyType p)
+  -> GenHaxl u w (KeyType p)
 keyOf f = case getFactKey f of
   Nothing -> getKey f
   Just k -> return k
@@ -93,5 +94,7 @@ trySyncHaxl :: GenHaxl u w b -> GenHaxl u w (Either SomeException b)
 trySyncHaxl act = catchIf isSyncException (Right <$> act) (return . Left)
 
 -- | Search for at most 1 result and return it or Nothing
-getFirstResult :: (Typeable a, Show a) => Query a -> GenHaxl Repo w (Maybe a)
+getFirstResult
+  :: (Typeable a, Show a, HasRepo u)
+  => Query a -> GenHaxl u w (Maybe a)
 getFirstResult = fmap (listToMaybe . fst) . search . limit 1

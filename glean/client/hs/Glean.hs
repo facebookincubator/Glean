@@ -122,6 +122,7 @@ module Glean
   , HaxlQuery
   , runHaxl
   , runHaxlWithWrites
+  , haxlRepo
   , search
   , search_
   , get
