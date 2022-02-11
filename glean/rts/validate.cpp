@@ -117,6 +117,17 @@ void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
     return starting_id + section * ids_per_section;
   });
 
+  auto last_percent = -1;
+  std::mutex percent_lock;
+  auto report_progress([&]() {
+    const std::lock_guard<std::mutex> lock(percent_lock);
+    size_t percent = (100 * count.load()) / elems;
+    if (percent != last_percent) {
+      last_percent = percent;
+      VLOG(2) << percent << "%";
+    }
+  });
+
   // validate multiple sections
   auto worker([&]() {
     while (true) {
@@ -128,6 +139,7 @@ void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
       }
 
       validate_section(from, to);
+      report_progress();
     }
   });
 
