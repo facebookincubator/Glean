@@ -311,6 +311,7 @@ data ResolvedSchema = ResolvedSchema
     -- ^ deriving declarations, for predicates defined in this schema
     -- or an inherited schema.
   , resolvedSchemaEvolves :: Set SchemaRef
+    -- ^ schemas evolves by this schema.
   }
 
 data RefTarget = RefType TypeRef | RefPred PredicateRef

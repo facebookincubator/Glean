@@ -24,7 +24,6 @@ module Glean.Database.Schema
   ) where
 
 import Control.Arrow (second)
-import Control.Applicative ((<|>))
 import Control.Exception
 import Control.Monad
 import Control.Monad.Except
@@ -456,14 +455,10 @@ evolvedPredicates stats override byRef resolved =
     evolutionForSchema :: SchemaRef -> Maybe SchemaRef
     evolutionForSchema old
       | hasFactsInDb old = Nothing
-      | otherwise = do
-        let trans = transitiveEvolves old
-            lastEvolution = listToMaybe $ reverse trans
-        -- Pick first parent schema with facts in the db
-        -- or, if none has facts, the last available evolution.
-        -- The last evolution is used in the case of schemas
-        -- that only have derived predicates.
-        find hasFactsInDb trans <|> lastEvolution
+        -- Pick first parent schema with facts in the db.
+        -- If a schema has only derived facts there is no need to
+        -- evolve it since the old version will still work.
+      | otherwise = find hasFactsInDb (transitiveEvolves old)
 
     -- given an 'a' returns [b,c...] such that 'b evolves a', 'c evolves b', ...
     transitiveEvolves s =
@@ -474,14 +469,15 @@ evolvedPredicates stats override byRef resolved =
     hasFactsInDb :: SchemaRef -> Bool
     hasFactsInDb sref = fromMaybe False $ do
       schema <- find ((sref ==) . schemaRef) resolved
-      let factCount pid = maybe 0 predicateStats_count
-            (HashMap.lookup pid stats)
-          hasFacts pid = factCount pid > 0
-          definedPreds = map predicatePid
+      let definedPreds = map predicatePid
             $ mapMaybe (`HashMap.lookup` byRef)
             $ HashMap.keys
             $ resolvedSchemaPredicates schema
-      return $ any hasFacts definedPreds
+      return $ any predicateHasFactsInDb definedPreds
+
+    predicateHasFactsInDb :: Pid -> Bool
+    predicateHasFactsInDb id = factCount > 0
+      where factCount = maybe 0 predicateStats_count (HashMap.lookup id stats)
 
     pid (PidRef x _) = x
 
@@ -492,8 +488,24 @@ evolvedPredicates stats override byRef resolved =
     mapPredicates oldRef newRef = Map.fromList
       [ (pid old, pid new)
       | (name, old) <- Map.toList (exports oldRef)
+      -- we don't evolve derived predicates, only their derivation query.
+      , not (isDerivedPred old)
       , Just new <- return $ Map.lookup name (exports newRef)
       ]
+
+    isDerivedPred :: PidRef -> Bool
+    isDerivedPred (PidRef pid ref) = case predicateDeriving details of
+      NoDeriving -> False
+      Derive when _ -> case when of
+        DeriveOnDemand -> True
+        DerivedAndStored -> False
+        DeriveIfEmpty -> not $ predicateHasFactsInDb pid
+      where
+        details = case HashMap.lookup ref byRef of
+          Nothing -> error $ "unknown predicate " <> show ref
+          Just details -> details
+
+
 
     exports :: SchemaRef -> Map Name PidRef
     exports sref = HashMap.lookupDefault mempty sref exportsBySchemaRef

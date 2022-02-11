@@ -1392,9 +1392,11 @@ schemaEvolvesTransformations = TestList
           ]
       ]
       [s| x.R.1 _ |]
+      -- Derived predicates should not be substituted for their newest
+      -- version but the query they flatten-out into should be evolved.
       $ \byRef response _ -> do
         facts <- decodeResultsAs (PredicateRef "x.R" 1) byRef response
-        assertEqual "result count" 2 (length facts)
+        assertEqual "result count" 1 (length facts)
 
   , TestLabel "predicate value" $ TestCase $ do
     withSchemaAndFacts []
@@ -1549,40 +1551,6 @@ schemaEvolvesTransformations = TestList
       $ \byRef response _ -> do
         facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
         assertEqual "result count" 1 (length facts)
-
-  , TestLabel "nested derived" $ TestCase $ do
-    withSchemaAndFacts []
-      [s|
-        schema base.1 {
-          predicate N : nat
-        }
-        schema x.1 : base.1 {
-          predicate P : nat A where N A; A > 2
-        }
-        schema x.2 : base.1 {
-          predicate P : nat A where N A; A <= 2
-        }
-        schema x.2 evolves x.1
-
-        schema y.1 : x.1 {
-          predicate Q : nat A where x.P A
-        }
-        schema all.1 : base.1, x.1, x.2, y.1 {}
-      |]
-      [ mkBatch (PredicateRef "base.N" 1)
-          [ [s|{ "key": 1 }|]
-          , [s|{ "key": 2 }|]
-          , [s|{ "key": 3 }|]
-          ]
-      ]
-      -- Even though y.Q doesn't need to be evolved, we want the
-      -- derived predicates in its derivation query to be evolved.
-      -- We want y.Q to use the implementation from x.P.2
-      -- instead of x.P.1.
-      [s| y.Q.1 _ |]
-      $ \byRef response _ -> do
-        facts <- decodeResultsAs (PredicateRef "y.Q" 1) byRef response
-        assertEqual "result count" 2 (length facts)
 
   , TestLabel "multiple evolved, same pred" $ TestCase $ do
     withSchemaAndFacts []
