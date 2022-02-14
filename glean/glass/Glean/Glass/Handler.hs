@@ -178,6 +178,7 @@ import Glean.Glass.Utils
 import qualified Data.Set as Set
 import Glean.Glass.Attributes.SymbolKind
     ( symbolKindFromSymbolKind, symbolKindToSymbolKind )
+import Glean.Glass.Annotations (getAnnotationsForEntity)
 
 
 -- | Runner for methods that are keyed by a file path
@@ -898,7 +899,10 @@ describeEntity
                    , symbolPath_repository = locationRange_repository
                    , symbolPath_filepath = locationRange_filepath
                    }
-  let symbolDescription_annotations = Nothing
+  annotations <- getAnnotationsForEntity decl
+  symbolDescription_annotations <- case annotations of
+    Right anns -> return anns
+    Left err -> throwM $ ServerException err
   return SymbolDescription{..}
 
 -- | Returns entities based on a string needle and an Angle query. Shared

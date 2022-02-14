@@ -471,14 +471,14 @@ locatorPatternIds be repo lp@LocatorPattern{..}
 -- -----------------------------------------------------------------------------
 
 -- | @getSrcFile fileIn@ will return 'Src.File' with @Just fileIn@
-getSrcFile :: Text -> Haxl w (Maybe Src.File)
+getSrcFile :: Text -> Haxl u w (Maybe Src.File)
 getSrcFile fileIn = fmap (fmap withFileIn) $ getFirstResult $ query $
   Q.Src.File_with_key fileIn
   where
     withFileIn (Src.File i _) = Src.File i (Just fileIn)
 
 -- | Returns 'Buck.Locator' (with key) retrieved that depend on 'Src.File'
-getConsumers :: Src.File -> Haxl w [Buck.Locator]
+getConsumers :: Src.File -> Haxl u w [Buck.Locator]
 getConsumers srcFile = do
   owners <- search_ $ query $ Q.Buck.Owner_with_key def
     { Q.Buck.owner_key_source = Just $ toQueryId (getId srcFile) -- match
@@ -492,7 +492,7 @@ getConsumers srcFile = do
     , tk <- maybeToList $ Buck.target_key (Buck.targetSources_key_target tsk) ]
 
 -- | Returns 'Buck.Locator' (with key) retrieved that produce 'Src.File'
-getProducers :: Src.File -> Haxl w [Buck.Locator]
+getProducers :: Src.File -> Haxl u w [Buck.Locator]
 getProducers srcFile = do
   outTargets <- search_ $ query $ Q.Buck.OutTarget_with_key def
     { Q.Buck.outTarget_key_file = Just $ toQueryId (getId srcFile)
