@@ -1235,4 +1235,54 @@ predicate HackAnnotation :
     ({ typeConst = Decl } = D; hack.TypeConstDefinition{declaration=Decl, attributes=A}) |
     ({ typedef_ = Decl } = D; hack.TypedefDefinition{declaration=Decl, attributes=A})
 
+#
+# Relations
+#
+
+predicate ExtendsParentEntity :
+  {
+    child: code.Entity,
+    parent: code.Entity
+  }
+  {C,P} where
+    ({hack={decl={container=Child}}}=C; {hack={decl={container=Parent}}}=P;
+      (
+        hack.ContainerParent{container=Child, parent=Parent}
+      )
+    ) |
+    ({cxx={decl={objcContainer=Child}}}=C; {cxx={decl={objcContainer=Parent}}}=P;
+      (
+        cxx1.ObjcImplements{implementation=Child, interface_=Parent} |
+        cxx1.ObjcContainerBase{declaration=Child, base=Parent}
+      )
+    ) |
+    ({cxx={decl={record_=Child}}}=C; {cxx={decl={record_=Parent}}}=P;
+      (
+        B[..]=cxx1.RecordBase{base=Parent}; cxx1.RecordDefinition{declaration=Child, bases=B}
+      )
+    )
+
+
+predicate ExtendsChildEntity :
+  {
+    parent: code.Entity,
+    child: code.Entity
+  }
+  {P,C} where
+    ({hack={decl={container=Parent}}}=P; {hack={decl={container=Child}}}=C;
+      (
+        hack.ContainerChild{container=Parent, child=Child}
+      )
+    ) |
+    ({cxx={decl={objcContainer=Parent}}}=P; {cxx={decl={objcContainer=Child}}}=C;
+      (
+        cxx1.ObjcInterfaceToImplementation{interface_=Parent, implementation=Child} |
+        cxx1.ObjcContainerInheritance{base=Parent, declaration=Child}
+      )
+    ) |
+    ({cxx={decl={record_=Parent}}}=P; {cxx={decl={record_=Child}}}=C;
+      (
+        cxx1.RecordDerived{base=Parent, derived=Child}
+      )
+    )
 }
