@@ -12,14 +12,11 @@ module Glean.Glass.Config
     defaultConfigKey,
     defaultPort,
     defaultServiceName,
-    defaultServerConfig,
     defaultRefreshFreq,
   ) where
 
 import Data.Text (Text)
 import Glean.Util.Time ( DiffTimePoints, minutes )
-
-import Glean.Glass.ServerConfig.Types (ServerConfig(..))
 
 defaultPort :: Int
 defaultPort = 26073
@@ -32,9 +29,3 @@ defaultServiceName = "glean_glass"
 
 defaultRefreshFreq :: DiffTimePoints
 defaultRefreshFreq = minutes 5
-
-defaultServerConfig :: ServerConfig
-defaultServerConfig =
-  ServerConfig {
-    serverConfig_port = fromIntegral defaultPort
-  }

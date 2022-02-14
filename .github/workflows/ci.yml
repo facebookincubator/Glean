@@ -39,6 +39,8 @@ jobs:
         run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make
       - name: Run Glean tests
         run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make test
+      - name: Build Glass
+        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make glass
   # check the vscode extension builds
   vscode:
     runs-on: ubuntu-latest

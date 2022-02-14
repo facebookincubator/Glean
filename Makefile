@@ -17,7 +17,7 @@
 
 CABAL_BIN=cabal
 PWD := $(shell /bin/pwd)
-CABAL = $(CABAL_BIN) --project-file=$(PWD)/cabal.project
+CABAL = $(CABAL_BIN) --jobs --project-file=$(PWD)/cabal.project
 
 THRIFT_COMPILE = $(CABAL) run exe:thrift-compiler --
 
@@ -73,8 +73,11 @@ SCHEMAS= \
 	pp1 \
 	python \
 	rust \
+	search_code \
 	search_cxx \
+	search_erlang \
 	search_hack \
+	search_hs \
 	search_pp \
 	src \
 	sys \
@@ -118,13 +121,17 @@ thrift-glean-hs:
 	# index goes in a subdir, so do it separately
 	$(THRIFT_COMPILE) --hs glean/if/index.thrift \
 		-o glean/if/index
+	# glass goes in a subdir, so do it separately
+	$(THRIFT_COMPILE) --hs glean/glass/if/glass.thrift \
+		-o glean/glass/if/glass
+
 
 .PHONY: thrift-schema-hs
 thrift-schema-hs:
 	for s in $(SCHEMAS); do \
 		$(THRIFT_COMPILE) --hs \
 			glean/schema/thrift/$$s.thrift \
-			-o glean/schema/thrift; \
+			-o glean/schema/thrift & \
 		$(THRIFT_COMPILE) --hs \
 			glean/schema/thrift/query/$$s.thrift \
 			-o glean/schema/thrift/query; \
@@ -150,3 +157,13 @@ thrift-cpp: thrift-hsthrift-cpp
 .PHONY: thrift-hsthrift-cpp
 thrift-hsthrift-cpp::
 	(cd hsthrift && make CABAL="$(CABAL)" thrift-cpp)
+
+# full build up to glass lib
+.PHONY: glass-lib
+glass-all:: thrift $(BYTECODE_GEN) gen-schema thrift-schema-hs thrift-glean-hs
+	$(CABAL) build glass-lib
+
+# short circuit target to avoid thrift regen
+.PHONY: glass
+glass::
+	$(CABAL) build glass-server
