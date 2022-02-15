@@ -183,9 +183,9 @@ thrift::Batch FactSet::serialize() const {
   }
 
   thrift::Batch batch;
-  batch.firstId_ref() = startingId().toThrift();
-  batch.count_ref() = size();
-  batch.facts_ref() = output.moveToFbString();
+  batch.firstId() = startingId().toThrift();
+  batch.count() = size();
+  batch.facts() = output.moveToFbString();
 
   return batch;
 }
@@ -210,9 +210,9 @@ FactSet::serializeReorder(folly::Range<const uint64_t *> order) const {
   }
 
   thrift::Batch batch;
-  batch.firstId_ref() = startingId().toThrift();
-  batch.count_ref() = size();
-  batch.facts_ref() = output.moveToFbString();
+  batch.firstId() = startingId().toThrift();
+  batch.count() = size();
+  batch.facts() = output.moveToFbString();
 
   return batch;
 }

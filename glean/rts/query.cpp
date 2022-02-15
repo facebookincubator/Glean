@@ -308,38 +308,38 @@ void QueryExecutor::saveState(uint64_t *pc, uint64_t *frame) {
   for (auto &iter : iters) {
     thrift::internal::KeyIterator i;
     if (auto fact = iter.iter->get(FactIterator::KeyOnly)) {
-      i.type_ref() = iter.type.toWord();
-      i.key_ref() = binary::mkString(fact.key());
-      i.prefix_size_ref() = static_cast<int64_t>(iter.prefix_size);
-      i.first_ref() = iter.first;
+      i.type() = iter.type.toWord();
+      i.key() = binary::mkString(fact.key());
+      i.prefix_size() = static_cast<int64_t>(iter.prefix_size);
+      i.first() = iter.first;
     } else {
       // A finished iterator - we have no key to serialize
-      i.type_ref() = Pid::invalid().toWord();
+      i.type() = Pid::invalid().toWord();
     }
     contIters.emplace_back(std::move(i));
   }
-  cont.iters_ref() = std::move(contIters);
+  cont.iters() = std::move(contIters);
 
   std::vector<std::string> contOutputs;
   for (auto &output : outputs) {
     contOutputs.emplace_back(output.string());
   }
-  cont.outputs_ref() = std::move(contOutputs);
+  cont.outputs() = std::move(contOutputs);
 
   thrift::internal::SubroutineState subState;
-  subState.code_ref() =
+  subState.code() =
       std::string(reinterpret_cast<const char *>(sub.code.data()),
                   sub.code.size() * sizeof(uint64_t));
-  subState.entry_ref() = pc - sub.code.data();
-  subState.literals_ref() = sub.literals;
+  subState.entry() = pc - sub.code.data();
+  subState.literals() = sub.literals;
   std::vector<int64_t> locals(sub.locals);
   std::copy(frame + sub.inputs, frame + sub.inputs + sub.locals, locals.data());
-  subState.locals_ref() = std::move(locals);
-  subState.inputs_ref() = sub.inputs;
-  cont.sub_ref() = std::move(subState);
-  cont.pid_ref() = pid.toWord();
+  subState.locals() = std::move(locals);
+  subState.inputs() = sub.inputs;
+  cont.sub() = std::move(subState);
+  cont.pid() = pid.toWord();
   if (traverse) {
-    cont.traverse_ref() = Subroutine::toThrift(*traverse);
+    cont.traverse() = Subroutine::toThrift(*traverse);
   }
   queryCont = std::move(cont);
 };
@@ -468,22 +468,22 @@ std::unique_ptr<QueryResults> restartQuery(
 
   // Build a Subroutine
   uint64_t* code = reinterpret_cast<uint64_t*>(
-    const_cast<char*>(queryCont.sub_ref()->code_ref()->data()));
-  auto code_size = queryCont.sub_ref()->code_ref()->size() / sizeof(uint64_t);
+    const_cast<char*>(queryCont.sub()->code()->data()));
+  auto code_size = queryCont.sub()->code()->size() / sizeof(uint64_t);
   Subroutine sub{std::vector<uint64_t>(code, code + code_size),
-                 static_cast<size_t>(*queryCont.sub_ref()->inputs_ref()),
-                 queryCont.outputs_ref()->size(),
-                 static_cast<size_t>(queryCont.sub_ref()->locals_ref()->size()),
+                 static_cast<size_t>(*queryCont.sub()->inputs()),
+                 queryCont.outputs()->size(),
+                 static_cast<size_t>(queryCont.sub()->locals()->size()),
                  {}, // no constants - they're already on the stack
-                 std::move(*queryCont.sub_ref()->literals_ref())};
+                 std::move(*queryCont.sub()->literals())};
 
   std::shared_ptr<Subroutine> traverse;
-  if (queryCont.traverse_ref().has_value()) {
-    traverse = Subroutine::fromThrift(*queryCont.traverse_ref());
+  if (queryCont.traverse().has_value()) {
+    traverse = Subroutine::fromThrift(*queryCont.traverse());
   }
 
   // Setup the state as it was before, and execute the Subroutine
-  auto pid = Pid::fromWord(*queryCont.pid_ref());
+  auto pid = Pid::fromWord(*queryCont.pid());
 
   return executeQuery(
       inventory,
@@ -542,11 +542,11 @@ std::unique_ptr<QueryResults> executeQuery (
 
   // Set up all the iterators as before if we're restarting
   if (restart) {
-    for (auto& savedIter : *restart->iters_ref()) {
+    for (auto& savedIter : *restart->iters()) {
       std::unique_ptr<FactIterator> iter;
       Id id;
-      if (const auto type = Pid::fromThrift(*savedIter.type_ref())) {
-        auto key = binary::byteRange(*savedIter.key_ref());
+      if (const auto type = Pid::fromThrift(*savedIter.type())) {
+        auto key = binary::byteRange(*savedIter.key());
         iter = facts.seek(type, key, savedIter.get_prefix_size());
         auto res = iter->get(FactIterator::KeyOnly);
         if (!res || res.key() != key) {
@@ -559,17 +559,17 @@ std::unique_ptr<QueryResults> executeQuery (
         id = Id::invalid();
       }
       q.iters.emplace_back(QueryExecutor::Iter{std::move(iter),
-          Pid::fromWord(*savedIter.type_ref()),
+          Pid::fromWord(*savedIter.type()),
           id,
           static_cast<size_t>(savedIter.get_prefix_size()),
-          *savedIter.first_ref()});
+          *savedIter.first()});
     }
   }
 
   if (restart) {
     for (auto i = 0; i < sub.outputs; i++) {
       q.outputs[i].bytes(
-          restart->outputs_ref()[i].data(), restart->outputs_ref()[i].size());
+          restart->outputs()[i].data(), restart->outputs()[i].size());
     }
   }
 
@@ -683,10 +683,10 @@ std::unique_ptr<QueryResults> executeQuery (
 
   if (restart) {
     std::copy(
-        restart->sub_ref()->locals_ref()->begin(),
-        restart->sub_ref()->locals_ref()->end(),
+        restart->sub()->locals()->begin(),
+        restart->sub()->locals()->end(),
         std::back_inserter(args));
-    sub.restart(args.data(), *restart->sub_ref()->entry_ref());
+    sub.restart(args.data(), *restart->sub()->entry());
   } else {
     sub.execute(args.data());
   }

@@ -50,12 +50,12 @@ public:
       // We aren't waiting on a substitution (either we haven't sent anything
       // yet or we just rebased). Send the next piece.
       thrift::Repo repo;
-      repo.name_ref() = config.repo_name;
-      repo.hash_ref() = config.repo_hash;
+      repo.name() = config.repo_name;
+      repo.hash() = config.repo_hash;
       thrift::ComputedBatch cbatch;
-      cbatch.repo_ref() = std::move(repo);
-      cbatch.remember_ref() = true;
-      cbatch.batch_ref() = batch.serialize();
+      cbatch.repo() = std::move(repo);
+      cbatch.remember() = true;
+      cbatch.batch() = batch.serialize();
       future = std::make_unique<folly::Future<thrift::Subst>>(
         send(
           std::make_shared<thrift::ComputedBatch>(std::move(cbatch)))

@@ -89,8 +89,8 @@ thrift::Subst Substitution::serialize() const {
     [](auto x) { return x.toThrift(); }
   );
   thrift::Subst s;
-  s.firstId_ref() = base.toThrift();
-  s.ids_ref() = std::move(ids);
+  s.firstId() = base.toThrift();
+  s.ids() = std::move(ids);
   return s;
 }
 

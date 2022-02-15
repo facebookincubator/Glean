@@ -389,12 +389,12 @@ Subroutine::fromThrift(const thrift::internal::Subroutine &ser) {
 
 thrift::internal::Subroutine Subroutine::toThrift(const Subroutine &sub) {
   thrift::internal::Subroutine ser = {};
-  ser.code_ref().emplace(copy_as<int64_t>(sub.code));
-  ser.inputs_ref().emplace(sub.inputs);
-  ser.outputs_ref() = sub.outputs;
-  ser.locals_ref() = sub.locals;
-  ser.constants_ref().emplace(copy_as<int64_t>(sub.constants));
-  ser.literals_ref().emplace(sub.literals);
+  ser.code().emplace(copy_as<int64_t>(sub.code));
+  ser.inputs().emplace(sub.inputs);
+  ser.outputs() = sub.outputs;
+  ser.locals() = sub.locals;
+  ser.constants().emplace(copy_as<int64_t>(sub.constants));
+  ser.literals().emplace(sub.literals);
   return ser;
 }
 

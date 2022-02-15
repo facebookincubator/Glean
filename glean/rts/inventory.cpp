@@ -68,17 +68,17 @@ std::vector<const Predicate *> Inventory::predicates() const {
 
 std::string Inventory::serialize() const {
   thrift::internal::Inventory inv;
-  inv.predicates_ref() = {};
+  inv.predicates() = {};
   for (const auto& p : preds) {
     if (p.id) {
       thrift::internal::Predicate ser;
-      ser.id_ref() = p.id.toThrift();
-      ser.ref_ref() = {};
-      ser.ref_ref()->name_ref() = p.name;
-      ser.ref_ref()->version_ref() = p.version;
-      ser.typechecker_ref() = Subroutine::toThrift(*p.typechecker);
-      ser.traverser_ref() =  Subroutine::toThrift(*p.traverser);
-      inv.predicates_ref()->push_back(std::move(ser));
+      ser.id() = p.id.toThrift();
+      ser.ref() = {};
+      ser.ref()->name() = p.name;
+      ser.ref()->version() = p.version;
+      ser.typechecker() = Subroutine::toThrift(*p.typechecker);
+      ser.traverser() =  Subroutine::toThrift(*p.traverser);
+      inv.predicates()->push_back(std::move(ser));
     }
   }
   return apache::thrift::CompactSerializer::serialize<std::string>(inv);

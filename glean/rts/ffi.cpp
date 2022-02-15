@@ -517,8 +517,8 @@ const char* glean_factset_rebase(
     auto subst_vec = std::vector<int64_t>();
     // TODO: Remove this copy
     subst_vec.insert(subst_vec.end(), &ids[0], &ids[count]);
-    thrift_subst.firstId_ref() = firstId;
-    thrift_subst.ids_ref() = subst_vec;
+    thrift_subst.firstId() = firstId;
+    thrift_subst.ids() = subst_vec;
     Substitution subst = Substitution::deserialize(thrift_subst);
     GLEAN_SANITY_CHECK(subst.sanityCheck(false));
     *result = nullptr;
