@@ -12,9 +12,6 @@ module Glean.Glass.Env
     -- * Read-only configuration
     Config(..),
 
-    -- * Values from server_config key
-    ServerConfig(..),
-
     -- * Session resources
     Env(..),
     IndexBackend(..),
@@ -23,7 +20,12 @@ module Glean.Glass.Env
 import Util.EventBase (EventBaseDataplane)
 import Facebook.Fb303 (Fb303State)
 import Logger.IO (Logger)
+
+#ifdef FACEBOOK
 import Configerator (ConfigAPI)
+#else
+import Glean.Impl.ConfigProvider (ConfigAPI)
+#endif
 
 import Data.Text (Text)
 import Control.Concurrent.STM
@@ -35,8 +37,6 @@ import Glean.Backend.Remote (ThriftBackend)
 import Glean.Util.Some ( Some )
 import Glean.Util.Observed (Observed)
 import Glean.Util.Time ( DiffTimePoints )
-
-import Glean.Glass.ServerConfig.Types (ServerConfig(..))
 
 -- | Init-time configuration
 data Config = Config
@@ -55,7 +55,6 @@ data Env = Env
   , logger :: Logger
   , gleanBackend :: Some Glean.Backend
   , fb303 :: Fb303State
-  , serverConfig :: Observed ServerConfig
   , latestGleanRepos :: TVar Glean.LatestRepos
   , gleanIndexBackend :: IndexBackend
   }

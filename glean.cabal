@@ -159,6 +159,8 @@ library logger
         Logger.IO
         Logger.GleanDatabaseStats
         Logger.GleanServer
+        Logger.GleanGlass
+        Logger.GleanGlassErrors
     build-depends:
         glean:util
 
@@ -562,7 +564,6 @@ library db
         glean:tailer,
         glean:rocksdb,
 
-
 library client-hs
     import: fb-haskell, fb-cpp, deps
     visibility: public
@@ -573,6 +574,7 @@ library client-hs
           Glean.Write
           Glean.Haxl
           Glean.Repo
+          Glean.Haxl.Repos
           Glean.Util.ShellPrint
     build-depends:
         pretty,
@@ -595,7 +597,6 @@ library client-hs-local
         glean:core,
         glean:client-hs,
         glean:db,
-
 
 library schema
     import: fb-haskell, fb-cpp, deps
@@ -629,8 +630,11 @@ library schema
         Glean.Schema.Pp1
         Glean.Schema.Python
         Glean.Schema.Rust
+        Glean.Schema.SearchCode
         Glean.Schema.SearchCxx
+        Glean.Schema.SearchErlang
         Glean.Schema.SearchHack
+        Glean.Schema.SearchHs
         Glean.Schema.SearchPp
         Glean.Schema.Src
         Glean.Schema.Sys
@@ -661,8 +665,11 @@ library schema
         Glean.Schema.Pp1.Types
         Glean.Schema.Python.Types
         Glean.Schema.Rust.Types
+        Glean.Schema.SearchCode.Types
         Glean.Schema.SearchCxx.Types
+        Glean.Schema.SearchErlang.Types
         Glean.Schema.SearchHack.Types
+        Glean.Schema.SearchHs.Types
         Glean.Schema.SearchPp.Types
         Glean.Schema.Src.Types
         Glean.Schema.Sys.Types
@@ -960,6 +967,108 @@ executable glean-hyperlink
         http-types,
         wai,
         warp
+
+-- -----------------------------------------------------------------------------
+-- Glass services
+
+-- Glass thrift service definition
+library if-glass-hs
+    import: fb-haskell, fb-cpp, deps
+    visibility: public
+    hs-source-dirs:
+        glean/glass/if/glass/gen-hs2
+    exposed-modules:
+        Glean.Glass.Types
+        Glean.Glass.GlassService.Client
+        Glean.Glass.GlassService.Service
+    build-depends:
+        glean:config,
+        glean:if-fb303-hs,
+        glean:if-index-hs
+
+-- Glass core library
+library glass-lib
+    import: fb-haskell, fb-cpp, deps
+    visibility: public
+    default-extensions: CPP
+    hs-source-dirs: glean/glass
+    exposed-modules:
+        Glean.Glass.Annotations
+        Glean.Glass.Attributes
+        Glean.Glass.Attributes.Class
+        Glean.Glass.Attributes.SymbolKind
+        Glean.Glass.Base
+        Glean.Glass.Config
+        Glean.Glass.Env
+        Glean.Glass.Handler
+        Glean.Glass.Logging
+        Glean.Glass.Main
+        Glean.Glass.Options
+        Glean.Glass.Path
+        Glean.Glass.Pretty.Annotations
+        Glean.Glass.Pretty.Cxx
+        Glean.Glass.Pretty.Hack
+        Glean.Glass.Query
+        Glean.Glass.Query.Cxx
+        Glean.Glass.Range
+        Glean.Glass.RepoMapping
+        Glean.Glass.Repos
+        Glean.Glass.Search
+        Glean.Glass.Search.Class
+        Glean.Glass.Search.Cxx
+        Glean.Glass.Search.Erlang
+        Glean.Glass.Search.Flow
+        Glean.Glass.Search.Hack
+        Glean.Glass.Search.Haskell
+        Glean.Glass.Search.Python
+        Glean.Glass.SymbolId
+        Glean.Glass.SymbolId.Buck
+        Glean.Glass.SymbolId.Class
+        Glean.Glass.SymbolId.Cxx
+        Glean.Glass.SymbolId.Erlang
+        Glean.Glass.SymbolId.Flow
+        Glean.Glass.SymbolId.Hack
+        Glean.Glass.SymbolId.Hs
+        Glean.Glass.SymbolId.Pp
+        Glean.Glass.SymbolId.Python
+        Glean.Glass.SymbolId.Rust
+        Glean.Glass.SymbolId.Thrift
+        Glean.Glass.SymbolMap
+        Glean.Glass.Utils
+    build-depends:
+        glean:client-hs,
+        glean:client-hs-local,
+        glean:core,
+        glean:if-glass-hs,
+        glean:if-index-hs,
+        glean:lib,
+        glean:logger,
+        glean:schema,
+        glean:stubs,
+        glean:util,
+        thrift-server,
+        uri-encode,
+
+executable glass-server
+    import: fb-haskell, fb-cpp, deps, exe
+    hs-source-dirs: glean/glass/server
+    main-is: Server.hs
+    ghc-options: -main-is Server
+    extra-libraries: stdc++
+    build-depends:
+        glean:glass-lib,
+
+executable glass-symbol
+    import: fb-haskell, fb-cpp, deps, exe
+    hs-source-dirs: glean/glass/tools/
+    main-is: Glean/Glass/Test/Symbol.hs
+    ghc-options: -main-is Glean.Glass.Test.Symbol
+    extra-libraries: stdc++
+    default-extensions: CPP
+    build-depends:
+        glean:glass-lib,
+        glean:if-glass-hs,
+        glean:stubs,
 
 -- -----------------------------------------------------------------------------
 -- Benchmarks
@@ -1388,3 +1497,21 @@ if arch(x86_64)
             glean:db,
             glean:lib,
             glean:schema
+
+test-suite glass-range
+    import: fb-haskell, fb-cpp, deps, exe
+    hs-source-dirs: glean/glass/test
+    default-extensions: CPP
+    type: exitcode-stdio-1.0
+    main-is: Glean/Glass/Test/Range.hs
+    ghc-options: -main-is Glean.Glass.Test.Range
+    build-depends:
+        HUnit,
+        glean:client-hs,
+        glean:glass-lib,
+        glean:if-glass-hs,
+        glean:lib,
+        glean:schema,
+        glean:stubs,
+        glean:test-lib,
+        glean:test-unit,
