@@ -204,7 +204,7 @@ instance ToSymbolSignature Code.Entity where
     Code.Entity_cxx x -> return $ case Cxx.prettyCxxSignature x of
       "" -> Nothing
       s -> Just s
-    Code.Entity_hack x -> return $ Hack.prettyHackSignature x
+    Code.Entity_hack x -> Hack.prettyHackSignature x
     Code.Entity_pp{} -> return Nothing
     _ -> return Nothing
 

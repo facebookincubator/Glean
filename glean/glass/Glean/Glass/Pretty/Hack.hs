@@ -16,13 +16,16 @@ module  Glean.Glass.Pretty.Hack
   , QualName(..)
   ) where
 
+import qualified Glean.Haxl.Repos as Glean
 import qualified Glean.Schema.Hack.Types as Hack
 import Glean.Schema.CodeHack.Types as Hack ( Entity(..) )
 import Data.Text (Text)
 import qualified Data.Text as Text
+import Control.Monad.Trans.Maybe (MaybeT (..))
+import Control.Monad (MonadPlus (mzero))
 
-prettyHackSignature :: Hack.Entity -> Maybe Text
-prettyHackSignature (Hack.Entity_decl d) = prettyDecl <$> decl d
+prettyHackSignature :: Hack.Entity -> Glean.RepoHaxl u w (Maybe Text)
+prettyHackSignature (Hack.Entity_decl d) = runMaybeT $ prettyDecl <$> decl d
 
 (<+>) :: Text -> Text -> Text
 "" <+> b = b
@@ -79,47 +82,48 @@ ppQualName (QualName (namespace, name)) = ppQual (Qual namespace) <\> name
 ppQual :: Qual -> Text
 ppQual (Qual namespace) = Text.intercalate "\\" namespace
 
-decl :: Hack.Declaration -> Maybe Decl
+decl :: Hack.Declaration -> Glean.MaybeTRepoHaxl u w Decl
 decl (Hack.Declaration_classConst Hack.ClassConstDeclaration{..}) = do
-  Hack.ClassConstDeclaration_key{..} <- classConstDeclaration_key
-  name <- Hack.name_key classConstDeclaration_key_name
+  Hack.ClassConstDeclaration_key{..} <- liftMaybe classConstDeclaration_key
+  name <- liftMaybe $ Hack.name_key classConstDeclaration_key_name
   pure $ ClassConst $ Name name
-decl (Hack.Declaration_container container) = containerDecl container
+decl (Hack.Declaration_container container) =
+  liftMaybe $ containerDecl container
 decl (Hack.Declaration_enumerator Hack.Enumerator{..}) = do
-  Hack.Enumerator_key{..} <- enumerator_key
+  Hack.Enumerator_key{..} <- liftMaybe $enumerator_key
   Hack.EnumDeclaration{..} <- pure enumerator_key_enumeration
-  Hack.EnumDeclaration_key{..} <- enumDeclaration_key
-  enum <- qName enumDeclaration_key_name
-  name <- Hack.name_key enumerator_key_name
+  Hack.EnumDeclaration_key{..} <- liftMaybe $enumDeclaration_key
+  enum <- liftMaybe $ qName enumDeclaration_key_name
+  name <- liftMaybe $ Hack.name_key enumerator_key_name
   pure $ Enumerator (QualName enum) $ Name name
 decl (Hack.Declaration_function_ Hack.FunctionDeclaration{..}) = do
-  Hack.FunctionDeclaration_key{..} <- functionDeclaration_key
-  name <- qName functionDeclaration_key_name
+  Hack.FunctionDeclaration_key{..} <- liftMaybe functionDeclaration_key
+  name <- liftMaybe $ qName functionDeclaration_key_name
   pure $ Function $ QualName name
 decl (Hack.Declaration_globalConst Hack.GlobalConstDeclaration{..}) = do
-  Hack.GlobalConstDeclaration_key{..} <- globalConstDeclaration_key
-  name <- qName globalConstDeclaration_key_name
+  Hack.GlobalConstDeclaration_key{..} <- liftMaybe globalConstDeclaration_key
+  name <- liftMaybe $ qName globalConstDeclaration_key_name
   pure $ GlobalConst $ QualName name
 decl (Hack.Declaration_namespace_ Hack.NamespaceDeclaration{..}) = do
-  Hack.NamespaceDeclaration_key{..} <- namespaceDeclaration_key
-  name <- namespaceQName $ Just namespaceDeclaration_key_name
+  Hack.NamespaceDeclaration_key{..} <- liftMaybe namespaceDeclaration_key
+  name <- liftMaybe $ namespaceQName $ Just namespaceDeclaration_key_name
   pure $ Namespace $ Qual name
 decl (Hack.Declaration_method Hack.MethodDeclaration{..}) = do
-  Hack.MethodDeclaration_key{..} <- methodDeclaration_key
-  name <- Hack.name_key methodDeclaration_key_name
-  container <- containerQualName methodDeclaration_key_container
+  Hack.MethodDeclaration_key{..} <- liftMaybe methodDeclaration_key
+  name <- liftMaybe $ Hack.name_key methodDeclaration_key_name
+  container <- liftMaybe $ containerQualName methodDeclaration_key_container
   pure $ Method container $ Name name
 decl (Hack.Declaration_property_ Hack.PropertyDeclaration{..}) = do
-  Hack.PropertyDeclaration_key{..} <- propertyDeclaration_key
-  name <- Hack.name_key propertyDeclaration_key_name
+  Hack.PropertyDeclaration_key{..} <- liftMaybe propertyDeclaration_key
+  name <- liftMaybe $ Hack.name_key propertyDeclaration_key_name
   pure $ Property $ Name name
 decl (Hack.Declaration_typeConst Hack.TypeConstDeclaration{..}) = do
-  Hack.TypeConstDeclaration_key{..} <- typeConstDeclaration_key
-  name <- Hack.name_key typeConstDeclaration_key_name
+  Hack.TypeConstDeclaration_key{..} <- liftMaybe typeConstDeclaration_key
+  name <- liftMaybe $ Hack.name_key typeConstDeclaration_key_name
   pure $ TypeConst $ Name name
 decl (Hack.Declaration_typedef_ Hack.TypedefDeclaration{..}) = do
-  Hack.TypedefDeclaration_key{..} <- typedefDeclaration_key
-  name <- qName typedefDeclaration_key_name
+  Hack.TypedefDeclaration_key{..} <- liftMaybe typedefDeclaration_key
+  name <- liftMaybe $ qName typedefDeclaration_key_name
   pure $ Typedef $ QualName name
 
 containerDecl :: Hack.ContainerDeclaration -> Maybe Decl
@@ -182,3 +186,6 @@ namespaceQName (Just name) = reverse <$> namespaceQNameInner (Just name) []
     Hack.NamespaceQName_key{..} <- namespaceQName_key
     parent <- Hack.name_key namespaceQName_key_name
     namespaceQNameInner namespaceQName_key_parent (parent:children)
+
+liftMaybe :: (MonadPlus m) => Maybe a -> m a
+liftMaybe = maybe mzero return

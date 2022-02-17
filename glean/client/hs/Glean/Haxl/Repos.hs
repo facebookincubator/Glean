@@ -11,11 +11,15 @@
 module Glean.Haxl.Repos
   ( ReposHaxl
   , RepoHaxl
+  , MaybeTReposHaxl
+  , MaybeTRepoHaxl
   , queryAllRepos
   , withRepo
   , queryEachRepo
   , runHaxlAllRepos
   ) where
+
+import Control.Monad.Trans.Maybe (MaybeT (..))
 
 import Haxl.Core hiding (Env, runHaxl)
 import Haxl.DataSource.Glean (HasRepo(..))
@@ -30,6 +34,9 @@ import qualified Glean.Haxl as Glean
 
 type ReposHaxl u w a = QueryRepos u => GenHaxl u w a
 type RepoHaxl u w a = Haxl.DataSource.Glean.HasRepo u => GenHaxl u w a
+type MaybeTReposHaxl u w a = QueryRepos u => MaybeT (GenHaxl u w) a
+type MaybeTRepoHaxl u w a =
+  Haxl.DataSource.Glean.HasRepo u => MaybeT (GenHaxl u w) a
 
 -- This type has instances for both HasRepo and HasRepos.
 -- The instance `HasRepo` allows us to use it as the userState
