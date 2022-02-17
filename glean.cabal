@@ -1070,6 +1070,17 @@ executable glass-symbol
         glean:if-glass-hs,
         glean:stubs,
 
+-- Minimal glass client showing how to wire things up
+executable glass-democlient
+    import: fb-haskell, fb-cpp, deps, exe
+    hs-source-dirs: glean/glass/tools/
+    main-is: Glean/Glass/Test/DemoClient.hs
+    ghc-options: -main-is Glean.Glass.Test.DemoClient
+    extra-libraries: stdc++
+    build-depends:
+        glean:if-glass-hs,
+        glean:stubs,
+
 -- -----------------------------------------------------------------------------
 -- Benchmarks
 
@@ -1515,3 +1526,4 @@ test-suite glass-range
         glean:stubs,
         glean:test-lib,
         glean:test-unit,
+
