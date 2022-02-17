@@ -200,9 +200,12 @@ struct glean_json_document_t {
 const char *glean_json_parse(
     const char *text,
     size_t size,
+    size_t rec_limit,
     glean_json_document_t **document) {
   return ffi::wrap([=] {
-    auto dyn = folly::parseJson({text,size});
+    folly::json::serialization_opts opts;
+    opts.recursion_limit = rec_limit;
+    auto dyn = folly::parseJson({text,size}, opts);
     *document = new glean_json_document_t{std::move(dyn)};
   });
 }

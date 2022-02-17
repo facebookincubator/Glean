@@ -62,8 +62,11 @@ withParsed :: ByteString -> (Value -> IO a) -> IO a
 withParsed s f =
   handle (throwIO . JSONError . ffiErrorMessage) $
   unsafeWithBytes s $ \bytes size ->
-  using (invoke $ glean_json_parse (castPtr bytes) size) $
+  using (invoke $ glean_json_parse (castPtr bytes) size recursionLimit) $
   f <=< unfold <=< glean_json_document_root
+  where
+    -- folly's default of 100 is too low.
+    recursionLimit = 500
 
 -- | Reference to a JSON array.
 data ArrayRef =
@@ -215,7 +218,7 @@ escapeMangledString (MangledStringRef (ByteStringRef p n)) o k =
   unsafeIOToST (glean_json_mangled_string_escape p n o (fromIntegral k))
 
 foreign import ccall safe glean_json_parse
-  :: Ptr CChar -> CSize -> Ptr Document -> IO CString
+  :: Ptr CChar -> CSize -> CSize -> Ptr Document -> IO CString
 foreign import ccall unsafe glean_json_document_free
   :: Document -> IO ()
 foreign import ccall unsafe glean_json_document_root

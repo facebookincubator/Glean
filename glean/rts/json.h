@@ -21,6 +21,7 @@ typedef struct glean_json_value_t glean_json_value_t;
 const char *glean_json_parse(
   const char *text,
   size_t size,
+  size_t rec_limit,
   glean_json_document_t **document);
 void glean_json_document_free(glean_json_document_t *);
 
