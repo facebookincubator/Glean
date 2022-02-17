@@ -131,7 +131,7 @@ thrift-schema-hs:
 	for s in $(SCHEMAS); do \
 		$(THRIFT_COMPILE) --hs \
 			glean/schema/thrift/$$s.thrift \
-			-o glean/schema/thrift & \
+			-o glean/schema/thrift; \
 		$(THRIFT_COMPILE) --hs \
 			glean/schema/thrift/query/$$s.thrift \
 			-o glean/schema/thrift/query; \
