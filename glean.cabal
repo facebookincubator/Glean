@@ -1053,7 +1053,7 @@ executable glass-server
     import: fb-haskell, fb-cpp, deps, exe
     hs-source-dirs: glean/glass/server
     main-is: Server.hs
-    ghc-options: -main-is Server
+    ghc-options: -main-is Server -threaded
     extra-libraries: stdc++
     build-depends:
         glean:glass-lib,

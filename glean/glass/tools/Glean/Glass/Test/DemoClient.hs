@@ -25,8 +25,7 @@ import Control.Monad.Trans ( MonadIO(liftIO) )
 
 import Util.OptParse ( maybeTextOption, maybeIntOption )
 
-import Thrift.Channel.HeaderChannel
-    ( HeaderConfig(..), withHeaderChannel )
+import Thrift.Channel.HeaderChannel ( HeaderConfig(..), withHeaderChannel )
 import Thrift.Protocol.Id ( compactProtocolId )
 import Util.EventBase ( withEventBaseDataplane )
 
@@ -43,8 +42,7 @@ options = info (helper <*> parser) fullDesc
 defQuery :: DocumentSymbolsRequest
 defQuery = def {
   documentSymbolsRequest_repository = RepoName "react",
-  documentSymbolsRequest_filepath =
-    Path "react/packages/react/src/ReactHooks.js",
+  documentSymbolsRequest_filepath = Path "packages/react/src/ReactHooks.js",
   documentSymbolsRequest_include_refs = True
 }
 
@@ -53,9 +51,9 @@ defCfg = HeaderConfig
   { headerHost = "127.0.0.1"
   , headerPort = 26073
   , headerProtocolId = compactProtocolId
-  , headerConnTimeout = 5000
-  , headerSendTimeout = 5000
-  , headerRecvTimeout = 5000
+  , headerConnTimeout = 15000
+  , headerSendTimeout = 15000
+  , headerRecvTimeout = 15000
   }
 
 main :: IO ()

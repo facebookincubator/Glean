@@ -70,8 +70,8 @@ import Glean.Glass.Types
       ServerException(ServerException),
     )
 
-import Glean.Glass.RepoMapping
-import Glean.Glass.Path
+import Glean.Glass.RepoMapping  -- site-specific
+import Glean.Glass.Path  -- site-specific
 
 --  all pairs (repoName, Language) which maps to glean db,
 --  except for "test" repoName

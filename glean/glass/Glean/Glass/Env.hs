@@ -6,7 +6,6 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-
 module Glean.Glass.Env
   (
     -- * Read-only configuration
@@ -28,7 +27,7 @@ import Glean.Impl.ConfigProvider (ConfigAPI)
 #endif
 
 import Data.Text (Text)
-import Control.Concurrent.STM
+import Control.Concurrent.STM ( TVar )
 
 import qualified Glean
 import qualified Glean.Repo as Glean

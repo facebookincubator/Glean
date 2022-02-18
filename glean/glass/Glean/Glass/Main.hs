@@ -6,7 +6,6 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-
 module Glean.Glass.Main
   ( main
 
@@ -25,18 +24,16 @@ import Logger.IO (withLogger)
 import Data.Maybe ( fromMaybe )
 import Data.Text (Text)
 import qualified Data.Text as Text
-import Options.Applicative
 
 #ifdef FACEBOOK
-import Facebook.Init ( withFacebookOptions )
 import Configerator
-    ( withConfigeratorAPI, defaultConfigeratorOptions )
+import Facebook.Init ( withFacebookOptions )
 import qualified Facebook.FbWhoAmI as FbWhoAmI
 import qualified Facebook.Process as TW
 #else
-import Glean.Impl.ConfigProvider
-import Glean.Util.ConfigProvider
 import Glean.Init ( withOptions )
+import Glean.Util.ConfigProvider
+    ( ConfigProvider(defaultConfigOptions, withConfigProvider) )
 #endif
 
 import Glean.LocalOrRemote as Glean
@@ -63,13 +60,15 @@ type Server = Glass.Env -> Glass.Config -> IO ()
 -- | Set up the resources we'll need
 withGlass :: Server -> IO ()
 withGlass f =
-#ifdef FACEBOOK
-  withFacebookOptions Glass.options $ \config@Glass.Config{..} ->
-#else
-  withOptions Glass.options $ \config@Glass.Config{..} ->
-#endif
+  withGlassOptions Glass.options $ \config@Glass.Config{..} ->
   withEnv serviceName gleanService configKey refreshFreq $ \env ->
   f env config
+  where
+#ifdef FACEBOOK
+    withGlassOptions = withFacebookOptions
+#else
+    withGlassOptions = withOptions
+#endif
 
 -- | Construct a server environment
 withEnv
@@ -81,11 +80,7 @@ withEnv
   -> IO a
 withEnv name service key refreshFreq f =
   withEventBaseDataplane $ \evp ->
-#ifdef FACEBOOK
-  withConfigeratorAPI defaultConfigeratorOptions $ \cfgapi ->
-#else
-  withConfigProvider defaultConfigOptions $ \cfgapi ->
-#endif
+  withCfg $ \cfgapi ->
   withLogger cfgapi $ \logger ->
   withFb303 name $ \fb303 ->
   withBackendWithDefaultOptions evp cfgapi service $ \backend ->
@@ -95,6 +90,12 @@ withEnv name service key refreshFreq f =
       , gleanIndexBackend = indexBackend backend
       , ..
       }
+  where
+#ifdef FACEBOOK
+    withCfg = withConfigeratorAPI defaultConfigeratorOptions
+#else
+    withCfg = withConfigProvider defaultConfigOptions
+#endif
 
 -- | Construct a backend to call the indexing endpoint
 indexBackend :: LocalOrRemote b => b -> Glass.IndexBackend
