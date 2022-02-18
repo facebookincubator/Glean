@@ -13,7 +13,10 @@ import Glean.Init as Glean ( withOptions )
 
 import Glean.Glass.Types
 import Glean.Glass.GlassService.Client
-    ( documentSymbolListX, GlassService, describeSymbol )
+    ( documentSymbolListX,
+      GlassService,
+      findReferenceRanges,
+      describeSymbol )
 
 import Options.Applicative
 import Options.Applicative.Types ( readerAsk )
@@ -36,6 +39,7 @@ newtype Options = Options { optCommand :: Command }
 data Command
   = List RepoName Path
   | Describe SymbolId
+  | FindRefs SymbolId
 
 options :: ParserInfo Options
 options = info (helper <*> parser) fullDesc
@@ -55,13 +59,25 @@ options = info (helper <*> parser) fullDesc
           ," e.g. glass describe react/js/ReactHooks.js/src/react/packages/react/useEffect"
           ]
         )
+      ) <>
+      command "references" (info findRefsCommand
+        (progDesc $ unlines
+          ["Find references to this symbol"
+          ," e.g. glass references react/js/ReactHooks.js/src/react/packages/react/useEffect"
+          ]
+        )
       )
 
     listCommand :: Parser Options
     listCommand = Options <$> argument readListRepoPath (metavar "REPO/PATH")
 
     describeCommand :: Parser Options
-    describeCommand = Options <$> argument readDescribeSymbol (metavar "SYMBOL")
+    describeCommand = Options <$> argument
+      (Describe <$> readSymbol) (metavar "SYMBOL")
+
+    findRefsCommand :: Parser Options
+    findRefsCommand = Options <$> argument
+      (FindRefs <$> readSymbol) (metavar "SYMBOL")
 
 readListRepoPath :: ReadM Command
 readListRepoPath = do
@@ -74,12 +90,12 @@ readListRepoPath = do
     where
       sep = Text.singleton pathSeparator
 
-readDescribeSymbol :: ReadM Command
-readDescribeSymbol = do
+readSymbol :: ReadM SymbolId
+readSymbol = do
   sym <- Text.pack <$> readerAsk
   if length (Text.splitOn "/" sym) < 3
     then err
-    else return $ Describe (SymbolId sym)
+    else return (SymbolId sym)
   where
     err = fail "Not a valid symbol. Symbols have the form: repo/lang/path-ish"
 
@@ -105,13 +121,14 @@ main = Glean.withOptions options $ \Options{..} -> do
   case optCommand of
     List repo path -> runListSymbols repo path
     Describe sym -> runDescribe sym
+    FindRefs sym -> runFindRefs sym
 
 runListSymbols :: RepoName -> Path -> IO ()
 runListSymbols repo path =
   withEventBaseDataplane $ \evp -> withHeaderChannel evp defCfg $ do
-      DocumentSymbolListXResult{..} <- documentSymbolListX query def
-      liftIO $ mapM_ Text.putStrLn $
-        pprDefs documentSymbolListXResult_definitions
+    DocumentSymbolListXResult{..} <- documentSymbolListX query def
+    liftIO $ mapM_ Text.putStrLn $
+      pprDefs documentSymbolListXResult_definitions
   where
     query = defDocumentSymbolsReq {
             documentSymbolsRequest_repository = repo
@@ -121,10 +138,16 @@ runListSymbols repo path =
 runDescribe :: SymbolId -> IO ()
 runDescribe sym =
   withEventBaseDataplane $ \evp -> withHeaderChannel evp defCfg $ do
-      SymbolDescription{..} <- describeSymbol sym def
-      liftIO $ Text.putStrLn $ pprSymbolPath symbolDescription_location
-      liftIO $ Text.putStrLn $ pprQName symbolDescription_name
-      whenJust symbolDescription_kind $ liftIO . print
+    SymbolDescription{..} <- describeSymbol sym def
+    liftIO $ Text.putStrLn $ pprSymbolPath symbolDescription_location
+    liftIO $ Text.putStrLn $ pprQName symbolDescription_name
+    whenJust symbolDescription_kind $ liftIO . print
+
+runFindRefs :: SymbolId -> IO ()
+runFindRefs sym =
+  withEventBaseDataplane $ \evp -> withHeaderChannel evp defCfg $ do
+    ranges <- findReferenceRanges sym def
+    liftIO $ Text.putStrLn $ "Found " <> textShow (length ranges) <> " references"
 
 -- List unique definition symbols
 pprDefs :: [DefinitionSymbolX] -> [Text]
