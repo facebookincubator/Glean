@@ -998,6 +998,7 @@ library glass-lib
         Glean.Glass.Attributes.Class
         Glean.Glass.Attributes.SymbolKind
         Glean.Glass.Base
+        Glean.Glass.Comments
         Glean.Glass.Config
         Glean.Glass.Env
         Glean.Glass.Handler
