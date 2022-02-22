@@ -9,7 +9,8 @@
 module Glean.Glass.Regression.Tests (
   testDocumentSymbolListX,
   testDescribeSymbolMatchesPath,
-  testFindReferences
+  testFindReferences,
+  testDescribeSymbolComments
 ) where
 
 import Data.Default
@@ -60,6 +61,22 @@ testDescribeSymbolMatchesPath sym@(SymbolId name) path get =
         path
       Location{..} <- resolveSymbol env sym def
       assertEqual "resolveSymbol Path matches" location_filepath path
+
+-- | Test that both describeSymbol has expected comment
+testDescribeSymbolComments
+  :: SymbolId -> (Int, Int) -> IO (Some Backend, Repo) -> Test
+testDescribeSymbolComments sym@(SymbolId name) (line, col) get =
+  TestLabel (Text.unpack name) $ TestCase $ do
+    (backend, _repo) <- get
+    withTestEnv backend $ \env -> do
+      SymbolDescription{..} <- describeSymbol env sym def
+      assertEqual "describeSymbol Comment start matches"
+        [(fromIntegral line, fromIntegral col)] $
+        zip
+          (range_lineBegin . locationRange_range
+            <$> symbolDescription_comments)
+          (range_columnBegin . locationRange_range
+            <$> symbolDescription_comments)
 
 -- | Test findReferences and findReferenceRanges: given a SymbolId check
 -- that the number of references returned for each Path matches the input.

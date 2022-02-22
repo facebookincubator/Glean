@@ -239,6 +239,7 @@ struct SymbolDescription {
   3: QualifiedName name;
   4: optional SymbolKind kind;
   5: optional list<Annotation> annotations;
+  6: list<LocationRange> comments;
 }
 
 struct SearchContext {

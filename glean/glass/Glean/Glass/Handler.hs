@@ -179,6 +179,7 @@ import qualified Data.Set as Set
 import Glean.Glass.Attributes.SymbolKind
     ( symbolKindFromSymbolKind, symbolKindToSymbolKind )
 import Glean.Glass.Annotations (getAnnotationsForEntity)
+import Glean.Glass.Comments (getCommentsForEntity)
 
 
 -- | Runner for methods that are keyed by a file path
@@ -902,6 +903,10 @@ describeEntity
   annotations <- getAnnotationsForEntity decl
   symbolDescription_annotations <- case annotations of
     Right anns -> return anns
+    Left err -> throwM $ ServerException err
+  comments <- getCommentsForEntity locationRange_repository decl
+  symbolDescription_comments <- case comments of
+    Right comments -> return comments
     Left err -> throwM $ ServerException err
   return SymbolDescription{..}
 

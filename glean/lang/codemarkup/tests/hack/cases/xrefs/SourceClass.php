@@ -7,6 +7,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+/**
+ * Test Code Block
+ */
 class SourceClass extends SuperClass {
 
   const int BAZ = 2;

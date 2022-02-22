@@ -24,6 +24,7 @@ main = mainTestIndexExternal "glass-regression-hack" $ \get -> TestList
   [ testDocumentSymbolListX (Path "www/RefClass.php") get
   , testSymbolIdLookup get
   , testHackFindReferences get
+  , testHackDescribeSymbolComments get
   ]
 
 testSymbolIdLookup :: IO (Some Backend, Repo) -> Test
@@ -83,4 +84,17 @@ testHackFindReferences get = TestLabel "findReferences" $ TestList [
       testFindReferences
         (SymbolId sym)
         (map (first Path) expected)
+        get
+
+testHackDescribeSymbolComments :: IO (Some Backend, Repo) -> Test
+testHackDescribeSymbolComments get = TestLabel "describeSymbolComments" $
+  TestList [
+    "test/php/SourceClass" --> (10,1)
+  ]
+  where
+    (-->) :: Text -> (Int,Int) -> Test
+    sym --> expected =
+      testDescribeSymbolComments
+        (SymbolId sym)
+        expected
         get
