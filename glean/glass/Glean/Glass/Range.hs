@@ -118,9 +118,11 @@ toLocation
   :: RepoName -> Src.File -> Src.ByteSpan -> Glean.RepoHaxl u w Location
 toLocation repo file bytespan = do
   path <- GleanPath <$> Glean.keyOf file
+  let (location_repository, location_filepath) =
+        fromGleanPath repo path
   return $ Location {
-       location_repository = repo, -- TBD x-repo queries
-       location_filepath = fromGleanPath repo path,
+       location_repository = location_repository,
+       location_filepath = location_filepath,
        location_span = spanToSpan bytespan
      }
 
@@ -129,9 +131,11 @@ toLocationRange
   :: RepoName -> Src.File -> Range -> Glean.RepoHaxl u w LocationRange
 toLocationRange repo file range = do
   path <- GleanPath <$> Glean.keyOf file
+  let (locationRange_repository, locationRange_filepath) =
+        fromGleanPath repo path
   return $ LocationRange {
-       locationRange_repository = repo, -- TBD x-repo queries
-       locationRange_filepath = fromGleanPath repo path,
+       locationRange_repository = locationRange_repository,
+       locationRange_filepath = locationRange_filepath,
        locationRange_range = range
      }
 
