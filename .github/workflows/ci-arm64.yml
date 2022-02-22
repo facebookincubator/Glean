@@ -36,7 +36,9 @@ jobs:
         run: rm -rf /tmp/fbcode_builder_getdeps-Z__wZGleanZGleanZhsthriftZbuildZfbcode_builder-root/
       - name: Populate hackage index with new packages
         run: cabal update
-      - name: Build hsthrift/Glean
+      - name: Build hsthrift and Glean
         run: make
-      - name: Run Glean tests
+      - name: Build glass
+        run: make glass
+      - name: Run tests
         run: make test

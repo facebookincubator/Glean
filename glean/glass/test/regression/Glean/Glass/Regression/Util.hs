@@ -8,8 +8,6 @@
 
 module Glean.Glass.Regression.Util (withTestEnv) where
 
-import Data.Default
-
 import Util.EventBase
 import Configerator
 import ConfigeratorTestUtils
@@ -17,7 +15,6 @@ import Facebook.Fb303 ( withFb303 )
 import Logger.IO (withLogger)
 
 import Glean
-import Glean.Util.Observed
 import Glean.Util.Some
 import Glean.Util.Time
 
@@ -36,6 +33,5 @@ withTestEnv backend f =
     f Glass.Env
       { gleanBackend = Some backend
       , gleanIndexBackend = IndexBackend Nothing
-      , serverConfig = fixedValue def
       , ..
       }

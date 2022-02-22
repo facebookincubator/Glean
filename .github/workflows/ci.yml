@@ -35,9 +35,11 @@ jobs:
         run: echo "$HOME/.hsthrift/bin" >> "$GITHUB_PATH"
       - name: Populate hackage index
         run: cabal update
-      - name: Build hsthrift/Glean
+      - name: Build hsthrift and Glean
         run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make
-      - name: Run Glean tests
+      - name: Build glass
+        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make glass
+      - name: Run tests
         run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make test
   # check the vscode extension builds
   vscode:

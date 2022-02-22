@@ -18,7 +18,7 @@ import Data.Int ( Int64 )
 import Data.ByteString ( ByteString )
 
 import TestRunner ( testRunner )
-import Facebook.Init ( withFacebookUnitTest )
+import Glean.Init ( withUnitTest )
 
 import Glean.Glass.Range
     ( exclusiveRangeToFileByteSpan,
@@ -31,7 +31,7 @@ import qualified Glean.Schema.Src.Types as Src
 import qualified Glean.Util.Range as Range
 
 main :: IO ()
-main = withFacebookUnitTest $ testRunner $ TestList
+main = withUnitTest $ testRunner $ TestList
   [ TestList
       [ TestLabel name $
          testByteSpanToRange bs glass_range offs

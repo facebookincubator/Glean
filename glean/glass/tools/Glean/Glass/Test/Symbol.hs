@@ -24,7 +24,7 @@ import Options.Applicative
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
 
-import Facebook.Init ( withFacebookOptions )
+import Glean.Init ( withOptions )
 import Util.OptParse ( maybeTextOption, maybeIntOption )
 import Util.Timing ( showTime, timeIt )
 import Util.Text ( textShow )
@@ -70,7 +70,7 @@ options = info (helper <*> parser) fullDesc
 
 main :: IO ()
 main =
-  withFacebookOptions options $ \Config{..} ->
+  withOptions options $ \Config{..} ->
   Glass.withEnv "glass-symbol" (Glass.gleanService cfgGlass)
     (Glass.configKey cfgGlass) (Glass.refreshFreq cfgGlass) $ \env -> do
 

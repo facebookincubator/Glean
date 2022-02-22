@@ -6,7 +6,6 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-
 module Glean.Glass.Main
   ( main
 
@@ -14,30 +13,27 @@ module Glean.Glass.Main
   , withEnv
   ) where
 
-import Facebook.Init ( withFacebookOptions )
+
 import Facebook.Service ( runFacebookService )
 import Facebook.Fb303 ( fb303Handler, withFb303 )
-import qualified Facebook.Process as TW
-import qualified Facebook.FbWhoAmI as FbWhoAmI
 import qualified Thrift.Server.Types as Thrift
-import Configerator
-    ( withConfigeratorAPI, defaultConfigeratorOptions )
 import Util.EventBase ( withEventBaseDataplane )
 import Util.Log.Text ( logInfo )
 import Util.Text ( textShow )
 import Logger.IO (withLogger)
 
-import Data.Maybe ( fromMaybe )
 import Data.Text (Text)
 import qualified Data.Text as Text
 
+import Glean.Init ( withOptions )
 import Glean.LocalOrRemote as Glean
   ( Service,
     LocalOrRemote(..),
     BackendKind(..),
     withBackendWithDefaultOptions )
+import Glean.Util.ConfigProvider
+    ( ConfigProvider(defaultConfigOptions, withConfigProvider) )
 import Glean.Util.Some ( Some(Some) )
-import Glean.Util.ThriftSource ( config, withValue )
 import Glean.Util.Time ( DiffTimePoints )
 
 import qualified Glean.Glass.Env as Glass
@@ -55,7 +51,7 @@ type Server = Glass.Env -> Glass.Config -> IO ()
 -- | Set up the resources we'll need
 withGlass :: Server -> IO ()
 withGlass f =
-  withFacebookOptions Glass.options $ \config@Glass.Config{..} ->
+  withOptions Glass.options $ \config@Glass.Config{..} ->
   withEnv serviceName gleanService configKey refreshFreq $ \env ->
   f env config
 
@@ -67,13 +63,12 @@ withEnv
   -> DiffTimePoints
   -> (Glass.Env -> IO a)
   -> IO a
-withEnv name service key refreshFreq f =
+withEnv name service _ refreshFreq f =
   withEventBaseDataplane $ \evp ->
-  withConfigeratorAPI defaultConfigeratorOptions $ \cfgapi ->
+  withConfigProvider defaultConfigOptions $ \cfgapi ->
   withLogger cfgapi $ \logger ->
   withFb303 name $ \fb303 ->
   withBackendWithDefaultOptions evp cfgapi service $ \backend ->
-  withValue cfgapi (config key) $ \serverConfig ->
   withLatestRepos backend refreshFreq $ \latestGleanRepos ->
     f Glass.Env
       { gleanBackend = Some backend
@@ -101,23 +96,11 @@ runGlass res@Glass.Env{..} conf@Glass.Config{..} = do
 
 welcomeMessage :: Glass.Config -> IO Text
 welcomeMessage Glass.Config{..} = do
-  host <- FbWhoAmI.getName
-  ip <- getCanonicalIPAddr
   return $ Text.concat
     [ "glass"
     , ": port " <> textShow listenPort
     , ", config " <> configKey
-    , ", host " <> host
-    , ", ip " <> ip
     ]
-
--- | Work out what IP we're using, even if its in a task IP in TW
-getCanonicalIPAddr :: IO Text
-getCanonicalIPAddr = do
-  twip <- TW.getTupperwareTaskIpAddr
-  ipaddr <- FbWhoAmI.getPrimaryIP
-  ip6addr <- FbWhoAmI.getPrimaryIPV6
-  return $ fromMaybe (if Text.null ipaddr then ip6addr else ipaddr) twip
 
 -- Actual glass service handler, types from glass.thrift
 -- TODO: snapshot the env, rather than passing in the mutable fields

@@ -6,14 +6,10 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-
 module Glean.Glass.Env
   (
     -- * Read-only configuration
     Config(..),
-
-    -- * Values from server_config key
-    ServerConfig(..),
 
     -- * Session resources
     Env(..),
@@ -23,20 +19,17 @@ module Glean.Glass.Env
 import Util.EventBase (EventBaseDataplane)
 import Facebook.Fb303 (Fb303State)
 import Logger.IO (Logger)
-import Configerator (ConfigAPI)
+import Glean.Impl.ConfigProvider (ConfigAPI)
 
 import Data.Text (Text)
-import Control.Concurrent.STM
+import Control.Concurrent.STM ( TVar )
 
 import qualified Glean
 import qualified Glean.Repo as Glean
 import qualified Glean.LocalOrRemote as Glean
 import Glean.Backend.Remote (ThriftBackend)
 import Glean.Util.Some ( Some )
-import Glean.Util.Observed (Observed)
 import Glean.Util.Time ( DiffTimePoints )
-
-import Glean.Glass.ServerConfig.Types (ServerConfig(..))
 
 -- | Init-time configuration
 data Config = Config
@@ -55,7 +48,6 @@ data Env = Env
   , logger :: Logger
   , gleanBackend :: Some Glean.Backend
   , fb303 :: Fb303State
-  , serverConfig :: Observed ServerConfig
   , latestGleanRepos :: TVar Glean.LatestRepos
   , gleanIndexBackend :: IndexBackend
   }
