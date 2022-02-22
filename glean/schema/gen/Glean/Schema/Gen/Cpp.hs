@@ -81,29 +81,44 @@ defineSchema ds = do
     cppNameIn schemaNamespace . schemaName <$> predicateName predicateDefRef
   return $ Text.unlines $ concat
     [ ["struct SCHEMA {"]
-    ,indentLines
-      ["template<typename P> struct index;"]
-    ,indentLines
-      ["template<> struct index<"
+    , indentLines [
+        "template<typename P> struct index;",
+        "static constexpr size_t count = "
+          <> Text.pack (show $ length pnames)
+          <> ";",
+        "template<size_t i> struct predicate;"
+      ]
+    , ["};"]
+    , [""]
+    {-
+       we would like to do:
+
+         struct SCHEMA {
+           template<typename P> struct index;
+
+           template<> struct index<Predicate> { ... }
+         }
+
+       but declaring a template specialisation inside a struct is
+       not currently supported by gcc, see
+          https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85282
+
+       so instead we declare the specialisation outside the struct:
+
+         template<> struct SCHEMA::index<Predicate> { ... }
+    -}
+    , ["template<> struct SCHEMA::index<"
         <> p
         <> "> { static constexpr size_t value = "
         <> Text.pack (show i)
         <> "; };" | (i,p) <- zip [0::Int ..] pnames]
-    ,[""]
-    ,indentLines
-      ["static constexpr size_t count = "
-        <> Text.pack (show $ length pnames)
-        <> ";"]
-    ,[""]
-    ,indentLines
-      ["template<size_t i> struct predicate;"]
-    ,indentLines
-      ["template<> struct predicate<"
+    , [""]
+    , ["template<> struct SCHEMA::predicate<"
         <> Text.pack (show i)
         <> "> { using type = "
         <> p
         <> "; };" | (i,p) <- zip [0::Int ..] pnames]
-    ,["};"]]
+    ]
 
 -- Insert all the namespace opening and closing around declaration regions
 withNS :: [(NameSpaces, Text)] -> [Text]
