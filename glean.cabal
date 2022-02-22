@@ -620,6 +620,7 @@ library schema
         Glean.Schema.CodeThrift
         Glean.Schema.CodeBuck
         Glean.Schema.Cxx1
+        Glean.Schema.Docmarkup
         Glean.Schema.Erlang
         Glean.Schema.Flow
         Glean.Schema.GleanTest
@@ -655,6 +656,7 @@ library schema
         Glean.Schema.CodePp.Types
         Glean.Schema.CodePython.Types
         Glean.Schema.Cxx1.Types
+        Glean.Schema.Docmarkup.Types
         Glean.Schema.Erlang.Types
         Glean.Schema.Flow.Types
         Glean.Schema.GleanTest.Types
@@ -701,6 +703,7 @@ library schema-query
         Glean.Schema.Query.CodePp.Types
         Glean.Schema.Query.CodePython.Types
         Glean.Schema.Query.Cxx1.Types
+        Glean.Schema.Query.Docmarkup.Types
         Glean.Schema.Query.Erlang.Types
         Glean.Schema.Query.Flow.Types
         Glean.Schema.Query.GleanTest.Types
@@ -998,6 +1001,7 @@ library glass-lib
         Glean.Glass.Attributes.Class
         Glean.Glass.Attributes.SymbolKind
         Glean.Glass.Base
+        Glean.Glass.Comments
         Glean.Glass.Config
         Glean.Glass.Env
         Glean.Glass.Handler

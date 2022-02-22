@@ -24,10 +24,11 @@ toGleanPath _ (Glass.Path path) = GleanPath path
 
 -- | Site-level rules for processing index paths to the filesystem
 -- Glass paths are always repo-root relative.
-fromGleanPath :: Glass.RepoName -> GleanPath -> Glass.Path
-fromGleanPath (Glass.RepoName "react") (GleanPath path) =
-  case Text.stripPrefix "react/" path of
+fromGleanPath
+  :: Glass.RepoName -> GleanPath -> (Glass.RepoName, Glass.Path)
+fromGleanPath repo@(Glass.RepoName "react") (GleanPath path) =
+  (repo,) $ case Text.stripPrefix "react/" path of
     Just suff -> Glass.Path suff
     Nothing -> Glass.Path path
 
-fromGleanPath _ (GleanPath path) = Glass.Path path
+fromGleanPath repo (GleanPath path) = (repo, Glass.Path path)
