@@ -63,6 +63,7 @@ SCHEMAS= \
 	code_python \
 	code \
 	cxx1 \
+	docmarkup \
 	erlang \
 	flow \
 	glean_test \
