@@ -9,9 +9,10 @@
 {-# LANGUAGE ApplicativeDo #-}
 module GleanCLI.Restore (RestoreCommand) where
 
+import Control.Monad (forM_, forM)
 import Control.Concurrent
-import Data.Default
 import Data.Text (Text)
+import Data.Maybe (listToMaybe)
 import qualified Data.Text as Text
 import Data.Time
 import Data.Time.Clock.POSIX
@@ -20,7 +21,12 @@ import Options.Applicative
 import Util.IO
 import Util.OptParse
 
-import Glean (Repo(..), Database(..), DatabaseStatus(..))
+import Glean
+  ( Repo(..)
+  , Database(..)
+  , DatabaseStatus(..)
+  , Dependencies(..)
+  , Pruned(..))
 import qualified Glean hiding (options)
 
 import GleanCLI.Common
@@ -34,17 +40,23 @@ data WhatToRestore
 data RestoreCommand
   = Restore
       { what :: WhatToRestore
+      , ignoreDependencies :: Bool
       }
+
+type Locator = Text
 
 instance Plugin RestoreCommand where
   parseCommand =
     commandParser "restore" (progDesc "Restore a database") $
-      Restore <$> what
+      Restore <$> what <*> deps
     where
       locator = strArgument
         (  metavar "LOCATOR"
-        <> help "DB location, see :list-all in glean shell"
+        <> help "DB location, see :list-all in glean shell."
         )
+      deps = switch
+        (  long "ignore-dependencies"
+        <> help "Don't download database dependencies when specifying a repo name.")
       what =
         (RestoreLocator <$> locator) <|>
         (RestoreRepo <$> repoSlash) <|> do
@@ -61,61 +73,113 @@ instance Plugin RestoreCommand where
         (long "date" <> metavar "YYYY-MM-DD")
 
   runCommand _ _ backend Restore{..} = do
-    case what of
-      RestoreLocator locator -> do
-        Glean.restoreDatabase backend locator
-        wait locator
-      RestoreRepo repo -> do
-        Glean.ListDatabasesResult{..} <- Glean.listDatabases backend
-          Glean.ListDatabases { listDatabases_includeBackups = True }
-        case [ locator
-             | Glean.Database{..} <- listDatabasesResult_databases
-             , database_repo == repo
-             , Just locator <- [database_location] ] of
-          [] -> die 1 $ "Cannot find backup locator for " <>
-            Glean.showRepo repo
-          (locator:_) -> restore repo locator
-      RestoreRepoOnDay repoName day -> do
-        Glean.ListDatabasesResult{..} <- Glean.listDatabases backend
-          Glean.ListDatabases { listDatabases_includeBackups = True }
-        case [ (database_repo, locator)
-             | Glean.Database{..} <- listDatabasesResult_databases
-             , repo_name database_repo == repoName
-             , let t = database_created_since_epoch
-             , day == utctDay (posixSecondsToUTCTime $ fromIntegral $
-                 Glean.unPosixEpochTime t)
-             , Just locator <- [database_location] ] of
-          [] -> die 1 $ "Cannot find backup locator for " <>
-            Text.unpack repoName <> " on " <>
-            formatTime defaultTimeLocale (iso8601DateFormat Nothing) day
-          ((repo,locator):_) -> restore repo locator
+    targets <- locatorsToRestore
+    restore targets
+    wait (fst <$> targets)
     where
-      restore repo locator = do
-        putStrLn $ "Restoring " <> Glean.showRepo repo <>
-          " from " <> Text.unpack locator
-        Glean.restoreDatabase backend locator
-        wait locator
+      locatorsToRestore = case what of
+        -- ignores dependencies
+        RestoreLocator locator -> return [(locator, Nothing)]
+        RestoreRepo repo -> do
+          databases <- listWithBackups
+          let deps = if ignoreDependencies
+                then []
+                else dependencies databases repo
+          withLocator databases $ repo : deps
+        RestoreRepoOnDay repoName day -> do
+          databases <- listWithBackups
+          let matchingDay = listToMaybe
+                [ database_repo
+                | Database{..} <- databases
+                , repo_name database_repo == repoName
+                , let t = database_created_since_epoch
+                , day == utctDay (posixSecondsToUTCTime $ fromIntegral $
+                    Glean.unPosixEpochTime t)
+                ]
+          case matchingDay of
+            Just repo -> do
+              let deps = if ignoreDependencies
+                    then []
+                    else dependencies databases repo
+              withLocator databases $ repo : deps
+            Nothing -> die 1 $ unwords
+              ["Cannot find backup locator for", Text.unpack repoName, "on"
+              , formatTime defaultTimeLocale (iso8601DateFormat Nothing) day ]
 
-      wait locator = do
-        Glean.ListDatabasesResult{..} <- Glean.listDatabases backend def
-        case [ db | db <- listDatabasesResult_databases
-                  , database_location db == Just locator ] of
-          [] -> do
-            die 1 $ "error: server claims " <> Text.unpack locator <>
-              " is not being restored"
-          [db]
-            | database_status db == Glean.DatabaseStatus_Restoring ->
-              threadDelay 1000000 >> wait locator
-            | database_status db == DatabaseStatus_Complete ->
-              return ()
-            | database_status db == DatabaseStatus_Missing -> do
-              putStrLn $
-                "Some of this DB's dependencies are missing. " <>
-                "You may want to restore those as well"
-              -- TODO: List missing dependencies
-              return ()
-            | otherwise ->
-              die 1 $ "error: unexpected database status: " <>
-                show (database_status db)
-          _ -> die 1 $ "error: server has multiple DBs with the locator "
-            <> Text.unpack locator
+
+      withLocator :: [Database] -> [Repo] -> IO [(Locator, Maybe Repo)]
+      withLocator databases repos = forM repos $ \repo -> do
+        locator <- repoLocator databases repo
+        return (locator, Just repo)
+
+      listWithBackups =
+        Glean.listDatabasesResult_databases <$>
+          Glean.listDatabases backend Glean.ListDatabases
+            { listDatabases_includeBackups = True }
+
+      restore targets = do
+        forM_ targets $ \(locator, mrepo) -> do
+          putStrLn $ unwords $
+            [ "Restoring" ] ++
+            [ Glean.showRepo repo | Just repo <- [mrepo]] ++
+            [ "from", Text.unpack locator]
+          Glean.restoreDatabase backend locator
+
+      wait locators = do
+        localDatabases <- Glean.listDatabasesResult_databases <$>
+          Glean.listDatabases backend
+            Glean.ListDatabases { listDatabases_includeBackups = False }
+        dbs <- traverse (locatorDb localDatabases) locators
+        let isRestoring = (DatabaseStatus_Restoring ==) . database_status
+        if any isRestoring dbs
+           then threadDelay 1000000 >> wait locators
+           else forM_ dbs $ \db -> case database_status db of
+                DatabaseStatus_Complete -> return ()
+                DatabaseStatus_Missing -> putStrLn $ unwords
+                  [ "Some of"
+                  , Glean.showRepo (database_repo db)
+                  , "dependencies are missing."
+                  , "You may want to restore those as well"
+                  ] -- TODO: List missing dependencies
+                status ->
+                  die 1 $ "error: unexpected database status: " <> show status
+        where
+          locatorDb databases locator =
+            case
+              [ db
+              | db <- databases
+              , database_location db == Just locator ]
+            of
+              [db] -> return db
+              [] -> die 1 $ unwords
+                ["error: did not find database locator", Text.unpack locator]
+              _ -> die 1 $ unwords
+                ["error: server has multiple DBs with the locator"
+                , Text.unpack locator]
+
+repoLocator :: [Database] -> Repo -> IO Locator
+repoLocator databases repo =
+  case [ locator
+        | Database{..} <- databases
+        , database_repo == repo
+        , Just locator <- [database_location] ]
+  of
+    (locator:_) -> return locator
+    [] -> die 1 $ "Cannot find backup locator for " <> Glean.showRepo repo
+
+dependencies :: [Database] -> Repo -> [Repo]
+dependencies databases repo = repoDeps repo
+  where
+    repoDeps base =
+      case repoDirectDep base of
+        Nothing -> []
+        Just repo -> repo : repoDeps repo
+    repoDirectDep repo = listToMaybe
+        [ toRepo dep
+        | Database{..} <- databases
+        , database_repo == repo
+        , Just dep <- [database_dependencies]
+        ]
+    toRepo dep = case dep of
+      Dependencies_stacked repo -> repo
+      Dependencies_pruned (Pruned repo _ _) -> repo
