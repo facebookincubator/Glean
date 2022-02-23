@@ -21,4 +21,5 @@ prettyHackAnnotation :: Text -> [Text] -> Text
 prettyHackAnnotation name [] = name
 prettyHackAnnotation name args = name <> prettyArgs
   where
-    prettyArgs = "(" <> intercalate ", " args <> ")"
+    prettyArgs = "(" <> intercalate ", " (map prettyArg args) <> ")"
+    prettyArg arg = "\"" <> arg <> "\""

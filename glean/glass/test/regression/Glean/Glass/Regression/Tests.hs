@@ -10,12 +10,14 @@ module Glean.Glass.Regression.Tests (
   testDocumentSymbolListX,
   testDescribeSymbolMatchesPath,
   testFindReferences,
-  testDescribeSymbolComments
+  testDescribeSymbolComments,
+  testDescribeSymbolHasAnnotations
 ) where
 
 import Data.Default
 import Data.List
 import qualified Data.Map as Map
+import Data.Text (Text)
 import qualified Data.Text as Text
 import Test.HUnit hiding (Path)
 
@@ -77,6 +79,20 @@ testDescribeSymbolComments sym@(SymbolId name) (line, col) get =
             <$> symbolDescription_comments)
           (range_columnBegin . locationRange_range
             <$> symbolDescription_comments)
+
+-- | Test that describeSymbol has specific annotations
+testDescribeSymbolHasAnnotations
+  :: SymbolId -> [(Text, Text)] -> IO (Some Backend, Repo) -> Test
+testDescribeSymbolHasAnnotations sym@(SymbolId name) anns get =
+  TestLabel (Text.unpack name) $ TestCase $ do
+    (backend, _repo) <- get
+    withTestEnv backend $ \env -> do
+      SymbolDescription{..} <- describeSymbol env sym def
+      assertEqual "describeSymbol Annotations equal"
+        anns
+        (maybe []
+          (map $ \Annotation{..} -> (annotation_name, annotation_source))
+          symbolDescription_annotations)
 
 -- | Test findReferences and findReferenceRanges: given a SymbolId check
 -- that the number of references returned for each Path matches the input.

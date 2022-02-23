@@ -10,6 +10,7 @@
 /**
  * Test Code Block
  */
+<<TestAnnotation("Text")>>
 class SourceClass extends SuperClass {
 
   const int BAZ = 2;
@@ -21,4 +22,8 @@ class SourceClass extends SuperClass {
   public function bar(int $param): int {
     return $param * corge();
   }
+}
+
+class TestAnnotation implements HH\ClassAttribute {
+  public function __construct(private string $test) {}
 }

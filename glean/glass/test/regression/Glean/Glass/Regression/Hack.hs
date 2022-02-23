@@ -25,6 +25,7 @@ main = mainTestIndexExternal "glass-regression-hack" $ \get -> TestList
   , testSymbolIdLookup get
   , testHackFindReferences get
   , testHackDescribeSymbolComments get
+  , testHackAnnotations get
   ]
 
 testSymbolIdLookup :: IO (Some Backend, Repo) -> Test
@@ -95,6 +96,18 @@ testHackDescribeSymbolComments get = TestLabel "describeSymbolComments" $
     (-->) :: Text -> (Int,Int) -> Test
     sym --> expected =
       testDescribeSymbolComments
+        (SymbolId sym)
+        expected
+        get
+
+testHackAnnotations :: IO (Some Backend, Repo) -> Test
+testHackAnnotations get = TestLabel "annotations" $ TestList [
+  "test/php/SourceClass" --> [("TestAnnotation", "TestAnnotation(\"Text\")")]
+  ]
+  where
+    (-->) :: Text -> [(Text, Text)] -> Test
+    sym --> expected =
+      testDescribeSymbolHasAnnotations
         (SymbolId sym)
         expected
         get
