@@ -555,7 +555,7 @@ const char *glean_define_ownership_sort_by_owner(
   FactOrder *result
 );
 
-void glean_define_ownershiop_free(DefineOwnership *def);
+void glean_define_ownership_free(DefineOwnership *def);
 
 const char *glean_derived_ownership_compute(
   Ownership *own,
