@@ -115,6 +115,12 @@ instance LogResult SearchByNameResult where
 instance LogResult SearchBySymbolIdResult where
   logResult (SearchBySymbolIdResult symids, log) = logResult (symids, log)
 
+instance LogResult SearchRelatedResult where
+  logResult (SearchRelatedResult edges, log) = logResult (edges, log)
+
+instance LogResult [RelatedSymbols] where
+  logResult (edges, log) = log <> Logger.setItemCount (length edges)
+
 class LogRepo a where
   logRepo :: a -> GleanGlassLogger
 

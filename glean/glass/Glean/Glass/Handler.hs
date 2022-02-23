@@ -155,7 +155,8 @@ import Glean.Glass.Types
       Path,
       RepoName(..),
       RequestOptions(..),
-      DocumentSymbolsRequest(..), SymbolKind )
+      DocumentSymbolsRequest(..), SymbolKind,
+      rELATED_SYMBOLS_MAX_LIMIT )
 import Glean.Index.Types
   ( IndexRequest,
     IndexResponse)
@@ -180,6 +181,7 @@ import Glean.Glass.Attributes.SymbolKind
     ( symbolKindFromSymbolKind, symbolKindToSymbolKind )
 import Glean.Glass.Annotations (getAnnotationsForEntity)
 import Glean.Glass.Comments (getCommentsForEntity)
+import Glean.Glass.SearchRelated (searchRelatedSymbols)
 
 
 -- | Runner for methods that are keyed by a file path
@@ -992,9 +994,26 @@ searchRelated
   -> RequestOptions
   -> SearchRelatedRequest
   -> IO SearchRelatedResult
-searchRelated _env _sym _opts _req = return $ SearchRelatedResult
-  { searchRelatedResult_edges = []
-  }
+searchRelated env@Glass.Env{..} sym opt req = do
+    withSymbol "searchRelated" env sym $ \(gleanDBs, (repo, lang, toks)) -> do
+      backendRunHaxl GleanBackend {..} $ do
+        (edges, err) <-
+          searchRelatedSymbols
+          limit
+          searchRelatedRequest_relation
+          searchRelatedRequest_relatedBy
+          (repo, lang, toks)
+        let
+          result = SearchRelatedResult
+            { searchRelatedResult_edges = edges
+            }
+        pure (result, err)
+  where
+    RequestOptions {..} = opt
+    SearchRelatedRequest {..} = req
+    limit = fromIntegral $ case requestOptions_limit of
+      Just x | x < rELATED_SYMBOLS_MAX_LIMIT -> x
+      _ -> rELATED_SYMBOLS_MAX_LIMIT
 
 -- Processing indexing requests
 index :: Glass.Env -> IndexRequest -> IO IndexResponse
