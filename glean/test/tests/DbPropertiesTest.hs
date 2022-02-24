@@ -33,34 +33,30 @@ propertiesTest = TestCase $ withTestEnv [] $ \env -> do
     , kickOff_fill = Just (KickOffFill_writeHandle "")
     , kickOff_properties = props
     }
-  ListDatabasesResult{..} <- listDatabases env def
+
+  let getDatabase = do
+        ListDatabasesResult{..} <- listDatabases env def
+        case listDatabasesResult_databases of
+          [db] -> return db
+          [] -> assertFailure "no database found"
+          _ -> assertFailure "found more databases than expected"
+
+  Database{..} <- getDatabase
   assertBool "includes kickOff properties" $
-    case listDatabasesResult_databases of
-      [Database{..}] ->
-        all (`elem` HashMap.toList database_properties) (HashMap.toList props)
-      _ -> False
+    all (`elem` HashMap.toList database_properties) (HashMap.toList props)
 
   void $ updateProperties env repo (HashMap.fromList [("key", "newValue")]) []
-  ListDatabasesResult{..} <- listDatabases env def
+  Database{..} <- getDatabase
   assertBool "can overwrite values" $
-    case listDatabasesResult_databases of
-      [Database{..}] ->
-        HashMap.lookup "key" database_properties == Just "newValue"
-      _ -> False
+    HashMap.lookup "key" database_properties == Just "newValue"
 
   void $ updateProperties env repo
     (HashMap.fromList [("newKey", "newValue")]) ["key"]
-  ListDatabasesResult{..} <- listDatabases env def
+  Database{..} <- getDatabase
   assertBool "can remove keys" $
-    case listDatabasesResult_databases of
-      [Database{..}] ->
-        HashMap.lookup "newKey" database_properties == Just "newValue" &&
-        not (HashMap.member "key" database_properties)
-      _ -> False
+    HashMap.lookup "newKey" database_properties == Just "newValue" &&
+    not (HashMap.member "key" database_properties)
 
-  ListDatabasesResult{..} <- listDatabases env def
+  Database{..} <- getDatabase
   assertBool "sets glean.schema_version by default" $
-    case listDatabasesResult_databases of
-      [Database{..}] ->
-        all (`elem` HashMap.keys database_properties) ["glean.schema_version"]
-      _ -> False
+    all (`elem` HashMap.keys database_properties) ["glean.schema_version"]
