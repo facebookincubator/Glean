@@ -49,7 +49,7 @@
       },
       "location": {
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "length": 3, "start": 288 } },
+        "location": { "span": { "length": 3, "start": 315 } },
         "name": "BAZ"
       }
     }
@@ -147,7 +147,7 @@
       },
       "location": {
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "length": 11, "start": 242 } },
+        "location": { "span": { "length": 11, "start": 269 } },
         "name": "SourceClass"
       }
     }
@@ -502,7 +502,7 @@
       },
       "location": {
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "length": 3, "start": 364 } },
+        "location": { "span": { "length": 3, "start": 391 } },
         "name": "bar"
       }
     }
@@ -639,7 +639,7 @@
       },
       "location": {
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "length": 4, "start": 334 } },
+        "location": { "span": { "length": 4, "start": 361 } },
         "name": "daz"
       }
     }
@@ -666,7 +666,7 @@
       },
       "location": {
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "length": 1, "start": 311 } },
+        "location": { "span": { "length": 1, "start": 338 } },
         "name": "T"
       }
     }
