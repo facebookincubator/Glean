@@ -12,6 +12,7 @@ import Control.Monad
 import Data.Default
 import qualified Data.HashMap.Strict as HashMap
 import Test.HUnit
+import Control.Concurrent
 
 import TestRunner
 
@@ -33,9 +34,10 @@ propertiesTest = TestCase $ withTestEnv [] $ \env -> do
     , kickOff_fill = Just (KickOffFill_writeHandle "")
     , kickOff_properties = props
     }
-  ListDatabasesResult{..} <- listDatabases env def
-  assertBool "includes kickOff properties" $
-    case listDatabasesResult_databases of
+
+  tryAgain 3 "includes kickOff properties" $ do
+    ListDatabasesResult{..} <- listDatabases env def
+    return $ case listDatabasesResult_databases of
       [Database{..}] ->
         all (`elem` HashMap.toList database_properties) (HashMap.toList props)
       _ -> False
@@ -64,3 +66,14 @@ propertiesTest = TestCase $ withTestEnv [] $ \env -> do
       [Database{..}] ->
         all (`elem` HashMap.keys database_properties) ["glean.schema_version"]
       _ -> False
+
+tryAgain :: Int -> String -> IO Bool -> IO ()
+tryAgain n str io = loop n
+  where
+    loop 0 = assertFailure str
+    loop i = do
+      good <- io
+      when (not good) $ do
+        putStrLn "WARNING: test failed, retrying with delay..."
+        threadDelay (10^6)
+        loop (i-1)
