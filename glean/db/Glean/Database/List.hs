@@ -61,7 +61,7 @@ listDatabases env@Env{..} Thrift.ListDatabases{..} = do
             meta
         , getDatabaseResult_tasks = Nothing
         })
-    filterDatabasePred now minDBAge db = currentAgeInSeconds > minDBAge
+    filterDatabasePred now minDBAge db = currentAgeInSeconds >= minDBAge
       where
         dbTime = case Thrift.database_completed db of
           Just completedAt -> completedAt
