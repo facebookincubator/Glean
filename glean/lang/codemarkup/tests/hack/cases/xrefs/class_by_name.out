@@ -70,7 +70,14 @@
       },
       "implements_": [ ],
       "uses": [ ],
-      "attributes": [ ],
+      "attributes": [
+        {
+          "key": {
+            "name": { "key": "TestAnnotation" },
+            "parameters": [ "Text" ]
+          }
+        }
+      ],
       "typeParams": [ ]
     }
   },

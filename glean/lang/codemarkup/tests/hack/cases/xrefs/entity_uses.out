@@ -140,7 +140,26 @@
         }
       },
       "file": { "key": "www/SourceClass.php" },
-      "span": { "start": 289, "length": 10 }
+      "span": { "start": 316, "length": 10 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "TestAnnotation" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/SourceClass.php" },
+      "span": { "start": 265, "length": 14 }
     }
   },
   {
@@ -175,6 +194,30 @@
       },
       "file": { "key": "www/RefClass.php" },
       "span": { "start": 845, "length": 8 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "ClassAttribute" },
+                      "namespace_": { "key": { "name": { "key": "HH" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/SourceClass.php" },
+      "span": { "start": 509, "length": 17 }
     }
   },
   {
@@ -331,7 +374,7 @@
         }
       },
       "file": { "key": "www/SourceClass.php" },
-      "span": { "start": 434, "length": 5 }
+      "span": { "start": 461, "length": 5 }
     }
   },
   {
@@ -521,6 +564,30 @@
       },
       "file": { "key": "www/RefClass.php" },
       "span": { "start": 743, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "test" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "TestAnnotation" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/SourceClass.php" },
+      "span": { "start": 574, "length": 5 }
     }
   },
   {

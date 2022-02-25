@@ -7,7 +7,7 @@
         "target": {
           "name": "BAZ",
           "file": { "key": "www/SourceClass.php" },
-          "span": { "start": 315, "length": 3 }
+          "span": { "start": 342, "length": 3 }
         },
         "source": { "start": 608, "length": 3 }
       },
@@ -175,7 +175,7 @@
         "target": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "span": { "start": 269, "length": 11 }
+          "span": { "start": 296, "length": 11 }
         },
         "source": { "start": 507, "length": 11 }
       },
@@ -201,7 +201,7 @@
         "target": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "span": { "start": 269, "length": 11 }
+          "span": { "start": 296, "length": 11 }
         },
         "source": { "start": 555, "length": 11 }
       },
@@ -227,7 +227,7 @@
         "target": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "span": { "start": 269, "length": 11 }
+          "span": { "start": 296, "length": 11 }
         },
         "source": { "start": 595, "length": 11 }
       },
@@ -253,7 +253,7 @@
         "target": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "span": { "start": 269, "length": 11 }
+          "span": { "start": 296, "length": 11 }
         },
         "source": { "start": 766, "length": 11 }
       },
@@ -331,7 +331,7 @@
         "target": {
           "name": "T",
           "file": { "key": "www/SourceClass.php" },
-          "span": { "start": 338, "length": 1 }
+          "span": { "start": 365, "length": 1 }
         },
         "source": { "start": 520, "length": 1 }
       },
@@ -525,7 +525,7 @@
         "target": {
           "name": "daz",
           "file": { "key": "www/SourceClass.php" },
-          "span": { "start": 361, "length": 4 }
+          "span": { "start": 388, "length": 4 }
         },
         "source": { "start": 623, "length": 3 }
       },
