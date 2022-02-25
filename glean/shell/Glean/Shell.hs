@@ -371,21 +371,21 @@ helptext mode = vcat
 
     commands :: [(Text.Text,Text.Text)]
     commands =
-      [ ("database [<name>]",
-            "Use database <name>")
+      [ ("database [<db>]",
+            "Use database <db>")
       , ("index <lang> <dir>",
             "Index source files in <dir> and create a database. <lang> supports "
             <> "only flow currently.")
-      , ("list [<reponame>]",
-            "List available databases which match <reponame>")
-      , ("list-all [<reponame>]",
-            "List available databases, and restorable backups, which match "
-            <> "<reponame>")
+      , ("list [<db>]",
+            "List available databases which match <db>")
+      , ("list-all [<db>]",
+            "List available databases and restorable backups which match "
+            <> "<db>")
       , ("debug off|[-]ir|[-]bytecode|all",
             "Enable/disable query debugging options")
-      , ("describe [<reponame>]",
+      , ("describe [<db>]",
             "Like :list, but show more details")
-      , ("describe-all [<reponame>]",
+      , ("describe-all [<db>]",
             "Like :list-all, but show more details")
       , ("mode [json|angle]",
             "Select mode for query syntax and results")
