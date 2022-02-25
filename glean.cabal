@@ -1025,6 +1025,7 @@ library glass-lib
         Glean.Glass.Search.Hack
         Glean.Glass.Search.Haskell
         Glean.Glass.Search.Python
+        Glean.Glass.SearchRelated
         Glean.Glass.SymbolId
         Glean.Glass.SymbolId.Buck
         Glean.Glass.SymbolId.Class
