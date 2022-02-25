@@ -396,6 +396,8 @@ helptext mode = vcat
             <> "Set the EDITOR environment variable to choose an editor")
       , ("limit <n>",
             "Set limit on the number of query results")
+      , ("load (<file> | <db>/<hash> <file> ...)",
+            "Create a DB from file(s) of JSON facts")
       , ("timeout off|<n>",
             "Set the query time budget")
       , ("expand off|on",
@@ -654,9 +656,9 @@ reloadCmd = do
 
 loadCmd :: String -> Eval ()
 loadCmd str
-  | [db, file] <- args
+  | (db : files@(_ : _)) <- args
   , Just repo <- Glean.parseRepo db
-  = do load repo [file]; setRepo repo
+  = do load repo files; setRepo repo
 
   -- Just a file: derive the repo from the filename and pick an unused hash
   | [file] <- args = do
@@ -667,7 +669,8 @@ loadCmd str
     setRepo repo
 
   | otherwise
-  = liftIO $ throwIO $ ErrorCall "syntax:  :load [<db>/<hash>] <file>"
+  = liftIO $ throwIO $ ErrorCall
+      "syntax:  :load (<file> | <db>/<hash> <file> ...)"
   where
     args = Data.List.words str
 

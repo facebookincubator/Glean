@@ -10,26 +10,27 @@
   Glean Shell.+ (re)
   
   Commands:
-    :database [<name>]                Use database <name>
-    :index <lang> <dir>               Index source files in <dir> and create a database. <lang> supports only flow currently.
-    :list [<reponame>]                List available databases which match <reponame>
-    :list-all [<reponame>]            List available databases, and restorable backups, which match <reponame>
-    :debug off|[-]ir|[-]bytecode|all  Enable/disable query debugging options
-    :describe [<reponame>]            Like :list, but show more details
-    :describe-all [<reponame>]        Like :list-all, but show more details
-    :mode [json|angle]                Select mode for query syntax and results
-    :schema [predicate|type]          Show schema for the given predicate or type
-    :edit                             Edit a query in an external editor. Set the EDITOR environment variable to choose an editor
-    :limit <n>                        Set limit on the number of query results
-    :timeout off|<n>                  Set the query time budget
-    :expand off|on                    Recursively expand nested facts in the response
-    :pager off|on                     Enable/disable result paging
-    :count <query>                    Show only a count of query results, not the results themselves
-    :more                             Fetch more results from the previous query
-    :profile [off|summary|full]       Show query profiling information
-    :reload                           Reload the schema (when using --schema)
-    :statistics [-s] [<predicate>]    Show statistics for the current database, sorted by decreasing size when using -s
-    :quit                             Exit the shell
+    :database [<name>]                       Use database <name>
+    :index <lang> <dir>                      Index source files in <dir> and create a database. <lang> supports only flow currently.
+    :list [<reponame>]                       List available databases which match <reponame>
+    :list-all [<reponame>]                   List available databases, and restorable backups, which match <reponame>
+    :debug off|[-]ir|[-]bytecode|all         Enable/disable query debugging options
+    :describe [<reponame>]                   Like :list, but show more details
+    :describe-all [<reponame>]               Like :list-all, but show more details
+    :mode [json|angle]                       Select mode for query syntax and results
+    :schema [predicate|type]                 Show schema for the given predicate or type
+    :edit                                    Edit a query in an external editor. Set the EDITOR environment variable to choose an editor
+    :limit <n>                               Set limit on the number of query results
+    :load (<file> | <db>/<hash> <file> ...)  Create a DB from file(s) of JSON facts
+    :timeout off|<n>                         Set the query time budget
+    :expand off|on                           Recursively expand nested facts in the response
+    :pager off|on                            Enable/disable result paging
+    :count <query>                           Show only a count of query results, not the results themselves
+    :more                                    Fetch more results from the previous query
+    :profile [off|summary|full]              Show query profiling information
+    :reload                                  Reload the schema (when using --schema)
+    :statistics [-s] [<predicate>]           Show statistics for the current database, sorted by decreasing size when using -s
+    :quit                                    Exit the shell
   
   Queries (angle mode):
     {1234}                    Look up a fact by its Id
