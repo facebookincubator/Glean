@@ -881,7 +881,7 @@ angleDSL modify = dbTestCase $ \env repo -> do
       end
   assertEqual "angle - DSL 2" 1 (length results)
 
-  results <- runQuery_ env repo $ modify $ Angle.data_ $
+  results <- runQuery_ env repo $ modify $ Angle.query $
     vars $ \x y ->
       tuple (x,y) `where_` [
         x .= nat 1,
@@ -889,13 +889,14 @@ angleDSL modify = dbTestCase $ \env repo -> do
       ]
   assertEqual "angle - DSL 3" [(toNat 1, toNat 2)] results
 
-  results <- runQuery_ env repo $ modify $ Angle.data_ $
+  results <- runQuery_ env repo $ modify $ Angle.query $
     vars $ \x ->
       x `where_` [
         x .= elementsOf (array [nat 1, nat 2, nat 3 ]),
         not_ [x .= (nat 1 .| nat 3)]
       ]
   assertEqual "angle - DSL 4" [toNat 2] results
+
 
 -- nested patterns
 angleNested :: (forall a . Query a -> Query a) -> Test
@@ -1466,7 +1467,7 @@ queryStats
   -> Query q
   -> IO ([q], Maybe UserQueryStats)
 
-queryStats be repo (Query query decoder) = do
+queryStats be repo (Query query) = do
   let
     opts = fromMaybe def (userQuery_options query)
     query' = query
@@ -1475,7 +1476,7 @@ queryStats be repo (Query query decoder) = do
         opts { userQueryOptions_collect_facts_searched = True }
       }
   UserQueryResults{..} <- userQuery be repo query'
-  results <- decodeResults userQueryResults_results decoder
+  results <- decodeResults userQueryResults_results decodeAsFact
   return (results, userQueryResults_stats)
 
 
@@ -1815,7 +1816,8 @@ angleRecExpansion modify = dbTestCase $ \env repo -> do
 
 angleQueryOptions :: Test
 angleQueryOptions = dbTestCase $ \env repo -> do
-  let omitResults omit (Query query decoder) = Query q decoder
+  let omitResults :: Bool -> Query q -> Query q
+      omitResults omit (Query query) = Query q
         where
           opts = fromMaybe def (userQuery_options query)
           q = query

@@ -26,7 +26,7 @@ module Glean.Glass.Utils
 
 import Glean
     ( recursive, limit, search, search_, getFirstResult )
-import Glean.Angle as Angle ( data_, query, Angle )
+import Glean.Angle as Angle ( query, Angle )
 import Glean.Typed.Binary ( Type )
 import Glean.Typed.Predicate ( Predicate )
 import Data.Typeable ( Typeable )
@@ -47,18 +47,18 @@ type QueryType q =
 -- No more than 1 result will be returned from the server.
 --
 fetchData :: (QueryType a) => Angle a -> RepoHaxl u w (Maybe a)
-fetchData = getFirstResult . data_
+fetchData = getFirstResult . query
 
 -- | Fetch exactly 0 or 1 results, recusively
 fetchDataRecursive :: (QueryType a) => Angle a -> RepoHaxl u w (Maybe a)
-fetchDataRecursive = getFirstResult . recursive . data_
+fetchDataRecursive = getFirstResult . recursive . query
 
 -- | Run a non-recursive data query with optional limit on search results
 searchWithLimit :: QueryType q => Maybe Int -> Angle q -> RepoHaxl u w [q]
 searchWithLimit Nothing =
-  search_ . Angle.data_
+  search_ . Angle.query
 searchWithLimit (Just n) =
-  fmap fst <$> search . limit n . Angle.data_
+  fmap fst <$> search . limit n . Angle.query
 
 -- | Run a non-recursive data query with optional limit over multiple repos
 searchReposWithLimit
@@ -85,9 +85,9 @@ searchPredicateWithLimit (Just n) =
 searchRecursiveWithLimit
   :: QueryType q => Maybe Int -> Angle q -> RepoHaxl u w [q]
 searchRecursiveWithLimit Nothing =
-  search_ . recursive . Angle.data_
+  search_ . recursive . Angle.query
 searchRecursiveWithLimit (Just n) =
-  fmap fst <$> search . recursive . limit n . Angle.data_
+  fmap fst <$> search . recursive . limit n . Angle.query
 
 -- | Split a filepath into a list of directory components
 pathFragments :: Text -> [Text]

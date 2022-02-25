@@ -119,5 +119,5 @@ mkQueryReq
   -> Query q
   -> Bool
   -> GleanQuery ([q], Bool)
-mkQueryReq repo (Query q decoder) b = QueryReq (Query q' decoder) repo b
+mkQueryReq repo (Query q) b = QueryReq (Query q') repo b
   where q' = q { userQuery_encodings = [UserQueryEncoding_bin def] }

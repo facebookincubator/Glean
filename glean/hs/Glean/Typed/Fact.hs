@@ -6,9 +6,6 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-  {-# LANGUAGE ConstraintKinds #-}
-
-
 module Glean.Typed.Fact
   ( decodeFact
   , decodeRef
@@ -25,7 +22,7 @@ import Glean.Typed.Build
 import Glean.Typed.Binary
 import Glean.Typed.Id
 import Glean.Typed.Predicate
-import qualified Glean.Types as Thrift -- generated
+import Glean.Types as Thrift
 
 -- | Decode a serialized fact, possibly with nested facts
 decodeFact
@@ -48,7 +45,9 @@ decodeFact serialized cache fid (Thrift.Fact _pid k v) = mkFact fid
 -- * If the serialized fact is available, we decode it and add it to the cache
 -- * Otherwise, we simply construct the empty fact with 'justId'.
 --
-decodeRef :: forall p. (Predicate p, Typeable p) => Decoder p
+decodeRef
+  :: forall p. (Predicate p, Typeable p)
+  => Decoder p
 decodeRef = Decoder $ \env@DecoderEnv{..} -> do
   (fid :: IdOf p) <- runDecoder decodeRtsValue env
   cache <- liftIO $ readIORef cacheRef

@@ -60,7 +60,7 @@ import Glean.Typed.Id
 -- Superclass constraint of 'BT.Type' ensures this can be serialized into
 -- the underlying binary format.
 
-class (Type (KeyType p), Type (ValueType p)) => Predicate p where
+class (Type p, Type (KeyType p), Type (ValueType p)) => Predicate p where
   type KeyType p
   type ValueType p
   type ValueType p = ()

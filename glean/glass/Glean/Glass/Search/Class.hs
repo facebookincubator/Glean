@@ -25,7 +25,8 @@ import Data.Typeable (Typeable)
 import qualified Glean
 import Glean.Typed.Binary (Type)
 
-import Glean.Angle as Angle ( data_, Angle )
+import Glean.Angle ( Angle )
+import qualified Glean.Angle as Angle
 import Glean.Haxl.Repos as Glean
 
 import qualified Glean.Schema.Src.Types as Src
@@ -69,7 +70,7 @@ runSearch :: (Typeable t, Show t, Glean.Typed.Binary.Type t)
 runSearch toks query = do
   results <- Glean.queryAllRepos $ do
     repo <- Glean.haxlRepo
-    results <- Glean.search_ $ data_ query
+    results <- Glean.search_ $ Angle.query query
     return $ map (repo,) results
   let toksText = intercalate "/" toks
   return $ case results of

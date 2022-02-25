@@ -154,7 +154,7 @@ hyperlinkFile st path offset = do
 
 codeMarkupHyperlinks :: Text.Text -> Glean.Haxl w [Hyperlink]
 codeMarkupHyperlinks path = do
-  xrefs <- Glean.search_ $ Angle.data_ $
+  xrefs <- Glean.search_ $ Angle.query $
     var $ \x -> x `where_` [
       wild .= predicate @CodeMarkup.FileEntityXRefLocations (
         rec $

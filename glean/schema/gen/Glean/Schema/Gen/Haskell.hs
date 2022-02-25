@@ -339,7 +339,8 @@ genPredicate mode PredicateDef{..}
 
         def_Type = inst "Glean.Type"
           [ "buildRtsValue b = Glean.buildRtsValue b . Glean.getId"
-          , "decodeRtsValue = Glean.decodeRef" ]
+          , "decodeRtsValue = Glean.decodeRef"
+          , "decodeAsFact = Glean.decodeFact" ]
 
         def_QueryResult_QueryOf =
           ["type instance Glean.QueryResult " <> queryName <> " = " <> name

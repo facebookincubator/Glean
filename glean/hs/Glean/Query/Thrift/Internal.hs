@@ -57,7 +57,7 @@ import Data.Text.Prettyprint.Doc hiding ((<>))
 import qualified Text.JSON
 import Text.Printf
 
-import Thrift.Protocol
+import Thrift.Protocol hiding (Type)
 import Thrift.Protocol.JSON
 import Util.Log
 
@@ -78,19 +78,18 @@ type ResultDecoder a =
   -> IO a
 
 -- | A query that can be performed by 'runQuery'. Build using 'query'.
-data Query a = Query
+data Query a = Type a => Query
   { querySpec :: UserQuery
-  , queryDecoder :: ResultDecoder a
   }
 
 instance Show (Query a) where
-  show (Query spec _) = show spec
+  show (Query spec) = show spec
 
 instance Eq (Query a) where
-  Query spec1 _ == Query spec2 _ = spec1 == spec2
+  Query spec1 == Query spec2 = spec1 == spec2
 
 instance Hashable (Query a) where
-  hashWithSalt salt (Query spec _) = hashWithSalt salt spec
+  hashWithSalt salt (Query spec) = hashWithSalt salt spec
 
 decodeResults :: UserQueryEncodedResults -> ResultDecoder a -> IO [a]
 decodeResults results decoder =
@@ -109,7 +108,7 @@ decodeResults results decoder =
 -- | Extract the predicate.  If there is a version then
 -- this is reported as 'PredicateRef' otherwise only the predicate name.
 queryPredicate :: Query a -> PredicateRef
-queryPredicate (Query q _) = case userQuery_predicate_version q of
+queryPredicate (Query q) = case userQuery_predicate_version q of
   Nothing -> error $ "queryPredicate unexpected Nothing version for: " <>
     show (userQuery_predicate q)
   Just v -> PredicateRef{ predicateRef_name = userQuery_predicate q
@@ -117,7 +116,7 @@ queryPredicate (Query q _) = case userQuery_predicate_version q of
 
 -- | A human-readable form of the Query (as JSON).
 displayQuery :: Query a -> Text
-displayQuery (Query UserQuery{..} _) = Text.decodeUtf8 userQuery_query
+displayQuery (Query UserQuery{..}) = Text.decodeUtf8 userQuery_query
 
 -- | Build a query for passing to `runQuery` (see "Glean.Query.Thrift")
 query :: forall q . (ThriftQuery q) => QueryOf q -> Query q
@@ -135,14 +134,11 @@ allFacts = angle $ Text.pack $
 angle :: forall r. (Predicate r) => Text -> Query r
 angle q = Query
   { querySpec = angleQuery (getName (Proxy @r)) q
-  , queryDecoder = Typed.decodeFact
   }
 
 -- | Fetch just the keys of the given fact query
-keys :: Predicate r => Query r -> Query (KeyType r)
-keys (Query spec _) = Query spec decoder
-  where
-  decoder x y _fid (Thrift.Fact _ k _) = decodeWithCache x y decodeRtsValue k
+keys :: (Predicate r) => Query r -> Query (KeyType r)
+keys (Query spec) = Query { querySpec = spec }
 
 angleQuery :: PredicateRef -> Text -> UserQuery
 angleQuery pref query = def
@@ -166,10 +162,9 @@ angleQuery pref query = def
 -- Warning: nothing is checking that the type of the query matches the
 -- expected type at the callsite. If you get this wrong, undefined
 -- behaviour will ensue.
-angleData :: Typed.Type r => Text -> Query r
-angleData query = Query spec decoder
+angleData :: (Type r) => Text -> Query r
+angleData query = Query { querySpec = spec  }
   where
-  decoder x y _fid (Thrift.Fact _ k _) = decodeWithCache x y decodeRtsValue k
   spec = def
     { userQuery_query = Text.encodeUtf8 query
     , userQuery_options = Just def
@@ -178,15 +173,14 @@ angleData query = Query spec decoder
       }
     }
 
-
 -- | Convert various JSON formats into Query, trusting the type, for
 -- passing to `runQuery` (see "Glean.Query.Thrift")
 class MkQuery a where
-  mkQuery :: Predicate q => a -> Query q
+  mkQuery :: (Predicate q) => a -> Query q
 
 instance MkQuery ByteString where
-  mkQuery :: forall q. Predicate q => ByteString -> Query q
-  mkQuery queryBS = Query spec Typed.decodeFact
+  mkQuery :: forall q. (Predicate q) => ByteString -> Query q
+  mkQuery queryBS = Query { querySpec = spec }
    where
    pref = getName (Proxy @q)
    spec = def
@@ -214,7 +208,7 @@ instance MkQuery Text.JSON.JSValue where
 
 -- | Make a query recursive
 recursive :: Query a -> Query a
-recursive (Query q decoder) = Query q' decoder
+recursive (Query q) = Query q'
   where
   q' = q { userQuery_options = Just (fromMaybe def (userQuery_options q))
     { userQueryOptions_recursive = True } }
@@ -222,7 +216,7 @@ recursive (Query q decoder) = Query q' decoder
 -- | Set a limit on the number of results returned by a query. This controls
 -- query result page size when streaming.
 limit :: Int -> Query a -> Query a
-limit n (Query q decoder) = Query q' decoder
+limit n (Query q) = Query q'
   where
   q' = q { userQuery_options = Just (fromMaybe def (userQuery_options q))
     { userQueryOptions_max_results = Just (fromIntegral n) } }
@@ -230,7 +224,7 @@ limit n (Query q decoder) = Query q' decoder
 -- | Set a limit on the size of data returned by a query. This
 -- controls query result page size when streaming.
 limitBytes :: Int -> Query a -> Query a
-limitBytes n (Query q decoder) = Query q' decoder
+limitBytes n (Query q) = Query q'
   where
   q' = q { userQuery_options = Just (fromMaybe def (userQuery_options q))
     { userQueryOptions_max_bytes = Just (fromIntegral n) } }
@@ -240,7 +234,7 @@ limitBytes n (Query q decoder) = Query q' decoder
 limitTime
   :: Int  -- ^ time budget in milliseconds
   -> Query a -> Query a
-limitTime n (Query q decoder) = Query q' decoder
+limitTime n (Query q) = Query q'
   where
   q' = q { userQuery_options = Just (fromMaybe def (userQuery_options q))
     { userQueryOptions_max_time_ms = Just (fromIntegral n) } }
@@ -249,7 +243,7 @@ limitTime n (Query q decoder) = Query q' decoder
 -- caching derived facts after creating a DB, not for normal usage. If
 -- the datbase is read-only, this will cause the query to fail.
 store :: Query a -> Query a
-store (Query q decoder) = Query q' decoder
+store (Query q) = Query q'
   where
   q' = q { userQuery_options = Just (fromMaybe def (userQuery_options q))
     { userQueryOptions_store_derived_facts = True } }

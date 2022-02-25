@@ -169,7 +169,7 @@ incrementalTest = TestCase $
     completeTestDB env inc
 
     let
-      edgesFrom s = fmap sort $ runQuery_ env inc $ data_ $
+      edgesFrom s = fmap sort $ runQuery_ env inc $ query $
         var $ \n ->
           n `where_` [
             wild .= predicate @Glean.Test.Edge (rec $

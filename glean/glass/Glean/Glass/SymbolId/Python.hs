@@ -29,7 +29,7 @@ instance Symbol Py.Name where
 
 instance Symbol Py.Declaration where
   toSymbol d = do
-    locations <- Glean.search_ $ Glean.limit 1 $ data_ $
+    locations <- Glean.search_ $ Glean.limit 1 $ Angle.query $
       declarationLocation $ toAngle d
     let loc = case nub $ map (head . splitOn "/") locations of
               [location] -> location

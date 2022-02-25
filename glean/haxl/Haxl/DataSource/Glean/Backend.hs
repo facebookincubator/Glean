@@ -54,7 +54,7 @@ runSyncQuery
   -> Maybe ([q] -> [q]) -- results so far
   -> ResultVar ([q], Bool)
   -> IO ()
-runSyncQuery repo env q@(Query req _) acc rvar = do
+runSyncQuery repo env q@(Query req) acc rvar = do
   r <- tryAll $ userQuery env repo req
   case r of
     Left e -> putFailure rvar e

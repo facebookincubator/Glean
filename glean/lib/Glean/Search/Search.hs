@@ -436,7 +436,7 @@ findHackDecls lim backend repo SearchQuery{..} = Glean.runHaxl backend repo $
     search :: Angle Hack.Declaration -> Glean.Haxl w [Hack.Declaration]
     search q =
       fmap fst $ Glean.search $ maybe id limit lim $ Glean.recursive $
-        Angle.data_ q
+        Angle.query q
 
     -- The final namespace parent is always a wildcard
     namespaceOf [] = wild

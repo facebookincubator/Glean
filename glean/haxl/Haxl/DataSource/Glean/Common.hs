@@ -210,7 +210,7 @@ putQueryResults
   -> (Query q -> Maybe ([q] -> [q]) -> IO ())
      -- ^ How to resume if we're streaming
   -> IO ()
-putQueryResults (Query q decoder) UserQueryResults{..} maybeAcc rvar more = do
+putQueryResults (Query q) UserQueryResults{..} maybeAcc rvar more = do
   mapM_ reportUserQueryStats userQueryResults_stats
   UserQueryResultsBin{..} <- expectBinResults userQueryResults_results
   cacheRef <- newIORef IntMap.empty
@@ -219,7 +219,7 @@ putQueryResults (Query q decoder) UserQueryResults{..} maybeAcc rvar more = do
       [ (fromIntegral id,f)
       | (id,f) <- Map.toList userQueryResultsBin_nestedFacts ]
   results <- forM (Map.toList userQueryResultsBin_facts) $ \(fid, fact) -> do
-    liftIO $ decoder serialized cacheRef
+    liftIO $ decodeAsFact serialized cacheRef
       (Typed.IdOf (Fid fid)) fact
 
   if
@@ -229,7 +229,7 @@ putQueryResults (Query q decoder) UserQueryResults{..} maybeAcc rvar more = do
       -> more
          (Query q { userQuery_options = Just
            (fromMaybe def (userQuery_options q))
-             { userQueryOptions_continuation = Just cont } } decoder)
+             { userQueryOptions_continuation = Just cont } })
          (Just (acc . (results++)))
 
     | otherwise -> do

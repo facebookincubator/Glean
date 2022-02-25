@@ -21,34 +21,34 @@ module Glean.Typed.Binary
   , mapD, buildRtsSelector, thriftEnum_buildRtsValue
   ) where
 
+import Control.Monad
+import Control.Monad.IO.Class
+import Data.ByteString ( ByteString )
+import qualified Data.ByteString.Unsafe as BS
+import Data.Dynamic
+import Data.IORef
+import Data.IntMap (IntMap)
+import Data.Text ( Text )
+import Data.Word ( Word64 )
+import Foreign.Ptr
+
 import qualified Glean.FFI as FFI
 import qualified Glean.RTS as RTS
 import qualified Glean.RTS.Builder as RTS
 import Glean.Typed.Build
 import Glean.Typed.Id
-import Glean.Types
+import Glean.Types as Thrift
 
-import Control.Monad
-import Control.Monad.IO.Class
-import Data.ByteString ( ByteString )
-import qualified Data.ByteString.Unsafe as BS
-import Data.Text ( Text )
-import Data.Word ( Word64 )
-import Foreign.Ptr
 import Thrift.Protocol (ThriftEnum, fromThriftEnum)
 
 -- -----------------------------------------------------------------------------
 
--- | Types that can be converted to/from Glean types
---
--- 'Decoder' newtype is from "Glean.RTS.Types.Build"
+-- | Types that can be converted to/from Glean's binary representation
 class Type a where
-  -- | Convert to a Glean value, using further 'buildRtsValue' or
-  -- "Glean.RTS" (via "Glean.FFI.call")
+  -- | Convert to a Glean value
   buildRtsValue :: RTS.Builder -> a -> IO ()
 
-  -- | Convert from a Glean value, usuall using wonderful 'Applicative'
-  -- instance of 'Decoder'
+  -- | Convert from a Glean value
   decodeRtsValue :: Decoder a
 
   -- | If this type only has one possible value and hence doesn't have a
@@ -56,6 +56,27 @@ class Type a where
   constantRtsValue :: Maybe a
 
   constantRtsValue = Nothing
+
+  -- | Decode this type when it is the result of a query. Queries for
+  -- a predicate type return the facts of the predicate directly,
+  -- whereas queries for non-predicate types return facts of a
+  -- pseudo-predicate whose keys are the query results.  The
+  -- 'decodeAsFact' method abstracts the difference in representation
+  -- between predicate and non-predicate query results, so we can just
+  -- use 'decodeAsFact' to decode query results.
+  --
+  -- The default implementation works for all non-predicate types;
+  -- predicate types override it with 'decodeFact'.
+  decodeAsFact
+    :: (MonadIO m)
+    => IntMap Thrift.Fact               -- ^ serialized nested facts
+    -> IORef (IntMap Dynamic)           -- ^ cached deserialized facts
+    -> IdOf a                           -- ^ Id of fact to decode
+    -> Thrift.Fact                      -- ^ fact to decode
+    -> m a
+
+  decodeAsFact nested cache _fid (Thrift.Fact _ k _) =
+    decodeWithCache nested cache decodeRtsValue k
 
 -- -----------------------------------------------------------------------------
 

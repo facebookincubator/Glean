@@ -24,7 +24,6 @@ module Glean.Query.Angle
   , or_
   , (.->)
   , query
-  , data_
   , nat
   , byte
   , enum
@@ -111,16 +110,13 @@ display (Angle m) = render $
     NestedQuery _ q -> q
     t -> SourceQuery (Just t) []
 
--- | Build a query that returns facts of a predicate.
+-- | Build a query. It can returns facts of a predicate:
 --
 -- >    query $ predicate @Pp.Define (field @"macro" "NULL" end)
 --
-query :: Predicate t => Angle t -> Query t
-query = Thrift.angle . display
-
--- | Build a query that returns arbitrary values.
+-- Or arbitrary values:
 --
--- >    data_ $ var $ \n ->
+-- >    query $ var $ \n ->
 -- >      n `where_` [
 -- >        wild .= predicate @Hack.MethodDeclaration $
 -- >          rec $
@@ -131,8 +127,8 @@ query = Thrift.angle . display
 -- >                    (rec (field @"name" n end))
 -- >                 end)
 -- >      ]
-data_ :: Type t => Angle t -> Query t
-data_ = Thrift.angleData . display
+query :: (Type t) => Angle t -> Query t
+query = Thrift.angleData . display
 
 render :: SourceQuery -> Text
 render q = renderStrict (layoutCompact (pretty q))

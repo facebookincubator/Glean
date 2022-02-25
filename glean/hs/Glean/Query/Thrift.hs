@@ -41,6 +41,7 @@ import Data.Maybe
 
 import Util.Log.Text
 
+import Glean.Typed.Binary
 import Glean.Types as Thrift
 import Glean.Backend.Remote (Backend(userQuery))
 import Glean.Query.Thrift.Internal
@@ -86,7 +87,7 @@ runQueryPage
   -> Query q
   -> IO ([q], Maybe UserQueryCont)
 
-runQueryPage be repo cont (Query query decoder) = do
+runQueryPage be repo cont (Query query) = do
   let
     query' = query
       { userQuery_options = Just
@@ -98,7 +99,7 @@ runQueryPage be repo cont (Query query decoder) = do
   mapM_ reportUserQueryStats userQueryResults_stats
   mapM_ (vlog 1) userQueryResults_diagnostics
   mapM_ (waitBatch be) userQueryResults_handle
-  results <- decodeResults userQueryResults_results decoder
+  results <- decodeResults userQueryResults_results decodeAsFact
   return (results, userQueryResults_continuation)
 
 

@@ -98,7 +98,7 @@ remoteQuery (ThriftBackend config evb ts clientInfo) =
       acc = if stream then Just id else Nothing
 
   withClientInfo :: UserQueryClientInfo -> Query q -> Query q
-  withClientInfo info (Query q d) = Query q' d
+  withClientInfo info (Query q) = Query q'
     where
       q' = q { userQuery_client_info = Just info }
 
@@ -112,7 +112,7 @@ runRemoteQuery
   -> Maybe ([q] -> [q]) -- results so far
   -> ResultVar ([q], Bool)
   -> IO ()
-runRemoteQuery evb repo q@(Query req _) ts acc rvar =
+runRemoteQuery evb repo q@(Query req) ts acc rvar =
   runThrift evb ts $ do
     let
       recvCob

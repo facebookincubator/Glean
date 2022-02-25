@@ -56,7 +56,7 @@ runQueryJSON
   -> Repo
   -> Query q
   -> IO ([q], Bool)
-runQueryJSON be repo (Query query _) = do
+runQueryJSON be repo (Query query) = do
   -- Only works for whole facts, but that's enforced by the TestQuery context.
   let
     query' = query
@@ -84,7 +84,7 @@ runQueryCompact
   -> Repo
   -> Query q
   -> IO ([q], Bool)
-runQueryCompact be repo (Query query _) = do
+runQueryCompact be repo (Query query) = do
   -- Only works for whole facts, but that's enforced by the TestQuery context.
   let
     query' = query
