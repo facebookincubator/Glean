@@ -104,7 +104,10 @@ instance HasPredicates Predicates where
         | pid /= invalidPid = PidOf pid
         | otherwise = throw $ MissingPredicate $ getName (Proxy :: Proxy p)
         where
-          pid = pids Vector.! getIndex (Proxy :: Proxy p)
+          index = getIndex (Proxy :: Proxy p)
+          pid = if index < Vector.length pids
+            then pids Vector.! index
+            else invalidPid
 
 -- | The type of @allPredicates@ generated for each schema. To get this,
 -- import the generated module for the schema, e.g. @Glean.Schema.Src@.
