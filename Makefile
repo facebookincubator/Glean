@@ -167,4 +167,4 @@ glass-lib:: thrift $(BYTECODE_GEN) gen-schema thrift-schema-hs thrift-glean-hs
 # short circuit target to avoid thrift regen
 .PHONY: glass
 glass::
-	$(CABAL) build glass-server
+	$(CABAL) build glass-server glass-democlient
