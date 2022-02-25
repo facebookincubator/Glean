@@ -1,0 +1,56 @@
+[
+{
+   "predicate": "glean.test.Node.4",
+   "facts" : [
+       {
+         "key": { "label": "d" }
+       }
+   ],
+   "unit": "D"
+},
+
+{
+   "predicate": "glean.test.Edge.4",
+   "facts" : [
+       {
+         "key": {
+            "parent": { "key": { "label": "a" } },
+            "child": { "key": { "label": "b" } }
+         }
+       },
+       {
+         "key": {
+            "parent": { "key": { "label": "a" } },
+            "child": { "key": { "label": "c" } }
+         }
+       }
+   ],
+   "unit": "A"
+},
+
+{
+   "predicate": "glean.test.Edge.4",
+   "facts" : [
+       {
+         "key": {
+            "parent": { "key": { "label": "b" } },
+            "child": { "key": { "label": "d" } }
+         }
+       }
+   ],
+   "unit": "B"
+},
+
+{
+   "predicate": "glean.test.Edge.4",
+   "facts" : [
+       {
+         "key": {
+            "parent": { "key": { "label": "c" } },
+            "child": { "key": { "label": "d" } }
+         }
+       }
+   ],
+   "unit": "C"
+}
+]

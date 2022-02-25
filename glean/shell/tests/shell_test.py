@@ -220,6 +220,23 @@ class GleanShellLoad(GleanShellTest):
         self.assertIn("expr/1", output)
 
 
+class GleanShellOwner(GleanShellTest):
+    def test(self):
+        repo = "owner"
+        prompt = repo + ">"
+
+        # facts in owner.glean replicate the test setup from IncrementalTest.hs
+        self.shellCommand(
+            ":load " + repo + "/0 glean/shell/tests/owner.glean", prompt=prompt
+        )
+        output = self.shellCommand(":db", prompt=prompt)
+        self.assertIn("owner/0", output)
+
+        # 1024 should be the first fact created, i.e. Node "d"
+        output = self.shellCommand(":!owner 1024", prompt="owner>")
+        self.assertIn("D || B || C", output)
+
+
 class GleanShellDump(GleanShellTest):
     def test(self):
         dumpfile = self.tmpdir + "/test.glean"

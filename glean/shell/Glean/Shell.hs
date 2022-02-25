@@ -34,6 +34,7 @@ import Data.Maybe
 import Data.Ord
 import Text.Printf
 import qualified Data.Text as Text
+import qualified Data.Text.Encoding as Text
 import Data.Text.Prettyprint.Doc as Pretty hiding ((<>), pageWidth)
 import Data.Text.Prettyprint.Doc.Util as Pretty hiding (words)
 import qualified Data.Text.Prettyprint.Doc.Render.Terminal as Pretty
@@ -64,6 +65,7 @@ import Util.TimeSec
 import qualified Glean hiding (options)
 import qualified Glean.BuildInfo as BuildInfo
 import Glean.Backend.Remote (clientInfo, StackedDbOpts(..))
+import Glean.Database.Ownership
 import Glean.Database.Schema.Types (DbSchema(..))
 import Glean.Database.Schema (newDbSchema, readWriteContent)
 import Glean.Database.Config (parseSchemaDir)
@@ -609,6 +611,7 @@ commands =
   , Cmd "!restore" Haskeline.noCompletion $ const . restoreDatabase
   , Cmd "!kickoff" Haskeline.noCompletion $ const . kickOff
   , Cmd "!delete" completeDatabases $ const . deleteDatabase
+  , Cmd "!owner" Haskeline.noCompletion $ \str _ -> ownerCmd str
   , Cmd "help" Haskeline.noCompletion $ \_ _ -> help
   , Cmd "?" Haskeline.noCompletion $ \_ _ -> help
   ]
@@ -628,6 +631,30 @@ doCmd name arg0 = do
       _ -> output "*** Ambiguous command. Type :help for help."
   liftIO $ readIORef stop
 
+ownerCmd :: String -> Eval ()
+ownerCmd str
+  | Right fid <- textToInt (Text.pack str) = do
+    withBackend $ \backend ->
+      case backendKind backend of
+        BackendEnv env -> withRepo $ \repo -> do
+          maybeExpr <- liftIO $ factOwnership env repo (Fid (fromIntegral fid))
+          case maybeExpr of
+            Nothing -> output "*** no ownership information"
+            Just expr -> output (prettyOwner expr)
+        _other -> liftIO $ throwIO $ ErrorCall
+          "!owner only works with --db-root"
+  | otherwise = liftIO $ throwIO $ ErrorCall "syntax:  :!owner <fact>"
+  where
+  prettyOwner (Unit x) = pretty (Text.decodeUtf8 x)
+  prettyOwner (OrOwners [one]) = prettyOwner one
+  prettyOwner (OrOwners many) = sep $ intersperse "||" (map prettyOwner1 many)
+  prettyOwner (AndOwners [one]) = prettyOwner one
+  prettyOwner (AndOwners many) = sep $ intersperse "&&" (map prettyOwner1 many)
+
+  prettyOwner1 (Unit x) = prettyOwner (Unit x)
+  prettyOwner1 (OrOwners [one]) = prettyOwner1 one
+  prettyOwner1 (AndOwners [one]) = prettyOwner1 one
+  prettyOwner1 owner = parens (prettyOwner owner)
 
 moreCmd :: Eval ()
 moreCmd = do
