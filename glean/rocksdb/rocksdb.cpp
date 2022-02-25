@@ -113,6 +113,7 @@ public:
   static const Family stats;
   static const Family meta;
   static const Family ownershipUnits;
+  static const Family ownershipUnitIds;
   static const Family ownershipRaw;
   static const Family ownershipDerivedRaw;
   static const Family ownershipSets;
@@ -150,6 +151,8 @@ const Family Family::stats("stats", [](auto& opts) {
   opts.OptimizeForPointLookup(10); });
 const Family Family::meta("meta", [](auto&) {});
 const Family Family::ownershipUnits("ownershipUnits", [](auto& opts) {
+  opts.OptimizeForPointLookup(100); });
+const Family Family::ownershipUnitIds("ownershipUnitIds", [](auto& opts) {
   opts.OptimizeForPointLookup(100); });
 const Family Family::ownershipRaw("ownershipRaw", [](auto&) {}, false);
 const Family Family::ownershipDerivedRaw("ownershipDerivedRaw", [](auto& opts) {
@@ -624,6 +627,21 @@ struct DatabaseImpl final : Database {
     }
   }
 
+  folly::Optional<std::string> getUnit(uint32_t unit_id) override {
+    rocksdb::PinnableSlice val;
+    auto s = container_.db->Get(
+        rocksdb::ReadOptions(),
+        container_.family(Family::ownershipUnitIds),
+        slice(EncodedNat(unit_id).byteRange()),
+        &val);
+    if (!s.IsNotFound()) {
+      check(s);
+      return val.ToString();
+    } else {
+      return folly::none;
+    }
+  }
+
   rts::Id startingId() const override {
     return starting_id;
   }
@@ -1075,6 +1093,10 @@ struct DatabaseImpl final : Database {
           container_.family(Family::ownershipUnits),
           slice(set.unit),
           toSlice(unit_id)));
+        check(batch.Put(
+          container_.family(Family::ownershipUnitIds),
+          slice(EncodedNat(unit_id).byteRange()),
+          slice(set.unit)));
         ++new_count;
       }
 
@@ -1267,6 +1289,27 @@ struct StoredOwnership : Ownership {
       return existing->id;
     } else {
       return INVALID_USET;
+    }
+  }
+
+  folly::Optional<SetExpr<SetU32>> getUset(UsetId id) override {
+    rocksdb::PinnableSlice val;
+    auto s = db_->container_.db->Get(
+        rocksdb::ReadOptions(),
+        db_->container_.family(Family::ownershipSets),
+        slice(EncodedNat(id).byteRange()),
+        &val);
+    binary::Input inp(byteRange(val));
+    if (!s.IsNotFound()) {
+      check(s);
+      SetExpr<SetU32> exp;
+      exp.op = static_cast<SetOp>(inp.trustedNat());
+      OwnerSet efset;
+      deserializeEliasFano(inp, efset);
+      exp.set = SetU32::fromEliasFano(efset);
+      return exp;
+    } else {
+      return folly::none;
     }
   }
 

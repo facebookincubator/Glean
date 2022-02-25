@@ -78,8 +78,10 @@ typedef struct FactCount {
 
 #ifdef __cplusplus
 using FactOrder = HsArray<int64_t>;
+using OwnershipSet = HsArray<uint32_t>;
 #else
 typedef void FactOrder;
+typedef void OwnershipSet;
 #endif
 
 #ifdef __cplusplus
@@ -517,6 +519,19 @@ const char *glean_ownership_compute(
 void glean_ownership_free(Ownership *own);
 
 void glean_computed_ownership_free(ComputedOwnership *own);
+
+const char *glean_get_ownership_set(
+  Ownership *ownership,
+  uint32_t uset_id,
+  int *op,
+  OwnershipSet **result
+);
+
+const char *glean_get_fact_owner(
+  Ownership *ownership,
+  glean_fact_id_t fact,
+  uint32_t *uset_id
+);
 
 const char *glean_slice_compute(
   Ownership *ownership,

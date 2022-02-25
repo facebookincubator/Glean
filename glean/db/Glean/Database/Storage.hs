@@ -115,6 +115,7 @@ class CanLookup (Database s) => Storage s where
   getOwnership :: Database s -> IO (Maybe Ownership)
 
   getUnitId :: Database s -> ByteString -> IO (Maybe UnitId)
+  getUnit :: Database s -> UnitId -> IO (Maybe ByteString)
 
   addDefineOwnership :: Database s -> DefineOwnership -> IO ()
 

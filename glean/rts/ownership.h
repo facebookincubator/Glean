@@ -47,6 +47,10 @@ struct Ownership {
 
   // Look up a set, can return INVALID_USET if it doesn't exist
   virtual UsetId lookupSet(Uset*) = 0;
+
+  // Fetch the set corresponding to a UsetId. This is used for
+  // introspection only.
+  virtual folly::Optional<SetExpr<SetU32>> getUset(UsetId) = 0;
 };
 
 ///

@@ -903,6 +903,35 @@ void glean_computed_ownership_free(ComputedOwnership *own) {
   ffi::free_(own);
 }
 
+const char *glean_get_fact_owner(
+  Ownership *ownership,
+  glean_fact_id_t fact,
+  uint32_t *uset_id) {
+  return ffi::wrap([=] {
+    *uset_id = ownership->getOwner(Id::fromWord(fact));
+  });
+}
+
+const char *glean_get_ownership_set(
+  Ownership *ownership,
+  uint32_t uset_id,
+  int *op,
+  OwnershipSet **result) {
+  return ffi::wrap([=] {
+    auto exp = ownership->getUset(uset_id);
+    if (!exp.hasValue()) {
+      *result = nullptr;
+    } else {
+      std::vector<uint32_t> elts;
+      exp->set.foreach([&](UsetId setid) {
+        elts.push_back(setid);
+      });
+      *op = exp->op;
+      *result = new HsArray(std::move(elts));
+    };
+  });
+}
+
 const char *glean_slice_compute(
   Ownership *ownership,
   uint32_t *unit_ids,

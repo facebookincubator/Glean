@@ -24,6 +24,7 @@ import Glean.Write (parseRef)
 import Glean.Angle
 import Glean.Init
 import Glean.Database.Types
+import Glean.Database.Ownership
 import Glean.Database.Test
 import Glean.Derive
 import qualified Glean.Schema.GleanTest as Glean.Test
@@ -39,14 +40,14 @@ import qualified Glean.Schema.GleanTest.Types as Glean.Test
 
 owners:
   nodes:
-   A: a, b, c, d
+   A: a, b, c
    B: b, d
    C: c, d
    D: d
   edges:
    A: ab, ac
    B: bd
-   C: cd,
+   C: cd
 -}
 mkGraph :: Env -> Repo -> IO ()
 mkGraph env repo =
@@ -86,6 +87,20 @@ incrementalTest = TestCase $
     kickOffTestDB env base id
     mkGraph env base
     completeTestDB env base
+
+    -- check the owners of Node "d"
+    results <- runQuery_ env base $ query $
+      predicate @Glean.Test.Node (rec $ field @"label" (string "d") end)
+    case results of
+      [Glean.Test.Node id _] -> do
+        ownerExpr <- factOwnership env base (Fid id)
+        print ownerExpr
+        assertBool "owners" $
+          case ownerExpr of
+            Just (OrOwners [Unit x, Unit y, Unit z]) ->
+              sort [x,y,z] == ["B","C","D"]
+            _otherwise -> False
+      _ -> assertFailure "query failed"
 
     -- ------------------------------------------------------------------
     -- exclude unit A
@@ -262,6 +277,26 @@ deriveTest = TestCase $
       (parseRef "glean.test.SkipRevEdge") Nothing
 
     completeTestDB env base
+
+    -- check the owners of SkipRevEdge d->a
+    results <- runQuery_ env base $ query $
+      predicate @Glean.Test.SkipRevEdge $
+        rec $ field @"child" (
+          rec $ field @"label" (string "d") end
+        ) end
+    case results of
+      [Glean.Test.SkipRevEdge id _] -> do
+        ownerExpr <- factOwnership env base (Fid id)
+        print ownerExpr
+        assertBool "owners" $
+          case ownerExpr of
+            Just (OrOwners [
+                AndOwners [OrOwners [Unit a],OrOwners [Unit b]],
+                AndOwners [OrOwners [Unit c],OrOwners [Unit d]]
+              ]) ->
+              sort [a,b,c,d] == ["A", "A", "B", "C"]
+            _otherwise -> False
+      _ -> assertFailure "query failed"
 
     -- should have two RevEdges, d->b and d->c
     results <- runQuery_ env base $ query $

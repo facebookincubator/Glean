@@ -81,6 +81,7 @@ instance Storage Memory where
   -- TODO: ownership
   computeOwnership _ _ = return (error "unimplemented computeOwnership")
   getUnitId _ _ = return (error "unimplemented getUnitId")
+  getUnit _ _ = return (error "unimplemented getUnit")
   storeOwnership _ = return (error "unimplemented storeOwnership")
   getOwnership _ = return Nothing
   addDefineOwnership _ _ =

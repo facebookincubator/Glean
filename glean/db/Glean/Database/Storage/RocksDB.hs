@@ -189,6 +189,13 @@ instance Storage RocksDB where
         then return Nothing
         else return (Just (UnitId (fromIntegral w64)))
 
+  getUnit db unit =
+    withForeignPtr (dbPtr db) $ \db_ptr -> do
+      (unit_ptr, unit_size) <- invoke $ glean_rocksdb_get_unit db_ptr unit
+      if unit_size /= 0
+        then Just <$> unsafeMallocedByteString unit_ptr unit_size
+        else return Nothing
+
   addDefineOwnership db define =
     withForeignPtr (dbPtr db) $ \db_ptr ->
     with define $ \define_ptr ->
@@ -332,6 +339,13 @@ foreign import ccall unsafe glean_rocksdb_get_unit_id
   -> Ptr ()
   -> CSize
   -> Ptr Word64
+  -> IO CString
+
+foreign import ccall unsafe glean_rocksdb_get_unit
+  :: Ptr (Database RocksDB)
+  -> UnitId
+  -> Ptr (Ptr ())
+  -> Ptr CSize
   -> IO CString
 
 foreign import ccall unsafe glean_rocksdb_store_ownership

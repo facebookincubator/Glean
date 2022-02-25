@@ -23,15 +23,20 @@ module Glean.RTS.Foreign.Ownership
   , defineOwnershipSortByOwner
   , DerivedFactOwnershipIterator
   , computeDerivedOwnership
+  , getFactOwner
+  , SetOp(..)
+  , getOwnershipSet
   ) where
 
 import Control.Exception
+import Control.Monad
 import Data.Coerce
 import qualified Data.Vector.Storable as VS
 import Foreign hiding (with)
 import Foreign.C
 
 import Foreign.CPP.HsStruct
+import Foreign.CPP.Marshallable
 
 import Glean.FFI
 import Glean.RTS.Foreign.Inventory (Inventory)
@@ -159,6 +164,36 @@ defineOwnershipSortByOwner define count =
       (fromIntegral count) arr_ptr
     hsArrayStorable <$> peek (castPtr arr_ptr)
 
+#include <glean/rts/ownership/uset.h>
+
+getFactOwner :: Ownership -> Fid -> IO (Maybe UsetId)
+getFactOwner ownership (Fid fid) =
+  with ownership $ \ownership_ptr -> do
+    usetId <- invoke $ glean_get_fact_owner ownership_ptr (fromIntegral fid)
+    if usetId == (#const facebook::glean::rts::INVALID_USET)
+      then return Nothing
+      else return (Just (UsetId usetId))
+
+data SetOp = Or | And
+  deriving (Eq, Ord, Enum)
+
+getOwnershipSet :: Ownership -> UsetId -> IO (Maybe (SetOp, VS.Vector UsetId))
+getOwnershipSet ownership usetid =
+  with ownership $ \ownership_ptr ->
+  bracket
+    (invoke $ glean_get_ownership_set ownership_ptr usetid)
+    (\(_, arr_ptr) -> when (arr_ptr /= nullPtr) $ delete arr_ptr)
+    (\(cop, arr_ptr) -> do
+      if arr_ptr == nullPtr
+        then return Nothing
+        else do
+          vec <- hsArrayStorable <$> peek (castPtr arr_ptr)
+          let op | cop == (#const facebook::glean::rts::Or) = Or
+                 | cop == (#const facebook::glean::rts::And) = And
+                 | otherwise = error "unkonwn SetOp"
+          return $ Just (op, coerce (vec :: VS.Vector Word32))
+    )
+
 foreign import ccall unsafe glean_new_define_ownership
   :: Ptr Ownership
   -> Word64
@@ -191,6 +226,19 @@ foreign import ccall safe glean_ownership_compute
   -> Ptr Lookup
   -> UnitIterator
   -> Ptr (Ptr ComputedOwnership)
+  -> IO CString
+
+foreign import ccall unsafe glean_get_fact_owner
+  :: Ptr Ownership
+  -> Word64
+  -> Ptr Word32
+  -> IO CString
+
+foreign import ccall unsafe glean_get_ownership_set
+  :: Ptr Ownership
+  -> UsetId
+  -> Ptr CInt
+  -> Ptr (Ptr (HsArray Word32))
   -> IO CString
 
 foreign import ccall safe glean_derived_ownership_compute

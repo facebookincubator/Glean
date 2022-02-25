@@ -176,6 +176,20 @@ const char *glean_rocksdb_get_unit_id(Database *db, void *unit,
   });
 }
 
+const char *glean_rocksdb_get_unit(Database *db, uint32_t unit_id, void **unit,
+                                   size_t *unit_size) {
+  return ffi::wrap([=] {
+    auto res = db->getUnit(unit_id);
+    if (res.hasValue()) {
+      ffi::clone_bytes(*res).release_to(unit, unit_size);
+    } else {
+      *unit = nullptr;
+      *unit_size = 0;
+    }
+  });
+}
+
+
 const char *glean_rocksdb_database_stats(
     Database *db,
     size_t *count,
