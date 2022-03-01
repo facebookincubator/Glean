@@ -507,6 +507,7 @@ library db
         Glean.Database.Janitor
         Glean.Database.Logger
         Glean.Database.Meta
+        Glean.Database.Ownership
         Glean.Database.Repo
         Glean.Database.Schema
         Glean.Database.Schema.Evolve
