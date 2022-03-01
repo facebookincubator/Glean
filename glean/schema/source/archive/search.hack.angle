@@ -1,7 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema search.hack.7 {
-import hack.6
+schema search.hack.6 {
+import hack.5
 
 # SearchByName can be used to search for symbols in any context (wildcard
 # context).
@@ -150,5 +150,3 @@ predicate SearchInContext :
       SearchInNamespace {name = N, namespace_ = { just = NS }, decl = D} )
 
 }
-
-schema search.hack.7 evolves search.hack.6

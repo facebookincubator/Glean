@@ -1,9 +1,9 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema code.18 {
+schema code.19 {
 import code.cxx.3
 import code.java.3
-import code.hack.3
+import code.hack.4
 import code.flow.2
 import code.hs.2
 import code.pp.1
@@ -37,3 +37,5 @@ type Annotations =
     thrift : code.thrift.Annotations |
   }
 }
+
+schema code.19 evolves code.18

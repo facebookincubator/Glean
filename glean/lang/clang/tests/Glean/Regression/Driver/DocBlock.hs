@@ -29,7 +29,7 @@ indexer = driverIndexer Clang.driver `indexerThen` docblocks
         Nothing Nothing predicate Nothing
     where
     passes = map parseRef
-      [ "docmarkup.EntityByDocAttrKey"
+      [ "docmarkup.EntityByDocAttrKey.8"
       ]
 
 main :: IO ()
