@@ -910,6 +910,7 @@ describeEntity
   symbolDescription_comments <- case comments of
     Right comments -> return comments
     Left err -> throwM $ ServerException err
+  let symbolDescription_visibility = Nothing
   return SymbolDescription{..}
 
 -- | Returns entities based on a string needle and an Angle query. Shared

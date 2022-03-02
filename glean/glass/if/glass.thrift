@@ -232,6 +232,12 @@ struct Annotation {
   3: string name;
 }
 
+enum Visibility {
+  Public = 20,
+  Protected = 30,
+  Private = 40,
+}
+
 // A symbol description extends the symbol id with additional attributes
 struct SymbolDescription {
   1: SymbolId sym;
@@ -240,6 +246,7 @@ struct SymbolDescription {
   4: optional SymbolKind kind;
   5: optional list<Annotation> annotations;
   6: list<LocationRange> comments;
+  7: optional Visibility visibility;
 }
 
 struct SearchContext {
