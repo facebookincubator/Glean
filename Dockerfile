@@ -1,11 +1,16 @@
 FROM ghcr.io/facebookincubator/hsthrift/ci-base:latest as tools
-RUN apt-get install -y ghc-8.10.2 ninja-build libfmt-dev libxxhash-dev wget unzip
+# remove any old stuff
+RUN rm -rf /usr/local/lib
+RUN rm -rf /usr/local/include
+RUN apt-get install -y ghc-8.10.2 cmake ninja-build libxxhash-dev wget unzip
 RUN cabal update
 RUN mkdir /glean-code
 WORKDIR /glean-code
 ADD https://api.github.com/repos/facebookincubator/hsthrift/compare/main...HEAD /dev/null
 ADD ./install_deps.sh /glean-code/
 RUN ./install_deps.sh
+# Nuke build artifacts to save space
+RUN rm -rf /tmp/fbcode_builder_getdeps-Z__wZGleanZGleanZhsthriftZbuildZfbcode_builder-root/
 ADD ./glean /glean-code/glean
 ADD ./cabal.project /glean-code/
 ADD ./Makefile  /glean-code/
@@ -13,7 +18,7 @@ ADD ./glean.cabal /glean-code/
 ADD ./LICENSE /glean-code/
 ADD ./Setup.hs /glean-code/
 
-ENV LD_LIBRARY_PATH=/root/.hsthrift/lib:/usr/local/lib
+ENV LD_LIBRARY_PATH=/root/.hsthrift/lib
 ENV PKG_CONFIG_PATH=/root/.hsthrift/lib/pkgconfig
 ENV PATH=$PATH:/root/.hsthrift/bin
 
@@ -22,10 +27,9 @@ RUN cp $(cabal exec --project-file=cabal.project -- which glean) ~/.cabal/bin/
 RUN cp $(cabal exec --project-file=cabal.project -- which glean-server) ~/.cabal/bin/
 RUN cp $(cabal exec --project-file=cabal.project -- which glean-hyperlink) ~/.cabal/bin/
 RUN glean --help
-RUN apt-get install -y wget unzip
 RUN wget https://github.com/facebook/flow/releases/download/v0.148.0/flow-linux64-v0.148.0.zip
 RUN unzip flow-linux64-v0.148.0.zip
-RUN mv flow/flow /usr/local/bin/ && rm -rf flow-linux64-v0.148.0.zip flow/
+RUN mv flow/flow /root/.hsthrift/bin/ && rm -rf flow-linux64-v0.148.0.zip flow/
 WORKDIR /
 RUN git clone https://github.com/facebook/react.git --depth 1 react-code
 RUN cat /react-code/scripts/flow/config/flowconfig \
@@ -52,6 +56,7 @@ RUN apt-get update && apt-get install -y \
     libdouble-conversion3 \
     libmysqlclient21 \
     libevent-2.1-7 \
+    libsnappy-dev \
     libxxhash0 \
     libatomic1 \
  && apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -61,7 +66,7 @@ WORKDIR /glean-demo
 RUN mkdir /glean-demo/bin
 
 COPY --from=tools /root/.hsthrift/lib /usr/local/lib
-COPY --from=tools /usr/local/bin/flow /usr/local/bin
+COPY --from=tools /root/.hsthrift/bin/flow /usr/local/bin
 COPY --from=tools /root/.cabal/bin/glean /glean-demo/bin
 COPY --from=tools /root/.cabal/bin/glean-server /glean-demo/bin
 COPY --from=tools /root/.cabal/bin/glean-hyperlink /glean-demo/bin
