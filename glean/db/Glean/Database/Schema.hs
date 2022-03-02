@@ -363,27 +363,34 @@ mkDbSchema override getPids dbContent source base addition = do
             typeRef_version (typeRef b) = a
           | otherwise = b
 
+      resolvedAlls = filter ((== "all") . resolvedSchemaName) resolved
+
+      schemaAlls = HashMap.fromList
+          [ let version = resolvedSchemaVersion
+            in (version, Schema version mempty mempty)
+          | ResolvedSchema{..} <- resolvedAlls
+          ]
+
       -- When a query mentions an unversioned predicate, we use a default
       -- version of the predicate. The default version is whatever is
       -- exported by the highest version of the distinguished schema "all"
-      (predicatesByName, schemaTypesByName, latestVer) =
-        case filter ((== "all") . resolvedSchemaName) resolved of
-          [] -> (IntMap.empty, IntMap.empty, 0)
-          schemas -> (predsByName, typesByName, latest)
-            where
-            latest = maximum (map resolvedSchemaVersion schemas)
-            predsByName = IntMap.fromList
-              [ (fromIntegral resolvedSchemaVersion,
-                   mkPredicatesByName (
-                     HashMap.keys resolvedSchemaReExportedPredicates))
-              | ResolvedSchema{..} <- schemas
-              ]
-            typesByName = IntMap.fromList
-              [ (fromIntegral resolvedSchemaVersion,
-                  mkSchemaTypesByName (
-                    HashMap.keys resolvedSchemaReExportedTypes))
-              | ResolvedSchema{..} <- schemas
-              ]
+      latestVer = case resolvedAlls of
+        [] -> Nothing
+        xs -> Just $ maximum $ map resolvedSchemaVersion xs
+
+      predicatesByName = IntMap.fromList
+        [ (fromIntegral resolvedSchemaVersion,
+             mkPredicatesByName (
+               HashMap.keys resolvedSchemaReExportedPredicates))
+        | ResolvedSchema{..} <- resolvedAlls
+        ]
+
+      schemaTypesByName = IntMap.fromList
+        [ (fromIntegral resolvedSchemaVersion,
+            mkSchemaTypesByName (
+              HashMap.keys resolvedSchemaReExportedTypes))
+        | ResolvedSchema{..} <- resolvedAlls
+        ]
 
       dependencies = fmap f byId
         where
@@ -400,10 +407,14 @@ mkDbSchema override getPids dbContent source base addition = do
     , schemaTypesByRef = tcEnvTypes env
     , schemaTypesByName = schemaTypesByName
     , schemaInventory = inventory predicates
-    , schemaSpec = base { schemasResolved = resolved }
+    , schemaSpec = Schemas
+        { schemasResolved = resolved
+        , schemasSchemas = schemaAlls
+        , schemasCurrentVersion = latestVer
+        }
     , schemaSource = source
     , schemaMaxPid = maxPid
-    , schemaLatestVersion = latestVer
+    , schemaLatestVersion = fromMaybe 0 latestVer
     }
 
 detailsFor :: IntMap PredicateDetails -> Pid -> PredicateDetails
