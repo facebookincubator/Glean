@@ -9,8 +9,7 @@
 module Glean.Glass.Regression.Util (withTestEnv) where
 
 import Util.EventBase
-import Configerator
-import ConfigeratorTestUtils
+import Glean.Util.ConfigProvider
 import Facebook.Fb303 ( withFb303 )
 import Logger.IO (withLogger)
 
@@ -26,7 +25,7 @@ withTestEnv backend f =
   withEventBaseDataplane $ \evp ->
   -- don't use the real configerator in tests
   withFakeConf $ \_fakeConf ->
-  withConfigeratorAPI defaultConfigeratorOptions $ \cfgapi ->
+  withConfigProvider defaultConfigOptions $ \cfgapi ->
   withLogger cfgapi $ \logger ->
   withFb303 "glass-test" $ \fb303 ->
   withLatestRepos backend (hours 1) $ \latestGleanRepos ->

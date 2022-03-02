@@ -14,6 +14,7 @@ module Glean.Util.ConfigProvider
   , ConfigPath
   , TestConfigProvider(..)
   , withConfigOptions
+  , withFakeConf
   ) where
 
 import Control.Exception
@@ -69,6 +70,9 @@ class ConfigProvider cfg where
 class ConfigProvider cfg => TestConfigProvider cfg where
   setTestConfig :: cfg -> ConfigPath -> ByteString -> IO ()
 
+-- | Fake config provider for tests (stub for compatibility)
+withFakeConf :: (() -> IO a) -> IO a
+withFakeConf f = f ()
 
 -- | Variant of 'withOptions' that adds in the ConfigProvider options
 withConfigOptions
