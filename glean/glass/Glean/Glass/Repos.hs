@@ -148,6 +148,7 @@ filetype (Path file)
   | ".cpp" `Text.isSuffixOf` file = Just Language_Cpp
   | ".cc" `Text.isSuffixOf` file = Just Language_Cpp
   | ".c" `Text.isSuffixOf` file = Just Language_Cpp
+  | ".hh" `Text.isSuffixOf` file = Just Language_Cpp
   | ".hpp" `Text.isSuffixOf` file = Just Language_Cpp
   | ".mm" `Text.isSuffixOf` file = Just Language_Cpp
   | ".m" `Text.isSuffixOf` file = Just Language_Cpp
