@@ -852,6 +852,20 @@ library test-unit
         Glean.Test.HUnit
         Glean.Test.Mock
 
+-- Stub for regression tests
+library handler
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs: glean/server
+    exposed-modules:
+        Glean.Handler
+    build-depends:
+        glean:client-hs,
+        glean:if-fb303-hs,
+        glean:if-glean-hs,
+        glean:stubs,
+        glean:db,
+        glean:config,
+
 executable glean-server
     import: fb-haskell, fb-cpp, deps, exe
     hs-source-dirs: glean/server
@@ -971,6 +985,30 @@ executable glean-hyperlink
         http-types,
         wai,
         warp
+
+library clang-derive
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs: glean/lang/clang
+    exposed-modules:
+        Derive.Env
+        Derive.Lib
+        Derive.Types
+    other-modules:
+        Derive.Common
+        Derive.CxxDeclarationSources
+        Derive.CxxDeclarationTargets
+        Derive.CxxSame
+        Derive.CxxTargetUses
+        Derive.Generic
+    build-depends:
+        glean:client-hs,
+        glean:client-hs-local,
+        glean:core,
+        glean:lib,
+        glean:schema,
+        glean:util,
+        ghc-compact,
+        vector-algorithms,
 
 -- -----------------------------------------------------------------------------
 -- Glass services
@@ -1191,6 +1229,51 @@ library test-lib
         glean:stubs,
         glean:test-unit,
         glean:util
+
+library regression-test-lib
+    import: fb-haskell, fb-cpp, deps
+    visibility: private
+    hs-source-dirs: glean/test/regression
+    exposed-modules:
+        Glean.Regression.Config
+        Glean.Regression.Driver.External
+        Glean.Regression.Indexer
+        Glean.Regression.Indexer.External
+        Glean.Regression.Snapshot
+        Glean.Regression.Snapshot.Driver
+        Glean.Regression.Snapshot.Options
+        Glean.Regression.Snapshot.Query
+        Glean.Regression.Snapshot.Result
+        Glean.Regression.Snapshot.Transform
+        Glean.Regression.Test
+    build-depends:
+        glean:client-hs,
+        glean:db,
+        glean:handler,
+        glean:if-glean-hs,
+        glean:lib,
+        glean:stubs,
+        glean:test-lib,
+        glean:util,
+        split,
+        thrift-server,
+        yaml
+
+-- library clang-derive-test
+--      import: fb-haskell, fb-cpp, deps
+--      hs-source-dirs: glean/lang/clang/tests
+--      exposed-modules:
+-- Missing Glean.Clang.Test
+--         Glean.Clang.Test.DerivePass
+--         Glean.Regression.Driver.DeriveFunctionCalls
+--         Glean.Regression.Driver.DeriveDeclFamilies
+--         Glean.Regression.Driver.DeriveObjcInheritance
+--         Glean.Regression.Driver.DeriveDeclByName
+--         Glean.Regression.Driver.DocBlock
+--         Glean.Regression.Driver.Clang
+--      build-depends:
+--         glean:regression-test-lib,
+--         glean:clang-derive,
 
 library bench-lib
     import: fb-haskell, fb-cpp, deps
@@ -1533,3 +1616,78 @@ test-suite glass-range
         glean:test-lib,
         glean:test-unit,
 
+------------------------------------------------------------------------
+-- Regression tests for schemas, indexers and systems
+--
+
+library glass-regression
+    import: fb-haskell, fb-cpp, deps
+    visibility: private
+    hs-source-dirs: glean/glass/test/regression/lib
+    exposed-modules:
+        Glean.Glass.Regression.Tests
+        Glean.Glass.Regression.Util
+    build-depends:
+        glean:client-hs,
+        glean:glass-lib,
+        glean:if-glass-hs,
+        glean:logger,
+        glean:stubs,
+        glean:util,
+
+-- common to all regression tests
+common glass-regression-deps
+    hs-source-dirs: glean/glass/test/regression
+    build-depends:
+        HUnit,
+        glean:glass-lib,
+        glean:glass-regression,
+        glean:if-glass-hs,
+        glean:regression-test-lib,
+
+test-suite glass-regression-buck
+    import: glass-regression-deps, fb-haskell, deps
+    type: exitcode-stdio-1.0
+    main-is: Glean/Glass/Regression/Buck.hs
+    ghc-options: -main-is Glean.Glass.Regression.Buck
+    buildable: False
+
+--test-suite glass-regression-cpp
+--    import: glass-regression, fb-haskell, deps
+--    type: exitcode-stdio-1.0
+--    main-is: Glean/Glass/Regression/Cpp.hs
+--    ghc-options: -main-is Glean.Glass.Regression.Cpp
+--    build-depends:
+--        glean:clang-derive,
+--        glean:clang-derive-test,
+
+test-suite glass-regression-flow
+    import: glass-regression-deps, fb-haskell, deps
+    type: exitcode-stdio-1.0
+    main-is: Glean/Glass/Regression/Flow.hs
+    ghc-options: -main-is Glean.Glass.Regression.Flow
+    buildable: False
+
+test-suite glass-regression-hack
+    import: glass-regression-deps, fb-haskell, deps
+    type: exitcode-stdio-1.0
+    main-is: Glean/Glass/Regression/Hack.hs
+    ghc-options: -main-is Glean.Glass.Regression.Hack
+    build-depends:
+        glean:client-hs,
+        glean:util,
+    buildable: False
+
+test-suite glass-regression-python
+    import: glass-regression-deps, fb-haskell, deps
+    type: exitcode-stdio-1.0
+    main-is: Glean/Glass/Regression/Python.hs
+    ghc-options: -main-is Glean.Glass.Regression.Python
+    buildable: False
+
+test-suite glass-regression-thrift
+    import: glass-regression-deps, fb-haskell, deps
+    type: exitcode-stdio-1.0
+    main-is: Glean/Glass/Regression/Thrift.hs
+    ghc-options: -main-is Glean.Glass.Regression.Thrift
+    buildable: False

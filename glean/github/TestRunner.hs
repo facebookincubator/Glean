@@ -16,3 +16,8 @@ testRunner :: Test -> IO ()
 testRunner t = do
   Counts{..} <- runTestTT t
   when (errors + failures > 0) $ exitWith (ExitFailure 1)
+
+data TestAction = TestAction
+
+testRunnerAction :: TestAction -> Test -> IO ()
+testRunnerAction _ = testRunner
