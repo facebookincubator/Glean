@@ -11,6 +11,8 @@
 #if FACEBOOK
 #include "glean/facebook/lang/clang/logger.h"
 #include "common/fbwhoami/FbWhoAmI.h"
+#else
+#include <folly/ExceptionWrapper.h>
 #endif
 
 namespace facebook {
@@ -48,6 +50,8 @@ ActionLogger::ActionLogger(const std::string& name,
     start = Clock::now();
   }
 }
+
+#define LOG_VIA_LOGGER_ASYNC(l)
 
 ActionLogger::~ActionLogger() {
   if (enabled) {

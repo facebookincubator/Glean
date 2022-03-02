@@ -103,7 +103,11 @@ gen-schema ::
 	$(CABAL) run glean:gen-schema -- \
 		--dir glean/schema/source \
 		--thrift glean/schema \
-		--hs glean/schema \
+		--hs glean/schema
+	$(CABAL) run glean:gen-schema -- \
+		--dir glean/schema/source \
+		--thrift glean/schema \
+		--cpp glean/lang/clang/schema.h
 
 THRIFT_GLEAN= \
 	glean/github/if/fb303.thrift \
@@ -172,3 +176,7 @@ glass-lib:: thrift $(BYTECODE_GEN) gen-schema thrift-schema-hs thrift-glean-hs
 .PHONY: glass
 glass::
 	$(CABAL) build glass-server glass-democlient
+
+.PHONY: glean-clang
+glean-clang:: gen-schema glean
+	$(CABAL) build glean-clang

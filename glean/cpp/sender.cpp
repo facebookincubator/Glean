@@ -184,6 +184,7 @@ private:
 
 }
 
+#if FACEBOOK
 std::unique_ptr<Sender> thriftSender(
     const std::string& service,
     const std::string& repo_name,
@@ -197,6 +198,7 @@ std::unique_ptr<Sender> thriftSender(
     }
   );
 }
+#endif
 
 namespace {
 

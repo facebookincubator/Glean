@@ -27,7 +27,10 @@
 
 #if FACEBOOK
 #include "common/init/Init.h"
+#else
+#include <folly/init/Init.h>
 #endif
+
 #include "thrift/lib/cpp/transport/TTransportException.h"
 
 #include "glean/cpp/glean.h"
@@ -193,6 +196,7 @@ struct Config {
     }
     log_pfx = folly::to<std::string>(FLAGS_worker_index) + ": ";
 
+    #if FACEBOOK
     if (!FLAGS_service.empty()) {
       // Full logging if we are talking to a remote service
       should_log = true;
@@ -211,7 +215,9 @@ struct Config {
         10,          // hardcode min_retry_delay for now
         static_cast<size_t>(FLAGS_max_comm_errors)
       );
-    } else if (!FLAGS_dump.empty()) {
+    } else
+      #endif
+      if (!FLAGS_dump.empty()) {
       // No logging when dumping to a file
       should_log = false;
       sender = fileWriter(FLAGS_dump);
@@ -554,7 +560,11 @@ int main(int argc, char **argv) {
 #endif
 
   std::signal(SIGTERM, [](int) {
+    #if FACEBOOK
     LOG(CRITICAL)
+    #else
+    LOG(ERROR)
+    #endif
       << "worker " << FLAGS_worker_index << " received SIGTERM, exiting";
     _exit(1);
   });

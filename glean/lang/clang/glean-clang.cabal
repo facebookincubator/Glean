@@ -1,0 +1,207 @@
+cabal-version:       3.6
+
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
+name:                glean-clang
+version:             0.1.0.0
+synopsis:            C++ code indexing infrastructure for Glean
+homepage:            https://github.com/facebookincubator/Glean
+bug-reports:         https://github.com/facebookincubator/Glean/issues
+license:             BSD-3-Clause
+license-file:        LICENSE
+author:              Facebook, Inc.
+maintainer:          Glean-team@fb.com
+copyright:           (c) Facebook, All Rights Reserved
+build-type:          Custom
+extra-source-files:  CHANGELOG.md
+
+-- These bits of code live in their own package because we want the custom setup
+-- to detect LLVM/clang, but this is not compatible with glean.cabal's use of
+-- multiple (public) libraries:
+--
+--   Error:
+--       Internal libraries only supported with per-component builds.
+--       Per-component builds were disabled because build-type is Custom
+--       In the inplace package 'glean-0.1.0.0'
+
+
+-- Custom setup used to detect LLVM (and clang) and configure the appropriate
+-- include/library directories, necessary for 'glean-clang-index' C++ program
+-- which uses the clang/llvm libraries.
+custom-setup
+  setup-depends: base
+               , Cabal >= 3.6
+               , containers
+
+flag opt
+     default: False
+
+-- copied from the main cabal file, probably a lot of superfluous deps here
+common deps
+    build-depends:
+        fb-util,
+        thrift-cpp-channel,
+        thrift-lib,
+        HUnit,
+        safe,
+        scientific,
+        text-show,
+        uuid,
+        extra,
+        aeson,
+        data-default,
+        temporary,
+        clock,
+        STMonadTrans,
+        utf8-string,
+        optparse-applicative,
+        ansi-terminal,
+        json,
+        regex-base,
+        regex-pcre,
+        base >=4.11.1 && <4.15,
+        array ^>=0.5.2.0,
+        async ^>=2.2.1,
+        attoparsec ^>=0.13.2.3,
+        unordered-containers ^>=0.2.9.0,
+        containers,
+        contravariant ^>=1.5,
+        text ^>=1.2.3.0,
+        bytestring ^>=0.10.8.2,
+        vector ^>=0.12.0.1,
+        transformers ^>=0.5.5.0,
+        network-uri ^>=2.6.1.0,
+        stm ^>=2.5.0.0,
+        directory ^>=1.3.1.5,
+        filepath ^>=1.4.2,
+        exceptions ^>=0.10.0,
+        mtl ^>=2.2.2,
+        unix ^>=2.7.2.2,
+        process ^>=1.6.3.0,
+        prettyprinter >=1.2.1 && <1.7,
+        time >=1.8.0.2 && <1.12,
+        binary ^>=0.8.5.1,
+        deepseq ^>=1.4.3.0,
+        hashable >=1.2.7.0 && <1.4,
+        tar ^>=0.5.1.0,
+        ghc-prim >=0.5.2.0 && <0.7,
+        parsec ^>=3.1.13.0,
+        haxl >= 2.1.2.0 && < 2.4,
+        hinotify ^>= 0.4.1
+
+common exe
+  ghc-options: -threaded
+
+common fb-haskell
+    default-language: Haskell2010
+    default-extensions:
+        BangPatterns
+        BinaryLiterals
+        DataKinds
+        DeriveDataTypeable
+        DeriveGeneric
+        EmptyCase
+        ExistentialQuantification
+        FlexibleContexts
+        FlexibleInstances
+        GADTs
+        GeneralizedNewtypeDeriving
+        LambdaCase
+        MultiParamTypeClasses
+        MultiWayIf
+        NoMonomorphismRestriction
+        OverloadedStrings
+        PatternSynonyms
+        RankNTypes
+        RecordWildCards
+        ScopedTypeVariables
+        StandaloneDeriving
+        TupleSections
+        TypeFamilies
+        TypeSynonymInstances
+        NondecreasingIndentation
+  if flag(opt)
+     ghc-options: -O2
+
+common fb-cpp
+  cxx-options: -DOSS=1 -std=c++17
+  if arch(x86_64)
+      cxx-options: -DGLEAN_X86_64 -march=haswell
+  if flag(opt)
+     cxx-options: -O3
+
+library
+    import: fb-haskell, fb-cpp, deps, exe
+    exposed-modules:
+        Derive
+        Derive.Common
+        Derive.CxxDeclarationSources
+        Derive.CxxDeclarationTargets
+        Derive.CxxSame
+        Derive.CxxTargetUses
+        Derive.Env
+        Derive.Generic
+        Derive.Lib
+        Derive.Types
+    build-depends:
+        ghc-compact,
+        glean:client-hs,
+        glean:client-hs-local,
+        glean:core,
+        glean:db,
+        glean:lib,
+        glean:schema,
+        glean:util,
+        vector-algorithms
+
+-- TODO: the relative paths below are annoying, but the files in
+--       question are not part of any glean sub-library.
+executable glean-clang-index
+    import: fb-cpp
+    ghc-options: -no-hs-main
+    include-dirs: ../../../
+    main-is: index.cpp
+    cxx-sources:
+        action.cpp,
+        ast.cpp,
+        db.cpp,
+        path.cpp,
+        preprocessor.cpp,
+        ../../cpp/sender.cpp,
+        ../../cpp/glean.cpp,
+        ../../interprocess/cpp/worklist.cpp,
+        ../../interprocess/cpp/counters.cpp
+    build-depends:
+        glean:rts,
+        glean:config,
+        glean:if-glean-cpp,
+        glean:if-internal-cpp
+    extra-libraries: clangFrontend,
+                     clangSerialization,
+                     clangDriver,
+                     clangParse,
+                     clangSema,
+                     clangAnalysis,
+                     clangAST,
+                     clangASTMatchers,
+                     clangEdit,
+                     clangFrontendTool,
+                     clangIndex,
+                     clangToolingCore,
+                     clangTooling,
+                     clangFormat,
+                     clangLex,
+                     clangBasic,
+                     LLVM,
+                     folly,
+                     glog,
+                     pthread,
+                     fmt,
+                     gflags,
+                     boost_filesystem,
+                     atomic
+    cxx-options: -fexceptions -DOSS=1 -std=c++17
+    if arch(x86_64)
+      cxx-options: -DGLEAN_X86_64 -march=haswell
+    if flag(opt)
+      cxx-options: -O3

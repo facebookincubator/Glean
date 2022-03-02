@@ -15,10 +15,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Update apt database
+        run: apt-get update
       - name: Install ninja
         run: apt install ninja-build
-      - name: Install libxxhash wget unzip
-        run: apt-get install -y libxxhash-dev wget unzip
+      - name: Install libxxhash wget unzip clang llvm
+        run: apt-get install -y libxxhash-dev wget unzip clang-11 libclang-11-dev llvm-11-dev
       - name: Remove libfmt
         run: apt-get remove -y libfmt-dev
       - name: Install GHC ${{ matrix.ghc }}
