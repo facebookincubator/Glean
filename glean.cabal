@@ -1230,12 +1230,14 @@ library test-lib
         glean:test-unit,
         glean:util
 
+-- snapshot and other regression tests against glean
 library regression-test-lib
     import: fb-haskell, fb-cpp, deps
     visibility: private
     hs-source-dirs: glean/test/regression
     exposed-modules:
         Glean.Regression.Config
+        Glean.Regression.Driver.Args.Flow
         Glean.Regression.Driver.External
         Glean.Regression.Indexer
         Glean.Regression.Indexer.External
@@ -1622,7 +1624,19 @@ test-suite glass-range
 ------------------------------------------------------------------------
 -- Regression tests for schemas, indexers and systems
 --
+-- Glean snapshot regression tests, these require the indexers installed
+--
+test-suite glean-snapshot-flow
+    import: fb-haskell, deps
+    hs-source-dirs: glean/test/regression/snapshot
+    type: exitcode-stdio-1.0
+    main-is: Glean/Regression/Flow/Main.hs
+    ghc-options: -main-is Glean.Regression.Flow.Main
+    build-depends: glean:regression-test-lib
 
+------------------------------------------------------------------------
+-- glass regression tests
+--
 library glass-regression
     import: fb-haskell, fb-cpp, deps
     visibility: private

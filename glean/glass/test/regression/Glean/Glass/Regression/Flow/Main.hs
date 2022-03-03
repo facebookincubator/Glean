@@ -7,24 +7,11 @@
 -}
 module Glean.Glass.Regression.Flow.Main ( main ) where
 
-import Data.List ( intercalate )
 import System.Environment
-import qualified Glean.Glass.Regression.Flow as Flow ( main )
+import Glean.Regression.Driver.Args.Flow as Flow
+import qualified Glean.Glass.Regression.Flow as Glass
 
 main :: IO ()
-main = withArgs flowArgs Flow.main
+main = withArgs (Flow.args path) Glass.main
   where
-    flowArgs =
-        ["--binary", "flow"
-        ,"--json"
-        ,"--args", "glean ${TEST_ROOT} --output-dir ${JSON_BATCH_DIR} --write-root test"
-        ,"--root", "glean/lang/codemarkup/tests/flow/cases/xrefs"
-        ,"--derive", flowDerives
-        ]
-    flowDerives = intercalate ","
-        ["flow.StringToFileModule"
-        ,"flow.FileXRef"
-        ,"flow.FileDeclaration"
-        ,"flow.FlowEntityImportUses"
-        ,"flow.FlowTypeEntityImportUses"
-        ]
+    path = "glean/lang/codemarkup/tests/flow/cases/xrefs"
