@@ -61,7 +61,6 @@ data Ext = Ext
   { extBinary :: FilePath
   , extArgs :: [String]
   , extGroups :: [String]
-  , extSchemaVersion :: Maybe Int
   , extFlavour :: Flavour
   , extDerivePredicates :: [Text]
   }
@@ -78,9 +77,6 @@ extOptions = do
   extGroups <- fmap list $ O.strOption $
     O.long "groups" <> O.metavar "NAME,NAME,..." <> O.value "" <>
     O.help "all tests are run for each group"
-  extSchemaVersion <- O.optional $ O.option O.auto $
-    O.long "schema-version" <> O.metavar "INT" <>
-    O.help "version of 'all' schema to use for unversioned queries"
   extFlavour <-
     O.flag' Json (
       O.long "json" <>

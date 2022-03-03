@@ -45,7 +45,8 @@ optionsWith other = O.info (O.helper <*> ((,) <$> parser <*> other)) O.fullDesc
       cfgReplace <- O.switch $ O.long "replace" <>
         O.help "Generate (overwrite) golden *.out files instead of testing"
       cfgSchemaVersion <- O.optional $ O.option O.auto $
-        O.long "schema-version" <> O.metavar "INT"
+        O.long "schema-version" <> O.metavar "INT" <>
+        O.help "version of 'all' schema to use for unversioned queries"
       cfgTests <- O.many $ O.strOption $
         O.long "only" <> O.metavar "DIR" <>
         O.help "Run tests from DIR only"
