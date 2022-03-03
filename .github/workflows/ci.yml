@@ -17,8 +17,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Install ninja
         run: apt install ninja-build
-      - name: Install libxxhash
-        run: apt-get install -y libxxhash-dev
+      - name: Install libxxhash wget unzip
+        run: apt-get install -y libxxhash-dev wget unzip
       - name: Remove libfmt
         run: apt-get remove -y libfmt-dev
       - name: Install GHC ${{ matrix.ghc }}
@@ -27,11 +27,17 @@ jobs:
         run: ghcup install cabal -u https://downloads.haskell.org/~cabal/cabal-install-3.6.0.0/cabal-install-3.6.0.0-x86_64-linux.tar.xz 3.6.0.0 --set
       - name: Add GHC and cabal to PATH
         run: echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
+      - name: Install indexers (flow)
+        run: |
+          export FLOW=0.172.0
+          wget "https://github.com/facebook/flow/releases/download/v${FLOW}/flow-linux64-v${FLOW}.zip"
+          unzip "flow-linux64-v${FLOW}.zip"
+          mkdir -p "$HOME"/.hsthrift/bin && mv flow/flow "$HOME"/.hsthrift/bin
       - name: Fetch hsthrift and build folly, fizz, wangle, fbthrift, rocksdb
         run: ./install_deps.sh
       - name: Nuke build artifacts
         run: rm -rf /tmp/fbcode_builder_getdeps-Z__wZGleanZGleanZhsthriftZbuildZfbcode_builder-root/
-      - name: Add thrift compiler to path
+      - name: Add thrift compiler and indexers to path
         run: echo "$HOME/.hsthrift/bin" >> "$GITHUB_PATH"
       - name: Populate hackage index
         run: cabal update

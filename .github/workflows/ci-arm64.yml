@@ -20,12 +20,18 @@ jobs:
           rm -rf "$HOME"/.ghcup/bin
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Install libxxhash
-        run: apt-get install -y libxxhash-dev
+      - name: Install libxxhash wget unzip
+        run: apt-get install -y libxxhash-dev wget unzip
       - name: Install GHC ${{ matrix.ghc }}
         run: ghcup install ghc ${{ matrix.ghc }} --set --force
       - name: Install cabal-install 3.6
         run: ghcup install cabal -u https://downloads.haskell.org/~cabal/cabal-install-3.6.0.0/cabal-install-3.6.0.0-aarch64-linux-deb10.tar.xz 3.6.0.0 --set
+      - name: Install indexers (flow)
+        run: |
+          export FLOW=0.172.0
+          wget "https://github.com/facebook/flow/releases/download/v${FLOW}/flow-linux-arm64-v${FLOW}.zip"
+          unzip "flow-linux-arm64-v${FLOW}.zip"
+          mkdir -p "$HOME"/.hsthrift/bin && mv flow/flow "$HOME"/.hsthrift/bin
       - name: Fetch hsthrift and build folly, fizz, wangle, fbthrift, rocksdb
         run: ./install_deps.sh
       - name: Nuke build artifacts
