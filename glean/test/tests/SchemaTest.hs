@@ -163,25 +163,21 @@ schemaUnversioned = TestCase $ do
           Nothing
 
   withSchemaFile latestAngleVersion schema $ \root file -> do
-    repo1 <- withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
-      let repo = Thrift.Repo "schematest-repo" "1"
-      kickOffTestDB env repo id
-      fill env repo
-      return repo
-    repo2 <- withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
-      let repo = Thrift.Repo "schematest-repo" "2"
-      kickOffTestDB env repo id
-      let props = HashMap.fromList [("glean.schema_version", "1")]
-      void $ updateProperties env repo props []
-      fill env repo
-      return repo
-    repo3 <- withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
-      let repo = Thrift.Repo "schematest-repo" "3"
-      kickOffTestDB env repo id
-      let props = HashMap.fromList [("glean.schema_version", "3")]
-      void $ updateProperties env repo props []
-      fill env repo
-      return repo
+    let
+      create repo propList =
+        withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
+          kickOffTestDB env repo id
+          let props = HashMap.fromList propList
+          void $ updateProperties env repo props []
+          fill env repo
+          completeTestDB env repo
+          return repo
+
+    repo1 <- create (Thrift.Repo "schematest-repo" "1") []
+    repo2 <- create (Thrift.Repo "schematest-repo" "2")
+      [("glean.schema_version", "1")]
+    repo3 <- create (Thrift.Repo "schematest-repo" "3")
+      [("glean.schema_version", "3")]
 
     withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
       -- Test that an unversioned query "test.P _" resolves to test.P.2,
