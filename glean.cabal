@@ -1501,19 +1501,22 @@ test-suite lookup
         glean:core,
         glean:db
 
-if arch(x86_64)
-    test-suite incremental
-        import: test
-        type: exitcode-stdio-1.0
-        main-is: IncrementalTest.hs
-        ghc-options: -main-is IncrementalTest
-        build-depends:
-            glean:stubs,
-            glean:client-hs,
-            glean:core,
-            glean:db,
-            glean:lib,
-            glean:schema
+test-suite incremental
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: IncrementalTest.hs
+    ghc-options: -main-is IncrementalTest
+    build-depends:
+        glean:stubs,
+        glean:client-hs,
+        glean:core,
+        glean:db,
+        glean:lib,
+        glean:schema
+    if arch(x86_64)
+        buildable: True
+    else
+        buildable: False
 
 test-suite glass-range
     import: fb-haskell, fb-cpp, deps, exe
