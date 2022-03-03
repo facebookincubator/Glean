@@ -1667,8 +1667,9 @@ test-suite glass-regression-buck
 test-suite glass-regression-flow
     import: glass-regression-deps, fb-haskell, deps
     type: exitcode-stdio-1.0
-    main-is: Glean/Glass/Regression/Flow.hs
-    ghc-options: -main-is Glean.Glass.Regression.Flow
+    main-is: Glean/Glass/Regression/Flow/Main.hs
+    ghc-options: -main-is Glean.Glass.Regression.Flow.Main
+    other-modules: Glean.Glass.Regression.Flow
     buildable: False
 
 test-suite glass-regression-hack
