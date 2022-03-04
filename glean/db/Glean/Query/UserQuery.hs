@@ -133,9 +133,8 @@ genericUserQuery
 genericUserQuery env repo query enc = do
   config@ServerConfig.Config{..} <- Observed.get (envServerConfig env)
   readDatabase env repo $ \odb lookup ->
-    let schema = odbSchema odb in
-    maybe id withSavedAllocLimit config_query_alloc_limit
-      $ performUserQuery enc schema
+    maybe id limitAllocsThrow config_query_alloc_limit
+      $ performUserQuery enc (odbSchema odb)
       $ userQueryImpl env odb config lookup repo query
 
 -- | A generic implementation of lookup queries.
