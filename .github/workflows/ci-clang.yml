@@ -1,0 +1,39 @@
+# https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions
+name: CI-clang
+on: [push, pull_request]
+
+jobs:
+  ci-clang:
+    strategy:
+      fail-fast: false
+      matrix:
+        ghc: [8.10.7]
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/donsbot/hsthrift/ci-base:clang11
+      options: --cpus 2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install libxxhash
+        run: apt-get install -y libxxhash-dev
+      - name: Install GHC ${{ matrix.ghc }}
+        run: ghcup install ghc ${{ matrix.ghc }} --set
+      - name: Install cabal-install 3.6
+        run: ghcup install cabal -u https://downloads.haskell.org/~cabal/cabal-install-3.6.0.0/cabal-install-3.6.0.0-x86_64-linux.tar.xz 3.6.0.0 --set
+      - name: Add GHC and cabal to PATH
+        run: echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
+      - name: Fetch hsthrift and build folly, fizz, wangle, fbthrift, rocksdb
+        run: ./install_deps.sh
+      - name: Nuke build artifacts
+        run: rm -rf /tmp/fbcode_builder_getdeps-Z__wZGleanZGleanZhsthriftZbuildZfbcode_builder-root/
+      - name: Add thrift compiler to path
+        run: echo "$HOME/.hsthrift/bin" >> "$GITHUB_PATH"
+      - name: Populate hackage index
+        run: cabal update
+      - name: Build hsthrift and Glean
+        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make
+      - name: Build glass
+        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make glass
+      - name: Run tests
+        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make test
