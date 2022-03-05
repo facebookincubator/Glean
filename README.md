@@ -1,4 +1,5 @@
-![ci](https://github.com/facebookincubator/Glean/actions/workflows/ci.yml/badge.svg)
+![ci-x86](https://github.com/facebookincubator/Glean/actions/workflows/ci.yml/badge.svg)
+![ci-arm](https://github.com/facebookincubator/Glean/actions/workflows/ci-arm64.yml/badge.svg)
 ![demo](https://github.com/facebookincubator/Glean/actions/workflows/glean-docker.yml/badge.svg)
 
 # Glean
@@ -41,6 +42,10 @@ release yet; we hope to make these available in the future:
 * Objective-C
 * Java
 * Rust
+* Haskell
+* Erlang
+* Thrift
+* Buck
 
 ## License
 
