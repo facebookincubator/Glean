@@ -173,7 +173,7 @@ thinSchemaInfo DbSchema{..} predicateStats =
   neededSchemas :: [Name]
   neededSchemas =
     [ showSourceRef (SourceRef resolvedSchemaName (Just resolvedSchemaVersion))
-    | ResolvedSchema{..} <- schemasResolved schemaSpec
+    | ResolvedSchema{..} <- schemaResolved
     , any (`HashSet.member` nonEmptyPredicates)
         (HashMap.keys resolvedSchemaPredicates)
     ]
@@ -365,12 +365,6 @@ mkDbSchema override getPids dbContent source base addition = do
 
       resolvedAlls = filter ((== "all") . resolvedSchemaName) resolved
 
-      schemaAlls = HashMap.fromList
-          [ let version = resolvedSchemaVersion
-            in (version, Schema version mempty mempty)
-          | ResolvedSchema{..} <- resolvedAlls
-          ]
-
       -- When a query mentions an unversioned predicate, we use a default
       -- version of the predicate. The default version is whatever is
       -- exported by the highest version of the distinguished schema "all"
@@ -407,11 +401,7 @@ mkDbSchema override getPids dbContent source base addition = do
     , schemaTypesByRef = tcEnvTypes env
     , schemaTypesByName = schemaTypesByName
     , schemaInventory = inventory predicates
-    , schemaSpec = Schemas
-        { schemasResolved = resolved
-        , schemasSchemas = schemaAlls
-        , schemasCurrentVersion = latestVer
-        }
+    , schemaResolved = resolved
     , schemaSource = source
     , schemaMaxPid = maxPid
     , schemaLatestVersion = fromMaybe 0 latestVer

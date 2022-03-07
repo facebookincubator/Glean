@@ -55,7 +55,7 @@ data DbSchema = DbSchema
   , schemaTypesByName :: IntMap (HashMap Name TypeDetails)
      -- ^ points to the type for each name in schema "all"
   , schemaInventory :: Inventory
-  , schemaSpec :: Schemas
+  , schemaResolved :: [ResolvedSchema]
   , schemaSource :: SourceSchemas
   , schemaMaxPid :: Pid
   , schemaLatestVersion :: Version

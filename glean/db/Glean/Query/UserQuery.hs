@@ -87,7 +87,7 @@ import Glean.Query.JSON
 import Glean.Query.Nested
 import Glean.Query.Nested.Compile
 import Glean.Query.Nested.Types
-import Glean.Schema.Resolve (Schemas(..), resolveType)
+import Glean.Schema.Resolve (resolveType)
 import Glean.Schema.Util
 import Glean.Util.Observed as Observed
 import Glean.Query.Typecheck
@@ -825,7 +825,7 @@ schemaVersionForQuery env schema repo qversion = do
         ]
   where
     isAvailable version =
-      version `HashMap.member` schemasSchemas (schemaSpec schema)
+      fromIntegral version `IntMap.member` predicatesByName schema
 
 compileAngleQuery
   :: SchemaVersion
