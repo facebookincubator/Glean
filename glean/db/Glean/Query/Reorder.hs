@@ -496,7 +496,6 @@ classifyPattern scope t = fromMaybe PatternMatchesOne (go False t end)
       MatchPrefix s t
         | not (ByteString.null s) -> fixed (\pref' -> go pref' t r)
         | otherwise -> go pref t r
-      MatchSum{} -> Just PatternMatchesSome -- TODO conservative
       MatchExt{} -> Just PatternMatchesSome
     where
     var v
@@ -565,7 +564,6 @@ prefixVars lookups scope stmt = prefixVarsStmt stmt
     MatchVar (Var _ v _) -> var v
     MatchAnd a b -> prefixVarsTerm a r `IntSet.union` prefixVarsTerm b r
     MatchPrefix _ t -> prefixVarsTerm t r
-    MatchSum alts -> IntSet.unions (map (`prefixVarsTerm` r) (catMaybes alts))
     MatchExt{} -> IntSet.empty
     where
     var v

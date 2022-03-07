@@ -258,12 +258,6 @@ flattenPattern pat = case pat of
       <*> flattenPattern b
   Ref (MatchPrefix str t) ->
     fmap (fmap (Ref . MatchPrefix str)) <$> flattenPattern t
-  Ref (MatchSum ts) ->
-    fmap (manyTerms (Ref . MatchSum)) $
-      forM ts $ \maybeT ->
-        case maybeT of
-          Nothing -> return [(mempty, Nothing)]
-          Just t -> fmap (fmap Just) <$> flattenPattern t
   Ref (MatchExt (Typed _ (TcOr a b))) -> do  -- Note [flattening TcOr]
     as <- flattenPattern a
     bs <- flattenPattern b

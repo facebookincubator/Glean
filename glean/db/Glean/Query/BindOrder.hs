@@ -100,8 +100,6 @@ instance (FixBindOrder a) => FixBindOrder (Match a Var) where
     MatchAnd <$> mapM (fixBindOrder isPat) a <*> mapM (fixBindOrder isPat) b
   fixBindOrder isPat (MatchPrefix str rest) =
     MatchPrefix str <$> mapM (fixBindOrder isPat) rest
-  fixBindOrder isPat (MatchSum alts) =
-    MatchSum <$> mapM (mapM (mapM (fixBindOrder isPat))) alts
   fixBindOrder isPat (MatchExt ext) = MatchExt <$> fixBindOrder isPat ext
   fixBindOrder _ other = return other
 

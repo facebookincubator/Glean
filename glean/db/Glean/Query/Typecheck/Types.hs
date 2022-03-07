@@ -68,7 +68,6 @@ mapExt f t = case t of
   MatchVar v -> MatchVar v
   MatchAnd a b -> MatchAnd (fmap (mapExt f) a) (fmap (mapExt f) b)
   MatchPrefix str t -> MatchPrefix str (fmap (mapExt f) t)
-  MatchSum alts -> MatchSum $ map (fmap (fmap (mapExt f))) alts
   MatchExt ext -> MatchExt (f ext)
 
 instance Pretty TcTerm where

@@ -261,8 +261,6 @@ instance Apply Pat where
     y' <- apply y
     return (Ref (MatchAnd x' y'))
   apply (Ref (MatchPrefix str x)) = Ref . MatchPrefix str <$> apply x
-  apply (Ref (MatchSum alts)) =
-    Ref . MatchSum <$> mapM (mapM apply) alts
   apply t = return t
 
 applyVar :: Var -> U Pat
@@ -340,7 +338,6 @@ unify (String x) (Ref (MatchPrefix s y))
   | Just r <- B.stripPrefix s x = unify y (String r)
 unify (Ref (MatchAnd x y)) z = (&&) <$> unify x z <*> unify y z
 unify z (Ref (MatchAnd x y)) = (&&) <$> unify z x <*> unify z y
-unify (Ref MatchSum{}) (Ref MatchSum{}) = return True -- TODO: better
 unify _ _ = return False
 
 extend :: Var -> Pat -> U Bool
@@ -394,7 +391,6 @@ freshWild pat = do
   freshWildMatch m = case m of
     MatchWild ty -> MatchBind <$> fresh ty
     MatchPrefix str rest -> MatchPrefix str <$> mapM freshWildMatch rest
-    MatchSum alts -> MatchSum <$> mapM (mapM (mapM freshWildMatch)) alts
     MatchNever ty -> return (MatchNever ty)
     MatchFid f -> return (MatchFid f)
     MatchBind v -> return (MatchBind v)
@@ -462,8 +458,6 @@ termScope pat r = foldr onMatch r pat
   onMatch :: Match () Var -> VarSet -> VarSet
   onMatch m r = case m of
     MatchPrefix _ rest -> foldr onMatch r rest
-    MatchSum alts -> foldr onAlt r alts
-      where onAlt alt r = foldr termScope r alt
     MatchBind v -> addToCurrentScope v r
     MatchVar v -> addToCurrentScope v r
     MatchAnd x y -> foldr onMatch (foldr onMatch r y) x

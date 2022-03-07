@@ -105,7 +105,6 @@ evolvePat innerL innerR old new pat = case pat of
       (evolve old new a)
       (evolve old new b)
     MatchPrefix prefix rest -> MatchPrefix prefix $ evolve old new rest
-    MatchSum mterms -> MatchSum $ fmap (fmap $ evolve old new) mterms
     MatchExt extra -> MatchExt $ innerL old new extra
   Alt oldIx term
     | Type.Boolean <- old

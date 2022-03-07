@@ -221,12 +221,6 @@ data Match ext var
       ByteString  -- the prefix of the string (utf-8 encoded)
       (Term (Match ext var))  -- the rest of the string
 
-    -- | Match zero or more alts of a sum type.  Note that variables bound
-    -- in an alternative of MatchSum are not in scope outside it.
-    -- Efficient when used in a search context, but for matching sums in
-    -- a prefix context it's probably better to use SeqGenerators instead.
-  | MatchSum [Maybe (Term (Match ext var))]
-
     -- | placeholder for extending this type
   | MatchExt ext
 
@@ -242,7 +236,6 @@ instance Bifunctor Match where
     MatchBind var -> MatchBind (g var)
     MatchAnd a b -> MatchAnd (fmap (bimap f g) a) (fmap (bimap f g) b)
     MatchPrefix b term -> MatchPrefix b $ fmap (bimap f g) term
-    MatchSum xs -> MatchSum $ map (fmap (fmap (bimap f g))) xs
 
 instance Bifoldable Match where
   bifoldMap f g = \case
@@ -254,7 +247,6 @@ instance Bifoldable Match where
     MatchBind var -> g var
     MatchAnd a b -> foldMap (bifoldMap f g) a <> foldMap (bifoldMap f g) b
     MatchPrefix _ term -> foldMap (bifoldMap f g) term
-    MatchSum xs -> foldMap (foldMap (foldMap (bifoldMap f g))) xs
 
 matchVar :: Match ext var -> Maybe var
 matchVar (MatchVar v) = Just v
@@ -268,7 +260,6 @@ instance Pretty ext => Pretty (Match ext Var) where
   pretty (MatchAnd l r) = pretty l <+> "@" <+> pretty r
   pretty (MatchBind v@(Var ty _ _)) = pretty v  <> ":" <> pretty ty
   pretty (MatchPrefix str rest) = pretty (show str) <> ".." <> pretty rest
-  pretty (MatchSum alts) = hsep (punctuate "|" (map (maybe "_" pretty) alts))
   pretty (MatchExt ext) = pretty ext
   pretty other = prettyMatchAtom other
 
@@ -392,9 +383,6 @@ findOutputs q = findOutputsQuery q IntSet.empty
   findOutputsMatch (MatchBind (Var ty var _)) r
     | not (isWordTy ty) = IntSet.insert var r
   findOutputsMatch (MatchAnd a b) r = findOutputsPat a (findOutputsPat b r)
-  findOutputsMatch (MatchSum alts) r =
-    foldr findOutputsAlt r alts
-    where findOutputsAlt alt r = foldr findOutputsPat r alt
   findOutputsMatch _ r = r
 
 compileQuery
@@ -1164,14 +1152,6 @@ preProcessPat pat = unsafePerformIO $
           b <- builder
           lift $ FFI.call $ glean_push_value_selector b $ fromIntegral ix
           build term
-      Ref (MatchSum alts) -> do
-        case [ (n, alt) | (n, Just alt) <- zip [0..] alts ] of
-          [(n,one)] -> build (Alt n one)
-          _otherwise -> do
-            endOfChunk
-            ppAlts <- forM alts $ \alt ->
-              mapM (getChunks . build) alt
-            modify $ \(b, e, chunks) -> (b, e, QuerySum ppAlts : chunks)
       Ref (MatchVar v) -> chunk (QueryVar v)
       Ref (MatchBind v) -> chunk (QueryBind v)
       Ref (MatchWild ty) -> chunk (QueryWild ty)

@@ -107,6 +107,5 @@ instantiateWithFreshVariables query numVars = do
     MatchBind (Var ty v nm) -> MatchBind (Var ty (v+base) nm)
     MatchAnd l r -> MatchAnd (instantiatePat base l) (instantiatePat base r)
     MatchPrefix s t -> MatchPrefix s (instantiatePat base t)
-    MatchSum alts -> MatchSum (fmap (fmap (instantiatePat base)) alts)
     MatchExt (Typed ty ext) -> MatchExt (Typed ty (instantiateTcTerm base ext))
     other -> other

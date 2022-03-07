@@ -1027,7 +1027,6 @@ matchUsesNegation = \case
   MatchVar _ -> False
   MatchAnd one two -> tcPatUsesNegation one || tcPatUsesNegation two
   MatchPrefix _ x -> tcPatUsesNegation x
-  MatchSum xs -> any tcPatUsesNegation (catMaybes xs)
   MatchExt (Typed _ tcterm) -> tcTermUsesNegation tcterm
 
 tcTermUsesNegation  :: TcTerm -> Bool

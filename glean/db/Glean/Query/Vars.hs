@@ -72,7 +72,6 @@ instance VarsOf (Match () Var) where
     MatchVar (Var _ v _) -> IntSet.insert v r
     MatchAnd a b -> varsOf a $! varsOf b r
     MatchPrefix _ t -> varsOf t r
-    MatchSum alts -> foldr varsOf r [ t | Just t <- alts ]
     MatchExt{} -> r
 
 -- | Like 'varsOf', but only including variables that can be bound by
