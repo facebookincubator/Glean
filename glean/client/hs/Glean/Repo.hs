@@ -24,8 +24,6 @@ import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Maybe
 import Data.Text (Text)
-import Util.TimeSec (Time(..))
-import qualified Util.TimeSec as Time
 
 import Util.Log
 
@@ -66,21 +64,10 @@ getLatestRepos backend keepName = do
       isNothing database_expire_time
   xss <- groupSortOn (repo_name . database_repo) . filter ok <$>
     localDatabases backend
-  Time now <- Time.now
   let pickRepo xs =
         let
           sorted = sortBy (flip compare `on` database_created_since_epoch) xs
-          minDbAge = 30*60
-            -- DBs younger than this are ignored, to give the DB a chance to
-            -- propagate to all servers.
-          oldEnough db
-            | created <- fromIntegral $ unPosixEpochTime $
-                database_created_since_epoch db
-            = now - created >= minDbAge
-            | otherwise
-            = False
-          (wellAged, tooYoung) = partition oldEnough sorted
-        in checkRestorableAvailable backend $ wellAged ++ tooYoung
+        in checkRestorableAvailable backend sorted
       assemble rs = LatestRepos $ Map.fromList [ (repo_name r, r) | r <- rs ]
   assemble . catMaybes <$> mapM pickRepo xss
 
