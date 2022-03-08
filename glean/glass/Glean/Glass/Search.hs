@@ -16,7 +16,8 @@ module Glean.Glass.Search
 import Data.Text ( Text )
 import Control.Monad.Catch (throwM)
 
-import Glean.Glass.Repos (Language(..), toShortCode)
+import Glean.Glass.Repos (Language(..) )
+import Glean.Glass.SymbolId ( toShortCode )
 
 import Glean.Glass.Search.Class as Search
     ( Search(symbolSearch),

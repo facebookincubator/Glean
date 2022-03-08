@@ -22,7 +22,6 @@ module Glean.Glass.SymbolId.Class (
 
   -- ** labels and other attributes
   , ToSymbolParent(..)
-  , ToSymbolSignature(..)
 
   -- * for predicate types
   , toSymbolPredicate
@@ -88,10 +87,6 @@ class Symbol a => ToQName a where
 -- first level parent identifier
 class ToSymbolParent a where
   toSymbolParent :: a -> Glean.RepoHaxl u w (Maybe Name)
-
--- signature of symbols
-class ToSymbolSignature a where
-  toSymbolSignature :: a -> Glean.RepoHaxl u w (Maybe Text)
 
 type SymbolKeyType p =
   ( Typeable p

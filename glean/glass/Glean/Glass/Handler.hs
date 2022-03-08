@@ -80,6 +80,8 @@ import qualified Glean.Schema.Src.Types as Src
 import qualified Control.Concurrent.Async as Async
 
 import qualified Glean.Glass.Attributes as Attributes
+import Glean.Glass.Base
+    ( GleanPath(..) )
 import Glean.Glass.Logging
     ( LogRepo(..),
       ErrorTy(..),
@@ -88,20 +90,18 @@ import Glean.Glass.Logging
       LogError(..),
       ErrorLogger, errorText )
 import Glean.Glass.Repos
-    ( GleanPath(..),
-      GleanDBName(unGleanDBName),
+    ( GleanDBName(unGleanDBName),
       firstAttrDB,
       filetype,
       findLanguages,
       findRepos,
       fromSCSRepo,
-      fromShortCode,
       lookupLatestRepos,
-      toGleanPath,
       toRepoName,
-      toShortCode,
       filterRepoLang,
       GleanDBAttrName(GleanDBAttrName, gleanAttrDBName) )
+import Glean.Glass.Path
+    ( toGleanPath )
 import Glean.Glass.Range
     ( locationFromCodeLocation,
       locationRangeFromCodeLocation,
@@ -118,13 +118,17 @@ import Glean.Glass.SymbolId
     ( entityToAngle,
       symbolTokens,
       toQualifiedName,
+      toShortCode,
       toSymbolId,
       entityDefinitionType,
       entityLanguage,
-      entityKind, findSymbolKind )
+      entityKind,
+      fromShortCode )
 import Glean.Glass.SymbolId.Class
-    ( ToSymbolSignature(toSymbolSignature),
-      ToSymbolParent(toSymbolParent) )
+    ( ToSymbolParent(toSymbolParent) )
+import Glean.Glass.SymbolSig
+    ( ToSymbolSignature(toSymbolSignature) )
+import Glean.Glass.SymbolKind ( findSymbolKind )
 import Glean.Glass.Types
     ( SearchContext(searchContext_kinds, searchContext_repo_name,
                     searchContext_language),

@@ -1039,7 +1039,9 @@ library glass-lib
         Glean.Glass.SymbolId.Python
         Glean.Glass.SymbolId.Rust
         Glean.Glass.SymbolId.Thrift
+        Glean.Glass.SymbolKind
         Glean.Glass.SymbolMap
+        Glean.Glass.SymbolSig
         Glean.Glass.Utils
     build-depends:
         glean:client-hs,

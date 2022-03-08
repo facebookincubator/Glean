@@ -24,6 +24,10 @@ module Glean.Glass.SymbolId
   , entityDefinitionType
   , entityKind
 
+  -- * Lookups and language names
+  , toShortCode
+  , fromShortCode
+
   -- * searching for entities
   , ToAngle(..)
   , entityToAngle
@@ -31,14 +35,14 @@ module Glean.Glass.SymbolId
   -- * Qualified names
   , toQualifiedName
 
-  -- * searching by prefix
-  , findSymbolKind
-
-   ) where
+  ) where
 
 import Data.Text ( Text )
 import Control.Monad.Catch ( throwM, try )
+import qualified Data.Map as Map
+import Data.Maybe ( fromMaybe )
 import qualified Data.Text as Text
+import Data.Tuple ( swap )
 import qualified Network.URI.Encode as URI
 
 import Glean.Glass.Types as Glass
@@ -51,12 +55,6 @@ import Glean.Glass.Types as Glass
                Language_Buck, Language_Erlang),
       SymbolId(SymbolId),
       RepoName(..) )
-import Glean.Glass.Query as Query ( symbolKind )
-import Glean.Glass.Repos
-    ( fromShortCode, toShortCode )
-import Glean.Glass.Utils as Utils ( searchWithLimit )
-import Glean.Glass.Attributes.SymbolKind as Glass
-    ( symbolKindToSymbolKind )
 
 import Glean.Angle ( alt, Angle )
 import qualified Glean.Haxl.Repos as Glean
@@ -66,8 +64,7 @@ import Glean.Glass.SymbolId.Class
       SymbolError(SymbolError),
       ToAngle(..),
       ToQName(..),
-      ToSymbolParent(..),
-      ToSymbolSignature(..) )
+      ToSymbolParent(..) )
 
 import Glean.Glass.SymbolId.Cxx ({- instances -})
 import Glean.Glass.SymbolId.Flow ({- instances -})
@@ -80,8 +77,6 @@ import Glean.Glass.SymbolId.Buck ({- instances -})
 import Glean.Glass.SymbolId.Thrift ({- instances -})
 import Glean.Glass.SymbolId.Erlang ({- instances -})
 
-import Glean.Glass.Pretty.Cxx as Cxx ( prettyCxxSignature )
-import Glean.Glass.Pretty.Hack as Hack ( prettyHackSignature )
 import qualified Glean.Glass.SymbolId.Cxx as Cxx
 import qualified Glean.Glass.SymbolId.Pp as Pp
 
@@ -130,6 +125,39 @@ symbolTokens (SymbolId symid)
   | otherwise = Left $ "Invalid symbol: " <> symid
   where
     tokens = Text.split (=='/') symid
+
+-- | SymbolID-encoded language, used for db name lookups
+shortCodeTable :: [(Language,Text)]
+shortCodeTable =
+  [ (Language_Haskell, "hs")
+  , (Language_JavaScript, "js")
+  , (Language_Hack, "php")
+  , (Language_Python, "py")
+  , (Language_Cpp, "cpp")
+  , (Language_PreProcessor , "pp")
+  , (Language_Thrift , "thrift")
+  , (Language_Rust , "rs")
+  , (Language_Buck , "buck")
+  , (Language_Erlang , "erl")
+  ]
+
+languageToCode :: Map.Map Language Text
+languageToCode = Map.fromList shortCodeTable
+
+codeToLanguage :: Map.Map Text Language
+codeToLanguage = Map.fromList (map swap shortCodeTable)
+
+-- | Symbol identifier to use when we don't support symbol identifiers
+unsupportedSymbol :: Text
+unsupportedSymbol = "UNSUPPORTED_LANGUAGE"
+
+-- | Language to canonical shortcode in symbol
+toShortCode :: Language -> Text
+toShortCode lang = fromMaybe unsupportedSymbol
+  (Map.lookup lang languageToCode)
+
+fromShortCode :: Text -> Maybe Language
+fromShortCode code = Map.lookup code codeToLanguage
 
 -- | The language is the outermost tag of the code.Entity constructor
 entityLanguage :: Code.Entity -> Language
@@ -198,27 +226,6 @@ instance ToSymbolParent Code.Entity where
     Code.Entity_cxx x -> toSymbolParent x
     Code.Entity_pp{} -> return Nothing
     _ -> return Nothing
-
-instance ToSymbolSignature Code.Entity where
-  toSymbolSignature e = case e of
-    Code.Entity_cxx x -> return $ case Cxx.prettyCxxSignature x of
-      "" -> Nothing
-      s -> Just s
-    Code.Entity_hack x -> Hack.prettyHackSignature x
-    Code.Entity_pp{} -> return Nothing
-    _ -> return Nothing
-
--- | Pointwise lookup of a symbol kind by entity
-findSymbolKind
-  :: Code.Entity
-  -> Glean.RepoHaxl u w (Either Text Glass.SymbolKind)
-findSymbolKind e = case entityToAngle e of
-  Left err -> return $ Left $ "ToSymbolKind: " <> err
-  Right ent -> do
-    r <- Utils.searchWithLimit (Just 1) $ Query.symbolKind ent
-    return $ case r of
-      [] -> Left "No kind found"
-      (kind:_) -> Right $ Glass.symbolKindToSymbolKind kind
 
 -- | Attribute for definition/declaration distinction
 entityDefinitionType :: Code.Entity -> Maybe Glass.DefinitionKind

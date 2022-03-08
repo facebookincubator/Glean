@@ -26,15 +26,6 @@ module Glean.Glass.Repos
   , lookupLatestRepos
   , updateLatestRepos
 
-  -- * Lookups and language names
-  , toShortCode
-  , fromShortCode
-
-  -- * Normalizing paths
-  , GleanPath(..)
-  , toGleanPath
-  , fromGleanPath
-
   -- * Misc
   , toRepoName
   , findLanguages
@@ -49,10 +40,9 @@ import Control.Concurrent.Async ( withAsync )
 import Control.Concurrent.STM
     ( readTVarIO, writeTVar, atomically, newTVarIO, TVar )
 import Control.Exception ( uninterruptibleMask_, throwIO )
-import Data.Maybe ( catMaybes, fromMaybe )
+import Data.Maybe ( catMaybes )
 import Data.Set ( Set )
 import Data.Text ( Text )
-import Data.Tuple ( swap )
 
 import Glean.Util.Periodic ( doPeriodically )
 import qualified Data.Map.Strict as Map
@@ -61,6 +51,7 @@ import qualified Glean
 import qualified Glean.Repo as Glean
 
 import Glean.Glass.Base
+import Glean.Glass.SymbolId ( toShortCode )
 import Glean.Glass.Types
     ( Path(Path),
       RepoName(RepoName),
@@ -71,7 +62,6 @@ import Glean.Glass.Types
     )
 
 import Glean.Glass.RepoMapping  -- site-specific
-import Glean.Glass.Path  -- site-specific
 
 --  all pairs (repoName, Language) which maps to glean db,
 --  except for "test" repoName
@@ -178,39 +168,6 @@ filetype (Path file)
   | "BUCK" `Text.isSuffixOf` file = Just Language_Buck
 
   | otherwise = Nothing
-
--- | SymbolID-encoded language, used for db name lookups
-shortCodeTable :: [(Language,Text)]
-shortCodeTable =
-  [ (Language_Haskell, "hs")
-  , (Language_JavaScript, "js")
-  , (Language_Hack, "php")
-  , (Language_Python, "py")
-  , (Language_Cpp, "cpp")
-  , (Language_PreProcessor , "pp")
-  , (Language_Thrift , "thrift")
-  , (Language_Rust , "rs")
-  , (Language_Buck , "buck")
-  , (Language_Erlang , "erl")
-  ]
-
-languageToCode :: Map.Map Language Text
-languageToCode = Map.fromList shortCodeTable
-
-codeToLanguage :: Map.Map Text Language
-codeToLanguage = Map.fromList (map swap shortCodeTable)
-
--- | Symbol identifier to use when we don't support symbol identifiers
-unsupportedSymbol :: Text
-unsupportedSymbol = "UNSUPPORTED_LANGUAGE"
-
--- | Language to canonical shortcode in symbol
-toShortCode :: Language -> Text
-toShortCode lang = fromMaybe unsupportedSymbol
-  (Map.lookup lang languageToCode)
-
-fromShortCode :: Text -> Maybe Language
-fromShortCode code = Map.lookup code codeToLanguage
 
 --
 -- Operating on the latest repo state

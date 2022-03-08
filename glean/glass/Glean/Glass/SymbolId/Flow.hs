@@ -23,7 +23,7 @@ import qualified Glean.Schema.Flow.Types as Flow
 import qualified Glean.Schema.Src.Types as Src
 
 import Glean.Glass.Utils
-import Glean.Glass.Repos ( GleanPath(GleanPath) )
+import Glean.Glass.Base ( GleanPath(GleanPath) )
 import Glean.Glass.Types ( Name(..) )
 
 import Glean.Schema.CodeFlow.Types as Flow ( Entity(..) )

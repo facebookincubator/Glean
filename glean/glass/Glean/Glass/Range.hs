@@ -49,8 +49,8 @@ import Glean.Glass.Types
       RepoName,
       Range(range_columnEnd, range_lineEnd, range_columnBegin,
             range_lineBegin) )
-import Glean.Glass.Repos
-    ( toGleanPath, fromGleanPath, GleanPath(..) )
+import Glean.Glass.Base ( GleanPath(..) )
+import Glean.Glass.Path ( toGleanPath, fromGleanPath )
 import Glean.Glass.Logging
     ( ErrorTy(NoSrcFileFact) )
 import qualified Haxl.Core.Memo as Haxl

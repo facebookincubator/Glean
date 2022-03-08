@@ -43,7 +43,7 @@ import Glean.Angle as Angle
 
 import Glean.Glass.Attributes.SymbolKind
   ( {- instance AngleEnum Code.SymbolKind -} )
-import Glean.Glass.Repos (GleanPath(..))
+import Glean.Glass.Base (GleanPath(..))
 
 import qualified Glean.Schema.Codemarkup.Types as Code
 import qualified Glean.Schema.Code.Types as Code
