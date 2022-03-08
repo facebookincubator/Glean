@@ -19,7 +19,7 @@ CABAL_BIN=cabal
 PWD := $(shell /bin/pwd)
 CABAL = $(CABAL_BIN) --jobs --project-file=$(PWD)/cabal.project
 
-THRIFT_COMPILE = $(CABAL) run exe:thrift-compiler --
+THRIFT_COMPILE := $(shell $(CABAL) list-bin exe:thrift-compiler)
 
 BYTECODE_GEN= \
 	glean/rts/bytecode/gen/evaluate.h \
@@ -85,13 +85,17 @@ SCHEMAS= \
 	thrift \
 
 .PHONY: thrift
-thrift:: thrift-cpp thrift-hs
+thrift:: thrift-cpp thrift-compiler thrift-hs
 
 .PHONY: thrift-hs
 thrift-hs:: thrift-hsthrift-hs thrift-glean-hs
 
+.PHONY: thrift-compiler
+thrift-compiler::
+	(cd hsthrift && make CABAL="$(CABAL)" compiler)
+
 .PHONY: thrift-hsthrift-hs
-thrift-hsthrift-hs ::
+thrift-hsthrift-hs::
 	(cd hsthrift && make CABAL="$(CABAL)" thrift-hs)
 
 .PHONY: gen-schema
