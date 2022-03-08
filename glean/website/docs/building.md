@@ -95,7 +95,9 @@ sudo dnf install \
     pcre-devel \
     community-mysql-devel \
     fftw-devel \
-    xxhash-devel
+    xxhash-devel \
+    snappy-devel \
+    lz4-devel
 ```
 
 ## Building
@@ -114,8 +116,8 @@ We need to set paths to these that the Glean build can find the thrift compiler
 and associated libraries:
 
 ```
-export LD_LIBRARY_PATH=$HOME/.hsthrift/lib:$LD_LIBRARY_PATH
-export PKG_CONFIG_PATH=$HOME/lib/pkgconfig
+export LD_LIBRARY_PATH=$HOME/.hsthrift/lib:$HOME/.hsthrift/lib64:$LD_LIBRARY_PATH
+export PKG_CONFIG_PATH=$HOME/.hsthrift/lib/pkgconfig:$HOME/.hsthrift/lib64/pkgconfig
 export PATH=$PATH:$HOME/.hsthrift/bin
 ```
 
