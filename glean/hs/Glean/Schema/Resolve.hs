@@ -64,11 +64,14 @@ data Schemas = Schemas
     -- ^ Resolved schemas in dependency order
   }
 
--- | A single schema
+-- | One version of the special schema "all"
+--  This type is used for code generation.
 data Schema = Schema
   { schemaVersion :: Version
   , schemaTypes :: HashMap Name (Set Version)
   , schemaPredicates :: HashMap Name (Set Version)
+  -- ^ the types and predicates here include everything this
+  -- schema uses transitively.
   }
   deriving Eq
 
