@@ -21,6 +21,7 @@ module Glean.Regression.Snapshot
 import Control.Monad
 import qualified Data.ByteString.Lazy as BSL
 import qualified Data.Map.Strict as Map
+import Data.List
 import Data.Maybe
 import qualified Data.Text as Text
 import System.Directory
@@ -43,17 +44,19 @@ import Glean.Regression.Snapshot.Result
 import Glean.Regression.Snapshot.Transform
 import Glean.Types hiding (Success, Failure)
 
--- | From 'testRoot' this locates all /testRoot/*/*/ directories, those
--- that are exactly two levels below 'testRoot'
+-- | From 'testRoot' this locates all subdirectories below the root
+-- that contain at least one ".out" file.
 discoverTests :: FilePath -> IO [FilePath]
-discoverTests path = do
-  dirs <- list_subdirs path
-  fmap concat $ forM dirs $ \dir ->
-    map (dir </>) <$> list_subdirs (path </> dir)
+discoverTests root = go ""
   where
-    list_subdirs path = do
-      xs <- listDirectory path
-      filterM (\x -> doesDirectoryExist $ path </> x) xs
+  go dir = do
+    xs <- listDirectory (root </> dir)
+    dirs <- filterM (doesDirectoryExist . ((root </> dir) </>)) xs
+    subdirTests <- concat <$> mapM (go . (dir </>)) dirs
+    return $
+      if any (".out" `isSuffixOf`) xs
+        then dir : subdirTests
+        else subdirTests
 
 -- | Run one test and its *.query files, return (*.out, *.perf) 'FilePath'.
 runTest :: Driver opts -> opts -> TestConfig -> IO [FilePath]
