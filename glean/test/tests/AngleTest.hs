@@ -897,6 +897,9 @@ angleDSL modify = dbTestCase $ \env repo -> do
       ]
   assertEqual "angle - DSL 4" [toNat 2] results
 
+  results <- runQuery_ env repo $ modify $ Angle.query $
+    var $ \p -> p `where_` [p .= sig (never @Glean.Test.Predicate)]
+  assertEqual "angle - DSL 4" 0 (length results)
 
 -- nested patterns
 angleNested :: (forall a . Query a -> Query a) -> Test

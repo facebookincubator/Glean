@@ -33,6 +33,7 @@ module Glean.Query.Angle
   , array
   , tuple
   , wild
+  , never
   , field
   , end
   , rec
@@ -283,6 +284,9 @@ end = NoFields
 
 wild :: Angle t
 wild = Angle $ pure $ Wildcard DSL
+
+never :: Angle t
+never = wild `where_` [nat 1 .= nat 2]
 
 -- | Use this when you want a variable to match a nested predicate
 -- rather than its key.
