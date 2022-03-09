@@ -6,38 +6,6 @@
       "entity": {
         "cxx": {
           "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "h" } } },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "signature": {
-                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 14,
-                  "columnBegin": 1,
-                  "lineEnd": 19,
-                  "columnEnd": 1
-                }
-              }
-            }
-          }
-        }
-      },
-      "kind": 13
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "entity": {
-        "cxx": {
-          "decl": {
             "variable": {
               "key": {
                 "name": {
@@ -129,6 +97,43 @@
         }
       },
       "kind": 14
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "h" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 14,
+                      "columnBegin": 1,
+                      "lineEnd": 19,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "kind": 13
     }
   }
 ]

@@ -5,46 +5,22 @@
       "file": { "key": "test.cpp" },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "namespace_": {
               "key": {
-                "name": { "key": { "name": { "key": "N0" } } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
-                  "columnBegin": 1,
-                  "lineEnd": 13,
-                  "columnEnd": 1
-                }
-              }
-            }
-          }
-        }
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "namespace_": {
-              "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "N1" },
-                    "parent": { "key": { "name": { "key": "N0" } } }
+                    "name": { "key": { "name": { "key": "N0" } } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 9,
+                      "columnBegin": 1,
+                      "lineEnd": 13,
+                      "columnEnd": 1
+                    }
                   }
                 },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 10,
-                  "columnBegin": 1,
-                  "lineEnd": 12,
-                  "columnEnd": 1
-                }
+                "members": { "key": [ ] }
               }
             }
           }
@@ -58,27 +34,27 @@
       "file": { "key": "test.cpp" },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "namespace_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "N2" },
-                    "parent": {
+                    "name": {
                       "key": {
                         "name": { "key": "N1" },
                         "parent": { "key": { "name": { "key": "N0" } } }
                       }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 10,
+                      "columnBegin": 1,
+                      "lineEnd": 12,
+                      "columnEnd": 1
                     }
                   }
                 },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 1,
-                  "lineEnd": 11,
-                  "columnEnd": 15
-                }
+                "members": { "key": [ ] }
               }
             }
           }
@@ -92,17 +68,32 @@
       "file": { "key": "test.cpp" },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "namespace_": {
               "key": {
-                "name": { "key": { "name": { "key": "X1" } } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 15,
-                  "columnBegin": 1,
-                  "lineEnd": 19,
-                  "columnEnd": 1
-                }
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "N2" },
+                        "parent": {
+                          "key": {
+                            "name": { "key": "N1" },
+                            "parent": { "key": { "name": { "key": "N0" } } }
+                          }
+                        }
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 11,
+                      "columnBegin": 1,
+                      "lineEnd": 11,
+                      "columnEnd": 15
+                    }
+                  }
+                },
+                "members": { "key": [ ] }
               }
             }
           }
@@ -116,17 +107,22 @@
       "file": { "key": "test.cpp" },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "namespace_": {
               "key": {
-                "name": { "key": { "name": { "key": "X2" } } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
-                  "columnBegin": 1,
-                  "lineEnd": 25,
-                  "columnEnd": 1
-                }
+                "declaration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "X1" } } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 15,
+                      "columnBegin": 1,
+                      "lineEnd": 19,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "members": { "key": [ ] }
               }
             }
           }
@@ -140,17 +136,51 @@
       "file": { "key": "test.cpp" },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "namespace_": {
               "key": {
-                "name": { "key": { "name": { "key": "X3" } } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 27,
-                  "columnBegin": 1,
-                  "lineEnd": 31,
-                  "columnEnd": 1
-                }
+                "declaration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "X2" } } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 21,
+                      "columnBegin": 1,
+                      "lineEnd": 25,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "members": { "key": [ ] }
+              }
+            }
+          }
+        }
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "namespace_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "X3" } } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 27,
+                      "columnBegin": 1,
+                      "lineEnd": 31,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "members": { "key": [ ] }
               }
             }
           }

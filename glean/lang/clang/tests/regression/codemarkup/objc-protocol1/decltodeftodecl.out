@@ -3,64 +3,6 @@
   {
     "key": {
       "tuplefield0": {
-        "function_": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": { "name": { "key": "call" } } },
-                "scope": { "global_": { } }
-              }
-            },
-            "signature": {
-              "key": {
-                "returns": { "key": "void" },
-                "parameters": [
-                  { "name": { "key": "s" }, "type": { "key": "J *" } }
-                ]
-              }
-            },
-            "source": {
-              "file": { "key": "test.m" },
-              "lineBegin": 16,
-              "columnBegin": 1,
-              "lineEnd": 19,
-              "columnEnd": 1
-            }
-          }
-        }
-      },
-      "tuplefield1": {
-        "function_": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": { "name": { "key": "call" } } },
-                "scope": { "global_": { } }
-              }
-            },
-            "signature": {
-              "key": {
-                "returns": { "key": "void" },
-                "parameters": [
-                  { "name": { "key": "s" }, "type": { "key": "J *" } }
-                ]
-              }
-            },
-            "source": {
-              "file": { "key": "test.m" },
-              "lineBegin": 16,
-              "columnBegin": 1,
-              "lineEnd": 19,
-              "columnEnd": 1
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "tuplefield0": {
         "objcContainer": {
           "key": {
             "id": { "interface_": { "key": "J" } },

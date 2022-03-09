@@ -335,23 +335,29 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "Bar" },
-                    "scope": { "global_": { } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "Bar" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 10,
+                      "columnBegin": 1,
+                      "lineEnd": 10,
+                      "columnEnd": 13
+                    }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 10,
-                  "columnBegin": 1,
-                  "lineEnd": 10,
-                  "columnEnd": 13
-                }
+                "bases": [ ],
+                "members": { "key": [ ] }
               }
             }
           }
@@ -694,23 +700,29 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "Baz" },
-                    "scope": { "global_": { } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "Baz" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 11,
+                      "columnBegin": 1,
+                      "lineEnd": 11,
+                      "columnEnd": 13
+                    }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 1,
-                  "lineEnd": 11,
-                  "columnEnd": 13
-                }
+                "bases": [ ],
+                "members": { "key": [ ] }
               }
             }
           }
@@ -1053,23 +1065,29 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "Foo" },
-                    "scope": { "global_": { } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "Foo" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 9,
+                      "columnBegin": 1,
+                      "lineEnd": 9,
+                      "columnEnd": 13
+                    }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
-                  "columnBegin": 1,
-                  "lineEnd": 9,
-                  "columnEnd": 13
-                }
+                "bases": [ ],
+                "members": { "key": [ ] }
               }
             }
           }
@@ -1412,20 +1430,29 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
-                  "key": { "name": { "key": "S" }, "scope": { "global_": { } } }
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "S" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 14,
+                      "columnBegin": 1,
+                      "lineEnd": 17,
+                      "columnEnd": 1
+                    }
+                  }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 14,
-                  "columnBegin": 1,
-                  "lineEnd": 17,
-                  "columnEnd": 1
-                }
+                "bases": [ ],
+                "members": { "key": [ ] }
               }
             }
           }
@@ -1768,20 +1795,29 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
-                  "key": { "name": { "key": "S" }, "scope": { "global_": { } } }
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "S" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 19,
+                      "columnBegin": 1,
+                      "lineEnd": 23,
+                      "columnEnd": 1
+                    }
+                  }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 19,
-                  "columnBegin": 1,
-                  "lineEnd": 23,
-                  "columnEnd": 1
-                }
+                "bases": [ ],
+                "members": { "key": [ ] }
               }
             }
           }

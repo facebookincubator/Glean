@@ -54,33 +54,38 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "function_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": { "name": { "key": "bar" } } },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "void" },
-                    "parameters": [
-                      {
-                        "name": { "key": "selector" },
-                        "type": { "key": "SEL" }
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "bar" } } },
+                        "scope": { "global_": { } }
                       }
-                    ]
+                    },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "void" },
+                        "parameters": [
+                          {
+                            "name": { "key": "selector" },
+                            "type": { "key": "SEL" }
+                          }
+                        ]
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 13,
+                      "columnBegin": 1,
+                      "lineEnd": 16,
+                      "columnEnd": 1
+                    }
                   }
                 },
-                "source": {
-                  "file": { "key": "test.m" },
-                  "lineBegin": 13,
-                  "columnBegin": 1,
-                  "lineEnd": 16,
-                  "columnEnd": 1
-                }
+                "isInline": false
               }
             }
           }
@@ -106,30 +111,35 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "function_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": { "name": { "key": "call" } } },
-                    "scope": { "global_": { } }
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "call" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "void" },
+                        "parameters": [
+                          { "name": { "key": "s" }, "type": { "key": "J *" } }
+                        ]
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 18,
+                      "columnBegin": 1,
+                      "lineEnd": 23,
+                      "columnEnd": 1
+                    }
                   }
                 },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "void" },
-                    "parameters": [
-                      { "name": { "key": "s" }, "type": { "key": "J *" } }
-                    ]
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.m" },
-                  "lineBegin": 18,
-                  "columnBegin": 1,
-                  "lineEnd": 23,
-                  "columnEnd": 1
-                }
+                "isInline": false
               }
             }
           }

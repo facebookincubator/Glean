@@ -6,43 +6,6 @@
       "entity": {
         "cxx": {
           "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "call" } } },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "int" },
-                    "parameters": [
-                      { "name": { "key": "x" }, "type": { "key": "I *" } }
-                    ]
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.m" },
-                  "lineBegin": 15,
-                  "columnBegin": 1,
-                  "lineEnd": 18,
-                  "columnEnd": 1
-                }
-              }
-            }
-          }
-        }
-      },
-      "kind": 13
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.m" },
-      "entity": {
-        "cxx": {
-          "decl": {
             "objcMethod": {
               "key": {
                 "selector": { "key": [ "foo" ] },
@@ -66,6 +29,48 @@
         }
       },
       "kind": 7
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "call" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "int" },
+                        "parameters": [
+                          { "name": { "key": "x" }, "type": { "key": "I *" } }
+                        ]
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 15,
+                      "columnBegin": 1,
+                      "lineEnd": 18,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "kind": 13
     }
   }
 ]

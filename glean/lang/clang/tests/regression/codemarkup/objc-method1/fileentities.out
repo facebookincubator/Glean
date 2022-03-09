@@ -212,30 +212,38 @@
       },
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "function_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": { "name": { "key": "setFoo" } } },
-                    "scope": { "global_": { } }
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "setFoo" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "void" },
+                        "parameters": [
+                          {
+                            "name": { "key": "foo" },
+                            "type": { "key": "id<Foo>" }
+                          }
+                        ]
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.mm" },
+                      "lineBegin": 15,
+                      "columnBegin": 1,
+                      "lineEnd": 17,
+                      "columnEnd": 1
+                    }
                   }
                 },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "void" },
-                    "parameters": [
-                      { "name": { "key": "foo" }, "type": { "key": "id<Foo>" } }
-                    ]
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.mm" },
-                  "lineBegin": 15,
-                  "columnBegin": 1,
-                  "lineEnd": 17,
-                  "columnEnd": 1
-                }
+                "isInline": false
               }
             }
           }

@@ -349,13 +349,49 @@ predicate CxxResolveTraceLocation:
     ({ Str, Range, Entity } where
       Decl = Decls[..];
       cxx1.DeclarationLocationName { Decl, Range, Str };
-      Entity = code.Entity { cxx = { decl = Decl } };
+      CxxResolveDeclarationToEntity { Decl, Entity };
     ) |
     ## preprocessor #defines
     ({ Str, Range, Entity } where
       { define = Define } = PPDecls[..];
       cxx1.PPDefineLocation { Define, Str, _, Range };
       Entity = code.Entity { pp = { define = Define } };
+    )
+
+# For a given declaration, match to proper code.cxx.Entity. It will be
+# a definition entity if the given declaration points to a definition.
+predicate CxxResolveDeclarationToEntity:
+  {
+    decl: cxx1.Declaration,
+    entity: code.Entity,
+  }
+  { Decl, Entity } where
+    (
+      { function_ = FunctionDecl } = Decl;
+      FunctionDefn = cxx1.FunctionDefinition { declaration = FunctionDecl };
+      Entity = code.Entity { cxx = { defn = { function_ = FunctionDefn } } };
+    ) |
+    (
+      { record_ = RecordDecl } = Decl;
+      RecordDefn = cxx1.RecordDefinition { declaration = RecordDecl };
+      Entity = code.Entity { cxx = { defn = { record_ = RecordDefn } } };
+    ) |
+    (
+      { enum_ = EnumDecl } = Decl;
+      EnumDefn = cxx1.EnumDefinition { declaration = EnumDecl };
+      Entity = code.Entity { cxx = { defn = { enum_ = EnumDefn } } };
+    ) |
+    (
+      { namespace_ = NamespaceDecl } = Decl;
+      NamespaceDefn = cxx1.NamespaceDefinition { declaration = NamespaceDecl };
+      Entity = code.Entity { cxx = { defn = { namespace_ = NamespaceDefn } } };
+    ) |
+    (
+      !({ function_ = FunctionDecl } = Decl; cxx1.FunctionDefinition { declaration = FunctionDecl });
+      !({ record_ = RecordDecl } = Decl; cxx1.RecordDefinition { declaration = RecordDecl });
+      !({ enum_ = EnumDecl } = Decl; cxx1.EnumDefinition { declaration = EnumDecl });
+      !({ namespace_ = NamespaceDecl } = Decl; cxx1.NamespaceDefinition { declaration = NamespaceDecl });
+      Entity = code.Entity { cxx = { decl = Decl } };
     )
 
 # Resolve sigma/Haskell locations

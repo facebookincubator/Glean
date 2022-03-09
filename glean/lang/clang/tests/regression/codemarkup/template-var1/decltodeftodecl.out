@@ -3,54 +3,6 @@
   {
     "key": {
       "tuplefield0": {
-        "function_": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": { "name": { "key": "h" } } },
-                "scope": { "global_": { } }
-              }
-            },
-            "signature": {
-              "key": { "returns": { "key": "void" }, "parameters": [ ] }
-            },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 14,
-              "columnBegin": 1,
-              "lineEnd": 19,
-              "columnEnd": 1
-            }
-          }
-        }
-      },
-      "tuplefield1": {
-        "function_": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": { "name": { "key": "h" } } },
-                "scope": { "global_": { } }
-              }
-            },
-            "signature": {
-              "key": { "returns": { "key": "void" }, "parameters": [ ] }
-            },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 14,
-              "columnBegin": 1,
-              "lineEnd": 19,
-              "columnEnd": 1
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "tuplefield0": {
         "variable": {
           "key": {
             "name": {
