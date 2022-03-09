@@ -56,7 +56,7 @@ import Glean.Schema.Resolve
 
 data WhichVersion
   = AllVersions
-  | CurrentVersion
+  | HighestVersion
   | OneVersion Version
 
 data Options = Options
@@ -99,7 +99,7 @@ options = do
     justVersion = fmap OneVersion $ option auto $
       long "version" <> metavar "VERSION" <>
       help "version of the schema to generate code for"
-  version <- allVersions <|> justVersion <|> pure CurrentVersion
+  version <- allVersions <|> justVersion <|> pure HighestVersion
   return Options{..}
 
 main :: IO ()
@@ -189,11 +189,11 @@ rmLocSchemas (SourceSchemas version schemas evolves) =
 gen :: Options -> Schemas -> IO ()
 gen Options{..} Schemas{..} = do
   case version of
-    CurrentVersion -> do
-      currentVersion <- case schemasCurrentVersion of
+    HighestVersion -> do
+      highestVersion <- case schemasHighestVersion of
         Just ver -> return ver
         Nothing -> fail "missing 'all' schema"
-      genFor currentVersion Nothing
+      genFor highestVersion Nothing
     OneVersion v -> genFor v Nothing
     AllVersions ->
       forM_ (HashMap.keys schemasSchemas) $ \v ->

@@ -43,7 +43,7 @@ import Glean.Database.Schema (toSchemaInfo)
 import Glean.Internal.Types
 import qualified Glean.Recipes.Types as Recipes
 import Glean.RTS.Foreign.Lookup (firstFreeId)
-import Glean.Schema.Resolve (schemasCurrentVersion)
+import Glean.Schema.Resolve (schemasHighestVersion)
 import Glean.RTS.Types (lowestFid)
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types hiding (Database)
@@ -150,7 +150,7 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
   where
     schemaProperties = do
       (_,schemas) <- Observed.get envSchemaSource
-      currentVersion <- case schemasCurrentVersion schemas of
+      currentVersion <- case schemasHighestVersion schemas of
         Just ver -> return ver
         Nothing -> dbError kickOff_repo "missing 'all' schema"
       let version = Text.pack $ show currentVersion
