@@ -17,9 +17,9 @@
 
 CABAL_BIN=cabal
 PWD := $(shell /bin/pwd)
-CABAL = $(CABAL_BIN) --jobs --project-file=$(PWD)/cabal.project
+CABAL = $(CABAL_BIN) --jobs -vnormal+nowrap --project-file=$(PWD)/cabal.project
 
-THRIFT_COMPILE := $(shell $(CABAL) list-bin exe:thrift-compiler)
+THRIFT_COMPILE := $(shell $(CABAL) -v0 list-bin exe:thrift-compiler)
 
 BYTECODE_GEN= \
 	glean/rts/bytecode/gen/evaluate.h \
