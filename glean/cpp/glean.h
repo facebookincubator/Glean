@@ -510,7 +510,7 @@ private:
   }
 };
 
-// A Batch encapsulates a set of cached facts which is initially empty and an
+// A Batch encapsulates a set of cached facts which is initially empty and a
 // set of facts local to the Batch. Local facts can reference cached ones but
 // not vice versa. New local facts can be added to the Batch.
 //

@@ -146,7 +146,11 @@ writeWorkQueue wq Parcel{..} = do
 
 -- | Given a list of acceptable tasks, get the next available work parcel for
 -- one of them.
-readWorkQueue :: WorkQueue -> [Text] -> Maybe Parcel -> STM Parcel
+readWorkQueue
+  :: WorkQueue
+  -> [Text] -- ^ regex patterns to match task names
+  -> Maybe Parcel
+  -> STM Parcel
 readWorkQueue queue xs near = do
   tasks <- readTVar $ wqQueue queue
   read_near tasks near <|> read_any tasks
