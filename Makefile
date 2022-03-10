@@ -116,7 +116,7 @@ THRIFT_GLEAN= \
 	glean/config/client/client_config.thrift
 
 .PHONY: thrift-glean-hs
-thrift-glean-hs:
+thrift-glean-hs: thrift-compiler
 	for f in $(THRIFT_GLEAN); do \
 		$(THRIFT_COMPILE) --hs $$f -o $$(dirname $$f); \
 	done
@@ -132,7 +132,7 @@ thrift-glean-hs:
 
 
 .PHONY: thrift-schema-hs
-thrift-schema-hs:
+thrift-schema-hs: thrift-compiler
 	for s in $(SCHEMAS); do \
 		$(THRIFT_COMPILE) --hs \
 			glean/schema/thrift/$$s.thrift \
