@@ -1152,6 +1152,7 @@ import thrift.4
 import rust.1
 import code.cxx.3
 import code.buck.1
+import code.hack.3
 import buck.3
 import erlang.1
 
@@ -2423,4 +2424,33 @@ predicate ExtendsChildEntity :
         cxx1.RecordDerived{base=Parent, derived=Child}
       )
     )
+
+predicate ContainsChildEntity :
+  {
+    parent: code.Entity,
+    child: code.Entity
+  }
+  { { hack = Parent }, { hack = Child } } where
+    HackContainsChildEntity { Parent, Child }
+
+predicate HackContainsChildEntity :
+  {
+    parent: code.hack.Entity,
+    child: code.hack.Entity
+  }
+  { { decl = { container = Container } }, { decl = Member } } where
+    (
+      { class_ = Class } = Container;
+      hack.ClassDefinition { declaration = Class, members = Members };
+    ) |
+    (
+      { interface_ = Interface } = Container;
+      hack.InterfaceDefinition { declaration = Interface, members = Members };
+    ) |
+    (
+      { trait = Trait } = Container;
+      hack.TraitDefinition { declaration = Trait, members = Members };
+    );
+    Member = Members[..]
+
 }
