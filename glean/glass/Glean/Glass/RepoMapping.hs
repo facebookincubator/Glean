@@ -16,9 +16,19 @@ import Glean.Glass.Types ( Language(..), RepoName(..) )
 -- example: the open source react repo.
 gleanIndices :: Map.Map RepoName [(GleanDBName, Language)]
 gleanIndices = Map.fromList
-    [ (RepoName "react",
-        [ ("react", Language_JavaScript) ])
-    ]
+  -- demo
+  [ (RepoName "react", [ ("react", Language_JavaScript) ])
+  -- for running tests with locally-indexed repos:
+  , (RepoName "test",
+      [("test", Language_JavaScript)
+      ,("test", Language_Hack)
+      ,("test", Language_Cpp)
+      ,("test", Language_PreProcessor)
+      ,("test", Language_Python)
+      ,("test", Language_Thrift)
+      ,("test", Language_Buck)
+      ])
+  ]
 
 -- repos that contain symbol attributes
 gleanAttrIndices :: Map.Map GleanDBName [GleanDBAttrName]

@@ -69,7 +69,6 @@ class ConfigProvider cfg where
 class ConfigProvider cfg => TestConfigProvider cfg where
   setTestConfig :: cfg -> ConfigPath -> ByteString -> IO ()
 
-
 -- | Variant of 'withOptions' that adds in the ConfigProvider options
 withConfigOptions
   :: ConfigProvider cfg

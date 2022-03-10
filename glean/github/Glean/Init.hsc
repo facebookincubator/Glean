@@ -11,6 +11,7 @@ module Glean.Init (
     withUnitTest,
     withGflags,
     withOptions,
+    withUnitTestOptions,
   ) where
 
 import Control.Exception
@@ -23,6 +24,8 @@ import Util.Encoding (setDefaultEncodingToUTF8)
 import Util.OptParse
 import Util.Text (withCStrings)
 import Util.Control.Exception (tryAll)
+
+import TestRunner
 
 import Mangle.TH
 
@@ -62,6 +65,9 @@ withGflags args = bracket_ (follyInit args) follyUninit
 
 withOptions :: ParserInfo a -> (a -> IO b) -> IO b
 withOptions = withParser Sys.getArgs
+
+withUnitTestOptions :: ParserInfo a -> (TestAction -> a -> IO b) -> IO b
+withUnitTestOptions opts f = withOptions opts $ f TestAction
 
 withParser :: IO [String] -> ParserInfo a -> (a -> IO b) -> IO b
 withParser argsIO p act = do
