@@ -1428,7 +1428,7 @@ predicate HackResolveLocation:
     hack.FileDeclarations { file = File, declarations = Ds };
     Decl = Ds[..];
     hack.DeclarationName Decl -> (hack.Name Name);
-    hack.DeclarationLocation { declaration = Decl, file = File, span = Span };
+    hack.DeclarationSpan { declaration = Decl, file = File, span = Span };
     Entity = code.Entity { hack = { decl = Decl } };
 
 predicate PythonResolveLocation:
@@ -1564,7 +1564,7 @@ predicate HackEntityLocation:
     location: Location,
   }
   { { hack = { decl = D } }, { Name, File, { span = Span } } } where
-    hack.DeclarationLocation { declaration = D, file = File, span = Span };
+    hack.DeclarationSpan { declaration = D, file = File, span = Span };
     hack.DeclarationName D -> (hack.Name Name);
 
 predicate PythonEntityLocation:
