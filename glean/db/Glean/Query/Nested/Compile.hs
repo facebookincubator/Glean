@@ -41,18 +41,16 @@ fresh = do n <- get; put (n+1); return n
 
 -- | Convert a nested query into a TcQuery
 toGenerators
-  :: Bool -- ^ enable evolves
-  -> DbSchema
+  :: DbSchema
   -> Bool -- ^ True <=> derive DerivedAndStored predicates
   -> PredicateDetails
   -> Term (RTS.Match (Nested Fid))
   -> Either Text (CodegenQuery, Evolutions)
-toGenerators enableEvolves dbSchema deriveStored details term =
+toGenerators dbSchema deriveStored details term =
   runExcept $ do
     (query, numVars) <- compileResult
     let typechecked = QueryWithInfo query numVars queryTy
     (flat, evolutions) <- flatten
-      enableEvolves
       dbSchema
       Angle.latestAngleVersion
       deriveStored

@@ -124,7 +124,6 @@ withSchema version str action =
     let settings =
           [ setRoot root
           , setSchemaPath file
-          , setSchemaEnableEvolves True
           ]
     r <- tryAll $
       withEmptyTestDB settings $ \env repo ->
@@ -1315,28 +1314,6 @@ schemaEvolvesTransformations = TestList
         nested <- decodeNestedAs (PredicateRef "x.P" 1) byRef response
         assertEqual "nested count" 2 (length nested)
 
-  , TestLabel "can disable evolves" $ TestCase $ do
-    withSchemaAndFacts [setSchemaEnableEvolves False]
-      [s|
-        schema x.1 {
-          predicate P : nat
-        }
-        schema x.2 {
-          predicate P : nat
-        }
-        schema x.2 evolves x.1
-        schema all.1 : x.1, x.2 {}
-      |]
-      [ mkBatch (PredicateRef "x.P" 2)
-          [ [s|{ "id": 1, "key": 1 }|]
-          , [s|{ "id": 2, "key": 2 }|]
-          ]
-      ]
-      [s| x.P.1 _ |]
-      $ \byRef response _ -> do
-        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
-        assertEqual "result count" 0 (length facts)
-
   , TestLabel "derived pred fields" $ TestCase $ do
     withSchemaAndFacts []
       [s|
@@ -1685,7 +1662,6 @@ withSchemaAndFacts customSettings schema facts query act =
   let settings =
         [ setRoot root
         , setSchemaPath file
-        , setSchemaEnableEvolves True
         ] ++ customSettings
 
   -- create db and write facts

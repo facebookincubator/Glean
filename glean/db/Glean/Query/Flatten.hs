@@ -35,13 +35,12 @@ import Glean.Schema.Util
 -- | Turn 'TypecheckedQuery' into 'FlattenedQuery', by lifting out
 -- nested generators into statements.
 flatten
-  :: Bool -- ^ enable evolves
-  -> DbSchema
+  :: DbSchema
   -> Schema.AngleVersion
   -> Bool -- ^ derive DerivedAndStored predicates
   -> TypecheckedQuery
   -> Except Text (FlattenedQuery, Evolutions)
-flatten enableEvolves dbSchema _ver deriveStored typechecked = do
+flatten dbSchema _ver deriveStored typechecked = do
   let returnTy = derefType $ evolveType dbSchema $ qiReturnType typechecked
       deriveStoredPred =
         case returnTy of
@@ -51,7 +50,6 @@ flatten enableEvolves dbSchema _ver deriveStored typechecked = do
         dbSchema
         (qiNumVars typechecked)
         deriveStoredPred
-        enableEvolves
   (qi, FlattenState{..}) <- flip runStateT state $ do
       query <- evolve (qiQuery typechecked)
       q <- flattenQuery query
@@ -67,10 +65,7 @@ flatten enableEvolves dbSchema _ver deriveStored typechecked = do
 evolve :: TcQuery -> F TcQuery
 evolve query = do
   dbSchema <- gets flDbSchema
-  enable <- gets flEnableEvolves
-  return $ if enable
-    then evolveTcQuery dbSchema query
-    else query
+  return $ evolveTcQuery dbSchema query
 
 evolveTypecheckedQuery :: TypecheckedQuery -> F TypecheckedQuery
 evolveTypecheckedQuery (QueryWithInfo q vars _) = do

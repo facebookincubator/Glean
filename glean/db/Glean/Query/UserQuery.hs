@@ -498,13 +498,9 @@ userQueryImpl
         -- that returns a temporary predicate.
         _ -> do
           let
-            evolves =
-              envSchemaEnableEvolves env || config_enable_schema_evolution
-
           (compileTime, _, (query@QueryWithInfo{..}, evolutions)) <- timeIt $
             compileAngleQuery
               schemaVersion
-              evolves
               schema
               userQuery_query
               stored
@@ -758,10 +754,8 @@ userQueryImpl
             nextId <- firstFreeId lookup
             let pids = getExpandPids query
                 limits = getLimits pids
-                evolves =
-                  envSchemaEnableEvolves env || config_enable_schema_evolution
             (gens, evolutions) <-
-              case toGenerators evolves schema stored details query of
+              case toGenerators schema stored details query of
                 Left err -> throwIO $ Thrift.BadQuery err
                 Right r -> return r
             derived <- FactSet.new nextId
@@ -830,12 +824,11 @@ schemaVersionForQuery env schema repo qversion = do
 compileAngleQuery
   :: SchemaVersion
     -- ^ Schema version to resolve unversioned predicates
-  -> Bool  -- ^ enable evolves
   -> DbSchema
   -> ByteString
   -> Bool
   -> IO (CodegenQuery, Evolutions)
-compileAngleQuery ver enableEvolves dbSchema source stored = do
+compileAngleQuery ver dbSchema source stored = do
   parsed <- checkBadQuery Text.pack $ Angle.parseQuery source
   vlog 2 $ "parsed query: " <> show (pretty parsed)
 
@@ -844,7 +837,7 @@ compileAngleQuery ver enableEvolves dbSchema source stored = do
   vlog 2 $ "typechecked query: " <> show (pretty (qiQuery typechecked))
 
   (flattened, evolutions) <- checkBadQuery id $ runExcept $
-    flatten enableEvolves dbSchema latestAngleVersion stored typechecked
+    flatten dbSchema latestAngleVersion stored typechecked
   vlog 2 $ "flattened query: " <> show (pretty (qiQuery flattened))
 
   optimised <- checkBadQuery id $ runExcept $ optimise flattened

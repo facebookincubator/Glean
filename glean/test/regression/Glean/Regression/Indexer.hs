@@ -88,5 +88,4 @@ withTestEnvDatabase indexer test action =
   action backend (testRepo test)
   where
     settings =
-        [ setRoot $ testOutput test </> "db"
-        , setSchemaEnableEvolves True ]
+        [ setRoot $ testOutput test </> "db" ]

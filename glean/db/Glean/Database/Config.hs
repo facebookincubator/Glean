@@ -64,8 +64,6 @@ data Config = Config
   , cfgSchemaVersion :: Maybe Version
       -- ^ If set, this is the version of the "all" schema that is
       -- used to resolve unversioned predicates in a query.
-  , cfgSchemaEnableEvolves :: Bool
-      -- ^ Allow the evolves directive to take effect.
   , cfgRecipeConfig :: ThriftSource Recipes.Config
   , cfgServerConfig :: ThriftSource ServerConfig.Config
   , cfgStorage :: FilePath -> ServerConfig.Config -> IO (Some Storage)
@@ -91,7 +89,6 @@ instance Default Config where
     , cfgSchemaDir = Nothing
     , cfgSchemaOverride = False
     , cfgSchemaVersion = Nothing
-    , cfgSchemaEnableEvolves = False
     , cfgRecipeConfig = def
     , cfgServerConfig = def
     , cfgStorage = \root scfg -> Some <$> RocksDB.newStorage root scfg
@@ -202,7 +199,6 @@ options = do
   cfgReadOnly <- switch (long "db-read-only")
   cfgMockWrites <- switch (long "db-mock-writes")
   cfgTailerOpts <- Tailer.options
-  cfgSchemaEnableEvolves <- switch (long "db-schema-evolves")
   return Config
     { cfgCatalogStore = cfgCatalogStore def
     , cfgListener = mempty
