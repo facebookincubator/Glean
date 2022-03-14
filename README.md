@@ -1,5 +1,6 @@
 ![ci-x86](https://github.com/facebookincubator/Glean/actions/workflows/ci.yml/badge.svg)
 ![ci-arm](https://github.com/facebookincubator/Glean/actions/workflows/ci-arm64.yml/badge.svg)
+![ci-clang](https://github.com/facebookincubator/Glean/actions/workflows/ci-clang.yml/badge.svg)
 ![demo](https://github.com/facebookincubator/Glean/actions/workflows/glean-docker.yml/badge.svg)
 
 # Glean
