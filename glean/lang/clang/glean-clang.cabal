@@ -131,7 +131,7 @@ common fb-cpp
      cxx-options: -O3
 
 library
-    import: fb-haskell, fb-cpp, deps, exe
+    import: fb-haskell, fb-cpp, deps
     exposed-modules:
         Derive
         Derive.Common
