@@ -24,6 +24,8 @@ class SourceClass extends SuperClass {
   }
 }
 
+class SubClass extends SourceClass {}
+
 class TestAnnotation implements HH\ClassAttribute {
   public function __construct(private string $test) {}
 }

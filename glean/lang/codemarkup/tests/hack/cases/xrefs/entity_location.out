@@ -159,6 +159,26 @@
           "decl": {
             "container": {
               "class_": {
+                "key": { "name": { "key": { "name": { "key": "SubClass" } } } }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "length": 8, "start": 483 } },
+        "name": "SubClass"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
                 "key": {
                   "name": { "key": { "name": { "key": "SuperClass" } } }
                 }
@@ -191,7 +211,7 @@
       },
       "location": {
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "length": 14, "start": 483 } },
+        "location": { "span": { "length": 14, "start": 522 } },
         "name": "TestAnnotation"
       }
     }
@@ -578,7 +598,7 @@
       },
       "location": {
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "length": 11, "start": 547 } },
+        "location": { "span": { "length": 11, "start": 586 } },
         "name": "__construct"
       }
     }
@@ -715,7 +735,7 @@
       },
       "location": {
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "length": 5, "start": 574 } },
+        "location": { "span": { "length": 5, "start": 613 } },
         "name": "test"
       }
     }

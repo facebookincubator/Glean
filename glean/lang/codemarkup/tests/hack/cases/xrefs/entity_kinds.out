@@ -135,6 +135,22 @@
           "decl": {
             "container": {
               "class_": {
+                "key": { "name": { "key": { "name": { "key": "SubClass" } } } }
+              }
+            }
+          }
+        }
+      },
+      "kind": 6
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
                 "key": {
                   "name": { "key": { "name": { "key": "SuperClass" } } }
                 }

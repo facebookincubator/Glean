@@ -678,6 +678,32 @@
       "file": { "key": "www/SourceClass.php" },
       "xref": {
         "target": {
+          "name": "SourceClass",
+          "file": { "key": "www/SourceClass.php" },
+          "span": { "start": 296, "length": 11 }
+        },
+        "source": { "start": 500, "length": 11 }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceClass" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "xref": {
+        "target": {
           "name": "SuperClass",
           "file": { "key": "www/SuperClass.php" },
           "span": { "start": 242, "length": 10 }
@@ -706,7 +732,7 @@
         "target": {
           "name": "TestAnnotation",
           "file": { "key": "www/SourceClass.php" },
-          "span": { "start": 483, "length": 14 }
+          "span": { "start": 522, "length": 14 }
         },
         "source": { "start": 265, "length": 14 }
       },
@@ -754,9 +780,9 @@
         "target": {
           "name": "test",
           "file": { "key": "www/SourceClass.php" },
-          "span": { "start": 574, "length": 5 }
+          "span": { "start": 613, "length": 5 }
         },
-        "source": { "start": 574, "length": 5 }
+        "source": { "start": 613, "length": 5 }
       },
       "entity": {
         "hack": {

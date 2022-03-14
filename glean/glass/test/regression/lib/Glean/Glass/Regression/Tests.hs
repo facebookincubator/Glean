@@ -11,7 +11,8 @@ module Glean.Glass.Regression.Tests (
   testDescribeSymbolMatchesPath,
   testFindReferences,
   testDescribeSymbolComments,
-  testDescribeSymbolHasAnnotations
+  testDescribeSymbolHasAnnotations,
+  testSearchRelated
 ) where
 
 import Data.Default
@@ -25,7 +26,7 @@ import Glean
 import Glean.Util.Some
 
 import Glean.Glass.Handler
-import Glean.Glass.Types
+import Glean.Glass.Types as Glass
 
 import Glean.Glass.Regression.Util
 
@@ -103,12 +104,66 @@ testFindReferences sym@(SymbolId name) paths get =
     (backend, _repo) <- get
     withTestEnv backend $ \env -> do
       locs <- findReferences env sym def
-      let cmpLocs results =
-            Map.fromList paths ==
-            Map.fromList
-              [ (head paths, length paths) | paths <- group (sort results) ]
-      assertBool "findReferences Path matches" $
-        cmpLocs (map location_filepath locs)
+      let
+        assertLocsEq s results =
+          assertEqual s
+            (Map.fromList paths )
+            (Map.fromList
+              [ (head paths, length paths) | paths <- group (sort results) ])
+      assertLocsEq "findReferences Path matches" $
+        map location_filepath locs
       locs <- findReferenceRanges env sym def
-      assertBool "findReferences Path matches" $
-        cmpLocs (map locationRange_filepath locs)
+      assertLocsEq "findReferences Path matches" $
+        map locationRange_filepath locs
+
+-- | Test search related contains an edge
+testSearchRelated
+  :: SymbolId
+  -> Bool
+  -> RelationDirection
+  -> RelationType
+  -> (SymbolId, SymbolId)
+  -> IO (Some Backend, Repo) -> Test
+testSearchRelated sym recurse dir rel (parent, child) get =
+  TestLabel label $ TestCase $ do
+    (backend, _repo) <- get
+    withTestEnv backend $ \env -> do
+      SearchRelatedResult{..} <-
+        searchRelated env sym def SearchRelatedRequest {..}
+      let
+        actual = -- better error messages
+          if
+            any
+              ((==) relatedSymbols_parent . Glass.relatedSymbols_parent)
+              searchRelatedResult_edges &&
+            any
+              ((==) relatedSymbols_child . Glass.relatedSymbols_child)
+              searchRelatedResult_edges
+          then [(parent, arrow, child)]
+          else
+            map
+              (\(RelatedSymbols p c) -> (p, arrow, c))
+              searchRelatedResult_edges
+      assertEqual
+        "searchRelated contains edge" [(parent, arrow, child)] actual
+  where
+    label =
+      showSymbolId sym <>
+      ": " <>
+      showSymbolId parent <>
+      " " <>
+      arrow <>
+      " " <>
+      showSymbolId child
+    showSymbolId (SymbolId sym) = Text.unpack sym
+    searchRelatedRequest_relatedBy = rel
+    searchRelatedRequest_relation = dir
+    searchRelatedRequest_recursive = recurse
+    searchRelatedRequest_filter = Nothing
+    relatedSymbols_parent = parent
+    relatedSymbols_child = child
+    arrowTail = if recurse then "-/ /-" else "--"
+    arrow = case dir of
+      RelationDirection_Parent -> arrowTail <> show rel <> "->"
+      RelationDirection_Child -> "<-" <> show rel <> arrowTail
+      RelationDirection__UNKNOWN{} -> "??" <> show rel <> "??"

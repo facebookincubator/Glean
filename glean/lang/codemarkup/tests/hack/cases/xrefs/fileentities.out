@@ -55,6 +55,27 @@
     "key": {
       "file": { "key": "www/SourceClass.php" },
       "location": {
+        "name": "SubClass",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 483, "length": 8 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "SubClass" } } } }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "location": {
         "name": "T",
         "file": { "key": "www/SourceClass.php" },
         "location": { "span": { "start": 365, "length": 1 } }
@@ -85,7 +106,7 @@
       "location": {
         "name": "TestAnnotation",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 483, "length": 14 } }
+        "location": { "span": { "start": 522, "length": 14 } }
       },
       "entity": {
         "hack": {
@@ -108,7 +129,7 @@
       "location": {
         "name": "__construct",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 547, "length": 11 } }
+        "location": { "span": { "start": 586, "length": 11 } }
       },
       "entity": {
         "hack": {
@@ -192,7 +213,7 @@
       "location": {
         "name": "test",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 574, "length": 5 } }
+        "location": { "span": { "start": 613, "length": 5 } }
       },
       "entity": {
         "hack": {

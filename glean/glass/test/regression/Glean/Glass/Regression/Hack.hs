@@ -26,6 +26,7 @@ main = mainTestIndexExternal "glass-regression-hack" $ \get -> TestList
   , testHackFindReferences get
   , testHackDescribeSymbolComments get
   , testHackAnnotations get
+  , testHackSearchRelated get
   ]
 
 testSymbolIdLookup :: IO (Some Backend, Repo) -> Test
@@ -67,7 +68,7 @@ testSymbolIdLookup get = TestLabel "describeSymbol" $ TestList [
 
 testHackFindReferences :: IO (Some Backend, Repo) -> Test
 testHackFindReferences get = TestLabel "findReferences" $ TestList [
-  "test/php/SourceClass" --> [("www/RefClass.php", 4)],
+  "test/php/SourceClass" --> [("www/RefClass.php", 4),("www/SourceClass.php", 1)],
   "test/php/SuperClass/BAZ" --> [],
   "test/php/SourceClass/daz" --> [("www/RefClass.php",1)],
   "test/php/SourceClass/T" --> [("www/RefClass.php",1)],
@@ -111,3 +112,34 @@ testHackAnnotations get = TestLabel "annotations" $ TestList [
         (SymbolId sym)
         expected
         get
+
+testHackSearchRelated :: IO (Some Backend, Repo) -> Test
+testHackSearchRelated get = TestLabel "searchRelated" $ TestList $ concat [
+  "test/php/RefClass" `extends` "test/php/SourceInterface",
+  "test/php/RefClass" `extends` "test/php/SourceTrait",
+  "test/php/SubClass" `extends` "test/php/SourceClass",
+  "test/php/SourceClass" `extends` "test/php/SuperClass",
+  "test/php/SubClass" `extendsRec` "test/php/SuperClass"
+  ]
+  where
+    extendsRec :: Text -> Text -> [Test]
+    extendsRec = extends' True
+    extends :: Text -> Text -> [Test]
+    extends = extends' False
+    extends' :: Bool -> Text -> Text -> [Test]
+    extends' recurse child parent =
+      [ testSearchRelated
+          (SymbolId parent)
+          recurse
+          RelationDirection_Child
+          RelationType_Extends
+          (SymbolId parent, SymbolId child)
+          get
+      , testSearchRelated
+          (SymbolId child)
+          recurse
+          RelationDirection_Parent
+          RelationType_Extends
+          (SymbolId parent, SymbolId child)
+          get
+      ]

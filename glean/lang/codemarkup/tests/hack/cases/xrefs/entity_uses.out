@@ -132,6 +132,25 @@
             "container": {
               "class_": {
                 "key": {
+                  "name": { "key": { "name": { "key": "SourceClass" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/SourceClass.php" },
+      "span": { "start": 500, "length": 11 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
                   "name": { "key": { "name": { "key": "SuperClass" } } }
                 }
               }
@@ -217,7 +236,7 @@
         }
       },
       "file": { "key": "www/SourceClass.php" },
-      "span": { "start": 509, "length": 17 }
+      "span": { "start": 548, "length": 17 }
     }
   },
   {
@@ -587,7 +606,7 @@
         }
       },
       "file": { "key": "www/SourceClass.php" },
-      "span": { "start": 574, "length": 5 }
+      "span": { "start": 613, "length": 5 }
     }
   },
   {
