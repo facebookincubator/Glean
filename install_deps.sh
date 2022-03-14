@@ -17,14 +17,22 @@ set -e
 
 HSTHRIFT_REPO=https://github.com/facebookincubator/hsthrift.git
 THREADS=4
+EXTRA_DEPS="rocksdb"
 
-case "$1" in
-    --threads) THREADS="$2"; shift; shift;;
-esac
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --threads) THREADS="$2"; shift;;
+        --use-system-libs) EXTRA_DEPS="";;
+        *)
+            echo "syntax: install_deps.sh [--use-system-libs] [--threads N]"
+            exit 1;;
+    esac
+    shift
+done
 
 if test ! -d hsthrift; then
     git clone "${HSTHRIFT_REPO}"
 fi
 
 cd hsthrift
-./new_install_deps.sh rocksdb --threads "${THREADS}"
+./new_install_deps.sh "${EXTRA_DEPS}" --threads "${THREADS}"
