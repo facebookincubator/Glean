@@ -64,6 +64,14 @@ Changes that are not backward compatible are not supported, such as:
 - Remove a field
 - Change the type of a field
 
+:::note
+
+When making a new schema version you may also have to update the
+special `all` schema to ensure a smooth migration for clients that are
+using unversioned queries. See [The special "all" schema](../all).
+
+:::
+
 ### Evolving schemas
 
 The feature is enabled using a top-level directive
@@ -145,4 +153,3 @@ schema os.2 {             # changed
 
 schema os.2 evolves os.1    # changed
 ```
-

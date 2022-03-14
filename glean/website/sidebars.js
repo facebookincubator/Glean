@@ -26,6 +26,7 @@ module.exports = {
                    'schema/syntax',
                    'schema/recursion',
                    'schema/changing',
+                   'schema/all',
                    ...fbContent({
                        internal: ['schema/fb/workflow'],
                        external: ['schema/workflow'],
