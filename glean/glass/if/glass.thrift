@@ -349,6 +349,7 @@ struct SearchRelatedRequest {
   4: optional set<SymbolKind> filter; //return only these symbols of these kinds
 }
 
+// Consider capping the number of symbols in a single angle query before increasing this number
 const i32 RELATED_SYMBOLS_MAX_LIMIT = 100;
 
 struct RelatedSymbols {

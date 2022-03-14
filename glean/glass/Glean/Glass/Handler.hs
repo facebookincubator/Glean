@@ -185,7 +185,7 @@ import Glean.Glass.Attributes.SymbolKind
     ( symbolKindFromSymbolKind, symbolKindToSymbolKind )
 import Glean.Glass.Annotations (getAnnotationsForEntity)
 import Glean.Glass.Comments (getCommentsForEntity)
-import Glean.Glass.SearchRelated (searchRelatedSymbols)
+import Glean.Glass.SearchRelated (searchRelatedSymbols, Recursive(..))
 
 
 -- | Runner for methods that are keyed by a file path
@@ -1005,6 +1005,7 @@ searchRelated env@Glass.Env{..} sym opt req = do
         (edges, err) <-
           searchRelatedSymbols
           limit
+          (if searchRelatedRequest_recursive then Recursive else NotRecursive)
           searchRelatedRequest_relation
           searchRelatedRequest_relatedBy
           (repo, lang, toks)

@@ -8,31 +8,57 @@
 
 {-# LANGUAGE ApplicativeDo #-}
 {-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Glean.Glass.SearchRelated
   ( searchRelatedSymbols
+  , Recursive(..)
   ) where
 
-import Glean.Angle as Angle
-import qualified Glean.Schema.Code.Types as Code
-import qualified Glean.Schema.Codemarkup.Types as Code
-import Glean.Glass.SymbolId (entityToAngle, toSymbolId)
-import Glean.Glass.Types
-import Glean.Haxl.Repos (RepoHaxl, ReposHaxl, withRepo)
-import Data.Text (Text)
-import Glean.Glass.Search (SearchEntity(..), SearchResult (..))
-import qualified Glean.Glass.Search as Search
+import Control.Monad (forM)
 import Control.Monad.Catch (MonadThrow(throwM))
-import Glean.Glass.Utils (searchRecursiveWithLimit)
+import Data.Hashable (Hashable(..))
+import Data.HashSet (HashSet)
+import Data.Text (Text)
+import GHC.Generics (Generic)
+import qualified Data.HashSet as HashSet
+
+import Glean.Angle as Angle
+import Glean.Haxl.Repos (RepoHaxl, ReposHaxl, withRepo)
+import qualified Glean.Schema.Codemarkup.Types as Code
+import qualified Glean.Schema.Code.Types as Code
+
 import Glean.Glass.Logging (ErrorLogger)
+import Glean.Glass.Search (SearchEntity(..), SearchResult(..))
+import Glean.Glass.SymbolId (entityToAngle, toSymbolId)
+import qualified Glean.Glass.Search as Search
+import Glean.Glass.Types
+import Glean.Glass.Utils (searchRecursiveWithLimit)
+
+data Recursive
+  = Recursive
+  | NotRecursive
+  deriving (Eq,Show)
+
+data Direction
+  = Parent
+  | Child
+  deriving (Eq,Show)
+
+data RelatedEntities = RelatedEntities
+  { parent :: Code.Entity
+  , child :: Code.Entity
+  } deriving (Eq,Show,Generic,Hashable)
 
 searchRelatedSymbols
   :: Int
+  -> Recursive
   -> RelationDirection
   -> RelationType
   -> (RepoName, Language, [Text])
   -> ReposHaxl u w ([RelatedSymbols], Maybe ErrorLogger)
-searchRelatedSymbols limit dir rel (repo, lang, toks) = do
+searchRelatedSymbols limit recurse dir rel (repo, lang, toks) = do
   r <- Search.searchEntity lang toks
   (SearchEntity {..}, err) <- case r of
     None t -> throwM (ServerException t)
@@ -40,56 +66,89 @@ searchRelatedSymbols limit dir rel (repo, lang, toks) = do
     Many e _t -> return (e, Nothing)
   edges <- withRepo entityRepo $ case (dir, rel) of
     (RelationDirection_Parent, RelationType_Extends) ->
-      searchParentExtends limit repo decl
+      searchExtends limit recurse Parent repo [decl] HashSet.empty
     (RelationDirection_Child, RelationType_Extends) ->
-      searchChildExtends limit repo decl
+      searchExtends limit recurse Child repo [decl] HashSet.empty
     _ ->
       return []
   return (edges, err)
 
 toSymbolIds
   :: RepoName
-  -> (Code.Entity, Code.Entity)
+  -> RelatedEntities
   -> RepoHaxl u w RelatedSymbols
-toSymbolIds repo (parent, child) = do
+toSymbolIds repo RelatedEntities{..} = do
   relatedSymbols_parent <- toSymbolId repo parent
   relatedSymbols_child <- toSymbolId repo child
   pure $ RelatedSymbols {..}
 
+searchExtends
+  :: Int
+  -> Recursive
+  -> Direction
+  -> RepoName
+  -> [Code.Entity]
+  -> HashSet RelatedEntities
+  -> RepoHaxl u w [RelatedSymbols]
+searchExtends limit recursive direction repo toVisit visited = do
+  justVisited <- case direction of
+    Parent -> searchParentExtends limit toVisit
+    Child -> searchChildExtends limit toVisit
+  let
+    newlyVisited = HashSet.fromList justVisited `HashSet.difference` visited
+    visited' = visited `HashSet.union` newlyVisited
+    toVisit = HashSet.toList $ case direction of
+      Parent -> HashSet.map parent newlyVisited
+      Child -> HashSet.map child newlyVisited
+    recLimit = limit - length visited'
+  if
+    recursive == Recursive &&
+    recLimit > 0 &&
+    recLimit < limit &&
+    not (null toVisit)
+  then
+    searchExtends recLimit recursive direction repo toVisit visited'
+  else
+    mapM (toSymbolIds repo) $ HashSet.toList visited'
+
 searchParentExtends
   :: Int
-  -> RepoName
-  -> Code.Entity
-  -> RepoHaxl u w [RelatedSymbols]
-searchParentExtends limit repo entity = do
-  let
-  angle <- case entityToAngle entity of
-    Right angle -> return angle
-    Left t -> throwM (ServerException t)
+  -> [Code.Entity]
+  -> RepoHaxl u w [RelatedEntities]
+searchParentExtends limit toVisit = do
+  angle <- forM toVisit $ \entity ->
+     case entityToAngle entity of
+      Right angle -> return angle
+      Left t -> throwM (ServerException t)
   entities <-
-    searchRecursiveWithLimit (Just limit) $ searchParentExtendsAngle angle
-  mapM (toSymbolIds repo)
-    [ (Code.extendsParentEntity_key_parent extends,
-       Code.extendsParentEntity_key_child extends)
+    searchRecursiveWithLimit (Just limit) $ searchParentExtendsAngle $
+      elementsOf $ array angle
+  pure $
+    [ RelatedEntities
+      { parent = Code.extendsParentEntity_key_parent extends
+      , child = Code.extendsParentEntity_key_child extends
+      }
     | Code.ExtendsParentEntity {..} <- entities
     , Just extends <- [extendsParentEntity_key]
     ]
 
 searchChildExtends
   :: Int
-  -> RepoName
-  -> Code.Entity
-  -> RepoHaxl u w [RelatedSymbols]
-searchChildExtends limit repo entity = do
-  let
-  angle <- case entityToAngle entity of
-    Right angle -> return angle
-    Left t -> throwM (ServerException t)
+  -> [Code.Entity]
+  -> RepoHaxl u w [RelatedEntities]
+searchChildExtends limit toVisit = do
+  angle <- forM toVisit $ \entity ->
+     case entityToAngle entity of
+      Right angle -> return angle
+      Left t -> throwM (ServerException t)
   entities <-
-    searchRecursiveWithLimit (Just limit) $ searchChildExtendsAngle angle
-  mapM (toSymbolIds repo)
-    [ (Code.extendsChildEntity_key_parent extends,
-       Code.extendsChildEntity_key_child extends)
+    searchRecursiveWithLimit (Just limit) $ searchChildExtendsAngle $
+      elementsOf $ array angle
+  pure $
+    [ RelatedEntities
+      { parent = Code.extendsChildEntity_key_parent extends
+      , child = Code.extendsChildEntity_key_child extends
+      }
     | Code.ExtendsChildEntity {..} <- entities
     , Just extends <- [extendsChildEntity_key]
     ]
