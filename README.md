@@ -1,7 +1,7 @@
-![ci-x86](https://github.com/facebookincubator/Glean/actions/workflows/ci.yml/badge.svg)
-![ci-arm](https://github.com/facebookincubator/Glean/actions/workflows/ci-arm64.yml/badge.svg)
-![ci-clang](https://github.com/facebookincubator/Glean/actions/workflows/ci-clang.yml/badge.svg)
-![demo](https://github.com/facebookincubator/Glean/actions/workflows/glean-docker.yml/badge.svg)
+[![CI](https://github.com/facebookincubator/Glean/actions/workflows/ci.yml/badge.svg)](https://github.com/facebookincubator/Glean/actions/workflows/ci.yml)
+[![CI-ARM64](https://github.com/facebookincubator/Glean/actions/workflows/ci-arm64.yml/badge.svg)](https://github.com/facebookincubator/Glean/actions/workflows/ci-arm64.yml)
+[![CI-Clang](https://github.com/facebookincubator/Glean/actions/workflows/ci-clang-rocksdb.yml/badge.svg)](https://github.com/facebookincubator/Glean/actions/workflows/ci-clang-rocksdb.yml)
+[![Glean demo Docker image](https://github.com/facebookincubator/Glean/actions/workflows/glean-docker.yml/badge.svg)](https://github.com/facebookincubator/Glean/actions/workflows/glean-docker.yml)
 
 # Glean
 
