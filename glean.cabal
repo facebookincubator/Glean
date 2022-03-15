@@ -1239,9 +1239,11 @@ library regression-test-lib
     hs-source-dirs:
         glean/test/regression
         glean/lang/flow
+        glean/lang/hack
     exposed-modules:
         Glean.Regression.Config
         Glean.Regression.Driver.Args.Flow
+        Glean.Regression.Driver.Args.Hack
         Glean.Regression.Driver.External
         Glean.Regression.Indexer
         Glean.Regression.Indexer.External
@@ -1637,6 +1639,15 @@ test-suite glean-snapshot-flow
     main-is: Glean/Regression/Flow/Main.hs
     ghc-options: -main-is Glean.Regression.Flow.Main
     build-depends: glean:regression-test-lib
+
+test-suite glean-snapshot-hack
+    import: fb-haskell, deps
+    hs-source-dirs: glean/lang/codemarkup/tests/hack
+    type: exitcode-stdio-1.0
+    main-is: Glean/Regression/Hack/Main.hs
+    ghc-options: -main-is Glean.Regression.Hack.Main
+    build-depends: glean:regression-test-lib
+    buildable: False
 
 ------------------------------------------------------------------------
 -- glass regression tests
