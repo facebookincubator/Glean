@@ -26,7 +26,7 @@ class RefClass implements SourceInterface {
     $source = new SourceClass();
     $result1 = corge() + SourceClass::BAZ + $source->daz + $this::JAZZ + WALDO;
     $result2 = $this->quux($result1) + Position::Right + $this::foo();
-    $result3 = $this->raz + $this->bazza() + SourceClass::superAdd(1, $param);
+    $result3 = $this->raz + $this->bazza() + $source->superAdd(1, $param);
     return ($result1 + $result2 + $result3 + Position::Center) * corge();
   }
 }
