@@ -1707,12 +1707,16 @@ test-suite glass-regression-flow
 test-suite glass-regression-hack
     import: glass-regression-deps, fb-haskell, deps
     type: exitcode-stdio-1.0
-    main-is: Glean/Glass/Regression/Hack.hs
-    ghc-options: -main-is Glean.Glass.Regression.Hack
+    main-is: Glean/Glass/Regression/Hack/Main.hs
+    ghc-options: -main-is Glean.Glass.Regression.Hack.Main
+    other-modules: Glean.Glass.Regression.Hack
     build-depends:
         glean:client-hs,
         glean:util,
-    buildable: False
+    if arch(x86_64) -- hhvm is x86 only currently
+        buildable: True
+    else
+        buildable: False
 
 test-suite glass-regression-python
     import: glass-regression-deps, fb-haskell, deps
