@@ -990,7 +990,7 @@ executable glean-hyperlink
         wai,
         warp
 
-library clang-derive
+library clang-derive-lib
     import: fb-haskell, fb-cpp, deps
     hs-source-dirs: glean/lang/clang
     exposed-modules:
@@ -1013,6 +1013,36 @@ library clang-derive
         glean:util,
         ghc-compact,
         vector-algorithms,
+
+library hack-derive-lib
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs: glean/lang/hack
+    exposed-modules:
+        Derive.All
+        Derive.Env
+        Derive.HackDeclarationTarget
+        Derive.Types
+    build-depends:
+        glean:client-hs,
+        glean:core,
+        glean:if-glean-hs,
+        glean:lib,
+        glean:schema,
+        glean:util,
+        IntervalMap,
+
+-- external hack deriver
+-- n.b in subdir to avoid recompilation of hack-derive-lib
+executable hack-derive
+    import: fb-haskell, fb-cpp, deps, exe
+    hs-source-dirs: glean/lang/hack/deriver
+    main-is: Derive.hs
+    ghc-options: -main-is Derive
+    build-depends:
+        glean:client-hs,
+        glean:hack-derive-lib,
+        glean:stubs,
+        glean:util,
 
 -- -----------------------------------------------------------------------------
 -- Glass services
@@ -1285,7 +1315,20 @@ library regression-test-lib
 --         Glean.Regression.Driver.Clang
 --      build-depends:
 --         glean:regression-test-lib,
---         glean:clang-derive,
+--         glean:clang-derive-lib,
+
+test-suite hack-derive-test
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs: glean/lang/hack/tests
+    type: exitcode-stdio-1.0
+    main-is: Main.hs
+    ghc-options: -main-is Main
+    other-modules: Driver
+    build-depends:
+       glean:regression-test-lib,
+       glean:hack-derive-lib,
+    if !flag(hack-tests)
+        buildable: False
 
 library bench-lib
     import: fb-haskell, fb-cpp, deps
