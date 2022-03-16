@@ -10,8 +10,8 @@ jobs:
     runs-on: [self-hosted, linux, ARM64]
     container:
       # built from hsthrift/.github/workflows/Dockerfile.arm64v8
-      image: ghcr.io/donsbot/hsthrift/ci-base:arm64
-      options: --cpus 4
+      image: ghcr.io/donsbot/hsthrift/ci-base:arm64rocksdb
+      options: --cpus 8
     steps:
       - name: Clean up old container
         run: |
@@ -25,15 +25,15 @@ jobs:
       - name: Install GHC ${{ matrix.ghc }}
         run: ghcup install ghc ${{ matrix.ghc }} --set --force
       - name: Install cabal-install 3.6
-        run: ghcup install cabal -u https://downloads.haskell.org/~cabal/cabal-install-3.6.0.0/cabal-install-3.6.0.0-aarch64-linux-deb10.tar.xz 3.6.0.0 --set
+        run: ghcup install cabal -u https://downloads.haskell.org/~cabal/cabal-install-3.6.2.0/cabal-install-3.6.2.0-aarch64-linux-deb10.tar.xz 3.6.2.0 --set
       - name: Install indexers (flow)
         run: |
-          export FLOW=0.172.0
+          export FLOW=0.173.0
           wget "https://github.com/facebook/flow/releases/download/v${FLOW}/flow-linux-arm64-v${FLOW}.zip"
           unzip "flow-linux-arm64-v${FLOW}.zip"
           mkdir -p "$HOME"/.hsthrift/bin && mv flow/flow "$HOME"/.hsthrift/bin
-      - name: Fetch hsthrift and build folly, fizz, wangle, fbthrift, rocksdb
-        run: ./install_deps.sh
+      - name: Fetch hsthrift and build folly, fizz, wangle, fbthrift
+        run: ./install_deps.sh --threads 8 --use-system-libs
       - name: Nuke build artifacts
         run: rm -rf /tmp/fbcode_builder_getdeps-Z__wZGleanZGleanZhsthriftZbuildZfbcode_builder-root/
       - name: Populate hackage index with new packages
