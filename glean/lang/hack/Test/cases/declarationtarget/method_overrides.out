@@ -1,0 +1,27 @@
+[
+  "@generated",
+  {
+    "key": {
+      "derived": {
+        "key": {
+          "name": { "key": "f" },
+          "container": {
+            "class_": {
+              "key": { "name": { "key": { "name": { "key": "SourceC" } } } }
+            }
+          }
+        }
+      },
+      "base": {
+        "key": {
+          "name": { "key": "f" },
+          "container": {
+            "class_": {
+              "key": { "name": { "key": { "name": { "key": "SourceB" } } } }
+            }
+          }
+        }
+      }
+    }
+  }
+]
