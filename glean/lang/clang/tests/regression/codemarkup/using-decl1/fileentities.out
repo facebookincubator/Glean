@@ -14,7 +14,8 @@
             "lineEnd": 18,
             "columnEnd": 34
           }
-        }
+        },
+        "span": { "start": 374, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -60,7 +61,8 @@
             "lineEnd": 59,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 721, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -106,7 +108,8 @@
             "lineEnd": 68,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 869, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -152,7 +155,8 @@
             "lineEnd": 20,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 231, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -193,7 +197,8 @@
             "lineEnd": 26,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 406, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -234,7 +239,8 @@
             "lineEnd": 43,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 436, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -275,7 +281,8 @@
             "lineEnd": 70,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 663, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -316,7 +323,8 @@
             "lineEnd": 11,
             "columnEnd": 11
           }
-        }
+        },
+        "span": { "start": 241, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -367,7 +375,8 @@
             "lineEnd": 12,
             "columnEnd": 20
           }
-        }
+        },
+        "span": { "start": 254, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -421,7 +430,8 @@
             "lineEnd": 13,
             "columnEnd": 12
           }
-        }
+        },
+        "span": { "start": 276, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -462,92 +472,6 @@
     "key": {
       "file": { "key": "test.cpp" },
       "location": {
-        "name": "f1",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 30,
-            "columnBegin": 1,
-            "lineEnd": 30,
-            "columnEnd": 12
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "f1" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 30,
-                  "columnBegin": 1,
-                  "lineEnd": 30,
-                  "columnEnd": 12
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
-        "name": "f1",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 63,
-            "columnBegin": 1,
-            "lineEnd": 63,
-            "columnEnd": 12
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "f1" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 63,
-                  "columnBegin": 1,
-                  "lineEnd": 63,
-                  "columnEnd": 12
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
         "name": "f2",
         "file": { "key": "test.cpp" },
         "location": {
@@ -558,7 +482,8 @@
             "lineEnd": 15,
             "columnEnd": 8
           }
-        }
+        },
+        "span": { "start": 291, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -604,7 +529,8 @@
             "lineEnd": 17,
             "columnEnd": 32
           }
-        }
+        },
+        "span": { "start": 314, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -659,7 +585,8 @@
             "lineEnd": 17,
             "columnEnd": 56
           }
-        }
+        },
+        "span": { "start": 335, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -709,49 +636,6 @@
     "key": {
       "file": { "key": "test.cpp" },
       "location": {
-        "name": "f3",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 31,
-            "columnBegin": 1,
-            "lineEnd": 31,
-            "columnEnd": 12
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "f3" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 31,
-                  "columnBegin": 1,
-                  "lineEnd": 31,
-                  "columnEnd": 12
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
         "name": "f4",
         "file": { "key": "test.cpp" },
         "location": {
@@ -762,7 +646,8 @@
             "lineEnd": 18,
             "columnEnd": 31
           }
-        }
+        },
+        "span": { "start": 384, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -813,7 +698,8 @@
             "lineEnd": 24,
             "columnEnd": 8
           }
-        }
+        },
+        "span": { "start": 416, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -849,49 +735,6 @@
     "key": {
       "file": { "key": "test.cpp" },
       "location": {
-        "name": "f5",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 32,
-            "columnBegin": 1,
-            "lineEnd": 32,
-            "columnEnd": 12
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "f5" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 32,
-                  "columnBegin": 1,
-                  "lineEnd": 32,
-                  "columnEnd": 12
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
         "name": "no1",
         "file": { "key": "test.cpp" },
         "location": {
@@ -902,7 +745,8 @@
             "lineEnd": 35,
             "columnEnd": 19
           }
-        }
+        },
+        "span": { "start": 507, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -949,7 +793,8 @@
             "lineEnd": 55,
             "columnEnd": 21
           }
-        }
+        },
+        "span": { "start": 791, "length": 4 }
       },
       "entity": {
         "cxx": {
@@ -1001,7 +846,8 @@
             "lineEnd": 57,
             "columnEnd": 21
           }
-        }
+        },
+        "span": { "start": 836, "length": 4 }
       },
       "entity": {
         "cxx": {
@@ -1053,7 +899,8 @@
             "lineEnd": 66,
             "columnEnd": 21
           }
-        }
+        },
+        "span": { "start": 915, "length": 4 }
       },
       "entity": {
         "cxx": {
@@ -1105,7 +952,8 @@
             "lineEnd": 37,
             "columnEnd": 18
           }
-        }
+        },
+        "span": { "start": 545, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -1152,7 +1000,8 @@
             "lineEnd": 39,
             "columnEnd": 18
           }
-        }
+        },
+        "span": { "start": 582, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -1199,7 +1048,8 @@
             "lineEnd": 41,
             "columnEnd": 25
           }
-        }
+        },
+        "span": { "start": 626, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -1246,7 +1096,8 @@
             "lineEnd": 48,
             "columnEnd": 20
           }
-        }
+        },
+        "span": { "start": 692, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -1293,7 +1144,8 @@
             "lineEnd": 53,
             "columnEnd": 18
           }
-        }
+        },
+        "span": { "start": 749, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -1345,7 +1197,8 @@
             "lineEnd": 34,
             "columnEnd": 16
           }
-        }
+        },
+        "span": { "start": 489, "length": 4 }
       },
       "entity": {
         "cxx": {
@@ -1392,7 +1245,8 @@
             "lineEnd": 54,
             "columnEnd": 20
           }
-        }
+        },
+        "span": { "start": 769, "length": 5 }
       },
       "entity": {
         "cxx": {
@@ -1444,7 +1298,8 @@
             "lineEnd": 56,
             "columnEnd": 20
           }
-        }
+        },
+        "span": { "start": 814, "length": 5 }
       },
       "entity": {
         "cxx": {
@@ -1496,7 +1351,8 @@
             "lineEnd": 65,
             "columnEnd": 18
           }
-        }
+        },
+        "span": { "start": 895, "length": 5 }
       },
       "entity": {
         "cxx": {
@@ -1548,7 +1404,8 @@
             "lineEnd": 36,
             "columnEnd": 15
           }
-        }
+        },
+        "span": { "start": 528, "length": 4 }
       },
       "entity": {
         "cxx": {
@@ -1595,7 +1452,8 @@
             "lineEnd": 38,
             "columnEnd": 15
           }
-        }
+        },
+        "span": { "start": 565, "length": 4 }
       },
       "entity": {
         "cxx": {
@@ -1642,7 +1500,8 @@
             "lineEnd": 40,
             "columnEnd": 22
           }
-        }
+        },
+        "span": { "start": 602, "length": 4 }
       },
       "entity": {
         "cxx": {
@@ -1689,7 +1548,8 @@
             "lineEnd": 47,
             "columnEnd": 17
           }
-        }
+        },
+        "span": { "start": 673, "length": 4 }
       },
       "entity": {
         "cxx": {
@@ -1736,7 +1596,8 @@
             "lineEnd": 52,
             "columnEnd": 15
           }
-        }
+        },
+        "span": { "start": 732, "length": 4 }
       },
       "entity": {
         "cxx": {

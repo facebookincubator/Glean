@@ -14,7 +14,8 @@
             "lineEnd": 15,
             "columnEnd": 21
           }
-        }
+        },
+        "span": { "start": 292, "length": 1 }
       },
       "entity": {
         "cxx": {
@@ -156,178 +157,6 @@
     "key": {
       "file": { "key": "test.cpp" },
       "location": {
-        "name": "E",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 29,
-            "columnBegin": 1,
-            "lineEnd": 29,
-            "columnEnd": 11
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "E" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 29,
-                  "columnBegin": 1,
-                  "lineEnd": 29,
-                  "columnEnd": 11
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
-        "name": "E",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 63,
-            "columnBegin": 1,
-            "lineEnd": 63,
-            "columnEnd": 11
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "E" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 63,
-                  "columnBegin": 1,
-                  "lineEnd": 63,
-                  "columnEnd": 11
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
-        "name": "E1",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 30,
-            "columnBegin": 1,
-            "lineEnd": 30,
-            "columnEnd": 12
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "E1" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 30,
-                  "columnBegin": 1,
-                  "lineEnd": 30,
-                  "columnEnd": 12
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
-        "name": "E1",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 64,
-            "columnBegin": 1,
-            "lineEnd": 64,
-            "columnEnd": 12
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "E1" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 64,
-                  "columnBegin": 1,
-                  "lineEnd": 64,
-                  "columnEnd": 12
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
         "name": "F",
         "file": { "key": "test.cpp" },
         "location": {
@@ -338,7 +167,8 @@
             "lineEnd": 16,
             "columnEnd": 27
           }
-        }
+        },
+        "span": { "start": 321, "length": 1 }
       },
       "entity": {
         "cxx": {
@@ -480,92 +310,6 @@
     "key": {
       "file": { "key": "test.cpp" },
       "location": {
-        "name": "F",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 31,
-            "columnBegin": 1,
-            "lineEnd": 31,
-            "columnEnd": 11
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "F" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 31,
-                  "columnBegin": 1,
-                  "lineEnd": 31,
-                  "columnEnd": 11
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
-        "name": "F",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 65,
-            "columnBegin": 1,
-            "lineEnd": 65,
-            "columnEnd": 11
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "F" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 65,
-                  "columnBegin": 1,
-                  "lineEnd": 65,
-                  "columnEnd": 11
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
         "name": "N1",
         "file": { "key": "test.cpp" },
         "location": {
@@ -576,7 +320,8 @@
             "lineEnd": 24,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 231, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -617,7 +362,8 @@
             "lineEnd": 58,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 453, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -658,7 +404,8 @@
             "lineEnd": 14,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 244, "length": 1 }
       },
       "entity": {
         "cxx": {
@@ -775,92 +522,6 @@
     "key": {
       "file": { "key": "test.cpp" },
       "location": {
-        "name": "T",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 28,
-            "columnBegin": 1,
-            "lineEnd": 28,
-            "columnEnd": 11
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "T" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 28,
-                  "columnBegin": 1,
-                  "lineEnd": 28,
-                  "columnEnd": 11
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
-        "name": "T",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 62,
-            "columnBegin": 1,
-            "lineEnd": 62,
-            "columnEnd": 11
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "T" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 62,
-                  "columnBegin": 1,
-                  "lineEnd": 62,
-                  "columnEnd": 11
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
         "name": "Type",
         "file": { "key": "test.cpp" },
         "location": {
@@ -871,7 +532,8 @@
             "lineEnd": 22,
             "columnEnd": 25
           }
-        }
+        },
+        "span": { "start": 410, "length": 4 }
       },
       "entity": {
         "cxx": {
@@ -928,7 +590,8 @@
             "lineEnd": 22,
             "columnEnd": 25
           }
-        }
+        },
+        "span": { "start": 410, "length": 4 }
       },
       "entity": {
         "cxx": {
@@ -985,7 +648,8 @@
             "lineEnd": 12,
             "columnEnd": 15
           }
-        }
+        },
+        "span": { "start": 256, "length": 1 }
       },
       "entity": {
         "cxx": {
@@ -1042,7 +706,8 @@
             "lineEnd": 18,
             "columnEnd": 13
           }
-        }
+        },
+        "span": { "start": 346, "length": 1 }
       },
       "entity": {
         "cxx": {
@@ -1077,92 +742,6 @@
     "key": {
       "file": { "key": "test.cpp" },
       "location": {
-        "name": "U",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 32,
-            "columnBegin": 1,
-            "lineEnd": 32,
-            "columnEnd": 11
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "U" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 32,
-                  "columnBegin": 1,
-                  "lineEnd": 32,
-                  "columnEnd": 11
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
-        "name": "U",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 66,
-            "columnBegin": 1,
-            "lineEnd": 66,
-            "columnEnd": 11
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "U" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 66,
-                  "columnBegin": 1,
-                  "lineEnd": 66,
-                  "columnEnd": 11
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
         "name": "V",
         "file": { "key": "test.cpp" },
         "location": {
@@ -1173,7 +752,8 @@
             "lineEnd": 19,
             "columnEnd": 14
           }
-        }
+        },
+        "span": { "start": 368, "length": 1 }
       },
       "entity": {
         "cxx": {
@@ -1208,92 +788,6 @@
     "key": {
       "file": { "key": "test.cpp" },
       "location": {
-        "name": "V",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 33,
-            "columnBegin": 1,
-            "lineEnd": 33,
-            "columnEnd": 11
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "V" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 33,
-                  "columnBegin": 1,
-                  "lineEnd": 33,
-                  "columnEnd": 11
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
-        "name": "V",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 67,
-            "columnBegin": 1,
-            "lineEnd": 67,
-            "columnEnd": 11
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "V" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 67,
-                  "columnBegin": 1,
-                  "lineEnd": 67,
-                  "columnEnd": 11
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
         "name": "W",
         "file": { "key": "test.cpp" },
         "location": {
@@ -1304,7 +798,8 @@
             "lineEnd": 22,
             "columnEnd": 44
           }
-        }
+        },
+        "span": { "start": 400, "length": 1 }
       },
       "entity": {
         "cxx": {
@@ -1348,7 +843,8 @@
             "lineEnd": 22,
             "columnEnd": 44
           }
-        }
+        },
+        "span": { "start": 400, "length": 1 }
       },
       "entity": {
         "cxx": {
@@ -1465,92 +961,6 @@
     "key": {
       "file": { "key": "test.cpp" },
       "location": {
-        "name": "W",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 34,
-            "columnBegin": 1,
-            "lineEnd": 34,
-            "columnEnd": 11
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "W" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 34,
-                  "columnBegin": 1,
-                  "lineEnd": 34,
-                  "columnEnd": 11
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
-        "name": "W",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 68,
-            "columnBegin": 1,
-            "lineEnd": 68,
-            "columnEnd": 11
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "W" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 68,
-                  "columnBegin": 1,
-                  "lineEnd": 68,
-                  "columnEnd": 11
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
         "name": "f",
         "file": { "key": "test.cpp" },
         "location": {
@@ -1561,7 +971,8 @@
             "lineEnd": 13,
             "columnEnd": 17
           }
-        }
+        },
+        "span": { "start": 279, "length": 1 }
       },
       "entity": {
         "cxx": {
@@ -1619,7 +1030,8 @@
             "lineEnd": 22,
             "columnEnd": 41
           }
-        }
+        },
+        "span": { "start": 431, "length": 1 }
       },
       "entity": {
         "cxx": {
@@ -1677,7 +1089,8 @@
             "lineEnd": 56,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 657, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -1728,7 +1141,8 @@
             "lineEnd": 79,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 777, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -1777,7 +1191,8 @@
             "lineEnd": 36,
             "columnEnd": 4
           }
-        }
+        },
+        "span": { "start": 554, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -1824,7 +1239,8 @@
             "lineEnd": 37,
             "columnEnd": 9
           }
-        }
+        },
+        "span": { "start": 560, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -1871,7 +1287,8 @@
             "lineEnd": 38,
             "columnEnd": 12
           }
-        }
+        },
+        "span": { "start": 571, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -1918,7 +1335,8 @@
             "lineEnd": 39,
             "columnEnd": 4
           }
-        }
+        },
+        "span": { "start": 585, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -1965,7 +1383,8 @@
             "lineEnd": 40,
             "columnEnd": 4
           }
-        }
+        },
+        "span": { "start": 591, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -2012,7 +1431,8 @@
             "lineEnd": 41,
             "columnEnd": 9
           }
-        }
+        },
+        "span": { "start": 602, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -2059,7 +1479,8 @@
             "lineEnd": 42,
             "columnEnd": 18
           }
-        }
+        },
+        "span": { "start": 622, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -2106,7 +1527,8 @@
             "lineEnd": 43,
             "columnEnd": 23
           }
-        }
+        },
+        "span": { "start": 630, "length": 2 }
       },
       "entity": {
         "cxx": {

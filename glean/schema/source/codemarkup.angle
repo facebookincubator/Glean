@@ -1,6 +1,6 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.20 {
+schema codemarkup.21 {
 import src.1
 import python.3
 import code.19
@@ -114,7 +114,7 @@ predicate ToLegacyXRef:
   }
   { { FromTarget, FromSource } , DirectXRef } where
     DirectXRef = (
-      { Name, TargetFile, {span = TargetSpan} } = FromTarget;
+      { Name, TargetFile, {span = TargetSpan}, nothing } = FromTarget;
       { span = Span } = FromSource;
       {{ Name, TargetFile, TargetSpan}, Span };
     )
@@ -141,6 +141,9 @@ type Location =
     name: string,
     file: src.File,
     location : RangeSpan,
+
+    # An optional byte span of the name itself rather than the entire entity.
+    span: maybe src.ByteSpan,
   }
 
 # XRefs from source to target declaration or definition
@@ -286,7 +289,7 @@ predicate HackResolveLocation:
     location: Location,
     entity: code.Entity,
   }
-  { { Name, File, { span = Span } }, Entity } where
+  { { Name, File, { span = Span }, nothing }, Entity } where
     hack.FileDeclarations { file = File, declarations = Ds };
     Decl = Ds[..];
     hack.DeclarationName Decl -> (hack.Name Name);
@@ -298,7 +301,7 @@ predicate PythonResolveLocation:
     location: Location,
     entity: code.Entity,
   }
-  { { Name, File, { span = Span } }, Entity } where
+  { { Name, File, { span = Span }, nothing }, Entity } where
     python.DeclarationsByFile { File, Span, Decl };
     python.DeclarationToName Decl -> (Name : string);
     Entity = code.Entity { python = { decl = Decl } };
@@ -308,7 +311,7 @@ predicate FlowResolveLocation:
     location: Location,
     entity: code.Entity,
   }
-  { { NameStr, File, { span = Span } }, Entity } where
+  { { NameStr, File, { span = Span }, nothing }, Entity } where
     flow.FileDeclaration { File, Decl };
     flow.DeclarationNameSpan { Decl, Name, Span };
     Name = flow.Name NameStr ;
@@ -320,9 +323,9 @@ predicate CxxResolveLocation:
     location: Location,
     entity: code.Entity,
   }
-  { { Str, File, Range }, Entity } where
+  { { Str, File, Range, Span }, Entity } where
     Trace = cxx1.Trace { file = File };
-    CxxResolveTraceLocation { Trace, { Str, File, Range } , Entity };
+    CxxResolveTraceLocation { Trace, { Str, File, Range, Span }, Entity };
 
 # Like FileEntityLocations but indexed by a specific Trace (for Cxx)
 predicate CxxFileEntityTraceLocations:
@@ -344,18 +347,20 @@ predicate CxxResolveTraceLocation:
     location: Location,
     entity: code.Entity,
   }
-  { Trace, { Str, File, { range = Range } }, Entity } where
+  { Trace, Location, Entity } where
     Trace = cxx1.Trace { File, cxx1.Declarations Decls, { events = PPDecls } };
     # regular decls
-    ({ Str, Range, Entity } where
+    (
       Decl = Decls[..];
-      cxx1.DeclarationLocationName { Decl, Range, Str };
+      cxx1.DeclarationLocationNameSpan { Decl, Range, Str, _, Span };
+      Location = Location { Str, File, { range = Range }, { just = Span } };
       CxxResolveDeclarationToEntity { Decl, Entity };
     ) |
     ## preprocessor #defines
-    ({ Str, Range, Entity } where
+    (
       { define = Define } = PPDecls[..];
       cxx1.PPDefineLocation { Define, Str, _, Range };
+      Location = Location { Str, File, { range = Range }, nothing };
       Entity = code.Entity { pp = { define = Define } };
     )
 
@@ -401,7 +406,7 @@ predicate HaskellResolveLocation:
     location: Location,
     entity: code.Entity,
   }
-  { { Name, File, { span = Span } }, Entity } where
+  { { Name, File, { span = Span }, nothing }, Entity } where
     hs.FileDefinition { File, Defn };
     hs.DefinitionLocation { Defn, Name, { File , Span }};
     Entity = code.Entity { hs = Defn };
@@ -412,7 +417,7 @@ predicate RustResolveLocation:
     location: Location,
     entity: code.Entity,
   }
-  { { Name, File, { span = Span } }, Entity } where
+  { { Name, File, { span = Span }, nothing }, Entity } where
     rust.FileDefinition { File, Defn };
     rust.DefLocation { Defn, File, Span };
     rust.DefinitionName { Defn, rust.Name Name };
@@ -423,7 +428,7 @@ predicate BuckResolveLocation:
     location: Location,
     entity: code.Entity,
   }
-  { { Name, File, { span = Span } }, Entity } where
+  { { Name, File, { span = Span }, nothing }, Entity } where
     buck.FileTarget { File, Locator };
     buck.TargetLocation { Locator, File, Span };
     Locator = buck.Locator { name = Name };
@@ -434,7 +439,7 @@ predicate ThriftResolveLocation:
     location: Location,
     entity: code.Entity,
   }
-  {{ Name, FileS, { range = Range }}, Entity } where
+  { { Name, FileS, { range = Range }, nothing }, Entity } where
     FileT = thrift.File FileS;
     thrift.FileDeclaration { FileT, Declaration };
     thrift.DeclarationNameSpan { Declaration, Identifier, FileT, {LB, CB, LE, CE} };
@@ -447,7 +452,7 @@ predicate ErlangResolveLocation:
     location: Location,
     entity: code.Entity,
   }
-  { { Name, File, { span = Span } }, Entity } where
+  { { Name, File, { span = Span }, nothing }, Entity } where
     # Location.name is weird but we aren't using it for anything yet.
     # Weirdness is that distinct fucntions foo/1 and foo/2 have same Location.name ("foo").
     # Use `Name = Fqn.name + str(Fqn.arity)` when primops available so names are "foo/1" and "foo/2"
@@ -461,7 +466,7 @@ predicate HackEntityLocation:
     entity: code.Entity,
     location: Location,
   }
-  { { hack = { decl = D } }, { Name, File, { span = Span } } } where
+  { { hack = { decl = D } }, { Name, File, { span = Span }, nothing } } where
     hack.DeclarationLocation { declaration = D, file = File, span = Span };
     hack.DeclarationName D -> (hack.Name Name);
 
@@ -470,7 +475,7 @@ predicate PythonEntityLocation:
     entity: code.Entity,
     location: Location,
   }
-  { { python = { decl = D } }, { Name, File, { span = Span } } } where
+  { { python = { decl = D } }, { Name, File, { span = Span }, nothing } } where
     python.DeclarationLocation { declaration = D, file = File, span = Span };
     python.DeclarationToName D -> (python.Name Name);
 
@@ -479,7 +484,7 @@ predicate FlowEntityLocation:
     entity: code.Entity,
     location: Location,
   }
-  { { flow = { decl = D } }, { Name, File, { span = Span } } } where
+  { { flow = { decl = D } }, { Name, File, { span = Span }, nothing } } where
     flow.DeclarationLocation { decl = D, file = File, span = Span };
     flow.DeclarationNameSpan { decl = D, name = flow.Name Name, span = Span };
 
@@ -488,8 +493,8 @@ predicate CxxEntityLocation:
     entity: code.Entity,
     location: Location,
   }
-  { { cxx = { decl = D } }, { Name, File, { range = Range } } } where
-    cxx1.DeclarationLocationName { decl = D, source = Range, name = Name };
+  { { cxx = { decl = D } }, { Name, File, { range = Range }, { just = Span } } } where
+    cxx1.DeclarationLocationNameSpan { D, Range, Name, _, Span };
     { file = File } = Range;
 
 predicate PPEntityLocation:
@@ -497,7 +502,7 @@ predicate PPEntityLocation:
     entity: code.Entity,
     location: Location,
   }
-  { Entity, { Name, File, { range = Range } } } where
+  { Entity, { Name, File, { range = Range }, nothing } } where
     { pp = { define = Define } } = Entity;
     cxx1.PPDefineLocation { Define, Name, File, Range};
 
@@ -506,7 +511,7 @@ predicate HaskellEntityLocation:
     entity: code.Entity,
     location: Location,
   }
-  { { hs = D }, { Name, File, { span = Span } } } where
+  { { hs = D }, { Name, File, { span = Span }, nothing } } where
     hs.DefinitionLocation { D, Name, { File, Span } };
 
 predicate RustEntityLocation:
@@ -514,7 +519,7 @@ predicate RustEntityLocation:
     entity: code.Entity,
     location: Location,
   }
-  { { rust = { definition = D } }, { Name, File, { span = Span } } } where
+  { { rust = { definition = D } }, { Name, File, { span = Span }, nothing } } where
     rust.DefLocation { D, File, Span };
     rust.DefinitionName { D, rust.Name Name };
 
@@ -523,7 +528,7 @@ predicate BuckEntityLocation:
     entity: code.Entity,
     location: Location,
   }
- { { buck = { locator = L } }, { Name, File, { span = Span } } }
+ { { buck = { locator = L } }, { Name, File, { span = Span }, nothing } }
   where buck.TargetLocation { L, File, Span };
   { name = Name } = L;
 
@@ -532,7 +537,7 @@ predicate ThriftEntityLocation:
     entity: code.Entity,
     location: Location,
   }
- { Entity, { Name, FileS, { range = Range } } } where
+ { Entity, { Name, FileS, { range = Range }, nothing } } where
     thrift.DeclarationNameSpan { Declaration, Identifier, FileT, Loc };
     Entity = code.Entity { thrift = Declaration };
     Identifier = thrift.Identifier Name;
@@ -545,7 +550,7 @@ predicate ErlangEntityLocation:
     entity: code.Entity,
     location: Location,
   }
-  { { erlang = { decl = D } }, { Name, File, { span = Span } } } where
+  { { erlang = { decl = D } }, { Name, File, { span = Span }, nothing } } where
     erlang.DeclarationLocation { declaration = D, file = File, span = Span };
     # Location.name here is weird, see ErlangResolveLocation comment
     { func = erlang.FunctionDeclaration { fqn = {name = Name } , file = _, span = _} } = D;
@@ -563,7 +568,7 @@ predicate HackFileEntityXRefLocations:
     hack.XRef { target = { declaration = D }, ranges = Uses } = XRefs[..];
     hack.DeclarationName D -> (hack.Name TargetName);
     hack.DeclarationLocation { declaration = D, file = TargetFile, span = TargetSpan };
-    Location = Location { TargetName, TargetFile, { span = TargetSpan }};
+    Location = Location { TargetName, TargetFile, { span = TargetSpan }, nothing };
     Sources = prim.relToAbsByteSpans Uses;
     Src = Sources[..];
     Entity = code.Entity { hack = { decl = D } };
@@ -617,7 +622,7 @@ predicate FlowFileReferenceEntityXRefLocations:
       { typeRef = { typeDeclaration = T } } = XRef;
       flow.FlowTypeImportXRef { T, Entity, TargetFile, TargetSpan };
     );
-    Location = Location { Str, TargetFile, { span = TargetSpan }}
+    Location = Location { Str, TargetFile, { span = TargetSpan }, nothing }
 
 # Flow cross-references from import declarations.
 #
@@ -646,7 +651,7 @@ predicate FlowFileImportDeclEntityXRefLocations:
       flow.FlowTypeImportXRef { TypeD, Entity, TargetFile, TargetSpan };
       { name = Name, loc = SrcLoc } = TypeD;
     );
-    Location = Location { Str, TargetFile, { span = TargetSpan } };
+    Location = Location { Str, TargetFile, { span = TargetSpan }, nothing };
     Name = flow.Name Str;
     { span = Src } = SrcLoc;
 
@@ -672,7 +677,7 @@ predicate PythonFileEntityXRefLocations:
   Entity = code.Entity { python = { decl = PyDecl } };
   PythonEntityToDeclaration { entity = Entity, decl = Decl};
   { Name, TargetFile, TargetSpan } = Decl;
-  { Name, TargetFile, { span = TargetSpan }} = Location;
+  { Name, TargetFile, { span = TargetSpan }, nothing } = Location;
 
 # N.B. uses deprecated types
 predicate PythonEntityToDeclaration:
@@ -767,9 +772,9 @@ predicate CxxXRefTargetLocation:
   { XRefTarget, Entity, Location } where
     # fixed declaration entities
     ( { declaration = Decl } = XRefTarget;
-      cxx1.DeclarationLocationName { Decl, Range, Name };
+      cxx1.DeclarationLocationNameSpan { Decl, Range, Name, _, Span };
       { file = TargetFile } = Range;
-      { Name, TargetFile, { range = Range } } = Location;
+      { Name, TargetFile, { range = Range }, { just = Span } } = Location;
       code.Entity { cxx = { decl = Decl }} = Entity;
     ) | (
     # or jump through the decl sometimes to a def
@@ -780,7 +785,7 @@ predicate CxxXRefTargetLocation:
       { enumerator = Enum } = XRefTarget;
       { cxx1.Name Name, _, Range } = Enum;
       { file = TargetFile } = Range;
-      { Name, TargetFile, { range = Range } } = Location;
+      { Name, TargetFile, { range = Range }, nothing } = Location;
       code.Entity { cxx = { enumerator = Enum }} = Entity;
     )
     # objSelector -- not an entity type
@@ -808,8 +813,8 @@ predicate CxxFileEntityTraceDeclToDefXRefLocations:
       CxxDeclToDefXRefTargetLocation { Decl, Entity, Location } |
       CxxDefToDeclFamilyXRefTargetLocation { Decl, Entity, Location }
     );
-    cxx1.DeclarationSrcRange { Decl, SrcRange };
-    { Location, { range = SrcRange }} = XRef;
+    cxx1.DeclarationNameSpan { Decl, _, Span };
+    { Location, { span = Span }} = XRef;
 
 # For a given Decl, it might have a base Defn, build an entity for that
 # Iff the target is not the same as the source Decl
@@ -823,9 +828,9 @@ predicate CxxDeclToDefXRefTargetLocation:
     code.cxx.DeclToDef { Decl1, Defn };
     cxx1.DefToBaseDecl { Defn , Decl2 };
     Decl1 != Decl2; # Filter out (many) self refs
-    cxx1.DeclarationLocationName { Decl2, Range, Name };
+    cxx1.DeclarationLocationNameSpan { Decl2, Range, Name, _, Span };
     { file = TargetFile } = Range;
-    { Name, TargetFile, { range = Range } } = Location;
+    { Name, TargetFile, { range = Range }, { just = Span } } = Location;
     code.Entity { cxx = { defn = Defn }} = Entity;
 
 # For a given Decl, find any DeclFamily entries
@@ -839,9 +844,9 @@ predicate CxxDefToDeclFamilyXRefTargetLocation:
   { Decl1, Entity, Location } where
     cxx1.DeclFamilyOf { decl = Decl1, family = Decl2 };
     Decl1 != Decl2; # filter out many self-refs
-    cxx1.DeclarationLocationName { Decl2, Range, Name };
+    cxx1.DeclarationLocationNameSpan { Decl2, Range, Name, _, Span };
     { file = TargetFile } = Range;
-    { Name, TargetFile, { range = Range } } = Location;
+    { Name, TargetFile, { range = Range }, { just = Span } } = Location;
     code.Entity { cxx = { decl = Decl2 }} = Entity;
 
 # "Variable" external XRefs only, for a specific trace (FileXRefMap)
@@ -870,9 +875,9 @@ predicate CxxFileEntityTraceVariableXRefDeclLocations:
   { Trace, Decl, Location } where
     cxx1.FileXRefs { Trace, Targets };
     { declaration = Decl } = Targets[..];
-    cxx1.DeclarationLocationName { Decl, Range, Name };
+    cxx1.DeclarationLocationNameSpan { Decl, Range, Name, _, Span };
     { file = TargetFile } = Range;
-    { Name, TargetFile, { range = Range } } = Location;
+    { Name, TargetFile, { range = Range }, { just = Span } } = Location;
 
 # Bulk fetch any declaration locations associated with the xref targets
 # Rather than O(n) calls to map over the external target xrefs,
@@ -886,9 +891,9 @@ predicate CxxFileEntityXMapVariableXRefDeclLocations:
   { Trace, Decl, Location } where
     cxx1.FileXRefs { externals = Targets } = Trace;
     { declaration = Decl } = Targets[..];
-    cxx1.DeclarationLocationName { Decl, Range, Name };
+    cxx1.DeclarationLocationNameSpan { Decl, Range, Name, _, Span };
     { file = TargetFile } = Range;
-    { Name, TargetFile, { range = Range } } = Location;
+    { Name, TargetFile, { range = Range }, { just = Span } } = Location;
 
 # Bulk fetch any definitions associated with the external decls in the trace
 # (deprecated)
@@ -944,7 +949,7 @@ predicate CxxFileEntityTracePPXRefLocations:
   { File, Trace, XRef, Entity } where
     cxx1.FilePPTraceXRefs { File, Trace, SrcRange, PpEntity };
     cxx1.PPEntityLocation { PpEntity, Name, TargetFile, TargetRange };
-    {{ Name , TargetFile, {range = TargetRange}}, { range = SrcRange }} = XRef;
+    { { Name, TargetFile, { range = TargetRange }, nothing }, { range = SrcRange } } = XRef;
     Entity = code.Entity { pp = PpEntity };
 
 # XRefs in sigma/Haskell
@@ -967,7 +972,7 @@ predicate HaskellFileEntityXRefLocations:
         name = hs.DefinitionName TargetName,
         source = {TargetFile, TargetSpan}
       };
-    Location = Location { TargetName, TargetFile, { span = TargetSpan }};
+    Location = Location { TargetName, TargetFile, { span = TargetSpan }, nothing };
 
     Entity = code.Entity { hs = { definition = Def }};
 
@@ -988,7 +993,7 @@ predicate RustFileEntityXRefLocations:
 
     rust.DefLocation { TargetDef, TargetFile, TargetSpan };
     rust.DefinitionName { TargetDef, rust.Name Name };
-    { Name, TargetFile, { span = TargetSpan }} = TargetLocation;
+    { Name, TargetFile, { span = TargetSpan }, nothing } = TargetLocation;
     Entity = code.Entity { rust = { definition = TargetDef } };
 
 predicate BuckFileEntityXRefLocations:
@@ -1004,7 +1009,7 @@ predicate BuckFileEntityXRefLocations:
     { locator = Locator } = XRefLocator;
     { name = Name } = Locator;
     buck.TargetLocation { Locator, TargetFile, LocatorSpan };
-    { Name, TargetFile, { span = LocatorSpan }} = LocatorLocation;
+    { Name, TargetFile, { span = LocatorSpan }, nothing } = LocatorLocation;
     Entity = code.Entity { buck = { locator = Locator } };
 
 predicate ThriftFileEntityXRefLocations:
@@ -1024,7 +1029,7 @@ predicate ThriftFileEntityXRefLocations:
                                span = { TLB, TCB, TLE, TCE } };
   TargetFileT = thrift.File TargetFile;
   TargetRange = {TargetFile, TLB, TCB, TLE, TCE };
-  { name = Name, file = TargetFile, location = { range = TargetRange } } = TargetLocation;
+  { Name, TargetFile, { range = TargetRange }, nothing } = TargetLocation;
   Entity = code.Entity { thrift = XRefTarget };
 
 predicate ErlangFileEntityXRefLocations:
@@ -1040,7 +1045,7 @@ predicate ErlangFileEntityXRefLocations:
   Entity = code.Entity { erlang = { decl = Decl } };
   # Location.name here is weird, see ErlangResolveLocation comment
   { func = { fqn = { name = Name }, file = TargetFile, span = TargetSpan } } = Decl;
-  { Name, TargetFile, { span = TargetSpan }} = TargetLocation;
+  { Name, TargetFile, { span = TargetSpan }, nothing } = TargetLocation;
 
 #
 # Language entity uses
@@ -1354,4 +1359,4 @@ predicate HackContainsChildEntity :
 
 }
 
-schema codemarkup.20 evolves codemarkup.19
+schema codemarkup.21 evolves codemarkup.20

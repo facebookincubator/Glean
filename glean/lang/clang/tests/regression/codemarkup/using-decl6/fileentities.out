@@ -14,7 +14,8 @@
             "lineEnd": 14,
             "columnEnd": 34
           }
-        }
+        },
+        "span": { "start": 296, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -64,7 +65,8 @@
             "lineEnd": 10,
             "columnEnd": 12
           }
-        }
+        },
+        "span": { "start": 241, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -138,49 +140,6 @@
     "key": {
       "file": { "key": "test.cpp" },
       "location": {
-        "name": "Foo",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 19,
-            "columnBegin": 1,
-            "lineEnd": 19,
-            "columnEnd": 13
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "Foo" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 19,
-                  "columnBegin": 1,
-                  "lineEnd": 19,
-                  "columnEnd": 13
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
         "name": "N1",
         "file": { "key": "test.cpp" },
         "location": {
@@ -191,7 +150,8 @@
             "lineEnd": 11,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 231, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -232,7 +192,8 @@
             "lineEnd": 16,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 263, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -273,7 +234,8 @@
             "lineEnd": 24,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 352, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -314,7 +276,8 @@
             "lineEnd": 15,
             "columnEnd": 34
           }
-        }
+        },
+        "span": { "start": 330, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -365,7 +328,8 @@
             "lineEnd": 23,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 393, "length": 1 }
       },
       "entity": {
         "cxx": {
@@ -416,7 +380,8 @@
             "lineEnd": 20,
             "columnEnd": 14
           }
-        }
+        },
+        "span": { "start": 385, "length": 1 }
       },
       "entity": {
         "cxx": {

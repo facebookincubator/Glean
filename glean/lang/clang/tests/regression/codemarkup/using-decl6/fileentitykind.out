@@ -6,37 +6,6 @@
       "entity": {
         "cxx": {
           "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "Foo" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 19,
-                  "columnBegin": 1,
-                  "lineEnd": 19,
-                  "columnEnd": 13
-                }
-              }
-            }
-          }
-        }
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "entity": {
-        "cxx": {
-          "decl": {
             "variable": {
               "key": {
                 "name": {

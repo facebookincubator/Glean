@@ -210,7 +210,8 @@
             "lineEnd": 9,
             "columnEnd": 42
           }
-        }
+        },
+        "span": { "start": 256, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -451,7 +452,8 @@
             "lineEnd": 10,
             "columnEnd": 46
           }
-        }
+        },
+        "span": { "start": 300, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -692,7 +694,8 @@
             "lineEnd": 11,
             "columnEnd": 38
           }
-        }
+        },
+        "span": { "start": 338, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -933,7 +936,8 @@
             "lineEnd": 19,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 393, "length": 1 }
       },
       "entity": {
         "cxx": {

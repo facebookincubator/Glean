@@ -40,68 +40,6 @@
       "entity": {
         "cxx": {
           "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "T1" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N2" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 26,
-                  "columnBegin": 1,
-                  "lineEnd": 26,
-                  "columnEnd": 12
-                }
-              }
-            }
-          }
-        }
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "f1" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N2" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 25,
-                  "columnBegin": 1,
-                  "lineEnd": 25,
-                  "columnEnd": 12
-                }
-              }
-            }
-          }
-        }
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "entity": {
-        "cxx": {
-          "decl": {
             "variable": {
               "key": {
                 "name": {

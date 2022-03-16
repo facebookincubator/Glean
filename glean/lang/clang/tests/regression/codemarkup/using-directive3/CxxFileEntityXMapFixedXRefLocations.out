@@ -222,7 +222,8 @@
               "lineEnd": 13,
               "columnEnd": 1
             }
-          }
+          },
+          "span": { "start": 231, "length": 2 }
         },
         "source": { "span": { "start": 303, "length": 2 } }
       },
@@ -468,7 +469,8 @@
               "lineEnd": 13,
               "columnEnd": 1
             }
-          }
+          },
+          "span": { "start": 231, "length": 2 }
         },
         "source": { "span": { "start": 382, "length": 2 } }
       },
@@ -714,7 +716,8 @@
               "lineEnd": 25,
               "columnEnd": 1
             }
-          }
+          },
+          "span": { "start": 360, "length": 2 }
         },
         "source": { "span": { "start": 422, "length": 2 } }
       },

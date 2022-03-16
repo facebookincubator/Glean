@@ -14,7 +14,8 @@
             "lineEnd": 18,
             "columnEnd": 34
           }
-        }
+        },
+        "span": { "start": 374, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -60,7 +61,8 @@
             "lineEnd": 26,
             "columnEnd": 27
           }
-        }
+        },
+        "span": { "start": 433, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -106,7 +108,8 @@
             "lineEnd": 67,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 815, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -152,7 +155,8 @@
             "lineEnd": 20,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 231, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -193,7 +197,8 @@
             "lineEnd": 28,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 406, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -224,47 +229,6 @@
     "key": {
       "file": { "key": "test.cpp" },
       "location": {
-        "name": "N0",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 32,
-            "columnBegin": 1,
-            "lineEnd": 32,
-            "columnEnd": 18
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDirective": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "N0" },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 32,
-                  "columnBegin": 1,
-                  "lineEnd": 32,
-                  "columnEnd": 18
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
         "name": "N1",
         "file": { "key": "test.cpp" },
         "location": {
@@ -275,7 +239,8 @@
             "lineEnd": 34,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 465, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -306,47 +271,6 @@
     "key": {
       "file": { "key": "test.cpp" },
       "location": {
-        "name": "N1",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 38,
-            "columnBegin": 1,
-            "lineEnd": 38,
-            "columnEnd": 18
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDirective": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "N1" },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 38,
-                  "columnBegin": 1,
-                  "lineEnd": 38,
-                  "columnEnd": 18
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
         "name": "N2",
         "file": { "key": "test.cpp" },
         "location": {
@@ -357,7 +281,8 @@
             "lineEnd": 51,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 505, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -398,7 +323,8 @@
             "lineEnd": 69,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 757, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -439,7 +365,8 @@
             "lineEnd": 11,
             "columnEnd": 11
           }
-        }
+        },
+        "span": { "start": 241, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -490,7 +417,8 @@
             "lineEnd": 12,
             "columnEnd": 20
           }
-        }
+        },
+        "span": { "start": 254, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -544,7 +472,8 @@
             "lineEnd": 13,
             "columnEnd": 12
           }
-        }
+        },
+        "span": { "start": 276, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -595,7 +524,8 @@
             "lineEnd": 15,
             "columnEnd": 8
           }
-        }
+        },
+        "span": { "start": 291, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -641,7 +571,8 @@
             "lineEnd": 17,
             "columnEnd": 32
           }
-        }
+        },
+        "span": { "start": 314, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -696,7 +627,8 @@
             "lineEnd": 17,
             "columnEnd": 56
           }
-        }
+        },
+        "span": { "start": 335, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -756,7 +688,8 @@
             "lineEnd": 18,
             "columnEnd": 31
           }
-        }
+        },
+        "span": { "start": 384, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -807,7 +740,8 @@
             "lineEnd": 24,
             "columnEnd": 8
           }
-        }
+        },
+        "span": { "start": 416, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -853,7 +787,8 @@
             "lineEnd": 26,
             "columnEnd": 24
           }
-        }
+        },
+        "span": { "start": 443, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -904,7 +839,8 @@
             "lineEnd": 41,
             "columnEnd": 19
           }
-        }
+        },
+        "span": { "start": 554, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -951,7 +887,8 @@
             "lineEnd": 63,
             "columnEnd": 21
           }
-        }
+        },
+        "span": { "start": 885, "length": 4 }
       },
       "entity": {
         "cxx": {
@@ -1003,7 +940,8 @@
             "lineEnd": 65,
             "columnEnd": 21
           }
-        }
+        },
+        "span": { "start": 930, "length": 4 }
       },
       "entity": {
         "cxx": {
@@ -1055,7 +993,8 @@
             "lineEnd": 43,
             "columnEnd": 18
           }
-        }
+        },
+        "span": { "start": 592, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -1102,7 +1041,8 @@
             "lineEnd": 45,
             "columnEnd": 18
           }
-        }
+        },
+        "span": { "start": 629, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -1149,7 +1089,8 @@
             "lineEnd": 47,
             "columnEnd": 25
           }
-        }
+        },
+        "span": { "start": 673, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -1196,7 +1137,8 @@
             "lineEnd": 49,
             "columnEnd": 23
           }
-        }
+        },
+        "span": { "start": 722, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -1243,7 +1185,8 @@
             "lineEnd": 56,
             "columnEnd": 20
           }
-        }
+        },
+        "span": { "start": 786, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -1290,7 +1233,8 @@
             "lineEnd": 61,
             "columnEnd": 18
           }
-        }
+        },
+        "span": { "start": 843, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -1342,7 +1286,8 @@
             "lineEnd": 40,
             "columnEnd": 16
           }
-        }
+        },
+        "span": { "start": 536, "length": 4 }
       },
       "entity": {
         "cxx": {
@@ -1389,7 +1334,8 @@
             "lineEnd": 62,
             "columnEnd": 20
           }
-        }
+        },
+        "span": { "start": 863, "length": 5 }
       },
       "entity": {
         "cxx": {
@@ -1441,7 +1387,8 @@
             "lineEnd": 64,
             "columnEnd": 20
           }
-        }
+        },
+        "span": { "start": 908, "length": 5 }
       },
       "entity": {
         "cxx": {
@@ -1493,7 +1440,8 @@
             "lineEnd": 42,
             "columnEnd": 15
           }
-        }
+        },
+        "span": { "start": 575, "length": 4 }
       },
       "entity": {
         "cxx": {
@@ -1540,7 +1488,8 @@
             "lineEnd": 44,
             "columnEnd": 15
           }
-        }
+        },
+        "span": { "start": 612, "length": 4 }
       },
       "entity": {
         "cxx": {
@@ -1587,7 +1536,8 @@
             "lineEnd": 46,
             "columnEnd": 22
           }
-        }
+        },
+        "span": { "start": 649, "length": 4 }
       },
       "entity": {
         "cxx": {
@@ -1634,7 +1584,8 @@
             "lineEnd": 48,
             "columnEnd": 20
           }
-        }
+        },
+        "span": { "start": 700, "length": 4 }
       },
       "entity": {
         "cxx": {
@@ -1681,7 +1632,8 @@
             "lineEnd": 55,
             "columnEnd": 17
           }
-        }
+        },
+        "span": { "start": 767, "length": 4 }
       },
       "entity": {
         "cxx": {
@@ -1728,7 +1680,8 @@
             "lineEnd": 60,
             "columnEnd": 15
           }
-        }
+        },
+        "span": { "start": 826, "length": 4 }
       },
       "entity": {
         "cxx": {

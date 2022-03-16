@@ -272,7 +272,8 @@ cxxXRefTargetToLocation declLocMap (Cxx.XRefTarget_declaration decl) = do
             let location = Code.Location {
                 Code.location_name = name,
                 Code.location_file = Src.range_file range,
-                Code.location_location = Code.RangeSpan_range range
+                Code.location_location = Code.RangeSpan_range range,
+                Code.location_span = Nothing
               }
             return $ Just location
 
@@ -293,7 +294,8 @@ cxxXRefTargetToLocation _ (Cxx.XRefTarget_enumerator enumerator) = do
   let location = Code.Location {
       Code.location_name = nameStr,
       Code.location_file = Src.range_file range,
-      Code.location_location = Code.RangeSpan_range range
+      Code.location_location = Code.RangeSpan_range range,
+      Code.location_span = Nothing
     }
   return $ Just (entity, location)
 

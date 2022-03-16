@@ -14,7 +14,8 @@
             "lineEnd": 16,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 231, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -45,47 +46,6 @@
     "key": {
       "file": { "key": "test.cpp" },
       "location": {
-        "name": "N1",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 19,
-            "columnBegin": 1,
-            "lineEnd": 19,
-            "columnEnd": 18
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDirective": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "N1" },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 19,
-                  "columnBegin": 1,
-                  "lineEnd": 19,
-                  "columnEnd": 18
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
         "name": "N2",
         "file": { "key": "test.cpp" },
         "location": {
@@ -96,7 +56,8 @@
             "lineEnd": 27,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 417, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -137,7 +98,8 @@
             "lineEnd": 39,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 520, "length": 2 }
       },
       "entity": {
         "cxx": {
@@ -178,7 +140,8 @@
             "lineEnd": 11,
             "columnEnd": 42
           }
-        }
+        },
+        "span": { "start": 272, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -225,7 +188,8 @@
             "lineEnd": 12,
             "columnEnd": 46
           }
-        }
+        },
+        "span": { "start": 316, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -272,7 +236,8 @@
             "lineEnd": 13,
             "columnEnd": 38
           }
-        }
+        },
+        "span": { "start": 354, "length": 3 }
       },
       "entity": {
         "cxx": {
@@ -309,49 +274,6 @@
     "key": {
       "file": { "key": "test.cpp" },
       "location": {
-        "name": "foo",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 31,
-            "columnBegin": 1,
-            "lineEnd": 31,
-            "columnEnd": 13
-          }
-        }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "usingDeclaration": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "foo" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 31,
-                  "columnBegin": 1,
-                  "lineEnd": 31,
-                  "columnEnd": 13
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
         "name": "g",
         "file": { "key": "test.cpp" },
         "location": {
@@ -362,7 +284,8 @@
             "lineEnd": 26,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 448, "length": 1 }
       },
       "entity": {
         "cxx": {
@@ -413,7 +336,8 @@
             "lineEnd": 38,
             "columnEnd": 1
           }
-        }
+        },
+        "span": { "start": 547, "length": 1 }
       },
       "entity": {
         "cxx": {
