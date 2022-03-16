@@ -11,14 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/facebookincubator/hsthrift/ci-base:ghcup
-      options: --cpus 2
+      options: --cpus 2 --security-opt=seccomp=unconfined
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Install ninja
-        run: apt install ninja-build
-      - name: Install libxxhash wget unzip
-        run: apt-get install -y libxxhash-dev wget unzip
+      - name: Install additional tools
+        run: apt-get install -y ninja-build libxxhash-dev wget unzip
       - name: Remove libfmt
         run: apt-get remove -y libfmt-dev
       - name: Install GHC ${{ matrix.ghc }}
@@ -27,12 +25,20 @@ jobs:
         run: ghcup install cabal -u https://downloads.haskell.org/~cabal/cabal-install-3.6.0.0/cabal-install-3.6.0.0-x86_64-linux.tar.xz 3.6.0.0 --set
       - name: Add GHC and cabal to PATH
         run: echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
-      - name: Install indexers (flow)
+      - name: Install indexer (flow)
         run: |
-          export FLOW=0.172.0
+          export FLOW=0.173.0
           wget "https://github.com/facebook/flow/releases/download/v${FLOW}/flow-linux64-v${FLOW}.zip"
           unzip "flow-linux64-v${FLOW}.zip"
           mkdir -p "$HOME"/.hsthrift/bin && mv flow/flow "$HOME"/.hsthrift/bin
+      - name: Install indexer (hack)
+        run: |
+          apt-get update
+          apt-get install -y software-properties-common apt-transport-https
+          apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xB4112585D386EB94
+          add-apt-repository https://dl.hhvm.com/ubuntu
+          apt-get update
+          apt-get install -y hhvm-nightly
       - name: Fetch hsthrift and build folly, fizz, wangle, fbthrift, rocksdb
         run: ./install_deps.sh
       - name: Nuke build artifacts
