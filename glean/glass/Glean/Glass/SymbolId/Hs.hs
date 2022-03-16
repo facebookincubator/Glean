@@ -43,9 +43,11 @@ instance Symbol Hs.Entity where
   toSymbol (Hs.Entity_definition d) = toSymbolPredicate d
   toSymbol (Hs.Entity_function_ d) = toSymbolPredicate d
   toSymbol (Hs.Entity_class_ d) = toSymbolPredicate d
+  toSymbol Hs.Entity_EMPTY = return []
 
 instance ToAngle Hs.Entity where
   toAngle e = case e of
     Hs.Entity_class_ x -> alt @"class_" (mkKey x)
     Hs.Entity_definition x -> alt @"definition" (mkKey x)
     Hs.Entity_function_ x -> alt @"function_" (mkKey x)
+    Hs.Entity_EMPTY -> error "unknown Entity"

@@ -32,12 +32,14 @@ instance Symbol Flow.Entity where
   toSymbol e = case e of
     Flow.Entity_decl decl -> toSymbol decl
     Flow.Entity_module_ module_ -> toSymbolPredicate module_
+    Flow.Entity_EMPTY -> return []
 
 instance Symbol Flow.SomeDeclaration where
   toSymbol e = case e of
     Flow.SomeDeclaration_localDecl decl -> toSymbolPredicate decl
     Flow.SomeDeclaration_memberDecl member -> toSymbolPredicate member
     Flow.SomeDeclaration_typeDecl type_ -> toSymbolPredicate type_
+    Flow.SomeDeclaration_EMPTY -> return []
 
 instance Symbol Flow.Declaration_key where
   toSymbol (Flow.Declaration_key name container) = container <:> name
@@ -61,6 +63,7 @@ instance Symbol Flow.Module_key where
     Flow.Module_key_lib text -> return [text]
     Flow.Module_key_noSource _ -> return []
     Flow.Module_key_string_ text -> return [text]
+    Flow.Module_key_EMPTY -> return []
 
 instance Symbol Flow.Name where
   toSymbol k = do
@@ -132,24 +135,28 @@ instance ToAngle Flow.Entity where
   toAngle e = case e of
     Flow.Entity_decl x -> alt @"decl" (toAngle x)
     Flow.Entity_module_ x -> alt @"module_" (mkKey x)
+    Flow.Entity_EMPTY -> error "unknown Entity"
 
 instance ToAngle Flow.SomeDeclaration where
   toAngle e = case e of
     Flow.SomeDeclaration_localDecl x -> alt @"localDecl" (mkKey x)
     Flow.SomeDeclaration_memberDecl x -> alt @"memberDecl" (mkKey x)
     Flow.SomeDeclaration_typeDecl x -> alt @"typeDecl" (mkKey x)
+    Flow.SomeDeclaration_EMPTY -> error "unknown SomeDeclaration"
 
 
 instance ToQName Flow.Entity where
   toQName e = case e of
     Flow.Entity_decl x -> toQName x
     Flow.Entity_module_ x -> Glean.keyOf x >>= toQName
+    Flow.Entity_EMPTY -> return $ Left "unknown Entity"
 
 instance ToQName Flow.SomeDeclaration where
   toQName e = case e of
     Flow.SomeDeclaration_localDecl x -> Glean.keyOf x >>= toQName
     Flow.SomeDeclaration_memberDecl x -> Glean.keyOf x >>= toQName
     Flow.SomeDeclaration_typeDecl x -> Glean.keyOf x >>= toQName
+    Flow.SomeDeclaration_EMPTY -> return $ Left "unknown SomeDeclaration"
 
 instance ToQName Flow.Declaration_key where
   toQName (Flow.Declaration_key name container) = pairToQName name container

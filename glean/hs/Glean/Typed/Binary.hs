@@ -165,7 +165,9 @@ instance Type a => Type (Maybe a) where
   buildRtsValue b (Just x) = do
     buildRtsSelector b 1
     buildRtsValue b x
-  decodeRtsValue = sumD [pure Nothing, Just <$> decodeRtsValue]
+  decodeRtsValue = sumD
+    (Decoder $ \_ -> decodeFail "maybe selector out of range")
+    [pure Nothing, Just <$> decodeRtsValue]
 
 -- -----------------------------------------------------------------------------
 

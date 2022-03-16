@@ -45,6 +45,7 @@ prettyCxxSignature e = case e of
   Cxx.Entity_decl decl -> prettyDecl decl
   Cxx.Entity_defn def -> prettyDefinition def
   Cxx.Entity_enumerator x -> prettyEnumerator x
+  Cxx.Entity_EMPTY -> intentionallyEmpty
 
 intentionallyEmpty :: Text
 intentionallyEmpty = ""
@@ -89,6 +90,7 @@ prettyDecl d = case d of
   Cxx.Declaration_typeAlias x -> prettyTypeAlias x
   Cxx.Declaration_record_ x -> prettyRecord x
   Cxx.Declaration_function_ x -> prettyFunction x
+  Cxx.Declaration_EMPTY -> intentionallyEmpty
 
 prettyEnum :: Cxx.EnumDeclaration -> Text
 prettyEnum (Cxx.EnumDeclaration _ mkey) = case mkey of
@@ -137,6 +139,7 @@ prettyVarPrefix kind = case kind of
         -- TODO: there is a bug with const
         Cxx.GlobalVariableAttribute_Constexpr -> todoEmpty
   Cxx.VariableKind_ivar _ -> intentionallyEmpty
+  Cxx.VariableKind_EMPTY -> todoEmpty
 
 prettyTypeAlias :: Cxx.TypeAliasDeclaration -> Text
 prettyTypeAlias (Cxx.TypeAliasDeclaration _ mkey) = case mkey of
@@ -180,6 +183,7 @@ hasReturn (Cxx.FunctionQName _ mkey) = case mkey of
       Cxx.FunctionName_key_operator_ _ -> True
       Cxx.FunctionName_key_constructor _ -> False
       Cxx.FunctionName_key_destructor _ -> False
+      Cxx.FunctionName_key_EMPTY -> True
 
 
 prettyFuncPostfix :: Maybe Cxx.MethodSignature -> Text
@@ -231,6 +235,7 @@ prettyFunctionName (Cxx.FunctionName _ mkey) scope = case mkey of
       else oname
     Cxx.FunctionName_key_constructor _ -> owner_name
     Cxx.FunctionName_key_destructor _ -> "~" <> owner_name
+    Cxx.FunctionName_key_EMPTY -> "<unknown>"
     where
       owner_name = prettyScopeBasic scope
       is_lambda = case scope of
@@ -276,6 +281,7 @@ prettyRecord (Cxx.RecordDeclaration _ mkey) = case mkey of
     Cxx.RecordKind_struct_{} -> "struct" <+> prettyQName name
     Cxx.RecordKind_class_{} -> "class" <+> prettyQName name
     Cxx.RecordKind_union_{} -> "union" <+> prettyQName name
+    Cxx.RecordKind_EMPTY -> "<unknown-declaration>" <+> prettyQName name
 
 -- -- Produces X::Y::Z.T
 -- -- As we usually access fields through the .
@@ -304,6 +310,7 @@ prettyScope k separator = case k of
     -- Current implementation explicitly ignores it
     -- but we can actually print a function name if needed
     Cxx.Scope_local _ ->  intentionallyEmpty
+    Cxx.Scope_EMPTY -> "<unknown-scope>"
 
 prettyScopeBasic :: Cxx.Scope -> Text
 prettyScopeBasic k = case k of
@@ -337,6 +344,7 @@ prettyDefinition def = case def of
   Cxx.Definition_objcContainer _ -> intentionallyEmpty
   Cxx.Definition_variable x -> prettyVariable x
   Cxx.Definition_namespace_ x -> prettyNamespaceDef x
+  Cxx.Definition_EMPTY -> intentionallyEmpty
 
 prettyNamespaceDef :: Cxx.NamespaceDefinition -> Text
 prettyNamespaceDef (Cxx.NamespaceDefinition _ mkey) = case mkey of

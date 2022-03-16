@@ -22,6 +22,10 @@ import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.GleanTest.Types as Glean.Test
 import qualified Glean.Schema.Sys.Types as Sys
 
+rec :: Glean.Test.Rec
+rec = def
+    { Glean.Test.rec_beta = Glean.Test.Sum_wed True }
+
 kitchenSink1 :: Glean.Test.KitchenSink_1
 kitchenSink1 = def
   { Glean.Test.kitchenSink_1_byt = Byte 33
@@ -32,10 +36,7 @@ kitchenSink1 = def
     { Glean.Test.kitchenSink_1_record__a = Byte 34
     , Glean.Test.kitchenSink_1_record__b = Nat 35 }
   , Glean.Test.kitchenSink_1_sum_ = Glean.Test.KitchenSink_1_sum__d (Nat 36)
-  , Glean.Test.kitchenSink_1_named_record_ = Glean.Test.Rec
-    { Glean.Test.rec_alpha = Glean.Test.Enum_green
-    , Glean.Test.rec_beta = Glean.Test.Sum_wed True
-    }
+  , Glean.Test.kitchenSink_1_named_record_ = rec
   , Glean.Test.kitchenSink_1_named_sum_ = Glean.Test.Sum_tue (Nat 37)
   , Glean.Test.kitchenSink_1_named_enum_ = Glean.Test.Enum_blue
   , Glean.Test.kitchenSink_1_pred = Sys.Blob { blob_id = 3, blob_key = Nothing }
@@ -73,7 +74,13 @@ mkTestFacts first second = do
     ]
 
   let kitchenSinkTerm0 = def
-        { Glean.Test.kitchenSink_1_pred = sysBlobFact }
+        { Glean.Test.kitchenSink_1_pred = sysBlobFact
+        , Glean.Test.kitchenSink_1_sum_ =
+            Glean.Test.KitchenSink_1_sum__d (Nat 0)
+        , Glean.Test.kitchenSink_1_named_sum_ = Glean.Test.Sum_wed True
+        , Glean.Test.kitchenSink_1_maybe_ = Nothing
+        , Glean.Test.kitchenSink_1_named_record_ = rec
+        }
 
   first $ makeFact_ @Glean.Test.Predicate_1 kitchenSinkTerm0
 
@@ -88,7 +95,11 @@ mkTestFacts first second = do
       , Glean.Test.kitchenSink_sum_ =
           Glean.Test.KitchenSink_sum__d sysBlobFact
       , Glean.Test.kitchenSink_string_ = "abba"
-      , Glean.Test.kitchenSink_array_of_nat = map toNat [1,2] }
+      , Glean.Test.kitchenSink_array_of_nat = map toNat [1,2]
+      , Glean.Test.kitchenSink_named_sum_ = Glean.Test.Sum_wed True
+      , Glean.Test.kitchenSink_named_record_ = rec
+      , Glean.Test.kitchenSink_maybe_ = Nothing
+      }
 
     -- also make a small variant of kitchenSink2Term0
     kitchenSink2Term0b = kitchenSink2Term0
@@ -108,14 +119,19 @@ mkTestFacts first second = do
           Glean.Test.KitchenSink_sum__c kitchenSink2Fact0
       , Glean.Test.kitchenSink_array_of_pred = [ kitchenSink2Fact0 ]
       , Glean.Test.kitchenSink_string_ = "clobber"
-      , Glean.Test.kitchenSink_array_of_nat = map toNat [6] }
+      , Glean.Test.kitchenSink_array_of_nat = map toNat [6]
+      , Glean.Test.kitchenSink_named_sum_ = Glean.Test.Sum_wed True
+      , Glean.Test.kitchenSink_named_record_ = rec
+      , Glean.Test.kitchenSink_maybe_ = Nothing
+      }
 
     kitchenSink2Term1b = kitchenSink2Term1
       { Glean.Test.kitchenSink_sum_ =
           Glean.Test.KitchenSink_sum__c kitchenSink2Fact0b
       , Glean.Test.kitchenSink_array_of_pred = [ kitchenSink2Fact0b ]
       , Glean.Test.kitchenSink_string_ = "flubber"
-      , Glean.Test.kitchenSink_array_of_nat = [] }
+      , Glean.Test.kitchenSink_array_of_nat = []
+      }
 
     mk_refs term = do
       p <- makeFact @Glean.Test.Predicate term

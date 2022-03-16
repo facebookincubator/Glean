@@ -52,7 +52,7 @@ import Glean.Glass.Types as Glass
       Language(Language_Thrift, Language_Cpp, Language_JavaScript,
                Language_Hack, Language_Haskell, Language_Java,
                Language_PreProcessor, Language_Python, Language_Rust,
-               Language_Buck, Language_Erlang),
+               Language_Buck, Language_Erlang, Language__UNKNOWN),
       SymbolId(SymbolId),
       RepoName(..) )
 
@@ -173,6 +173,7 @@ entityLanguage e = case e of
   Code.Entity_thrift{} -> Language_Thrift
   Code.Entity_buck{} -> Language_Buck
   Code.Entity_erlang{} -> Language_Erlang
+  Code.Entity_EMPTY -> Language__UNKNOWN 0
 
 -- | An encoded Entity.
 --

@@ -36,6 +36,7 @@ instance Symbol Cxx.Entity where
     Cxx.Entity_decl decl -> toSymbol decl
     Cxx.Entity_defn defn -> toSymbol defn
     Cxx.Entity_enumerator enum -> toSymbolPredicate enum
+    Cxx.Entity_EMPTY -> return []
 
 instance Symbol Cxx.Declaration where
   toSymbol d = case d of
@@ -50,6 +51,7 @@ instance Symbol Cxx.Declaration where
     Cxx.Declaration_objcMethod x -> toSymbolPredicate x
     Cxx.Declaration_objcProperty x -> toSymbolPredicate x
     Cxx.Declaration_typeAlias x -> toSymbolPredicate x
+    Cxx.Declaration_EMPTY -> return []
 
 -- Results of DeclToDef calls
 instance Symbol Cxx.Definition where
@@ -61,6 +63,7 @@ instance Symbol Cxx.Definition where
     Cxx.Definition_objcContainer x -> toSymbolPredicate x
     Cxx.Definition_variable x -> toSymbolPredicate x
     Cxx.Definition_namespace_ x -> toSymbolPredicate x
+    Cxx.Definition_EMPTY -> return []
 
 instance Symbol Cxx.RecordDefinition_key where
   toSymbol (Cxx.RecordDefinition_key decl _bases _members) =
@@ -162,6 +165,7 @@ instance Symbol Cxx.FunctionName_key where
     Cxx.FunctionName_key_constructor _ -> return []
     Cxx.FunctionName_key_destructor _ -> return []
     Cxx.FunctionName_key_conversionOperator x -> toSymbol x
+    Cxx.FunctionName_key_EMPTY -> return []
 
 instance Symbol Cxx.Scope where
   toSymbol k = case k of
@@ -170,6 +174,7 @@ instance Symbol Cxx.Scope where
     Cxx.Scope_recordWithAccess (Cxx.Scope_recordWithAccess_ qname _) ->
       toSymbolPredicate qname
     Cxx.Scope_local qname -> toSymbolPredicate qname
+    Cxx.Scope_EMPTY -> return []
 
 instance Symbol Cxx.ObjcContainerId where
   toSymbol k = case k of
@@ -179,6 +184,7 @@ instance Symbol Cxx.ObjcContainerId where
     Cxx.ObjcContainerId_extensionInterface x -> toSymbol x
     Cxx.ObjcContainerId_implementation x -> toSymbol x
     Cxx.ObjcContainerId_categoryImplementation x -> toSymbol x
+    Cxx.ObjcContainerId_EMPTY -> return []
 
 instance Symbol Cxx.ObjcCategoryId where
   toSymbol (Cxx.ObjcCategoryId n1 n2) = do
@@ -213,6 +219,7 @@ instance ToAngle Cxx.Entity where
     Cxx.Entity_decl x -> alt @"decl" (toAngle x)
     Cxx.Entity_defn x -> alt @"defn" (toAngle x)
     Cxx.Entity_enumerator x -> alt @"enumerator" (mkKey x)
+    Cxx.Entity_EMPTY -> error "unknown Entity"
 
 instance ToAngle Cxx.Declaration where
   toAngle e = case e of
@@ -227,6 +234,8 @@ instance ToAngle Cxx.Declaration where
     Cxx.Declaration_objcMethod x -> alt @"objcMethod" (mkKey x)
     Cxx.Declaration_objcProperty x -> alt @"objcProperty" (mkKey x)
     Cxx.Declaration_typeAlias x -> alt @"typeAlias" (mkKey x)
+    Cxx.Declaration_EMPTY -> error "unknown Declaration"
+
 
 instance ToAngle Cxx.Definition where
   toAngle e = case e of
@@ -237,6 +246,7 @@ instance ToAngle Cxx.Definition where
     Cxx.Definition_objcContainer x -> alt @"objcContainer" (mkKey x)
     Cxx.Definition_variable x -> alt @"variable" (mkKey x)
     Cxx.Definition_namespace_ x -> alt @"namespace_" (mkKey x)
+    Cxx.Definition_EMPTY -> error "unknown Definition"
 
 --
 -- Entity "parent" relationship labelling
@@ -247,6 +257,7 @@ instance ToSymbolParent Cxx.Entity where
     Cxx.Entity_decl x -> toSymbolParent x
     Cxx.Entity_defn{} -> return Nothing
     Cxx.Entity_enumerator x -> Glean.keyOf x >>= toSymbolParent
+    Cxx.Entity_EMPTY -> return Nothing
 
 instance ToSymbolParent Cxx.Declaration where
   toSymbolParent e = case e of
@@ -261,6 +272,7 @@ instance ToSymbolParent Cxx.Declaration where
     Cxx.Declaration_objcMethod{} -> return Nothing -- TODO
     Cxx.Declaration_objcProperty{} -> return Nothing -- TODO
     Cxx.Declaration_typeAlias x -> Glean.keyOf x >>= toSymbolParent
+    Cxx.Declaration_EMPTY -> return Nothing
 
 instance ToSymbolParent Cxx.Enumerator_key where
   toSymbolParent (Cxx.Enumerator_key _name decl _) =
@@ -323,6 +335,7 @@ cxxScopeName scope = case scope of
   Cxx.Scope_recordWithAccess (Cxx.Scope_recordWithAccess_ qname _) ->
     Just <$> cxxParentQName qname
   Cxx.Scope_local _fqname -> return Nothing
+  Cxx.Scope_EMPTY -> return Nothing
 
 cxxParentQName :: Cxx.QName -> Glean.RepoHaxl u w Name
 cxxParentQName qname = do
@@ -350,6 +363,7 @@ cxxEntityDefinitionType e = case e of
   Cxx.Entity_decl{} -> Glass.DefinitionKind_Declaration
   Cxx.Entity_defn{} -> Glass.DefinitionKind_Definition
   Cxx.Entity_enumerator{} -> Glass.DefinitionKind_Definition -- is this ok?
+  Cxx.Entity_EMPTY -> Glass.DefinitionKind_Definition -- fallback to definition
 
 --
 -- entity labelling
@@ -359,6 +373,7 @@ cxxEntityKind e = case e of
   Cxx.Entity_decl x -> toSymbolDeclKind x
   Cxx.Entity_defn x -> toSymbolDefnKind x
   Cxx.Entity_enumerator{} -> return (Just SymbolKind_Enumerator)
+  Cxx.Entity_EMPTY -> return Nothing
 
 -- to match idelsp/GleanLSPConverter.php
 toSymbolDeclKind
@@ -375,16 +390,18 @@ toSymbolDeclKind e = case e of
   Cxx.Declaration_objcMethod{} -> return $ Just SymbolKind_Method
   Cxx.Declaration_objcProperty{} -> return $ Just SymbolKind_Property
   Cxx.Declaration_typeAlias{} -> return $ Just SymbolKind_Class_
+  Cxx.Declaration_EMPTY -> return Nothing
 
 toSymbolRecordKind
   :: Cxx.RecordDeclaration
   -> Glean.RepoHaxl u w (Maybe Glass.SymbolKind)
 toSymbolRecordKind k = do
   (Cxx.RecordDeclaration_key _ kind _) <- Glean.keyOf k
-  return $ Just $ case kind of
-    Cxx.RecordKind_struct_{} -> SymbolKind_Struct
-    Cxx.RecordKind_class_{} -> SymbolKind_Class_
-    Cxx.RecordKind_union_{} -> SymbolKind_Union
+  return $ case kind of
+    Cxx.RecordKind_struct_{} -> Just SymbolKind_Struct
+    Cxx.RecordKind_class_{} -> Just SymbolKind_Class_
+    Cxx.RecordKind_union_{} -> Just SymbolKind_Union
+    Cxx.RecordKind_EMPTY -> Nothing
 
 toSymbolDefnKind
   :: Cxx.Definition -> Glean.RepoHaxl u w (Maybe Glass.SymbolKind)
@@ -398,6 +415,7 @@ toSymbolDefnKind k = case k of
   Cxx.Definition_objcContainer{} -> return Nothing
   Cxx.Definition_variable{} -> return $ Just SymbolKind_Variable
   Cxx.Definition_namespace_{} -> return $ Just SymbolKind_Namespace
+  Cxx.Definition_EMPTY -> return Nothing
 
 --
 -- Qualified names for C++

@@ -529,7 +529,7 @@ genType here TypeDef{..} = addExtraDecls $ do
   withTypeDefHint root $ do
 
   let
-    structLike structOrUnion fields withFieldHint extraFields ann = do
+    structLike structOrUnion fields withFieldHint extraFields = do
       fieldTexts <- forM (zip [1..] fields) $ \(ix, FieldDef nm ty) -> do
          tyName <- withFieldHint nm (thriftTy here ty)
          if query
@@ -542,22 +542,21 @@ genType here TypeDef{..} = addExtraDecls $ do
              return $ makeField structOrUnion ix nm tyName
       let
         define | null fields = "struct " <> name <> " {}"
-               | otherwise = myUnlines . concat $
+               | otherwise = myUnlines $ concat
           [ [ structOrUnion <> " " <> name <> " {" ]
           , indentLines (fieldTexts ++ extraFields)
-          , [ "}" <> ann ]
+          , [ "}" ]
           ]
       return [define]
 
   case typeDefType of
-    Record fields -> structLike "struct" fields withRecordFieldHint [] ""
-    Sum fields -> structLike structOrUnion fields withUnionFieldHint anyField an
+    Record fields -> structLike "struct" fields withRecordFieldHint []
+    Sum fields -> structLike structOrUnion fields withUnionFieldHint anyField
       where
         structOrUnion = if query then "struct" else "union"
         anyField
           | query = [ showt (length fields + 1) <> ": bool any = false;" ]
           | otherwise = []
-        an = if query then "" else " (hs.nonempty)"
 
     -- queries on arrays:
     Array ty | query, not (isByt ty) -> do

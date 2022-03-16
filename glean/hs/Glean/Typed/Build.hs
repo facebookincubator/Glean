@@ -107,18 +107,16 @@ decodeWithCache serialized cache decoder v =
         return x
 
 
--- | A generic decoder for sum types. Can throw 'DecodingException' or
--- 'GleanFFIError'
-sumD :: [Decoder b] -> Decoder b
-sumD alts = Decoder $ \env@DecoderEnv{..} -> do
+-- | A generic decoder for sum types. Can throw 'GleanFFIError'
+sumD :: Decoder b -> [Decoder b] -> Decoder b
+sumD empty alts = Decoder $ \env@DecoderEnv{..} -> do
   sel <- FFI.ffiBuf buf $ RTS.glean_pop_value_selector begin end
-  case index sel alts of
-    Just (Decoder f) -> f env
-    Nothing -> decodeFail "selector out of range"
+  let Decoder f = index sel alts
+  f env
   where
-    index 0 (x:_) = Just x
+    index 0 (x:_) = x
     index i (_:xs) = index (i-1) xs
-    index _ [] = Nothing
+    index _ [] = empty
 
 -- | A generic decoder, used for Bool. Can throw 'DecodingException'
 -- or 'GleanFFIError'

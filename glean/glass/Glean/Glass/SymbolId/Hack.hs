@@ -36,6 +36,7 @@ instance Symbol Hack.Declaration where
     Hack.Declaration_globalConst x -> toSymbolPredicate x
     Hack.Declaration_namespace_ x -> toSymbolPredicate x
     Hack.Declaration_typedef_ x -> toSymbolPredicate x
+    Hack.Declaration_EMPTY -> return []
 
 instance Symbol Hack.TypeConstDeclaration_key where
   toSymbol (Hack.TypeConstDeclaration_key name container) = container <:> name
@@ -66,6 +67,7 @@ instance Symbol Hack.ContainerDeclaration where
   toSymbol (Hack.ContainerDeclaration_enum_ c) = toSymbolPredicate c
   toSymbol (Hack.ContainerDeclaration_interface_ c) = toSymbolPredicate c
   toSymbol (Hack.ContainerDeclaration_trait c) = toSymbolPredicate c
+  toSymbol Hack.ContainerDeclaration_EMPTY = return []
 
 instance Symbol Hack.ClassDeclaration_key where
   toSymbol (Hack.ClassDeclaration_key qn) = toSymbol qn
@@ -122,6 +124,7 @@ instance ToAngle Hack.Declaration where
     Hack.Declaration_property_ x -> alt @"property_" (mkKey x)
     Hack.Declaration_typeConst x -> alt @"typeConst" (mkKey x)
     Hack.Declaration_typedef_ x -> alt @"typedef_" (mkKey x)
+    Hack.Declaration_EMPTY -> error "unknown Declaration"
 
 instance ToAngle Hack.ContainerDeclaration where
   toAngle e = case e of
@@ -129,6 +132,7 @@ instance ToAngle Hack.ContainerDeclaration where
     Hack.ContainerDeclaration_enum_ x -> alt @"enum_" (mkKey x)
     Hack.ContainerDeclaration_interface_ x -> alt @"interface_" (mkKey x)
     Hack.ContainerDeclaration_trait x -> alt @"trait" (mkKey x)
+    Hack.ContainerDeclaration_EMPTY -> error "unknown ContainerDeclaration"
 
 instance ToQName Hack.Declaration where
   toQName e = case e of
@@ -142,6 +146,7 @@ instance ToQName Hack.Declaration where
     Hack.Declaration_property_ x -> Glean.keyOf x >>= toQName
     Hack.Declaration_typeConst x -> Glean.keyOf x >>= toQName
     Hack.Declaration_typedef_ x -> Glean.keyOf x >>= toQName
+    Hack.Declaration_EMPTY -> return $ Left "unknown Declaration"
 
 instance ToQName Hack.ClassConstDeclaration_key where
   toQName (Hack.ClassConstDeclaration_key name con) = pairToQName name con
@@ -151,6 +156,8 @@ instance ToQName Hack.ContainerDeclaration where
   toQName (Hack.ContainerDeclaration_enum_ x) = Glean.keyOf x >>= toQName
   toQName (Hack.ContainerDeclaration_interface_ x) = Glean.keyOf x >>= toQName
   toQName (Hack.ContainerDeclaration_trait x) = Glean.keyOf x >>= toQName
+  toQName Hack.ContainerDeclaration_EMPTY =
+    return $ Left "unknown ContainerDeclaration"
 
 instance ToQName Hack.EnumDeclaration_key where
   toQName (Hack.EnumDeclaration_key qn) = toQName qn

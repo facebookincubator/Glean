@@ -12,6 +12,7 @@ module Glean.Pretty.Java
   (
   ) where
 
+import Data.Text (Text)
 import Data.Text.Prettyprint.Doc
 
 import Glean.Pretty.Src ()
@@ -21,8 +22,12 @@ import Glean.Util.Range (locRange)
 import Glean.Util.URI
 
 
+intentionallyEmpty :: Doc a
+intentionallyEmpty = pretty ("" :: Text)
+
 instance Pretty Java.Entity where
   pretty (Java.Entity_class_ decl) = pretty decl
+  pretty Java.Entity_EMPTY = intentionallyEmpty
 
 instance Pretty Java.ClassDeclaration where
   pretty Java.ClassDeclaration{..} = maybe "" pretty classDeclaration_key

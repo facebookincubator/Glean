@@ -49,7 +49,14 @@ withBenchDB num act = withEmptyTestDB [] $ \env repo -> do
       [ def
         { Glean.Test.kitchenSink_string_ = "x" <> Text.pack (show n)
         , Glean.Test.kitchenSink_pred = blob
-        , Glean.Test.kitchenSink_sum_ = Glean.Test.KitchenSink_sum__d blob }
+        , Glean.Test.kitchenSink_sum_ = Glean.Test.KitchenSink_sum__d blob
+        , Glean.Test.kitchenSink_named_record_ =
+            def { Glean.Test.rec_beta = Glean.Test.Sum_wed True }
+        , Glean.Test.kitchenSink_named_sum_ =
+            Glean.Test.Sum_wed True
+        , Glean.Test.kitchenSink_maybe_ = Nothing
+        }
+
       | (n,blob) <- zip [(1::Int)..] blobs
       ]
 

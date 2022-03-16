@@ -21,3 +21,4 @@ instance Pretty Declaration where
 
 instance Pretty Entity where
   pretty (Entity_decl d) = pretty d
+  pretty Entity_EMPTY = ""

@@ -1865,7 +1865,23 @@ limitTest = dbTestCase $ \env repo -> do
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
-  [ TestLabel "angle" $ angleTest id
+  [ TestLabel "one" $ dbTestCase $ \env repo -> do
+    -- match one result of many
+    results <- runQuery_ env repo $ angle @Glean.Test.Predicate_1
+      [s|
+         glean.test.Predicate.1 { named_sum_ = { tue = 37 } }
+      |]
+    case results of
+      [Glean.Test.Predicate_1{Glean.Test.predicate_1_key = Just k}] -> do
+        print k
+        print kitchenSink1
+        assertBool "angle - glean.test.Predicate 1" $
+          ignorePredK k == ignorePredK kitchenSink1
+      _ -> do
+        print results
+        putStrLn "other branch"
+        assertBool "angle - glean.test.Predicate 1" False
+  , TestLabel "angle" $ angleTest id
   , TestLabel "angle/page" $ angleTest (limit 1)
   , TestLabel "error" angleErrorTests
   , TestLabel "nested" $ angleNested id

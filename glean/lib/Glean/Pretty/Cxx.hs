@@ -33,10 +33,14 @@ import Glean.Schema.Pp1.Types as Pp
 import Glean.Schema.Src.Types as Src
 import Glean.Util.URI
 
+intentionallyEmpty :: Doc ann
+intentionallyEmpty = ""
+
 instance Pretty Cxx.Entity where
   pretty (Cxx.Entity_decl decl) = pretty decl
   pretty (Cxx.Entity_defn defn) = pretty defn
   pretty (Cxx.Entity_enumerator en) = pretty en
+  pretty Cxx.Entity_EMPTY = intentionallyEmpty
 
 instance Pretty Cxx.Definition where
   pretty (Cxx.Definition_function_ defn) = pretty defn
@@ -46,6 +50,7 @@ instance Pretty Cxx.Definition where
   pretty (Cxx.Definition_objcContainer defn) = pretty defn
   pretty (Cxx.Definition_variable defn) = pretty defn
   pretty (Cxx.Definition_namespace_ defn) = pretty defn
+  pretty Cxx.Definition_EMPTY = intentionallyEmpty
 
 instance Pretty Cxx.NamespaceDefinition where
   pretty defn =
@@ -127,6 +132,7 @@ instance Pretty Cxx.Declaration where
   pretty (Cxx.Declaration_objcProperty prop) = prettyObjcPropertyDecl prop
   pretty (Cxx.Declaration_objcContainer contDecl) =
     prettyObjcContainerDecl contDecl
+  pretty Cxx.Declaration_EMPTY = intentionallyEmpty
 
 instance Pretty Cxx.FunctionQName where
   pretty = fromMaybe mempty . prettyScopedFnQName
@@ -244,6 +250,7 @@ prettyObjcContId contId
       prettyObjcCategoryId catId
   | Cxx.ObjcContainerId_categoryImplementation catId <- contId =
       prettyObjcCategoryId catId
+  | Cxx.ObjcContainerId_EMPTY <- contId = intentionallyEmpty
 
 prettyObjcCategoryId :: Cxx.ObjcCategoryId -> Doc ann
 prettyObjcCategoryId Cxx.ObjcCategoryId {
@@ -429,6 +436,7 @@ prettyFnNameK maybeContainerName fnk = case fnk of
   Cxx.FunctionName_key_destructor _unit -> maybe "/* destructor */"
     (\n -> pretty ("~" <> n)) maybeContainerName
   Cxx.FunctionName_key_conversionOperator t -> parens (prettyType t)
+  Cxx.FunctionName_key_EMPTY -> intentionallyEmpty
 
 prettyScopeColons :: Cxx.Scope -> Doc ann
 prettyScopeColons (Cxx.Scope_namespace_ namespaceQName) =

@@ -21,6 +21,7 @@ instance Pretty Hs.Entity where
   pretty (Hs.Entity_definition defn) = pretty defn
   pretty (Hs.Entity_function_ decl) = pretty decl
   pretty (Hs.Entity_class_ _cls) = mempty -- TODO
+  pretty Hs.Entity_EMPTY = mempty
 
 instance Pretty Hs.Definition where
   pretty Definition{..}

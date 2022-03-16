@@ -32,6 +32,7 @@ instance Symbol CodeThrift.Entity where
     CodeThrift.Entity_service_ service_ -> toSymbolPredicate service_
     CodeThrift.Entity_constant constant -> toSymbolPredicate constant
     CodeThrift.Entity_enumValue enumvalue -> toSymbolPredicate enumvalue
+    CodeThrift.Entity_EMPTY -> return []
 
 instance Symbol Src.File where
   toSymbol k = pathFragments <$> Glean.keyOf k

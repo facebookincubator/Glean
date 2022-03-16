@@ -23,6 +23,7 @@ import Glean.Schema.CodeBuck.Types as CodeBuck
 instance Symbol CodeBuck.Entity where
   toSymbol e = case e of
     CodeBuck.Entity_locator locator -> toSymbolPredicate locator
+    CodeBuck.Entity_EMPTY -> return []
 
 instance Symbol Buck.Locator_key where
   toSymbol (Buck.Locator_key subdir path name) =

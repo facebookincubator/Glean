@@ -58,6 +58,9 @@ import qualified Glean.Schema.Codemarkup.Types as Code
 import Glean.Angle ( query )
 import qualified Glean.Haxl.Repos as Glean
 
+unexpected :: a
+unexpected = error "unexpected RangeSpan"
+
 -- | Converts Glean-specific bytespan into client-visible line/col offsets
 -- convert Glean ranges into customer range types, with exclusive line end
 -- Warning: if the file doesn't have src.FileLines facts and the language
@@ -193,6 +196,8 @@ rangeSpanToRange file offsets (Code.RangeSpan_span span) =
   fileByteSpanToExclusiveRange file offsets span
 rangeSpanToRange _ _ (Code.RangeSpan_range range) =
   inclusiveRangeToExclusiveRange range
+rangeSpanToRange _ _ Code.RangeSpan_EMPTY =
+  unexpected
 
 -- | Convert a client-side target locator to a specific line/col range
 resolveLocationToRange
@@ -229,6 +234,7 @@ locationFromCodeLocation repo file rangespan = case rangespan of
     mOffsets <- memoLineOffsets file
     let span = inclusiveRangeToFileByteSpan mOffsets range
     toLocation repo file span
+  Code.RangeSpan_EMPTY -> unexpected
 
 -- | Convert Glean-side Location markers to the Glass range locations
 -- Like the composition of locationFromCodeLocation and resolveLocationRoRange,
@@ -245,4 +251,5 @@ locationRangeFromCodeLocation repo file rangespan = do
       return $ fileByteSpanToExclusiveRange file mOffsets span
     Code.RangeSpan_range incRange -> do
       return $ inclusiveRangeToExclusiveRange incRange
+    Code.RangeSpan_EMPTY -> unexpected
   toLocationRange repo file range

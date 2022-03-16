@@ -64,9 +64,11 @@ instance HasAnnotations Code.Annotations where
   getAnnotations Code.Annotations_python{} = Nothing -- Not yet supported
   getAnnotations Code.Annotations_thrift{} = Nothing -- Not yet supported
   getAnnotations Code.Annotations_java{} = Nothing -- Not yet supported
+  getAnnotations Code.Annotations_EMPTY = Nothing
 
 instance HasAnnotations Cxx1.Annotations where
   getAnnotations (Cxx1.Annotations_attributes anns) = getAnnotations anns
+  getAnnotations Cxx1.Annotations_EMPTY = Nothing
 
 instance HasAnnotations Cxx1.Attribute where
   getAnnotations Cxx1.Attribute{attribute_key=Just key} = Just
@@ -80,6 +82,7 @@ instance HasAnnotations Cxx1.Attribute where
 
 instance HasAnnotations Hack.Annotations where
   getAnnotations (Hack.Annotations_attributes anns) = getAnnotations anns
+  getAnnotations Hack.Annotations_EMPTY = Nothing
 
 instance HasAnnotations Hack.UserAttribute where
   getAnnotations

@@ -89,6 +89,7 @@ angleOfDeclaration = \case
     (asPredicate (factId (getId p)))
   Cxx.Declaration_typeAlias p -> alt @"typeAlias"
     (asPredicate (factId (getId p)))
+  Cxx.Declaration_EMPTY -> never
 
 -- -----------------------------------------------------------------------------
 
@@ -125,6 +126,7 @@ applyDeclaration f = \case
   Cxx.Declaration_objcMethod d -> f d
   Cxx.Declaration_objcProperty d -> f d
   Cxx.Declaration_typeAlias d -> f d
+  Cxx.Declaration_EMPTY -> error "unknown declaration branch"
 
 
 {-# INLINE applyConstrainedDeclaration #-}
@@ -158,6 +160,7 @@ applyConstrainedDeclaration Proxy f = \case
   Cxx.Declaration_objcMethod d -> f d
   Cxx.Declaration_objcProperty d -> f d
   Cxx.Declaration_typeAlias d -> f d
+  Cxx.Declaration_EMPTY -> error "unknown declaration"
 
 -- -----------------------------------------------------------------------------
 
@@ -231,7 +234,8 @@ queryRecord sfId nqnId name =
     end
 
 -- | Reduction of Cxx.ObjcContainerId where we only want its name
-data ObjcContainerName = ObjcContainerNameId Cxx.ObjcCategoryId
+data ObjcContainerName
+  = ObjcContainerNameId Cxx.ObjcCategoryId
   | ObjcContainerName Cxx.Name
 
 -- | Reduce Cxx.ObjcContainerId to its name
@@ -243,6 +247,7 @@ objcContainerName = \case
   Cxx.ObjcContainerId_extensionInterface name -> ObjcContainerName name
   Cxx.ObjcContainerId_implementation name -> ObjcContainerName name
   Cxx.ObjcContainerId_categoryImplementation catId -> ObjcContainerNameId catId
+  Cxx.ObjcContainerId_EMPTY -> error "unknown ObjcContainerId constructor"
 
 -- | Names from various Cxx things, for common processing
 data CxxName
@@ -283,6 +288,7 @@ declarationCxxName = \case
     Cxx.ObjcPropertyDeclaration_key{..} <- getFactKey d
     return $ CxxObjcPropertyName objcPropertyDeclaration_key_name
       objcPropertyDeclaration_key_container
+  Cxx.Declaration_EMPTY -> Nothing
 
 -- | Reduce Cxx.Enumerator to its name
 enumeratorCxxName :: Cxx.Enumerator -> Maybe CxxName

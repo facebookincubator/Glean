@@ -40,6 +40,7 @@ import Control.Monad.Trans.Writer.Strict
 
 prettyHackSignature :: Hack.Entity -> Glean.RepoHaxl u w (Maybe Text)
 prettyHackSignature (Hack.Entity_decl d) = runMaybeT $ prettyDecl <$> decl d
+prettyHackSignature Hack.Entity_EMPTY = return Nothing
 
 (<+>) :: Text -> Text -> Text
 "" <+> b = b
@@ -205,6 +206,7 @@ decl (Hack.Declaration_typedef_ Hack.TypedefDeclaration{..}) = do
   Hack.TypedefDeclaration_key{..} <- liftMaybe typedefDeclaration_key
   name <- liftMaybe $ qName typedefDeclaration_key_name
   pure $ Typedef $ QualName name
+decl Hack.Declaration_EMPTY = MaybeT (return Nothing)
 
 containerDecl :: Hack.ContainerDeclaration -> Glean.MaybeTRepoHaxl u w Decl
 containerDecl
@@ -236,6 +238,7 @@ containerDecl
     Hack.InterfaceDeclaration_key{..} <- liftMaybe interfaceDeclaration_key
     name <- liftMaybe $ qName interfaceDeclaration_key_name
     pure $ Interface $ QualName name
+containerDecl Hack.ContainerDeclaration_EMPTY = MaybeT (return Nothing)
 
 containerQualName :: Hack.ContainerDeclaration -> Maybe QualName
 containerQualName
@@ -258,6 +261,7 @@ containerQualName
     Hack.InterfaceDeclaration_key{..} <- interfaceDeclaration_key
     name <- qName interfaceDeclaration_key_name
     pure $ QualName name
+containerQualName Hack.ContainerDeclaration_EMPTY = Nothing
 
 qName :: Hack.QName -> Maybe ([Text], Text)
 qName Hack.QName{..} = do

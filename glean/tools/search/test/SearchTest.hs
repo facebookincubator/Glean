@@ -368,6 +368,7 @@ checkQueryRoundtrip backend repo tag ent@(Entity_cxx e) =
     mapM_ (checkDefn d) entity_defn
   checkCxx (Entity_enumerator d) Query.Cxx.Entity{..} = do
     mapM_ (check d) entity_enumerator
+  checkCxx Cxx.Entity_EMPTY _ = return ()
 
   checkDefn (Definition_record_ d) Query.Cxx.Definition{..} =
     mapM_ (check d) definition_record_

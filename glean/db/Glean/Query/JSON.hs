@@ -237,12 +237,13 @@ encode expanded Encoder{..} !d = enc
         encObjectEnd
       Sum fieldTys -> do
         sel <- liftST $ RTS.dSelector d
-        case atMay fieldTys (fromIntegral sel) of
+        encObjectBegin
+        void $ case atMay fieldTys (fromIntegral sel) of
           Just (FieldDef name ty) -> do
-            encObjectBegin
-            void $ enc_field Nothing (fromIntegral sel + 1) name ty d
-            encObjectEnd
-          Nothing -> liftST $ encodingError "selector out of range"
+            enc_field Nothing (fromIntegral sel + 1) name ty d
+          Nothing ->
+            enc_field Nothing (length fieldTys + 1) "UNKNOWN" (Record []) d
+        encObjectEnd
       NamedType (ExpandedType _ ty) -> enc ty
       Enumerated _ -> do
         x <- liftST $ RTS.dSelector d

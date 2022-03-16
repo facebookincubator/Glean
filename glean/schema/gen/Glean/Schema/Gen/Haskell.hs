@@ -528,7 +528,8 @@ unionDef mode ident ver fields = do
   withTypeDefHint root $ do
   let
     shortConNames = map fieldDefName fields
-    conNames = map (cap1 . (prefix <>)) shortConNames
+    conNames = map toConName shortConNames
+    toConName shortName = cap1 (prefix <> shortName)
       where prefix = name <> "_"
     queryConNames = map (prefixQuery <>) shortConNames
       where nameQuery = qFieldName uName
@@ -549,31 +550,23 @@ unionDef mode ident ver fields = do
     withUnionFieldHint (fieldDefName field) $
       toQuery here (fieldDefType field)
 
-  let
-    wrap :: Text -> Text
-    wrap s = "(" <> s <> ")"
-    conWithX c = wrap (c <> " x")
-  let mkBuild (i::Int) c _t =
-        "buildRtsValue b " <> conWithX c <> " = do"
-        : indentLines [ "Glean.buildRtsSelector b " <> Text.pack (show i)
-                      , "Glean.buildRtsValue b x" ]
-      mkDecode c _t = "Glean.mapD " <> c -- so far all has one constructor
   let def_Type = case conNames of
-        [] -> "instance Glean.Type " <> name <> " where"
-              : indentLines [ "buildRtsValue _ _ = Prelude.return ()"
-                 , "decodeRtsValue = Prelude.error $ \"decodeRtsValue\" <> " <>
-                     name ]
-        (c:cs) ->
-          let builds = concat $ zipWith3 mkBuild [0..] conNames conTypeNames
-              decodes = concat
-                [ [ "decodeRtsValue = Glean.sumD" ]
-                  , indentLines
-                      ( "[ " <> mkDecode c (head conTypeNames)
-                      : map (", " <>)
-                          (zipWith mkDecode cs (tail conTypeNames))
-                      )
-                  , indentLines [ "]" ]
-                ]
+        [] ->
+          "instance Glean.Type " <> name <> " where" : indentLines
+            [ "buildRtsValue _ _ = Prelude.return ()"
+            , "decodeRtsValue = Prelude.error $ \"decodeRtsValue\" <> " <> name
+            ]
+        _ ->
+          let emptyCon = toConName "EMPTY"
+              builds =
+                  mkBuildEmpty conNames emptyCon ++
+                  concat (zipWith mkBuild [0..] conNames)
+              decodes =
+                "decodeRtsValue = Glean.sumD" :
+                indentLines
+                  ( "(Prelude.pure " <> emptyCon <> ")"
+                  : asArray (map mkDecode conNames)
+                  )
           in concat
             [ ["instance Glean.Type " <> name <> " where"]
             , indentLines builds
@@ -627,6 +620,29 @@ unionDef mode ident ver fields = do
   return $ map myUnlines $ case mode of
     Data -> [def_Type, def_SumFields] ++ def_Sum
     Query -> [def_Query, def_ToQuery] ++ def_SumQuery
+  where
+    mkBuildEmpty constructors emptyCon =
+      let index = length constructors in
+      "buildRtsValue b " <> emptyCon <> "=" : indentLines
+        [ "Glean.buildRtsSelector b " <> Text.pack (show index) ]
+
+    mkBuild :: Int -> Text -> [Text]
+    mkBuild i c =
+      "buildRtsValue b (" <> c <> " x) = do" : indentLines
+        [ "Glean.buildRtsSelector b " <> Text.pack (show i)
+        , "Glean.buildRtsValue b x" ]
+
+    mkDecode :: Text -> Text
+    mkDecode c = "Glean.mapD " <> c
+
+    asArray :: [Text] -> [Text]
+    asArray = \case
+      [] -> ["[]"]
+      (x:xs) -> concat
+        [ ["[ " <> x]
+        , [", " <> e | e <- xs]
+        , ["]"]
+        ]
 
 enumDef :: Mode -> Name -> Version -> [Name] -> M [Text]
 enumDef mode ident ver eVals = do

@@ -158,6 +158,11 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
                 , Glean.Test.kitchenSink_sum_ =
                   Glean.Test.KitchenSink_sum__d $
                     def { Sys.blob_key = Just "def" }
+                , Glean.Test.kitchenSink_named_record_ =
+                    def { Glean.Test.rec_beta = Glean.Test.Sum_wed True }
+                , Glean.Test.kitchenSink_named_sum_ =
+                    Glean.Test.Sum_wed True
+                , Glean.Test.kitchenSink_maybe_ = Nothing
                 }
             }
         ]

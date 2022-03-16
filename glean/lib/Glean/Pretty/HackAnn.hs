@@ -63,6 +63,8 @@ hackNaming = \case
     Hack.typeConstDeclaration_key_name Hack.typeConstDeclaration_key_container x
   Hack.Declaration_typedef_ x -> InNamespace name_type
     . Hack.typedefDeclaration_key_name <$> getFactKey x
+  Hack.Declaration_EMPTY ->
+    Nothing
   where
     inQ
       :: Predicate p
@@ -86,6 +88,8 @@ hackNaming = \case
         Hack.interfaceDeclaration_key_name <$> getFactKey y
       Hack.ContainerDeclaration_trait y ->
         Hack.traitDeclaration_key_name <$> getFactKey y
+      Hack.ContainerDeclaration_EMPTY ->
+        Nothing
 
 -- -----------------------------------------------------------------------------
 

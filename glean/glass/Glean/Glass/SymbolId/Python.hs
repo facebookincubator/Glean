@@ -40,6 +40,7 @@ instance Symbol Py.Declaration where
       Py.Declaration_module x -> toSymbolPredicate x
       Py.Declaration_variable x -> toSymbolPredicate x
       Py.Declaration_imp x -> toSymbolPredicate x
+      Py.Declaration_EMPTY -> return []
     return $ loc:sym
 
 instance Symbol Py.ImportStatement_key where
@@ -73,6 +74,7 @@ instance ToAngle Py.Declaration where
   toAngle (Py.Declaration_module x) = alt @"module" (mkKey x)
   toAngle (Py.Declaration_variable x) = alt @"variable" (mkKey x)
   toAngle (Py.Declaration_imp x) = alt @"imp" (mkKey x)
+  toAngle Py.Declaration_EMPTY = error "unknown Declaration"
 
 instance ToQName Py.Declaration where
   toQName (Py.Declaration_cls x) = Glean.keyOf x >>= toQName
@@ -80,6 +82,7 @@ instance ToQName Py.Declaration where
   toQName (Py.Declaration_module x) = Glean.keyOf x >>= toQName
   toQName (Py.Declaration_variable x) = Glean.keyOf x >>= toQName
   toQName (Py.Declaration_imp x) = Glean.keyOf x >>= toQName
+  toQName Py.Declaration_EMPTY = return $ Left "unknown Declaration"
 
 instance ToQName Py.ImportStatement_key where
   toQName (Py.ImportStatement_key _ asName) = toQName asName

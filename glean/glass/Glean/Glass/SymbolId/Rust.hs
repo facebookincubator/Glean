@@ -20,6 +20,7 @@ import Glean.Schema.CodeRust.Types as Rust ( Entity(..) )
 
 instance Symbol Rust.Entity where
   toSymbol (Rust.Entity_definition defn) = toSymbol defn
+  toSymbol Rust.Entity_EMPTY = return []
 
 instance Symbol Rust.Def where
   toSymbol (Rust.Def_const_ d) = toSymbolPredicate d
@@ -38,6 +39,7 @@ instance Symbol Rust.Def where
   toSymbol (Rust.Def_tuple_variant d) = toSymbolPredicate d
   toSymbol (Rust.Def_type d) = toSymbolPredicate d
   toSymbol (Rust.Def_union_ d) = toSymbolPredicate d
+  toSymbol Rust.Def_EMPTY = return []
 
 instance Symbol Rust.ConstDef_key where
   toSymbol (Rust.ConstDef_key qname _ty) = toSymbolPredicate qname

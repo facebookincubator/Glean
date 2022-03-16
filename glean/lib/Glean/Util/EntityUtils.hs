@@ -57,12 +57,14 @@ trimCodeEntity = \case
       Pp.Entity_define x -> trim x
       Pp.Entity_undef x -> trim x
       Pp.Entity_include_ x -> trim x
+      Pp.Entity_EMPTY -> error "trimPp: unexpected"
 
     trimCxx = \case
       Cxx.Entity_decl x -> Cxx.Entity_decl $
         applyDeclaration trim x
       Cxx.Entity_defn x -> Cxx.Entity_defn (trimCxxDefn x)
       Cxx.Entity_enumerator x -> trim x
+      Cxx.Entity_EMPTY -> error "trimCxx: unexpected"
 
     trimCxxDefn = \case
       Cxx.Definition_record_ x -> trim x
@@ -72,14 +74,17 @@ trimCodeEntity = \case
       Cxx.Definition_objcContainer x -> trim x
       Cxx.Definition_variable x -> trim x
       Cxx.Definition_namespace_ x -> trim x
+      Cxx.Definition_EMPTY -> error "trimCxxDefn: unexpected"
 
     trimJava = \case
       Java.Entity_class_ x -> trim x
+      Java.Entity_EMPTY -> error "trimJava: unexpected"
 
     trimHs = \case
       Hs.Entity_definition x -> trim x
       Hs.Entity_function_ x -> trim x
       Hs.Entity_class_ x -> trim x
+      Hs.Entity_EMPTY -> error "trimHs: unexpected"
 
     trimPython = \case
       Python.Entity_decl x -> Python.Entity_decl $ case x of
@@ -88,6 +93,8 @@ trimCodeEntity = \case
         Python.Declaration_variable y -> trim y
         Python.Declaration_imp y -> trim y
         Python.Declaration_module y -> trim y
+        Python.Declaration_EMPTY -> error "trimPython: unexpected"
+      Python.Entity_EMPTY -> error "trimPython: unexpected"
 
     trimHack = \case
       Hack.Entity_decl x -> Hack.Entity_decl $ case x of
@@ -97,6 +104,7 @@ trimCodeEntity = \case
           Hack.ContainerDeclaration_enum_ z -> trim z
           Hack.ContainerDeclaration_interface_ z -> trim z
           Hack.ContainerDeclaration_trait z -> trim z
+          Hack.ContainerDeclaration_EMPTY -> error "trimHack: unexpected"
         Hack.Declaration_enumerator y -> trim y
         Hack.Declaration_function_ y -> trim y
         Hack.Declaration_globalConst y -> trim y
@@ -105,6 +113,8 @@ trimCodeEntity = \case
         Hack.Declaration_property_ y -> trim y
         Hack.Declaration_typeConst y -> trim y
         Hack.Declaration_typedef_ y -> trim y
+        Hack.Declaration_EMPTY -> error "trimHack: unexpected"
+      Hack.Entity_EMPTY -> error "trimHack: unexpected"
 
     trimFlow = \case
       Flow.Entity_module_ m -> Flow.Entity_module_ m
@@ -112,6 +122,8 @@ trimCodeEntity = \case
          Flow.SomeDeclaration_localDecl d -> trim d
          Flow.SomeDeclaration_memberDecl d -> trim d
          Flow.SomeDeclaration_typeDecl d -> trim d
+         Flow.SomeDeclaration_EMPTY -> error "trimFlow: unexpected"
+      Flow.Entity_EMPTY -> error "trimFlow: unexpected"
 
 -- -----------------------------------------------------------------------------
 -- Entity to query

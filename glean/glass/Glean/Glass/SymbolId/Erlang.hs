@@ -30,10 +30,12 @@ import Glean.Schema.CodeErlang.Types as CodeErlang
 instance Symbol CodeErlang.Entity where
   toSymbol e = case e of
     CodeErlang.Entity_decl decl -> toSymbol decl
+    CodeErlang.Entity_EMPTY -> return []
 
 instance Symbol Erlang.Declaration where
   toSymbol decl = case decl of
     Erlang.Declaration_func func -> toSymbolPredicate func
+    Erlang.Declaration_EMPTY -> return []
 
 instance Symbol Erlang.FunctionDeclaration_key where
   toSymbol (Erlang.FunctionDeclaration_key fqn _file _span) = toSymbol fqn
@@ -50,15 +52,19 @@ instance Symbol (Text, Nat) where
       return [intercalate "." [name, showt (fromNat arity)]]
 
 instance ToAngle Erlang.Declaration where
-  toAngle (Erlang.Declaration_func x) = alt @"func" (mkKey x)
+  toAngle d = case d of
+    Erlang.Declaration_func x -> alt @"func" (mkKey x)
+    Erlang.Declaration_EMPTY -> error "unknown Declaration"
 
 instance ToQName CodeErlang.Entity where
   toQName e = case e of
     CodeErlang.Entity_decl x -> toQName x
+    CodeErlang.Entity_EMPTY -> return $ Left "unknown Entity"
 
 instance ToQName Erlang.Declaration where
   toQName e = case e of
     Erlang.Declaration_func x -> Glean.keyOf x >>= toQName
+    Erlang.Declaration_EMPTY -> return $ Left "unknown Declaration"
 
 instance ToQName Erlang.FunctionDeclaration_key where
   toQName e = case e of

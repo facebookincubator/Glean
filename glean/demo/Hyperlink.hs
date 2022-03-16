@@ -337,25 +337,34 @@ cxxGetHyperlinks path = do  -- ApplicativeDo makes these parallel:
 
       Cxx.XRefTarget_declaration (Cxx.Declaration_variable r) -> do
         key <- Glean.getKey r
-        target_range
-          (case Cxx.variableDeclaration_key_kind key of
-            Cxx.VariableKind_global_{} -> "variable"
-            Cxx.VariableKind_field{} -> "field"
-            Cxx.VariableKind_ivar{} -> "ivar") $
-          Cxx.variableDeclaration_key_source key
+        let mkind = case Cxx.variableDeclaration_key_kind key of
+              Cxx.VariableKind_global_{} -> Just "variable"
+              Cxx.VariableKind_field{} -> Just "field"
+              Cxx.VariableKind_ivar{} -> Just "ivar"
+              Cxx.VariableKind_EMPTY -> Nothing
+        case mkind of
+          Nothing -> return Nothing
+          Just kind -> target_range kind $
+            Cxx.variableDeclaration_key_source key
 
       Cxx.XRefTarget_declaration (Cxx.Declaration_objcContainer r) -> do
         key <- Glean.getKey r
-        let kind = case Cxx.objcContainerDeclaration_key_id key of
-              Cxx.ObjcContainerId_protocol{} -> "objc protocol"
-              Cxx.ObjcContainerId_interface_{} -> "objc interface"
-              Cxx.ObjcContainerId_categoryInterface{} -> "objc category"
-              Cxx.ObjcContainerId_extensionInterface{} -> "objc extension"
-              Cxx.ObjcContainerId_implementation{} -> "objc implementation"
+        let mkind = case Cxx.objcContainerDeclaration_key_id key of
+              Cxx.ObjcContainerId_protocol{} -> Just "objc protocol"
+              Cxx.ObjcContainerId_interface_{} -> Just "objc interface"
+              Cxx.ObjcContainerId_categoryInterface{} -> Just "objc category"
+              Cxx.ObjcContainerId_extensionInterface{} -> Just "objc extension"
+              Cxx.ObjcContainerId_implementation{} -> Just "objc implementation"
               Cxx.ObjcContainerId_categoryImplementation{} ->
-                "objc category implementation"
-        target_range kind $
-          Cxx.objcContainerDeclaration_key_source key
+                Just "objc category implementation"
+              Cxx.ObjcContainerId_EMPTY -> Nothing
+        case mkind of
+          Nothing -> return Nothing
+          Just kind -> target_range kind $
+            Cxx.objcContainerDeclaration_key_source key
+
+      Cxx.XRefTarget_declaration Cxx.Declaration_EMPTY ->
+        return Nothing
 
       Cxx.XRefTarget_declaration (Cxx.Declaration_objcMethod r) -> do
         key <- Glean.getKey r
@@ -379,6 +388,9 @@ cxxGetHyperlinks path = do  -- ApplicativeDo makes these parallel:
       Cxx.XRefTarget_indirect r -> do
         key <- Glean.getKey r
         xrefTarget $ Cxx.xRefIndirectTarget_key_target key
+
+      Cxx.XRefTarget_EMPTY ->
+        return Nothing
 
     target_range kind (Src.Range file line _ _ _) =
       target_locH kind file line

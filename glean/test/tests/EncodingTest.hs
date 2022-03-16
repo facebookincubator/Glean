@@ -45,7 +45,7 @@ kitchenSink = KitchenSink
   , kitchenSink_pred = Blob 256789 Nothing
   , kitchenSink_maybe_ = Nothing
   , kitchenSink_record_ = def
-  , kitchenSink_sum_ = def
+  , kitchenSink_sum_ = KitchenSink_sum__c def
   , kitchenSink_enum_ = def
   , kitchenSink_named_record_ = Rec
       { rec_alpha = Enum_green
@@ -183,12 +183,23 @@ compactEnc = Enc
 foreign import ccall unsafe glean_test_compact_reencode
   :: Ptr () -> CSize -> Ptr (Ptr ()) -> Ptr CSize -> IO CString
 
+binaryRoundTrip :: (Type a, Eq a, Show a) => a -> Test
+binaryRoundTrip val = TestCase $ do
+  putStrLn "original:"
+  print val
+
+  term <- withBuilder $ \builder -> do
+    buildRtsValue builder val
+    finishBuilder builder
+
+  decoded <- decodeRts term
+  assertEqual "binaryEncoding" val decoded
+
 main :: IO ()
 main = withUnitTest $ do
   e <- mkE
   testRunner $ TestList
-    [ TestLabel "roundTrip JSON 0" $ roundTrip jsonEnc e def
-    , TestLabel "roundTrip JSON 1" $ roundTrip jsonEnc e kitchenSink
-    , TestLabel "roundTrip compact 0" $ roundTrip compactEnc e def
-    , TestLabel "roundTrip compact 1" $ roundTrip compactEnc e kitchenSink
+    [ TestLabel "roundTrip JSON" $ roundTrip jsonEnc e kitchenSink
+    , TestLabel "roundTrip compact" $ roundTrip compactEnc e kitchenSink
+    , TestLabel "roundTrip binary" $ binaryRoundTrip kitchenSink
     ]

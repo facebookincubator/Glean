@@ -33,6 +33,7 @@ instance Symbol Pp.Entity where
     Pp.Entity_define e -> toSymbolPredicate e
     Pp.Entity_undef e -> toSymbolPredicate e
     Pp.Entity_include_ f -> toSymbol f
+    Pp.Entity_EMPTY -> return []
 
 instance Symbol Pp1.Define_key where
   toSymbol (Pp1.Define_key macro source) = toSymbolMacro macro source
@@ -60,3 +61,4 @@ ppEntityKind e = case e of
   Pp.Entity_define{} -> return (Just SymbolKind_Macro)
   Pp.Entity_undef{} -> return (Just SymbolKind_Macro)
   Pp.Entity_include_{} -> return (Just SymbolKind_File)
+  Pp.Entity_EMPTY -> return Nothing

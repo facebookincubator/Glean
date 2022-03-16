@@ -184,6 +184,7 @@ prettyScopeColons (Cxx.Scope_namespace_ namespaceQName) =
 prettyScopeColons (Cxx.Scope_recordWithAccess recordWithAccess) =
   prettyScopeRecordWithAccess recordWithAccess <//> txt operator "::"
 prettyScopeColons (Cxx.Scope_local fqn) = prettyScopedFnQName fqn  <//> "::"
+prettyScopeColons Cxx.Scope_EMPTY = ""
 
 prettyScopeAccess :: Cxx.Scope -> Maybe (Doc (Ann r))
 prettyScopeAccess (Cxx.Scope_recordWithAccess recordWithAccess) =
@@ -200,6 +201,7 @@ clangRecordKind :: Cxx.RecordKind -> Text
 clangRecordKind (Cxx.RecordKind_class_ _) = "class"
 clangRecordKind (Cxx.RecordKind_struct_ _) = "struct"
 clangRecordKind (Cxx.RecordKind_union_ _) = "union"
+clangRecordKind Cxx.RecordKind_EMPTY = ""
 
 prettyRecordKind :: Cxx.RecordKind -> Doc (Ann r)
 prettyRecordKind = txt keyword . clangRecordKind
@@ -222,16 +224,17 @@ prettyBase am Cxx.RecordBase{..} = fillSep $
 prettyFnName :: Maybe Text -> Cxx.FunctionName -> Doc (Ann r)
 prettyFnName maybeContainerName fn = fromMaybe mempty $ do
   fnk <- getFactKey fn
-  pure $ case fnk of
-    Cxx.FunctionName_key_name name -> prettyName name_function name
-    Cxx.FunctionName_key_operator_ x -> txt operator x
-    Cxx.FunctionName_key_literalOperator x -> txt operator_word x
-    Cxx.FunctionName_key_constructor _unit -> maybe "/* constructor */"
+  case fnk of
+    Cxx.FunctionName_key_name name -> Just $ prettyName name_function name
+    Cxx.FunctionName_key_operator_ x -> Just $ txt operator x
+    Cxx.FunctionName_key_literalOperator x -> Just $ txt operator_word x
+    Cxx.FunctionName_key_constructor _unit -> Just $ maybe "/* constructor */"
       (txt name_function) maybeContainerName
-    Cxx.FunctionName_key_destructor _unit -> maybe "/* destructor */"
+    Cxx.FunctionName_key_destructor _unit -> Just $ maybe "/* destructor */"
       (\n -> txt name_function ("~" <> n)) maybeContainerName
-    Cxx.FunctionName_key_conversionOperator t ->
+    Cxx.FunctionName_key_conversionOperator t -> Just $
       txt keyword "operator" </> prettyType t <> lparen <> rparen
+    Cxx.FunctionName_key_EMPTY -> Nothing
 
 -- | Shows the name without the scope
 prettyShortFnQName :: Cxx.FunctionQName -> Doc (Ann r)
@@ -399,10 +402,12 @@ prettyVariableDecl am decl = fromMaybe mempty $ do
           [ txt keyword "mutable" | field_mutable_ ]
         Cxx.VariableKind_ivar Cxx.ObjcIVar{..} ->
           [ txt keyword "@synthesize" | objcIVar_synthesize ]
+        Cxx.VariableKind_EMPTY -> []
       trailing = case variableDeclaration_key_kind of
         Cxx.VariableKind_global_ {} -> []
         Cxx.VariableKind_field Cxx.Field{..} -> bs field_bitsize
         Cxx.VariableKind_ivar Cxx.ObjcIVar{..} -> bs objcIVar_bitsize
+        Cxx.VariableKind_EMPTY-> []
         where
           bs Nothing = []
           bs (Just n) = [ txt operator ":"

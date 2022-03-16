@@ -60,6 +60,7 @@ toDeclTag = \case
   Cxx.Declaration_objcMethod{} -> 8
   Cxx.Declaration_objcProperty{} -> 9
   Cxx.Declaration_typeAlias{} -> 10
+  Cxx.Declaration_EMPTY -> error "unknown Cxx.Declaration"
 
 -- | Reconstruct the 'Cxx.Declaration' from the branch index (creatged by
 -- 'toDeclTag') and the fact id.
