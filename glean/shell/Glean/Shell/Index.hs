@@ -39,8 +39,19 @@ runIndexer :: Language -> String -> String -> IO ()
 runIndexer lang dir outputDir = case lang of
   Flow -> callProcess "flow"
     [ "glean", dir , "--output-dir", outputDir , "--write-root", "." ]
-  Hack -> callProcess "hh_server"
-    [ dir , "--write-symbol-info", outputDir ]
+  Hack -> callProcess "hh_server" $
+    [ dir , "--write-symbol-info", outputDir ] <> hackConfig
+  where
+    hackConfig = concatMap (\flag -> ["--config", flag])
+        [ "symbol_write_include_hhi=false"
+        , "symbolindex_search_provider=NoIndex"
+        , "use_mini_state=true"
+        , "lazy_decl=true"
+        , "lazy_parse=true"
+        , "lazy_init2=true"
+        , "enable_enum_classes=true"
+        , "enable_enum_supertyping=true"
+        ]
 
 indexCmd :: String -> Eval ()
 indexCmd str
