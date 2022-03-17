@@ -118,22 +118,20 @@ sumD empty alts = Decoder $ \env@DecoderEnv{..} -> do
     index i (_:xs) = index (i-1) xs
     index _ [] = empty
 
--- | A generic decoder, used for Bool. Can throw 'DecodingException'
--- or 'GleanFFIError'
-enumD :: forall a. (Enum a, Bounded a) => Decoder a
-enumD = Decoder $ \DecoderEnv{..} -> do
+-- | A generic decoder, used for Bool. Can throw 'GleanFFIError'
+enumD :: forall a. (Enum a, Bounded a) => Decoder a -> Decoder a
+enumD unknown = Decoder $ \env@DecoderEnv{..} -> do
   sel <- FFI.ffiBuf buf $ RTS.glean_pop_value_selector begin end
-  if sel <= ord maxBound - ord minBound
-    then return $ toEnum $ fromIntegral $ sel + ord minBound
-    else decodeFail "enum selector out of range"
+  let Decoder f = if sel <= ord maxBound - ord minBound
+        then return $ toEnum $ fromIntegral $ sel + ord minBound
+        else unknown
+  f env
   where
     ord x = fromIntegral $ fromEnum (x :: a)
 
 -- | A generic decoder for thrift enum types.
 thriftEnumD :: ThriftEnum a => Decoder a
 thriftEnumD = Decoder $ \DecoderEnv{..} ->
-  -- We assume toThriftEnum throws, will have to check for UNKNOWN once it
-  -- stops doing that
   fmap (toThriftEnum . fromIntegral)
     $ FFI.ffiBuf buf
     $ RTS.glean_pop_value_selector begin end

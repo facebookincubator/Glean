@@ -300,6 +300,7 @@ modifiersForMethod Hack.MethodDefinition_key {..} =
     Hack.Visibility_Protected -> Protected
     Hack.Visibility_Private -> Private
     Hack.Visibility_Internal -> Internal
+    Hack.Visibility__UNKNOWN{} -> error "unexpected visibility"
   )
   (if methodDefinition_key_isStatic then Static else NotStatic)
   (if methodDefinition_key_isAsync then Async else NotAsync)

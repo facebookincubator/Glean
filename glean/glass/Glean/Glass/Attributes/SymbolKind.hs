@@ -126,6 +126,7 @@ symbolKindToSymbolKind k = case k of
   Code.SymbolKind_TypeParameter -> Glass.SymbolKind_TypeParameter
   Code.SymbolKind_Union -> Glass.SymbolKind_Union
   Code.SymbolKind_Macro -> Glass.SymbolKind_Macro
+  Code.SymbolKind__UNKNOWN n -> Glass.SymbolKind__UNKNOWN n
 
 -- | Type safe mapping from the client-exposed SymbolKind type to the SymbolKind
 -- defined in codemarkup (which generates a thrift type).
@@ -199,3 +200,4 @@ instance AngleEnum Code.SymbolKind where
     Code.SymbolKind_TypeParameter -> "TypeParameter"
     Code.SymbolKind_Union -> "Union"
     Code.SymbolKind_Macro -> "Macro"
+    Code.SymbolKind__UNKNOWN _ -> "UNKNOWN"

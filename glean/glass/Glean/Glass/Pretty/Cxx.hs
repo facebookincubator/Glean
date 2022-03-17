@@ -133,11 +133,13 @@ prettyVarPrefix kind = case kind of
         Cxx.GlobalVariableKind_StaticVariable -> "static"
         Cxx.GlobalVariableKind_StaticMember -> "static"
         Cxx.GlobalVariableKind_SimpleVariable -> intentionallyEmpty
+        Cxx.GlobalVariableKind__UNKNOWN{} -> intentionallyEmpty
       prefix2 = case attribute of
         Cxx.GlobalVariableAttribute_Plain -> intentionallyEmpty
         Cxx.GlobalVariableAttribute_Inline -> intentionallyEmpty
         -- TODO: there is a bug with const
         Cxx.GlobalVariableAttribute_Constexpr -> todoEmpty
+        Cxx.GlobalVariableAttribute__UNKNOWN{} -> todoEmpty
   Cxx.VariableKind_ivar _ -> intentionallyEmpty
   Cxx.VariableKind_EMPTY -> todoEmpty
 
@@ -156,6 +158,7 @@ prettyTypeAlias (Cxx.TypeAliasDeclaration _ mkey) = case mkey of
       , "="
       , prettyType ttype
       ]
+    Cxx.TypeAliasKind__UNKNOWN{} -> todoEmpty
 
 prettyFunction :: Cxx.FunctionDeclaration -> Text
 prettyFunction (Cxx.FunctionDeclaration _ mkey) = case mkey of

@@ -142,6 +142,7 @@ prettyAccess a = txt keyword $ case a of
   Cxx.Access_Public -> "public"
   Cxx.Access_Protected -> "protected"
   Cxx.Access_Private -> "private"
+  Cxx.Access__UNKNOWN{} -> ""
 
 prettyVirtual :: Bool -> [Doc (Ann r)]
 prettyVirtual False = []
@@ -324,6 +325,7 @@ prettyMethodSignature (Just Cxx.MethodSignature{..}) =
         Cxx.RefQualifier_None_ -> []
         Cxx.RefQualifier_LValue -> [ txt keyword "&" ]
         Cxx.RefQualifier_RValue -> [ txt keyword "&&" ]
+        Cxx.RefQualifier__UNKNOWN{} -> []
       combine [] = Nothing
       combine xs = Just (hsep xs)
   in (combine virtual, combine (volatile <> const <> refQualifier))
@@ -391,12 +393,14 @@ prettyVariableDecl am decl = fromMaybe mempty $ do
                   [ txt keyword "static" ]
                 Cxx.GlobalVariableKind_StaticMember ->
                   [ txt keyword "static" ]
+                Cxx.GlobalVariableKind__UNKNOWN{} -> []
               attribute = case globalVariable_attribute of
                 Cxx.GlobalVariableAttribute_Plain -> []
                 Cxx.GlobalVariableAttribute_Inline ->
                   [ txt keyword "inline" ]
                 Cxx.GlobalVariableAttribute_Constexpr ->
                   [ txt keyword "constexpr" ]
+                Cxx.GlobalVariableAttribute__UNKNOWN{} -> []
           in kind ++ attribute
         Cxx.VariableKind_field Cxx.Field{..} ->
           [ txt keyword "mutable" | field_mutable_ ]
@@ -427,6 +431,7 @@ prettyTypeAliasDecl am decl = fromMaybe mempty $ do
     Cxx.TypeAliasKind_Typedef -> [txt keyword "typedef", typ, name]
     Cxx.TypeAliasKind_Using -> [txt keyword "using", name
       , txt operator "=", typ]
+    Cxx.TypeAliasKind__UNKNOWN{} -> []
 
 prettyRecordDecl :: [r] -> Cxx.RecordDeclaration -> Doc (Ann r)
 prettyRecordDecl refTos decl = fromMaybe mempty $ do

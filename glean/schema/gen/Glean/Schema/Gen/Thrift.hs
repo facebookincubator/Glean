@@ -505,7 +505,7 @@ makeEnumerated :: Text -> [Name] -> M [Text]
 makeEnumerated name vals = do
   let
     pieces = Text.intercalate "," (zipWith mkEnumerator [0..] vals)
-    declare = "enum " <> name <> " {" <> pieces <> "\n} (hs.nounknown)"
+    declare = "enum " <> name <> " {" <> pieces <> "\n}"
   return [declare]
   where
     mkEnumerator (i :: Int) val = "\n  " <> val <> " = " <> showt i <> annotText

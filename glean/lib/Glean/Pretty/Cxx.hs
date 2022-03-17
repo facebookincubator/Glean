@@ -309,6 +309,7 @@ simpleTypeAliasDecl tad = do
       prefix = case kind of
           Cxx.TypeAliasKind_Typedef -> "typedef"
           Cxx.TypeAliasKind_Using -> "using"
+          Cxx.TypeAliasKind__UNKNOWN{} -> intentionallyEmpty
   return $ fillSep [prefix, prettyType typ, prettyQName name]
 
 prettyTypeAliasDecl :: Cxx.TypeAliasDeclaration -> Doc ann

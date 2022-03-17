@@ -326,6 +326,7 @@ cxxGetHyperlinks path = do  -- ApplicativeDo makes these parallel:
         let kind = case Cxx.typeAliasDeclaration_key_kind key of
               Cxx.TypeAliasKind_Typedef -> "typedef"
               Cxx.TypeAliasKind_Using -> "using"
+              Cxx.TypeAliasKind__UNKNOWN{} -> ""
         target_range
           ("type alias (" <> kind <> ")")
           $ Cxx.typeAliasDeclaration_key_source key

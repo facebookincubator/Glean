@@ -52,7 +52,7 @@ kitchenSink = KitchenSink
       , rec_beta = Sum_mon $ Byte 5
       }
   , kitchenSink_named_sum_ = Sum_wed False
-  , kitchenSink_named_enum_ = Enum_blue
+  , kitchenSink_named_enum_ = Enum__UNKNOWN 10
   , kitchenSink_array_of_byte =
       BS.pack [0,5,127,minBound,maxBound]
   , kitchenSink_array_of_nat = Nat <$>

@@ -131,7 +131,8 @@ instance Type () where
 instance Type Bool where
   buildRtsValue b False = buildRtsSelector b 0
   buildRtsValue b True = buildRtsSelector b 1
-  decodeRtsValue = enumD
+  decodeRtsValue = enumD fail
+    where fail = Decoder $ \_ -> decodeFail "bool selector out of range"
 
 instance Type Nat where
   buildRtsValue b nat = FFI.call $
