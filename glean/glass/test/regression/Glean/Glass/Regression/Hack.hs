@@ -13,8 +13,8 @@ import Data.Text (Text)
 import Test.HUnit
 
 import Glean
-import Glean.Regression.Test
 import Glean.Util.Some
+import Glean.Regression.Test
 
 import Glean.Glass.Types
 import Glean.Glass.Regression.Tests
