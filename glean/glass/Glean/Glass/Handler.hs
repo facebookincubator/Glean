@@ -711,9 +711,12 @@ toReferenceSymbol repoName file offsets (Code.XRefLocation{..},entity) = do
 
   moffsets <- memoLineOffsets location_file
   let targetRange = rangeSpanToRange location_file moffsets location_location
+      targetNameRange =
+        fmap (fileByteSpanToExclusiveRange location_file moffsets) location_span
 
   target <- toLocationRange repoName location_file targetRange
-  return $ (entity,) $ ReferenceRangeSymbolX sym range target attributes
+  return $ (entity,)
+    $ ReferenceRangeSymbolX sym range target attributes targetNameRange
   where
     -- reference target is a Declaration and an Entity
     Code.Location{..} = xRefLocation_target
@@ -731,9 +734,10 @@ toDefinitionSymbol
 toDefinitionSymbol repoName file offsets (Code.Location{..}, entity) = do
   sym <- toSymbolId repoName entity
   attributes <- getStaticAttributes entity
-  return $ (entity,) $ DefinitionSymbolX sym range attributes
+  return $ (entity,) $ DefinitionSymbolX sym range attributes nameRange
   where
     range = rangeSpanToRange file offsets location_location
+    nameRange = fmap (fileByteSpanToExclusiveRange file offsets) location_span
 
 -- | Decorate an entity with 'static' attributes.
 -- These are static in that they are derivable from the entity and
