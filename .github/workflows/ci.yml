@@ -17,8 +17,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Install ninja
         run: apt install ninja-build
-      - name: Install libxxhash wget unzip
-        run: apt-get install -y libxxhash-dev wget unzip
+      - name: Install libxxhash, clang, llvm, wget, unzip
+        run: apt-get update && apt-get install -y libxxhash-dev wget unzip clang-11 libclang-11-dev llvm-11-dev
       - name: Remove libfmt
         run: apt-get remove -y libfmt-dev
       - name: Install GHC ${{ matrix.ghc }}

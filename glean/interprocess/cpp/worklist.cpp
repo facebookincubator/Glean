@@ -16,7 +16,11 @@
 #include <boost/interprocess/file_mapping.hpp>
 #include <boost/interprocess/mapped_region.hpp>
 
+#ifdef OSS
+#include <glog/logging.h>
+#else
 #include "common/logging/logging.h"
+#endif
 
 // A stealing counter file has the following structure:
 //

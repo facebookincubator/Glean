@@ -11,6 +11,7 @@ packages:
     hsthrift/haxl/thrift-haxl.cabal
     hsthrift/tests/thrift-tests.cabal
     glean.cabal
+    glean/lang/clang/glean-clang.cabal
 
 tests: True
 

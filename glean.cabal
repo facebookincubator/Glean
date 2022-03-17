@@ -297,7 +297,7 @@ library ffi
 
 library rts
     import: fb-haskell, fb-cpp, deps
-    visibility: private
+    visibility: public
     include-dirs: .
     cxx-sources:
         glean/rts/binary.cpp
