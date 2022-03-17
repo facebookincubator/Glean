@@ -64,7 +64,7 @@ indexCmd str
       withSystemTempDirectory' "glean-shell" $ \tmp -> do
         liftIO $ runIndexer lang dir tmp
         files <- liftIO $ listDirectory tmp
-        let name = Text.pack (takeBaseName dir)
+        let name = Text.pack (takeBaseName (dropTrailingPathSeparator dir))
         hash <- pickHash name
         let repo = Glean.Repo name hash
         load repo (map (tmp </>) files)
