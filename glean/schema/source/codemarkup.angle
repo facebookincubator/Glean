@@ -1341,21 +1341,26 @@ predicate HackContainsChildEntity :
     parent: code.hack.Entity,
     child: code.hack.Entity
   }
-  { { decl = { container = Container } }, { decl = Member } } where
+  { { decl = Container }, { decl = Member } } where
     (
-      { class_ = Class } = Container;
-      hack.ClassDefinition { declaration = Class, members = Members };
+      (
+        { container = { class_ = Class }} = Container;
+        hack.ClassDefinition { declaration = Class, members = Members };
+      ) |
+      (
+        { container = { interface_ = Interface }} = Container;
+        hack.InterfaceDefinition { declaration = Interface, members = Members };
+      ) |
+      (
+        { container = { trait = Trait }} = Container;
+        hack.TraitDefinition { declaration = Trait, members = Members };
+      );
+      Member = Members[..]
     ) |
     (
-      { interface_ = Interface } = Container;
-      hack.InterfaceDefinition { declaration = Interface, members = Members };
-    ) |
-    (
-      { trait = Trait } = Container;
-      hack.TraitDefinition { declaration = Trait, members = Members };
-    );
-    Member = Members[..]
-
+      { namespace_ = {name=Name} } = Container;
+      hack.NamespaceMember { namespace_ = Name, decl = Member}
+    )
 
 }
 
