@@ -1417,6 +1417,18 @@ test-suite angle
         glean:if-glean-hs,
         glean:schema
 
+test-suite cppexception
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: CppCatchTest.hs
+    ghc-options: -main-is CppCatchTest
+    build-depends:
+        glean:stubs,
+        glean:core,
+        glean:db,
+        glean:if-glean-hs,
+        glean:schema
+
 test-suite timeout
     import: test
     type: exitcode-stdio-1.0
