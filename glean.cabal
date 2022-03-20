@@ -63,6 +63,10 @@ flag opt
 flag benchmarks
      default: False
 
+-- run tests that require hhvm, typically Linux/x86_64
+flag hack-tests
+     default: True
+
 common deps
     build-depends:
         fb-util,
@@ -1648,9 +1652,7 @@ test-suite glean-snapshot-hack
     ghc-options: -main-is Glean.Regression.Hack.Main
     build-depends: glean:regression-test-lib
     -- no regular hhvm builds for arm64
-    if arch(x86_64)
-        buildable: True
-    else
+    if !flag(hack-tests)
         buildable: False
 
 ------------------------------------------------------------------------
@@ -1713,9 +1715,7 @@ test-suite glass-regression-hack
     build-depends:
         glean:client-hs,
         glean:util,
-    if arch(x86_64) -- hhvm is x86 only currently
-        buildable: True
-    else
+    if !flag(hack-tests)
         buildable: False
 
 test-suite glass-regression-python
