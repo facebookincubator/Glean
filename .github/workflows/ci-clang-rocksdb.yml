@@ -29,14 +29,7 @@ jobs:
           wget "https://github.com/facebook/flow/releases/download/v${FLOW}/flow-linux64-v${FLOW}.zip"
           unzip "flow-linux64-v${FLOW}.zip"
           mkdir -p "$HOME"/.hsthrift/bin && mv flow/flow "$HOME"/.hsthrift/bin
-      - name: Install indexer (hack)
-        run: |
-          apt-get update
-          apt-get install -y software-properties-common apt-transport-https
-          apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xB4112585D386EB94
-          add-apt-repository https://dl.hhvm.com/ubuntu
-          apt-get update
-          apt-get install -y hhvm-nightly
+    # no hhvm builds yet for jammy/22:00 so we skip that indexer
       - name: Fetch hsthrift and build folly, fizz, wangle, fbthrift
         run: ./install_deps.sh --use-system-libs
       - name: Nuke build artifacts
@@ -50,4 +43,4 @@ jobs:
       - name: Build glass
         run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make glass
       - name: Run tests
-        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make test
+        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" cabal test glean:tests -f-hack-tests
