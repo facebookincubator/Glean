@@ -1616,7 +1616,12 @@ reorderTest = dbTestCase $ \env repo -> do
   -- Inner match is not in a prefix position: do it last
   (_, stats) <- queryStats env repo $ angleData @Text
     [s|
-      "result" where glean.test.Tree { "b", _, { just = { "d", _, _ } } }
+      "result" where
+        glean.test.Tree {
+          { label = "b" },
+          _,
+          { just = { { label = "d" }, _, _ } }
+        }
     |]
   assertEqual "reorder nested 1" (Just 1) $
     factsSearched (PredicateRef "glean.test.Tree" 4) lookupPid stats
@@ -1624,7 +1629,7 @@ reorderTest = dbTestCase $ \env repo -> do
   -- Inner match is in a prefix position but irrefutable: do it last
   (_, stats) <- queryStats env repo $ angleData @Text
     [s|
-      X where glean.test.Tree { "b", { just = { X, _, _ } }, _ }
+      X where glean.test.Tree { { label = "b" }, { just = { X, _, _ } }, _ }
     |]
   assertEqual "reorder nested 2" Nothing $
     factsSearched (PredicateRef "glean.test.Tree" 4) lookupPid stats
@@ -1632,7 +1637,12 @@ reorderTest = dbTestCase $ \env repo -> do
   -- Inner match is in a prefix position and refutable: do it first
   (_, stats) <- queryStats env repo $ angleData @Text
     [s|
-      "result" where glean.test.Tree { "b", { just = { "d", _, _ } }, _ }
+      "result" where
+        glean.test.Tree {
+          { label = "b" },
+          { just = { { label = "d" }, _, _ } },
+          _
+        }
     |]
   assertEqual "reorder nested 3" (Just 1) $
     factsSearched (PredicateRef "glean.test.Tree" 4) lookupPid stats
@@ -1642,8 +1652,11 @@ reorderTest = dbTestCase $ \env repo -> do
   (_, stats) <- queryStats env repo $ angleData @Text
     [s|
       "d" where
-         L = glean.test.Tree { "d", _, _ };
-         glean.test.Tree { "b", { just = L }, { just = { "d", _, _ } } }
+         L = glean.test.Tree { { label = "d" }, _, _ };
+         glean.test.Tree {
+           { label = "b" },
+           { just = L },
+           { just = { { label = "d" }, _, _ } } }
     |]
   assertEqual "reorder nested 4" (Just 2) $
     factsSearched (PredicateRef "glean.test.Tree" 4) lookupPid stats
@@ -1661,7 +1674,7 @@ reorderTest = dbTestCase $ \env repo -> do
     [s|
       X where
         glean.test.Tree {
-          "a",
+          { label = "a" },
           _,
           { just = { _, { just = { X, _, _ } }, _ }}
         }
@@ -1673,9 +1686,9 @@ reorderTest = dbTestCase $ \env repo -> do
   (_, stats) <- queryStats env repo $ angle @Glean.Test.Tree
     [s|
       L where
-        L = glean.test.Tree { "b", _, _ };
-        L = glean.test.Tree { "b", { just = { "d", _, _ }}, _}
-          # L is bound, so even though the nested match { "d", _, _ }
+        L = glean.test.Tree { { label = "b" }, _, _ };
+        L = glean.test.Tree { { label = "b" }, { just = { { label = "d" }, _, _ }}, _}
+          # L is bound, so even though the nested match { { label = "d" }, _, _ }
           # is in a prefix position and would normally be done first,
           # in this case we want to do it afterwards because it's a lookup
           # and a lookup is always cheaper than a search.
@@ -1735,12 +1748,26 @@ reorderTest = dbTestCase $ \env repo -> do
   assertEqual "negation - reorder 3" Nothing $
     factsSearched (PredicateRef "cxx1.Name" 1) lookupPid stats
 
+  -- test for a bad case in reordering where the nested matches under
+  -- `left` were being lifted out before the outer match.
+  (_, stats) <- queryStats env repo $ angleData @Text
+    [s|
+      L where
+        glean.test.Tree {
+          node = { label = "a" },
+          left = { just = { node = { label = L } } }
+        }
+    |]
+  assertEqual "reorder nested 9" (Just 1) $
+    factsSearched (PredicateRef "glean.test.Tree" 4) lookupPid stats
+
+
 angleRecExpansion :: (forall a . Query a -> Query a) -> Test
 angleRecExpansion modify = dbTestCase $ \env repo -> do
   results <- runQuery_ env repo $ modify $ recursive $
     angle @Glean.Test.TreeToTree
     [s|
-      glean.test.TreeToTree { node = "a" }
+      glean.test.TreeToTree { node = { label = "a" } }
     |]
   assertBool "recursive expand key" $ case results of
     [ Glean.Test.TreeToTree
@@ -1748,17 +1775,23 @@ angleRecExpansion modify = dbTestCase $ \env repo -> do
           Just Glean.Test.Tree
             { tree_key =
               Just Glean.Test.Tree_key
-                { tree_key_node = "a"
+                { tree_key_node = Glean.Test.Node {
+                    node_key = Just (Glean.Test.Node_key "a")
+                  }
                 , tree_key_left =
                     Just Glean.Test.Tree
                       { tree_key =
                           Just Glean.Test.Tree_key
-                            { tree_key_node = "b"
+                            { tree_key_node = Glean.Test.Node {
+                                node_key = Just (Glean.Test.Node_key "b")
+                              }
                             , tree_key_right =
                                 Just Glean.Test.Tree
                                   { tree_key =
                                       Just Glean.Test.Tree_key
-                                        { tree_key_node = "d"}
+                                        { tree_key_node = Glean.Test.Node {
+                                            node_key = Just (Glean.Test.Node_key "d")
+                                        }}
                                   }
                             }
                       }
@@ -1768,17 +1801,23 @@ angleRecExpansion modify = dbTestCase $ \env repo -> do
           Just Glean.Test.Tree
             { tree_key =
               Just Glean.Test.Tree_key
-                { tree_key_node = "e"
+                { tree_key_node = Glean.Test.Node {
+                    node_key = Just (Glean.Test.Node_key "e")
+                  }
                 , tree_key_left =
                     Just Glean.Test.Tree
                       { tree_key =
                           Just Glean.Test.Tree_key
-                            { tree_key_node = "f"
+                            { tree_key_node = Glean.Test.Node {
+                                node_key = Just (Glean.Test.Node_key "f")
+                            }
                             , tree_key_right =
                                 Just Glean.Test.Tree
                                   { tree_key =
                                       Just Glean.Test.Tree_key
-                                        { tree_key_node = "g"}
+                                        { tree_key_node = Glean.Test.Node {
+                                            node_key = Just (Glean.Test.Node_key "g")
+                                        }}
                                   }
                             }
                       }

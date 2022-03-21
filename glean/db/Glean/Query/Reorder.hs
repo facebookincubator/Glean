@@ -283,6 +283,8 @@ reorderStmtGroup scope stmts = do
     candidateMap = IntMap.fromListWith (++)
       [ (n, [stmt]) | stmt@(_,n,_,_,_) <- candidates ]
 
+    -- iteratively discover more variables that should be lookups,
+    -- starting from initialLookupVars
     lookupVars = go (IntSet.toList initialLookupVars) IntSet.empty
       where
       go [] vars = vars
@@ -290,8 +292,23 @@ reorderStmtGroup scope stmts = do
         | x `IntSet.member` vars = go xs vars
         | otherwise = go (new ++ xs) (IntSet.insert x vars)
         where
-        new = concat [ IntSet.toList ys | (_, _, ys, _, _) <- stmts ]
+        new = new_unpacks ++ new_slow_searches
+
+        -- If X is a lookup and X = pred pat, then all vars in pat are
+        -- lookups too (nested unpacking).
+        new_unpacks = concat [ IntSet.toList ys | (_, _, ys, _, _) <- stmts ]
           where stmts = IntMap.findWithDefault [] x candidateMap
+
+        -- If X is a lookup and Y = pred { X, ... }, then Y is a slow
+        -- search and therefore a lookup too.
+        new_slow_searches =
+          [ y
+          | Just stmts <- [usesOf x]
+          , (_,_,FlatStatement _ (Ref v) (FactGenerator _ key _)) <- stmts
+          , Just (Var _ y _) <- [matchVar v]
+          , PatternSearchesAll <-
+              [classifyPattern (IntSet.delete x lhsScope) key]
+          ]
 
     -- find the statements that mention X
     usesOf x = IntMap.lookup x m
@@ -301,6 +318,7 @@ reorderStmtGroup scope stmts = do
         | (n, xs, ys, stmt) <- uses
         , x <- IntSet.toList xs
         ]
+
   visible <- gets roVisible
   let
     edges :: IntMap [(Int,FlatStatement)]
@@ -319,6 +337,15 @@ reorderStmtGroup scope stmts = do
       , (use, _, useStmt) <- uses
       , use /= lookup
       ]
+
+  -- comment this out and import Debug.Trace for debugging
+  let trace _ y = y
+  trace ("numStmts: " <> show (length nodes)) $ return ()
+  trace ("candidates: " <> show [ x | (_,x,_,_,_) <- candidates ]) $ return ()
+  trace ("scope: " <> show scope) $ return ()
+  trace ("initialLookupVars: " <> show initialLookupVars) $ return ()
+  trace ("lookupVars: " <> show lookupVars) $ return ()
+
   -- order the statements and then recursively reorder nested groups
   return $ map snd $ postorderDfs nodes edges
 

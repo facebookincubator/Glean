@@ -177,21 +177,24 @@ mkTestFacts first second = do
   b <- makeFact @Glean.Test.Node (Glean.Test.Node_key "b")
   c <- makeFact @Glean.Test.Node (Glean.Test.Node_key "c")
   d <- makeFact @Glean.Test.Node (Glean.Test.Node_key "d")
+  e <- makeFact @Glean.Test.Node (Glean.Test.Node_key "e")
+  f <- makeFact @Glean.Test.Node (Glean.Test.Node_key "f")
+  g <- makeFact @Glean.Test.Node (Glean.Test.Node_key "g")
 
   first $ makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key a b)
   second $ makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key a c)
   second $ makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key b d)
   second $ makeFact_ @Glean.Test.Edge (Glean.Test.Edge_key c d)
 
-  d <- makeFact @Glean.Test.Tree (Glean.Test.Tree_key "d" Nothing Nothing)
-  c <- makeFact @Glean.Test.Tree (Glean.Test.Tree_key "c" (Just d) Nothing)
-  b <- makeFact @Glean.Test.Tree (Glean.Test.Tree_key "b" Nothing (Just d))
-  a <- makeFact @Glean.Test.Tree (Glean.Test.Tree_key "a" (Just b) (Just c))
-  g <- makeFact @Glean.Test.Tree (Glean.Test.Tree_key "g" Nothing Nothing)
-  f <- makeFact @Glean.Test.Tree (Glean.Test.Tree_key "f" Nothing (Just g))
-  e <- makeFact @Glean.Test.Tree (Glean.Test.Tree_key "e" (Just f) Nothing)
+  d_ <- makeFact @Glean.Test.Tree (Glean.Test.Tree_key d Nothing Nothing)
+  c_ <- makeFact @Glean.Test.Tree (Glean.Test.Tree_key c (Just d_) Nothing)
+  b_ <- makeFact @Glean.Test.Tree (Glean.Test.Tree_key b Nothing (Just d_))
+  a_ <- makeFact @Glean.Test.Tree (Glean.Test.Tree_key a (Just b_) (Just c_))
+  g_ <- makeFact @Glean.Test.Tree (Glean.Test.Tree_key g Nothing Nothing)
+  f_ <- makeFact @Glean.Test.Tree (Glean.Test.Tree_key f Nothing (Just g_))
+  e_ <- makeFact @Glean.Test.Tree (Glean.Test.Tree_key e (Just f_) Nothing)
 
-  first $ makeFactV_ @Glean.Test.TreeToTree a e
+  first $ makeFactV_ @Glean.Test.TreeToTree a_ e_
 
   qux1 <- makeFact @Glean.Test.Qux "qux1"
   bar1 <- makeFactV @Glean.Test.Bar "bar1" qux1

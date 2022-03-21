@@ -250,7 +250,7 @@ predicate SkipRevEdge : { child : Node, grandparent : Node }
 # Recursive binary tree (DAG) type
 predicate Tree :
   {
-    node : string,
+    node : Node,
     left : maybe Tree,
     right : maybe Tree
   }
@@ -284,4 +284,5 @@ predicate Bar : string -> Qux
 predicate Qux : string
 
 predicate FooToFoo : Foo -> Foo
+
 }
