@@ -1,5 +1,6 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
+# retained by archive/dyn.1
 schema code.15 {
 import code.cxx.3
 import code.java.3
@@ -25,58 +26,7 @@ type Entity =
   }
 }
 
-schema code.16 {
-import code.cxx.3
-import code.java.3
-import code.hack.3
-import code.flow.2
-import code.hs.2
-import code.pp.1
-import code.python.1
-import code.rust.1
-import code.thrift.2
-
-type Entity =
-  {
-    cxx : code.cxx.Entity |
-    pp : code.pp.Entity |
-    java : code.java.Entity |
-    hs : code.hs.Entity |
-    python : code.python.Entity |
-    hack : code.hack.Entity |
-    flow : code.flow.Entity |
-    rust : code.rust.Entity |
-    thrift : code.thrift.Entity |
-  }
-}
-
-schema code.17 {
-import code.cxx.3
-import code.java.3
-import code.hack.3
-import code.flow.2
-import code.hs.2
-import code.pp.1
-import code.python.1
-import code.rust.1
-import code.thrift.2
-import code.buck.1
-
-type Entity =
-  {
-    cxx : code.cxx.Entity |
-    pp : code.pp.Entity |
-    java : code.java.Entity |
-    hs : code.hs.Entity |
-    python : code.python.Entity |
-    hack : code.hack.Entity |
-    flow : code.flow.Entity |
-    rust : code.rust.Entity |
-    thrift : code.thrift.Entity |
-    buck : code.buck.Entity |
-  }
-}
-
+# retained by dyn.3
 schema code.18 {
 import code.cxx.3
 import code.java.3
