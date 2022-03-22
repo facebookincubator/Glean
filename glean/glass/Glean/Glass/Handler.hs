@@ -901,6 +901,7 @@ describeEntity
   -> Glean.RepoHaxl u w SymbolDescription
 describeEntity
     LocationRange{..} decl symbolDescription_sym symbolDescription_kind = do
+  repo <- Glean.haxlRepo
   qname <- toQualifiedName decl
   symbolDescription_name <- case qname of
     Right a -> return a
@@ -918,6 +919,7 @@ describeEntity
   symbolDescription_comments <- case comments of
     Right comments -> return comments
     Left err -> throwM $ ServerException err
+  let symbolDescription_repo_hash = Glean.repo_hash repo
   let symbolDescription_visibility = Nothing
   return SymbolDescription{..}
 

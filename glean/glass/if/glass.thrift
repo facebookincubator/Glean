@@ -261,6 +261,7 @@ struct SymbolDescription {
   5: optional list<Annotation> annotations;
   6: list<LocationRange> comments;
   7: optional Visibility visibility;
+  8: string repo_hash;
 }
 
 struct SearchContext {
