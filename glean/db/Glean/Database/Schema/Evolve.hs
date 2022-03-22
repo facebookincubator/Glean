@@ -15,8 +15,11 @@ module Glean.Database.Schema.Evolve
 import Data.List (elemIndex)
 import Data.Bifoldable
 import qualified Data.Map.Strict as Map
+import Data.Map.Strict (Map)
 import Data.Maybe (fromMaybe, listToMaybe)
+import Data.Text (Text)
 import qualified Data.Set as Set
+import Data.Word (Word64)
 
 import Glean.Angle.Types (FieldDef_(..))
 import qualified Glean.Angle.Types as Type
@@ -181,13 +184,31 @@ mkValueTransformation :: Type -> Type -> Maybe (Value -> Value)
 mkValueTransformation from to = go from to
   where
     names = map fieldDefName
-    transformsFor from to = Map.fromList
-      [ (name, f)
-      | FieldDef name defFrom <- from
-      , FieldDef nameTo defTo <- to
-      , name == nameTo
-      , Just f <- [go defFrom defTo]
+
+    -- if an option's definition and index didn't change it
+    -- will not have an entry in this map.
+    transformationsFor
+      :: [FieldDef]
+      -> [FieldDef]
+      -> Map Text (Word64, Value -> Value)
+    transformationsFor from to = Map.fromList
+      [ (name, (ixTo, f))
+      | (FieldDef name defFrom, ixFrom) <- zip from [0..]
+      , Just (ixTo, f) <- return $ do
+          case Map.lookup name toFields of
+            Nothing -> Just unknown
+            Just (ixTo, defTo) ->
+              case go defFrom defTo of
+                Nothing | ixTo == ixFrom -> Nothing
+                Nothing -> Just (ixTo, id)
+                Just f -> Just (ixTo, f)
       ]
+      where
+        unknown = (fromIntegral (length to), const (Tuple []))
+
+        toFields :: Map Text (Word64, Type)
+        toFields = Map.fromList $ flip map (zip to [0..])
+          $ \(FieldDef name def, ix) -> (name, (ix, def))
 
     go :: Type -> Type -> Maybe (Value -> Value)
     go from@(Type.NamedType _) to = go (derefType from) to
@@ -207,45 +228,35 @@ mkValueTransformation from to = go from to
         _ -> error $ "expected Array, got " <> show term
 
     go (Type.Record from) (Type.Record to) =
-      let transformsMap = transformsFor from to
-          orderedTransforms =
+      let transformationsMap = transformationsFor from to
+          transformations =
             [ (field, transform)
             | field <- names to
-            , transform <- [fromMaybe id $ Map.lookup field transformsMap]
+            , transform <- [maybe id snd $ Map.lookup field transformationsMap]
             ]
-          transforms = map snd orderedTransforms
-          sameFieldOrder = and $ zipWith (==) (names from) (names to)
-          noChanges = null transformsMap
-          sameFields = names from == names to
+          noChange = null transformationsMap
       in
-      if sameFields && noChanges
+      if noChange
       then Nothing
       else Just $ \term -> case term of
-        Tuple contents | sameFieldOrder -> Tuple
-          [ transform value
-          | (transform, value) <- zip transforms contents
-          ]
         Tuple contents -> Tuple
           [ transform content
-          | (field, transform) <- orderedTransforms
+          | (field, transform) <- transformations
           , Just content <- [lookup field withNames]
           ]
           where withNames = zip (names from) contents
         _ -> error $ "expected Tuple, got " <> show term
 
     go (Type.Sum from) (Type.Sum to) =
-      let sameOpts = names from == names to
-          transforms = transformsFor from to
-          noChanges = Map.null transforms
+      let transformations = transformationsFor from to
+          noChange = Map.null transformations
           altMap = Map.fromList
-              [ (fromAlt, (toAlt, change))
-              | (nameFrom, fromAlt) <- zip (names from) [0..]
-              , (nameTo, toAlt) <- zip (names to) [0..]
-              , nameFrom == nameTo
-              , change <- [ fromMaybe id $ Map.lookup nameFrom transforms ]
+              [ (ixFrom, (ixTo, change))
+              | (name, ixFrom) <- zip (names from) [0..]
+              , Just (ixTo, change) <- [Map.lookup name transformations]
               ]
       in
-      if sameOpts && noChanges
+      if noChange
         then Nothing
         else Just $ \term -> case term of
           Alt n content -> case Map.lookup n altMap of

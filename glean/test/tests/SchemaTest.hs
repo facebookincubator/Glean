@@ -846,7 +846,7 @@ schemaEvolves = TestList
           Left err -> "missing evolved predicate" `isInfixOf` show err
           Right _ -> False
 
-  , TestLabel "cannot add option" $ TestCase $ do
+  , TestLabel "can add option" $ TestCase $ do
     withSchema latestAngleVersion
       [s|
         schema test.1 {
@@ -859,10 +859,28 @@ schemaEvolves = TestList
         schema all.1 : test.1, test.2 {}
       |]
       $ \r ->
-      assertBool "error states new option" $
+      assertBool "succeeds creating the schema" $
         case r of
-          Left err -> "option added: c" `isInfixOf` show err
-          Right _ -> False
+          Right _ -> True
+          Left _ -> False
+
+  , TestLabel "can add alternative" $ TestCase $ do
+    withSchema latestAngleVersion
+      [s|
+        schema test.1 {
+          predicate P : { a : nat | }
+        }
+        schema test.2 {
+          predicate P : { a : nat | b : string | }
+        }
+        schema test.2 evolves test.1
+        schema all.1 : test.1, test.2 {}
+      |]
+      $ \r ->
+      assertBool "succeeds creating the schema" $
+        case r of
+          Right _ -> True
+          Left _ -> False
 
   , TestLabel "cannot remove option" $ TestCase $ do
     withSchema latestAngleVersion
@@ -1602,6 +1620,63 @@ schemaEvolvesTransformations = TestList
       $ \_ (Right results) _ -> do
         let Just ty = userQueryResults_type results
         assertEqual "result type" "x.P.1" ty
+
+  , TestLabel "maps new sum alternatives to unknown values" $ TestCase $ do
+    withSchemaAndFacts []
+      [s|
+        schema x.1 {
+          predicate P : { b : string | }
+        }
+        schema x.2 {
+          predicate P : { a : nat | b : string | c : bool | }
+        }
+        schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
+      |]
+      [ mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "key": { "a": 1 } }|]
+          , [s|{ "key": { "b": "A" } }|]
+          , [s|{ "key": { "c": true } }|]
+          ]
+      ]
+      [s| x.P.1 _ |]
+      $ \byRef response _ -> do
+        -- the unknown alternative has an index one greater than
+        -- the last alternative index of x.P.1.
+        let unknown = RTS.Alt 1 unit
+            unit = RTS.Tuple []
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
+        assertEqual "result count"
+          [unknown, RTS.Alt 0 (RTS.String "A"), unknown] facts
+
+  , TestLabel "maps new enum alternatives to unknown values" $ TestCase $ do
+    withSchemaAndFacts []
+      [s|
+        schema x.1 {
+          predicate P : { b | }
+        }
+        schema x.2 {
+          predicate P : { a | b | c }
+        }
+        schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
+      |]
+      [ mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "key": { "a": {} } }|]
+          , [s|{ "key": { "b": {} } }|]
+          , [s|{ "key": { "c": {} } }|]
+          ]
+      ]
+      [s| x.P.1 _ |]
+      $ \byRef response _ -> do
+        -- the unknown alternative has an index one greater than
+        -- the last alternative index of x.P.1.
+        let unknown = RTS.Alt 1 unit
+            unit = RTS.Tuple []
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
+        assertEqual "result count"
+          [unknown, RTS.Alt 0 (RTS.Tuple []), unknown] facts
+
   ]
   where
     decodeResultsAs _ _ (Left err) = assertFailure $ "BadQuery: " <> show err
@@ -1643,9 +1718,20 @@ schemaEvolvesTransformations = TestList
     decodeAs ty bs = do
       print bs
       fmap (first showException) $ try $ evaluate
-        $ RTS.toValue (RTS.repType ty) bs
+        $ RTS.toValue (withUnknown $ RTS.repType ty) bs
       where
         showException (RTS.DecodingException e) = e
+        -- we want to decode binary values that contain the unknown alternative
+        withUnknown rep = case rep of
+          RTS.ByteRep -> rep
+          RTS.NatRep -> rep
+          RTS.ArrayRep elty -> RTS.ArrayRep $ withUnknown elty
+          RTS.TupleRep tys -> RTS.TupleRep $ fmap withUnknown tys
+          RTS.SumRep tys ->
+            let unknown = RTS.TupleRep [] in
+            RTS.SumRep $ fmap withUnknown tys ++ [unknown]
+          RTS.StringRep -> rep
+          RTS.PredicateRep _ -> rep
 
 withSchemaAndFacts
   :: [Setting]

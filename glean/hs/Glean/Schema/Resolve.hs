@@ -554,8 +554,6 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
     , resolvedSchemaEvolves = Set.fromList (schemaRef <$> schemaEvolves)
     }
 
-data FieldMatching = ExactMatch | AllowNew
-
 data Opt = Option | Field
 
 -- | For a backward compatibility to work if predicate A depends on predicate
@@ -598,13 +596,13 @@ backCompatible types evolvedBy new old = go new old
           <> " to " <> showPredicateRef new
       | otherwise = Nothing
     go (Enumerated new) (Enumerated old) =
-      compareFieldList ExactMatch Option new' old'
+      compareFieldList Option new' old'
       where
         new' = map unitOpt new
         old' = map unitOpt old
         unitOpt name = FieldDef name (Record [])
-    go (Sum new) (Sum old) = compareFieldList ExactMatch Option new old
-    go (Record new) (Record old) = compareFieldList AllowNew Field new old
+    go (Sum new) (Sum old) = compareFieldList Option new old
+    go (Record new) (Record old) = compareFieldList Field new old
     go _ _ = Just "type changed"
 
     -- get most evolved version of a predicate
@@ -612,22 +610,16 @@ backCompatible types evolvedBy new old = go new old
       Nothing -> p
       Just p' -> if p' == p then p else evolved p'
 
-    compareFieldList match optName new old =
-      case match of
-        ExactMatch | not (null addedFields) ->
-          Just $ plural optName addedFields
-            <> " added: " <> Text.unwords addedFields
-        _ | not (null removedFields) ->
-          Just $ plural optName removedFields
+    compareFieldList optName new old =
+      if null removedFields
+      then asum $ map compareField matchingFields
+      else Just $ plural optName removedFields
             <> " missing: " <> Text.unwords removedFields
-        _ ->
-          asum $ map compareField matchingFields
       where
         names = map fieldDefName
         oldByName = Map.fromList (zip (names old) old)
         newByName = Set.fromList (names new)
         removedFields = filter (not . flip Set.member newByName) (names old)
-        addedFields = filter (not . flip Map.member oldByName) (names new)
         matchingFields =
           [ (name, fNew, fOld)
           | FieldDef name fNew <- new
