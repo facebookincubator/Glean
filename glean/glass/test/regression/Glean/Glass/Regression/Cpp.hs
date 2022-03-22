@@ -20,7 +20,7 @@ import Glean.Glass.Regression.Tests
 main :: IO ()
 main = do
   let driver = DerivePass.driver [DeriveTargetUses, DeriveDeclFamilies]
-  mainTestIndexGeneric driver "glass-regression-cpp" $ \_ _ _ get ->
+  mainTestIndexGeneric driver "glass-regression-cpp" $ \_ _ _ _ get ->
     TestList
       [ testDocumentSymbolListX (Path "test.cpp") get
       ]

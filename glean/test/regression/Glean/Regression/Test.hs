@@ -46,13 +46,13 @@ mainTestIndexExternal
   -> TestIndex
   -> IO ()
 mainTestIndexExternal dir testIndex =
-  mainTestIndexGeneric externalDriver dir (\_ _ _ -> testIndex)
+  mainTestIndexGeneric externalDriver dir (\_ _ _ _ -> testIndex)
 
 -- | Run a test with an arbitrary indexer
 mainTestIndexGeneric
   :: Driver opts
   -> String -- ^ just a string to identify this test
-  -> (opts -> String -> TestConfig -> TestIndex)
+  -> (opts -> Config -> String -> TestConfig -> TestIndex)
   -> IO ()
 mainTestIndexGeneric driver dir testIndex = do
   let
@@ -84,7 +84,7 @@ mainTestIndexGeneric driver dir testIndex = do
                 }
           withLazy (withTestDatabase (indexerRun indexer opts) testConfig) $
             \get -> fn $ TestLabel (mkLabel platform) $
-              testIndex opts platform testConfig get
+              testIndex opts cfg platform testConfig get
 
       withMany withPlatformTest platforms $ \tests ->
         testRunnerAction action (TestList tests)
