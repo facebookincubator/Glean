@@ -633,6 +633,7 @@ library schema
         Glean.Schema.Hack
         Glean.Schema.Hs
         Glean.Schema.Java
+        Glean.Schema.Lsif
         Glean.Schema.Pp1
         Glean.Schema.Python
         Glean.Schema.Rust
@@ -669,6 +670,7 @@ library schema
         Glean.Schema.Hack.Types
         Glean.Schema.Hs.Types
         Glean.Schema.Java.Types
+        Glean.Schema.Lsif.Types
         Glean.Schema.Pp1.Types
         Glean.Schema.Python.Types
         Glean.Schema.Rust.Types
@@ -716,6 +718,7 @@ library schema-query
         Glean.Schema.Query.Hack.Types
         Glean.Schema.Query.Hs.Types
         Glean.Schema.Query.Java.Types
+        Glean.Schema.Query.Lsif.Types
         Glean.Schema.Query.Pp1.Types
         Glean.Schema.Query.Python.Types
         Glean.Schema.Query.Rust.Types
@@ -915,12 +918,12 @@ library shell-lib
         glean:client-hs,
         glean:client-hs-local,
         glean:util,
+        glean:lsif,
         haskeline >=0.7.3 && <0.8,
         json,
         monad-control,
         prettyprinter-ansi-terminal,
         split
-
 
 library cli-types
     import: fb-haskell, fb-cpp, deps
@@ -1013,6 +1016,30 @@ library clang-derive
         glean:util,
         ghc-compact,
         vector-algorithms,
+
+-- -----------------------------------------------------------------------------
+-- LSIF support
+
+library lsif
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs: glean/lang/lsif
+    exposed-modules:
+        Data.LSIF.Angle
+        Data.LSIF.Types
+        Data.LSIF.JSON
+        Glean.LSIF.Driver
+    build-depends:
+        aeson
+
+-- | A TypeScript indexer based on lsif-tsc
+executable glean-lsif-tsc
+    import: fb-haskell, fb-cpp, deps, exe
+    hs-source-dirs: glean/lang/typescript
+    main-is: Main.hs
+    ghc-options: -main-is Main
+    build-depends:
+        glean:lsif,
+        glean:stubs,
 
 -- -----------------------------------------------------------------------------
 -- Glass services

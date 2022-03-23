@@ -1177,7 +1177,7 @@ indexCompletion :: Haskeline.CompletionFunc Eval
 indexCompletion line@(left,_) =
   case splitWhen isSpace (reverse left) of
     [_cmd, _lang] -> ($line) $ Haskeline.completeWord Nothing " \t" $ \str ->
-      return (fromVocabulary str ["flow"])
+      return (fromVocabulary str (Map.keys indexerTable))
     (_cmd : _lang : rest)
       | not (null rest) -> Haskeline.completeFilename line
     _otherwise -> Haskeline.noCompletion line

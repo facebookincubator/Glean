@@ -8,6 +8,7 @@
 
 module Glean.Shell.Index
   ( indexCmd
+  , indexerTable
   , load
   , pickHash
   ) where
@@ -18,7 +19,6 @@ import Control.Monad.IO.Class
 import Control.Monad.Trans.Control
 import Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
-import qualified Data.ByteString as B
 import Data.Default
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -28,20 +28,29 @@ import System.FilePath
 import System.IO.Temp
 import System.Process
 import TextShow
+import qualified Data.ByteString as B
+import qualified Data.Map.Strict as Map
 
 import Glean
 import Glean.Shell.Types
 import Glean.Write
 
-data Language = Flow | Hack
+import qualified Glean.LSIF.Driver as LSIF ( runIndexer, Language(..) )
 
-runIndexer :: Language -> String -> String -> IO ()
+-- | Run an indexer, returning either a list of JSON files or a JSON value
+runIndexer :: Language -> String -> String -> IO (Either [FilePath] Value)
 runIndexer lang dir outputDir = case lang of
-  Flow -> callProcess "flow"
+  Flow -> Left <$> call "flow"
     [ "glean", dir , "--output-dir", outputDir , "--write-root", "." ]
-  Hack -> callProcess "hh_server" $
-    [ dir , "--write-symbol-info", outputDir ] <> hackConfig
+  Hack -> Left <$> call "hh_server" (
+    [ dir , "--write-symbol-info", outputDir ] <> hackConfig)
+  LSIF lang -> Right <$> LSIF.runIndexer lang dir
   where
+    call :: String -> [String] -> IO [FilePath]
+    call procName args = do
+      callProcess procName args
+      map (outputDir </>) <$> listDirectory outputDir
+
     hackConfig = concatMap (\flag -> ["--config", flag])
         [ "symbol_write_include_hhi=false"
         , "symbolindex_search_provider=NoIndex"
@@ -53,21 +62,37 @@ runIndexer lang dir outputDir = case lang of
         , "enable_enum_supertyping=true"
         ]
 
+data Language
+   = Flow
+   | Hack
+   | LSIF LSIF.Language
+
+-- ^ Indexers that can be invoked from glean shell
+indexerTable :: Map.Map String Language
+indexerTable = Map.fromList
+  [ ("flow", Flow)
+  , ("hack", Hack)
+  , ("lsif/typescript", LSIF LSIF.TypeScript)
+  , ("lsif/go", LSIF LSIF.Go)
+  ]
+
+-- Note, tab completions in Glean.Shell
 indexCmd :: String -> Eval ()
-indexCmd str
-  | ["flow", dir] <- words str = index Flow dir
-  | ["hack", dir] <- words str = index Hack dir
-  | otherwise = liftIO $ throwIO $ ErrorCall
-    "syntax:  :index flow|hack <dir>"
+indexCmd str = case words str of
+  [indexer, dir] | Just lang <- Map.lookup indexer indexerTable
+    -> index lang dir
+  _ -> liftIO $ throwIO $ ErrorCall
+    "syntax: :index flow|hack|lsif/typescript <dir>"
   where
     index lang dir =
       withSystemTempDirectory' "glean-shell" $ \tmp -> do
-        liftIO $ runIndexer lang dir tmp
-        files <- liftIO $ listDirectory tmp
+        fileValues <- liftIO $ runIndexer lang dir tmp
         let name = Text.pack (takeBaseName (dropTrailingPathSeparator dir))
         hash <- pickHash name
         let repo = Glean.Repo name hash
-        load repo (map (tmp </>) files)
+        case fileValues of
+          Left files -> load repo files
+          Right val -> loadValue repo val
         setRepo repo
 
 withSystemTempDirectory' :: String -> (FilePath -> Eval a) -> Eval a
@@ -87,14 +112,24 @@ pickHash name = withBackend $ \be -> do
       ]
   return $ head $ filter (`notElem` hashes) $ map showt [0::Int ..]
 
+-- | Load a set of JSON files as a DB
 load :: Glean.Repo -> [FilePath] -> Eval ()
 load repo files = withBackend $ \be ->  liftIO $ do
   let onExisting  = throwIO $ ErrorCall "database already exists"
-  void $ fillDatabase be Nothing repo "" onExisting $
-    forM_ files $ \file -> do
-      r <- Foreign.CPP.Dynamic.parseJSON =<< B.readFile file
-      val <- either (throwIO  . ErrorCall . Text.unpack) return r
-      batches <- case Aeson.parse parseJsonFactBatches val of
-        Error str -> throwIO $ ErrorCall str
-        Aeson.Success x -> return x
-      Glean.sendJsonBatch be repo batches Nothing
+  void $ fillDatabase be Nothing repo "" onExisting $ forM_ files $ \file -> do
+    r <- Foreign.CPP.Dynamic.parseJSON =<< B.readFile file
+    val <- either (throwIO  . ErrorCall . Text.unpack) return r
+    batches <- case Aeson.parse parseJsonFactBatches val of
+      Error str -> throwIO $ ErrorCall str
+      Aeson.Success x -> return x
+    Glean.sendJsonBatch be repo batches Nothing
+
+-- | Load a specific JSON value as a db
+loadValue :: Glean.Repo -> Value -> Eval ()
+loadValue repo val = withBackend $ \be ->  liftIO $ do
+  let onExisting  = throwIO $ ErrorCall "database already exists"
+  void $ fillDatabase be Nothing repo "" onExisting $ do
+    batches <- case Aeson.parse parseJsonFactBatches val of
+      Error str -> throwIO $ ErrorCall str
+      Aeson.Success x -> return x
+    void $ Glean.sendJsonBatch be repo batches Nothing
