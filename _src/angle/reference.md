@@ -69,6 +69,10 @@ Terms have the following forms:
 
 > A wildcard; matches anything
 
+&nbsp;&nbsp;  `never`<br />
+
+> A pattern that always fails to match.
+
 &nbsp;&nbsp;*predicate*&nbsp;*term* [ `->` *term* ] <br />
 
 > All the facts of **predicate** with keys that match the first **term** (and values that match the second **term** if appropriate)
