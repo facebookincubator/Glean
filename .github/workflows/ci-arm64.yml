@@ -28,10 +28,11 @@ jobs:
         run: ghcup install cabal -u https://downloads.haskell.org/~cabal/cabal-install-3.6.2.0/cabal-install-3.6.2.0-aarch64-linux-deb10.tar.xz 3.6.2.0 --set
       - name: Install indexers (flow)
         run: |
-          export FLOW=0.173.0
+          export FLOW=0.174.1
           wget "https://github.com/facebook/flow/releases/download/v${FLOW}/flow-linux-arm64-v${FLOW}.zip"
           unzip "flow-linux-arm64-v${FLOW}.zip"
           mkdir -p "$HOME"/.hsthrift/bin && mv flow/flow "$HOME"/.hsthrift/bin
+    # no hhvm builds yet for arm/linux, so we skip the hack indexer
       - name: Fetch hsthrift and build folly, fizz, wangle, fbthrift
         run: ./install_deps.sh --threads 8 --use-system-libs
       - name: Nuke build artifacts
@@ -42,5 +43,6 @@ jobs:
         run: make
       - name: Build glass
         run: make glass
+      # no hhvm/hack indexer, so we run without hack regression tests
       - name: Run tests
-        run: make test
+        run: cabal test glean:tests -f-hack-tests

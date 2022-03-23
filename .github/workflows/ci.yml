@@ -29,7 +29,7 @@ jobs:
         run: echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
       - name: Install indexer (flow)
         run: |
-          export FLOW=0.173.0
+          export FLOW=0.174.1
           wget "https://github.com/facebook/flow/releases/download/v${FLOW}/flow-linux64-v${FLOW}.zip"
           unzip "flow-linux64-v${FLOW}.zip"
           mkdir -p "$HOME"/.hsthrift/bin && mv flow/flow "$HOME"/.hsthrift/bin
