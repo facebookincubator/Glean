@@ -1,0 +1,248 @@
+[
+  "@generated",
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 4 },
+      "tuplefield1": { "module": { "key": { "name": { "key": "all" } } } }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 4 },
+      "tuplefield1": { "module": { "key": { "name": { "key": "big_lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 4 },
+      "tuplefield1": {
+        "module": { "key": { "name": { "key": "big_lib.relative" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 4 },
+      "tuplefield1": { "module": { "key": { "name": { "key": "lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 4 },
+      "tuplefield1": { "module": { "key": { "name": { "key": "main" } } } }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 6 },
+      "tuplefield1": {
+        "cls": { "key": { "name": { "key": "all.LocalClass" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 6 },
+      "tuplefield1": {
+        "cls": { "key": { "name": { "key": "lib.HelperClass" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 6 },
+      "tuplefield1": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "all.Helper" },
+            "from_name": { "key": "lib.HelperClass" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 6 },
+      "tuplefield1": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "main.Helper" },
+            "from_name": { "key": "lib.HelperClass" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 6 },
+      "tuplefield1": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "main.OtherHelper" },
+            "from_name": { "key": "lib.HelperClass" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 7 },
+      "tuplefield1": {
+        "func": { "key": { "name": { "key": "lib.HelperClass.method" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 13 },
+      "tuplefield1": { "func": { "key": { "name": { "key": "all.fn" } } } }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 13 },
+      "tuplefield1": {
+        "func": { "key": { "name": { "key": "big_lib.big_func" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 13 },
+      "tuplefield1": {
+        "func": { "key": { "name": { "key": "lib.helper_func" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 13 },
+      "tuplefield1": { "func": { "key": { "name": { "key": "main.f" } } } }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 13 },
+      "tuplefield1": { "func": { "key": { "name": { "key": "main.g" } } } }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 13 },
+      "tuplefield1": {
+        "func": { "key": { "name": { "key": "main.g.<locals>.h" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 13 },
+      "tuplefield1": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "all.big_func" },
+            "from_name": { "key": "big_lib.big_func" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 13 },
+      "tuplefield1": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "big_lib.relative.big_func" },
+            "from_name": { "key": "big_lib.big_func" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 13 },
+      "tuplefield1": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "lib.func" },
+            "from_name": { "key": "big_lib.big_func" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 13 },
+      "tuplefield1": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "main.big_func" },
+            "from_name": { "key": "big_lib.big_func" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 13 },
+      "tuplefield1": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "main.helper_func" },
+            "from_name": { "key": "lib.helper_func" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 14 },
+      "tuplefield1": {
+        "imp": {
+          "key": {
+            "as_name": { "key": "all.big_var" },
+            "from_name": { "key": "big_lib.big_var" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 14 },
+      "tuplefield1": {
+        "variable": { "key": { "name": { "key": "all.__all__" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 14 },
+      "tuplefield1": { "variable": { "key": { "name": { "key": "all.var" } } } }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 14 },
+      "tuplefield1": {
+        "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 14 },
+      "tuplefield1": {
+        "variable": { "key": { "name": { "key": "main.f.<locals>.c" } } }
+      }
+    }
+  }
+]

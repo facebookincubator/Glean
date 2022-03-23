@@ -1,6 +1,0 @@
-query: |
-  {Kind, Decl} where
-    python.DeclarationLocation { declaration = Decl };
-    codemarkup.EntityKind { { python = { decl = Decl }}, Kind }
-perf: true
-transform: [normord, []]

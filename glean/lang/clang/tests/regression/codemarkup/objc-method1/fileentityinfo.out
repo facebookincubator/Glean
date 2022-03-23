@@ -1,0 +1,110 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.mm" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "objcMethod": {
+              "key": {
+                "selector": { "key": [ "fooBar" ] },
+                "container": { "implementation": { "key": "Bar" } },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "isInstance": true,
+                "isOptional": false,
+                "isAccessor": false,
+                "source": {
+                  "file": { "key": "test.mm" },
+                  "lineBegin": 30,
+                  "columnBegin": 1,
+                  "lineEnd": 33,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 7, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.mm" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "foo" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "id<Foo>" },
+                "kind": { "ivar": { "synthesize": false } },
+                "source": {
+                  "file": { "key": "test.mm" },
+                  "lineBegin": 20,
+                  "columnBegin": 3,
+                  "lineEnd": 20,
+                  "columnEnd": 13
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 14, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.mm" },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "setFoo" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "void" },
+                        "parameters": [
+                          {
+                            "name": { "key": "foo" },
+                            "type": { "key": "id<Foo>" }
+                          }
+                        ]
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.mm" },
+                      "lineBegin": 15,
+                      "columnBegin": 1,
+                      "lineEnd": 17,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 13, "isAbstract": false }
+    }
+  }
+]
