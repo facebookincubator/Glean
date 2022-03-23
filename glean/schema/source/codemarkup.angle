@@ -18,62 +18,6 @@ import code.buck.1
 import buck.3
 import erlang.1
 
-# Deprecated types
-
-# deprecated
-type Declaration =
-  {
-    name: string,
-    file: src.File,
-    span: src.ByteSpan,
-  }
-
-# deprecated
-type DirectXRef =
-  {
-    target: Declaration,
-    source: src.ByteSpan,
-  }
-
-# deprecated: shiny xrefs
-type Annotation =
-  {
-    span: src.ByteSpan,
-    shortName: string,
-    linkTo: maybe LinkTo,
-  }
-
-type LinkTo =
-  {
-    localRepo: src.FileLocation |
-  }
-
-# Deprecated language-agnostic API (v2)
-
-# deprecated
-predicate FileEntityXRefs:
-  {
-    file: src.File,
-    xref: DirectXRef,
-    entity: code.Entity,
-  }
-  { File, DirectXRef, Entity } where
-    FileEntityXRefLocations { File, XRef, Entity };
-    ToLegacyXRef {XRef, DirectXRef};
-
-# Compat shims for old xref format (deprecated)
-predicate ToLegacyXRef:
-  {
-    from: XRefLocation,
-    to: DirectXRef
-  }
-  { { FromTarget, FromSource } , DirectXRef } where
-    DirectXRef = (
-      { Name, TargetFile, {span = TargetSpan}, nothing } = FromTarget;
-      { span = Span } = FromSource;
-      {{ Name, TargetFile, TargetSpan}, Span };
-    )
-
 #
 # Public API
 #
@@ -646,17 +590,17 @@ predicate PythonFileEntityXRefLocations:
     XRef
   );
   Entity = code.Entity { python = { decl = PyDecl } };
-  PythonEntityToDeclaration { entity = Entity, decl = Decl};
-  { Name, TargetFile, TargetSpan } = Decl;
+  PythonEntityNameAndLocation { Entity, Name, TargetFile, TargetSpan };
   { Name, TargetFile, { span = TargetSpan }, nothing } = Location;
 
-# N.B. uses deprecated types
-predicate PythonEntityToDeclaration:
+predicate PythonEntityNameAndLocation:
   {
     entity: code.Entity,
-    decl: Declaration,
+    name: string,
+    file: src.File,
+    span: src.ByteSpan,
   }
-  {Ent, Decl} where
+  {Ent, Name, File, Span} where
   { python = { decl = PyDecl }} = Ent;
   (
     { cls = D } = PyDecl;
@@ -676,7 +620,6 @@ predicate PythonEntityToDeclaration:
   );
   PyName = python.Name Name;
   python.DeclarationLocation {PyDecl, File, Span};
-  Decl = Declaration {Name, File, Span};
 
 # Either C++ / ObjC xrefs or C preprocessor xrefs
 predicate CxxFileEntityXRefLocations:

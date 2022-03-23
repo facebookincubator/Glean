@@ -81,10 +81,10 @@ main = benchmarkMain $ \run -> withBenchDB 100000 $ \env repo -> do
         codemarkup.EntityUses { target = E }
       |]
 
-    compile3 :: Query Codemarkup.FileEntityXRefs
-    compile3 = angleData @Codemarkup.FileEntityXRefs $
+    compile3 :: Query Codemarkup.FileEntityXRefLocations
+    compile3 = angleData @Codemarkup.FileEntityXRefLocations $
       [s|
-        codemarkup.FileEntityXRefs { file = "foo" }
+        codemarkup.FileEntityXRefLocations { file = "foo" }
       |]
 
   run

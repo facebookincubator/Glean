@@ -7,9 +7,9 @@
         "target": {
           "name": "BAZ",
           "file": { "key": "www/SourceClass.php" },
-          "span": { "start": 342, "length": 3 }
+          "location": { "span": { "start": 342, "length": 3 } }
         },
-        "source": { "start": 608, "length": 3 }
+        "source": { "span": { "start": 608, "length": 3 } }
       },
       "entity": {
         "hack": {
@@ -38,9 +38,9 @@
         "target": {
           "name": "Center",
           "file": { "key": "www/TopLevel.php" },
-          "span": { "start": 390, "length": 6 }
+          "location": { "span": { "start": 390, "length": 6 } }
         },
-        "source": { "start": 855, "length": 6 }
+        "source": { "span": { "start": 855, "length": 6 } }
       },
       "entity": {
         "hack": {
@@ -67,9 +67,9 @@
         "target": {
           "name": "JAZZ",
           "file": { "key": "www/RefClass.php" },
-          "span": { "start": 312, "length": 4 }
+          "location": { "span": { "start": 312, "length": 4 } }
         },
-        "source": { "start": 636, "length": 4 }
+        "source": { "span": { "start": 636, "length": 4 } }
       },
       "entity": {
         "hack": {
@@ -98,9 +98,9 @@
         "target": {
           "name": "Position",
           "file": { "key": "www/TopLevel.php" },
-          "span": { "start": 315, "length": 8 }
+          "location": { "span": { "start": 315, "length": 8 } }
         },
-        "source": { "start": 689, "length": 8 }
+        "source": { "span": { "start": 689, "length": 8 } }
       },
       "entity": {
         "hack": {
@@ -122,9 +122,9 @@
         "target": {
           "name": "Position",
           "file": { "key": "www/TopLevel.php" },
-          "span": { "start": 315, "length": 8 }
+          "location": { "span": { "start": 315, "length": 8 } }
         },
-        "source": { "start": 845, "length": 8 }
+        "source": { "span": { "start": 845, "length": 8 } }
       },
       "entity": {
         "hack": {
@@ -146,9 +146,9 @@
         "target": {
           "name": "Right",
           "file": { "key": "www/TopLevel.php" },
-          "span": { "start": 377, "length": 5 }
+          "location": { "span": { "start": 377, "length": 5 } }
         },
-        "source": { "start": 699, "length": 5 }
+        "source": { "span": { "start": 699, "length": 5 } }
       },
       "entity": {
         "hack": {
@@ -175,9 +175,9 @@
         "target": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "span": { "start": 296, "length": 11 }
+          "location": { "span": { "start": 296, "length": 11 } }
         },
-        "source": { "start": 507, "length": 11 }
+        "source": { "span": { "start": 507, "length": 11 } }
       },
       "entity": {
         "hack": {
@@ -201,9 +201,9 @@
         "target": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "span": { "start": 296, "length": 11 }
+          "location": { "span": { "start": 296, "length": 11 } }
         },
-        "source": { "start": 555, "length": 11 }
+        "source": { "span": { "start": 555, "length": 11 } }
       },
       "entity": {
         "hack": {
@@ -227,9 +227,9 @@
         "target": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "span": { "start": 296, "length": 11 }
+          "location": { "span": { "start": 296, "length": 11 } }
         },
-        "source": { "start": 595, "length": 11 }
+        "source": { "span": { "start": 595, "length": 11 } }
       },
       "entity": {
         "hack": {
@@ -253,9 +253,9 @@
         "target": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "span": { "start": 296, "length": 11 }
+          "location": { "span": { "start": 296, "length": 11 } }
         },
-        "source": { "start": 766, "length": 11 }
+        "source": { "span": { "start": 766, "length": 11 } }
       },
       "entity": {
         "hack": {
@@ -279,9 +279,9 @@
         "target": {
           "name": "SourceInterface",
           "file": { "key": "www/SourceInterface.php" },
-          "span": { "start": 246, "length": 15 }
+          "location": { "span": { "start": 246, "length": 15 } }
         },
-        "source": { "start": 262, "length": 15 }
+        "source": { "span": { "start": 262, "length": 15 } }
       },
       "entity": {
         "hack": {
@@ -305,9 +305,9 @@
         "target": {
           "name": "SourceTrait",
           "file": { "key": "www/SourceTrait.php" },
-          "span": { "start": 242, "length": 11 }
+          "location": { "span": { "start": 242, "length": 11 } }
         },
-        "source": { "start": 286, "length": 11 }
+        "source": { "span": { "start": 286, "length": 11 } }
       },
       "entity": {
         "hack": {
@@ -331,9 +331,9 @@
         "target": {
           "name": "T",
           "file": { "key": "www/SourceClass.php" },
-          "span": { "start": 365, "length": 1 }
+          "location": { "span": { "start": 365, "length": 1 } }
         },
-        "source": { "start": 520, "length": 1 }
+        "source": { "span": { "start": 520, "length": 1 } }
       },
       "entity": {
         "hack": {
@@ -362,9 +362,9 @@
         "target": {
           "name": "WALDO",
           "file": { "key": "www/TopLevel.php" },
-          "span": { "start": 246, "length": 5 }
+          "location": { "span": { "start": 246, "length": 5 } }
         },
-        "source": { "start": 410, "length": 5 }
+        "source": { "span": { "start": 410, "length": 5 } }
       },
       "entity": {
         "hack": {
@@ -384,9 +384,9 @@
         "target": {
           "name": "WALDO",
           "file": { "key": "www/TopLevel.php" },
-          "span": { "start": 246, "length": 5 }
+          "location": { "span": { "start": 246, "length": 5 } }
         },
-        "source": { "start": 643, "length": 5 }
+        "source": { "span": { "start": 643, "length": 5 } }
       },
       "entity": {
         "hack": {
@@ -406,9 +406,9 @@
         "target": {
           "name": "bazza",
           "file": { "key": "www/RefClass.php" },
-          "span": { "start": 440, "length": 5 }
+          "location": { "span": { "start": 440, "length": 5 } }
         },
-        "source": { "start": 756, "length": 5 }
+        "source": { "span": { "start": 756, "length": 5 } }
       },
       "entity": {
         "hack": {
@@ -437,9 +437,9 @@
         "target": {
           "name": "corge",
           "file": { "key": "www/TopLevel.php" },
-          "span": { "start": 268, "length": 5 }
+          "location": { "span": { "start": 268, "length": 5 } }
         },
-        "source": { "start": 400, "length": 5 }
+        "source": { "span": { "start": 400, "length": 5 } }
       },
       "entity": {
         "hack": {
@@ -459,9 +459,9 @@
         "target": {
           "name": "corge",
           "file": { "key": "www/TopLevel.php" },
-          "span": { "start": 268, "length": 5 }
+          "location": { "span": { "start": 268, "length": 5 } }
         },
-        "source": { "start": 471, "length": 5 }
+        "source": { "span": { "start": 471, "length": 5 } }
       },
       "entity": {
         "hack": {
@@ -481,9 +481,9 @@
         "target": {
           "name": "corge",
           "file": { "key": "www/TopLevel.php" },
-          "span": { "start": 268, "length": 5 }
+          "location": { "span": { "start": 268, "length": 5 } }
         },
-        "source": { "start": 585, "length": 5 }
+        "source": { "span": { "start": 585, "length": 5 } }
       },
       "entity": {
         "hack": {
@@ -503,9 +503,9 @@
         "target": {
           "name": "corge",
           "file": { "key": "www/TopLevel.php" },
-          "span": { "start": 268, "length": 5 }
+          "location": { "span": { "start": 268, "length": 5 } }
         },
-        "source": { "start": 865, "length": 5 }
+        "source": { "span": { "start": 865, "length": 5 } }
       },
       "entity": {
         "hack": {
@@ -525,9 +525,9 @@
         "target": {
           "name": "daz",
           "file": { "key": "www/SourceClass.php" },
-          "span": { "start": 388, "length": 4 }
+          "location": { "span": { "start": 388, "length": 4 } }
         },
-        "source": { "start": 623, "length": 3 }
+        "source": { "span": { "start": 623, "length": 3 } }
       },
       "entity": {
         "hack": {
@@ -556,9 +556,9 @@
         "target": {
           "name": "foo",
           "file": { "key": "www/RefClass.php" },
-          "span": { "start": 376, "length": 3 }
+          "location": { "span": { "start": 376, "length": 3 } }
         },
-        "source": { "start": 714, "length": 3 }
+        "source": { "span": { "start": 714, "length": 3 } }
       },
       "entity": {
         "hack": {
@@ -587,9 +587,9 @@
         "target": {
           "name": "quux",
           "file": { "key": "www/SourceTrait.php" },
-          "span": { "start": 274, "length": 4 }
+          "location": { "span": { "start": 274, "length": 4 } }
         },
-        "source": { "start": 672, "length": 4 }
+        "source": { "span": { "start": 672, "length": 4 } }
       },
       "entity": {
         "hack": {
@@ -618,9 +618,9 @@
         "target": {
           "name": "raz",
           "file": { "key": "www/RefClass.php" },
-          "span": { "start": 338, "length": 4 }
+          "location": { "span": { "start": 338, "length": 4 } }
         },
-        "source": { "start": 743, "length": 3 }
+        "source": { "span": { "start": 743, "length": 3 } }
       },
       "entity": {
         "hack": {
@@ -649,9 +649,9 @@
         "target": {
           "name": "superAdd",
           "file": { "key": "www/SuperClass.php" },
-          "span": { "start": 298, "length": 8 }
+          "location": { "span": { "start": 298, "length": 8 } }
         },
-        "source": { "start": 779, "length": 8 }
+        "source": { "span": { "start": 779, "length": 8 } }
       },
       "entity": {
         "hack": {
@@ -680,9 +680,9 @@
         "target": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "span": { "start": 296, "length": 11 }
+          "location": { "span": { "start": 296, "length": 11 } }
         },
-        "source": { "start": 500, "length": 11 }
+        "source": { "span": { "start": 500, "length": 11 } }
       },
       "entity": {
         "hack": {
@@ -706,9 +706,9 @@
         "target": {
           "name": "SuperClass",
           "file": { "key": "www/SuperClass.php" },
-          "span": { "start": 242, "length": 10 }
+          "location": { "span": { "start": 242, "length": 10 } }
         },
-        "source": { "start": 316, "length": 10 }
+        "source": { "span": { "start": 316, "length": 10 } }
       },
       "entity": {
         "hack": {
@@ -732,9 +732,9 @@
         "target": {
           "name": "TestAnnotation",
           "file": { "key": "www/SourceClass.php" },
-          "span": { "start": 522, "length": 14 }
+          "location": { "span": { "start": 522, "length": 14 } }
         },
-        "source": { "start": 265, "length": 14 }
+        "source": { "span": { "start": 265, "length": 14 } }
       },
       "entity": {
         "hack": {
@@ -758,9 +758,9 @@
         "target": {
           "name": "corge",
           "file": { "key": "www/TopLevel.php" },
-          "span": { "start": 268, "length": 5 }
+          "location": { "span": { "start": 268, "length": 5 } }
         },
-        "source": { "start": 461, "length": 5 }
+        "source": { "span": { "start": 461, "length": 5 } }
       },
       "entity": {
         "hack": {
@@ -780,9 +780,9 @@
         "target": {
           "name": "test",
           "file": { "key": "www/SourceClass.php" },
-          "span": { "start": 613, "length": 5 }
+          "location": { "span": { "start": 613, "length": 5 } }
         },
-        "source": { "start": 613, "length": 5 }
+        "source": { "span": { "start": 613, "length": 5 } }
       },
       "entity": {
         "hack": {
@@ -811,9 +811,9 @@
         "target": {
           "name": "WALDO",
           "file": { "key": "www/TopLevel.php" },
-          "span": { "start": 246, "length": 5 }
+          "location": { "span": { "start": 246, "length": 5 } }
         },
-        "source": { "start": 300, "length": 5 }
+        "source": { "span": { "start": 300, "length": 5 } }
       },
       "entity": {
         "hack": {

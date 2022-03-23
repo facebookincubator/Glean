@@ -1,2 +1,2 @@
-query: codemarkup.FileEntityXRefs _
+query: codemarkup.FileEntityXRefLocations _
 transform: [gensort, []]
