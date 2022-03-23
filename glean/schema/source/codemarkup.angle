@@ -48,51 +48,6 @@ type LinkTo =
     localRepo: src.FileLocation |
   }
 
-# Deprecate Shiny xref API
-
-# deprecated
-predicate FileAnnotations:
-  {
-    file: src.File,
-    annotation: Annotation,
-  }
-  { File, Ann } where
-  FileDirectXRefs {
-    File, { { name=ShortName, file=DstFile, span=DstSpan }, Source }
-  };
-  Ann =
-    Annotation {
-      span = Source,
-      shortName = ShortName,
-      linkTo = { just = { localRepo = { DstFile, DstSpan } } }
-    }
-
-# deprecated, used only by FileAnnotations
-predicate FileDirectXRefs:
-  {
-    file: src.File,
-    xref: DirectXRef,
-  }
-  ({ File, DirectXRef } where
-    FileEntityXRefLocations { File, XRef, _ };
-    ToLegacyXRef {XRef, DirectXRef}) |
-  ({ File, DirectXRef } where
-    HaskellFileDirectXRefs { File, DirectXRef })
-
-# deprecated, used only by FileAnnotations via FileDirectXRefs
-predicate HaskellFileDirectXRefs:
-  {
-    file: src.File,
-    xref: DirectXRef,
-  }
-  {File, {Decl, Src}} where
-  hs.FileXRefMap { file = File, refs = Refs };
-  { target = Target, spans = Spans } : hs.XReference = Refs [..];
-  Src : src.ByteSpan = Spans [..];
-  Target = hs.XRefTarget { definition =  hs.DefinitionName TargetName };
-  hs.Definition {hs.DefinitionName TargetName, {TargetFile, TargetSpan}};
-  Decl = Declaration {TargetName, TargetFile, TargetSpan};
-
 # Deprecated language-agnostic API (v2)
 
 # deprecated
@@ -1379,5 +1334,3 @@ predicate HackContainsChildEntity :
     )
 
 }
-
-schema codemarkup.21 evolves codemarkup.20
