@@ -13,7 +13,6 @@
 #include "glean/rts/binary.h"
 #include "glean/rts/nat.h"
 
-using namespace facebook::glean::rts;
 
 template <class T>
 struct NatTest : testing::Test {};

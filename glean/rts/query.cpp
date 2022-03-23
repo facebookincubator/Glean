@@ -18,7 +18,6 @@
 #include "glean/if/gen-cpp2/internal_types.h"
 #include "glean/rts/query.h"
 
-using namespace facebook::glean::thrift::internal;
 
 namespace facebook {
 namespace glean {

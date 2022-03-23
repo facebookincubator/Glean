@@ -9,7 +9,6 @@
 #include "glean/rts/lookup.h"
 #include "glean/rts/inventory.h"
 #include "glean/rts/ownership.h"
-#include "glean/rts/ownership/pool.h"
 #include "glean/rts/ownership/setu32.h"
 #include "glean/rts/ownership/triearray.h"
 #include "glean/rts/ownership/uset.h"
@@ -33,7 +32,6 @@
 #include <limits>
 #include <type_traits>
 
-using namespace folly::compression;
 
 namespace facebook {
 namespace glean {

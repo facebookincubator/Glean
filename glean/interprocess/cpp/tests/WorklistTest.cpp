@@ -39,7 +39,6 @@ namespace facebook {
 namespace glean {
 namespace worklist {
 
-using namespace testing;
 
 namespace {
 

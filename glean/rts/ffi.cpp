@@ -34,8 +34,6 @@
 #include <common/hs/util/cpp/HsStruct.h>
 #endif
 
-using namespace facebook::glean;
-using namespace facebook::glean::rts;
 
 namespace facebook {
 namespace glean {
