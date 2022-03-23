@@ -295,8 +295,12 @@ enclose stmts u = do
   return a
 
 unifyStmt :: FlatStatement -> U Bool
-unifyStmt (FlatStatement _ lhs (TermGenerator rhs)) = unify lhs rhs
-unifyStmt FlatStatement{} = return True
+unifyStmt (FlatStatement _ lhs rhs)
+  | neverMatches lhs = return False
+  | TermGenerator rhs' <- rhs = unify lhs rhs'
+  | FactGenerator _ key val <- rhs = return $
+      not (neverMatches key || neverMatches val)
+  | otherwise = return True
 unifyStmt FlatNegation{} = return True
   -- ignore negations for now. We will recurse into it later
 unifyStmt (FlatDisjunction [stmts]) =
@@ -305,6 +309,25 @@ unifyStmt (FlatDisjunction [stmts]) =
   -- it, but not treat it as a disjunction.
 unifyStmt (FlatDisjunction _) = return True
   -- ignore a disjunction for now. We will recurse into it later
+
+neverMatches :: Pat -> Bool
+neverMatches = \case
+  Byte _ -> False
+  Nat _ -> False
+  Array terms -> any neverMatches terms
+  ByteArray _ -> False
+  String _ -> False
+  Tuple terms -> any neverMatches terms
+  Alt _ term -> neverMatches term
+  Ref match -> case match of
+    MatchWild _ -> False
+    MatchNever _ -> True
+    MatchFid _ -> False
+    MatchBind _ -> False
+    MatchVar _ -> False
+    MatchAnd left right -> neverMatches left || neverMatches right
+    MatchPrefix _ term -> neverMatches term
+    MatchExt () -> False
 
 -- | Unify two patterns, extending the substitution. Note that this is
 -- not complete unification: we aren't guaranteeing to produce a
@@ -318,6 +341,8 @@ unify (String x) (String y) = return (x == y)
 unify (Ref (MatchFid x)) (Ref (MatchFid y)) = return (x == y)
 unify (Ref MatchWild{}) _ = return True
 unify _ (Ref MatchWild{}) = return True
+unify (Ref MatchNever{}) _ = return False
+unify _ (Ref MatchNever{}) = return False
 unify (Ref (MatchVar v)) pat = extend v pat
 unify pat (Ref (MatchVar v)) = extend v pat
 unify (Ref (MatchBind v)) pat = extend v pat
@@ -494,6 +519,8 @@ expandStmt (FlatStatement stmtTy lhs (TermGenerator rhs)) =
   expand ty a b = case (a,b) of
     (_, Ref MatchWild{}) -> []
     (Ref MatchWild{}, _) -> []
+    (_, Ref MatchNever{}) -> []
+    (Ref MatchNever{}, _) -> []
     (Byte a, Byte b) | a == b -> []
     (Nat a, Nat b) | a == b -> []
     (String a, String b) | a == b -> []

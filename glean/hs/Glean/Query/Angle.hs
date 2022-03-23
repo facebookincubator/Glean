@@ -286,7 +286,7 @@ wild :: Angle t
 wild = Angle $ pure $ Wildcard DSL
 
 never :: Angle t
-never = wild `where_` [nat 1 .= nat 2]
+never = Angle $ pure (Variable DSL "never")
 
 -- | Use this when you want a variable to match a nested predicate
 -- rather than its key.

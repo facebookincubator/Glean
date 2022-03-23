@@ -86,6 +86,7 @@ data SourcePat_ s v t
   | Negation s (SourcePat_ s v t)
   | FactId s (Maybe Text) Word64
   | TypeSignature s (SourcePat_ s v t) t
+  | Never s
  deriving (Eq, Show)
 
 data Field s v t = Field FieldName (SourcePat_ s v t)
@@ -110,6 +111,7 @@ sourcePatSpan = \case
   Negation s _ -> s
   FactId s _ _ -> s
   TypeSignature s _ _ -> s
+  Never s -> s
 
 -- ---------------------------------------------------------------------------
 -- Pretty printing
@@ -172,6 +174,7 @@ instance (Pretty v, Pretty t) => Pretty (SourcePat_ s v t) where
   pretty (FactId _ Nothing n) = "$" <> pretty n
   pretty (FactId _ (Just p) n) = "$" <> pretty p <+> pretty n
   pretty (TypeSignature _ p t) = prettyArg p <+> ":" <+> pretty t
+  pretty (Never _) = "never"
 
 instance (Pretty pat, Pretty stmt) => Pretty (SourceQuery_ pat stmt) where
   pretty (SourceQuery maybeHead stmts) = case stmts of
@@ -205,3 +208,4 @@ prettyArg pat = case pat of
   NestedQuery{} -> pretty pat
   Negation{} -> pretty pat
   FactId{} -> pretty pat
+  Never{} -> pretty pat

@@ -183,6 +183,28 @@ angleErrorTests = dbTestCase $ \env repo -> do
       Left (BadQuery x) -> "line 5, column 9" `Text.isInfixOf` x
       _ -> False
 
+  r <- try $ runQuery_ env repo $ angleData @Nat "1 + never"
+  print r
+  assertBool
+    "angle never - cannot be used in an expression" $
+    case r of
+      Left (BadQuery x) ->
+        "cannot use 'never' in an expression" `Text.isInfixOf` x
+      _ -> False
+
+  r <- runQuery_ env repo $ angleData @Nat "A = [1,2][..]; never = A; A"
+  print r
+  assertEqual
+    "angle - never does not match any result"
+    r []
+
+  r <- runQuery_ env repo $ angleData @Glean.Test.Predicate
+    "A = never : glean.test.Predicate; A"
+  print r
+  assertEqual
+    "angle - works for FactGenerators"
+    r []
+
   -- a negated term has type unit
   r <- try $ runQuery_ env repo $ angleData @Nat "!1 = 2; 3"
   print r

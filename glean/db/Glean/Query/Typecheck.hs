@@ -499,6 +499,7 @@ typecheckPattern ctx typ pat = case (typ, pat) of
     fst <$> tcFactGenerator ref pat
 
   (ty, Wildcard{}) -> return (mkWild ty)
+  (ty, Never{}) -> return $ Ref (MatchNever ty)
   (ty, Variable span name) -> varOcc ctx span name ty
 
   (_, KeyValue{}) -> unexpectedValue pat
@@ -959,6 +960,7 @@ varsPat pat r = case pat of
   Parser.ByteArray{} -> r
   Wildcard{} -> r
   FactId{} -> r
+  Never{} -> r
 
 varsQuery :: IsSrcSpan s => SourceQuery' s -> VarSet -> VarSet
 varsQuery (SourceQuery head stmts) r =

@@ -45,6 +45,7 @@ import Glean.Angle.Types (AngleVersion, SourcePat, SourceStatement, SourceQuery,
   'type'        { L _ (Token _ T_Type) }
   'where'       { L _ (Token _ T_QueryDef) }
   'evolves'     { L _ (Token _ T_Evolves) }
+  'never'       { L _ (Token _ T_Never) }
 
   '++'          { L _ (Token _ T_Append) }
   '..'          { L _ (Token _ T_DotDot) }
@@ -145,6 +146,7 @@ apat
   | '{' seplist0_(field,',') '}'    { Struct (s $1 $3) $2 }
   | '_'                             { Wildcard (sspan $1) }
   | var                             { Variable (sspan $1) (lval $1) }
+  | 'never'                         { Never (sspan $1) }
   | '(' query ')'
     { case $2 of
         SourceQuery Nothing [SourceStatement (Wildcard _) pat] -> pat

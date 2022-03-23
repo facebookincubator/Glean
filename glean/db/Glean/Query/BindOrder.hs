@@ -55,6 +55,7 @@ newtype NoBind = NoBind
 
 data FixBindOrderError
   = CannotUseWildcardInExpr
+  | CannotUseNeverInExpr
   | UnboundVariable Var
 
 type Fix a = StateT (Scope, NoBind) (Except FixBindOrderError) a
@@ -94,6 +95,8 @@ instance FixBindOrder () where
 instance (FixBindOrder a) => FixBindOrder (Match a Var) where
   fixBindOrder IsExpr MatchWild{} =
     throwError CannotUseWildcardInExpr
+  fixBindOrder IsExpr MatchNever{} =
+    throwError CannotUseNeverInExpr
   fixBindOrder isPat (MatchBind var) = fixVar isPat var
   fixBindOrder isPat (MatchVar var) = fixVar isPat var
   fixBindOrder isPat (MatchAnd a b) =

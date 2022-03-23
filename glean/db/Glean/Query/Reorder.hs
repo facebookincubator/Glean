@@ -506,7 +506,7 @@ classifyPattern scope t = fromMaybe PatternMatchesOne (go False t end)
     String{} -> fixed r
     Ref m -> case m of
       MatchWild{} -> wild pref
-      MatchNever{} -> Just PatternMatchesSome
+      MatchNever{} -> Just PatternMatchesOne
       MatchFid{} -> fixed r
       MatchBind (Var _ v _) -> var v
       MatchVar (Var _ v _) -> var v
@@ -830,6 +830,7 @@ fixVars isPat p = do
       UnboundVariable v@(Var _ _ nm) ->
         "unbound variable: " <> fromMaybe (Text.pack $ show v) nm
       CannotUseWildcardInExpr -> "cannot use a wildcard in an expression"
+      CannotUseNeverInExpr -> "cannot use 'never' in an expression"
 
 
 data ReorderState = ReorderState

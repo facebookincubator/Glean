@@ -174,6 +174,7 @@ rmLocSchemas (SourceSchemas version schemas evolves) =
       App _ x xs -> App () (rmLocPat x) (rmLocPat <$> xs)
       KeyValue _ x y -> KeyValue () (rmLocPat x) (rmLocPat y)
       Wildcard _ -> Wildcard ()
+      Never _ -> Never ()
       Variable _ v -> Variable () v
       ElementsOfArray _ x -> ElementsOfArray () (rmLocPat x)
       OrPattern _ x y -> OrPattern () (rmLocPat x) (rmLocPat y)

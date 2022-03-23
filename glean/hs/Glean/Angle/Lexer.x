@@ -71,6 +71,7 @@ tokens :-
   "stored"      { basicToken T_Stored }
   "where"       { basicToken T_QueryDef }
   "evolves"     { basicToken T_Evolves }
+  "never"       { basicToken T_Never }
   "++"          { basicToken T_Append }
   ".."          { basicToken T_DotDot }
   "->"          { basicToken T_RightArrow }
@@ -135,6 +136,7 @@ data TokenType
   | T_NatLit Word64
   | T_QueryDef
   | T_Evolves
+  | T_Never
   | T_Append
   | T_DotDot
   | T_RightArrow
