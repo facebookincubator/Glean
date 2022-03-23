@@ -20,7 +20,7 @@
           }
         }
       },
-      "kind": { "kind": 15, "isAbstract": false }
+      "info": { "kind": 15, "isAbstract": false }
     }
   },
   {
@@ -43,7 +43,7 @@
           }
         }
       },
-      "kind": { "kind": 15, "isAbstract": false }
+      "info": { "kind": 15, "isAbstract": false }
     }
   },
   {
@@ -66,7 +66,7 @@
           }
         }
       },
-      "kind": { "kind": 15, "isAbstract": false }
+      "info": { "kind": 15, "isAbstract": false }
     }
   },
   {
@@ -91,7 +91,7 @@
           }
         }
       },
-      "kind": { "kind": 15, "isAbstract": true }
+      "info": { "kind": 15, "isAbstract": true }
     }
   },
   {
@@ -107,7 +107,7 @@
           }
         }
       },
-      "kind": { "kind": 6, "isAbstract": false }
+      "info": { "kind": 6, "isAbstract": false }
     }
   },
   {
@@ -125,7 +125,7 @@
           }
         }
       },
-      "kind": { "kind": 6, "isAbstract": false }
+      "info": { "kind": 6, "isAbstract": false }
     }
   },
   {
@@ -141,7 +141,7 @@
           }
         }
       },
-      "kind": { "kind": 6, "isAbstract": false }
+      "info": { "kind": 6, "isAbstract": false }
     }
   },
   {
@@ -159,7 +159,7 @@
           }
         }
       },
-      "kind": { "kind": 6, "isAbstract": false }
+      "info": { "kind": 6, "isAbstract": false }
     }
   },
   {
@@ -177,7 +177,7 @@
           }
         }
       },
-      "kind": { "kind": 6, "isAbstract": false }
+      "info": { "kind": 6, "isAbstract": false }
     }
   },
   {
@@ -193,7 +193,7 @@
           }
         }
       },
-      "kind": { "kind": 11, "isAbstract": false }
+      "info": { "kind": 11, "isAbstract": false }
     }
   },
   {
@@ -211,7 +211,7 @@
           }
         }
       },
-      "kind": { "kind": 12, "isAbstract": false }
+      "info": { "kind": 12, "isAbstract": false }
     }
   },
   {
@@ -229,7 +229,7 @@
           }
         }
       },
-      "kind": { "kind": 12, "isAbstract": false }
+      "info": { "kind": 12, "isAbstract": false }
     }
   },
   {
@@ -250,7 +250,7 @@
           }
         }
       },
-      "kind": { "kind": 11, "isAbstract": false }
+      "info": { "kind": 11, "isAbstract": false }
     }
   },
   {
@@ -271,7 +271,7 @@
           }
         }
       },
-      "kind": { "kind": 11, "isAbstract": false }
+      "info": { "kind": 11, "isAbstract": false }
     }
   },
   {
@@ -292,7 +292,7 @@
           }
         }
       },
-      "kind": { "kind": 11, "isAbstract": false }
+      "info": { "kind": 11, "isAbstract": false }
     }
   },
   {
@@ -313,7 +313,7 @@
           }
         }
       },
-      "kind": { "kind": 11, "isAbstract": false }
+      "info": { "kind": 11, "isAbstract": false }
     }
   },
   {
@@ -334,7 +334,7 @@
           }
         }
       },
-      "kind": { "kind": 11, "isAbstract": false }
+      "info": { "kind": 11, "isAbstract": false }
     }
   },
   {
@@ -348,7 +348,7 @@
           }
         }
       },
-      "kind": { "kind": 13, "isAbstract": false }
+      "info": { "kind": 13, "isAbstract": false }
     }
   },
   {
@@ -362,7 +362,7 @@
           }
         }
       },
-      "kind": { "kind": 15, "isAbstract": false }
+      "info": { "kind": 15, "isAbstract": false }
     }
   },
   {
@@ -385,7 +385,7 @@
           }
         }
       },
-      "kind": { "kind": 7, "isAbstract": false }
+      "info": { "kind": 7, "isAbstract": false }
     }
   },
   {
@@ -408,7 +408,7 @@
           }
         }
       },
-      "kind": { "kind": 7, "isAbstract": false }
+      "info": { "kind": 7, "isAbstract": false }
     }
   },
   {
@@ -431,7 +431,7 @@
           }
         }
       },
-      "kind": { "kind": 7, "isAbstract": false }
+      "info": { "kind": 7, "isAbstract": false }
     }
   },
   {
@@ -454,7 +454,7 @@
           }
         }
       },
-      "kind": { "kind": 7, "isAbstract": false }
+      "info": { "kind": 7, "isAbstract": false }
     }
   },
   {
@@ -477,7 +477,7 @@
           }
         }
       },
-      "kind": { "kind": 7, "isAbstract": false }
+      "info": { "kind": 7, "isAbstract": false }
     }
   },
   {
@@ -502,7 +502,7 @@
           }
         }
       },
-      "kind": { "kind": 7, "isAbstract": true }
+      "info": { "kind": 7, "isAbstract": true }
     }
   },
   {
@@ -525,7 +525,7 @@
           }
         }
       },
-      "kind": { "kind": 7, "isAbstract": false }
+      "info": { "kind": 7, "isAbstract": false }
     }
   },
   {
@@ -548,7 +548,7 @@
           }
         }
       },
-      "kind": { "kind": 7, "isAbstract": false }
+      "info": { "kind": 7, "isAbstract": false }
     }
   },
   {
@@ -571,7 +571,7 @@
           }
         }
       },
-      "kind": { "kind": 8, "isAbstract": false }
+      "info": { "kind": 8, "isAbstract": false }
     }
   },
   {
@@ -594,7 +594,7 @@
           }
         }
       },
-      "kind": { "kind": 8, "isAbstract": false }
+      "info": { "kind": 8, "isAbstract": false }
     }
   },
   {
@@ -617,7 +617,7 @@
           }
         }
       },
-      "kind": { "kind": 8, "isAbstract": false }
+      "info": { "kind": 8, "isAbstract": false }
     }
   },
   {
@@ -640,7 +640,7 @@
           }
         }
       },
-      "kind": { "kind": 1, "isAbstract": false }
+      "info": { "kind": 1, "isAbstract": false }
     }
   }
 ]
