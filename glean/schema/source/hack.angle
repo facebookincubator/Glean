@@ -1140,6 +1140,13 @@ predicate DeclarationName : Declaration -> Name
       (N where { typeConst = X } = D; { name = N } = X) |
       (N where { typedef_ = X } = D; { name = { name = N }} = X)
 
+predicate ContainerDeclarationQName : ContainerDeclaration -> QName
+  D -> QName where
+      ({ class_ = { name = QName } } = D) |
+      ({ enum_ = { name = QName } } = D) |
+      ({ interface_ = { name = QName } } = D) |
+      ({ trait = { name = QName } } = D)
+
 # Container that a given container directly inherits from
 # (via extends, implements, use)
 predicate ContainerParent :
