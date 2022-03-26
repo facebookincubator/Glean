@@ -177,6 +177,29 @@ predicate FileEntityXRefLocations:
     ThriftFileEntityXRefLocations { File, XRef, Entity } |
     ErlangFileEntityXRefLocations { File, XRef, Entity };
 
+# Xrefs without the target location. This can be useful in cases
+# where we don't have a target location, but we don't need it. This
+# happens when indexing a subset of Hack files in a repo, for example.
+predicate FileEntityXRefSpans:
+  {
+    file: src.File,
+    span: src.ByteSpan,
+    entity: code.Entity,
+  }
+  { File, Span, Entity } where
+    HackFileEntityXRefSpans { File, Span, Entity } |
+    (
+      FlowFileEntityXRefLocations { File, XRef, Entity } |
+      PythonFileEntityXRefLocations { File, XRef, Entity } |
+      CxxFileEntityXRefLocations { File, XRef, Entity } |
+      HaskellFileEntityXRefLocations { File, XRef, Entity } |
+      RustFileEntityXRefLocations { File, XRef, Entity } |
+      BuckFileEntityXRefLocations { File, XRef, Entity } |
+      ThriftFileEntityXRefLocations { File, XRef, Entity } |
+      ErlangFileEntityXRefLocations { File, XRef, Entity };
+      { source = { span = Span }} = XRef
+    )
+
 # Finding xrefs. All references in a file, and their kinds
 predicate FileEntityXRefKinds:
   {
@@ -523,6 +546,18 @@ predicate HackFileEntityXRefLocations:
     Sources = prim.relToAbsByteSpans Uses;
     Src = Sources[..];
     Entity = code.Entity { hack = { decl = D } };
+
+predicate HackFileEntityXRefSpans:
+  {
+    file: src.File,
+    span: src.ByteSpan,
+    entity: code.Entity,
+  }
+  { File, Src, { hack = { decl = D } } } where
+    hack.FileXRefs { file = File, xrefs = XRefs };
+    hack.XRef { target = { declaration = D }, ranges = Uses } = XRefs[..];
+    Sources = prim.relToAbsByteSpans Uses;
+    Src = Sources[..]
 
 predicate FlowFileEntityXRefLocations:
   {
