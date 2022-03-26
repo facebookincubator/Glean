@@ -89,7 +89,7 @@ typecheckDeriving
   -> SourceDerivingInfo' s
   -> Except Text (DerivingInfo TypecheckedQuery)
 typecheckDeriving tcEnv ver policy PredicateDetails{..} derivingInfo = do
-  (d, TypecheckState{..}) <-
+  (d, _) <-
     let state = initialTypecheckState tcEnv ver policy TcModePredicate
     in
     flip runStateT state $ do

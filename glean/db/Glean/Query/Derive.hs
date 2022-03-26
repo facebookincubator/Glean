@@ -283,7 +283,7 @@ runDerivation
   -> Thrift.DerivePredicateQuery
   -> IO ()
 runDerivation env repo pred Thrift.DerivePredicateQuery{..} = do
-  readDatabase env repo $ \odb@OpenDB{..} lookup ->
+  readDatabase env repo $ \odb lookup ->
     case derivePredicateQuery_parallel of
       Nothing -> deriveQuery odb lookup (query (allFacts pred))
       Just par -> parallelDerivation odb lookup par
@@ -440,7 +440,7 @@ finishDerivation
   -> Repo
   -> PredicateRef
   -> IO Derivation
-finishDerivation env@Env{..} log repo pred = do
+finishDerivation env log repo pred = do
   derivation <- atomically (getDerivation env repo pred)
   finished <- finishedWrites derivation
   when (isNothing (derivationError derivation) && isRight finished)

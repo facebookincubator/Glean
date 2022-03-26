@@ -13,7 +13,6 @@ module Glean.DefaultConfigs (
     schemaConfigPath,
   ) where
 
-import Data.Default
 import Data.Text (Text)
 
 import Glean.Util.ThriftSource

@@ -65,8 +65,8 @@ runDatabaseJanitor env =
   config@ServerConfig.Config{..} <- Observed.get (envServerConfig env)
 
   let
-    !ServerConfig.DatabaseRetentionPolicy{..} = config_retention
-    !ServerConfig.DatabaseRestorePolicy{..} = config_restore
+    !ServerConfig.DatabaseRetentionPolicy{} = config_retention
+    !ServerConfig.DatabaseRestorePolicy{} = config_restore
     !ServerConfig.DatabaseClosePolicy{..} = config_close
 
   mostRecent <- newestDbs env

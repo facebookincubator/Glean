@@ -354,7 +354,7 @@ data StatsFormatOpts = StatsFormatOpts
   deriving (Eq)
 
 instance ShellFormat StatsFormatOpts (PredStatsFilter, PredStatsList) where
-    shellFormatText Context{..} opts (filterPred, preds) = vsep $
+    shellFormatText _context opts (filterPred, preds) = vsep $
         [ nest 2 $ vsep
             [ case ref of
                 Left id -> pretty id

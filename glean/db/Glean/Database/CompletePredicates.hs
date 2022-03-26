@@ -34,7 +34,7 @@ import Glean.Util.Mutex
 
 -- For internal use: actually perform completion for a DB
 syncCompletePredicates :: Env -> Repo -> IO ()
-syncCompletePredicates env@Env{..} repo =
+syncCompletePredicates env repo =
   withOpenDatabase env repo $ \OpenDB{..} -> do
     own <- Storage.computeOwnership odbHandle
       (schemaInventory odbSchema)

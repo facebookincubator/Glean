@@ -59,5 +59,5 @@ fb303BaseHandler Fb303State{..} AliveSince = return $ fromIntegral t
 -- | Handler for all things fb303. All services should send `Fb303State`
 -- commands through this handler
 fb303Handler :: Fb303State -> FacebookServiceCommand a -> IO a
-fb303Handler state@Fb303State{..} (SuperBaseService c) =
+fb303Handler state (SuperBaseService c) =
   fb303BaseHandler state c

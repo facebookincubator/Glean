@@ -128,7 +128,7 @@ getTodo env@Env{..} sinbin = getFinalize <|> getRestore <|> getBackup
         Item{..} : _ -> do
           dsite <- getSite env (repo_name itemRepo)
           case dsite of
-            Just (prefix, Some site, DatabaseBackupPolicy{..}) ->
+            Just (prefix, Some site, _policy) ->
                 return (itemRepo, doBackup env itemRepo prefix site)
             Nothing -> retry
 

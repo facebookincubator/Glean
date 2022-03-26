@@ -50,7 +50,7 @@ flatten dbSchema _ver deriveStored typechecked = do
         dbSchema
         (qiNumVars typechecked)
         deriveStoredPred
-  (qi, FlattenState{..}) <- flip runStateT state $ do
+  (qi,_) <- flip runStateT state $ do
       query <- evolve (qiQuery typechecked)
       q <- flattenQuery query
         `catchError` \e -> throwError $ e <> " in\n" <>
