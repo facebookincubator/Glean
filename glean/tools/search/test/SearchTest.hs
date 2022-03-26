@@ -33,7 +33,7 @@ import Glean.Util.SchemaRepos
 main :: IO ()
 main = do
   let driver = DerivePass.driver [DeriveGeneric "cxx1.DeclByName"]
-  mainTestIndexGeneric driver "search-test" $
+  mainTestIndexGeneric driver (pure ()) "search-test" $
     \_ _ platform _ get -> TestCase $ do
 
       (backend, repo) <- get

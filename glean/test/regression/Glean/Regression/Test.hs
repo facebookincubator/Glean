@@ -20,6 +20,7 @@ module Glean.Regression.Test
 
 import Foreign.Marshal.Utils
 import qualified Data.Text as Text
+import Options.Applicative
 import System.FilePath
 import System.IO.Temp
 import Test.HUnit
@@ -46,28 +47,31 @@ mainTestIndexExternal
   -> TestIndex
   -> IO ()
 mainTestIndexExternal dir testIndex =
-  mainTestIndexGeneric externalDriver dir (\_ _ _ _ -> testIndex)
+  mainTestIndexGeneric externalDriver (pure ()) dir (\_ _ _ _ -> testIndex)
 
 -- | Run a test with an arbitrary indexer
 mainTestIndexGeneric
-  :: Driver opts
+  :: Driver driverOpts
+  -> Parser extraOpts -- ^ parser for extra options to recognise
   -> String -- ^ just a string to identify this test
-  -> (opts -> Config -> String -> TestConfig -> TestIndex)
+  -> (extraOpts -> Config -> String -> TestConfig -> TestIndex)
   -> IO ()
-mainTestIndexGeneric driver dir testIndex = do
+mainTestIndexGeneric driver extraOptParser dir testIndex = do
   let
     indexer = driverIndexer driver
-    parse = indexerOptParser indexer
-  withUnitTestOptions (optionsWith parse) $ \ action (mkcfg, opts) -> do
+    parse = (,) <$> indexerOptParser indexer <*> extraOptParser
+  withUnitTestOptions (optionsWith parse) $
+          \ action (mkcfg, (driverOpts, extraOpts)) -> do
     -- TODO: we're using the options for snapshot tests which have a
     -- couple of flags that don't make sense here: --replace for
     -- example.
     cfg <- mkcfg
     let
-      theGroups = driverGroups driver opts
+      theGroups = driverGroups driver driverOpts
       (platforms, mkLabel) = if null theGroups
           then (["testhash"], const dir)
           else (theGroups, \group -> dir <> " : " <> group)
+      index = indexerRun indexer driverOpts
     withOutputDir dir (cfgOutput cfg) $ \ outDir -> do
       let
         withPlatformTest :: String -> (Test -> IO a) -> IO a
@@ -82,9 +86,9 @@ mainTestIndexGeneric driver dir testIndex = do
                 , testGroup = platform
                 , testSchemaVersion = cfgSchemaVersion cfg
                 }
-          withLazy (withTestDatabase (indexerRun indexer opts) testConfig) $
+          withLazy (withTestDatabase index testConfig) $
             \get -> fn $ TestLabel (mkLabel platform) $
-              testIndex opts cfg platform testConfig get
+              testIndex extraOpts cfg platform testConfig get
 
       withMany withPlatformTest platforms $ \tests ->
         testRunnerAction action (TestList tests)
