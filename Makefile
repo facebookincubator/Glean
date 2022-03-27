@@ -17,7 +17,16 @@
 
 CABAL_BIN=cabal
 PWD := $(shell /bin/pwd)
-CABAL = $(CABAL_BIN) --jobs -vnormal+nowrap --project-file=$(PWD)/cabal.project
+
+# There's a lot of parallelism in the schema-generated code
+# If you have >=16G and >=4 cores, trying passing these:
+#
+# EXTRA_GHC_OPTS = '-j4 +RTS -A128m -n2m -RTS'
+#
+EXTRA_GHC_OPTS ?=
+
+CABAL = $(CABAL_BIN) --jobs --ghc-options='$(EXTRA_GHC_OPTS)' \
+            -vnormal+nowrap --project-file=$(PWD)/cabal.project
 
 THRIFT_COMPILE := $(shell $(CABAL) -v0 list-bin exe:thrift-compiler)
 
