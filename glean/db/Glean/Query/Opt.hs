@@ -216,7 +216,7 @@ instance Apply FlatStatement where
     -- we can remove alternatives that are known to be false, but if
     -- ALL alternatives are false, then we must leave behind just one
     -- alternative so that we don't leave unbound variables.
-    case filter notFalseGroups stmtss' of
+    case filter (not . isFalseGroups) stmtss' of
       [] -> case stmtss' of
         [] -> return (FlatDisjunction [])
         (ss : _) -> return (FlatDisjunction [ss])
@@ -234,21 +234,20 @@ optStmts stmts = do
   notFalse <- all and <$> mapM (mapM unifyStmt) stmts
   stmts' <- expandGroups <$> mapM (mapM apply) stmts
   -- unify may fail, but apply may also leave behind a false statement:
-  if notFalse && all (all notFalseStmt) stmts'
+  if notFalse && not (any (any isFalseStmt) stmts')
     then return stmts'
     else return ( (falseStmt :| []) : stmts' )
 
 -- Look for the sentinel left by optStmts
-notFalseGroups :: [FlatStatementGroup] -> Bool
-notFalseGroups ((s :| _) : _) = notFalseStmt s
-notFalseGroups [] = True
+isFalseGroups :: [FlatStatementGroup] -> Bool
+isFalseGroups ((s :| _) : _) = isFalseStmt s
+isFalseGroups [] = False
 
-notFalseStmt :: FlatStatement -> Bool
-notFalseStmt (FlatNegation []) = False
-notFalseStmt (FlatDisjunction []) = False
-notFalseStmt (FlatDisjunction [stmts]) = all (all notFalseStmt) stmts
-notFalseStmt _ = True
-
+isFalseStmt :: FlatStatement -> Bool
+isFalseStmt (FlatNegation []) = True
+isFalseStmt (FlatDisjunction []) = True
+isFalseStmt (FlatDisjunction [stmts]) = any (any isFalseStmt) stmts
+isFalseStmt _ = False
 
 instance Apply Pat where
   apply (Tuple xs) = Tuple <$> mapM apply xs
