@@ -6,19 +6,18 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-
 module Derive
   ( main
   ) where
 
 import Control.Concurrent (setNumCapabilities)
 
-import Configerator
-import Facebook.Init (withFacebookOptions)
 import Util.EventBase (withEventBaseDataplane)
 
+import Glean.Init ( withOptions )
 import qualified Glean
-import Glean.Impl.ConfigProvider ()
+import Glean.Util.ConfigProvider
+import Glean.Impl.ConfigProvider
 
 import Derive.Types
 import Derive.All
@@ -28,9 +27,9 @@ withNumCapabilities Nothing act = act
 withNumCapabilities (Just n) act = setNumCapabilities n >> act
 
 main :: IO ()
-main = withFacebookOptions options $ \(cfg, service) ->
+main = withOptions options $ \(cfg, service) ->
   withNumCapabilities (cfgNumCapabilities cfg) $
   withEventBaseDataplane $ \evb ->
-  withConfigeratorAPI defaultConfigeratorOptions $ \cfgAPI ->
-  Glean.withRemoteBackend evb cfgAPI service $ \be ->
+  withConfigProvider defaultConfigOptions $ \cfgAPI ->
+  Glean.withRemoteBackend evb (cfgAPI::ConfigAPI) service $ \be ->
   Derive.All.derive be cfg
