@@ -40,7 +40,7 @@ jobs:
       - name: Populate hackage index with new packages
         run: cabal update
       - name: Build hsthrift and Glean
-        run: make
+        run: make EXTRA_GHC_OPTS="-j4 +RTS -A128m -n2m -RTS"
       - name: Build glass
         run: make glass
       # no hhvm/hack indexer, so we run without hack regression tests
