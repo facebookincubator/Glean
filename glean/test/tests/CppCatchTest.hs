@@ -13,17 +13,13 @@ import Control.Exception
 import qualified Data.Text as Text
 import Test.HUnit
 
-import TestRunner
-
-import Glean.Backend as Backend
 import Glean.Init
 import Glean.Query.Thrift as Thrift
-import Glean.Query.Thrift.Internal
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import Glean.Typed hiding (end)
-import Glean.Types
+import Util.Text ( textShow )
 
-import TestData
+import TestRunner
 import TestDB
 
 catchTest :: Test
@@ -33,16 +29,24 @@ catchTest = dbTestCase $ \env repo -> do
   names <- runQuery_ env repo $ allFacts @Cxx.Name
   let factId x = Text.pack (show (fromFid (idOf (getId x))))
 
-  -- Now query for it but assert the wrong type. Show raise
+  --
+  -- Now query for it but assert the wrong type
+  -- This should raise an exception if all is working properly
+  --
   r <- try $ runQuery_ env repo $ angle @Cxx.Type $
       "$cxx1.Type " <> factId (head names)
-  print (r :: Either SomeException [Cxx.Type])
-    -- should be caught and have a nice trace
+
+  -- on mis-compiled hosts this is expected to SIGABRT, instead of 
+  -- catching the C++ exception
+  case r of
+    Left (e :: SomeException) -> assertBool
+       "Correctly caught exception" ("Stack trace" `Text.isInfixOf` textShow e)
+    Right _ -> assertFailure "catchTest did not throw"
+
 
 {-
 Correct trace looks like:
 
-Left fact has the wrong type
 Stack trace:
   facebook::glean::rts::raiseError(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)
   std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > facebook::glean::rts::error<>(folly::Range<char const*>)
