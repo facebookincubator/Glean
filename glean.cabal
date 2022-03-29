@@ -44,6 +44,8 @@ common fb-haskell
         TypeFamilies
         TypeSynonymInstances
         NondecreasingIndentation
+
+  ghc-options: -Wall -Wno-orphans -Wno-name-shadowing
   if flag(opt)
      ghc-options: -O2
 

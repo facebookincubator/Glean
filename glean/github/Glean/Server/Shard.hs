@@ -12,8 +12,6 @@ module Glean.Server.Shard
   , updateShards
   ) where
 
-import Util.EventBase
-
 data ShardKey = ShardKey
 
 getShardKey :: eventBaseDataplane -> port -> IO ShardKey

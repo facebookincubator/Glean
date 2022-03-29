@@ -20,7 +20,6 @@ import Foreign.C
 import Options.Applicative
 import qualified System.Environment as Sys
 
-import Util.Encoding (setDefaultEncodingToUTF8)
 import Util.OptParse
 import Util.Text (withCStrings)
 import Util.Control.Exception (tryAll)

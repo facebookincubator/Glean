@@ -125,7 +125,7 @@ externalBinaryController = Controller
     in forM indices $ \idx -> startParcel idx ctx
   , resumeTask = \ctx parcels -> flip Vector.imapM_ parcels $ \idx parcel ->
     case parcel of
-      ParcelState_running ParcelRunning{..} -> startParcel idx ctx
+      ParcelState_running ParcelRunning{} -> startParcel idx ctx
       x -> return x
   }
   where

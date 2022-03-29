@@ -255,7 +255,7 @@ reportQueueSizes repo repoQueueCount repoQueueSize totalQueueSize mLatency = do
         elapsedMilliSeconds Avg
 
 enqueueBatch :: Env -> ComputedBatch -> Maybe DefineOwnership -> IO SendResponse
-enqueueBatch env@Env{..} ComputedBatch{..} ownership = do
+enqueueBatch env ComputedBatch{..} ownership = do
   -- NOTE: we use UUIDs here rather than, say, consecutive
   -- numbers because we want to avoid conflicts when the
   -- server restarts/crashes
@@ -278,7 +278,7 @@ enqueueJsonBatch
   -> Repo
   -> Thrift.SendJsonBatch
   -> IO Thrift.SendJsonBatchResponse
-enqueueJsonBatch env@Env{..} repo batch = do
+enqueueJsonBatch env repo batch = do
   handle <- UUID.toText <$> UUID.nextRandom
   let
     jsonFactBatchSize JsonFactBatch{..} =
@@ -305,7 +305,7 @@ enqueueJsonBatchByteString
   -> SendJsonBatchOptions
   -> Bool -- ^ remember?
   -> IO Thrift.SendJsonBatchResponse
-enqueueJsonBatchByteString env@Env{..} repo pred facts opts remember = do
+enqueueJsonBatchByteString env repo pred facts opts remember = do
   handle <- UUID.toText <$> UUID.nextRandom
   let
     size = sum (map ByteString.length facts)

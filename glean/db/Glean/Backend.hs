@@ -384,7 +384,7 @@ runLogQuery
   -> Thrift.UserQuery
   -> GleanServerLogger
   -> IO ()
-runLogQuery cmd env@Database.Env{..} repo Thrift.UserQuery{..} log = do
+runLogQuery cmd env repo Thrift.UserQuery{..} log = do
   runLogRepo cmd env repo $ mconcat
     [ log
     , Logger.setQuery (Text.decodeUtf8 userQuery_query)

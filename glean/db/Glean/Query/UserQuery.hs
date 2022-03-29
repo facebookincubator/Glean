@@ -471,7 +471,7 @@ userQueryImpl
 userQueryImpl
   env
   odb
-  config@ServerConfig.Config{..}
+  config
   lookup
   repo
   Thrift.UserQuery{..}
@@ -647,7 +647,7 @@ userQueryImpl
 userQueryImpl
   env
   odb
-  config@ServerConfig.Config{..}
+  config
   lookup
   repo
   Thrift.UserQuery{..} = do

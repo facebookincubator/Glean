@@ -616,7 +616,7 @@ fetchDocumentSymbolIndex
   -> GleanBackend b
   -> Maybe Language
   -> IO (DocumentSymbolIndex, Maybe ErrorLogger)
-fetchDocumentSymbolIndex latest req opts be@GleanBackend{..} mlang = do
+fetchDocumentSymbolIndex latest req opts be mlang = do
   (DocumentSymbolListXResult refs defs revision, merr1) <-
     fetchSymbolsAndAttributes latest req opts be mlang
 
@@ -807,7 +807,7 @@ withLog
   -> req
   -> (GleanGlassLogger -> IO (res, GleanGlassLogger, Maybe ErrorLogger))
   -> IO res
-withLog cmd env@Glass.Env{..} req action = do
+withLog cmd env req action = do
   fst <$> loggingAction
     (runLog env cmd)
     logResult

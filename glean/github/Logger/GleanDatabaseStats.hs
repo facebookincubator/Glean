@@ -8,8 +8,6 @@
 
 module Logger.GleanDatabaseStats (module Logger.GleanDatabaseStats) where
 
-import Data.Monoid
-import Data.Semigroup
 import Data.Text
 
 import Logger.IO

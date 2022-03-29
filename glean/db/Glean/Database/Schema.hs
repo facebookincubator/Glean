@@ -346,7 +346,7 @@ mkDbSchema override getPids dbContent source base addition = do
       mkPredicatesByName predicates = HashMap.fromListWith latest
         [ (predicateRef_name ref, deets)
         | ref <- predicates
-        , Just deets@PredicateDetails{..} <- [HashMap.lookup ref byRef] ]
+        , Just deets <- [HashMap.lookup ref byRef] ]
         where
         latest a b
           | predicateRef_version (predicateRef a) >
@@ -356,7 +356,7 @@ mkDbSchema override getPids dbContent source base addition = do
       mkSchemaTypesByName types = HashMap.fromListWith latest
         [ (typeRef_name ref, deets)
         | ref <- types
-        , Just deets@TypeDetails{..} <- [HashMap.lookup ref (tcEnvTypes env)] ]
+        , Just deets@TypeDetails{} <- [HashMap.lookup ref (tcEnvTypes env)] ]
         where
         latest a b
           | typeRef_version (typeRef a) >

@@ -302,7 +302,8 @@ instance Plugin WriteCommand where
               scribeWriteBatches
                 writeFromScribe_category
                 (case writeFromScribe_bucket of
-                  Just (PickScribeBucket_bucket n) -> Just (fromIntegral n)
+                  Just (PickScribeBucket_bucket n) ->
+                      Just (fromIntegral n :: Int)
                   Nothing -> Nothing)
                 batches
                 scribeCompress

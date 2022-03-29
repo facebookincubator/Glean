@@ -199,7 +199,7 @@ startTailer env repo task_name settings progress = do
                     HashMap.adjust
                       (\task@Task{..} -> case task_state of
                           TaskState_running (TaskRunning parcels)
-                            | ParcelState_running parcel@ParcelRunning{..}
+                            | ParcelState_running parcel
                                   <- V.head parcels -> task
                                 { task_state = TaskState_running
                                     $ TaskRunning

@@ -507,7 +507,7 @@ workFinished env Thrift.WorkFinished{..} = do
   logInfo $ "workFinished_outcome " ++ show workFinished_outcome
   time <- getCurrentTime
   immediately $ do
-    info@ParcelInfo{..} <- lift $ runningParcelInfo env workFinished_work
+    info <- lift $ runningParcelInfo env workFinished_work
     lift $ deleteHeartbeat (envHeartbeats env) workFinished_work
     case workFinished_outcome of
       Thrift.Outcome_success{} ->
