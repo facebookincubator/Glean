@@ -154,12 +154,9 @@ library
         glean:util,
         vector-algorithms
 
--- TODO: the relative paths below are annoying, but the files in
---       question are not part of any glean sub-library.
 executable glean-clang-index
     import: fb-cpp
     ghc-options: -no-hs-main
-    include-dirs: ../../../
     main-is: index.cpp
     cxx-sources:
         action.cpp,
@@ -167,15 +164,12 @@ executable glean-clang-index
         db.cpp,
         path.cpp,
         preprocessor.cpp,
-        ../../cpp/sender.cpp,
-        ../../cpp/glean.cpp,
-        ../../interprocess/cpp/worklist.cpp,
-        ../../interprocess/cpp/counters.cpp
     build-depends:
         glean:rts,
         glean:config,
         glean:if-glean-cpp,
-        glean:if-internal-cpp
+        glean:if-internal-cpp,
+        glean:client-cpp
     extra-libraries: clangFrontend,
                      clangSerialization,
                      clangDriver,

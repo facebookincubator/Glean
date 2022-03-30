@@ -605,6 +605,24 @@ library client-hs-local
         glean:client-hs,
         glean:db,
 
+-- things needed by glean-clang
+library client-cpp
+    import: fb-cpp, deps
+    visibility: public
+    cxx-sources:
+        glean/cpp/sender.cpp,
+        glean/cpp/glean.cpp,
+        glean/interprocess/cpp/worklist.cpp,
+        glean/interprocess/cpp/counters.cpp
+    cxx-options: -DOSS=1
+    if arch(x86_64)
+      cxx-options: -DGLEAN_X86_64
+    include-dirs: .
+    install-includes:
+        glean/cpp/glean.h
+    build-depends:
+        glean:rts
+
 library schema
     import: fb-haskell, fb-cpp, deps
     visibility: public
