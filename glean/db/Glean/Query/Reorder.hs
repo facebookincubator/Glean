@@ -278,6 +278,10 @@ reorderStmtGroup scope stmts = do
             -- NB. we want variables that this statement can *bind*,
             -- not all the variables it mentions.
           , Just x /= lhs && not (x `IntSet.member` prefix)
+            -- only consider variables that actually have lookup
+            -- statements, otherwise the assumption made by
+            -- new_slow_searches below is incorrect.
+          , x `IntMap.member` candidateMap
           ]
 
     candidateMap = IntMap.fromListWith (++)
