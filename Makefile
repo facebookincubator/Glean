@@ -80,6 +80,7 @@ SCHEMAS= \
 	hack \
 	hs \
 	java \
+	lsif \
 	pp1 \
 	python \
 	rust \
