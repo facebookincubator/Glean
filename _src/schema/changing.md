@@ -58,11 +58,13 @@ To use schema evolutions, all changes made in the new schema must be backward co
 - Change field order in a predicate/type
 - Change alternative order in a sum type or enum
 - Add a predicate
+- Add alternatives to unions and enums
 - Remove a predicate
 
 Changes that are not backward compatible are not supported, such as:
 - Remove a field
 - Change the type of a field
+- Remove an alternative
 
 :::note
 
