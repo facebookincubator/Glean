@@ -24,10 +24,8 @@ import Data.Aeson ( object, Value(String, Array), KeyValue(..) )
 import Data.Aeson.Types ( Pair )
 import Data.IntMap ( IntMap )
 import qualified Data.IntMap.Strict as IMap
-import Data.IntSet ( IntSet )
-import qualified Data.IntSet as Set
-import Data.Maybe ( fromMaybe )
 import Data.Text ( Text )
+import Data.Maybe ( fromMaybe, listToMaybe, mapMaybe )
 import qualified Data.Text as Text
 import qualified Data.Vector as V
 
@@ -37,100 +35,126 @@ import Data.LSIF.JSON ({- instances -})
 -- Converts from AESON-parsed standard LSIF into Glean-compatible types
 
 -- | Parser env, to track command statements in LSIF that change scope
--- So much bookeeping to recover the types
 data Env =
   Env {
-    root :: !Text, -- ^ used to clean up file paths to be repo-relative
-    openProjects :: IntSet, -- open project identifiers
-    openDocuments :: IntSet, -- stack of open document identifiers
+    root :: [Text], -- ^ a list of path prefixes to strip
 
     -- track some of the types associated with ids
-    idTypeMap :: IntMap VertexType,
+    idType :: IntMap VertexType,
 
-    -- resultset id -> defnition id
-    resultSetToDefMap :: IntMap Id,
+    -- tracking edge relationships we care about
+    -- "next" edges associate range vertices with result sets
+    resultSet :: IntMap (Id_ ResultSetTy),
 
-    -- resultset id -> fileid of definition range
-    resultSetToFileMap :: IntMap Id,
+    -- textDocument/definition, associate resultset with ([def range], file)
+    definitionFile :: IntMap FileDefs,
 
-    -- each range (ref or def or decl) is a `next` edge member of a result set
-    rangeToResultSetMap :: IntMap Id,
-
-    -- when we see an textDocument/definition edge, record its resultset
-    definitionResultToResultSetMap :: IntMap Id
+    -- textDocument/hover, associate resultset with a hovertext/lang
+    hoverText :: IntMap (Id_ HoverTextTy)
 
   }
 
--- Track the implied type of some of the graph nodes identifiers
+-- Type tags for various vertices we need
 data VertexType
-  = DefinitionType
-  | DeclarationType
-  | ReferenceType
+  = ResultDefinitionType
+  | ResultDeclarationType
+  | ResultReferenceType
   | ResultSetType
-  deriving (Eq, Ord, Bounded, Enum)
+
+  | DefinitionType
+  | ReferenceType
+  | DeclarationType
+  deriving (Eq)
+
+-- Strict pair of file id/ definition ids
+data FileDefs
+   = FileDefs
+      {-# UNPACK #-}!(Id_ FileTy)
+      !(V.Vector (Id_ DefinitionTy))
+
+-- tag the Id with a type when we put it in the env
+type Id_ a = Id
+
+data DefinitionTy
+data ResultSetTy
+data FileTy
+data HoverTextTy
+
+tagResultSet :: Id -> Id_ ResultSetTy
+tagResultSet = id
+
+tagFile :: Id -> Id_ FileTy
+tagFile = id
+
+tagDefinitions :: V.Vector Id -> V.Vector (Id_ DefinitionTy)
+tagDefinitions = id
 
 -- Build up some lookup tables for the assoc lists between refs/defs/decls/files
 -- to aid in generaing flatter angle facts
 empty :: Env
-empty = Env "" Set.empty Set.empty
-  IMap.empty IMap.empty IMap.empty IMap.empty IMap.empty
+empty = Env [] IMap.empty IMap.empty IMap.empty IMap.empty
 
 -- Drop projectRoot prefix from URI to yield repo-relative paths for Glean
+-- Some indexers generate uris outside of the repo. In those cases we
+-- just try to remove local environment specific-stuff
 filterRoot :: Text -> State Env Text
 filterRoot path = do
-  prefix <- root <$> get
-  pure $ fromMaybe path (Text.stripPrefix (prefix <> "/") path)
+  prefixes <- root <$> get -- try a few paths
+  let clean = mapMaybe (\p -> Text.stripPrefix (p <> "/") path) $ prefixes
+  pure (fromMaybe path (listToMaybe clean))
 
-setRoot :: Text -> State Env ()
-setRoot path = modify' (\e -> e { root = path })
+appendRoot :: Text -> State Env ()
+appendRoot path = modify' (\e -> e { root = path : (root e) })
 
-insertProject, insertDocument :: Id -> State Env ()
-insertProject (Id n) = modify' $ \e ->
-  e { openProjects = Set.insert (fromIntegral n) (openProjects e) }
-insertDocument (Id n) = modify' $ \e ->
-  e { openDocuments = Set.insert (fromIntegral n) (openDocuments e) }
+setRoot :: [Text] -> State Env ()
+setRoot paths = modify' (\e -> e { root = paths })
 
 insertType :: Id -> VertexType -> State Env ()
-insertType (Id n) ty = modify' $ \e -> e { idTypeMap =
-    IMap.insert (fromIntegral n) ty (idTypeMap e)
+insertType (Id n) ty = modify' $ \e -> e { idType =
+    IMap.insert (fromIntegral n) ty (idType e)
   }
 
-resultSetToDef :: Id -> Id -> State Env ()
-resultSetToDef (Id n) defId = modify' $ \e -> e { resultSetToDefMap =
-    IMap.insert (fromIntegral n) defId (resultSetToDefMap e)
-  }
-
-insertInResultSet :: Id -> Id -> State Env ()
-insertInResultSet (Id n) resultSetId  = modify' $ \e ->
-  e { rangeToResultSetMap =
-    IMap.insert (fromIntegral n) resultSetId (rangeToResultSetMap e)
-  }
-
-insertDefinitionResult :: Id -> Id -> State Env ()
-insertDefinitionResult (Id n) resultMapId = modify' $ \e ->
-  e { definitionResultToResultSetMap =
-    IMap.insert (fromIntegral n) resultMapId (definitionResultToResultSetMap e)
-  }
-
-insertResultSetFile :: Id -> Id -> State Env ()
-insertResultSetFile (Id n) fileId = modify' $ \e ->
-  e { resultSetToFileMap =
-    IMap.insert (fromIntegral n) fileId (resultSetToFileMap e)
-  }
-
-getResultSetOfDefinitionResult :: Id -> State Env (Maybe Id)
-getResultSetOfDefinitionResult = lookupIMapEnv definitionResultToResultSetMap
+-- Add a bunch of types in one go
+insertTypes :: V.Vector Id -> VertexType -> State Env ()
+insertTypes ids ty = modify' $ \e -> e { idType = IMap.union imap (idType e) }
+  where
+    imap = IMap.fromAscList . V.toList . V.map (\(Id i) -> (fromIntegral i, ty)) $ ids
 
 getTypeOf :: Id -> State Env (Maybe VertexType)
-getTypeOf = lookupIMapEnv idTypeMap
+getTypeOf = lookupIMapEnv idType
+
+addToResultSet :: Id -> Id_ ResultSetTy -> State Env ()
+addToResultSet (Id n) resultSetId  = modify' $ \e ->
+  e { resultSet = IMap.insert (fromIntegral n) resultSetId (resultSet e) }
+
+getResultSetOf :: Id -> State Env (Maybe (Id_ ResultSetTy))
+getResultSetOf = lookupIMapEnv resultSet
+
+addToDefinitionFile :: Id_ ResultSetTy -> Id_ FileTy -> V.Vector (Id_ DefinitionTy) -> State Env ()
+addToDefinitionFile (Id resultSetId) fileId defIds  = modify' $ \e ->
+  e { definitionFile = IMap.insert
+        (fromIntegral resultSetId) (FileDefs fileId defIds) (definitionFile e)
+  }
+
+getDefinitionFile :: Id_ ResultSetTy -> State Env (Maybe FileDefs)
+getDefinitionFile = lookupIMapEnv definitionFile
+
+addHoverToResultSet :: Id_ HoverTextTy -> Id_ ResultSetTy -> State Env ()
+addHoverToResultSet hoverId (Id resultSetId) = modify' $ \e ->
+  e { hoverText = IMap.insert
+        (fromIntegral resultSetId) hoverId (hoverText e)
+  }
+
+getHoverTextId :: Id_ ResultSetTy -> State Env (Maybe (Id_ HoverTextTy))
+getHoverTextId = lookupIMapEnv hoverText
 
 lookupIMapEnv :: (Env -> IntMap a) -> Id -> State Env (Maybe a)
 lookupIMapEnv f (Id n) = do
   imap <- f <$> get
   pure (IMap.lookup (fromIntegral n) imap)
 
-lookupIn :: t -> (t -> IntMap a) -> Id -> Maybe a
-lookupIn env f (Id n) = IMap.lookup (fromIntegral n) (f env)
+_lookupIn :: t -> (t -> IntMap a) -> Id -> Maybe a
+_lookupIn env f (Id n) = IMap.lookup (fromIntegral n) (f env)
 
 --
 -- | Convert LSIF json to Glean json
@@ -146,17 +170,16 @@ lookupIn env f (Id n) = IMap.lookup (fromIntegral n) (f env)
 -- verbose. We should group by lsif.angle predicates first, before generating
 -- the final value, and likely improves load time.
 --
-toAngle :: LSIF -> Value
-toAngle (LSIF facts) = Array $ V.concatMap V.fromList $
-  evalState (V.mapM factToAngle facts) empty
+toAngle :: [Text] -> LSIF -> Value
+toAngle prefixPaths (LSIF facts) = Array $ V.concatMap V.fromList $
+  evalState (setRoot prefixPaths >> V.mapM factToAngle facts) empty
 
 -- | Process each key/fact pair
 factToAngle :: KeyFact -> State Env [Value]
 factToAngle (KeyFact _ MetaData{..}) = do
-  setRoot projectRoot
+  appendRoot projectRoot
   predicate "lsif.Metadata.1" ([
     "lsifVersion" .= version,
-    "projectRoot" .= string projectRoot, -- src.File
     "positionEncoding" .= positionEncoding
     ] ++ (case toolInfo of -- optional
             Nothing -> []
@@ -178,7 +201,7 @@ factToAngle (KeyFact _ PackageInformation{..}) =
     "version" .= version
   ]
 
--- LSIF Documents are uri/language pairs.
+-- LSIF Documents are uri/language pairs. We generate a src.File nested fact
 factToAngle (KeyFact n Document{..}) = do
   path <- filterRoot uri
   predicate "lsif.Document.1"
@@ -191,26 +214,37 @@ factToAngle (KeyFact n Document{..}) = do
 
 -- Push document or project identifier onto open stack. This is list of
 -- documents or projects for which facts may still be emitted.
-factToAngle (KeyFact _ (Event Begin scope n)) = [] <$ case scope of
-  ProjectScope -> insertProject n
-  DocumentScope -> insertDocument n -- should be src.File id of previous $event
-
--- Declares a resultset, which is used to group definitions, uses, symbol ids
--- (monikers), projects, hovertext and more
-factToAngle (KeyFact n ResultSet) = [] <$ insertType n ResultSetType
+-- we don't currently use these event markers for anything
+factToAngle (KeyFact _ Event{}) = pure []
 
 -- Associate a range fact with a result set.
 -- We use this to track chains of ref -> resultset -> def for later generation
+-- note: inV targets are always resultSets, outVs may be ranges or resultSets
 factToAngle (KeyFact _ (Edge EdgeNext outV inV)) = [] <$ do
-  outFactType <- getTypeOf outV
-  inFactType <- getTypeOf inV
-  case (outFactType, inFactType ) of
-    (Just DefinitionType, Just ResultSetType) -> do
-        outV `insertInResultSet` inV
-        resultSetToDef inV outV -- record inverse map as well
-    (Just ReferenceType, Just ResultSetType) ->
-        outV `insertInResultSet` inV
-    _ -> return ()
+  addToResultSet outV (tagResultSet inV)
+
+-- collect textDocument/definition and textDocument/hover edges to resultsets
+factToAngle (KeyFact _ (Edge EdgeTextDocumentDefinition outV inV)) = [] <$ do
+  addToResultSet inV (tagResultSet outV)
+
+-- record which resulset this hover text is a member of
+factToAngle (KeyFact _ (Edge EdgeTextDocumentHover outV inV)) = [] <$
+  addHoverToResultSet inV outV
+
+-- Adds more type information about these ranges
+factToAngle (KeyFact _ (Item _outV inVs _fileId (Just References))) = [] <$
+  insertTypes inVs ReferenceType
+
+-- items : these add ranges to definition results
+-- we check the result set of this definitionResult, then record
+-- that the result set points at this definition ranges / document pair
+factToAngle (KeyFact _ (Item outV inVs fileId Nothing)) = [] <$ do
+  insertTypes inVs DefinitionType -- todo: do we see DeclarationTy here?
+  mResultSet <- getResultSetOf outV -- questionable: ordering of resultSet
+  case mResultSet of
+    Nothing -> return ()
+    Just resultSetId -> addToDefinitionFile resultSetId
+          (tagFile fileId) (tagDefinitions inVs)
 
 -- Range facts. These are range spans, 0-indexed, and may have optional
 -- tag/labels indicating what kind of span they are. They may have no text
@@ -220,101 +254,138 @@ factToAngle (KeyFact _ (Edge EdgeNext outV inV)) = [] <$ do
 --
 factToAngle (KeyFact n (SymbolRange range mtag)) = do
   -- record the type if we have the tag handy
-  case mtag of
-    Just Definition{} -> insertType n DefinitionType
-    Just Declaration{} -> insertType n DeclarationType
-    Just Reference{} -> insertType n ReferenceType
-    _ -> return ()
+  forM_ {- Maybe -} (tagToTy =<< mtag) (insertType n)
 
   -- emit a range fact for this id
   predicateId "lsif.Range.1" n $
     [ "range" .= toRange range
     ] ++ mFullRange ++ mText
     where
-      mFullRange = case mtag of
-        Just Definition{..} -> ["fullRange" .= toRange fullRange]
-        Just Declaration{..} -> ["fullRange" .= toRange fullRange]
-        _ -> []
+      mFullRange = fromMaybe [] (tagToRange =<< mtag)
+      mText = fromMaybe [] (tagToText =<< mtag)
 
-      mText = case mtag of
-        Just Definition{..} -> ["text" .= string tagText]
-        Just Declaration{..} -> ["text" .= string tagText]
-        Just Reference{..} -> ["text" .= string tagText]
-        _ -> []
-
--- These declare some types
-factToAngle (KeyFact n DefinitionResult) = [] <$
-  insertType n DefinitionType
-factToAngle (KeyFact n DeclarationResult) = [] <$
-  insertType n DeclarationType
-factToAngle (KeyFact n ReferenceResult) = [] <$
-  insertType n ReferenceType
-
--- if we see a text/Document/Definition edge, track the resultmap it points to
--- we need this later to look up files -> to their definition resultmaps
-factToAngle (KeyFact _ (Edge EdgeTextDocumentDefinition outV inV)) = do
-  insertDefinitionResult inV outV
-  pure []
-
--- Item edges link ranges to semantic elements like definitions and references
--- They are tied to documents.
-factToAngle (KeyFact _ (Item outV inVs fileId prop)) = do
-  ty <- getTypeOf outV
-  case ty of
-    Just DefinitionType -> do
-      -- we can now map fileIds to their definition result sets
-      mResultSet <- getResultSetOfDefinitionResult outV
-      case mResultSet of
-        -- record the definition resultSet points to its fileId
-        Just resultSetId -> insertResultSetFile resultSetId fileId
-        _ -> return ()
-
-      -- and emit the file definition fact
-      predicate "lsif.FileDefinitions.1"
-              [ "file" .= fileId
-              , "range" .= inVs -- vector
-              ]
-
-    Just DeclarationType ->
-      predicate "lsif.FileDeclarations.1"
-              [ "file" .= fileId
-              , "range" .= inVs -- vector
-              ]
-
-    -- this is an item set of references in this file
-    -- we should be able to emit the target def if it has already been
-    -- seen, for each ref id
-    Just ReferenceType | prop == Just References -> do
-      env <- get
-      let xrefFacts :: [[Pair]]
-          xrefFacts =
-            [ [ "file" .= fileId
-              , "range" .= inV
-              , "target" .= object
-                    [ "file" .= targetFileId
-                    , "range" .= targetDefId
-                    ]
-              ]
-            | inV <- V.toList inVs
-            , Just resultSetId <-
-                pure (lookupIn env rangeToResultSetMap inV)
-            , Just targetFileId <-
-                pure (lookupIn env resultSetToFileMap resultSetId)
-            , Just targetDefId <-
-                pure (lookupIn env resultSetToDefMap resultSetId)
-            ]
-      if null xrefFacts
-        then pure []
-        else pure [
-            object [
-              "predicate" .= text "lsif.FileReferences.1",
-              "facts" .= [ object (map key xrefFacts) ]
-            ]
+-- Hover text
+factToAngle (KeyFact n (HoverResult contents)) = do
+  facts <- V.forM contents $ \case
+    HoverSignature language str ->
+      predicateId "lsif.HoverContent" n
+        [ "text" .= object [ "key" .= str ] -- bare lsif.HoverText
+        , "language" .= fromEnum language
         ]
+    HoverText str ->
+      predicateId "lsif.HoverContent" n
+        [ "text" .= object [ "key" .= str ]
+        , "language" .= fromEnum UnknownLanguage
+        ]
+  return $ concat (V.toList facts)
 
-    _ -> pure [] -- warning? a definition for something we haven't seen declared
+-- These declare some types of output nodes (things pointed to by resultsets)
+factToAngle (KeyFact n DefinitionResult) = [] <$ insertType n ResultDefinitionType
+factToAngle (KeyFact n DeclarationResult) = [] <$ insertType n ResultDeclarationType
+factToAngle (KeyFact n ReferenceResult) = [] <$ insertType n ResultReferenceType
+factToAngle (KeyFact n ResultSet) = [] <$ insertType n ResultSetType
+
+-- emit FileDefinition, FileDeclaration and FileReference facts
+factToAngle (KeyFact _ (Contains fileId inVs)) = do
+
+  -- elaborate all ids with their types
+  tys <- V.mapM (\i -> (,i) <$> getTypeOf i) inVs
+
+  -- partition ids by type
+  let defRangeIds = V.map snd $ V.filter ((== Just DefinitionType) . fst) tys
+      declRangeIds = V.map snd $ V.filter ((== Just DeclarationType) . fst) tys
+      refRangeIds = V.map snd $ V.filter ((== Just ReferenceType) . fst) tys
+
+  defFacts <- if not (null defRangeIds)
+      then pure [
+        object [
+          "predicate" .= text "lsif.Definition.1",
+          "facts" .= Array (V.map (\id -> (object . pure . key)
+                        [ "file" .= fileId
+                        , "range" .= id
+                        ]
+                      ) defRangeIds)
+        ]
+      ]
+      else pure []
+
+  declFacts <- if not (null declRangeIds)
+      then pure [
+        object [
+          "predicate" .= text "lsif.Declaration.1",
+          "facts" .= Array (V.map (\id -> (object . pure . key)
+                        [ "file" .= fileId
+                        , "range" .= id
+                        ]
+                      ) declRangeIds)
+        ]
+      ]
+      else pure []
+
+  -- Generate a single lsif.FileReferences.1 predicate row per file containing
+  -- many facts.
+  xrefBodies <- concat. V.toList <$> V.mapM (generateFileReferences fileId) refRangeIds
+  xrefFacts <- if not (null xrefBodies)
+      then pure [ object [
+            "predicate" .= text "lsif.Reference.1",
+            "facts" .= Array ( V.fromList $
+              map (object . pure . key) xrefBodies
+            )
+          ] ]
+      else pure []
+
+  -- generate hover text facts for the definitions
+  hoverBodies <- V.catMaybes <$> V.mapM (generateHoverFacts fileId) defRangeIds
+  hoverFacts <- if not (V.null hoverBodies)
+      then pure [ object [
+          "predicate" .= text "lsif.DefinitionHover",
+          "facts" .= Array hoverBodies
+        ] ]
+      else pure []
+
+  pure (defFacts <> declFacts <> xrefFacts <> hoverFacts)
 
 factToAngle _ = pure []
+
+generateHoverFacts :: Id -> Id -> State Env (Maybe Value)
+generateHoverFacts fileId defRangeId = do
+  mResultSet <- getResultSetOf defRangeId
+  case mResultSet of
+    Nothing -> pure Nothing
+    Just resultSetId -> do -- lookup up associated hovertext
+      mHoverFact <- getHoverTextId resultSetId
+      case mHoverFact of
+        Nothing -> pure Nothing
+        Just hoverFactId -> pure $ Just $ object $ pure $ key
+          [ "defn" .= (object . pure . key)
+             [ "file" .= fileId
+             , "range" .= defRangeId
+             ]
+          , "hover" .= hoverFactId
+          ]
+
+-- For each refId, look up the result set, find the result sets file and defs
+-- and generate a single flat file -> ref -> targetDef fat
+generateFileReferences :: Id -> Id -> State Env [[Pair]]
+generateFileReferences fileId refRangeId = do
+  -- get resultset of ref
+  mResultSet <- getResultSetOf refRangeId
+  case mResultSet of
+    Nothing -> pure []
+    Just resultSetId -> do -- now, knowing the result set, lookup up the outgoing file / def
+      mFileDefs <- getDefinitionFile resultSetId
+      case mFileDefs of
+        Nothing -> pure []
+        Just (FileDefs targetFileId targetRanges) -> pure
+          [ [ "file" .= fileId
+            , "range" .= refRangeId
+            , "target" .= (object . pure . key)
+                [ "file" .= targetFileId
+                , "range" .= targetRange
+                ]
+            ]
+          | targetRange <- V.toList targetRanges
+          ]
 
 --
 -- JSON-generating utilities
@@ -358,3 +429,20 @@ string s = object [ "key" .= s ]
 
 text :: Text -> Value
 text = String
+
+tagToTy :: Tag -> Maybe VertexType
+tagToTy Definition{} = Just DefinitionType
+tagToTy Declaration{} = Just DeclarationType
+tagToTy Reference{} = Just ReferenceType
+tagToTy _ = Nothing
+
+tagToText :: KeyValue a => Tag -> Maybe [a]
+tagToText Definition{..} = Just ["text" .= string tagText]
+tagToText Declaration{..} = Just ["text" .= string tagText]
+tagToText Reference{..} = Just ["text" .= string tagText]
+tagToText _ = Nothing
+
+tagToRange :: KeyValue a => Tag -> Maybe [a]
+tagToRange Definition{..} = Just ["fullRange" .= toRange fullRange]
+tagToRange Declaration{..} = Just ["fullRange" .= toRange fullRange]
+tagToRange _ = Nothing

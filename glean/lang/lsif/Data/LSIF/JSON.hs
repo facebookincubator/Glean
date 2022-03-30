@@ -111,7 +111,7 @@ parseVertex o = do
       result <- o .: "result"
       cs <- result .: "contents"
       contents <- withArray "hoverResult" (V.mapM parseHoverContents) cs
-      return LsifHoverResult{..}
+      return HoverResult{..}
 
     "resultSet" -> pure ResultSet
     "definitionResult" -> pure DefinitionResult

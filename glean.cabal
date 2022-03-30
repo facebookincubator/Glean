@@ -69,6 +69,14 @@ flag benchmarks
 flag hack-tests
      default: True
 
+-- run tests that require lsif-tsc
+flag typescript-tests
+     default: True
+
+-- run tests that require lsif-go
+flag go-tests
+     default: True
+
 common deps
     build-depends:
         fb-util,
@@ -1067,10 +1075,10 @@ library lsif
     build-depends:
         aeson
 
--- | A TypeScript indexer based on lsif-tsc
-executable glean-lsif-tsc
+-- | A generic LSIF-based external indexer
+executable glean-lsif
     import: fb-haskell, fb-cpp, deps, exe
-    hs-source-dirs: glean/lang/typescript
+    hs-source-dirs: glean/lang/lsif/indexer
     main-is: Main.hs
     ghc-options: -main-is Main
     build-depends:
@@ -1306,11 +1314,15 @@ library regression-test-lib
     hs-source-dirs:
         glean/test/regression
         glean/lang/flow
+        glean/lang/go
         glean/lang/hack
+        glean/lang/typescript
     exposed-modules:
         Glean.Regression.Config
         Glean.Regression.Driver.Args.Flow
+        Glean.Regression.Driver.Args.Go
         Glean.Regression.Driver.Args.Hack
+        Glean.Regression.Driver.Args.TypeScript
         Glean.Regression.Driver.External
         Glean.Regression.Indexer
         Glean.Regression.Indexer.External
@@ -1327,6 +1339,7 @@ library regression-test-lib
         glean:handler,
         glean:if-glean-hs,
         glean:lib,
+        glean:lsif,
         glean:stubs,
         glean:test-lib,
         glean:util,
@@ -1740,6 +1753,26 @@ test-suite glean-snapshot-hack
     build-depends: glean:regression-test-lib
     -- no regular hhvm builds for arm64
     if !flag(hack-tests)
+        buildable: False
+
+test-suite glean-snapshot-typescript
+    import: fb-haskell, deps
+    hs-source-dirs: glean/lang/codemarkup/tests/typescript
+    type: exitcode-stdio-1.0
+    main-is: Glean/Regression/TypeScript/Main.hs
+    ghc-options: -main-is Glean.Regression.TypeScript.Main
+    build-depends: glean:regression-test-lib
+    if !flag(typescript-tests)
+        buildable: False
+
+test-suite glean-snapshot-go
+    import: fb-haskell, deps
+    hs-source-dirs: glean/lang/codemarkup/tests/go/
+    type: exitcode-stdio-1.0
+    main-is: Glean/Regression/Go/Main.hs
+    ghc-options: -main-is Glean.Regression.Go.Main
+    build-depends: glean:regression-test-lib
+    if !flag(go-tests)
         buildable: False
 
 ------------------------------------------------------------------------

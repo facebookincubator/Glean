@@ -22,7 +22,7 @@ import Data.Text ( Text )
 import Data.Vector ( Vector )
 import GHC.Generics ( Generic )
 
--- | Document root
+-- | LSIF document facts. Fact with id N is at vector index N+1
 newtype LSIF = LSIF (Vector KeyFact)
   deriving (Generic, Show)
 
@@ -64,7 +64,7 @@ data Fact
       uri :: !Text,
       language :: !LanguageId
   }
-  | LsifHoverResult {
+  | HoverResult {
       contents :: Vector HoverContents
   }
   -- Project-level symbol identifiers, usually for imports and exports
@@ -106,11 +106,11 @@ data Fact
     }
   | Contains {
     outV :: {-# UNPACK #-}!Id,
-    inVs :: Vector Id
+    inVs :: !(Vector Id)
   }
   | Item {
     outV :: {-# UNPACK #-}!Id,
-    inVs :: Vector Id,
+    inVs :: !(Vector Id),
     document :: {-# UNPACK #-}!Id,
     property :: Maybe Property
   }
@@ -118,7 +118,7 @@ data Fact
 
 data HoverContents
   = HoverSignature {
-      hoverLanguage :: !Text,
+      hoverLanguage :: !LanguageId,
       value :: !Text
   }
   | HoverText !Text

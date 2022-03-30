@@ -32,7 +32,9 @@ jobs:
           wget "https://github.com/facebook/flow/releases/download/v${FLOW}/flow-linux-arm64-v${FLOW}.zip"
           unzip "flow-linux-arm64-v${FLOW}.zip"
           mkdir -p "$HOME"/.hsthrift/bin && mv flow/flow "$HOME"/.hsthrift/bin
+    # no yarnpkg with correct versions, so skip typescript indexer
     # no hhvm builds yet for arm/linux, so we skip the hack indexer
+    # no arm64 builds of go lsif indexer
       - name: Fetch hsthrift and build folly, fizz, wangle, fbthrift
         run: ./install_deps.sh --threads 8 --use-system-libs
       - name: Nuke build artifacts
@@ -43,6 +45,6 @@ jobs:
         run: make EXTRA_GHC_OPTS="-j4 +RTS -A128m -n2m -RTS"
       - name: Build glass
         run: make glass
-      # no hhvm/hack indexer, so we run without hack regression tests
+    # disable tests for languages we don't have indexer installed
       - name: Run tests
-        run: cabal test glean:tests -f-hack-tests
+        run: cabal test glean:tests -f-hack-tests -f-typescript-tests -f-go-tests

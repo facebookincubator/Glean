@@ -48,6 +48,7 @@ import Glean.Regression.Config
 import Glean.Regression.Indexer
 import Glean.Types
 import Glean.Write
+import qualified Glean.LSIF.Driver as LSIF
 
 externalIndexer :: Indexer Ext
 externalIndexer = Indexer
@@ -55,7 +56,7 @@ externalIndexer = Indexer
   , indexerRun = execExternal
   }
 
-data Flavour = Json | Server
+data Flavour = Json | Server | Lsif
 
 data Ext = Ext
   { extBinary :: FilePath
@@ -84,7 +85,11 @@ extOptions = do
     O.flag' Server (
       O.long "server" <>
       O.help ("the binary should connect to a Glean server on " <>
-        "port ${SERVER_PORT} to write facts"))
+        "port ${SERVER_PORT} to write facts")) O.<|>
+    O.flag' Lsif (
+      O.long "lsif" <>
+      O.help "run glean-lsif on the language specified by --binary")
+
   extDerivePredicates <-
     fmap (maybe [] (Text.splitOn "," . Text.pack)) $
     O.optional $
@@ -134,6 +139,15 @@ execExternal Ext{..} TestConfig{..} env = do index; derive
           Aeson.Error str -> throwIO $ ErrorCall $ file ++ ": " ++ str
           Aeson.Success x -> return x
         void $ Glean.sendJsonBatch env testRepo batches Nothing
+
+    Lsif -> case LSIF.indexerLang extBinary of
+        Nothing -> fail ("Unrecognized LSIF language indexer: " <> extBinary)
+        Just lang -> do
+          val <- LSIF.runIndexer lang testRoot
+          batches <- case Aeson.parse parseJsonFactBatches val of
+            Aeson.Error s -> throwIO $ ErrorCall $ extBinary <> "/lsif: " ++ s
+            Aeson.Success x -> return x
+          void $ Glean.sendJsonBatch env testRepo batches Nothing
 
     Server -> do
       fb303 <- newFb303 "gleandriver"

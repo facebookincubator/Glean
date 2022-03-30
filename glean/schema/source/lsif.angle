@@ -46,6 +46,9 @@ type LanguageId =
 # Opaque identifiers
 predicate Name: string
 
+# Markdown hover text
+predicate HoverText: string
+
 # LSIF documents
 predicate Document:
   {
@@ -53,10 +56,16 @@ predicate Document:
     language : lsif.LanguageId
   }
 
+# LSIF hover cards in markdown
+predicate HoverContent:
+  {
+    text : lsif.HoverText,
+    language : lsif.LanguageId
+  }
+
 predicate Metadata:
   {
     lsifVersion: string,
-    projectRoot: src.File,
     positionEncoding: string,
     toolInfo: maybe ToolInfo,
   }
@@ -92,25 +101,30 @@ predicate Range:
     text: maybe lsif.Name
   }
 
-# an edge item where the out vertex is a "definitionResult"
-predicate FileDefinitions:
-  {
-    file : src.File,
-    range: [lsif.Range],
-  }
-
-type XRefLocation =
+predicate Definition:
   {
     file: src.File,
     range: lsif.Range
   }
 
-# a reference span in file , pointing to target definition xref location
-predicate FileReferences:
+predicate Declaration:
   {
-    file : src.File,
+    file: src.File,
+    range: lsif.Range
+  }
+
+predicate Reference:
+  {
+    file: src.File,
     range: lsif.Range,
-    target: lsif.XRefLocation
+    target: lsif.Definition
+  }
+
+ # Associate a hover content with the anchor definition
+ predicate DefinitionHover:
+  {
+    defn: lsif.Definition,
+    hover: lsif.HoverContent
   }
 
 }
