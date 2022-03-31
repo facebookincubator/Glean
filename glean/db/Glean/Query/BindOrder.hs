@@ -6,6 +6,8 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE GeneralisedNewtypeDeriving #-}
+{-# LANGUAGE DerivingStrategies #-}
 module Glean.Query.BindOrder
   ( Fix
   , Scope(..)
@@ -14,12 +16,18 @@ module Glean.Query.BindOrder
   , runFixBindOrder
   , FixBindOrder(..)
   , FixBindOrderError(..)
+  , Variable
+  , isBound
+  , bind
   ) where
 
 import Control.Monad.Except
 import Control.Monad.State
 import Data.IntSet (IntSet)
+import Data.IntMap (IntMap)
+import Data.Maybe (fromMaybe)
 import qualified Data.IntSet as IntSet
+import qualified Data.IntMap.Strict as IntMap
 
 import Glean.Query.Codegen
 import Glean.RTS.Term as RTS hiding (Match(..))
@@ -43,8 +51,20 @@ import Glean.RTS.Term as RTS hiding (Match(..))
 -- typechecker.  Maybe we'll change this in the future.
 
 newtype Scope = Scope
-  { unScope :: IntSet
+  { unScope :: IntMap Bool
+  -- ^ A map of all variables in a scope with a boolean
+  -- for whether it is bound or not
   }
+  deriving newtype (Semigroup, Monoid, Show)
+
+type Variable = Int
+
+isBound :: Scope -> Variable -> Bool
+isBound (Scope scope) var = fromMaybe False $ IntMap.lookup var scope
+
+bind :: Variable -> Scope -> Scope
+bind var (Scope scope) = Scope $ IntMap.insert var True scope
+
 
 -- | Variables that should not be bound.
 -- Statements in a negated subquery should not bind values that occur later
@@ -108,11 +128,11 @@ instance (FixBindOrder a) => FixBindOrder (Match a Var) where
 
 fixVar :: IsPat -> Var -> Fix (Match a Var)
 fixVar isPat var@(Var _ v _) = do
-  (Scope inScope, NoBind noBind) <- get
+  (scope, NoBind noBind) <- get
   if
-    | v `IntSet.member` inScope -> return (MatchVar var)
+    | isBound scope v -> return (MatchVar var)
     | (IsExpr == isPat) || (v `IntSet.member` noBind)
       -> throwError $ UnboundVariable var
     | otherwise -> do
-      put (Scope (IntSet.insert v inScope), NoBind noBind)
+      put (bind v scope, NoBind noBind)
       return (MatchBind var)

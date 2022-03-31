@@ -121,31 +121,58 @@ reorder dbSchema QueryWithInfo{..} =
       return (QueryWithInfo q roNextVar qiReturnType)
 
 reorderQuery :: FlatQuery -> R CgQuery
-reorderQuery (FlatQuery pat _ stmts) = do
-  stmts' <- reorderGroups stmts
-  pat' <- fixVars IsExpr pat
-  return (CgQuery pat' stmts')
+reorderQuery (FlatQuery pat _ stmts) =
+  withScopeFor stmts $ do
+    stmts' <- reorderGroups stmts
+    pat' <- fixVars IsExpr pat
+    return (CgQuery pat' stmts')
 
 reorderGroups :: [FlatStatementGroup] -> R [CgStatement]
-reorderGroups groups = withVisibleVarsFrom groups $ do
-  Scope scope <- gets roScope
-  stmts <- go scope groups
+reorderGroups groups = do
+  scope <- gets roScope
+  let stmts = go scope groups
   reorderStmts stmts
   where
-    go _ [] = return []
-    go scope (group : groups) = do
-      stmts <- reorderStmtGroup scope group
-      let scope' = vars stmts `IntSet.union` scope
-      rest <- go scope' groups
-      return (stmts <> rest)
+    go _ [] = []
+    go scope (group : groups) = stmts <> go scope' groups
+      where
+        stmts = reorderStmtGroup scope group
+        stmtsVars = IntSet.toList (vars stmts)
+        scope' = foldr bind scope stmtsVars
+        -- mark all variables from stmts as bound.
 
-withVisibleVarsFrom :: [FlatStatementGroup] -> R a -> R a
-withVisibleVarsFrom stmts act = do
-  s0 <- get
-  modify $ \s -> s { roVisible = roVisible s0 <> visibleVars stmts }
+-- | Define a new scope.
+-- Adds all variables local to the statements to the scope at the start and
+-- remove them from the scope in the end.
+withScopeFor :: [FlatStatementGroup] -> R a -> R a
+withScopeFor stmts act = do
+  outerScope <- gets roScope
+  let stmtsVars = scopeVars stmts
+      locals = IntSet.filter (not . isInScope outerScope) stmtsVars
+      localScope = Scope $ IntMap.fromSet (const False) locals
+      -- ^ add locals as unbound vars to the scope
+
+  modify $ \s -> s { roScope = outerScope <> localScope }
   res <- act
-  modify $ \s -> s { roVisible = roVisible s0 }
+  modify $ \s -> s { roScope = roScope s `without` localScope }
   return res
+  where
+    without (Scope x) (Scope y) = Scope $ IntMap.difference x y
+    -- | All variables that appear in the scope these statements are in.
+    -- Does not include variables local to sub-scopes such as those that only
+    -- appear:
+    --  - inside a negated subquery
+    --  - in some but not all branches of a disjunction
+    scopeVars :: [FlatStatementGroup] -> VarSet
+    scopeVars stmtss = foldMap (foldMap stmtScope) stmtss
+      where
+        stmtScope = \case
+          FlatNegation{} -> mempty
+          s@FlatStatement{} -> vars s
+          -- only count variables that appear in all branches of the disjunction
+          FlatDisjunction [] -> mempty
+          FlatDisjunction (s:ss) ->
+             foldr (IntSet.intersection . scopeVars) (scopeVars s) ss
 
 {-
 Note [Optimising statement groups]
@@ -186,16 +213,18 @@ The algorithm is:
 
 -}
 
-reorderStmtGroup :: VarSet -> FlatStatementGroup -> R [FlatStatement]
-reorderStmtGroup scope stmts = do
+reorderStmtGroup :: Scope -> FlatStatementGroup -> [FlatStatement]
+reorderStmtGroup scope stmts =
   let
+    bound = allBound scope
+
     nodes = zip [(0::Int)..] (NonEmpty.toList stmts)
 
     -- statements, numbered from zero, and with the set of variables
     -- mentioned anywhere in the statement.
     withVars :: [(Int, VarSet, FlatStatement)]
     withVars =
-      [ (n, vars stmt `IntSet.difference` scope, stmt)
+      [ (n, vars stmt `IntSet.difference` bound, stmt)
       | (n, stmt) <- nodes
       ]
 
@@ -241,12 +270,12 @@ reorderStmtGroup scope stmts = do
     --
     -- we want to consider { Y, _ } as a prefix match and put the
     -- binding of Y first.
-    lhsScope = scope `IntSet.union` lhsVars
+    lhsScope = bound `IntSet.union` lhsVars
 
     -- for each statements in this group, find the variables that
     -- the statement mentions in a prefix position.
     uses =
-      [ (n, xs, prefixVars lhsVars scope stmt, stmt)
+      [ (n, xs, prefixVars lhsVars bound stmt, stmt)
       | (n, xs, stmt) <- withVars
       ]
 
@@ -262,7 +291,7 @@ reorderStmtGroup scope stmts = do
     -- * add vars from the rhs of all these candidates
     -- * keep going until we're done
     initialLookupVars = IntSet.unions
-      [ scope
+      [ bound
       , IntSet.fromList slowSearches
       , IntSet.fromList nonPrefixVars
       ]
@@ -323,14 +352,12 @@ reorderStmtGroup scope stmts = do
         , x <- IntSet.toList xs
         ]
 
-  visible <- gets roVisible
-  let
     edges :: IntMap [(Int,FlatStatement)]
     edges = IntMap.fromListWith (++)
       [ if
           | PatternMatchesOne <- matchType -> (use, [(lookup,lookupStmt)])
             -- a point match: always do these first
-          | isUnresolved visible scope useStmt -> (use, [(lookup,lookupStmt)])
+          | isUnresolved scope useStmt -> (use, [(lookup,lookupStmt)])
             -- if the use is undefined at this point, put the lookup first
           | x `IntSet.member` lookupVars -> (lookup, [(use, useStmt)])
             -- we want X to be a lookup: do it after the use of X
@@ -342,16 +369,17 @@ reorderStmtGroup scope stmts = do
       , use /= lookup
       ]
 
-  -- comment this out and import Debug.Trace for debugging
-  let trace _ y = y
-  trace ("numStmts: " <> show (length nodes)) $ return ()
-  trace ("candidates: " <> show [ x | (_,x,_,_,_) <- candidates ]) $ return ()
-  trace ("scope: " <> show scope) $ return ()
-  trace ("initialLookupVars: " <> show initialLookupVars) $ return ()
-  trace ("lookupVars: " <> show lookupVars) $ return ()
+    -- comment this out and import Debug.Trace for debugging
+    trace _ y = y
+  in
+  trace ("numStmts: " <> show (length nodes)) $
+  trace ("candidates: " <> show [ x | (_,x,_,_,_) <- candidates ]) $
+  trace ("scope: " <> show scope) $
+  trace ("initialLookupVars: " <> show initialLookupVars) $
+  trace ("lookupVars: " <> show lookupVars) $
 
   -- order the statements and then recursively reorder nested groups
-  return $ map snd $ postorderDfs nodes edges
+  map snd $ postorderDfs nodes edges
 
 {-
 After reordering groups, we perform some further obvious reorderings.
@@ -419,23 +447,21 @@ reorderStmts stmts = iterate stmts
   iterate [] = return []
   iterate [x] = reorderStmt x
   iterate stmts = do
-    Scope scope <- gets roScope
-    visible <- gets roVisible
-    let (chosen, rest) = choose visible scope stmts
+    scope <- gets roScope
+    let (chosen, rest) = choose scope stmts
     cgChosen <- reorderStmt chosen
     cgRest <- iterate rest
     return (cgChosen <> cgRest)
 
   choose
-    :: Visible
-    -> VarSet
+    :: Scope
     -> [FlatStatement]
     -> (FlatStatement,[FlatStatement])
-  choose visible scope stmts = lift [] stmts
+  choose scope stmts = lift [] stmts
     where
     lift _ [] = sink [] stmts
     lift notPicked (stmt : stmts) =
-      if isResolvedFilter visible scope stmt
+      if isResolvedFilter scope stmt
         then (stmt, reverse notPicked <> stmts)
         else lift (stmt : notPicked) stmts
 
@@ -444,39 +470,50 @@ reorderStmts stmts = iterate stmts
         one : rest -> (one, rest)
         [] -> error "sink"
     sink unresolved (stmt : stmts)
-      | isUnresolved visible scope stmt = sink (stmt : unresolved) stmts
+      | isUnresolved scope stmt = sink (stmt : unresolved) stmts
       | otherwise = (stmt, reverse unresolved ++ stmts)
 
 -- | True if the statement is O(1) and resolved
-isResolvedFilter :: Visible -> VarSet -> FlatStatement -> Bool
-isResolvedFilter _ _ (FlatStatement _ _ ArrayElementGenerator{}) = False
+isResolvedFilter :: Scope -> FlatStatement -> Bool
+isResolvedFilter _ (FlatStatement _ _ ArrayElementGenerator{}) = False
   -- an ArrayElementGenerator is not O(1)
-isResolvedFilter visible scope stmt = isReadyFilter visible scope stmt False
+isResolvedFilter scope stmt = isReadyFilter scope stmt False
 
 -- | True if the statement is unresolved in the given scope
 isUnresolved
-  :: Visible  -- ^ all vars from the enclosing scope, bound and unbound.
-  -> VarSet  -- ^ vars bound so far
+  :: Scope
   -> FlatStatement
   -> Bool
-isUnresolved visible scope stmt = not (isReadyFilter visible scope stmt True)
+isUnresolved scope stmt = not (isReadyFilter scope stmt True)
 
-isReadyFilter :: Visible -> VarSet -> FlatStatement -> Bool -> Bool
-isReadyFilter _ scope (FlatStatement _ lhs (TermGenerator rhs)) _ =
-  all (`IntSet.member` scope) (IntSet.toList (vars lhs)) ||
-  all (`IntSet.member` scope) (IntSet.toList (vars rhs))
-isReadyFilter _ scope (FlatStatement _ _ (ArrayElementGenerator _ arr)) _ =
-  all (`IntSet.member` scope) (IntSet.toList (vars arr))
-isReadyFilter _ scope (FlatStatement _ _ (PrimCall _ args)) _ =
-  all (`IntSet.member` scope) (IntSet.toList (vars args))
-isReadyFilter visible scope (FlatNegation stmtss) notFilter =
+isReadyFilter :: Scope -> FlatStatement -> Bool -> Bool
+isReadyFilter scope (FlatStatement _ lhs (TermGenerator rhs)) _ =
+  all (isBound scope) (IntSet.toList (vars lhs)) ||
+  all (isBound scope) (IntSet.toList (vars rhs))
+isReadyFilter scope (FlatStatement _ _ (ArrayElementGenerator _ arr)) _ =
+  all (isBound scope) (IntSet.toList (vars arr))
+isReadyFilter scope (FlatStatement _ _ (PrimCall _ args)) _ =
+  all (isBound scope) (IntSet.toList (vars args))
+isReadyFilter scope (FlatNegation stmtss) notFilter =
+  -- See Note [Reordering negations]
   all (all isReady) stmtss && hasAllNonLocalsBound
   where
-    hasAllNonLocalsBound = nonLocal `IntSet.isSubsetOf` scope
-    nonLocal = allVars `IntSet.intersection` unVisible visible
-    allVars = foldMap (foldMap vars) stmtss
-    isReady stmt = isReadyFilter visible scope stmt notFilter
-isReadyFilter _ _ _ notFilter = notFilter
+    isReady stmt = isReadyFilter scope stmt notFilter
+    appearInStmts = foldMap (foldMap vars) stmtss
+    hasAllNonLocalsBound =
+      IntSet.null $
+      IntSet.filter (\var -> isInScope scope var && not (isBound scope var))
+      appearInStmts
+isReadyFilter _ _ notFilter = notFilter
+
+isInScope :: Scope -> Variable -> Bool
+isInScope (Scope scope) var = var `IntMap.member` scope
+
+allBound :: Scope -> VarSet
+allBound (Scope scope) = IntMap.keysSet $ IntMap.filter id scope
+
+allVars :: Scope -> VarSet
+allVars (Scope scope) = IntMap.keysSet scope
 
 data PatternMatch
   = PatternSearchesAll
@@ -702,7 +739,7 @@ reorderStmt stmt@(FlatStatement ty lhs gen)
 
           Just details@Schema.PredicateDetails{} -> do return details
 
-      bind var
+      bindVar var
       stmts <- f `catchErrorRestore` \e' -> attemptBindFromType e' f
       let
         pid = Schema.predicatePid details
@@ -718,6 +755,9 @@ reorderStmt stmt@(FlatStatement ty lhs gen)
       -- LHS = RHS
       return $ CgStatement (Ref (MatchBind var)) pat : stmts
 
+    bindVar :: Var -> R ()
+    bindVar (Var _ v _) = modify $ \s -> s { roScope = bind v $ roScope s }
+
 -- fallback: just convert other statements to CgStatement
 reorderStmt stmt = toCgStatement stmt
 
@@ -727,31 +767,35 @@ toCgStatement (FlatStatement _ lhs gen) = do
   gen' <- fixVars IsExpr gen -- NB. do this first!
   lhs' <- fixVars IsPat lhs
   return [CgStatement lhs' gen']
-toCgStatement (FlatNegation stmts) =
-  withinNegation $ do
-    stmts' <- reorderGroups stmts
+toCgStatement (FlatNegation stmts) = do
+    stmts' <-
+      withinNegation $
+      withScopeFor stmts $
+      reorderGroups stmts
     return [CgNegation stmts']
 toCgStatement (FlatDisjunction [stmts]) =
-  reorderGroups stmts
+  withScopeFor stmts $ reorderGroups stmts
 toCgStatement (FlatDisjunction stmtss) = do
   cg <- intersectBindings stmtss
   return [CgDisjunction cg]
   where
   intersectBindings [] = return []
-  intersectBindings rs = do
-    scope0 <- gets roScope
-    let
-      doOne r = do
-        modify $ \state -> state { roScope = scope0 }
-        a <- reorderGroups r
-        scope <- gets roScope
-        return (a,scope)
-    results <- mapM doOne rs
-    let intersectScope = foldr1 IntSet.intersection (map (unScope.snd) results)
-    as' <- forM results $ \(a,scope) ->
-      renameAlt (unScope scope `IntSet.difference` intersectScope) a
-    modify $ \state -> state { roScope = Scope intersectScope }
-    return as'
+  intersectBindings groupss = do
+    initialScope <- gets roScope
+    results <- forM groupss $ \groups -> do
+        modify $ \state -> state { roScope = initialScope }
+        stmts <- withScopeFor groups $ reorderGroups groups
+        newScope <- gets roScope
+        return (stmts, allBound newScope)
+
+    let boundInAllBranches = foldr1 IntSet.intersection (map snd results)
+    stmtss <- forM results $ \(stmts, boundInThisBranch) -> do
+      let needsRenaming = IntSet.difference boundInThisBranch boundInAllBranches
+      renameAlt needsRenaming stmts
+
+    let newScope = foldr bind initialScope $ IntSet.toList boundInAllBranches
+    modify $ \state -> state { roScope = newScope }
+    return stmtss
 
   -- Rename local variables in each branch of |. See Note [local variables].
   renameAlt :: IntSet -> [CgStatement] -> R [CgStatement]
@@ -761,19 +805,21 @@ toCgStatement (FlatDisjunction stmtss) = do
     put state { roNextVar = roNextVar + n }
     let env = IntMap.fromList (zip (IntSet.toList vars) [ roNextVar .. ])
     return (map (fmap (rename env)) stmts)
-    where
-    rename :: IntMap Int -> Var -> Var
-    rename env v@(Var ty x nm) = case IntMap.lookup x env of
-      Nothing -> v
-      Just y -> Var ty y nm
 
+  rename :: IntMap Int -> Var -> Var
+  rename env v@(Var ty x nm) = case IntMap.lookup x env of
+    Nothing -> v
+    Just y -> Var ty y nm
+
+-- | Keep track of variables in the scope outside of the negation so that we
+-- can make reordering decisions about variables local to the negation.
+-- See Note [Reordering negations]
 withinNegation :: R a -> R a
 withinNegation act = do
   before <- get
-  modify $ \s -> s { roNegationEnclosingVisible = roVisible before }
+  modify $ \s -> s { roNegationEnclosingScope = allVars $ roScope before }
   res <- act
-  modify $ \s -> s
-    { roNegationEnclosingVisible = roNegationEnclosingVisible before }
+  modify $ \s -> s { roNegationEnclosingScope = roNegationEnclosingScope before }
   return res
 
 {- Note [local variables]
@@ -822,12 +868,12 @@ fixVars :: FixBindOrder a => IsPat -> a -> R a
 fixVars isPat p = do
   state <- get
   let scope = roScope state
-      noBind = NoBind $ unVisible (roNegationEnclosingVisible state)
+      noBind = NoBind (roNegationEnclosingScope state)
   (p', scope') <-
     lift $
       withExcept (\err -> (errMsg err, Just err)) $
       runFixBindOrder scope noBind (fixBindOrder isPat p)
-  modify $ \state -> state { roScope = scope' }
+  modify $ \s -> s { roScope = scope' }
   return p'
   where
     errMsg err = case err of
@@ -839,41 +885,19 @@ fixVars isPat p = do
 
 data ReorderState = ReorderState
   { roNextVar :: !Int
-  , roScope :: Scope
   , roDbSchema :: Schema.DbSchema
-  , roVisible :: Visible
-    -- ^ all variables that will be visible in this scope
-  , roNegationEnclosingVisible :: Visible
-    -- ^ visible vars minus vars from the current negated subquery
+  , roScope :: Scope
+  , roNegationEnclosingScope :: VarSet
+    -- ^ variables non-local to the current negated subquery
   }
 
 type R a = StateT ReorderState (Except (Text, Maybe FixBindOrderError)) a
 
-newtype Visible = Visible { unVisible :: VarSet }
-  deriving newtype (Semigroup, Monoid)
-
 initialReorderState :: Int -> Schema.DbSchema -> ReorderState
 initialReorderState nextVar dbSchema = ReorderState
   { roNextVar = nextVar
-  , roScope = Scope IntSet.empty
+  , roScope = mempty
   , roDbSchema = dbSchema
-  , roVisible = Visible mempty
-  , roNegationEnclosingVisible = mempty
+  , roNegationEnclosingScope = mempty
   }
 
-bind :: Var -> R ()
-bind (Var _ v _) = modify $ \state ->
-  state { roScope = Scope (IntSet.insert v (unScope (roScope state))) }
-
--- | Variables that are bound in the enclosing scope of these statements.
--- Does not include:
---  - variables that only appear inside a negated subquery
---  - variables that don't appear in all branches of a disjunction
-visibleVars :: [FlatStatementGroup] -> Visible
-visibleVars stmtss = foldMap (foldMap stmtScope) stmtss
-  where
-    stmtScope = \case
-      FlatNegation{} -> Visible mempty
-      s@FlatStatement{} -> Visible (vars s)
-      -- only count variables that appear in all branches of the disjunction
-      FlatDisjunction ss -> foldMap visibleVars ss
