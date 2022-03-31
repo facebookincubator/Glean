@@ -6,9 +6,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include "glean/rts/ffi.h"
-#include "glean/ffi/memory.h"
-#include "glean/ffi/wrap.h"
+#include "common/hs/util/cpp/ffi.h"
+#include "common/hs/util/cpp/memory.h"
+#include "common/hs/util/cpp/wrap.h"
 #include "glean/if/gen-cpp2/glean_types.h"
 #include "glean/rts/bytecode/subroutine.h"
 #include "glean/rts/cache.h"
@@ -34,6 +34,7 @@
 #include <common/hs/util/cpp/HsStruct.h>
 #endif
 
+using namespace facebook::hs;
 
 namespace facebook {
 namespace glean {

@@ -292,15 +292,6 @@ library if-internal-cpp
         glean:if-glean-cpp,
         glean:config
 
-library ffi
-    import: fb-haskell, fb-cpp, deps
-    visibility: private
-    include-dirs: .
-    cxx-sources:
-        glean/ffi/ffi.cpp
-    build-depends:
-        glean:if-glean-cpp
-
 library rts
     import: fb-haskell, fb-cpp, deps
     visibility: public
@@ -335,7 +326,6 @@ library rts
     cxx-options: -DOSS=1
     build-depends:
         glean:if-internal-cpp,
-        glean:ffi
 
 library rocksdb
     import: fb-haskell, fb-cpp, deps
@@ -351,7 +341,6 @@ library rocksdb
     build-depends:
         glean:rocksdb-stats,
         glean:rts,
-        glean:ffi
 
 -- This needs to be separate from rocksdb because it can't be compiled with -fno-rtti
 library rocksdb-stats
@@ -361,7 +350,6 @@ library rocksdb-stats
         glean/rocksdb/stats.cpp
     build-depends:
         glean:rts,
-        glean:ffi
 
 library util
     import: fb-haskell, fb-cpp, deps
@@ -479,7 +467,6 @@ library core
         glean:util,
         glean:if-glean-hs,
         glean:if-internal-hs,
-        glean:ffi,
         glean:rts,
         glean:stubs,
         glean:tailer,
@@ -564,7 +551,6 @@ library db
         glean:util,
         glean:if-glean-hs,
         glean:if-internal-hs,
-        glean:ffi,
         glean:rts,
         glean:logger,
         glean:stubs,
@@ -1412,7 +1398,6 @@ library bench-lib
 --     cxx-sources:
 --         glean/test/cpp/compact.cpp
 --     build-depends:
---         glean:ffi,
 --         schema-cpp
 --
 -- library schema-cpp

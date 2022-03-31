@@ -10,7 +10,7 @@ module Glean.Interprocess.Worklist
   ( Worker, Worklist, Range(..), withTemp, get, next, peek, doNext
   ) where
 
-import Glean.FFI (invoke)
+import Util.FFI (invoke)
 
 import Control.Exception (bracket)
 import Data.Word (Word32)

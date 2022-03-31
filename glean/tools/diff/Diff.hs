@@ -14,6 +14,7 @@ import Foreign.Ptr (Ptr)
 import Options.Applicative
 
 import Util.EventBase
+import Util.FFI
 
 import qualified Glean
 import Glean (Repo(..))
@@ -22,7 +23,7 @@ import qualified Glean.Database.Env as Database
 import Glean.Database.Schema (schemaInventory)
 import Glean.Database.Open (readDatabase)
 import Glean.Database.Types
-import Glean.FFI (invoke, with)
+import Glean.FFI (with)
 import Glean.RTS.Foreign.Inventory (Inventory)
 import Glean.RTS.Foreign.Lookup
 import Glean.Util.ConfigProvider

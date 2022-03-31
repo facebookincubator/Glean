@@ -59,6 +59,8 @@ import qualified Data.ByteString as BS
 import qualified Data.ByteString.Unsafe as BS
 import System.IO.Unsafe (unsafePerformIO)
 
+import qualified Util.FFI as FFI
+
 import qualified Glean.FFI as FFI
 import Glean.RTS.Builder
 import Glean.RTS.Types

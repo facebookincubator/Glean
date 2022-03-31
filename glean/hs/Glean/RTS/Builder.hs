@@ -23,7 +23,7 @@ import qualified Data.ByteString.Unsafe as BS
 import Foreign
 import Foreign.C
 
-import qualified Glean.FFI as FFI
+import qualified Util.FFI as FFI
 
 newtype Builder = Builder (Ptr Builder)
   deriving(Storable)

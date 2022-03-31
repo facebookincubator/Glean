@@ -23,6 +23,8 @@ import Data.Text
 import Foreign.C
 import Foreign.Ptr
 
+import Util.FFI
+
 import Glean.FFI
 import Glean.RTS.Types (Fid(..))
 import qualified Glean.Types as Thrift

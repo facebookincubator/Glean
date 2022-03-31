@@ -12,7 +12,7 @@
 #include <folly/Range.h>
 #include <folly/Varint.h>
 
-#include "glean/ffi/memory.h"
+#include "common/hs/util/cpp/memory.h"
 #include "glean/rts/id.h"
 #include "glean/rts/error.h"
 #include "glean/rts/nat.h"
@@ -339,7 +339,7 @@ struct Output {
     return buf.to<std::string>();
   }
 
-  ffi::malloced_array<uint8_t> moveBytes() {
+  hs::ffi::malloced_array<uint8_t> moveBytes() {
     return buf.moveBytes();
   }
 
@@ -397,7 +397,7 @@ struct Output {
       return p;
     }
 
-    ffi::malloced_array<uint8_t> moveBytes() {
+    hs::ffi::malloced_array<uint8_t> moveBytes() {
       buf.prune(len);
       return std::move(buf);
     }
@@ -413,7 +413,7 @@ struct Output {
    private:
     void realloc(size_t n);
 
-    ffi::malloced_array<uint8_t> buf;
+    hs::ffi::malloced_array<uint8_t> buf;
     size_t len;
   };
 

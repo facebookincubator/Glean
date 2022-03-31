@@ -8,9 +8,6 @@
 
 {-# LANGUAGE TypeOperators #-}
 module Glean.FFI (
-  GleanFFIError, ffiErrorMessage, call,
-  List(..), FFIFun(..), Tuple(..), invoke,
-
   unsafeWithBytes, copyByteString, unsafeMallocedByteString,
   unsafeMallocedVector,
   withUTF8Text, fromUTF8, unsafeMallocedUTF8,
@@ -25,9 +22,7 @@ module Glean.FFI (
 
 import Foreign hiding (with, withMany)
 import Foreign.C
-import System.IO.Unsafe (unsafePerformIO)
 import Control.Exception
-import Control.Monad
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Unsafe as BS
@@ -36,108 +31,7 @@ import qualified Data.Text.Encoding as Text
 import qualified Data.Text.Encoding.Error as Text
 import qualified Data.Vector.Storable
 
-foreign import ccall unsafe "&glean_ffi_free_error" glean_ffi_free_error
-  :: FunPtr (CString -> IO ())
-
-newtype GleanFFIError = GleanFFIError (ForeignPtr CChar)
-
-ffiErrorMessage :: GleanFFIError -> String
-ffiErrorMessage (GleanFFIError fp) =
-  unsafePerformIO $ withForeignPtr fp peekCString
-
-instance Show GleanFFIError where
-  show = ffiErrorMessage
-
-instance Exception GleanFFIError
-
-call :: IO CString -> IO ()
-call f = do
-  p <- f
-  when (p /= nullPtr) $ do
-    fp <- newForeignPtr glean_ffi_free_error p
-    throwIO $ GleanFFIError fp
-
-infixr 5 :>
-
-data List xs where
-  Nil :: List '[]
-  (:>) :: x -> List xs -> List (x ': xs)
-
-class Tuple xs where
-  type Tup xs
-  tuple :: List xs -> Tup xs
-
-instance Tuple '[] where
-  type Tup '[] = ()
-  tuple Nil = ()
-
-instance Tuple '[a] where
-  type Tup '[a] = a
-  tuple (a :> _) = a
-
-instance Tuple [a,b] where
-  type Tup [a,b] = (a,b)
-  tuple (a :> b :> _) = (a,b)
-
-instance Tuple [a,b,c] where
-  type Tup [a,b,c] = (a,b,c)
-  tuple (a :> b :> c :> _) = (a,b,c)
-
-instance Tuple [a,b,c,d] where
-  type Tup [a,b,c,d] = (a,b,c,d)
-  tuple (a :> b :> c :> d :> _) = (a,b,c,d)
-
-instance Tuple [a,b,c,d,e] where
-  type Tup [a,b,c,d,e] = (a,b,c,d,e)
-  tuple (a :> b :> c :> d :> e :> _) = (a,b,c,d,e)
-
-instance Tuple [a,b,c,d,e,f] where
-  type Tup [a,b,c,d,e,f] = (a,b,c,d,e,f)
-  tuple (a :> b :> c :> d :> e :> f :> _) = (a,b,c,d,e,f)
-
-instance Tuple [a,b,c,d,e,f,g] where
-  type Tup [a,b,c,d,e,f,g] = (a,b,c,d,e,f,g)
-  tuple (a :> b :> c :> d :> e :> f :> g :> _) = (a,b,c,d,e,f,g)
-
-instance Tuple [a,b,c,d,e,f,g,h] where
-  type Tup [a,b,c,d,e,f,g,h] = (a,b,c,d,e,f,g,h)
-  tuple (a :> b :> c :> d :> e :> f :> g :> h :> _) = (a,b,c,d,e,f,g,h)
-
-instance Tuple [a,b,c,d,e,f,g,h,i] where
-  type Tup [a,b,c,d,e,f,g,h,i] = (a,b,c,d,e,f,g,h,i)
-  tuple (a :> b :> c :> d :> e :> f :> g :> h :> i :> _) = (a,b,c,d,e,f,g,h,i)
-
-class FFIFun f where
-  type Res f :: [*]
-  invoke' :: f -> IO (List (Res f))
-
-instance FFIFun (IO CString) where
-  type Res (IO CString) = '[]
-  invoke' f = do
-    call f
-    return Nil
-
-instance FFIFun (IO ()) where
-  type Res (IO ()) = '[]
-  invoke' f = do
-    f
-    return Nil
-
--- | For output parameter 'Ptr a' this will 'alloca' memory (unitialized)
--- and then proceed to the next parameter.  On returning this prepends
--- the result into x.  This is only safe if the invoked function
--- always fills in this output parameter pointer before returning.
-instance (Storable a, FFIFun f) => FFIFun (Ptr a -> f) where
-  type Res (Ptr a -> f) = a ': Res f
-  invoke' f = alloca $ \p -> do
-    xs <- invoke' (f p)
-    x <- peek p
-    return $ x :> xs
-
--- | This is only safe if the invoked function
--- always fills in output parameter pointers before returning.
-invoke :: (FFIFun f, Tuple (Res f)) => f -> IO (Tup (Res f))
-invoke = fmap tuple . invoke'
+import Util.FFI
 
 unsafeWithBytes :: ByteString -> (Ptr () -> CSize -> IO a) -> IO a
 unsafeWithBytes s f = BS.unsafeUseAsCStringLen s $ \(p,n) ->

@@ -13,9 +13,9 @@ import Foreign.C.String (CString)
 import Test.HUnit
 
 import TestRunner
+import Util.FFI
 
 import Glean.Database.Open (readDatabase)
-import Glean.FFI
 import Glean.Init
 import Glean.RTS.Foreign.Lookup
 

@@ -6,12 +6,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include "glean/ffi/wrap.h"
+#include "common/hs/util/cpp/wrap.h"
 #include "glean/rts/fact.h"
 #include "glean/rts/lookup.h"
 
 #include <ostream>
 
+using namespace facebook::hs;
 using namespace facebook::glean;
 using namespace facebook::glean::rts;
 

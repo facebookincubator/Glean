@@ -32,14 +32,15 @@ import Data.Text ( Text )
 import Data.Word ( Word64 )
 import Foreign.Ptr
 
+import Thrift.Protocol (ThriftEnum, fromThriftEnum)
+import qualified Util.FFI as FFI
+
 import qualified Glean.FFI as FFI
 import qualified Glean.RTS as RTS
 import qualified Glean.RTS.Builder as RTS
 import Glean.Typed.Build
 import Glean.Typed.Id
 import Glean.Types as Thrift
-
-import Thrift.Protocol (ThriftEnum, fromThriftEnum)
 
 -- -----------------------------------------------------------------------------
 

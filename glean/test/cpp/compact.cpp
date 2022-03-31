@@ -6,13 +6,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include "glean/ffi/memory.h"
-#include "glean/ffi/wrap.h"
+#include "common/hs/util/cpp/memory.h"
+#include "common/hs/util/cpp/wrap.h"
 #include "glean/schema/thrift/gen-cpp2/glean_test_types.h"
 
 #include <folly/Range.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
+using namespace facebook::hs;
 using namespace facebook::glean;
 
 extern "C" {

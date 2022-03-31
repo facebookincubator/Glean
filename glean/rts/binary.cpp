@@ -31,7 +31,7 @@ void Output::Buf::realloc(size_t n) {
   const auto wanted =
     std::max(capacity() + std::max(capacity(), n), size_t(64));
   const auto new_cap = folly::goodMallocSize(wanted);
-  auto new_buf = ffi::malloc_array<unsigned char>(new_cap);
+  auto new_buf = hs::ffi::malloc_array<unsigned char>(new_cap);
   if (len > 0) {
     std::memcpy(new_buf.get(), buf.get(), len);
   }

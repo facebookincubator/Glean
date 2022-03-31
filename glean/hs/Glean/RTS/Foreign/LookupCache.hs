@@ -23,6 +23,8 @@ import Foreign.C.Types
 import Foreign.ForeignPtr
 import Foreign.Ptr
 
+import Util.FFI
+
 import Glean.FFI
 import Glean.RTS.Foreign.Lookup
 

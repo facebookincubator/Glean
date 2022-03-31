@@ -27,6 +27,7 @@ import Foreign.Storable (peekElemOff)
 import System.IO.Unsafe (unsafePerformIO, unsafeDupablePerformIO)
 
 import Glean.FFI
+import Util.FFI
 
 data SubroutineCode = SubroutineCode
   { -- | Instructions

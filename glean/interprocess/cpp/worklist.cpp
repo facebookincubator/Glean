@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include "glean/ffi/wrap.h"
+#include "common/hs/util/cpp/wrap.h"
 #include "glean/interprocess/cpp/worklist.h"
 #include "glean/interprocess/cpp/worklist_ffi.h"
 
@@ -40,6 +40,7 @@
 // With files, we don't need the size at the beginning, strictly speaking. We
 // will, though, if we switch to shmem objects.
 
+using namespace facebook::hs;
 using namespace facebook::glean;
 
 extern "C" {

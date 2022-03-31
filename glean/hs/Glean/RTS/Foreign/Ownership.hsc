@@ -37,6 +37,7 @@ import Foreign.C
 
 import Foreign.CPP.HsStruct
 import Foreign.CPP.Marshallable
+import Util.FFI
 
 import Glean.FFI
 import Glean.RTS.Foreign.Inventory (Inventory)

@@ -25,6 +25,8 @@ import Foreign hiding (with, withMany, new)
 import Foreign.C
 import System.IO.Unsafe (unsafePerformIO)
 
+import Util.FFI
+
 import Glean.FFI
 import Glean.RTS.Typecheck
 import Glean.RTS.Traverse

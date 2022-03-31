@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include "glean/ffi/wrap.h"
+#include "common/hs/util/cpp/wrap.h"
 #include "glean/interprocess/cpp/counters.h"
 #include "glean/interprocess/cpp/counters_ffi.h"
 
@@ -16,7 +16,7 @@
 #include <boost/interprocess/file_mapping.hpp>
 #include <boost/interprocess/mapped_region.hpp>
 
-using namespace facebook::glean;
+using namespace facebook::hs;
 
 extern "C" {
 

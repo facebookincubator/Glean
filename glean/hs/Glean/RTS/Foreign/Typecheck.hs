@@ -16,6 +16,8 @@ import Foreign.C.Types
 import Foreign.Ptr
 import System.IO.Unsafe (unsafePerformIO)
 
+import Util.FFI
+
 import Glean.FFI
 import Glean.RTS.Foreign.Bytecode
 import Glean.RTS.Typecheck (CompiledTypecheck)

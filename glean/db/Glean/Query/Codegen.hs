@@ -45,6 +45,7 @@ import Data.Word
 import Foreign.Ptr hiding (WordPtr)
 import System.IO.Unsafe
 
+import qualified Util.FFI as FFI
 import Util.Log
 import qualified Util.Log.Text as TextLog
 

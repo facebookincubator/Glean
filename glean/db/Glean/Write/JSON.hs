@@ -34,11 +34,11 @@ import Foreign.C.Types (CSize)
 import TextShow hiding (Builder)
 
 import Thrift.Protocol.JSON.Base64
+import Util.FFI (invoke)
 
 import Glean.Database.Open
 import Glean.Database.Write.Batch
 import Glean.Database.Types as Database
-import Glean.FFI (invoke)
 import qualified Glean.FFI as FFI
 import Glean.RTS as RTS
 import Glean.RTS.Builder

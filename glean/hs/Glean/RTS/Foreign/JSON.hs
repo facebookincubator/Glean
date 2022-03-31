@@ -34,6 +34,7 @@ import Foreign.Ptr
 import Foreign.Storable
 
 import qualified Util.Buffer as Buffer
+import Util.FFI
 
 import Glean.FFI
 import Glean.RTS (ByteStringRef(..), MangledStringRef(..))

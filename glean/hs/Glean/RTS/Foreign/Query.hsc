@@ -32,6 +32,7 @@ import Foreign.C
 import Foreign hiding (with)
 
 import Foreign.CPP.HsStruct.Types
+import Util.FFI
 
 import Glean.FFI
 import Glean.RTS.Foreign.Bytecode

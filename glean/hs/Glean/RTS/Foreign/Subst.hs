@@ -19,6 +19,8 @@ import Foreign.ForeignPtr
 import Foreign.Ptr
 import System.IO.Unsafe (unsafePerformIO)
 
+import Util.FFI
+
 import Glean.FFI
 import Glean.RTS.Types (Fid(..), lowestFid)
 import qualified Glean.Types as Thrift

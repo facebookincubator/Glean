@@ -16,7 +16,8 @@ import Data.Text
 import Foreign.C.String
 import Foreign.Ptr
 
-import Glean.FFI
+import Util.FFI
+
 import Glean.RTS.Foreign.Define (Define(..), CanDefine(..))
 import Glean.RTS.Foreign.Lookup (Lookup(..), CanLookup(..))
 

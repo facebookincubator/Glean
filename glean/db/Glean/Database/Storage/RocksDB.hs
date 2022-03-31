@@ -28,6 +28,7 @@ import Foreign.Storable
 import System.Directory
 import System.FilePath
 
+import Util.FFI
 import Util.IO (safeRemovePathForcibly)
 
 import Glean.Database.Repo (databasePath)

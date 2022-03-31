@@ -6,10 +6,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include "glean/ffi/memory.h"
-#include "glean/ffi/wrap.h"
+#include "common/hs/util/cpp/memory.h"
+#include "common/hs/util/cpp/wrap.h"
 #include "glean/rocksdb/rocksdb.h"
 #include "glean/rocksdb/ffi.h"
+
+using namespace facebook::hs;
 
 namespace facebook {
 namespace glean {

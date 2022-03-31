@@ -22,9 +22,10 @@ import Test.HUnit
 import TestRunner
 import Thrift.Protocol.Compact
 import Thrift.Protocol.JSON
+import Util.FFI
 
 import Glean.Database.Config
-import Glean.FFI (invoke, unsafeMallocedByteString, unsafeWithBytes)
+import Glean.FFI (unsafeMallocedByteString, unsafeWithBytes)
 import Glean.Init
 import Glean.Query.JSON
 import Glean.RTS

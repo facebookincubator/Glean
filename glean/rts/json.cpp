@@ -6,15 +6,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include "glean/ffi/memory.h"
-#include "glean/ffi/wrap.h"
+#include "common/hs/util/cpp/memory.h"
+#include "common/hs/util/cpp/wrap.h"
 #include "glean/rts/json.h"
 
 #include <folly/dynamic.h>
 #include <folly/lang/ToAscii.h>
 #include <folly/json.h>
 
-using namespace facebook::glean;
+using namespace facebook::hs;
 
 namespace {
 

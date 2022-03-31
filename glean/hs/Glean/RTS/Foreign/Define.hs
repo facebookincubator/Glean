@@ -24,6 +24,8 @@ import Foreign.C.Types
 import Foreign.Ptr
 import Foreign.Storable
 
+import Util.FFI
+
 import Glean.FFI
 import Glean.RTS.Builder
 import Glean.RTS.Foreign.Inventory (Inventory)

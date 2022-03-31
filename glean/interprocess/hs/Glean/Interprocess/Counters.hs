@@ -10,7 +10,7 @@ module Glean.Interprocess.Counters (
   Counters, withTemp, get, set
 ) where
 
-import Glean.FFI (invoke)
+import Util.FFI (invoke)
 
 import Control.Exception (bracket)
 import Data.Word (Word64)
