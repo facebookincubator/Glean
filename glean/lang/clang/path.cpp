@@ -9,17 +9,18 @@
 #include "glean/lang/clang/path.h"
 
 #include <algorithm>
+#include <cassert>
 
 namespace facebook {
 namespace glean {
 namespace clangx {
 
-boost::filesystem::path goodPath(
-    boost::filesystem::path root,
-    boost::filesystem::path path) {
+std::filesystem::path goodPath(
+    std::filesystem::path root,
+    std::filesystem::path path) {
   assert(root.is_absolute());
   path = path.lexically_normal();
-  // NOTE: we can't use boost's lexically_relative because
+  // NOTE: we can't use std's lexically_relative because
   // "../foo/bar".lexically_relative("/foo") isn't "bar".
   if (path.is_relative()) {
     auto root_begin = root.begin();
@@ -38,7 +39,7 @@ boost::filesystem::path goodPath(
         done = true;
       }
     }
-    boost::filesystem::path result;
+    std::filesystem::path result;
     while (root_end != root.end()) {
       result /= "..";
       ++root_end;
@@ -52,7 +53,7 @@ boost::filesystem::path goodPath(
     auto d = std::mismatch(
       path.begin(), path.end(), root.begin(), root.end());
     if (d.second == root.end()) {
-      boost::filesystem::path ret;
+      std::filesystem::path ret;
       for (auto i = d.first; i != path.end(); ++i) {
         ret /= *i;
       }
@@ -63,9 +64,9 @@ boost::filesystem::path goodPath(
   }
 }
 
-boost::filesystem::path betterPath(
-    boost::filesystem::path path1,
-    boost::filesystem::path path2) {
+std::filesystem::path betterPath(
+    std::filesystem::path path1,
+    std::filesystem::path path2) {
   return
     !path1.empty() && (path1.is_relative() || path2.is_absolute())
       ? path1

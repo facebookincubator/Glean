@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 namespace facebook {
 namespace glean {
@@ -23,21 +23,21 @@ namespace clangx {
 ///
 /// This doesn't resolve through symbolic links. For the moment, the code that
 /// calls us does but we probably should do that here eventually. Sadly, it is
-/// entirely unclear what the exact semantics of various boost::filesystem
+/// entirely unclear what the exact semantics of various std::filesystem
 /// functions (e.g., relative) is. None of them seem to quite do what we want.
 ///
 /// TODO: We probably want to either always return a path that's relative to
 /// root or just fail if path isn't under root. We probably also want to resolve
 /// symlinks as long as they don't point to something outside of root.
-boost::filesystem::path goodPath(
-  boost::filesystem::path root,
-  boost::filesystem::path path);
+std::filesystem::path goodPath(
+  std::filesystem::path root,
+  std::filesystem::path path);
 
 /// Given two paths, pick the better one, preferring the first. At the moment,
 /// this only prefers relative paths to absolute ones.
-boost::filesystem::path betterPath(
-  boost::filesystem::path path1,
-  boost::filesystem::path path2);
+std::filesystem::path betterPath(
+  std::filesystem::path path1,
+  std::filesystem::path path2);
 
 }
 }

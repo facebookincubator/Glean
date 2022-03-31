@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include <filesystem>
 
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Tooling/CommonOptionsParser.h>
@@ -162,7 +163,7 @@ struct Counters {
 };
 
 struct Config {
-  boost::filesystem::path root;
+  std::filesystem::path root;
   // subdir of root for setting current working directory
   folly::Optional<std::string> cwd_subdir;
   // subdir of root for interpreting relative clang paths
@@ -184,7 +185,7 @@ struct Config {
 
   Config(int argc, char **argv) {
     assert (argc > 0);
-    root = boost::filesystem::canonical(FLAGS_root);
+    root = std::filesystem::canonical(FLAGS_root);
     if (!FLAGS_cwd_subdir.empty()) {
       cwd_subdir = FLAGS_cwd_subdir;
     }
@@ -571,8 +572,8 @@ int main(int argc, char **argv) {
 
   Config config(argc, argv);
 
-  boost::filesystem::current_path(
-    config.root / boost::filesystem::path(config.cwd_subdir.value_or("")));
+  std::filesystem::current_path(
+    config.root / std::filesystem::path(config.cwd_subdir.value_or("")));
 
   const auto work_counter = FLAGS_work_file.empty()
     ? worklist::serialCounter(0, config.sources.size())

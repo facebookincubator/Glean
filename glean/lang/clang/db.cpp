@@ -15,15 +15,15 @@ namespace clangx {
 
 namespace {
 
-boost::filesystem::path subpath(
+std::filesystem::path subpath(
     const folly::Optional<std::string>& subdir,
     clang::StringRef path) {
   // This returns 'path' if it is absolute or if 'subdir' is empty and
   // 'subdir'/'path' otherwise.
-  boost::filesystem::path p(static_cast<std::string>(path));
+  std::filesystem::path p(static_cast<std::string>(path));
   return p.is_absolute() || !subdir
     ? p
-    : boost::filesystem::path(subdir.value()) / p;
+    : std::filesystem::path(subdir.value()) / p;
 }
 
 }
@@ -45,7 +45,7 @@ Fact<Src::File> ClangDB::fileFromEntry(
     path = betterPath(goodPath(root, subpath(subdir, real)), path);
   }
   if (path_prefix.has_value()) {
-     path = boost::filesystem::path(path_prefix.value()) / path;
+     path = std::filesystem::path(path_prefix.value()) / path;
   }
   const auto file = batch.fact<Src::File>(path.native());
 

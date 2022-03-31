@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Tooling/Tooling.h>
@@ -44,7 +44,7 @@ public:
   struct Env {
     Fact<Buck::Locator> locator;
     folly::Optional<Fact<Buck::Platform>> platform;
-    boost::filesystem::path root;
+    std::filesystem::path root;
     folly::Optional<std::string> subdir;
     folly::Optional<std::string> path_prefix;
     Batch<SCHEMA>& batch;
@@ -204,7 +204,7 @@ public:
 private:
   Fact<Buck::Locator> locator;
   folly::Optional<Fact<Buck::Platform>> platform;
-  const boost::filesystem::path root;
+  const std::filesystem::path root;
   const folly::Optional<std::string> subdir;
   const folly::Optional<std::string> path_prefix;
   Batch<SCHEMA>& batch;
