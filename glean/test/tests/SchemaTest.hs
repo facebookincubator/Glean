@@ -755,14 +755,14 @@ schemaEvolves = TestList
           Right _ -> True
           Left _ -> False
 
-  , TestLabel "can add field" $ TestCase $ do
+  , TestLabel "can add optional field" $ TestCase $ do
     withSchema latestAngleVersion
       [s|
         schema test.1 {
           predicate P : { a : nat }
         }
         schema test.2 {
-          predicate P : { a : nat, b: string }
+          predicate P : { a : nat, b: maybe string }
         }
         schema test.2 evolves test.1
         schema all.1 : test.1, test.2 {}
@@ -953,7 +953,7 @@ schemaEvolves = TestList
         }
 
         schema x.2 {
-          predicate P: { a : nat, b : nat }
+          predicate P: { a : nat, b : maybe nat }
         }
 
         schema y.2 {
@@ -979,11 +979,11 @@ schemaEvolves = TestList
         }
 
         schema x.2 {
-          predicate P: { a : nat, b : nat }
+          predicate P: { a : nat, b : maybe nat }
         }
 
         schema x.3 {
-          predicate P: { a : nat, b : nat, c : nat }
+          predicate P: { a : nat, b : maybe nat, c : maybe nat }
         }
 
         schema y.1 {
@@ -1022,7 +1022,7 @@ schemaEvolves = TestList
 
         schema x.3 : x.2 {
           import base.1
-          predicate Q : { x: base.T, y: base.T }
+          predicate Q : { x: base.T, y: maybe base.T }
         }
 
         schema x.3 evolves x.2
@@ -1069,7 +1069,7 @@ schemaEvolvesTransformations = TestList
           predicate P: { a : nat }
         }
         schema x.2 {
-          predicate P: { a : nat, b: string }
+          predicate P: { a : nat, b: maybe string }
         }
         schema x.2 evolves x.1
         schema all.1 : x.1, x.2 {}
@@ -1134,8 +1134,8 @@ schemaEvolvesTransformations = TestList
           predicate Q: { x: string }
         }
         schema x.2 {
-          predicate P: { a: Q, b: string }
-          predicate Q: { x: string, y: nat }
+          predicate P: { a: Q, b: maybe string }
+          predicate Q: { x: string, y: maybe nat }
         }
         schema x.2 evolves x.1
         schema all.1 : x.1, x.2 {}
@@ -1190,7 +1190,7 @@ schemaEvolvesTransformations = TestList
           predicate P : { a : nat }
         }
         schema x.2 {
-          predicate P : { a : nat, b: string }
+          predicate P : { a : nat, b: maybe string }
         }
         schema x.2 evolves x.1
         schema all.1 : x.1, x.2 {}
@@ -1215,7 +1215,7 @@ schemaEvolvesTransformations = TestList
           predicate P : { a : nat }
         }
         schema x.2 {
-          predicate P : { a : nat, b: string }
+          predicate P : { a : nat, b: maybe string }
         }
         schema x.2 evolves x.1
         schema y.1 {
@@ -1243,7 +1243,7 @@ schemaEvolvesTransformations = TestList
           predicate P : { a : nat }
         }
         schema x.2 {
-          predicate P : { a : nat, b: string }
+          predicate P : { a : nat, b: maybe string }
         }
         schema x.2 evolves x.1
 
@@ -1582,7 +1582,7 @@ schemaEvolvesTransformations = TestList
           predicate P : { x: nat }
         }
         schema x.2 {
-          predicate P : { x: nat, y: nat }
+          predicate P : { x: nat, y: maybe nat }
         }
         schema x.2 evolves x.1
         schema all.1 : x.1, x.2 {}
@@ -1607,7 +1607,7 @@ schemaEvolvesTransformations = TestList
           predicate P : { x: nat }
         }
         schema x.2 {
-          predicate P : { x: nat, y: nat }
+          predicate P : { x: nat, y: maybe nat }
         }
         schema x.2 evolves x.1
         schema all.1 : x.1, x.2 {}

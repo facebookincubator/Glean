@@ -261,15 +261,15 @@ evolveOneSchema types evolvedBy (new, old) = do
       (PredicateDef ref key val _)
       (PredicateDef _ oldkey oldval _) =
       let
-          keyErr = key `canEvolve` oldkey
-          valErr = val `canEvolve` oldval
+          keyErr = key `canEvolve'` oldkey
+          valErr = val `canEvolve'` oldval
       in case keyErr <|> valErr of
         Nothing -> return ()
         Just err -> throwError $
           "cannot evolve predicate " <> predicateRef_name ref <> ": " <> err
 
-    canEvolve :: Type -> Type -> Maybe Text
-    canEvolve = backCompatible types evolvedBy'
+    canEvolve' :: Type -> Type -> Maybe Text
+    canEvolve' = canEvolve types evolvedBy'
 
     -- add evolutions from current schema
     evolvedBy' :: HashMap PredicateRef PredicateRef
@@ -556,7 +556,9 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
 
 data Opt = Option | Field
 
--- | For a backward compatibility to work if predicate A depends on predicate
+-- | Check if a type is backward and forward compatible.
+--
+-- For backward compatibility to work if predicate A depends on predicate
 -- B, evolved A must depend on evolved B.  That is, the following diagram must
 -- commute
 --
@@ -567,13 +569,13 @@ data Opt = Option | Field
 --     B --------> evolved(B)
 --      evolved-by
 --
-backCompatible
+canEvolve
   :: HashMap TypeRef TypeDef -- ^ type definitions
   -> HashMap PredicateRef PredicateRef -- ^ current evolutions map
   -> Type                    -- ^ updated type
   -> Type                    -- ^ old type
   -> Maybe Text              -- ^ compatibility error
-backCompatible types evolvedBy new old = go new old
+canEvolve types evolvedBy new old = go new old
   where
     get ty = case HashMap.lookup ty types of
       Just v -> typeDefType v
@@ -611,15 +613,14 @@ backCompatible types evolvedBy new old = go new old
       Just p' -> if p' == p then p else evolved p'
 
     compareFieldList optName new old =
-      if null removedFields
-      then asum $ map compareField matchingFields
-      else Just $ plural optName removedFields
-            <> " missing: " <> Text.unwords removedFields
+      removedFieldsError <|> newRequiredFieldsError <|>
+      asum (map compareField matchingFields)
       where
         names = map fieldDefName
         oldByName = Map.fromList (zip (names old) old)
-        newByName = Set.fromList (names new)
-        removedFields = filter (not . flip Set.member newByName) (names old)
+        newByName = Map.fromList (zip (names new) new)
+        addedFields = Map.difference newByName oldByName
+        removedFields = Map.difference oldByName newByName
         matchingFields =
           [ (name, fNew, fOld)
           | FieldDef name fNew <- new
@@ -629,6 +630,29 @@ backCompatible types evolvedBy new old = go new old
           where
             addLocation err =
               "in " <> showOpt optName <> " '" <> name <> "', " <> err
+
+        newRequiredFields = Map.keys $
+          Map.filter (not . hasDefaultValue . fieldDefType) addedFields
+
+        hasDefaultValue ty = case ty of
+          Maybe _ -> True
+          _ -> False
+
+        removedFieldsError = case Map.keys removedFields of
+          [] -> Nothing
+          fields -> Just $ plural optName fields <>
+            " missing: " <> Text.unwords fields
+
+        newRequiredFieldsError = case optName of
+          Option -> Nothing
+          Field -> case newRequiredFields of
+            [] -> Nothing
+            _ -> Just $ Text.unlines
+              [ Text.unwords [ "required" , plural optName newRequiredFields
+                , "added:" , Text.unwords newRequiredFields ]
+              , "For backward and forward compatibility, predicate evolutions"
+                <> " require that all new fields be optional"
+              ]
 
 
     plural s [_] = showOpt s
