@@ -219,7 +219,7 @@ angleErrorTests = dbTestCase $ \env repo -> do
   assertBool "angle - negation unbound" $
     case r of
       Left (BadQuery x) ->
-        "One or more variables were not bound anywhere" `Text.isInfixOf` x
+        "unbound variable: A" `Text.isInfixOf` x
       _ -> False
 
 angleTest :: (forall a . Query a -> Query a) -> Test
@@ -594,7 +594,16 @@ angleTest modify = dbTestCase $ \env repo -> do
         !(!(glean.test.IsGlean B; V = [B]; A = V[..]));
     |]
   print r
-  assertEqual "negation - scope 3" 1 (length r)
+  assertEqual "negation - scope 4" 1 (length r)
+
+  -- variables local to earlier non-overlapping scopes with
+  -- the same name as negation variables do not interfere.
+  r <- runQuery_ env repo $ modify $ angleData @Text
+    [s|
+      !(A = 1; A = 2); (A = "A") | "B"
+    |]
+  print r
+  assertEqual "negation - scope 5" 2 (length r)
 
   -- a negated query's head is replaced with {}
   r <- runQuery_ env repo $ modify $ angleData @Nat
@@ -1604,21 +1613,6 @@ optTest = dbTestCase $ \env repo -> do
     |]
   assertEqual "opt - negation" Nothing $
     factsSearched (PredicateRef "glean.test.StringPair" 1) lookupPid stats
-
-  -- variables that appear in a negation are part of the enclosing scope.
-  r <- runQuery_ env repo $ angleData @Nat
-    [s|
-      A where
-        K = [1,2];
-        (A = K[..]) | (A = K[..]);
-        (B = K[..]) | (B = K[..]);
-        !(A = B);
-    |]
-  print r
-  -- If B in the negation weren't handled as part of the enclosing scope it
-  -- would be treated as a different variable from the B inside the disjuction,
-  -- thus making A = B trivially true and !(A = B) would always fail.
-  assertEqual "opt - negation 2" 2 (length r)
 
 {-
   Test reordering of nested matches using a simple DAG:

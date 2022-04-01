@@ -455,10 +455,9 @@ typecheckPattern ctx typ pat = case (typ, pat) of
           res <- tc
           modify $ \after -> after
             { tcBindings = tcBindings before
-            , tcUses =
-               let boundWithin =
-                      tcBindings after `HashSet.difference` tcBindings before
-               in tcUses after `HashSet.difference` boundWithin
+            , tcUses = tcUses after `HashSet.intersection` tcVisible before
+            , tcScope = tcScope after
+                `HashMap.intersection` HashSet.toMap (tcVisible before)
             }
           return res
 
@@ -822,26 +821,27 @@ orPattern pata ta patb tb = do
 --
 oneBranch :: IsSrcSpan s => SourcePat' s -> T a -> T (a, VarSet, VarSet)
 oneBranch pat ta = do
-  state0 <- get
-  let visible = tcVisible state0
+  visibleBefore  <- gets tcVisible
   modify $ \s -> s {
     tcUses = HashSet.empty,
     tcBindings = HashSet.empty,
-    tcVisible = tcVisible state0 `HashSet.union` varsPat pat mempty }
+    tcVisible = visibleBefore `HashSet.union` varsPat pat mempty }
       -- See Note (3) above
   a <- ta
-  stateA <- get
+  after <- get
   let
-    localUses = HashSet.difference (tcUses stateA) visible
-    localBinds = HashSet.difference (tcBindings stateA) visible
+    localUses = HashSet.difference (tcUses after) visibleBefore
+    localBinds = HashSet.difference (tcBindings after) visibleBefore
   unboundVariablesAreErrors_ localUses localBinds
   modify $ \s -> s
-    { tcScope = HashMap.intersection (tcScope stateA) (HashSet.toMap visible)
+    { tcScope = HashMap.intersection
+        (tcScope after)
+        (HashSet.toMap visibleBefore)
        -- See Note (1) above
-    , tcVisible = tcVisible state0 }
+    , tcVisible = visibleBefore }
   let
-    extUses = HashSet.intersection (tcUses stateA) visible
-    extBinds = HashSet.intersection (tcBindings stateA) visible
+    extUses = HashSet.intersection (tcUses after) visibleBefore
+    extBinds = HashSet.intersection (tcBindings after) visibleBefore
   return (a, extUses, extBinds)
 
 data PrimArgType
@@ -941,6 +941,12 @@ primitives = HashMap.fromList
 
 type VarSet = HashSet Name
 
+-- Variables visible in the pattern's enclosing scope.
+--
+-- 1. or-patterns and negations don't bring variables into a scope. They can
+--    bind variables that are already part of the scope, but if the same
+--    variable appears in all branches but not in the enclosing scope then each
+--    occurrence will be treated as a separate variable.
 varsPat :: IsSrcSpan s => SourcePat' s -> VarSet -> VarSet
 varsPat pat r = case pat of
   Variable _ v -> HashSet.insert v r
@@ -950,9 +956,9 @@ varsPat pat r = case pat of
   App _ f ps -> varsPat f $! foldr varsPat r ps
   KeyValue _ k v -> varsPat k (varsPat v r)
   ElementsOfArray _ p -> varsPat p r
-  OrPattern{} -> r -- ignore nested or-patterns
+  OrPattern{} -> r -- ignore nested or-patterns. Note (1) above
   NestedQuery _ q -> varsQuery q r
-  Negation _ q -> varsPat q r
+  Negation{} -> r -- Note (1) above
   TypeSignature _ p _ -> varsPat p r
   Parser.Nat{} -> r
   Parser.String{} -> r
