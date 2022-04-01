@@ -23,9 +23,9 @@ import Control.Monad.State.Strict
 import Data.Aeson ( object, Value(String, Array), KeyValue(..) )
 import Data.Aeson.Types ( Pair )
 import Data.IntMap ( IntMap )
-import qualified Data.IntMap.Strict as IMap
-import Data.Text ( Text )
 import Data.Maybe ( fromMaybe, listToMaybe, mapMaybe )
+import Data.Text ( Text )
+import qualified Data.IntMap.Strict as IMap
 import qualified Data.Text as Text
 import qualified Data.Vector as V
 
@@ -100,11 +100,11 @@ empty = Env [] IMap.empty IMap.empty IMap.empty IMap.empty
 filterRoot :: Text -> State Env Text
 filterRoot path = do
   prefixes <- root <$> get -- try a few paths
-  let clean = mapMaybe (\p -> Text.stripPrefix (p <> "/") path) $ prefixes
+  let clean = mapMaybe (\p -> Text.stripPrefix (p <> "/") path) prefixes
   pure (fromMaybe path (listToMaybe clean))
 
 appendRoot :: Text -> State Env ()
-appendRoot path = modify' (\e -> e { root = path : (root e) })
+appendRoot path = modify' (\e -> e { root = path : root e })
 
 setRoot :: [Text] -> State Env ()
 setRoot paths = modify' (\e -> e { root = paths })
@@ -240,7 +240,7 @@ factToAngle (KeyFact _ (Item _outV inVs _fileId (Just References))) = [] <$
 -- that the result set points at this definition ranges / document pair
 factToAngle (KeyFact _ (Item outV inVs fileId Nothing)) = [] <$ do
   insertTypes inVs DefinitionType -- todo: do we see DeclarationTy here?
-  mResultSet <- getResultSetOf outV -- questionable: ordering of resultSet
+  mResultSet <- getResultSetOf outV -- unsound: depends on ordering of resultSet
   case mResultSet of
     Nothing -> return ()
     Just resultSetId -> addToDefinitionFile resultSetId
@@ -296,96 +296,99 @@ factToAngle (KeyFact _ (Contains fileId inVs)) = do
       declRangeIds = V.map snd $ V.filter ((== Just DeclarationType) . fst) tys
       refRangeIds = V.map snd $ V.filter ((== Just ReferenceType) . fst) tys
 
-  defFacts <- if not (null defRangeIds)
-      then pure [
-        object [
-          "predicate" .= text "lsif.Definition.1",
-          "facts" .= Array (V.map (\id -> (object . pure . key)
-                        [ "file" .= fileId
-                        , "range" .= id
-                        ]
-                      ) defRangeIds)
-        ]
-      ]
-      else pure []
+  let defFacts = emitDefinitions fileId defRangeIds
+      declFacts = emitDeclarations fileId declRangeIds
 
-  declFacts <- if not (null declRangeIds)
-      then pure [
-        object [
-          "predicate" .= text "lsif.Declaration.1",
-          "facts" .= Array (V.map (\id -> (object . pure . key)
-                        [ "file" .= fileId
-                        , "range" .= id
-                        ]
-                      ) declRangeIds)
-        ]
-      ]
-      else pure []
-
-  -- Generate a single lsif.FileReferences.1 predicate row per file containing
-  -- many facts.
-  xrefBodies <- concat. V.toList <$> V.mapM (generateFileReferences fileId) refRangeIds
-  xrefFacts <- if not (null xrefBodies)
-      then pure [ object [
-            "predicate" .= text "lsif.Reference.1",
-            "facts" .= Array ( V.fromList $
-              map (object . pure . key) xrefBodies
-            )
-          ] ]
-      else pure []
-
-  -- generate hover text facts for the definitions
-  hoverBodies <- V.catMaybes <$> V.mapM (generateHoverFacts fileId) defRangeIds
-  hoverFacts <- if not (V.null hoverBodies)
-      then pure [ object [
-          "predicate" .= text "lsif.DefinitionHover",
-          "facts" .= Array hoverBodies
-        ] ]
-      else pure []
+  xrefFacts <- emitReferences fileId refRangeIds
+  hoverFacts <- emitHovers fileId defRangeIds
 
   pure (defFacts <> declFacts <> xrefFacts <> hoverFacts)
 
 factToAngle _ = pure []
 
-generateHoverFacts :: Id -> Id -> State Env (Maybe Value)
-generateHoverFacts fileId defRangeId = do
-  mResultSet <- getResultSetOf defRangeId
-  case mResultSet of
-    Nothing -> pure Nothing
-    Just resultSetId -> do -- lookup up associated hovertext
-      mHoverFact <- getHoverTextId resultSetId
-      case mHoverFact of
-        Nothing -> pure Nothing
-        Just hoverFactId -> pure $ Just $ object $ pure $ key
-          [ "defn" .= (object . pure . key)
-             [ "file" .= fileId
-             , "range" .= defRangeId
-             ]
-          , "hover" .= hoverFactId
-          ]
+emitHovers :: Id -> V.Vector Id -> State Env [Value]
+emitHovers fileId ids = do
+  hoverBodies <- V.catMaybes <$> V.mapM (generateHoverFacts fileId) ids
+  if V.null hoverBodies
+    then pure []
+    else pure [ object [
+        "predicate" .= text "lsif.DefinitionHover",
+        "facts" .= Array hoverBodies
+      ] ]
+
+emitReferences :: Id -> V.Vector Id -> State Env [Value]
+emitReferences fileId ids = do
+  xrefBodies <- concat. V.toList <$> V.mapM (generateFileReferences fileId) ids
+  if null xrefBodies
+    then pure []
+    else pure [ object [
+            "predicate" .= text "lsif.Reference.1",
+            "facts" .= Array (V.fromList $
+              map (object . pure . key) xrefBodies
+            )
+          ] ]
 
 -- For each refId, look up the result set, find the result sets file and defs
 -- and generate a single flat file -> ref -> targetDef fat
 generateFileReferences :: Id -> Id -> State Env [[Pair]]
-generateFileReferences fileId refRangeId = do
-  -- get resultset of ref
-  mResultSet <- getResultSetOf refRangeId
-  case mResultSet of
-    Nothing -> pure []
-    Just resultSetId -> do -- now, knowing the result set, lookup up the outgoing file / def
-      mFileDefs <- getDefinitionFile resultSetId
-      case mFileDefs of
-        Nothing -> pure []
-        Just (FileDefs targetFileId targetRanges) -> pure
-          [ [ "file" .= fileId
-            , "range" .= refRangeId
-            , "target" .= (object . pure . key)
-                [ "file" .= targetFileId
-                , "range" .= targetRange
-                ]
+generateFileReferences fileId refRangeId =
+  withResultSet refRangeId getDefinitionFile $ \case
+    FileDefs targetFileId targetRanges -> pure
+      [ [ "file" .= fileId
+        , "range" .= refRangeId
+        , "target" .= (object . pure . key)
+            [ "file" .= targetFileId
+            , "range" .= targetRange
             ]
-          | targetRange <- V.toList targetRanges
+        ]
+      | targetRange <- V.toList targetRanges
+      ]
+
+emitDefinitions :: Id_ FileTy -> V.Vector (Id_ DefinitionTy) -> [Value]
+emitDefinitions = emitDeclDefs "lsif.Definition.1"
+
+emitDeclarations :: Id_ FileTy -> V.Vector Id -> [Value]
+emitDeclarations = emitDeclDefs "lsif.Declaration.1"
+
+emitDeclDefs :: Text -> Id_ FileTy -> V.Vector (Id_ DefinitionTy) -> [Value]
+emitDeclDefs name fileId ids
+  | V.null ids = []
+  | otherwise = pure $ object [
+    "predicate" .= text name,
+    "facts" .= Array (V.map (\rangeId -> (object . pure . key)
+                  [ "file" .= fileId
+                  , "range" .= rangeId
+                  ]
+                ) ids)
+    ]
+
+generateHoverFacts :: Id -> Id -> State Env (Maybe Value)
+generateHoverFacts fileId defRangeId =
+  withResultSet defRangeId getHoverTextId $ \hoverFactId ->
+    pure $ pure $ object $ pure $ key
+      [ "defn" .= (object . pure . key)
+          [ "file" .= fileId
+          , "range" .= defRangeId
           ]
+      , "hover" .= hoverFactId
+      ]
+
+-- get the result set of an id, use that result set id to look up another 
+-- environment, then apply a function to the result.
+-- used to jump from A to B via a [resultset] node
+withResultSet
+  :: MonadPlus m
+ => Id -> (Id_ ResultSetTy -> State Env (Maybe t)) -> (t -> State Env (m a))
+ -> State Env (m a)
+withResultSet id f g = do
+  mResultSet <- getResultSetOf id
+  case mResultSet of
+    Nothing -> pure mzero
+    Just resultSetId -> do
+      mv <- f resultSetId
+      case mv of
+        Nothing -> pure mzero
+        Just a -> g a
 
 --
 -- JSON-generating utilities
@@ -434,7 +437,7 @@ tagToTy :: Tag -> Maybe VertexType
 tagToTy Definition{} = Just DefinitionType
 tagToTy Declaration{} = Just DeclarationType
 tagToTy Reference{} = Just ReferenceType
-tagToTy _ = Nothing
+tagToTy _ = Just DefinitionType -- yolo
 
 tagToText :: KeyValue a => Tag -> Maybe [a]
 tagToText Definition{..} = Just ["text" .= string tagText]

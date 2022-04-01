@@ -20,7 +20,9 @@ module Data.LSIF.JSON ({-instances -}) where
 import Data.Aeson.Types
 import Data.Text ( Text )
 import qualified Data.Vector as V
+import Control.Applicative ( Alternative((<|>)) )
 
+import Data.Maybe ( fromMaybe )
 import Data.LSIF.Types
 
 instance FromJSON LSIF where
@@ -50,7 +52,7 @@ parseDiagnostic v = fail ("Unrecognized value in diagnostic results" <> show v)
 
 parseHoverContents :: Value -> Parser HoverContents
 parseHoverContents (Object o) = HoverSignature
-  <$> o .: "language"
+  <$> (o .: "language" <|> o .: "kind")
   <*> o .: "value"
 parseHoverContents (String s) = pure (HoverText s)
 parseHoverContents v = fail ("Unrecognized value in hover contents: " <> show v)
@@ -110,7 +112,10 @@ parseVertex o = do
     "hoverResult" -> do
       result <- o .: "result"
       cs <- result .: "contents"
-      contents <- withArray "hoverResult" (V.mapM parseHoverContents) cs
+      contents <- case cs of
+        Array arr -> V.mapM parseHoverContents arr
+        Object{} -> V.singleton <$> parseHoverContents cs
+        t -> fail $ "hoverResult: contents: unhandled type: " <> show t
       return HoverResult{..}
 
     "resultSet" -> pure ResultSet
@@ -157,7 +162,7 @@ instance FromJSON Tag where
 instance FromJSON ToolInfo where
   parseJSON = withObject "ToolInfo" $ \o -> ToolInfo
     <$> o .: "name"
-    <*> o .: "args"
+    <*> (fromMaybe [] <$> o .:? "args")
     <*> o .: "version"
 
 parseProperty :: Text -> Parser Property
@@ -177,6 +182,7 @@ parseEdgeLabel "textDocument/references" = pure EdgeTextDocumentReferences
 parseEdgeLabel "textDocument/diagnostic" = pure EdgeTextDocumentDiagnostic
 parseEdgeLabel "textDocument/documentSymbol" =
   pure EdgeTextDocumentDocumentSymbol
+parseEdgeLabel "textDocument/foldingRange" = pure EdgeTextDocumentFoldingRange
 parseEdgeLabel s = fail ("Unknown edge label: parseEdgeLabel: " <> show s)
 
 -- | lsif edges

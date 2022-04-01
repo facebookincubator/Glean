@@ -77,6 +77,10 @@ flag typescript-tests
 flag go-tests
      default: True
 
+-- run tests that require rust-analyzer
+flag rust-tests
+     default: False
+
 common deps
     build-depends:
         fb-util,
@@ -1314,15 +1318,11 @@ library regression-test-lib
     hs-source-dirs:
         glean/test/regression
         glean/lang/flow
-        glean/lang/go
         glean/lang/hack
-        glean/lang/typescript
     exposed-modules:
         Glean.Regression.Config
         Glean.Regression.Driver.Args.Flow
-        Glean.Regression.Driver.Args.Go
         Glean.Regression.Driver.Args.Hack
-        Glean.Regression.Driver.Args.TypeScript
         Glean.Regression.Driver.External
         Glean.Regression.Indexer
         Glean.Regression.Indexer.External
@@ -1755,13 +1755,23 @@ test-suite glean-snapshot-hack
     if !flag(hack-tests)
         buildable: False
 
+test-suite glean-snapshot-rust
+    import: fb-haskell, deps
+    hs-source-dirs: glean/lang/codemarkup/tests/rust
+    type: exitcode-stdio-1.0
+    main-is: Glean/Regression/Rust/Main.hs
+    ghc-options: -main-is Glean.Regression.Rust.Main
+    build-depends: glean:regression-test-lib, glean:lsif
+    if !flag(rust-tests)
+        buildable: False
+
 test-suite glean-snapshot-typescript
     import: fb-haskell, deps
     hs-source-dirs: glean/lang/codemarkup/tests/typescript
     type: exitcode-stdio-1.0
     main-is: Glean/Regression/TypeScript/Main.hs
     ghc-options: -main-is Glean.Regression.TypeScript.Main
-    build-depends: glean:regression-test-lib
+    build-depends: glean:regression-test-lib, glean:lsif
     if !flag(typescript-tests)
         buildable: False
 
@@ -1771,7 +1781,7 @@ test-suite glean-snapshot-go
     type: exitcode-stdio-1.0
     main-is: Glean/Regression/Go/Main.hs
     ghc-options: -main-is Glean.Regression.Go.Main
-    build-depends: glean:regression-test-lib
+    build-depends: glean:regression-test-lib, glean:lsif
     if !flag(go-tests)
         buildable: False
 

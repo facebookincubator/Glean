@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-module Glean.Regression.Go.Main ( main ) where
+module Glean.Regression.Rust.Main ( main ) where
 
 import System.Environment ( withArgs )
 
@@ -14,6 +14,6 @@ import qualified Glean.Regression.Driver.External as Driver ( main )
 import qualified Glean.LSIF.Driver as LSIF
 
 main :: IO ()
-main = withArgs (LSIF.testArgs path LSIF.Go) Driver.main
+main = withArgs (LSIF.testArgs path LSIF.Rust) Driver.main
   where
-      path = "glean/lang/go/tests/cases"
+      path = "glean/lang/rust/tests/cases"

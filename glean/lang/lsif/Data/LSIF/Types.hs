@@ -212,6 +212,7 @@ data Label
   | EdgeTextDocumentDocumentSymbol
   | EdgeTextDocumentHover
   | EdgeTextDocumentReferences
+  | EdgeTextDocumentFoldingRange
   deriving (Eq, Show)
 
 -- | LSP symbolKind type (c.f. LSP.Types for similar examples)

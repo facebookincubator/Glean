@@ -28,8 +28,8 @@ import Data.Char (toLower)
 import Data.List (intercalate)
 
 data Config = Config
-  { cfgLanguage :: Either String LSIF.Language
-  , cfgRepoDir :: FilePath
+  { cfgLanguage :: Maybe (Either String LSIF.Language)
+  , cfgRepoDir :: Maybe FilePath
   , cfgOutDir :: Maybe FilePath
   , cfgUseDumpFile :: Maybe FilePath
   }
@@ -43,46 +43,56 @@ options :: ParserInfo Config
 options = info (parser <**> helper) fullDesc
   where
     parser = do
-      cfgLanguage <- parseLang <$> strOption (
-             long "language"
-          <> metavar "LANGUAGE"
-          <> help "Which language to index (typescript, go, ..)")
       cfgUseDumpFile <- optional (strOption $
              long "dump-file"
           <> metavar "PATH"
-          <> help "Optionally use an existing lsif dump file (do not re-index lsif)")
+          <> help "Use an existing lsif dump file (instead of running lsif indexer)")
       cfgOutDir <- optional $ strOption $
              long "output-dir"
           <> short 'o'
           <> metavar "PATH"
           <> help "Optional path to JSON output directory (default: `pwd`)"
-      cfgRepoDir <- strArgument $
+      cfgLanguage <- fmap parseLang <$> optional (strOption (
+             long "language"
+          <> metavar "LANGUAGE"
+          <> help "Which language to index (typescript, go, ..)"))
+      cfgRepoDir <- optional $ strArgument $
              metavar "PATH"
-          <> help "Source repository directory (required)"
+          <> help "Source repository directory (required if not using dump-file)"
       return Config{..}
 
 -- | Run an lsif indexer and convert to json predicates for lsif.angle
 main :: IO ()
 main = withOptions options $ \Config{..} -> do
-  let lang = case cfgLanguage of
-        Left err -> error $ "Unsupported language: " <> show err <>
+  cwd <- getCurrentDirectory
+  (json,name) <- case cfgUseDumpFile of
+    Just lsif -> do
+        let name = takeBaseName lsif
+        val <- runLsif (Left lsif)
+        return (val, name)
+    Nothing -> case (cfgLanguage, cfgRepoDir) of -- must provide language + repo dir
+      (Nothing, _) ->
+        error $ "Missing --language: " <>
           " should be one of " <> map toLower (intercalate ", " $
             map show [minBound :: LSIF.Language ..])
-        Right l -> l
+      (Just (Left err), _) ->
+        error $ "Unsupported language: " <> show err <>
+          " should be one of " <> map toLower (intercalate ", " $
+            map show [minBound :: LSIF.Language ..])
+      (Just (Right lang), Nothing) ->
+        error $ "Missing PATH to " <> show lang <> " source repository"
+      (Just (Right lang), Just rawRepoDir) -> do
+        repoDir <- makeAbsolute rawRepoDir
+        let name = takeBaseName (dropTrailingPathSeparator repoDir)
+        val <- runLsif (Right (lang,repoDir))
+        return (val, name)
 
-  cwd <- getCurrentDirectory
-  repoDir <- makeAbsolute cfgRepoDir
-  let name = takeBaseName (dropTrailingPathSeparator repoDir)
-  json <- runLsif lang $ case cfgUseDumpFile of
-            Nothing -> Right repoDir
-            Just f -> Left f
   let outFile = case cfgOutDir of
         Nothing -> cwd </> name <> ".json"
         Just f -> f </> name <> ".json"
   LSIF.writeJSON outFile json
 
 -- | either parse an existing lsif file, or run an indexer and process that
-runLsif :: LSIF.Language -> Either FilePath FilePath -> IO Aeson.Value
-runLsif lang repo = case repo of
-  Left lsifFile -> LSIF.processLSIF lsifFile
-  Right repoDir -> LSIF.runIndexer lang repoDir
+runLsif :: Either FilePath (LSIF.Language, FilePath) -> IO Aeson.Value
+runLsif (Left lsifFile) = LSIF.processLSIF lsifFile
+runLsif (Right (lang,repoDir)) = LSIF.runIndexer lang repoDir

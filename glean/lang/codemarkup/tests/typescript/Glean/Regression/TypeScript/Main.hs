@@ -11,9 +11,9 @@ module Glean.Regression.TypeScript.Main ( main ) where
 import System.Environment ( withArgs )
 
 import qualified Glean.Regression.Driver.External as Driver ( main )
-import qualified Glean.Regression.Driver.Args.TypeScript as TypeScript
+import qualified Glean.LSIF.Driver as LSIF
 
 main :: IO ()
-main = withArgs (TypeScript.args path) Driver.main
+main = withArgs (LSIF.testArgs path LSIF.TypeScript) Driver.main
   where
       path = "glean/lang/typescript/tests/cases"
