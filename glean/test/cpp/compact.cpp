@@ -6,8 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include "common/hs/util/cpp/memory.h"
-#include "common/hs/util/cpp/wrap.h"
+#include <cpp/memory.h>
+#include <cpp/wrap.h>
 #include "glean/schema/thrift/gen-cpp2/glean_test_types.h"
 
 #include <folly/Range.h>
