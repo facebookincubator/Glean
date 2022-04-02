@@ -6,7 +6,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include "common/hs/util/cpp/wrap.h"
+#ifdef OSS
+#include <cpp/wrap.h>
+#else
+#include <common/hs/util/cpp/wrap.h>
+#endif
 #include "glean/interprocess/cpp/counters.h"
 #include "glean/interprocess/cpp/counters_ffi.h"
 
