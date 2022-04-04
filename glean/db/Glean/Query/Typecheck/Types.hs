@@ -57,6 +57,7 @@ data TcTerm
   | TcQueryGen TcQuery
   | TcNegation [TcStatement]
   | TcPrimCall PrimOp [TcPat]
+  | TcIf { cond :: Typed TcPat, then_ :: TcPat, else_ :: TcPat }
   deriving Show
 
 mapExt :: (ext -> ext') -> Match ext var -> Match ext' var
@@ -72,6 +73,11 @@ mapExt f t = case t of
 
 instance Pretty TcTerm where
   pretty (TcOr a b) = pretty a <+> "++" <+> pretty b
+  pretty (TcIf (Typed _ cond) then_ else_) = sep
+    [ nest 2 $ sep ["if", prettyArg cond ]
+    , nest 2 $ sep ["then", prettyArg then_]
+    , nest 2 $ sep ["else", prettyArg else_]
+    ]
   pretty (TcFactGen pid kpat vpat)
     | isWild vpat = pretty pid <+> prettyArg kpat
     | otherwise = pretty pid <+> prettyArg kpat <+> "->" <+> prettyArg vpat
@@ -87,6 +93,7 @@ prettyArg pat = case pat of
   Ref (MatchExt (Typed _ TcPrimCall{})) -> parens (pretty pat)
   Ref (MatchExt (Typed _ TcQueryGen{})) -> parens (pretty pat)
   Ref (MatchExt (Typed _ TcNegation{})) -> pretty pat
+  Ref (MatchExt (Typed _ TcIf{})) -> parens (pretty pat)
   _ -> pretty pat
 
 type TypecheckedQuery = QueryWithInfo TcQuery

@@ -160,8 +160,8 @@ mkStmt ty [(lhsstmts, gen)] many = do
 mkStmt ty many [one] = mkStmt ty [one] many
 mkStmt ty lhsmany rhsmany = do
   v <- fresh ty
-  rhs <- mkStmt ty [(mempty, TermGenerator (Ref (MatchBind v)))] rhsmany
-  lhs <- mkStmt ty [(mempty, TermGenerator (Ref (MatchBind v)))] lhsmany
+  rhs <- bind v rhsmany
+  lhs <- bind v lhsmany
   return (rhs <> lhs)
 
 flattenSeqGenerators :: TcPat -> F [(Statements, Generator)]
@@ -193,9 +193,29 @@ flattenSeqGenerators (Ref (MatchExt (Typed ty match))) = case match of
     return [(mempty `thenStmt` neg, TermGenerator $ Tuple [])]
   TcPrimCall op args -> do
     manyTerms (PrimCall op) <$> mapM flattenPattern args
+  TcIf (Typed condTy cond) then_ else_ -> do
+    condStmts <- bindWild condTy =<< flattenSeqGenerators cond
+    var <- fresh ty
+    thenStmts <- bind var =<< flattenSeqGenerators then_
+    elseStmts <- bind var =<< flattenSeqGenerators else_
+    let stmt = FlatConditional
+          (flattenStmtGroups [condStmts])
+          (flattenStmtGroups [thenStmts])
+          (flattenStmtGroups [elseStmts])
+    return [(mempty `thenStmt` stmt, TermGenerator $ Ref $ MatchVar var)]
 flattenSeqGenerators pat = do
   r <- flattenPattern pat
-  return [(stmts, TermGenerator pat) | (stmts,pat) <- r ]
+  return $ [(stmts, TermGenerator pat) | (stmts, pat) <- r]
+
+bindWild :: Type -> [(Statements, Generator)] -> F Statements
+bindWild ty stmts =
+  mkStmt ty stmts [(mempty, TermGenerator $ Ref $ MatchWild ty)]
+
+bind :: Var -> [(Statements, Generator)] -> F Statements
+bind var gens = mkStmt
+  (varType var)
+  [(mempty, TermGenerator (RTS.Ref (MatchBind var)))]
+  gens
 
 flattenFactGen :: PidRef -> Pat -> Pat -> F ([Statements], Generator)
 flattenFactGen pidRef@(PidRef pid _) kpat vpat = do

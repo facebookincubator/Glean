@@ -103,6 +103,12 @@ evolveTcQuery schema q@(TcQuery ty _ _ _) = evolveTcQuery' ty Nothing q
       let new = evolveType schema newish in
       case term of
         TcOr left right -> TcOr (evolve old new left) (evolve old new right)
+        TcIf (Typed oldc cond) then_ else_ ->
+          let newc = evolveType schema oldc in
+          TcIf
+            (Typed newc (evolve oldc newc cond))
+            (evolve old new then_)
+            (evolve old new else_)
         TcFactGen pref key val -> evolveTcFactGen pref key val
         TcElementsOfArray pat -> TcElementsOfArray $
           evolve (Type.Array old) (Type.Array new) pat

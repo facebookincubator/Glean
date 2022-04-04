@@ -72,6 +72,9 @@ tokens :-
   "where"       { basicToken T_QueryDef }
   "evolves"     { basicToken T_Evolves }
   "never"       { basicToken T_Never }
+  "if"          { basicToken T_If }
+  "then"        { basicToken T_Then }
+  "else"        { basicToken T_Else }
   "++"          { basicToken T_Append }
   ".."          { basicToken T_DotDot }
   "->"          { basicToken T_RightArrow }
@@ -137,6 +140,9 @@ data TokenType
   | T_QueryDef
   | T_Evolves
   | T_Never
+  | T_If
+  | T_Then
+  | T_Else
   | T_Append
   | T_DotDot
   | T_RightArrow

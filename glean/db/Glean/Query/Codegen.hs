@@ -114,8 +114,13 @@ data CgStatement_ var
   = CgStatement (Pat_ var) (Generator_ var)
   | CgNegation [CgStatement_ var]
   | CgDisjunction [[CgStatement_ var]]
+  -- ^ For rationale, see Note [why do we have sequential composition?]
+  | CgConditional
+    { cond :: [CgStatement_ var]
+    , then_ :: [CgStatement_ var]
+    , else_ :: [CgStatement_ var]
+    }
   deriving (Show, Functor, Foldable, Traversable)
-  -- For rationale, see Note [why do we have sequential composition?]
 
 
 type CgStatement = CgStatement_ Var
@@ -367,6 +372,8 @@ findOutputs q = findOutputsQuery q IntSet.empty
      foldr findOutputsStmt r stmts
   findOutputsStmt (CgDisjunction stmtss) r =
      foldr (flip (foldr findOutputsStmt)) r stmtss
+  findOutputsStmt (CgConditional cond then_ else_) r =
+     foldr (flip (foldr findOutputsStmt)) r [cond, then_, else_]
 
   findOutputsGen :: Generator -> IntSet -> IntSet
   findOutputsGen (FactGenerator _ kpat vpat) r =
@@ -632,6 +639,36 @@ compileStatements
     compile stmts
   where
       compile [] = andThen
+
+      compile (CgConditional cond then_ else_: rest) =
+        local $ \failed ->
+        local $ \innerRet -> mdo
+          let
+            compileBranch stmts =
+              compileStatements regs stmts vars $ mdo
+                site <- callSite
+                loadLabel ret innerRet
+                jump doInner
+                ret <- label
+                return site
+
+          -- if
+          loadConst 1 failed
+          thenSite <- compileStatements regs cond vars $ do
+          -- then
+            loadConst 0 failed
+            compileBranch then_
+          -- else
+          jumpIf0 failed done
+          elseSite <- compileBranch else_
+          jump done
+
+          doInner <- label
+          a <- calledFrom [thenSite, elseSite] $ compile rest
+          jumpReg innerRet
+
+          done <- label
+          return a
 
       compile (CgStatement (Ref (MatchWild _)) gen : rest) =
         compileGen gen Nothing $ compile rest
@@ -1584,6 +1621,11 @@ instance Pretty CgStatement where
     CgStatement pat gen -> hang 2 $ sep [pretty pat <+> "=", pretty gen]
     CgNegation stmts -> "!" <> doStmts stmts
     CgDisjunction stmtss -> sep (punctuate " |" (map doStmts stmtss))
+    CgConditional cond then_ else_ -> sep
+      [ nest 2 $ sep ["if", doStmts cond ]
+      , nest 2 $ sep ["then", doStmts then_]
+      , nest 2 $ sep ["else", doStmts else_]
+      ]
     where
       doStmts stmts =
         hang 2 (sep [sep ("(" : punctuate ";" (map pretty stmts)), ")"])

@@ -36,6 +36,8 @@ instance VarsOf FlatStatement where
     FlatStatement _ lhs rhs -> varsOf lhs (varsOf rhs r)
     FlatNegation stmts      -> varsStmts stmts r
     FlatDisjunction stmtss  -> foldr varsStmts r stmtss
+    FlatConditional cond then_ else_ ->
+      foldr varsStmts r [cond, then_, else_]
     where
       varsStmts stmts r = foldr (\g r -> foldr varsOf r g) r stmts
 
@@ -83,6 +85,9 @@ boundVarsOf :: FlatStatement -> VarSet -> VarSet
 boundVarsOf (FlatStatement _ lhs rhs) r = varsOf lhs (boundVarsOfGen rhs r)
 boundVarsOf (FlatNegation _) r = r -- a negated query cannot bind variables
 boundVarsOf (FlatDisjunction stmtss) r = foldr varsStmts r stmtss
+  where varsStmts stmts r = foldr (\g r -> foldr boundVarsOf r g) r stmts
+boundVarsOf (FlatConditional cond then_ else_) r =
+  varsStmts cond $ varsStmts then_ $ varsStmts else_ r
   where varsStmts stmts r = foldr (\g r -> foldr boundVarsOf r g) r stmts
 
 boundVarsOfGen :: Generator -> VarSet -> VarSet

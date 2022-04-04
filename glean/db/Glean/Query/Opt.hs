@@ -221,6 +221,20 @@ instance Apply FlatStatement where
         [] -> return (FlatDisjunction [])
         (ss : _) -> return (FlatDisjunction [ss])
       some -> return (FlatDisjunction some)
+  apply (FlatConditional cond then_ else_) = do
+    -- like disjunctions, assumptions arising from the conditional statements
+    -- are not true outside of it. However, those arising from the condition
+    -- are true in the 'then' case.
+    (cond', then') <-
+      enclose cond $ do
+        cond' <- optStmts cond
+        then' <- optStmtsEnclosed then_
+        return (cond', then')
+    else' <- optStmtsEnclosed else_
+
+    return $ if isFalseGroups cond'
+      then FlatDisjunction [else']
+      else FlatConditional cond' then' else'
 
 optStmtsEnclosed :: [FlatStatementGroup] -> U [FlatStatementGroup]
 optStmtsEnclosed stmts = enclose stmts $ optStmts stmts
@@ -306,8 +320,10 @@ unifyStmt (FlatDisjunction [stmts]) =
   all and <$> mapM (mapM unifyStmt) stmts
   -- singleton FlatDisjunction is used for grouping, we must retain
   -- it, but not treat it as a disjunction.
-unifyStmt (FlatDisjunction _) = return True
-  -- ignore a disjunction for now. We will recurse into it later
+unifyStmt FlatDisjunction{} = return True
+  -- ignore a disjunction for now. We will recurse into it in 'apply'
+unifyStmt FlatConditional{} = return True
+  -- ignore conditions for now. We will recurse into it in 'apply'
 
 neverMatches :: Pat -> Bool
 neverMatches = \case
@@ -463,8 +479,10 @@ stmtScope (FlatNegation stmts) r =
   foldr (flip (foldr stmtScope)) r stmts
 stmtScope (FlatDisjunction [stmts]) r =
   foldr (flip (foldr stmtScope)) r stmts
-stmtScope (FlatDisjunction _) r = r
+stmtScope FlatDisjunction{} r = r
   -- contents of or-patterns are not part of the "current scope"
+stmtScope FlatConditional{} r = r
+  -- contents of if-patterns are not part of the "current scope"
 
 genScope :: Generator -> VarSet -> VarSet
 genScope (FactGenerator _ key val) r = termScope key $! termScope val r

@@ -46,7 +46,9 @@ import Glean.Angle.Types (AngleVersion, SourcePat, SourceStatement, SourceQuery,
   'where'       { L _ (Token _ T_QueryDef) }
   'evolves'     { L _ (Token _ T_Evolves) }
   'never'       { L _ (Token _ T_Never) }
-
+  'if'          { L _ (Token _ T_If) }
+  'then'        { L _ (Token _ T_Then) }
+  'else'        { L _ (Token _ T_Else) }
   '++'          { L _ (Token _ T_Append) }
   '..'          { L _ (Token _ T_DotDot) }
   '->'          { L _ (Token _ T_RightArrow) }
@@ -99,10 +101,13 @@ statement
 
 pattern :: { SourcePat }
 pattern
-  : gen '++' pattern  { OrPattern (s $1 $3) $1 $3 } -- deprecated syntax
-  | gen '|' pattern   { OrPattern (s $1 $3) $1 $3 }
-  | '!' gen           { Negation (s $1 $2) $2 }
-  | gen  { $1 }
+  : gen '++' pattern { OrPattern (s $1 $3) $1 $3 } -- deprecated syntax
+  | gen '|' pattern  { OrPattern (s $1 $3) $1 $3 }
+  | '!' gen          { Negation (s $1 $2) $2 }
+  | 'if' pattern
+    'then' pattern
+    'else' pattern   { IfPattern (s $1 $6) $2 $4 $6 }
+  | gen              { $1 }
 
 gen :: { SourcePat }
 gen

@@ -837,6 +837,106 @@ angleTest modify = dbTestCase $ \env repo -> do
   assertBool "angle - empty tuples" $
     let l = length r in l >= 1 && l <= 4
 
+  -- if statements
+
+  r <- runQuery_ env repo $ modify $ angleData @Nat
+    "if never : {} then 1 else 2"
+  print r
+  assertEqual
+    "if statement - returns the else branch when matching fails"
+    [Nat 2] r
+
+  r <- runQuery_ env repo $ modify $ angleData @Nat
+    "if (A = (0 | 1 | 2); A > 0) then A else 2"
+  print r
+  assertEqual
+    "if statement - returns the 'then' branch if any matching succeeds"
+    [Nat 1, Nat 2] r
+
+  r <- runQuery_ env repo $ modify $ angleData @Nat
+    "if (0 where 0 = 0) then 1 else 2"
+  print r
+  assertEqual
+    "if statement - works when condition has return type"
+    [Nat 1] r
+
+  r <- runQuery_ env repo $ modify $ angleData @Nat
+    "if (0 = 0) then 1 else 2"
+  print r
+  assertEqual
+    "if statement - works when condition is subquery without return type"
+    [Nat 1] r
+
+  r <- runQuery_ env repo $ modify $ angleData @Nat
+    "if glean.test.IsGlean _ then 1 else 2"
+  print r
+  assertEqual
+    "if statement - works when condition is not subquery"
+    [Nat 1] r
+
+  r <- runQuery_ env repo $ modify $ angleData @Nat
+    "if (A = 1) then A else 2"
+  print r
+  assertEqual
+    "if statement - variables bound in condition are available in 'then' branch"
+    [Nat 1] r
+
+  r <- try $ runQuery_ env repo $ angleData @Nat
+    "if (A = 1) then A else A"
+  print r
+  assertBool
+    "if statement - variables bound in condition are not available in 'else' branch" $
+    case r of
+      Left (BadQuery x) -> "not bound anywhere: A" `Text.isInfixOf` x
+      _ -> False
+
+  r <- try $ runQuery_ env repo $ angleData @Nat
+    [s|
+      A where if (A = 1) then A else 2;
+    |]
+  print r
+  assertBool
+    "if statement - variables bound in condition are not available outside of if statement" $
+    case r of
+      Left (BadQuery x) -> "not bound anywhere: A" `Text.isInfixOf` x
+      _ -> False
+
+  r <- try $ runQuery_ env repo $ angleData @Nat
+    [s|
+      A where if 1 then (A = 1) else 2;
+    |]
+  print r
+  assertBool
+    "if statement - variables in 'then' branch only are not available outside" $
+    case r of
+      Left (BadQuery x) -> "not bound anywhere: A" `Text.isInfixOf` x
+      _ -> False
+
+  r <- try $ runQuery_ env repo $ angleData @Nat
+    [s|
+      A where if never : {} then 1 else (A = 1) ;
+    |]
+  print r
+  assertBool
+    "if statement - variables in 'else' branch only are not available outside" $
+    case r of
+      Left (BadQuery x) -> "not bound anywhere: A" `Text.isInfixOf` x
+      _ -> False
+
+  r <- runQuery_ env repo $ modify $ angleData @Nat
+      "A where if 1 then (A = 1) else (A = 1)"
+  print r
+  assertEqual
+    "if statement - variables bound in both branches are available outside."
+    [Nat 1] r
+
+  r <- runQuery_ env repo $ modify $ angleData @(Nat, Nat)
+      "B = if (A = 1) then 2 else (A = 2); { A, B }"
+  print r
+  assertEqual
+    "if statement - variables bound in condition and 'else' are available outside."
+    [(Nat 1, Nat 2)] r
+
 angleArray :: (forall a . Query a -> Query a) -> Test
 angleArray modify = dbTestCase $ \env repo -> do
   -- fetch all elements of an array
@@ -1614,6 +1714,15 @@ optTest = dbTestCase $ \env repo -> do
   assertEqual "opt - negation" Nothing $
     factsSearched (PredicateRef "glean.test.StringPair" 1) lookupPid stats
 
+  -- a false condition in an if pattern gets optimised away.
+  (_, stats) <- queryStats env repo $ angleData @Nat
+    [s|
+      if (1 = 2; glean.test.StringPair _)
+        then 1
+        else 1
+     |]
+  assertEqual "optimise if condition" Nothing $
+    factsSearched (PredicateRef "glean.test.StringPair" 1) lookupPid stats
 {-
   Test reordering of nested matches using a simple DAG:
 
@@ -1734,6 +1843,31 @@ reorderTest = dbTestCase $ \env repo -> do
   print r
   assertEqual "negation - reorder 1" 1 (length r)
 
+  -- negations are moved after the binding of the variables it mentions
+  -- even when the variable comes from a disjunction.
+  r <- runQuery_ env repo $ angleData @Text
+    [s|
+       A where
+        !(glean.test.IsGlean A);
+        glean.test.IsGlean ("g".. A) | glean.test.IsGlean ("gl".. A);
+    |]
+  print r
+  assertEqual "negation - reorder 2" 2 (length r)
+
+  -- negations are moved after the binding of the variables it mentions
+  -- even when the variable comes from an if statement
+  r <- runQuery_ env repo $ angleData @Text
+    [s|
+      A where
+        !(glean.test.IsGlean A);
+        if 1 then
+          glean.test.IsGlean ("g".. A)
+        else
+          glean.test.IsGlean ("g".. A)
+    |]
+  print r
+  assertEqual "negation - reorder 3" 1 (length r)
+
   -- The negation is moved after the binding of all the variables it mentions.
   r <- runQuery_ env repo $ angleData @Nat
     -- only if the negation is moved after the last statement will tere be two
@@ -1748,7 +1882,7 @@ reorderTest = dbTestCase $ \env repo -> do
         { B, _} = TWO[..];
     |]
   print r
-  assertEqual "negation - reorder 2" 2 (length r)
+  assertEqual "negation - reorder 4" 2 (length r)
 
   -- A negation which is an O(1) filter gets moved up.
   (_,stats) <- queryStats env repo $ angleData @Text
@@ -1761,7 +1895,7 @@ reorderTest = dbTestCase $ \env repo -> do
         !(A = B);
     |]
   print r
-  assertEqual "negation - reorder 3" Nothing $
+  assertEqual "negation - reorder 5" Nothing $
     factsSearched (PredicateRef "cxx1.Name" 1) lookupPid stats
 
   -- test for a bad case in reordering where the nested matches under

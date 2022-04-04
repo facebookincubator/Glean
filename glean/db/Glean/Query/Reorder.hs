@@ -14,6 +14,8 @@ module Glean.Query.Reorder
 
 import Control.Monad.Except
 import Control.Monad.State
+import Data.Foldable (fold)
+import Data.Functor.Identity (Identity(..))
 import qualified Data.ByteString as ByteString
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
@@ -163,6 +165,7 @@ withScopeFor stmts act = do
     -- appear:
     --  - inside a negated subquery
     --  - in some but not all branches of a disjunction
+    --  - in only one of 'else' or (condition + 'then') clauses of an if stmt
     scopeVars :: [FlatStatementGroup] -> VarSet
     scopeVars stmtss = foldMap (foldMap stmtScope) stmtss
       where
@@ -172,7 +175,11 @@ withScopeFor stmts act = do
           -- only count variables that appear in all branches of the disjunction
           FlatDisjunction [] -> mempty
           FlatDisjunction (s:ss) ->
-             foldr (IntSet.intersection . scopeVars) (scopeVars s) ss
+            foldr (IntSet.intersection . scopeVars) (scopeVars s) ss
+          FlatConditional cond then_ else_ ->
+            IntSet.intersection
+              (scopeVars $ cond <> then_)
+              (scopeVars else_)
 
 {-
 Note [Optimising statement groups]
@@ -603,6 +610,8 @@ prefixVars lookups scope stmt = prefixVarsStmt stmt
   prefixVarsStmt (FlatStatement _ _ _) = IntSet.empty
   prefixVarsStmt (FlatNegation stmtss) = prefixVarsStmts stmtss
   prefixVarsStmt (FlatDisjunction stmtsss) = foldMap prefixVarsStmts stmtsss
+  prefixVarsStmt (FlatConditional cond then_ else_) =
+    foldMap prefixVarsStmts [cond, then_, else_]
 
   prefixVarsStmts :: [FlatStatementGroup] -> VarSet
   prefixVarsStmts stmtss =
@@ -761,41 +770,50 @@ reorderStmt stmt@(FlatStatement ty lhs gen)
 -- fallback: just convert other statements to CgStatement
 reorderStmt stmt = toCgStatement stmt
 
-
 toCgStatement :: FlatStatement -> R [CgStatement]
-toCgStatement (FlatStatement _ lhs gen) = do
-  gen' <- fixVars IsExpr gen -- NB. do this first!
-  lhs' <- fixVars IsPat lhs
-  return [CgStatement lhs' gen']
-toCgStatement (FlatNegation stmts) = do
+toCgStatement stmt = case stmt of
+  FlatStatement _ lhs gen -> do
+    gen' <- fixVars IsExpr gen -- NB. do this first!
+    lhs' <- fixVars IsPat lhs
+    return [CgStatement lhs' gen']
+  FlatNegation stmts -> do
     stmts' <-
       withinNegation $
       withScopeFor stmts $
       reorderGroups stmts
     return [CgNegation stmts']
-toCgStatement (FlatDisjunction [stmts]) =
-  withScopeFor stmts $ reorderGroups stmts
-toCgStatement (FlatDisjunction stmtss) = do
-  cg <- intersectBindings stmtss
-  return [CgDisjunction cg]
+  FlatDisjunction [stmts] ->
+    withScopeFor stmts $ reorderGroups stmts
+  FlatDisjunction stmtss -> do
+    cg <- map runIdentity <$> intersectBindings (map Identity stmtss)
+    return [CgDisjunction cg]
+  FlatConditional cond then_ else_ -> do
+    r <- intersectBindings [[ cond, then_ ], [ else_ ]]
+    case r of
+      [[cond', then'], [else']] -> return [CgConditional cond' then' else']
+      _ -> error "unexpected length returned by intersectBindings"
   where
+
+  intersectBindings :: (Traversable t, Foldable t) =>
+    [t [FlatStatementGroup]] -> R [t [CgStatement]]
   intersectBindings [] = return []
   intersectBindings groupss = do
     initialScope <- gets roScope
-    results <- forM groupss $ \groups -> do
+    results <- forM groupss $ \tgroup -> do
         modify $ \state -> state { roScope = initialScope }
-        stmts <- withScopeFor groups $ reorderGroups groups
+        tstmts <- withScopeFor (fold tgroup) $ traverse reorderGroups tgroup
         newScope <- gets roScope
-        return (stmts, allBound newScope)
+        return (tstmts, allBound newScope)
 
     let boundInAllBranches = foldr1 IntSet.intersection (map snd results)
-    stmtss <- forM results $ \(stmts, boundInThisBranch) -> do
+    tstmtss <- forM results $ \(tstmts, boundInThisBranch) -> do
       let needsRenaming = IntSet.difference boundInThisBranch boundInAllBranches
-      renameAlt needsRenaming stmts
+      traverse (renameAlt needsRenaming) tstmts
 
     let newScope = foldr bind initialScope $ IntSet.toList boundInAllBranches
     modify $ \state -> state { roScope = newScope }
-    return stmtss
+    return tstmtss
+
 
   -- Rename local variables in each branch of |. See Note [local variables].
   renameAlt :: IntSet -> [CgStatement] -> R [CgStatement]
@@ -900,4 +918,3 @@ initialReorderState nextVar dbSchema = ReorderState
   , roDbSchema = dbSchema
   , roNegationEnclosingScope = mempty
   }
-

@@ -87,6 +87,12 @@ data SourcePat_ s v t
   | FactId s (Maybe Text) Word64
   | TypeSignature s (SourcePat_ s v t) t
   | Never s
+  | IfPattern
+      { span :: s
+      , cond :: SourcePat_ s v t
+      , then_ :: SourcePat_ s v t
+      , else_ :: SourcePat_ s v t
+      }
  deriving (Eq, Show)
 
 data Field s v t = Field FieldName (SourcePat_ s v t)
@@ -107,6 +113,7 @@ sourcePatSpan = \case
   Variable s _ -> s
   ElementsOfArray s _ -> s
   OrPattern s _ _ -> s
+  IfPattern s _ _ _ -> s
   NestedQuery s _ -> s
   Negation s _ -> s
   FactId s _ _ -> s
@@ -169,6 +176,11 @@ instance (Pretty v, Pretty t) => Pretty (SourcePat_ s v t) where
   pretty (Variable _ name) = pretty name
   pretty (ElementsOfArray _ pat) = pretty pat <> "[..]"
   pretty (OrPattern _ lhs rhs) = sep [prettyArg lhs <+> "|", prettyArg rhs]
+  pretty (IfPattern _ cond then_ else_) = sep
+    [ nest 2 $ sep ["if", prettyArg cond ]
+    , nest 2 $ sep ["then", prettyArg then_]
+    , nest 2 $ sep ["else", prettyArg else_]
+    ]
   pretty (NestedQuery _ q) = parens $ pretty q
   pretty (Negation _ q) = "!" <> parens (pretty q)
   pretty (FactId _ Nothing n) = "$" <> pretty n
@@ -194,6 +206,7 @@ prettyArg pat = case pat of
   App{} -> parens $ pretty pat
   KeyValue{} -> parens $ pretty pat
   OrPattern{} -> parens $ pretty pat
+  IfPattern{} -> parens $ pretty pat
   TypeSignature{} -> parens $ pretty pat
   Nat{} -> pretty pat
   String{} -> pretty pat

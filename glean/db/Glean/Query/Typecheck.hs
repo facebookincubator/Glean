@@ -151,13 +151,11 @@ needsResult q@(SourceQuery Nothing stmts) = case reverse stmts of
   where
     err = "the last statement should be an expression: " <> pretty q
 
+-- add a unit result if the pattern doesn't have a result.
 ignoreResult :: IsSrcSpan s => SourcePat' s -> SourcePat' s
-ignoreResult (OrPattern s a b) = OrPattern s (ignoreAlt a) (ignoreAlt b)
-ignoreResult other = other
-
-ignoreAlt :: IsSrcSpan s => SourcePat' s -> SourcePat' s
-ignoreAlt p = case p of
-  OrPattern s a b -> OrPattern s (ignoreAlt a) (ignoreAlt b)
+ignoreResult p = case p of
+  OrPattern s a b -> OrPattern s (ignoreResult a) (ignoreResult b)
+  IfPattern s a b c -> IfPattern s a (ignoreResult b) (ignoreResult c)
   NestedQuery s (SourceQuery Nothing stmts) ->
     NestedQuery s (SourceQuery (Just empty) stmts)
   other ->
@@ -191,6 +189,11 @@ unexpectedValue pat = prettyErrorIn pat
 typecheckStatement :: IsSrcSpan s => SourceStatement' s -> T TcStatement
 typecheckStatement (SourceStatement lhs rhs0) = do
   let
+    ignoreTopResult (OrPattern s a b) =
+      OrPattern s (ignoreResult a) (ignoreResult b)
+    ignoreTopResult (IfPattern s a b c) =
+      IfPattern s a (ignoreResult b) (ignoreResult c)
+    ignoreTopResult other = other
     -- We want to allow things like (A; B) | (C; D) at the statement
     -- level, without enforcing that B and D are expressions or that
     -- they have the same type.  After the parser this would appear
@@ -202,7 +205,7 @@ typecheckStatement (SourceStatement lhs rhs0) = do
     -- This preempts 'needsResult' from doing its transformation and
     -- failing when the last statement is not an expression.
     rhs
-      | Wildcard _ <- lhs = ignoreResult rhs0
+      | Wildcard _ <- lhs = ignoreTopResult rhs0
       | otherwise = rhs0
   (rhs', ty) <- inferExpr ContextPat rhs
   lhs' <- typecheckPattern ContextPat ty lhs
@@ -295,15 +298,29 @@ inferExpr ctx pat = case pat of
               (,typeType) <$> typecheckPattern ctx typeType arg
   OrPattern _ a b -> do
     ((a', ty), b') <-
-      orPattern
-        a (inferExpr ctx a)
-        b (\(_,ty) -> typecheckPattern ctx ty b)
+      disjunction
+        (varsPat a mempty) (inferExpr ctx a)
+        (varsPat b mempty) (\(_,ty) -> typecheckPattern ctx ty b)
     return (Ref (MatchExt (Typed ty (TcOr a' b'))), ty)
   NestedQuery _ q -> do
     q@(TcQuery ty _ _ _) <- inferQuery ctx q
     return (Ref (MatchExt (Typed ty (TcQueryGen q))), ty)
   Negation _ _ ->
     (,unit) <$> typecheckPattern ctx unit pat
+  IfPattern _ srcCond srcThen srcElse -> do
+    let tcThen = do
+          (cond, condTy) <- inferExpr ctx (ignoreResult srcCond)
+          (then_, thenTy) <- inferExpr ctx srcThen
+          return (Typed condTy cond, then_, thenTy)
+
+    ((cond, then_, ty), else_) <- disjunction
+      (varsPat srcCond $ varsPat srcThen mempty)
+      tcThen
+      (varsPat srcElse mempty)
+      (\(_,_, thenTy) -> typecheckPattern ctx thenTy srcElse)
+
+    return (Ref (MatchExt (Typed ty (TcIf{..}))), ty)
+
   ElementsOfArray _ e -> do
     (e', ty) <- inferExpr ContextExpr e
     case ty of
@@ -430,10 +447,22 @@ typecheckPattern ctx typ pat = case (typ, pat) of
 
   (ty, OrPattern _ left right) -> do
     (left',right') <-
-      orPattern
-        left (typecheckPattern ctx ty left)
-        right (\_ -> typecheckPattern ctx ty right)
+      disjunction
+        (varsPat left mempty) (typecheckPattern ctx ty left)
+        (varsPat right mempty) (\_ -> typecheckPattern ctx ty right)
     return (Ref (MatchExt (Typed ty (TcOr left' right'))))
+
+  (ty, IfPattern _ srcCond srcThen srcElse) -> do
+    let tcThen = do
+          (cond,condTy) <- inferExpr ctx srcCond
+          then_ <- typecheckPattern ctx ty srcThen
+          return (Typed condTy cond, then_)
+
+    ((cond, then_), else_) <- disjunction
+      (varsPat srcCond $ varsPat srcThen mempty) tcThen
+      (varsPat srcElse mempty) (\_ -> typecheckPattern ctx ty srcElse)
+
+    return (Ref (MatchExt (Typed ty (TcIf cond then_ else_))))
 
   (ty, NestedQuery _ query) ->
     Ref . MatchExt . Typed ty . TcQueryGen <$> typecheckQuery ctx ty query
@@ -788,19 +817,13 @@ oldOrPattern ta tb = do
 -- 2. The set of variables that are considered to be *used* by this
 --    pattern are those that are used in either branch.
 --
-orPattern
-  :: IsSrcSpan s
-  => SourcePat' s
-  -> T a
-  -> SourcePat' s
-  -> (a -> T b)
-  -> T (a,b)
-orPattern pata ta patb tb = do
+disjunction :: VarSet -> T a -> VarSet -> (a -> T b) -> T (a,b)
+disjunction varsA ta varsB tb = do
   v <- gets tcAngleVersion
   if not (varBinding v) then oldOrPattern ta tb else do
   state0 <- get
-  (a, usesA, bindsA) <- oneBranch pata ta
-  (b, usesB, bindsB) <- oneBranch patb (tb a)
+  (a, usesA, bindsA) <- oneBranch varsA ta
+  (b, usesB, bindsB) <- oneBranch varsB (tb a)
   modify  $ \s -> s {
     tcBindings = tcBindings state0 `HashSet.union` -- Note (1) above
       (bindsA `HashSet.intersection` bindsB),
@@ -819,13 +842,13 @@ orPattern pata ta patb tb = do
 -- 3. To determine what is local to any nested A|B subterms, we update
 --    tcVisible by finding the visible variables of the current pattern.
 --
-oneBranch :: IsSrcSpan s => SourcePat' s -> T a -> T (a, VarSet, VarSet)
-oneBranch pat ta = do
+oneBranch :: VarSet -> T a -> T (a, VarSet, VarSet)
+oneBranch branchVars ta = do
   visibleBefore  <- gets tcVisible
   modify $ \s -> s {
     tcUses = HashSet.empty,
     tcBindings = HashSet.empty,
-    tcVisible = visibleBefore `HashSet.union` varsPat pat mempty }
+    tcVisible = visibleBefore `HashSet.union` branchVars }
       -- See Note (3) above
   a <- ta
   after <- get
@@ -943,10 +966,10 @@ type VarSet = HashSet Name
 
 -- Variables visible in the pattern's enclosing scope.
 --
--- 1. or-patterns and negations don't bring variables into a scope. They can
---    bind variables that are already part of the scope, but if the same
---    variable appears in all branches but not in the enclosing scope then each
---    occurrence will be treated as a separate variable.
+-- 1. or-patterns, negations and if statements don't bring variables into a
+--    scope. They can bind variables that are already part of the scope, but if
+--    the same variable appears in all branches but not in the enclosing scope
+--    then each occurrence will be treated as a separate variable.
 varsPat :: IsSrcSpan s => SourcePat' s -> VarSet -> VarSet
 varsPat pat r = case pat of
   Variable _ v -> HashSet.insert v r
@@ -957,6 +980,7 @@ varsPat pat r = case pat of
   KeyValue _ k v -> varsPat k (varsPat v r)
   ElementsOfArray _ p -> varsPat p r
   OrPattern{} -> r -- ignore nested or-patterns. Note (1) above
+  IfPattern{} -> r -- ignore nested if-patterns
   NestedQuery _ q -> varsQuery q r
   Negation{} -> r -- Note (1) above
   TypeSignature _ p _ -> varsPat p r
@@ -1005,6 +1029,7 @@ tcQueryDeps q = Set.fromList $ map getRef (overQuery q)
       TcQueryGen q -> overQuery q
       TcNegation stmts -> foldMap overStatement stmts
       TcPrimCall _ xs -> foldMap overPat xs
+      TcIf (Typed _ x) y z -> foldMap overPat [x, y, z]
 
 -- | Whether a query uses negation in its definition.
 -- Does not check for transitive uses of negation.
@@ -1045,3 +1070,5 @@ tcTermUsesNegation = \case
   TcQueryGen q -> tcQueryUsesNegation q
   TcNegation _ -> True
   TcPrimCall _ xs -> any tcPatUsesNegation xs
+  -- one can replicate negation using if statements
+  TcIf{} -> True

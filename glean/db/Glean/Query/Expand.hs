@@ -98,6 +98,11 @@ instantiateWithFreshVariables query numVars = do
     TcNegation (map (instantiateStmt base) stmts)
   instantiateTcTerm base (TcPrimCall op args) =
     TcPrimCall op (map (instantiatePat base) args)
+  instantiateTcTerm base (TcIf (Typed ty cond) then_ else_) =
+    TcIf
+      (Typed ty $ instantiatePat base cond)
+      (instantiatePat base then_)
+      (instantiatePat base else_)
 
   instantiatePat :: Int -> TcPat -> TcPat
   instantiatePat base = fmap (instantiateMatch base)

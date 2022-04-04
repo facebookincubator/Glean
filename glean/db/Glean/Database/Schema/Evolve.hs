@@ -149,7 +149,7 @@ evolvePat innerL innerR old new pat = case pat of
                 Nothing -> Ref (MatchWild newTy)
         in
         Tuple $ fmap termForField newFields
-  _ -> error "unexpected"
+  _ -> error $ "unexpected pattern: " <> show (pat, old, new)
   where
     maybeAt list ix = listToMaybe (drop ix list)
     evolve = evolvePat innerL innerR

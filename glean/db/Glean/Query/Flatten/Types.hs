@@ -73,6 +73,15 @@ data FlatStatement
     -- As a special case, if there is just one alternative this construct
     -- is used for nesting groups within a FlatStatementGroup. See
     -- Glean.Query.Flatten.floatGroups.
+  | FlatConditional
+      { cond :: [FlatStatementGroup]
+      , then_ :: [FlatStatementGroup]
+      , else_ :: [FlatStatementGroup]
+      }
+    -- ^ An if-then-else statement.
+    -- If the statements in the condition match, the 'then' statements are
+    -- evaluated, otherwide the 'else' statements are.
+
   deriving Show
 
 -- | a statement that always fails
@@ -87,6 +96,11 @@ instance Pretty FlatStatement where
       "!" <> doStmts groups
     FlatDisjunction groupss ->
       sep (punctuate " |" (map doStmts groupss))
+    FlatConditional cond then_ else_ -> sep
+      [ nest 2 $ sep ["if", doStmts cond ]
+      , nest 2 $ sep ["then", doStmts then_]
+      , nest 2 $ sep ["else", doStmts else_]
+      ]
     where
     doStmts groups =
       hang 2 (sep [sep ("(" : punctuate ";" (map pretty groups)), ")"])

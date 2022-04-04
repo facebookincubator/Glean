@@ -178,6 +178,7 @@ rmLocSchemas (SourceSchemas version schemas evolves) =
       Variable _ v -> Variable () v
       ElementsOfArray _ x -> ElementsOfArray () (rmLocPat x)
       OrPattern _ x y -> OrPattern () (rmLocPat x) (rmLocPat y)
+      IfPattern _ x y z -> IfPattern () (rmLocPat x) (rmLocPat y) (rmLocPat z)
       Negation _ x -> Negation () (rmLocPat x)
       NestedQuery _ query -> NestedQuery () $ rmLocQuery query
       FactId _ x y -> FactId () x y

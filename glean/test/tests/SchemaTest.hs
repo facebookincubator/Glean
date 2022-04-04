@@ -1822,6 +1822,24 @@ schemaNegation =
             `isInfixOf` show e
           _ -> False
 
+  , TestLabel "negation - stored if statements" $ TestCase $ do
+    -- a stored predicate cannot use if statements
+    withSchema latestAngleVersion
+      [s|
+        schema test.1 {
+          predicate Base : string
+          predicate Stored : string
+            stored A where A = if (Base B) then B else "x"
+        }
+        schema all.1 : test.1 {}
+      |]
+      $ \r ->
+      assertBool "schemaNegation - stored" $
+        case r of
+          Left e -> "negation is not allowed in a stored predicate"
+            `isInfixOf` show e
+          _ -> False
+
   , TestLabel "negation - stored dependency" $ TestCase $ do
     -- a stored predicate cannot depend on a derived
     -- predicate that uses negation
