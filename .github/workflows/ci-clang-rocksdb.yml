@@ -28,7 +28,19 @@ jobs:
           wget "https://github.com/facebook/flow/releases/download/v${FLOW}/flow-linux64-v${FLOW}.zip"
           unzip "flow-linux64-v${FLOW}.zip"
           mkdir -p "$HOME"/.hsthrift/bin && mv flow/flow "$HOME"/.hsthrift/bin
+      - name: Install indexer (go)
+        run: |
+          export GOLANG=1.17.8
+          export LSIFGO=1.7.6
+          mkdir go-install; cd go-install
+          wget "https://go.dev/dl/go${GOLANG}.linux-amd64.tar.gz"
+          tar -C "$HOME/.hsthrift" -xzf  "go${GOLANG}.linux-amd64.tar.gz"
+          wget "https://github.com/sourcegraph/lsif-go/releases/download/v1.7.6/lsif-go_${LSIFGO}_linux_amd64.tar.gz"
+          tar xzf "lsif-go_${LSIFGO}_linux_amd64.tar.gz"
+          mkdir -p "$HOME"/.hsthrift/bin && mv lsif-go "$HOME"/.hsthrift/bin
+          echo "$HOME/.hsthrift/go/bin" >> "$GITHUB_PATH"
     # no hhvm builds yet for jammy/ubuntu 22.00, so we skip the hack indexer
+    # no yarnpkg builds yet for jammy/ubuntu 22.00, so we skip the typescript indexer
       - name: Fetch hsthrift and build folly, fizz, wangle, fbthrift
         run: ./install_deps.sh --use-system-libs
       - name: Nuke build artifacts
@@ -41,6 +53,6 @@ jobs:
         run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make
       - name: Build glass
         run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make glass
-      # no hhvm/hack indexer, so we run without hack regression tests
+      # no hhvm/hack or typescript indexer, so we run without hack regression tests
       - name: Run tests
-        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" cabal test glean:tests -f-hack-tests
+        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" cabal test glean:tests -f-hack-tests -f-typescript-tests -f-rust-tests

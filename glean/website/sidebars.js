@@ -73,6 +73,10 @@ module.exports = {
                    'indexer/intro',
                    'indexer/flow',
                    'indexer/hack',
+                   'indexer/lsif-typescript',
+                   'indexer/lsif-go',
+                   'indexer/lsif-rust',
+
                ],
            },
        ],

@@ -27,12 +27,14 @@ jobs:
         run: ghcup install cabal -u https://downloads.haskell.org/~cabal/cabal-install-3.6.0.0/cabal-install-3.6.0.0-x86_64-linux.tar.xz 3.6.0.0 --set
       - name: Add GHC and cabal to PATH
         run: echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
+
       - name: Install indexer (flow)
         run: |
           export FLOW=0.174.1
           wget "https://github.com/facebook/flow/releases/download/v${FLOW}/flow-linux64-v${FLOW}.zip"
           unzip "flow-linux64-v${FLOW}.zip"
           mkdir -p "$HOME"/.hsthrift/bin && mv flow/flow "$HOME"/.hsthrift/bin
+
       - name: Install indexer (hack)
         run: |
           apt-get update
@@ -41,6 +43,32 @@ jobs:
           add-apt-repository https://dl.hhvm.com/ubuntu
           apt-get update
           apt-get install -y hhvm-nightly
+
+      - name: Install indexer (typescript)
+        run: |
+          apt-get install -y yarnpkg
+          yarnpkg global add @sourcegraph/lsif-tsc
+
+      - name: Install indexer (go)
+        run: |
+          export GOLANG=1.17.8
+          export LSIFGO=1.7.6
+          mkdir go-install; cd go-install
+          wget "https://go.dev/dl/go${GOLANG}.linux-amd64.tar.gz"
+          tar -C "$HOME/.hsthrift" -xzf  "go${GOLANG}.linux-amd64.tar.gz"
+          wget "https://github.com/sourcegraph/lsif-go/releases/download/v1.7.6/lsif-go_${LSIFGO}_linux_amd64.tar.gz"
+          tar xzf "lsif-go_${LSIFGO}_linux_amd64.tar.gz"
+          mkdir -p "$HOME"/.hsthrift/bin && mv lsif-go "$HOME"/.hsthrift/bin
+          echo "$HOME/.hsthrift/go/bin" >> "$GITHUB_PATH"
+
+      - name: Install indexer (rust)
+        run: |
+          apt-get install -y cargo rust-src
+          export RUST_ANALYZER=2022-04-04
+          mkdir -p "$HOME"/.hsthrift/bin
+          curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/${RUST_ANALYZER}/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > "$HOME"/.hsthrift/bin/rust-analyzer
+          chmod +x "$HOME"/.hsthrift/bin/rust-analyzer
+
       - name: Fetch hsthrift and build folly, fizz, wangle, fbthrift, rocksdb
         run: ./install_deps.sh
       - name: Nuke build artifacts

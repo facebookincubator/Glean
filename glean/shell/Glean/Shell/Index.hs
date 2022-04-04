@@ -74,6 +74,7 @@ indexerTable = Map.fromList
   , ("hack", Hack)
   , ("lsif/typescript", LSIF LSIF.TypeScript)
   , ("lsif/go", LSIF LSIF.Go)
+  , ("lsif/rust", LSIF LSIF.Rust)
   ]
 
 -- Note, tab completions in Glean.Shell
@@ -82,7 +83,7 @@ indexCmd str = case words str of
   [indexer, dir] | Just lang <- Map.lookup indexer indexerTable
     -> index lang dir
   _ -> liftIO $ throwIO $ ErrorCall
-    "syntax: :index flow|hack|lsif/typescript <dir>"
+    "syntax: :index flow|hack|lsif/{typescript,go,rust} <dir>"
   where
     index lang dir =
       withSystemTempDirectory' "glean-shell" $ \tmp -> do

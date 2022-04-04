@@ -15,31 +15,35 @@ predicates for typescript.
 
 {-# LANGUAGE OverloadedStrings #-}
 
-module Glean.LSIF.Driver
-  ( runIndexer
-  , Language(..)
-  , processLSIF
-  , writeJSON
-  ) where
+module Glean.LSIF.Driver (
+    indexerLang,
+    Language(..),
+    processLSIF,
+    writeJSON,
+    runIndexer,
+    testArgs
+ ) where
 
 import Control.Exception ( throwIO, ErrorCall(ErrorCall) )
+import Data.Aeson.Encoding ( encodingToLazyByteString )
+import Data.Text ( Text )
+import System.Directory
+    ( getHomeDirectory, withCurrentDirectory, makeAbsolute )
+import System.FilePath
+    ( takeBaseName, dropExtension, (</>), addExtension )
+import System.IO.Temp ( withSystemTempDirectory )
+import System.Process ( callProcess, callCommand )
+import Text.Printf ( printf )
+import Util.Log ( logInfo )
 import qualified Data.Aeson as A
 import qualified Data.Aeson as Aeson
-import Data.Aeson.Encoding (encodingToLazyByteString)
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy as Lazy
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
 import qualified Data.Vector as V
-import System.Directory ( makeAbsolute, withCurrentDirectory )
-import System.FilePath
-    ( addExtension, (</>), dropExtension, takeBaseName )
-import System.IO.Temp ( withSystemTempDirectory )
-import System.Process ( callProcess )
-import Text.Printf ( printf )
 
 import qualified Foreign.CPP.Dynamic
-import Util.Log ( logInfo )
 
 import qualified Data.LSIF.Angle as LSIF
 import Data.LSIF.Types (LSIF(..))
@@ -47,16 +51,34 @@ import Data.LSIF.Types (LSIF(..))
 -- | Languages we can index via LSIF
 data Language
   = Go
+  | Rust
   | TypeScript
+  deriving (Show, Eq, Bounded, Enum)
 
 lsifIndexer :: Language -> String
 lsifIndexer lang = case lang of
   Go -> "lsif-go"
+  Rust -> "rust-analyzer"
   TypeScript -> "lsif-tsc"
 
-lsifArgs :: Language -> FilePath -> [String]
-lsifArgs TypeScript outFile = [ "-p", ".", "--out", outFile ]
-lsifArgs Go outFile = [ "-o", outFile ]
+indexerLang :: String -> Maybe Language
+indexerLang "lsif-go" = Just Go
+indexerLang "lsif-tsc" = Just TypeScript
+indexerLang "rust-analyzer" = Just Rust
+indexerLang _ = Nothing
+
+lsifArgs :: Language -> FilePath -> Either [String] [String]
+lsifArgs Go outFile = Right [ "--no-animation", "-o", outFile ]
+lsifArgs TypeScript outFile = Right [ "-p", ".", "--out", outFile ]
+lsifArgs Rust _outFile = Left [ "lsif", "." ] -- readProcess
+
+-- snapshot tests for different lsif indexers all use the same frontend
+testArgs :: FilePath -> Language -> [String]
+testArgs dir lang =
+    [ "--binary", lsifIndexer lang
+    , "--lsif"
+    , "--root", dir
+    ]
 
 -- | Run an LSIF indexer, and convert to a Glean's lsif.angle database
 runIndexer :: Language -> FilePath -> IO Aeson.Value
@@ -72,7 +94,10 @@ runIndexer lang dir = do
 runLSIFIndexer :: Language -> FilePath -> FilePath -> IO ()
 runLSIFIndexer lang dir outputFile = withCurrentDirectory dir $ do
   logInfo $ printf "Indexing %s with %s" (takeBaseName dir) lsifBinary
-  callProcess lsifBinary $ lsifArgs lang outputFile
+  case lsifArgs lang outputFile of
+    Right args -> callProcess lsifBinary args
+    Left args -> callCommand $
+      printf "%s %s > %s" lsifBinary (unwords args) outputFile
   where
     lsifBinary = lsifIndexer lang
 
@@ -87,8 +112,21 @@ processLSIF lsifFile = do
     Right val -> case A.fromJSON val of
       A.Error err -> throwIO (ErrorCall err)
       A.Success lsif@(LSIF facts) -> do
-        logInfo $ printf "Parsed to LSIF ok. Found %d facts" (V.length facts)
-        return $ LSIF.toAngle lsif
+        logInfo $ printf "Parsed LSIF ok. Found %d facts" (V.length facts)
+        paths <- dropPrefixPaths
+        return $ LSIF.toAngle paths lsif
+
+-- Get some likely prefix paths to drop from indexers
+-- E.g. typescript with a yarn install puts .config/yarn paths for libraries
+dropPrefixPaths :: IO [Text]
+dropPrefixPaths = do
+  home <- getHomeDirectory
+  return $ map ("file://" <>)
+    [ Text.pack (home </> ".config/yarn") -- typescript
+    , "/usr/local/share/.config/yarn" -- typescript
+    , "/usr/lib" -- rust
+    , Text.pack (home </> ".cargo/registry") -- rust
+    ]
 
 -- | If we want to save to file instead
 writeJSON :: FilePath -> Aeson.Value -> IO ()

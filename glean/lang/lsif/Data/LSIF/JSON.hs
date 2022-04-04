@@ -20,7 +20,9 @@ module Data.LSIF.JSON ({-instances -}) where
 import Data.Aeson.Types
 import Data.Text ( Text )
 import qualified Data.Vector as V
+import Control.Applicative ( Alternative((<|>)) )
 
+import Data.Maybe ( fromMaybe )
 import Data.LSIF.Types
 
 instance FromJSON LSIF where
@@ -50,7 +52,7 @@ parseDiagnostic v = fail ("Unrecognized value in diagnostic results" <> show v)
 
 parseHoverContents :: Value -> Parser HoverContents
 parseHoverContents (Object o) = HoverSignature
-  <$> o .: "language"
+  <$> (o .: "language" <|> o .: "kind")
   <*> o .: "value"
 parseHoverContents (String s) = pure (HoverText s)
 parseHoverContents v = fail ("Unrecognized value in hover contents: " <> show v)
@@ -60,6 +62,7 @@ instance FromJSON MonikerKind where
     "export" -> pure Export
     "local" -> pure Local
     "import" -> pure Import
+    "implementation" -> pure Implementation
     s -> fail ("FromJSON.MonikerKind: unknown kind: " <> show s)
   parseJSON s = fail ("FromJSON.MonikerKind: unknown kind: " <> show s)
 
@@ -110,8 +113,11 @@ parseVertex o = do
     "hoverResult" -> do
       result <- o .: "result"
       cs <- result .: "contents"
-      contents <- withArray "hoverResult" (V.mapM parseHoverContents) cs
-      return LsifHoverResult{..}
+      contents <- case cs of
+        Array arr -> V.mapM parseHoverContents arr
+        Object{} -> V.singleton <$> parseHoverContents cs
+        t -> fail $ "hoverResult: contents: unhandled type: " <> show t
+      return HoverResult{..}
 
     "resultSet" -> pure ResultSet
     "definitionResult" -> pure DefinitionResult
@@ -157,7 +163,7 @@ instance FromJSON Tag where
 instance FromJSON ToolInfo where
   parseJSON = withObject "ToolInfo" $ \o -> ToolInfo
     <$> o .: "name"
-    <*> o .: "args"
+    <*> (fromMaybe [] <$> o .:? "args")
     <*> o .: "version"
 
 parseProperty :: Text -> Parser Property
@@ -166,7 +172,7 @@ parseProperty "references" = pure References
 parseProperty "referenceResults" = pure ReferenceResults
 parseProperty s = fail ("Unknown property: parsePropery: " <> show s)
 
-parseEdgeLabel :: Text -> Parser Label
+parseEdgeLabel :: Text -> Maybe Label
 parseEdgeLabel "moniker" = pure EdgeMoniker
 parseEdgeLabel "packageInformation" = pure EdgePackageInformation
 parseEdgeLabel "nextMoniker" = pure EdgeNextMoniker
@@ -177,7 +183,10 @@ parseEdgeLabel "textDocument/references" = pure EdgeTextDocumentReferences
 parseEdgeLabel "textDocument/diagnostic" = pure EdgeTextDocumentDiagnostic
 parseEdgeLabel "textDocument/documentSymbol" =
   pure EdgeTextDocumentDocumentSymbol
-parseEdgeLabel s = fail ("Unknown edge label: parseEdgeLabel: " <> show s)
+parseEdgeLabel "textDocument/foldingRange" = pure EdgeTextDocumentFoldingRange
+parseEdgeLabel "sourcegraph:documentationString" = Nothing
+parseEdgeLabel "sourcegraph:documentationChildren" = Nothing
+parseEdgeLabel _ = Nothing
 
 -- | lsif edges
 parseEdge :: Object -> Parser Fact
@@ -193,10 +202,11 @@ parseEdge o = do
       <*> o .: "document"
       <*> explicitParseFieldMaybe
             (withText "property" parseProperty) o "property"
-    s -> Edge -- singleton edge
-      <$> parseEdgeLabel s
-      <*> o .: "outV"
-      <*> o .: "inV"
+    s -> case parseEdgeLabel s of
+      Nothing -> pure LsifUnknown -- skip unknown edges
+      Just lbl -> Edge lbl
+        <$> o .: "outV"
+        <*> o .: "inV"
 
 -- https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#symbolKind
 instance FromJSON SymbolKind where
