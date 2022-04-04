@@ -1818,7 +1818,7 @@ schemaNegation =
       $ \r ->
       assertBool "schemaNegation - stored" $
         case r of
-          Left e -> "negation is not allowed in a stored predicate"
+          Left e -> "use of negation is not allowed in a stored predicate"
             `isInfixOf` show e
           _ -> False
 
@@ -1836,7 +1836,7 @@ schemaNegation =
       $ \r ->
       assertBool "schemaNegation - stored" $
         case r of
-          Left e -> "negation is not allowed in a stored predicate"
+          Left e -> "use of if-statements is not allowed in a stored predicate"
             `isInfixOf` show e
           _ -> False
 

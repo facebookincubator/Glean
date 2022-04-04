@@ -36,6 +36,7 @@ import qualified Data.HashMap.Lazy as Lazy.HashMap
 import qualified Data.HashSet as HashSet
 import Data.HashSet (HashSet)
 import Data.List (foldl', find)
+import Data.List.Extra (firstJust)
 import qualified Data.IntMap as IntMap
 import Data.IntMap (IntMap)
 import qualified Data.Map as Map
@@ -322,13 +323,20 @@ mkDbSchema override getPids dbContent source base addition = do
         DeriveOnDemand -> False
         DerivedAndStored -> True
         DeriveIfEmpty -> True
-    usesNegation ref = ref `HashSet.member` usingNegation
+    useOfNegation ref = HashMap.lookup ref usingNegation
 
   forM_ (tcEnvPredicates env) $ \PredicateDetails{..} ->
-    when (isStored predicateDeriving && usesNegation predicateRef)
-      $ throwIO $ Thrift.Exception
-      $ "negation is not allowed in a stored predicate: "
-      <> showPredicateRef predicateRef
+    when (isStored predicateDeriving) $
+      case useOfNegation predicateRef of
+        Nothing -> return ()
+        Just use ->
+          let feature = case use of
+                PatternNegation -> "negation"
+                IfStatement -> "if-statements"
+          in
+          throwIO $ Thrift.Exception
+          $ "use of " <> feature  <> " is not allowed in a stored predicate: "
+          <> showPredicateRef predicateRef
 
   let predicates = HashMap.elems (tcEnvPredicates env)
 
@@ -728,20 +736,22 @@ typecheckSchema override refToPid dbContent stored
 
 usesOfNegation
   :: HashMap PredicateRef PredicateDetails
-  -> HashSet PredicateRef
+  -> HashMap PredicateRef UseOfNegation
 usesOfNegation preds =
   foldl' recordUseOfNegation mempty derivations
   where
-    recordUseOfNegation usesNegation (predUsesNegation, ref, deps)
-      | predUsesNegation || any (`HashSet.member` usesNegation) deps
-      = HashSet.insert ref usesNegation
+    recordUseOfNegation usesNegation (mUseOfNeg, ref, deps)
+      | Just use <- mUseOfNeg
+      = HashMap.insert ref use usesNegation
+      | Just use <- firstJust (`HashMap.lookup` usesNegation) deps
+      = HashMap.insert ref use usesNegation
       | otherwise
-      -- remove from Set in case a derived predicate in this schema that does
+      -- remove from Map in case a derived predicate in this schema that does
       -- not use negation overrode a derived predicate that used negation.
-      = HashSet.delete ref usesNegation
+      = HashMap.delete ref usesNegation
 
     -- derivations in dependency order with flag for use of negation
-    derivations :: [(Bool, PredicateRef, [PredicateRef])]
+    derivations :: [(Maybe UseOfNegation, PredicateRef, [PredicateRef])]
     derivations = toPred . getNode <$> reverse (topSort graph)
       where
         (graph, getNode, _) = graphFromEdges

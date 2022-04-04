@@ -15,12 +15,15 @@ module Glean.Query.Typecheck
   , toScope
   , tcQueryDeps
   , tcQueryUsesNegation
+  , UseOfNegation(..)
   ) where
 
+import Control.Applicative ((<|>))
 import Control.Monad.Except
 import Control.Monad.State
 import Data.Bifoldable
 import Data.Char
+import Data.List.Extra (firstJust)
 import Data.Maybe
 import qualified Data.HashMap.Strict as HashMap
 import Data.HashMap.Strict (HashMap)
@@ -1031,44 +1034,49 @@ tcQueryDeps q = Set.fromList $ map getRef (overQuery q)
       TcPrimCall _ xs -> foldMap overPat xs
       TcIf (Typed _ x) y z -> foldMap overPat [x, y, z]
 
+data UseOfNegation
+  = PatternNegation
+  | IfStatement
+
 -- | Whether a query uses negation in its definition.
 -- Does not check for transitive uses of negation.
-tcQueryUsesNegation :: TcQuery -> Bool
-tcQueryUsesNegation (TcQuery _ _ _ stmts) = any tcStatementUsesNegation stmts
+tcQueryUsesNegation :: TcQuery -> Maybe UseOfNegation
+tcQueryUsesNegation (TcQuery _ _ _ stmts) =
+  firstJust tcStatementUsesNegation stmts
 
-tcStatementUsesNegation :: TcStatement -> Bool
+tcStatementUsesNegation :: TcStatement -> Maybe UseOfNegation
 tcStatementUsesNegation (TcStatement _ lhs rhs) =
-  tcPatUsesNegation lhs || tcPatUsesNegation rhs
+  tcPatUsesNegation lhs <|> tcPatUsesNegation rhs
 
-tcPatUsesNegation :: TcPat -> Bool
+tcPatUsesNegation :: TcPat -> Maybe UseOfNegation
 tcPatUsesNegation = \case
-  RTS.Byte _ -> False
-  RTS.Nat _ -> False
-  RTS.Array xs -> any tcPatUsesNegation xs
-  RTS.ByteArray _ -> False
-  RTS.Tuple xs -> any tcPatUsesNegation xs
+  RTS.Byte _ -> Nothing
+  RTS.Nat _ -> Nothing
+  RTS.Array xs -> firstJust tcPatUsesNegation xs
+  RTS.ByteArray _ -> Nothing
+  RTS.Tuple xs -> firstJust tcPatUsesNegation xs
   RTS.Alt _ t -> tcPatUsesNegation t
-  RTS.String _ -> False
+  RTS.String _ -> Nothing
   RTS.Ref match -> matchUsesNegation match
 
-matchUsesNegation  :: Match (Typed TcTerm) Var -> Bool
+matchUsesNegation  :: Match (Typed TcTerm) Var -> Maybe UseOfNegation
 matchUsesNegation = \case
-  MatchWild _ -> False
-  MatchNever _ -> False
-  MatchFid _ -> False
-  MatchBind _ -> False
-  MatchVar _ -> False
-  MatchAnd one two -> tcPatUsesNegation one || tcPatUsesNegation two
+  MatchWild _ -> Nothing
+  MatchNever _ -> Nothing
+  MatchFid _ -> Nothing
+  MatchBind _ -> Nothing
+  MatchVar _ -> Nothing
+  MatchAnd one two -> tcPatUsesNegation one <|> tcPatUsesNegation two
   MatchPrefix _ x -> tcPatUsesNegation x
   MatchExt (Typed _ tcterm) -> tcTermUsesNegation tcterm
 
-tcTermUsesNegation  :: TcTerm -> Bool
+tcTermUsesNegation  :: TcTerm -> Maybe UseOfNegation
 tcTermUsesNegation = \case
-  TcOr x y -> tcPatUsesNegation x || tcPatUsesNegation y
-  TcFactGen _ x y -> tcPatUsesNegation x || tcPatUsesNegation y
+  TcOr x y -> tcPatUsesNegation x <|> tcPatUsesNegation y
+  TcFactGen _ x y -> tcPatUsesNegation x <|> tcPatUsesNegation y
   TcElementsOfArray x -> tcPatUsesNegation x
   TcQueryGen q -> tcQueryUsesNegation q
-  TcNegation _ -> True
-  TcPrimCall _ xs -> any tcPatUsesNegation xs
+  TcNegation _ -> Just PatternNegation
+  TcPrimCall _ xs -> firstJust tcPatUsesNegation xs
   -- one can replicate negation using if statements
-  TcIf{} -> True
+  TcIf{} -> Just IfStatement
