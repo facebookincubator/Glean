@@ -1,6 +1,6 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.21 {
+schema codemarkup.22 {
 import src.1
 import python.3
 import code.19
@@ -53,13 +53,12 @@ type XRefLocation =
   }
 
 # Tags for entities, so clients can distinguish them.
-# Based on https://microsoft.github.io/language-server-protocol/specifications/specification-3-17/#symbolKind
 type SymbolKind =
   enum {
     Package | Type | Value | File | Module | Namespace | Class_ | Method | Property |
     Field | Constructor | Enum | Interface | Function | Variable | Constant | String |
     Number | Boolean | Array | Object_ | Key | Null | Enumerator | Struct | Event |
-    Operator | TypeParameter | Union | Macro
+    Operator | TypeParameter | Union | Macro | Trait
   }
 
 type SymbolInfo =

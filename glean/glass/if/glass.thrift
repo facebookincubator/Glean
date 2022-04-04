@@ -302,6 +302,7 @@ enum SymbolKind {
   TypeParameter = 28,
   Union = 29,
   Macro = 30,
+  Trait = 31,
 } (
   hack.attributes = "\GraphQLEnum('GlassSymbolKind'), \RelayFlowEnum, \SelfDescriptive, \Oncalls('code_indexing')",
 )

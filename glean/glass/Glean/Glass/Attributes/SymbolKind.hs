@@ -126,6 +126,7 @@ symbolKindToSymbolKind k = case k of
   Code.SymbolKind_TypeParameter -> Glass.SymbolKind_TypeParameter
   Code.SymbolKind_Union -> Glass.SymbolKind_Union
   Code.SymbolKind_Macro -> Glass.SymbolKind_Macro
+  Code.SymbolKind_Trait -> Glass.SymbolKind_Trait
   Code.SymbolKind__UNKNOWN n -> Glass.SymbolKind__UNKNOWN n
 
 -- | Type safe mapping from the client-exposed SymbolKind type to the SymbolKind
@@ -165,6 +166,7 @@ symbolKindFromSymbolKind k = case k of
   Glass.SymbolKind_TypeParameter -> Code.SymbolKind_TypeParameter
   Glass.SymbolKind_Union -> Code.SymbolKind_Union
   Glass.SymbolKind_Macro -> Code.SymbolKind_Macro
+  Glass.SymbolKind_Trait -> Code.SymbolKind_Trait
   Glass.SymbolKind__UNKNOWN x -> toThriftEnum x -- this might throw
 
 instance AngleEnum Code.SymbolKind where
@@ -200,4 +202,5 @@ instance AngleEnum Code.SymbolKind where
     Code.SymbolKind_TypeParameter -> "TypeParameter"
     Code.SymbolKind_Union -> "Union"
     Code.SymbolKind_Macro -> "Macro"
+    Code.SymbolKind_Trait -> "Trait"
     Code.SymbolKind__UNKNOWN _ -> "UNKNOWN"
