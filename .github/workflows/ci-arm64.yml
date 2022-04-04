@@ -20,8 +20,10 @@ jobs:
           rm -rf "$HOME"/.ghcup/bin
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Install libxxhash wget unzip
-        run: apt-get install -y libxxhash-dev wget unzip
+      - name: Install additional tools
+        run: |
+          apt-get update
+          apt-get install -y libxxhash-dev wget unzip
       - name: Install GHC ${{ matrix.ghc }}
         run: ghcup install ghc ${{ matrix.ghc }} --set --force
       - name: Install cabal-install 3.6
