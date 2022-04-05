@@ -51,7 +51,7 @@ DEFINE_string(task, "", "task id (for logging)");
 DEFINE_string(request, "", "request id (for logging)");
 DEFINE_string(origin, "", "origin (for logging)");
 DEFINE_string(inventory, "", "PATH to inventory file");
-DEFINE_string(root, "", "root repository PATH");
+DEFINE_string(root, ".", "root repository PATH");
 DEFINE_string(blank_cell_name, "", "buck cell name output as nothing");
 DEFINE_string(cwd_subdir, "", "current working subdirectory under --root");
 DEFINE_string(target_subdir, "", "clang target subdirectory under --root");
