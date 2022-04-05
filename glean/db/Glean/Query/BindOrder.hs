@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE GeneralisedNewtypeDeriving #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE DerivingStrategies #-}
 module Glean.Query.BindOrder
   ( Fix
