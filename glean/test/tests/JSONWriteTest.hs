@@ -62,7 +62,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
   results <- runQuery_ env repo $ query $
     predicate @Sys.Blob (byteArray "hello")
   case results of
-    [Sys.Blob{..}] -> return ()
+    [Sys.Blob{}] -> return ()
     _ -> assertFailure "syncWriteJsonBatch - sys.Blob"
 
   -- Write another fact into the DB
@@ -122,7 +122,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
     predicate @Glean.Test.Predicate $
       rec $ field @"pred" (byteArray "test2") end
   test_pred <- case results of
-    [fact@Glean.Test.Predicate{..}] -> return fact
+    [fact@Glean.Test.Predicate{}] -> return fact
     _ -> do
       _ <- assertFailure "syncWriteJsonBatch - glean.test.Predicate 3"
       return def
@@ -187,7 +187,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
     predicate @Glean.Test.Predicate $
       rec $ field @"pred" (byteArray "test2") end
   void $ case results of
-    [fact@Glean.Test.Predicate{..}] -> return fact
+    [fact@Glean.Test.Predicate{}] -> return fact
     _ -> do
       _ <- assertFailure "syncWriteJsonBatch - glean.test.Predicate 4"
       return def
