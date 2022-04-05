@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE AllowAmbiguousTypes, TypeOperators #-}
+{-# LANGUAGE AllowAmbiguousTypes, TypeApplications #-}
 
 -- |
 -- Support for converting between Haskell types and Glean's binary
@@ -28,6 +28,7 @@ import qualified Data.ByteString.Unsafe as BS
 import Data.Dynamic
 import Data.IORef
 import Data.IntMap (IntMap)
+import Data.Proxy (Proxy(..))
 import Data.Text ( Text )
 import Data.Word ( Word64 )
 import Foreign.Ptr
@@ -35,6 +36,8 @@ import Foreign.Ptr
 import Thrift.Protocol (ThriftEnum, fromThriftEnum)
 import qualified Util.FFI as FFI
 
+import qualified Glean.Angle.Types as Angle
+import qualified Glean.Schema.Util as Angle
 import qualified Glean.FFI as FFI
 import qualified Glean.RTS as RTS
 import qualified Glean.RTS.Builder as RTS
@@ -79,6 +82,9 @@ class Type a where
   decodeAsFact nested cache _fid (Thrift.Fact _ k _) =
     decodeWithCache nested cache decodeRtsValue k
 
+  -- | Get the representation of the type
+  sourceType :: Proxy a -> Angle.SourceType
+
 -- -----------------------------------------------------------------------------
 
 -- | Convenient combination, buiding on the 'decode' from
@@ -105,6 +111,7 @@ instance Type Word64 where
   buildRtsValue b x = FFI.call $ RTS.glean_push_value_nat b x
   decodeRtsValue = Decoder $ \DecoderEnv{..} ->
     FFI.ffiBuf buf $ RTS.glean_pop_value_nat begin end
+  sourceType _ = Angle.Nat
 
 instance Type ByteString where
   buildRtsValue b xs = BS.unsafeUseAsCStringLen xs $ \(p,n) -> do
@@ -114,6 +121,7 @@ instance Type ByteString where
     size <- FFI.ffiBuf buf $ RTS.glean_pop_value_array begin end
     ptr <- FFI.ffiBuf buf $ RTS.glean_pop_value_bytes begin end size
     BS.unsafePackMallocCStringLen (castPtr ptr, fromIntegral size)
+  sourceType _ = Angle.Array Angle.Nat
 
 instance Type Text where
   buildRtsValue b s = FFI.withUTF8Text s $ \p n ->
@@ -121,12 +129,15 @@ instance Type Text where
   decodeRtsValue = Decoder $ \DecoderEnv{..} -> do
     (p,n) <- FFI.invoke $ RTS.glean_pop_value_string begin end
     FFI.unsafeMallocedUTF8 (castPtr p) n
+  sourceType _ = Angle.String
 
 -- | The instance for () does not encode or decode bytes, it is vacuous
 instance Type () where
   buildRtsValue _ () = return ()
   decodeRtsValue = pure ()
   constantRtsValue = Just ()
+  sourceType _ = Angle.unit
+
 
 -- | Bool is alias for sum of two ()
 instance Type Bool where
@@ -134,6 +145,8 @@ instance Type Bool where
   buildRtsValue b True = buildRtsSelector b 1
   decodeRtsValue = enumD fail
     where fail = Decoder $ \_ -> decodeFail "bool selector out of range"
+  sourceType _ = Angle.Boolean
+
 
 instance Type Nat where
   buildRtsValue b nat = FFI.call $
@@ -141,6 +154,7 @@ instance Type Nat where
   decodeRtsValue = Decoder $ \DecoderEnv{..} ->
     fmap (Nat . fromIntegral)
          (FFI.ffiBuf buf (RTS.glean_pop_value_nat begin end))
+  sourceType _ = Angle.Nat
 
 instance Type Byte where
   buildRtsValue b byt = FFI.call $
@@ -148,6 +162,7 @@ instance Type Byte where
   decodeRtsValue = Decoder $ \DecoderEnv{..} ->
     fmap (Byte . fromIntegral)
          (FFI.ffiBuf buf (RTS.glean_pop_value_byte begin end))
+  sourceType _ = Angle.Byte
 
 -- -----------------------------------------------------------------------------
 -- Containers
@@ -161,6 +176,8 @@ instance Type a => Type [a] where
     size <- FFI.ffiBuf buf $ RTS.glean_pop_value_array begin end
     replicateM (fromIntegral size) (runDecoder decodeRtsValue env)
 
+  sourceType _ = Angle.Array (sourceType (Proxy @a))
+
 -- | 'Maybe' is alias pattern for sum of () | 'a' (in this order)
 instance Type a => Type (Maybe a) where
   buildRtsValue b Nothing = buildRtsSelector b 0
@@ -170,14 +187,16 @@ instance Type a => Type (Maybe a) where
   decodeRtsValue = sumD
     (Decoder $ \_ -> decodeFail "maybe selector out of range")
     [pure Nothing, Just <$> decodeRtsValue]
+  sourceType _ = Angle.Maybe (sourceType (Proxy @a))
 
 -- -----------------------------------------------------------------------------
 
 -- | 'IdOf' as a Glean primitive
-instance Type (IdOf p) where
+instance (Type p) => Type (IdOf p) where
   buildRtsValue b (IdOf fid) = FFI.call $ RTS.glean_push_value_fact b fid
   decodeRtsValue = Decoder $ \DecoderEnv{..} ->
     IdOf <$> FFI.ffiBuf buf (RTS.glean_pop_value_fact begin end)
+  sourceType _ = sourceType (Proxy @p)
 
 -- -----------------------------------------------------------------------------
 -- All the tuples, using the wonderful Applicative instance of Decoder
@@ -189,6 +208,10 @@ instance (Type a, Type b) => Type (a,b) where
   decodeRtsValue = (,)
     <$> decodeRtsValue
     <*> decodeRtsValue
+  sourceType _ = Angle.tupleSchema
+      [ sourceType (Proxy @a)
+      , sourceType (Proxy @b)
+      ]
 
 instance (Type a, Type b, Type c) => Type (a,b,c) where
   buildRtsValue builder (a,b,c) = do
@@ -199,6 +222,11 @@ instance (Type a, Type b, Type c) => Type (a,b,c) where
     <$> decodeRtsValue
     <*> decodeRtsValue
     <*> decodeRtsValue
+  sourceType _ = Angle.tupleSchema
+      [ sourceType (Proxy @a)
+      , sourceType (Proxy @b)
+      , sourceType (Proxy @c)
+      ]
 
 instance (Type a, Type b, Type c, Type d) => Type (a,b,c,d) where
   buildRtsValue builder (a,b,c,d) = do
@@ -211,6 +239,12 @@ instance (Type a, Type b, Type c, Type d) => Type (a,b,c,d) where
     <*> decodeRtsValue
     <*> decodeRtsValue
     <*> decodeRtsValue
+  sourceType _ = Angle.tupleSchema
+      [ sourceType (Proxy @a)
+      , sourceType (Proxy @b)
+      , sourceType (Proxy @c)
+      , sourceType (Proxy @d)
+      ]
 
 instance (Type a, Type b, Type c, Type d, Type e) => Type (a,b,c,d,e) where
   buildRtsValue builder (a,b,c,d,e) = do
@@ -225,3 +259,10 @@ instance (Type a, Type b, Type c, Type d, Type e) => Type (a,b,c,d,e) where
     <*> decodeRtsValue
     <*> decodeRtsValue
     <*> decodeRtsValue
+  sourceType _ = Angle.tupleSchema
+      [ sourceType (Proxy @a)
+      , sourceType (Proxy @b)
+      , sourceType (Proxy @c)
+      , sourceType (Proxy @d)
+      , sourceType (Proxy @e)
+      ]

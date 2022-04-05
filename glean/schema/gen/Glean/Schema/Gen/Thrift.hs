@@ -109,6 +109,7 @@ genTargets mode slashVn version info =
             Query -> depTargets Data
             Data -> [])) <> "],"
     , "  hs2_deps = ["
+    , "    \"//glean/hs:angle\","
     , "    \"//glean/hs:typed\","
     , "    \"//glean/hs:query-angle\","
     , "    \"//glean/if:glean-hs2\","

@@ -14,6 +14,7 @@ module Glean.Typed.Predicate
     Predicate(..)
   , justId
   , predicateRef
+  , predicateSourceType
     -- * Lookup PidOf
   , HasPredicates(..)
     -- ** exception
@@ -38,9 +39,11 @@ import System.IO.Unsafe
 import TextShow
 
 import Glean.RTS.Types (invalidPid)
+import qualified Glean.Schema.Util as Angle
 import Glean.Types (PredicateRef(..), SchemaInfo(..))
 import Glean.Typed.Binary
 import Glean.Typed.Id
+import qualified Glean.Angle.Types as Angle
 
 -- -----------------------------------------------------------------------------
 
@@ -75,6 +78,10 @@ class (Type p, Type (KeyType p), Type (ValueType p)) => Predicate p where
   getIndex :: proxy p -> PredicateIndex
   getIndex = const (predicateIndex (getName (Proxy :: Proxy p)))
     -- this should be computed once and cached per predicate type
+
+-- | Retrieve the Angle representation of the type
+predicateSourceType :: Predicate p => Proxy p -> Angle.SourceType
+predicateSourceType proxy = Angle.Predicate $ Angle.convertRef (getName proxy)
 
 justId :: Predicate p => IdOf p -> p
 justId x = mkFact x Nothing Nothing

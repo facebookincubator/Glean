@@ -1032,6 +1032,21 @@ angleDSL modify = dbTestCase $ \env repo -> do
     var $ \p -> p `where_` [p .= sig (never @Glean.Test.Predicate)]
   assertEqual "angle - DSL 4" 0 (length results)
 
+  results <- runQuery_ env repo $ modify $ Angle.query  @((), Bool, Text) $
+    var $ \p -> p `where_`
+      [ wild .= sig (wild @Glean.Test.Predicate)
+      , wild .= sig Angle.unit
+      , wild .= sig Angle.true
+      , wild .= sig (Angle.string "a")
+      , wild .= sig (Angle.nat 1)
+      , wild .= sig @Glean.Test.Sum (Angle.alt @"wed" Angle.true)
+      , wild .= sig (array [Angle.nat 1, Angle.nat 2])
+      , wild .= sig (Angle.nothing :: Angle (Maybe Glean.Test.Predicate))
+      , wild .= sig (Angle.tuple (Angle.unit, Angle.true))
+      , p .= sig (Angle.tuple (Angle.unit, Angle.true, Angle.string "a"))
+      ]
+  assertEqual "angle - DSL type signatures" 1 (length results)
+
 -- nested patterns
 angleNested :: (forall a . Query a -> Query a) -> Test
 angleNested modify = dbTestCase $ \env repo -> do

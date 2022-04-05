@@ -132,6 +132,7 @@ header mode here deps = Text.unlines $
   , "import qualified Glean.Types as Glean"
   , "import qualified Glean.Typed as Glean"
   , "import qualified Glean.Query.Angle as Angle"
+  , "import qualified Glean.Angle.Types as Angle"
   , ""
   ] ++
   -- import dependencies
@@ -310,7 +311,8 @@ genPredicate mode PredicateDef{..}
     toQueryKey <- toQuery here predicateDefKeyType
 
     let extra = define_key ++ define_value
-    let inst cls body =
+    let ver = predicateRef_version predicateDefRef
+        inst cls body =
           "instance " <> cls <> " " <> name <> " where"
           : indentLines body
         def_Predicate = inst "Glean.Predicate" $
@@ -320,7 +322,7 @@ genPredicate mode PredicateDef{..}
           ++
           [ "getName _proxy " =@ "Glean.PredicateRef " <>
                 Text.pack (show glean_name) <> -- adds quotes, does escaping
-                showt (predicateRef_version predicateDefRef)
+                showt ver
           , "getId = Glean.IdOf . Glean.Fid . " <> field_id
           , "mkFact (Glean.IdOf (Glean.Fid x)) k "
               <> (if has_value then "v" else "_")
@@ -340,7 +342,9 @@ genPredicate mode PredicateDef{..}
         def_Type = inst "Glean.Type"
           [ "buildRtsValue b = Glean.buildRtsValue b . Glean.getId"
           , "decodeRtsValue = Glean.decodeRef"
-          , "decodeAsFact = Glean.decodeFact" ]
+          , "decodeAsFact = Glean.decodeFact"
+          , "sourceType = Glean.predicateSourceType"
+          ]
 
         def_QueryResult_QueryOf =
           ["type instance Glean.QueryResult " <> queryName <> " = " <> name
@@ -397,8 +401,8 @@ genType mode TypeDef{typeDefRef = TypeRef{..}, ..}
     _ -> return []
 
 structDef :: Mode -> Name -> Version -> [FieldDef] -> M [Text]
-structDef mode sName ver fields = do
-  let typeRef = TypeRef sName ver
+structDef mode ident ver fields = do
+  let typeRef = TypeRef ident ver
   sName@(here,root) <- typeName typeRef
   let name = haskellTypeName Data sName
       queryName = haskellTypeName Query sName
@@ -427,7 +431,11 @@ structDef mode sName ver fields = do
       toQuery here (fieldDefType field)
   let def_Type =
         "instance Glean.Type " <> name <> " where"
-        : indentLines (encodeMe <> decodeMe)
+        : indentLines
+        ( encodeMe
+        <> decodeMe
+        <> [sourceTypeDef ident ver]
+        )
 
       def_Query =
         ["type instance Glean.QueryResult " <> queryName <> " = " <> name
@@ -571,6 +579,7 @@ unionDef mode ident ver fields = do
             [ ["instance Glean.Type " <> name <> " where"]
             , indentLines builds
             , indentLines decodes
+            , indentLines [sourceTypeDef ident ver]
             ]
 
       def_Query =
@@ -659,6 +668,7 @@ enumDef mode ident ver eVals = do
     def_Type = "instance Glean.Type " <> name <> " where"
             : indentLines [ "buildRtsValue = Glean.thriftEnum_buildRtsValue "
                           , "decodeRtsValue = Glean.thriftEnumD "
+                          , sourceTypeDef ident ver
                           ]
     def_Query =
       ["type instance Glean.QueryResult " <> queryName <> " = " <> name
@@ -680,6 +690,17 @@ enumDef mode ident ver eVals = do
   return $ map myUnlines $ case mode of
     Data -> [def_Type, def_SumFields]
     Query -> [def_Query, def_ToQuery]
+
+sourceTypeDef :: Name -> Version -> Text
+sourceTypeDef name version =
+  "sourceType _ = Angle.NamedType " <> paren sourceRef
+  where
+    sourceRef = Text.unwords
+      [ "Angle.SourceRef"
+      , Text.pack (show name)
+      , paren ("Prelude.Just " <> showt version)
+      ]
+
 
 emitFieldTypes :: Text -> Text -> [(FieldDef, Text)] -> Text
 emitFieldTypes family name fields =

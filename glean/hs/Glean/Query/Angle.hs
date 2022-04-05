@@ -314,15 +314,12 @@ hasType :: Angle a -> Text -> Angle a
 hasType (Angle a) t = Angle $
   (\x -> TypeSignature DSL x $ Predicate (parseRef t)) <$> a
 
--- | Sometimes the Angle typechecker needs a type signature, and this
--- adds a type signature for a predicate type.  Prefer this over 'hasType'
--- when the type is a predicate, because it is robust to schema
--- changes.  For non-predicate types you will still need to use 'hasType'.
-sig :: forall p. Predicate p => Angle p -> Angle p
+-- | Sometimes the Angle typechecker needs a type signature.
+-- This adds a type signature for any Angle type.
+sig :: forall p. Type p => Angle p -> Angle p
 sig a = Angle $ do
   ta <- gen a
-  return $ TypeSignature DSL ta $
-    Predicate (convertRef (getName (Proxy @p)))
+  return $ TypeSignature DSL ta $ sourceType (Proxy @p)
 
 class AngleTuple a where
   type AngleTupleTy a
