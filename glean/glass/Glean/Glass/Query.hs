@@ -165,9 +165,9 @@ searchByLocalName_ ty sCase kinds name =
             field @"entity" entity $
             field @"location" loc
         end)
-    , hasType wild "{}" .= (
+    , sig @() wild .= (
       [ not_ [wild .= entityKind entity allKinds]
-      , mKind .= hasType nothing "maybe codemarkup.SymbolKind"
+      , mKind .= sig @(Maybe Code.SymbolKind) nothing
       ]
       `or_` [wild .= entityKind entity kind, mKind .= just kind]
     )

@@ -56,7 +56,7 @@ angleFamilyOfDecls ds =
     var $ \ (declaration :: Angle Cxx.Declaration) ->
     predicate @Cxx.DeclToFamily (rec $ field @"decl" declaration end)
       `where_`
-      [ declaration .= (foldr1 (.|) fs `hasType` "cxx1.Declaration.2") ]
+      [ declaration .= (sig @Cxx.Declaration $ foldr1 (.|) fs) ]
     where
       fs = angleOfDeclaration <$> ds
 

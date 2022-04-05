@@ -490,4 +490,4 @@ fetchFactIdOnly
 fetchFactIdOnly p = fmap (Glean.getId . fst) <$> fetchData (factIdQuery p)
   where
     factIdQuery p = var $ \r ->
-      tuple (r, unit `hasType` "{}") `where_` [ r .= p ]
+      tuple (r, sig unit) `where_` [ r .= p ]

@@ -39,7 +39,6 @@ module Glean.Query.Angle
   , rec
   , alt
   , asPredicate
-  , hasType
   , sig
   , factId
   , factIds
@@ -75,11 +74,10 @@ import GHC.TypeLits hiding (Nat)
 import TextShow
 
 import Glean.Angle.Types (SourcePat', SourceType,
-  SourceStatement', Type_(Predicate), SourceQuery')
+  SourceStatement', SourceQuery')
 import Glean.Query.Types hiding (Field, SourceStatement)
 import qualified Glean.Query.Types as Angle
 import Glean.Query.Thrift.Internal as Thrift hiding (query)
-import Glean.Schema.Util hiding (unit)
 import Glean.Typed hiding (end)
 import Glean.Types (Nat, Byte)
 
@@ -169,7 +167,7 @@ not_ :: [AngleStatement] -> AngleStatement
 not_ stmts = unit' .= Angle (Negation DSL <$> gen t)
   where
     t = unit' `where_` stmts
-    unit' = unit `hasType` "{}"
+    unit' = sig unit
 
 -- | Build a statement, `A = B`
 (.=) :: Angle t -> Angle t -> AngleStatement
@@ -183,7 +181,7 @@ a .| b = Angle $ OrPattern DSL <$> gen a <*> gen b
 or_ :: [AngleStatement] -> [AngleStatement] -> Angle ()
 or_ left right = (unit' `where_` left) .| (unit' `where_` right)
   where
-  unit' = unit `hasType` "{}"
+  unit' = sig unit
 
 -- | Build a key-value pattern, `A -> B`
 (.->) :: Angle a -> Angle b -> Angle c
@@ -306,13 +304,6 @@ never = Angle $ pure (Variable DSL "never")
 --
 asPredicate :: Angle p -> Angle (KeyType p)
 asPredicate (Angle a) = Angle a
-
--- | Sometimes the Angle typechecker needs a type signature, we can
--- add one manually using 'hasType'. The supplied type can be a named
--- type or a predicate, but for a predicate you should use 'sig' instead.
-hasType :: Angle a -> Text -> Angle a
-hasType (Angle a) t = Angle $
-  (\x -> TypeSignature DSL x $ Predicate (parseRef t)) <$> a
 
 -- | Sometimes the Angle typechecker needs a type signature.
 -- This adds a type signature for any Angle type.
