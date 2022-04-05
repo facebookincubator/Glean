@@ -16,7 +16,7 @@
 #include "glean/if/gen-cpp2/internal_types.h"
 
 #ifdef OSS
-#include <cpp/HsStruct.h>
+#include <cpp/HsStruct.h> // @manual
 #else
 #include <common/hs/util/cpp/HsStruct.h>
 #endif

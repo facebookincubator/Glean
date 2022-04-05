@@ -337,6 +337,7 @@ library rocksdb
     -- get linker errors for references to missing typeinfo symbols if
     -- we don't.
     cxx-options: -fno-rtti
+    cxx-options: -DOSS=1
     extra-libraries: rocksdb
     build-depends:
         glean:rocksdb-stats,
@@ -1678,6 +1679,7 @@ test-suite lookup
     main-is: LookupTest.hs
     ghc-options: -main-is LookupTest
     cxx-sources: glean/rts/tests/LookupInvariants.cpp
+    cxx-options: -DOSS=1
     build-depends:
         glean:stubs,
         glean:core,

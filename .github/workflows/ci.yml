@@ -15,12 +15,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Install ninja
-        run: apt install ninja-build
-      - name: Install libxxhash, clang, llvm, wget, unzip
-        run: apt-get update && apt-get install -y libxxhash-dev wget unzip clang-11 libclang-11-dev llvm-11-dev
-      - name: Remove libfmt
-        run: apt-get remove -y libfmt-dev
+      - name: Install additional tools
+        run: |
+          apt-get update
+          apt install -y ninja-build libxxhash-dev wget unzip clang-11 libclang-11-dev llvm-11-dev
+          apt-get remove -y libfmt-dev
       - name: Install GHC ${{ matrix.ghc }}
         run: ghcup install ghc ${{ matrix.ghc }} --set
       - name: Install cabal-install 3.6
@@ -35,7 +34,6 @@ jobs:
           mkdir -p "$HOME"/.hsthrift/bin && mv flow/flow "$HOME"/.hsthrift/bin
       - name: Install indexer (hack)
         run: |
-          apt-get update
           apt-get install -y software-properties-common apt-transport-https
           apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xB4112585D386EB94
           add-apt-repository https://dl.hhvm.com/ubuntu

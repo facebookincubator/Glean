@@ -6,9 +6,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include "common/hs/util/cpp/ffi.h"
-#include "common/hs/util/cpp/memory.h"
-#include "common/hs/util/cpp/wrap.h"
+#ifdef OSS
+#include <cpp/ffi.h> // @manual
+#include <cpp/memory.h> // @manual
+#include <cpp/wrap.h> // @manual
+#else
+#include <common/hs/util/cpp/ffi.h>
+#include <common/hs/util/cpp/memory.h>
+#include <common/hs/util/cpp/wrap.h>
+#endif
 #include "glean/if/gen-cpp2/glean_types.h"
 #include "glean/rts/bytecode/subroutine.h"
 #include "glean/rts/cache.h"
@@ -29,7 +35,7 @@
 #include <algorithm>
 
 #ifdef OSS
-#include <cpp/HsStruct.h>
+#include <cpp/HsStruct.h> // @manual
 #else
 #include <common/hs/util/cpp/HsStruct.h>
 #endif

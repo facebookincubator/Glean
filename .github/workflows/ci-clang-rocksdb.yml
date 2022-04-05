@@ -15,7 +15,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Install additional tools
-        run: apt-get install -y libxxhash-dev wget unzip
+        run: |
+          apt-get update
+          apt-get install -y libxxhash-dev wget unzip
       - name: Install GHC ${{ matrix.ghc }}
         run: ghcup install ghc ${{ matrix.ghc }} --set
       - name: Install cabal-install

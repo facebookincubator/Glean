@@ -12,7 +12,11 @@
 #include <folly/Range.h>
 #include <folly/Varint.h>
 
-#include "common/hs/util/cpp/memory.h"
+#ifdef OSS
+#include <cpp/memory.h> // @manual
+#else
+#include <common/hs/util/cpp/memory.h>
+#endif
 #include "glean/rts/id.h"
 #include "glean/rts/error.h"
 #include "glean/rts/nat.h"
