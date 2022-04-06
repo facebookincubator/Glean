@@ -9,7 +9,7 @@
 module Glean.Database.Schema.Types
   ( DbSchema(..)
   , PredicateDetails(..)
-  , PredicateEvolution(..)
+  , PredicateTransformation(..)
   , SchemaVersion(..)
   , lookupPredicate
   , lookupPredicateRef
@@ -47,8 +47,8 @@ data DbSchema = DbSchema
   , predicatesByName :: IntMap (HashMap Name PredicateDetails)
      -- ^ points to the predicate for each name in schema "all"
   , predicatesById :: IntMap PredicateDetails
-  , predicatesEvolution  :: IntMap PredicateEvolution
-     -- ^ value evolves key
+  , predicatesTransformations  :: IntMap PredicateTransformation
+     -- ^ keyed by predicate requested
   , predicatesDeps :: IntMap (Set Pid)
      -- ^ transitive predicate dependencies
   , schemaTypesByRef :: HashMap TypeRef TypeDetails
@@ -61,21 +61,23 @@ data DbSchema = DbSchema
   , schemaLatestVersion :: Version
   }
 
--- | Information required to transform a query that uses a deprecated predicate
--- P into one that uses a new predicate P' and then to transform all P' result
--- facts into P facts to return to the client.
-data PredicateEvolution = PredicateEvolution
-  { evolutionOld :: PredicateDetails
-    -- ^ deprecated predicate
-  , evolutionNew :: PredicateDetails
-    -- ^ new version of deprecated predicate
-  , evolutionEvolveKey :: Pat -> Pat
-  , evolutionEvolveValue :: Pat -> Pat
-    -- ^ transform a pattern that matches the old predicate's value into
-    -- one that matches the new predicates's value.
-  , evolutionDevolve :: Thrift.Fact -> Thrift.Fact
-    -- ^ transform a fact of the new predicate into a fact
-    -- of the original, deprecated predicate.
+-- | Data required to transform a predicate that was requested in a query into
+-- one that we have available in the database, and then to transform the facts
+-- found back into the requested predicate.
+data PredicateTransformation = PredicateTransformation
+  { tRequested :: PredicateDetails
+    -- ^ the predicate that was queried for
+  , tAvailable :: PredicateDetails
+    -- ^ the predicate we have in the database
+  , tTransformKey :: Pat -> Pat
+  , tTransformValue :: Pat -> Pat
+    -- ^ requested -> available
+    -- transform a query patterns that matche the requested predicate into
+    -- one that matches the predicates available.
+  , tTransformFactBack :: Thrift.Fact -> Thrift.Fact
+    -- ^ available -> requested
+    -- ^ transform a fact of the available predicate into a fact
+    -- of the requested predicate.
   }
 
 data TypeDetails = TypeDetails

@@ -23,6 +23,7 @@ module Glean.Database.Schema
   , thinSchemaInfo
   ) where
 
+import Control.Applicative ((<|>))
 import Control.Arrow (second)
 import Control.Exception
 import Control.Monad
@@ -51,8 +52,8 @@ import Data.Tuple (swap)
 
 import Glean.RTS.Foreign.Inventory as Inventory
 import Glean.Database.Schema.Types
-import Glean.Database.Schema.Evolve (mkPredicateEvolution)
-import qualified Glean.Database.Schema.Evolve as Evolve
+import Glean.Database.Schema.Transform (mkPredicateTransformation)
+import qualified Glean.Database.Schema.Transform as Transform
 import Glean.RTS.Traverse
 import Glean.RTS.Typecheck
 import Glean.RTS.Types as RTS
@@ -397,14 +398,15 @@ mkDbSchema override getPids dbContent source base addition = do
       dependencies = fmap f byId
         where
           f = Set.fromList
-            . Evolve.transitiveDeps (detailsFor byId)
+            . Transform.transitiveDeps (detailsFor byId)
             . predicatePid
 
   return $ DbSchema
     { predicatesByRef = byRef
     , predicatesByName = predicatesByName
     , predicatesById = byId
-    , predicatesEvolution = mkEvolutions dbContent override byId byRef resolved
+    , predicatesTransformations =
+        mkTransformations dbContent override byId byRef resolved
     , predicatesDeps = dependencies
     , schemaTypesByRef = tcEnvTypes env
     , schemaTypesByName = schemaTypesByName
@@ -421,59 +423,72 @@ detailsFor byId pid =
     Just details -> details
     Nothing -> error $ "unknown pid " <> show pid
 
-mkEvolutions
+mkTransformations
   :: DbContent
   -> Override
   -> IntMap PredicateDetails
   -> HashMap PredicateRef PredicateDetails
   -> [ResolvedSchema]
-  -> IntMap PredicateEvolution
-mkEvolutions DbWritable _ _ _ _ = mempty
-mkEvolutions (DbReadOnly stats) override byId byRef resolved =
+  -> IntMap PredicateTransformation
+mkTransformations DbWritable _ _ _ _ = mempty
+mkTransformations (DbReadOnly stats) override byId byRef resolved =
   IntMap.fromList
     [ (fromIntegral (fromPid old), evolution)
-    | (old, new) <- Map.toList $ evolvedPredicates stats override byRef resolved
-    , Just evolution <- [mkEvolution old new]
+    | (old, new) <- Map.toList $
+        transformedPredicates stats override byRef resolved
+    , Just evolution <- [mkTransformation old new]
     ]
   where
-    mkEvolution old new =
-      mkPredicateEvolution (detailsFor byId) old new
+    mkTransformation old new =
+      mkPredicateTransformation (detailsFor byId) old new
 
--- ^ Create a map of which predicate is evolved by which
-evolvedPredicates
+-- ^ Create a map of which should be transformed into which
+transformedPredicates
   :: HashMap Pid PredicateStats
   -> Override
   -> HashMap PredicateRef PredicateDetails
   -> [ResolvedSchema]
-  -> Map Pid Pid        -- ^ value evolves key
-evolvedPredicates stats override byRef resolved =
-  foldMap (uncurry mapPredicates) $ HashMap.toList finalEvolves
+  -> Map Pid Pid -- ^ when key pred is requested, get value pred from db
+transformedPredicates stats override byRef resolved =
+  HashMap.foldMapWithKey mapPredicates schemaTransformations
   where
+    schemaTransformations :: HashMap SchemaRef SchemaRef
+    schemaTransformations = HashMap.fromList
+      [ (requested, available)
+      | requested <- map schemaRef resolved
+      , Just available <- [transformationTarget requested]
+      ]
+
+    -- map each schema to the schema its queries should be transformed into
+    transformationTarget :: SchemaRef -> Maybe SchemaRef
+    transformationTarget src
+      | hasFactsInDb src = Nothing
+        -- Pick closest related schema with facts in the db.
+        -- If a schema has only derived facts there is no need to
+        -- transform it since the original version will still work.
+      | otherwise =
+          find hasFactsInDb newerSchemas <|>
+          find hasFactsInDb olderSchemas
+          where
+            -- given an 'a' returns [b,c...] such that 'b evolves a', 'c
+            -- evolves b', ...
+            newerSchemas = close directEvolves src
+            -- given an 'd' returns [c,b...] such that 'd evolves c', 'c
+            -- evolves b', ...
+            olderSchemas = close reverseDirectEvolves src
+
+    close :: (Hashable a, Eq a) => HashMap a a -> a -> [a]
+    close m x = case HashMap.lookup x m of
+        Just y -> y : close m y
+        Nothing -> []
+
     -- as specified by a `schema x evolves y` line
     directEvolves :: HashMap SchemaRef SchemaRef
     directEvolves = either (error . show) id (resolveEvolves resolved)
 
-    finalEvolves :: HashMap SchemaRef SchemaRef
-    finalEvolves = HashMap.fromList
-      [ (old,  new)
-      | old <- HashMap.keys directEvolves
-      , Just new <- [evolutionForSchema old]
-      ]
-
-    -- map each predicate in a schema to the final schema that will evolve it
-    evolutionForSchema :: SchemaRef -> Maybe SchemaRef
-    evolutionForSchema old
-      | hasFactsInDb old = Nothing
-        -- Pick first parent schema with facts in the db.
-        -- If a schema has only derived facts there is no need to
-        -- evolve it since the old version will still work.
-      | otherwise = find hasFactsInDb (transitiveEvolves old)
-
-    -- given an 'a' returns [b,c...] such that 'b evolves a', 'c evolves b', ...
-    transitiveEvolves s =
-      case HashMap.lookup s directEvolves of
-        Just s' -> s' : transitiveEvolves s'
-        Nothing -> []
+    reverseDirectEvolves :: HashMap SchemaRef SchemaRef
+    reverseDirectEvolves =
+      HashMap.fromList $ map swap $ HashMap.toList directEvolves
 
     hasFactsInDb :: SchemaRef -> Bool
     hasFactsInDb sref = fromMaybe False $ do
@@ -494,12 +509,12 @@ evolvedPredicates stats override byRef resolved =
       :: SchemaRef
       -> SchemaRef
       -> Map Pid Pid
-    mapPredicates oldRef newRef = Map.fromList
-      [ (pid old, pid new)
-      | (name, old) <- Map.toList (exports oldRef)
-      -- we don't evolve derived predicates, only their derivation query.
-      , not (isDerivedPred old)
-      , Just new <- return $ Map.lookup name (exports newRef)
+    mapPredicates requestedRef availableRef = Map.fromList
+      [ (pid requested, pid available)
+      | (name, requested) <- Map.toList (exports requestedRef)
+      -- we don't transform derived predicates, only their derivation query.
+      , not (isDerivedPred requested)
+      , Just available <- return $ Map.lookup name (exports availableRef)
       ]
 
     isDerivedPred :: PidRef -> Bool
@@ -513,8 +528,6 @@ evolvedPredicates stats override byRef resolved =
         details = case HashMap.lookup ref byRef of
           Nothing -> error $ "unknown predicate " <> show ref
           Just details -> details
-
-
 
     exports :: SchemaRef -> Map Name PidRef
     exports sref = HashMap.lookupDefault mempty sref exportsBySchemaRef

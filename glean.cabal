@@ -504,7 +504,7 @@ library db
         Glean.Database.Ownership
         Glean.Database.Repo
         Glean.Database.Schema
-        Glean.Database.Schema.Evolve
+        Glean.Database.Schema.Transform
         Glean.Database.Schema.Types
         Glean.Database.Stats
         Glean.Database.Storage
@@ -522,7 +522,7 @@ library db
         Glean.Write.JSON
         Glean.Query.BindOrder
         Glean.Query.Codegen
-        Glean.Query.Evolve
+        Glean.Query.Transform
         Glean.Query.Expand
         Glean.Query.Flatten
         Glean.Query.Flatten.Types

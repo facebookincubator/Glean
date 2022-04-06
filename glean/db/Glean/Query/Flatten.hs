@@ -25,7 +25,8 @@ import Glean.Query.Codegen
 import Glean.Query.Expand
 import Glean.Query.Flatten.Types
 import Glean.Query.Typecheck.Types
-import Glean.Query.Evolve (Evolutions, evolveTcQuery, evolveType, evolutionsFor)
+import Glean.Query.Transform
+  (Transformations, transformQuery, transformType, transformationsFor)
 import Glean.RTS.Types as RTS
 import Glean.RTS.Term as RTS hiding (Match(..))
 import Glean.Database.Schema.Types
@@ -39,9 +40,9 @@ flatten
   -> Schema.AngleVersion
   -> Bool -- ^ derive DerivedAndStored predicates
   -> TypecheckedQuery
-  -> Except Text (FlattenedQuery, Evolutions)
+  -> Except Text (FlattenedQuery, Transformations)
 flatten dbSchema _ver deriveStored typechecked = do
-  let returnTy = derefType $ evolveType dbSchema $ qiReturnType typechecked
+  let returnTy = derefType $ transformType dbSchema $ qiReturnType typechecked
       deriveStoredPred =
         case returnTy of
           Schema.Predicate (PidRef _ pref) | deriveStored -> Just pref
@@ -51,25 +52,25 @@ flatten dbSchema _ver deriveStored typechecked = do
         (qiNumVars typechecked)
         deriveStoredPred
   (qi,_) <- flip runStateT state $ do
-      query <- evolve (qiQuery typechecked)
+      query <- transform (qiQuery typechecked)
       q <- flattenQuery query
         `catchError` \e -> throwError $ e <> " in\n" <>
            Text.pack (show (pretty query))
       (q', ty) <- captureKey dbSchema q (case query of TcQuery ty _ _ _ -> ty)
       nextVar <- gets flNextVar
-      evolutions <- liftEither $
-        evolutionsFor dbSchema (qiReturnType typechecked)
-      return (QueryWithInfo q' nextVar ty, evolutions)
+      transformations <- liftEither $
+        transformationsFor dbSchema (qiReturnType typechecked)
+      return (QueryWithInfo q' nextVar ty, transformations)
   return qi
 
-evolve :: TcQuery -> F TcQuery
-evolve query = do
+transform :: TcQuery -> F TcQuery
+transform query = do
   dbSchema <- gets flDbSchema
-  return $ evolveTcQuery dbSchema query
+  return $ transformQuery dbSchema query
 
-evolveTypecheckedQuery :: TypecheckedQuery -> F TypecheckedQuery
-evolveTypecheckedQuery (QueryWithInfo q vars _) = do
-  q'@(TcQuery ty _ _ _) <- evolve q
+transformTypeCheckedQuery :: TypecheckedQuery -> F TypecheckedQuery
+transformTypeCheckedQuery (QueryWithInfo q vars _) = do
+  q'@(TcQuery ty _ _ _) <- transform q
   return $ QueryWithInfo q' vars ty
 
 flattenQuery :: TcQuery -> F FlatQuery
@@ -234,8 +235,9 @@ flattenFactGen pidRef@(PidRef pid _) kpat vpat = do
                return (mempty, FactGenerator pidRef kpat vpat)
           | otherwise -> do
             calling predicateRef $ do
-              qevolved <- evolveTypecheckedQuery query
-              query' <- expandDerivedPredicateCall details kpat vpat qevolved
+              qtransformed <- transformTypeCheckedQuery query
+              query' <-
+                expandDerivedPredicateCall details kpat vpat qtransformed
               (stmts, key, maybeVal) <- flattenQuery' query'
               let val = fromMaybe (Tuple []) maybeVal
               return (stmts, DerivedFactGenerator pidRef key val)

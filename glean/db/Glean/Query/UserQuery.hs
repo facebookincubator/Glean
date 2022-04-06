@@ -64,7 +64,7 @@ import Glean.Database.Types as Database
 import Glean.Database.Writes
 import Glean.FFI
 import Glean.Query.Codegen hiding (Match(..))
-import Glean.Query.Evolve
+import Glean.Query.Transform
 import Glean.Query.Flatten
 import Glean.Query.Opt
 import Glean.Query.Reorder
@@ -498,7 +498,7 @@ userQueryImpl
         -- that returns a temporary predicate.
         _ -> do
           let
-          (compileTime, _, (query@QueryWithInfo{..}, evolutions)) <- timeIt $
+          (compileTime, _, (query@QueryWithInfo{..}, appliedTrans)) <- timeIt $
             compileAngleQuery
               schemaVersion
               schema
@@ -511,9 +511,9 @@ userQueryImpl
 
             cont = case Thrift.userQueryOptions_continuation opts of
               Just c -> Right c
-              Nothing -> Left (query, evolutions)
+              Nothing -> Left (query, appliedTrans)
 
-            returnType = devolveType evolutions qiReturnType
+            returnType = undoTypeTransformation appliedTrans qiReturnType
 
           return (returnType, compileTime, irDiag, cont)
 
@@ -571,15 +571,15 @@ userQueryImpl
       else return Nothing
 
     ( qResults@QueryResults{..}
-      , evolutions
+      , appliedTrans
       , queryDiag
       , bytecodeSize) <-
       case cont of
         Right ucont -> do
           let binaryCont = Thrift.userQueryCont_continuation ucont
-              evolutions = toEvolutions schema $
+              appliedTrans = toTransformations schema $
                 Thrift.userQueryCont_evolutions ucont
-          results <- devolveResults evolutions <$>
+          results <- transformResultsBack appliedTrans <$>
             restartCompiled
               schemaInventory
               defineOwners
@@ -587,9 +587,9 @@ userQueryImpl
               (Just predicatePid)
               limits
               binaryCont
-          return (results, evolutions, [], B.length binaryCont)
+          return (results, appliedTrans, [], B.length binaryCont)
 
-        Left (query, evolutions) -> do
+        Left (query, appliedTrans) -> do
           let
             bytecodeDiag sub =
               [ "bytecode:\n" <> Text.unlines
@@ -597,11 +597,11 @@ userQueryImpl
               | Thrift.queryDebugOptions_bytecode debug ]
 
           bracket (compileQuery query) (release . compiledQuerySub) $ \sub -> do
-            results <- devolveResults evolutions <$>
+            results <- transformResultsBack appliedTrans <$>
               executeCompiled schemaInventory defineOwners stack sub limits
             diags <- evaluate $ force (bytecodeDiag sub) -- don't keep sub alive
             sz <- evaluate $ Bytecode.size (compiledQuerySub sub)
-            return (results, evolutions, diags, sz)
+            return (results, appliedTrans, diags, sz)
 
     -- If we're storing derived facts, queue them for writing and
     -- return the handle.
@@ -614,7 +614,8 @@ userQueryImpl
       Nothing -> return Nothing
       Just bs -> do
         nextId <- firstFreeId derived
-        return $ Just $ mkUserQueryCont evolutions (Right returnType) bs nextId
+        return $ Just $
+          mkUserQueryCont appliedTrans (Right returnType) bs nextId
 
     stats <- getStats qResults
 
@@ -674,13 +675,13 @@ userQueryImpl
       pred = predicateRef_name predicateRef <> "." <>
           showt (predicateRef_version predicateRef)
 
-      mkResults pids firstId derived evolutions qResults defineOwners = do
-        let QueryResults{..} = devolveResults evolutions qResults
+      mkResults pids firstId derived appliedTrans qResults defineOwners = do
+        let QueryResults{..} = transformResultsBack appliedTrans qResults
         userCont <- case queryResultsCont of
           Nothing -> return Nothing
           Just bs -> do
             nextId <- firstFreeId derived
-            return $ Just $ mkUserQueryCont evolutions (Left pids) bs nextId
+            return $ Just $ mkUserQueryCont appliedTrans (Left pids) bs nextId
 
         stats <- getStats qResults
         when (isJust userCont) $
@@ -732,9 +733,9 @@ userQueryImpl
             limits = getLimits pids
         qResults <- restartCompiled schemaInventory defineOwners stack
           (Just predicatePid) limits (Thrift.userQueryCont_continuation ucont)
-        let evolutions = toEvolutions schema $
+        let appliedTrans = toTransformations schema $
               Thrift.userQueryCont_evolutions ucont
-        mkResults pids nextId derived evolutions qResults defineOwners
+        mkResults pids nextId derived appliedTrans qResults defineOwners
 
       Nothing -> do
         let
@@ -754,7 +755,7 @@ userQueryImpl
             nextId <- firstFreeId lookup
             let pids = getExpandPids query
                 limits = getLimits pids
-            (gens, evolutions) <-
+            (gens, appliedTrans) <-
               case toGenerators schema stored details query of
                 Left err -> throwIO $ Thrift.BadQuery err
                 Right r -> return r
@@ -764,7 +765,7 @@ userQueryImpl
             qResults <- bracket (compileQuery gens) (release . compiledQuerySub)
               $ \sub -> executeCompiled schemaInventory defineOwners stack
                 sub limits
-            mkResults pids nextId derived evolutions qResults defineOwners
+            mkResults pids nextId derived appliedTrans qResults defineOwners
 
         -- 1. Decode the JSON
         pat <- case Aeson.eitherDecode (LB.fromStrict userQuery_query) of
@@ -827,7 +828,7 @@ compileAngleQuery
   -> DbSchema
   -> ByteString
   -> Bool
-  -> IO (CodegenQuery, Evolutions)
+  -> IO (CodegenQuery, Transformations)
 compileAngleQuery ver dbSchema source stored = do
   parsed <- checkBadQuery Text.pack $ Angle.parseQuery source
   vlog 2 $ "parsed query: " <> show (pretty parsed)
@@ -836,7 +837,7 @@ compileAngleQuery ver dbSchema source stored = do
     typecheck dbSchema latestAngleVersion (Qualified dbSchema ver) parsed
   vlog 2 $ "typechecked query: " <> show (pretty (qiQuery typechecked))
 
-  (flattened, evolutions) <- checkBadQuery id $ runExcept $
+  (flattened, appliedTrans) <- checkBadQuery id $ runExcept $
     flatten dbSchema latestAngleVersion stored typechecked
   vlog 2 $ "flattened query: " <> show (pretty (qiQuery flattened))
 
@@ -845,7 +846,7 @@ compileAngleQuery ver dbSchema source stored = do
 
   -- no need to vlog, compileQuery will vlog it later
   reordered <- checkBadQuery id $ runExcept $ reorder dbSchema optimised
-  return (reordered, evolutions)
+  return (reordered, appliedTrans)
   where
   checkBadQuery :: (err -> Text) -> Either err a -> IO a
   checkBadQuery txt act = case act of
@@ -1177,12 +1178,12 @@ parseQuery dbSchema Thrift.UserQueryOptions{..} details val =
         Nothing -> return Nothing
 
 mkUserQueryCont
-  :: Evolutions
+  :: Transformations
   -> Either (Set Pid) Type
   -> ByteString
   -> Fid
   -> Thrift.UserQueryCont
-mkUserQueryCont evolutions contInfo cont nextId =
+mkUserQueryCont appliedTrans contInfo cont nextId =
   hashUserQueryCont $ Thrift.UserQueryCont
   { userQueryCont_continuation = cont
   , userQueryCont_nextId = fromFid nextId
@@ -1190,7 +1191,7 @@ mkUserQueryCont evolutions contInfo cont nextId =
   , userQueryCont_hash = 0
   , userQueryCont_returnType = returnType
   , userQueryCont_pids = pids
-  , userQueryCont_evolutions = fromEvolutions evolutions
+  , userQueryCont_evolutions = fromTransformations appliedTrans
   }
   where
     returnType = case contInfo of
