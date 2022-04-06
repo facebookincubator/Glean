@@ -1,0 +1,796 @@
+[
+  [
+    {
+      "facts": [
+        {
+          "id": 1,
+          "key": "./function.rs"
+        }
+      ],
+      "predicate": "src.File.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.ConstDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.EnumDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.FieldDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.ForeignFunctionDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.ForeignStaticDef.1"
+    },
+    {
+      "facts": [
+        {
+          "id": 18,
+          "key": {
+            "name": {
+              "id": 20,
+              "key": {
+                "local_name": {
+                  "id": 21,
+                  "key": "add2"
+                }
+              }
+            },
+            "type": {
+              "id": 19,
+              "key": {
+                "repr": "pub fn add2(i32, i32) -> i32"
+              }
+            }
+          }
+        },
+        {
+          "id": 54,
+          "key": {
+            "name": {
+              "id": 56,
+              "key": {
+                "local_name": {
+                  "id": 57,
+                  "key": "add3"
+                }
+              }
+            },
+            "type": {
+              "id": 55,
+              "key": {
+                "repr": "pub fn add3(i32, i32, i32) -> i32"
+              }
+            }
+          }
+        }
+      ],
+      "predicate": "rust.FunctionDef.1"
+    },
+    {
+      "facts": [
+        {
+          "id": 2,
+          "key": {
+            "name": {
+              "id": 6,
+              "key": {
+                "local_name": {
+                  "id": 7,
+                  "key": "a"
+                },
+                "parent": {
+                  "id": 4,
+                  "key": {
+                    "local_name": {
+                      "id": 5,
+                      "key": "add2"
+                    }
+                  }
+                }
+              }
+            },
+            "type": {
+              "id": 3,
+              "key": {
+                "repr": "i32"
+              }
+            }
+          }
+        },
+        {
+          "id": 10,
+          "key": {
+            "name": {
+              "id": 14,
+              "key": {
+                "local_name": {
+                  "id": 15,
+                  "key": "b"
+                },
+                "parent": {
+                  "id": 12,
+                  "key": {
+                    "local_name": {
+                      "id": 13,
+                      "key": "add2"
+                    }
+                  }
+                }
+              }
+            },
+            "type": {
+              "id": 11,
+              "key": {
+                "repr": "i32"
+              }
+            }
+          }
+        },
+        {
+          "id": 24,
+          "key": {
+            "name": {
+              "id": 26,
+              "key": {
+                "local_name": {
+                  "id": 27,
+                  "key": "sum"
+                }
+              }
+            },
+            "type": {
+              "id": 25,
+              "key": {
+                "repr": "i32"
+              }
+            }
+          }
+        },
+        {
+          "id": 30,
+          "key": {
+            "name": {
+              "id": 34,
+              "key": {
+                "local_name": {
+                  "id": 35,
+                  "key": "a"
+                },
+                "parent": {
+                  "id": 32,
+                  "key": {
+                    "local_name": {
+                      "id": 33,
+                      "key": "add3"
+                    }
+                  }
+                }
+              }
+            },
+            "type": {
+              "id": 31,
+              "key": {
+                "repr": "i32"
+              }
+            }
+          }
+        },
+        {
+          "id": 38,
+          "key": {
+            "name": {
+              "id": 42,
+              "key": {
+                "local_name": {
+                  "id": 43,
+                  "key": "b"
+                },
+                "parent": {
+                  "id": 40,
+                  "key": {
+                    "local_name": {
+                      "id": 41,
+                      "key": "add3"
+                    }
+                  }
+                }
+              }
+            },
+            "type": {
+              "id": 39,
+              "key": {
+                "repr": "i32"
+              }
+            }
+          }
+        },
+        {
+          "id": 46,
+          "key": {
+            "name": {
+              "id": 50,
+              "key": {
+                "local_name": {
+                  "id": 51,
+                  "key": "c"
+                },
+                "parent": {
+                  "id": 48,
+                  "key": {
+                    "local_name": {
+                      "id": 49,
+                      "key": "add3"
+                    }
+                  }
+                }
+              }
+            },
+            "type": {
+              "id": 47,
+              "key": {
+                "repr": "i32"
+              }
+            }
+          }
+        }
+      ],
+      "predicate": "rust.LocalDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.MethodDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.ModuleDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.StaticDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.StructDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.StructVariantDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.TraitDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.TupleVariantDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.TypeDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.UnionDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.Impl.1"
+    },
+    {
+      "facts": [
+        {
+          "id": 8,
+          "key": {
+            "def_": {
+              "local": {
+                "id": 2
+              }
+            },
+            "file": {
+              "id": 1
+            },
+            "span": {
+              "length": 1,
+              "start": 12
+            }
+          }
+        },
+        {
+          "id": 16,
+          "key": {
+            "def_": {
+              "local": {
+                "id": 10
+              }
+            },
+            "file": {
+              "id": 1
+            },
+            "span": {
+              "length": 1,
+              "start": 20
+            }
+          }
+        },
+        {
+          "id": 22,
+          "key": {
+            "def_": {
+              "function_": {
+                "id": 18
+              }
+            },
+            "file": {
+              "id": 1
+            },
+            "span": {
+              "length": 4,
+              "start": 7
+            }
+          }
+        },
+        {
+          "id": 28,
+          "key": {
+            "def_": {
+              "local": {
+                "id": 24
+              }
+            },
+            "file": {
+              "id": 1
+            },
+            "span": {
+              "length": 3,
+              "start": 45
+            }
+          }
+        },
+        {
+          "id": 36,
+          "key": {
+            "def_": {
+              "local": {
+                "id": 30
+              }
+            },
+            "file": {
+              "id": 1
+            },
+            "span": {
+              "length": 1,
+              "start": 81
+            }
+          }
+        },
+        {
+          "id": 44,
+          "key": {
+            "def_": {
+              "local": {
+                "id": 38
+              }
+            },
+            "file": {
+              "id": 1
+            },
+            "span": {
+              "length": 1,
+              "start": 89
+            }
+          }
+        },
+        {
+          "id": 52,
+          "key": {
+            "def_": {
+              "local": {
+                "id": 46
+              }
+            },
+            "file": {
+              "id": 1
+            },
+            "span": {
+              "length": 1,
+              "start": 97
+            }
+          }
+        },
+        {
+          "id": 58,
+          "key": {
+            "def_": {
+              "function_": {
+                "id": 54
+              }
+            },
+            "file": {
+              "id": 1
+            },
+            "span": {
+              "length": 4,
+              "start": 76
+            }
+          }
+        }
+      ],
+      "predicate": "rust.DefLocation.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.ImplLocation.1"
+    },
+    {
+      "facts": [
+        {
+          "id": 9,
+          "key": {
+            "ranges": [],
+            "target": {
+              "local": {
+                "id": 2
+              }
+            }
+          }
+        },
+        {
+          "id": 17,
+          "key": {
+            "ranges": [],
+            "target": {
+              "local": {
+                "id": 10
+              }
+            }
+          }
+        },
+        {
+          "id": 23,
+          "key": {
+            "ranges": [],
+            "target": {
+              "function_": {
+                "id": 18
+              }
+            }
+          }
+        },
+        {
+          "id": 29,
+          "key": {
+            "ranges": [],
+            "target": {
+              "local": {
+                "id": 24
+              }
+            }
+          }
+        },
+        {
+          "id": 37,
+          "key": {
+            "ranges": [],
+            "target": {
+              "local": {
+                "id": 30
+              }
+            }
+          }
+        },
+        {
+          "id": 45,
+          "key": {
+            "ranges": [],
+            "target": {
+              "local": {
+                "id": 38
+              }
+            }
+          }
+        },
+        {
+          "id": 53,
+          "key": {
+            "ranges": [],
+            "target": {
+              "local": {
+                "id": 46
+              }
+            }
+          }
+        },
+        {
+          "id": 59,
+          "key": {
+            "ranges": [],
+            "target": {
+              "function_": {
+                "id": 54
+              }
+            }
+          }
+        },
+        {
+          "id": 23,
+          "key": {
+            "ranges": [
+              {
+                "length": 4,
+                "start": 118
+              },
+              {
+                "length": 4,
+                "start": 123
+              }
+            ],
+            "target": {
+              "function_": {
+                "id": 18
+              }
+            }
+          }
+        },
+        {
+          "id": 59,
+          "key": {
+            "ranges": [],
+            "target": {
+              "function_": {
+                "id": 54
+              }
+            }
+          }
+        },
+        {
+          "id": 17,
+          "key": {
+            "ranges": [
+              {
+                "length": 1,
+                "start": 55
+              }
+            ],
+            "target": {
+              "local": {
+                "id": 10
+              }
+            }
+          }
+        },
+        {
+          "id": 45,
+          "key": {
+            "ranges": [
+              {
+                "length": 1,
+                "start": 131
+              }
+            ],
+            "target": {
+              "local": {
+                "id": 38
+              }
+            }
+          }
+        },
+        {
+          "id": 9,
+          "key": {
+            "ranges": [
+              {
+                "length": 1,
+                "start": 51
+              }
+            ],
+            "target": {
+              "local": {
+                "id": 2
+              }
+            }
+          }
+        },
+        {
+          "id": 37,
+          "key": {
+            "ranges": [
+              {
+                "length": 1,
+                "start": 128
+              }
+            ],
+            "target": {
+              "local": {
+                "id": 30
+              }
+            }
+          }
+        },
+        {
+          "id": 53,
+          "key": {
+            "ranges": [
+              {
+                "length": 1,
+                "start": 135
+              }
+            ],
+            "target": {
+              "local": {
+                "id": 46
+              }
+            }
+          }
+        },
+        {
+          "id": 29,
+          "key": {
+            "ranges": [
+              {
+                "length": 3,
+                "start": 62
+              }
+            ],
+            "target": {
+              "local": {
+                "id": 24
+              }
+            }
+          }
+        }
+      ],
+      "predicate": "rust.XRef.1"
+    },
+    {
+      "facts": [
+        {
+          "id": 60,
+          "key": {
+            "file": {
+              "id": 61,
+              "key": "./function.rs"
+            },
+            "xrefs": [
+              {
+                "id": 23,
+                "key": {
+                  "ranges": [
+                    {
+                      "length": 4,
+                      "start": 118
+                    },
+                    {
+                      "length": 4,
+                      "start": 123
+                    }
+                  ],
+                  "target": {
+                    "function_": {
+                      "id": 18
+                    }
+                  }
+                }
+              },
+              {
+                "id": 59,
+                "key": {
+                  "ranges": [],
+                  "target": {
+                    "function_": {
+                      "id": 54
+                    }
+                  }
+                }
+              },
+              {
+                "id": 17,
+                "key": {
+                  "ranges": [
+                    {
+                      "length": 1,
+                      "start": 55
+                    }
+                  ],
+                  "target": {
+                    "local": {
+                      "id": 10
+                    }
+                  }
+                }
+              },
+              {
+                "id": 45,
+                "key": {
+                  "ranges": [
+                    {
+                      "length": 1,
+                      "start": 131
+                    }
+                  ],
+                  "target": {
+                    "local": {
+                      "id": 38
+                    }
+                  }
+                }
+              },
+              {
+                "id": 9,
+                "key": {
+                  "ranges": [
+                    {
+                      "length": 1,
+                      "start": 51
+                    }
+                  ],
+                  "target": {
+                    "local": {
+                      "id": 2
+                    }
+                  }
+                }
+              },
+              {
+                "id": 37,
+                "key": {
+                  "ranges": [
+                    {
+                      "length": 1,
+                      "start": 128
+                    }
+                  ],
+                  "target": {
+                    "local": {
+                      "id": 30
+                    }
+                  }
+                }
+              },
+              {
+                "id": 53,
+                "key": {
+                  "ranges": [
+                    {
+                      "length": 1,
+                      "start": 135
+                    }
+                  ],
+                  "target": {
+                    "local": {
+                      "id": 46
+                    }
+                  }
+                }
+              },
+              {
+                "id": 29,
+                "key": {
+                  "ranges": [
+                    {
+                      "length": 3,
+                      "start": 62
+                    }
+                  ],
+                  "target": {
+                    "local": {
+                      "id": 24
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "predicate": "rust.FileXRefs.1"
+    }
+  ]
+]

@@ -1,0 +1,335 @@
+[
+  [
+    {
+      "facts": [
+        {
+          "id": 1,
+          "key": "./struct.rs"
+        }
+      ],
+      "predicate": "src.File.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.ConstDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.EnumDef.1"
+    },
+    {
+      "facts": [
+        {
+          "id": 7,
+          "key": {
+            "name": {
+              "id": 11,
+              "key": {
+                "local_name": {
+                  "id": 12,
+                  "key": "bar"
+                },
+                "parent": {
+                  "id": 9,
+                  "key": {
+                    "local_name": {
+                      "id": 10,
+                      "key": "Foo"
+                    }
+                  }
+                }
+              }
+            },
+            "type": {
+              "id": 8,
+              "key": {
+                "repr": "i32"
+              }
+            }
+          }
+        },
+        {
+          "id": 15,
+          "key": {
+            "name": {
+              "id": 19,
+              "key": {
+                "local_name": {
+                  "id": 20,
+                  "key": "baz"
+                },
+                "parent": {
+                  "id": 17,
+                  "key": {
+                    "local_name": {
+                      "id": 18,
+                      "key": "Foo"
+                    }
+                  }
+                }
+              }
+            },
+            "type": {
+              "id": 16,
+              "key": {
+                "repr": "(f32, char)"
+              }
+            }
+          }
+        }
+      ],
+      "predicate": "rust.FieldDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.ForeignFunctionDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.ForeignStaticDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.FunctionDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.LocalDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.MethodDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.ModuleDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.StaticDef.1"
+    },
+    {
+      "facts": [
+        {
+          "id": 2,
+          "key": {
+            "name": {
+              "id": 3,
+              "key": {
+                "local_name": {
+                  "id": 4,
+                  "key": "Foo"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "predicate": "rust.StructDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.StructVariantDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.TraitDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.TupleVariantDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.TypeDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.UnionDef.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.Impl.1"
+    },
+    {
+      "facts": [
+        {
+          "id": 5,
+          "key": {
+            "def_": {
+              "struct_": {
+                "id": 2
+              }
+            },
+            "file": {
+              "id": 1
+            },
+            "span": {
+              "length": 3,
+              "start": 11
+            }
+          }
+        },
+        {
+          "id": 13,
+          "key": {
+            "def_": {
+              "field": {
+                "id": 7
+              }
+            },
+            "file": {
+              "id": 1
+            },
+            "span": {
+              "length": 3,
+              "start": 25
+            }
+          }
+        },
+        {
+          "id": 21,
+          "key": {
+            "def_": {
+              "field": {
+                "id": 15
+              }
+            },
+            "file": {
+              "id": 1
+            },
+            "span": {
+              "length": 3,
+              "start": 43
+            }
+          }
+        }
+      ],
+      "predicate": "rust.DefLocation.1"
+    },
+    {
+      "facts": [],
+      "predicate": "rust.ImplLocation.1"
+    },
+    {
+      "facts": [
+        {
+          "id": 6,
+          "key": {
+            "ranges": [],
+            "target": {
+              "struct_": {
+                "id": 2
+              }
+            }
+          }
+        },
+        {
+          "id": 14,
+          "key": {
+            "ranges": [],
+            "target": {
+              "field": {
+                "id": 7
+              }
+            }
+          }
+        },
+        {
+          "id": 22,
+          "key": {
+            "ranges": [],
+            "target": {
+              "field": {
+                "id": 15
+              }
+            }
+          }
+        },
+        {
+          "id": 6,
+          "key": {
+            "ranges": [],
+            "target": {
+              "struct_": {
+                "id": 2
+              }
+            }
+          }
+        },
+        {
+          "id": 14,
+          "key": {
+            "ranges": [],
+            "target": {
+              "field": {
+                "id": 7
+              }
+            }
+          }
+        },
+        {
+          "id": 22,
+          "key": {
+            "ranges": [],
+            "target": {
+              "field": {
+                "id": 15
+              }
+            }
+          }
+        }
+      ],
+      "predicate": "rust.XRef.1"
+    },
+    {
+      "facts": [
+        {
+          "id": 23,
+          "key": {
+            "file": {
+              "id": 24,
+              "key": "./struct.rs"
+            },
+            "xrefs": [
+              {
+                "id": 6,
+                "key": {
+                  "ranges": [],
+                  "target": {
+                    "struct_": {
+                      "id": 2
+                    }
+                  }
+                }
+              },
+              {
+                "id": 14,
+                "key": {
+                  "ranges": [],
+                  "target": {
+                    "field": {
+                      "id": 7
+                    }
+                  }
+                }
+              },
+              {
+                "id": 22,
+                "key": {
+                  "ranges": [],
+                  "target": {
+                    "field": {
+                      "id": 15
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "predicate": "rust.FileXRefs.1"
+    }
+  ]
+]
