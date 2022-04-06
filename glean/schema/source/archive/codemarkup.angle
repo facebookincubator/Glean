@@ -1374,107 +1374,6 @@ import code.buck.1
 import buck.3
 import erlang.1
 
-# Deprecated types
-
-# deprecated
-type Declaration =
-  {
-    name: string,
-    file: src.File,
-    span: src.ByteSpan,
-  }
-
-# deprecated
-type DirectXRef =
-  {
-    target: Declaration,
-    source: src.ByteSpan,
-  }
-
-# deprecated: shiny xrefs
-type Annotation =
-  {
-    span: src.ByteSpan,
-    shortName: string,
-    linkTo: maybe LinkTo,
-  }
-
-type LinkTo =
-  {
-    localRepo: src.FileLocation |
-  }
-
-# Deprecate Shiny xref API
-
-# deprecated
-predicate FileAnnotations:
-  {
-    file: src.File,
-    annotation: Annotation,
-  }
-  { File, Ann } where
-  FileDirectXRefs {
-    File, { { name=ShortName, file=DstFile, span=DstSpan }, Source }
-  };
-  Ann =
-    Annotation {
-      span = Source,
-      shortName = ShortName,
-      linkTo = { just = { localRepo = { DstFile, DstSpan } } }
-    }
-
-# deprecated, used only by FileAnnotations
-predicate FileDirectXRefs:
-  {
-    file: src.File,
-    xref: DirectXRef,
-  }
-  ({ File, DirectXRef } where
-    FileEntityXRefLocations { File, XRef, _ };
-    ToLegacyXRef {XRef, DirectXRef}) |
-  ({ File, DirectXRef } where
-    HaskellFileDirectXRefs { File, DirectXRef })
-
-# deprecated, used only by FileAnnotations via FileDirectXRefs
-predicate HaskellFileDirectXRefs:
-  {
-    file: src.File,
-    xref: DirectXRef,
-  }
-  {File, {Decl, Src}} where
-  hs.FileXRefMap { file = File, refs = Refs };
-  { target = Target, spans = Spans } : hs.XReference = Refs [..];
-  Src : src.ByteSpan = Spans [..];
-  Target = hs.XRefTarget { definition =  hs.DefinitionName TargetName };
-  hs.Definition {hs.DefinitionName TargetName, {TargetFile, TargetSpan}};
-  Decl = Declaration {TargetName, TargetFile, TargetSpan};
-
-# Deprecated language-agnostic API (v2)
-
-# deprecated
-predicate FileEntityXRefs:
-  {
-    file: src.File,
-    xref: DirectXRef,
-    entity: code.Entity,
-  }
-  { File, DirectXRef, Entity } where
-    FileEntityXRefLocations { File, XRef, Entity };
-    ToLegacyXRef {XRef, DirectXRef};
-
-# Compat shims for old xref format (deprecated)
-predicate ToLegacyXRef:
-  {
-    from: XRefLocation,
-    to: DirectXRef
-  }
-  { { FromTarget, FromSource } , DirectXRef } where
-    DirectXRef = (
-      { Name, TargetFile, {span = TargetSpan}, nothing } = FromTarget;
-      { span = Span } = FromSource;
-      {{ Name, TargetFile, TargetSpan}, Span };
-    )
-
 #
 # Public API
 #
@@ -1519,20 +1418,36 @@ type SymbolKind =
     Operator | TypeParameter | Union | Macro
   }
 
+type SymbolInfo =
+  {
+    kind: SymbolKind,
+    isAbstract: bool,  # typically applies to methods, fields, and classes
+  }
+
 # Public language-agnostic API
 
 # Associates an entity with a symbol kind.
+# TODO: Deprecate and replace with EntityInfo
 predicate EntityKind:
   {
     entity: code.Entity,
     kind: SymbolKind,
   }
   { Entity, Kind } where
-    PythonEntityKind { Entity, Kind } |
-    CxxEntityKind { Entity, Kind } |
-    PpEntityKind { Entity, Kind } |
-    HackEntityKind { Entity, Kind } |
-    ErlangEntityKind { Entity, Kind };
+    EntityInfo { Entity, { kind = Kind } }
+
+# Retrieve information about an entity
+predicate EntityInfo:
+  {
+    entity: code.Entity,
+    info: SymbolInfo,
+  }
+  { Entity, Info } where
+    PythonEntityInfo { Entity, Info } |
+    CxxEntityInfo { Entity, Info } |
+    PpEntityInfo { Entity, Info } |
+    HackEntityInfo { Entity, Info } |
+    ErlangEntityInfo { Entity, Info }
 
 # All entities defined in a src.File and their locations
 predicate FileEntityLocations:
@@ -1555,6 +1470,16 @@ predicate FileEntityKinds:
   { File, Entity, Kind } where
     FileEntityLocations { File, _, Entity };
     EntityKind { Entity, Kind };
+
+predicate FileEntityInfos:
+  {
+    file: src.File,
+    entity: code.Entity,
+    info: SymbolInfo,
+  }
+  { File, Entity, Info } where
+    FileEntityLocations { File, _, Entity };
+    EntityInfo { Entity, Info };
 
 # Map a location to the Entity declared there
 predicate ResolveLocation:
@@ -1608,6 +1533,29 @@ predicate FileEntityXRefLocations:
     ThriftFileEntityXRefLocations { File, XRef, Entity } |
     ErlangFileEntityXRefLocations { File, XRef, Entity };
 
+# Xrefs without the target location. This can be useful in cases
+# where we don't have a target location, but we don't need it. This
+# happens when indexing a subset of Hack files in a repo, for example.
+predicate FileEntityXRefSpans:
+  {
+    file: src.File,
+    span: src.ByteSpan,
+    entity: code.Entity,
+  }
+  { File, Span, Entity } where
+    HackFileEntityXRefSpans { File, Span, Entity } |
+    (
+      FlowFileEntityXRefLocations { File, XRef, Entity } |
+      PythonFileEntityXRefLocations { File, XRef, Entity } |
+      CxxFileEntityXRefLocations { File, XRef, Entity } |
+      HaskellFileEntityXRefLocations { File, XRef, Entity } |
+      RustFileEntityXRefLocations { File, XRef, Entity } |
+      BuckFileEntityXRefLocations { File, XRef, Entity } |
+      ThriftFileEntityXRefLocations { File, XRef, Entity } |
+      ErlangFileEntityXRefLocations { File, XRef, Entity };
+      { source = { span = Span }} = XRef
+    )
+
 # Finding xrefs. All references in a file, and their kinds
 predicate FileEntityXRefKinds:
   {
@@ -1618,6 +1566,16 @@ predicate FileEntityXRefKinds:
   { File, Entity, Kind } where
     FileEntityXRefLocations { File, _, Entity };
     EntityKind { Entity, Kind };
+
+predicate FileEntityXRefInfos:
+  {
+    file: src.File,
+    entity: code.Entity,
+    info: SymbolInfo,
+  }
+  { File, Entity, Info } where
+    FileEntityXRefLocations { File, _, Entity };
+    EntityInfo { Entity, Info };
 
 # Find references to a language entity
 predicate EntityUses:
@@ -1945,6 +1903,18 @@ predicate HackFileEntityXRefLocations:
     Src = Sources[..];
     Entity = code.Entity { hack = { decl = D } };
 
+predicate HackFileEntityXRefSpans:
+  {
+    file: src.File,
+    span: src.ByteSpan,
+    entity: code.Entity,
+  }
+  { File, Src, { hack = { decl = D } } } where
+    hack.FileXRefs { file = File, xrefs = XRefs };
+    hack.XRef { target = { declaration = D }, ranges = Uses } = XRefs[..];
+    Sources = prim.relToAbsByteSpans Uses;
+    Src = Sources[..]
+
 predicate FlowFileEntityXRefLocations:
   {
     file: src.File,
@@ -2047,17 +2017,17 @@ predicate PythonFileEntityXRefLocations:
     XRef
   );
   Entity = code.Entity { python = { decl = PyDecl } };
-  PythonEntityToDeclaration { entity = Entity, decl = Decl};
-  { Name, TargetFile, TargetSpan } = Decl;
+  PythonEntityNameAndLocation { Entity, Name, TargetFile, TargetSpan };
   { Name, TargetFile, { span = TargetSpan }, nothing } = Location;
 
-# N.B. uses deprecated types
-predicate PythonEntityToDeclaration:
+predicate PythonEntityNameAndLocation:
   {
     entity: code.Entity,
-    decl: Declaration,
+    name: string,
+    file: src.File,
+    span: src.ByteSpan,
   }
-  {Ent, Decl} where
+  {Ent, Name, File, Span} where
   { python = { decl = PyDecl }} = Ent;
   (
     { cls = D } = PyDecl;
@@ -2077,7 +2047,6 @@ predicate PythonEntityToDeclaration:
   );
   PyName = python.Name Name;
   python.DeclarationLocation {PyDecl, File, Span};
-  Decl = Declaration {Name, File, Span};
 
 # Either C++ / ObjC xrefs or C preprocessor xrefs
 predicate CxxFileEntityXRefLocations:
@@ -2507,15 +2476,16 @@ predicate ErlangEntityUses:
   erlang.DeclarationUses { declaration = D, file = File, span = Span}
 
 #
-# Language-specific symbol kinds
+# Language-specific symbol info
 #
 
-predicate NonImportPythonDeclarationKind:
+predicate NonImportPythonDeclarationInfo:
   {
     declaration: python.Declaration,
-    kind: SymbolKind,
+    info: SymbolInfo,
   }
-  { D, Kind } where
+  { D, Info } where
+    { kind = Kind, isAbstract = false } = Info;
     ({cls = _} = D; Class_ = Kind ) |
     ({module = _} = D; Module = Kind ) |
     ({func = _} = D;
@@ -2529,89 +2499,119 @@ predicate NonImportPythonDeclarationKind:
       ({cls = _} = C; Field = Kind ) |
       ({func = _} = C; Variable = Kind ))  # these are locals
 
-predicate PythonEntityKind:
+predicate PythonEntityInfo:
   {
     entity: code.Entity,
-    kind: SymbolKind,
+    info: SymbolInfo,
   }
-  { { python = { decl = D } }, Kind } where
-    NonImportPythonDeclarationKind { D, Kind } |
+  { { python = { decl = D } }, Info } where
+    NonImportPythonDeclarationInfo { D, Info } |
     ({imp = {from_name = FN}} = D;
       python.DeclarationWithName { FN, Imported };
-      NonImportPythonDeclarationKind { Imported, Kind }
+      NonImportPythonDeclarationInfo { Imported, Info }
     )
 
-predicate CxxEntityKind:
+predicate CxxEntityInfo:
   {
     entity: code.Entity,
-    kind: SymbolKind,
+    info: SymbolInfo,
   }
-  { { cxx = CxxD }, Kind } where
+  { { cxx = CxxD }, Info } where
     ({ decl = Decl } = CxxD;
-     CxxDeclKind { Decl, Kind }) |
+     CxxDeclInfo { Decl, Info }) |
     ({ enumerator = _ } = CxxD;
-     Enumerator = Kind) |
+     { kind = Enumerator, isAbstract = false } = Info) |
     ({ defn = Defn } = CxxD;
      cxx1.DefToBaseDecl { Defn, Decl };
-     CxxDeclKind { Decl, Kind }; )
+     CxxDeclInfo { Decl, Info }; )
 
-predicate CxxDeclKind:
+predicate CxxDeclInfo:
   {
     decl: cxx1.Declaration,
-    kind: SymbolKind,
+    info: SymbolInfo,
   }
-  { Decl, Kind } where
-    ({ namespace_ = _ } = Decl; Namespace = Kind ) |
-    ({ usingDeclaration = _ } = Decl; Namespace = Kind ) |
-    ({ enum_ = _ } = Decl; Enum = Kind ) |
-    ({ function_ = _ } = Decl; Function = Kind ) |
-    ({ variable = _ } = Decl; Variable = Kind ) |
-    ({ objcMethod = _ } = Decl; Method = Kind ) |
-    ({ objcProperty = _ } = Decl; Property = Kind ) |
-    ({ typeAlias = _ } = Decl; Class_ = Kind ) |
-    # TODO: objc containers, using directives
-    ({ record_ = R } = Decl;
-      ({ kind = { struct_ = _ } } = R; Struct = Kind ) |
-      ({ kind = { class_ = _ } } = R; Class_ = Kind ) |
-      ({ kind = { union_ = _ } } = R; Union = Kind )
+  { Decl, { kind = Kind, isAbstract = Abs } } where
+    ({ function_ = { method = MM } } = Decl;
+       ({ just = M } = MM; Method = Kind; { isVirtual = Abs } = M) |
+       (nothing = MM; Function = Kind; false = Abs)
+    ) |
+    ({ function_ = { method = { just = M }}} = Decl;
+       Method = Kind;
+       { isVirtual = Abs } = M
+    ) |
+    (
+      false = Abs;
+      ({ namespace_ = _ } = Decl; Namespace = Kind ) |
+      ({ usingDeclaration = _ } = Decl; Namespace = Kind ) |
+      ({ enum_ = _ } = Decl; Enum = Kind ) |
+      ({ variable = _ } = Decl; Variable = Kind ) |
+      ({ objcMethod = _ } = Decl; Method = Kind ) |
+      ({ objcProperty = _ } = Decl; Property = Kind ) |
+      ({ typeAlias = _ } = Decl; Class_ = Kind ) |
+      # TODO: objc containers, using directives
+      ({ record_ = R } = Decl;
+        ({ kind = { struct_ = _ } } = R; Struct = Kind ) |
+        ({ kind = { class_ = _ } } = R; Class_ = Kind ) |
+        ({ kind = { union_ = _ } } = R; Union = Kind )
+      )
     )
 
-predicate PpEntityKind:
+predicate PpEntityInfo:
   {
     entity: code.Entity,
-    kind: SymbolKind,
+    info: SymbolInfo,
   }
-  { { pp = Decl }, Kind } where
+  { { pp = Decl }, { kind = Kind, isAbstract = false } } where
     ({ define = _ } = Decl; Macro = Kind ) |
     ({ undef = _ } = Decl; Macro = Kind ) |
     ({ include_ = _ } = Decl; File = Kind )
 
-predicate HackEntityKind:
+predicate HackEntityInfo:
   {
     entity: code.Entity,
-    kind: SymbolKind,
+    info: SymbolInfo,
   }
-  { {hack = {decl = Decl}}, Kind } where
-    ({ classConst = _ } = Decl; Constant = Kind) |
-    ({ container = { class_ = _ } } = Decl; Class_ = Kind) |
-    ({ container = { enum_ = _ } } = Decl; Enum = Kind) |
-    ({ container = { interface_ = _ } } = Decl; Interface = Kind) |
-    ({ container = { trait = _ } } = Decl; Interface = Kind) |
-    ({ enumerator = _ } = Decl; Enum = Kind) |
-    ({ function_ = _ } = Decl; Function = Kind) |
-    ({ globalConst = _ } = Decl; Constant = Kind) |
-    ({ namespace_ = _ } = Decl; Namespace = Kind) |
-    ({ method = _ } = Decl; Method = Kind) |
-    ({ property_ = _ } = Decl; Property = Kind) |
-    ({ typeConst = _ } = Decl; Type = Kind) |
-    ({ typedef_ = _ } = Decl; Type = Kind)
+  { {hack = {decl = Decl}}, { kind = Kind, isAbstract = Abs } } where
+    ( { method = M } = Decl;
+      hack.MethodDefinition { declaration = M, isAbstract = Abs };
+      Method = Kind
+    ) |
+    ( { property_ = P } = Decl;
+      hack.PropertyDefinition { declaration = P, isAbstract = Abs };
+      Property = Kind
+    ) |
+    ( { classConst = C } = Decl;
+      hack.ClassConstDefinition { declaration = C, value = V };
+      Constant = Kind;
+      ( nothing = V; true = Abs ) | ( { just = _ } = V; false = Abs )
+    ) |
+    ( { typeConst = T } = Decl;
+      hack.TypeConstDefinition { declaration = T, kind = TCKind };
+      Type = Kind;
+      ( Concrete = TCKind; false = Abs ) |
+      ( Abstract = TCKind; true = Abs) |
+      ( PartiallyAbstract = TCKind; true = Abs)
+    ) |
+    (
+      false = Abs;
+      ({ container = { class_ = _ } } = Decl; Class_ = Kind) |
+      ({ container = { enum_ = _ } } = Decl; Enum = Kind) |
+      ({ container = { interface_ = _ } } = Decl; Interface = Kind) |
+      ({ container = { trait = _ } } = Decl; Interface = Kind) |
+      ({ enumerator = _ } = Decl; Enum = Kind) |
+      ({ function_ = _ } = Decl; Function = Kind) |
+      ({ globalConst = _ } = Decl; Constant = Kind) |
+      ({ namespace_ = _ } = Decl; Namespace = Kind) |
+      ({ typedef_ = _ } = Decl; Type = Kind)
+    )
 
-predicate ErlangEntityKind:
+predicate ErlangEntityInfo:
   {
     entity: code.Entity,
-    kind: SymbolKind,
+    info: SymbolInfo,
   }
-  { { erlang = { decl = { func = D} } }, Kind } where
+  { { erlang = { decl = { func = D} } },
+    { kind = Kind, isAbstract = false } } where
   Kind = Function: SymbolKind;
   erlang.FunctionDeclaration {} = D;
 
@@ -2735,5 +2735,3 @@ predicate HackContainsChildEntity :
     )
 
 }
-
-schema codemarkup.21 evolves codemarkup.20
