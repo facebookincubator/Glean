@@ -16,7 +16,7 @@ import Data.List (elemIndex)
 import Data.Bifoldable
 import qualified Data.Map.Strict as Map
 import Data.Map.Strict (Map)
-import Data.Maybe (fromMaybe, listToMaybe)
+import Data.Maybe (fromMaybe, listToMaybe, isJust)
 import Data.Text (Text)
 import qualified Data.Set as Set
 import Data.Word (Word64)
@@ -185,26 +185,26 @@ mkValueTransformation from to = go from to
   where
     names = map fieldDefName
 
-    -- if an option's definition and index didn't change it
-    -- will not have an entry in this map.
+    -- one entry for each common field
     transformationsFor
       :: [FieldDef]
       -> [FieldDef]
-      -> Map Text (Word64, Value -> Value)
-    transformationsFor from to = Map.fromList
-      [ (name, (ixTo, f))
-      | (FieldDef name defFrom, ixFrom) <- zip from [0..]
-      , Just (ixTo, f) <- return $ do
-          case Map.lookup name toFields of
-            Nothing -> Just unknown
-            Just (ixTo, defTo) ->
-              case go defFrom defTo of
-                Nothing | ixTo == ixFrom -> Nothing
-                Nothing -> Just (ixTo, id)
-                Just f -> Just (ixTo, f)
-      ]
+      -> Map Text (Maybe (Word64, Value -> Value))
+    transformationsFor from to =
+      Map.intersectionWith trans fromFields toFields
       where
-        unknown = (fromIntegral (length to), const (Tuple []))
+        trans (ixFrom, defFrom) (ixTo, defTo) =
+          case go defFrom defTo of
+            -- fields are identical
+            Nothing | ixTo == ixFrom -> Nothing
+            -- field order changed
+            Nothing -> Just (ixTo, id)
+            -- field content changed
+            Just f -> Just (ixTo, f)
+
+        fromFields :: Map Text (Word64, Type)
+        fromFields = Map.fromList $ flip map (zip from [0..])
+          $ \(FieldDef name def, ix) -> (name, (ix, def))
 
         toFields :: Map Text (Word64, Type)
         toFields = Map.fromList $ flip map (zip to [0..])
@@ -228,41 +228,54 @@ mkValueTransformation from to = go from to
         _ -> error $ "expected Array, got " <> show term
 
     go (Type.Record from) (Type.Record to) =
-      let transformationsMap = transformationsFor from to
-          transformations =
-            [ (field, transform)
-            | field <- names to
-            , transform <- [maybe id snd $ Map.lookup field transformationsMap]
-            ]
-          noChange = null transformationsMap
+      let transformations = transformationsFor from to
+          sameFieldCount = length from == length to
+          -- implies same field order as well
+          sameFieldContents = Map.null (Map.filter isJust transformations)
+          noChange = sameFieldCount && sameFieldContents
       in
       if noChange
       then Nothing
       else Just $ \term -> case term of
         Tuple contents -> Tuple
-          [ transform content
-          | (field, transform) <- transformations
-          , Just content <- [lookup field withNames]
+          [ case Map.lookup name transMap of
+              -- 'to' field doesn't exist in 'from'
+              Nothing -> defaultValue ty
+              Just (content, Nothing) -> content
+              Just (content, Just (_, transform)) -> transform content
+          | FieldDef name ty <- to
           ]
-          where withNames = zip (names from) contents
+          where
+            transMap = Map.intersectionWith (,) contentsByName transformations
+            contentsByName = Map.fromList $ zip (names from) contents
         _ -> error $ "expected Tuple, got " <> show term
 
     go (Type.Sum from) (Type.Sum to) =
       let transformations = transformationsFor from to
-          noChange = Map.null transformations
-          altMap = Map.fromList
-              [ (ixFrom, (ixTo, change))
+          safeAltCount = length from <= length to
+          sameAltContents = Map.null (Map.filter isJust transformations)
+          noChange = safeAltCount && sameAltContents
+          transformationsByIx = Map.fromList
+              [ (ixFrom, trans)
               | (name, ixFrom) <- zip (names from) [0..]
-              , Just (ixTo, change) <- [Map.lookup name transformations]
+              , Just trans <- [Map.lookup name transformations]
               ]
+          unknown = Alt (fromIntegral $ length to) (Tuple [])
       in
       if noChange
         then Nothing
         else Just $ \term -> case term of
-          Alt n content -> case Map.lookup n altMap of
-            Nothing -> Alt n content
-            Just (n', change) -> Alt n' (change content)
+          Alt n content -> case Map.lookup n transformationsByIx of
+            -- alternative in 'from' doesn't exist in 'to'
+            Nothing -> unknown
+            Just Nothing -> term
+            Just (Just (n', transform)) -> Alt n' (transform content)
           _ -> error $ "expected Alt, got " <> show term
     go from to =
       error $ "invalid type conversion: "
         <> show from <> " to " <> show to
+
+defaultValue :: Type -> Value
+defaultValue ty = case ty of
+  Type.Maybe _ -> Alt 0 (Tuple [])
+  _ -> error $ "type doesn't have a default value: " <> show ty

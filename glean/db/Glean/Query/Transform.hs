@@ -68,6 +68,7 @@ fromTransformations (Transformations e) = Map.fromList
 -- Transform TypecheckedQuery
 -- ========================
 
+-- Transform types requested in the query into types available in the database.
 transformQuery :: DbSchema -> TcQuery -> TcQuery
 transformQuery schema q@(TcQuery ty _ _ _) = transformTcQuery ty Nothing q
   where
@@ -99,8 +100,8 @@ transformQuery schema q@(TcQuery ty _ _ _) = transformTcQuery ty Nothing q
           Var to vid name
 
     transformTcTerm :: Type -> Type -> TcTerm -> TcTerm
-    transformTcTerm from newish term =
-      let to = transformType schema newish in
+    transformTcTerm from to0 term =
+      let to = transformType schema to0 in
       case term of
         TcOr left right -> TcOr
           (transform from to left)
@@ -145,11 +146,11 @@ transformQuery schema q@(TcQuery ty _ _ _) = transformTcQuery ty Nothing q
     transform :: Type -> Type -> TcPat -> TcPat
     transform = transformPat overTyped overVar
       where
-        overTyped from newish (Typed _ pat) =
-          let to = transformType schema newish in
+        overTyped from to0 (Typed _ pat) =
+          let to = transformType schema to0 in
           Typed to (transformTcTerm from to pat)
-        overVar _ newish (Var _ vid name) =
-          let to = transformType schema newish in
+        overVar _ to0 (Var _ vid name) =
+          let to = transformType schema to0 in
           Var to vid name
 
 -- | Transformations for a type and all its transitively nested types

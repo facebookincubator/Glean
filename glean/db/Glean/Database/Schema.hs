@@ -470,11 +470,10 @@ transformedPredicates stats override byRef resolved =
           find hasFactsInDb newerSchemas <|>
           find hasFactsInDb olderSchemas
           where
-            -- given an 'a' returns [b,c...] such that 'b evolves a', 'c
-            -- evolves b', ...
+            -- if we have 'b evolves a' and 'c evolves b'
+            -- given 'a' produces [b, c]
             newerSchemas = close directEvolves src
-            -- given an 'd' returns [c,b...] such that 'd evolves c', 'c
-            -- evolves b', ...
+            -- given 'c' produces [b, a]
             olderSchemas = close reverseDirectEvolves src
 
     close :: (Hashable a, Eq a) => HashMap a a -> a -> [a]

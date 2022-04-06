@@ -1062,7 +1062,7 @@ schemaEvolves = TestList
 
 schemaEvolvesTransformations :: Test
 schemaEvolvesTransformations = TestList
-  [ TestLabel "remove field" $ TestCase $ do
+  [ TestLabel "backcompat - remove field" $ TestCase $ do
     withSchemaAndFacts []
       [s|
         schema x.1 {
@@ -1082,7 +1082,31 @@ schemaEvolvesTransformations = TestList
         facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
         assertEqual "result count" 1 (length facts)
 
-  , TestLabel "change field order" $ TestCase $ do
+  , TestLabel "forwardcompat - maps new optional field to default value" $
+    TestCase $ do
+    withSchemaAndFacts []
+      [s|
+        schema x.1 {
+          predicate P : { a : string }
+        }
+        schema x.2 {
+          predicate P : { a : string, b : maybe string }
+        }
+        schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
+      |]
+      [ mkBatch (PredicateRef "x.P" 1)
+          [ [s|{ "key": { "a": "A" } }|]
+          ]
+      ]
+      [s| x.P.2 _ |]
+      $ \byRef response _ -> do
+        let nothing = RTS.Alt 0 unit
+            unit = RTS.Tuple []
+        facts <- decodeResultsAs (PredicateRef "x.P" 2) byRef response
+        assertEqual "result content" [RTS.Tuple [RTS.String "A", nothing]] facts
+
+  , TestLabel "backcompat - change field order" $ TestCase $ do
     withSchemaAndFacts []
       [s|
         schema x.1 {
@@ -1104,7 +1128,29 @@ schemaEvolvesTransformations = TestList
         facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
         assertEqual "result count" 2 (length facts)
 
-  , TestLabel "change alternative order" $ TestCase $ do
+  , TestLabel "forwardcompat - change field order" $ TestCase $ do
+    withSchemaAndFacts []
+      [s|
+        schema x.1 {
+          predicate P: { a : string, b: nat }
+        }
+        schema x.2 {
+          predicate P: { b: nat, a : string }
+        }
+        schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
+      |]
+      [ mkBatch (PredicateRef "x.P" 1)
+          [ [s|{ "key": { "b": 16, "a": "one1" } }|]
+          , [s|{ "key": { "b": 32, "a": "one2" } }|]
+          ]
+      ]
+      [s| x.P.2 _ |]
+      $ \byRef response _ -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 2) byRef response
+        assertEqual "result count" 2 (length facts)
+
+  , TestLabel "backcompat - change alternative order" $ TestCase $ do
     withSchemaAndFacts []
       [s|
         schema x.1 {
@@ -1125,6 +1171,86 @@ schemaEvolvesTransformations = TestList
       $ \byRef response _ -> do
         facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
         assertEqual "result count" 2 (length facts)
+
+  , TestLabel "forwardcompat - change alternative order" $ TestCase $ do
+    withSchemaAndFacts []
+      [s|
+        schema x.1 {
+          predicate P: { a : string | b: nat }
+        }
+        schema x.2 {
+          predicate P: { b: nat | a : string }
+        }
+        schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
+      |]
+      [ mkBatch (PredicateRef "x.P" 1)
+          [ [s|{ "key": { "a": "A" } }|]
+          , [s|{ "key": { "b": 1 } }|]
+          ]
+      ]
+      [s| x.P.2 _ |]
+      $ \byRef response _ -> do
+        facts <- decodeResultsAs (PredicateRef "x.P" 2) byRef response
+        assertEqual "result count" 2 (length facts)
+
+  , TestLabel "backcompat - maps new sum alternatives to unknown values" $
+    TestCase $ do
+    withSchemaAndFacts []
+      [s|
+        schema x.1 {
+          predicate P : { b : string | }
+        }
+        schema x.2 {
+          predicate P : { a : nat | b : string | c : bool | }
+        }
+        schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
+      |]
+      [ mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "key": { "a": 1 } }|]
+          , [s|{ "key": { "b": "A" } }|]
+          , [s|{ "key": { "c": true } }|]
+          ]
+      ]
+      [s| x.P.1 _ |]
+      $ \byRef response _ -> do
+        -- the unknown alternative has an index one greater than
+        -- the last alternative index of x.P.1.
+        let unknown = RTS.Alt 1 unit
+            unit = RTS.Tuple []
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
+        assertEqual "result count"
+          [unknown, RTS.Alt 0 (RTS.String "A"), unknown] facts
+
+  , TestLabel "backcompat - maps new enum alternatives to unknown values" $
+    TestCase $ do
+    withSchemaAndFacts []
+      [s|
+        schema x.1 {
+          predicate P : { b | }
+        }
+        schema x.2 {
+          predicate P : { a | b | c }
+        }
+        schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
+      |]
+      [ mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "key": { "a": {} } }|]
+          , [s|{ "key": { "b": {} } }|]
+          , [s|{ "key": { "c": {} } }|]
+          ]
+      ]
+      [s| x.P.1 _ |]
+      $ \byRef response _ -> do
+        -- the unknown alternative has an index one greater than
+        -- the last alternative index of x.P.1.
+        let unknown = RTS.Alt 1 unit
+            unit = RTS.Tuple []
+        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
+        assertEqual "result count"
+          [unknown, RTS.Alt 0 (RTS.Tuple []), unknown] facts
 
   , TestLabel "transform nested facts" $ TestCase $ do
     withSchemaAndFacts []
@@ -1620,62 +1746,6 @@ schemaEvolvesTransformations = TestList
       $ \_ (Right results) _ -> do
         let Just ty = userQueryResults_type results
         assertEqual "result type" "x.P.1" ty
-
-  , TestLabel "maps new sum alternatives to unknown values" $ TestCase $ do
-    withSchemaAndFacts []
-      [s|
-        schema x.1 {
-          predicate P : { b : string | }
-        }
-        schema x.2 {
-          predicate P : { a : nat | b : string | c : bool | }
-        }
-        schema x.2 evolves x.1
-        schema all.1 : x.1, x.2 {}
-      |]
-      [ mkBatch (PredicateRef "x.P" 2)
-          [ [s|{ "key": { "a": 1 } }|]
-          , [s|{ "key": { "b": "A" } }|]
-          , [s|{ "key": { "c": true } }|]
-          ]
-      ]
-      [s| x.P.1 _ |]
-      $ \byRef response _ -> do
-        -- the unknown alternative has an index one greater than
-        -- the last alternative index of x.P.1.
-        let unknown = RTS.Alt 1 unit
-            unit = RTS.Tuple []
-        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
-        assertEqual "result count"
-          [unknown, RTS.Alt 0 (RTS.String "A"), unknown] facts
-
-  , TestLabel "maps new enum alternatives to unknown values" $ TestCase $ do
-    withSchemaAndFacts []
-      [s|
-        schema x.1 {
-          predicate P : { b | }
-        }
-        schema x.2 {
-          predicate P : { a | b | c }
-        }
-        schema x.2 evolves x.1
-        schema all.1 : x.1, x.2 {}
-      |]
-      [ mkBatch (PredicateRef "x.P" 2)
-          [ [s|{ "key": { "a": {} } }|]
-          , [s|{ "key": { "b": {} } }|]
-          , [s|{ "key": { "c": {} } }|]
-          ]
-      ]
-      [s| x.P.1 _ |]
-      $ \byRef response _ -> do
-        -- the unknown alternative has an index one greater than
-        -- the last alternative index of x.P.1.
-        let unknown = RTS.Alt 1 unit
-            unit = RTS.Tuple []
-        facts <- decodeResultsAs (PredicateRef "x.P" 1) byRef response
-        assertEqual "result count"
-          [unknown, RTS.Alt 0 (RTS.Tuple []), unknown] facts
 
   ]
   where
