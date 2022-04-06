@@ -19,34 +19,32 @@ module Glean.LSIF.Driver (
     indexerLang,
     Language(..),
     processLSIF,
-    writeJSON,
     runIndexer,
-    testArgs
+    testArgs,
+
+    -- writing
+    writeJSON
  ) where
 
 import Control.Exception ( throwIO, ErrorCall(ErrorCall) )
-import Data.Aeson.Encoding ( encodingToLazyByteString )
+import Control.Monad.State.Strict
 import Data.Text ( Text )
-import System.Directory
-    ( getHomeDirectory, withCurrentDirectory, makeAbsolute )
-import System.FilePath
-    ( takeBaseName, dropExtension, (</>), addExtension )
+import System.Directory ( getHomeDirectory, withCurrentDirectory, makeAbsolute )
+import System.FilePath ( (</>), takeBaseName )
 import System.IO.Temp ( withSystemTempDirectory )
 import System.Process ( callProcess, callCommand )
 import Text.Printf ( printf )
 import Util.Log ( logInfo )
-import qualified Data.Aeson as A
 import qualified Data.Aeson as Aeson
-import qualified Data.ByteString as B
-import qualified Data.ByteString.Lazy as Lazy
-import qualified Data.Text as Text
-import qualified Data.Text.IO as Text
+import qualified Data.ByteString.Char8 as Strict
+import qualified Data.ByteString.Lazy.Char8 as Lazy
 import qualified Data.Vector as V
+import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 
 import qualified Foreign.CPP.Dynamic
 
 import qualified Data.LSIF.Angle as LSIF
-import Data.LSIF.Types (LSIF(..))
 
 -- | Languages we can index via LSIF
 data Language
@@ -81,6 +79,7 @@ testArgs dir lang =
     ]
 
 -- | Run an LSIF indexer, and convert to a Glean's lsif.angle database
+-- returning a single JSON value that can be sent to the Glean server
 runIndexer :: Language -> FilePath -> IO Aeson.Value
 runIndexer lang dir = do
   repoDir <- makeAbsolute dir -- save this before we switch to tmp
@@ -101,20 +100,17 @@ runLSIFIndexer lang dir outputFile = withCurrentDirectory dir $ do
   where
     lsifBinary = lsifIndexer lang
 
--- | Convert an lsif json dump into Glean lsif.angle
+-- | Convert an lsif json dump into Glean lsif.angle JSON object
 processLSIF :: FilePath -> IO Aeson.Value
 processLSIF lsifFile = do
   logInfo $ "Using LSIF from " <> lsifFile
-  contents <- normalizeJson lsifFile
-  r <- Foreign.CPP.Dynamic.parseJSON contents
-  case r of
-    Left err -> throwIO (ErrorCall (Text.unpack err))
-    Right val -> case A.fromJSON val of
-      A.Error err -> throwIO (ErrorCall err)
-      A.Success lsif@(LSIF facts) -> do
-        logInfo $ printf "Parsed LSIF ok. Found %d facts" (V.length facts)
-        paths <- dropPrefixPaths
-        return $ LSIF.toAngle paths lsif
+  toLsifAngle =<< Lazy.readFile lsifFile
+
+-- | Write json to file
+writeJSON :: FilePath -> Aeson.Value -> IO ()
+writeJSON outFile json = do
+  logInfo $ "Writing Angle facts to " <> outFile
+  Aeson.encodeFile outFile json
 
 -- Get some likely prefix paths to drop from indexers
 -- E.g. typescript with a yarn install puts .config/yarn paths for libraries
@@ -132,21 +128,40 @@ dropPrefixPaths = do
     , home <> "/.rustup/toolchains/stable-aarch64-unknown-linux-gnu"
     ]
 
--- | If we want to save to file instead
-writeJSON :: FilePath -> Aeson.Value -> IO ()
-writeJSON jsonFile json = do
-  Lazy.writeFile jsonFile (encodingToLazyByteString $ Aeson.toEncoding json)
-  logInfo $ printf "Wrote Angle/JSON to %s" jsonFile
+toLsifAngle :: Lazy.ByteString -> IO Aeson.Value
+toLsifAngle str = do
+  paths <- dropPrefixPaths
+  (facts, env) <- parseChunks paths str
+  logInfo "Generating cross-references"
+  let !xrefs = evalState LSIF.emitFileFactSets  env
+  let result = LSIF.generateJSON (LSIF.insertPredicateMap facts xrefs)
+  return (Aeson.Array $ V.fromList result)
 
--- lsif-tsc dump format is not valid json (each line is an object though)
--- We just turn the whole thing into a valid json array so it parses with the
--- folly parseJSON
-normalizeJson :: FilePath -> IO B.ByteString
-normalizeJson lsifFile = do
-  raw <- Text.readFile lsifFile
-  Text.writeFile outFile "["
-  Text.appendFile outFile (Text.intercalate "," (Text.lines raw))
-  Text.appendFile outFile "]"
-  B.readFile outFile
+-- | Lazily parse lsif as one object per line. File is consumed and can be
+-- dropped at end of parsing We go to some lengths to avoid retaining things,
+-- just the state needed to emit xrefs at the end of
+-- the analysis.
+parseChunks :: [Text] -> Lazy.ByteString -> IO (LSIF.PredicateMap, LSIF.Env)
+parseChunks paths str =
+  let contents = map (Strict.concat . Lazy.toChunks) (Lazy.lines str)
+      initState = LSIF.emptyEnv { LSIF.root = paths }
+  in runStateT (runToAngle contents) initState
+
+-- strict left fold over each chunk, producing accumulating output facts
+-- and final global state of the analysis
+runToAngle :: [Strict.ByteString] -> StateT LSIF.Env IO LSIF.PredicateMap
+runToAngle = go HashMap.empty -- a foldlM'
   where
-    outFile = (dropExtension lsifFile <> "-normal") `addExtension` "lsif"
+    go !acc [] = return acc
+    go !acc (line:lines) = do
+      preds <- parseAsJSON line
+      go (LSIF.insertPredicateMap acc preds) lines
+
+parseAsJSON :: Strict.ByteString -> StateT LSIF.Env IO [LSIF.Predicate]
+parseAsJSON line = do
+  rawjson <- liftIO $ Foreign.CPP.Dynamic.parseJSON line
+  case rawjson of
+    Left bad -> liftIO $ throwIO (ErrorCall (Text.unpack bad))
+    Right good -> case Aeson.fromJSON good of
+      Aeson.Error err -> liftIO $ throwIO (ErrorCall err)
+      Aeson.Success fact -> LSIF.factToAngle fact

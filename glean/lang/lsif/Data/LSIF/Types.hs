@@ -24,7 +24,7 @@ import GHC.Generics ( Generic )
 
 -- | LSIF document facts. Fact with id N is at vector index N+1
 newtype LSIF = LSIF (Vector KeyFact)
-  deriving (Generic, Show)
+  deriving (Generic)
 
 -- | A single  "fact" in an LSIF dump, keyed by id
 data KeyFact
@@ -32,11 +32,13 @@ data KeyFact
       id_ :: {-# UNPACK #-}!Id,
       fact :: !Fact
   }
-  deriving Show
 
 -- | An Id to identify a vertex or an edge.
 newtype Id = Id Int64
-  deriving (Generic, Show, Eq)
+  deriving (Generic, Eq)
+
+-- let's put these in unboxed vectors when we find them
+
 
 -- | LSIF records of various sorts. Constructors correspond to labels
 -- We flatten edges and vertices here, as they will all be serialized back to
@@ -92,7 +94,7 @@ data Fact
       diagnostics :: Vector Diagnostic
   }
   | LsifDocumentSymbolResult {
-      documentSymbols :: Vector Id
+      documentSymbols :: !(Vector Id)
   }
   | LsifUnknown
   --
@@ -114,7 +116,7 @@ data Fact
     document :: {-# UNPACK #-}!Id,
     property :: Maybe Property
   }
-  deriving (Generic, Show, Eq)
+  deriving (Generic)
 
 data HoverContents
   = HoverSignature {
@@ -122,7 +124,6 @@ data HoverContents
       value :: !Text
   }
   | HoverText !Text
-  deriving (Eq, Show)
 
 data Diagnostic
   = Diagnostic {
@@ -131,29 +132,25 @@ data Diagnostic
       message :: !Text,
       diagnosticRange :: {-# UNPACK #-}!Range
   }
-  deriving (Eq, Show)
 
 data MonikerKind = Export | Local | Import | Implementation
-  deriving (Show, Eq)
 
 data Marker = Begin | End
-  deriving (Show, Eq)
 
 data Scope = DocumentScope | ProjectScope
-  deriving (Show, Eq)
 
 -- | A 0-indexed line/character-offset point in a document
 data Position = Position {
       line :: {-# UNPACK #-} !Int64,
       character :: {-# UNPACK #-} !Int64
     }
-  deriving (Generic, Eq, Show)
+  deriving (Generic)
 
 data Range = Range {
       start :: {-# UNPACK #-} !Position,
       end :: {-# UNPACK #-} !Position
     }
-  deriving (Generic, Eq, Show)
+  deriving (Generic)
 
 -- | LSIF tags, very close to LSP method call results
 data Tag
@@ -187,7 +184,7 @@ data Tag
   | UnknownSymbol {
       tagText :: !Text
   }
-  deriving (Generic, Eq, Show)
+  deriving (Generic)
 
 -- | Information about the tool that created the dump
 data ToolInfo =
@@ -196,10 +193,9 @@ data ToolInfo =
     toolArgs :: [Text],
     toolVersion :: Maybe Text
   }
-  deriving (Generic, Eq, Ord, Show)
+  deriving (Generic)
 
 data Property = Definitions | References | ReferenceResults
-  deriving (Eq, Show)
 
 data Label
   = EdgeContains
@@ -216,7 +212,6 @@ data Label
   -- added in lsif-go 1.7.x
   | EdgeSourceGraphDocString
   | EdgeSourceGraphDocChildren
-  deriving (Eq, Show)
 
 -- | LSP symbolKind type (c.f. LSP.Types for similar examples)
 -- https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#symbolKind
@@ -251,7 +246,7 @@ data SymbolKind
     | SkOperator
     | SkTypeParameter
     | SkUnknown
-    deriving (Generic,Show,Eq,Enum)
+    deriving (Generic,Enum)
 
 -- From https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocumentItem
 -- Text documents have a language identifier to identify a document on the
@@ -318,4 +313,4 @@ data LanguageId
   | XSL -- "xsl"
   | YAML -- "yaml"
   | UnknownLanguage
-  deriving (Show, Eq, Enum)
+  deriving (Enum)
