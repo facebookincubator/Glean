@@ -1240,7 +1240,7 @@ predicate HackEntityInfo:
       ({ container = { class_ = _ } } = Decl; Class_ = Kind) |
       ({ container = { enum_ = _ } } = Decl; Enum = Kind) |
       ({ container = { interface_ = _ } } = Decl; Interface = Kind) |
-      ({ container = { trait = _ } } = Decl; Interface = Kind) |
+      ({ container = { trait = _ } } = Decl; Trait = Kind) |
       ({ enumerator = _ } = Decl; Enum = Kind) |
       ({ function_ = _ } = Decl; Function = Kind) |
       ({ globalConst = _ } = Decl; Constant = Kind) |
