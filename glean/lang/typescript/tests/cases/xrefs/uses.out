@@ -1,0 +1,1123 @@
+[
+  "@generated",
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 7,
+                "columnBegin": 7,
+                "lineEnd": 7,
+                "columnEnd": 9
+              },
+              "fullRange": {
+                "lineBegin": 7,
+                "columnBegin": 7,
+                "lineEnd": 7,
+                "columnEnd": 9
+              },
+              "text": { "key": "fs" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 45,
+            "columnBegin": 18,
+            "lineEnd": 45,
+            "columnEnd": 20
+          },
+          "text": { "key": "fs" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 8,
+                "columnBegin": 7,
+                "lineEnd": 8,
+                "columnEnd": 9
+              },
+              "fullRange": {
+                "lineBegin": 8,
+                "columnBegin": 7,
+                "lineEnd": 8,
+                "columnEnd": 9
+              },
+              "text": { "key": "os" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 45,
+            "columnBegin": 43,
+            "lineEnd": 45,
+            "columnEnd": 45
+          },
+          "text": { "key": "os" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 9,
+                "columnBegin": 7,
+                "lineEnd": 9,
+                "columnEnd": 11
+              },
+              "fullRange": {
+                "lineBegin": 9,
+                "columnBegin": 7,
+                "lineEnd": 9,
+                "columnEnd": 11
+              },
+              "text": { "key": "path" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 45,
+            "columnBegin": 33,
+            "lineEnd": 45,
+            "columnEnd": 37
+          },
+          "text": { "key": "path" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 10,
+                "columnBegin": 7,
+                "lineEnd": 10,
+                "columnEnd": 12
+              },
+              "fullRange": {
+                "lineBegin": 10,
+                "columnBegin": 7,
+                "lineEnd": 10,
+                "columnEnd": 12
+              },
+              "text": { "key": "shell" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 14,
+            "columnBegin": 16,
+            "lineEnd": 14,
+            "columnEnd": 21
+          },
+          "text": { "key": "shell" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 10,
+                "columnBegin": 7,
+                "lineEnd": 10,
+                "columnEnd": 12
+              },
+              "fullRange": {
+                "lineBegin": 10,
+                "columnBegin": 7,
+                "lineEnd": 10,
+                "columnEnd": 12
+              },
+              "text": { "key": "shell" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 21,
+            "columnBegin": 4,
+            "lineEnd": 21,
+            "columnEnd": 9
+          },
+          "text": { "key": "shell" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 10,
+                "columnBegin": 7,
+                "lineEnd": 10,
+                "columnEnd": 12
+              },
+              "fullRange": {
+                "lineBegin": 10,
+                "columnBegin": 7,
+                "lineEnd": 10,
+                "columnEnd": 12
+              },
+              "text": { "key": "shell" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 25,
+            "columnBegin": 4,
+            "lineEnd": 25,
+            "columnEnd": 9
+          },
+          "text": { "key": "shell" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 10,
+                "columnBegin": 7,
+                "lineEnd": 10,
+                "columnEnd": 12
+              },
+              "fullRange": {
+                "lineBegin": 10,
+                "columnBegin": 7,
+                "lineEnd": 10,
+                "columnEnd": 12
+              },
+              "text": { "key": "shell" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 27,
+            "columnBegin": 4,
+            "lineEnd": 27,
+            "columnEnd": 9
+          },
+          "text": { "key": "shell" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 10,
+                "columnBegin": 7,
+                "lineEnd": 10,
+                "columnEnd": 12
+              },
+              "fullRange": {
+                "lineBegin": 10,
+                "columnBegin": 7,
+                "lineEnd": 10,
+                "columnEnd": 12
+              },
+              "text": { "key": "shell" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 33,
+            "columnBegin": 19,
+            "lineEnd": 33,
+            "columnEnd": 24
+          },
+          "text": { "key": "shell" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 12,
+                "columnBegin": 6,
+                "lineEnd": 12,
+                "columnEnd": 9
+              },
+              "fullRange": {
+                "lineBegin": 12,
+                "columnBegin": 0,
+                "lineEnd": 40,
+                "columnEnd": 3
+              },
+              "text": { "key": "Git" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 44,
+            "columnBegin": 57,
+            "lineEnd": 44,
+            "columnEnd": 60
+          },
+          "text": { "key": "Git" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 12,
+                "columnBegin": 6,
+                "lineEnd": 12,
+                "columnEnd": 9
+              },
+              "fullRange": {
+                "lineBegin": 12,
+                "columnBegin": 0,
+                "lineEnd": 40,
+                "columnEnd": 3
+              },
+              "text": { "key": "Git" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 47,
+            "columnBegin": 18,
+            "lineEnd": 47,
+            "columnEnd": 21
+          },
+          "text": { "key": "Git" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 13,
+                "columnBegin": 22,
+                "lineEnd": 13,
+                "columnEnd": 25
+              },
+              "fullRange": {
+                "lineBegin": 13,
+                "columnBegin": 14,
+                "lineEnd": 13,
+                "columnEnd": 33
+              },
+              "text": { "key": "dir" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 14,
+            "columnBegin": 45,
+            "lineEnd": 14,
+            "columnEnd": 48
+          },
+          "text": { "key": "dir" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 13,
+                "columnBegin": 22,
+                "lineEnd": 13,
+                "columnEnd": 25
+              },
+              "fullRange": {
+                "lineBegin": 13,
+                "columnBegin": 14,
+                "lineEnd": 13,
+                "columnEnd": 33
+              },
+              "text": { "key": "dir" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 22,
+            "columnBegin": 11,
+            "lineEnd": 22,
+            "columnEnd": 14
+          },
+          "text": { "key": "dir" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 13,
+                "columnBegin": 22,
+                "lineEnd": 13,
+                "columnEnd": 25
+              },
+              "fullRange": {
+                "lineBegin": 13,
+                "columnBegin": 14,
+                "lineEnd": 13,
+                "columnEnd": 33
+              },
+              "text": { "key": "dir" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 25,
+            "columnBegin": 52,
+            "lineEnd": 25,
+            "columnEnd": 55
+          },
+          "text": { "key": "dir" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 13,
+                "columnBegin": 22,
+                "lineEnd": 13,
+                "columnEnd": 25
+              },
+              "fullRange": {
+                "lineBegin": 13,
+                "columnBegin": 14,
+                "lineEnd": 13,
+                "columnEnd": 33
+              },
+              "text": { "key": "dir" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 28,
+            "columnBegin": 11,
+            "lineEnd": 28,
+            "columnEnd": 14
+          },
+          "text": { "key": "dir" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 13,
+                "columnBegin": 22,
+                "lineEnd": 13,
+                "columnEnd": 25
+              },
+              "fullRange": {
+                "lineBegin": 13,
+                "columnBegin": 14,
+                "lineEnd": 13,
+                "columnEnd": 33
+              },
+              "text": { "key": "dir" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 33,
+            "columnBegin": 54,
+            "lineEnd": 33,
+            "columnEnd": 57
+          },
+          "text": { "key": "dir" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 14,
+                "columnBegin": 10,
+                "lineEnd": 14,
+                "columnEnd": 13
+              },
+              "fullRange": {
+                "lineBegin": 14,
+                "columnBegin": 10,
+                "lineEnd": 14,
+                "columnEnd": 64
+              },
+              "text": { "key": "res" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 15,
+            "columnBegin": 8,
+            "lineEnd": 15,
+            "columnEnd": 11
+          },
+          "text": { "key": "res" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 14,
+                "columnBegin": 10,
+                "lineEnd": 14,
+                "columnEnd": 13
+              },
+              "fullRange": {
+                "lineBegin": 14,
+                "columnBegin": 10,
+                "lineEnd": 14,
+                "columnEnd": 64
+              },
+              "text": { "key": "res" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 16,
+            "columnBegin": 51,
+            "lineEnd": 16,
+            "columnEnd": 54
+          },
+          "text": { "key": "res" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 14,
+                "columnBegin": 10,
+                "lineEnd": 14,
+                "columnEnd": 13
+              },
+              "fullRange": {
+                "lineBegin": 14,
+                "columnBegin": 10,
+                "lineEnd": 14,
+                "columnEnd": 64
+              },
+              "text": { "key": "res" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 17,
+            "columnBegin": 10,
+            "lineEnd": 17,
+            "columnEnd": 13
+          },
+          "text": { "key": "res" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 14,
+                "columnBegin": 10,
+                "lineEnd": 14,
+                "columnEnd": 13
+              },
+              "fullRange": {
+                "lineBegin": 14,
+                "columnBegin": 10,
+                "lineEnd": 14,
+                "columnEnd": 64
+              },
+              "text": { "key": "res" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 18,
+            "columnBegin": 10,
+            "lineEnd": 18,
+            "columnEnd": 13
+          },
+          "text": { "key": "res" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 33,
+                "columnBegin": 10,
+                "lineEnd": 33,
+                "columnEnd": 16
+              },
+              "fullRange": {
+                "lineBegin": 33,
+                "columnBegin": 10,
+                "lineEnd": 33,
+                "columnEnd": 73
+              },
+              "text": { "key": "addRes" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 34,
+            "columnBegin": 8,
+            "lineEnd": 34,
+            "columnEnd": 14
+          },
+          "text": { "key": "addRes" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 33,
+                "columnBegin": 10,
+                "lineEnd": 33,
+                "columnEnd": 16
+              },
+              "fullRange": {
+                "lineBegin": 33,
+                "columnBegin": 10,
+                "lineEnd": 33,
+                "columnEnd": 73
+              },
+              "text": { "key": "addRes" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 35,
+            "columnBegin": 50,
+            "lineEnd": 35,
+            "columnEnd": 56
+          },
+          "text": { "key": "addRes" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 33,
+                "columnBegin": 10,
+                "lineEnd": 33,
+                "columnEnd": 16
+              },
+              "fullRange": {
+                "lineBegin": 33,
+                "columnBegin": 10,
+                "lineEnd": 33,
+                "columnEnd": 73
+              },
+              "text": { "key": "addRes" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 36,
+            "columnBegin": 10,
+            "lineEnd": 36,
+            "columnEnd": 16
+          },
+          "text": { "key": "addRes" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 33,
+                "columnBegin": 10,
+                "lineEnd": 33,
+                "columnEnd": 16
+              },
+              "fullRange": {
+                "lineBegin": 33,
+                "columnBegin": 10,
+                "lineEnd": 33,
+                "columnEnd": 73
+              },
+              "text": { "key": "addRes" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 37,
+            "columnBegin": 10,
+            "lineEnd": 37,
+            "columnEnd": 16
+          },
+          "text": { "key": "addRes" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 45,
+                "columnBegin": 8,
+                "lineEnd": 45,
+                "columnEnd": 15
+              },
+              "fullRange": {
+                "lineBegin": 45,
+                "columnBegin": 8,
+                "lineEnd": 45,
+                "columnEnd": 73
+              },
+              "text": { "key": "repoDir" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 47,
+            "columnBegin": 22,
+            "lineEnd": 47,
+            "columnEnd": 29
+          },
+          "text": { "key": "repoDir" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "global/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 971,
+                "columnBegin": 10,
+                "lineEnd": 971,
+                "columnEnd": 15
+              },
+              "fullRange": {
+                "lineBegin": 971,
+                "columnBegin": 0,
+                "lineEnd": 975,
+                "columnEnd": 1
+              },
+              "text": { "key": "Error" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 16,
+            "columnBegin": 16,
+            "lineEnd": 16,
+            "columnEnd": 21
+          },
+          "text": { "key": "Error" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "global/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 971,
+                "columnBegin": 10,
+                "lineEnd": 971,
+                "columnEnd": 15
+              },
+              "fullRange": {
+                "lineBegin": 971,
+                "columnBegin": 0,
+                "lineEnd": 975,
+                "columnEnd": 1
+              },
+              "text": { "key": "Error" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 35,
+            "columnBegin": 16,
+            "lineEnd": 35,
+            "columnEnd": 21
+          },
+          "text": { "key": "Error" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "global/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 983,
+                "columnBegin": 12,
+                "lineEnd": 983,
+                "columnEnd": 17
+              },
+              "fullRange": {
+                "lineBegin": 983,
+                "columnBegin": 12,
+                "lineEnd": 983,
+                "columnEnd": 35
+              },
+              "text": { "key": "Error" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 16,
+            "columnBegin": 16,
+            "lineEnd": 16,
+            "columnEnd": 21
+          },
+          "text": { "key": "Error" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "file": {
+            "key": "global/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 983,
+                "columnBegin": 12,
+                "lineEnd": 983,
+                "columnEnd": 17
+              },
+              "fullRange": {
+                "lineBegin": 983,
+                "columnBegin": 12,
+                "lineEnd": 983,
+                "columnEnd": 35
+              },
+              "text": { "key": "Error" }
+            }
+          }
+        }
+      },
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 35,
+            "columnBegin": 16,
+            "lineEnd": 35,
+            "columnEnd": 21
+          },
+          "text": { "key": "Error" }
+        }
+      }
+    }
+  }
+]

@@ -48,6 +48,13 @@ release yet; we hope to make these available in the future:
 * Thrift
 * Buck
 
+We have added experimental support for [LSIF](https://lsif.dev) indexers, starting with:
+
+* [TypeScript](https://glean.software/docs/indexer/lsif-typescript)
+* [Go](https://glean.software/docs/indexer/lsif-go)
+* [Rust](https://glean.software/docs/indexer/lsif-rust)
+
+
 ## License
 
 Glean is licensed under a [BSD LICENSE](LICENSE).

@@ -1,0 +1,2 @@
+query: lsif.DefinitionHover _
+transform: [gensort, []]

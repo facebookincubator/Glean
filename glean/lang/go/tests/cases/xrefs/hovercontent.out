@@ -1,0 +1,332 @@
+[
+  "@generated",
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 18,
+                "columnBegin": 8,
+                "lineEnd": 18,
+                "columnEnd": 16
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": { "key": "```go\u000apackage leaphash\u000a```" },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 31,
+                "columnBegin": 5,
+                "lineEnd": 31,
+                "columnEnd": 12
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": {
+            "key": "```go\u000afunc Compute(data string) string\u000a```\u000a\u000a---\u000a\u000aCompute returns the sha1 sum of all non whitespace characters in data excluding comments. Since it includes logic for special lines specific to the leap-second.list format its not a general purpose function and should be only used to verify the integrity of an official leap-second.list document. \u000a\u000a"
+          },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 31,
+                "columnBegin": 13,
+                "lineEnd": 31,
+                "columnEnd": 17
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": { "key": "```go\u000avar data string\u000a```" },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 32,
+                "columnBegin": 1,
+                "lineEnd": 32,
+                "columnEnd": 6
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": { "key": "```go\u000avar lines []string\u000a```" },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 34,
+                "columnBegin": 5,
+                "lineEnd": 34,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": { "key": "```go\u000avar filtered string\u000a```" },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 35,
+                "columnBegin": 1,
+                "lineEnd": 35,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": {
+            "key": "```go\u000avar filterBlanks func(r rune) rune\u000a```"
+          },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 35,
+                "columnBegin": 22,
+                "lineEnd": 35,
+                "columnEnd": 23
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": { "key": "```go\u000avar r rune\u000a```" },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 42,
+                "columnBegin": 5,
+                "lineEnd": 42,
+                "columnEnd": 6
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": { "key": "```go\u000avar i int\u000a```" },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 51,
+                "columnBegin": 3,
+                "lineEnd": 51,
+                "columnEnd": 7
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": { "key": "```go\u000avar line string\u000a```" },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 53,
+                "columnBegin": 3,
+                "lineEnd": 53,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": { "key": "```go\u000avar commentPos int\u000a```" },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 63,
+                "columnBegin": 1,
+                "lineEnd": 63,
+                "columnEnd": 5
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": { "key": "```go\u000avar hash string\u000a```" },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 65,
+                "columnBegin": 5,
+                "lineEnd": 65,
+                "columnEnd": 16
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": { "key": "```go\u000avar groupedHash string\u000a```" },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 67,
+                "columnBegin": 5,
+                "lineEnd": 67,
+                "columnEnd": 6
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": { "key": "```go\u000avar i int\u000a```" },
+          "language": 30
+        }
+      }
+    }
+  }
+]
