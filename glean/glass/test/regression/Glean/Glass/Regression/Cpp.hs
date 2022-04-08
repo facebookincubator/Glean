@@ -14,7 +14,15 @@ import Derive.Lib (DerivePass(..))
 import qualified Glean.Clang.Test.DerivePass as DerivePass
 import Glean.Regression.Test (mainTestIndexGeneric)
 
+
+import Data.Bifunctor
+import Data.Text (Text)
+
+import Glean
+import Glean.Util.Some
+
 import Glean.Glass.Types
+
 import Glean.Glass.Regression.Tests
 
 main :: IO ()
@@ -24,4 +32,22 @@ main = do
   mainTestIndexGeneric driver (pure ()) name $ \_ _ _ _ get ->
     TestList
       [ testDocumentSymbolListX (Path "test.cpp") get
+      , testCppFindReferences get
       ]
+
+
+testCppFindReferences :: IO (Some Backend, Repo) -> Test
+testCppFindReferences get = TestLabel "findReferences" $ TestList [
+  "test/cpp/foo/S" --> [("test.cpp", 1)],
+  "test/cpp/foo/bar/T" --> [("test.cpp", 1)],
+  "test/cpp/foo/f" --> [("test.cpp", 1)],
+  "test/cpp/foo/bar/g" --> [("test.cpp", 1)],
+  "test/cpp/h" --> []
+  ]
+  where
+    (-->) :: Text -> [(Text,Int)] -> Test
+    sym --> expected =
+      testFindReferences
+        (SymbolId sym)
+        (map (first Path) expected)
+        get
