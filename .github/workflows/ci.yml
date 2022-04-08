@@ -40,7 +40,7 @@ jobs:
 
       - name: Install indexer (flow)
         run: |
-          export FLOW=0.174.1
+          export FLOW=0.175.1
           wget "https://github.com/facebook/flow/releases/download/v${FLOW}/flow-linux64-v${FLOW}.zip"
           unzip "flow-linux64-v${FLOW}.zip"
           mkdir -p "$HOME"/.hsthrift/bin && mv flow/flow "$HOME"/.hsthrift/bin
@@ -95,6 +95,7 @@ jobs:
         run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make glean-clang
       - name: Run tests
         run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make test
+
   # check the vscode extension builds
   vscode:
     runs-on: ubuntu-latest
