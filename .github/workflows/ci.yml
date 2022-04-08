@@ -2,6 +2,9 @@
 name: CI
 on: [push, pull_request]
 
+env:
+  LANG: en_US.UTF-8
+
 jobs:
   ci:
     strategy:
@@ -15,11 +18,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Install additional tools
         run: |
           apt-get update
           apt install -y ninja-build libxxhash-dev wget unzip clang-11 libclang-11-dev llvm-11-dev
           apt-get remove -y libfmt-dev
+
+      - name: Make utf8 default locale
+        run: |
+          apt-get install -y locales
+          locale-gen en_US.UTF-8
+          update-locale LANG=en_US.UTF-8
+
       - name: Install GHC ${{ matrix.ghc }}
         run: ghcup install ghc ${{ matrix.ghc }} --set
       - name: Install cabal-install 3.6
