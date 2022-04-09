@@ -1,50 +1,143 @@
 [
   "@generated",
-  { "key": "rustlib/src/rust/library/alloc/src/borrow.rs" },
-  { "key": "rustlib/src/rust/library/alloc/src/boxed.rs" },
-  { "key": "rustlib/src/rust/library/alloc/src/macros.rs" },
-  { "key": "rustlib/src/rust/library/alloc/src/slice.rs" },
-  { "key": "rustlib/src/rust/library/alloc/src/str.rs" },
-  { "key": "rustlib/src/rust/library/alloc/src/string.rs" },
-  { "key": "rustlib/src/rust/library/alloc/src/vec.rs" },
-  { "key": "rustlib/src/rust/library/core/src/cell.rs" },
-  { "key": "rustlib/src/rust/library/core/src/char/convert.rs" },
-  { "key": "rustlib/src/rust/library/core/src/char/mod.rs" },
-  { "key": "rustlib/src/rust/library/core/src/clone.rs" },
-  { "key": "rustlib/src/rust/library/core/src/cmp.rs" },
-  { "key": "rustlib/src/rust/library/core/src/default.rs" },
-  { "key": "rustlib/src/rust/library/core/src/intrinsics.rs" },
-  { "key": "rustlib/src/rust/library/core/src/iter/traits/collect.rs" },
-  { "key": "rustlib/src/rust/library/core/src/iter/traits/iterator.rs" },
-  { "key": "rustlib/src/rust/library/core/src/macros/mod.rs" },
-  { "key": "rustlib/src/rust/library/core/src/marker.rs" },
-  { "key": "rustlib/src/rust/library/core/src/mem/maybe_uninit.rs" },
-  { "key": "rustlib/src/rust/library/core/src/mem/mod.rs" },
-  { "key": "rustlib/src/rust/library/core/src/num/f64.rs" },
-  { "key": "rustlib/src/rust/library/core/src/num/mod.rs" },
-  { "key": "rustlib/src/rust/library/core/src/num/shells/u64.rs" },
-  { "key": "rustlib/src/rust/library/core/src/ops/arith.rs" },
-  { "key": "rustlib/src/rust/library/core/src/ops/function.rs" },
-  { "key": "rustlib/src/rust/library/core/src/ops/mod.rs" },
-  { "key": "rustlib/src/rust/library/core/src/ops/range.rs" },
-  { "key": "rustlib/src/rust/library/core/src/option.rs" },
-  { "key": "rustlib/src/rust/library/core/src/result.rs" },
-  { "key": "rustlib/src/rust/library/core/src/slice/mod.rs" },
-  { "key": "rustlib/src/rust/library/core/src/str/mod.rs" },
-  { "key": "rustlib/src/rust/library/core/src/str/traits.rs" },
-  { "key": "rustlib/src/rust/library/std/src/collections/hash/map.rs" },
-  { "key": "rustlib/src/rust/library/std/src/collections/hash/set.rs" },
-  { "key": "rustlib/src/rust/library/std/src/collections/mod.rs" },
-  { "key": "rustlib/src/rust/library/std/src/env.rs" },
-  { "key": "rustlib/src/rust/library/std/src/f64.rs" },
-  { "key": "rustlib/src/rust/library/std/src/fs.rs" },
-  { "key": "rustlib/src/rust/library/std/src/io/error.rs" },
-  { "key": "rustlib/src/rust/library/std/src/io/mod.rs" },
-  { "key": "rustlib/src/rust/library/std/src/lib.rs" },
-  { "key": "rustlib/src/rust/library/std/src/macros.rs" },
-  { "key": "rustlib/src/rust/library/std/src/panic.rs" },
-  { "key": "rustlib/src/rust/library/std/src/process.rs" },
-  { "key": "rustlib/src/rust/library/std/src/thread/mod.rs" },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/borrow.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/boxed.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/macros.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/slice.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/str.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/string.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cell.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/char/convert.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/char/mod.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/clone.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/cmp.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/default.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/fmt/mod.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/intrinsics.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/iter/traits/collect.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/iter/traits/iterator.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/macros/mod.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/marker.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/mem/maybe_uninit.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/mem/mod.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/f64.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/mod.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/num/shells/u64.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ops/arith.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ops/function.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ops/mod.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ops/range.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/option.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/result.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/slice/mod.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/traits.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/collections/hash/map.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/collections/hash/set.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/collections/mod.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/env.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/f64.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/fs.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/io/error.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/io/mod.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/lib.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/macros.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/panic.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/process.rs"
+  },
+  {
+    "key": "file:///home/dons/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/thread/mod.rs"
+  },
   { "key": "src/bintree.rs" },
   { "key": "src/bounds.rs" },
   { "key": "src/break.rs" },

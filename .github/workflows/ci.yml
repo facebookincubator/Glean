@@ -72,7 +72,8 @@ jobs:
 
       - name: Install indexer (rust)
         run: |
-          apt-get install -y cargo rust-src
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
           export RUST_ANALYZER=2022-04-04
           mkdir -p "$HOME"/.hsthrift/bin
           curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/${RUST_ANALYZER}/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > "$HOME"/.hsthrift/bin/rust-analyzer
