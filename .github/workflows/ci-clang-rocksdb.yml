@@ -60,8 +60,15 @@ jobs:
           mkdir -p "$HOME"/.hsthrift/bin && mv lsif-go "$HOME"/.hsthrift/bin
           echo "$HOME/.hsthrift/go/bin" >> "$GITHUB_PATH"
 
-    # disable rust indexing, as rustc puts different gcc and llvm versions back
-    #     on the system, defeating our goal of building only with clang
+      - name: Install indexer (rust)
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+          export RUST_ANALYZER=2022-04-04
+          mkdir -p "$HOME"/.hsthrift/bin
+          curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/${RUST_ANALYZER}/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > "$HOME"/.hsthrift/bin/rust-analyzer
+          chmod +x "$HOME"/.hsthrift/bin/rust-analyzer
+
     # no hhvm builds yet for jammy/ubuntu 22.00, so we skip the hack indexer
 
       - name: Fetch hsthrift and build folly, fizz, wangle, fbthrift
@@ -78,4 +85,4 @@ jobs:
         run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make glass
       # no hhvm/hack or typescript indexer, so we run without hack regression tests
       - name: Run tests
-        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" cabal test glean:tests -f-hack-tests -f-rust-tests
+        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" cabal test glean:tests -f-hack-tests

@@ -52,17 +52,17 @@ jobs:
           apt-get install -y yarnpkg
           yarnpkg global add @sourcegraph/lsif-tsc
 
-    #       - name: Install indexer (rust)
-    #         run: |
-    #           apt-get install -y cargo rust-src
-    #           export RUST_ANALYZER=2022-04-04
-    #           mkdir -p "$HOME"/.hsthrift/bin
-    #           curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/${RUST_ANALYZER}/rust-analyzer-aarch64-unknown-linux-gnu.gz | gunzip -c - > "$HOME"/.hsthrift/bin/rust-analyzer
-    #           chmod +x "$HOME"/.hsthrift/bin/rust-analyzer
+      - name: Install indexer (rust)
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+          export RUST_ANALYZER=2022-04-04
+          mkdir -p "$HOME"/.hsthrift/bin
+          curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/${RUST_ANALYZER}/rust-analyzer-aarch64-unknown-linux-gnu.gz | gunzip -c - > "$HOME"/.hsthrift/bin/rust-analyzer
+          chmod +x "$HOME"/.hsthrift/bin/rust-analyzer
 
     # no hhvm builds yet for arm/linux, so we skip the hack indexer
     # no arm64 builds of go lsif indexer
-    # no rust yet, as it scrambles compiler versions
 
       - name: Fetch hsthrift and build folly, fizz, wangle, fbthrift
         run: ./install_deps.sh --threads 8 --use-system-libs
@@ -76,4 +76,4 @@ jobs:
         run: make glass
     # disable tests for languages we don't have indexer installed
       - name: Run tests
-        run: cabal test glean:tests -f-hack-tests -f-go-tests -f-rust-tests
+        run: cabal test glean:tests -f-hack-tests -f-go-tests
