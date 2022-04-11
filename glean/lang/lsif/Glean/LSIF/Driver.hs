@@ -120,12 +120,16 @@ processLSIF lsifFile = do
 -- E.g. typescript with a yarn install puts .config/yarn paths for libraries
 dropPrefixPaths :: IO [Text]
 dropPrefixPaths = do
-  home <- getHomeDirectory
+  home <- Text.pack <$> getHomeDirectory
   return $ map ("file://" <>)
-    [ Text.pack (home </> ".config/yarn") -- typescript
-    , "/usr/local/share/.config/yarn" -- typescript
-    , "/usr/lib" -- rust
-    , Text.pack (home </> ".cargo/registry") -- rust
+  -- typescript system paths
+    [ home <> "/.config/yarn"
+    , "/usr/local/share/.config/yarn"
+   -- rust system paths
+    , "/usr/lib"
+    , home <> "/.cargo/registry"
+    , home <> "/.rustup/toolchains/stable-x86_64-unknown-linux-gnu"
+    , home <> "/.rustup/toolchains/stable-aarch64-unknown-linux-gnu"
     ]
 
 -- | If we want to save to file instead

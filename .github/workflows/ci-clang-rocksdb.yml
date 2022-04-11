@@ -35,12 +35,19 @@ jobs:
         run: ghcup install cabal -u https://downloads.haskell.org/cabal/cabal-install-3.6.2.0/cabal-install-3.6.2.0-x86_64-linux-deb10.tar.xz 3.6.2.0 --set
       - name: Add GHC and cabal to PATH
         run: echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
+
       - name: Install indexer (flow)
         run: |
-          export FLOW=0.174.1
+          export FLOW=0.175.1
           wget "https://github.com/facebook/flow/releases/download/v${FLOW}/flow-linux64-v${FLOW}.zip"
           unzip "flow-linux64-v${FLOW}.zip"
           mkdir -p "$HOME"/.hsthrift/bin && mv flow/flow "$HOME"/.hsthrift/bin
+
+      - name: Install indexer (typescript)
+        run: |
+          apt-get install -y yarnpkg
+          yarnpkg global add @sourcegraph/lsif-tsc
+
       - name: Install indexer (go)
         run: |
           export GOLANG=1.17.8
@@ -52,8 +59,18 @@ jobs:
           tar xzf "lsif-go_${LSIFGO}_linux_amd64.tar.gz"
           mkdir -p "$HOME"/.hsthrift/bin && mv lsif-go "$HOME"/.hsthrift/bin
           echo "$HOME/.hsthrift/go/bin" >> "$GITHUB_PATH"
+
+      - name: Install indexer (rust)
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+          export RUST_ANALYZER=2022-04-04
+          mkdir -p "$HOME"/.hsthrift/bin
+          curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/${RUST_ANALYZER}/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > "$HOME"/.hsthrift/bin/rust-analyzer
+          chmod +x "$HOME"/.hsthrift/bin/rust-analyzer
+
     # no hhvm builds yet for jammy/ubuntu 22.00, so we skip the hack indexer
-    # no yarnpkg builds yet for jammy/ubuntu 22.00, so we skip the typescript indexer
+
       - name: Fetch hsthrift and build folly, fizz, wangle, fbthrift
         run: ./install_deps.sh --use-system-libs
       - name: Nuke build artifacts
@@ -68,4 +85,4 @@ jobs:
         run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make glass
       # no hhvm/hack or typescript indexer, so we run without hack regression tests
       - name: Run tests
-        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" cabal test glean:tests -f-hack-tests -f-typescript-tests -f-rust-tests
+        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" cabal test glean:tests -f-hack-tests

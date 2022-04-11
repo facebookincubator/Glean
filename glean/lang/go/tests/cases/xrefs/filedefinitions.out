@@ -6,9 +6,9 @@
       "range": {
         "key": {
           "range": {
-            "lineBegin": 18,
+            "lineBegin": 10,
             "columnBegin": 8,
-            "lineEnd": 18,
+            "lineEnd": 10,
             "columnEnd": 16
           }
         }
@@ -21,9 +21,9 @@
       "range": {
         "key": {
           "range": {
-            "lineBegin": 31,
+            "lineBegin": 23,
             "columnBegin": 5,
-            "lineEnd": 31,
+            "lineEnd": 23,
             "columnEnd": 12
           }
         }
@@ -36,9 +36,9 @@
       "range": {
         "key": {
           "range": {
-            "lineBegin": 31,
+            "lineBegin": 23,
             "columnBegin": 13,
-            "lineEnd": 31,
+            "lineEnd": 23,
             "columnEnd": 17
           }
         }
@@ -51,10 +51,55 @@
       "range": {
         "key": {
           "range": {
-            "lineBegin": 32,
+            "lineBegin": 24,
             "columnBegin": 1,
-            "lineEnd": 32,
+            "lineEnd": 24,
             "columnEnd": 6
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 26,
+            "columnBegin": 5,
+            "lineEnd": 26,
+            "columnEnd": 13
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 27,
+            "columnBegin": 1,
+            "lineEnd": 27,
+            "columnEnd": 13
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+      "range": {
+        "key": {
+          "range": {
+            "lineBegin": 27,
+            "columnBegin": 22,
+            "lineEnd": 27,
+            "columnEnd": 23
           }
         }
       }
@@ -69,51 +114,6 @@
             "lineBegin": 34,
             "columnBegin": 5,
             "lineEnd": 34,
-            "columnEnd": 13
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 35,
-            "columnBegin": 1,
-            "lineEnd": 35,
-            "columnEnd": 13
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 35,
-            "columnBegin": 22,
-            "lineEnd": 35,
-            "columnEnd": 23
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
-      "range": {
-        "key": {
-          "range": {
-            "lineBegin": 42,
-            "columnBegin": 5,
-            "lineEnd": 42,
             "columnEnd": 6
           }
         }
@@ -126,9 +126,9 @@
       "range": {
         "key": {
           "range": {
-            "lineBegin": 51,
+            "lineBegin": 43,
             "columnBegin": 3,
-            "lineEnd": 51,
+            "lineEnd": 43,
             "columnEnd": 7
           }
         }
@@ -141,9 +141,9 @@
       "range": {
         "key": {
           "range": {
-            "lineBegin": 53,
+            "lineBegin": 45,
             "columnBegin": 3,
-            "lineEnd": 53,
+            "lineEnd": 45,
             "columnEnd": 13
           }
         }
@@ -156,9 +156,9 @@
       "range": {
         "key": {
           "range": {
-            "lineBegin": 63,
+            "lineBegin": 55,
             "columnBegin": 1,
-            "lineEnd": 63,
+            "lineEnd": 55,
             "columnEnd": 5
           }
         }
@@ -171,9 +171,9 @@
       "range": {
         "key": {
           "range": {
-            "lineBegin": 65,
+            "lineBegin": 57,
             "columnBegin": 5,
-            "lineEnd": 65,
+            "lineEnd": 57,
             "columnEnd": 16
           }
         }
@@ -186,9 +186,9 @@
       "range": {
         "key": {
           "range": {
-            "lineBegin": 67,
+            "lineBegin": 59,
             "columnBegin": 5,
-            "lineEnd": 67,
+            "lineEnd": 59,
             "columnEnd": 6
           }
         }
