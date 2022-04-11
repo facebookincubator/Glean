@@ -29,6 +29,7 @@ module Glean.LSIF.Driver (
 import Control.Exception ( throwIO, ErrorCall(ErrorCall) )
 import Control.Monad.State.Strict
 import Data.Text ( Text )
+import Data.List 
 import System.Directory ( getHomeDirectory, withCurrentDirectory, makeAbsolute )
 import System.FilePath ( (</>), takeBaseName )
 import System.IO.Temp ( withSystemTempDirectory )
@@ -110,7 +111,22 @@ processLSIF lsifFile = do
 writeJSON :: FilePath -> Aeson.Value -> IO ()
 writeJSON outFile json = do
   logInfo $ "Writing Angle facts to " <> outFile
-  Aeson.encodeFile outFile json
+  case json of
+    Aeson.Array facts -> encodeChunks outFile facts
+    _ -> Aeson.encodeFile outFile json
+
+-- Uses less memory if we do this piece-wise
+encodeChunks :: FilePath -> V.Vector Aeson.Value -> IO ()
+encodeChunks file vs = bracketContents file $ mapM_ writeChunk $
+    intersperse (Right ",") (map Left (V.toList vs))
+  where
+    writeChunk (Left c) = Lazy.appendFile file (Aeson.encode c)
+    writeChunk (Right s) = Lazy.appendFile file (s <> "\n")
+
+    bracketContents file act = do
+      Lazy.writeFile file "["
+      _ <- act
+      Lazy.appendFile file "]"
 
 -- Get some likely prefix paths to drop from indexers
 -- E.g. typescript with a yarn install puts .config/yarn paths for libraries

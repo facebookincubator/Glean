@@ -1080,6 +1080,7 @@ library lsif
         Glean.LSIF.Driver
     build-depends:
         aeson,
+        split,
 
 -- | A generic LSIF-based external indexer
 executable glean-lsif

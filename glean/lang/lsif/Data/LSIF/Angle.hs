@@ -31,6 +31,7 @@ import Control.Monad.State.Strict
 import Data.Aeson
 import Data.Aeson.Types ( Pair )
 import Data.List
+import Data.List.Split
 import Data.Maybe ( catMaybes, fromMaybe, listToMaybe, mapMaybe )
 import Data.HashMap.Strict ( HashMap )
 import qualified Data.HashMap.Strict as HashMap
@@ -45,17 +46,21 @@ import Data.LSIF.Env
 import Data.LSIF.JSON ({- instances -})
 
 -- | Given a hashmap keyed by predicate names, emit an array of json pred/facts
--- with one entry per predicate.
+-- with one entry per predicate. In case we have very large predicats, we chunk
+-- them into smaller top level groups, which makes memory mgmt a bit easier
 generateJSON :: HashMap Text [Value] -> [Value]
-generateJSON hm = mapMaybe (\k -> gen k <$> HashMap.lookup k hm) keys
+generateJSON hm = concat $ mapMaybe (\k -> gen k <$> HashMap.lookup k hm) keys
   where
     gen k = emitPredicate . Predicate k
     keys = sortOn dependencyOrder (HashMap.keys hm)
 
-emitPredicate :: Predicate -> Value
-emitPredicate (Predicate name facts) = object
-  [ "predicate" .= text name
-  , "facts" .= Array (V.fromList facts)
+emitPredicate :: Predicate -> [Value]
+emitPredicate (Predicate name facts) =
+  [ object
+    [ "predicate" .= text name
+    , "facts" .= Array (V.fromList chunk)
+    ]
+  | chunk <- chunksOf 10000 facts
   ]
 
 dependencyOrder :: Text -> Int
