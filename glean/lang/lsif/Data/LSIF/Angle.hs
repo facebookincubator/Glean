@@ -363,10 +363,10 @@ factToAngle (KeyFact n (SymbolRange range mtag)) = do
   -- emit a range fact for this id
   predicateId "lsif.Range.1" n $
     [ "range" .= toRange range
-    ] ++ mFullRange ++ mText
+    , "text" .= maybe (string "anonymous") toName mtag
+    ] ++ mFullRange
     where
       mFullRange = fromMaybe [] (tagToRange =<< mtag)
-      mText = fromMaybe [] (tagToText =<< mtag)
 
 -- Hover text
 factToAngle (KeyFact n (HoverResult contents)) = do
@@ -613,11 +613,13 @@ tagToTy (Just Declaration{}) = Just DeclarationType
 tagToTy (Just Reference{}) = Just ReferenceType
 tagToTy _ = Nothing
 
-tagToText :: KeyValue a => Tag -> Maybe [a]
-tagToText Definition{..} = Just ["text" .= string tagText]
-tagToText Declaration{..} = Just ["text" .= string tagText]
-tagToText Reference{..} = Just ["text" .= string tagText]
-tagToText _ = Nothing
+-- | Identifier text string
+toName :: Tag -> Value
+toName t = string $ case t of
+  Definition{..} -> tagText
+  Declaration{..} -> tagText
+  Reference{..} -> tagText
+  UnknownSymbol{..} -> tagText
 
 tagToRange :: KeyValue a => Tag -> Maybe [a]
 tagToRange Definition{..} = Just ["fullRange" .= toRange fullRange]
