@@ -9,6 +9,10 @@
 namespace foo {
 
 struct S {};
+
+/**
+ * Test Code Block
+ */
 void f();
 
 namespace bar {
