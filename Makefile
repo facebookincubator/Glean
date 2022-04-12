@@ -64,6 +64,7 @@ SCHEMAS= \
 	code_hack \
 	code_hs \
 	code_java \
+	code_lsif \
 	code_rust \
 	code_thrift \
 	code_buck \

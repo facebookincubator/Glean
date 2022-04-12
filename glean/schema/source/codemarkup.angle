@@ -1,22 +1,24 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.22 {
+schema codemarkup.23 {
 import src.1
-import python.3
-import code.19
-import code.flow.2
-import hs.2
-import hack.6
-import flow.3
-import cxx1.4
-import pp1.1
-import thrift.4
-import rust.1
-import code.cxx.3
-import code.hack.4
-import code.buck.1
 import buck.3
+import code.20
+import code.buck.1
+import code.cxx.3
+import code.flow.2
+import code.hack.4
+import code.lsif.1
+import cxx1.4
 import erlang.1
+import flow.3
+import hack.6
+import hs.2
+import lsif.1
+import pp1.1
+import python.3
+import rust.1
+import thrift.4
 
 #
 # Public API
@@ -31,7 +33,7 @@ import erlang.1
 type RangeSpan =
   {
     span : src.ByteSpan |
-    range : src.Range # cxx compat
+    range : src.Range # cxx and lsif compat
   }
 
 # Symbol locations within a repo
@@ -139,7 +141,8 @@ predicate ResolveLocation:
     RustResolveLocation { Location, Entity } |
     BuckResolveLocation { Location, Entity } |
     ThriftResolveLocation { Location, Entity } |
-    ErlangResolveLocation { Location, Entity };
+    ErlangResolveLocation { Location, Entity } |
+    LsifResolveLocation { Location, Entity };
 
 predicate EntityLocation:
   {
@@ -156,7 +159,8 @@ predicate EntityLocation:
     RustEntityLocation { Entity, Location } |
     BuckEntityLocation { Entity, Location } |
     ThriftEntityLocation { Entity, Location } |
-    ErlangEntityLocation { Entity, Location };
+    ErlangEntityLocation { Entity, Location } |
+    LsifEntityLocation { Entity, Location };
 
 # Finding xrefs. All references in a file and their targets
 predicate FileEntityXRefLocations:
@@ -174,7 +178,8 @@ predicate FileEntityXRefLocations:
     RustFileEntityXRefLocations { File, XRef, Entity } |
     BuckFileEntityXRefLocations { File, XRef, Entity } |
     ThriftFileEntityXRefLocations { File, XRef, Entity } |
-    ErlangFileEntityXRefLocations { File, XRef, Entity };
+    ErlangFileEntityXRefLocations { File, XRef, Entity } |
+    LsifFileEntityXRefLocations { File, XRef, Entity };
 
 # Xrefs without the target location. This can be useful in cases
 # where we don't have a target location, but we don't need it. This
@@ -195,7 +200,8 @@ predicate FileEntityXRefSpans:
       RustFileEntityXRefLocations { File, XRef, Entity } |
       BuckFileEntityXRefLocations { File, XRef, Entity } |
       ThriftFileEntityXRefLocations { File, XRef, Entity } |
-      ErlangFileEntityXRefLocations { File, XRef, Entity };
+      ErlangFileEntityXRefLocations { File, XRef, Entity } |
+      LsifFileEntityXRefLocations { File, XRef, Entity };
       { source = { span = Span }} = XRef
     )
 
@@ -221,6 +227,7 @@ predicate FileEntityXRefInfos:
     EntityInfo { Entity, Info };
 
 # Find references to a language entity
+# (deprecated in favor of more general codemarkup.EntityReferences)
 predicate EntityUses:
   {
     target: code.Entity,
@@ -236,6 +243,29 @@ predicate EntityUses:
     RustEntityUses { Entity, File, Span } |
     BuckEntityUses { Entity, File, Span } |
     ErlangEntityUses { Entity, File, Span };
+
+# Find references to a language entity (same as EntityUses but with RangeSpans)
+predicate EntityReferences:
+  {
+    target: code.Entity,
+    file: src.File,
+    range: RangeSpan
+  }
+  {Entity, File, RangeSpan} where
+  (
+    HackEntityUses { Entity, File, Span } |
+    FlowEntityUses { Entity, File, Span } |
+    PythonEntityUses { Entity, File, Span } |
+    CxxEntityUses { Entity, File, Span } |
+    HaskellEntityUses { Entity, File, Span } |
+    RustEntityUses { Entity, File, Span } |
+    BuckEntityUses { Entity, File, Span } |
+    ErlangEntityUses { Entity, File, Span };
+    { span = Span } = RangeSpan;
+  ) | (
+    LsifEntityUses { Entity, File, Range };
+    { range = Range } = RangeSpan;
+  )
 
 # Private language instances
 
@@ -432,6 +462,14 @@ predicate ErlangResolveLocation:
     Declaration = erlang.Declaration { func = { fqn = {name = Name}, file = File, span = Span } };
     Entity = code.Entity { erlang = { decl = Declaration } };
 
+predicate LsifResolveLocation:
+  {
+    location: Location,
+    entity: code.Entity,
+  }
+  { { Name, File, { range = Range }, nothing }, { lsif = Entity } } where
+    lsif.ResolveLocation { { Name, File, Range }, Entity };
+
 # Finding entities' locations
 
 predicate HackEntityLocation:
@@ -527,6 +565,14 @@ predicate ErlangEntityLocation:
     erlang.DeclarationLocation { declaration = D, file = File, span = Span };
     # Location.name here is weird, see ErlangResolveLocation comment
     { func = erlang.FunctionDeclaration { fqn = {name = Name } , file = _, span = _} } = D;
+
+predicate LsifEntityLocation:
+  {
+    entity: code.Entity,
+    location: Location,
+  }
+  { { lsif = Entity }, { Name, File, { range = Range }, nothing } } where
+    lsif.EntityLocation { Entity, { Name, File, Range } };
 
 # Finding references in a file
 
@@ -1031,6 +1077,18 @@ predicate ErlangFileEntityXRefLocations:
   { func = { fqn = { name = Name }, file = TargetFile, span = TargetSpan } } = Decl;
   { Name, TargetFile, { span = TargetSpan }, nothing } = TargetLocation;
 
+predicate LsifFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: XRefLocation,
+    entity: code.Entity,
+  }
+  { File, XRefLocation, { lsif = Entity } } where
+    lsif.FileEntityXRefLocation { File, SrcRange, TargetLocation, Entity };
+    { Name, TargetFile, TargetRange } = TargetLocation;
+    { { Name, TargetFile, { range = TargetRange }, nothing },
+      { range = SrcRange }} = XRefLocation;
+
 #
 # Language entity uses
 #
@@ -1117,6 +1175,15 @@ predicate ErlangEntityUses:
   }
   { { erlang = { decl = D } }, File, Span } where
   erlang.DeclarationUses { declaration = D, file = File, span = Span}
+
+predicate LsifEntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    range: src.Range, # n.b src.Range
+  }
+  { { lsif = E }, File, Range } where
+  lsif.EntityUses { E, File, Range }
 
 #
 # Language-specific symbol info

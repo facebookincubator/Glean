@@ -102,6 +102,7 @@ filterRoot path = do
 -- edges relate existnig vertex facts to each other (with new facts)
 --
 factToAngle :: KeyFact -> Parse [Predicate]
+
 factToAngle (KeyFact _ MetaData{..}) = do
   appendRoot projectRoot
   predicate "lsif.Metadata.1" ([
@@ -128,15 +129,15 @@ factToAngle (KeyFact _ PackageInformation{..}) =
     "version" .= version
   ]
 
--- LSIF Documents are uri/language pairs. We generate a src.File nested fact
+-- LSIF Documents are uri/language pairs
+-- Rather than key on src.File, we use lsif.Document to keep the language of the
+-- symbol accessible, for mixed-language lsif dbs.
+--
 factToAngle (KeyFact n Document{..}) = do
   insertType n FileType
   path <- filterRoot uri
-  predicate "lsif.Document.1"
-    [ "file" .= object [
-            factId n, -- generates a new src.File fact with this id
-            "key" .= path
-         ],
+  predicateId "lsif.Document.1" n
+    [ "file" .= string path, -- n.b. anonymous src.File fact
       "language" .= fromEnum language
     ]
 
@@ -199,7 +200,7 @@ factToAngle (KeyFact n (SymbolRange range mtag)) = do
   -- emit a range fact for this id
   predicateId "lsif.Range.1" n $
     [ "range" .= toRange range
-    , "text" .= maybe (string "anonymous") toName mtag
+    , "text" .= maybe (string "" {- better to use nothing? -}) toName mtag
     ] ++ mFullRange
     where
       mFullRange = fromMaybe [] (tagToRange =<< mtag)
