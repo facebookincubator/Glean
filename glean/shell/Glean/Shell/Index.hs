@@ -87,11 +87,11 @@ indexCmd str = case words str of
   where
     index lang dir =
       withSystemTempDirectory' "glean-shell" $ \tmp -> do
-        fileValues <- liftIO $ runIndexer lang dir tmp
+        fileValue <- liftIO $ runIndexer lang dir tmp
         let name = Text.pack (takeBaseName (dropTrailingPathSeparator dir))
         hash <- pickHash name
         let repo = Glean.Repo name hash
-        case fileValues of
+        case fileValue of
           Left files -> load repo files
           Right val -> loadValue repo val
         setRepo repo
@@ -125,10 +125,10 @@ load repo files = withBackend $ \be ->  liftIO $ do
       Aeson.Success x -> return x
     Glean.sendJsonBatch be repo batches Nothing
 
--- | Load a specific JSON value as a db
+-- | Load a specific set of JSON fact/predicate set as a db
 loadValue :: Glean.Repo -> Value -> Eval ()
 loadValue repo val = withBackend $ \be ->  liftIO $ do
-  let onExisting  = throwIO $ ErrorCall "database already exists"
+  let onExisting = throwIO $ ErrorCall "database already exists"
   void $ fillDatabase be Nothing repo "" onExisting $ do
     batches <- case Aeson.parse parseJsonFactBatches val of
       Error str -> throwIO $ ErrorCall str

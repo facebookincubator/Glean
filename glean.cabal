@@ -1074,11 +1074,13 @@ library lsif
     hs-source-dirs: glean/lang/lsif
     exposed-modules:
         Data.LSIF.Angle
-        Data.LSIF.Types
+        Data.LSIF.Env
         Data.LSIF.JSON
+        Data.LSIF.Types
         Glean.LSIF.Driver
     build-depends:
-        aeson
+        aeson,
+        split,
 
 -- | A generic LSIF-based external indexer
 executable glean-lsif
