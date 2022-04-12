@@ -1,0 +1,204 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "trace": {
+        "key": {
+          "file": { "key": "test.cpp" },
+          "declarations": {
+            "key": [
+              {
+                "typeAlias": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "I" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "type": { "key": "__int128_t" },
+                    "kind": 1,
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 9,
+                      "columnBegin": 1,
+                      "lineEnd": 9,
+                      "columnEnd": 20
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "f" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 11,
+                      "columnBegin": 1,
+                      "lineEnd": 13,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "preprocessor": {
+            "key": { "file": { "key": "test.cpp" }, "events": [ ] }
+          }
+        }
+      },
+      "location": {
+        "name": "I",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 9,
+            "columnBegin": 1,
+            "lineEnd": 9,
+            "columnEnd": 20
+          }
+        },
+        "span": { "start": 227, "length": 1 }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "typeAlias": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "I" }, "scope": { "global_": { } } }
+                },
+                "type": { "key": "__int128_t" },
+                "kind": 1,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 9,
+                  "columnEnd": 20
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "trace": {
+        "key": {
+          "file": { "key": "test.cpp" },
+          "declarations": {
+            "key": [
+              {
+                "typeAlias": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "I" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "type": { "key": "__int128_t" },
+                    "kind": 1,
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 9,
+                      "columnBegin": 1,
+                      "lineEnd": 9,
+                      "columnEnd": 20
+                    }
+                  }
+                }
+              },
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "f" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 11,
+                      "columnBegin": 1,
+                      "lineEnd": 13,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "preprocessor": {
+            "key": { "file": { "key": "test.cpp" }, "events": [ ] }
+          }
+        }
+      },
+      "location": {
+        "name": "f",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 11,
+            "columnBegin": 1,
+            "lineEnd": 13,
+            "columnEnd": 1
+          }
+        },
+        "span": { "start": 249, "length": 1 }
+      },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "f" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 11,
+                      "columnBegin": 1,
+                      "lineEnd": 13,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

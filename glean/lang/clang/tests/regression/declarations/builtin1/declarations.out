@@ -1,0 +1,47 @@
+[
+  "@generated",
+  {
+    "key": [
+      {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "I" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "__int128_t" },
+            "kind": 1,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 1,
+              "lineEnd": 9,
+              "columnEnd": 20
+            }
+          }
+        }
+      },
+      {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "f" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 11,
+              "columnBegin": 1,
+              "lineEnd": 13,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    ]
+  }
+]

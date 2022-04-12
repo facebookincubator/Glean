@@ -1,0 +1,100 @@
+[
+  "@generated",
+  {
+    "key": {
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "f" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 11,
+              "columnBegin": 1,
+              "lineEnd": 13,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 11,
+        "columnBegin": 1,
+        "lineEnd": 13,
+        "columnEnd": 1
+      },
+      "name": "f"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "I" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "__int128_t" },
+            "kind": 1,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 1,
+              "lineEnd": 9,
+              "columnEnd": 20
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 9,
+        "columnBegin": 1,
+        "lineEnd": 9,
+        "columnEnd": 20
+      },
+      "name": "I"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "__int128_t" },
+                "scope": { "global_": { } }
+              }
+            },
+            "type": { "key": "__int128" },
+            "kind": 0,
+            "source": {
+              "file": { "key": "<builtin>" },
+              "lineBegin": 1,
+              "columnBegin": 1,
+              "lineEnd": 1,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "<builtin>" },
+        "lineBegin": 1,
+        "columnBegin": 1,
+        "lineEnd": 1,
+        "columnEnd": 1
+      },
+      "name": "__int128_t"
+    }
+  }
+]
