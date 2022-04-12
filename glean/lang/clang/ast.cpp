@@ -696,8 +696,10 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         // https://github.com/llvm/llvm-project/blob/a3a2239aaaf6860eaee591c70a016b7c5984edde/clang-tools-extra/clangd/AST.cpp#L167-L172
         auto nameRange =
             visitor.db.srcRange(visitor.db.rangeOfToken(decl->getLocation()));
-        visitor.db.fact<Cxx::DeclarationNameSpan>(
-            result->declaration(), nameRange.range.file, nameRange.span);
+        if (nameRange.file) {
+          visitor.db.fact<Cxx::DeclarationNameSpan>(
+              result->declaration(), nameRange.file->fact, nameRange.span);
+        }
         if (DeclTraits::canHaveComments(decl)){
           if (auto comment =
                 decl->getASTContext().getRawCommentForDeclNoCache(decl)) {
