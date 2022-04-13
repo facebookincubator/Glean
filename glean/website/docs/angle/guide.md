@@ -270,6 +270,10 @@ facts > if (example.Parent { child = X }) then X else example.Class _
   { "id": 1027, "key": { "name": "Goldfish", "line": 40 } }
 ```
 
+Please note that if-patterns cannot be used in stored derived predicates. This
+is the case because they require the use of negation, which is disallowed in
+stored predicates.
+
 ## More complex queries
 
 So far we’ve seen how to query for facts by matching patterns, including matching nested facts.  In this section we’ll see how to construct more complex queries that combine matching facts from multiple predicates.
