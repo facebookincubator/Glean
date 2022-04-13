@@ -137,6 +137,8 @@ shortCodeTable =
   , (Language_Rust , "rs")
   , (Language_Buck , "buck")
   , (Language_Erlang , "erl")
+  , (Language_Go , "go")
+  , (Language_TypeScript , "ts")
   ]
 
 languageToCode :: Map.Map Language Text
