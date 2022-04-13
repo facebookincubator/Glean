@@ -7,7 +7,9 @@
           "rust": {
             "defn": {
               "key": {
-                "file": { "key": "src/lib.rs" },
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
                 "range": {
                   "key": {
                     "range": {
@@ -16,7 +18,7 @@
                       "lineEnd": 12,
                       "columnEnd": 14
                     },
-                    "text": { "key": "anonymous" }
+                    "text": { "key": "" }
                   }
                 }
               }
@@ -25,7 +27,7 @@
         }
       },
       "location": {
-        "name": "anonymous",
+        "name": "",
         "file": { "key": "src/lib.rs" },
         "location": {
           "range": {
@@ -46,7 +48,9 @@
           "rust": {
             "defn": {
               "key": {
-                "file": { "key": "src/lib.rs" },
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
                 "range": {
                   "key": {
                     "range": {
@@ -55,7 +59,7 @@
                       "lineEnd": 12,
                       "columnEnd": 16
                     },
-                    "text": { "key": "anonymous" }
+                    "text": { "key": "" }
                   }
                 }
               }
@@ -64,7 +68,7 @@
         }
       },
       "location": {
-        "name": "anonymous",
+        "name": "",
         "file": { "key": "src/lib.rs" },
         "location": {
           "range": {
@@ -85,7 +89,9 @@
           "rust": {
             "defn": {
               "key": {
-                "file": { "key": "src/lib.rs" },
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
                 "range": {
                   "key": {
                     "range": {
@@ -94,7 +100,7 @@
                       "lineEnd": 16,
                       "columnEnd": 9
                     },
-                    "text": { "key": "anonymous" }
+                    "text": { "key": "" }
                   }
                 }
               }
@@ -103,7 +109,7 @@
         }
       },
       "location": {
-        "name": "anonymous",
+        "name": "",
         "file": { "key": "src/lib.rs" },
         "location": {
           "range": {
@@ -124,7 +130,9 @@
           "rust": {
             "defn": {
               "key": {
-                "file": { "key": "src/lib.rs" },
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
                 "range": {
                   "key": {
                     "range": {
@@ -133,7 +141,7 @@
                       "lineEnd": 16,
                       "columnEnd": 11
                     },
-                    "text": { "key": "anonymous" }
+                    "text": { "key": "" }
                   }
                 }
               }
@@ -142,7 +150,7 @@
         }
       },
       "location": {
-        "name": "anonymous",
+        "name": "",
         "file": { "key": "src/lib.rs" },
         "location": {
           "range": {
@@ -163,7 +171,9 @@
           "rust": {
             "defn": {
               "key": {
-                "file": { "key": "src/lib.rs" },
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
                 "range": {
                   "key": {
                     "range": {
@@ -172,7 +182,7 @@
                       "lineEnd": 16,
                       "columnEnd": 21
                     },
-                    "text": { "key": "anonymous" }
+                    "text": { "key": "" }
                   }
                 }
               }
@@ -181,7 +191,7 @@
         }
       },
       "location": {
-        "name": "anonymous",
+        "name": "",
         "file": { "key": "src/lib.rs" },
         "location": {
           "range": {
@@ -202,7 +212,9 @@
           "rust": {
             "defn": {
               "key": {
-                "file": { "key": "src/lib.rs" },
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
                 "range": {
                   "key": {
                     "range": {
@@ -211,7 +223,7 @@
                       "lineEnd": 22,
                       "columnEnd": 14
                     },
-                    "text": { "key": "anonymous" }
+                    "text": { "key": "" }
                   }
                 }
               }
@@ -220,7 +232,7 @@
         }
       },
       "location": {
-        "name": "anonymous",
+        "name": "",
         "file": { "key": "src/lib.rs" },
         "location": {
           "range": {
@@ -241,7 +253,9 @@
           "rust": {
             "defn": {
               "key": {
-                "file": { "key": "src/lib.rs" },
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
                 "range": {
                   "key": {
                     "range": {
@@ -250,7 +264,7 @@
                       "lineEnd": 22,
                       "columnEnd": 16
                     },
-                    "text": { "key": "anonymous" }
+                    "text": { "key": "" }
                   }
                 }
               }
@@ -259,7 +273,7 @@
         }
       },
       "location": {
-        "name": "anonymous",
+        "name": "",
         "file": { "key": "src/lib.rs" },
         "location": {
           "range": {
@@ -280,7 +294,9 @@
           "rust": {
             "defn": {
               "key": {
-                "file": { "key": "src/lib.rs" },
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
                 "range": {
                   "key": {
                     "range": {
@@ -289,7 +305,7 @@
                       "lineEnd": 23,
                       "columnEnd": 16
                     },
-                    "text": { "key": "anonymous" }
+                    "text": { "key": "" }
                   }
                 }
               }
@@ -298,7 +314,7 @@
         }
       },
       "location": {
-        "name": "anonymous",
+        "name": "",
         "file": { "key": "src/lib.rs" },
         "location": {
           "range": {
@@ -319,7 +335,9 @@
           "rust": {
             "defn": {
               "key": {
-                "file": { "key": "src/lib.rs" },
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
                 "range": {
                   "key": {
                     "range": {
@@ -328,7 +346,7 @@
                       "lineEnd": 24,
                       "columnEnd": 14
                     },
-                    "text": { "key": "anonymous" }
+                    "text": { "key": "" }
                   }
                 }
               }
@@ -337,7 +355,7 @@
         }
       },
       "location": {
-        "name": "anonymous",
+        "name": "",
         "file": { "key": "src/lib.rs" },
         "location": {
           "range": {
@@ -358,7 +376,9 @@
           "rust": {
             "defn": {
               "key": {
-                "file": { "key": "src/lib.rs" },
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
                 "range": {
                   "key": {
                     "range": {
@@ -367,7 +387,7 @@
                       "lineEnd": 37,
                       "columnEnd": 14
                     },
-                    "text": { "key": "anonymous" }
+                    "text": { "key": "" }
                   }
                 }
               }
@@ -376,7 +396,7 @@
         }
       },
       "location": {
-        "name": "anonymous",
+        "name": "",
         "file": { "key": "src/lib.rs" },
         "location": {
           "range": {
@@ -397,7 +417,9 @@
           "rust": {
             "defn": {
               "key": {
-                "file": { "key": "src/lib.rs" },
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
                 "range": {
                   "key": {
                     "range": {
@@ -406,7 +428,7 @@
                       "lineEnd": 37,
                       "columnEnd": 16
                     },
-                    "text": { "key": "anonymous" }
+                    "text": { "key": "" }
                   }
                 }
               }
@@ -415,7 +437,7 @@
         }
       },
       "location": {
-        "name": "anonymous",
+        "name": "",
         "file": { "key": "src/lib.rs" },
         "location": {
           "range": {
@@ -436,7 +458,9 @@
           "rust": {
             "defn": {
               "key": {
-                "file": { "key": "src/lib.rs" },
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
                 "range": {
                   "key": {
                     "range": {
@@ -445,7 +469,7 @@
                       "lineEnd": 38,
                       "columnEnd": 16
                     },
-                    "text": { "key": "anonymous" }
+                    "text": { "key": "" }
                   }
                 }
               }
@@ -454,7 +478,7 @@
         }
       },
       "location": {
-        "name": "anonymous",
+        "name": "",
         "file": { "key": "src/lib.rs" },
         "location": {
           "range": {
@@ -475,7 +499,9 @@
           "rust": {
             "defn": {
               "key": {
-                "file": { "key": "src/lib.rs" },
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
                 "range": {
                   "key": {
                     "range": {
@@ -484,7 +510,7 @@
                       "lineEnd": 39,
                       "columnEnd": 10
                     },
-                    "text": { "key": "anonymous" }
+                    "text": { "key": "" }
                   }
                 }
               }
@@ -493,7 +519,7 @@
         }
       },
       "location": {
-        "name": "anonymous",
+        "name": "",
         "file": { "key": "src/lib.rs" },
         "location": {
           "range": {

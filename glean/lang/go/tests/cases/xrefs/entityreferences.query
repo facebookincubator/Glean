@@ -1,0 +1,3 @@
+query: codemarkup.EntityReferences { target = { lsif = { go = _ } } }
+perf: True
+transform: [gensort, []]
