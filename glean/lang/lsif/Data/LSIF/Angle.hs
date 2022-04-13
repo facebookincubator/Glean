@@ -588,11 +588,11 @@ predicateId name id_ facts =
 
 toRange :: Range -> Value
 toRange Range{..} =
-  object [ -- lsif.Range data type
-    "lineBegin" .= line start,
-    "columnBegin" .= character start,
-    "lineEnd" .= line end,
-    "columnEnd" .= character end
+  object [ -- lsif.Range data type, we convert to 1-indexed
+    "lineBegin" .= (line start + 1),
+    "columnBegin" .= (character start + 1),
+    "lineEnd" .= (line end + 1),
+    "columnEnd" .= (character end + 1)
   ]
 
 key :: KeyValue kv => [Pair] -> kv
@@ -615,11 +615,7 @@ tagToTy _ = Nothing
 
 -- | Identifier text string
 toName :: Tag -> Value
-toName t = string $ case t of
-  Definition{..} -> tagText
-  Declaration{..} -> tagText
-  Reference{..} -> tagText
-  UnknownSymbol{..} -> tagText
+toName = string . tagText
 
 tagToRange :: KeyValue a => Tag -> Maybe [a]
 tagToRange Definition{..} = Just ["fullRange" .= toRange fullRange]
