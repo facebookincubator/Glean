@@ -172,7 +172,7 @@ instance ToQName Flow.Module_key where
     sym <- toSymbol m
     return $ case reverse sym of
       [] -> Left "QName not supported for this symbol"
-      (h:t) -> Right $ (Name h, Name $ intercalate "." $ reverse t)
+      (h:t) -> Right (Name h, Name (intercalate "." (reverse t)))
 
 pairToQName
   :: (Symbol name, Symbol container)

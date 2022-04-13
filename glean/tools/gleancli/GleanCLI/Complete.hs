@@ -33,7 +33,7 @@ instance Plugin CompleteCommand where
       (progDesc "Notify server that some predicates are complete.") $ do
       completeRepo <- repoOpts
       completePredicates <-
-        many $ fmap parseRef $ strArgument (metavar "PREDICATE")
+        many $ parseRef <$> strArgument (metavar "PREDICATE")
       return Complete{..}
 
   runCommand _ _ backend Complete{..} = do

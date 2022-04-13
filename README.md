@@ -54,7 +54,6 @@ We have added experimental support for [LSIF](https://lsif.dev) indexers, starti
 * [Go](https://glean.software/docs/indexer/lsif-go)
 * [Rust](https://glean.software/docs/indexer/lsif-rust)
 
-
 ## License
 
 Glean is licensed under a [BSD LICENSE](LICENSE).
@@ -66,6 +65,10 @@ requests](https://github.com/facebookincubator/Glean/pulls) on github,
 and note that we need contributors to sign the [Contributor license
 agreement](https://code.facebook.com/cla) before we can accept your
 pull request.
+
+Style guide: for Haskell code, we use `hlint` to check for style issues. Lines
+wrap at 80 columns. Code should be -Wall clean. For C++, code should compile
+with Clang or GCC.
 
 ## Building
 

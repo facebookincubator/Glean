@@ -90,7 +90,7 @@ instance Plugin WriteCommand where
           )
         writeFiles <- fileArgs
         finish <- finishOpt
-        scribe <- Just <$> scribeOptions <|> pure Nothing
+        scribe <- optional scribeOptions
         dependencies <- optional (stackedOptions <|> updateOptions)
         properties <- many $ option readProperty
           (  long "property"
@@ -162,8 +162,8 @@ instance Plugin WriteCommand where
     writeScribeOpts :: Parser (Text, Maybe PickScribeBucket, Bool)
     writeScribeOpts = do
       cat <- textOption (long "scribe-category" <> metavar "NAME")
-      bucket <- optional $ fmap PickScribeBucket_bucket $
-        option auto (long "scribe-bucket" <> metavar "BUCKET")
+      bucket <- optional (PickScribeBucket_bucket <$>
+        option auto (long "scribe-bucket" <> metavar "BUCKET"))
       compress <- switch (long "compress")
       return (cat, bucket, compress)
 
