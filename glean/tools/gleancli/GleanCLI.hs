@@ -274,7 +274,7 @@ instance Plugin DumpCommand where
   runCommand _ _ backend Dump{..} =
     Glean.dumpJsonToFile backend dumpRepo dumpFile
 
-data DeleteCommand
+newtype DeleteCommand
   = Delete
       { deleteRepo :: Repo
       }
@@ -324,7 +324,7 @@ instance Plugin ValidateCommand where
     Glean.BackendEnv env -> Glean.validate env validateRepo validate
     _ -> die 2 "Can't validate a remote database"
 
-data ValidateSchemaCommand
+newtype ValidateSchemaCommand
   = ValidateSchema
       { file :: FilePath
       }
@@ -404,7 +404,7 @@ instance Plugin StatsCommand where
           predicateRef_name == sourceRefName &&
           maybe True (== predicateRef_version) sourceRefVersion
 
-data OwnershipCommand
+newtype OwnershipCommand
   = Ownership
       { ownershipRepo :: Repo
       }

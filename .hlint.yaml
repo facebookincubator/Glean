@@ -1,0 +1,64 @@
+# Don't recommend LambdaCase
+- ignore: {name: Use lambda-case}
+
+# Allow identifiers like @c_frobnicateTheBlerch@.
+- ignore: {name: Use camelCase}
+
+# Discourage point-free style.
+- ignore: {name: Eta reduce}
+
+# Allow one-statement do blocks.
+- ignore: {name: Redundant do}
+
+# > (`f` "something")        # NO
+# > (\x -> f x "something")  # YES
+- ignore: {name: Avoid lambda}
+
+# Allow @Set.union x y@ instead of @x `Set.union` y@.
+- ignore: {name: Use infix}
+
+# Allow explicit export of multiple modules without the
+# import/export shortcut.
+- ignore: {name: Use import/export shortcut}
+
+# Let the branches of @if@ have some redundancy:
+
+# > if pred x then return x else return y
+# > return (if pred x then x else y)
+- ignore: {name: Too strict if}
+
+# join is a bit obscure
+- ignore: {name: Use join}
+
+# "when (not x)" is just as clear as "unless x"
+- ignore: {name: Use unless}
+
+# uncurry doesn't increase readability
+- ignore: {name: Use uncurry}
+
+# Arrows are too obscure to recommend
+- ignore: {name: Use &&&}
+
+# tuple sections don't increase readability
+- ignore: {name: Use tuple-section}
+
+# foldl' is almost always what you want
+- warn: {
+  lhs: foldl,
+  rhs: foldl',
+  note: "Use foldl', which is strict, to avoid space leaks. https://fburl.com/fo\
+ldl"
+}
+- warn: {
+  lhs: fromJust,
+  rhs: "fromMaybe (error \"your descriptive error message\")",
+  note: "Avoid usage of partial functions. https://fburl.com/partial-functions"
+}
+
+# Discourage point-free style:
+- warn: {
+  lhs: f . g $ x,
+  rhs: f $ g $ x,
+  name: Point-free style,
+  note: "Don't overuse the point-free style: https://fburl.com/wiki/hdhaxhbm"
+}
