@@ -89,9 +89,10 @@ predicate ProjectDocument:
     project: lsif.Project,
   }
 
-# Note, in LSIF range spans are not keyed by file
-# having this as a type compresses better than as a predicate
-# Note: These are 0-based, unlike src.Range.
+# In LSIF range spans are not keyed by file, we index them separately.
+# Having this as a type compresses better than as a predicate
+# Note: these are 1-indexed, like src.Range, while LSIF native is 0-indexed.
+# The conversion happens in the indexer.
 type RangeSpan =
   {
     lineBegin : nat,
