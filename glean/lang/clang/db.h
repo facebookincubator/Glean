@@ -9,6 +9,7 @@
 #pragma once
 
 #include <filesystem>
+#include <variant>
 
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Tooling/Tooling.h>
@@ -123,7 +124,7 @@ public:
     clang::FileID file;
   };
 
-  using PrePPEvent = boost::variant<Cxx::PPEvent, PreInclude>;
+  using PrePPEvent = std::variant<Cxx::PPEvent, PreInclude>;
 
   struct CrossRef {
     Src::ByteSpan span;

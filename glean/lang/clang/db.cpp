@@ -8,6 +8,7 @@
 
 #include "glean/lang/clang/db.h"
 #include "glean/lang/clang/path.h"
+#include "glean/lang/clang/common.h"
 
 namespace facebook {
 namespace glean {
@@ -338,32 +339,26 @@ void ClangDB::finish() {
         | folly::gen::as<std::vector>());
     release(decls);
 
-    auto resolve = [&](const auto &x) {
-      struct Resolver : boost::static_visitor<Cxx::PPEvent> {
-        auto operator()(const Cxx::PPEvent& x) const {
-          return x;
-        }
-
-        auto operator()(const PreInclude& x) const {
-          folly::Optional<Fact<Cxx::Trace>> trace;
-          if (auto p = folly::get_default(db->files, x.file, nullptr)) {
-            if (p->trace) {
-              trace = p->trace.value();
-            } else {
-              LOG(WARNING) << "unresolved include";
-            }
-          } else {
-            LOG(WARNING) << "unknown include";
-          }
-          return Cxx::PPEvent::include_(
-            Cxx::IncludeTrace{x.include, maybe(trace)});
-        }
-
-        ClangDB *db;
-      };
-      Resolver r;
-      r.db = this;
-      return boost::apply_visitor(r, x);
+    auto resolve = [&](const auto& x) {
+      return std::visit(
+          overload{
+              [](const Cxx::PPEvent& x) { return x; },
+              [db = this](const PreInclude& x) {
+                folly::Optional<Fact<Cxx::Trace>> trace;
+                if (auto p = folly::get_default(db->files, x.file, nullptr)) {
+                  if (p->trace) {
+                    trace = p->trace.value();
+                  } else {
+                    LOG(WARNING) << "unresolved include";
+                  }
+                } else {
+                  LOG(WARNING) << "unknown include";
+                }
+                return Cxx::PPEvent::include_(
+                    Cxx::IncludeTrace{x.include, maybe(trace)});
+              }
+          },
+          x);
     };
     auto pp_trace = fact<Cxx::PPTrace>(
       file.fact,

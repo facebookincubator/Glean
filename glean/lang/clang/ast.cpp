@@ -6,7 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include <boost/variant.hpp>
+#include <variant>
+
 #include <clang/AST/RecursiveASTVisitor.h>
 #include <clang/Sema/SemaConsumer.h>
 #include <llvm/Config/llvm-config.h>
@@ -15,6 +16,7 @@
 #include "folly/ScopeGuard.h"
 #include "glean/lang/clang/ast.h"
 #include "glean/lang/clang/index.h"
+#include "glean/lang/clang/common.h"
 
 // This file implements the Clang AST traversal.
 
@@ -477,7 +479,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     Fact<Cxx::FunctionQName> fact;
   };
 
-  using Scope = boost::variant<
+  using Scope = std::variant<
     GlobalScope,
     NamespaceScope,
     ClassScope,
@@ -530,31 +532,17 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   }
 
   Cxx::Scope scopeRepr(const Scope& scope, clang::AccessSpecifier acs) {
-    struct GetScope
-      : boost::static_visitor<Cxx::Scope> {
-
-      const clang::AccessSpecifier access_;
-
-      explicit GetScope(clang::AccessSpecifier a) : access_(a) {}
-
-      result_type operator()(const GlobalScope&) const {
-        return Cxx::Scope::global_();
-      }
-
-      result_type operator()(const NamespaceScope& ns) const {
-        return Cxx::Scope::namespace_(ns.fact);
-      }
-
-      result_type operator()(const ClassScope& cls) const {
-        return Cxx::Scope::recordWithAccess(cls.fact, access(access_));
-      }
-
-      result_type operator()(const LocalScope& fun) const {
-        return Cxx::Scope::local(fun.fact);
-      }
-    };
-
-    return boost::apply_visitor(GetScope(acs), scope);
+    return std::visit(
+        overload{
+            [](const GlobalScope&) { return Cxx::Scope::global_(); },
+            [](const NamespaceScope& ns) {
+              return Cxx::Scope::namespace_(ns.fact);
+            },
+            [acs](const ClassScope& cls) {
+              return Cxx::Scope::recordWithAccess(cls.fact, access(acs));
+            },
+            [](const LocalScope& fun) { return Cxx::Scope::local(fun.fact); }},
+        scope);
   }
 
   // Obtain the cxx.Scope of a Decl and translate it to clang.Scope
@@ -739,28 +727,19 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   // Obtain the parent namespace of a Decl, if any
   folly::Optional<Fact<Cxx::NamespaceQName>> parentNamespace(
       const clang::Decl* decl) {
-    struct GetNamespace
-      : boost::static_visitor<folly::Optional<Fact<Cxx::NamespaceQName>>> {
-      result_type operator()(const GlobalScope&) const {
-        return folly::none;
-      }
-
-      result_type operator()(const NamespaceScope& ns) const {
-        return ns.fact;
-      }
-
-      result_type operator()(const ClassScope&) const {
-        LOG(ERROR) << "Inner scope is a class, should have been a namespace";
-        return folly::none;
-      }
-
-      result_type operator()(const LocalScope&) const {
-        LOG(ERROR) << "Inner scope is a function, should have been a namespace";
-        return folly::none;
-      }
-    };
-
-    return boost::apply_visitor(GetNamespace(), parentScope(decl));
+    using return_type = folly::Optional<Fact<Cxx::NamespaceQName>>;
+    return std::visit(
+        overload{
+            [](const NamespaceScope& ns) -> return_type { return ns.fact; },
+            [](const auto& v) -> return_type {
+              if constexpr (std::is_same_v<decltype(v), const ClassScope&>) {
+                LOG(ERROR) << "Inner scope is a class, should have been a namespace";
+              } else if constexpr (std::is_same_v<decltype(v), const LocalScope&>) {
+                LOG(ERROR) << "Inner scope is a function, should have been a namespace";
+              }
+              return folly::none;
+            }},
+        parentScope(decl));
   }
 
   struct NamespaceDecl : Declare<NamespaceDecl> {
