@@ -6,18 +6,17 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-module Glean.Glass.Regression.Go (main) where
+module Glean.Glass.Regression.TypeScript (main) where
 
 import Test.HUnit
 
-import Glean.Indexer.Go as Go
 import Glean.Regression.Test
 
 import Glean.Glass.Types
 import Glean.Glass.Regression.Tests
 
 main :: IO ()
-main = mainTestIndexExternal "glass-regression-go" $ \get -> TestList
+main = mainTestIndexExternal "glass-regression-typescript" $ \get -> TestList
   [ testDocumentSymbolListX
-      (Path "glean/lang/go/tests/cases/xrefs/leaphash.go") get
+      (Path "glean/lang/typescript/tests/cases/xrefs/example.ts") get
   ]

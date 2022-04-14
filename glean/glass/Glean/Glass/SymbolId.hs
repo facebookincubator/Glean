@@ -72,6 +72,7 @@ import Glean.Glass.SymbolId.Rust ({- instances -})
 import Glean.Glass.SymbolId.Buck ({- instances -})
 import Glean.Glass.SymbolId.Thrift ({- instances -})
 import Glean.Glass.SymbolId.Erlang ({- instances -})
+import Glean.Glass.SymbolId.LSIF ({- instances -})
 
 import qualified Glean.Glass.SymbolId.Cxx as Cxx
 import qualified Glean.Glass.SymbolId.Pp as Pp
@@ -195,6 +196,9 @@ instance Symbol Code.Entity where
     Code.Entity_buck x -> toSymbol x
     Code.Entity_thrift x -> toSymbol x
     Code.Entity_erlang x -> toSymbol x
+    Code.Entity_lsif (Lsif.Entity_typescript x) -> toSymbol x
+    Code.Entity_lsif (Lsif.Entity_go x) -> toSymbol x
+    Code.Entity_lsif (Lsif.Entity_rust x) -> toSymbol x
     _ -> throwM $ SymbolError "Language not supported"
 
 -- | Top level with error handler, to catch attempts to query

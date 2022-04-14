@@ -1185,6 +1185,7 @@ library glass-lib
         Glean.Glass.SymbolId.Flow
         Glean.Glass.SymbolId.Hack
         Glean.Glass.SymbolId.Hs
+        Glean.Glass.SymbolId.LSIF
         Glean.Glass.SymbolId.Pp
         Glean.Glass.SymbolId.Python
         Glean.Glass.SymbolId.Rust
@@ -1891,6 +1892,14 @@ test-suite glass-regression-hack
     if !flag(hack-tests)
         buildable: False
 
+test-suite glass-regression-typescript
+    import: glass-regression-deps, fb-haskell, deps
+    type: exitcode-stdio-1.0
+    main-is: Glean/Glass/Regression/TypeScript/Main.hs
+    ghc-options: -main-is Glean.Glass.Regression.TypeScript.Main
+    other-modules: Glean.Glass.Regression.TypeScript
+    build-depends: glean:lsif
+
 test-suite glass-regression-go
     import: glass-regression-deps, fb-haskell, deps
     type: exitcode-stdio-1.0
@@ -1898,7 +1907,14 @@ test-suite glass-regression-go
     ghc-options: -main-is Glean.Glass.Regression.Go.Main
     other-modules: Glean.Glass.Regression.Go
     build-depends: glean:lsif
-    buildable: False
+
+test-suite glass-regression-rust
+    import: glass-regression-deps, fb-haskell, deps
+    type: exitcode-stdio-1.0
+    main-is: Glean/Glass/Regression/Rust/Main.hs
+    ghc-options: -main-is Glean.Glass.Regression.Rust.Main
+    other-modules: Glean.Glass.Regression.Rust
+    build-depends: glean:lsif
 
 test-suite glass-regression-python
     import: glass-regression-deps, fb-haskell, deps

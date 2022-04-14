@@ -6,18 +6,16 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-module Glean.Glass.Regression.Go (main) where
+module Glean.Glass.Regression.Rust (main) where
 
 import Test.HUnit
 
-import Glean.Indexer.Go as Go
 import Glean.Regression.Test
 
 import Glean.Glass.Types
 import Glean.Glass.Regression.Tests
 
 main :: IO ()
-main = mainTestIndexExternal "glass-regression-go" $ \get -> TestList
-  [ testDocumentSymbolListX
-      (Path "glean/lang/go/tests/cases/xrefs/leaphash.go") get
+main = mainTestIndexExternal "glass-regression-rust" $ \get -> TestList
+  [ testDocumentSymbolListX (Path "src/lib.rs") get
   ]
