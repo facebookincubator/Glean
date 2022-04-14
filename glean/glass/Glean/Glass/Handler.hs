@@ -206,7 +206,7 @@ runRepoFile
 runRepoFile sym fn env req opts =
   withRepoFile sym env req repo file $ \dbs mlang ->
     fn repos req opts
-        (mkGleanBackend (Glass.gleanBackend env) dbs)
+        (GleanBackend (Glass.gleanBackend env) dbs)
           mlang
   where
     repos = Glass.latestGleanRepos env
@@ -270,7 +270,7 @@ findReferences
 findReferences env@Glass.Env{..} sym RequestOptions{..} =
   withSymbol "findReferences" env sym (\(dbs,(repo, lang, toks)) ->
     fetchSymbolReferences repo lang toks limit
-      (mkGleanBackend gleanBackend dbs))
+      (GleanBackend gleanBackend dbs))
   where
     limit = fmap fromIntegral requestOptions_limit
 
@@ -283,7 +283,7 @@ findReferenceRanges
 findReferenceRanges env@Glass.Env{..} sym RequestOptions{..} =
   withSymbol "findReferenceRanges" env sym $ \(db,(repo, lang, toks)) ->
     fetchSymbolReferenceRanges repo lang toks limit
-      (mkGleanBackend gleanBackend db)
+      (GleanBackend gleanBackend db)
   where
     limit = fmap fromIntegral requestOptions_limit
 
@@ -296,7 +296,7 @@ resolveSymbol
   -> IO Location
 resolveSymbol env@Glass.Env{..} sym _opts =
   withSymbol "resolveSymbol" env sym (\(db,(repo, lang, toks)) ->
-    findSymbolLocation repo lang toks (mkGleanBackend gleanBackend db))
+    findSymbolLocation repo lang toks (GleanBackend gleanBackend db))
 
 -- | Describe characteristics of a symbol
 describeSymbol
@@ -386,15 +386,8 @@ data GleanBackend b =
   }
 backendRunHaxl
   :: Glean.Backend b => GleanBackend b -> (forall u. ReposHaxl u w a) -> IO a
-backendRunHaxl GleanBackend {..} act =
-  runHaxlAllRepos gleanBackend (fmap snd gleanDBs) act
-
-mkGleanBackend
-  :: Glean.Backend b
-  => b
-  -> NonEmpty (GleanDBName, Glean.Repo)
-  -> GleanBackend b
-mkGleanBackend b dbs = GleanBackend b dbs
+backendRunHaxl GleanBackend {..} =
+  runHaxlAllRepos gleanBackend (fmap snd gleanDBs)
 
 -- | Symbol search: try to resolve the symbol back to an Entity.
 findSymbolLocation
@@ -506,8 +499,7 @@ fetchDocumentSymbols
   -> Maybe Language
   -> IO (DocumentSymbols, Maybe ErrorLogger)
 
-fetchDocumentSymbols (FileReference scsrepo path)
-    mlimit includeRefs b mlang =
+fetchDocumentSymbols (FileReference scsrepo path) mlimit includeRefs b mlang =
   backendRunHaxl b $ do
     efile <- firstOrErrors $ queryEachRepo $ do
       repo <- Glean.haxlRepo
@@ -526,16 +518,15 @@ fetchDocumentSymbols (FileReference scsrepo path)
 
       -- from Glean, fetch xrefs and defs in batches
       (xrefs,defns) <- withRepo fileRepo $
-        documentSymbolsForLanguage mlimit mlang
-          includeRefs fileId
+        documentSymbolsForLanguage mlimit mlang includeRefs fileId
       (kindMap, merr) <- withRepo fileRepo $
         documentSymbolKinds mlimit mlang fileId
 
       -- mark up symbols into normal format with static attributes
       refs1 <- withRepo fileRepo $
-        mapM (\x -> toReferenceSymbol scsrepo srcFile offsets x) xrefs
+        mapM (toReferenceSymbol scsrepo srcFile offsets) xrefs
       defs1 <- withRepo fileRepo $
-        mapM (\x -> toDefinitionSymbol scsrepo srcFile offsets x) defns
+        mapM (toDefinitionSymbol scsrepo srcFile offsets) defns
 
       let (refs, defs) = Attributes.extendAttributes
             (Attributes.fromSymbolId Attributes.SymbolKindAttr)
@@ -599,11 +590,9 @@ documentSymbolsForLanguage mlimit (Just Language_Cpp) includeRefs fileId =
 -- For everyone else, we just query the generic codemarkup predicates
 documentSymbolsForLanguage mlimit _ includeRefs fileId = do
   xrefs <- if includeRefs
-    then searchRecursiveWithLimit mlimit $
-      Query.fileEntityXRefLocations fileId
+    then searchRecursiveWithLimit mlimit $ Query.fileEntityXRefLocations fileId
     else return []
-  defns <- searchRecursiveWithLimit mlimit $
-    Query.fileEntityLocations fileId
+  defns <- searchRecursiveWithLimit mlimit $ Query.fileEntityLocations fileId
   return (xrefs,defns)
 
 -- And build a line-indexed map of symbols, resolved to spans
