@@ -8,11 +8,11 @@
 
 module Glean.Regression.Indexer
   ( Indexer(..)
+  , IndexerParams(..)
   , RunIndexer
   , indexerWithNoOptions
   , indexerThen
   , withTestDatabase
-  , withTestEnvDatabase
   ) where
 
 import Options.Applicative
@@ -28,8 +28,7 @@ import Glean.Types
 import Glean.Util.Some
 
 
--- | An 'Indexer' tells the test framework how to index some source
--- code.
+-- | An 'Indexer' knows how to index some source code.
 --
 -- Indexers have command-line options, and a function to index the
 -- code specified by the 'TestConfig' using a given 'Env' as a
@@ -37,7 +36,26 @@ import Glean.Util.Some
 --
 data Indexer opts = Indexer
   { indexerOptParser :: Parser opts
-  , indexerRun :: opts -> TestConfig -> Env -> IO ()
+  , indexerRun :: opts -> RunIndexer
+  }
+
+type RunIndexer = Env -> Repo -> IndexerParams -> IO ()
+
+data IndexerParams = IndexerParams
+  { indexerRoot :: FilePath
+    -- ^ path containing source files to index
+  , indexerProjectRoot :: FilePath
+    -- ^ path to the root of the repository
+  , indexerOutput :: FilePath
+    -- ^ Where to put temporary files. The caller will choose whether
+    -- to create a temporary directory, or to use one specified by the
+    -- user in case they want to keep the temporary files for
+    -- debugging purposes.
+  , indexerGroup :: String
+    -- ^ which "group" to use. This is for when we run a set of tests
+    -- in multiple different ways. The interpretation of "group" is up
+    -- to the indexing backend; indexers that don't need to support
+    -- groups can ignore this.
   }
 
 -- | An indexer composed of two separate indexing tasks. The left
@@ -51,41 +69,36 @@ data Indexer opts = Indexer
 indexerThen :: Indexer a -> RunIndexer -> Indexer a
 indexerThen (Indexer parseOpts run1) run2 = Indexer
   { indexerOptParser = parseOpts
-  , indexerRun = \opts test env -> run1 opts test env >> run2 test env
+  , indexerRun = \opts backend repo params ->
+      run1 opts backend repo params >> run2 backend repo params
   }
-
-type RunIndexer = TestConfig -> Env -> IO ()
 
 indexerWithNoOptions :: RunIndexer -> Indexer ()
 indexerWithNoOptions run = Indexer
   { indexerOptParser = pure ()
-  , indexerRun = \() -> run
+  , indexerRun = const run
   }
 
 -- | Run the supplied Indexer to populate a temporary DB
 withTestDatabase
   :: RunIndexer
   -> TestConfig
-  -> ((Some Backend, Repo) -> IO a)
+  -> (Some Backend -> Repo -> IO a)
   -> IO a
-withTestDatabase gen cfg f =
-  withTestEnvDatabase gen cfg (\env repo -> f (Some env, repo))
-
--- | Like 'withTestDatabase', but requires an 'Env' rather than an
--- arbitrary 'Backend'.
-withTestEnvDatabase
-  :: RunIndexer
-  -> TestConfig
-  -> (Env -> Repo -> IO a)
-  -> IO a
-withTestEnvDatabase indexer test action =
+withTestDatabase indexer test action =
   withTestEnv settings $ \backend -> do
   let
     repo = testRepo test
     ver = fromIntegral <$> testSchemaVersion test
-  fillDatabase backend ver repo "" (die "repo already exists") $ do
-    indexer test backend
-  action backend (testRepo test)
+    params = IndexerParams {
+      indexerRoot = testRoot test,
+      indexerProjectRoot = testProjectRoot test,
+      indexerOutput = testOutput test,
+      indexerGroup = testGroup test
+    }
+  fillDatabase backend ver repo "" (die "repo already exists") $
+    indexer backend repo params
+  action (Some backend) repo
   where
     settings =
         [ setRoot $ testOutput test </> "db" ]

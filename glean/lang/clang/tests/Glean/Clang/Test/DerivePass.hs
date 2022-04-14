@@ -12,7 +12,6 @@ module Glean.Clang.Test.DerivePass (testDeriver, driver) where
 import Control.Monad
 
 import qualified Glean.Clang.Test as Clang
-import Glean.Regression.Config
 import Glean.Regression.Indexer
 import Glean.Regression.Snapshot.Driver
 import Glean.Regression.Snapshot
@@ -27,10 +26,10 @@ driver passes = Clang.driver { driverIndexer = indexer }
   where
   indexer = driverIndexer Clang.driver `indexerThen` derive
 
-  derive test backend =
+  derive backend repo _params =
     forM_ passes $ \thisPass ->
       -- withTestWriter completes before next pass
-      withEnv (testConfig (testRepo test)) allPredicates backend $ \env ->
+      withEnv (testConfig repo) allPredicates backend $ \env ->
         dispatchDerive env thisPass
 
 testDeriver :: [DerivePass] -> IO ()

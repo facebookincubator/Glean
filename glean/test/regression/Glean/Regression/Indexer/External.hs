@@ -25,7 +25,6 @@ import qualified Data.Aeson.Types as Aeson
 import qualified Data.ByteString as B
 import Data.Char(isAlphaNum)
 import qualified Data.HashMap.Strict as HashMap
-import Data.List.Split (wordsBy)
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Options.Applicative as O
@@ -41,10 +40,8 @@ import qualified Thrift.Server.CppServer as CppServer
 import qualified Thrift.Server.Types as Thrift.Server
 
 import qualified Glean
-import Glean.Database.Types (envRoot)
 import Glean.Derive
 import qualified Glean.Handler as GleanHandler
-import Glean.Regression.Config
 import Glean.Regression.Indexer
 import Glean.Types
 import Glean.Write
@@ -61,7 +58,6 @@ data Flavour = Json | Server | Lsif
 data Ext = Ext
   { extBinary :: FilePath
   , extArgs :: [String]
-  , extGroups :: [String]
   , extFlavour :: Flavour
   , extDerivePredicates :: [Text]
   }
@@ -75,9 +71,6 @@ extOptions = do
     fmap (:[]) (O.strOption $ O.long "arg" <> O.metavar "ARG")
     O.<|>
     fmap words (O.strOption $ O.long "args" <> O.metavar "ARGS")
-  extGroups <- fmap list $ O.strOption $
-    O.long "groups" <> O.metavar "NAME,NAME,..." <> O.value "" <>
-    O.help "all tests are run for each group"
   extFlavour <-
     O.flag' Json (
       O.long "json" <>
@@ -89,7 +82,6 @@ extOptions = do
     O.flag' Lsif (
       O.long "lsif" <>
       O.help "run glean-lsif on the language specified by --binary")
-
   extDerivePredicates <-
     fmap (maybe [] (Text.splitOn "," . Text.pack)) $
     O.optional $
@@ -97,31 +89,25 @@ extOptions = do
     O.long "derive" <> O.metavar "PREDICATE,PREDICATE,..." <>
     O.help "predicates to derive after writing facts (ordered)"
   return Ext{..}
-  where
-    list = wordsBy (==',')
 
 -- | Finish decoding parameters from @glean_test@ by
 -- performing substitutions on @TEST_*@ variables, and return the
 -- 'RunIndexer'.
 execExternal :: Ext -> RunIndexer
-execExternal Ext{..} TestConfig{..} env = do index; derive
+execExternal Ext{..} env repo IndexerParams{..} = do index; derive
   where
   derive = forM_ extDerivePredicates $ \pred ->
-    derivePredicate env testRepo Nothing Nothing
+    derivePredicate env repo Nothing Nothing
       (parseRef pred) Nothing
 
-  repoName = Text.unpack (repo_name testRepo)
-  repoHash = Text.unpack (repo_hash testRepo)
+  repoName = Text.unpack (repo_name repo)
+  repoHash = Text.unpack (repo_hash repo)
 
   vars = HashMap.fromList
-    [ ("TEST_DB_ROOT", envRoot env)
-    , ("TEST_REPO", repoName ++ '/' : repoHash)
+    [ ("TEST_REPO", Glean.showRepo repo)
     , ("TEST_REPO_NAME", repoName)
     , ("TEST_REPO_HASH", repoHash)
-    , ("TEST_ROOT", testRoot)
-    , ("TEST_PROJECT_ROOT", testProjectRoot)
-    , ("TEST_OUTPUT", testOutput)
-    , ("TEST_GROUP", testGroup)
+    , ("TEST_ROOT", indexerRoot)
     ]
 
   index = case extFlavour of
@@ -138,16 +124,16 @@ execExternal Ext{..} TestConfig{..} env = do index; derive
         batches <- case Aeson.parse parseJsonFactBatches val of
           Aeson.Error str -> throwIO $ ErrorCall $ file ++ ": " ++ str
           Aeson.Success x -> return x
-        void $ Glean.sendJsonBatch env testRepo batches Nothing
+        void $ Glean.sendJsonBatch env repo batches Nothing
 
     Lsif -> case LSIF.indexerLang extBinary of
         Nothing -> fail ("Unrecognized LSIF language indexer: " <> extBinary)
         Just lang -> do
-          val <- LSIF.runIndexer lang testRoot
+          val <- LSIF.runIndexer lang indexerRoot
           batches <- case Aeson.parse parseJsonFactBatches val of
             Aeson.Error s -> throwIO $ ErrorCall $ extBinary <> "/lsif: " ++ s
             Aeson.Success x -> return x
-          void $ Glean.sendJsonBatch env testRepo batches Nothing
+          void $ Glean.sendJsonBatch env repo batches Nothing
 
     Server -> do
       fb303 <- newFb303 "gleandriver"

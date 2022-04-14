@@ -21,18 +21,20 @@ import Glean.Regression.Snapshot.Transform
 -- 'Glean.Regression.Snapshot.testMain' to make a complete test executable.
 data Driver opts = Driver
   { driverIndexer :: Indexer opts
-      -- ^ test data generator
-  , driverGroups :: opts -> [String]
-      -- ^ groups - Test will be executed once for each group, with 'testGroup'
-      -- set appropriately. If empty, test will be executed once with
-      -- 'testGroup' set to "".
+      -- ^ test data generator, for a given test group
+  , driverGroups :: opts -> [Group]
+      -- ^ groups - Test will be executed once for each group, with
+      -- 'testGroup' set appropriately. If empty, test will be
+      -- executed once with 'testGroup' set to "".
   , driverTransforms :: Transforms
       -- ^ Additional query result transformers.
   }
 
+type Group = String
+
 emptyDriver :: Driver ()
 emptyDriver = Driver
-  { driverIndexer = Indexer (pure ()) (\_ _ _ -> return ())
+  { driverIndexer = Indexer (pure ()) (\_ _ _ _ -> return ())
   , driverGroups = const []
   , driverTransforms = mempty
   }
@@ -45,8 +47,11 @@ driverFromIndexer indexer = emptyDriver
 
 -- | A 'Driver' using an external 'Indexer'. See
 -- "Glean.Regression.Indexer.External".
+--
+-- This driver doesn't support multiple groups; that could be added if
+-- necessary.
 externalDriver :: Driver Ext
 externalDriver = emptyDriver
   { driverIndexer = externalIndexer
-  , driverGroups = extGroups
+  , driverGroups = const []
   }

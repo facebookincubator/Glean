@@ -13,7 +13,6 @@ module Driver
 import Derive.Env (withEnv)
 import Derive.HackDeclarationTarget (deriveHackDeclarationTarget)
 import qualified Derive.Types as DT
-import Glean.Regression.Config
 import Glean.Regression.Indexer
 import Glean.Regression.Indexer.External
 import Glean.Regression.Snapshot (testMain)
@@ -21,8 +20,8 @@ import Glean.Regression.Snapshot.Driver
 
 indexer :: Indexer Ext
 indexer =
-  externalIndexer `indexerThen` \test env ->
-    withEnv (DT.defaultConfig (testRepo test)) env
+  externalIndexer `indexerThen` \env repo _params ->
+    withEnv (DT.defaultConfig repo) env
       deriveHackDeclarationTarget
 
 main :: IO ()

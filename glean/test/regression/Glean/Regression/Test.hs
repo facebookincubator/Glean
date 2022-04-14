@@ -86,7 +86,7 @@ mainTestIndexGeneric driver extraOptParser dir testIndex = do
                 , testGroup = platform
                 , testSchemaVersion = cfgSchemaVersion cfg
                 }
-          withLazy (withTestDatabase index testConfig) $
+          withLazy (withTestDatabase index testConfig . curry) $
             \get -> fn $ TestLabel (mkLabel platform) $
               testIndex extraOpts cfg platform testConfig get
 

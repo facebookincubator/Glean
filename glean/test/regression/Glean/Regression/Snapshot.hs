@@ -61,7 +61,7 @@ discoverTests root = go ""
 -- | Run one test and its *.query files, return (*.out, *.perf) 'FilePath'.
 runTest :: Driver opts -> opts -> TestConfig -> IO [FilePath]
 runTest Driver{..} driverOpts testIn =
-  withTestEnvDatabase (indexerRun driverIndexer driverOpts) testIn $
+  withTestDatabase (indexerRun driverIndexer driverOpts) testIn $
     queryMakeOuts testIn
   where
     queryMakeOuts test backend repo = do
