@@ -129,13 +129,13 @@ execExternal Ext{..} env repo IndexerParams{..} = do index; derive
         void $ Glean.sendJsonBatch env repo batches Nothing
 
     Lsif -> case LSIF.indexerLang extBinary of
-        Nothing -> fail ("Unrecognized LSIF language indexer: " <> extBinary)
-        Just lang -> do
-          val <- LSIF.runIndexer lang indexerRoot
-          batches <- case Aeson.parse parseJsonFactBatches val of
-            Aeson.Error s -> throwIO $ ErrorCall $ extBinary <> "/lsif: " ++ s
-            Aeson.Success x -> return x
-          void $ Glean.sendJsonBatch env repo batches Nothing
+      Nothing -> fail ("Unrecognized LSIF language indexer: " <> extBinary)
+      Just lang -> do
+        val <- LSIF.runIndexer lang indexerRoot
+        batches <- case Aeson.parse parseJsonFactBatches val of
+          Aeson.Error s -> throwIO $ ErrorCall $ extBinary <> "/lsif: " ++ s
+          Aeson.Success x -> return x
+        void $ Glean.sendJsonBatch env repo batches Nothing
 
     Server -> do
       let

@@ -20,9 +20,8 @@ import System.Exit
 import System.FilePath
 
 import Glean (fillDatabase)
-import Glean.Backend (Backend)
+import Glean.Backend (Backend, LocalOrRemote)
 import Glean.Database.Test
-import Glean.Database.Types (Env)
 import Glean.Regression.Config
 import Glean.Types
 import Glean.Util.Some
@@ -39,7 +38,7 @@ data Indexer opts = Indexer
   , indexerRun :: opts -> RunIndexer
   }
 
-type RunIndexer = Env -> Repo -> IndexerParams -> IO ()
+type RunIndexer = Some LocalOrRemote -> Repo -> IndexerParams -> IO ()
 
 data IndexerParams = IndexerParams
   { indexerRoot :: FilePath
@@ -97,7 +96,7 @@ withTestDatabase indexer test action =
       indexerGroup = testGroup test
     }
   fillDatabase backend ver repo "" (die "repo already exists") $
-    indexer backend repo params
+    indexer (Some backend) repo params
   action (Some backend) repo
   where
     settings =
