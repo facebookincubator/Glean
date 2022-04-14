@@ -157,10 +157,10 @@ externalXRefs mlimit xrefId = do
       let defnXRefs = zipXRefSourcesAndDefinitions declToDefMap ranges locations
       return $ defnXRefs ++ declXRefs
 
--- N.B. Src.ByteSpans are _relative_ bytespans ([RelByteSpan]), its misnamed
+-- N.B. Src.ByteSpans are _relative_ bytespans ([RelByteSpan]), it's misnamed
 relativeByteSpansToRanges :: [Src.ByteSpans] -> [[Src.ByteSpan]]
-relativeByteSpansToRanges spans =
-  map (map Range.rangeToByteSpan . Range.relByteSpansToRanges) spans
+relativeByteSpansToRanges =
+  map (map Range.rangeToByteSpan . Range.relByteSpansToRanges)
 
 -- Laboriously stitch the unzipped xref source and target into
 -- XRefLocation and Entities again.
