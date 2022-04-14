@@ -126,7 +126,7 @@ main =
       let port = CppServer.serverPort server
       atomically $ writeTVar portVar (Just port)
       forM_ (cfgWritePort cfg) $ \path -> writeFile path (show port)
-      logInfo $ "server alive on port " ++ (show port)
+      logInfo $ "server alive on port " ++ show port
       writeIORef (fb303_status fb303) Fb303_status_ALIVE
 
     -- If the janitor is enabled, wait until it has run once to

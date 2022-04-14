@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE DeriveFunctor, DeriveFoldable, DeriveTraversable #-}
+{-# LANGUAGE DeriveTraversable #-}
 module Glean.Shell.Types (
   Parse(..), Statement(..), JSONQuery(..), AngleQuery(..),
   ShellMode(..),
@@ -25,6 +25,7 @@ module Glean.Shell.Types (
 
 import Control.Concurrent
 import Control.Exception
+import Data.Functor (($>))
 import qualified Control.Monad.Catch as C
 import Control.Monad.IO.Class (MonadIO, liftIO)
 import qualified Control.Monad.Trans.State.Strict as State
@@ -56,7 +57,7 @@ class Parse a where
   parse :: Parser a
 
 instance Parse Fid where
-  parse = (Fid . fromInteger) <$> P.braces lexer (P.natural lexer)
+  parse = Fid . fromInteger <$> P.braces lexer (P.natural lexer)
 
 instance Parse pat => Parse (Statement pat) where
   parse = P.choice [command, P.try factref, ptrn]
@@ -76,8 +77,8 @@ data AngleQuery = AngleQuery
 
 instance Parse AngleQuery where
   parse = AngleQuery
-    <$> P.option False (P.char '!' *> pure True)
-    <*> P.option False (P.char '*' *> pure True)
+    <$> P.option False (P.char '!' $> True)
+    <*> P.option False (P.char '*' $> True)
     <*> P.many P.anyChar
 
 data JSONQuery = JSONQuery
@@ -90,8 +91,8 @@ data JSONQuery = JSONQuery
 instance Parse JSONQuery where
   parse = JSONQuery
     <$> P.identifier lexer
-    <*> P.option False (P.char '!' *> pure True)
-    <*> P.option False (P.char '*' *> pure True)
+    <*> P.option False (P.char '!' $> True)
+    <*> P.option False (P.char '*' $> True)
     <*> P.many P.anyChar
 
 lexer :: P.TokenParser st

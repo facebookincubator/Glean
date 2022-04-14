@@ -6,7 +6,6 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE NamedFieldPuns #-}
 -- | This is in a separate module from "Glean.Write.Async" in order
 -- so that depending on "//glean/schema/hs:hs" does not create a cycle.
 --
