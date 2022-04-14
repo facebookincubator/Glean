@@ -77,6 +77,7 @@ import Glean.Database.Schema
 import qualified Glean.Types as Thrift
 import Glean.Util.Observed as Observed
 import Glean.Util.ThriftSource as ThriftSource
+import Glean.Util.Some
 import Glean.Util.Time
 
 import Glean.Backend.Remote hiding (options, optionsLong)
@@ -537,3 +538,39 @@ instance LocalOrRemote Database.Env where
 
 instance LocalOrRemote ThriftBackend where
   backendKind t = BackendThrift t
+
+instance Backend (Some LocalOrRemote) where
+  queryFact (Some backend) = queryFact backend
+  firstFreeId (Some backend) = firstFreeId backend
+  factIdRange (Some backend) = factIdRange backend
+  getSchemaInfo (Some backend) = getSchemaInfo backend
+  validateSchema (Some backend) = validateSchema backend
+  predicateStats (Some backend) = predicateStats backend
+  listDatabases (Some backend) = listDatabases backend
+  getDatabase (Some backend) = getDatabase backend
+  userQueryFacts (Some backend) = userQueryFacts backend
+  userQuery (Some backend) = userQuery backend
+  deriveStored (Some backend) = deriveStored backend
+  pollDerivation (Some backend) = pollDerivation backend
+
+  kickOffDatabase (Some backend) = kickOffDatabase backend
+  finalizeDatabase (Some backend) = finalizeDatabase backend
+  updateProperties (Some backend) = updateProperties backend
+  getWork (Some backend) = getWork backend
+  workCancelled (Some backend) = workCancelled backend
+  workHeartbeat (Some backend) = workHeartbeat backend
+  workFinished (Some backend) = workFinished backend
+  completePredicates (Some backend) = completePredicates backend
+
+  restoreDatabase (Some backend) = restoreDatabase backend
+  deleteDatabase (Some backend) = deleteDatabase backend
+
+  enqueueBatch (Some backend) = enqueueBatch backend
+  enqueueJsonBatch (Some backend) = enqueueJsonBatch backend
+  pollBatch (Some backend) = pollBatch backend
+  displayBackend (Some backend) = displayBackend backend
+  hasDatabase (Some backend) = hasDatabase backend
+  maybeRemote (Some backend) = maybeRemote backend
+
+instance LocalOrRemote (Some LocalOrRemote) where
+  backendKind (Some b) = backendKind b

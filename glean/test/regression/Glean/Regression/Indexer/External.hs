@@ -40,12 +40,14 @@ import qualified Thrift.Server.CppServer as CppServer
 import qualified Thrift.Server.Types as Thrift.Server
 
 import qualified Glean
+import Glean.Backend (BackendKind(..), LocalOrRemote(..), ThriftBackend(..))
 import Glean.Derive
 import qualified Glean.Handler as GleanHandler
 import Glean.Regression.Indexer
 import Glean.Types
 import Glean.Write
 import qualified Glean.LSIF.Driver as LSIF
+import Glean.Util.Service
 
 externalIndexer :: Indexer Ext
 externalIndexer = Indexer
@@ -77,8 +79,8 @@ extOptions = do
       O.help "the binary should put JSON files in ${JSON_BATCH_DIR}") O.<|>
     O.flag' Server (
       O.long "server" <>
-      O.help ("the binary should connect to a Glean server on " <>
-        "port ${SERVER_PORT} to write facts")) O.<|>
+      O.help ("the binary should connect to a Glean server at " <>
+        "${GLEAN_SERVER} to write facts")) O.<|>
     O.flag' Lsif (
       O.long "lsif" <>
       O.help "run glean-lsif on the language specified by --binary")
@@ -136,16 +138,22 @@ execExternal Ext{..} env repo IndexerParams{..} = do index; derive
           void $ Glean.sendJsonBatch env repo batches Nothing
 
     Server -> do
-      fb303 <- newFb303 "gleandriver"
-      let state = GleanHandler.State fb303 env
-      withBackgroundFacebookService
-        (GleanHandler.fb303State state)
-        (GleanHandler.handler state)
-        Thrift.Server.defaultOptions
-        $ \server -> do
-          let port = CppServer.serverPort server
-              serverVars = HashMap.insert "SERVER_PORT" (show port) vars
+      let
+        go service = do
+          let serverVars = HashMap.insert "GLEAN_SERVER" service vars
           callProcess extBinary (map (subst serverVars) extArgs)
+      case backendKind env of
+        BackendEnv env -> do
+          fb303 <- newFb303 "gleandriver"
+          let state = GleanHandler.State fb303 env
+          withBackgroundFacebookService
+            (GleanHandler.fb303State state)
+            (GleanHandler.handler state)
+            Thrift.Server.defaultOptions
+            $ \server -> go ("localhost:" <> show (CppServer.serverPort server))
+        BackendThrift thrift -> do
+          let clientConfig = thriftBackendClientConfig thrift
+          go (serviceToString (Glean.clientConfig_serv clientConfig))
 
   subst vars ('$':'{':s)
     | (var,'}':rest) <- break (=='}') s
