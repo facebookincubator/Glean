@@ -261,6 +261,16 @@ predicate EntityUses:
     lsif.EntityDefinition { Entity, Defn };
     lsif.ToSrcRange { File, Range, SrcRange };
 
+# and for codemarkup.EntityKind
+predicate EntityKind:
+  {
+    entity: lsif.Entity,
+    kind: lsif.SymbolKind,
+  }
+  { Entity, Kind } where
+    lsif.EntityDefinition { Entity, Defn };
+    lsif.DefinitionKind { Defn, Kind };
+
 #
 # Helpers for working with language tags and entities
 #
