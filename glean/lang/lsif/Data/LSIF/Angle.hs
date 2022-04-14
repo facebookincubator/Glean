@@ -79,6 +79,7 @@ dependencyOrder p = case p of
   "lsif.DefinitionUse.1" -> 14
   "lsif.ProjectDocument.1" -> 15
   "lsif.DefinitionMoniker.1" ->  16
+  "lsif.DefinitionKind.1" ->  17
   -- everything else, in the middle
   _ -> 5
 
@@ -199,9 +200,15 @@ factToAngle (KeyFact _ (Edge EdgeTextDocumentDefinition outV inV)) = [] <$ do
 -- tag/labels indicating what kind of span they are. They may have no text
 -- or no tag attached, generally.
 factToAngle (KeyFact n (SymbolRange range mtag)) = do
-  case tagToTy mtag of -- record the type if we have the tag handy
+  -- record the type of the range if we have the tag handy
+  case tagToTy mtag of
     Nothing -> pure ()
     Just ty -> insertType n ty
+
+  -- record the symbol kind if it exists (definitions only)
+  case tagToKind =<< mtag of
+    Nothing -> pure ()
+    Just kind -> insertSymbolKind n kind
 
   -- emit a range fact for this id
   predicateId "lsif.Range.1" n $
@@ -303,9 +310,10 @@ emitFileFacts_ fileId rawIds = do
   useFacts <- emitTargetUses fileId refIds
   hoverFacts <- emitHovers fileId defIds
   monikerFacts <- emitMonikers fileId defIds
+  symbolKindFacts <- emitSymbolKinds fileId defIds
   return $ catMaybes
     [defFacts, declFacts, xrefFacts, useFacts,
-     hoverFacts, projectFacts, monikerFacts]
+     hoverFacts, projectFacts, monikerFacts, symbolKindFacts]
 
 emitProjects :: Id -> IdVector -> Maybe Predicate
 emitProjects projId ids
@@ -317,6 +325,14 @@ emitProjects projId ids
           , "project" .= projId
           ]
         ) (U.toList ids))
+
+emitSymbolKinds :: Id -> IdVector -> Parse (Maybe Predicate)
+emitSymbolKinds fileId ids = do
+  factBodies <- catMaybes <$>
+    mapM (generateSymbolKindFacts fileId . Id) (U.toList ids)
+  if null factBodies
+    then pure Nothing
+    else return $ Just $ Predicate "lsif.DefinitionKind.1" factBodies
 
 emitMonikers :: Id -> IdVector -> Parse (Maybe Predicate)
 emitMonikers fileId ids = do
@@ -425,6 +441,20 @@ generateMonikerFacts fileId defRangeId =
       , "moniker" .= monikerId
       ]
 
+generateSymbolKindFacts :: Id -> Id -> Parse (Maybe Value)
+generateSymbolKindFacts fileId defRangeId = do
+  mKind <- getSymbolKind defRangeId
+  case mKind of
+    Nothing -> pure mzero
+    Just kindLiteral ->
+      pure $ pure $ object $ pure $ key
+        [ "defn" .= (object . pure . key)
+            [ "file" .= fileId
+            , "range" .= defRangeId
+            ]
+        , "kind" .= fromEnum kindLiteral
+        ]
+
 -- get the result set of an id, use that result set id to look up another
 -- environment, then apply a function to the result.
 -- used to jump from A to B via a [resultset] node
@@ -489,3 +519,8 @@ tagToRange :: KeyValue a => Tag -> Maybe [a]
 tagToRange Definition{..} = Just ["fullRange" .= toRange fullRange]
 tagToRange Declaration{..} = Just ["fullRange" .= toRange fullRange]
 tagToRange _ = Nothing
+
+tagToKind :: Tag -> Maybe SymbolKind
+tagToKind Definition{..} = Just tagKind
+tagToKind Declaration{..} = Just tagKind
+tagToKind _ = Nothing

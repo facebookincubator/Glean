@@ -108,7 +108,7 @@ predicate Range:
   {
     range: lsif.RangeSpan,
     fullRange: maybe lsif.RangeSpan,
-    text: lsif.Name
+    text: lsif.Name,
   }
 
 # LSIF monikers are symbol identifier components. They have a type
@@ -159,20 +159,27 @@ predicate Reference:
     hover: lsif.HoverContent
   }
 
- # Associate a moniker with its anchor definition
- predicate DefinitionMoniker:
+# Associate a moniker with its anchor definition
+predicate DefinitionMoniker:
   {
     defn: lsif.Definition,
     moniker: lsif.Moniker,
   }
 
-  # Uses of definitions and declarations (inverse of xrefs)
-  predicate DefinitionUse:
-    {
-      target: lsif.Definition,
-      file: lsif.Document,
-      range: lsif.Range,
-    }
+# Associate symbol kinds with some definitions and declarations
+predicate DefinitionKind:
+  {
+    defn: lsif.Definition,
+    kind: lsif.SymbolKind
+  }
+
+# Uses of definitions and declarations (inverse of xrefs)
+predicate DefinitionUse:
+  {
+    target: lsif.Definition,
+    file: lsif.Document,
+    range: lsif.Range,
+  }
 
 #
 # Generic codemarkup.angle provider layer
