@@ -69,6 +69,7 @@ dependencyOrder p = case p of
   "lsif.Project" -> 0
   "lsif.Range.1" -> 1
   "lsif.HoverContent" -> 2
+  "lsif.Moniker" -> 3
   -- these refer to Range.1
   "lsif.Definition.1" -> 10
   "lsif.Declaration.1" -> 11
@@ -77,6 +78,7 @@ dependencyOrder p = case p of
   "lsif.DefinitionHover.1" ->  13
   "lsif.DefinitionUse.1" -> 14
   "lsif.ProjectDocument.1" -> 15
+  "lsif.DefinitionMoniker.1" ->  16
   -- everything else, in the middle
   _ -> 5
 
@@ -156,6 +158,10 @@ factToAngle (KeyFact _ (Edge EdgeNext outV inV)) = [] <$ do
 factToAngle (KeyFact _ (Edge EdgeTextDocumentHover outV inV)) = [] <$
   addHoverToResultSet inV outV
 
+-- record which resultset this moniker points at
+factToAngle (KeyFact _ (Edge EdgeMoniker outV inV)) = [] <$
+  addMonikerToResultSet inV outV
+
 -- edge:item for property:references associates an inV range with a
 -- textDocument/references result. record that the range is a reference type
 factToAngle (KeyFact _ (Item _outV inVs _fileId (Just References))) = [] <$
@@ -219,6 +225,14 @@ factToAngle (KeyFact n (HoverResult contents)) = do
         , "language" .= fromEnum UnknownLanguage
         ]
   return $ concat (V.toList facts)
+
+-- Moniker payloads
+factToAngle (KeyFact n (Moniker kind scheme ident)) = do
+  predicateId "lsif.Moniker" n
+    [ "kind" .= fromEnum kind
+    , "scheme" .= string scheme
+    , "ident" .= string ident
+    ]
 
 -- These are output nodes. We generally don't need their type, as it
 -- can be inferred by context in Item edges
@@ -288,8 +302,10 @@ emitFileFacts_ fileId rawIds = do
   xrefFacts <- emitReferences fileId refIds
   useFacts <- emitTargetUses fileId refIds
   hoverFacts <- emitHovers fileId defIds
+  monikerFacts <- emitMonikers fileId defIds
   return $ catMaybes
-    [defFacts, declFacts, xrefFacts, useFacts, hoverFacts, projectFacts]
+    [defFacts, declFacts, xrefFacts, useFacts,
+     hoverFacts, projectFacts, monikerFacts]
 
 emitProjects :: Id -> IdVector -> Maybe Predicate
 emitProjects projId ids
@@ -301,6 +317,14 @@ emitProjects projId ids
           , "project" .= projId
           ]
         ) (U.toList ids))
+
+emitMonikers :: Id -> IdVector -> Parse (Maybe Predicate)
+emitMonikers fileId ids = do
+  factBodies <- catMaybes <$>
+    mapM (generateMonikerFacts fileId . Id) (U.toList ids)
+  if null factBodies
+    then pure Nothing
+    else return $ Just $ Predicate "lsif.DefinitionMoniker.1" factBodies
 
 emitHovers :: Id -> IdVector -> Parse (Maybe Predicate)
 emitHovers fileId ids = do
@@ -388,6 +412,17 @@ generateHoverFacts fileId defRangeId =
           , "range" .= defRangeId
           ]
       , "hover" .= hoverFactId
+      ]
+
+generateMonikerFacts :: Id -> Id -> Parse (Maybe Value)
+generateMonikerFacts fileId defRangeId =
+  withResultSet defRangeId getMonikerId $ \monikerId ->
+    pure $ pure $ object $ pure $ key
+      [ "defn" .= (object . pure . key)
+          [ "file" .= fileId
+          , "range" .= defRangeId
+          ]
+      , "moniker" .= monikerId
       ]
 
 -- get the result set of an id, use that result set id to look up another

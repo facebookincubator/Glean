@@ -111,6 +111,27 @@ predicate Range:
     text: lsif.Name
   }
 
+# LSIF monikers are symbol identifier components. They have a type
+# identicating what scope the moniker fragment binds
+type MonikerKind =
+  enum {
+    Export | Local | Import | Implementation |
+  }
+
+# Moniker schemes describe which type of moniker protocol is used
+predicate MonikerScheme: string
+
+# The text fragment of the moniker
+predicate MonikerId: string
+
+# Monikers are scoped unique symbol identifiers, similar to Glass symbol ids
+predicate Moniker:
+  {
+    kind: lsif.MonikerKind,
+    scheme: lsif.MonikerScheme,
+    ident: lsif.MonikerId
+  }
+
 predicate Definition:
   {
     file: lsif.Document,
@@ -136,6 +157,13 @@ predicate Reference:
   {
     defn: lsif.Definition,
     hover: lsif.HoverContent
+  }
+
+ # Associate a moniker with its anchor definition
+ predicate DefinitionMoniker:
+  {
+    defn: lsif.Definition,
+    moniker: lsif.Moniker,
   }
 
   # Uses of definitions and declarations (inverse of xrefs)
