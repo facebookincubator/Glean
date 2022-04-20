@@ -13,6 +13,7 @@ import Data.Text (Text)
 import Test.HUnit
 
 import Glean
+import Glean.Indexer.Hack as Hack
 import Glean.Util.Some
 import Glean.Regression.Test
 
@@ -20,7 +21,7 @@ import Glean.Glass.Types
 import Glean.Glass.Regression.Tests
 
 main :: IO ()
-main = mainTestIndexExternal "glass-regression-hack" $ \get -> TestList
+main = mainTestIndex "glass-regression-hack" Hack.indexer $ \get -> TestList
   [ testDocumentSymbolListX (Path "www/RefClass.php") get
   , testSymbolIdLookup get
   , testHackFindReferences get

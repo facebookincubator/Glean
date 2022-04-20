@@ -9,10 +9,9 @@
 module Glean.Glass.Regression.Hack.Main ( main ) where
 
 import System.Environment
-import Glean.Regression.Driver.Args.Hack as Hack
 import qualified Glean.Glass.Regression.Hack as Glass
 
 main :: IO ()
-main = withArgs (Hack.args path) Glass.main
+main = withArgs ["--root", path] Glass.main
   where
     path = "glean/lang/codemarkup/tests/hack/cases/xrefs"

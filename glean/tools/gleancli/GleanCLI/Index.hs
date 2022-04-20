@@ -21,6 +21,7 @@ import Glean hiding (options)
 import Glean.Indexer
 import qualified Glean.Indexer.External as External
 import qualified Glean.Indexer.Flow as Flow
+import qualified Glean.Indexer.Hack as Hack
 import Glean.Util.Some
 
 import GleanCLI.Common
@@ -43,6 +44,9 @@ indexers =
   , ("flow",
       "Index JS/Flow code",
       SomeIndexer Flow.indexer)
+  , ("hack",
+      "Index Hack code",
+      SomeIndexer Hack.indexer)
   ]
 
 instance Plugin IndexCommand where

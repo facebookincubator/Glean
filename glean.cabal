@@ -1326,9 +1326,9 @@ library regression-test-lib
     exposed-modules:
         Glean.Indexer
         Glean.Indexer.External
-        Glean.Regression.Config
         Glean.Indexer.Flow
-        Glean.Regression.Driver.Args.Hack
+        Glean.Indexer.Hack
+        Glean.Regression.Config
         Glean.Regression.Driver.External
         Glean.Regression.Indexer
         Glean.Regression.Snapshot
