@@ -13,8 +13,8 @@ module Glean.Regression.Snapshot.Driver
   , externalDriver
   ) where
 
-import Glean.Regression.Indexer
-import Glean.Regression.Indexer.External
+import Glean.Indexer
+import Glean.Indexer.External
 import Glean.Regression.Snapshot.Transform
 
 -- | A test driver describes how to run a set of tests. It is passed to
@@ -46,7 +46,7 @@ driverFromIndexer indexer = emptyDriver
   }
 
 -- | A 'Driver' using an external 'Indexer'. See
--- "Glean.Regression.Indexer.External".
+-- "Glean.Indexer.External".
 --
 -- This driver doesn't support multiple groups; that could be added if
 -- necessary.

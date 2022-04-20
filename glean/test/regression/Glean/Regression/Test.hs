@@ -28,6 +28,7 @@ import TestRunner
 import Util.IO
 
 import Glean
+import Glean.Indexer
 import Glean.Init (withUnitTestOptions)
 import Glean.Regression.Config
 import Glean.Regression.Indexer
