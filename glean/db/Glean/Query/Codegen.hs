@@ -280,7 +280,9 @@ prettyMatchAtom (MatchFid fid) = pretty fid
 prettyMatchAtom (MatchVar v) = pretty v
 prettyMatchAtom (MatchPrefix str rest) =
   pretty (show str) <> ".." <> pretty rest
-prettyMatchAtom other = "(" <> pretty other <> ")"
+prettyMatchAtom other@MatchAnd{} = "(" <> pretty other <> ")"
+prettyMatchAtom other@MatchBind{} = "(" <> pretty other <> ")"
+prettyMatchAtom other@MatchExt{} = "(" <> pretty other <> ")"
 
 type Pat = Pat_ Var
 type Expr = Expr_ Var
@@ -1496,10 +1498,10 @@ data QueryRegs s = QueryRegs
   {
     -- | Start a new traversal of facts beginning with a given prefix
     seek
-     :: Register 'Word
-     -> Register 'DataPtr
-     -> Register 'DataPtr
-     -> Register 'Word
+     :: Register 'Word -- predicate id
+     -> Register 'DataPtr -- prefix
+     -> Register 'DataPtr -- prefix end
+     -> Register 'Word -- (output) token
      -> Code ()
 
     -- | Fetch the current seek token
