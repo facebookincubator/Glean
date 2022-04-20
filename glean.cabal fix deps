@@ -1839,6 +1839,9 @@ test-suite glass-regression-flow
     main-is: Glean/Glass/Regression/Flow/Main.hs
     ghc-options: -main-is Glean.Glass.Regression.Flow.Main
     other-modules: Glean.Glass.Regression.Flow
+    build-depends:
+        glean:client-hs,
+        glean:util,
 
 test-suite glass-regression-hack
     import: glass-regression-deps, fb-haskell, deps
