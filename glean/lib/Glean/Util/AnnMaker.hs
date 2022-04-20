@@ -6,7 +6,6 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE NamedFieldPuns #-}
 -- | 'AnnMaker' hides creation of references and annotations (useful for
 -- pretty printing).
 module Glean.Util.AnnMaker

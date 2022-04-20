@@ -42,7 +42,7 @@ data ConfigAPI = ConfigAPI
       MVar (HashMap ConfigPath (WatchDescriptor, [ByteString -> IO ()]))
   }
 
-data LocalConfigOptions = LocalConfigOptions
+newtype LocalConfigOptions = LocalConfigOptions
   { configDir :: Maybe FilePath
       -- ^ directory where the configs are found. If Nothing, we'll
       -- use $HOME/.config/glean.

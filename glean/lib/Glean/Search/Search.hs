@@ -407,13 +407,13 @@ findHackDecls lim backend repo SearchQuery{..} = Glean.runHaxl backend repo $
           namespaces = if null withoutLeadingBlackslash
             then []
             else reverse (init withoutLeadingBlackslash)
-      guard (all (not . Text.null) namespaces)
+      guard (not (any Text.null namespaces))
       let parent_ident = if null withoutLeadingBlackslash
             then ""
             else last withoutLeadingBlackslash
           doubleColonComponents = Text.splitOn "::" parent_ident
       guard (length doubleColonComponents `elem` [1, 2])
-      guard (all (not . Text.null) doubleColonComponents)
+      guard (not (any Text.null doubleColonComponents))
       let parent = if length doubleColonComponents == 2
             then Just (head doubleColonComponents)
             else Nothing

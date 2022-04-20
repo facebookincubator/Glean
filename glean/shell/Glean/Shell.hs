@@ -895,7 +895,7 @@ runUserQuery SchemaQuery
           , Thrift.userQuery_predicate_version = maybeVer
           , Thrift.userQuery_query =
             if syntax == Thrift.QuerySyntax_ANGLE then UTF8.fromString rest else
-            if null (filter (not.isSpace) rest)
+            if all isSpace rest
               then "{\"get\": {}}"
               else "{\"key\":" <> UTF8.fromString rest <> "}"
           , Thrift.userQuery_options = Just def
@@ -1126,7 +1126,7 @@ withSignalHandlers act = do
       _ <- installHandler sigINT   hdlINT  Nothing
       return ()
 
-  Haskeline.bracket installHandlers uninstallHandlers (\_ -> act)
+  Haskeline.bracket installHandlers uninstallHandlers (const act)
 
 completeDatabases :: Haskeline.CompletionFunc Eval
 completeDatabases =
