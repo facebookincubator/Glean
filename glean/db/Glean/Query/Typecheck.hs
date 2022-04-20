@@ -23,6 +23,7 @@ import Control.Monad.Except
 import Control.Monad.State
 import Data.Bifoldable
 import Data.Char
+import Data.Foldable (toList)
 import Data.List.Extra (firstJust)
 import Data.Maybe
 import qualified Data.HashMap.Strict as HashMap
@@ -30,6 +31,7 @@ import Data.HashMap.Strict (HashMap)
 import qualified Data.HashSet as HashSet
 import Data.HashSet (HashSet)
 import Data.List
+import Data.List.NonEmpty (NonEmpty((:|)))
 import Data.Text (Text)
 import qualified Data.Set as Set
 import Data.Set (Set)
@@ -258,6 +260,11 @@ inferExpr ctx pat = case pat of
     (t',ty) <- inferExpr ctx t
     ts' <- mapM (typecheckPattern ctx ty) ts
     return (RTS.Array (t':ts'), Schema.Array ty)
+  Parser.ArrayPrefix _ (t:|ts) -> do
+    (t',ty) <- inferExpr ctx t
+    ts' <- mapM (typecheckPattern ctx ty) ts
+    let tcPat = RTS.Ref (MatchArrayPrefix ty (t':ts'))
+    return (tcPat, Schema.Array ty)
   Variable span name
     | name == "false" -> return (falseVal, Boolean)
     | name == "true" -> return (trueVal, Boolean)
@@ -383,6 +390,10 @@ typecheckPattern ctx typ pat = case (typ, pat) of
     return (RTS.ByteArray s)
   (Schema.Array elemTy, Parser.Array _ pats) ->
     RTS.Array <$> mapM (typecheckPattern ctx elemTy) pats
+  (Schema.Array elemTy, Parser.ArrayPrefix _ pre) -> do
+    pre <- mapM (typecheckPattern ctx elemTy) pre
+    let match = MatchArrayPrefix elemTy (toList pre)
+    return (RTS.Ref match)
   (Record fields, Parser.Tuple _ pats) | length fields == length pats ->
     RTS.Tuple <$>
       mapM (\(t,p) -> typecheckPattern ctx t p)
@@ -977,6 +988,7 @@ varsPat :: IsSrcSpan s => SourcePat' s -> VarSet -> VarSet
 varsPat pat r = case pat of
   Variable _ v -> HashSet.insert v r
   Parser.Array _ ps -> foldr varsPat r ps
+  Parser.ArrayPrefix _ ps -> foldr varsPat r ps
   Parser.Tuple _ ps -> foldr varsPat r ps
   Struct _ fs -> foldr (\(Field _ p) r -> varsPat p r) r fs
   App _ f ps -> varsPat f $! foldr varsPat r ps
@@ -1068,6 +1080,7 @@ matchUsesNegation = \case
   MatchVar _ -> Nothing
   MatchAnd one two -> tcPatUsesNegation one <|> tcPatUsesNegation two
   MatchPrefix _ x -> tcPatUsesNegation x
+  MatchArrayPrefix _ty prefix -> firstJust tcPatUsesNegation prefix
   MatchExt (Typed _ tcterm) -> tcTermUsesNegation tcterm
 
 tcTermUsesNegation  :: TcTerm -> Maybe UseOfNegation

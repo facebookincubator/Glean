@@ -401,6 +401,13 @@ facts> X where [_,X,_] = [1,2,3]
 { "id": 1040, "key": 2 }
 ```
 
+Or if we don't care about the length of the array:
+
+```lang=angle
+facts> X where [_,X,..] = [1,2,3]
+{ "id": 1040, "key": 2 }
+```
+
 ## String prefix
 
 We’ve seen many examples of patterns that match strings. Glean also supports matching strings by *prefix*; for example:

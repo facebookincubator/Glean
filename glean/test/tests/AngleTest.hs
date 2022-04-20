@@ -938,7 +938,13 @@ angleTest modify = dbTestCase $ \env repo -> do
     [(Nat 1, Nat 2)] r
 
 angleArray :: (forall a . Query a -> Query a) -> Test
-angleArray modify = dbTestCase $ \env repo -> do
+angleArray modify = TestList
+  [ TestLabel "generators" $ angleArrayGenerator modify
+  , TestLabel "prefix" $ angleArrayPrefix modify
+  ]
+
+angleArrayGenerator :: (forall a . Query a -> Query a) -> Test
+angleArrayGenerator modify = dbTestCase $ \env repo -> do
   -- fetch all elements of an array
   results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
     [s|
@@ -976,6 +982,89 @@ angleArray modify = dbTestCase $ \env repo -> do
   print results
   assertEqual "angle - array generator 4"
     [ ("a", Nat 1), ("b", Nat 2) ] results
+
+
+angleArrayPrefix :: (forall a . Query a -> Query a) -> Test
+angleArrayPrefix modify = TestList
+  [ TestLabel "nat" $ TestList
+    [ TestLabel "nested" $ dbTestCase $ \env repo -> do
+        results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
+          [s|
+            P where
+            P = glean.test.Predicate { array_of_nat = [3,4..] }
+          |]
+        assertEqual "angle - array prefix" 1 (length results)
+        results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
+          [s|
+            P where
+            P = glean.test.Predicate { array_of_nat = [3..] }
+          |]
+        assertEqual "angle - array prefix" 1 (length results)
+    , TestLabel "flat" $ dbTestCase $ \env repo -> do
+        results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
+          [s|
+            P where
+            P = glean.test.Predicate { array_of_nat = A };
+            [3..] = A
+          |]
+        assertEqual "angle - array prefix" 1 (length results)
+        results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
+          [s|
+            P where
+            P = glean.test.Predicate { array_of_nat = A };
+            [3,4..] = A
+          |]
+        assertEqual "angle - array prefix" 1 (length results)
+    ]
+  , TestLabel "pred" $ TestList
+    [ TestLabel "nested" $ dbTestCase $ \env repo -> do
+        results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
+          [s|
+            P where
+            P = glean.test.Predicate { array_of_pred = [glean.test.Predicate _ ..] }
+          |]
+        assertEqual "angle - array prefix" 2 (length results)
+    , TestLabel "flat" $ dbTestCase $ \env repo -> do
+        results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
+          [s|
+            P where
+            P = glean.test.Predicate { array_of_pred = A };
+            [_ ..] = A
+          |]
+        assertEqual "angle - array prefix" 2 (length results)
+        results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
+          [s|
+            P where
+            P = glean.test.Predicate { array_of_pred = A };
+            [glean.test.Predicate _ ..] = A
+          |]
+        assertEqual "angle - array prefix" 2 (length results)
+    ]
+  , TestLabel "string" $ TestList
+    [ TestLabel "nested" $ dbTestCase $ \env repo -> do
+        results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
+          [s|
+            P where
+            P = glean.test.Predicate { array_of_string = ["abba","baba"..] }
+          |]
+        assertEqual "angle - array prefix" 2 (length results)
+        results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
+          [s|
+            P where
+            P = glean.test.Predicate { array_of_string = ["abba"..] }
+          |]
+        assertEqual "angle - array prefix" 2 (length results)
+    ]
+  , TestLabel "nat and string" $ TestList
+    [ TestLabel "nested" $ dbTestCase $ \env repo -> do
+        results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
+          [s|
+            P where
+            P = glean.test.Predicate { array_of_nat = [3..], array_of_string = ["abba"..] }
+          |]
+        assertEqual "angle - array prefix" 1 (length results)
+    ]
+  ]
 
 
 angleDSL :: (forall a . Query a -> Query a) -> Test

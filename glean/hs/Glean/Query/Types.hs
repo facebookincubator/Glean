@@ -24,6 +24,7 @@ module Glean.Query.Types
 import qualified Data.Aeson as Aeson
 import Data.ByteString (ByteString)
 import qualified Data.ByteString.Lazy.Char8 as BL
+import Data.List.NonEmpty (NonEmpty, toList)
 import Data.Text (Text)
 import qualified Data.Text.Encoding as Text
 import Data.Text.Prettyprint.Doc
@@ -73,6 +74,7 @@ data SourcePat_ s v t
     -- ^ There's no concrete syntax for this (yet), but it can be used
     -- via the DSL.
   | Array s [SourcePat_ s v t]
+  | ArrayPrefix s (NonEmpty (SourcePat_ s v t))
   | Tuple s [SourcePat_ s v t]
   | Struct s [Field s v t]
   | App s (SourcePat_ s v t) [SourcePat_ s v t]
@@ -105,6 +107,7 @@ sourcePatSpan = \case
   StringPrefix s _ -> s
   ByteArray s _ -> s
   Array s _ -> s
+  ArrayPrefix s _ -> s
   Tuple s _ -> s
   Struct s _ -> s
   App s _ _ -> s
@@ -165,6 +168,8 @@ instance (Pretty v, Pretty t) => Pretty (SourcePat_ s v t) where
     pretty (String s str :: SourcePat_ s v t) <> ".."
   pretty (ByteArray _ b) = pretty (show b)
   pretty (Array _ pats) = brackets $ hsep (punctuate "," (map pretty pats))
+  pretty (ArrayPrefix _ pats) =
+    encloseSep "[" "..]" "," (map pretty $ toList pats)
   pretty (Tuple _ pats) = braces $ hsep (punctuate "," (map pretty pats))
   pretty (Struct _ fs) = cat [ nest 2 $ cat [ "{", fields fs], "}"]
     where
@@ -213,6 +218,7 @@ prettyArg pat = case pat of
   StringPrefix{} -> pretty pat
   ByteArray{} -> pretty pat
   Array{} -> pretty pat
+  ArrayPrefix{} -> pretty pat
   Tuple{} -> pretty pat
   Struct{} -> pretty pat
   ElementsOfArray{} -> pretty pat

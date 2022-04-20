@@ -96,6 +96,7 @@ mkTestFacts first second = do
           Glean.Test.KitchenSink_sum__d sysBlobFact
       , Glean.Test.kitchenSink_string_ = "abba"
       , Glean.Test.kitchenSink_array_of_nat = map toNat [1,2]
+      , Glean.Test.kitchenSink_array_of_string = ["abba", "baba"]
       , Glean.Test.kitchenSink_named_sum_ = Glean.Test.Sum_wed True
       , Glean.Test.kitchenSink_named_record_ = rec
       , Glean.Test.kitchenSink_maybe_ = Nothing
@@ -105,7 +106,8 @@ mkTestFacts first second = do
     kitchenSink2Term0b = kitchenSink2Term0
       { Glean.Test.kitchenSink_nat = toNat 42
       , Glean.Test.kitchenSink_string_ = "acca"
-      , Glean.Test.kitchenSink_array_of_nat = map toNat [3,4,5] }
+      , Glean.Test.kitchenSink_array_of_nat = map toNat [3,4,5]
+      }
 
   kitchenSink2Fact0 <- makeFact @Glean.Test.Predicate kitchenSink2Term0
   kitchenSink2Fact0b <- makeFact @Glean.Test.Predicate kitchenSink2Term0b

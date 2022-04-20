@@ -123,8 +123,13 @@ instance (FixBindOrder a) => FixBindOrder (Match a Var) where
     MatchAnd <$> mapM (fixBindOrder isPat) a <*> mapM (fixBindOrder isPat) b
   fixBindOrder isPat (MatchPrefix str rest) =
     MatchPrefix str <$> mapM (fixBindOrder isPat) rest
+  fixBindOrder isPat (MatchArrayPrefix ty pre) =
+    MatchArrayPrefix ty
+      <$> (mapM.mapM) (fixBindOrder isPat) pre
   fixBindOrder isPat (MatchExt ext) = MatchExt <$> fixBindOrder isPat ext
-  fixBindOrder _ other = return other
+  fixBindOrder _ other@MatchFid{} = return other
+  fixBindOrder _ other@MatchNever{} = return other
+  fixBindOrder _ other@MatchWild{} = return other
 
 fixVar :: IsPat -> Var -> Fix (Match a Var)
 fixVar isPat var@(Var _ v _) = do

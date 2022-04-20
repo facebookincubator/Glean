@@ -108,6 +108,11 @@ transformPat innerL innerR from to pat = case pat of
       (transform from to a)
       (transform from to b)
     MatchPrefix prefix rest -> MatchPrefix prefix $ transform from to rest
+    MatchArrayPrefix _ty prefix
+      | Type.Array fromElem <- from
+      , Type.Array toElem <- to
+      -> MatchArrayPrefix toElem (map (transform fromElem toElem) prefix)
+      | otherwise -> error "unexpected"
     MatchExt extra -> MatchExt $ innerL from to extra
   Alt fromIx term
     | Type.Boolean <- from

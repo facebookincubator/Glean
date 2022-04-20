@@ -77,6 +77,7 @@ tokens :-
   "else"        { basicToken T_Else }
   "++"          { basicToken T_Append }
   ".."          { basicToken T_DotDot }
+  "..]"         { basicToken T_DotDotRightSquare }
   "->"          { basicToken T_RightArrow }
   ","           { basicToken T_Comma }
   "|"           { basicToken T_Bar }
@@ -145,6 +146,7 @@ data TokenType
   | T_Else
   | T_Append
   | T_DotDot
+  | T_DotDotRightSquare
   | T_RightArrow
   | T_Comma
   | T_Bar

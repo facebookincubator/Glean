@@ -13,6 +13,7 @@ module Glean.Query.Opt
 import Control.Monad.Except
 import Control.Monad.State
 import qualified Data.ByteString as B
+import Data.Foldable (toList)
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
 import Data.IntSet (IntSet)
@@ -274,7 +275,16 @@ instance Apply Pat where
     y' <- apply y
     return (Ref (MatchAnd x' y'))
   apply (Ref (MatchPrefix str x)) = Ref . MatchPrefix str <$> apply x
-  apply t = return t
+  apply (Ref (MatchArrayPrefix ty pre)) =
+    Ref . MatchArrayPrefix ty <$> mapM apply pre
+  apply t@Byte{} = return t
+  apply t@ByteArray{} = return t
+  apply t@Nat{} = return t
+  apply t@String{} = return t
+  apply t@(Ref MatchExt{}) = return t
+  apply t@(Ref MatchFid{}) = return t
+  apply t@(Ref MatchNever{}) = return t
+  apply t@(Ref MatchWild{}) = return t
 
 applyVar :: Var -> U Pat
 applyVar var@(Var _ v _) = do
@@ -342,6 +352,7 @@ neverMatches = \case
     MatchVar _ -> False
     MatchAnd left right -> neverMatches left || neverMatches right
     MatchPrefix _ term -> neverMatches term
+    MatchArrayPrefix _ty pre -> any neverMatches pre
     MatchExt () -> False
 
 -- | Unify two patterns, extending the substitution. Note that this is
@@ -378,6 +389,12 @@ unify (String x) (Ref (MatchPrefix s y))
   | Just r <- B.stripPrefix s x = unify y (String r)
 unify (Ref (MatchAnd x y)) z = (&&) <$> unify x z <*> unify y z
 unify z (Ref (MatchAnd x y)) = (&&) <$> unify z x <*> unify z y
+unify (Ref (MatchArrayPrefix _ pre)) (Ref (MatchArrayPrefix _ pre')) = do
+  and <$> zipWithM unify pre pre'
+unify (Ref (MatchArrayPrefix _ pre)) (Array xs)
+  | length pre <= length xs = and <$> zipWithM unify pre xs
+unify (Array xs) (Ref (MatchArrayPrefix _ pre))
+  | length pre <= length xs = and <$> zipWithM unify xs pre
 unify _ _ = return False
 
 extend :: Var -> Pat -> U Bool
@@ -431,6 +448,8 @@ freshWild pat = do
   freshWildMatch m = case m of
     MatchWild ty -> MatchBind <$> fresh ty
     MatchPrefix str rest -> MatchPrefix str <$> mapM freshWildMatch rest
+    MatchArrayPrefix ty pre ->
+      MatchArrayPrefix ty <$> (mapM.mapM) freshWildMatch pre
     MatchNever ty -> return (MatchNever ty)
     MatchFid f -> return (MatchFid f)
     MatchBind v -> return (MatchBind v)
@@ -503,7 +522,11 @@ termScope pat r = foldr onMatch r pat
     MatchBind v -> addToCurrentScope v r
     MatchVar v -> addToCurrentScope v r
     MatchAnd x y -> foldr onMatch (foldr onMatch r y) x
-    _ -> r
+    MatchArrayPrefix _ty pre -> foldr onMatch r (foldMap toList pre)
+    MatchNever{} -> r
+    MatchWild{} -> r
+    MatchExt{} -> r
+    MatchFid{} -> r
 
 
 -- | For T = U statements, decompose the statement as far as possible.
@@ -562,6 +585,14 @@ expandStmt (FlatStatement stmtTy lhs (TermGenerator rhs)) =
     (Ref (MatchPrefix s a), Ref (MatchPrefix t b))
       | t == s -> expand ty a b
     (Ref (MatchFid x), Ref (MatchFid y)) | x == y -> []
+    (Ref (MatchArrayPrefix eltTy0 ts), Array us)
+      | length ts <= length us
+      , eltTy <- derefType eltTy0
+      -> concat (zipWith (expand eltTy) ts us)
+    (Ref (MatchArrayPrefix eltTy0 ts), Ref (MatchArrayPrefix _ty us))
+      | eltTy <- derefType eltTy0
+      , length ts == length us
+      -> concat (zipWith (expand eltTy) ts us)
     _ -> [(ty,a,b)]
 expandStmt s@(FlatNegation _) = [s]
   -- the expansion is handled by @apply@ with @optStmts@ because we need to

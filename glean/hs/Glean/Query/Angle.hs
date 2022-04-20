@@ -43,6 +43,7 @@ module Glean.Query.Angle
   , factId
   , factIds
   , elementsOf
+  , arrayPrefix
   , unit
   , true
   , false
@@ -358,6 +359,11 @@ elementsOf :: Angle [x] -> Angle x
 elementsOf listOfX = Angle $ do
   xs <- gen listOfX
   return (ElementsOfArray DSL xs)
+
+arrayPrefix :: NonEmpty (Angle x) -> Angle x
+arrayPrefix pats = Angle $ do
+  pats <- traverse gen pats
+  return (ArrayPrefix DSL pats)
 
 unit :: Angle ()
 unit = Angle $ pure (Variable DSL "{}")

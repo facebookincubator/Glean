@@ -35,6 +35,7 @@ import qualified Data.ByteString as ByteString
 import Data.Coerce
 import Data.IntSet (IntSet)
 import qualified Data.IntSet as IntSet
+import Data.List (genericLength)
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -65,7 +66,6 @@ import Glean.RTS.Traverse
 import Glean.RTS.Types
 import Glean.RTS.Term hiding (Match)
 import Glean.Typed.Binary (buildRtsValue)
-
 import Glean.Types hiding (Nat, Byte)
 
 {- Debugging the bytecode query backend:
@@ -227,6 +227,10 @@ data Match ext var
       ByteString  -- the prefix of the string (utf-8 encoded)
       (Term (Match ext var))  -- the rest of the string
 
+  | MatchArrayPrefix
+      Type                     -- ^ The type of elements
+      [Term (Match ext var)]   -- ^ The prefix
+
     -- | placeholder for extending this type
   | MatchExt ext
 
@@ -242,6 +246,8 @@ instance Bifunctor Match where
     MatchBind var -> MatchBind (g var)
     MatchAnd a b -> MatchAnd (fmap (bimap f g) a) (fmap (bimap f g) b)
     MatchPrefix b term -> MatchPrefix b $ fmap (bimap f g) term
+    MatchArrayPrefix ty prefix ->
+      MatchArrayPrefix ty ((fmap.fmap) (bimap f g) prefix)
 
 instance Bifoldable Match where
   bifoldMap f g = \case
@@ -253,6 +259,8 @@ instance Bifoldable Match where
     MatchBind var -> g var
     MatchAnd a b -> foldMap (bifoldMap f g) a <> foldMap (bifoldMap f g) b
     MatchPrefix _ term -> foldMap (bifoldMap f g) term
+    MatchArrayPrefix _ty pre ->
+      (foldMap.foldMap) (bifoldMap f g) pre
 
 matchVar :: Match ext var -> Maybe var
 matchVar (MatchVar v) = Just v
@@ -280,6 +288,8 @@ prettyMatchAtom (MatchFid fid) = pretty fid
 prettyMatchAtom (MatchVar v) = pretty v
 prettyMatchAtom (MatchPrefix str rest) =
   pretty (show str) <> ".." <> pretty rest
+prettyMatchAtom (MatchArrayPrefix _ty pre) =
+  align $ encloseSep "[" "..]" "," $ map pretty pre
 prettyMatchAtom other@MatchAnd{} = "(" <> pretty other <> ")"
 prettyMatchAtom other@MatchBind{} = "(" <> pretty other <> ")"
 prettyMatchAtom other@MatchExt{} = "(" <> pretty other <> ")"
@@ -1097,6 +1107,12 @@ data QueryChunk var =
    -- fragment of the serialized pattern
    QueryPrefix ByteString
 
+  -- | An array prefix of length N
+ | QueryArrayPrefix
+    Word64                -- ^ Length
+    Type                  -- ^ Element type
+    [QueryChunk var]      -- ^ chunks for the prefix
+
    -- | A wildcard, represented as the type of the fragment to skip over
  | QueryWild Type
 
@@ -1208,6 +1224,9 @@ preProcessPat pat = unsafePerformIO $
       Ref (MatchPrefix txt rest) -> do
         prefixString txt
         build rest
+      Ref (MatchArrayPrefix ty prefix) -> do
+        chunks <- getChunks $ mapM_ build prefix
+        chunk $ QueryArrayPrefix (genericLength chunks) ty chunks
       Ref MatchExt{} -> error "preProcessPat"
       Byte w -> do
         b <- builder
@@ -1453,6 +1472,23 @@ matchPat vars input inputend fail chunks =
       move input start
       skipTrusted input inputend ty
       outputBytes start input outReg
+      return ()
+  match (QueryArrayPrefix npatterns ty patterns) = do
+    local $ \size -> do
+    local $ \patternsLen -> mdo
+      loadConst npatterns patternsLen
+      inputNat input inputend size
+      jumpIfLt size patternsLen fail
+      mapM_ match patterns
+
+      -- skip to the end
+      sub patternsLen size
+      jumpIf0 size done
+      skip <- label
+      skipTrusted input inputend ty
+      decrAndJumpIfNot0 size skip
+
+      done <- label
       return ()
 
 -----------------------------------------------------------------------------

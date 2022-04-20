@@ -169,6 +169,7 @@ rmLocSchemas (SourceSchemas version schemas evolves) =
       StringPrefix _ x -> StringPrefix () x
       ByteArray _ x -> ByteArray () x
       Array _ xs -> Array () (rmLocPat <$> xs)
+      ArrayPrefix _ xs -> ArrayPrefix () (rmLocPat <$> xs)
       Tuple _ xs -> Tuple () (rmLocPat <$> xs)
       Struct _ xs -> Struct () (rmLocField <$> xs)
       App _ x xs -> App () (rmLocPat x) (rmLocPat <$> xs)
