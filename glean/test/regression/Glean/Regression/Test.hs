@@ -14,6 +14,7 @@ module Glean.Regression.Test
   ( -- * your test code
     TestIndex
     -- * make your main
+  , mainTestIndex
   , mainTestIndexExternal
   , mainTestIndexGeneric
   ) where
@@ -41,6 +42,19 @@ type TestIndex = IO (Some Backend, Repo) -> Test
 withOutputDir :: String -> Maybe FilePath -> (FilePath -> IO a) -> IO a
 withOutputDir _dir (Just output) act = act output
 withOutputDir dir Nothing act = withSystemTempDirectory dir act
+
+-- | Run a test with an arbitrary indexer
+mainTestIndex
+  :: String -- ^ just a string to identify this test
+  -> Indexer opts
+  -> TestIndex
+  -> IO ()
+mainTestIndex dir indexer testIndex =
+  mainTestIndexGeneric
+    (driverFromIndexer indexer)
+    (pure ())
+    dir
+    (\_ _ _ _ -> testIndex)
 
 -- | Run a test with an external indexer
 mainTestIndexExternal

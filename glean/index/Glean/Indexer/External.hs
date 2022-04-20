@@ -16,6 +16,7 @@
 module Glean.Indexer.External
   ( externalIndexer
   , Ext(..)
+  , Flavour(..)
   ) where
 
 import Control.Exception

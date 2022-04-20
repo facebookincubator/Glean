@@ -9,6 +9,7 @@
 {-# LANGUAGE ApplicativeDo #-}
 module GleanCLI.Index (IndexCommand) where
 
+import Data.Foldable
 import Options.Applicative
 import System.Directory
 import System.IO.Temp
@@ -18,7 +19,8 @@ import Util.OptParse
 
 import Glean hiding (options)
 import Glean.Indexer
-import Glean.Indexer.External
+import qualified Glean.Indexer.External as External
+import qualified Glean.Indexer.Flow as Flow
 import Glean.Util.Some
 
 import GleanCLI.Common
@@ -28,23 +30,39 @@ data IndexCommand
   = Index
       { indexCmdRepo :: Repo
       , indexCmdRoot :: FilePath
-      , indexCmdOpts :: Ext
+      , indexCmdRun :: RunIndexer
       }
+
+data SomeIndexer = forall opts . SomeIndexer (Indexer opts)
+
+indexers :: [(String, String, SomeIndexer)]
+indexers =
+  [ ("external",
+      "Use a generic external indexer",
+      SomeIndexer External.externalIndexer)
+  , ("flow",
+      "Index JS/Flow code",
+      SomeIndexer Flow.indexer)
+  ]
 
 instance Plugin IndexCommand where
   parseCommand =
     commandParser "index" (progDesc "Index some source code") $ do
-      commandParser "external" (progDesc "Use an external indexer") $ do
-        indexCmdRepo <- repoOpts
-        indexCmdRoot <- strArgument (metavar "ROOT")
-        indexCmdOpts <- indexerOptParser externalIndexer
-        return Index{..}
+      indexCmdRepo <- repoOpts
+      indexCmdRun <- asum langs
+      indexCmdRoot <- strArgument (metavar "ROOT")
+      return Index{..}
+   where
+     langs = flip map indexers $ \(cmd, desc, SomeIndexer indexer) ->
+       commandParser cmd (progDesc desc) $ do
+         opts <- indexerOptParser indexer
+         return (indexerRun indexer opts)
 
   runCommand _evb _cfg backend Index{..} = do
     projectRoot <- getCurrentDirectory
     withSystemTempDirectory "glean-index" $ \tmpdir -> do
     fillDatabase backend Nothing indexCmdRepo "" (die 1 "repo already exists") $
-      indexerRun externalIndexer indexCmdOpts (Some backend) indexCmdRepo
+      indexCmdRun (Some backend) indexCmdRepo
         IndexerParams {
           indexerRoot = indexCmdRoot,
           indexerProjectRoot = projectRoot,

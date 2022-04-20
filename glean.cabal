@@ -1327,7 +1327,7 @@ library regression-test-lib
         Glean.Indexer
         Glean.Indexer.External
         Glean.Regression.Config
-        Glean.Regression.Driver.Args.Flow
+        Glean.Indexer.Flow
         Glean.Regression.Driver.Args.Hack
         Glean.Regression.Driver.External
         Glean.Regression.Indexer

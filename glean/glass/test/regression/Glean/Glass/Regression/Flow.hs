@@ -11,6 +11,7 @@ module Glean.Glass.Regression.Flow (main) where
 import Test.HUnit
 import Data.Text (Text)
 
+import Glean.Indexer.Flow as Flow
 import Glean.Regression.Test
 
 import Glean
@@ -19,7 +20,7 @@ import Glean.Glass.Types
 import Glean.Glass.Regression.Tests
 
 main :: IO ()
-main = mainTestIndexExternal "glass-regression-flow" $ \get -> TestList
+main = mainTestIndex "glass-regression-flow" Flow.indexer $ \get -> TestList
   [ testDocumentSymbolListX (Path "test/imports.js") get
   , testSymbolIdLookup get
   ]
