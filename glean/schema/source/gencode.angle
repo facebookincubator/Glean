@@ -1,0 +1,41 @@
+# (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
+
+# Schema to store GenCode information for a file
+schema gencode.1 {
+import src.1
+
+type GenCodeVariant = enum {
+  # File containing generated code entirely
+  Full |
+  # File containing gencode partially
+  Partial
+}
+
+predicate GenCodeCommand : string
+
+predicate GenCodeClass : string
+
+predicate GenCodeSignature : string
+
+# This fact contains information whether or not the file is a gencode
+predicate GenCode : {
+  file : src.File,
+  variant : GenCodeVariant,
+  # source for gencode
+  source : maybe src.File,
+  # command used for gencode
+  command : maybe GenCodeCommand,
+  # class for gencode
+  class_ : maybe GenCodeClass,
+  # whether the gencode is signed
+  signature : maybe GenCodeSignature,
+}
+
+# This fact contains mapping from the file which generated the gencode
+predicate GenCodeBySource : {
+  source : src.File,
+  gencode : src.File,
+}
+stored {SourceFile, GenCodeFile} where
+  GenCode { file = GenCodeFile, source = { just = SourceFile } }
+}
