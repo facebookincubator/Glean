@@ -48,6 +48,7 @@ import Glean.Shell
 import GleanCLI.Common
 import GleanCLI.Complete
 import GleanCLI.Derive
+import GleanCLI.Index
 import GleanCLI.Restore
 import GleanCLI.Query
 import GleanCLI.Types
@@ -92,6 +93,7 @@ plugins =
   , plugin @WriteSerializedInventoryCommand
   , plugin @ShellCommand
   , plugin @CompleteCommand
+  , plugin @IndexCommand
 #if FACEBOOK
   , plugin @FacebookPlugin
 #endif
