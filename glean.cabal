@@ -1322,13 +1322,15 @@ library regression-test-lib
         glean/test/regression
         glean/lang/flow
         glean/lang/hack
+        glean/index
     exposed-modules:
+        Glean.Indexer
+        Glean.Indexer.External
         Glean.Regression.Config
         Glean.Regression.Driver.Args.Flow
         Glean.Regression.Driver.Args.Hack
         Glean.Regression.Driver.External
         Glean.Regression.Indexer
-        Glean.Regression.Indexer.External
         Glean.Regression.Snapshot
         Glean.Regression.Snapshot.Driver
         Glean.Regression.Snapshot.Options
@@ -1338,6 +1340,7 @@ library regression-test-lib
         Glean.Regression.Test
     build-depends:
         glean:client-hs,
+        glean:client-hs-local,
         glean:db,
         glean:handler,
         glean:if-glean-hs,

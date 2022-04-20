@@ -12,7 +12,7 @@ import Control.Monad
 
 import qualified Glean.Clang.Test as Clang
 import qualified Glean.DocBlock.Test as DocBlock (runIndexer)
-import Glean.Regression.Indexer
+import Glean.Indexer
 import Glean.Regression.Snapshot.Driver
 import Glean.Regression.Snapshot
 import Glean.Derive (derivePredicate)

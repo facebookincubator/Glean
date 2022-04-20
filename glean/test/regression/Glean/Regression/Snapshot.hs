@@ -34,6 +34,7 @@ import qualified Test.HUnit as HUnit
 import TestRunner
 import Util.JSON.Pretty ()
 
+import Glean.Indexer
 import Glean.Init (withUnitTestOptions)
 import Glean.Regression.Config
 import Glean.Regression.Indexer

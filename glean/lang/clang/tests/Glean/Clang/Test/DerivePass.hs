@@ -12,7 +12,7 @@ module Glean.Clang.Test.DerivePass (testDeriver, driver) where
 import Control.Monad
 
 import qualified Glean.Clang.Test as Clang
-import Glean.Regression.Indexer
+import Glean.Indexer
 import Glean.Regression.Snapshot.Driver
 import Glean.Regression.Snapshot
 

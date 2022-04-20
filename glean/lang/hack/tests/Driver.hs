@@ -13,8 +13,8 @@ module Driver
 import Derive.Env (withEnv)
 import Derive.HackDeclarationTarget (deriveHackDeclarationTarget)
 import qualified Derive.Types as DT
-import Glean.Regression.Indexer
-import Glean.Regression.Indexer.External
+import Glean.Indexer
+import Glean.Indexer.External
 import Glean.Regression.Snapshot (testMain)
 import Glean.Regression.Snapshot.Driver
 

@@ -17,8 +17,8 @@ import Util.IO
 import Util.OptParse
 
 import Glean hiding (options)
-import Glean.Regression.Indexer
-import Glean.Regression.Indexer.External
+import Glean.Indexer
+import Glean.Indexer.External
 import Glean.Util.Some
 
 import GleanCLI.Common

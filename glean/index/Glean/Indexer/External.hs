@@ -13,7 +13,7 @@
 -- generate JSON files and then writing them to the repo using the
 -- 'glean' CLI tool, or it might involve running a server.
 --
-module Glean.Regression.Indexer.External
+module Glean.Indexer.External
   ( externalIndexer
   , Ext(..)
   ) where
@@ -43,8 +43,7 @@ import qualified Glean
 import Glean.Backend (BackendKind(..), LocalOrRemote(..), ThriftBackend(..))
 import Glean.Derive
 import qualified Glean.Handler as GleanHandler
-import Glean.Regression.Indexer
-import Glean.Types
+import Glean.Indexer
 import Glean.Write
 import qualified Glean.LSIF.Driver as LSIF
 import Glean.Util.Service
@@ -102,8 +101,8 @@ execExternal Ext{..} env repo IndexerParams{..} = do index; derive
     derivePredicate env repo Nothing Nothing
       (parseRef pred) Nothing
 
-  repoName = Text.unpack (repo_name repo)
-  repoHash = Text.unpack (repo_hash repo)
+  repoName = Text.unpack (Glean.repo_name repo)
+  repoHash = Text.unpack (Glean.repo_hash repo)
 
   vars = HashMap.fromList
     [ ("TEST_REPO", Glean.showRepo repo)
