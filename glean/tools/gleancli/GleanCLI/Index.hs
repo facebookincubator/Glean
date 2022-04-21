@@ -9,7 +9,6 @@
 {-# LANGUAGE ApplicativeDo #-}
 module GleanCLI.Index (IndexCommand) where
 
-import Data.Foldable
 import Options.Applicative
 import System.Directory
 import System.IO.Temp
@@ -36,14 +35,9 @@ instance Plugin IndexCommand where
   parseCommand =
     commandParser "index" (progDesc "Index some source code") $ do
       indexCmdRepo <- repoOpts
-      indexCmdRun <- asum langs
+      indexCmdRun <- cmdLineParser
       indexCmdRoot <- strArgument (metavar "ROOT")
       return Index{..}
-   where
-     langs = flip map indexers $ \(cmd, desc, SomeIndexer indexer) ->
-       commandParser cmd (progDesc desc) $ do
-         opts <- indexerOptParser indexer
-         return (indexerRun indexer opts)
 
   runCommand _evb _cfg backend Index{..} = do
     projectRoot <- getCurrentDirectory
