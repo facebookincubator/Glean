@@ -951,11 +951,13 @@ library indexers
         glean/lang/flow
         glean/lang/hack
         glean/index
+        glean/index/list
     exposed-modules:
         Glean.Indexer
         Glean.Indexer.External
         Glean.Indexer.Flow
         Glean.Indexer.Hack
+        Glean.Indexer.List
     build-depends:
         glean:client-hs,
         glean:client-hs-local,
