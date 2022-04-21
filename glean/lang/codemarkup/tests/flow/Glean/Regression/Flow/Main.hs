@@ -10,10 +10,12 @@ module Glean.Regression.Flow.Main ( main ) where
 
 import System.Environment ( withArgs )
 
-import qualified Glean.Regression.Driver.External as Driver ( main )
-import qualified Glean.Regression.Driver.Args.Flow as Flow
+import Glean.Indexer.Flow as Flow
+import Glean.Regression.Snapshot
+import Glean.Regression.Snapshot.Driver
 
 main :: IO ()
-main = withArgs (Flow.args path) Driver.main
+main = withArgs ["--root", path] $ testMain driver
   where
+      driver = driverFromIndexer Flow.indexer
       path = "glean/lang/codemarkup/tests/flow/cases"
