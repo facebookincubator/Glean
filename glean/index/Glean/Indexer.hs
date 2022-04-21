@@ -28,7 +28,9 @@ import Glean.Util.Some
 -- backend.
 --
 data Indexer opts = Indexer
-  { indexerOptParser :: Parser opts
+  { indexerShortName :: String
+  , indexerDescription :: String
+  , indexerOptParser :: Parser opts
   , indexerRun :: opts -> RunIndexer
   }
 
@@ -60,14 +62,16 @@ data IndexerParams = IndexerParams
 -- generalise this, but this more restricted form was found to be more
 -- convenient when used with 'Driver'.
 indexerThen :: Indexer a -> RunIndexer -> Indexer a
-indexerThen (Indexer parseOpts run1) run2 = Indexer
-  { indexerOptParser = parseOpts
-  , indexerRun = \opts backend repo params ->
-      run1 opts backend repo params >> run2 backend repo params
+indexerThen indexer run2 = indexer
+  { indexerRun = \opts backend repo params -> do
+      indexerRun indexer opts backend repo params
+      run2 backend repo params
   }
 
-indexerWithNoOptions :: RunIndexer -> Indexer ()
-indexerWithNoOptions run = Indexer
-  { indexerOptParser = pure ()
+indexerWithNoOptions :: String -> RunIndexer -> Indexer ()
+indexerWithNoOptions name run = Indexer
+  { indexerShortName = name
+  , indexerDescription = name
+  , indexerOptParser = pure ()
   , indexerRun = const run
   }

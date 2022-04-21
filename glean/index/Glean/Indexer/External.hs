@@ -51,7 +51,9 @@ import Glean.Util.Service
 
 externalIndexer :: Indexer Ext
 externalIndexer = Indexer
-  { indexerOptParser = extOptions
+  { indexerShortName = "external"
+  , indexerDescription = "A generic indexer that runs an external binary"
+  , indexerOptParser = extOptions
   , indexerRun = execExternal
   }
 

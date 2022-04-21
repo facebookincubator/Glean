@@ -8,7 +8,6 @@
 
 module Glean.Regression.Snapshot.Driver
   ( Driver(..)
-  , emptyDriver
   , driverFromIndexer
   , externalDriver
   ) where
@@ -32,17 +31,11 @@ data Driver opts = Driver
 
 type Group = String
 
-emptyDriver :: Driver ()
-emptyDriver = Driver
-  { driverIndexer = Indexer (pure ()) (\_ _ _ _ -> return ())
-  , driverGroups = const []
-  , driverTransforms = mempty
-  }
-
 driverFromIndexer :: Indexer opts -> Driver opts
-driverFromIndexer indexer = emptyDriver
+driverFromIndexer indexer = Driver
   { driverIndexer = indexer
   , driverGroups = const []
+  , driverTransforms = mempty
   }
 
 -- | A 'Driver' using an external 'Indexer'. See
@@ -51,7 +44,4 @@ driverFromIndexer indexer = emptyDriver
 -- This driver doesn't support multiple groups; that could be added if
 -- necessary.
 externalDriver :: Driver Ext
-externalDriver = emptyDriver
-  { driverIndexer = externalIndexer
-  , driverGroups = const []
-  }
+externalDriver = driverFromIndexer externalIndexer

@@ -30,6 +30,8 @@ options = do
 
 indexer :: Indexer Flow
 indexer = Indexer {
+  indexerShortName = "flow",
+  indexerDescription = "Index JS/Flow code",
   indexerOptParser = options,
   indexerRun = \Flow{..} -> do
     let ext = Ext {
