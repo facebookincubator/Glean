@@ -13,6 +13,7 @@ import Data.Text (Text)
 import Test.HUnit
 
 import Glean
+import Glean.Indexer.Python as Python
 import Glean.Regression.Test
 import Glean.Util.Some
 
@@ -20,7 +21,7 @@ import Glean.Glass.Types
 import Glean.Glass.Regression.Tests
 
 main :: IO ()
-main = mainTestIndexExternal "glass-regression-python" $ \get -> TestList
+main = mainTestIndex "glass-regression-python" Python.indexer $ \get -> TestList
   [ testDocumentSymbolListX (Path "all.py") get
   , testSymbolIdLookup get
   , testPythonFindReferences get
