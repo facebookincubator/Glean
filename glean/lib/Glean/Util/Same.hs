@@ -18,8 +18,6 @@ module Glean.Util.Same
   , DefDecl(..)
     -- ** query
   , queryDefDeclOf
-  , queryDefOf
-  , queryDeclToFamilyDefs
   , queryDeclToDef
     -- ** helper class
   , DefCheck(..)
@@ -197,29 +195,6 @@ queryDefDeclOf i = case declToDef i of
   Just q -> do
     xs <- getFirstResult (query q)
     return $ if null xs then Decl else Def
-
--- | Use 'DefCheck' to get matching definition, if possible and present
-queryDefOf
-  :: (HaxlQuery (DeclToDef p), DefCheck p)
-  => IdOf p
-  -> Haxl w (Maybe (DeclToDef p))
-queryDefOf = fmap join . traverse (getFirstResult . query) . declToDef
-
--- | Explore whole family and return the corresponding definitions.
--- The new 'queryDeclToDef' may be more efficient for most cases.
---
--- Note, does not support 'Cxx.VariableDeclaration', and does support
--- questionable 'Cxx.ObjcPropertyDeclaration'
--- to 'Cxx.ObjcPropertyImplementation' lookup.
-queryDeclToFamilyDefs
-  :: (HaxlQuery (DeclToDef p), DefCheck p, DeclBranch p)
-  => IdOf p
-  -> Haxl w [DeclToDef p]
-queryDeclToFamilyDefs xIn = case declToDef xIn of
-  Nothing -> return [] -- shortcut
-  Just _ -> do
-    xs <- queryDeclFamilyOf xIn
-    catMaybes <$> mapM queryDefOf xs
 
 -- | Replaces the older 'queryDeclToFamilyDefs'
 --
