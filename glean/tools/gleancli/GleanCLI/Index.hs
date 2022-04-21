@@ -19,9 +19,7 @@ import Util.OptParse
 
 import Glean hiding (options)
 import Glean.Indexer
-import qualified Glean.Indexer.External as External
-import qualified Glean.Indexer.Flow as Flow
-import qualified Glean.Indexer.Hack as Hack
+import Glean.Indexer.List
 import Glean.Util.Some
 
 import GleanCLI.Common
@@ -33,21 +31,6 @@ data IndexCommand
       , indexCmdRoot :: FilePath
       , indexCmdRun :: RunIndexer
       }
-
-data SomeIndexer = forall opts . SomeIndexer (Indexer opts)
-
-indexers :: [(String, String, SomeIndexer)]
-indexers =
-  [ ("external",
-      "Use a generic external indexer",
-      SomeIndexer External.externalIndexer)
-  , ("flow",
-      "Index JS/Flow code",
-      SomeIndexer Flow.indexer)
-  , ("hack",
-      "Index Hack code",
-      SomeIndexer Hack.indexer)
-  ]
 
 instance Plugin IndexCommand where
   parseCommand =
