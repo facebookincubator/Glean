@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeFamilyDependencies #-}
 {-# LANGUAGE UndecidableInstances #-} -- class QueryDefDecl
 module Glean.Util.Same
@@ -31,10 +32,13 @@ import Data.Maybe
 import Data.Proxy
 
 import Glean
+import Glean.Angle hiding (query)
+import qualified Glean.Angle as Angle
 import qualified Glean.Schema.CodeCxx.Types as CodeCxx
 import qualified Glean.Schema.Query.CodeCxx.Types as Q.CodeCxx
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.Query.Cxx1.Types as Q.Cxx
+import Glean.Util.ToAngle
 import Glean.Util.Declarations
 
 -- | Use 'Cxx.DeclToFamily' to find the same facts (shallow query)
@@ -42,9 +46,9 @@ import Glean.Util.Declarations
 -- Always returns non-empty list, in same order as in 'Cxx.DeclFamily' fact
 queryDeclFamily :: Cxx.Declaration -> Haxl w [Cxx.Declaration]
 queryDeclFamily decl = do
-  fams <- search_ $ query $
-    Q.Cxx.DeclToFamily_with_key $ def
-      { Q.Cxx.declToFamily_key_decl = Just $ matchDeclaration decl }
+  fams <- search_ $ Angle.query $
+    predicate @Cxx.DeclToFamily $
+      rec $ field @"decl" (toAngle decl) end
   case fams of
     [] -> return [decl]
     (Cxx.DeclToFamily _ (Just key):_) ->
