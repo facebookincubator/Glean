@@ -10,10 +10,12 @@ module Glean.Regression.Hack.Main ( main ) where
 
 import System.Environment ( withArgs )
 
-import qualified Glean.Regression.Driver.External as Driver ( main )
-import qualified Glean.Regression.Driver.Args.Hack as Hack
+import Glean.Indexer.Hack as Hack
+import Glean.Regression.Snapshot
+import Glean.Regression.Snapshot.Driver
 
 main :: IO ()
-main = withArgs (Hack.args path) Driver.main
+main = withArgs ["--root", path] $ testMain driver
   where
-    path = "glean/lang/codemarkup/tests/hack/cases"
+      driver = driverFromIndexer Hack.indexer
+      path = "glean/lang/codemarkup/tests/hack/cases"

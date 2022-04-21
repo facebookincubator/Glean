@@ -854,6 +854,7 @@ library lib
         Glean.Util.Declarations
         Glean.Util.URI
         Glean.Util.Range
+        Glean.Util.ToAngle
         Glean.Util.XRefs
         Glean.Util.Same
         Glean.Util.SchemaRepos
@@ -944,6 +945,28 @@ library shell-lib
         prettyprinter-ansi-terminal,
         split
 
+library indexers
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs:
+        glean/lang/flow
+        glean/lang/hack
+        glean/index
+    exposed-modules:
+        Glean.Indexer
+        Glean.Indexer.External
+        Glean.Indexer.Flow
+        Glean.Indexer.Hack
+    build-depends:
+        glean:client-hs,
+        glean:client-hs-local,
+        glean:db,
+        glean:handler,
+        glean:lib,
+        glean:lsif,
+        glean:stubs,
+        glean:util,
+        thrift-server
+
 library cli-types
     import: fb-haskell, fb-cpp, deps
     hs-source-dirs: glean/tools/gleancli/plugin
@@ -962,6 +985,7 @@ executable glean
         GleanCLI.Complete
         GleanCLI.Derive
         GleanCLI.Finish
+        GleanCLI.Index
         GleanCLI.Query
         GleanCLI.Restore
         GleanCLI.Write
@@ -973,6 +997,7 @@ executable glean
         glean:client-hs-local,
         glean:db,
         glean:if-glean-hs,
+        glean:indexers,
         glean:shell-lib,
         glean:stubs,
         glean:config,
@@ -1320,14 +1345,7 @@ library regression-test-lib
     visibility: private
     hs-source-dirs:
         glean/test/regression
-        glean/lang/flow
-        glean/lang/hack
-        glean/index
     exposed-modules:
-        Glean.Indexer
-        Glean.Indexer.External
-        Glean.Indexer.Flow
-        Glean.Indexer.Hack
         Glean.Regression.Config
         Glean.Regression.Driver.External
         Glean.Regression.Indexer
@@ -1340,17 +1358,14 @@ library regression-test-lib
         Glean.Regression.Test
     build-depends:
         glean:client-hs,
-        glean:client-hs-local,
         glean:db,
-        glean:handler,
+        glean:indexers,
         glean:if-glean-hs,
         glean:lib,
-        glean:lsif,
         glean:stubs,
         glean:test-lib,
         glean:util,
         split,
-        thrift-server,
         yaml
 
 -- library clang-derive-test
@@ -1749,7 +1764,9 @@ test-suite glean-snapshot-flow
     type: exitcode-stdio-1.0
     main-is: Glean/Regression/Flow/Main.hs
     ghc-options: -main-is Glean.Regression.Flow.Main
-    build-depends: glean:regression-test-lib
+    build-depends:
+        glean:regression-test-lib,
+        glean:indexers
 
 test-suite glean-snapshot-hack
     import: fb-haskell, deps
@@ -1757,7 +1774,9 @@ test-suite glean-snapshot-hack
     type: exitcode-stdio-1.0
     main-is: Glean/Regression/Hack/Main.hs
     ghc-options: -main-is Glean.Regression.Hack.Main
-    build-depends: glean:regression-test-lib
+    build-depends:
+        glean:regression-test-lib,
+        glean:indexers
     -- no regular hhvm builds for arm64
     if !flag(hack-tests)
         buildable: False
@@ -1844,6 +1863,7 @@ test-suite glass-regression-flow
     other-modules: Glean.Glass.Regression.Flow
     build-depends:
         glean:client-hs,
+        glean:indexers,
         glean:util
 
 test-suite glass-regression-hack
@@ -1854,6 +1874,7 @@ test-suite glass-regression-hack
     other-modules: Glean.Glass.Regression.Hack
     build-depends:
         glean:client-hs,
+        glean:indexers,
         glean:util,
     if !flag(hack-tests)
         buildable: False
