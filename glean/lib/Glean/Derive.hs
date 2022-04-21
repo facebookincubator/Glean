@@ -19,6 +19,7 @@ import Glean.Angle.Types
 import Glean.Query.Thrift.Internal
 import Glean.Types
 import Glean
+import qualified Glean.Schema.Builtin.Types as Builtin
 import Glean.Schema.Util (showSourceRef)
 import Util.Log
 
@@ -47,6 +48,8 @@ derivePredicate backend repo maxBytes maxResults s parallel = loop
     query = def
       { derivePredicateQuery_predicate = name
       , derivePredicateQuery_predicate_version = version
+      , derivePredicateQuery_schema_version =
+          Just $ fromIntegral Builtin.version
       , derivePredicateQuery_options = Just def
         { derivePredicateOptions_max_results_per_query = maxResults
         , derivePredicateOptions_max_bytes_per_query = maxBytes

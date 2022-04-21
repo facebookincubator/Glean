@@ -525,6 +525,10 @@ struct DerivePredicateQuery {
   5: optional DerivePredicateOptions options;
   // How to parallelise derivation
   6: optional ParallelDerivation parallel;
+  // If supplied, then any unversioned predicates in the query are
+  // resolved using this version of the "all" schema. Otherwise, they
+  // are resolved to the latest version of the "all" schema.
+  7: optional Version schema_version;
 }
 
 // Derivation can be parallelised by partitioning over the range of an

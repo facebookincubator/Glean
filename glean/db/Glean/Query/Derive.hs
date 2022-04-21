@@ -365,6 +365,7 @@ runDerivation env repo pred Thrift.DerivePredicateQuery{..} = do
     outerQuery pred batchSize = def
       { userQuery_query = Text.encodeUtf8 $ allFacts (predicateRef pred)
       , userQuery_encodings = [UserQueryEncoding_bin def]
+      , userQuery_schema_version = derivePredicateQuery_schema_version
       , userQuery_options = Just def
         { userQueryOptions_syntax = QuerySyntax_ANGLE
         , userQueryOptions_max_results = Just batchSize
@@ -375,6 +376,7 @@ runDerivation env repo pred Thrift.DerivePredicateQuery{..} = do
       { userQuery_predicate = derivePredicateQuery_predicate
       , userQuery_predicate_version = derivePredicateQuery_predicate_version
       , userQuery_query = Text.encodeUtf8 q
+      , userQuery_schema_version = derivePredicateQuery_schema_version
       , userQuery_options = Just opts
       , userQuery_encodings = []
       }
