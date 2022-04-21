@@ -220,19 +220,20 @@ testAll act cfg driver opts = do
         | otherwise = fromDriver
         where fromDriver = driverGroups driver opts
 
-  if cfgReplace cfg
-    then do
+  case cfgReplace cfg of
+    Just root -> do
       forM_ tests $ \test -> do
         -- remove all .out files
-        let path = cfgRoot cfg </> test
+        let path = root </> test
         xs <- listDirectory path
         forM_ xs $ \x ->
           when (takeExtension x == ".out" || takeExtension x == ".perf") $
             removePathForcibly $ path </> x
         -- regenerate outputs - use the first group as the base
         forM_ groups $ \group ->
-          executeTest cfg driver opts (head groups) group regenerate test
-    else do
+          executeTest cfg { cfgRoot = root } driver opts
+            (head groups) group regenerate test
+    Nothing -> do
       testRunnerAction act $ HUnit.TestList
         [ (if null g then id else HUnit.TestLabel g)
             $ HUnit.TestList

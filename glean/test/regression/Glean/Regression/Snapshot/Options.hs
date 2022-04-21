@@ -23,7 +23,7 @@ data Config = Config
     -- ^ parent path of all sources, *.query, golden *.out
   , cfgOutput :: Maybe FilePath
     -- ^ parent path of *.query results
-  , cfgReplace :: Bool
+  , cfgReplace :: Maybe FilePath
     -- ^ when True overwrite golden *.out with query result
   , cfgSchemaVersion :: Maybe Int
     -- ^ version of 'all' schema to use
@@ -42,7 +42,8 @@ optionsWith other = O.info (O.helper <*> ((,) <$> parser <*> other)) O.fullDesc
       cfgRoot <- O.strOption $ O.long "root" <> O.metavar "PATH" <> O.value ""
       cfgOutput <- O.optional $ O.strOption $
         O.short 'o' <> O.long "output" <> O.metavar "PATH"
-      cfgReplace <- O.switch $ O.long "replace" <>
+      cfgReplace <- O.optional $ O.strOption $
+        O.long "replace" <> O.metavar "PATH" <>
         O.help "Generate (overwrite) golden *.out files instead of testing"
       cfgSchemaVersion <- O.optional $ O.option O.auto $
         O.long "schema-version" <> O.metavar "INT" <>
@@ -57,4 +58,9 @@ optionsWith other = O.info (O.helper <*> ((,) <$> parser <*> other)) O.fullDesc
         then getCurrentDirectory
         else makeAbsolute $ cfgProjectRoot cfg
       root <- makeAbsolute $ cfgRoot cfg
-      return $ cfg { cfgProjectRoot = projectRoot, cfgRoot = root }
+      replace <- mapM makeAbsolute $ cfgReplace cfg
+      return $ cfg {
+        cfgProjectRoot = projectRoot,
+        cfgRoot = root,
+        cfgReplace = replace
+      }
