@@ -168,39 +168,3 @@ symbolKindFromSymbolKind k = case k of
   Glass.SymbolKind_Macro -> Code.SymbolKind_Macro
   Glass.SymbolKind_Trait -> Code.SymbolKind_Trait
   Glass.SymbolKind__UNKNOWN x -> toThriftEnum x -- this might throw
-
-instance AngleEnum Code.SymbolKind where
-  type AngleEnumTy Code.SymbolKind = Code.SymbolKind
-  enumName k = case k of
-    Code.SymbolKind_Package -> "Package"
-    Code.SymbolKind_Type -> "Type"
-    Code.SymbolKind_Value -> "Value"
-    Code.SymbolKind_File -> "File"
-    Code.SymbolKind_Module -> "Module"
-    Code.SymbolKind_Namespace -> "Namespace"
-    Code.SymbolKind_Class_ -> "Class_"
-    Code.SymbolKind_Method -> "Method"
-    Code.SymbolKind_Property -> "Property"
-    Code.SymbolKind_Field -> "Field"
-    Code.SymbolKind_Constructor -> "Constructor"
-    Code.SymbolKind_Enum -> "Enum"
-    Code.SymbolKind_Interface -> "Interface"
-    Code.SymbolKind_Function -> "Function"
-    Code.SymbolKind_Variable -> "Variable"
-    Code.SymbolKind_Constant -> "Constant"
-    Code.SymbolKind_String -> "String"
-    Code.SymbolKind_Number -> "Number"
-    Code.SymbolKind_Boolean -> "Boolean"
-    Code.SymbolKind_Array -> "Array"
-    Code.SymbolKind_Object_ -> "Object_"
-    Code.SymbolKind_Key -> "Key"
-    Code.SymbolKind_Null -> "Null"
-    Code.SymbolKind_Enumerator -> "Enumerator"
-    Code.SymbolKind_Struct -> "Struct"
-    Code.SymbolKind_Event -> "Event"
-    Code.SymbolKind_Operator -> "Operator"
-    Code.SymbolKind_TypeParameter -> "TypeParameter"
-    Code.SymbolKind_Union -> "Union"
-    Code.SymbolKind_Macro -> "Macro"
-    Code.SymbolKind_Trait -> "Trait"
-    Code.SymbolKind__UNKNOWN _ -> "UNKNOWN"

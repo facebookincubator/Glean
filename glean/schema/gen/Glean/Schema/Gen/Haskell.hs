@@ -687,8 +687,14 @@ enumDef mode ident ver eVals = do
            | n <- eVals ]
        ]
 
+    def_AngleEnum =
+      "instance Angle.AngleEnum " <> name <> " where": indentLines
+        [ "type AngleEnumTy " <> name <> " = " <> name
+        , "enumName v = Text.pack (Prelude.drop " <>
+            showt (Text.length root + 1) <> " (Prelude.show v))"]
+
   return $ map myUnlines $ case mode of
-    Data -> [def_Type, def_SumFields]
+    Data -> [def_Type, def_SumFields, def_AngleEnum]
     Query -> [def_Query, def_ToQuery]
 
 sourceTypeDef :: Name -> Version -> Text

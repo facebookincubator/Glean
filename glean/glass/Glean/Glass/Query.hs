@@ -41,8 +41,6 @@ import Data.Text (Text, toLower)
 import qualified Glean
 import Glean.Angle as Angle
 
-import Glean.Glass.Attributes.SymbolKind
-  ( {- instance AngleEnum Code.SymbolKind -} )
 import Glean.Glass.Base (GleanPath(..))
 
 import qualified Glean.Schema.Codemarkup.Types as Code
