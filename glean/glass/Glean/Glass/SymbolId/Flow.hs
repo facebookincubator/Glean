@@ -128,23 +128,6 @@ moduleStringNameByFile (GleanPath path) =
       end)
   ]
 
---
--- Searching for Flow entities
---
-instance ToAngle Flow.Entity where
-  toAngle e = case e of
-    Flow.Entity_decl x -> alt @"decl" (toAngle x)
-    Flow.Entity_module_ x -> alt @"module_" (mkKey x)
-    Flow.Entity_EMPTY -> error "unknown Entity"
-
-instance ToAngle Flow.SomeDeclaration where
-  toAngle e = case e of
-    Flow.SomeDeclaration_localDecl x -> alt @"localDecl" (mkKey x)
-    Flow.SomeDeclaration_memberDecl x -> alt @"memberDecl" (mkKey x)
-    Flow.SomeDeclaration_typeDecl x -> alt @"typeDecl" (mkKey x)
-    Flow.SomeDeclaration_EMPTY -> error "unknown SomeDeclaration"
-
-
 instance ToQName Flow.Entity where
   toQName e = case e of
     Flow.Entity_decl x -> toQName x

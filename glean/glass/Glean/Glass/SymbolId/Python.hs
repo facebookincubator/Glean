@@ -17,9 +17,11 @@ import Data.List (nub)
 import qualified Glean
 import Glean.Angle as Angle
 import qualified Glean.Haxl.Repos as Glean
+import qualified Glean.Schema.Python.Types as Py
+import Glean.Util.ToAngle
+
 import Glean.Glass.SymbolId.Class
 import Glean.Glass.Types (Name(..))
-import qualified Glean.Schema.Python.Types as Py
 import Glean.Glass.Utils ( searchWithLimit )
 
 instance Symbol Py.Name where
@@ -67,14 +69,6 @@ declarationLocation decl = var $ \file ->
         field @"file" file
       end)
   ]
-
-instance ToAngle Py.Declaration where
-  toAngle (Py.Declaration_cls x) = alt @"cls" (mkKey x)
-  toAngle (Py.Declaration_func x) = alt @"func" (mkKey x)
-  toAngle (Py.Declaration_module x) = alt @"module" (mkKey x)
-  toAngle (Py.Declaration_variable x) = alt @"variable" (mkKey x)
-  toAngle (Py.Declaration_imp x) = alt @"imp" (mkKey x)
-  toAngle Py.Declaration_EMPTY = error "unknown Declaration"
 
 instance ToQName Py.Declaration where
   toQName (Py.Declaration_cls x) = Glean.keyOf x >>= toQName

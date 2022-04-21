@@ -12,7 +12,6 @@
 module Glean.Glass.SymbolId.Hack ( {- instances -} ) where
 
 import qualified Glean
-import Glean.Angle
 import qualified Glean.Haxl.Repos as Glean
 
 import Glean.Glass.SymbolId.Class
@@ -111,28 +110,6 @@ instance Symbol Hack.Name where
 --
 -- And searching for Hack Entities
 --
-
-instance ToAngle Hack.Declaration where
-  toAngle e = case e of
-    Hack.Declaration_classConst x -> alt @"classConst" (mkKey x)
-    Hack.Declaration_container x -> alt @"container" (toAngle x)
-    Hack.Declaration_enumerator x -> alt @"enumerator" (mkKey x)
-    Hack.Declaration_function_ x -> alt @"function_" (mkKey x)
-    Hack.Declaration_globalConst x -> alt @"globalConst" (mkKey x)
-    Hack.Declaration_method x -> alt @"method" (mkKey x)
-    Hack.Declaration_namespace_ x -> alt @"namespace_" (mkKey x)
-    Hack.Declaration_property_ x -> alt @"property_" (mkKey x)
-    Hack.Declaration_typeConst x -> alt @"typeConst" (mkKey x)
-    Hack.Declaration_typedef_ x -> alt @"typedef_" (mkKey x)
-    Hack.Declaration_EMPTY -> error "unknown Declaration"
-
-instance ToAngle Hack.ContainerDeclaration where
-  toAngle e = case e of
-    Hack.ContainerDeclaration_class_ x -> alt @"class_" (mkKey x)
-    Hack.ContainerDeclaration_enum_ x -> alt @"enum_" (mkKey x)
-    Hack.ContainerDeclaration_interface_ x -> alt @"interface_" (mkKey x)
-    Hack.ContainerDeclaration_trait x -> alt @"trait" (mkKey x)
-    Hack.ContainerDeclaration_EMPTY -> error "unknown ContainerDeclaration"
 
 instance ToQName Hack.Declaration where
   toQName e = case e of

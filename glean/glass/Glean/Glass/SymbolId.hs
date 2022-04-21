@@ -29,7 +29,6 @@ module Glean.Glass.SymbolId
   , fromShortCode
 
   -- * searching for entities
-  , ToAngle(..)
   , entityToAngle
 
   -- * Qualified names
@@ -58,11 +57,11 @@ import Glean.Glass.Types as Glass
 
 import Glean.Angle ( alt, Angle )
 import qualified Glean.Haxl.Repos as Glean
+import Glean.Util.ToAngle
 
 import Glean.Glass.SymbolId.Class
     ( Symbol(..),
       SymbolError(SymbolError),
-      ToAngle(..),
       ToQName(..),
       ToSymbolParent(..) )
 

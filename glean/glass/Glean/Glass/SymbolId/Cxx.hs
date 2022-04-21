@@ -21,7 +21,6 @@ import Data.Text ( Text, intercalate )
 import Glean.Glass.SymbolId.Class
 
 import qualified Glean
-import Glean.Angle ( alt, )
 import qualified Glean.Haxl.Repos as Glean
 
 import Glean.Glass.Types
@@ -210,43 +209,6 @@ instance Symbol Cxx.Name where
   toSymbol k = do
     v <- Glean.keyOf k
     return [v]
-
---
--- Search by entity
---
-instance ToAngle Cxx.Entity where
-  toAngle e = case e of
-    Cxx.Entity_decl x -> alt @"decl" (toAngle x)
-    Cxx.Entity_defn x -> alt @"defn" (toAngle x)
-    Cxx.Entity_enumerator x -> alt @"enumerator" (mkKey x)
-    Cxx.Entity_EMPTY -> error "unknown Entity"
-
-instance ToAngle Cxx.Declaration where
-  toAngle e = case e of
-    Cxx.Declaration_namespace_ x -> alt @"namespace_" (mkKey x)
-    Cxx.Declaration_usingDeclaration x -> alt @"usingDeclaration" (mkKey x)
-    Cxx.Declaration_usingDirective x -> alt @"usingDirective" (mkKey x)
-    Cxx.Declaration_record_ x -> alt @"record_" (mkKey x)
-    Cxx.Declaration_enum_ x -> alt @"enum_" (mkKey x)
-    Cxx.Declaration_function_ x -> alt @"function_" (mkKey x)
-    Cxx.Declaration_variable x -> alt @"variable" (mkKey x)
-    Cxx.Declaration_objcContainer x -> alt @"objcContainer" (mkKey x)
-    Cxx.Declaration_objcMethod x -> alt @"objcMethod" (mkKey x)
-    Cxx.Declaration_objcProperty x -> alt @"objcProperty" (mkKey x)
-    Cxx.Declaration_typeAlias x -> alt @"typeAlias" (mkKey x)
-    Cxx.Declaration_EMPTY -> error "unknown Declaration"
-
-
-instance ToAngle Cxx.Definition where
-  toAngle e = case e of
-    Cxx.Definition_record_ x -> alt @"record_" (mkKey x)
-    Cxx.Definition_function_ x -> alt @"function_" (mkKey x)
-    Cxx.Definition_enum_ x -> alt @"enum_" (mkKey x)
-    Cxx.Definition_objcMethod x -> alt @"objcMethod" (mkKey x)
-    Cxx.Definition_objcContainer x -> alt @"objcContainer" (mkKey x)
-    Cxx.Definition_variable x -> alt @"variable" (mkKey x)
-    Cxx.Definition_namespace_ x -> alt @"namespace_" (mkKey x)
-    Cxx.Definition_EMPTY -> error "unknown Definition"
 
 --
 -- Entity "parent" relationship labelling

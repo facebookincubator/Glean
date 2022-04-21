@@ -14,26 +14,24 @@ module Glean.Glass.Query.Cxx
     documentSymbolsForCxx,
   ) where
 
-import qualified Glean
-import Glean.Angle
-import Glean.Haxl.Repos as Glean
-
 import Data.Maybe ( catMaybes )
 import Data.Map.Strict ( Map )
 import qualified Data.Map as Map
 import Data.Text (Text)
 
+import qualified Glean
+import Glean.Angle
+import Glean.Haxl.Repos as Glean
+
 import qualified Glean.Schema.Codemarkup.Types as Code
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.CodeCxx.Types as Cxx
-import qualified Glean.Schema.Src.Types as Src
-
 import qualified Glean.Schema.Cxx1.Types as Cxx
-
-import Glean.Glass.SymbolId ( ToAngle(toAngle) )
-import Glean.Glass.Utils
-
+import qualified Glean.Schema.Src.Types as Src
+import Glean.Util.ToAngle ( ToAngle(toAngle) )
 import qualified Glean.Util.Range as Range
+
+import Glean.Glass.Utils
 
 --
 -- The cxx1 schema is complicated for xrefs and decls, as files have multiple

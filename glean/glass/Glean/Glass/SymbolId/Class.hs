@@ -14,9 +14,6 @@ module Glean.Glass.SymbolId.Class (
     Symbol(..)
   , SymbolError(..)
 
-  -- ** generating queries
-  , ToAngle(..)
-
   -- ** qualified names
   , ToQName(..)
 
@@ -25,7 +22,6 @@ module Glean.Glass.SymbolId.Class (
 
   -- * for predicate types
   , toSymbolPredicate
-  , mkKey
   , SymbolKeyType
 
   -- * builders
@@ -39,8 +35,7 @@ import Control.Exception ( Exception(..) )
 
 import qualified Haxl.Core.Exception as Haxl
 
-import Glean ( keyOf, Predicate(getId, KeyType) )
-import Glean.Angle ( asPredicate, factId, Angle )
+import Glean ( keyOf, Predicate(KeyType) )
 import qualified Glean.Haxl.Repos as Glean
 import Glean.Glass.Types ( Name(Name) )
 import Data.Typeable ( Typeable )
@@ -75,11 +70,6 @@ instance Exception SymbolError where
 class Symbol a where
   toSymbol :: a -> Glean.RepoHaxl u w [Text]
 
--- | Generate Angle query for a non-predicate type, like Src.Entity
--- Used where we need to index by structure.
-class ToAngle a where
-  toAngle :: a -> Angle a
-
 -- | Symbols that have qualified names can be searched
 class Symbol a => ToQName a where
   toQName :: a -> Glean.RepoHaxl u w (Either Text (Name, Name))
@@ -100,10 +90,6 @@ type SymbolKeyType p =
 -- | Generically traverse predicates for keys
 toSymbolPredicate :: (SymbolKeyType p) => p -> Glean.RepoHaxl u w [Text]
 toSymbolPredicate k = Glean.keyOf k >>= toSymbol
-
--- | Generically get an Angle key query
-mkKey :: Glean.Predicate p => p -> Angle (Glean.KeyType p)
-mkKey x = asPredicate (factId (Glean.getId x))
 
 -- TODO: use a short string builder
 (<:>) :: (Symbol a, Symbol b) => a -> b -> Glean.RepoHaxl u w [Text]

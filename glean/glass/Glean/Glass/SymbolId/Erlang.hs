@@ -15,7 +15,6 @@ module Glean.Glass.SymbolId.Erlang
 
 import TextShow
 
-import Glean.Angle as Angle
 import Glean (Nat, fromNat, keyOf)
 import Glean.Glass.SymbolId.Class
 import Glean.Glass.Types (Name(..))
@@ -50,11 +49,6 @@ instance Symbol Text where
 instance Symbol (Text, Nat) where
   toSymbol (name, arity) =
       return [intercalate "." [name, showt (fromNat arity)]]
-
-instance ToAngle Erlang.Declaration where
-  toAngle d = case d of
-    Erlang.Declaration_func x -> alt @"func" (mkKey x)
-    Erlang.Declaration_EMPTY -> error "unknown Declaration"
 
 instance ToQName CodeErlang.Entity where
   toQName e = case e of
