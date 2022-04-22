@@ -11,9 +11,8 @@ module Main ( main ) where
 import System.Environment ( withArgs )
 
 import qualified Driver ( main )
-import qualified Glean.Regression.Driver.Args.Hack as Hack
 
 main :: IO ()
-main = withArgs (Hack.args path) Driver.main
+main = withArgs ["--root", path] Driver.main
   where
     path = "glean/lang/hack/tests/cases"

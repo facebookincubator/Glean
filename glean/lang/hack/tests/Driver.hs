@@ -14,15 +14,15 @@ import Derive.Env (withEnv)
 import Derive.HackDeclarationTarget (deriveHackDeclarationTarget)
 import qualified Derive.Types as DT
 import Glean.Indexer
-import Glean.Indexer.External
+import qualified Glean.Indexer.Hack as Hack
 import Glean.Regression.Snapshot (testMain)
 import Glean.Regression.Snapshot.Driver
 
-indexer :: Indexer Ext
+indexer :: Indexer Hack.Hack
 indexer =
-  externalIndexer `indexerThen` \env repo _params ->
+  Hack.indexer `indexerThen` \env repo _params ->
     withEnv (DT.defaultConfig repo) env
       deriveHackDeclarationTarget
 
 main :: IO ()
-main = testMain (externalDriver { driverIndexer = indexer })
+main = testMain (driverFromIndexer indexer)

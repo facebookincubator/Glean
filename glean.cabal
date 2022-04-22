@@ -1397,6 +1397,7 @@ test-suite hack-derive-test
     build-depends:
        glean:regression-test-lib,
        glean:hack-derive-lib,
+       glean:indexers,
     if !flag(hack-tests)
         buildable: False
 

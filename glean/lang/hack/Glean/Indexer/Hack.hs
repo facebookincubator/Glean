@@ -7,7 +7,7 @@
 -}
 
 {-# LANGUAGE ApplicativeDo #-}
-module Glean.Indexer.Hack ( indexer ) where
+module Glean.Indexer.Hack ( indexer, Hack(..) ) where
 
 import Options.Applicative
 
