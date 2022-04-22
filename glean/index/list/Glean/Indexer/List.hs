@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE ApplicativeDo #-}
 module Glean.Indexer.List (
     SomeIndexer(..),
@@ -22,6 +23,9 @@ import Glean.Indexer
 import qualified Glean.Indexer.External as External
 import qualified Glean.Indexer.Flow as Flow
 import qualified Glean.Indexer.Hack as Hack
+#ifdef FACEBOOK
+import qualified Glean.Indexer.Python as Python
+#endif
 
 data SomeIndexer = forall opts . SomeIndexer (Indexer opts)
 
@@ -30,6 +34,9 @@ indexers =
   [ SomeIndexer External.externalIndexer
   , SomeIndexer Flow.indexer
   , SomeIndexer Hack.indexer
+#ifdef FACEBOOK
+  , SomeIndexer Python.indexer
+#endif
   ]
 
 cmdLineParser :: Parser RunIndexer
