@@ -17,6 +17,7 @@ import Glean.Indexer.External
 data Hack = Hack
   { hackBinary :: FilePath
   , hackWriteRoot :: String
+  , hackOnly :: Maybe String
   }
 
 options :: Parser Hack
@@ -29,6 +30,9 @@ options = do
     long "symbol-write-root-path" <>
     value "www" <>
     help "prefix to add to source file paths in the DB"
+  hackOnly <- optional $ strOption $
+    long "only-index" <>
+    help "comma-separated list of files to index (otherwise all)"
   return Hack{..}
 
 indexer :: Indexer Hack
@@ -58,7 +62,7 @@ indexer = Indexer {
             ]
         }
 
-        hhConfig = concat $ map (\x -> ["--config", x])
+        hhConfig = concatMap (\x -> ["--config", x]) $
           [ "symbol_write_include_hhi=false"
           , "symbol_write_root_path=" <> hackWriteRoot
           , "symbolindex_search_provider=NoIndex"
@@ -68,7 +72,10 @@ indexer = Indexer {
           , "lazy_init2=true"
           , "enable_enum_classes=true"
           , "enable_enum_supertyping=true"
-          ]
+          ] <>
+          (case hackOnly of
+            Nothing -> []
+            Just paths -> ["symbol_write_index_paths=" <> paths])
 
     indexerRun externalIndexer ext
   }
