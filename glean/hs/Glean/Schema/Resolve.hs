@@ -98,17 +98,20 @@ parseAndResolveSchema str =
 resolveSchema :: SourceSchemas -> Either Text Schemas
 resolveSchema SourceSchemas{..} = runExcept $ do
   let
-    -- dependency analysis: we want to process schemas in dependency order
-    sccs = stronglyConnComp edges
+    -- dependency analysis: we want to process schemas in dependency
+    -- order, and detect cycles in evolves declarations.
+    sccs = stronglyConnComp $
+      edges (\s -> schemaDependencies s <> schemaEvolves s)
 
-    edges =
+    schemaDependencies SourceSchema{..} =
+      schemaInherits ++ [ name | SourceImport name <- schemaDecls ]
+
+    schemaEvolves SourceSchema{..} =
+      HashMap.lookupDefault [] schemaName evolves
+
+    edges outNames =
       [ (schema, schemaName schema, outNames schema)
       | schema <- srcSchemas ]
-      where
-      outNames SourceSchema{..} =
-        schemaInherits
-        ++ [ name | SourceImport name <- schemaDecls ]
-        ++ HashMap.lookupDefault [] schemaName evolves
 
     evolves = HashMap.fromListWith (++)
       [ (new, [old]) | SourceEvolves _ new old <- srcEvolves ]
@@ -134,7 +137,10 @@ resolveSchema SourceSchemas{..} = runExcept $ do
     -- we can find the transitive closure of types and predicates that
     -- it refers to. Sadly this means building the graph again because
     -- stronglyConnComp doesn't let us get the graph it built.
-    (graph, fromVertex, toVertex) = graphFromEdges edges
+    --
+    -- However we don't want edges from evolves here, only actual
+    -- dependencies.
+    (graph, fromVertex, toVertex) = graphFromEdges (edges schemaDependencies)
 
     resolvedAllSchemas =
       [ (n, schema)
