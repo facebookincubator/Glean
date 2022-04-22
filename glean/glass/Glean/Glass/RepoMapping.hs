@@ -27,6 +27,9 @@ gleanIndices = Map.fromList
       ,("test", Language_Python)
       ,("test", Language_Thrift)
       ,("test", Language_Buck)
+      ,("test", Language_Go)
+      ,("test", Language_TypeScript)
+      ,("test", Language_Rust)
       ])
   ]
 

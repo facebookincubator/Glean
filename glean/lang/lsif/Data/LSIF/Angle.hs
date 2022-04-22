@@ -102,6 +102,7 @@ filterRoot path = do
 -- edges relate existnig vertex facts to each other (with new facts)
 --
 factToAngle :: KeyFact -> Parse [Predicate]
+
 factToAngle (KeyFact _ MetaData{..}) = do
   appendRoot projectRoot
   predicate "lsif.Metadata.1" ([
@@ -128,15 +129,15 @@ factToAngle (KeyFact _ PackageInformation{..}) =
     "version" .= version
   ]
 
--- LSIF Documents are uri/language pairs. We generate a src.File nested fact
+-- LSIF Documents are uri/language pairs
+-- Rather than key on src.File, we use lsif.Document to keep the language of the
+-- symbol accessible, for mixed-language lsif dbs.
+--
 factToAngle (KeyFact n Document{..}) = do
   insertType n FileType
   path <- filterRoot uri
-  predicate "lsif.Document.1"
-    [ "file" .= object [
-            factId n, -- generates a new src.File fact with this id
-            "key" .= path
-         ],
+  predicateId "lsif.Document.1" n
+    [ "file" .= string path, -- n.b. anonymous src.File fact
       "language" .= fromEnum language
     ]
 
@@ -199,10 +200,10 @@ factToAngle (KeyFact n (SymbolRange range mtag)) = do
   -- emit a range fact for this id
   predicateId "lsif.Range.1" n $
     [ "range" .= toRange range
-    ] ++ mFullRange ++ mText
+    , "text" .= maybe (string "" {- better to use nothing? -}) toName mtag
+    ] ++ mFullRange
     where
       mFullRange = fromMaybe [] (tagToRange =<< mtag)
-      mText = fromMaybe [] (tagToText =<< mtag)
 
 -- Hover text
 factToAngle (KeyFact n (HoverResult contents)) = do
@@ -420,11 +421,11 @@ predicateId name id_ facts =
 
 toRange :: Range -> Value
 toRange Range{..} =
-  object [ -- lsif.Range data type
-    "lineBegin" .= line start,
-    "columnBegin" .= character start,
-    "lineEnd" .= line end,
-    "columnEnd" .= character end
+  object [ -- lsif.Range data type, we convert to 1-indexed
+    "lineBegin" .= (line start + 1),
+    "columnBegin" .= (character start + 1),
+    "lineEnd" .= (line end + 1),
+    "columnEnd" .= (character end + 1)
   ]
 
 key :: KeyValue kv => [Pair] -> kv
@@ -445,11 +446,9 @@ tagToTy (Just Declaration{}) = Just DeclarationType
 tagToTy (Just Reference{}) = Just ReferenceType
 tagToTy _ = Nothing
 
-tagToText :: KeyValue a => Tag -> Maybe [a]
-tagToText Definition{..} = Just ["text" .= string tagText]
-tagToText Declaration{..} = Just ["text" .= string tagText]
-tagToText Reference{..} = Just ["text" .= string tagText]
-tagToText _ = Nothing
+-- | Identifier text string
+toName :: Tag -> Value
+toName = string . tagText
 
 tagToRange :: KeyValue a => Tag -> Maybe [a]
 tagToRange Definition{..} = Just ["fullRange" .= toRange fullRange]

@@ -1,22 +1,23 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema search.code.10 {
-import code.19
+schema search.code.11 {
+import code.20
 import code.cxx.3
 import code.hack.4
 import code.python.1
 import cxx1.4
 import flow.3
 import hack.6
+import erlang.1
 import hs.2
+import lsif.1
 import pp1.1
 import python.3
 import rust.1
-import erlang.1
 import search.cxx.4
-import search.erlang.2
+import search.erlang.3
 import search.hack.7
-import search.hs.7
+import search.hs.8
 import thrift.4
 
 # global entity search by identifier name (or prefix)
@@ -168,5 +169,3 @@ predicate ErlangSearchByLowerCaseName:
   ErlangSearchByName { NameCase, Entity }
 
 }
-
-schema search.code.10 evolves search.code.9

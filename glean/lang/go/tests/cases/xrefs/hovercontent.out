@@ -4,15 +4,21 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "file": {
+            "key": {
+              "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+              "language": 16
+            }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 10,
-                "columnBegin": 8,
-                "lineEnd": 10,
-                "columnEnd": 16
-              }
+                "lineBegin": 11,
+                "columnBegin": 9,
+                "lineEnd": 11,
+                "columnEnd": 17
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -29,15 +35,21 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "file": {
+            "key": {
+              "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+              "language": 16
+            }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 23,
-                "columnBegin": 5,
-                "lineEnd": 23,
-                "columnEnd": 12
-              }
+                "lineBegin": 24,
+                "columnBegin": 6,
+                "lineEnd": 24,
+                "columnEnd": 13
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -56,15 +68,21 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "file": {
+            "key": {
+              "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+              "language": 16
+            }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 23,
-                "columnBegin": 13,
-                "lineEnd": 23,
-                "columnEnd": 17
-              }
+                "lineBegin": 24,
+                "columnBegin": 14,
+                "lineEnd": 24,
+                "columnEnd": 18
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -81,15 +99,21 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "file": {
+            "key": {
+              "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+              "language": 16
+            }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 24,
-                "columnBegin": 1,
-                "lineEnd": 24,
-                "columnEnd": 6
-              }
+                "lineBegin": 25,
+                "columnBegin": 2,
+                "lineEnd": 25,
+                "columnEnd": 7
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -106,15 +130,21 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "file": {
+            "key": {
+              "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+              "language": 16
+            }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 26,
-                "columnBegin": 5,
-                "lineEnd": 26,
-                "columnEnd": 13
-              }
+                "lineBegin": 27,
+                "columnBegin": 6,
+                "lineEnd": 27,
+                "columnEnd": 14
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -131,15 +161,21 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "file": {
+            "key": {
+              "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+              "language": 16
+            }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 27,
-                "columnBegin": 1,
-                "lineEnd": 27,
-                "columnEnd": 13
-              }
+                "lineBegin": 28,
+                "columnBegin": 2,
+                "lineEnd": 28,
+                "columnEnd": 14
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -158,15 +194,21 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "file": {
+            "key": {
+              "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+              "language": 16
+            }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 27,
-                "columnBegin": 22,
-                "lineEnd": 27,
-                "columnEnd": 23
-              }
+                "lineBegin": 28,
+                "columnBegin": 23,
+                "lineEnd": 28,
+                "columnEnd": 24
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -183,15 +225,21 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "file": {
+            "key": {
+              "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+              "language": 16
+            }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 34,
-                "columnBegin": 5,
-                "lineEnd": 34,
-                "columnEnd": 6
-              }
+                "lineBegin": 35,
+                "columnBegin": 6,
+                "lineEnd": 35,
+                "columnEnd": 7
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -208,15 +256,21 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "file": {
+            "key": {
+              "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+              "language": 16
+            }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 43,
-                "columnBegin": 3,
-                "lineEnd": 43,
-                "columnEnd": 7
-              }
+                "lineBegin": 44,
+                "columnBegin": 4,
+                "lineEnd": 44,
+                "columnEnd": 8
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -233,15 +287,21 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "file": {
+            "key": {
+              "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+              "language": 16
+            }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 45,
-                "columnBegin": 3,
-                "lineEnd": 45,
-                "columnEnd": 13
-              }
+                "lineBegin": 46,
+                "columnBegin": 4,
+                "lineEnd": 46,
+                "columnEnd": 14
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -258,15 +318,21 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "file": {
+            "key": {
+              "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+              "language": 16
+            }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 55,
-                "columnBegin": 1,
-                "lineEnd": 55,
-                "columnEnd": 5
-              }
+                "lineBegin": 56,
+                "columnBegin": 2,
+                "lineEnd": 56,
+                "columnEnd": 6
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -283,15 +349,21 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "file": {
+            "key": {
+              "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+              "language": 16
+            }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 57,
-                "columnBegin": 5,
-                "lineEnd": 57,
-                "columnEnd": 16
-              }
+                "lineBegin": 58,
+                "columnBegin": 6,
+                "lineEnd": 58,
+                "columnEnd": 17
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -308,15 +380,21 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+          "file": {
+            "key": {
+              "file": { "key": "glean/lang/go/tests/cases/xrefs/leaphash.go" },
+              "language": 16
+            }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 59,
-                "columnBegin": 5,
-                "lineEnd": 59,
-                "columnEnd": 6
-              }
+                "lineBegin": 60,
+                "columnBegin": 6,
+                "lineEnd": 60,
+                "columnEnd": 7
+              },
+              "text": { "key": "" }
             }
           }
         }

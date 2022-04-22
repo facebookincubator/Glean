@@ -49,11 +49,13 @@ predicate Name: string
 # Markdown hover text
 predicate HoverText: string
 
-# LSIF documents
+# LSIF documents, use this to find language of a file (or entity)
+# In mixed-language repos, symbols are keyed to Document instead of src.File
+# so we can track language tags of symbols
 predicate Document:
   {
-    file : src.File,
-    language : lsif.LanguageId
+    file: src.File,
+    language: lsif.LanguageId
   }
 
 # LSIF hover cards in markdown
@@ -85,13 +87,14 @@ predicate Project:
 # which project is a file a member of
 predicate ProjectDocument:
   {
-    file: src.File,
+    file: lsif.Document,
     project: lsif.Project,
   }
 
-# Note, in LSIF range spans are not keyed by file
-# having this as a type compresses better than as a predicate
-# Note: These are 0-based, unlike src.Range.
+# In LSIF range spans are not keyed by file, we index them separately.
+# Having this as a type compresses better than as a predicate
+# Note: these are 1-indexed, like src.Range, while LSIF native is 0-indexed.
+# The conversion happens in the indexer.
 type RangeSpan =
   {
     lineBegin : nat,
@@ -105,24 +108,25 @@ predicate Range:
   {
     range: lsif.RangeSpan,
     fullRange: maybe lsif.RangeSpan,
-    text: maybe lsif.Name
+    text: lsif.Name
   }
 
 predicate Definition:
   {
-    file: src.File,
+    file: lsif.Document,
     range: lsif.Range
   }
 
 predicate Declaration:
   {
-    file: src.File,
+    file: lsif.Document,
     range: lsif.Range
   }
 
+# just xrefs to defns for now
 predicate Reference:
   {
-    file: src.File,
+    file: lsif.Document,
     range: lsif.Range,
     target: lsif.Definition
   }
@@ -138,8 +142,137 @@ predicate Reference:
   predicate DefinitionUse:
     {
       target: lsif.Definition,
-      file: src.File,
+      file: lsif.Document,
       range: lsif.Range,
     }
+
+#
+# Generic codemarkup.angle provider layer
+#
+
+# Symbol locations within a repo. Analog of codemarkup:Location, non-LSIF types
+type Location =
+  {
+    name : string,
+    file : src.File,
+    location : src.Range,
+    # not attempting to do full ranges yet
+    # span: maybe src.Range,
+}
+
+# Tagged entity by language. Tags should match shape of code.lsif.angle
+type Entity =
+  {
+    typescript : lsif.SomeEntity |
+    go : lsif.SomeEntity |
+    rust : lsif.SomeEntity |
+  }
+
+# Base entities in LSIF are definitions and declartions
+type SomeEntity =
+  {
+    decl : lsif.Declaration |
+    defn : lsif.Definition |
+  }
+
+# analog of codemarkup.ResolveLocation, flattens locations and converts spans
+# Since we can return multiple language symbols in lsif, add a tag for what we
+# think the language is. This is used in codemarkup to get the lsif.code lang
+predicate ResolveLocation:
+  {
+    location: lsif.Location,
+    entity: lsif.Entity,
+  }
+  { { NameStr, File, SrcRange }, Entity } where
+    Defn = lsif.Definition { { File, Language }, Range };
+    { range = RangeSpan, text = Name NameStr } = Range;
+    lsif.ToSrcRange { File, RangeSpan, SrcRange };
+    lsif.TagDefinition { Language, Defn, Entity };
+
+# unwrap language tag and lookup the decl/defn directly
+predicate EntityLocation:
+  {
+    entity: lsif.Entity,
+    location: lsif.Location,
+  }
+  { Entity, Location } where
+    lsif.EntityDefinition { Entity, Defn } ;
+    lsif.DefinitionLocation { Defn, Location };
+
+# analog of codemarkup equivalent
+predicate FileEntityXRefLocation:
+  {
+    file: src.File,
+    source: src.Range,
+    target: lsif.Location,
+    entity: lsif.Entity,
+  }
+  { File, SrcRange, Location, Entity } where
+    lsif.Reference { { file = File }, { range = RangeSpan }, Defn };
+    lsif.ToSrcRange { File, RangeSpan, SrcRange };
+    lsif.DefinitionLocation { Defn, Location };
+    { file = { language = Language } } = Defn;
+    lsif.TagDefinition { Language, Defn, Entity };
+
+# analog of codemarkup.EntityUses
+predicate EntityUses:
+  {
+    target: lsif.Entity,
+    file: src.File,
+    range: src.Range,
+  }
+  { Entity, File, SrcRange } where
+    lsif.DefinitionUse { Defn, { file = File }, { range = Range } };
+    lsif.EntityDefinition { Entity, Defn };
+    lsif.ToSrcRange { File, Range, SrcRange };
+
+#
+# Helpers for working with language tags and entities
+#
+
+# introduce entity tags
+predicate TagDefinition:
+  {
+    language: LanguageId,
+    defn: lsif.Definition,
+    entity: lsif.Entity,
+  }
+  { Language, Defn, Entity } where
+    ( TypeScript = Language; { typescript = { defn = Defn } } = Entity) |
+    ( Go = Language; { go = { defn = Defn } } = Entity) |
+    ( Rust = Language; { rust = { defn = Defn } } = Entity);
+
+# eliminate entity tags
+predicate EntityDefinition:
+  {
+    entity : lsif.Entity,
+    defn : lsif.Definition,
+  }
+  { Entity, Defn } where
+    ({ typescript = { defn = Defn }} = Entity; ) |
+    ({ go = { defn = Defn }} = Entity; ) |
+    ({ rust = { defn = Defn }} = Entity; );
+
+# Just need to elaborate lsif.RangeSpan with a File key
+predicate DefinitionLocation:
+  {
+    defn: lsif.Definition,
+    location: lsif.Location,
+  }
+  { Defn, Location } where
+    { { file = File }, { RangeSpan, _, Name NameStr } } = Defn;
+    lsif.ToSrcRange { File, RangeSpan, SrcRange };
+    { NameStr, File, SrcRange } = Location;
+
+# convenience to convert between lsif.RangeSpan and src.Range
+# These are both 1-indexed range types, but lsif doesn't have a File
+predicate ToSrcRange:
+  {
+    file: src.File,
+    lsif: lsif.RangeSpan,
+    range: src.Range,
+  }
+  { File, { A, B, C, D }, SrcRange } where
+    SrcRange = { File, A, B, C, D };
 
 }

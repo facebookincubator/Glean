@@ -1,7 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema search.hs.7 {
-  import code.19
+schema search.hs.8 {
+  import code.20
   import code.hs.2
   import hs.2
 
@@ -15,5 +15,3 @@ schema search.hs.7 {
       code.hs.Entity {function_ = {name = hs.FunctionName Name}} |
       code.hs.Entity {class_ = {name = hs.ClassName Name}};
 }
-
-schema search.hs.7 evolves search.hs.6

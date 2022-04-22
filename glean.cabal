@@ -637,6 +637,7 @@ library schema
         Glean.Schema.CodeHack
         Glean.Schema.CodeHs
         Glean.Schema.CodeJava
+        Glean.Schema.CodeLsif
         Glean.Schema.Codemarkup
         Glean.Schema.CodePp
         Glean.Schema.CodePython
@@ -674,6 +675,7 @@ library schema
         Glean.Schema.CodeHack.Types
         Glean.Schema.CodeHs.Types
         Glean.Schema.CodeJava.Types
+        Glean.Schema.CodeLsif.Types
         Glean.Schema.CodeRust.Types
         Glean.Schema.CodeThrift.Types
         Glean.Schema.CodeBuck.Types
@@ -722,6 +724,7 @@ library schema-query
         Glean.Schema.Query.CodeHack.Types
         Glean.Schema.Query.CodeHs.Types
         Glean.Schema.Query.CodeJava.Types
+        Glean.Schema.Query.CodeLsif.Types
         Glean.Schema.Query.CodeRust.Types
         Glean.Schema.Query.CodeThrift.Types
         Glean.Schema.Query.CodeBuck.Types
@@ -1882,6 +1885,15 @@ test-suite glass-regression-hack
         glean:util,
     if !flag(hack-tests)
         buildable: False
+
+test-suite glass-regression-go
+    import: glass-regression-deps, fb-haskell, deps
+    type: exitcode-stdio-1.0
+    main-is: Glean/Glass/Regression/Go/Main.hs
+    ghc-options: -main-is Glean.Glass.Regression.Go.Main
+    other-modules: Glean.Glass.Regression.Go
+    build-depends: glean:lsif
+    buildable: False
 
 test-suite glass-regression-python
     import: glass-regression-deps, fb-haskell, deps

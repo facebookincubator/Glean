@@ -1,0 +1,3 @@
+query: codemarkup.EntityLocation { entity = { lsif = { go = _ } } }
+perf: True
+transform: [gensort, []]

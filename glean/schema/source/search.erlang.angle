@@ -1,7 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema search.erlang.2 {
-  import code.19
+schema search.erlang.3 {
+  import code.20
   import code.erlang.1
   import erlang.1
 

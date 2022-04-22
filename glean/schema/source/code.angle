@@ -1,17 +1,18 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema code.19 {
+schema code.20 {
+import code.buck.1
 import code.cxx.3
-import code.java.3
-import code.hack.4
+import code.erlang.1
 import code.flow.2
+import code.hack.4
 import code.hs.2
+import code.java.3
+import code.lsif.1
 import code.pp.1
 import code.python.1
 import code.rust.1
 import code.thrift.2
-import code.buck.1
-import code.erlang.1
 
 type Entity =
   {
@@ -26,6 +27,7 @@ type Entity =
     thrift : code.thrift.Entity |
     buck : code.buck.Entity |
     erlang : code.erlang.Entity |
+    lsif : code.lsif.Entity |
   }
 
 type Annotations =
@@ -37,5 +39,3 @@ type Annotations =
     thrift : code.thrift.Annotations |
   }
 }
-
-schema code.19 evolves code.18

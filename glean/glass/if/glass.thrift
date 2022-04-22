@@ -320,6 +320,8 @@ enum Language {
   Rust = 10,
   Buck = 11,
   Erlang = 12,
+  TypeScript = 13,
+  Go = 14,
 } (
   hack.attributes = "\GraphQLEnum('GlassLanguage'), \RelayFlowEnum, \SelfDescriptive, \Oncalls('code_indexing')",
 )

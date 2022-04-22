@@ -1,0 +1,957 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 12,
+              "columnBegin": 15,
+              "lineEnd": 12,
+              "columnEnd": 16
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 13,
+            "columnBegin": 11,
+            "lineEnd": 13,
+            "columnEnd": 12
+          }
+        }
+      },
+      "entity": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
+                "range": {
+                  "key": {
+                    "range": {
+                      "lineBegin": 12,
+                      "columnBegin": 15,
+                      "lineEnd": 12,
+                      "columnEnd": 16
+                    },
+                    "text": { "key": "" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 4,
+              "lineEnd": 16,
+              "columnEnd": 9
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 13,
+            "columnBegin": 5,
+            "lineEnd": 13,
+            "columnEnd": 10
+          }
+        }
+      },
+      "entity": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
+                "range": {
+                  "key": {
+                    "range": {
+                      "lineBegin": 16,
+                      "columnBegin": 4,
+                      "lineEnd": 16,
+                      "columnEnd": 9
+                    },
+                    "text": { "key": "" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 4,
+              "lineEnd": 16,
+              "columnEnd": 9
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 30,
+            "lineEnd": 17,
+            "columnEnd": 35
+          }
+        }
+      },
+      "entity": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
+                "range": {
+                  "key": {
+                    "range": {
+                      "lineBegin": 16,
+                      "columnBegin": 4,
+                      "lineEnd": 16,
+                      "columnEnd": 9
+                    },
+                    "text": { "key": "" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 10,
+              "lineEnd": 16,
+              "columnEnd": 11
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 8,
+            "lineEnd": 17,
+            "columnEnd": 9
+          }
+        }
+      },
+      "entity": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
+                "range": {
+                  "key": {
+                    "range": {
+                      "lineBegin": 16,
+                      "columnBegin": 10,
+                      "lineEnd": 16,
+                      "columnEnd": 11
+                    },
+                    "text": { "key": "" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 10,
+              "lineEnd": 16,
+              "columnEnd": 11
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 36,
+            "lineEnd": 17,
+            "columnEnd": 37
+          }
+        }
+      },
+      "entity": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
+                "range": {
+                  "key": {
+                    "range": {
+                      "lineBegin": 16,
+                      "columnBegin": 10,
+                      "lineEnd": 16,
+                      "columnEnd": 11
+                    },
+                    "text": { "key": "" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 10,
+              "lineEnd": 16,
+              "columnEnd": 11
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 49,
+            "lineEnd": 17,
+            "columnEnd": 50
+          }
+        }
+      },
+      "entity": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
+                "range": {
+                  "key": {
+                    "range": {
+                      "lineBegin": 16,
+                      "columnBegin": 10,
+                      "lineEnd": 16,
+                      "columnEnd": 11
+                    },
+                    "text": { "key": "" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 18,
+              "lineEnd": 16,
+              "columnEnd": 21
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 17,
+            "lineEnd": 17,
+            "columnEnd": 20
+          }
+        }
+      },
+      "entity": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
+                "range": {
+                  "key": {
+                    "range": {
+                      "lineBegin": 16,
+                      "columnBegin": 18,
+                      "lineEnd": 16,
+                      "columnEnd": 21
+                    },
+                    "text": { "key": "" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 18,
+              "lineEnd": 16,
+              "columnEnd": 21
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 43,
+            "lineEnd": 17,
+            "columnEnd": 46
+          }
+        }
+      },
+      "entity": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
+                "range": {
+                  "key": {
+                    "range": {
+                      "lineBegin": 16,
+                      "columnBegin": 18,
+                      "lineEnd": 16,
+                      "columnEnd": 21
+                    },
+                    "text": { "key": "" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 22,
+              "columnBegin": 15,
+              "lineEnd": 22,
+              "columnEnd": 16
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 24,
+            "columnBegin": 17,
+            "lineEnd": 24,
+            "columnEnd": 18
+          }
+        }
+      },
+      "entity": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
+                "range": {
+                  "key": {
+                    "range": {
+                      "lineBegin": 22,
+                      "columnBegin": 15,
+                      "lineEnd": 22,
+                      "columnEnd": 16
+                    },
+                    "text": { "key": "" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 23,
+              "columnBegin": 13,
+              "lineEnd": 23,
+              "columnEnd": 16
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 27,
+            "columnBegin": 20,
+            "lineEnd": 27,
+            "columnEnd": 23
+          }
+        }
+      },
+      "entity": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
+                "range": {
+                  "key": {
+                    "range": {
+                      "lineBegin": 23,
+                      "columnBegin": 13,
+                      "lineEnd": 23,
+                      "columnEnd": 16
+                    },
+                    "text": { "key": "" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 23,
+              "columnBegin": 13,
+              "lineEnd": 23,
+              "columnEnd": 16
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 29,
+            "columnBegin": 13,
+            "lineEnd": 29,
+            "columnEnd": 16
+          }
+        }
+      },
+      "entity": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
+                "range": {
+                  "key": {
+                    "range": {
+                      "lineBegin": 23,
+                      "columnBegin": 13,
+                      "lineEnd": 23,
+                      "columnEnd": 16
+                    },
+                    "text": { "key": "" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 24,
+              "columnBegin": 13,
+              "lineEnd": 24,
+              "columnEnd": 14
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 26,
+            "columnBegin": 12,
+            "lineEnd": 26,
+            "columnEnd": 13
+          }
+        }
+      },
+      "entity": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
+                "range": {
+                  "key": {
+                    "range": {
+                      "lineBegin": 24,
+                      "columnBegin": 13,
+                      "lineEnd": 24,
+                      "columnEnd": 14
+                    },
+                    "text": { "key": "" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 24,
+              "columnBegin": 13,
+              "lineEnd": 24,
+              "columnEnd": 14
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 29,
+            "columnBegin": 20,
+            "lineEnd": 29,
+            "columnEnd": 21
+          }
+        }
+      },
+      "entity": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
+                "range": {
+                  "key": {
+                    "range": {
+                      "lineBegin": 24,
+                      "columnBegin": 13,
+                      "lineEnd": 24,
+                      "columnEnd": 14
+                    },
+                    "text": { "key": "" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 24,
+              "columnBegin": 13,
+              "lineEnd": 24,
+              "columnEnd": 14
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 30,
+            "columnBegin": 13,
+            "lineEnd": 30,
+            "columnEnd": 14
+          }
+        }
+      },
+      "entity": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
+                "range": {
+                  "key": {
+                    "range": {
+                      "lineBegin": 24,
+                      "columnBegin": 13,
+                      "lineEnd": 24,
+                      "columnEnd": 14
+                    },
+                    "text": { "key": "" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 37,
+              "columnBegin": 15,
+              "lineEnd": 37,
+              "columnEnd": 16
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 39,
+            "columnBegin": 18,
+            "lineEnd": 39,
+            "columnEnd": 19
+          }
+        }
+      },
+      "entity": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
+                "range": {
+                  "key": {
+                    "range": {
+                      "lineBegin": 37,
+                      "columnBegin": 15,
+                      "lineEnd": 37,
+                      "columnEnd": 16
+                    },
+                    "text": { "key": "" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 38,
+              "columnBegin": 13,
+              "lineEnd": 38,
+              "columnEnd": 16
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 40,
+            "columnBegin": 9,
+            "lineEnd": 40,
+            "columnEnd": 12
+          }
+        }
+      },
+      "entity": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
+                "range": {
+                  "key": {
+                    "range": {
+                      "lineBegin": 38,
+                      "columnBegin": 13,
+                      "lineEnd": 38,
+                      "columnEnd": 16
+                    },
+                    "text": { "key": "" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 38,
+              "columnBegin": 13,
+              "lineEnd": 38,
+              "columnEnd": 16
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 42,
+            "columnBegin": 5,
+            "lineEnd": 42,
+            "columnEnd": 8
+          }
+        }
+      },
+      "entity": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
+                "range": {
+                  "key": {
+                    "range": {
+                      "lineBegin": 38,
+                      "columnBegin": 13,
+                      "lineEnd": 38,
+                      "columnEnd": 16
+                    },
+                    "text": { "key": "" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 39,
+              "columnBegin": 9,
+              "lineEnd": 39,
+              "columnEnd": 10
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 40,
+            "columnBegin": 16,
+            "lineEnd": 40,
+            "columnEnd": 17
+          }
+        }
+      },
+      "entity": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "file": {
+                  "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+                },
+                "range": {
+                  "key": {
+                    "range": {
+                      "lineBegin": 39,
+                      "columnBegin": 9,
+                      "lineEnd": 39,
+                      "columnEnd": 10
+                    },
+                    "text": { "key": "" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]
