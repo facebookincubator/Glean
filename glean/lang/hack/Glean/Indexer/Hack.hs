@@ -33,6 +33,8 @@ options = do
 
 indexer :: Indexer Hack
 indexer = Indexer {
+  indexerShortName = "hack",
+  indexerDescription = "Index Hack code",
   indexerOptParser = options,
   indexerRun = \Hack{..} -> do
     let ext = Ext {
