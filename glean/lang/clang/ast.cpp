@@ -13,10 +13,10 @@
 #include <llvm/Config/llvm-config.h>
 
 #include "folly/MapUtil.h"
+#include "folly/Overload.h"
 #include "folly/ScopeGuard.h"
 #include "glean/lang/clang/ast.h"
 #include "glean/lang/clang/index.h"
-#include "glean/lang/clang/common.h"
 
 // This file implements the Clang AST traversal.
 
@@ -532,17 +532,16 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   }
 
   Cxx::Scope scopeRepr(const Scope& scope, clang::AccessSpecifier acs) {
-    return std::visit(
-        overload{
-            [](const GlobalScope&) { return Cxx::Scope::global_(); },
-            [](const NamespaceScope& ns) {
-              return Cxx::Scope::namespace_(ns.fact);
-            },
-            [acs](const ClassScope& cls) {
-              return Cxx::Scope::recordWithAccess(cls.fact, access(acs));
-            },
-            [](const LocalScope& fun) { return Cxx::Scope::local(fun.fact); }},
-        scope);
+    return folly::variant_match(
+        scope,
+        [](const GlobalScope&) { return Cxx::Scope::global_(); },
+        [](const NamespaceScope& ns) {
+          return Cxx::Scope::namespace_(ns.fact);
+        },
+        [acs](const ClassScope& cls) {
+          return Cxx::Scope::recordWithAccess(cls.fact, access(acs));
+        },
+        [](const LocalScope& fun) { return Cxx::Scope::local(fun.fact); });
   }
 
   // Obtain the cxx.Scope of a Decl and translate it to clang.Scope
@@ -727,19 +726,18 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   // Obtain the parent namespace of a Decl, if any
   folly::Optional<Fact<Cxx::NamespaceQName>> parentNamespace(
       const clang::Decl* decl) {
-    using return_type = folly::Optional<Fact<Cxx::NamespaceQName>>;
-    return std::visit(
-        overload{
-            [](const NamespaceScope& ns) -> return_type { return ns.fact; },
-            [](const auto& v) -> return_type {
-              if constexpr (std::is_same_v<decltype(v), const ClassScope&>) {
-                LOG(ERROR) << "Inner scope is a class, should have been a namespace";
-              } else if constexpr (std::is_same_v<decltype(v), const LocalScope&>) {
-                LOG(ERROR) << "Inner scope is a function, should have been a namespace";
-              }
-              return folly::none;
-            }},
-        parentScope(decl));
+    return folly::variant_match<folly::Optional<Fact<Cxx::NamespaceQName>>>(
+        parentScope(decl),
+        [](const GlobalScope&) { return folly::none; },
+        [](const NamespaceScope& ns) { return ns.fact; },
+        [](const ClassScope&) {
+          LOG(ERROR) << "Inner scope is a class, should have been a namespace";
+          return folly::none;
+        },
+        [](const LocalScope&) {
+          LOG(ERROR) << "Inner scope is a function, should have been a namespace";
+          return folly::none;
+        });
   }
 
   struct NamespaceDecl : Declare<NamespaceDecl> {

@@ -16,15 +16,6 @@ namespace clangx {
 
 using namespace facebook::glean::cpp;
 
-// Sort of 'inherit' all operator() of passed types
-template <typename... Ts>
-struct overload : Ts... {
-  using Ts::operator()...;
-};
-// deduction guide
-template <typename... Ts>
-overload(Ts...) -> overload<Ts...>;
-
 }
 }
 }
