@@ -1417,24 +1417,25 @@ matchPat vars input inputend _ [QueryBind (Var ty var _)] | not (isWordTy ty) =
     outputBytes input inputend reg
 
   -- general case
-matchPat vars input inputend fail chunks =
-  mapM_ match (reverse (dropWhile isWild (reverse chunks)))
-    -- there's no point in traversing data at the end of the key
-    -- if we're just ignoring it, so drop trailing wildcards.
+matchPat vars input inputend fail chunks = do
+
+  -- there's no point in traversing data at the end of the key
+  -- if we're just ignoring it, so drop trailing wildcards.
+  mapM_isLast' (dropWhile isWild) match chunks
   where
-  match (QueryPrefix bs) = do
+  match _isLast (QueryPrefix bs) = do
     local $ \ok -> do
       inputShiftLit input inputend bs ok
       jumpIf0 ok fail -- chunk didn't match
-  match (QueryWild ty) =
+  match _ (QueryWild ty) =
     skipTrusted input inputend ty
-  match QueryNever =
+  match _ QueryNever =
     jump fail
-  match (QueryVar (Var ty var _)) | isWordTy ty =
+  match _ (QueryVar (Var ty var _)) | isWordTy ty =
     local $ \id -> do
       inputNat input inputend id
       jumpIfNe id (vars ! var) fail
-  match (QueryVar (Var ty var _))
+  match _ (QueryVar (Var ty var _))
     | isEmptyTy ty = return ()
       -- the empty tuple could be represented by a null pointer, so it's
       -- not safe to do inputShiftBytes anyway.
@@ -1443,13 +1444,13 @@ matchPat vars input inputend fail chunks =
         getOutput (castRegister (vars ! var)) ptr end
         inputShiftBytes input inputend ptr end ok
         jumpIf0 ok fail
-  match (QueryAnd a b) = do
+  match isLast (QueryAnd a b) = do
     local $ \start -> do
       move input start
-      mapM_ match a
+      mapM_isLast True match a
       move start input
-    mapM_ match b
-  match (QuerySum alts) = mdo
+    mapM_isLast isLast match b
+  match isLast (QuerySum alts) = mdo
     local $ \sel -> do
       inputNat input inputend sel
       select sel lbls
@@ -1459,12 +1460,12 @@ matchPat vars input inputend fail chunks =
         Nothing -> return fail
         Just chunks -> do
           lbl <- label
-          mapM_ match chunks
+          mapM_isLast isLast match chunks
           jump end
           return lbl
     end <- label
     return ()
-  match (QueryBind (Var ty var _))
+  match _ (QueryBind (Var ty var _))
     | isWordTy ty = inputNat input inputend (vars ! var)
     | otherwise = local $ \start -> do
       let outReg = castRegister (vars ! var)
@@ -1473,24 +1474,33 @@ matchPat vars input inputend fail chunks =
       skipTrusted input inputend ty
       outputBytes start input outReg
       return ()
-  match (QueryArrayPrefix npatterns ty patterns) = do
+  match isLast (QueryArrayPrefix npatterns ty patterns) = do
     local $ \size -> do
-    local $ \patternsLen -> mdo
+    local $ \patternsLen -> do
       loadConst npatterns patternsLen
       inputNat input inputend size
       jumpIfLt size patternsLen fail
-      mapM_ match patterns
+      mapM_isLast isLast match patterns
+      -- skip to the end unless we are fully done matching
+      unless isLast $ mdo
+          sub patternsLen size
+          jumpIf0 size done
+          skip <- label
+          skipTrusted input inputend ty
+          decrAndJumpIfNot0 size skip
 
-      -- skip to the end
-      sub patternsLen size
-      jumpIf0 size done
-      skip <- label
-      skipTrusted input inputend ty
-      decrAndJumpIfNot0 size skip
+          done <- label
+          return ()
 
-      done <- label
-      return ()
+  -- mapM with last element tracking
+  mapM_isLast isLast f
+    | isLast = mapM_isLast' id f
+    | otherwise = mapM_ (f False)
 
+  mapM_isLast' prepro f xx =
+    mapM_ (uncurry f)
+          (reverse (zip (True : repeat False)
+                        (prepro (reverse xx))))
 -----------------------------------------------------------------------------
 
 -- | Compile a query for some facts, possibly with recursive expansion.
