@@ -404,7 +404,7 @@ facts> X where [_,X,_] = [1,2,3]
 Or if we don't care about the length of the array:
 
 ```lang=angle
-facts> X where [_,X,..] = [1,2,3]
+facts> X where [_,X, ..] = [1,2,3]
 { "id": 1040, "key": 2 }
 ```
 

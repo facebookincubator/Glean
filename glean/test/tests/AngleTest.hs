@@ -991,13 +991,13 @@ angleArrayPrefix modify = TestList
         results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
           [s|
             P where
-            P = glean.test.Predicate { array_of_nat = [3,4..] }
+            P = glean.test.Predicate { array_of_nat = [3,4, ..] }
           |]
         assertEqual "angle - array prefix" 1 (length results)
         results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
           [s|
             P where
-            P = glean.test.Predicate { array_of_nat = [3..] }
+            P = glean.test.Predicate { array_of_nat = [3, ..] }
           |]
         assertEqual "angle - array prefix" 1 (length results)
     , TestLabel "flat" $ dbTestCase $ \env repo -> do
@@ -1005,14 +1005,14 @@ angleArrayPrefix modify = TestList
           [s|
             P where
             P = glean.test.Predicate { array_of_nat = A };
-            [3..] = A
+            [3, ..] = A
           |]
         assertEqual "angle - array prefix" 1 (length results)
         results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
           [s|
             P where
             P = glean.test.Predicate { array_of_nat = A };
-            [3,4..] = A
+            [3,4, ..] = A
           |]
         assertEqual "angle - array prefix" 1 (length results)
     ]
@@ -1021,7 +1021,7 @@ angleArrayPrefix modify = TestList
         results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
           [s|
             P where
-            P = glean.test.Predicate { array_of_pred = [glean.test.Predicate _ ..] }
+            P = glean.test.Predicate { array_of_pred = [glean.test.Predicate _, ..] }
           |]
         assertEqual "angle - array prefix" 2 (length results)
     , TestLabel "flat" $ dbTestCase $ \env repo -> do
@@ -1029,14 +1029,14 @@ angleArrayPrefix modify = TestList
           [s|
             P where
             P = glean.test.Predicate { array_of_pred = A };
-            [_ ..] = A
+            [_, ..] = A
           |]
         assertEqual "angle - array prefix" 2 (length results)
         results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
           [s|
             P where
             P = glean.test.Predicate { array_of_pred = A };
-            [glean.test.Predicate _ ..] = A
+            [glean.test.Predicate _, ..] = A
           |]
         assertEqual "angle - array prefix" 2 (length results)
     ]
@@ -1045,13 +1045,13 @@ angleArrayPrefix modify = TestList
         results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
           [s|
             P where
-            P = glean.test.Predicate { array_of_string = ["abba","baba"..] }
+            P = glean.test.Predicate { array_of_string = ["abba","baba", ..] }
           |]
         assertEqual "angle - array prefix" 2 (length results)
         results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
           [s|
             P where
-            P = glean.test.Predicate { array_of_string = ["abba"..] }
+            P = glean.test.Predicate { array_of_string = ["abba", ..] }
           |]
         assertEqual "angle - array prefix" 2 (length results)
     ]
@@ -1060,7 +1060,7 @@ angleArrayPrefix modify = TestList
         results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
           [s|
             P where
-            P = glean.test.Predicate { array_of_nat = [3..], array_of_string = ["abba"..] }
+            P = glean.test.Predicate { array_of_nat = [3, ..], array_of_string = ["abba", ..] }
           |]
         assertEqual "angle - array prefix" 1 (length results)
     ]

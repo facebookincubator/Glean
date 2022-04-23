@@ -51,7 +51,6 @@ import Glean.Angle.Types (AngleVersion, SourcePat, SourceStatement, SourceQuery,
   'then'        { L _ (Token _ T_Then) }
   'else'        { L _ (Token _ T_Else) }
   '++'          { L _ (Token _ T_Append) }
-  '..]'         { L _ (Token _ T_DotDotRightSquare) }
   '..'          { L _ (Token _ T_DotDot) }
   '->'          { L _ (Token _ T_RightArrow) }
   ','           { L _ (Token _ T_Comma) }
@@ -120,7 +119,7 @@ gen
   | plus '>=' plus   { App (s $1 $3) (Variable (sspan $2) "prim.geNat") [$1, $3] }
   | plus '<' plus    { App (s $1 $3) (Variable (sspan $2) "prim.ltNat") [$1, $3] }
   | plus '<=' plus   { App (s $1 $3) (Variable (sspan $2) "prim.leNat") [$1, $3] }
-  | kv '[' '..]'     { ElementsOfArray (s $1 $3) $1 }
+  | kv '[' '..' ']'     { ElementsOfArray (s $1 $4) $1 }
     -- NB. kv to resolve shift-reduce conflict
   | plus ':' type  { TypeSignature (s $1 $3) $1 (lval $3) }
 
@@ -149,7 +148,7 @@ apat
   | '$' NAT                         { FactId (s $1 $2) Nothing (lval $2)  }
   | '$' var NAT                     { FactId (s $1 $3) (Just $ lval $2) (lval $3) }
   | '[' seplist0(pattern,',') ']'   { Array (s $1 $3) $2 }
-  | '[' seplist(pattern,',') '..]'  { ArrayPrefix (s $1 $3) (let (h:t) = $2 in h:|t) }
+  | '[' seplist__(pattern,',') '..' ']'  { ArrayPrefix (s $1 $4) (let (h:t) = $2 in h:|t) }
   | '{' seplist2(pattern,',') '}'   { Tuple (s $1 $3) $2 }
   | '{' seplist0_(field,',') '}'    { Struct (s $1 $3) $2 }
   | '_'                             { Wildcard (sspan $1) }
@@ -334,6 +333,11 @@ seplist0_(p,sep)
 -- List with a separator, >=2 elements, optional final separator
 seplist2_(p,sep)
   : p sep seplist_(p,sep) { $1 : $3 }
+
+-- List with a separator, >=1 elements, mandatory final separator
+seplist__(p,sep)
+  : p sep seplist__(p,sep) { $1 : $3 }
+  | p sep { [$1] }
 
 
 {
