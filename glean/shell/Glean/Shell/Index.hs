@@ -8,93 +8,66 @@
 
 module Glean.Shell.Index
   ( indexCmd
-  , indexerTable
-  , load
   , pickHash
+  , load
   ) where
 
+import Options.Applicative as OptParse
 import Control.Exception
 import Control.Monad
+import Control.Monad.Catch
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Control
 import Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
+import qualified Data.ByteString as B
 import Data.Default
 import Data.Text (Text)
 import qualified Data.Text as Text
-import Foreign.CPP.Dynamic (parseJSON)
+import Foreign.CPP.Dynamic
 import System.Directory
 import System.FilePath
 import System.IO.Temp
-import System.Process
 import TextShow
-import qualified Data.ByteString as B
-import qualified Data.Map.Strict as Map
 
 import Glean
 import Glean.Shell.Types
+import Glean.Util.Some
 import Glean.Write
 
-import qualified Glean.LSIF.Driver as LSIF ( runIndexer, Language(..) )
+import Glean.Indexer
+import Glean.Indexer.List
 
--- | Run an indexer, returning either a list of JSON files or a JSON value
-runIndexer :: Language -> String -> String -> IO (Either [FilePath] Value)
-runIndexer lang dir outputDir = case lang of
-  Flow -> Left <$> call "flow"
-    [ "glean", dir , "--output-dir", outputDir , "--write-root", "." ]
-  Hack -> Left <$> call "hh_server" (
-    [ dir , "--write-symbol-info", outputDir ] <> hackConfig)
-  LSIF lang -> Right <$> LSIF.runIndexer lang dir
-  where
-    call :: String -> [String] -> IO [FilePath]
-    call procName args = do
-      callProcess procName args
-      map (outputDir </>) <$> listDirectory outputDir
-
-    hackConfig = concatMap (\flag -> ["--config", flag])
-        [ "symbol_write_include_hhi=false"
-        , "symbolindex_search_provider=NoIndex"
-        , "use_mini_state=true"
-        , "lazy_decl=true"
-        , "lazy_parse=true"
-        , "lazy_init2=true"
-        , "enable_enum_classes=true"
-        , "enable_enum_supertyping=true"
-        ]
-
-data Language
-   = Flow
-   | Hack
-   | LSIF LSIF.Language
-
--- ^ Indexers that can be invoked from glean shell
-indexerTable :: Map.Map String Language
-indexerTable = Map.fromList
-  [ ("flow", Flow)
-  , ("hack", Hack)
-  , ("lsif/typescript", LSIF LSIF.TypeScript)
-  , ("lsif/go", LSIF LSIF.Go)
-  , ("lsif/rust", LSIF LSIF.Rust)
-  ]
-
--- Note, tab completions in Glean.Shell
 indexCmd :: String -> Eval ()
-indexCmd str = case words str of
-  [indexer, dir] | Just lang <- Map.lookup indexer indexerTable
-    -> index lang dir
-  _ -> liftIO $ throwIO $ ErrorCall
-    "syntax: :index flow|hack|lsif/{typescript,go,rust} <dir>"
-  where
-    index lang dir =
-      withSystemTempDirectory' "glean-shell" $ \tmp -> do
-        fileValue <- liftIO $ runIndexer lang dir tmp
-        let name = Text.pack (takeBaseName (dropTrailingPathSeparator dir))
-        hash <- pickHash name
-        let repo = Glean.Repo name hash
-        case fileValue of
-          Left files -> load repo files
-          Right val -> loadValue repo val
-        setRepo repo
+indexCmd str = do
+  let parser = (,)
+        <$> cmdLineParser
+        <*> (strArgument (metavar "ROOT"))
+
+      result = execParserPure defaultPrefs (info parser fullDesc)
+        (words str {- TODO: quoting -})
+
+  (runIndexer, root) <- case result of
+    OptParse.Success a -> return a
+    OptParse.Failure f -> throwM $ ErrorCall $ fst $ renderFailure f ":index"
+    OptParse.CompletionInvoked{} -> throwM $ ErrorCall "CompletionInvoked"
+
+  projectRoot <- liftIO $ getCurrentDirectory
+  withSystemTempDirectory' "glean-shell" $ \tmp -> do
+    let name = Text.pack (takeBaseName (dropTrailingPathSeparator root))
+    hash <- pickHash name
+    let repo = Glean.Repo name hash
+    withBackend $ \backend -> do
+      let exists = throwIO (ErrorCall (show repo <> ": already exists"))
+      liftIO $ fillDatabase backend Nothing repo "" exists $
+        runIndexer (Some backend) repo
+          IndexerParams {
+            indexerRoot = root,
+            indexerProjectRoot = projectRoot,
+            indexerOutput = tmp,
+            indexerGroup = ""
+          }
+    setRepo repo
 
 withSystemTempDirectory' :: String -> (FilePath -> Eval a) -> Eval a
 withSystemTempDirectory' str action = Eval $ do
@@ -124,13 +97,3 @@ load repo files = withBackend $ \be ->  liftIO $ do
       Error str -> throwIO $ ErrorCall str
       Aeson.Success x -> return x
     Glean.sendJsonBatch be repo batches Nothing
-
--- | Load a specific set of JSON fact/predicate set as a db
-loadValue :: Glean.Repo -> Value -> Eval ()
-loadValue repo val = withBackend $ \be ->  liftIO $ do
-  let onExisting = throwIO $ ErrorCall "database already exists"
-  void $ fillDatabase be Nothing repo "" onExisting $ do
-    batches <- case Aeson.parse parseJsonFactBatches val of
-      Error str -> throwIO $ ErrorCall str
-      Aeson.Success x -> return x
-    void $ Glean.sendJsonBatch be repo batches Nothing

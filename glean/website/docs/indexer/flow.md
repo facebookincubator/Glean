@@ -13,6 +13,27 @@ in the [Glean demo Docker image](../trying.md) to try out.
 
 ## Run the indexer
 
+The indexer is run via the main `glean` CLI tool.
+
+```
+> cabal build exe:glean
+```
+
+And index your Flow repository with:
+```
+glean index flow DIR --repo name/hash
+```
+
+where
+
+* `DIR` is the root directory containing the Flow project (with `.flowconfig`)
+* `name/hash` is the name of the repository to create
+
+Provide the usual `--db-root` and `--schema` or `--service` arguments
+to `glean`
+
+## Run the indexer (manually)
+
 ```
 flow glean DIR --output-dir JSON --write-root PREFIX
 ```

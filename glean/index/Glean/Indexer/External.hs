@@ -17,11 +17,12 @@ module Glean.Indexer.External
   ( externalIndexer
   , Ext(..)
   , Flavour(..)
+  , sendJsonBatches
   ) where
 
 import Control.Exception
 import Control.Monad
-import Data.Aeson as Aeson
+import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
 import qualified Data.ByteString as B
 import Data.Char(isAlphaNum)
@@ -46,7 +47,6 @@ import Glean.Derive
 import qualified Glean.Handler as GleanHandler
 import Glean.Indexer
 import Glean.Write
-import qualified Glean.LSIF.Driver as LSIF
 import Glean.Util.Service
 
 externalIndexer :: Indexer Ext
@@ -57,7 +57,7 @@ externalIndexer = Indexer
   , indexerRun = execExternal
   }
 
-data Flavour = Json | Server | Lsif
+data Flavour = Json | Server
 
 data Ext = Ext
   { extBinary :: FilePath
@@ -82,10 +82,7 @@ extOptions = do
     O.flag' Server (
       O.long "server" <>
       O.help ("the binary should connect to a Glean server at " <>
-        "${GLEAN_SERVER} to write facts")) O.<|>
-    O.flag' Lsif (
-      O.long "lsif" <>
-      O.help "run glean-lsif on the language specified by --binary")
+        "${GLEAN_SERVER} to write facts"))
   extDerivePredicates <-
     fmap (maybe [] (Text.splitOn "," . Text.pack)) $
     O.optional $
@@ -125,17 +122,9 @@ execExternal Ext{..} env repo IndexerParams{..} = do index; derive
         r <- Foreign.CPP.Dynamic.parseJSON str
         val <- either (throwIO  . ErrorCall . ((file ++ ": ") ++) .
           Text.unpack) return r
+        sendJsonBatches env repo file val
         batches <- case Aeson.parse parseJsonFactBatches val of
           Aeson.Error str -> throwIO $ ErrorCall $ file ++ ": " ++ str
-          Aeson.Success x -> return x
-        void $ Glean.sendJsonBatch env repo batches Nothing
-
-    Lsif -> case LSIF.indexerLang extBinary of
-      Nothing -> fail ("Unrecognized LSIF language indexer: " <> extBinary)
-      Just lang -> do
-        val <- LSIF.runIndexer lang indexerRoot
-        batches <- case Aeson.parse parseJsonFactBatches val of
-          Aeson.Error s -> throwIO $ ErrorCall $ extBinary <> "/lsif: " ++ s
           Aeson.Success x -> return x
         void $ Glean.sendJsonBatch env repo batches Nothing
 
@@ -163,3 +152,16 @@ execExternal Ext{..} env repo IndexerParams{..} = do index; derive
         HashMap.lookupDefault ("${" <> var <> "}") var vars ++ subst vars rest
   subst vars (c:s) = c : subst vars s
   subst _ "" = ""
+
+sendJsonBatches
+  :: Glean.Backend b
+  => b
+  -> Glean.Repo
+  -> String
+  -> Aeson.Value
+  -> IO ()
+sendJsonBatches backend repo msg val = do
+  batches <- case Aeson.parse parseJsonFactBatches val of
+    Aeson.Error s -> throwIO $ ErrorCall $ msg <> ": " <> s
+    Aeson.Success x -> return x
+  void $ Glean.sendJsonBatch backend repo batches Nothing

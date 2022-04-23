@@ -940,6 +940,7 @@ library shell-lib
         glean:db,
         glean:client-hs,
         glean:client-hs-local,
+        glean:indexers,
         glean:util,
         glean:lsif,
         haskeline >=0.7.3 && <0.8,
@@ -953,13 +954,21 @@ library indexers
     hs-source-dirs:
         glean/lang/flow
         glean/lang/hack
+        glean/lang/typescript
+        glean/lang/go
+        glean/lang/lsif/indexer
+        glean/lang/rust-lsif
         glean/index
         glean/index/list
     exposed-modules:
         Glean.Indexer
         Glean.Indexer.External
         Glean.Indexer.Flow
+        Glean.Indexer.Go
         Glean.Indexer.Hack
+        Glean.Indexer.RustLsif
+        Glean.Indexer.Typescript
+        Glean.Indexer.LSIF
         Glean.Indexer.List
     build-depends:
         glean:client-hs,
@@ -1112,16 +1121,6 @@ library lsif
     build-depends:
         aeson,
         split,
-
--- | A generic LSIF-based external indexer
-executable glean-lsif
-    import: fb-haskell, fb-cpp, deps, exe
-    hs-source-dirs: glean/lang/lsif/indexer
-    main-is: Main.hs
-    ghc-options: -main-is Main
-    build-depends:
-        glean:lsif,
-        glean:stubs,
 
 -- -----------------------------------------------------------------------------
 -- Glass services
@@ -1788,13 +1787,15 @@ test-suite glean-snapshot-hack
     if !flag(hack-tests)
         buildable: False
 
-test-suite glean-snapshot-rust
+test-suite glean-snapshot-rust-lsif
     import: fb-haskell, deps
-    hs-source-dirs: glean/lang/codemarkup/tests/rust
+    hs-source-dirs: glean/lang/rust-lsif/tests
     type: exitcode-stdio-1.0
-    main-is: Glean/Regression/Rust/Main.hs
-    ghc-options: -main-is Glean.Regression.Rust.Main
-    build-depends: glean:regression-test-lib, glean:lsif
+    main-is: Glean/Regression/RustLsif/Main.hs
+    ghc-options: -main-is Glean.Regression.RustLsif.Main
+    build-depends:
+        glean:regression-test-lib,
+        glean:indexers
     if !flag(rust-tests)
         buildable: False
 
@@ -1804,7 +1805,9 @@ test-suite glean-snapshot-typescript
     type: exitcode-stdio-1.0
     main-is: Glean/Regression/TypeScript/Main.hs
     ghc-options: -main-is Glean.Regression.TypeScript.Main
-    build-depends: glean:regression-test-lib, glean:lsif
+    build-depends:
+        glean:regression-test-lib,
+        glean:indexers
     if !flag(typescript-tests)
         buildable: False
 
@@ -1814,7 +1817,9 @@ test-suite glean-snapshot-go
     type: exitcode-stdio-1.0
     main-is: Glean/Regression/Go/Main.hs
     ghc-options: -main-is Glean.Regression.Go.Main
-    build-depends: glean:regression-test-lib, glean:lsif
+    build-depends:
+        glean:regression-test-lib,
+        glean:indexers
     if !flag(go-tests)
         buildable: False
 

@@ -16,11 +16,9 @@ predicates for typescript.
 {-# LANGUAGE OverloadedStrings #-}
 
 module Glean.LSIF.Driver (
-    indexerLang,
-    Language(..),
+    LsifIndexerParams(..),
     processLSIF,
     runIndexer,
-    testArgs,
 
     -- writing
     writeJSON
@@ -47,6 +45,7 @@ import qualified Foreign.CPP.Dynamic
 
 import qualified Data.LSIF.Angle as LSIF
 
+{-
 -- | Languages we can index via LSIF
 data Language
   = Go
@@ -60,6 +59,14 @@ lsifIndexer lang = case lang of
   Rust -> "rust-analyzer"
   TypeScript -> "lsif-tsc"
 
+-- snapshot tests for different lsif indexers all use the same frontend
+testArgs :: FilePath -> Language -> [String]
+testArgs dir lang =
+    [ "--binary", lsifIndexer lang
+    , "--lsif"
+    , "--root", dir
+    ]
+
 indexerLang :: String -> Maybe Language
 indexerLang "lsif-go" = Just Go
 indexerLang "lsif-tsc" = Just TypeScript
@@ -70,36 +77,36 @@ lsifArgs :: Language -> FilePath -> Either [String] [String]
 lsifArgs Go outFile = Right [ "--no-animation", "-o", outFile ]
 lsifArgs TypeScript outFile = Right [ "-p", ".", "--out", outFile ]
 lsifArgs Rust _outFile = Left [ "lsif", "." ] -- readProcess
+-}
 
--- snapshot tests for different lsif indexers all use the same frontend
-testArgs :: FilePath -> Language -> [String]
-testArgs dir lang =
-    [ "--binary", lsifIndexer lang
-    , "--lsif"
-    , "--root", dir
-    ]
+data LsifIndexerParams = LsifIndexerParams
+  { lsifBinary :: FilePath
+  , lsifArgs :: FilePath -> [String]
+  , lsifRoot :: FilePath
+  , lsifStdout :: Bool
+  }
 
 -- | Run an LSIF indexer, and convert to a Glean's lsif.angle database
 -- returning a single JSON value that can be sent to the Glean server
-runIndexer :: Language -> FilePath -> IO Aeson.Value
-runIndexer lang dir = do
-  repoDir <- makeAbsolute dir -- save this before we switch to tmp
+runIndexer :: LsifIndexerParams -> IO Aeson.Value
+runIndexer params@LsifIndexerParams{..} = do
+  repoDir <- makeAbsolute lsifRoot -- save this before we switch to tmp
   withSystemTempDirectory "glean-lsif" $ \lsifDir -> do
     let lsifFile = lsifDir </> "index.lsif"
-    runLSIFIndexer lang repoDir lsifFile
+    runLSIFIndexer params { lsifRoot = repoDir } lsifFile
     processLSIF lsifFile
 
 -- | Run the lsif-tsc indexer on a repository,
 -- put lsif dump output into outputFile
-runLSIFIndexer :: Language -> FilePath -> FilePath -> IO ()
-runLSIFIndexer lang dir outputFile = withCurrentDirectory dir $ do
-  logInfo $ printf "Indexing %s with %s" (takeBaseName dir) lsifBinary
-  case lsifArgs lang outputFile of
-    Right args -> callProcess lsifBinary args
-    Left args -> callCommand $
-      printf "%s %s > %s" lsifBinary (unwords args) outputFile
-  where
-    lsifBinary = lsifIndexer lang
+runLSIFIndexer :: LsifIndexerParams -> FilePath -> IO ()
+runLSIFIndexer LsifIndexerParams{..} outputFile =
+  withCurrentDirectory lsifRoot $ do
+    logInfo $ printf "Indexing %s with %s" (takeBaseName lsifRoot) lsifBinary
+    let args = lsifArgs outputFile
+    if lsifStdout
+      then callCommand $
+        printf "%s %s > %s" lsifBinary (unwords args) outputFile
+      else callProcess lsifBinary args
 
 -- | Convert an lsif json dump into Glean lsif.angle JSON object
 processLSIF :: FilePath -> IO Aeson.Value

@@ -6,17 +6,17 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-module Glean.Regression.Go.Main ( main ) where
+module Glean.Regression.RustLsif.Main ( main ) where
 
 import System.Environment ( withArgs )
 
-import Glean.Indexer.Go as Go
+import Glean.Indexer.RustLsif as RustLsif
 import Glean.Regression.Snapshot
 import Glean.Regression.Snapshot.Driver
 
 main :: IO ()
 main =
   withArgs ["--root", path] $
-    testMain (driverFromIndexer Go.indexer)
+    testMain (driverFromIndexer RustLsif.indexer)
   where
-    path = "glean/lang/go/tests/cases"
+    path = "glean/lang/rust-lsif/tests/cases"

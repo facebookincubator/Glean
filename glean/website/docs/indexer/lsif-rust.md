@@ -11,32 +11,34 @@ To index [Rust](https://www.rust-lang.org/) we use [rust-analyzer](https://rust-
 
 ## Run the indexer
 
-Build the glean-lsif indexer, which wraps rust-analyzer.
+The indexer is run via the main `glean` CLI tool.
 
 ```
-> cabal build glean-lsif
+> cabal build exe:glean
 ```
 
 And index your Rust repository with:
 ```
-glean-lsif --language rust --o JSON DIR
+glean index rust-lsif DIR --repo name/hash
 ```
 
 where
 
-* `DIR` is the root directory containing the TypeScript project
-* `JSON` is the directory in which to write the output `.json` files after converting from lsif
+* `DIR` is the root directory containing the Rust project
+* `name/hash` is the name of the repository to create
 
-The generated files can be ingested into a Glean database using [`glean
-create`](../cli.md#glean-create), or added to Glean with `:load` in the shell.
+Provide the usual `--db-root` and `--schema` or `--service` arguments
+to `glean`
 
 ## In the shell
 
 Rust source can also be indexed directly from the Glean shell:
 
 ```
-:index lsif/rust DIR
+:index rust-lsif DIR
 ```
+
+The shell will pick a DB name and hash for you based on `DIR`.
 
 ## Schema
 
