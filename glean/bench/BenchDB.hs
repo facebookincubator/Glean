@@ -55,6 +55,7 @@ withBenchDB num act = withEmptyTestDB [] $ \env repo -> do
         , Glean.Test.kitchenSink_named_sum_ =
             Glean.Test.Sum_wed True
         , Glean.Test.kitchenSink_maybe_ = Nothing
+        , Glean.Test.kitchenSink_array_of_nat = map Nat [1 .. fromIntegral n]
         }
 
       | (n,blob) <- zip [(1::Int)..] blobs

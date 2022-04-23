@@ -87,6 +87,12 @@ main = benchmarkMain $ \run -> withBenchDB 100000 $ \env repo -> do
         codemarkup.FileEntityXRefLocations { file = "foo" }
       |]
 
+    arrayPrefix :: Query Nat
+    arrayPrefix = angleData @Nat
+      [s| N where
+         glean.test.Predicate { array_of_nat = [N, ..]}
+       |]
+
   run
     [
       bgroup "thrift"
@@ -120,5 +126,7 @@ main = benchmarkMain $ \run -> withBenchDB 100000 $ \env repo -> do
           runQuery_ env repo compile2
       , bench "compile3" $ whnfIO $
           runQuery_ env repo compile3
+      , bench "array_prefix" $ whnfIO $
+          runQuery_ env repo arrayPrefix
       ]
     ]
