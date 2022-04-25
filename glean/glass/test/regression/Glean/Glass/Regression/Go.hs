@@ -10,12 +10,13 @@ module Glean.Glass.Regression.Go (main) where
 
 import Test.HUnit
 
+import Glean.Indexer.Go as Go
 import Glean.Regression.Test
 
 import Glean.Glass.Types
 import Glean.Glass.Regression.Tests
 
 main :: IO ()
-main = mainTestIndexExternal "glass-regression-go" $ \get -> TestList
+main = mainTestIndex "glass-regression-go" Go.indexer $ \get -> TestList
   [ testDocumentSymbolListX (Path "leaphash.go") get
   ]

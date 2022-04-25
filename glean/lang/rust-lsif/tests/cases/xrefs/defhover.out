@@ -1,0 +1,336 @@
+[
+  "@generated",
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "src/lib.rs" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 11,
+                "columnBegin": 7,
+                "lineEnd": 11,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": {
+            "key": "\u000a```rust\u000abasics\u000a```\u000a\u000a```rust\u000apub fn sum_f1(n: u64) -> u64\u000a```"
+          },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "src/lib.rs" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 11,
+                "columnBegin": 14,
+                "lineEnd": 11,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": { "key": "\u000a```rust\u000an: u64\u000a```" },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "src/lib.rs" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 15,
+                "columnBegin": 3,
+                "lineEnd": 15,
+                "columnEnd": 8
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": {
+            "key": "\u000a```rust\u000abasics\u000a```\u000a\u000a```rust\u000afn f1_go(n: u64, acc: u64) -> u64\u000a```"
+          },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "src/lib.rs" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 15,
+                "columnBegin": 9,
+                "lineEnd": 15,
+                "columnEnd": 10
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": { "key": "\u000a```rust\u000an: u64\u000a```" },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "src/lib.rs" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 15,
+                "columnBegin": 17,
+                "lineEnd": 15,
+                "columnEnd": 20
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": { "key": "\u000a```rust\u000aacc: u64\u000a```" },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "src/lib.rs" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 21,
+                "columnBegin": 7,
+                "lineEnd": 21,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": {
+            "key": "\u000a```rust\u000abasics\u000a```\u000a\u000a```rust\u000apub fn sum_f2(n: u64) -> u64\u000a```"
+          },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "src/lib.rs" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 21,
+                "columnBegin": 14,
+                "lineEnd": 21,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": { "key": "\u000a```rust\u000an: u64\u000a```" },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "src/lib.rs" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 22,
+                "columnBegin": 12,
+                "lineEnd": 22,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": { "key": "\u000a```rust\u000alet mut acc: u64\u000a```" },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "src/lib.rs" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 23,
+                "columnBegin": 12,
+                "lineEnd": 23,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": { "key": "\u000a```rust\u000alet mut m: u64\u000a```" },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "src/lib.rs" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 36,
+                "columnBegin": 7,
+                "lineEnd": 36,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": {
+            "key": "\u000a```rust\u000abasics\u000a```\u000a\u000a```rust\u000apub fn sum_f3(n: u64) -> u64\u000a```"
+          },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "src/lib.rs" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 36,
+                "columnBegin": 14,
+                "lineEnd": 36,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": { "key": "\u000a```rust\u000an: u64\u000a```" },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "src/lib.rs" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 37,
+                "columnBegin": 12,
+                "lineEnd": 37,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": { "key": "\u000a```rust\u000alet mut acc: u64\u000a```" },
+          "language": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": { "key": "src/lib.rs" },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 38,
+                "columnBegin": 8,
+                "lineEnd": 38,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": {
+          "text": { "key": "\u000a```rust\u000am: u64\u000a```" },
+          "language": 30
+        }
+      }
+    }
+  }
+]

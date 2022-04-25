@@ -78,6 +78,21 @@ Maximum number of facts per page
 * `PREDICATE`<br />
 Predicates to derive
 
+### `glean index`
+
+Index some source code using one of the known indexers.
+
+The form of the command in general is
+
+```
+glean index LANGUAGE DIR --repo NAME/HASH
+```
+
+There may also be additional options accepted for each `LANGUAGE`; try
+`glean index LANGUAGE --help` to find out.
+
+For information on each indexer, see [Indexers](./indexer/intro.md).
+
 ### `glean query`
 
 Execute an Angle query and print the results, or write them to a file.

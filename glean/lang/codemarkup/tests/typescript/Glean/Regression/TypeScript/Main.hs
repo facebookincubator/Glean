@@ -10,10 +10,13 @@ module Glean.Regression.TypeScript.Main ( main ) where
 
 import System.Environment ( withArgs )
 
-import qualified Glean.Regression.Driver.External as Driver ( main )
-import qualified Glean.LSIF.Driver as LSIF
+import Glean.Indexer.Typescript as Typescript
+import Glean.Regression.Snapshot
+import Glean.Regression.Snapshot.Driver
 
 main :: IO ()
-main = withArgs (LSIF.testArgs path LSIF.TypeScript) Driver.main
+main =
+  withArgs ["--root", path] $
+    testMain (driverFromIndexer Typescript.indexer)
   where
-      path = "glean/lang/typescript/tests/cases"
+    path = "glean/lang/typescript/tests/cases"

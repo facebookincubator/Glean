@@ -10,9 +10,8 @@ module Glean.Glass.Regression.Go.Main ( main ) where
 
 import System.Environment
 import qualified Glean.Glass.Regression.Go as Glass
-import qualified Glean.LSIF.Driver as LSIF
 
 main :: IO ()
-main = withArgs (LSIF.testArgs path LSIF.Go) Glass.main
+main = withArgs ["--root", path] Glass.main
   where
     path = "glean/lang/go/tests/cases/xrefs"

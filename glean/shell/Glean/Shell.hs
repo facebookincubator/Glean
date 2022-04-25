@@ -70,6 +70,8 @@ import Glean.Database.Schema.Types (DbSchema(..))
 import Glean.Database.Schema (newDbSchema, readWriteContent)
 import Glean.Database.Config (parseSchemaDir)
 import qualified Glean.Database.Config as DB (Config(..))
+import Glean.Indexer
+import Glean.Indexer.List
 import Glean.LocalOrRemote as Glean hiding (options)
 import Glean.RTS.Types (Pid(..), Fid(..))
 import Glean.RTS.Foreign.Query (interruptRunningQueries)
@@ -1178,7 +1180,8 @@ indexCompletion :: Haskeline.CompletionFunc Eval
 indexCompletion line@(left,_) =
   case splitWhen isSpace (reverse left) of
     [_cmd, _lang] -> ($line) $ Haskeline.completeWord Nothing " \t" $ \str ->
-      return (fromVocabulary str (Map.keys indexerTable))
+      let words = [ indexerShortName ix | SomeIndexer ix <- indexers ] in
+      return (fromVocabulary str words)
     (_cmd : _lang : rest)
       | not (null rest) -> Haskeline.completeFilename line
     _otherwise -> Haskeline.noCompletion line
