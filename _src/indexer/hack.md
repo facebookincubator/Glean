@@ -11,6 +11,35 @@ The [Hack](https://hacklang.org/) indexer is built into the [Hack typechecker](h
 
 ## Run the indexer
 
+The indexer is run via the main `glean` CLI tool.
+
+```
+> cabal build exe:glean
+```
+
+And index your Hack repository with:
+```
+glean index hack DIR --repo name/hash
+```
+
+where
+
+* `DIR` is the root directory containing the Hack project (with `.hhconfig`)
+* `name/hash` is the name of the repository to create
+
+Provide the usual `--db-root` and `--schema` or `--service` arguments
+to `glean`
+
+## In the shell
+
+Hack source can also be indexed directly from the Glean shell:
+
+```
+:index hack DIR
+```
+
+## Run the indexer (manually)
+
 ```
 hh_server DIR --write-symbol-info JSON \
   --config symbol_write_include_hhi=false \
@@ -34,14 +63,6 @@ The generated files can be ingested into a Glean database using [`glean create`]
 ## Derived predicates
 
 Several predicates should be derived after indexing. For each `stored` predicate in the [schema](#schema) you should [`glean derive`](../cli.md#glean-derive) the predicate.
-
-## In the shell
-
-Hack source can also be indexed directly from the Glean shell:
-
-```
-:index hack DIR
-```
 
 ## Schema
 
