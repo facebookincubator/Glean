@@ -72,14 +72,18 @@ type SymbolInfo =
 # Public language-agnostic API
 
 # Associates an entity with a symbol kind.
-# TODO: Deprecate and replace with EntityInfo
+# Note: available for partial indices where EntityInfo is incomplete.
 predicate EntityKind:
   {
     entity: code.Entity,
     kind: SymbolKind,
   }
   { Entity, Kind } where
-    EntityInfo { Entity, { kind = Kind } }
+    PythonEntityKind { Entity, Kind } |
+    CxxEntityKind { Entity, Kind } |
+    PpEntityKind { Entity, Kind } |
+    HackEntityKind { Entity, Kind } |
+    ErlangEntityKind { Entity, Kind }
 
 # Retrieve information about an entity
 predicate EntityInfo:
@@ -88,11 +92,13 @@ predicate EntityInfo:
     info: SymbolInfo,
   }
   { Entity, Info } where
-    PythonEntityInfo { Entity, Info } |
+    ( { kind = Kind, isAbstract = false } = Info;
+      (PythonEntityKind { Entity, Kind } |
+       PpEntityKind { Entity, Kind} |
+       ErlangEntityKind { Entity, Kind })
+    ) |
     CxxEntityInfo { Entity, Info } |
-    PpEntityInfo { Entity, Info } |
-    HackEntityInfo { Entity, Info } |
-    ErlangEntityInfo { Entity, Info }
+    HackEntityInfo { Entity, Info }
 
 # All entities defined in a src.File and their locations
 predicate FileEntityLocations:
@@ -1189,13 +1195,12 @@ predicate LsifEntityUses:
 # Language-specific symbol info
 #
 
-predicate NonImportPythonDeclarationInfo:
+predicate NonImportPythonDeclarationKind:
   {
     declaration: python.Declaration,
-    info: SymbolInfo,
+    kind: SymbolKind,
   }
-  { D, Info } where
-    { kind = Kind, isAbstract = false } = Info;
+  { D, Kind } where
     ({cls = _} = D; Class_ = Kind ) |
     ({module = _} = D; Module = Kind ) |
     ({func = _} = D;
@@ -1209,16 +1214,73 @@ predicate NonImportPythonDeclarationInfo:
       ({cls = _} = C; Field = Kind ) |
       ({func = _} = C; Variable = Kind ))  # these are locals
 
+# For backward compatibility:
+predicate NonImportPythonDeclarationInfo:
+  {
+    declaration: python.Declaration,
+    info: SymbolInfo,
+  }
+  { D, { kind = K, isAbstract = false }} where
+    NonImportPythonDeclarationKind { D, K }
+
+predicate PythonEntityKind:
+  {
+    entity: code.Entity,
+    kind: SymbolKind,
+  }
+  { { python = { decl = D } }, Kind } where
+    NonImportPythonDeclarationKind { D, Kind } |
+    ({imp = {from_name = FN}} = D;
+      python.DeclarationWithName { FN, Imported };
+      NonImportPythonDeclarationKind { Imported, Kind }
+    )
+
+# For backward compatibility:
 predicate PythonEntityInfo:
   {
     entity: code.Entity,
     info: SymbolInfo,
   }
-  { { python = { decl = D } }, Info } where
-    NonImportPythonDeclarationInfo { D, Info } |
-    ({imp = {from_name = FN}} = D;
-      python.DeclarationWithName { FN, Imported };
-      NonImportPythonDeclarationInfo { Imported, Info }
+  { E, { kind = K, isAbstract = false }} where
+    PythonEntityKind { entity = E, kind = K }
+
+predicate CxxEntityKind:
+  {
+    entity: code.Entity,
+    kind: SymbolKind,
+  }
+  { { cxx = CxxD }, Kind } where
+    ({ decl = Decl } = CxxD;
+     CxxDeclKind { Decl, Kind }) |
+    ({ enumerator = _ } = CxxD; Enumerator = Kind) |
+    ({ defn = Defn } = CxxD;
+     cxx1.DefToBaseDecl { Defn, Decl };
+     CxxDeclKind { Decl, Kind } )
+
+predicate CxxDeclKind:
+  {
+    decl: cxx1.Declaration,
+    kind: SymbolKind,
+  }
+  { Decl, Kind } where
+    ({ function_ = { method = MM } } = Decl;
+       ({ just = _ } = MM; Method = Kind) |
+       (nothing = MM; Function = Kind)
+    ) |
+    (
+      ({ enum_ = _ } = Decl; Enum = Kind ) |
+      ({ namespace_ = _ } = Decl; Namespace = Kind ) |
+      ({ objcMethod = _ } = Decl; Method = Kind ) |
+      ({ objcProperty = _ } = Decl; Property = Kind ) |
+      ({ typeAlias = _ } = Decl; Class_ = Kind ) |
+      ({ usingDeclaration = _ } = Decl; Namespace = Kind ) |
+      ({ variable = _ } = Decl; Variable = Kind ) |
+      # TODO: objc containers, using directives
+      ({ record_ = R } = Decl;
+        ({ kind = { struct_ = _ } } = R; Struct = Kind ) |
+        ({ kind = { class_ = _ } } = R; Class_ = Kind ) |
+        ({ kind = { union_ = _ } } = R; Union = Kind )
+      )
     )
 
 predicate CxxEntityInfo:
@@ -1241,40 +1303,59 @@ predicate CxxDeclInfo:
     info: SymbolInfo,
   }
   { Decl, { kind = Kind, isAbstract = Abs } } where
-    ({ function_ = { method = MM } } = Decl;
-       ({ just = M } = MM; Method = Kind; { isVirtual = Abs } = M) |
-       (nothing = MM; Function = Kind; false = Abs)
-    ) |
-    ({ function_ = { method = { just = M }}} = Decl;
-       Method = Kind;
-       { isVirtual = Abs } = M
-    ) |
-    (
-      false = Abs;
-      ({ namespace_ = _ } = Decl; Namespace = Kind ) |
-      ({ usingDeclaration = _ } = Decl; Namespace = Kind ) |
-      ({ enum_ = _ } = Decl; Enum = Kind ) |
-      ({ variable = _ } = Decl; Variable = Kind ) |
-      ({ objcMethod = _ } = Decl; Method = Kind ) |
-      ({ objcProperty = _ } = Decl; Property = Kind ) |
-      ({ typeAlias = _ } = Decl; Class_ = Kind ) |
-      # TODO: objc containers, using directives
-      ({ record_ = R } = Decl;
-        ({ kind = { struct_ = _ } } = R; Struct = Kind ) |
-        ({ kind = { class_ = _ } } = R; Class_ = Kind ) |
-        ({ kind = { union_ = _ } } = R; Union = Kind )
+    CxxDeclKind { decl = Decl, kind = Kind };
+    if (Method = Kind) then (
+      ({ function_ = { method = { just = M }}} = Decl;
+         { isVirtual = Abs } = M
+      ) |
+      (
+        { objcMethod = _ } = Decl;
+        false = Abs;
       )
+    ) else (
+      false = Abs
     )
 
+predicate PpEntityKind:
+  {
+    entity: code.Entity,
+    kind: SymbolKind,
+  }
+  { { pp = Decl }, Kind } where
+    ({ define = _ } = Decl; Macro = Kind ) |
+    ({ undef = _ } = Decl; Macro = Kind ) |
+    ({ include_ = _ } = Decl; File = Kind )
+
+# For backward compatibility:
 predicate PpEntityInfo:
   {
     entity: code.Entity,
     info: SymbolInfo,
   }
-  { { pp = Decl }, { kind = Kind, isAbstract = false } } where
-    ({ define = _ } = Decl; Macro = Kind ) |
-    ({ undef = _ } = Decl; Macro = Kind ) |
-    ({ include_ = _ } = Decl; File = Kind )
+  { E, { kind = K, isAbstract = false } } where
+  PpEntityKind { E, K }
+
+predicate HackEntityKind:
+  {
+    entity: code.Entity,
+    kind: SymbolKind,
+  }
+  { {hack = {decl = Decl}}, Kind } where
+    ({ classConst = _ } = Decl; Constant = Kind) |
+    ({ container = C } = Decl;
+      ({ class_ = _ } = C; Class_ = Kind) |
+      ({ enum_ = _ } = C; Enum = Kind) |
+      ({ interface_ = _ } = C; Interface = Kind) |
+      ({ trait = _ } = C; Trait = Kind)
+    ) |
+    ({ enumerator = _ } = Decl; Enum = Kind) |
+    ({ function_ = _ } = Decl; Function = Kind) |
+    ({ globalConst = _ } = Decl; Constant = Kind) |
+    ({ method = _ } = Decl; Method = Kind) |
+    ({ namespace_ = _ } = Decl; Namespace = Kind) |
+    ({ property_ = _ } = Decl; Property = Kind) |
+    ({ typeConst = _ } = Decl; Type = Kind) |
+    ({ typedef_ = _ } = Decl; Type = Kind)
 
 predicate HackEntityInfo:
   {
@@ -1282,48 +1363,54 @@ predicate HackEntityInfo:
     info: SymbolInfo,
   }
   { {hack = {decl = Decl}}, { kind = Kind, isAbstract = Abs } } where
-    ( { method = M } = Decl;
-      hack.MethodDefinition { declaration = M, isAbstract = Abs };
-      Method = Kind
+    HackEntityKind { { hack = {decl = Decl}}, Kind };
+    ( Method = Kind;
+      { method = M } = Decl;
+      hack.MethodDefinition { declaration = M, isAbstract = Abs }
     ) |
-    ( { property_ = P } = Decl;
-      hack.PropertyDefinition { declaration = P, isAbstract = Abs };
-      Property = Kind
+    ( Property = Kind;
+      { property_ = P } = Decl;
+      hack.PropertyDefinition { declaration = P, isAbstract = Abs }
     ) |
-    ( { classConst = C } = Decl;
+    ( Constant = Kind;
+      { classConst = C } = Decl;
       hack.ClassConstDefinition { declaration = C, value = V };
-      Constant = Kind;
       ( nothing = V; true = Abs ) | ( { just = _ } = V; false = Abs )
     ) |
-    ( { typeConst = T } = Decl;
+    ( Type = Kind;
+      { typeConst = T } = Decl;
       hack.TypeConstDefinition { declaration = T, kind = TCKind };
-      Type = Kind;
       ( Concrete = TCKind; false = Abs ) |
       ( Abstract = TCKind; true = Abs) |
       ( PartiallyAbstract = TCKind; true = Abs)
     ) |
-    (
-      false = Abs;
-      ({ container = { class_ = _ } } = Decl; Class_ = Kind) |
-      ({ container = { enum_ = _ } } = Decl; Enum = Kind) |
-      ({ container = { interface_ = _ } } = Decl; Interface = Kind) |
-      ({ container = { trait = _ } } = Decl; Trait = Kind) |
-      ({ enumerator = _ } = Decl; Enum = Kind) |
-      ({ function_ = _ } = Decl; Function = Kind) |
-      ({ globalConst = _ } = Decl; Constant = Kind) |
-      ({ namespace_ = _ } = Decl; Namespace = Kind) |
-      ({ typedef_ = _ } = Decl; Type = Kind)
+    ( false = Abs;
+      (Class_ = Kind) |
+      (Constant = Kind; { globalConst = _ } = Decl) |
+      (Enum = Kind) |
+      (Interface = Kind) |
+      (Trait = Kind) |
+      (Function = Kind) |
+      (Namespace = Kind) |
+      (Type = Kind; { typedef_ = _ } = Decl)
     )
 
+predicate ErlangEntityKind:
+  {
+    entity: code.Entity,
+    kind: SymbolKind,
+  }
+  { { erlang = { decl = { func = D } } }, Function } where
+  erlang.FunctionDeclaration {} = D
+
+# For backward compatibility:
 predicate ErlangEntityInfo:
   {
     entity: code.Entity,
     info: SymbolInfo,
   }
-  { { erlang = { decl = { func = D} } },
-    { kind = Kind, isAbstract = false } } where
-  Kind = Function: SymbolKind;
-  erlang.FunctionDeclaration {} = D;
+  { E, { kind = K, isAbstract = false } } where
+  ErlangEntityKind { E, K }
 
 #
 # Annotations
