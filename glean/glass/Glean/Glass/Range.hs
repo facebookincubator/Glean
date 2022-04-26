@@ -54,7 +54,7 @@ import Glean.Glass.Path ( toGleanPath, fromGleanPath )
 import Glean.Glass.Logging
     ( ErrorTy(NoSrcFileFact) )
 import qualified Haxl.Core.Memo as Haxl
-import qualified Glean.Schema.Codemarkup.Types as Code
+import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import Glean.Angle ( query )
 import qualified Glean.Haxl.Repos as Glean
 

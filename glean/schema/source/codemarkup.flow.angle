@@ -1,0 +1,129 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema codemarkup.flow.1 {
+import src.1
+import code.20
+import code.flow.2
+import codemarkup.types.1
+import flow.3
+
+# Resolving locations to entities
+
+predicate FlowResolveLocation:
+  {
+    location: codemarkup.types.Location,
+    entity: code.Entity,
+  }
+  { { NameStr, File, { span = Span }, nothing }, Entity } where
+    flow.FileDeclaration { File, Decl };
+    flow.DeclarationNameSpan { Decl, Name, Span };
+    Name = flow.Name NameStr ;
+    Entity = code.Entity { flow = { decl = Decl } };
+
+# Finding entities' locations
+
+predicate FlowEntityLocation:
+  {
+    entity: code.Entity,
+    location: codemarkup.types.Location,
+  }
+  { { flow = { decl = D } }, { Name, File, { span = Span }, nothing } } where
+    flow.DeclarationLocation { decl = D, file = File, span = Span };
+    flow.DeclarationNameSpan { decl = D, name = flow.Name Name, span = Span };
+
+predicate FlowFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.Entity,
+  }
+  { File, XRef, { flow = Entity } } where
+    FlowFileReferenceEntityXRefLocations { File, XRef, Entity } |
+    FlowFileImportDeclEntityXRefLocations { File, XRef, Entity }
+
+# Flow cross-references from occurrences.
+#
+# References in the Flow index point to the local import declaration
+# in the file.  To resolve these to the remote reference:
+#
+#  * For each reference in the file (flow.FileXRef)
+#  * emit a DirectXRef to its target
+#  * also, if the target is a flow.ImportDeclaration
+#  * find the source of the import, and emit a DirectXRef to that
+#
+# And do the same for type declarations.
+#
+# This will result in two DirectXRefs for each non-local reference,
+# one pointing to the import declaration and another to the non-local
+# target. The client can decide which one(s) it wants.
+#
+predicate FlowFileReferenceEntityXRefLocations:
+  {
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.flow.Entity,
+  }
+  { File, {Location, { span = Src }}, Entity } where
+    flow.FileXRef { file = File, ref = XRef };
+    flow.FlowXRefDeclInfo { XRef, SrcLoc, Name, TargetLoc, D };
+    Name = flow.Name Str;
+    { span = Src } = SrcLoc;
+    (
+      # TODO: should be able to inline M, but the optimiser got it wrong
+      { module = M, span = TargetSpan } = TargetLoc;
+      { file = TargetFile } = M;
+      { decl = D } = Entity;
+    ) | (
+      { localRef = { declaration = LocalD } } = XRef;
+      flow.FlowImportXRef { LocalD, Entity, TargetFile, TargetSpan };
+    ) | (
+      { typeRef = { typeDeclaration = T } } = XRef;
+      flow.FlowTypeImportXRef { T, Entity, TargetFile, TargetSpan };
+    );
+    Location = codemarkup.types.Location { Str, TargetFile, { span = TargetSpan }, nothing }
+
+# Flow cross-references from import declarations.
+#
+# We want to hyperlink the identifiers in an import declaration to the
+# source of the import:
+#
+# * For each declaration in the file (flow.FileDeclaration)
+# * If it is an import declaraiton, find the source (reusing FlowImportXRef)
+#
+# and do the same for type declarations (FlowTypeImportXRef).
+#
+predicate FlowFileImportDeclEntityXRefLocations:
+  {
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.flow.Entity,
+  }
+  { File, { Location, { span = Src } }, Entity } where
+    flow.FileDeclaration { File, D };
+    (
+      { localDecl = LocalD } = D;
+      flow.FlowImportXRef { LocalD, Entity, TargetFile, TargetSpan };
+      { name = Name, loc = SrcLoc } = LocalD;
+    ) | (
+      { typeDecl = TypeD } = D;
+      flow.FlowTypeImportXRef { TypeD, Entity, TargetFile, TargetSpan };
+      { name = Name, loc = SrcLoc } = TypeD;
+    );
+    Location = codemarkup.types.Location { Str, TargetFile, { span = TargetSpan }, nothing };
+    Name = flow.Name Str;
+    { span = Src } = SrcLoc;
+
+#
+# Language entity uses
+#
+
+predicate FlowEntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  { { flow = Entity }, File, Span } where
+    flow.FlowEntityUsesAll { Entity, File, Span };
+
+}

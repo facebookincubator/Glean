@@ -21,7 +21,7 @@ import Glean.Glass.Search.Class
 import Glean.Glass.Query ( entityLocation )
 
 import qualified Glean.Schema.CodeHack.Types as Hack
-import qualified Glean.Schema.Codemarkup.Types as Code
+import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Hack.Types as Hack
 import qualified Glean.Schema.SearchHack.Types as Hack
 import qualified Glean.Schema.Src.Types as Src

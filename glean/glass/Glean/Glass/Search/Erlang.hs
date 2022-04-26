@@ -23,7 +23,7 @@ import Glean.Glass.Search.Class
 import Glean.Glass.Query ( entityLocation )
 
 import qualified Glean.Schema.CodeErlang.Types as Erlang
-import qualified Glean.Schema.Codemarkup.Types as Code
+import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.SearchErlang.Types as Erlang
 import qualified Glean.Schema.Src.Types as Src
 import Text.Read ( readMaybe )

@@ -23,7 +23,8 @@ import qualified Glean
 import Glean.Angle
 import Glean.Haxl.Repos as Glean
 
-import qualified Glean.Schema.Codemarkup.Types as Code
+import qualified Glean.Schema.CodemarkupCxx.Types as Code
+import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.CodeCxx.Types as Cxx
 import qualified Glean.Schema.Cxx1.Types as Cxx

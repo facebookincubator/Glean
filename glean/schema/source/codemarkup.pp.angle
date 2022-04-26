@@ -1,0 +1,45 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema codemarkup.pp.1 {
+import code.20
+import codemarkup.types.1
+import cxx1.4
+import pp1.1
+
+#
+# Finding entities' locations
+#
+
+predicate PPEntityLocation:
+  {
+    entity: code.Entity,
+    location: codemarkup.types.Location,
+  }
+  { Entity, { Name, File, { range = Range }, nothing } } where
+    { pp = { define = Define } } = Entity;
+    cxx1.PPDefineLocation { Define, Name, File, Range};
+
+#
+# Language-specific symbol info
+#
+
+predicate PpEntityKind:
+  {
+    entity: code.Entity,
+    kind: codemarkup.types.SymbolKind,
+  }
+  { { pp = Decl }, Kind } where
+    ({ define = _ } = Decl; Macro = Kind ) |
+    ({ undef = _ } = Decl; Macro = Kind ) |
+    ({ include_ = _ } = Decl; File = Kind )
+
+# For backward compatibility:
+predicate PpEntityInfo:
+  {
+    entity: code.Entity,
+    info: codemarkup.types.SymbolInfo,
+  }
+  { E, { kind = K, isAbstract = false } } where
+  PpEntityKind { E, K }
+
+}

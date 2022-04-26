@@ -30,7 +30,7 @@ import qualified Glean.Angle as Angle
 import Glean.Haxl.Repos as Glean
 
 import qualified Glean.Schema.Src.Types as Src
-import qualified Glean.Schema.Codemarkup.Types as Code
+import qualified Glean.Schema.CodemarkupTypes.Types as Code
 
 -- Search-based inverse of Symbol.toSymbol :: a -> [Text]
 class Search t where

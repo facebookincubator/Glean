@@ -22,7 +22,7 @@ import Glean.Glass.Types (ServerException(ServerException))
 import Glean.Glass.Utils (searchWithLimit)
 
 import qualified Glean.Schema.CodePython.Types as Py
-import qualified Glean.Schema.Codemarkup.Types as Code
+import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Python.Types as Py
 import qualified Glean.Schema.Src.Types as Src
 import Data.Text (Text)

@@ -25,7 +25,7 @@ import Glean.Glass.Query ( entityLocation )
 import qualified Glean.Schema.CodeFlow.Types as Flow
 import qualified Glean.Schema.Flow.Types as Flow
 import qualified Glean.Schema.Src.Types as Src
-import qualified Glean.Schema.Codemarkup.Types as Code
+import qualified Glean.Schema.CodemarkupTypes.Types as Code
 
 instance Search Flow.Entity where
   symbolSearch [] = return $ None "Flow.symbolSearch: empty"

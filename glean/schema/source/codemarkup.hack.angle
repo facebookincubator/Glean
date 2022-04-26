@@ -1,0 +1,203 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema codemarkup.hack.1 {
+import src.1
+import code.20
+import code.hack.4
+import hack.6
+import codemarkup.types.1
+
+# hack.DeclarationSpan doesn't currently cover ClassConstDeclarations,
+# so we fall back to hack.DeclaraitonLocation. This workaround can go
+# away when that bug is fixed (T114671647)
+predicate HackDeclarationSpan:
+  {
+    declaration: hack.Declaration,
+    file: src.File,
+    span: src.ByteSpan
+  }
+  { Decl, File, Span } where
+    hack.DeclarationSpan { declaration = Decl, file = File, span = Span } |
+    (
+      !hack.DeclarationSpan { declaration = Decl };
+      hack.DeclarationLocation {declaration = Decl, file = File, span = Span }
+    );
+
+predicate HackResolveLocation:
+  {
+    location: codemarkup.types.Location,
+    entity: code.Entity,
+  }
+  { { Name, File, { span = Span }, nothing }, Entity } where
+    hack.FileDeclarations { file = File, declarations = Ds };
+    Decl = Ds[..];
+    hack.DeclarationName Decl -> (hack.Name Name);
+    HackDeclarationSpan { declaration = Decl, file = File, span = Span };
+    Entity = code.Entity { hack = { decl = Decl } };
+
+# Finding entities' locations
+
+predicate HackEntityLocation:
+  {
+    entity: code.Entity,
+    location: codemarkup.types.Location,
+  }
+  { { hack = { decl = D } }, { Name, File, { span = Span }, nothing } } where
+    HackDeclarationSpan { declaration = D, file = File, span = Span };
+    hack.DeclarationName D -> (hack.Name Name);
+
+# Finding references in a file
+
+predicate HackFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.Entity,
+  }
+  { File, { Location, { span = Src } }, Entity } where
+    hack.FileXRefs { file = File, xrefs = XRefs };
+    hack.XRef { target = { declaration = D }, ranges = Uses } = XRefs[..];
+    hack.DeclarationName D -> (hack.Name TargetName);
+    hack.DeclarationLocation { declaration = D, file = TargetFile, span = TargetSpan };
+    Location = codemarkup.types.Location { TargetName, TargetFile, { span = TargetSpan }, nothing };
+    Sources = prim.relToAbsByteSpans Uses;
+    Src = Sources[..];
+    Entity = code.Entity { hack = { decl = D } };
+
+predicate HackFileEntityXRefSpans:
+  {
+    file: src.File,
+    span: src.ByteSpan,
+    entity: code.Entity,
+  }
+  { File, Src, { hack = { decl = D } } } where
+    hack.FileXRefs { file = File, xrefs = XRefs };
+    hack.XRef { target = { declaration = D }, ranges = Uses } = XRefs[..];
+    Sources = prim.relToAbsByteSpans Uses;
+    Src = Sources[..]
+
+#
+# Language entity uses
+#
+
+predicate HackEntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  { { hack = { decl = D } }, File, Span } where
+    hack.TargetUses { target = { declaration = D }, file = File, uses = Uses };
+    Spans = prim.relToAbsByteSpans Uses;
+    Span = Spans[..];
+
+predicate HackEntityKind:
+  {
+    entity: code.Entity,
+    kind: codemarkup.types.SymbolKind,
+  }
+  { {hack = {decl = Decl}}, Kind } where
+    ({ classConst = _ } = Decl; Constant = Kind) |
+    ({ container = C } = Decl;
+      ({ class_ = _ } = C; Class_ = Kind) |
+      ({ enum_ = _ } = C; Enum = Kind) |
+      ({ interface_ = _ } = C; Interface = Kind) |
+      ({ trait = _ } = C; Trait = Kind)
+    ) |
+    ({ enumerator = _ } = Decl; Enum = Kind) |
+    ({ function_ = _ } = Decl; Function = Kind) |
+    ({ globalConst = _ } = Decl; Constant = Kind) |
+    ({ method = _ } = Decl; Method = Kind) |
+    ({ namespace_ = _ } = Decl; Namespace = Kind) |
+    ({ property_ = _ } = Decl; Property = Kind) |
+    ({ typeConst = _ } = Decl; Type = Kind) |
+    ({ typedef_ = _ } = Decl; Type = Kind)
+
+predicate HackEntityInfo:
+  {
+    entity: code.Entity,
+    info: codemarkup.types.SymbolInfo,
+  }
+  { {hack = {decl = Decl}}, { kind = Kind, isAbstract = Abs } } where
+    HackEntityKind { { hack = {decl = Decl}}, Kind };
+    ( Method = Kind;
+      { method = M } = Decl;
+      hack.MethodDefinition { declaration = M, isAbstract = Abs }
+    ) |
+    ( Property = Kind;
+      { property_ = P } = Decl;
+      hack.PropertyDefinition { declaration = P, isAbstract = Abs }
+    ) |
+    ( Constant = Kind;
+      { classConst = C } = Decl;
+      hack.ClassConstDefinition { declaration = C, value = V };
+      ( nothing = V; true = Abs ) | ( { just = _ } = V; false = Abs )
+    ) |
+    ( Type = Kind;
+      { typeConst = T } = Decl;
+      hack.TypeConstDefinition { declaration = T, kind = TCKind };
+      ( Concrete = TCKind; false = Abs ) |
+      ( Abstract = TCKind; true = Abs) |
+      ( PartiallyAbstract = TCKind; true = Abs)
+    ) |
+    ( false = Abs;
+      (Class_ = Kind) |
+      (Constant = Kind; { globalConst = _ } = Decl) |
+      (Enum = Kind) |
+      (Interface = Kind) |
+      (Trait = Kind) |
+      (Function = Kind) |
+      (Namespace = Kind) |
+      (Type = Kind; { typedef_ = _ } = Decl)
+    )
+
+#
+# Annotations
+#
+
+predicate HackAnnotation :
+  {
+    entity: code.Entity,
+    anns: code.Annotations,
+  }
+  {{hack={decl=D}}, {hack={attributes=A}}} where
+    ({ container = { class_ = Decl } } = D; hack.ClassDefinition{declaration=Decl, attributes=A}) |
+    ({ container = { enum_ = Decl } } = D; hack.EnumDefinition{declaration=Decl, attributes=A}) |
+    ({ container = { interface_ = Decl } } = D; hack.InterfaceDefinition{declaration=Decl, attributes=A}) |
+    ({ container = { trait = Decl } } = D; hack.TraitDefinition{declaration=Decl, attributes=A}) |
+    ({ method = Decl } = D; hack.MethodDefinition{declaration=Decl, attributes=A}) |
+    ({ property_ = Decl } = D; hack.PropertyDefinition{declaration=Decl, attributes=A}) |
+    ({ typeConst = Decl } = D; hack.TypeConstDefinition{declaration=Decl, attributes=A}) |
+    ({ typedef_ = Decl } = D; hack.TypedefDefinition{declaration=Decl, attributes=A})
+
+#
+# Relations
+#
+
+predicate HackContainsChildEntity :
+  {
+    parent: code.hack.Entity,
+    child: code.hack.Entity
+  }
+  { { decl = Container }, { decl = Member } } where
+    (
+      (
+        { container = { class_ = Class }} = Container;
+        hack.ClassDefinition { declaration = Class, members = Members };
+      ) |
+      (
+        { container = { interface_ = Interface }} = Container;
+        hack.InterfaceDefinition { declaration = Interface, members = Members };
+      ) |
+      (
+        { container = { trait = Trait }} = Container;
+        hack.TraitDefinition { declaration = Trait, members = Members };
+      );
+      Member = Members[..]
+    ) |
+    (
+      { namespace_ = {name=Name} } = Container;
+      hack.NamespaceMember { namespace_ = Name, decl = Member}
+    )
+
+}

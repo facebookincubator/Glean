@@ -36,6 +36,7 @@ import Glean.Glass.Types as Glass
 import Thrift.Protocol ( fromThriftEnum, ThriftEnum (toThriftEnum) )
 
 import qualified Glean.Schema.Code.Types as Code
+import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Codemarkup.Types as Code
 import qualified Glean.Schema.Src.Types as Src
 

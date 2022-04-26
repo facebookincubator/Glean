@@ -1,2 +1,2 @@
-query: codemarkup.CxxFileEntityTraceVariableXRefLocations _
+query: codemarkup.cxx.CxxFileEntityTraceVariableXRefLocations _
 transform: [gensort, []]

@@ -1,2 +1,2 @@
-query: codemarkup.CxxFileEntityTraceVariableXRefDeclToDefs _
+query: codemarkup.cxx.CxxFileEntityTraceVariableXRefDeclToDefs _
 transform: [gensort, []]

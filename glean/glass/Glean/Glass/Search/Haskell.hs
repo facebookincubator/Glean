@@ -22,7 +22,7 @@ import Glean.Glass.Search.Class
 import Glean.Glass.Query ( entityLocation )
 
 import qualified Glean.Schema.CodeHs.Types as Haskell
-import qualified Glean.Schema.Codemarkup.Types as Code
+import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.SearchHs.Types as Haskell
 import qualified Glean.Schema.Src.Types as Src
 

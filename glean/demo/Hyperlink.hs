@@ -19,6 +19,7 @@ import qualified Glean.Schema.Src.Types as Src
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.Pp1.Types as Pp1
 import qualified Glean.Schema.Codemarkup.Types as CodeMarkup
+import qualified Glean.Schema.CodemarkupTypes.Types as CodeMarkup
 
 import qualified Glean
 import Glean.Impl.ConfigProvider

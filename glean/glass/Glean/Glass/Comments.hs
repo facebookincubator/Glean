@@ -21,7 +21,7 @@ import Glean.Glass.Range
 import qualified Glean.Haxl.Repos as Glean
 import qualified Glean.Schema.Docmarkup.Types as Docmarkup
 import qualified Glean.Schema.Code.Types as Code
-import qualified Glean.Schema.Codemarkup.Types as Code
+import qualified Glean.Schema.CodemarkupTypes.Types as Code
 
 import Glean.Glass.SymbolId (entityToAngle)
 import qualified Glean.Glass.Types as Glass
