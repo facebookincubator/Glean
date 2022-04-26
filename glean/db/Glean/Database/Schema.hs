@@ -28,6 +28,8 @@ import Control.Arrow (second)
 import Control.Exception
 import Control.Monad
 import Control.Monad.Except
+import Control.Monad.Extra (whenJust)
+import Control.Monad.State as State
 import Data.ByteString (ByteString)
 import Data.Graph
 import Data.Hashable
@@ -45,6 +47,7 @@ import Data.Map (Map)
 import Data.Maybe
 import qualified Data.Set as Set
 import qualified Data.Text as Text
+import Data.Text (Text)
 import qualified Data.Text.Encoding as Text
 import Data.Text.Prettyprint.Doc
 import Data.Text.Prettyprint.Doc.Render.Text
@@ -561,6 +564,8 @@ To keep the overhead on incremental databases as low as possible, stored
 derived predicates are not allowed to use negation.
 -}
 
+type Error = Text
+
 typecheckSchema
   :: Override  -- ^ new schema overrides existing types/predicates?
   -> HashMap PredicateRef Pid
@@ -596,43 +601,52 @@ typecheckSchema override refToPid dbContent stored
   let
     insert
       :: (Eq k, Hashable k)
-      => (v -> v -> IO ())
+      => (v -> v -> Maybe Error)
       -> HashMap k v
       -> (k,v)
-      -> IO (HashMap k v)
-    insert cmp = case override of
-      TakeOld -> takeOld
-      TakeNew -> takeNew
-      MustBeEqual -> \m (k,v) -> if
-        | Just oldV <- HashMap.lookup k m -> do cmp oldV v; return m
-        | otherwise -> takeNew m (k,v)
+      -> State [Error] (HashMap k v)
+    insert cmp hmap (k,v) = case override of
+      TakeOld -> return $ takeOld hmap (k,v)
+      TakeNew -> return $ takeNew hmap (k,v)
+      MustBeEqual
+        | Just oldV <- HashMap.lookup k hmap -> do
+          whenJust (cmp oldV v) $ \err -> State.modify (err:)
+          return hmap
+        | otherwise -> return $ takeNew hmap (k,v)
 
-    takeOld m (k,v) = return $ HashMap.insertWith (\_ old -> old) k v m
-    takeNew m (k,v) = return $ HashMap.insert k v m
+    takeOld m (k,v) = HashMap.insertWith (\_ old -> old) k v m
+    takeNew m (k,v) = HashMap.insert k v m
 
     mergePredicates = insert comparePredicates
     mergeTypes = insert compareTypes
 
-    comparePredicates a b =
-      when (not (predicateKeyType a `eqType` predicateKeyType b)
-        || not (predicateValueType a `eqType` predicateValueType b)) $
-        throwIO $ Thrift.Exception $ "predicate " <>
-          Text.pack (show (pretty (predicateRef a))) <> " has changed"
+    comparePredicates a b
+      | sameKeyType && sameValueType = Nothing
+      | otherwise = Just err
+      where
+        sameKeyType = predicateKeyType a `eqType` predicateKeyType b
+        sameValueType = predicateValueType a `eqType` predicateValueType b
+        err = "predicate " <> Text.pack (show (pretty (predicateRef a)))
+            <> " has changed"
 
-    compareTypes a b =
-      when (not (typeType a `eqType` typeType b)) $
-        throwIO $ Thrift.Exception $ "type " <>
+    compareTypes a b
+      | typeType a `eqType` typeType b = Nothing
+      | otherwise = Just $ "type " <>
           Text.pack (show (pretty (typeRef a))) <> " has changed"
 
-  preds <-
-    foldM mergePredicates tcEnvPredicates
-      [ (predicateRef, details)
-      | details@PredicateDetails{..} <- predicates ]
+    ((preds, types), errors) = flip runState [] $ do
+      preds <- foldM mergePredicates tcEnvPredicates
+          [ (predicateRef, details)
+          | details@PredicateDetails{..} <- predicates ]
 
-  types <-
-    foldM mergeTypes tcEnvTypes
-      [ (ref, TypeDetails ref ty)
-      | (ref, Just ty) <- HashMap.toList typedefs ]
+      types <- foldM mergeTypes tcEnvTypes
+          [ (ref, TypeDetails ref ty)
+          | (ref, Just ty) <- HashMap.toList typedefs ]
+
+      return (preds, types)
+
+  unless (null errors) $
+    throwIO $ Thrift.Exception $ Text.intercalate "\n\n" errors
 
   let
     -- Build the environment in which we typecheck predicates from
@@ -684,8 +698,8 @@ typecheckSchema override refToPid dbContent stored
       | addDeriving details = takeNew m item
       | otherwise = takeOld m item
 
-  -- Build the final environment.
-  finalPreds <- foldM mergeDeriving preds typecheckedPredicates
+    -- Build the final environment.
+    finalPreds = foldl' mergeDeriving preds typecheckedPredicates
 
   -- Check the invariant that stored predicates do not refer to derived
   -- predicates. We have to defer this check until last, because

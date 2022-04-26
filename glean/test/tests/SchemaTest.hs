@@ -298,7 +298,7 @@ schemaValidation = TestCase $
       [s|
         schema test.1 {
           predicate P : { b : nat, a : string  }  # field order matters
-          predicate Q : { p : P }
+          predicate Q : { p : string }            # field types matter
         }
 
         schema test.2 : test.1 {
@@ -331,8 +331,12 @@ schemaValidation = TestCase $
       s <- B.readFile schema2
       r <- try $ validateSchema env (ValidateSchema s)
       print r
-      assertBool "validate2" $ case r of
+      assertBool "validate2 - first failure" $ case r of
         Left err@Exception{} -> "test.P.1 has changed" `isInfixOf` show err
+        _ -> False
+
+      assertBool "validate2 - second failure failure" $ case r of
+        Left err@Exception{} -> "test.Q.1 has changed" `isInfixOf` show err
         _ -> False
 
       s <- B.readFile schema3
