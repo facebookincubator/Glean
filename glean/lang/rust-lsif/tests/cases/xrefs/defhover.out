@@ -4,15 +4,18 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "src/lib.rs" },
+          "file": {
+            "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 11,
-                "columnBegin": 7,
-                "lineEnd": 11,
-                "columnEnd": 13
-              }
+                "lineBegin": 12,
+                "columnBegin": 8,
+                "lineEnd": 12,
+                "columnEnd": 14
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -31,15 +34,18 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "src/lib.rs" },
+          "file": {
+            "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 11,
-                "columnBegin": 14,
-                "lineEnd": 11,
-                "columnEnd": 15
-              }
+                "lineBegin": 12,
+                "columnBegin": 15,
+                "lineEnd": 12,
+                "columnEnd": 16
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -56,15 +62,18 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "src/lib.rs" },
+          "file": {
+            "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 15,
-                "columnBegin": 3,
-                "lineEnd": 15,
-                "columnEnd": 8
-              }
+                "lineBegin": 16,
+                "columnBegin": 4,
+                "lineEnd": 16,
+                "columnEnd": 9
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -83,15 +92,18 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "src/lib.rs" },
+          "file": {
+            "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 15,
-                "columnBegin": 9,
-                "lineEnd": 15,
-                "columnEnd": 10
-              }
+                "lineBegin": 16,
+                "columnBegin": 10,
+                "lineEnd": 16,
+                "columnEnd": 11
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -108,15 +120,18 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "src/lib.rs" },
+          "file": {
+            "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 15,
-                "columnBegin": 17,
-                "lineEnd": 15,
-                "columnEnd": 20
-              }
+                "lineBegin": 16,
+                "columnBegin": 18,
+                "lineEnd": 16,
+                "columnEnd": 21
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -133,15 +148,18 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "src/lib.rs" },
+          "file": {
+            "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 21,
-                "columnBegin": 7,
-                "lineEnd": 21,
-                "columnEnd": 13
-              }
+                "lineBegin": 22,
+                "columnBegin": 8,
+                "lineEnd": 22,
+                "columnEnd": 14
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -160,15 +178,18 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "src/lib.rs" },
+          "file": {
+            "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 21,
-                "columnBegin": 14,
-                "lineEnd": 21,
-                "columnEnd": 15
-              }
+                "lineBegin": 22,
+                "columnBegin": 15,
+                "lineEnd": 22,
+                "columnEnd": 16
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -185,15 +206,18 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "src/lib.rs" },
+          "file": {
+            "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 22,
-                "columnBegin": 12,
-                "lineEnd": 22,
-                "columnEnd": 15
-              }
+                "lineBegin": 23,
+                "columnBegin": 13,
+                "lineEnd": 23,
+                "columnEnd": 16
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -210,15 +234,18 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "src/lib.rs" },
+          "file": {
+            "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 23,
-                "columnBegin": 12,
-                "lineEnd": 23,
-                "columnEnd": 13
-              }
+                "lineBegin": 24,
+                "columnBegin": 13,
+                "lineEnd": 24,
+                "columnEnd": 14
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -235,15 +262,18 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "src/lib.rs" },
+          "file": {
+            "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 36,
-                "columnBegin": 7,
-                "lineEnd": 36,
-                "columnEnd": 13
-              }
+                "lineBegin": 37,
+                "columnBegin": 8,
+                "lineEnd": 37,
+                "columnEnd": 14
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -262,15 +292,18 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "src/lib.rs" },
+          "file": {
+            "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 36,
-                "columnBegin": 14,
-                "lineEnd": 36,
-                "columnEnd": 15
-              }
+                "lineBegin": 37,
+                "columnBegin": 15,
+                "lineEnd": 37,
+                "columnEnd": 16
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -287,15 +320,18 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "src/lib.rs" },
+          "file": {
+            "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 37,
-                "columnBegin": 12,
-                "lineEnd": 37,
-                "columnEnd": 15
-              }
+                "lineBegin": 38,
+                "columnBegin": 13,
+                "lineEnd": 38,
+                "columnEnd": 16
+              },
+              "text": { "key": "" }
             }
           }
         }
@@ -312,15 +348,18 @@
     "key": {
       "defn": {
         "key": {
-          "file": { "key": "src/lib.rs" },
+          "file": {
+            "key": { "file": { "key": "src/lib.rs" }, "language": 42 }
+          },
           "range": {
             "key": {
               "range": {
-                "lineBegin": 38,
-                "columnBegin": 8,
-                "lineEnd": 38,
-                "columnEnd": 9
-              }
+                "lineBegin": 39,
+                "columnBegin": 9,
+                "lineEnd": 39,
+                "columnEnd": 10
+              },
+              "text": { "key": "" }
             }
           }
         }
