@@ -69,6 +69,18 @@ SCHEMAS= \
 	code_thrift \
 	code_buck \
 	codemarkup \
+	codemarkup.buck \
+	codemarkup.cxx \
+	codemarkup.erlang \
+	codemarkup.flow \
+	codemarkup.hack \
+	codemarkup.haskell \
+	codemarkup.lsif \
+	codemarkup.pp \
+	codemarkup.python \
+	codemarkup.rust \
+	codemarkup.thrift \
+	codemarkup.types \
 	code_pp \
 	code_python \
 	code \

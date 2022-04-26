@@ -639,6 +639,18 @@ library schema
         Glean.Schema.CodeJava
         Glean.Schema.CodeLsif
         Glean.Schema.Codemarkup
+        Glean.Schema.CodemarkupBuck
+        Glean.Schema.CodemarkupCxx
+        Glean.Schema.CodemarkupErlang
+        Glean.Schema.CodemarkupFlow
+        Glean.Schema.CodemarkupHack
+        Glean.Schema.CodemarkupHaskell
+        Glean.Schema.CodemarkupLsif
+        Glean.Schema.CodemarkupPp
+        Glean.Schema.CodemarkupPython
+        Glean.Schema.CodemarkupRust
+        Glean.Schema.CodemarkupThrift
+        Glean.Schema.CodemarkupTypes
         Glean.Schema.CodePp
         Glean.Schema.CodePython
         Glean.Schema.CodeRust
