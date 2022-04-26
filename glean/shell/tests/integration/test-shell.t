@@ -1,7 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
   $ source "$TESTDIR/setup.sh"
-  Creating DB using handle fbcode:glean/tools/gleancli:glean@
+  Creating DB using handle fbcode:glean/tools/gleancli:glean@.* (re)
 
   $ function query { "$GLEAN" --service "::1:$PORT" shell --db "$DB" "$(echo -e $1)" ; }
 
