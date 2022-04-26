@@ -8,7 +8,8 @@
 
 -- | Utilities for writing data to Glean
 module Glean.Write
-  ( parseRef
+  ( fileToBatches
+  , parseRef
   , parseJsonFactBatches
   , fillDatabase
   , finalize
@@ -21,6 +22,7 @@ import Control.Monad.Extra
 import Data.Aeson
 import qualified Data.Aeson.Types as Aeson
 import Data.ByteString (ByteString)
+import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy.Char8 as LB
 import Data.Default
 import Data.Either
@@ -31,12 +33,29 @@ import qualified Data.Text as Text
 import qualified Data.Vector as Vector
 import TextShow
 
+import Foreign.CPP.Dynamic (parseJSONWithOptions, JSONOptions(..))
 import Util.Control.Exception
 
 import Glean.Backend.Remote hiding (completePredicates)
 import qualified Glean.Backend.Remote as Backend
 import Glean.Types hiding (Value)
 import Glean.Schema.Util
+
+-- | Read a file of JSON fact batches
+fileToBatches :: FilePath -> IO [JsonFactBatch]
+fileToBatches file = do
+  bs <- B.readFile file
+  r <- Foreign.CPP.Dynamic.parseJSONWithOptions opts bs
+  val <- case r of
+    Right val -> return val
+    Left err -> throwIO $ ErrorCall $ file ++ ": " ++ Text.unpack err
+  case Aeson.parse parseJsonFactBatches val of
+    Aeson.Error str -> throwIO $ ErrorCall $ file ++ ": " ++ str
+    Aeson.Success x -> return x
+  where
+    -- folly's default recursion limit is 100, which is not enough for us.
+    opts = Foreign.CPP.Dynamic.JSONOptions
+      { json_recursionLimit = Just 500 }
 
 parsePredicate :: Value -> Aeson.Parser PredicateRef
 parsePredicate = withText "predicate" $ \txt -> do

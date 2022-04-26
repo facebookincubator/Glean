@@ -24,7 +24,6 @@ import Control.Exception
 import Control.Monad
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
-import qualified Data.ByteString as B
 import Data.Char(isAlphaNum)
 import qualified Data.HashMap.Strict as HashMap
 import Data.Text (Text)
@@ -37,7 +36,6 @@ import System.Process
 
 import Facebook.Fb303
 import Facebook.Service
-import Foreign.CPP.Dynamic (parseJSON)
 import qualified Thrift.Server.CppServer as CppServer
 import qualified Thrift.Server.Types as Thrift.Server
 
@@ -118,14 +116,7 @@ execExternal Ext{..} env repo IndexerParams{..} = do index; derive
       callProcess extBinary (map (subst jsonVars) extArgs)
       files <- listDirectory jsonBatchDir
       forM_ files $ \file -> do
-        str <- B.readFile (jsonBatchDir </> file)
-        r <- Foreign.CPP.Dynamic.parseJSON str
-        val <- either (throwIO  . ErrorCall . ((file ++ ": ") ++) .
-          Text.unpack) return r
-        sendJsonBatches env repo file val
-        batches <- case Aeson.parse parseJsonFactBatches val of
-          Aeson.Error str -> throwIO $ ErrorCall $ file ++ ": " ++ str
-          Aeson.Success x -> return x
+        batches <- fileToBatches (jsonBatchDir </> file)
         void $ Glean.sendJsonBatch env repo batches Nothing
 
     Server -> do

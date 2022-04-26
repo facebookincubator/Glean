@@ -12,8 +12,6 @@ module GleanCLI.Write (WriteCommand, FinishCommand) where
 import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
-import Data.Aeson as Aeson
-import qualified Data.Aeson.Types as Aeson
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Char8 as B8
 import Data.Default
@@ -26,7 +24,6 @@ import qualified Data.Text as Text
 import Options.Applicative
 
 import Control.Concurrent.Stream (stream)
-import Foreign.CPP.Dynamic (parseJSONWithOptions, JSONOptions(..))
 import Thrift.Protocol.Compact (Compact)
 import Thrift.Protocol
 import Util.Control.Exception
@@ -275,7 +272,7 @@ instance Plugin WriteCommand where
                   Left parseError -> die 3 $ "Parse error: " <> parseError
                   Right result -> return result
               JsonFormat -> do
-                batches <- toBatches file
+                batches <- fileToBatches file
                 buildJsonBatch dbSchema Nothing batches
             _ <- Glean.writeSendAndRebaseQueue queue batch $
               \_ -> writeTQueue logMessages $ "Wrote " <> file
@@ -294,7 +291,7 @@ instance Plugin WriteCommand where
 
     write repo files max scribe Nothing JsonFormat = do
       stream max (forM_ files) $ \file -> do
-        batches <- toBatches file
+        batches <- fileToBatches file
         case scribe of
           Nothing -> void $ Glean.sendJsonBatch backend repo batches Nothing
           Just ScribeOptions
@@ -316,17 +313,3 @@ instance Plugin WriteCommand where
     resultToFailure Right{} = Nothing
     resultToFailure (Left err) = Just (show err)
 
-    toBatches :: FilePath -> IO [JsonFactBatch]
-    toBatches file = do
-      bs <- B.readFile file
-      r <- Foreign.CPP.Dynamic.parseJSONWithOptions opts bs
-      val <- case r of
-        Right val -> return val
-        Left err -> throwIO  $ ErrorCall $ file ++ ": " ++ Text.unpack err
-      case Aeson.parse parseJsonFactBatches val of
-        Aeson.Error str -> throwIO $ ErrorCall $ file ++ ": " ++ str
-        Aeson.Success x -> return x
-      where
-        -- folly's default recursion limit is 100, which is not enough for us.
-        opts = Foreign.CPP.Dynamic.JSONOptions
-          { json_recursionLimit = Just 500 }
