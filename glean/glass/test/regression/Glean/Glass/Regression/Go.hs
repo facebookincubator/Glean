@@ -17,7 +17,7 @@ import Glean.Glass.Types
 import Glean.Glass.Regression.Tests
 
 main :: IO ()
-main = mainTestIndexExternal "glass-regression-go" $ \get -> TestList
+main = mainTestIndex "glass-regression-go" Go.indexer $ \get -> TestList
   [ testDocumentSymbolListX
       (Path "glean/lang/go/tests/cases/xrefs/leaphash.go") get
   ]

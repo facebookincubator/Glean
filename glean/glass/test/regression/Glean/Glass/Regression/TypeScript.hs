@@ -10,13 +10,14 @@ module Glean.Glass.Regression.TypeScript (main) where
 
 import Test.HUnit
 
+import Glean.Indexer.Typescript as Typescript
 import Glean.Regression.Test
 
 import Glean.Glass.Types
 import Glean.Glass.Regression.Tests
 
 main :: IO ()
-main = mainTestIndexExternal "glass-regression-typescript" $ \get -> TestList
+main = mainTestIndex "glass-regression-typescript" Typescript.indexer $ \get -> TestList
   [ testDocumentSymbolListX
       (Path "glean/lang/typescript/tests/cases/xrefs/example.ts") get
   ]

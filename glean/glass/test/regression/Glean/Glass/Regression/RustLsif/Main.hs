@@ -6,13 +6,12 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-module Glean.Glass.Regression.Rust.Main ( main ) where
+module Glean.Glass.Regression.RustLsif.Main ( main ) where
 
 import System.Environment
-import qualified Glean.Glass.Regression.Rust as Glass
-import qualified Glean.LSIF.Driver as LSIF
+import qualified Glean.Glass.Regression.RustLsif as Glass
 
 main :: IO ()
-main = withArgs (LSIF.testArgs path LSIF.Rust) Glass.main
+main = withArgs ["--root", path] Glass.main
   where
-    path = "glean/lang/rust/tests/cases/xrefs"
+    path = "glean/lang/rust-lsif/tests/cases/xrefs"

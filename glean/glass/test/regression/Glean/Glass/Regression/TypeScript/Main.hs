@@ -10,9 +10,8 @@ module Glean.Glass.Regression.TypeScript.Main ( main ) where
 
 import System.Environment
 import qualified Glean.Glass.Regression.TypeScript as Glass
-import qualified Glean.LSIF.Driver as LSIF
 
 main :: IO ()
-main = withArgs (LSIF.testArgs path LSIF.TypeScript) Glass.main
+main = withArgs ["--root", path] Glass.main
   where
     path = "glean/lang/typescript/tests/cases/xrefs"

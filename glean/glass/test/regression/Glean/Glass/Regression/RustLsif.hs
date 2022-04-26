@@ -6,16 +6,17 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-module Glean.Glass.Regression.Rust (main) where
+module Glean.Glass.Regression.RustLsif (main) where
 
 import Test.HUnit
 
+import Glean.Indexer.RustLsif as RustLsif
 import Glean.Regression.Test
 
 import Glean.Glass.Types
 import Glean.Glass.Regression.Tests
 
 main :: IO ()
-main = mainTestIndexExternal "glass-regression-rust" $ \get -> TestList
+main = mainTestIndex "glass-regression-rust-lsif" RustLsif.indexer $ \get -> TestList
   [ testDocumentSymbolListX (Path "src/lib.rs") get
   ]
