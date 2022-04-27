@@ -33,6 +33,8 @@ module Data.LSIF.Env (
     addToResultSet,
     addToDefinitionFile,
     addHoverToResultSet,
+    addMonikerToResultSet,
+    insertSymbolKind,
     addFileContainsIds,
     shareDefinitionFile,
 
@@ -41,6 +43,8 @@ module Data.LSIF.Env (
     getResultSetOf,
     getDefinitionFile,
     getHoverTextId,
+    getMonikerId,
+    getSymbolKind,
 
     -- running a parser and getting results
     Parse,
@@ -106,6 +110,12 @@ data Env =
     -- textDocument/hover, edge from resultset to hovertext/lang
     hoverText :: !(IntMap (Id_ HoverTextTy)),
 
+    -- symbol, file and project "moniker" records
+    moniker :: !(IntMap (Id_ MonikerTy)),
+
+    -- associate definition rangeids with their kind
+    symbolKinds :: !(IntMap SymbolKind),
+
     -- track file "contains" edge associations from file to any ranges
     fileContains :: !(IntMap [IdVector])
 
@@ -149,6 +159,8 @@ data DefinitionTy
 data ResultSetTy
 data FileTy
 data HoverTextTy
+data MonikerTy
+data RangeTy
 
 tagResultSet :: Id -> Id_ ResultSetTy
 tagResultSet = id
@@ -162,7 +174,8 @@ tagDefinitions = id
 -- Build up some lookup tables for the assoc lists between refs/defs/decls/files
 -- to aid in generaing flatter angle facts
 emptyEnv :: Env
-emptyEnv = Env [] IMap.empty IMap.empty IMap.empty IMap.empty IMap.empty
+emptyEnv = Env [] IMap.empty IMap.empty IMap.empty
+  IMap.empty IMap.empty IMap.empty IMap.empty
 
 appendRoot :: Text -> Parse ()
 appendRoot path = modify' (\e -> e { root = path : root e })
@@ -216,6 +229,24 @@ addHoverToResultSet hoverId (Id resultSetId) = modify' $ \e ->
 
 getHoverTextId :: Id_ ResultSetTy -> Parse (Maybe (Id_ HoverTextTy))
 getHoverTextId = lookupIMapEnv hoverText
+
+addMonikerToResultSet :: Id_ MonikerTy -> Id_ ResultSetTy -> Parse ()
+addMonikerToResultSet monikerId (Id resultSetId) = modify' $ \e ->
+  e { moniker = IMap.insert
+        (fromIntegral resultSetId) monikerId (moniker e)
+  }
+
+getMonikerId :: Id_ MonikerTy -> Parse (Maybe (Id_ HoverTextTy))
+getMonikerId = lookupIMapEnv moniker
+
+insertSymbolKind :: Id_ RangeTy -> SymbolKind -> Parse ()
+insertSymbolKind (Id rangeId) kind = modify' $ \e ->
+  e { symbolKinds = IMap.insert
+        (fromIntegral rangeId) kind (symbolKinds e)
+  }
+
+getSymbolKind :: Id -> Parse (Maybe SymbolKind)
+getSymbolKind = lookupIMapEnv symbolKinds
 
 addFileContainsIds :: Id_ FileTy -> V.Vector Id -> Parse ()
 addFileContainsIds (Id fileId) contents = modify' $ \e ->

@@ -51,7 +51,8 @@ predicate EntityInfo:
        codemarkup.erlang.ErlangEntityKind { Entity, Kind })
     ) |
     codemarkup.cxx.CxxEntityInfo { Entity, Info } |
-    codemarkup.hack.HackEntityInfo { Entity, Info }
+    codemarkup.hack.HackEntityInfo { Entity, Info } |
+    codemarkup.lsif.EntityInfo { Entity, Info }
 
 # All entities defined in a src.File and their locations
 predicate FileEntityLocations:
