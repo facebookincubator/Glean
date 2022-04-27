@@ -234,7 +234,7 @@ prettyFunctionName (Cxx.FunctionName _ mkey) scope = case mkey of
     Cxx.FunctionName_key_literalOperator loname -> loname
     Cxx.FunctionName_key_conversionOperator mtype -> prettyType mtype
     Cxx.FunctionName_key_operator_ oname -> if is_lambda
-      then "lambda_" <> get_record_id scope
+      then "lambda_" <> getRecordId scope
       else oname
     Cxx.FunctionName_key_constructor _ -> owner_name
     Cxx.FunctionName_key_destructor _ -> "~" <> owner_name
@@ -246,8 +246,8 @@ prettyFunctionName (Cxx.FunctionName _ mkey) scope = case mkey of
           Text.null owner_name
         _ -> False
 
-get_record_id::Cxx.Scope -> Text
-get_record_id scope = case scope of
+getRecordId :: Cxx.Scope -> Text
+getRecordId scope = case scope of
   -- TODO: Make it better. Seems to be prone to errors
   Cxx.Scope_recordWithAccess (
     Cxx.Scope_recordWithAccess_ (

@@ -151,6 +151,7 @@ data FileInfo = FileInfo {
 
 -- | Get file metadata. Throw if we have no src.File
 -- This is the first point we might encounter an unindexed file path
+-- Note: we may not have lineoffsets, but this is not necessarily fatal
 getFileAndLines
   :: Glean.Repo -> GleanPath -> Glean.RepoHaxl u w (Either ErrorTy FileInfo)
 getFileAndLines fileRepo path = do
@@ -168,8 +169,7 @@ getFile :: GleanPath -> Glean.RepoHaxl u w (Either ErrorTy Src.File)
 getFile path = do
   mfile <- Glean.getFirstResult (query (Query.srcFile path))
   return $ case mfile of
-    Nothing -> Left $ NoSrcFileFact $
-      "No src.File fact for " <> gleanPath path
+    Nothing -> Left $ NoSrcFileFact $ "No src.File fact for " <> gleanPath path
     Just srcFile -> Right srcFile
 
 -- | Get the line offsets associated with a file
@@ -181,7 +181,7 @@ toLineOffsets file = do
     Nothing -> return Nothing
     Just offs -> Just . Range.lengthsToLineOffsets <$> Glean.keyOf offs
 
--- | Memorize the result of computing the line offsets on a file
+-- | Memoize the result of computing the line offsets on a file
 -- This provides up to 15x win for xrefs on large files
 memoLineOffsets :: Src.File -> Glean.RepoHaxl u w (Maybe Range.LineOffsets)
 memoLineOffsets file = do

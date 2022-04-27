@@ -7,7 +7,6 @@
 -}
 
 {-# OPTIONS_GHC -Wno-orphans #-}
-{-# LANGUAGE TypeApplications #-}
 
 module Glean.Glass.SymbolId.Erlang
   ({- instances -})

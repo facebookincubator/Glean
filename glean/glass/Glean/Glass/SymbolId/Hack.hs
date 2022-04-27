@@ -6,7 +6,6 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE TypeApplications #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 
 module Glean.Glass.SymbolId.Hack ( {- instances -} ) where
