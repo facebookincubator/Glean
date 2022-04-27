@@ -58,6 +58,8 @@ test::
 SCHEMAS= \
 	buck \
 	builtin \
+	code \
+	code_buck \
 	code_cxx \
 	code_erlang \
 	code_flow \
@@ -65,17 +67,29 @@ SCHEMAS= \
 	code_hs \
 	code_java \
 	code_lsif \
-	code_rust \
-	code_thrift \
-	code_buck \
 	codemarkup \
+	codemarkup_buck \
+	codemarkup_cxx \
+	codemarkup_erlang \
+	codemarkup_flow \
+	codemarkup_hack \
+	codemarkup_haskell \
+	codemarkup_lsif \
+	codemarkup_pp \
+	codemarkup_python \
+	codemarkup_rust \
+	codemarkup_thrift \
+	codemarkup_types \
 	code_pp \
 	code_python \
-	code \
+	code_rust \
+	code_thrift \
 	cxx1 \
 	docmarkup \
+	dyn \
 	erlang \
 	flow \
+	gencode \
 	glean_test \
 	graphql \
 	hack \
