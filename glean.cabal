@@ -639,6 +639,18 @@ library schema
         Glean.Schema.CodeJava
         Glean.Schema.CodeLsif
         Glean.Schema.Codemarkup
+        Glean.Schema.CodemarkupBuck
+        Glean.Schema.CodemarkupCxx
+        Glean.Schema.CodemarkupErlang
+        Glean.Schema.CodemarkupFlow
+        Glean.Schema.CodemarkupHack
+        Glean.Schema.CodemarkupHaskell
+        Glean.Schema.CodemarkupLsif
+        Glean.Schema.CodemarkupPp
+        Glean.Schema.CodemarkupPython
+        Glean.Schema.CodemarkupRust
+        Glean.Schema.CodemarkupThrift
+        Glean.Schema.CodemarkupTypes
         Glean.Schema.CodePp
         Glean.Schema.CodePython
         Glean.Schema.CodeRust
@@ -668,7 +680,7 @@ library schema
         Glean.Schema.Thrift
         Glean.Schema.Buck.Types
         Glean.Schema.Builtin.Types
-        Glean.Schema.Code.Types
+        Glean.Schema.CodeBuck.Types
         Glean.Schema.CodeCxx.Types
         Glean.Schema.CodeErlang.Types
         Glean.Schema.CodeFlow.Types
@@ -676,12 +688,24 @@ library schema
         Glean.Schema.CodeHs.Types
         Glean.Schema.CodeJava.Types
         Glean.Schema.CodeLsif.Types
-        Glean.Schema.CodeRust.Types
-        Glean.Schema.CodeThrift.Types
-        Glean.Schema.CodeBuck.Types
+        Glean.Schema.CodemarkupBuck.Types
+        Glean.Schema.CodemarkupCxx.Types
+        Glean.Schema.CodemarkupErlang.Types
+        Glean.Schema.CodemarkupFlow.Types
+        Glean.Schema.CodemarkupHack.Types
+        Glean.Schema.CodemarkupHaskell.Types
+        Glean.Schema.CodemarkupLsif.Types
+        Glean.Schema.CodemarkupPp.Types
+        Glean.Schema.CodemarkupPython.Types
+        Glean.Schema.CodemarkupRust.Types
+        Glean.Schema.CodemarkupThrift.Types
         Glean.Schema.Codemarkup.Types
+        Glean.Schema.CodemarkupTypes.Types
         Glean.Schema.CodePp.Types
         Glean.Schema.CodePython.Types
+        Glean.Schema.CodeRust.Types
+        Glean.Schema.CodeThrift.Types
+        Glean.Schema.Code.Types
         Glean.Schema.Cxx1.Types
         Glean.Schema.Docmarkup.Types
         Glean.Schema.Erlang.Types
@@ -725,12 +749,13 @@ library schema-query
         Glean.Schema.Query.CodeHs.Types
         Glean.Schema.Query.CodeJava.Types
         Glean.Schema.Query.CodeLsif.Types
-        Glean.Schema.Query.CodeRust.Types
-        Glean.Schema.Query.CodeThrift.Types
         Glean.Schema.Query.CodeBuck.Types
         Glean.Schema.Query.Codemarkup.Types
+        Glean.Schema.Query.CodemarkupTypes.Types
         Glean.Schema.Query.CodePp.Types
         Glean.Schema.Query.CodePython.Types
+        Glean.Schema.Query.CodeRust.Types
+        Glean.Schema.Query.CodeThrift.Types
         Glean.Schema.Query.Cxx1.Types
         Glean.Schema.Query.Docmarkup.Types
         Glean.Schema.Query.Erlang.Types
