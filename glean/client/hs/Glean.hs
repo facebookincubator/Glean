@@ -68,6 +68,8 @@ module Glean
   , PosixEpochTime(..)
   , StackedDbOpts(..)
   , LogDerivationResult
+  , SendJsonBatchOptions(..)
+  , Subst(..)
 
   -- * Repositories
   , Repo(..)

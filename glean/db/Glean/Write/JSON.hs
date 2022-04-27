@@ -58,9 +58,19 @@ import Glean.Util.Metric
 emptySubst :: (Point -> IO ()) -> (Point -> IO Subst.Subst)
 emptySubst f point = f point >> return Subst.empty
 
-syncWriteJsonBatch :: Env -> Repo -> SendJsonBatch -> IO ()
-syncWriteJsonBatch env repo batch = do
+syncWriteJsonBatch
+  :: Env
+  -> Repo
+  -> [Thrift.JsonFactBatch]
+  -> Maybe Thrift.SendJsonBatchOptions
+  -> IO ()
+syncWriteJsonBatch env repo batches opts = do
   tick <- beginTick 1
+  let batch =
+        Thrift.SendJsonBatch
+          { Thrift.sendJsonBatch_batches = batches
+          , Thrift.sendJsonBatch_options = opts
+          , Thrift.sendJsonBatch_remember = False }
   writeJsonBatch env repo batch tick
 
 writeJsonBatch

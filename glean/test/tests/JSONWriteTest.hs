@@ -25,7 +25,6 @@ import Glean.Angle
 import Glean.Init
 import Glean.Database.Test
 import Glean.Write.JSON (syncWriteJsonBatch)
-import Glean.Types
 import qualified Glean.Schema.GleanTest.Types as Glean.Test
 import qualified Glean.Schema.Sys.Types as Sys
 
@@ -55,9 +54,8 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
     options' = Just SendJsonBatchOptions
       { sendJsonBatchOptions_no_base64_binary = False
       }
-    mkSendJsonBatch batches options = SendJsonBatch batches options False
 
-  _ <- syncWriteJsonBatch env repo $ mkSendJsonBatch batches options
+  _ <- syncWriteJsonBatch env repo batches options
 
   results <- runQuery_ env repo $ query $
     predicate @Sys.Blob (byteArray "hello")
@@ -72,7 +70,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
         [ "{ \"id\": 1025, \"key\": \"test\"}" -- overlaps with previous
         ]
       ]
-  _ <- syncWriteJsonBatch env repo $ mkSendJsonBatch batches options
+  _ <- syncWriteJsonBatch env repo batches options
   results <- runQuery_ env repo $ query $
     predicate @Sys.Blob (byteArray "test")
   test_blob_id <- case results of
@@ -89,7 +87,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
             -- most of the fields are defaulted
         ]
       ]
-  _ <- syncWriteJsonBatch env repo $ mkSendJsonBatch batches options
+  _ <- syncWriteJsonBatch env repo batches options
   results <- runQuery_ env repo $ query $
     predicate @Glean.Test.Predicate wild
   test_predicate_id <- case results of
@@ -99,7 +97,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
       return 0
 
   -- insert the same fact again, ensure we still have just one
-  _ <- syncWriteJsonBatch env repo $ mkSendJsonBatch batches options
+  _ <- syncWriteJsonBatch env repo batches options
   results <- runQuery_ env repo $ query $
     predicate @Glean.Test.Predicate wild
   assertBool "syncWriteJsonBatch - glean.test.Predicate 2" $ case results of
@@ -117,7 +115,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
           "}, \"pred\" : 1025}}"
         ]
       ]
-  _ <- syncWriteJsonBatch env repo $ mkSendJsonBatch batches options
+  _ <- syncWriteJsonBatch env repo batches options
   results <- runQuery_ env repo $ query $
     predicate @Glean.Test.Predicate $
       rec $ field @"pred" (byteArray "test2") end
@@ -136,7 +134,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
               Glean.Test.kitchenSink_1_pred = Sys.Blob 1028 (Just "blobby") }
         ]
       ]
-  _ <- syncWriteJsonBatch env repo $ mkSendJsonBatch batches options'
+  _ <- syncWriteJsonBatch env repo batches options'
   results <- runQuery_ env repo $ query $
     predicate @Glean.Test.Predicate_1 $
       rec $ field @"pred" (byteArray "blobby") end
@@ -167,7 +165,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
             }
         ]
       ]
-  _ <- syncWriteJsonBatch env repo $ mkSendJsonBatch batches options'
+  _ <- syncWriteJsonBatch env repo batches options'
   results <- runQuery_ env repo $ query $
     predicate @Glean.Test.Predicate $
       rec $ field @"pred" (byteArray "abc") end
@@ -182,7 +180,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
         [ serializeJSON test_pred
         ]
       ]
-  _ <- syncWriteJsonBatch env repo $ mkSendJsonBatch batches options
+  _ <- syncWriteJsonBatch env repo batches options
   results <- runQuery_ env repo $ query $
     predicate @Glean.Test.Predicate $
       rec $ field @"pred" (byteArray "test2") end
@@ -200,7 +198,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
         , "{ \"id\": 4611686018427387903, \"key\": \"test5\"}"
         ]
       ]
-  _ <- syncWriteJsonBatch env repo $ mkSendJsonBatch batches options
+  _ <- syncWriteJsonBatch env repo batches options
   results <- runQuery_ env repo $ query $
     predicate @Sys.Blob (byteArray "test5")
   print results
@@ -216,7 +214,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
         | s <- sequence ["ab","bc","cd"]
         ]
       ]
-  _ <- syncWriteJsonBatch env repo $ mkSendJsonBatch batches options
+  _ <- syncWriteJsonBatch env repo batches options
   results <- runQuery_ env repo $ query $
     predicate @Sys.Blob (byteArray "bcd")
   print results
@@ -237,7 +235,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
           { "key": { "sum_" : { "d": 10000 }, "pred" : 10000}}
         |]]
       ]
-  _ <- syncWriteJsonBatch env repo $ mkSendJsonBatch batches options
+  _ <- syncWriteJsonBatch env repo batches options
   results <- runQuery_ env repo $ query $
     predicate @Glean.Test.Predicate $
       rec $ field @"pred" (byteArray "abba") end
@@ -258,7 +256,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
         }
         |]]  --  id 10000 is defined and used in the same fact
       ]
-  _ <- syncWriteJsonBatch env repo $ mkSendJsonBatch batches options
+  _ <- syncWriteJsonBatch env repo batches options
   results <- runQuery_ env repo $ query $
     predicate @Glean.Test.Predicate $
       rec $ field @"pred" (byteArray "abba") end
@@ -288,7 +286,7 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
         }
         |]]
       ]
-  _ <- syncWriteJsonBatch env repo $ mkSendJsonBatch batches options
+  _ <- syncWriteJsonBatch env repo batches options
   results <- runQuery_ env repo $ query $
     predicate @Glean.Test.Predicate $
       rec $ field @"pred" (byteArray "baab") end

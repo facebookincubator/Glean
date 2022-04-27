@@ -41,6 +41,7 @@ import qualified Thrift.Server.CppServer as CppServer
 import qualified Thrift.Server.Types as Thrift.Server
 
 import qualified Glean
+import qualified Glean.LocalOrRemote as LocalOrRemote
 import Glean.Backend (BackendKind(..), LocalOrRemote(..), ThriftBackend(..))
 import Glean.Derive
 import qualified Glean.Handler as GleanHandler
@@ -123,7 +124,7 @@ execExternal Ext{..} env repo IndexerParams{..} = do index; derive
       files <- listDirectory jsonBatchDir
       stream maxConcurrency (forM_ files) $ \file -> do
         batches <- fileToBatches (jsonBatchDir </> file)
-        void $ Glean.sendJsonBatch env repo batches Nothing
+        void $ LocalOrRemote.sendJsonBatch env repo batches Nothing
 
     Server -> do
       let
@@ -151,7 +152,7 @@ execExternal Ext{..} env repo IndexerParams{..} = do index; derive
   subst _ "" = ""
 
 sendJsonBatches
-  :: Glean.Backend b
+  :: LocalOrRemote.LocalOrRemote b
   => b
   -> Glean.Repo
   -> String
@@ -161,4 +162,4 @@ sendJsonBatches backend repo msg val = do
   batches <- case Aeson.parse parseJsonFactBatches val of
     Aeson.Error s -> throwIO $ ErrorCall $ msg <> ": " <> s
     Aeson.Success x -> return x
-  void $ Glean.sendJsonBatch backend repo batches Nothing
+  void $ LocalOrRemote.sendJsonBatch backend repo batches Nothing

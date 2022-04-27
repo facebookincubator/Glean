@@ -31,6 +31,7 @@ import Util.IO
 import Util.OptParse
 
 import Glean hiding (options)
+import qualified Glean.LocalOrRemote as LocalOrRemote
 import Glean.Database.Schema
 import Glean.Datasource.Scribe.Write
 import Glean.Types as Thrift
@@ -293,7 +294,8 @@ instance Plugin WriteCommand where
       stream max (forM_ files) $ \file -> do
         batches <- fileToBatches file
         case scribe of
-          Nothing -> void $ Glean.sendJsonBatch backend repo batches Nothing
+          Nothing ->
+            void $ LocalOrRemote.sendJsonBatch backend repo batches Nothing
           Just ScribeOptions
             { writeFromScribe = WriteFromScribe{..}, .. } ->
               scribeWriteBatches

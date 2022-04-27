@@ -55,7 +55,7 @@ import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types as Thrift
 import Glean.Util.ConfigProvider
 import qualified Glean.Util.ThriftSource as ThriftSource
-import Glean.Write.SendBatch
+import Glean.Write.JSON
 
 import TestDB
 
@@ -151,7 +151,7 @@ schemaUnversioned = TestCase $ do
       |]
 
   let fill env repo =
-        void $ sendJsonBatch env repo
+        void $ syncWriteJsonBatch env repo
           [ mkBatch (PredicateRef "test.P" 1)
               [ [s|{ "key" : { "a": 1 } }|] ]
           , mkBatch (PredicateRef "test.P" 2)
@@ -521,14 +521,14 @@ writeEphemeralPredicate = TestCase $
     -- try to write a fact from the new schema
     withTestEnv [setRoot root, setSchemaPath schema_v1_file] $ \env -> do
       -- this should work
-      void $ sendJsonBatch env repo
+      void $ syncWriteJsonBatch env repo
         [ mkBatch (PredicateRef "test.P" 1)
             [ "{ \"key\" : {} }" ]
         ]
         Nothing
 
       -- this should fail
-      r <- try $ sendJsonBatch env repo
+      r <- try $ syncWriteJsonBatch env repo
         [ mkBatch (PredicateRef "test.P" 2)
             [ "{ \"key\" : {} }" ]
         ]
@@ -575,7 +575,7 @@ backwardCompatDeriving = TestCase $
     -- create a DB with schema v0, create a fact of P.1
     repo0 <- withEmptyTestDB [setRoot root, setSchemaPath schema_v0_file] $
       \env repo -> do
-        void $ sendJsonBatch env repo
+        void $ syncWriteJsonBatch env repo
           [ mkBatch (PredicateRef "test.P" 1)
               [ "{ \"key\" : {} }" ]
           ]
@@ -597,7 +597,7 @@ backwardCompatDeriving = TestCase $
     -- create a new DB with schema_v1, create a fact of P.2
     repo1 <- withEmptyTestDB [setRoot root, setSchemaPath schema_v1_file] $
       \env repo -> do
-        void $ sendJsonBatch env repo
+        void $ syncWriteJsonBatch env repo
           [ mkBatch (PredicateRef "test.P" 2)
               [ "{ \"key\" : {} }" ]
           ]
@@ -668,7 +668,7 @@ deriveDefault = TestCase $
 
     let
       mkP version env repo =
-        void $ sendJsonBatch env repo
+        void $ syncWriteJsonBatch env repo
           [ mkBatch (PredicateRef "test.P" version)
               [ "{ \"key\" : {} }" ]
           ]
@@ -1826,7 +1826,7 @@ withSchemaAndFacts customSettings schema facts query act =
 
   -- create db and write facts
   repo <- withEmptyTestDB settings $ \env repo -> do
-      void $ sendJsonBatch env repo facts Nothing
+      void $ syncWriteJsonBatch env repo facts Nothing
       completeTestDB env repo
       return repo
 
@@ -2001,7 +2001,7 @@ thinSchemaTest = TestCase $
     -- create a DB with schema v0, create a fact of test.P.1
     repo0 <- withEmptyTestDB [setRoot root, setSchemaPath schema_v0_file]
       $ \env repo -> do
-        void $ sendJsonBatch env repo
+        void $ syncWriteJsonBatch env repo
           [ mkBatch (PredicateRef "test.P" 1)
               [ "{ \"key\" : {} }" ]
           ]
