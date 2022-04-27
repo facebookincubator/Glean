@@ -174,7 +174,7 @@ type TailerKey = (Text, Text, Maybe Int)
 -- | Information about a derived stored predicate being derived
 data Derivation = Derivation
   { derivationStart :: TimePoint
-  , derivationQueryingFinished :: Bool
+  , derivationFinished :: Bool
   , derivationStats :: Thrift.UserQueryStats
   , derivationPendingWrites :: [Thrift.Handle]
   , derivationError :: Maybe (TimePoint, SomeException)
@@ -184,7 +184,7 @@ data Derivation = Derivation
 instance NFData Derivation where
   rnf Derivation{..} =
     derivationStart
-    `seq` derivationQueryingFinished
+    `seq` derivationFinished
     `seq` rnf derivationStats
     `seq` rnf derivationPendingWrites
     `seq` maybe () (`seq` ()) derivationError

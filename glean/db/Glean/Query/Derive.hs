@@ -11,6 +11,7 @@ module Glean.Query.Derive
   , deriveStored
   ) where
 
+import System.Timeout
 import Control.DeepSeq
 import Control.Exception
 import Control.Concurrent
@@ -134,21 +135,21 @@ deriveStoredImpl env@Env{..} log repo req@Thrift.DerivePredicateQuery{..} = do
   now <- getTimePoint
 
   mask $ \unmask -> do
-  join $ unmask $ atomically $ do
-    running <- HashMap.lookup (repo, pred) <$> readTVar envDerivations
-    case running of
-      Just derivation -> return $ return derivation
-      Nothing -> do
-        checkConstraints odbSchema pred
-        let new = newDerivation now handle
-        save env repo pred new
-        return $ handleAll (onErr pred) $ unmask $ do
-          kickOff pred
-          return new
+    join $ unmask $ atomically $ do
+      running <- HashMap.lookup (repo, pred) <$> readTVar envDerivations
+      case running of
+        Just derivation -> return $ return derivation
+        Nothing -> do
+          checkConstraints odbSchema pred
+          let new = newDerivation now handle
+          save env repo pred new
+          return $ handleAll (onErr pred) $ unmask $ do
+            kickOff pred
+            shortWait env pred new
   where
     newDerivation now handle = Derivation
       { derivationStart = now
-      , derivationQueryingFinished = False
+      , derivationFinished = False
       , derivationStats = def
       , derivationPendingWrites = []
       , derivationError = Nothing
@@ -160,6 +161,21 @@ deriveStoredImpl env@Env{..} log repo req@Thrift.DerivePredicateQuery{..} = do
       spawn_ envWarden $ handleAll (onErr pred) $ do
         runDerivation env repo pred req
         enqueueCheckpoint env repo $ void $ finishDerivation env log repo pred
+
+    -- When we kick off a new derivation, wait a short time (1s) for
+    -- it to finish. This enables tests and short indexing runs to
+    -- avoid the 1s wait per derivation that would normally happen
+    -- before we poll for the result.
+    shortWait :: Env -> PredicateRef -> Derivation -> IO Derivation
+    shortWait Env{..} pred drv = do
+      r <- timeout 1000000 $ atomically $ do
+        m <- HashMap.lookup (repo, pred) <$> readTVar envDerivations
+        case m of
+          Nothing -> throwSTM $ toException UnknownDerivation
+          Just d -> do
+            when (not (isFinished d)) retry
+            return d
+      return (fromMaybe drv r)
 
     onErr :: PredicateRef -> SomeException -> IO a
     onErr pred e = do
@@ -409,10 +425,9 @@ runDerivation env repo pred Thrift.DerivePredicateQuery{..} = do
         { userQueryOptions_continuation = Just cont }
       }
 
-    addProgress (stats, mcont, mWriteHandle) =
+    addProgress (stats, _mcont, mWriteHandle) =
       void $ overDerivation env repo pred $ \d@Derivation{..} -> d
-        { derivationQueryingFinished = isNothing mcont
-        , derivationStats = mergeStats derivationStats stats
+        { derivationStats = mergeStats derivationStats stats
         , derivationPendingWrites = maybeToList mWriteHandle
             ++ derivationPendingWrites
         }
@@ -443,6 +458,7 @@ finishDerivation
   -> PredicateRef
   -> IO Derivation
 finishDerivation env log repo pred = do
+  vlog 1 $ "finishDerivation: " <> show pred
   derivation <- atomically (getDerivation env repo pred)
   finished <- finishedWrites derivation
   when (isNothing (derivationError derivation) && isRight finished)
@@ -461,6 +477,11 @@ finishDerivation env log repo pred = do
     withProgress now finished d =
       let pendingWrites = derivationPendingWrites d \\ fromRight [] finished in
       d { derivationPendingWrites = pendingWrites
+        , derivationFinished = True
+          -- We can only record this derivation as finished once the
+          -- finishDerivation checkpoint has run, otherwise the DB
+          -- will not close successfully. Also, the next derivation
+          -- depends on finishOwnership having completed.
         , derivationError =
             derivationError d
             <|> case finished of
@@ -510,8 +531,7 @@ instance Exception DerivationFailed
 
 isFinished :: Derivation -> Bool
 isFinished Derivation{..} =
-    isJust derivationError ||
-    (derivationQueryingFinished && null derivationPendingWrites)
+    isJust derivationError || derivationFinished
 
 isWriteFinished
   :: Database.Env

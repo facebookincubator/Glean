@@ -118,7 +118,7 @@ addDummyDerivationForPredicate pred env =
     $ modifyTVar' (envDerivations env)
     $ HashMap.insert (repo, pred) Derivation
       { derivationStart = undefined
-      , derivationQueryingFinished = undefined
+      , derivationFinished = undefined
       , derivationStats = error "wrong repo!"
       , derivationPendingWrites = undefined
       , derivationError = undefined
