@@ -34,6 +34,7 @@ import System.FilePath
 import System.IO.Temp
 import System.Process
 
+import Control.Concurrent.Stream (stream)
 import Facebook.Fb303
 import Facebook.Service
 import qualified Thrift.Server.CppServer as CppServer
@@ -109,13 +110,18 @@ execExternal Ext{..} env repo IndexerParams{..} = do index; derive
     , ("TEST_ROOT", indexerRoot)
     ]
 
+  -- We could make this configurable, but there's not a lot to be
+  -- gained and it would have to be plumbed through all the separate
+  -- language indexers that build on External.
+  maxConcurrency = 20 :: Int
+
   index = case extFlavour of
     Json -> do
       withSystemTempDirectory "glean-json" $ \jsonBatchDir -> do
       let jsonVars = HashMap.insert "JSON_BATCH_DIR" jsonBatchDir vars
       callProcess extBinary (map (subst jsonVars) extArgs)
       files <- listDirectory jsonBatchDir
-      forM_ files $ \file -> do
+      stream maxConcurrency (forM_ files) $ \file -> do
         batches <- fileToBatches (jsonBatchDir </> file)
         void $ Glean.sendJsonBatch env repo batches Nothing
 
