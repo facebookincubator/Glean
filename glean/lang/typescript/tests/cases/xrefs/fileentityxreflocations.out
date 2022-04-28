@@ -2,8 +2,10 @@
   "@generated",
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "Error",
           "file": {
@@ -33,37 +35,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "global/node_modules/typescript-lsif/lib/lib.es5.d.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 972,
-                      "columnBegin": 11,
-                      "lineEnd": 972,
-                      "columnEnd": 16
-                    },
-                    "fullRange": {
-                      "lineBegin": 972,
-                      "columnBegin": 1,
-                      "lineEnd": 976,
-                      "columnEnd": 2
-                    },
-                    "text": { "key": "Error" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "global/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 972,
+                "columnBegin": 11,
+                "lineEnd": 972,
+                "columnEnd": 16
+              },
+              "fullRange": {
+                "lineBegin": 972,
+                "columnBegin": 1,
+                "lineEnd": 976,
+                "columnEnd": 2
+              },
+              "text": { "key": "Error" }
             }
           }
         }
@@ -72,8 +68,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "Error",
           "file": {
@@ -103,37 +101,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "global/node_modules/typescript-lsif/lib/lib.es5.d.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 972,
-                      "columnBegin": 11,
-                      "lineEnd": 972,
-                      "columnEnd": 16
-                    },
-                    "fullRange": {
-                      "lineBegin": 972,
-                      "columnBegin": 1,
-                      "lineEnd": 976,
-                      "columnEnd": 2
-                    },
-                    "text": { "key": "Error" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "global/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 972,
+                "columnBegin": 11,
+                "lineEnd": 972,
+                "columnEnd": 16
+              },
+              "fullRange": {
+                "lineBegin": 972,
+                "columnBegin": 1,
+                "lineEnd": 976,
+                "columnEnd": 2
+              },
+              "text": { "key": "Error" }
             }
           }
         }
@@ -142,8 +134,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "Error",
           "file": {
@@ -173,37 +167,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "global/node_modules/typescript-lsif/lib/lib.es5.d.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 984,
-                      "columnBegin": 13,
-                      "lineEnd": 984,
-                      "columnEnd": 18
-                    },
-                    "fullRange": {
-                      "lineBegin": 984,
-                      "columnBegin": 13,
-                      "lineEnd": 984,
-                      "columnEnd": 36
-                    },
-                    "text": { "key": "Error" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "global/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 984,
+                "columnBegin": 13,
+                "lineEnd": 984,
+                "columnEnd": 18
+              },
+              "fullRange": {
+                "lineBegin": 984,
+                "columnBegin": 13,
+                "lineEnd": 984,
+                "columnEnd": 36
+              },
+              "text": { "key": "Error" }
             }
           }
         }
@@ -212,8 +200,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "Error",
           "file": {
@@ -243,37 +233,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "global/node_modules/typescript-lsif/lib/lib.es5.d.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 984,
-                      "columnBegin": 13,
-                      "lineEnd": 984,
-                      "columnEnd": 18
-                    },
-                    "fullRange": {
-                      "lineBegin": 984,
-                      "columnBegin": 13,
-                      "lineEnd": 984,
-                      "columnEnd": 36
-                    },
-                    "text": { "key": "Error" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "global/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 984,
+                "columnBegin": 13,
+                "lineEnd": 984,
+                "columnEnd": 18
+              },
+              "fullRange": {
+                "lineBegin": 984,
+                "columnBegin": 13,
+                "lineEnd": 984,
+                "columnEnd": 36
+              },
+              "text": { "key": "Error" }
             }
           }
         }
@@ -282,8 +266,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "Git",
           "file": {
@@ -313,37 +299,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 14,
-                      "columnBegin": 7,
-                      "lineEnd": 14,
-                      "columnEnd": 10
-                    },
-                    "fullRange": {
-                      "lineBegin": 14,
-                      "columnBegin": 1,
-                      "lineEnd": 42,
-                      "columnEnd": 4
-                    },
-                    "text": { "key": "Git" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 14,
+                "columnBegin": 7,
+                "lineEnd": 14,
+                "columnEnd": 10
+              },
+              "fullRange": {
+                "lineBegin": 14,
+                "columnBegin": 1,
+                "lineEnd": 42,
+                "columnEnd": 4
+              },
+              "text": { "key": "Git" }
             }
           }
         }
@@ -352,8 +332,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "Git",
           "file": {
@@ -383,37 +365,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 14,
-                      "columnBegin": 7,
-                      "lineEnd": 14,
-                      "columnEnd": 10
-                    },
-                    "fullRange": {
-                      "lineBegin": 14,
-                      "columnBegin": 1,
-                      "lineEnd": 42,
-                      "columnEnd": 4
-                    },
-                    "text": { "key": "Git" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 14,
+                "columnBegin": 7,
+                "lineEnd": 14,
+                "columnEnd": 10
+              },
+              "fullRange": {
+                "lineBegin": 14,
+                "columnBegin": 1,
+                "lineEnd": 42,
+                "columnEnd": 4
+              },
+              "text": { "key": "Git" }
             }
           }
         }
@@ -422,8 +398,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "addRes",
           "file": {
@@ -453,37 +431,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 35,
-                      "columnBegin": 11,
-                      "lineEnd": 35,
-                      "columnEnd": 17
-                    },
-                    "fullRange": {
-                      "lineBegin": 35,
-                      "columnBegin": 11,
-                      "lineEnd": 35,
-                      "columnEnd": 74
-                    },
-                    "text": { "key": "addRes" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 35,
+                "columnBegin": 11,
+                "lineEnd": 35,
+                "columnEnd": 17
+              },
+              "fullRange": {
+                "lineBegin": 35,
+                "columnBegin": 11,
+                "lineEnd": 35,
+                "columnEnd": 74
+              },
+              "text": { "key": "addRes" }
             }
           }
         }
@@ -492,8 +464,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "addRes",
           "file": {
@@ -523,37 +497,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 35,
-                      "columnBegin": 11,
-                      "lineEnd": 35,
-                      "columnEnd": 17
-                    },
-                    "fullRange": {
-                      "lineBegin": 35,
-                      "columnBegin": 11,
-                      "lineEnd": 35,
-                      "columnEnd": 74
-                    },
-                    "text": { "key": "addRes" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 35,
+                "columnBegin": 11,
+                "lineEnd": 35,
+                "columnEnd": 17
+              },
+              "fullRange": {
+                "lineBegin": 35,
+                "columnBegin": 11,
+                "lineEnd": 35,
+                "columnEnd": 74
+              },
+              "text": { "key": "addRes" }
             }
           }
         }
@@ -562,8 +530,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "addRes",
           "file": {
@@ -593,37 +563,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 35,
-                      "columnBegin": 11,
-                      "lineEnd": 35,
-                      "columnEnd": 17
-                    },
-                    "fullRange": {
-                      "lineBegin": 35,
-                      "columnBegin": 11,
-                      "lineEnd": 35,
-                      "columnEnd": 74
-                    },
-                    "text": { "key": "addRes" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 35,
+                "columnBegin": 11,
+                "lineEnd": 35,
+                "columnEnd": 17
+              },
+              "fullRange": {
+                "lineBegin": 35,
+                "columnBegin": 11,
+                "lineEnd": 35,
+                "columnEnd": 74
+              },
+              "text": { "key": "addRes" }
             }
           }
         }
@@ -632,8 +596,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "addRes",
           "file": {
@@ -663,37 +629,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 35,
-                      "columnBegin": 11,
-                      "lineEnd": 35,
-                      "columnEnd": 17
-                    },
-                    "fullRange": {
-                      "lineBegin": 35,
-                      "columnBegin": 11,
-                      "lineEnd": 35,
-                      "columnEnd": 74
-                    },
-                    "text": { "key": "addRes" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 35,
+                "columnBegin": 11,
+                "lineEnd": 35,
+                "columnEnd": 17
+              },
+              "fullRange": {
+                "lineBegin": 35,
+                "columnBegin": 11,
+                "lineEnd": 35,
+                "columnEnd": 74
+              },
+              "text": { "key": "addRes" }
             }
           }
         }
@@ -702,8 +662,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "dir",
           "file": {
@@ -733,37 +695,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 15,
-                      "columnBegin": 23,
-                      "lineEnd": 15,
-                      "columnEnd": 26
-                    },
-                    "fullRange": {
-                      "lineBegin": 15,
-                      "columnBegin": 15,
-                      "lineEnd": 15,
-                      "columnEnd": 34
-                    },
-                    "text": { "key": "dir" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 15,
+                "columnBegin": 23,
+                "lineEnd": 15,
+                "columnEnd": 26
+              },
+              "fullRange": {
+                "lineBegin": 15,
+                "columnBegin": 15,
+                "lineEnd": 15,
+                "columnEnd": 34
+              },
+              "text": { "key": "dir" }
             }
           }
         }
@@ -772,8 +728,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "dir",
           "file": {
@@ -803,37 +761,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 15,
-                      "columnBegin": 23,
-                      "lineEnd": 15,
-                      "columnEnd": 26
-                    },
-                    "fullRange": {
-                      "lineBegin": 15,
-                      "columnBegin": 15,
-                      "lineEnd": 15,
-                      "columnEnd": 34
-                    },
-                    "text": { "key": "dir" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 15,
+                "columnBegin": 23,
+                "lineEnd": 15,
+                "columnEnd": 26
+              },
+              "fullRange": {
+                "lineBegin": 15,
+                "columnBegin": 15,
+                "lineEnd": 15,
+                "columnEnd": 34
+              },
+              "text": { "key": "dir" }
             }
           }
         }
@@ -842,8 +794,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "dir",
           "file": {
@@ -873,37 +827,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 15,
-                      "columnBegin": 23,
-                      "lineEnd": 15,
-                      "columnEnd": 26
-                    },
-                    "fullRange": {
-                      "lineBegin": 15,
-                      "columnBegin": 15,
-                      "lineEnd": 15,
-                      "columnEnd": 34
-                    },
-                    "text": { "key": "dir" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 15,
+                "columnBegin": 23,
+                "lineEnd": 15,
+                "columnEnd": 26
+              },
+              "fullRange": {
+                "lineBegin": 15,
+                "columnBegin": 15,
+                "lineEnd": 15,
+                "columnEnd": 34
+              },
+              "text": { "key": "dir" }
             }
           }
         }
@@ -912,8 +860,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "dir",
           "file": {
@@ -943,37 +893,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 15,
-                      "columnBegin": 23,
-                      "lineEnd": 15,
-                      "columnEnd": 26
-                    },
-                    "fullRange": {
-                      "lineBegin": 15,
-                      "columnBegin": 15,
-                      "lineEnd": 15,
-                      "columnEnd": 34
-                    },
-                    "text": { "key": "dir" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 15,
+                "columnBegin": 23,
+                "lineEnd": 15,
+                "columnEnd": 26
+              },
+              "fullRange": {
+                "lineBegin": 15,
+                "columnBegin": 15,
+                "lineEnd": 15,
+                "columnEnd": 34
+              },
+              "text": { "key": "dir" }
             }
           }
         }
@@ -982,8 +926,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "dir",
           "file": {
@@ -1013,37 +959,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 15,
-                      "columnBegin": 23,
-                      "lineEnd": 15,
-                      "columnEnd": 26
-                    },
-                    "fullRange": {
-                      "lineBegin": 15,
-                      "columnBegin": 15,
-                      "lineEnd": 15,
-                      "columnEnd": 34
-                    },
-                    "text": { "key": "dir" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 15,
+                "columnBegin": 23,
+                "lineEnd": 15,
+                "columnEnd": 26
+              },
+              "fullRange": {
+                "lineBegin": 15,
+                "columnBegin": 15,
+                "lineEnd": 15,
+                "columnEnd": 34
+              },
+              "text": { "key": "dir" }
             }
           }
         }
@@ -1052,8 +992,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "fs",
           "file": {
@@ -1083,37 +1025,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 9,
-                      "columnBegin": 8,
-                      "lineEnd": 9,
-                      "columnEnd": 10
-                    },
-                    "fullRange": {
-                      "lineBegin": 9,
-                      "columnBegin": 8,
-                      "lineEnd": 9,
-                      "columnEnd": 10
-                    },
-                    "text": { "key": "fs" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 9,
+                "columnBegin": 8,
+                "lineEnd": 9,
+                "columnEnd": 10
+              },
+              "fullRange": {
+                "lineBegin": 9,
+                "columnBegin": 8,
+                "lineEnd": 9,
+                "columnEnd": 10
+              },
+              "text": { "key": "fs" }
             }
           }
         }
@@ -1122,8 +1058,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "os",
           "file": {
@@ -1153,37 +1091,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 10,
-                      "columnBegin": 8,
-                      "lineEnd": 10,
-                      "columnEnd": 10
-                    },
-                    "fullRange": {
-                      "lineBegin": 10,
-                      "columnBegin": 8,
-                      "lineEnd": 10,
-                      "columnEnd": 10
-                    },
-                    "text": { "key": "os" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 10,
+                "columnBegin": 8,
+                "lineEnd": 10,
+                "columnEnd": 10
+              },
+              "fullRange": {
+                "lineBegin": 10,
+                "columnBegin": 8,
+                "lineEnd": 10,
+                "columnEnd": 10
+              },
+              "text": { "key": "os" }
             }
           }
         }
@@ -1192,8 +1124,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "path",
           "file": {
@@ -1223,37 +1157,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 11,
-                      "columnBegin": 8,
-                      "lineEnd": 11,
-                      "columnEnd": 12
-                    },
-                    "fullRange": {
-                      "lineBegin": 11,
-                      "columnBegin": 8,
-                      "lineEnd": 11,
-                      "columnEnd": 12
-                    },
-                    "text": { "key": "path" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 11,
+                "columnBegin": 8,
+                "lineEnd": 11,
+                "columnEnd": 12
+              },
+              "fullRange": {
+                "lineBegin": 11,
+                "columnBegin": 8,
+                "lineEnd": 11,
+                "columnEnd": 12
+              },
+              "text": { "key": "path" }
             }
           }
         }
@@ -1262,8 +1190,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "repoDir",
           "file": {
@@ -1293,37 +1223,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 47,
-                      "columnBegin": 9,
-                      "lineEnd": 47,
-                      "columnEnd": 16
-                    },
-                    "fullRange": {
-                      "lineBegin": 47,
-                      "columnBegin": 9,
-                      "lineEnd": 47,
-                      "columnEnd": 74
-                    },
-                    "text": { "key": "repoDir" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 47,
+                "columnBegin": 9,
+                "lineEnd": 47,
+                "columnEnd": 16
+              },
+              "fullRange": {
+                "lineBegin": 47,
+                "columnBegin": 9,
+                "lineEnd": 47,
+                "columnEnd": 74
+              },
+              "text": { "key": "repoDir" }
             }
           }
         }
@@ -1332,8 +1256,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "res",
           "file": {
@@ -1363,37 +1289,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 16,
-                      "columnBegin": 11,
-                      "lineEnd": 16,
-                      "columnEnd": 14
-                    },
-                    "fullRange": {
-                      "lineBegin": 16,
-                      "columnBegin": 11,
-                      "lineEnd": 16,
-                      "columnEnd": 65
-                    },
-                    "text": { "key": "res" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 16,
+                "columnBegin": 11,
+                "lineEnd": 16,
+                "columnEnd": 14
+              },
+              "fullRange": {
+                "lineBegin": 16,
+                "columnBegin": 11,
+                "lineEnd": 16,
+                "columnEnd": 65
+              },
+              "text": { "key": "res" }
             }
           }
         }
@@ -1402,8 +1322,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "res",
           "file": {
@@ -1433,37 +1355,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 16,
-                      "columnBegin": 11,
-                      "lineEnd": 16,
-                      "columnEnd": 14
-                    },
-                    "fullRange": {
-                      "lineBegin": 16,
-                      "columnBegin": 11,
-                      "lineEnd": 16,
-                      "columnEnd": 65
-                    },
-                    "text": { "key": "res" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 16,
+                "columnBegin": 11,
+                "lineEnd": 16,
+                "columnEnd": 14
+              },
+              "fullRange": {
+                "lineBegin": 16,
+                "columnBegin": 11,
+                "lineEnd": 16,
+                "columnEnd": 65
+              },
+              "text": { "key": "res" }
             }
           }
         }
@@ -1472,8 +1388,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "res",
           "file": {
@@ -1503,37 +1421,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 16,
-                      "columnBegin": 11,
-                      "lineEnd": 16,
-                      "columnEnd": 14
-                    },
-                    "fullRange": {
-                      "lineBegin": 16,
-                      "columnBegin": 11,
-                      "lineEnd": 16,
-                      "columnEnd": 65
-                    },
-                    "text": { "key": "res" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 16,
+                "columnBegin": 11,
+                "lineEnd": 16,
+                "columnEnd": 14
+              },
+              "fullRange": {
+                "lineBegin": 16,
+                "columnBegin": 11,
+                "lineEnd": 16,
+                "columnEnd": 65
+              },
+              "text": { "key": "res" }
             }
           }
         }
@@ -1542,8 +1454,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "res",
           "file": {
@@ -1573,37 +1487,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 16,
-                      "columnBegin": 11,
-                      "lineEnd": 16,
-                      "columnEnd": 14
-                    },
-                    "fullRange": {
-                      "lineBegin": 16,
-                      "columnBegin": 11,
-                      "lineEnd": 16,
-                      "columnEnd": 65
-                    },
-                    "text": { "key": "res" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 16,
+                "columnBegin": 11,
+                "lineEnd": 16,
+                "columnEnd": 14
+              },
+              "fullRange": {
+                "lineBegin": 16,
+                "columnBegin": 11,
+                "lineEnd": 16,
+                "columnEnd": 65
+              },
+              "text": { "key": "res" }
             }
           }
         }
@@ -1612,8 +1520,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "shell",
           "file": {
@@ -1643,37 +1553,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 12,
-                      "columnBegin": 8,
-                      "lineEnd": 12,
-                      "columnEnd": 13
-                    },
-                    "fullRange": {
-                      "lineBegin": 12,
-                      "columnBegin": 8,
-                      "lineEnd": 12,
-                      "columnEnd": 13
-                    },
-                    "text": { "key": "shell" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 12,
+                "columnBegin": 8,
+                "lineEnd": 12,
+                "columnEnd": 13
+              },
+              "fullRange": {
+                "lineBegin": 12,
+                "columnBegin": 8,
+                "lineEnd": 12,
+                "columnEnd": 13
+              },
+              "text": { "key": "shell" }
             }
           }
         }
@@ -1682,8 +1586,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "shell",
           "file": {
@@ -1713,37 +1619,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 12,
-                      "columnBegin": 8,
-                      "lineEnd": 12,
-                      "columnEnd": 13
-                    },
-                    "fullRange": {
-                      "lineBegin": 12,
-                      "columnBegin": 8,
-                      "lineEnd": 12,
-                      "columnEnd": 13
-                    },
-                    "text": { "key": "shell" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 12,
+                "columnBegin": 8,
+                "lineEnd": 12,
+                "columnEnd": 13
+              },
+              "fullRange": {
+                "lineBegin": 12,
+                "columnBegin": 8,
+                "lineEnd": 12,
+                "columnEnd": 13
+              },
+              "text": { "key": "shell" }
             }
           }
         }
@@ -1752,8 +1652,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "shell",
           "file": {
@@ -1783,37 +1685,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 12,
-                      "columnBegin": 8,
-                      "lineEnd": 12,
-                      "columnEnd": 13
-                    },
-                    "fullRange": {
-                      "lineBegin": 12,
-                      "columnBegin": 8,
-                      "lineEnd": 12,
-                      "columnEnd": 13
-                    },
-                    "text": { "key": "shell" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 12,
+                "columnBegin": 8,
+                "lineEnd": 12,
+                "columnEnd": 13
+              },
+              "fullRange": {
+                "lineBegin": 12,
+                "columnBegin": 8,
+                "lineEnd": 12,
+                "columnEnd": 13
+              },
+              "text": { "key": "shell" }
             }
           }
         }
@@ -1822,8 +1718,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "shell",
           "file": {
@@ -1853,37 +1751,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 12,
-                      "columnBegin": 8,
-                      "lineEnd": 12,
-                      "columnEnd": 13
-                    },
-                    "fullRange": {
-                      "lineBegin": 12,
-                      "columnBegin": 8,
-                      "lineEnd": 12,
-                      "columnEnd": 13
-                    },
-                    "text": { "key": "shell" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 12,
+                "columnBegin": 8,
+                "lineEnd": 12,
+                "columnEnd": 13
+              },
+              "fullRange": {
+                "lineBegin": 12,
+                "columnBegin": 8,
+                "lineEnd": 12,
+                "columnEnd": 13
+              },
+              "text": { "key": "shell" }
             }
           }
         }
@@ -1892,8 +1784,10 @@
   },
   {
     "key": {
-      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
-      "xref": {
+      "tuplefield0": {
+        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+      },
+      "tuplefield1": {
         "target": {
           "name": "shell",
           "file": {
@@ -1923,37 +1817,31 @@
           }
         }
       },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "file": {
-                  "key": {
-                    "file": {
-                      "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
-                    },
-                    "language": 49
-                  }
-                },
-                "range": {
-                  "key": {
-                    "range": {
-                      "lineBegin": 12,
-                      "columnBegin": 8,
-                      "lineEnd": 12,
-                      "columnEnd": 13
-                    },
-                    "fullRange": {
-                      "lineBegin": 12,
-                      "columnBegin": 8,
-                      "lineEnd": 12,
-                      "columnEnd": 13
-                    },
-                    "text": { "key": "shell" }
-                  }
-                }
-              }
+      "tuplefield2": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 12,
+                "columnBegin": 8,
+                "lineEnd": 12,
+                "columnEnd": 13
+              },
+              "fullRange": {
+                "lineBegin": 12,
+                "columnBegin": 8,
+                "lineEnd": 12,
+                "columnEnd": 13
+              },
+              "text": { "key": "shell" }
             }
           }
         }

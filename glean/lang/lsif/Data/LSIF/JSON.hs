@@ -102,7 +102,7 @@ parseVertex o = do
     "document" -> Document
       <$> o .: "uri"
       <*> o .: "languageId"
-    "moniker" -> LsifMoniker
+    "moniker" -> Moniker
       <$> o .: "kind"
       <*> o .: "scheme"
       <*> o .: "identifier"

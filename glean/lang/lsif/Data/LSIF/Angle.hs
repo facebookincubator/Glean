@@ -69,6 +69,7 @@ dependencyOrder p = case p of
   "lsif.Project" -> 0
   "lsif.Range.1" -> 1
   "lsif.HoverContent" -> 2
+  "lsif.Moniker" -> 3
   -- these refer to Range.1
   "lsif.Definition.1" -> 10
   "lsif.Declaration.1" -> 11
@@ -77,6 +78,8 @@ dependencyOrder p = case p of
   "lsif.DefinitionHover.1" ->  13
   "lsif.DefinitionUse.1" -> 14
   "lsif.ProjectDocument.1" -> 15
+  "lsif.DefinitionMoniker.1" ->  16
+  "lsif.DefinitionKind.1" ->  17
   -- everything else, in the middle
   _ -> 5
 
@@ -156,6 +159,10 @@ factToAngle (KeyFact _ (Edge EdgeNext outV inV)) = [] <$ do
 factToAngle (KeyFact _ (Edge EdgeTextDocumentHover outV inV)) = [] <$
   addHoverToResultSet inV outV
 
+-- record which resultset this moniker points at
+factToAngle (KeyFact _ (Edge EdgeMoniker outV inV)) = [] <$
+  addMonikerToResultSet inV outV
+
 -- edge:item for property:references associates an inV range with a
 -- textDocument/references result. record that the range is a reference type
 factToAngle (KeyFact _ (Item _outV inVs _fileId (Just References))) = [] <$
@@ -193,9 +200,15 @@ factToAngle (KeyFact _ (Edge EdgeTextDocumentDefinition outV inV)) = [] <$ do
 -- tag/labels indicating what kind of span they are. They may have no text
 -- or no tag attached, generally.
 factToAngle (KeyFact n (SymbolRange range mtag)) = do
-  case tagToTy mtag of -- record the type if we have the tag handy
+  -- record the type of the range if we have the tag handy
+  case tagToTy mtag of
     Nothing -> pure ()
     Just ty -> insertType n ty
+
+  -- record the symbol kind if it exists (definitions only)
+  case tagToKind =<< mtag of
+    Nothing -> pure ()
+    Just kind -> insertSymbolKind n kind
 
   -- emit a range fact for this id
   predicateId "lsif.Range.1" n $
@@ -219,6 +232,14 @@ factToAngle (KeyFact n (HoverResult contents)) = do
         , "language" .= fromEnum UnknownLanguage
         ]
   return $ concat (V.toList facts)
+
+-- Moniker payloads
+factToAngle (KeyFact n (Moniker kind scheme ident)) = do
+  predicateId "lsif.Moniker" n
+    [ "kind" .= fromEnum kind
+    , "scheme" .= string scheme
+    , "ident" .= string ident
+    ]
 
 -- These are output nodes. We generally don't need their type, as it
 -- can be inferred by context in Item edges
@@ -288,8 +309,11 @@ emitFileFacts_ fileId rawIds = do
   xrefFacts <- emitReferences fileId refIds
   useFacts <- emitTargetUses fileId refIds
   hoverFacts <- emitHovers fileId defIds
+  monikerFacts <- emitMonikers fileId defIds
+  symbolKindFacts <- emitSymbolKinds fileId defIds
   return $ catMaybes
-    [defFacts, declFacts, xrefFacts, useFacts, hoverFacts, projectFacts]
+    [defFacts, declFacts, xrefFacts, useFacts,
+     hoverFacts, projectFacts, monikerFacts, symbolKindFacts]
 
 emitProjects :: Id -> IdVector -> Maybe Predicate
 emitProjects projId ids
@@ -301,6 +325,22 @@ emitProjects projId ids
           , "project" .= projId
           ]
         ) (U.toList ids))
+
+emitSymbolKinds :: Id -> IdVector -> Parse (Maybe Predicate)
+emitSymbolKinds fileId ids = do
+  factBodies <- catMaybes <$>
+    mapM (generateSymbolKindFacts fileId . Id) (U.toList ids)
+  if null factBodies
+    then pure Nothing
+    else return $ Just $ Predicate "lsif.DefinitionKind.1" factBodies
+
+emitMonikers :: Id -> IdVector -> Parse (Maybe Predicate)
+emitMonikers fileId ids = do
+  factBodies <- catMaybes <$>
+    mapM (generateMonikerFacts fileId . Id) (U.toList ids)
+  if null factBodies
+    then pure Nothing
+    else return $ Just $ Predicate "lsif.DefinitionMoniker.1" factBodies
 
 emitHovers :: Id -> IdVector -> Parse (Maybe Predicate)
 emitHovers fileId ids = do
@@ -390,6 +430,37 @@ generateHoverFacts fileId defRangeId =
       , "hover" .= hoverFactId
       ]
 
+-- Monikers are the symbol ids of LSIF. But they are optional.
+-- We want to generate 'nothing' for definitions that are missing
+-- monikers, so they will still be useful in entity lookups as keys
+generateMonikerFacts :: Id -> Id -> Parse (Maybe Value)
+generateMonikerFacts fileId defRangeId = do
+  mId <- withResultSet defRangeId getMonikerId (pure . Just)
+  pure $ pure $ object $ pure $ key $
+    [ "defn" .= (object . pure . key)
+        [ "file" .= fileId
+        , "range" .= defRangeId
+        ]
+    ] ++
+    (case mId of
+        Nothing -> []
+        Just monikerId -> [ "moniker" .= monikerId ]
+    )
+
+generateSymbolKindFacts :: Id -> Id -> Parse (Maybe Value)
+generateSymbolKindFacts fileId defRangeId = do
+  mKind <- getSymbolKind defRangeId
+  case mKind of
+    Nothing -> pure mzero
+    Just kindLiteral ->
+      pure $ pure $ object $ pure $ key
+        [ "defn" .= (object . pure . key)
+            [ "file" .= fileId
+            , "range" .= defRangeId
+            ]
+        , "kind" .= fromEnum kindLiteral
+        ]
+
 -- get the result set of an id, use that result set id to look up another
 -- environment, then apply a function to the result.
 -- used to jump from A to B via a [resultset] node
@@ -454,3 +525,8 @@ tagToRange :: KeyValue a => Tag -> Maybe [a]
 tagToRange Definition{..} = Just ["fullRange" .= toRange fullRange]
 tagToRange Declaration{..} = Just ["fullRange" .= toRange fullRange]
 tagToRange _ = Nothing
+
+tagToKind :: Tag -> Maybe SymbolKind
+tagToKind Definition{..} = Just tagKind
+tagToKind Declaration{..} = Just tagKind
+tagToKind _ = Nothing

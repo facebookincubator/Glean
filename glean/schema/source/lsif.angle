@@ -108,7 +108,28 @@ predicate Range:
   {
     range: lsif.RangeSpan,
     fullRange: maybe lsif.RangeSpan,
-    text: lsif.Name
+    text: lsif.Name,
+  }
+
+# LSIF monikers are symbol identifier components. They have a type
+# identicating what scope the moniker fragment binds
+type MonikerKind =
+  enum {
+    Export | Local | Import | Implementation |
+  }
+
+# Moniker schemes describe which type of moniker protocol is used
+predicate MonikerScheme: string
+
+# The text fragment of the moniker
+predicate MonikerId: string
+
+# Monikers are scoped unique symbol identifiers, similar to Glass symbol ids
+predicate Moniker:
+  {
+    kind: lsif.MonikerKind,
+    scheme: lsif.MonikerScheme,
+    ident: lsif.MonikerId
   }
 
 predicate Definition:
@@ -138,13 +159,28 @@ predicate Reference:
     hover: lsif.HoverContent
   }
 
-  # Uses of definitions and declarations (inverse of xrefs)
-  predicate DefinitionUse:
-    {
-      target: lsif.Definition,
-      file: lsif.Document,
-      range: lsif.Range,
-    }
+# Associate a moniker with its anchor definition
+# guaranteed to be one for every definition, so suitable as an entity key
+predicate DefinitionMoniker:
+  {
+    defn: lsif.Definition,
+    moniker: maybe lsif.Moniker,
+  }
+
+# Associate symbol kinds with some definitions and declarations
+predicate DefinitionKind:
+  {
+    defn: lsif.Definition,
+    kind: lsif.SymbolKind
+  }
+
+# Uses of definitions and declarations (inverse of xrefs)
+predicate DefinitionUse:
+  {
+    target: lsif.Definition,
+    file: lsif.Document,
+    range: lsif.Range,
+  }
 
 #
 # Generic codemarkup.angle provider layer
@@ -172,7 +208,7 @@ type Entity =
 type SomeEntity =
   {
     decl : lsif.Declaration |
-    defn : lsif.Definition |
+    defn : lsif.DefinitionMoniker |
   }
 
 # analog of codemarkup.ResolveLocation, flattens locations and converts spans
@@ -184,7 +220,7 @@ predicate ResolveLocation:
     entity: lsif.Entity,
   }
   { { NameStr, File, SrcRange }, Entity } where
-    Defn = lsif.Definition { { File, Language }, Range };
+    Defn = lsif.DefinitionMoniker { defn = { { File, Language }, Range }};
     { range = RangeSpan, text = Name NameStr } = Range;
     lsif.ToSrcRange { File, RangeSpan, SrcRange };
     lsif.TagDefinition { Language, Defn, Entity };
@@ -196,7 +232,7 @@ predicate EntityLocation:
     location: lsif.Location,
   }
   { Entity, Location } where
-    lsif.EntityDefinition { Entity, Defn } ;
+    lsif.EntityDefinition { Entity, { defn = Defn }} ;
     lsif.DefinitionLocation { Defn, Location };
 
 # analog of codemarkup equivalent
@@ -208,10 +244,11 @@ predicate FileEntityXRefLocation:
     entity: lsif.Entity,
   }
   { File, SrcRange, Location, Entity } where
-    lsif.Reference { { file = File }, { range = RangeSpan }, Defn };
+    lsif.Reference { { file = File }, { range = RangeSpan }, BaseDefn };
     lsif.ToSrcRange { File, RangeSpan, SrcRange };
-    lsif.DefinitionLocation { Defn, Location };
-    { file = { language = Language } } = Defn;
+    lsif.DefinitionLocation { BaseDefn, Location };
+    Defn = lsif.DefinitionMoniker { defn = BaseDefn };
+    { file = { language = Language } } = BaseDefn;
     lsif.TagDefinition { Language, Defn, Entity };
 
 # analog of codemarkup.EntityUses
@@ -222,9 +259,19 @@ predicate EntityUses:
     range: src.Range,
   }
   { Entity, File, SrcRange } where
+    lsif.EntityDefinition { Entity, { defn = Defn }};
     lsif.DefinitionUse { Defn, { file = File }, { range = Range } };
-    lsif.EntityDefinition { Entity, Defn };
     lsif.ToSrcRange { File, Range, SrcRange };
+
+# and for codemarkup.EntityKind
+predicate EntityKind:
+  {
+    entity: lsif.Entity,
+    kind: lsif.SymbolKind,
+  }
+  { Entity, Kind } where
+    lsif.EntityDefinition { Entity, { defn = Defn }};
+    lsif.DefinitionKind { Defn, Kind };
 
 #
 # Helpers for working with language tags and entities
@@ -234,7 +281,7 @@ predicate EntityUses:
 predicate TagDefinition:
   {
     language: LanguageId,
-    defn: lsif.Definition,
+    defn: lsif.DefinitionMoniker,
     entity: lsif.Entity,
   }
   { Language, Defn, Entity } where
@@ -246,7 +293,7 @@ predicate TagDefinition:
 predicate EntityDefinition:
   {
     entity : lsif.Entity,
-    defn : lsif.Definition,
+    defn : lsif.DefinitionMoniker,
   }
   { Entity, Defn } where
     ({ typescript = { defn = Defn }} = Entity; ) |

@@ -71,7 +71,7 @@ data Fact
   }
   -- Project-level symbol identifiers, usually for imports and exports
   -- These are glass-like symbol ids, identified by opaque text and a scheme
-  | LsifMoniker {
+  | Moniker {
       monikerKind :: !MonikerKind,
       scheme :: !Text,
       identifier :: !Text
@@ -134,6 +134,7 @@ data Diagnostic
   }
 
 data MonikerKind = Export | Local | Import | Implementation
+  deriving (Enum)
 
 data Marker = Begin | End
 
