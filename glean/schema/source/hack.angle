@@ -1009,6 +1009,11 @@ type Occurrence =
     method : MethodOccurrence |
   }
 
+# String literals that occur in expression context, rather than as the
+# definition of a top-level or class constant.  These must be escaped
+# if they are not valid UTF-8.
+predicate StringLiteral : string
+
 # Code that is referenced elsewhere
 type XRefTarget =
   {
@@ -1029,6 +1034,29 @@ predicate FileXRefs :
   {
     file : src.File,
     xrefs : [XRef],
+  }
+
+# Context-free information about an expression argument
+type Argument =
+  {
+    lit: StringLiteral |
+    xref: XRefTarget
+  }
+
+# An argument to a particular call.
+type CallArgument =
+  {
+    span: src.RelByteSpan,
+    argument: maybe Argument,
+  }
+
+# Information for all calls, organized by file and callee_span, which
+# should match an entry in FileXRefs.
+predicate FileCall :
+  {
+    file: src.File,
+    callee_span: src.ByteSpan,
+    call_args: [CallArgument],
   }
 
 # All uses of a declaration in a file. Note that the bytespan offsets are
