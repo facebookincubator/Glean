@@ -117,6 +117,33 @@
           "decl": {
             "container": {
               "class_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "NamespaceClass" },
+                      "namespace_": { "key": { "name": { "key": "NS" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/Namespace.php" },
+        "location": { "span": { "length": 76, "start": 251 } },
+        "name": "NamespaceClass"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
                 "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
               }
             }
@@ -451,6 +478,38 @@
                 "container": {
                   "class_": {
                     "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "NamespaceClass" },
+                          "namespace_": { "key": { "name": { "key": "NS" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "name": { "key": "class_function" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/Namespace.php" },
+        "location": { "span": { "length": 47, "start": 278 } },
+        "name": "class_function"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "container": {
+                  "class_": {
+                    "key": {
                       "name": { "key": { "name": { "key": "RefClass" } } }
                     }
                   }
@@ -656,6 +715,24 @@
         "file": { "key": "www/SourceTrait.php" },
         "location": { "span": { "length": 58, "start": 258 } },
         "name": "quux"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "namespace_": {
+              "key": { "name": { "key": { "name": { "key": "NS" } } } }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/Namespace.php" },
+        "location": { "span": { "length": 2, "start": 246 } },
+        "name": "NS"
       }
     }
   },

@@ -41,6 +41,11 @@ data Recursive
   | NotRecursive
   deriving (Eq,Show)
 
+data Relation
+  = Extends
+  | Contains
+  deriving (Eq,Show)
+
 data Direction
   = Parent
   | Child
@@ -66,9 +71,13 @@ searchRelatedSymbols limit recurse dir rel (repo, lang, toks) = do
     Many e _t -> return (e, Nothing)
   edges <- withRepo entityRepo $ case (dir, rel) of
     (RelationDirection_Parent, RelationType_Extends) ->
-      searchExtends limit recurse Parent repo [decl] HashSet.empty
+      searchRelation limit recurse Extends Parent repo [decl] HashSet.empty
     (RelationDirection_Child, RelationType_Extends) ->
-      searchExtends limit recurse Child repo [decl] HashSet.empty
+      searchRelation limit recurse Extends Child repo [decl] HashSet.empty
+    (RelationDirection_Parent, RelationType_Contains) ->
+      searchRelation limit recurse Contains Parent repo [decl] HashSet.empty
+    (RelationDirection_Child, RelationType_Contains) ->
+      searchRelation limit recurse Contains Child repo [decl] HashSet.empty
     _ ->
       return []
   return (edges, err)
@@ -82,18 +91,25 @@ toSymbolIds repo RelatedEntities{..} = do
   relatedSymbols_child <- toSymbolId repo child
   pure $ RelatedSymbols {..}
 
-searchExtends
+searchRelation
   :: Int
   -> Recursive
+  -> Relation
   -> Direction
   -> RepoName
   -> [Code.Entity]
   -> HashSet RelatedEntities
   -> RepoHaxl u w [RelatedSymbols]
-searchExtends limit recursive direction repo toVisit visited = do
-  justVisited <- case direction of
-    Parent -> searchParentExtends limit toVisit
-    Child -> searchChildExtends limit toVisit
+searchRelation limit recursive relation direction repo toVisit visited = do
+  angle <- forM toVisit $ \entity ->
+     case entityToAngle entity of
+      Right angle -> return angle
+      Left t -> throwM (ServerException t)
+  justVisited <- case (relation, direction) of
+    (Extends, Parent) -> searchParentExtends limit angle
+    (Extends, Child) -> searchChildExtends limit angle
+    (Contains, Parent) -> return [] -- todo
+    (Contains, Child) -> searchChildContains limit angle
   let
     newlyVisited = HashSet.fromList justVisited `HashSet.difference` visited
     visited' = visited `HashSet.union` newlyVisited
@@ -107,19 +123,32 @@ searchExtends limit recursive direction repo toVisit visited = do
     recLimit < limit &&
     not (null toVisit)
   then
-    searchExtends recLimit recursive direction repo toVisit visited'
+    searchRelation recLimit recursive relation direction repo toVisit visited'
   else
     mapM (toSymbolIds repo) $ HashSet.toList visited'
 
+searchChildContains
+  :: Int
+  -> [Angle Code.Entity]
+  -> RepoHaxl u w [RelatedEntities]
+searchChildContains limit angle = do
+  entities <-
+    searchRecursiveWithLimit (Just limit) $ searchChildContainsAngle $
+      elementsOf $ array angle
+  pure $
+    [ RelatedEntities
+      { parent = Code.containsChildEntity_key_parent contains
+      , child = Code.containsChildEntity_key_child contains
+      }
+    | Code.ContainsChildEntity {..} <- entities
+    , Just contains <- [containsChildEntity_key]
+    ]
+
 searchParentExtends
   :: Int
-  -> [Code.Entity]
+  -> [Angle Code.Entity]
   -> RepoHaxl u w [RelatedEntities]
-searchParentExtends limit toVisit = do
-  angle <- forM toVisit $ \entity ->
-     case entityToAngle entity of
-      Right angle -> return angle
-      Left t -> throwM (ServerException t)
+searchParentExtends limit angle = do
   entities <-
     searchRecursiveWithLimit (Just limit) $ searchParentExtendsAngle $
       elementsOf $ array angle
@@ -134,13 +163,9 @@ searchParentExtends limit toVisit = do
 
 searchChildExtends
   :: Int
-  -> [Code.Entity]
+  -> [Angle Code.Entity]
   -> RepoHaxl u w [RelatedEntities]
-searchChildExtends limit toVisit = do
-  angle <- forM toVisit $ \entity ->
-     case entityToAngle entity of
-      Right angle -> return angle
-      Left t -> throwM (ServerException t)
+searchChildExtends limit angle = do
   entities <-
     searchRecursiveWithLimit (Just limit) $ searchChildExtendsAngle $
       elementsOf $ array angle
@@ -152,6 +177,13 @@ searchChildExtends limit toVisit = do
     | Code.ExtendsChildEntity {..} <- entities
     , Just extends <- [extendsChildEntity_key]
     ]
+
+searchChildContainsAngle :: Angle Code.Entity -> Angle Code.ContainsChildEntity
+searchChildContainsAngle entity =
+  predicate @Code.ContainsChildEntity (
+    rec $
+      field @"parent" entity
+    end)
 
 searchParentExtendsAngle :: Angle Code.Entity -> Angle Code.ExtendsParentEntity
 searchParentExtendsAngle entity =

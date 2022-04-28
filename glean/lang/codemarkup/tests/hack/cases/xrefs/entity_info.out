@@ -101,6 +101,29 @@
           "decl": {
             "container": {
               "class_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "NamespaceClass" },
+                      "namespace_": { "key": { "name": { "key": "NS" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 6, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
                 "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
               }
             }
@@ -464,6 +487,34 @@
           "decl": {
             "method": {
               "key": {
+                "name": { "key": "class_function" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "NamespaceClass" },
+                          "namespace_": { "key": { "name": { "key": "NS" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 7, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
                 "name": { "key": "foo" },
                 "container": {
                   "class_": {
@@ -549,6 +600,20 @@
         }
       },
       "info": { "kind": 7, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "namespace_": {
+              "key": { "name": { "key": { "name": { "key": "NS" } } } }
+            }
+          }
+        }
+      },
+      "info": { "kind": 5, "isAbstract": false }
     }
   },
   {

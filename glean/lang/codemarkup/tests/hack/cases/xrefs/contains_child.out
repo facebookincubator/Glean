@@ -1,0 +1,633 @@
+[
+  "@generated",
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "NamespaceClass" },
+                      "namespace_": { "key": { "name": { "key": "NS" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "class_function" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "NamespaceClass" },
+                          "namespace_": { "key": { "name": { "key": "NS" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "classConst": {
+              "key": {
+                "name": { "key": "JAZZ" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "bar" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "bazza" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "foo" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "raz" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceClass" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "classConst": {
+              "key": {
+                "name": { "key": "BAZ" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceClass" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "bar" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceClass" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "daz" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceClass" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "typeConst": {
+              "key": {
+                "name": { "key": "T" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SuperClass" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "classConst": {
+              "key": {
+                "name": { "key": "BAZ" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SuperClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SuperClass" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "superAdd" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SuperClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "TestAnnotation" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "__construct" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "TestAnnotation" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "TestAnnotation" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "test" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "TestAnnotation" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceInterface" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "classConst": {
+              "key": {
+                "name": { "key": "JAZZ" },
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "SourceInterface" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceInterface" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "foo" },
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "SourceInterface" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "trait": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceTrait" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "quux" },
+                "container": {
+                  "trait": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceTrait" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "namespace_": {
+              "key": { "name": { "key": { "name": { "key": "NS" } } } }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "NamespaceClass" },
+                      "namespace_": { "key": { "name": { "key": "NS" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

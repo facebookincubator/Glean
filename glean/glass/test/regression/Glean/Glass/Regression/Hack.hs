@@ -120,7 +120,11 @@ testHackSearchRelated get = TestLabel "searchRelated" $ TestList $ concat [
   "test/php/RefClass" `extends` "test/php/SourceTrait",
   "test/php/SubClass" `extends` "test/php/SourceClass",
   "test/php/SourceClass" `extends` "test/php/SuperClass",
-  "test/php/SubClass" `extendsRec` "test/php/SuperClass"
+  "test/php/SubClass" `extendsRec` "test/php/SuperClass",
+  "test/php/SourceInterface" `contains` "test/php/SourceInterface/foo",
+  "test/php/NS" `contains` "test/php/NS/NamespaceClass",
+  "test/php/NS/NamespaceClass" `contains` "test/php/NS/NamespaceClass/class_function",
+  "test/php/NS" `containsRec` "test/php/NS/NamespaceClass/class_function"
   ]
   where
     extendsRec :: Text -> Text -> [Test]
@@ -141,6 +145,20 @@ testHackSearchRelated get = TestLabel "searchRelated" $ TestList $ concat [
           recurse
           RelationDirection_Parent
           RelationType_Extends
+          (SymbolId parent, SymbolId child)
+          get
+      ]
+    containsRec :: Text -> Text -> [Test]
+    containsRec = contains' True
+    contains :: Text -> Text -> [Test]
+    contains = contains' False
+    contains' :: Bool -> Text -> Text -> [Test]
+    contains' recurse parent child =
+      [ testSearchRelated
+          (SymbolId parent)
+          recurse
+          RelationDirection_Child
+          RelationType_Contains
           (SymbolId parent, SymbolId child)
           get
       ]
