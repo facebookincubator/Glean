@@ -610,7 +610,7 @@ prefixVars lookups scope stmt = prefixVarsStmt stmt
   where
   prefixVarsStmt (FlatStatement _ _ (FactGenerator _ key _)) =
       prefixVarsTerm key IntSet.empty
-  prefixVarsStmt (FlatStatement _ _ _) = IntSet.empty
+  prefixVarsStmt FlatStatement{} = IntSet.empty
   prefixVarsStmt (FlatNegation stmtss) = prefixVarsStmts stmtss
   prefixVarsStmt (FlatDisjunction stmtsss) = foldMap prefixVarsStmts stmtsss
   prefixVarsStmt (FlatConditional cond then_ else_) =

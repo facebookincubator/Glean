@@ -347,7 +347,7 @@ updateParcel env ParcelInfo{..} time state = do
       forM_ mdb $ \db -> do
         st <- readTVar (dbState db)
         case st of
-          Open odb@(OpenDB { odbWriting = Just Writing{..} }) -> do
+          Open odb@OpenDB { odbWriting = Just Writing{..} } -> do
             -- NB. check the active counter as well as the queue,
             -- because this will tell us if there are writes currently
             -- in progress.

@@ -6,11 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE
-  TypeApplications
-, ConstraintKinds
-, UndecidableInstances
-#-}
+{-# LANGUAGE TypeApplications, ConstraintKinds, UndecidableInstances #-}
 
 module Glean.Util.ShellPrint
   ( DbVerbosity(..)

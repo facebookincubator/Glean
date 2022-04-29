@@ -106,7 +106,7 @@ loadPredMap
 loadPredMap e cfg q f =
   runQueryEach e (cfgRepo cfg) keysQuery mempty $ \ pm p -> do
     let (k, v) = f p
-    return $! PredMap.alter (Just . maybe [v] ((:) v)) k pm
+    return $! PredMap.alter (Just . maybe [v] (v :)) k pm
     where
       keysQuery = limitBytes (cfgMaxQuerySize cfg) $ keys q
 

@@ -462,8 +462,7 @@ optionsLong self = do
          " (default: fallback)")))
   return
     $ maybe id fmap service
-    $ maybe id fmap sharding
-    $ config
+    $ maybe id fmap sharding config
   where
     readShard = maybeReader $ \str -> case str of
       "yes" -> Just USE_SHARDS

@@ -6,8 +6,6 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE TypeApplications #-}
-
 -- | Support for using the Glean Haxl datasource with a remote server
 module Haxl.DataSource.Glean.Remote
   ( initGlobalState

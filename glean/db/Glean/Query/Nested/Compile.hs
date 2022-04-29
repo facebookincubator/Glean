@@ -129,7 +129,7 @@ toGenerators dbSchema deriveStored details term =
     return (RTS.Ref (MatchExt
       (Typed ty (TcFactGen (PidRef predicatePid predicateRef) pat
         (RTS.Ref (MatchWild predicateValueType))))))
-  nestedMatch ty (RTS.MatchTerm (NestedPred _ _ _)) =
+  nestedMatch ty (RTS.MatchTerm NestedPred{}) =
     return (RTS.Ref (MatchWild ty))
   nestedMatch ty@(Angle.Sum fields)
       (RTS.MatchTerm (NestedSum SumMatchThese alts))

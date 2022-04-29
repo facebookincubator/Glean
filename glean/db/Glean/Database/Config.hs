@@ -122,7 +122,7 @@ parseSchemaDir :: FilePath -> IO (SourceSchemas, Schemas)
 parseSchemaDir dir = do
   str <- catSchemaFiles =<< listDirectoryRecursive dir
   case parseAndResolveSchema str of
-    Left err -> throwIO $ ErrorCall $ err
+    Left err -> throwIO $ ErrorCall err
     Right schema -> return schema
 
 -- | Concatenate the contents of all the .angle files, prepending the

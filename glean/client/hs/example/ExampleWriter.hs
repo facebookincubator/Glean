@@ -29,8 +29,7 @@ import Glean.Schema.Cxx1 as Cxx
 import Glean.Schema.Cxx1.Types as Cxx
 import Glean.Util.ConfigProvider
 
-
-data Config = Config
+newtype Config = Config
   { cfgService :: Glean.ThriftSource Glean.ClientConfig
   }
 

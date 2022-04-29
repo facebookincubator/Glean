@@ -153,7 +153,7 @@ resolveSchema SourceSchemas{..} = runExcept $ do
         Just v -> return v
         _ -> throwError "internal error: resolveSchema"
       let
-        reachable = map fromVertex $ concat $ map flatten $ dfs graph [v]
+        reachable = map fromVertex $ concatMap flatten (dfs graph [v])
         deps =
           [ r | (_,n,_) <- reachable, Just r <- [HashMap.lookup n finalEnv] ]
         types = HashMap.unions (map resolvedSchemaTypes deps)
@@ -438,8 +438,7 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
       HashMap.union (fmap Set.fromList unqualLocalScope) $
       HashMap.union unqualInheritedScope $
       HashMap.unionWith Set.union (fmap Set.fromList qualLocalScope) $
-      HashMap.unionWith Set.union qualInheritedScope $
-      importedScope
+      HashMap.unionWith Set.union qualInheritedScope importedScope
 
   -- Check for multiple definitions of the same name/version.
   -- Multiple definitions of the same name is OK: an unqualified

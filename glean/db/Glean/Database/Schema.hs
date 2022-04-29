@@ -293,8 +293,7 @@ mkDbSchema override getPids dbContent source base addition = do
   let resolved = schemasResolved base <> addition
   let refs = HashMap.keys
         $ HashMap.unions
-        $ map resolvedSchemaPredicates
-        $ resolved
+        $ map resolvedSchemaPredicates resolved
   let pids = getPids refs
   let refToPid = HashMap.fromList
         $ filter (\(_,pid) -> pid /= Pid Thrift.iNVALID_ID)
