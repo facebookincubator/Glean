@@ -5,16 +5,16 @@
   This source code is licensed under the BSD-style license found in the
   LICENSE file in the root directory of this source tree.
 -}
-
 {-# LANGUAGE OverloadedStrings #-}
+
 module HieDBIndexer.Main where
 
-import Configerator (
-  defaultConfigeratorOptions,
-  withConfigeratorAPI,
- )
+import Glean.Impl.ConfigProvider ()
 import Glean.Init (withOptions)
 import qualified Glean.LocalOrRemote as Glean
+import Glean.Util.ConfigProvider (
+  ConfigProvider (defaultConfigOptions, withConfigProvider),
+ )
 import HieDBIndexer.Builder (buildXrefMapFiles)
 import HieDBIndexer.Glean (createGleanDB)
 import HieDBIndexer.Options (
@@ -45,7 +45,7 @@ main = do
   let tracer = vlogTextTracer 0
   withOptions options $ \cfg ->
     withEventBaseDataplane $ \evb ->
-      withConfigeratorAPI defaultConfigeratorOptions $ \cfgAPI ->
+      withConfigProvider defaultConfigOptions $ \cfgAPI ->
         Glean.withBackendWithDefaultOptions evb cfgAPI (cfgService cfg) $
           \backend -> do
             finalCfg <-
