@@ -16,7 +16,6 @@ import Control.Concurrent.Async (mapConcurrently_)
 import Control.Monad (forM_)
 import Data.Array.Unboxed (elems)
 import qualified Data.HashMap.Strict as Map
-import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Glean hiding (options)
 import Glean.Angle.Types (SourceRef (..))
@@ -40,11 +39,6 @@ import HieDBIndexer.Types (
   mkGleanXReference,
  )
 import System.Exit (exitSuccess)
-import Util.VCS.Common (mkVCSEnv, runVCS)
-import Util.VCS.Hg (
-  Hg,
-  hgCurrentHash,
- )
 import Text.Printf
 
 createGleanDB ::
@@ -54,9 +48,7 @@ createGleanDB ::
   [IndexerBatchOutput] ->
   IO ()
 createGleanDB _env@HieDBIndexerEnv {..} fileLinesMap batchOutputs = do
-  hash <- case repoHash cfg of
-    Just h -> return $ Text.pack h
-    Nothing -> runVCS (mkVCSEnv $ repoPath cfg) getHash
+  let hash = repoHash cfg
 
   let newRepo = Glean.Repo (Text.pack $ repoName cfg) hash
       buildHandle = buildRule <> "@" <> buildRevision
@@ -172,6 +164,3 @@ gleanFileLinesWriter fileLinesList = do
 
 allPredicates :: [Glean.SchemaPredicates]
 allPredicates = [Src.allPredicates, Hs.allPredicates]
-
-getHash :: Hg Text
-getHash = Text.pack <$> hgCurrentHash

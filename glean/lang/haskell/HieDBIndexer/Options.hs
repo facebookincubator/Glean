@@ -13,7 +13,7 @@ module HieDBIndexer.Options where
 -- @lint-ignore-every TODOHACK
 -- @lint-ignore-every LINEWRAP
 
-import Control.Applicative (optional)
+import Data.Text (Text)
 import qualified Glean (Backend)
 import qualified Glean.LocalOrRemote as Glean
 import Options.Applicative (
@@ -40,7 +40,7 @@ data HieDBIndexerOptions = HieDBIndexerOptions
   , verbosity :: Int
   , hiedbTrace :: Bool
   , repoName :: String
-  , repoHash :: Maybe String
+  , repoHash :: Text
   , repoPath :: FilePath
   , chunkSize :: Int
   , dontCreateDb :: Bool
@@ -108,7 +108,6 @@ options = info (helper <*> parser) fullDesc
           )
 
       repoHash <-
-        optional $
           strOption
             ( long "repo-hash"
                 <> metavar "REPO_HASH"
