@@ -1486,6 +1486,14 @@ common test
         glean:test-unit,
         HUnit,
 
+common angle-test
+    build-depends:
+        glean:stubs,
+        glean:core,
+        glean:db,
+        glean:if-glean-hs,
+        glean:schema
+
 test-suite jsonquery
     import: test
     type: exitcode-stdio-1.0
@@ -1500,17 +1508,71 @@ test-suite jsonquery
         glean:schema-query,
         glean:config,
 
-test-suite angle
-    import: test
+test-suite angle-test-onemany
+    import: test, angle-test
     type: exitcode-stdio-1.0
-    main-is: AngleTest.hs
-    ghc-options: -main-is AngleTest
-    build-depends:
-        glean:stubs,
-        glean:core,
-        glean:db,
-        glean:if-glean-hs,
-        glean:schema
+    main-is: Angle/OneManyTest.hs
+    ghc-options: -main-is Angle.OneManyTest
+
+test-suite angle-test-angle
+    import: test, angle-test
+    type: exitcode-stdio-1.0
+    main-is: Angle/AngleTest.hs
+    ghc-options: -main-is Angle.AngleTest
+
+test-suite angle-test-error
+    import: test, angle-test
+    type: exitcode-stdio-1.0
+    main-is: Angle/ErrorTest.hs
+    ghc-options: -main-is Angle.ErrorTest
+
+test-suite angle-test-nested
+    import: test, angle-test
+    type: exitcode-stdio-1.0
+    main-is: Angle/NestedTest.hs
+    ghc-options: -main-is Angle.NestedTest
+
+test-suite angle-test-derived
+    import: test, angle-test
+    type: exitcode-stdio-1.0
+    main-is: Angle/DerivedTest.hs
+    ghc-options: -main-is Angle.DerivedTest
+
+test-suite angle-test-stored
+    import: test, angle-test
+    type: exitcode-stdio-1.0
+    main-is: Angle/StoredTest.hs
+    ghc-options: -main-is Angle.StoredTest
+
+test-suite angle-test-array
+    import: test, angle-test
+    type: exitcode-stdio-1.0
+    main-is: Angle/ArrayTest.hs
+    ghc-options: -main-is Angle.ArrayTest
+
+test-suite angle-test-rec-expansion
+    import: test, angle-test
+    type: exitcode-stdio-1.0
+    main-is: Angle/RecExpansionTest.hs
+    ghc-options: -main-is Angle.RecExpansionTest
+
+test-suite angle-test-data
+    import: test, angle-test
+    type: exitcode-stdio-1.0
+    main-is: Angle/DataTest.hs
+    ghc-options: -main-is Angle.DataTest
+
+test-suite angle-test-opt
+    import: test, angle-test
+    type: exitcode-stdio-1.0
+    main-is: Angle/OptTest.hs
+    ghc-options: -main-is Angle.OptTest
+
+test-suite angle-test-misc
+    import: test, angle-test
+    type: exitcode-stdio-1.0
+    main-is: Angle/MiscTest.hs
+    ghc-options: -main-is Angle.MiscTest
 
 test-suite cppexception
     import: test
