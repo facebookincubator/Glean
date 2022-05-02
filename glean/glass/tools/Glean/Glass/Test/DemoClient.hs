@@ -179,15 +179,8 @@ runDescribe sym = do
 
 runResolve :: Protocol p => SymbolId -> GlassM p [Text]
 runResolve sym = do
-  loc@Location{..} <- resolveSymbol sym def
-  range <- jumpTo loc def
-  return
-    [pprLocationRange LocationRange {
-          locationRange_repository = location_repository,
-          locationRange_filepath = location_filepath,
-          locationRange_range = range
-        }
-    ]
+  range <- resolveSymbolRange sym def
+  return [pprLocationRange range]
 
 runFindRefs :: Protocol p => SymbolId -> GlassM p [Text]
 runFindRefs sym = do

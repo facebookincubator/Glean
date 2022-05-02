@@ -25,6 +25,7 @@ module Glean.Glass.Handler
 
   -- * working with symbol ids
   , resolveSymbol
+  , resolveSymbolRange
   , describeSymbol
 
   -- * searching
@@ -295,8 +296,18 @@ resolveSymbol
   -> RequestOptions
   -> IO Location
 resolveSymbol env@Glass.Env{..} sym _opts =
-  withSymbol "resolveSymbol" env sym (\(db,(repo, lang, toks)) ->
-    findSymbolLocation repo lang toks (GleanBackend gleanBackend db))
+  withSymbol "resolveSymbol" env sym $ \(db,(repo, lang, toks)) ->
+    findSymbolLocation (GleanBackend gleanBackend db) repo lang toks
+
+-- | Resolve a symbol identifier to its range-based location in the latest db
+resolveSymbolRange
+  :: Glass.Env
+  -> SymbolId
+  -> RequestOptions
+  -> IO LocationRange
+resolveSymbolRange env@Glass.Env{..} sym _opts =
+  withSymbol "resolveSymbolRange" env sym $ \(db,(repo, lang, toks)) ->
+    findSymbolLocationRange (GleanBackend gleanBackend db) repo lang toks
 
 -- | Describe characteristics of a symbol
 describeSymbol
@@ -384,28 +395,47 @@ data GleanBackend b =
     gleanBackend :: b,
     gleanDBs :: NonEmpty (GleanDBName, Glean.Repo)
   }
+
 backendRunHaxl
   :: Glean.Backend b => GleanBackend b -> (forall u. ReposHaxl u w a) -> IO a
 backendRunHaxl GleanBackend {..} =
   runHaxlAllRepos gleanBackend (fmap snd gleanDBs)
 
+withEntity
+  :: (RepoName -> Src.File -> Code.RangeSpan -> RepoHaxl u w a)
+  -> RepoName
+  -> Language
+  -> [Text]
+  -> Glean.ReposHaxl u w (a, Maybe GleanGlassErrorsLogger)
+withEntity f scsrepo lang toks = do
+  r <- Search.searchEntity lang toks
+  (SearchEntity{..}, err) <- case r of
+    None t -> throwM (ServerException t)
+    One e ->  return (e, Nothing)
+    Many e t -> return (e, Just (EntitySearchFail t))
+  (, fmap logError err) <$> withRepo entityRepo (f scsrepo file rangespan)
+
 -- | Symbol search: try to resolve the symbol back to an Entity.
 findSymbolLocation
   :: Glean.Backend b
-  => RepoName
+  => GleanBackend b
+  -> RepoName
   -> Language
   -> [Text]
-  -> GleanBackend b
   -> IO (Location, Maybe ErrorLogger)
-findSymbolLocation scsrepo lang toks b =
-  backendRunHaxl b $ do
-    r <- Search.searchEntity lang toks
-    (SearchEntity{..}, err) <- case r of
-      None t -> throwM (ServerException t)
-      One e ->  return (e, Nothing)
-      Many e t -> return (e, Just (EntitySearchFail t))
-    (, fmap logError err) <$> withRepo entityRepo
-      (locationFromCodeLocation scsrepo file rangespan)
+findSymbolLocation b repo lang toks = backendRunHaxl b $
+  withEntity locationFromCodeLocation repo lang toks
+
+-- | Symbol search: try to resolve the line/col range of an entity
+findSymbolLocationRange
+  :: Glean.Backend b
+  => GleanBackend b
+  -> RepoName
+  -> Language
+  -> [Text]
+  -> IO (LocationRange, Maybe ErrorLogger)
+findSymbolLocationRange b repo lang toks = backendRunHaxl b $
+  withEntity locationRangeFromCodeLocation repo lang toks
 
 -- | Symbol search for references
 fetchSymbolReferences
