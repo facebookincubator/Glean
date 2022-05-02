@@ -23,13 +23,13 @@
         "lineBegin": 9,
         "columnBegin": 8,
         "lineEnd": 9,
-        "columnEnd": 10
+        "columnEnd": 9
       },
       "fullRange": {
         "lineBegin": 9,
         "columnBegin": 8,
         "lineEnd": 9,
-        "columnEnd": 10
+        "columnEnd": 9
       },
       "text": { "key": "fs" }
     }
@@ -40,13 +40,13 @@
         "lineBegin": 10,
         "columnBegin": 8,
         "lineEnd": 10,
-        "columnEnd": 10
+        "columnEnd": 9
       },
       "fullRange": {
         "lineBegin": 10,
         "columnBegin": 8,
         "lineEnd": 10,
-        "columnEnd": 10
+        "columnEnd": 9
       },
       "text": { "key": "os" }
     }
@@ -57,13 +57,13 @@
         "lineBegin": 11,
         "columnBegin": 8,
         "lineEnd": 11,
-        "columnEnd": 12
+        "columnEnd": 11
       },
       "fullRange": {
         "lineBegin": 11,
         "columnBegin": 8,
         "lineEnd": 11,
-        "columnEnd": 12
+        "columnEnd": 11
       },
       "text": { "key": "path" }
     }
@@ -74,13 +74,13 @@
         "lineBegin": 12,
         "columnBegin": 8,
         "lineEnd": 12,
-        "columnEnd": 13
+        "columnEnd": 12
       },
       "fullRange": {
         "lineBegin": 12,
         "columnBegin": 8,
         "lineEnd": 12,
-        "columnEnd": 13
+        "columnEnd": 12
       },
       "text": { "key": "shell" }
     }
@@ -91,13 +91,13 @@
         "lineBegin": 14,
         "columnBegin": 7,
         "lineEnd": 14,
-        "columnEnd": 10
+        "columnEnd": 9
       },
       "fullRange": {
         "lineBegin": 14,
         "columnBegin": 1,
         "lineEnd": 42,
-        "columnEnd": 4
+        "columnEnd": 3
       },
       "text": { "key": "Git" }
     }
@@ -108,7 +108,7 @@
         "lineBegin": 15,
         "columnBegin": 3,
         "lineEnd": 33,
-        "columnEnd": 4
+        "columnEnd": 3
       },
       "text": {
         "key": "constructor(private dir: string) {\u000a    const res = shell.exec('git init', {cwd: dir, silent: true});\u000a    if (res.code !== 0) {\u000a      throw new Error(`git init exited with code ${res.code}.\u000astderr: ${res.stderr}\u000astdout: ${res.stdout}`);\u000a    }\u000a    // Doesn't matter currently\u000a    shell.exec('git config user.email \"test@jc-verse.com\"', {\u000a      cwd: dir,\u000a      silent: true,\u000a    });\u000a    shell.exec('git config user.name \"Test\"', {cwd: dir, silent: true});\u000a\u000a    shell.exec('git commit --allow-empty -m \"First commit\"', {\u000a      cwd: dir,\u000a      silent: true,\u000a    });\u000a  }"
@@ -121,13 +121,13 @@
         "lineBegin": 15,
         "columnBegin": 23,
         "lineEnd": 15,
-        "columnEnd": 26
+        "columnEnd": 25
       },
       "fullRange": {
         "lineBegin": 15,
         "columnBegin": 15,
         "lineEnd": 15,
-        "columnEnd": 34
+        "columnEnd": 33
       },
       "text": { "key": "dir" }
     }
@@ -138,13 +138,13 @@
         "lineBegin": 16,
         "columnBegin": 11,
         "lineEnd": 16,
-        "columnEnd": 14
+        "columnEnd": 13
       },
       "fullRange": {
         "lineBegin": 16,
         "columnBegin": 11,
         "lineEnd": 16,
-        "columnEnd": 65
+        "columnEnd": 64
       },
       "text": { "key": "res" }
     }
@@ -155,7 +155,7 @@
         "lineBegin": 16,
         "columnBegin": 17,
         "lineEnd": 16,
-        "columnEnd": 22
+        "columnEnd": 21
       },
       "text": { "key": "shell" }
     }
@@ -166,7 +166,7 @@
         "lineBegin": 16,
         "columnBegin": 40,
         "lineEnd": 16,
-        "columnEnd": 64
+        "columnEnd": 63
       },
       "text": { "key": "{cwd: dir, silent: true}" }
     }
@@ -177,13 +177,13 @@
         "lineBegin": 16,
         "columnBegin": 41,
         "lineEnd": 16,
-        "columnEnd": 44
+        "columnEnd": 43
       },
       "fullRange": {
         "lineBegin": 16,
         "columnBegin": 41,
         "lineEnd": 16,
-        "columnEnd": 49
+        "columnEnd": 48
       },
       "text": { "key": "cwd" }
     }
@@ -194,7 +194,7 @@
         "lineBegin": 16,
         "columnBegin": 46,
         "lineEnd": 16,
-        "columnEnd": 49
+        "columnEnd": 48
       },
       "text": { "key": "dir" }
     }
@@ -205,13 +205,13 @@
         "lineBegin": 16,
         "columnBegin": 51,
         "lineEnd": 16,
-        "columnEnd": 57
+        "columnEnd": 56
       },
       "fullRange": {
         "lineBegin": 16,
         "columnBegin": 51,
         "lineEnd": 16,
-        "columnEnd": 63
+        "columnEnd": 62
       },
       "text": { "key": "silent" }
     }
@@ -222,7 +222,7 @@
         "lineBegin": 17,
         "columnBegin": 9,
         "lineEnd": 17,
-        "columnEnd": 12
+        "columnEnd": 11
       },
       "text": { "key": "res" }
     }
@@ -233,7 +233,7 @@
         "lineBegin": 18,
         "columnBegin": 17,
         "lineEnd": 18,
-        "columnEnd": 22
+        "columnEnd": 21
       },
       "text": { "key": "Error" }
     }
@@ -244,7 +244,7 @@
         "lineBegin": 18,
         "columnBegin": 52,
         "lineEnd": 18,
-        "columnEnd": 55
+        "columnEnd": 54
       },
       "text": { "key": "res" }
     }
@@ -255,7 +255,7 @@
         "lineBegin": 19,
         "columnBegin": 11,
         "lineEnd": 19,
-        "columnEnd": 14
+        "columnEnd": 13
       },
       "text": { "key": "res" }
     }
@@ -266,7 +266,7 @@
         "lineBegin": 20,
         "columnBegin": 11,
         "lineEnd": 20,
-        "columnEnd": 14
+        "columnEnd": 13
       },
       "text": { "key": "res" }
     }
@@ -277,7 +277,7 @@
         "lineBegin": 23,
         "columnBegin": 5,
         "lineEnd": 23,
-        "columnEnd": 10
+        "columnEnd": 9
       },
       "text": { "key": "shell" }
     }
@@ -288,7 +288,7 @@
         "lineBegin": 23,
         "columnBegin": 61,
         "lineEnd": 26,
-        "columnEnd": 6
+        "columnEnd": 61
       },
       "text": {
         "key": "{\u000a      cwd: dir,\u000a      silent: true,\u000a    }"
@@ -301,13 +301,13 @@
         "lineBegin": 24,
         "columnBegin": 7,
         "lineEnd": 24,
-        "columnEnd": 10
+        "columnEnd": 9
       },
       "fullRange": {
         "lineBegin": 24,
         "columnBegin": 7,
         "lineEnd": 24,
-        "columnEnd": 15
+        "columnEnd": 14
       },
       "text": { "key": "cwd" }
     }
@@ -318,7 +318,7 @@
         "lineBegin": 24,
         "columnBegin": 12,
         "lineEnd": 24,
-        "columnEnd": 15
+        "columnEnd": 14
       },
       "text": { "key": "dir" }
     }
@@ -329,13 +329,13 @@
         "lineBegin": 25,
         "columnBegin": 7,
         "lineEnd": 25,
-        "columnEnd": 13
+        "columnEnd": 12
       },
       "fullRange": {
         "lineBegin": 25,
         "columnBegin": 7,
         "lineEnd": 25,
-        "columnEnd": 19
+        "columnEnd": 18
       },
       "text": { "key": "silent" }
     }
@@ -346,7 +346,7 @@
         "lineBegin": 27,
         "columnBegin": 5,
         "lineEnd": 27,
-        "columnEnd": 10
+        "columnEnd": 9
       },
       "text": { "key": "shell" }
     }
@@ -357,7 +357,7 @@
         "lineBegin": 27,
         "columnBegin": 47,
         "lineEnd": 27,
-        "columnEnd": 71
+        "columnEnd": 70
       },
       "text": { "key": "{cwd: dir, silent: true}" }
     }
@@ -368,13 +368,13 @@
         "lineBegin": 27,
         "columnBegin": 48,
         "lineEnd": 27,
-        "columnEnd": 51
+        "columnEnd": 50
       },
       "fullRange": {
         "lineBegin": 27,
         "columnBegin": 48,
         "lineEnd": 27,
-        "columnEnd": 56
+        "columnEnd": 55
       },
       "text": { "key": "cwd" }
     }
@@ -385,7 +385,7 @@
         "lineBegin": 27,
         "columnBegin": 53,
         "lineEnd": 27,
-        "columnEnd": 56
+        "columnEnd": 55
       },
       "text": { "key": "dir" }
     }
@@ -396,13 +396,13 @@
         "lineBegin": 27,
         "columnBegin": 58,
         "lineEnd": 27,
-        "columnEnd": 64
+        "columnEnd": 63
       },
       "fullRange": {
         "lineBegin": 27,
         "columnBegin": 58,
         "lineEnd": 27,
-        "columnEnd": 70
+        "columnEnd": 69
       },
       "text": { "key": "silent" }
     }
@@ -413,7 +413,7 @@
         "lineBegin": 29,
         "columnBegin": 5,
         "lineEnd": 29,
-        "columnEnd": 10
+        "columnEnd": 9
       },
       "text": { "key": "shell" }
     }
@@ -424,7 +424,7 @@
         "lineBegin": 29,
         "columnBegin": 62,
         "lineEnd": 32,
-        "columnEnd": 6
+        "columnEnd": 62
       },
       "text": {
         "key": "{\u000a      cwd: dir,\u000a      silent: true,\u000a    }"
@@ -437,13 +437,13 @@
         "lineBegin": 30,
         "columnBegin": 7,
         "lineEnd": 30,
-        "columnEnd": 10
+        "columnEnd": 9
       },
       "fullRange": {
         "lineBegin": 30,
         "columnBegin": 7,
         "lineEnd": 30,
-        "columnEnd": 15
+        "columnEnd": 14
       },
       "text": { "key": "cwd" }
     }
@@ -454,7 +454,7 @@
         "lineBegin": 30,
         "columnBegin": 12,
         "lineEnd": 30,
-        "columnEnd": 15
+        "columnEnd": 14
       },
       "text": { "key": "dir" }
     }
@@ -465,13 +465,13 @@
         "lineBegin": 31,
         "columnBegin": 7,
         "lineEnd": 31,
-        "columnEnd": 13
+        "columnEnd": 12
       },
       "fullRange": {
         "lineBegin": 31,
         "columnBegin": 7,
         "lineEnd": 31,
-        "columnEnd": 19
+        "columnEnd": 18
       },
       "text": { "key": "silent" }
     }
@@ -482,13 +482,13 @@
         "lineBegin": 34,
         "columnBegin": 3,
         "lineEnd": 34,
-        "columnEnd": 9
+        "columnEnd": 8
       },
       "fullRange": {
         "lineBegin": 34,
         "columnBegin": 3,
         "lineEnd": 41,
-        "columnEnd": 6
+        "columnEnd": 5
       },
       "text": { "key": "commit" }
     }
@@ -499,13 +499,13 @@
         "lineBegin": 34,
         "columnBegin": 10,
         "lineEnd": 34,
-        "columnEnd": 13
+        "columnEnd": 12
       },
       "fullRange": {
         "lineBegin": 34,
         "columnBegin": 10,
         "lineEnd": 34,
-        "columnEnd": 21
+        "columnEnd": 20
       },
       "text": { "key": "msg" }
     }
@@ -516,13 +516,13 @@
         "lineBegin": 34,
         "columnBegin": 23,
         "lineEnd": 34,
-        "columnEnd": 27
+        "columnEnd": 26
       },
       "fullRange": {
         "lineBegin": 34,
         "columnBegin": 23,
         "lineEnd": 34,
-        "columnEnd": 35
+        "columnEnd": 34
       },
       "text": { "key": "date" }
     }
@@ -533,13 +533,13 @@
         "lineBegin": 34,
         "columnBegin": 37,
         "lineEnd": 34,
-        "columnEnd": 43
+        "columnEnd": 42
       },
       "fullRange": {
         "lineBegin": 34,
         "columnBegin": 37,
         "lineEnd": 34,
-        "columnEnd": 51
+        "columnEnd": 50
       },
       "text": { "key": "author" }
     }
@@ -550,13 +550,13 @@
         "lineBegin": 35,
         "columnBegin": 11,
         "lineEnd": 35,
-        "columnEnd": 17
+        "columnEnd": 16
       },
       "fullRange": {
         "lineBegin": 35,
         "columnBegin": 11,
         "lineEnd": 35,
-        "columnEnd": 74
+        "columnEnd": 73
       },
       "text": { "key": "addRes" }
     }
@@ -567,7 +567,7 @@
         "lineBegin": 35,
         "columnBegin": 20,
         "lineEnd": 35,
-        "columnEnd": 25
+        "columnEnd": 24
       },
       "text": { "key": "shell" }
     }
@@ -578,7 +578,7 @@
         "lineBegin": 35,
         "columnBegin": 44,
         "lineEnd": 35,
-        "columnEnd": 73
+        "columnEnd": 72
       },
       "text": { "key": "{cwd: this.dir, silent: true}" }
     }
@@ -589,13 +589,13 @@
         "lineBegin": 35,
         "columnBegin": 45,
         "lineEnd": 35,
-        "columnEnd": 48
+        "columnEnd": 47
       },
       "fullRange": {
         "lineBegin": 35,
         "columnBegin": 45,
         "lineEnd": 35,
-        "columnEnd": 58
+        "columnEnd": 57
       },
       "text": { "key": "cwd" }
     }
@@ -606,7 +606,7 @@
         "lineBegin": 35,
         "columnBegin": 55,
         "lineEnd": 35,
-        "columnEnd": 58
+        "columnEnd": 57
       },
       "text": { "key": "dir" }
     }
@@ -617,13 +617,13 @@
         "lineBegin": 35,
         "columnBegin": 60,
         "lineEnd": 35,
-        "columnEnd": 66
+        "columnEnd": 65
       },
       "fullRange": {
         "lineBegin": 35,
         "columnBegin": 60,
         "lineEnd": 35,
-        "columnEnd": 72
+        "columnEnd": 71
       },
       "text": { "key": "silent" }
     }
@@ -634,7 +634,7 @@
         "lineBegin": 36,
         "columnBegin": 9,
         "lineEnd": 36,
-        "columnEnd": 15
+        "columnEnd": 14
       },
       "text": { "key": "addRes" }
     }
@@ -645,7 +645,7 @@
         "lineBegin": 37,
         "columnBegin": 17,
         "lineEnd": 37,
-        "columnEnd": 22
+        "columnEnd": 21
       },
       "text": { "key": "Error" }
     }
@@ -656,7 +656,7 @@
         "lineBegin": 37,
         "columnBegin": 51,
         "lineEnd": 37,
-        "columnEnd": 57
+        "columnEnd": 56
       },
       "text": { "key": "addRes" }
     }
@@ -667,7 +667,7 @@
         "lineBegin": 38,
         "columnBegin": 11,
         "lineEnd": 38,
-        "columnEnd": 17
+        "columnEnd": 16
       },
       "text": { "key": "addRes" }
     }
@@ -678,7 +678,7 @@
         "lineBegin": 39,
         "columnBegin": 11,
         "lineEnd": 39,
-        "columnEnd": 17
+        "columnEnd": 16
       },
       "text": { "key": "addRes" }
     }
@@ -689,13 +689,13 @@
         "lineBegin": 46,
         "columnBegin": 17,
         "lineEnd": 46,
-        "columnEnd": 31
+        "columnEnd": 30
       },
       "fullRange": {
         "lineBegin": 46,
         "columnBegin": 1,
         "lineEnd": 52,
-        "columnEnd": 2
+        "columnEnd": 1
       },
       "text": { "key": "createTempRepo" }
     }
@@ -706,7 +706,7 @@
         "lineBegin": 46,
         "columnBegin": 35,
         "lineEnd": 46,
-        "columnEnd": 62
+        "columnEnd": 61
       },
       "text": { "key": "{repoDir: string; git: Git}" }
     }
@@ -717,13 +717,13 @@
         "lineBegin": 46,
         "columnBegin": 36,
         "lineEnd": 46,
-        "columnEnd": 43
+        "columnEnd": 42
       },
       "fullRange": {
         "lineBegin": 46,
         "columnBegin": 36,
         "lineEnd": 46,
-        "columnEnd": 52
+        "columnEnd": 51
       },
       "text": { "key": "repoDir" }
     }
@@ -734,13 +734,13 @@
         "lineBegin": 46,
         "columnBegin": 53,
         "lineEnd": 46,
-        "columnEnd": 56
+        "columnEnd": 55
       },
       "fullRange": {
         "lineBegin": 46,
         "columnBegin": 53,
         "lineEnd": 46,
-        "columnEnd": 61
+        "columnEnd": 60
       },
       "text": { "key": "git" }
     }
@@ -751,7 +751,7 @@
         "lineBegin": 46,
         "columnBegin": 58,
         "lineEnd": 46,
-        "columnEnd": 61
+        "columnEnd": 60
       },
       "text": { "key": "Git" }
     }
@@ -762,13 +762,13 @@
         "lineBegin": 47,
         "columnBegin": 9,
         "lineEnd": 47,
-        "columnEnd": 16
+        "columnEnd": 15
       },
       "fullRange": {
         "lineBegin": 47,
         "columnBegin": 9,
         "lineEnd": 47,
-        "columnEnd": 74
+        "columnEnd": 73
       },
       "text": { "key": "repoDir" }
     }
@@ -779,7 +779,7 @@
         "lineBegin": 47,
         "columnBegin": 19,
         "lineEnd": 47,
-        "columnEnd": 21
+        "columnEnd": 20
       },
       "text": { "key": "fs" }
     }
@@ -790,7 +790,7 @@
         "lineBegin": 47,
         "columnBegin": 34,
         "lineEnd": 47,
-        "columnEnd": 38
+        "columnEnd": 37
       },
       "text": { "key": "path" }
     }
@@ -801,7 +801,7 @@
         "lineBegin": 47,
         "columnBegin": 44,
         "lineEnd": 47,
-        "columnEnd": 46
+        "columnEnd": 45
       },
       "text": { "key": "os" }
     }
@@ -812,13 +812,13 @@
         "lineBegin": 49,
         "columnBegin": 9,
         "lineEnd": 49,
-        "columnEnd": 12
+        "columnEnd": 11
       },
       "fullRange": {
         "lineBegin": 49,
         "columnBegin": 9,
         "lineEnd": 49,
-        "columnEnd": 31
+        "columnEnd": 30
       },
       "text": { "key": "git" }
     }
@@ -829,7 +829,7 @@
         "lineBegin": 49,
         "columnBegin": 19,
         "lineEnd": 49,
-        "columnEnd": 22
+        "columnEnd": 21
       },
       "text": { "key": "Git" }
     }
@@ -840,7 +840,7 @@
         "lineBegin": 49,
         "columnBegin": 23,
         "lineEnd": 49,
-        "columnEnd": 30
+        "columnEnd": 29
       },
       "text": { "key": "repoDir" }
     }
@@ -851,7 +851,7 @@
         "lineBegin": 51,
         "columnBegin": 10,
         "lineEnd": 51,
-        "columnEnd": 24
+        "columnEnd": 23
       },
       "text": { "key": "{repoDir, git}" }
     }
@@ -862,13 +862,13 @@
         "lineBegin": 51,
         "columnBegin": 11,
         "lineEnd": 51,
-        "columnEnd": 18
+        "columnEnd": 17
       },
       "fullRange": {
         "lineBegin": 51,
         "columnBegin": 11,
         "lineEnd": 51,
-        "columnEnd": 18
+        "columnEnd": 17
       },
       "text": { "key": "repoDir" }
     }
@@ -879,13 +879,13 @@
         "lineBegin": 51,
         "columnBegin": 20,
         "lineEnd": 51,
-        "columnEnd": 23
+        "columnEnd": 22
       },
       "fullRange": {
         "lineBegin": 51,
         "columnBegin": 20,
         "lineEnd": 51,
-        "columnEnd": 23
+        "columnEnd": 22
       },
       "text": { "key": "git" }
     }
@@ -896,13 +896,13 @@
         "lineBegin": 972,
         "columnBegin": 11,
         "lineEnd": 972,
-        "columnEnd": 16
+        "columnEnd": 15
       },
       "fullRange": {
         "lineBegin": 972,
         "columnBegin": 1,
         "lineEnd": 976,
-        "columnEnd": 2
+        "columnEnd": 1
       },
       "text": { "key": "Error" }
     }
@@ -913,13 +913,13 @@
         "lineBegin": 984,
         "columnBegin": 13,
         "lineEnd": 984,
-        "columnEnd": 18
+        "columnEnd": 17
       },
       "fullRange": {
         "lineBegin": 984,
         "columnBegin": 13,
         "lineEnd": 984,
-        "columnEnd": 36
+        "columnEnd": 35
       },
       "text": { "key": "Error" }
     }
