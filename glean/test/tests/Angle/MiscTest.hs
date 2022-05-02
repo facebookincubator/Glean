@@ -55,7 +55,7 @@ angleDSL modify = dbTestCase $ \env repo -> do
         field @"string_" "acca" $
         field @"nat" (nat 42) $
         field @"array_of_nat" (array [nat 3, nat 4, nat 5]) $
-        field @"bool_" false $
+        field @"bool_" false
       end
   assertEqual "angle - DSL 0" 1 (length results)
 

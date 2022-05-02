@@ -143,7 +143,7 @@ optTest = dbTestCase $ \env repo -> do
     factsSearched (PredicateRef "glean.test.StringPair" 1) lookupPid stats
 
   -- Test that unification works properly with literal fact IDs
-  result : _ <- runQuery_ env repo $ (allFacts :: Query Glean.Test.StringPair)
+  result : _ <- runQuery_ env repo (allFacts :: Query Glean.Test.StringPair)
   let fid = factId (getId result)
   results <- runQuery_ env repo $ Angle.query $ fid `where_` [ fid .= fid ]
   assertEqual "unify fact Id" 1 (length results)
