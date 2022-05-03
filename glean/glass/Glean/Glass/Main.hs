@@ -120,6 +120,7 @@ glassHandler env cmd = case cmd of
   -- Resolving symbol information
   JumpTo r opts -> Handler.jumpTo env r opts
   ResolveSymbol r opts -> Handler.resolveSymbol env r opts
+  ResolveSymbolRange r opts -> Handler.resolveSymbolRange env r opts
 
   -- Symbol info
   DescribeSymbol r opts -> Handler.describeSymbol env r opts

@@ -93,6 +93,12 @@ instance LogResult Location where
     , Logger.setRepo $ unRepoName location_repository
     ]
 
+instance LogResult LocationRange where
+  logResult (LocationRange{..},log) = log <> mconcat
+    [ Logger.setItemCount 1
+    , Logger.setRepo $ unRepoName locationRange_repository
+    ]
+
 instance LogResult SymbolDescription where
   logResult (SymbolDescription{..}, log) = log <>
     logResult (symbolDescription_location, log) <>
