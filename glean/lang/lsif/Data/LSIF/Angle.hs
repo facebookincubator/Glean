@@ -490,14 +490,20 @@ predicateId :: Applicative f => Text -> Id -> [Pair] -> f [Predicate]
 predicateId name id_ facts =
   pure [Predicate name [object [factId id_, key facts ]]]
 
+-- LSIF ranges are 0-indexed, exclusive of end col.
+-- We want to store as Glean ranges, 1-indexed, inclusive of end col.
 toRange :: Range -> Value
 toRange Range{..} =
-  object [ -- lsif.Range data type, we convert to 1-indexed
-    "lineBegin" .= (line start + 1),
-    "columnBegin" .= (character start + 1),
-    "lineEnd" .= (line end + 1),
-    "columnEnd" .= (character end + 1)
-  ]
+  let colBegin = character start + 1
+       -- n.b. end col should be _inclusive_ of end, and >= col start
+      colEnd = max colBegin ((character end + 1) - 1)
+  in
+    object [
+      "lineBegin" .= (line start + 1),
+      "columnBegin" .= colBegin,
+      "lineEnd" .= (line end + 1),
+      "columnEnd" .= colEnd
+    ]
 
 key :: KeyValue kv => [Pair] -> kv
 key xs = "key" .= object xs
