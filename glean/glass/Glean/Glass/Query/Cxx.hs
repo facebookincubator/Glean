@@ -24,9 +24,11 @@ import Glean.Angle
 import Glean.Haxl.Repos as Glean
 
 import qualified Glean.Schema.CodemarkupCxx.Types as Code
+import qualified Glean.Schema.CodemarkupPp.Types as Code
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.CodeCxx.Types as Cxx
+import qualified Glean.Schema.CodePp.Types as Pp
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.Src.Types as Src
 import Glean.Util.ToAngle ( ToAngle(toAngle) )
@@ -342,23 +344,38 @@ cxxFileEntityTraceLocations
   :: Glean.IdOf Cxx.Trace
   -> Angle (Code.Location, Code.Entity)
 cxxFileEntityTraceLocations traceId =
-  vars $ \(location :: Angle Code.Location) (entity :: Angle Code.Entity) ->
+  vars $ \(location :: Angle Code.Location)
+          (entity :: Angle Code.Entity)
+          (cxx_entity :: Angle Cxx.Entity)
+          (pp_entity :: Angle Pp.Entity) ->
     tuple (location,entity) `where_` [
-      wild .= predicate @Code.CxxFileEntityTraceLocations (
-        rec $
-          field @"trace" (asPredicate (factId traceId)) $
-          field @"location" location $
-          field @"entity" entity
-        end)
-      ]
+      wild .=
+        [
+          wild .= predicate @Code.CxxFileEntityTraceLocations (
+            rec $
+              field @"trace" (asPredicate (factId traceId)) $
+              field @"location" location $
+              field @"entity" cxx_entity
+            end),
+          entity .= sig (alt @"cxx" cxx_entity)
+        ] `or_` [
+          wild .= predicate @Code.PpFileEntityTraceLocations (
+            rec $
+              field @"trace" (asPredicate (factId traceId)) $
+              field @"location" location $
+              field @"entity" pp_entity
+            end),
+          entity .= sig (alt @"pp" pp_entity)
+        ]
+    ]
 
 -- Fixed XRefs associated with a file and xmap /xref set
 cxxFileEntityXMapFixedXRefLocations
   :: Glean.IdOf Cxx.FileXRefs
   -> Angle (Code.XRefLocation, Code.Entity)
 cxxFileEntityXMapFixedXRefLocations xrefId =
-  vars $ \(xref :: Angle Code.XRefLocation) (entity :: Angle Code.Entity) ->
-    tuple (xref,entity) `where_` [
+  vars $ \(xref :: Angle Code.XRefLocation) (entity :: Angle Cxx.Entity) ->
+    tuple (xref, sig (alt @"cxx" entity) :: Angle Code.Entity) `where_` [
       wild .= predicate @Code.CxxFileEntityXMapFixedXRefLocations (
         rec $
           field @"trace" (asPredicate (factId xrefId)) $
@@ -394,8 +411,8 @@ cxxFileEntityTraceDeclToDefXRefLocations
   :: Glean.IdOf Cxx.Trace
   -> Angle (Code.XRefLocation, Code.Entity)
 cxxFileEntityTraceDeclToDefXRefLocations traceId =
-  vars $ \(xref :: Angle Code.XRefLocation) (entity :: Angle Code.Entity) ->
-    tuple (xref,entity) `where_` [
+  vars $ \(xref :: Angle Code.XRefLocation) (entity :: Angle Cxx.Entity) ->
+    tuple (xref, sig (alt @"cxx" entity) :: Angle Code.Entity) `where_` [
       wild .= predicate @Code.CxxFileEntityTraceDeclToDefXRefLocations (
         rec $
           field @"trace" (asPredicate (factId traceId)) $
@@ -449,9 +466,10 @@ cxxFileEntityXMapVariableXRefDeclToDefs
   :: Glean.IdOf Cxx.FileXRefs
   -> Angle (Cxx.Declaration, Code.Entity, Code.Location)
 cxxFileEntityXMapVariableXRefDeclToDefs xrefId =
-  vars $ \(decl :: Angle Cxx.Declaration) (entity :: Angle Code.Entity)
+  vars $ \(decl :: Angle Cxx.Declaration) (entity :: Angle Cxx.Entity)
       (location :: Angle Code.Location) ->
-    tuple (decl, entity, location) `where_` [
+    tuple (decl, sig (alt @"cxx" entity) :: Angle Code.Entity, location)
+    `where_` [
       wild .= predicate @Code.CxxFileEntityXMapVariableXRefDeclToDefs (
         rec $
           field @"trace" (asPredicate (factId xrefId)) $
@@ -466,9 +484,9 @@ cxxFileEntityTracePPXRefLocations
   :: Glean.IdOf Cxx.Trace
   -> Angle (Code.XRefLocation, Code.Entity)
 cxxFileEntityTracePPXRefLocations traceId =
-  vars $ \(xref :: Angle Code.XRefLocation) (entity :: Angle Code.Entity) ->
-    tuple (xref,entity) `where_` [
-      wild .= predicate @Code.CxxFileEntityTracePPXRefLocations (
+  vars $ \(xref :: Angle Code.XRefLocation) (entity :: Angle Pp.Entity) ->
+    tuple (xref, sig (alt @"pp" entity) :: Angle Code.Entity) `where_` [
+      wild .= predicate @Code.PpFileEntityTraceXRefLocations (
         rec $
           field @"trace" (asPredicate (factId traceId)) $
           field @"xref" xref $

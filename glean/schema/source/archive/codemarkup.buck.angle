@@ -1,9 +1,9 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.buck.2 {
+schema codemarkup.buck.1 {
 import src.1
 import buck.3
-import code.buck.1
+import code.20
 import codemarkup.types.1
 
 #
@@ -13,13 +13,13 @@ import codemarkup.types.1
 predicate BuckResolveLocation:
   {
     location: codemarkup.types.Location,
-    entity: code.buck.Entity,
+    entity: code.Entity,
   }
   { { Name, File, { span = Span }, nothing }, Entity } where
     buck.FileTarget { File, Locator };
     buck.TargetLocation { Locator, File, Span };
     Locator = buck.Locator { name = Name };
-    Entity = { locator = Locator } : code.buck.Entity;
+    Entity = code.Entity { buck = { locator = Locator } };
 
 #
 # Finding entities' locations
@@ -27,10 +27,10 @@ predicate BuckResolveLocation:
 
 predicate BuckEntityLocation:
   {
-    entity: code.buck.Entity,
+    entity: code.Entity,
     location: codemarkup.types.Location,
   }
- { { locator = L }, { Name, File, { span = Span }, nothing } }
+ { { buck = { locator = L } }, { Name, File, { span = Span }, nothing } }
   where buck.TargetLocation { L, File, Span };
   { name = Name } = L;
 
@@ -42,7 +42,7 @@ predicate BuckFileEntityXRefLocations:
   {
     file: src.File,
     xref: codemarkup.types.XRefLocation,
-    entity: code.buck.Entity,
+    entity: code.Entity,
   }
   { File, { LocatorLocation, { span = SrcSpan } }, Entity } where
     buck.FileXRefs { File, XRefs };
@@ -52,7 +52,7 @@ predicate BuckFileEntityXRefLocations:
     { name = Name } = Locator;
     buck.TargetLocation { Locator, TargetFile, LocatorSpan };
     { Name, TargetFile, { span = LocatorSpan }, nothing } = LocatorLocation;
-    Entity = { locator = Locator } : code.buck.Entity;
+    Entity = code.Entity { buck = { locator = Locator } };
 
 #
 # Language entity uses
@@ -60,11 +60,11 @@ predicate BuckFileEntityXRefLocations:
 
 predicate BuckEntityUses:
   {
-    target: code.buck.Entity,
+    target: code.Entity,
     file: src.File,
     span: src.ByteSpan,
   }
-  { { locator = Locator }, File, Span } where
+  { { buck = { locator = Locator } }, File, Span } where
     buck.TargetUses { Locator, File, Spans };
     Span = Spans[..];
 

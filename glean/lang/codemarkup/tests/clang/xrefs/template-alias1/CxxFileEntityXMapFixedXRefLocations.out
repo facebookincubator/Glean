@@ -136,25 +136,20 @@
         "source": { "span": { "start": 367, "length": 2 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "typeAlias": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "F1" },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "type": { "key": "T" },
-                "kind": 1,
-                "source": {
-                  "file": { "key": "main.cpp" },
-                  "lineBegin": 12,
-                  "columnBegin": 22,
-                  "lineEnd": 12,
-                  "columnEnd": 33
-                }
+        "decl": {
+          "typeAlias": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "F1" }, "scope": { "global_": { } } }
+              },
+              "type": { "key": "T" },
+              "kind": 1,
+              "source": {
+                "file": { "key": "main.cpp" },
+                "lineBegin": 12,
+                "columnBegin": 22,
+                "lineEnd": 12,
+                "columnEnd": 33
               }
             }
           }
@@ -298,25 +293,20 @@
         "source": { "span": { "start": 378, "length": 2 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "typeAlias": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "F2" },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "type": { "key": "int" },
-                "kind": 1,
-                "source": {
-                  "file": { "key": "main.cpp" },
-                  "lineBegin": 13,
-                  "columnBegin": 22,
-                  "lineEnd": 13,
-                  "columnEnd": 35
-                }
+        "decl": {
+          "typeAlias": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "F2" }, "scope": { "global_": { } } }
+              },
+              "type": { "key": "int" },
+              "kind": 1,
+              "source": {
+                "file": { "key": "main.cpp" },
+                "lineBegin": 13,
+                "columnBegin": 22,
+                "lineEnd": 13,
+                "columnEnd": 35
               }
             }
           }
@@ -460,25 +450,20 @@
         "source": { "span": { "start": 389, "length": 2 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "typeAlias": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "F3" },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "type": { "key": "S<T>" },
-                "kind": 1,
-                "source": {
-                  "file": { "key": "main.cpp" },
-                  "lineBegin": 14,
-                  "columnBegin": 22,
-                  "lineEnd": 14,
-                  "columnEnd": 36
-                }
+        "decl": {
+          "typeAlias": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "F3" }, "scope": { "global_": { } } }
+              },
+              "type": { "key": "S<T>" },
+              "kind": 1,
+              "source": {
+                "file": { "key": "main.cpp" },
+                "lineBegin": 14,
+                "columnBegin": 22,
+                "lineEnd": 14,
+                "columnEnd": 36
               }
             }
           }
@@ -622,21 +607,19 @@
         "source": { "span": { "start": 360, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "S" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "main.cpp" },
-                  "lineBegin": 10,
-                  "columnBegin": 1,
-                  "lineEnd": 10,
-                  "columnEnd": 11
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "S" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "main.cpp" },
+                "lineBegin": 10,
+                "columnBegin": 1,
+                "lineEnd": 10,
+                "columnEnd": 11
               }
             }
           }

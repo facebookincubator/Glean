@@ -84,18 +84,16 @@
         "source": { "span": { "start": 263, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "objcContainer": {
-              "key": {
-                "id": { "interface_": { "key": "I" } },
-                "source": {
-                  "file": { "key": "test.m" },
-                  "lineBegin": 9,
-                  "columnBegin": 1,
-                  "lineEnd": 13,
-                  "columnEnd": 4
-                }
+        "decl": {
+          "objcContainer": {
+            "key": {
+              "id": { "interface_": { "key": "I" } },
+              "source": {
+                "file": { "key": "test.m" },
+                "lineBegin": 9,
+                "columnBegin": 1,
+                "lineEnd": 13,
+                "columnEnd": 4
               }
             }
           }
@@ -187,18 +185,16 @@
         "source": { "span": { "start": 280, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "objcContainer": {
-              "key": {
-                "id": { "interface_": { "key": "I" } },
-                "source": {
-                  "file": { "key": "test.m" },
-                  "lineBegin": 9,
-                  "columnBegin": 1,
-                  "lineEnd": 13,
-                  "columnEnd": 4
-                }
+        "decl": {
+          "objcContainer": {
+            "key": {
+              "id": { "interface_": { "key": "I" } },
+              "source": {
+                "file": { "key": "test.m" },
+                "lineBegin": 9,
+                "columnBegin": 1,
+                "lineEnd": 13,
+                "columnEnd": 4
               }
             }
           }
@@ -290,25 +286,23 @@
         "source": { "span": { "start": 282, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "objcMethod": {
-              "key": {
-                "selector": { "key": [ "foo" ] },
-                "container": { "interface_": { "key": "I" } },
-                "signature": {
-                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
-                },
-                "isInstance": false,
-                "isOptional": false,
-                "isAccessor": false,
-                "source": {
-                  "file": { "key": "test.m" },
-                  "lineBegin": 11,
-                  "columnBegin": 1,
-                  "lineEnd": 11,
-                  "columnEnd": 11
-                }
+        "decl": {
+          "objcMethod": {
+            "key": {
+              "selector": { "key": [ "foo" ] },
+              "container": { "interface_": { "key": "I" } },
+              "signature": {
+                "key": { "returns": { "key": "int" }, "parameters": [ ] }
+              },
+              "isInstance": false,
+              "isOptional": false,
+              "isAccessor": false,
+              "source": {
+                "file": { "key": "test.m" },
+                "lineBegin": 11,
+                "columnBegin": 1,
+                "lineEnd": 11,
+                "columnEnd": 11
               }
             }
           }

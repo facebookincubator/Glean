@@ -178,6 +178,10 @@ l .= r = AngleStatement $ Angle.SourceStatement <$> gen l <*> gen r
 (.|) :: Angle a -> Angle a -> Angle a
 a .| b = Angle $ OrPattern DSL <$> gen a <*> gen b
 
+infix 1 .=
+infixr 2 `or_`
+infixr 3 .|
+
 -- | Build an or-pattern between statements
 or_ :: [AngleStatement] -> [AngleStatement] -> Angle ()
 or_ left right = (unit' `where_` left) .| (unit' `where_` right)

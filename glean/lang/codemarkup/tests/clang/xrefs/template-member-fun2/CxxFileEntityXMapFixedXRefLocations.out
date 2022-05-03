@@ -534,21 +534,19 @@
         "source": { "span": { "start": 342, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
-                  "columnBegin": 22,
-                  "lineEnd": 13,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 22,
+                "lineEnd": 13,
+                "columnEnd": 1
               }
             }
           }
@@ -1090,21 +1088,19 @@
         "source": { "span": { "start": 442, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
-                  "columnBegin": 22,
-                  "lineEnd": 13,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 22,
+                "lineEnd": 13,
+                "columnEnd": 1
               }
             }
           }
@@ -1646,21 +1642,19 @@
         "source": { "span": { "start": 488, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
-                  "columnBegin": 22,
-                  "lineEnd": 13,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 22,
+                "lineEnd": 13,
+                "columnEnd": 1
               }
             }
           }
@@ -2202,21 +2196,19 @@
         "source": { "span": { "start": 535, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
-                  "columnBegin": 22,
-                  "lineEnd": 13,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 22,
+                "lineEnd": 13,
+                "columnEnd": 1
               }
             }
           }
@@ -2758,21 +2750,19 @@
         "source": { "span": { "start": 550, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
-                  "columnBegin": 22,
-                  "lineEnd": 13,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 22,
+                "lineEnd": 13,
+                "columnEnd": 1
               }
             }
           }
@@ -3314,21 +3304,19 @@
         "source": { "span": { "start": 562, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
-                  "columnBegin": 22,
-                  "lineEnd": 13,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 22,
+                "lineEnd": 13,
+                "columnEnd": 1
               }
             }
           }
@@ -3870,47 +3858,45 @@
         "source": { "span": { "start": 589, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "bar" } } },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "bar" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "void" },
-                    "parameters": [
-                      { "name": { "key": "" }, "type": { "key": "T" } }
-                    ]
-                  }
-                },
-                "method": {
-                  "isVirtual": false,
-                  "isConst": false,
-                  "isVolatile": false,
-                  "refQualifier": 0
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 3,
-                  "lineEnd": 11,
-                  "columnEnd": 13
                 }
+              },
+              "signature": {
+                "key": {
+                  "returns": { "key": "void" },
+                  "parameters": [
+                    { "name": { "key": "" }, "type": { "key": "T" } }
+                  ]
+                }
+              },
+              "method": {
+                "isVirtual": false,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 3,
+                "lineEnd": 11,
+                "columnEnd": 13
               }
             }
           }
@@ -4452,47 +4438,45 @@
         "source": { "span": { "start": 701, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "bar" } } },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "bar" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "void" },
-                    "parameters": [
-                      { "name": { "key": "" }, "type": { "key": "T" } }
-                    ]
-                  }
-                },
-                "method": {
-                  "isVirtual": false,
-                  "isConst": false,
-                  "isVolatile": false,
-                  "refQualifier": 0
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 3,
-                  "lineEnd": 11,
-                  "columnEnd": 13
                 }
+              },
+              "signature": {
+                "key": {
+                  "returns": { "key": "void" },
+                  "parameters": [
+                    { "name": { "key": "" }, "type": { "key": "T" } }
+                  ]
+                }
+              },
+              "method": {
+                "isVirtual": false,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 3,
+                "lineEnd": 11,
+                "columnEnd": 13
               }
             }
           }
@@ -5034,47 +5018,45 @@
         "source": { "span": { "start": 645, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "bar" } } },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "bar" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "void" },
-                    "parameters": [
-                      { "name": { "key": "" }, "type": { "key": "int" } }
-                    ]
-                  }
-                },
-                "method": {
-                  "isVirtual": false,
-                  "isConst": false,
-                  "isVolatile": false,
-                  "refQualifier": 0
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 17,
-                  "columnBegin": 3,
-                  "lineEnd": 17,
-                  "columnEnd": 15
                 }
+              },
+              "signature": {
+                "key": {
+                  "returns": { "key": "void" },
+                  "parameters": [
+                    { "name": { "key": "" }, "type": { "key": "int" } }
+                  ]
+                }
+              },
+              "method": {
+                "isVirtual": false,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 17,
+                "columnBegin": 3,
+                "lineEnd": 17,
+                "columnEnd": 15
               }
             }
           }
@@ -5616,48 +5598,46 @@
         "source": { "span": { "start": 601, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "baz" } } },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "baz" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "void" },
-                    "parameters": [
-                      { "name": { "key": "" }, "type": { "key": "double" } },
-                      { "name": { "key": "" }, "type": { "key": "U" } }
-                    ]
-                  }
-                },
-                "method": {
-                  "isVirtual": false,
-                  "isConst": false,
-                  "isVolatile": false,
-                  "refQualifier": 0
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 12,
-                  "columnBegin": 24,
-                  "lineEnd": 12,
-                  "columnEnd": 36
                 }
+              },
+              "signature": {
+                "key": {
+                  "returns": { "key": "void" },
+                  "parameters": [
+                    { "name": { "key": "" }, "type": { "key": "double" } },
+                    { "name": { "key": "" }, "type": { "key": "U" } }
+                  ]
+                }
+              },
+              "method": {
+                "isVirtual": false,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 12,
+                "columnBegin": 24,
+                "lineEnd": 12,
+                "columnEnd": 36
               }
             }
           }
@@ -6199,48 +6179,46 @@
         "source": { "span": { "start": 616, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "baz" } } },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "baz" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "void" },
-                    "parameters": [
-                      { "name": { "key": "" }, "type": { "key": "double" } },
-                      { "name": { "key": "" }, "type": { "key": "U" } }
-                    ]
-                  }
-                },
-                "method": {
-                  "isVirtual": false,
-                  "isConst": false,
-                  "isVolatile": false,
-                  "refQualifier": 0
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 12,
-                  "columnBegin": 24,
-                  "lineEnd": 12,
-                  "columnEnd": 36
                 }
+              },
+              "signature": {
+                "key": {
+                  "returns": { "key": "void" },
+                  "parameters": [
+                    { "name": { "key": "" }, "type": { "key": "double" } },
+                    { "name": { "key": "" }, "type": { "key": "U" } }
+                  ]
+                }
+              },
+              "method": {
+                "isVirtual": false,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 12,
+                "columnBegin": 24,
+                "lineEnd": 12,
+                "columnEnd": 36
               }
             }
           }
@@ -6782,48 +6760,46 @@
         "source": { "span": { "start": 716, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "baz" } } },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "baz" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "void" },
-                    "parameters": [
-                      { "name": { "key": "" }, "type": { "key": "bool" } },
-                      { "name": { "key": "" }, "type": { "key": "U" } }
-                    ]
-                  }
-                },
-                "method": {
-                  "isVirtual": false,
-                  "isConst": false,
-                  "isVolatile": false,
-                  "refQualifier": 0
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 12,
-                  "columnBegin": 24,
-                  "lineEnd": 12,
-                  "columnEnd": 36
                 }
+              },
+              "signature": {
+                "key": {
+                  "returns": { "key": "void" },
+                  "parameters": [
+                    { "name": { "key": "" }, "type": { "key": "bool" } },
+                    { "name": { "key": "" }, "type": { "key": "U" } }
+                  ]
+                }
+              },
+              "method": {
+                "isVirtual": false,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 12,
+                "columnBegin": 24,
+                "lineEnd": 12,
+                "columnEnd": 36
               }
             }
           }
@@ -7365,48 +7341,46 @@
         "source": { "span": { "start": 657, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "baz" } } },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "baz" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "void" },
-                    "parameters": [
-                      { "name": { "key": "" }, "type": { "key": "int" } },
-                      { "name": { "key": "" }, "type": { "key": "U" } }
-                    ]
-                  }
-                },
-                "method": {
-                  "isVirtual": false,
-                  "isConst": false,
-                  "isVolatile": false,
-                  "refQualifier": 0
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 18,
-                  "columnBegin": 24,
-                  "lineEnd": 18,
-                  "columnEnd": 38
                 }
+              },
+              "signature": {
+                "key": {
+                  "returns": { "key": "void" },
+                  "parameters": [
+                    { "name": { "key": "" }, "type": { "key": "int" } },
+                    { "name": { "key": "" }, "type": { "key": "U" } }
+                  ]
+                }
+              },
+              "method": {
+                "isVirtual": false,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 18,
+                "columnBegin": 24,
+                "lineEnd": 18,
+                "columnEnd": 38
               }
             }
           }
@@ -7948,48 +7922,46 @@
         "source": { "span": { "start": 672, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "baz" } } },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "baz" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "void" },
-                    "parameters": [
-                      { "name": { "key": "" }, "type": { "key": "int" } },
-                      { "name": { "key": "" }, "type": { "key": "U" } }
-                    ]
-                  }
-                },
-                "method": {
-                  "isVirtual": false,
-                  "isConst": false,
-                  "isVolatile": false,
-                  "refQualifier": 0
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 18,
-                  "columnBegin": 24,
-                  "lineEnd": 18,
-                  "columnEnd": 38
                 }
+              },
+              "signature": {
+                "key": {
+                  "returns": { "key": "void" },
+                  "parameters": [
+                    { "name": { "key": "" }, "type": { "key": "int" } },
+                    { "name": { "key": "" }, "type": { "key": "U" } }
+                  ]
+                }
+              },
+              "method": {
+                "isVirtual": false,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 18,
+                "columnBegin": 24,
+                "lineEnd": 18,
+                "columnEnd": 38
               }
             }
           }
@@ -8531,48 +8503,46 @@
         "source": { "span": { "start": 734, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "baz" } } },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "baz" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "void" },
-                    "parameters": [
-                      { "name": { "key": "" }, "type": { "key": "bool" } },
-                      { "name": { "key": "" }, "type": { "key": "bool" } }
-                    ]
-                  }
-                },
-                "method": {
-                  "isVirtual": false,
-                  "isConst": false,
-                  "isVolatile": false,
-                  "refQualifier": 0
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 24,
-                  "columnBegin": 1,
-                  "lineEnd": 26,
-                  "columnEnd": 37
                 }
+              },
+              "signature": {
+                "key": {
+                  "returns": { "key": "void" },
+                  "parameters": [
+                    { "name": { "key": "" }, "type": { "key": "bool" } },
+                    { "name": { "key": "" }, "type": { "key": "bool" } }
+                  ]
+                }
+              },
+              "method": {
+                "isVirtual": false,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 24,
+                "columnBegin": 1,
+                "lineEnd": 26,
+                "columnEnd": 37
               }
             }
           }
@@ -9114,42 +9084,40 @@
         "source": { "span": { "start": 578, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "foo" } } },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "foo" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "signature": {
-                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                },
-                "method": {
-                  "isVirtual": false,
-                  "isConst": false,
-                  "isVolatile": false,
-                  "refQualifier": 0
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 10,
-                  "columnBegin": 3,
-                  "lineEnd": 10,
-                  "columnEnd": 12
                 }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "method": {
+                "isVirtual": false,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 10,
+                "columnBegin": 3,
+                "lineEnd": 10,
+                "columnEnd": 12
               }
             }
           }
@@ -9691,42 +9659,40 @@
         "source": { "span": { "start": 634, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "foo" } } },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "foo" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "signature": {
-                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                },
-                "method": {
-                  "isVirtual": false,
-                  "isConst": false,
-                  "isVolatile": false,
-                  "refQualifier": 0
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 16,
-                  "columnBegin": 3,
-                  "lineEnd": 16,
-                  "columnEnd": 12
                 }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "method": {
+                "isVirtual": false,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 16,
+                "columnBegin": 3,
+                "lineEnd": 16,
+                "columnEnd": 12
               }
             }
           }
@@ -10268,42 +10234,40 @@
         "source": { "span": { "start": 690, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "foo" } } },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "foo" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "signature": {
-                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                },
-                "method": {
-                  "isVirtual": false,
-                  "isConst": false,
-                  "isVolatile": false,
-                  "refQualifier": 0
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
-                  "columnBegin": 1,
-                  "lineEnd": 22,
-                  "columnEnd": 22
                 }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "method": {
+                "isVirtual": false,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 21,
+                "columnBegin": 1,
+                "lineEnd": 22,
+                "columnEnd": 22
               }
             }
           }

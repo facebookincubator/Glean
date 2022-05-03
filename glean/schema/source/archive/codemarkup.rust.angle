@@ -1,9 +1,9 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.rust.2 {
+schema codemarkup.rust.1 {
 
 import src.1
-import code.rust.1
+import code.20
 import codemarkup.types.1
 import rust.1
 
@@ -15,12 +15,13 @@ import rust.1
 predicate RustResolveLocation:
   {
     location: codemarkup.types.Location,
-    entity: code.rust.Entity,
+    entity: code.Entity,
   }
-  { { Name, File, { span = Span }, nothing }, { definition = Defn } } where
+  { { Name, File, { span = Span }, nothing }, Entity } where
     rust.FileDefinition { File, Defn };
     rust.DefLocation { Defn, File, Span };
     rust.DefinitionName { Defn, rust.Name Name };
+    Entity = code.Entity { rust = { definition = Defn } };
 
 #
 # Finding entities' locations
@@ -28,10 +29,10 @@ predicate RustResolveLocation:
 
 predicate RustEntityLocation:
   {
-    entity: code.rust.Entity,
+    entity: code.Entity,
     location: codemarkup.types.Location,
   }
-  { { definition = D }, { Name, File, { span = Span }, nothing } } where
+  { { rust = { definition = D } }, { Name, File, { span = Span }, nothing } } where
     rust.DefLocation { D, File, Span };
     rust.DefinitionName { D, rust.Name Name };
 
@@ -44,14 +45,9 @@ predicate RustFileEntityXRefLocations:
   {
     file: src.File,
     xref: codemarkup.types.XRefLocation,
-    entity: code.rust.Entity,
+    entity: code.Entity,
   }
-  {
-    File,
-    { TargetLocation, { span = SrcSpan } },
-    { definition = TargetDef }
-  }
-  where
+  { File, { TargetLocation, { span = SrcSpan } }, Entity } where
     rust.FileXRefs { File, XRefs };
     { TargetDef, SrcSpans } = XRefs[..];
     SrcSpan = SrcSpans[..];
@@ -62,6 +58,7 @@ predicate RustFileEntityXRefLocations:
     rust.DefLocation { TargetDef, TargetFile, TargetSpan };
     rust.DefinitionName { TargetDef, rust.Name Name };
     { Name, TargetFile, { span = TargetSpan }, nothing } = TargetLocation;
+    Entity = code.Entity { rust = { definition = TargetDef } };
 
 #
 # Language entity uses
@@ -69,11 +66,11 @@ predicate RustFileEntityXRefLocations:
 
 predicate RustEntityUses:
   {
-    target: code.rust.Entity,
+    target: code.Entity,
     file: src.File,
     span: src.ByteSpan,
   }
-  { { definition = Def }, File, Span } where
+  { { rust = { definition = Def } }, File, Span } where
     rust.DefinitionUses { Def, File, Spans };
     Span = Spans[..];
 

@@ -1,7 +1,8 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.hack.2 {
+schema codemarkup.hack.1 {
 import src.1
+import code.20
 import code.hack.4
 import hack.6
 import codemarkup.types.1
@@ -25,22 +26,23 @@ predicate HackDeclarationSpan:
 predicate HackResolveLocation:
   {
     location: codemarkup.types.Location,
-    entity: code.hack.Entity,
+    entity: code.Entity,
   }
-  { { Name, File, { span = Span }, nothing }, { decl = Decl } } where
+  { { Name, File, { span = Span }, nothing }, Entity } where
     hack.FileDeclarations { file = File, declarations = Ds };
     Decl = Ds[..];
     hack.DeclarationName Decl -> (hack.Name Name);
     HackDeclarationSpan { declaration = Decl, file = File, span = Span };
+    Entity = code.Entity { hack = { decl = Decl } };
 
 # Finding entities' locations
 
 predicate HackEntityLocation:
   {
-    entity: code.hack.Entity,
+    entity: code.Entity,
     location: codemarkup.types.Location,
   }
-  { { decl = D }, { Name, File, { span = Span }, nothing } } where
+  { { hack = { decl = D } }, { Name, File, { span = Span }, nothing } } where
     HackDeclarationSpan { declaration = D, file = File, span = Span };
     hack.DeclarationName D -> (hack.Name Name);
 
@@ -50,9 +52,9 @@ predicate HackFileEntityXRefLocations:
   {
     file: src.File,
     xref: codemarkup.types.XRefLocation,
-    entity: code.hack.Entity,
+    entity: code.Entity,
   }
-  { File, { Location, { span = Src } }, { decl = D } } where
+  { File, { Location, { span = Src } }, Entity } where
     hack.FileXRefs { file = File, xrefs = XRefs };
     hack.XRef { target = { declaration = D }, ranges = Uses } = XRefs[..];
     hack.DeclarationName D -> (hack.Name TargetName);
@@ -60,14 +62,15 @@ predicate HackFileEntityXRefLocations:
     Location = codemarkup.types.Location { TargetName, TargetFile, { span = TargetSpan }, nothing };
     Sources = prim.relToAbsByteSpans Uses;
     Src = Sources[..];
+    Entity = code.Entity { hack = { decl = D } };
 
 predicate HackFileEntityXRefSpans:
   {
     file: src.File,
     span: src.ByteSpan,
-    entity: code.hack.Entity,
+    entity: code.Entity,
   }
-  { File, Src, { decl = D } } where
+  { File, Src, { hack = { decl = D } } } where
     hack.FileXRefs { file = File, xrefs = XRefs };
     hack.XRef { target = { declaration = D }, ranges = Uses } = XRefs[..];
     Sources = prim.relToAbsByteSpans Uses;
@@ -79,21 +82,21 @@ predicate HackFileEntityXRefSpans:
 
 predicate HackEntityUses:
   {
-    target: code.hack.Entity,
+    target: code.Entity,
     file: src.File,
     span: src.ByteSpan,
   }
-  { { decl = D }, File, Span } where
+  { { hack = { decl = D } }, File, Span } where
     hack.TargetUses { target = { declaration = D }, file = File, uses = Uses };
     Spans = prim.relToAbsByteSpans Uses;
     Span = Spans[..];
 
 predicate HackEntityKind:
   {
-    entity: code.hack.Entity,
+    entity: code.Entity,
     kind: codemarkup.types.SymbolKind,
   }
-  { {decl = Decl}, Kind } where
+  { {hack = {decl = Decl}}, Kind } where
     ({ classConst = _ } = Decl; Constant = Kind) |
     ({ container = C } = Decl;
       ({ class_ = _ } = C; Class_ = Kind) |
@@ -112,11 +115,11 @@ predicate HackEntityKind:
 
 predicate HackEntityInfo:
   {
-    entity: code.hack.Entity,
+    entity: code.Entity,
     info: codemarkup.types.SymbolInfo,
   }
-  { {decl = Decl}, { kind = Kind, isAbstract = Abs } } where
-    HackEntityKind { {decl = Decl}, Kind };
+  { {hack = {decl = Decl}}, { kind = Kind, isAbstract = Abs } } where
+    HackEntityKind { { hack = {decl = Decl}}, Kind };
     ( Method = Kind;
       { method = M } = Decl;
       hack.MethodDefinition { declaration = M, isAbstract = Abs }
@@ -154,10 +157,10 @@ predicate HackEntityInfo:
 
 predicate HackAnnotation :
   {
-    entity: code.hack.Entity,
-    anns: code.hack.Annotations,
+    entity: code.Entity,
+    anns: code.Annotations,
   }
-  {{decl=D}, {attributes=A}} where
+  {{hack={decl=D}}, {hack={attributes=A}}} where
     ({ container = { class_ = Decl } } = D; hack.ClassDefinition{declaration=Decl, attributes=A}) |
     ({ container = { enum_ = Decl } } = D; hack.EnumDefinition{declaration=Decl, attributes=A}) |
     ({ container = { interface_ = Decl } } = D; hack.InterfaceDefinition{declaration=Decl, attributes=A}) |

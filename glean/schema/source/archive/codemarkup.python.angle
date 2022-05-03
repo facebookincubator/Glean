@@ -1,8 +1,8 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.python.2 {
+schema codemarkup.python.1 {
 import src.1
-import code.python.1
+import code.20
 import codemarkup.types.1
 import python.3
 
@@ -11,20 +11,21 @@ import python.3
 predicate PythonResolveLocation:
   {
     location: codemarkup.types.Location,
-    entity: code.python.Entity,
+    entity: code.Entity,
   }
-  { { Name, File, { span = Span }, nothing }, { decl = Decl } } where
+  { { Name, File, { span = Span }, nothing }, Entity } where
     python.DeclarationsByFile { File, Span, Decl };
     python.DeclarationToName Decl -> (Name : string);
+    Entity = code.Entity { python = { decl = Decl } };
 
 # Finding entities' locations
 
 predicate PythonEntityLocation:
   {
-    entity: code.python.Entity,
+    entity: code.Entity,
     location: codemarkup.types.Location,
   }
-  { { decl = D }, { Name, File, { span = Span }, nothing } } where
+  { { python = { decl = D } }, { Name, File, { span = Span }, nothing } } where
     python.DeclarationLocation { declaration = D, file = File, span = Span };
     python.DeclarationToName D -> (python.Name Name);
 
@@ -32,7 +33,7 @@ predicate PythonFileEntityXRefLocations:
   {
     file: src.File,
     xref: codemarkup.types.XRefLocation,
-    entity: code.python.Entity,
+    entity: code.Entity,
   }
   {File, {Location, { span = Src }}, Entity} where
   {PyDecl, Src} = (
@@ -47,19 +48,19 @@ predicate PythonFileEntityXRefLocations:
     python.DirectXRefsByFile {File, XRef};
     XRef
   );
-  { decl = PyDecl } = Entity;
+  Entity = code.Entity { python = { decl = PyDecl } };
   PythonEntityNameAndLocation { Entity, Name, TargetFile, TargetSpan };
   { Name, TargetFile, { span = TargetSpan }, nothing } = Location;
 
 predicate PythonEntityNameAndLocation:
   {
-    entity: code.python.Entity,
+    entity: code.Entity,
     name: string,
     file: src.File,
     span: src.ByteSpan,
   }
   {Ent, Name, File, Span} where
-  { decl = PyDecl } = Ent;
+  { python = { decl = PyDecl }} = Ent;
   (
     { cls = D } = PyDecl;
     D = python.ClassDeclaration { name = PyName };
@@ -85,11 +86,11 @@ predicate PythonEntityNameAndLocation:
 
 predicate PythonEntityUses:
   {
-    target: code.python.Entity,
+    target: code.Entity,
     file: src.File,
     span: src.ByteSpan,
   }
-  { { decl = D }, File, Span } where
+  { { python = { decl = D } }, File, Span } where
   python.DeclarationUses { declaration = D, file = File, span = Span}
 
 #
@@ -126,10 +127,10 @@ predicate NonImportPythonDeclarationInfo:
 
 predicate PythonEntityKind:
   {
-    entity: code.python.Entity,
+    entity: code.Entity,
     kind: codemarkup.types.SymbolKind,
   }
-  { { decl = D }, Kind } where
+  { { python = { decl = D } }, Kind } where
     NonImportPythonDeclarationKind { D, Kind } |
     ({imp = {from_name = FN}} = D;
       python.DeclarationWithName { FN, Imported };
@@ -139,7 +140,7 @@ predicate PythonEntityKind:
 # For backward compatibility:
 predicate PythonEntityInfo:
   {
-    entity: code.python.Entity,
+    entity: code.Entity,
     info: codemarkup.types.SymbolInfo,
   }
   { E, { kind = K, isAbstract = false }} where

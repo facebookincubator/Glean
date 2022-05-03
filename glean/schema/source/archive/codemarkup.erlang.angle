@@ -1,8 +1,8 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.erlang.2 {
+schema codemarkup.erlang.1 {
 import src.1
-import code.erlang.1
+import code.20
 import codemarkup.types.1
 import erlang.1
 
@@ -13,13 +13,14 @@ import erlang.1
 predicate ErlangResolveLocation:
   {
     location: codemarkup.types.Location,
-    entity: code.erlang.Entity,
+    entity: code.Entity,
   }
-  { { Name, File, { span = Span }, nothing }, { decl = Declaration } } where
+  { { Name, File, { span = Span }, nothing }, Entity } where
     # Location.name is weird but we aren't using it for anything yet.
     # Weirdness is that distinct fucntions foo/1 and foo/2 have same Location.name ("foo").
     # Use `Name = Fqn.name + str(Fqn.arity)` when primops available so names are "foo/1" and "foo/2"
     Declaration = erlang.Declaration { func = { fqn = {name = Name}, file = File, span = Span } };
+    Entity = code.Entity { erlang = { decl = Declaration } };
 
 #
 # Finding entities' locations
@@ -27,10 +28,10 @@ predicate ErlangResolveLocation:
 
 predicate ErlangEntityLocation:
   {
-    entity: code.erlang.Entity,
+    entity: code.Entity,
     location: codemarkup.types.Location,
   }
-  { { decl = D }, { Name, File, { span = Span }, nothing } } where
+  { { erlang = { decl = D } }, { Name, File, { span = Span }, nothing } } where
     erlang.DeclarationLocation { declaration = D, file = File, span = Span };
     # Location.name here is weird, see ErlangResolveLocation comment
     { func = erlang.FunctionDeclaration { fqn = {name = Name } , file = _, span = _} } = D;
@@ -43,17 +44,13 @@ predicate ErlangFileEntityXRefLocations:
   {
     file: src.File,
     xref: codemarkup.types.XRefLocation,
-    entity: code.erlang.Entity,
+    entity: code.Entity,
   }
-  {
-     File,
-     { target = TargetLocation, source = { span = Span } },
-     { decl = Decl }
-  }
-  where
+  {File, { target = TargetLocation, source = { span = Span } }, Entity} where
   erlang.XRefsViaFqnByFile { file = File, xrefs = XRefs };
   { target = Fqn, source = Span } = XRefs[..];
   erlang.DeclarationWithFqn { fqn = Fqn, declaration = Decl };
+  Entity = code.Entity { erlang = { decl = Decl } };
   # Location.name here is weird, see ErlangResolveLocation comment
   { func = { fqn = { name = Name }, file = TargetFile, span = TargetSpan } } = Decl;
   { Name, TargetFile, { span = TargetSpan }, nothing } = TargetLocation;
@@ -64,11 +61,11 @@ predicate ErlangFileEntityXRefLocations:
 
 predicate ErlangEntityUses:
   {
-    target: code.erlang.Entity,
+    target: code.Entity,
     file: src.File,
     span: src.ByteSpan,
   }
-  { { decl = D }, File, Span } where
+  { { erlang = { decl = D } }, File, Span } where
   erlang.DeclarationUses { declaration = D, file = File, span = Span}
 
 #
@@ -77,16 +74,16 @@ predicate ErlangEntityUses:
 
 predicate ErlangEntityKind:
   {
-    entity: code.erlang.Entity,
+    entity: code.Entity,
     kind: codemarkup.types.SymbolKind,
   }
-  { { decl = { func = D } }, Function } where
+  { { erlang = { decl = { func = D } } }, Function } where
   erlang.FunctionDeclaration {} = D
 
 # For backward compatibility:
 predicate ErlangEntityInfo:
   {
-    entity: code.erlang.Entity,
+    entity: code.Entity,
     info: codemarkup.types.SymbolInfo,
   }
   { E, { kind = K, isAbstract = false } } where

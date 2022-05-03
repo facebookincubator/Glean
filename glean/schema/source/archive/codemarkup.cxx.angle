@@ -1,7 +1,8 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.cxx.2 {
+schema codemarkup.cxx.1 {
 import src.1
+import code.20
 import code.cxx.3
 import codemarkup.types.1
 import cxx1.4
@@ -12,7 +13,7 @@ import cxx1.4
 predicate CxxResolveLocation:
   {
     location: codemarkup.types.Location,
-    entity: code.cxx.Entity,
+    entity: code.Entity,
   }
   { { Str, File, Range, Span }, Entity } where
     Trace = cxx1.Trace { file = File };
@@ -24,7 +25,7 @@ predicate CxxFileEntityTraceLocations:
     file: src.File,
     trace: cxx1.Trace,
     location: codemarkup.types.Location,
-    entity: code.cxx.Entity,
+    entity: code.Entity,
   }
   { File, Trace, Location, Entity } where
     CxxResolveTraceLocation { Trace, Location, Entity };
@@ -36,16 +37,23 @@ predicate CxxResolveTraceLocation:
   {
     trace : cxx1.Trace,
     location: codemarkup.types.Location,
-    entity: code.cxx.Entity,
+    entity: code.Entity,
   }
   { Trace, Location, Entity } where
-    Trace = cxx1.Trace { file = File, declarations = cxx1.Declarations Decls };
+    Trace = cxx1.Trace { File, cxx1.Declarations Decls, { events = PPDecls } };
     # regular decls
     (
       Decl = Decls[..];
       cxx1.DeclarationLocationNameSpan { Decl, Range, Str, _, Span };
       Location = codemarkup.types.Location { Str, File, { range = Range }, { just = Span } };
       CxxResolveDeclarationToEntity { Decl, Entity };
+    ) |
+    ## preprocessor #defines
+    (
+      { define = Define } = PPDecls[..];
+      cxx1.PPDefineLocation { Define, Str, _, Range };
+      Location = codemarkup.types.Location { Str, File, { range = Range }, nothing };
+      Entity = code.Entity { pp = { define = Define } };
     )
 
 # For a given declaration, match to proper code.cxx.Entity. It will be
@@ -53,45 +61,45 @@ predicate CxxResolveTraceLocation:
 predicate CxxResolveDeclarationToEntity:
   {
     decl: cxx1.Declaration,
-    entity: code.cxx.Entity,
+    entity: code.Entity,
   }
   { Decl, Entity } where
     (
       { function_ = FunctionDecl } = Decl;
       FunctionDefn = cxx1.FunctionDefinition { declaration = FunctionDecl };
-      { defn = { function_ = FunctionDefn } } = Entity;
+      Entity = code.Entity { cxx = { defn = { function_ = FunctionDefn } } };
     ) |
     (
       { record_ = RecordDecl } = Decl;
       RecordDefn = cxx1.RecordDefinition { declaration = RecordDecl };
-      { defn = { record_ = RecordDefn } } = Entity;
+      Entity = code.Entity { cxx = { defn = { record_ = RecordDefn } } };
     ) |
     (
       { enum_ = EnumDecl } = Decl;
       EnumDefn = cxx1.EnumDefinition { declaration = EnumDecl };
-      { defn = { enum_ = EnumDefn } } = Entity;
+      Entity = code.Entity { cxx = { defn = { enum_ = EnumDefn } } };
     ) |
     (
       { namespace_ = NamespaceDecl } = Decl;
       NamespaceDefn = cxx1.NamespaceDefinition { declaration = NamespaceDecl };
-      { defn = { namespace_ = NamespaceDefn } } = Entity;
+      Entity = code.Entity { cxx = { defn = { namespace_ = NamespaceDefn } } };
     ) |
     (
       !({ function_ = FunctionDecl } = Decl; cxx1.FunctionDefinition { declaration = FunctionDecl });
       !({ record_ = RecordDecl } = Decl; cxx1.RecordDefinition { declaration = RecordDecl });
       !({ enum_ = EnumDecl } = Decl; cxx1.EnumDefinition { declaration = EnumDecl });
       !({ namespace_ = NamespaceDecl } = Decl; cxx1.NamespaceDefinition { declaration = NamespaceDecl });
-      { decl = Decl } = Entity;
+      Entity = code.Entity { cxx = { decl = Decl } };
     )
 
 # Finding entities' locations
 
 predicate CxxEntityLocation:
   {
-    entity: code.cxx.Entity,
+    entity: code.Entity,
     location: codemarkup.types.Location,
   }
-  { { decl = D }, { Name, File, { range = Range }, { just = Span } } } where
+  { { cxx = { decl = D } }, { Name, File, { range = Range }, { just = Span } } } where
     cxx1.DeclarationLocationNameSpan { D, Range, Name, _, Span };
     { file = File } = Range;
 
@@ -102,17 +110,18 @@ predicate CxxFileEntityXRefLocations:
   {
     file: src.File,
     xref: codemarkup.types.XRefLocation,
-    entity: code.cxx.Entity,
+    entity: code.Entity,
   }
   { File, XRef, Entity } where
-    CxxFileEntityFixedXRefLocations { File, XRef, Entity }
+    CxxFileEntityFixedXRefLocations { File, XRef, Entity } |
+    CxxFileEntityPPXRefLocations { File, XRef, Entity }
 
 # Fixed C++ xrefs only
 predicate CxxFileEntityFixedXRefLocations:
   {
     file: src.File,
     xref: codemarkup.types.XRefLocation,
-    entity: code.cxx.Entity,
+    entity: code.Entity,
   }
   { File, XRef, Entity } where
     CxxFileEntityTraceFixedXRefLocations { File, _, XRef, Entity }
@@ -124,7 +133,7 @@ predicate CxxFileEntityTraceFixedXRefLocations:
     file: src.File,
     trace: cxx1.FileXRefMap,
     xref: codemarkup.types.XRefLocation,
-    entity: code.cxx.Entity,
+    entity: code.Entity,
   }
   { File, Trace, XRef, Entity } where
     cxx1.FileXRefMap { file = File, fixed = Fixeds } = Trace;
@@ -141,7 +150,7 @@ predicate CxxFileEntityXMapFixedXRefLocations:
   {
     trace: cxx1.FileXRefs,
     xref: codemarkup.types.XRefLocation,
-    entity: code.cxx.Entity,
+    entity: code.Entity,
   }
   { Trace, XRef, Entity } where
     cxx1.FileXRefs { xmap = { fixed = Fixeds } } = Trace;
@@ -155,7 +164,7 @@ predicate CxxFileEntityXMapFixedXRefLocations:
 predicate CxxXRefTargetLocation:
   {
     target: cxx1.XRefTarget,
-    entity: code.cxx.Entity,
+    entity: code.Entity,
     location: codemarkup.types.Location,
   }
   { XRefTarget, Entity, Location } where
@@ -164,7 +173,7 @@ predicate CxxXRefTargetLocation:
       cxx1.DeclarationLocationNameSpan { Decl, Range, Name, _, Span };
       { file = TargetFile } = Range;
       { Name, TargetFile, { range = Range }, { just = Span } } = Location;
-      { decl = Decl } = Entity;
+      code.Entity { cxx = { decl = Decl }} = Entity;
     ) | (
     # or jump through the decl sometimes to a def
       { declaration = Decl } = XRefTarget;
@@ -175,7 +184,7 @@ predicate CxxXRefTargetLocation:
       { cxx1.Name Name, _, Range } = Enum;
       { file = TargetFile } = Range;
       { Name, TargetFile, { range = Range }, nothing } = Location;
-      { enumerator = Enum } = Entity;
+      code.Entity { cxx = { enumerator = Enum }} = Entity;
     )
     # objSelector -- not an entity type
     # unknown -- just a file and a point in the file tbd
@@ -192,7 +201,7 @@ predicate CxxFileEntityTraceDeclToDefXRefLocations:
     file: src.File,
     trace: cxx1.Trace,
     xref: codemarkup.types.XRefLocation,
-    entity: code.cxx.Entity,
+    entity: code.Entity,
   }
   { File, Trace, XRef, Entity } where
     Trace = cxx1.Trace { File, cxx1.Declarations Decls, _ };
@@ -210,7 +219,7 @@ predicate CxxFileEntityTraceDeclToDefXRefLocations:
 predicate CxxDeclToDefXRefTargetLocation:
   {
     decl: cxx1.Declaration,
-    entity: code.cxx.Entity,
+    entity: code.Entity,
     location: codemarkup.types.Location
   }
   { Decl1, Entity, Location } where
@@ -220,14 +229,14 @@ predicate CxxDeclToDefXRefTargetLocation:
     cxx1.DeclarationLocationNameSpan { Decl2, Range, Name, _, Span };
     { file = TargetFile } = Range;
     { Name, TargetFile, { range = Range }, { just = Span } } = Location;
-    { defn = Defn } = Entity;
+    code.Entity { cxx = { defn = Defn }} = Entity;
 
 # For a given Decl, find any DeclFamily entries
 # We will turn these into xrefs
 predicate CxxDefToDeclFamilyXRefTargetLocation:
   {
     decl: cxx1.Declaration,
-    entity: code.cxx.Entity,
+    entity: code.Entity,
     location: codemarkup.types.Location,
   }
   { Decl1, Entity, Location } where
@@ -236,7 +245,7 @@ predicate CxxDefToDeclFamilyXRefTargetLocation:
     cxx1.DeclarationLocationNameSpan { Decl2, Range, Name, _, Span };
     { file = TargetFile } = Range;
     { Name, TargetFile, { range = Range }, { just = Span } } = Location;
-    { decl = Decl2 } = Entity;
+    code.Entity { cxx = { decl = Decl2 }} = Entity;
 
 # "Variable" external XRefs only, for a specific trace (FileXRefMap)
 # todo: we should really zip these in Angle and export them as XRefLocations
@@ -290,7 +299,7 @@ predicate CxxFileEntityTraceVariableXRefDeclToDefs:
   {
     trace: cxx1.FileXRefMap,
     source: cxx1.Declaration, # used to identify the source
-    entity: code.cxx.Entity, # enough stuff to build a xreflocation
+    entity: code.Entity, # enough stuff to build a xreflocation
     location: codemarkup.types.Location,
   }
   { Trace, Decl, Entity, Location } where
@@ -305,7 +314,7 @@ predicate CxxFileEntityXMapVariableXRefDeclToDefs:
   {
     trace: cxx1.FileXRefs,
     source: cxx1.Declaration, # used to identify the source
-    entity: code.cxx.Entity, # enough stuff to build a xreflocation
+    entity: code.Entity, # enough stuff to build a xreflocation
     location: codemarkup.types.Location,
   }
   { Trace, Decl, Entity, Location } where
@@ -315,21 +324,47 @@ predicate CxxFileEntityXMapVariableXRefDeclToDefs:
     { declaration = Decl } = Targets[..];
     CxxDeclToDefXRefTargetLocation { Decl, Entity, Location };
 
+# C preprocessor uses of #defines as xrefs
+predicate CxxFileEntityPPXRefLocations:
+  {
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.Entity,
+  }
+  { File, XRef, Entity } where
+    Trace = cxx1.Trace { file = File };
+    CxxFileEntityTracePPXRefLocations { File, Trace, XRef, Entity };
+
+# C preprocessor uses of #defines and #includes.
+# N.B. uses are keyed by traces, not xmaps, for PP
+predicate CxxFileEntityTracePPXRefLocations:
+  {
+    file: src.File,
+    trace: cxx1.Trace,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.Entity,
+  }
+  { File, Trace, XRef, Entity } where
+    cxx1.FilePPTraceXRefs { File, Trace, SrcRange, PpEntity };
+    cxx1.PPEntityLocation { PpEntity, Name, TargetFile, TargetRange };
+    { { Name, TargetFile, { range = TargetRange }, nothing }, { range = SrcRange } } = XRef;
+    Entity = code.Entity { pp = PpEntity };
+
 #
 # Language entity uses
 #
 
 predicate CxxEntityUses:
   {
-    target: code.cxx.Entity,
+    target: code.Entity,
     file: src.File,
     span: src.ByteSpan,
   }
-  ({ { decl = D }, File, Span } where
+  ({ { cxx = { decl = D } }, File, Span } where
     cxx1.TargetUses { { declaration = D }, File, Uses };
     Spans = prim.relToAbsByteSpans Uses;
     Span = Spans[..]) |
-  ({ { enumerator = E }, File, Span } where
+  ({ { cxx = { enumerator = E } }, File, Span } where
     cxx1.TargetUses { { enumerator = E }, File, Uses };
     Spans = prim.relToAbsByteSpans Uses;
     Span = Spans[..])
@@ -340,10 +375,10 @@ predicate CxxEntityUses:
 
 predicate CxxEntityKind:
   {
-    entity: code.cxx.Entity,
+    entity: code.Entity,
     kind: codemarkup.types.SymbolKind,
   }
-  { CxxD, Kind } where
+  { { cxx = CxxD }, Kind } where
     ({ decl = Decl } = CxxD;
      CxxDeclKind { Decl, Kind }) |
     ({ enumerator = _ } = CxxD; Enumerator = Kind) |
@@ -379,10 +414,10 @@ predicate CxxDeclKind:
 
 predicate CxxEntityInfo:
   {
-    entity: code.cxx.Entity,
+    entity: code.Entity,
     info: codemarkup.types.SymbolInfo,
   }
-  { CxxD, Info } where
+  { { cxx = CxxD }, Info } where
     ({ decl = Decl } = CxxD;
      CxxDeclInfo { Decl, Info }) |
     ({ enumerator = _ } = CxxD;
@@ -416,10 +451,10 @@ predicate CxxDeclInfo:
 
 predicate CxxAnnotation :
   {
-    entity: code.cxx.Entity,
-    anns: code.cxx.Annotations,
+    entity: code.Entity,
+    anns: code.Annotations,
   }
-  {{decl=D}, {attributes=As}} where
+  {{cxx={decl=D}}, {cxx={attributes=As}}} where
     ({ function_ = Decl } = D; cxx1.FunctionAttribute{declaration=Decl, attr=A}; As=[A]) |
     ({ function_ = Decl } = D; !cxx1.FunctionAttribute{declaration=Decl}; As=[]:[cxx1.Attribute.4])
 

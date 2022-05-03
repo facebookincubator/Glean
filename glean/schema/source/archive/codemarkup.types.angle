@@ -1,0 +1,50 @@
+schema codemarkup.types.1 {
+
+import src.1
+
+# Public types
+
+# Within a file, the type of symbol locations.
+# range is used for compatibility with cxx/thrift indexer
+# but new indexers should use the `bytespan` representation.
+# (and should also generate `src.FileLines` fact).
+type RangeSpan =
+  {
+    span : src.ByteSpan |
+    range : src.Range # cxx and lsif compat
+  }
+
+# XRefs from source to target declaration or definition
+type XRefLocation =
+  {
+    target: Location,
+    source: RangeSpan
+  }
+
+# Tags for entities, so clients can distinguish them.
+type SymbolKind =
+  enum {
+    Package | Type | Value | File | Module | Namespace | Class_ | Method | Property |
+    Field | Constructor | Enum | Interface | Function | Variable | Constant | String |
+    Number | Boolean | Array | Object_ | Key | Null | Enumerator | Struct | Event |
+    Operator | TypeParameter | Union | Macro | Trait
+  }
+
+type SymbolInfo =
+  {
+    kind: SymbolKind,
+    isAbstract: bool,  # typically applies to methods, fields, and classes
+  }
+
+# Symbol locations within a repo
+type Location =
+  {
+    name: string,
+    file: src.File,
+    location : RangeSpan,
+
+    # An optional byte span of the name itself rather than the entire entity.
+    span: maybe src.ByteSpan,
+  }
+
+}

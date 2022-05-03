@@ -1,7 +1,8 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.flow.2 {
+schema codemarkup.flow.1 {
 import src.1
+import code.20
 import code.flow.2
 import codemarkup.types.1
 import flow.3
@@ -11,21 +12,22 @@ import flow.3
 predicate FlowResolveLocation:
   {
     location: codemarkup.types.Location,
-    entity: code.flow.Entity,
+    entity: code.Entity,
   }
-  { { NameStr, File, { span = Span }, nothing }, { decl = Decl } } where
+  { { NameStr, File, { span = Span }, nothing }, Entity } where
     flow.FileDeclaration { File, Decl };
     flow.DeclarationNameSpan { Decl, Name, Span };
-    Name = flow.Name NameStr;
+    Name = flow.Name NameStr ;
+    Entity = code.Entity { flow = { decl = Decl } };
 
 # Finding entities' locations
 
 predicate FlowEntityLocation:
   {
-    entity: code.flow.Entity,
+    entity: code.Entity,
     location: codemarkup.types.Location,
   }
-  { { decl = D }, { Name, File, { span = Span }, nothing } } where
+  { { flow = { decl = D } }, { Name, File, { span = Span }, nothing } } where
     flow.DeclarationLocation { decl = D, file = File, span = Span };
     flow.DeclarationNameSpan { decl = D, name = flow.Name Name, span = Span };
 
@@ -33,9 +35,9 @@ predicate FlowFileEntityXRefLocations:
   {
     file: src.File,
     xref: codemarkup.types.XRefLocation,
-    entity: code.flow.Entity,
+    entity: code.Entity,
   }
-  { File, XRef, Entity } where
+  { File, XRef, { flow = Entity } } where
     FlowFileReferenceEntityXRefLocations { File, XRef, Entity } |
     FlowFileImportDeclEntityXRefLocations { File, XRef, Entity }
 
@@ -117,11 +119,11 @@ predicate FlowFileImportDeclEntityXRefLocations:
 
 predicate FlowEntityUses:
   {
-    target: code.flow.Entity,
+    target: code.Entity,
     file: src.File,
     span: src.ByteSpan,
   }
-  { Entity, File, Span } where
+  { { flow = Entity }, File, Span } where
     flow.FlowEntityUsesAll { Entity, File, Span };
 
 }

@@ -106,21 +106,19 @@
         "source": { "span": { "start": 325, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
-                  "columnBegin": 22,
-                  "lineEnd": 11,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 22,
+                "lineEnd": 11,
+                "columnEnd": 1
               }
             }
           }
@@ -234,21 +232,19 @@
         "source": { "span": { "start": 363, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
-                  "columnBegin": 22,
-                  "lineEnd": 11,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 22,
+                "lineEnd": 11,
+                "columnEnd": 1
               }
             }
           }
@@ -362,41 +358,39 @@
         "source": { "span": { "start": 371, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "f" } } },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "f" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "void" },
-                    "parameters": [
-                      { "name": { "key": "" }, "type": { "key": "U" } }
-                    ]
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 10,
-                  "columnBegin": 24,
-                  "lineEnd": 10,
-                  "columnEnd": 39
                 }
+              },
+              "signature": {
+                "key": {
+                  "returns": { "key": "void" },
+                  "parameters": [
+                    { "name": { "key": "" }, "type": { "key": "U" } }
+                  ]
+                }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 10,
+                "columnBegin": 24,
+                "lineEnd": 10,
+                "columnEnd": 39
               }
             }
           }

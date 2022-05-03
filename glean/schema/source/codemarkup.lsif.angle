@@ -1,8 +1,8 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.lsif.1 {
+schema codemarkup.lsif.2 {
 import src.1
-import code.20
+import code.lsif.1
 import codemarkup.types.1
 import lsif.1
 
@@ -13,9 +13,9 @@ import lsif.1
 predicate LsifResolveLocation:
   {
     location: codemarkup.types.Location,
-    entity: code.Entity,
+    entity: code.lsif.Entity,
   }
-  { { Name, File, { range = Range }, nothing }, { lsif = Entity } } where
+  { { Name, File, { range = Range }, nothing }, Entity } where
     lsif.ResolveLocation { { Name, File, Range }, Entity };
 
 #
@@ -24,10 +24,10 @@ predicate LsifResolveLocation:
 
 predicate LsifEntityLocation:
   {
-    entity: code.Entity,
+    entity: code.lsif.Entity,
     location: codemarkup.types.Location,
   }
-  { { lsif = Entity }, { Name, File, { range = Range }, nothing } } where
+  { Entity, { Name, File, { range = Range }, nothing } } where
     lsif.EntityLocation { Entity, { Name, File, Range } };
 
 #
@@ -38,9 +38,9 @@ predicate LsifFileEntityXRefLocations:
   {
     file: src.File,
     xref: codemarkup.types.XRefLocation,
-    entity: code.Entity,
+    entity: code.lsif.Entity,
   }
-  { File, XRefLocation, { lsif = Entity } } where
+  { File, XRefLocation, Entity } where
     lsif.FileEntityXRefLocation { File, SrcRange, TargetLocation, Entity };
     { Name, TargetFile, TargetRange } = TargetLocation;
     { { Name, TargetFile, { range = TargetRange }, nothing },
@@ -52,11 +52,11 @@ predicate LsifFileEntityXRefLocations:
 
 predicate LsifEntityUses:
   {
-    target: code.Entity,
+    target: code.lsif.Entity,
     file: src.File,
     range: src.Range, # n.b src.Range
   }
-  { { lsif = E }, File, Range } where
+  { E, File, Range } where
   lsif.EntityUses { E, File, Range }
 
 #
@@ -65,10 +65,10 @@ predicate LsifEntityUses:
 
 predicate EntityInfo:
   {
-    entity: code.Entity,
+    entity: code.lsif.Entity,
     info: codemarkup.types.SymbolInfo
   }
-  { { lsif = Entity }, { kind = Kind, isAbstract = false } } where
+  { Entity, { kind = Kind, isAbstract = false } } where
     lsif.EntityKind { Entity, Lsif };
     LsifKindToKind { Lsif, Kind };
 

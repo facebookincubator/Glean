@@ -561,43 +561,39 @@
         "source": { "span": { "start": 490, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "Bar" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "Foo" },
-                            "scope": {
-                              "namespace_": {
-                                "key": {
-                                  "name": { "key": "N2" },
-                                  "parent": {
-                                    "key": { "name": { "key": "N1" } }
-                                  }
-                                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Bar" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "Foo" },
+                          "scope": {
+                            "namespace_": {
+                              "key": {
+                                "name": { "key": "N2" },
+                                "parent": { "key": { "name": { "key": "N1" } } }
                               }
                             }
                           }
-                        },
-                        "access": 0
-                      }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 22,
-                  "columnBegin": 3,
-                  "lineEnd": 22,
-                  "columnEnd": 15
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 22,
+                "columnBegin": 3,
+                "lineEnd": 22,
+                "columnEnd": 15
               }
             }
           }
@@ -1166,43 +1162,39 @@
         "source": { "span": { "start": 503, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "Bar" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "Foo" },
-                            "scope": {
-                              "namespace_": {
-                                "key": {
-                                  "name": { "key": "N2" },
-                                  "parent": {
-                                    "key": { "name": { "key": "N1" } }
-                                  }
-                                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Bar" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "Foo" },
+                          "scope": {
+                            "namespace_": {
+                              "key": {
+                                "name": { "key": "N2" },
+                                "parent": { "key": { "name": { "key": "N1" } } }
                               }
                             }
                           }
-                        },
-                        "access": 0
-                      }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 22,
-                  "columnBegin": 3,
-                  "lineEnd": 22,
-                  "columnEnd": 15
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 22,
+                "columnBegin": 3,
+                "lineEnd": 22,
+                "columnEnd": 15
               }
             }
           }
@@ -1771,43 +1763,39 @@
         "source": { "span": { "start": 556, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "Bar" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "Foo" },
-                            "scope": {
-                              "namespace_": {
-                                "key": {
-                                  "name": { "key": "N2" },
-                                  "parent": {
-                                    "key": { "name": { "key": "N1" } }
-                                  }
-                                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Bar" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "Foo" },
+                          "scope": {
+                            "namespace_": {
+                              "key": {
+                                "name": { "key": "N2" },
+                                "parent": { "key": { "name": { "key": "N1" } } }
                               }
                             }
                           }
-                        },
-                        "access": 0
-                      }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 22,
-                  "columnBegin": 3,
-                  "lineEnd": 22,
-                  "columnEnd": 15
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 22,
+                "columnBegin": 3,
+                "lineEnd": 22,
+                "columnEnd": 15
               }
             }
           }
@@ -2376,43 +2364,39 @@
         "source": { "span": { "start": 744, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "Bar" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "Foo" },
-                            "scope": {
-                              "namespace_": {
-                                "key": {
-                                  "name": { "key": "N2" },
-                                  "parent": {
-                                    "key": { "name": { "key": "N1" } }
-                                  }
-                                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Bar" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "Foo" },
+                          "scope": {
+                            "namespace_": {
+                              "key": {
+                                "name": { "key": "N2" },
+                                "parent": { "key": { "name": { "key": "N1" } } }
                               }
                             }
                           }
-                        },
-                        "access": 0
-                      }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 22,
-                  "columnBegin": 3,
-                  "lineEnd": 22,
-                  "columnEnd": 15
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 22,
+                "columnBegin": 3,
+                "lineEnd": 22,
+                "columnEnd": 15
               }
             }
           }
@@ -2981,43 +2965,39 @@
         "source": { "span": { "start": 762, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "Bar" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "Foo" },
-                            "scope": {
-                              "namespace_": {
-                                "key": {
-                                  "name": { "key": "N2" },
-                                  "parent": {
-                                    "key": { "name": { "key": "N1" } }
-                                  }
-                                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Bar" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "Foo" },
+                          "scope": {
+                            "namespace_": {
+                              "key": {
+                                "name": { "key": "N2" },
+                                "parent": { "key": { "name": { "key": "N1" } } }
                               }
                             }
                           }
-                        },
-                        "access": 0
-                      }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 22,
-                  "columnBegin": 3,
-                  "lineEnd": 22,
-                  "columnEnd": 15
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 22,
+                "columnBegin": 3,
+                "lineEnd": 22,
+                "columnEnd": 15
               }
             }
           }
@@ -3586,43 +3566,39 @@
         "source": { "span": { "start": 1195, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "Bar" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "Foo" },
-                            "scope": {
-                              "namespace_": {
-                                "key": {
-                                  "name": { "key": "N2" },
-                                  "parent": {
-                                    "key": { "name": { "key": "N1" } }
-                                  }
-                                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Bar" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "Foo" },
+                          "scope": {
+                            "namespace_": {
+                              "key": {
+                                "name": { "key": "N2" },
+                                "parent": { "key": { "name": { "key": "N1" } } }
                               }
                             }
                           }
-                        },
-                        "access": 0
-                      }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 22,
-                  "columnBegin": 3,
-                  "lineEnd": 22,
-                  "columnEnd": 15
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 22,
+                "columnBegin": 3,
+                "lineEnd": 22,
+                "columnEnd": 15
               }
             }
           }
@@ -4191,31 +4167,29 @@
         "source": { "span": { "start": 498, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "Foo" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
-                        }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Foo" },
+                  "scope": {
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "N2" },
+                        "parent": { "key": { "name": { "key": "N1" } } }
                       }
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
-                  "columnBegin": 1,
-                  "lineEnd": 25,
-                  "columnEnd": 1
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 21,
+                "columnBegin": 1,
+                "lineEnd": 25,
+                "columnEnd": 1
               }
             }
           }
@@ -4784,31 +4758,29 @@
         "source": { "span": { "start": 551, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "Foo" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
-                        }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Foo" },
+                  "scope": {
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "N2" },
+                        "parent": { "key": { "name": { "key": "N1" } } }
                       }
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
-                  "columnBegin": 1,
-                  "lineEnd": 25,
-                  "columnEnd": 1
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 21,
+                "columnBegin": 1,
+                "lineEnd": 25,
+                "columnEnd": 1
               }
             }
           }
@@ -5377,31 +5349,29 @@
         "source": { "span": { "start": 757, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "Foo" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
-                        }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Foo" },
+                  "scope": {
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "N2" },
+                        "parent": { "key": { "name": { "key": "N1" } } }
                       }
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
-                  "columnBegin": 1,
-                  "lineEnd": 25,
-                  "columnEnd": 1
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 21,
+                "columnBegin": 1,
+                "lineEnd": 25,
+                "columnEnd": 1
               }
             }
           }
@@ -5970,31 +5940,29 @@
         "source": { "span": { "start": 833, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "Foo" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
-                        }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Foo" },
+                  "scope": {
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "N2" },
+                        "parent": { "key": { "name": { "key": "N1" } } }
                       }
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
-                  "columnBegin": 1,
-                  "lineEnd": 25,
-                  "columnEnd": 1
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 21,
+                "columnBegin": 1,
+                "lineEnd": 25,
+                "columnEnd": 1
               }
             }
           }
@@ -6563,31 +6531,29 @@
         "source": { "span": { "start": 1051, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "Foo" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
-                        }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Foo" },
+                  "scope": {
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "N2" },
+                        "parent": { "key": { "name": { "key": "N1" } } }
                       }
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
-                  "columnBegin": 1,
-                  "lineEnd": 25,
-                  "columnEnd": 1
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 21,
+                "columnBegin": 1,
+                "lineEnd": 25,
+                "columnEnd": 1
               }
             }
           }
@@ -7156,31 +7122,29 @@
         "source": { "span": { "start": 1190, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "Foo" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
-                        }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Foo" },
+                  "scope": {
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "N2" },
+                        "parent": { "key": { "name": { "key": "N1" } } }
                       }
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
-                  "columnBegin": 1,
-                  "lineEnd": 25,
-                  "columnEnd": 1
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 21,
+                "columnBegin": 1,
+                "lineEnd": 25,
+                "columnEnd": 1
               }
             }
           }
@@ -7749,31 +7713,29 @@
         "source": { "span": { "start": 1271, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "Foo" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
-                        }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Foo" },
+                  "scope": {
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "N2" },
+                        "parent": { "key": { "name": { "key": "N1" } } }
                       }
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
-                  "columnBegin": 1,
-                  "lineEnd": 25,
-                  "columnEnd": 1
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 21,
+                "columnBegin": 1,
+                "lineEnd": 25,
+                "columnEnd": 1
               }
             }
           }
@@ -8342,18 +8304,16 @@
         "source": { "span": { "start": 709, "length": 2 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "namespace_": {
-              "key": {
-                "name": { "key": { "name": { "key": "M1" } } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 35,
-                  "columnBegin": 1,
-                  "lineEnd": 35,
-                  "columnEnd": 31
-                }
+        "decl": {
+          "namespace_": {
+            "key": {
+              "name": { "key": { "name": { "key": "M1" } } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 35,
+                "columnBegin": 1,
+                "lineEnd": 35,
+                "columnEnd": 31
               }
             }
           }
@@ -8922,18 +8882,16 @@
         "source": { "span": { "start": 639, "length": 2 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "namespace_": {
-              "key": {
-                "name": { "key": { "name": { "key": "N1" } } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
-                  "columnBegin": 1,
-                  "lineEnd": 33,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "namespace_": {
+            "key": {
+              "name": { "key": { "name": { "key": "N1" } } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 1,
+                "lineEnd": 33,
+                "columnEnd": 1
               }
             }
           }
@@ -9502,18 +9460,16 @@
         "source": { "span": { "start": 1171, "length": 2 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "namespace_": {
-              "key": {
-                "name": { "key": { "name": { "key": "N1" } } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
-                  "columnBegin": 1,
-                  "lineEnd": 33,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "namespace_": {
+            "key": {
+              "name": { "key": { "name": { "key": "N1" } } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 1,
+                "lineEnd": 33,
+                "columnEnd": 1
               }
             }
           }
@@ -10082,23 +10038,21 @@
         "source": { "span": { "start": 577, "length": 2 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "namespace_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "N2" },
-                    "parent": { "key": { "name": { "key": "N1" } } }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 1,
-                  "lineEnd": 29,
-                  "columnEnd": 1
+        "decl": {
+          "namespace_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "N2" },
+                  "parent": { "key": { "name": { "key": "N1" } } }
                 }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 1,
+                "lineEnd": 29,
+                "columnEnd": 1
               }
             }
           }
@@ -10667,23 +10621,21 @@
         "source": { "span": { "start": 1175, "length": 2 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "namespace_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "N2" },
-                    "parent": { "key": { "name": { "key": "N1" } } }
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 1,
-                  "lineEnd": 29,
-                  "columnEnd": 1
+        "decl": {
+          "namespace_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "N2" },
+                  "parent": { "key": { "name": { "key": "N1" } } }
                 }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 1,
+                "lineEnd": 29,
+                "columnEnd": 1
               }
             }
           }
@@ -11252,28 +11204,26 @@
         "source": { "span": { "start": 369, "length": 2 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "namespace_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "N3" },
-                    "parent": {
-                      "key": {
-                        "name": { "key": "N2" },
-                        "parent": { "key": { "name": { "key": "N1" } } }
-                      }
+        "decl": {
+          "namespace_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "N3" },
+                  "parent": {
+                    "key": {
+                      "name": { "key": "N2" },
+                      "parent": { "key": { "name": { "key": "N1" } } }
                     }
                   }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 15,
-                  "columnBegin": 1,
-                  "lineEnd": 15,
-                  "columnEnd": 31
                 }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 15,
+                "columnBegin": 1,
+                "lineEnd": 15,
+                "columnEnd": 31
               }
             }
           }
@@ -11842,28 +11792,26 @@
         "source": { "span": { "start": 423, "length": 2 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "namespace_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "N4" },
-                    "parent": {
-                      "key": {
-                        "name": { "key": "N2" },
-                        "parent": { "key": { "name": { "key": "N1" } } }
-                      }
+        "decl": {
+          "namespace_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "N4" },
+                  "parent": {
+                    "key": {
+                      "name": { "key": "N2" },
+                      "parent": { "key": { "name": { "key": "N1" } } }
                     }
                   }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 16,
-                  "columnBegin": 1,
-                  "lineEnd": 16,
-                  "columnEnd": 31
                 }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 16,
+                "columnBegin": 1,
+                "lineEnd": 16,
+                "columnEnd": 31
               }
             }
           }
@@ -12432,31 +12380,29 @@
         "source": { "span": { "start": 520, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "XXX" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
-                        }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "XXX" },
+                  "scope": {
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "N2" },
+                        "parent": { "key": { "name": { "key": "N1" } } }
                       }
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 13,
-                  "columnBegin": 1,
-                  "lineEnd": 13,
-                  "columnEnd": 13
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 13,
+                "columnBegin": 1,
+                "lineEnd": 13,
+                "columnEnd": 13
               }
             }
           }
@@ -13025,31 +12971,29 @@
         "source": { "span": { "start": 771, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "XXX" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
-                        }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "XXX" },
+                  "scope": {
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "N2" },
+                        "parent": { "key": { "name": { "key": "N1" } } }
                       }
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 13,
-                  "columnBegin": 1,
-                  "lineEnd": 13,
-                  "columnEnd": 13
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 13,
+                "columnBegin": 1,
+                "lineEnd": 13,
+                "columnEnd": 13
               }
             }
           }
@@ -13618,31 +13562,29 @@
         "source": { "span": { "start": 975, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "XXX" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
-                        }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "XXX" },
+                  "scope": {
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "N2" },
+                        "parent": { "key": { "name": { "key": "N1" } } }
                       }
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 13,
-                  "columnBegin": 1,
-                  "lineEnd": 13,
-                  "columnEnd": 13
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 13,
+                "columnBegin": 1,
+                "lineEnd": 13,
+                "columnEnd": 13
               }
             }
           }
@@ -14211,31 +14153,29 @@
         "source": { "span": { "start": 989, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "XXX" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
-                        }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "XXX" },
+                  "scope": {
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "N2" },
+                        "parent": { "key": { "name": { "key": "N1" } } }
                       }
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 13,
-                  "columnBegin": 1,
-                  "lineEnd": 13,
-                  "columnEnd": 13
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 13,
+                "columnBegin": 1,
+                "lineEnd": 13,
+                "columnEnd": 13
               }
             }
           }
@@ -14804,31 +14744,29 @@
         "source": { "span": { "start": 1209, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "XXX" },
-                    "scope": {
-                      "namespace_": {
-                        "key": {
-                          "name": { "key": "N2" },
-                          "parent": { "key": { "name": { "key": "N1" } } }
-                        }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "XXX" },
+                  "scope": {
+                    "namespace_": {
+                      "key": {
+                        "name": { "key": "N2" },
+                        "parent": { "key": { "name": { "key": "N1" } } }
                       }
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 13,
-                  "columnBegin": 1,
-                  "lineEnd": 13,
-                  "columnEnd": 13
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 13,
+                "columnBegin": 1,
+                "lineEnd": 13,
+                "columnEnd": 13
               }
             }
           }

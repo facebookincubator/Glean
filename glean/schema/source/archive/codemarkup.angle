@@ -1,1386 +1,5 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.21 {
-import src.1
-import python.3
-import code.19
-import code.flow.2
-import hs.2
-import hack.6
-import flow.3
-import cxx1.4
-import pp1.1
-import thrift.4
-import rust.1
-import code.cxx.3
-import code.hack.4
-import code.buck.1
-import buck.3
-import erlang.1
-
-#
-# Public API
-#
-
-# Public types
-
-# Within a file, the type of symbol locations.
-# range is used for compatibility with cxx/thrift indexer
-# but new indexers should use the `bytespan` representation.
-# (and should also generate `src.FileLines` fact).
-type RangeSpan =
-  {
-    span : src.ByteSpan |
-    range : src.Range # cxx compat
-  }
-
-# Symbol locations within a repo
-type Location =
-  {
-    name: string,
-    file: src.File,
-    location : RangeSpan,
-
-    # An optional byte span of the name itself rather than the entire entity.
-    span: maybe src.ByteSpan,
-  }
-
-# XRefs from source to target declaration or definition
-type XRefLocation =
-  {
-    target: Location,
-    source: RangeSpan
-  }
-
-# Tags for entities, so clients can distinguish them.
-# Based on https://microsoft.github.io/language-server-protocol/specifications/specification-3-17/#symbolKind
-type SymbolKind =
-  enum {
-    Package | Type | Value | File | Module | Namespace | Class_ | Method | Property |
-    Field | Constructor | Enum | Interface | Function | Variable | Constant | String |
-    Number | Boolean | Array | Object_ | Key | Null | Enumerator | Struct | Event |
-    Operator | TypeParameter | Union | Macro
-  }
-
-type SymbolInfo =
-  {
-    kind: SymbolKind,
-    isAbstract: bool,  # typically applies to methods, fields, and classes
-  }
-
-# Public language-agnostic API
-
-# Associates an entity with a symbol kind.
-# TODO: Deprecate and replace with EntityInfo
-predicate EntityKind:
-  {
-    entity: code.Entity,
-    kind: SymbolKind,
-  }
-  { Entity, Kind } where
-    EntityInfo { Entity, { kind = Kind } }
-
-# Retrieve information about an entity
-predicate EntityInfo:
-  {
-    entity: code.Entity,
-    info: SymbolInfo,
-  }
-  { Entity, Info } where
-    PythonEntityInfo { Entity, Info } |
-    CxxEntityInfo { Entity, Info } |
-    PpEntityInfo { Entity, Info } |
-    HackEntityInfo { Entity, Info } |
-    ErlangEntityInfo { Entity, Info }
-
-# All entities defined in a src.File and their locations
-predicate FileEntityLocations:
-  {
-    file: src.File,
-    location: Location,
-    entity: code.Entity,
-  }
-  { File, Location, Entity } where
-    ResolveLocation { Location, Entity };
-    Location { file = File } = Location;
-
-# All entities defined in a src.File, and their kinds
-predicate FileEntityKinds:
-  {
-    file: src.File,
-    entity: code.Entity,
-    kind: SymbolKind,
-  }
-  { File, Entity, Kind } where
-    FileEntityLocations { File, _, Entity };
-    EntityKind { Entity, Kind };
-
-predicate FileEntityInfos:
-  {
-    file: src.File,
-    entity: code.Entity,
-    info: SymbolInfo,
-  }
-  { File, Entity, Info } where
-    FileEntityLocations { File, _, Entity };
-    EntityInfo { Entity, Info };
-
-# Map a location to the Entity declared there
-predicate ResolveLocation:
-  {
-    location: Location,
-    entity: code.Entity,
-  }
-  { Location, Entity } where
-    HackResolveLocation { Location, Entity } |
-    PythonResolveLocation { Location, Entity } |
-    FlowResolveLocation { Location, Entity } |
-    CxxResolveLocation { Location, Entity } |
-    HaskellResolveLocation { Location, Entity } |
-    RustResolveLocation { Location, Entity } |
-    BuckResolveLocation { Location, Entity } |
-    ThriftResolveLocation { Location, Entity } |
-    ErlangResolveLocation { Location, Entity };
-
-predicate EntityLocation:
-  {
-    entity: code.Entity,
-    location: Location,
-  }
-  { Entity, Location } where
-    HackEntityLocation { Entity, Location } |
-    PythonEntityLocation { Entity, Location } |
-    FlowEntityLocation { Entity, Location } |
-    CxxEntityLocation { Entity, Location } |
-    PPEntityLocation { Entity, Location } |
-    HaskellEntityLocation { Entity, Location } |
-    RustEntityLocation { Entity, Location } |
-    BuckEntityLocation { Entity, Location } |
-    ThriftEntityLocation { Entity, Location } |
-    ErlangEntityLocation { Entity, Location };
-
-# Finding xrefs. All references in a file and their targets
-predicate FileEntityXRefLocations:
-  {
-    file: src.File,
-    xref: XRefLocation,
-    entity: code.Entity,
-  }
-  { File, XRef, Entity } where
-    HackFileEntityXRefLocations { File, XRef, Entity } |
-    FlowFileEntityXRefLocations { File, XRef, Entity } |
-    PythonFileEntityXRefLocations { File, XRef, Entity } |
-    CxxFileEntityXRefLocations { File, XRef, Entity } |
-    HaskellFileEntityXRefLocations { File, XRef, Entity } |
-    RustFileEntityXRefLocations { File, XRef, Entity } |
-    BuckFileEntityXRefLocations { File, XRef, Entity } |
-    ThriftFileEntityXRefLocations { File, XRef, Entity } |
-    ErlangFileEntityXRefLocations { File, XRef, Entity };
-
-# Xrefs without the target location. This can be useful in cases
-# where we don't have a target location, but we don't need it. This
-# happens when indexing a subset of Hack files in a repo, for example.
-predicate FileEntityXRefSpans:
-  {
-    file: src.File,
-    span: src.ByteSpan,
-    entity: code.Entity,
-  }
-  { File, Span, Entity } where
-    HackFileEntityXRefSpans { File, Span, Entity } |
-    (
-      FlowFileEntityXRefLocations { File, XRef, Entity } |
-      PythonFileEntityXRefLocations { File, XRef, Entity } |
-      CxxFileEntityXRefLocations { File, XRef, Entity } |
-      HaskellFileEntityXRefLocations { File, XRef, Entity } |
-      RustFileEntityXRefLocations { File, XRef, Entity } |
-      BuckFileEntityXRefLocations { File, XRef, Entity } |
-      ThriftFileEntityXRefLocations { File, XRef, Entity } |
-      ErlangFileEntityXRefLocations { File, XRef, Entity };
-      { source = { span = Span }} = XRef
-    )
-
-# Finding xrefs. All references in a file, and their kinds
-predicate FileEntityXRefKinds:
-  {
-    file: src.File,
-    entity: code.Entity,
-    kind: SymbolKind,
-  }
-  { File, Entity, Kind } where
-    FileEntityXRefLocations { File, _, Entity };
-    EntityKind { Entity, Kind };
-
-predicate FileEntityXRefInfos:
-  {
-    file: src.File,
-    entity: code.Entity,
-    info: SymbolInfo,
-  }
-  { File, Entity, Info } where
-    FileEntityXRefLocations { File, _, Entity };
-    EntityInfo { Entity, Info };
-
-# Find references to a language entity
-predicate EntityUses:
-  {
-    target: code.Entity,
-    file: src.File,
-    span: src.ByteSpan
-  }
-  {Entity, File, Span} where
-    HackEntityUses { Entity, File, Span } |
-    FlowEntityUses { Entity, File, Span } |
-    PythonEntityUses { Entity, File, Span } |
-    CxxEntityUses { Entity, File, Span } |
-    HaskellEntityUses { Entity, File, Span } |
-    RustEntityUses { Entity, File, Span } |
-    BuckEntityUses { Entity, File, Span } |
-    ErlangEntityUses { Entity, File, Span };
-
-# Private language instances
-
-# Resolving locations to entities
-
-# hack.DeclarationSpan doesn't currently cover ClassConstDeclarations,
-# so we fall back to hack.DeclaraitonLocation. This workaround can go
-# away when that bug is fixed (T114671647)
-predicate HackDeclarationSpan:
-  {
-    declaration: hack.Declaration,
-    file: src.File,
-    span: src.ByteSpan
-  }
-  { Decl, File, Span } where
-    hack.DeclarationSpan { declaration = Decl, file = File, span = Span } |
-    (
-      !hack.DeclarationSpan { declaration = Decl };
-      hack.DeclarationLocation {declaration = Decl, file = File, span = Span }
-    );
-
-predicate HackResolveLocation:
-  {
-    location: Location,
-    entity: code.Entity,
-  }
-  { { Name, File, { span = Span }, nothing }, Entity } where
-    hack.FileDeclarations { file = File, declarations = Ds };
-    Decl = Ds[..];
-    hack.DeclarationName Decl -> (hack.Name Name);
-    HackDeclarationSpan { declaration = Decl, file = File, span = Span };
-    Entity = code.Entity { hack = { decl = Decl } };
-
-predicate PythonResolveLocation:
-  {
-    location: Location,
-    entity: code.Entity,
-  }
-  { { Name, File, { span = Span }, nothing }, Entity } where
-    python.DeclarationsByFile { File, Span, Decl };
-    python.DeclarationToName Decl -> (Name : string);
-    Entity = code.Entity { python = { decl = Decl } };
-
-predicate FlowResolveLocation:
-  {
-    location: Location,
-    entity: code.Entity,
-  }
-  { { NameStr, File, { span = Span }, nothing }, Entity } where
-    flow.FileDeclaration { File, Decl };
-    flow.DeclarationNameSpan { Decl, Name, Span };
-    Name = flow.Name NameStr ;
-    Entity = code.Entity { flow = { decl = Decl } };
-
-# Resolve locations for all traces in a Cxx file
-predicate CxxResolveLocation:
-  {
-    location: Location,
-    entity: code.Entity,
-  }
-  { { Str, File, Range, Span }, Entity } where
-    Trace = cxx1.Trace { file = File };
-    CxxResolveTraceLocation { Trace, { Str, File, Range, Span }, Entity };
-
-# Like FileEntityLocations but indexed by a specific Trace (for Cxx)
-predicate CxxFileEntityTraceLocations:
-  {
-    file: src.File,
-    trace: cxx1.Trace,
-    location: Location,
-    entity: code.Entity,
-  }
-  { File, Trace, Location, Entity } where
-    CxxResolveTraceLocation { Trace, Location, Entity };
-    Location { file = File } = Location;
-
-# Resolve locations for Cxx, but for only a specific trace
-# We'll need to pick the trace on the client
-predicate CxxResolveTraceLocation:
-  {
-    trace : cxx1.Trace,
-    location: Location,
-    entity: code.Entity,
-  }
-  { Trace, Location, Entity } where
-    Trace = cxx1.Trace { File, cxx1.Declarations Decls, { events = PPDecls } };
-    # regular decls
-    (
-      Decl = Decls[..];
-      cxx1.DeclarationLocationNameSpan { Decl, Range, Str, _, Span };
-      Location = Location { Str, File, { range = Range }, { just = Span } };
-      CxxResolveDeclarationToEntity { Decl, Entity };
-    ) |
-    ## preprocessor #defines
-    (
-      { define = Define } = PPDecls[..];
-      cxx1.PPDefineLocation { Define, Str, _, Range };
-      Location = Location { Str, File, { range = Range }, nothing };
-      Entity = code.Entity { pp = { define = Define } };
-    )
-
-# For a given declaration, match to proper code.cxx.Entity. It will be
-# a definition entity if the given declaration points to a definition.
-predicate CxxResolveDeclarationToEntity:
-  {
-    decl: cxx1.Declaration,
-    entity: code.Entity,
-  }
-  { Decl, Entity } where
-    (
-      { function_ = FunctionDecl } = Decl;
-      FunctionDefn = cxx1.FunctionDefinition { declaration = FunctionDecl };
-      Entity = code.Entity { cxx = { defn = { function_ = FunctionDefn } } };
-    ) |
-    (
-      { record_ = RecordDecl } = Decl;
-      RecordDefn = cxx1.RecordDefinition { declaration = RecordDecl };
-      Entity = code.Entity { cxx = { defn = { record_ = RecordDefn } } };
-    ) |
-    (
-      { enum_ = EnumDecl } = Decl;
-      EnumDefn = cxx1.EnumDefinition { declaration = EnumDecl };
-      Entity = code.Entity { cxx = { defn = { enum_ = EnumDefn } } };
-    ) |
-    (
-      { namespace_ = NamespaceDecl } = Decl;
-      NamespaceDefn = cxx1.NamespaceDefinition { declaration = NamespaceDecl };
-      Entity = code.Entity { cxx = { defn = { namespace_ = NamespaceDefn } } };
-    ) |
-    (
-      !({ function_ = FunctionDecl } = Decl; cxx1.FunctionDefinition { declaration = FunctionDecl });
-      !({ record_ = RecordDecl } = Decl; cxx1.RecordDefinition { declaration = RecordDecl });
-      !({ enum_ = EnumDecl } = Decl; cxx1.EnumDefinition { declaration = EnumDecl });
-      !({ namespace_ = NamespaceDecl } = Decl; cxx1.NamespaceDefinition { declaration = NamespaceDecl });
-      Entity = code.Entity { cxx = { decl = Decl } };
-    )
-
-# Resolve sigma/Haskell locations
-predicate HaskellResolveLocation:
-  {
-    location: Location,
-    entity: code.Entity,
-  }
-  { { Name, File, { span = Span }, nothing }, Entity } where
-    hs.FileDefinition { File, Defn };
-    hs.DefinitionLocation { Defn, Name, { File , Span }};
-    Entity = code.Entity { hs = Defn };
-
-# Resolve Rust entities by location
-predicate RustResolveLocation:
-  {
-    location: Location,
-    entity: code.Entity,
-  }
-  { { Name, File, { span = Span }, nothing }, Entity } where
-    rust.FileDefinition { File, Defn };
-    rust.DefLocation { Defn, File, Span };
-    rust.DefinitionName { Defn, rust.Name Name };
-    Entity = code.Entity { rust = { definition = Defn } };
-
-predicate BuckResolveLocation:
-  {
-    location: Location,
-    entity: code.Entity,
-  }
-  { { Name, File, { span = Span }, nothing }, Entity } where
-    buck.FileTarget { File, Locator };
-    buck.TargetLocation { Locator, File, Span };
-    Locator = buck.Locator { name = Name };
-    Entity = code.Entity { buck = { locator = Locator } };
-
-predicate ThriftResolveLocation:
-  {
-    location: Location,
-    entity: code.Entity,
-  }
-  { { Name, FileS, { range = Range }, nothing }, Entity } where
-    FileT = thrift.File FileS;
-    thrift.FileDeclaration { FileT, Declaration };
-    thrift.DeclarationNameSpan { Declaration, Identifier, FileT, {LB, CB, LE, CE} };
-    Identifier = thrift.Identifier Name;
-    { file = FileS, lineBegin = LB, columnBegin = CB, lineEnd = LE, columnEnd = CE } = Range;
-    Entity = code.Entity { thrift = Declaration };
-
-predicate ErlangResolveLocation:
-  {
-    location: Location,
-    entity: code.Entity,
-  }
-  { { Name, File, { span = Span }, nothing }, Entity } where
-    # Location.name is weird but we aren't using it for anything yet.
-    # Weirdness is that distinct fucntions foo/1 and foo/2 have same Location.name ("foo").
-    # Use `Name = Fqn.name + str(Fqn.arity)` when primops available so names are "foo/1" and "foo/2"
-    Declaration = erlang.Declaration { func = { fqn = {name = Name}, file = File, span = Span } };
-    Entity = code.Entity { erlang = { decl = Declaration } };
-
-# Finding entities' locations
-
-predicate HackEntityLocation:
-  {
-    entity: code.Entity,
-    location: Location,
-  }
-  { { hack = { decl = D } }, { Name, File, { span = Span }, nothing } } where
-    HackDeclarationSpan { declaration = D, file = File, span = Span };
-    hack.DeclarationName D -> (hack.Name Name);
-
-predicate PythonEntityLocation:
-  {
-    entity: code.Entity,
-    location: Location,
-  }
-  { { python = { decl = D } }, { Name, File, { span = Span }, nothing } } where
-    python.DeclarationLocation { declaration = D, file = File, span = Span };
-    python.DeclarationToName D -> (python.Name Name);
-
-predicate FlowEntityLocation:
-  {
-    entity: code.Entity,
-    location: Location,
-  }
-  { { flow = { decl = D } }, { Name, File, { span = Span }, nothing } } where
-    flow.DeclarationLocation { decl = D, file = File, span = Span };
-    flow.DeclarationNameSpan { decl = D, name = flow.Name Name, span = Span };
-
-predicate CxxEntityLocation:
-  {
-    entity: code.Entity,
-    location: Location,
-  }
-  { { cxx = { decl = D } }, { Name, File, { range = Range }, { just = Span } } } where
-    cxx1.DeclarationLocationNameSpan { D, Range, Name, _, Span };
-    { file = File } = Range;
-
-predicate PPEntityLocation:
-  {
-    entity: code.Entity,
-    location: Location,
-  }
-  { Entity, { Name, File, { range = Range }, nothing } } where
-    { pp = { define = Define } } = Entity;
-    cxx1.PPDefineLocation { Define, Name, File, Range};
-
-predicate HaskellEntityLocation:
-  {
-    entity: code.Entity,
-    location: Location,
-  }
-  { { hs = D }, { Name, File, { span = Span }, nothing } } where
-    hs.DefinitionLocation { D, Name, { File, Span } };
-
-predicate RustEntityLocation:
-  {
-    entity: code.Entity,
-    location: Location,
-  }
-  { { rust = { definition = D } }, { Name, File, { span = Span }, nothing } } where
-    rust.DefLocation { D, File, Span };
-    rust.DefinitionName { D, rust.Name Name };
-
-predicate BuckEntityLocation:
-  {
-    entity: code.Entity,
-    location: Location,
-  }
- { { buck = { locator = L } }, { Name, File, { span = Span }, nothing } }
-  where buck.TargetLocation { L, File, Span };
-  { name = Name } = L;
-
-predicate ThriftEntityLocation:
-  {
-    entity: code.Entity,
-    location: Location,
-  }
- { Entity, { Name, FileS, { range = Range }, nothing } } where
-    thrift.DeclarationNameSpan { Declaration, Identifier, FileT, Loc };
-    Entity = code.Entity { thrift = Declaration };
-    Identifier = thrift.Identifier Name;
-    FileT = thrift.File FileS;
-    { LB, CB, LE, CE } = Loc;
-    { lineBegin = LB, columnBegin = CB, lineEnd = LE, columnEnd = CE } = Range;
-
-predicate ErlangEntityLocation:
-  {
-    entity: code.Entity,
-    location: Location,
-  }
-  { { erlang = { decl = D } }, { Name, File, { span = Span }, nothing } } where
-    erlang.DeclarationLocation { declaration = D, file = File, span = Span };
-    # Location.name here is weird, see ErlangResolveLocation comment
-    { func = erlang.FunctionDeclaration { fqn = {name = Name } , file = _, span = _} } = D;
-
-# Finding references in a file
-
-predicate HackFileEntityXRefLocations:
-  {
-    file: src.File,
-    xref: XRefLocation,
-    entity: code.Entity,
-  }
-  { File, { Location, { span = Src } }, Entity } where
-    hack.FileXRefs { file = File, xrefs = XRefs };
-    hack.XRef { target = { declaration = D }, ranges = Uses } = XRefs[..];
-    hack.DeclarationName D -> (hack.Name TargetName);
-    hack.DeclarationLocation { declaration = D, file = TargetFile, span = TargetSpan };
-    Location = Location { TargetName, TargetFile, { span = TargetSpan }, nothing };
-    Sources = prim.relToAbsByteSpans Uses;
-    Src = Sources[..];
-    Entity = code.Entity { hack = { decl = D } };
-
-predicate HackFileEntityXRefSpans:
-  {
-    file: src.File,
-    span: src.ByteSpan,
-    entity: code.Entity,
-  }
-  { File, Src, { hack = { decl = D } } } where
-    hack.FileXRefs { file = File, xrefs = XRefs };
-    hack.XRef { target = { declaration = D }, ranges = Uses } = XRefs[..];
-    Sources = prim.relToAbsByteSpans Uses;
-    Src = Sources[..]
-
-predicate FlowFileEntityXRefLocations:
-  {
-    file: src.File,
-    xref: XRefLocation,
-    entity: code.Entity,
-  }
-  { File, XRef, { flow = Entity } } where
-    FlowFileReferenceEntityXRefLocations { File, XRef, Entity } |
-    FlowFileImportDeclEntityXRefLocations { File, XRef, Entity }
-
-# Flow cross-references from occurrences.
-#
-# References in the Flow index point to the local import declaration
-# in the file.  To resolve these to the remote reference:
-#
-#  * For each reference in the file (flow.FileXRef)
-#  * emit a DirectXRef to its target
-#  * also, if the target is a flow.ImportDeclaration
-#  * find the source of the import, and emit a DirectXRef to that
-#
-# And do the same for type declarations.
-#
-# This will result in two DirectXRefs for each non-local reference,
-# one pointing to the import declaration and another to the non-local
-# target. The client can decide which one(s) it wants.
-#
-predicate FlowFileReferenceEntityXRefLocations:
-  {
-    file: src.File,
-    xref: XRefLocation,
-    entity: code.flow.Entity,
-  }
-  { File, {Location, { span = Src }}, Entity } where
-    flow.FileXRef { file = File, ref = XRef };
-    flow.FlowXRefDeclInfo { XRef, SrcLoc, Name, TargetLoc, D };
-    Name = flow.Name Str;
-    { span = Src } = SrcLoc;
-    (
-      # TODO: should be able to inline M, but the optimiser got it wrong
-      { module = M, span = TargetSpan } = TargetLoc;
-      { file = TargetFile } = M;
-      { decl = D } = Entity;
-    ) | (
-      { localRef = { declaration = LocalD } } = XRef;
-      flow.FlowImportXRef { LocalD, Entity, TargetFile, TargetSpan };
-    ) | (
-      { typeRef = { typeDeclaration = T } } = XRef;
-      flow.FlowTypeImportXRef { T, Entity, TargetFile, TargetSpan };
-    );
-    Location = Location { Str, TargetFile, { span = TargetSpan }, nothing }
-
-# Flow cross-references from import declarations.
-#
-# We want to hyperlink the identifiers in an import declaration to the
-# source of the import:
-#
-# * For each declaration in the file (flow.FileDeclaration)
-# * If it is an import declaraiton, find the source (reusing FlowImportXRef)
-#
-# and do the same for type declarations (FlowTypeImportXRef).
-#
-predicate FlowFileImportDeclEntityXRefLocations:
-  {
-    file: src.File,
-    xref: XRefLocation,
-    entity: code.flow.Entity,
-  }
-  { File, { Location, { span = Src } }, Entity } where
-    flow.FileDeclaration { File, D };
-    (
-      { localDecl = LocalD } = D;
-      flow.FlowImportXRef { LocalD, Entity, TargetFile, TargetSpan };
-      { name = Name, loc = SrcLoc } = LocalD;
-    ) | (
-      { typeDecl = TypeD } = D;
-      flow.FlowTypeImportXRef { TypeD, Entity, TargetFile, TargetSpan };
-      { name = Name, loc = SrcLoc } = TypeD;
-    );
-    Location = Location { Str, TargetFile, { span = TargetSpan }, nothing };
-    Name = flow.Name Str;
-    { span = Src } = SrcLoc;
-
-predicate PythonFileEntityXRefLocations:
-  {
-    file: src.File,
-    xref: XRefLocation,
-    entity: code.Entity,
-  }
-  {File, {Location, { span = Src }}, Entity} where
-  {PyDecl, Src} = (
-    python.DeclarationsByFile {
-      file = File,
-      span = Src,
-      declaration = { imp = { from_name = TargetName } },
-    };
-    python.DeclarationWithName { name = TargetName, declaration = TargetDecl};
-    {TargetDecl, Src}
-  ) | (
-    python.DirectXRefsByFile {File, XRef};
-    XRef
-  );
-  Entity = code.Entity { python = { decl = PyDecl } };
-  PythonEntityNameAndLocation { Entity, Name, TargetFile, TargetSpan };
-  { Name, TargetFile, { span = TargetSpan }, nothing } = Location;
-
-predicate PythonEntityNameAndLocation:
-  {
-    entity: code.Entity,
-    name: string,
-    file: src.File,
-    span: src.ByteSpan,
-  }
-  {Ent, Name, File, Span} where
-  { python = { decl = PyDecl }} = Ent;
-  (
-    { cls = D } = PyDecl;
-    D = python.ClassDeclaration { name = PyName };
-  ) | (
-    { func = D } = PyDecl;
-    D = python.FunctionDeclaration { name = PyName };
-  ) | (
-    { variable = D } = PyDecl;
-    D = python.VariableDeclaration { name = PyName };
-  ) | (
-    { imp = D } = PyDecl;
-    D = python.ImportStatement { from_name = PyName };
-  ) | (
-    { module = D } = PyDecl;
-    D = python.Module { name = PyName };
-  );
-  PyName = python.Name Name;
-  python.DeclarationLocation {PyDecl, File, Span};
-
-# Either C++ / ObjC xrefs or C preprocessor xrefs
-predicate CxxFileEntityXRefLocations:
-  {
-    file: src.File,
-    xref: XRefLocation,
-    entity: code.Entity,
-  }
-  { File, XRef, Entity } where
-    CxxFileEntityFixedXRefLocations { File, XRef, Entity } |
-    CxxFileEntityPPXRefLocations { File, XRef, Entity }
-
-# Fixed C++ xrefs only
-predicate CxxFileEntityFixedXRefLocations:
-  {
-    file: src.File,
-    xref: XRefLocation,
-    entity: code.Entity,
-  }
-  { File, XRef, Entity } where
-    CxxFileEntityTraceFixedXRefLocations { File, _, XRef, Entity }
-
-# Fixed C++ xrefs only, for a specific trace (FileXRefMap)
-# (deprecated)
-predicate CxxFileEntityTraceFixedXRefLocations:
-  {
-    file: src.File,
-    trace: cxx1.FileXRefMap,
-    xref: XRefLocation,
-    entity: code.Entity,
-  }
-  { File, Trace, XRef, Entity } where
-    cxx1.FileXRefMap { file = File, fixed = Fixeds } = Trace;
-    cxx1.FileXRefs { Trace, _ };
-    cxx1.FixedXRef { XRefTarget, Uses } = Fixeds[..];
-    CxxXRefTargetLocation { XRefTarget, Entity, Location };
-    Spans = prim.relToAbsByteSpans Uses;
-    Span = Spans[..];
-    { Location, { span = Span }} = XRef;
-
-# Fixed C++ xrefs, keyed by a specific cxx1.FileXRefs fact
-# We will expand any targets as best we can
-predicate CxxFileEntityXMapFixedXRefLocations:
-  {
-    trace: cxx1.FileXRefs,
-    xref: XRefLocation,
-    entity: code.Entity,
-  }
-  { Trace, XRef, Entity } where
-    cxx1.FileXRefs { xmap = { fixed = Fixeds } } = Trace;
-    cxx1.FixedXRef { XRefTarget, Uses } = Fixeds[..];
-    CxxXRefTargetLocation { XRefTarget, Entity, Location };
-    Spans = prim.relToAbsByteSpans Uses;
-    Span = Spans[..];
-    { Location, { span = Span }} = XRef;
-
-# Helper to (partially) process XRefTargets to entities and xrefs
-predicate CxxXRefTargetLocation:
-  {
-    target: cxx1.XRefTarget,
-    entity: code.Entity,
-    location: Location,
-  }
-  { XRefTarget, Entity, Location } where
-    # fixed declaration entities
-    ( { declaration = Decl } = XRefTarget;
-      cxx1.DeclarationLocationNameSpan { Decl, Range, Name, _, Span };
-      { file = TargetFile } = Range;
-      { Name, TargetFile, { range = Range }, { just = Span } } = Location;
-      code.Entity { cxx = { decl = Decl }} = Entity;
-    ) | (
-    # or jump through the decl sometimes to a def
-      { declaration = Decl } = XRefTarget;
-      CxxDeclToDefXRefTargetLocation { Decl, Entity, Location };
-    ) | (
-    # fixed enumerator entities
-      { enumerator = Enum } = XRefTarget;
-      { cxx1.Name Name, _, Range } = Enum;
-      { file = TargetFile } = Range;
-      { Name, TargetFile, { range = Range }, nothing } = Location;
-      code.Entity { cxx = { enumerator = Enum }} = Entity;
-    )
-    # objSelector -- not an entity type
-    # unknown -- just a file and a point in the file tbd
-    # indirect -- can't implement due to recursion
-
-#
-# Find xrefs associated with decls in this file / trace
-#
-# For decls, compute unique xrefs to defns
-# For defns, compute unique xrefs to decls (decl families)
-#
-predicate CxxFileEntityTraceDeclToDefXRefLocations:
-  {
-    file: src.File,
-    trace: cxx1.Trace,
-    xref: XRefLocation,
-    entity: code.Entity,
-  }
-  { File, Trace, XRef, Entity } where
-    Trace = cxx1.Trace { File, cxx1.Declarations Decls, _ };
-    Decl = Decls[..];
-    # Get xrefs from decl to defn ,and defn back to decl family
-    ({ Entity, Location } where
-      CxxDeclToDefXRefTargetLocation { Decl, Entity, Location } |
-      CxxDefToDeclFamilyXRefTargetLocation { Decl, Entity, Location }
-    );
-    cxx1.DeclarationNameSpan { Decl, _, Span };
-    { Location, { span = Span }} = XRef;
-
-# For a given Decl, it might have a base Defn, build an entity for that
-# Iff the target is not the same as the source Decl
-predicate CxxDeclToDefXRefTargetLocation:
-  {
-    decl: cxx1.Declaration,
-    entity: code.Entity,
-    location: Location
-  }
-  { Decl1, Entity, Location } where
-    code.cxx.DeclToDef { Decl1, Defn };
-    cxx1.DefToBaseDecl { Defn , Decl2 };
-    Decl1 != Decl2; # Filter out (many) self refs
-    cxx1.DeclarationLocationNameSpan { Decl2, Range, Name, _, Span };
-    { file = TargetFile } = Range;
-    { Name, TargetFile, { range = Range }, { just = Span } } = Location;
-    code.Entity { cxx = { defn = Defn }} = Entity;
-
-# For a given Decl, find any DeclFamily entries
-# We will turn these into xrefs
-predicate CxxDefToDeclFamilyXRefTargetLocation:
-  {
-    decl: cxx1.Declaration,
-    entity: code.Entity,
-    location: Location,
-  }
-  { Decl1, Entity, Location } where
-    cxx1.DeclFamilyOf { decl = Decl1, family = Decl2 };
-    Decl1 != Decl2; # filter out many self-refs
-    cxx1.DeclarationLocationNameSpan { Decl2, Range, Name, _, Span };
-    { file = TargetFile } = Range;
-    { Name, TargetFile, { range = Range }, { just = Span } } = Location;
-    code.Entity { cxx = { decl = Decl2 }} = Entity;
-
-# "Variable" external XRefs only, for a specific trace (FileXRefMap)
-# todo: we should really zip these in Angle and export them as XRefLocations
-predicate CxxFileEntityTraceVariableXRefLocations:
-  {
-    file: src.File,
-    trace: cxx1.FileXRefMap,
-    spans: [src.ByteSpans], # n.b. relative bytespan array
-    targets : [cxx1.XRefTarget],
-  }
-  { File, Trace, ByteSpanSpans, Targets } where
-    cxx1.FileXRefMap { file = File, variable = ByteSpanSpans } = Trace;
-    cxx1.FileXRefs { Trace, Targets };
-
-# Bulk fetch any declaration locations associated with the xref targets
-# Rather than O(n) calls to map over the external target xrefs,
-# we can bulk-fetch all locations in one go, saving a lot of calls
-# (deprecated)
-predicate CxxFileEntityTraceVariableXRefDeclLocations:
-  {
-    trace: cxx1.FileXRefMap,
-    source: cxx1.Declaration, # used to identify the source
-    location: Location,
-  }
-  { Trace, Decl, Location } where
-    cxx1.FileXRefs { Trace, Targets };
-    { declaration = Decl } = Targets[..];
-    cxx1.DeclarationLocationNameSpan { Decl, Range, Name, _, Span };
-    { file = TargetFile } = Range;
-    { Name, TargetFile, { range = Range }, { just = Span } } = Location;
-
-# Bulk fetch any declaration locations associated with the xref targets
-# Rather than O(n) calls to map over the external target xrefs,
-# we can bulk-fetch all locations in one go, saving a lot of calls
-predicate CxxFileEntityXMapVariableXRefDeclLocations:
-  {
-    trace: cxx1.FileXRefs,
-    source: cxx1.Declaration, # used to identify the source
-    location: Location,
-  }
-  { Trace, Decl, Location } where
-    cxx1.FileXRefs { externals = Targets } = Trace;
-    { declaration = Decl } = Targets[..];
-    cxx1.DeclarationLocationNameSpan { Decl, Range, Name, _, Span };
-    { file = TargetFile } = Range;
-    { Name, TargetFile, { range = Range }, { just = Span } } = Location;
-
-# Bulk fetch any definitions associated with the external decls in the trace
-# (deprecated)
-predicate CxxFileEntityTraceVariableXRefDeclToDefs:
-  {
-    trace: cxx1.FileXRefMap,
-    source: cxx1.Declaration, # used to identify the source
-    entity: code.Entity, # enough stuff to build a xreflocation
-    location: Location,
-  }
-  { Trace, Decl, Entity, Location } where
-    cxx1.FileXRefs { Trace, Targets };
-    # decls
-    # todo:  more cases: recursion: indirect xrefs could be decls too
-    { declaration = Decl } = Targets[..];
-    CxxDeclToDefXRefTargetLocation { Decl, Entity, Location };
-
-# Bulk fetch any definitions associated with the external decls in the filexrefs
-predicate CxxFileEntityXMapVariableXRefDeclToDefs:
-  {
-    trace: cxx1.FileXRefs,
-    source: cxx1.Declaration, # used to identify the source
-    entity: code.Entity, # enough stuff to build a xreflocation
-    location: Location,
-  }
-  { Trace, Decl, Entity, Location } where
-    cxx1.FileXRefs { externals = Targets } = Trace;
-    # decls
-    # todo:  more cases: recursion: indirect xrefs could be decls too
-    { declaration = Decl } = Targets[..];
-    CxxDeclToDefXRefTargetLocation { Decl, Entity, Location };
-
-# C preprocessor uses of #defines as xrefs
-predicate CxxFileEntityPPXRefLocations:
-  {
-    file: src.File,
-    xref: XRefLocation,
-    entity: code.Entity,
-  }
-  { File, XRef, Entity } where
-    Trace = cxx1.Trace { file = File };
-    CxxFileEntityTracePPXRefLocations { File, Trace, XRef, Entity };
-
-# C preprocessor uses of #defines and #includes.
-# N.B. uses are keyed by traces, not xmaps, for PP
-predicate CxxFileEntityTracePPXRefLocations:
-  {
-    file: src.File,
-    trace: cxx1.Trace,
-    xref: XRefLocation,
-    entity: code.Entity,
-  }
-  { File, Trace, XRef, Entity } where
-    cxx1.FilePPTraceXRefs { File, Trace, SrcRange, PpEntity };
-    cxx1.PPEntityLocation { PpEntity, Name, TargetFile, TargetRange };
-    { { Name, TargetFile, { range = TargetRange }, nothing }, { range = SrcRange } } = XRef;
-    Entity = code.Entity { pp = PpEntity };
-
-# XRefs in sigma/Haskell
-predicate HaskellFileEntityXRefLocations:
-  {
-    file: src.File,
-    xref: XRefLocation,
-    entity: code.Entity,
-  }
-  { File, { Location, { span = SrcSpan } }, Entity } where
-    # Get all XRefs in file
-    hs.FileXRefMap { file = File, refs = XRefs };
-    # Map over each XRef
-    hs.XReference { target = { definition = hs.DefinitionName TargetName }, spans = SrcSpans } = XRefs[..];
-
-    SrcSpan = SrcSpans[..];
-
-    Def = hs.Definition
-      {
-        name = hs.DefinitionName TargetName,
-        source = {TargetFile, TargetSpan}
-      };
-    Location = Location { TargetName, TargetFile, { span = TargetSpan }, nothing };
-
-    Entity = code.Entity { hs = { definition = Def }};
-
-# file xrefs for Rust
-predicate RustFileEntityXRefLocations:
-  {
-    file: src.File,
-    xref: XRefLocation,
-    entity: code.Entity,
-  }
-  { File, { TargetLocation, { span = SrcSpan } }, Entity } where
-    rust.FileXRefs { File, XRefs };
-    { TargetDef, SrcSpans } = XRefs[..];
-    SrcSpan = SrcSpans[..];
-
-    # workaroud T96159670 , do local refs only
-    TargetFile = File;
-
-    rust.DefLocation { TargetDef, TargetFile, TargetSpan };
-    rust.DefinitionName { TargetDef, rust.Name Name };
-    { Name, TargetFile, { span = TargetSpan }, nothing } = TargetLocation;
-    Entity = code.Entity { rust = { definition = TargetDef } };
-
-predicate BuckFileEntityXRefLocations:
-  {
-    file: src.File,
-    xref: XRefLocation,
-    entity: code.Entity,
-  }
-  { File, { LocatorLocation, { span = SrcSpan } }, Entity } where
-    buck.FileXRefs { File, XRefs };
-    { XRefLocator, SrcSpans } = XRefs[..];
-    SrcSpan = SrcSpans[..];
-    { locator = Locator } = XRefLocator;
-    { name = Name } = Locator;
-    buck.TargetLocation { Locator, TargetFile, LocatorSpan };
-    { Name, TargetFile, { span = LocatorSpan }, nothing } = LocatorLocation;
-    Entity = code.Entity { buck = { locator = Locator } };
-
-predicate ThriftFileEntityXRefLocations:
-  {
-    file: src.File,
-    xref: XRefLocation,
-    entity: code.Entity,
-  }
- { File, { target = TargetLocation, source = { range = SourceRange } }, Entity } where
-  FileT = thrift.File File;
-  thrift.FileXRefs { file = FileT, xrefs = XRefs };
-  { { startLine = LB, startCol = CB, endLine = LE, endCol = CE }  , XRefTarget } = XRefs[..];
-  { file = File, lineBegin = LB, columnBegin = CB, lineEnd = LE, columnEnd = CE } = SourceRange;
-  thrift.DeclarationNameSpan { decl = XRefTarget,
-                               name = thrift.Identifier Name,
-                               file = TargetFileT,
-                               span = { TLB, TCB, TLE, TCE } };
-  TargetFileT = thrift.File TargetFile;
-  TargetRange = {TargetFile, TLB, TCB, TLE, TCE };
-  { Name, TargetFile, { range = TargetRange }, nothing } = TargetLocation;
-  Entity = code.Entity { thrift = XRefTarget };
-
-predicate ErlangFileEntityXRefLocations:
-  {
-    file: src.File,
-    xref: XRefLocation,
-    entity: code.Entity,
-  }
-  {File, { target = TargetLocation, source = { span = Span } }, Entity} where
-  erlang.XRefsViaFqnByFile { file = File, xrefs = XRefs };
-  { target = Fqn, source = Span } = XRefs[..];
-  erlang.DeclarationWithFqn { fqn = Fqn, declaration = Decl };
-  Entity = code.Entity { erlang = { decl = Decl } };
-  # Location.name here is weird, see ErlangResolveLocation comment
-  { func = { fqn = { name = Name }, file = TargetFile, span = TargetSpan } } = Decl;
-  { Name, TargetFile, { span = TargetSpan }, nothing } = TargetLocation;
-
-#
-# Language entity uses
-#
-
-predicate HackEntityUses:
-  {
-    target: code.Entity,
-    file: src.File,
-    span: src.ByteSpan,
-  }
-  { { hack = { decl = D } }, File, Span } where
-    hack.TargetUses { target = { declaration = D }, file = File, uses = Uses };
-    Spans = prim.relToAbsByteSpans Uses;
-    Span = Spans[..];
-
-predicate HaskellEntityUses:
-  {
-    target: code.Entity,
-    file: src.File,
-    span: src.ByteSpan,
-  }
-  { { hs = { definition = Def } }, File, SrcSpan } where
-    hs.TargetUses {target = Def, file = File, uses = Spans};
-    SrcSpan = Spans[..];
-
-predicate FlowEntityUses:
-  {
-    target: code.Entity,
-    file: src.File,
-    span: src.ByteSpan,
-  }
-  { { flow = Entity }, File, Span } where
-    flow.FlowEntityUsesAll { Entity, File, Span };
-
-predicate PythonEntityUses:
-  {
-    target: code.Entity,
-    file: src.File,
-    span: src.ByteSpan,
-  }
-  { { python = { decl = D } }, File, Span } where
-  python.DeclarationUses { declaration = D, file = File, span = Span}
-
-predicate CxxEntityUses:
-  {
-    target: code.Entity,
-    file: src.File,
-    span: src.ByteSpan,
-  }
-  ({ { cxx = { decl = D } }, File, Span } where
-    cxx1.TargetUses { { declaration = D }, File, Uses };
-    Spans = prim.relToAbsByteSpans Uses;
-    Span = Spans[..]) |
-  ({ { cxx = { enumerator = E } }, File, Span } where
-    cxx1.TargetUses { { enumerator = E }, File, Uses };
-    Spans = prim.relToAbsByteSpans Uses;
-    Span = Spans[..])
-
-predicate RustEntityUses:
-  {
-    target: code.Entity,
-    file: src.File,
-    span: src.ByteSpan,
-  }
-  { { rust = { definition = Def } }, File, Span } where
-    rust.DefinitionUses { Def, File, Spans };
-    Span = Spans[..];
-
-predicate BuckEntityUses:
-  {
-    target: code.Entity,
-    file: src.File,
-    span: src.ByteSpan,
-  }
-  { { buck = { locator = Locator } }, File, Span } where
-    buck.TargetUses { Locator, File, Spans };
-    Span = Spans[..];
-
-predicate ErlangEntityUses:
-  {
-    target: code.Entity,
-    file: src.File,
-    span: src.ByteSpan,
-  }
-  { { erlang = { decl = D } }, File, Span } where
-  erlang.DeclarationUses { declaration = D, file = File, span = Span}
-
-#
-# Language-specific symbol info
-#
-
-predicate NonImportPythonDeclarationInfo:
-  {
-    declaration: python.Declaration,
-    info: SymbolInfo,
-  }
-  { D, Info } where
-    { kind = Kind, isAbstract = false } = Info;
-    ({cls = _} = D; Class_ = Kind ) |
-    ({module = _} = D; Module = Kind ) |
-    ({func = _} = D;
-      python.ContainingTopLevelDeclaration { D, C };
-      ({module = _} = C; Function = Kind ) |
-      ({cls = _} = C; Method = Kind ) |
-      ({func = _} = C; Function = Kind )) |  # these are locals
-    ({variable = _} = D;
-      python.ContainingTopLevelDeclaration { D, C };
-      ({module = _} = C; Variable = Kind ) |
-      ({cls = _} = C; Field = Kind ) |
-      ({func = _} = C; Variable = Kind ))  # these are locals
-
-predicate PythonEntityInfo:
-  {
-    entity: code.Entity,
-    info: SymbolInfo,
-  }
-  { { python = { decl = D } }, Info } where
-    NonImportPythonDeclarationInfo { D, Info } |
-    ({imp = {from_name = FN}} = D;
-      python.DeclarationWithName { FN, Imported };
-      NonImportPythonDeclarationInfo { Imported, Info }
-    )
-
-predicate CxxEntityInfo:
-  {
-    entity: code.Entity,
-    info: SymbolInfo,
-  }
-  { { cxx = CxxD }, Info } where
-    ({ decl = Decl } = CxxD;
-     CxxDeclInfo { Decl, Info }) |
-    ({ enumerator = _ } = CxxD;
-     { kind = Enumerator, isAbstract = false } = Info) |
-    ({ defn = Defn } = CxxD;
-     cxx1.DefToBaseDecl { Defn, Decl };
-     CxxDeclInfo { Decl, Info }; )
-
-predicate CxxDeclInfo:
-  {
-    decl: cxx1.Declaration,
-    info: SymbolInfo,
-  }
-  { Decl, { kind = Kind, isAbstract = Abs } } where
-    ({ function_ = { method = MM } } = Decl;
-       ({ just = M } = MM; Method = Kind; { isVirtual = Abs } = M) |
-       (nothing = MM; Function = Kind; false = Abs)
-    ) |
-    ({ function_ = { method = { just = M }}} = Decl;
-       Method = Kind;
-       { isVirtual = Abs } = M
-    ) |
-    (
-      false = Abs;
-      ({ namespace_ = _ } = Decl; Namespace = Kind ) |
-      ({ usingDeclaration = _ } = Decl; Namespace = Kind ) |
-      ({ enum_ = _ } = Decl; Enum = Kind ) |
-      ({ variable = _ } = Decl; Variable = Kind ) |
-      ({ objcMethod = _ } = Decl; Method = Kind ) |
-      ({ objcProperty = _ } = Decl; Property = Kind ) |
-      ({ typeAlias = _ } = Decl; Class_ = Kind ) |
-      # TODO: objc containers, using directives
-      ({ record_ = R } = Decl;
-        ({ kind = { struct_ = _ } } = R; Struct = Kind ) |
-        ({ kind = { class_ = _ } } = R; Class_ = Kind ) |
-        ({ kind = { union_ = _ } } = R; Union = Kind )
-      )
-    )
-
-predicate PpEntityInfo:
-  {
-    entity: code.Entity,
-    info: SymbolInfo,
-  }
-  { { pp = Decl }, { kind = Kind, isAbstract = false } } where
-    ({ define = _ } = Decl; Macro = Kind ) |
-    ({ undef = _ } = Decl; Macro = Kind ) |
-    ({ include_ = _ } = Decl; File = Kind )
-
-predicate HackEntityInfo:
-  {
-    entity: code.Entity,
-    info: SymbolInfo,
-  }
-  { {hack = {decl = Decl}}, { kind = Kind, isAbstract = Abs } } where
-    ( { method = M } = Decl;
-      hack.MethodDefinition { declaration = M, isAbstract = Abs };
-      Method = Kind
-    ) |
-    ( { property_ = P } = Decl;
-      hack.PropertyDefinition { declaration = P, isAbstract = Abs };
-      Property = Kind
-    ) |
-    ( { classConst = C } = Decl;
-      hack.ClassConstDefinition { declaration = C, value = V };
-      Constant = Kind;
-      ( nothing = V; true = Abs ) | ( { just = _ } = V; false = Abs )
-    ) |
-    ( { typeConst = T } = Decl;
-      hack.TypeConstDefinition { declaration = T, kind = TCKind };
-      Type = Kind;
-      ( Concrete = TCKind; false = Abs ) |
-      ( Abstract = TCKind; true = Abs) |
-      ( PartiallyAbstract = TCKind; true = Abs)
-    ) |
-    (
-      false = Abs;
-      ({ container = { class_ = _ } } = Decl; Class_ = Kind) |
-      ({ container = { enum_ = _ } } = Decl; Enum = Kind) |
-      ({ container = { interface_ = _ } } = Decl; Interface = Kind) |
-      ({ container = { trait = _ } } = Decl; Interface = Kind) |
-      ({ enumerator = _ } = Decl; Enum = Kind) |
-      ({ function_ = _ } = Decl; Function = Kind) |
-      ({ globalConst = _ } = Decl; Constant = Kind) |
-      ({ namespace_ = _ } = Decl; Namespace = Kind) |
-      ({ typedef_ = _ } = Decl; Type = Kind)
-    )
-
-predicate ErlangEntityInfo:
-  {
-    entity: code.Entity,
-    info: SymbolInfo,
-  }
-  { { erlang = { decl = { func = D} } },
-    { kind = Kind, isAbstract = false } } where
-  Kind = Function: SymbolKind;
-  erlang.FunctionDeclaration {} = D;
-
-#
-# Annotations
-#
-
-predicate EntityAnnotations : code.Entity -> code.Annotations
-  E -> A where
-    CxxAnnotation{entity=E, anns=A} |
-    HackAnnotation{entity=E, anns=A}
-
-predicate CxxAnnotation :
-  {
-    entity: code.Entity,
-    anns: code.Annotations,
-  }
-  {{cxx={decl=D}}, {cxx={attributes=As}}} where
-    ({ function_ = Decl } = D; cxx1.FunctionAttribute{declaration=Decl, attr=A}; As=[A]) |
-    ({ function_ = Decl } = D; !cxx1.FunctionAttribute{declaration=Decl}; As=[]:[cxx1.Attribute.4])
-
-
-predicate HackAnnotation :
-  {
-    entity: code.Entity,
-    anns: code.Annotations,
-  }
-  {{hack={decl=D}}, {hack={attributes=A}}} where
-    ({ container = { class_ = Decl } } = D; hack.ClassDefinition{declaration=Decl, attributes=A}) |
-    ({ container = { enum_ = Decl } } = D; hack.EnumDefinition{declaration=Decl, attributes=A}) |
-    ({ container = { interface_ = Decl } } = D; hack.InterfaceDefinition{declaration=Decl, attributes=A}) |
-    ({ container = { trait = Decl } } = D; hack.TraitDefinition{declaration=Decl, attributes=A}) |
-    ({ method = Decl } = D; hack.MethodDefinition{declaration=Decl, attributes=A}) |
-    ({ property_ = Decl } = D; hack.PropertyDefinition{declaration=Decl, attributes=A}) |
-    ({ typeConst = Decl } = D; hack.TypeConstDefinition{declaration=Decl, attributes=A}) |
-    ({ typedef_ = Decl } = D; hack.TypedefDefinition{declaration=Decl, attributes=A})
-
-#
-# Relations
-#
-
-predicate ExtendsParentEntity :
-  {
-    child: code.Entity,
-    parent: code.Entity
-  }
-  {C,P} where
-    ({hack={decl={container=Child}}}=C; {hack={decl={container=Parent}}}=P;
-      (
-        hack.ContainerParent{container=Child, parent=Parent}
-      )
-    ) |
-    ({cxx={decl={objcContainer=Child}}}=C; {cxx={decl={objcContainer=Parent}}}=P;
-      (
-        cxx1.ObjcImplements{implementation=Child, interface_=Parent} |
-        cxx1.ObjcContainerBase{declaration=Child, base=Parent}
-      )
-    ) |
-    ({cxx={decl={record_=Child}}}=C; {cxx={decl={record_=Parent}}}=P;
-      (
-        B[..]=cxx1.RecordBase{base=Parent}; cxx1.RecordDefinition{declaration=Child, bases=B}
-      )
-    )
-
-
-predicate ExtendsChildEntity :
-  {
-    parent: code.Entity,
-    child: code.Entity
-  }
-  {P,C} where
-    ({hack={decl={container=Parent}}}=P; {hack={decl={container=Child}}}=C;
-      (
-        hack.ContainerChild{container=Parent, child=Child}
-      )
-    ) |
-    ({cxx={decl={objcContainer=Parent}}}=P; {cxx={decl={objcContainer=Child}}}=C;
-      (
-        cxx1.ObjcInterfaceToImplementation{interface_=Parent, implementation=Child} |
-        cxx1.ObjcContainerInheritance{base=Parent, declaration=Child}
-      )
-    ) |
-    ({cxx={decl={record_=Parent}}}=P; {cxx={decl={record_=Child}}}=C;
-      (
-        cxx1.RecordDerived{base=Parent, derived=Child}
-      )
-    )
-
-predicate ContainsChildEntity :
-  {
-    parent: code.Entity,
-    child: code.Entity
-  }
-  { { hack = Parent }, { hack = Child } } where
-    HackContainsChildEntity { Parent, Child }
-
-predicate HackContainsChildEntity :
-  {
-    parent: code.hack.Entity,
-    child: code.hack.Entity
-  }
-  { { decl = Container }, { decl = Member } } where
-    (
-      (
-        { container = { class_ = Class }} = Container;
-        hack.ClassDefinition { declaration = Class, members = Members };
-      ) |
-      (
-        { container = { interface_ = Interface }} = Container;
-        hack.InterfaceDefinition { declaration = Interface, members = Members };
-      ) |
-      (
-        { container = { trait = Trait }} = Container;
-        hack.TraitDefinition { declaration = Trait, members = Members };
-      );
-      Member = Members[..]
-    ) |
-    (
-      { namespace_ = {name=Name} } = Container;
-      hack.NamespaceMember { namespace_ = Name, decl = Member}
-    )
-
-}
-# Copyright (c) Facebook, Inc. and its affiliates.
-
 schema codemarkup.22 {
 import src.1
 import python.3
@@ -4203,5 +2822,311 @@ predicate HackContainsChildEntity :
       { namespace_ = {name=Name} } = Container;
       hack.NamespaceMember { namespace_ = Name, decl = Member}
     )
+
+}
+
+schema codemarkup.24 {
+import src.1
+import code.20
+import codemarkup.buck.1
+import codemarkup.cxx.1
+import codemarkup.erlang.1
+import codemarkup.flow.1
+import codemarkup.hack.1
+import codemarkup.haskell.1
+import codemarkup.lsif.1
+import codemarkup.pp.1
+import codemarkup.python.1
+import codemarkup.rust.1
+import codemarkup.thrift.1
+import codemarkup.types.1
+import cxx1.4
+import hack.6
+
+#
+# Public API
+#
+
+# Public language-agnostic API
+
+# Associates an entity with a symbol kind.
+# Note: available for partial indices where EntityInfo is incomplete.
+predicate EntityKind:
+  {
+    entity: code.Entity,
+    kind: codemarkup.types.SymbolKind,
+  }
+  { Entity, Kind } where
+    codemarkup.python.PythonEntityKind { Entity, Kind } |
+    codemarkup.cxx.CxxEntityKind { Entity, Kind } |
+    codemarkup.pp.PpEntityKind { Entity, Kind } |
+    codemarkup.hack.HackEntityKind { Entity, Kind } |
+    codemarkup.erlang.ErlangEntityKind { Entity, Kind }
+
+# Retrieve information about an entity
+predicate EntityInfo:
+  {
+    entity: code.Entity,
+    info: codemarkup.types.SymbolInfo,
+  }
+  { Entity, Info } where
+    ( { kind = Kind, isAbstract = false } = Info;
+      (codemarkup.python.PythonEntityKind { Entity, Kind } |
+       codemarkup.pp.PpEntityKind { Entity, Kind} |
+       codemarkup.erlang.ErlangEntityKind { Entity, Kind })
+    ) |
+    codemarkup.cxx.CxxEntityInfo { Entity, Info } |
+    codemarkup.hack.HackEntityInfo { Entity, Info }
+
+# All entities defined in a src.File and their locations
+predicate FileEntityLocations:
+  {
+    file: src.File,
+    location: codemarkup.types.Location,
+    entity: code.Entity,
+  }
+  { File, Location, Entity } where
+    ResolveLocation { Location, Entity };
+    codemarkup.types.Location { file = File } = Location;
+
+# All entities defined in a src.File, and their kinds
+predicate FileEntityKinds:
+  {
+    file: src.File,
+    entity: code.Entity,
+    kind: codemarkup.types.SymbolKind,
+  }
+  { File, Entity, Kind } where
+    FileEntityLocations { File, _, Entity };
+    EntityKind { Entity, Kind };
+
+predicate FileEntityInfos:
+  {
+    file: src.File,
+    entity: code.Entity,
+    info: codemarkup.types.SymbolInfo,
+  }
+  { File, Entity, Info } where
+    FileEntityLocations { File, _, Entity };
+    EntityInfo { Entity, Info };
+
+# Map a location to the Entity declared there
+predicate ResolveLocation:
+  {
+    location: codemarkup.types.Location,
+    entity: code.Entity,
+  }
+  { Location, Entity } where
+    codemarkup.hack.HackResolveLocation { Location, Entity } |
+    codemarkup.python.PythonResolveLocation { Location, Entity } |
+    codemarkup.flow.FlowResolveLocation { Location, Entity } |
+    codemarkup.cxx.CxxResolveLocation { Location, Entity } |
+    codemarkup.haskell.HaskellResolveLocation { Location, Entity } |
+    codemarkup.rust.RustResolveLocation { Location, Entity } |
+    codemarkup.buck.BuckResolveLocation { Location, Entity } |
+    codemarkup.thrift.ThriftResolveLocation { Location, Entity } |
+    codemarkup.erlang.ErlangResolveLocation { Location, Entity } |
+    codemarkup.lsif.LsifResolveLocation { Location, Entity };
+
+predicate EntityLocation:
+  {
+    entity: code.Entity,
+    location: codemarkup.types.Location,
+  }
+  { Entity, Location } where
+    codemarkup.hack.HackEntityLocation { Entity, Location } |
+    codemarkup.python.PythonEntityLocation { Entity, Location } |
+    codemarkup.flow.FlowEntityLocation { Entity, Location } |
+    codemarkup.cxx.CxxEntityLocation { Entity, Location } |
+    codemarkup.pp.PPEntityLocation { Entity, Location } |
+    codemarkup.haskell.HaskellEntityLocation { Entity, Location } |
+    codemarkup.rust.RustEntityLocation { Entity, Location } |
+    codemarkup.buck.BuckEntityLocation { Entity, Location } |
+    codemarkup.thrift.ThriftEntityLocation { Entity, Location } |
+    codemarkup.erlang.ErlangEntityLocation { Entity, Location } |
+    codemarkup.lsif.LsifEntityLocation { Entity, Location };
+
+# Finding xrefs. All references in a file and their targets
+predicate FileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.Entity,
+  }
+  { File, XRef, Entity } where
+    codemarkup.hack.HackFileEntityXRefLocations { File, XRef, Entity } |
+    codemarkup.flow.FlowFileEntityXRefLocations { File, XRef, Entity } |
+    codemarkup.python.PythonFileEntityXRefLocations { File, XRef, Entity } |
+    codemarkup.cxx.CxxFileEntityXRefLocations { File, XRef, Entity } |
+    codemarkup.haskell.HaskellFileEntityXRefLocations { File, XRef, Entity } |
+    codemarkup.rust.RustFileEntityXRefLocations { File, XRef, Entity } |
+    codemarkup.buck.BuckFileEntityXRefLocations { File, XRef, Entity } |
+    codemarkup.thrift.ThriftFileEntityXRefLocations { File, XRef, Entity } |
+    codemarkup.erlang.ErlangFileEntityXRefLocations { File, XRef, Entity } |
+    codemarkup.lsif.LsifFileEntityXRefLocations { File, XRef, Entity };
+
+# Xrefs without the target location. This can be useful in cases
+# where we don't have a target location, but we don't need it. This
+# happens when indexing a subset of Hack files in a repo, for example.
+predicate FileEntityXRefSpans:
+  {
+    file: src.File,
+    span: src.ByteSpan,
+    entity: code.Entity,
+  }
+  { File, Span, Entity } where
+    codemarkup.hack.HackFileEntityXRefSpans { File, Span, Entity } |
+    (
+      codemarkup.flow.FlowFileEntityXRefLocations { File, XRef, Entity } |
+      codemarkup.python.PythonFileEntityXRefLocations { File, XRef, Entity } |
+      codemarkup.cxx.CxxFileEntityXRefLocations { File, XRef, Entity } |
+      codemarkup.haskell.HaskellFileEntityXRefLocations { File, XRef, Entity } |
+      codemarkup.rust.RustFileEntityXRefLocations { File, XRef, Entity } |
+      codemarkup.buck.BuckFileEntityXRefLocations { File, XRef, Entity } |
+      codemarkup.thrift.ThriftFileEntityXRefLocations { File, XRef, Entity } |
+      codemarkup.erlang.ErlangFileEntityXRefLocations { File, XRef, Entity } |
+      codemarkup.lsif.LsifFileEntityXRefLocations { File, XRef, Entity };
+      { source = { span = Span }} = XRef
+    )
+
+# Finding xrefs. All references in a file, and their kinds
+predicate FileEntityXRefKinds:
+  {
+    file: src.File,
+    entity: code.Entity,
+    kind: codemarkup.types.SymbolKind,
+  }
+  { File, Entity, Kind } where
+    FileEntityXRefLocations { File, _, Entity };
+    EntityKind { Entity, Kind };
+
+predicate FileEntityXRefInfos:
+  {
+    file: src.File,
+    entity: code.Entity,
+    info: codemarkup.types.SymbolInfo,
+  }
+  { File, Entity, Info } where
+    FileEntityXRefLocations { File, _, Entity };
+    EntityInfo { Entity, Info };
+
+# Find references to a language entity
+# (deprecated in favor of more general codemarkup.EntityReferences)
+predicate EntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    span: src.ByteSpan
+  }
+  {Entity, File, Span} where
+    codemarkup.hack.HackEntityUses { Entity, File, Span } |
+    codemarkup.flow.FlowEntityUses { Entity, File, Span } |
+    codemarkup.python.PythonEntityUses { Entity, File, Span } |
+    codemarkup.cxx.CxxEntityUses { Entity, File, Span } |
+    codemarkup.haskell.HaskellEntityUses { Entity, File, Span } |
+    codemarkup.rust.RustEntityUses { Entity, File, Span } |
+    codemarkup.buck.BuckEntityUses { Entity, File, Span } |
+    codemarkup.erlang.ErlangEntityUses { Entity, File, Span };
+
+# Find references to a language entity (same as EntityUses but with RangeSpans)
+predicate EntityReferences:
+  {
+    target: code.Entity,
+    file: src.File,
+    range: codemarkup.types.RangeSpan
+  }
+  {Entity, File, RangeSpan} where
+  (
+    codemarkup.hack.HackEntityUses { Entity, File, Span } |
+    codemarkup.flow.FlowEntityUses { Entity, File, Span } |
+    codemarkup.python.PythonEntityUses { Entity, File, Span } |
+    codemarkup.cxx.CxxEntityUses { Entity, File, Span } |
+    codemarkup.haskell.HaskellEntityUses { Entity, File, Span } |
+    codemarkup.rust.RustEntityUses { Entity, File, Span } |
+    codemarkup.buck.BuckEntityUses { Entity, File, Span } |
+    codemarkup.erlang.ErlangEntityUses { Entity, File, Span };
+    { span = Span } = RangeSpan;
+  ) | (
+    codemarkup.lsif.LsifEntityUses { Entity, File, Range };
+    { range = Range } = RangeSpan;
+  )
+
+#
+# Annotations
+#
+
+predicate EntityAnnotations : code.Entity -> code.Annotations
+  E -> A where
+    CxxAnnotation{entity=E, anns=A} |
+    codemarkup.hack.HackAnnotation{entity=E, anns=A}
+
+predicate CxxAnnotation :
+  {
+    entity: code.Entity,
+    anns: code.Annotations,
+  }
+  {{cxx={decl=D}}, {cxx={attributes=As}}} where
+    ({ function_ = Decl } = D; cxx1.FunctionAttribute{declaration=Decl, attr=A}; As=[A]) |
+    ({ function_ = Decl } = D; !cxx1.FunctionAttribute{declaration=Decl}; As=[]:[cxx1.Attribute.4])
+
+
+#
+# Relations
+#
+
+predicate ExtendsParentEntity :
+  {
+    child: code.Entity,
+    parent: code.Entity
+  }
+  {C,P} where
+    ({hack={decl={container=Child}}}=C; {hack={decl={container=Parent}}}=P;
+      (
+        hack.ContainerParent{container=Child, parent=Parent}
+      )
+    ) |
+    ({cxx={decl={objcContainer=Child}}}=C; {cxx={decl={objcContainer=Parent}}}=P;
+      (
+        cxx1.ObjcImplements{implementation=Child, interface_=Parent} |
+        cxx1.ObjcContainerBase{declaration=Child, base=Parent}
+      )
+    ) |
+    ({cxx={decl={record_=Child}}}=C; {cxx={decl={record_=Parent}}}=P;
+      (
+        B[..]=cxx1.RecordBase{base=Parent}; cxx1.RecordDefinition{declaration=Child, bases=B}
+      )
+    )
+
+
+predicate ExtendsChildEntity :
+  {
+    parent: code.Entity,
+    child: code.Entity
+  }
+  {P,C} where
+    ({hack={decl={container=Parent}}}=P; {hack={decl={container=Child}}}=C;
+      (
+        hack.ContainerChild{container=Parent, child=Child}
+      )
+    ) |
+    ({cxx={decl={objcContainer=Parent}}}=P; {cxx={decl={objcContainer=Child}}}=C;
+      (
+        cxx1.ObjcInterfaceToImplementation{interface_=Parent, implementation=Child} |
+        cxx1.ObjcContainerInheritance{base=Parent, declaration=Child}
+      )
+    ) |
+    ({cxx={decl={record_=Parent}}}=P; {cxx={decl={record_=Child}}}=C;
+      (
+        cxx1.RecordDerived{base=Parent, derived=Child}
+      )
+    )
+
+predicate ContainsChildEntity :
+  {
+    parent: code.Entity,
+    child: code.Entity
+  }
+  { { hack = Parent }, { hack = Child } } where
+    codemarkup.hack.HackContainsChildEntity { Parent, Child }
 
 }

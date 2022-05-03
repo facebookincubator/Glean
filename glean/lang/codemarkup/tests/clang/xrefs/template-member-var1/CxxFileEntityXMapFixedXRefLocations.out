@@ -705,21 +705,19 @@
         "source": { "span": { "start": 398, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -1432,21 +1430,19 @@
         "source": { "span": { "start": 585, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -2159,21 +2155,19 @@
         "source": { "span": { "start": 626, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -2886,21 +2880,19 @@
         "source": { "span": { "start": 660, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -3613,21 +3605,19 @@
         "source": { "span": { "start": 720, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -4340,21 +4330,19 @@
         "source": { "span": { "start": 749, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -5067,21 +5055,19 @@
         "source": { "span": { "start": 769, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -5794,21 +5780,19 @@
         "source": { "span": { "start": 786, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -6521,21 +6505,19 @@
         "source": { "span": { "start": 829, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -7248,21 +7230,19 @@
         "source": { "span": { "start": 856, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -7975,21 +7955,19 @@
         "source": { "span": { "start": 874, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -8702,21 +8680,19 @@
         "source": { "span": { "start": 892, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -9429,21 +9405,19 @@
         "source": { "span": { "start": 916, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -10156,21 +10130,19 @@
         "source": { "span": { "start": 940, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -10883,21 +10855,19 @@
         "source": { "span": { "start": 966, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -11610,21 +11580,19 @@
         "source": { "span": { "start": 983, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -12337,21 +12305,19 @@
         "source": { "span": { "start": 1000, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -13064,21 +13030,19 @@
         "source": { "span": { "start": 1023, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -13791,21 +13755,19 @@
         "source": { "span": { "start": 1046, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -14518,21 +14480,19 @@
         "source": { "span": { "start": 1071, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -15245,21 +15205,19 @@
         "source": { "span": { "start": 1086, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -15972,21 +15930,19 @@
         "source": { "span": { "start": 1101, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -16699,21 +16655,19 @@
         "source": { "span": { "start": 1122, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -17426,21 +17380,19 @@
         "source": { "span": { "start": 1143, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 22,
-                  "lineEnd": 15,
-                  "columnEnd": 1
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 22,
+                "lineEnd": 15,
+                "columnEnd": 1
               }
             }
           }
@@ -18153,21 +18105,19 @@
         "source": { "span": { "start": 364, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "X" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
-                  "columnBegin": 34,
-                  "lineEnd": 9,
-                  "columnEnd": 44
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "X" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 34,
+                "lineEnd": 9,
+                "columnEnd": 44
               }
             }
           }
@@ -18880,21 +18830,19 @@
         "source": { "span": { "start": 473, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "X" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
-                  "columnBegin": 34,
-                  "lineEnd": 9,
-                  "columnEnd": 44
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "X" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 34,
+                "lineEnd": 9,
+                "columnEnd": 44
               }
             }
           }
@@ -19607,21 +19555,19 @@
         "source": { "span": { "start": 577, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "X" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
-                  "columnBegin": 34,
-                  "lineEnd": 9,
-                  "columnEnd": 44
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "X" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 34,
+                "lineEnd": 9,
+                "columnEnd": 44
               }
             }
           }
@@ -20334,21 +20280,19 @@
         "source": { "span": { "start": 713, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "X" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
-                  "columnBegin": 34,
-                  "lineEnd": 9,
-                  "columnEnd": 44
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "X" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 34,
+                "lineEnd": 9,
+                "columnEnd": 44
               }
             }
           }
@@ -21061,21 +21005,19 @@
         "source": { "span": { "start": 820, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": { "name": { "key": "X" }, "scope": { "global_": { } } }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 9,
-                  "columnBegin": 34,
-                  "lineEnd": 9,
-                  "columnEnd": 44
-                }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "X" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 34,
+                "lineEnd": 9,
+                "columnEnd": 44
               }
             }
           }
@@ -21788,37 +21730,35 @@
         "source": { "span": { "start": 885, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "bar" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "bar" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "type": { "key": "double" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": false }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 13,
-                  "columnBegin": 3,
-                  "lineEnd": 13,
-                  "columnEnd": 14
                 }
+              },
+              "type": { "key": "double" },
+              "kind": {
+                "global_": { "kind": 2, "attribute": 0, "definition": false }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 13,
+                "columnBegin": 3,
+                "lineEnd": 13,
+                "columnEnd": 14
               }
             }
           }
@@ -22531,37 +22471,35 @@
         "source": { "span": { "start": 993, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "bar" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "bar" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "type": { "key": "char *" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": false }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 36,
-                  "columnBegin": 1,
-                  "lineEnd": 37,
-                  "columnEnd": 19
                 }
+              },
+              "type": { "key": "char *" },
+              "kind": {
+                "global_": { "kind": 2, "attribute": 0, "definition": false }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 36,
+                "columnBegin": 1,
+                "lineEnd": 37,
+                "columnEnd": 19
               }
             }
           }
@@ -23274,37 +23212,35 @@
         "source": { "span": { "start": 1094, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "bar" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "bar" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "type": { "key": "int" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": true }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 40,
-                  "columnBegin": 1,
-                  "lineEnd": 40,
-                  "columnEnd": 15
                 }
+              },
+              "type": { "key": "int" },
+              "kind": {
+                "global_": { "kind": 2, "attribute": 0, "definition": true }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 40,
+                "columnBegin": 1,
+                "lineEnd": 40,
+                "columnEnd": 15
               }
             }
           }
@@ -24017,37 +23953,35 @@
         "source": { "span": { "start": 903, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "baz" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "baz" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "type": { "key": "X<double, void>" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": false }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 14,
-                  "columnBegin": 24,
-                  "lineEnd": 14,
-                  "columnEnd": 40
                 }
+              },
+              "type": { "key": "X<double, void>" },
+              "kind": {
+                "global_": { "kind": 2, "attribute": 0, "definition": false }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 14,
+                "columnBegin": 24,
+                "lineEnd": 14,
+                "columnEnd": 40
               }
             }
           }
@@ -24760,37 +24694,35 @@
         "source": { "span": { "start": 1010, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "baz" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "baz" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "type": { "key": "X<char *, void>" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": false }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 14,
-                  "columnBegin": 24,
-                  "lineEnd": 14,
-                  "columnEnd": 40
                 }
+              },
+              "type": { "key": "X<char *, void>" },
+              "kind": {
+                "global_": { "kind": 2, "attribute": 0, "definition": false }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 14,
+                "columnBegin": 24,
+                "lineEnd": 14,
+                "columnEnd": 40
               }
             }
           }
@@ -25503,37 +25435,35 @@
         "source": { "span": { "start": 1109, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "baz" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "baz" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "type": { "key": "X<int, void>" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": false }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 20,
-                  "columnBegin": 24,
-                  "lineEnd": 20,
-                  "columnEnd": 42
                 }
+              },
+              "type": { "key": "X<int, void>" },
+              "kind": {
+                "global_": { "kind": 2, "attribute": 0, "definition": false }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 20,
+                "columnBegin": 24,
+                "lineEnd": 20,
+                "columnEnd": 42
               }
             }
           }
@@ -26246,37 +26176,35 @@
         "source": { "span": { "start": 1130, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "baz" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "baz" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "type": { "key": "X<int, int *>" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": false }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 20,
-                  "columnBegin": 24,
-                  "lineEnd": 20,
-                  "columnEnd": 42
                 }
+              },
+              "type": { "key": "X<int, int *>" },
+              "kind": {
+                "global_": { "kind": 2, "attribute": 0, "definition": false }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 20,
+                "columnBegin": 24,
+                "lineEnd": 20,
+                "columnEnd": 42
               }
             }
           }
@@ -26989,37 +26917,35 @@
         "source": { "span": { "start": 1151, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "baz" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "baz" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "type": { "key": "X<int, char *>" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": false }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 20,
-                  "columnBegin": 24,
-                  "lineEnd": 20,
-                  "columnEnd": 42
                 }
+              },
+              "type": { "key": "X<int, char *>" },
+              "kind": {
+                "global_": { "kind": 2, "attribute": 0, "definition": false }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 20,
+                "columnBegin": 24,
+                "lineEnd": 20,
+                "columnEnd": 42
               }
             }
           }
@@ -27732,37 +27658,35 @@
         "source": { "span": { "start": 927, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "baz" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "baz" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "type": { "key": "X<double, int *>" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": false }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 28,
-                  "columnBegin": 1,
-                  "lineEnd": 30,
-                  "columnEnd": 17
                 }
+              },
+              "type": { "key": "X<double, int *>" },
+              "kind": {
+                "global_": { "kind": 2, "attribute": 0, "definition": false }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 28,
+                "columnBegin": 1,
+                "lineEnd": 30,
+                "columnEnd": 17
               }
             }
           }
@@ -28475,37 +28399,35 @@
         "source": { "span": { "start": 951, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "baz" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "baz" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "type": { "key": "X<double, char *>" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": false }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 28,
-                  "columnBegin": 1,
-                  "lineEnd": 30,
-                  "columnEnd": 17
                 }
+              },
+              "type": { "key": "X<double, char *>" },
+              "kind": {
+                "global_": { "kind": 2, "attribute": 0, "definition": false }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 28,
+                "columnBegin": 1,
+                "lineEnd": 30,
+                "columnEnd": 17
               }
             }
           }
@@ -29218,37 +29140,35 @@
         "source": { "span": { "start": 1033, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "baz" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "baz" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "type": { "key": "X<char *, int *>" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": false }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 28,
-                  "columnBegin": 1,
-                  "lineEnd": 30,
-                  "columnEnd": 17
                 }
+              },
+              "type": { "key": "X<char *, int *>" },
+              "kind": {
+                "global_": { "kind": 2, "attribute": 0, "definition": false }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 28,
+                "columnBegin": 1,
+                "lineEnd": 30,
+                "columnEnd": 17
               }
             }
           }
@@ -29961,37 +29881,35 @@
         "source": { "span": { "start": 1056, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "baz" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "baz" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "type": { "key": "X<char *, char *>" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": false }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 28,
-                  "columnBegin": 1,
-                  "lineEnd": 30,
-                  "columnEnd": 17
                 }
+              },
+              "type": { "key": "X<char *, char *>" },
+              "kind": {
+                "global_": { "kind": 2, "attribute": 0, "definition": false }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 28,
+                "columnBegin": 1,
+                "lineEnd": 30,
+                "columnEnd": 17
               }
             }
           }
@@ -30704,37 +30622,35 @@
         "source": { "span": { "start": 867, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "foo" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "foo" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "type": { "key": "int" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": false }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 12,
-                  "columnBegin": 3,
-                  "lineEnd": 12,
-                  "columnEnd": 16
                 }
+              },
+              "type": { "key": "int" },
+              "kind": {
+                "global_": { "kind": 2, "attribute": 0, "definition": false }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 12,
+                "columnBegin": 3,
+                "lineEnd": 12,
+                "columnEnd": 16
               }
             }
           }
@@ -31447,37 +31363,35 @@
         "source": { "span": { "start": 976, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "foo" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "foo" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "type": { "key": "int" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": false }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 12,
-                  "columnBegin": 3,
-                  "lineEnd": 12,
-                  "columnEnd": 16
                 }
+              },
+              "type": { "key": "int" },
+              "kind": {
+                "global_": { "kind": 2, "attribute": 0, "definition": false }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 12,
+                "columnBegin": 3,
+                "lineEnd": 12,
+                "columnEnd": 16
               }
             }
           }
@@ -32190,37 +32104,35 @@
         "source": { "span": { "start": 1079, "length": 3 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "foo" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "foo" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "type": { "key": "int" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": true }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 39,
-                  "columnBegin": 1,
-                  "lineEnd": 39,
-                  "columnEnd": 15
                 }
+              },
+              "type": { "key": "int" },
+              "kind": {
+                "global_": { "kind": 2, "attribute": 0, "definition": true }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 39,
+                "columnBegin": 1,
+                "lineEnd": 39,
+                "columnEnd": 15
               }
             }
           }

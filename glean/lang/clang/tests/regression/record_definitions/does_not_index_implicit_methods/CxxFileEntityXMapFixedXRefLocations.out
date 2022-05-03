@@ -294,33 +294,31 @@
         "source": { "span": { "start": 592, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "A" },
-                    "scope": {
-                      "local": {
-                        "key": {
-                          "name": {
-                            "key": { "name": { "key": "calcSomething" } }
-                          },
-                          "scope": { "global_": { } }
-                        }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "A" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": {
+                          "key": { "name": { "key": "calcSomething" } }
+                        },
+                        "scope": { "global_": { } }
                       }
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 12,
-                  "columnBegin": 5,
-                  "lineEnd": 20,
-                  "columnEnd": 5
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 12,
+                "columnBegin": 5,
+                "lineEnd": 20,
+                "columnEnd": 5
               }
             }
           }
@@ -622,33 +620,31 @@
         "source": { "span": { "start": 617, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "B" },
-                    "scope": {
-                      "local": {
-                        "key": {
-                          "name": {
-                            "key": { "name": { "key": "calcSomething" } }
-                          },
-                          "scope": { "global_": { } }
-                        }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "B" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": {
+                          "key": { "name": { "key": "calcSomething" } }
+                        },
+                        "scope": { "global_": { } }
                       }
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 22,
-                  "columnBegin": 5,
-                  "lineEnd": 24,
-                  "columnEnd": 5
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 22,
+                "columnBegin": 5,
+                "lineEnd": 24,
+                "columnEnd": 5
               }
             }
           }
@@ -950,33 +946,31 @@
         "source": { "span": { "start": 782, "length": 14 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "ExplictMethods" },
-                    "scope": {
-                      "local": {
-                        "key": {
-                          "name": {
-                            "key": { "name": { "key": "calcSomething" } }
-                          },
-                          "scope": { "global_": { } }
-                        }
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "ExplictMethods" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": {
+                          "key": { "name": { "key": "calcSomething" } }
+                        },
+                        "scope": { "global_": { } }
                       }
                     }
                   }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 29,
-                  "columnBegin": 5,
-                  "lineEnd": 39,
-                  "columnEnd": 5
                 }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 29,
+                "columnBegin": 5,
+                "lineEnd": 39,
+                "columnEnd": 5
               }
             }
           }
@@ -1278,46 +1272,42 @@
         "source": { "span": { "start": 513, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "a" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": {
-                              "local": {
-                                "key": {
-                                  "name": {
-                                    "key": {
-                                      "name": { "key": "calcSomething" }
-                                    }
-                                  },
-                                  "scope": { "global_": { } }
-                                }
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "a" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": {
+                            "local": {
+                              "key": {
+                                "name": {
+                                  "key": { "name": { "key": "calcSomething" } }
+                                },
+                                "scope": { "global_": { } }
                               }
                             }
                           }
-                        },
-                        "access": 0
-                      }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "type": { "key": "int" },
-                "kind": { "field": { "mutable_": false } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 13,
-                  "columnBegin": 9,
-                  "lineEnd": 13,
-                  "columnEnd": 13
                 }
+              },
+              "type": { "key": "int" },
+              "kind": { "field": { "mutable_": false } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 13,
+                "columnBegin": 9,
+                "lineEnd": 13,
+                "columnEnd": 13
               }
             }
           }
@@ -1619,46 +1609,42 @@
         "source": { "span": { "start": 636, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "a" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": {
-                              "local": {
-                                "key": {
-                                  "name": {
-                                    "key": {
-                                      "name": { "key": "calcSomething" }
-                                    }
-                                  },
-                                  "scope": { "global_": { } }
-                                }
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "a" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "A" },
+                          "scope": {
+                            "local": {
+                              "key": {
+                                "name": {
+                                  "key": { "name": { "key": "calcSomething" } }
+                                },
+                                "scope": { "global_": { } }
                               }
                             }
                           }
-                        },
-                        "access": 0
-                      }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "type": { "key": "int" },
-                "kind": { "field": { "mutable_": false } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 13,
-                  "columnBegin": 9,
-                  "lineEnd": 13,
-                  "columnEnd": 13
                 }
+              },
+              "type": { "key": "int" },
+              "kind": { "field": { "mutable_": false } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 13,
+                "columnBegin": 9,
+                "lineEnd": 13,
+                "columnEnd": 13
               }
             }
           }
@@ -1960,46 +1946,42 @@
         "source": { "span": { "start": 633, "length": 2 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "a_" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "B" },
-                            "scope": {
-                              "local": {
-                                "key": {
-                                  "name": {
-                                    "key": {
-                                      "name": { "key": "calcSomething" }
-                                    }
-                                  },
-                                  "scope": { "global_": { } }
-                                }
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "a_" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "B" },
+                          "scope": {
+                            "local": {
+                              "key": {
+                                "name": {
+                                  "key": { "name": { "key": "calcSomething" } }
+                                },
+                                "scope": { "global_": { } }
                               }
                             }
                           }
-                        },
-                        "access": 0
-                      }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "type": { "key": "struct A" },
-                "kind": { "field": { "mutable_": false } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 23,
-                  "columnBegin": 9,
-                  "lineEnd": 23,
-                  "columnEnd": 19
                 }
+              },
+              "type": { "key": "struct A" },
+              "kind": { "field": { "mutable_": false } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 23,
+                "columnBegin": 9,
+                "lineEnd": 23,
+                "columnEnd": 19
               }
             }
           }
@@ -2301,46 +2283,42 @@
         "source": { "span": { "start": 755, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "c" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "ExplictMethods" },
-                            "scope": {
-                              "local": {
-                                "key": {
-                                  "name": {
-                                    "key": {
-                                      "name": { "key": "calcSomething" }
-                                    }
-                                  },
-                                  "scope": { "global_": { } }
-                                }
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "c" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "ExplictMethods" },
+                          "scope": {
+                            "local": {
+                              "key": {
+                                "name": {
+                                  "key": { "name": { "key": "calcSomething" } }
+                                },
+                                "scope": { "global_": { } }
                               }
                             }
                           }
-                        },
-                        "access": 0
-                      }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "type": { "key": "int" },
-                "kind": { "field": { "mutable_": false } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 30,
-                  "columnBegin": 9,
-                  "lineEnd": 30,
-                  "columnEnd": 13
                 }
+              },
+              "type": { "key": "int" },
+              "kind": { "field": { "mutable_": false } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 30,
+                "columnBegin": 9,
+                "lineEnd": 30,
+                "columnEnd": 13
               }
             }
           }
@@ -2642,46 +2620,42 @@
         "source": { "span": { "start": 813, "length": 1 } }
       },
       "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "c" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "ExplictMethods" },
-                            "scope": {
-                              "local": {
-                                "key": {
-                                  "name": {
-                                    "key": {
-                                      "name": { "key": "calcSomething" }
-                                    }
-                                  },
-                                  "scope": { "global_": { } }
-                                }
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "c" },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "ExplictMethods" },
+                          "scope": {
+                            "local": {
+                              "key": {
+                                "name": {
+                                  "key": { "name": { "key": "calcSomething" } }
+                                },
+                                "scope": { "global_": { } }
                               }
                             }
                           }
-                        },
-                        "access": 0
-                      }
+                        }
+                      },
+                      "access": 0
                     }
                   }
-                },
-                "type": { "key": "int" },
-                "kind": { "field": { "mutable_": false } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 30,
-                  "columnBegin": 9,
-                  "lineEnd": 30,
-                  "columnEnd": 13
                 }
+              },
+              "type": { "key": "int" },
+              "kind": { "field": { "mutable_": false } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 30,
+                "columnBegin": 9,
+                "lineEnd": 30,
+                "columnEnd": 13
               }
             }
           }
