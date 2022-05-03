@@ -1131,6 +1131,35 @@ executable hack-derive
         glean:stubs,
         glean:util,
 
+-- Haskell indexer via hiedb
+executable hiedb-indexer
+    import: deps, fb-haskell, exe
+    if impl(ghc >= 8.8)
+      buildable: True
+    else
+      buildable: False
+    hs-source-dirs: glean/lang/haskell
+    main-is: HieDBIndexer/Main.hs
+    other-modules:
+        HieDBIndexer.Builder
+        HieDBIndexer.Glean
+        HieDBIndexer.Options
+        HieDBIndexer.Trace
+        HieDBIndexer.Types
+    ghc-options: -main-is HieDBIndexer.Main
+    build-depends:
+        ghc,
+        glean:client-hs,
+        glean:client-hs-local,
+        glean:core,
+        glean:lib,
+        glean:schema,
+        glean:stubs,
+        glean:util,
+        hiedb,
+        split,
+        sqlite-simple,
+
 -- -----------------------------------------------------------------------------
 -- LSIF support
 

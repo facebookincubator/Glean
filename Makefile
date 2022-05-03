@@ -205,3 +205,7 @@ glass::
 .PHONY: glean-clang
 glean-clang:: gen-schema glean
 	$(CABAL) build glean-clang
+
+.PHONY: glean-hiedb
+glean-hiedb::
+	$(CABAL) build hiedb-indexer
