@@ -32,7 +32,7 @@ import Glean.Util.Some
 
 data MockBackend = MockBackend
 
-data MockSite = MockSite FilePath
+newtype MockSite = MockSite FilePath
 
 mock :: Some Backend
 mock = Some MockBackend

@@ -27,5 +27,4 @@ options :: Parser TailerOptions
 options = pure TailerOptions
 
 runTailer :: RunTailer TailerOptions
-runTailer _ _ = throwIO $ ErrorCall $
-  "tailers are not supported in this build"
+runTailer _ _ = throwIO $ ErrorCall "tailers are not supported in this build"

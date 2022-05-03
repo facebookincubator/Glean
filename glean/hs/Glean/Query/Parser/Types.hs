@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE DeriveFunctor, DeriveTraversable #-}
+{-# LANGUAGE DeriveTraversable #-}
 module Glean.Query.Parser.Types
   ( P
   , ParsedQuery

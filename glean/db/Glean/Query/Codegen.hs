@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE RecursiveDo, DeriveFunctor, DeriveTraversable #-}
+{-# LANGUAGE RecursiveDo, DeriveTraversable #-}
 module Glean.Query.Codegen
   ( CodegenQuery
   , QueryWithInfo(..)

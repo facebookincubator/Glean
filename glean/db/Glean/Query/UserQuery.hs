@@ -973,7 +973,7 @@ withStats io = do
         , Thrift.userQueryStats_allocated_bytes = fromIntegral bytes
         , Thrift.userQueryStats_facts_searched = resFactsSearched res
         , Thrift.userQueryStats_bytecode_size =
-            fmap fromIntegral $ resBytecodeSize res
+            fromIntegral <$> resBytecodeSize res
         , Thrift.userQueryStats_compile_time_ns =
             fmap (round . (* 1000000000)) (resCompileTime res )
         , Thrift.userQueryStats_execute_time_ns =

@@ -357,7 +357,7 @@ valid expressions and lifting out won't affect performance.
 
 -- | A set of statements. The statements in the set will be reordered
 -- by the Reorder pass later.
-data Statements = Statements [FlatStatement]
+newtype Statements = Statements [FlatStatement]
 
 instance Semigroup Statements where
   Statements s1 <> Statements s2 = Statements (s2 <> s1)

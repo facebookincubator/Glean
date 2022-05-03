@@ -15,7 +15,7 @@ import Glean.Indexer
 import Glean.Indexer.External
 import Glean.LSIF.Driver as LSIF
 
-data Typescript = Typescript
+newtype Typescript = Typescript
   { lsifTypescriptBinary :: FilePath
   }
 

@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE DeriveFoldable, DeriveFunctor, DeriveGeneric, DeriveTraversable #-}
+{-# LANGUAGE DeriveGeneric, DeriveTraversable #-}
 module Glean.RTS.Term
   ( Term(..)
   , Match(..)
