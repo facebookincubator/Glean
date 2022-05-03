@@ -461,7 +461,7 @@ helpAngle = vcat
   , "  \"abc\"..                  :: string prefix match"
   , "  true|false               :: bool"
   , "  [ val1, val2]            :: array(T)"
-  , "  [ val1, val2, ..]         :: array(T) prefix"
+  , "  [ val1, val2, ..]        :: array(T) prefix"
   , "  { field = val, ... }     :: record(fields), omitted fields are wild"
   , "  { field = val }          :: sum(fields)"
   , ""
