@@ -1,0 +1,4 @@
+query: search.code.SearchByLowerCaseName { name = "lines" }
+perf: True
+transform: [gensort, []]
+

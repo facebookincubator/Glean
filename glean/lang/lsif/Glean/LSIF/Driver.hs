@@ -45,40 +45,6 @@ import qualified Foreign.CPP.Dynamic
 
 import qualified Data.LSIF.Angle as LSIF
 
-{-
--- | Languages we can index via LSIF
-data Language
-  = Go
-  | Rust
-  | TypeScript
-  deriving (Show, Eq, Bounded, Enum)
-
-lsifIndexer :: Language -> String
-lsifIndexer lang = case lang of
-  Go -> "lsif-go"
-  Rust -> "rust-analyzer"
-  TypeScript -> "lsif-tsc"
-
--- snapshot tests for different lsif indexers all use the same frontend
-testArgs :: FilePath -> Language -> [String]
-testArgs dir lang =
-    [ "--binary", lsifIndexer lang
-    , "--lsif"
-    , "--root", dir
-    ]
-
-indexerLang :: String -> Maybe Language
-indexerLang "lsif-go" = Just Go
-indexerLang "lsif-tsc" = Just TypeScript
-indexerLang "rust-analyzer" = Just Rust
-indexerLang _ = Nothing
-
-lsifArgs :: Language -> FilePath -> Either [String] [String]
-lsifArgs Go outFile = Right [ "--no-animation", "-o", outFile ]
-lsifArgs TypeScript outFile = Right [ "-p", ".", "--out", outFile ]
-lsifArgs Rust _outFile = Left [ "lsif", "." ] -- readProcess
--}
-
 data LsifIndexerParams = LsifIndexerParams
   { lsifBinary :: FilePath
   , lsifArgs :: FilePath -> [String]

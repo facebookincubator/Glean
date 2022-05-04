@@ -1,0 +1,3 @@
+query: lsif.SearchByMoniker { ident = "github.com/facebook/time" }
+perf: True
+transform: [gensort, []]

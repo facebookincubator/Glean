@@ -26,6 +26,7 @@ import hack.6
 
 # Associates an entity with a symbol kind.
 # Note: available for partial indices where EntityInfo is incomplete.
+# this is used directly by Glass in Query.searchByLocalName
 predicate EntityKind:
   {
     entity: code.Entity,
@@ -36,7 +37,8 @@ predicate EntityKind:
     (codemarkup.cxx.CxxEntityKind { E, Kind }; { cxx = E } = Entity) |
     (codemarkup.pp.PpEntityKind { E, Kind }; { pp = E } = Entity) |
     (codemarkup.hack.HackEntityKind { E, Kind }; { hack = E } = Entity) |
-    (codemarkup.erlang.ErlangEntityKind { E, Kind }; { erlang = E } = Entity)
+    (codemarkup.erlang.ErlangEntityKind { E, Kind }; { erlang = E } = Entity) |
+    (codemarkup.lsif.EntityInfo { E, { kind = Kind }}; { lsif = E } = Entity)
 
 # Retrieve information about an entity
 predicate EntityInfo:

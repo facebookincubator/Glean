@@ -20,6 +20,10 @@ import search.hack.7
 import search.hs.8
 import thrift.4
 
+#
+# public API
+#
+
 # global entity search by identifier name (or prefix)
 predicate SearchByName:
   {
@@ -32,7 +36,8 @@ predicate SearchByName:
   FlowSearchByName { Name, Entity } |
   CxxSearchByName { Name, Entity } |
   HsSearchByName { Name, Entity } |
-  ErlangSearchByName { Name, Entity }
+  ErlangSearchByName { Name, Entity } |
+  LsifSearchByName { Name, Entity }
 
 # same as SearchByName but assumes `name` is lowercase. Useful for
 # case-insensitive search
@@ -46,8 +51,9 @@ predicate SearchByLowerCaseName:
   HackSearchByLowerCaseName { Name, Entity } |
   FlowSearchByLowerCaseName { Name, Entity } |
   CxxSearchByLowerCaseName { Name, Entity } |
-  HsSearchByLowerCaseName { Name, Entity }
-  ErlangSearchByLowerCaseName { Name, Entity }
+  HsSearchByLowerCaseName { Name, Entity } |
+  ErlangSearchByLowerCaseName { Name, Entity } |
+  LsifSearchByLowerCaseName { Name, Entity }
 
 #
 # Language-specific identifier search
@@ -167,5 +173,22 @@ predicate ErlangSearchByLowerCaseName:
   { Name, Entity } where
   erlang.NameLowerCase { Name, NameCase };
   ErlangSearchByName { NameCase, Entity }
+
+predicate LsifSearchByName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { Name, { lsif = Entity } } where
+  lsif.SearchByName { lsif.Name Name, Entity }
+
+predicate LsifSearchByLowerCaseName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { Name, { lsif = Entity } } where
+  lsif.NameLowerCase { Name, NameCase };
+  lsif.SearchByName { NameCase, Entity }
 
 }

@@ -12,7 +12,9 @@ module Glean.Indexer.Typescript ( indexer ) where
 import Options.Applicative
 
 import Glean.Indexer
+import Glean.Indexer.LSIF ( derive )
 import Glean.Indexer.External
+
 import Glean.LSIF.Driver as LSIF
 
 newtype Typescript = Typescript
@@ -42,4 +44,5 @@ indexer = Indexer {
       }
     val <- LSIF.runIndexer params
     sendJsonBatches backend repo (lsifTypescriptBinary <> "/lsif") val
+    derive backend repo
   }

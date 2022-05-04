@@ -1,0 +1,3 @@
+query: K where codemarkup.EntityKind { entity = { lsif = { typescript = _ } }, kind = K }
+perf: True
+transform: [gensort, []]
