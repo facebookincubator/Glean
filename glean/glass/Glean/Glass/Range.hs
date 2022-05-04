@@ -6,7 +6,6 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-
 module Glean.Glass.Range
   (
   -- * bytespans to ranges
@@ -16,7 +15,6 @@ module Glean.Glass.Range
   , inclusiveRangeToExclusiveRange
   , exclusiveRangeToInclusiveRange
   -- * locations
-  , toLocation
   , toLocationRange
   , resolveLocationToRange
   -- * Glass Thrift types to/from Angle

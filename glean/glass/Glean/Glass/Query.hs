@@ -18,7 +18,6 @@ module Glean.Glass.Query
   , fileEntityXRefLocations
 
   -- * Finding refernces to declarations
-  , findReferences
   , findReferenceRangeSpan
 
   -- * offsets and conversions to lines
@@ -118,24 +117,7 @@ fileEntityXRefLocations fileid =
         end)
       ]
 
--- | Entity-based find-references
-findReferences
-  :: Angle Code.Entity
-  -> Angle (Src.File, Src.ByteSpan)
-findReferences ent =
-  vars $ \(reffile :: Angle Src.File) (refspan :: Angle Src.ByteSpan) ->
-    Angle.tuple (reffile, refspan) `where_` [
-      wild .= predicate @Code.EntityUses (
-      rec $
-          field @"target" ent $
-          field @"file" (asPredicate reffile) $
-          field @"span" refspan
-        end
-      )
-    ]
-
 -- | Entity-based find-references returning native range or bytespan
--- (Unused, replace findReferences in Handler.fetchSymbolReference*)
 findReferenceRangeSpan
   :: Angle Code.Entity
   -> Angle (Src.File, Code.RangeSpan)
