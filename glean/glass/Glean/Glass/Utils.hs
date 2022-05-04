@@ -20,6 +20,8 @@ module Glean.Glass.Utils
 
   -- File utilities
   , pathFragments
+  , joinFragments
+
   -- Types
   , QueryType
   ) where
@@ -32,7 +34,7 @@ import Glean.Typed.Predicate ( Predicate )
 import Data.Typeable ( Typeable )
 
 import Data.Text as Text ( Text, pack, unpack )
-import System.FilePath ( splitDirectories )
+import System.FilePath ( splitDirectories, joinPath )
 import qualified Glean.Haxl.Repos as Glean
 import Glean.Haxl.Repos (RepoHaxl, ReposHaxl)
 
@@ -92,3 +94,6 @@ searchRecursiveWithLimit (Just n) =
 -- | Split a filepath into a list of directory components
 pathFragments :: Text -> [Text]
 pathFragments = map Text.pack . splitDirectories . Text.unpack
+
+joinFragments :: [Text] -> Text
+joinFragments = Text.pack . joinPath . map Text.unpack

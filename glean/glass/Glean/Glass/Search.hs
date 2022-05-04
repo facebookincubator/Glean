@@ -30,6 +30,7 @@ import qualified Glean.Glass.Search.Hack ({- instances -})
 import qualified Glean.Glass.Search.Haskell ({- instances -})
 import qualified Glean.Glass.Search.Python ({- instances -})
 import qualified Glean.Glass.Search.Erlang ({- instances -})
+import qualified Glean.Glass.Search.LSIF ({- instances -})
 import Glean.Glass.Types (ServerException(ServerException))
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Haxl.Repos as Glean
@@ -39,18 +40,16 @@ searchEntity
   -> [Text]
   -> Glean.ReposHaxl u w (SearchResult Code.Entity)
 searchEntity lang toks = case lang of
-  Language_Cpp ->
-    fmap Code.Entity_cxx <$> Search.symbolSearch toks
-  Language_Hack ->
-    fmap Code.Entity_hack <$> Search.symbolSearch toks
-  Language_Python ->
-    fmap Code.Entity_python <$> Search.symbolSearch toks
-  Language_JavaScript ->
-    fmap Code.Entity_flow <$> Search.symbolSearch toks
-  Language_Haskell  ->
-    fmap Code.Entity_hs <$> Search.symbolSearch toks
-  Language_Erlang  ->
-    fmap Code.Entity_erlang <$> Search.symbolSearch toks
+  Language_Cpp -> fmap Code.Entity_cxx <$> Search.symbolSearch toks
+  Language_Hack -> fmap Code.Entity_hack <$> Search.symbolSearch toks
+  Language_Python -> fmap Code.Entity_python <$> Search.symbolSearch toks
+  Language_JavaScript -> fmap Code.Entity_flow <$> Search.symbolSearch toks
+  Language_Haskell -> fmap Code.Entity_hs <$> Search.symbolSearch toks
+  Language_Erlang -> fmap Code.Entity_erlang <$> Search.symbolSearch toks
+  -- via lsif
+  Language_Go -> fmap Code.Entity_lsif <$> Search.symbolSearch toks
+  Language_TypeScript -> fmap Code.Entity_lsif <$> Search.symbolSearch toks
+  Language_Rust -> fmap Code.Entity_lsif <$> Search.symbolSearch toks
   lang ->
     return $ None $ "searchEntity: language not supported: " <> toShortCode lang
 
