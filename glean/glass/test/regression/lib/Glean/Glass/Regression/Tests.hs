@@ -12,7 +12,9 @@ module Glean.Glass.Regression.Tests (
   testFindReferences,
   testDescribeSymbolComments,
   testDescribeSymbolHasAnnotations,
-  testSearchRelated
+  testSearchRelated,
+  testResolveSymbol,
+  testSearchSymbolByName
 ) where
 
 import Data.Default
@@ -30,10 +32,11 @@ import Glean.Glass.Types as Glass
 
 import Glean.Glass.Regression.Util
 
+type Getter = IO (Some Backend, Repo)
 
 -- | Test that documentSymbolListX returns non-empty definitions and
 -- references for the given Path.
-testDocumentSymbolListX :: Path -> IO (Some Backend, Repo) -> Test
+testDocumentSymbolListX :: Path -> Getter -> Test
 testDocumentSymbolListX path get =
   TestLabel "testDocumentSymbolListX" $ TestCase $ do
     (backend, _repo) <- get
@@ -50,10 +53,29 @@ testDocumentSymbolListX path get =
         (not (null (documentSymbolListXResult_references res)) &&
          not (null (documentSymbolListXResult_definitions res)))
 
+testResolveSymbol :: SymbolId -> Path -> Getter -> Test
+testResolveSymbol sym@(SymbolId name) path get =
+  TestLabel (Text.unpack name) $ TestCase $ do
+    (backend, _repo) <- get
+    withTestEnv backend $ \env -> do
+      LocationRange{..} <- resolveSymbolRange env sym def
+      assertEqual "resolveSymbol Path matches" locationRange_filepath path
+
+testSearchSymbolByName :: Text -> SymbolId -> Getter -> Test
+testSearchSymbolByName searchStr sym@(SymbolId name) get =
+  TestLabel (Text.unpack name) $ TestCase $ do
+    (backend, _repo) <- get
+    withTestEnv backend $ \env -> do
+      syms <- searchByNameResult_symbols <$> searchByName env req def
+      assertBool "searchByName" (elem sym syms)
+  where
+    req = SearchByNameRequest ctx searchStr False True
+    ctx = SearchContext (Just $ RepoName "test") Nothing{-lang-} def{- kinds -}
+
 -- | Test that both describeSymbol and resolveSymbol for a SymbolId
 -- find the symbol in a given Path.
 testDescribeSymbolMatchesPath
-  :: SymbolId -> Path -> IO (Some Backend, Repo) -> Test
+  :: SymbolId -> Path -> Getter -> Test
 testDescribeSymbolMatchesPath sym@(SymbolId name) path get =
   TestLabel (Text.unpack name) $ TestCase $ do
     (backend, _repo) <- get
@@ -67,7 +89,7 @@ testDescribeSymbolMatchesPath sym@(SymbolId name) path get =
 
 -- | Test that both describeSymbol has expected comment
 testDescribeSymbolComments
-  :: SymbolId -> (Int, Int) -> IO (Some Backend, Repo) -> Test
+  :: SymbolId -> (Int, Int) -> Getter -> Test
 testDescribeSymbolComments sym@(SymbolId name) (line, col) get =
   TestLabel (Text.unpack name) $ TestCase $ do
     (backend, _repo) <- get
@@ -83,7 +105,7 @@ testDescribeSymbolComments sym@(SymbolId name) (line, col) get =
 
 -- | Test that describeSymbol has specific annotations
 testDescribeSymbolHasAnnotations
-  :: SymbolId -> [(Text, Text)] -> IO (Some Backend, Repo) -> Test
+  :: SymbolId -> [(Text, Text)] -> Getter -> Test
 testDescribeSymbolHasAnnotations sym@(SymbolId name) anns get =
   TestLabel (Text.unpack name) $ TestCase $ do
     (backend, _repo) <- get
@@ -98,7 +120,7 @@ testDescribeSymbolHasAnnotations sym@(SymbolId name) anns get =
 -- | Test findReferences and findReferenceRanges: given a SymbolId check
 -- that the number of references returned for each Path matches the input.
 testFindReferences
-  :: SymbolId -> [(Path,Int)] -> IO (Some Backend, Repo) -> Test
+  :: SymbolId -> [(Path,Int)] -> Getter -> Test
 testFindReferences sym@(SymbolId name) paths get =
   TestLabel (Text.unpack name) $ TestCase $ do
     (backend, _repo) <- get
@@ -123,7 +145,7 @@ testSearchRelated
   -> RelationDirection
   -> RelationType
   -> (SymbolId, SymbolId)
-  -> IO (Some Backend, Repo) -> Test
+  -> Getter -> Test
 testSearchRelated sym recurse dir rel (parent, child) get =
   TestLabel label $ TestCase $ do
     (backend, _repo) <- get

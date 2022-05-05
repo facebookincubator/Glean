@@ -19,6 +19,7 @@ import qualified Glean.Schema.Erlang.Types as Erlang
 import qualified Glean.Schema.Flow.Types as Flow
 import qualified Glean.Schema.Hack.Types as Hack
 import qualified Glean.Schema.Python.Types as Py
+import qualified Glean.Schema.Lsif.Types as Lsif
 
 import qualified Glean.Schema.CodeCxx.Types as Cxx
 import qualified Glean.Schema.CodeFlow.Types as Flow
@@ -138,3 +139,11 @@ instance ToAngle Py.Declaration where
   toAngle (Py.Declaration_variable x) = alt @"variable" (mkKey x)
   toAngle (Py.Declaration_imp x) = alt @"imp" (mkKey x)
   toAngle Py.Declaration_EMPTY = error "unknown Declaration"
+
+-- LSIF languages
+
+instance ToAngle Lsif.SomeEntity where
+  toAngle e = case e of
+    Lsif.SomeEntity_defn x -> alt @"defn" (mkKey x)
+    Lsif.SomeEntity_decl x -> alt @"decl" (mkKey x)
+    Lsif.SomeEntity_EMPTY -> error "unknown Lsif.SomeEntity"

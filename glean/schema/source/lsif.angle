@@ -46,6 +46,14 @@ type LanguageId =
 # Opaque identifiers
 predicate Name: string
 
+# Maps lower-case strings to Name, for case-insensitive search
+predicate NameLowerCase:
+  {
+    nameLowerCase: string,
+    name: lsif.Name,
+  } stored
+  { prim.toLower Str, N } where N = lsif.Name Str
+
 # Markdown hover text
 predicate HoverText: string
 
@@ -167,6 +175,27 @@ predicate DefinitionMoniker:
     moniker: maybe lsif.Moniker,
   }
 
+# reverse index from monikers to their defn (for search)
+predicate MonikerDefinition:
+  {
+    ident: lsif.MonikerId,
+    moniker: lsif.Moniker,
+    defn: lsif.Definition,
+  } stored
+  { Ident, Moniker, Defn } where
+    lsif.DefinitionMoniker { Defn, { just = Moniker }};
+    { ident = Ident } = Moniker;
+
+# reverse index from identifer to defn (for search)
+predicate NameDefinition:
+  {
+    name: lsif.Name,
+    defn: lsif.DefinitionMoniker,
+  } stored
+  { Name, Defn } where
+    Name != lsif.Name ""; # don't index empty identifiers
+    Defn = lsif.DefinitionMoniker { defn = { range = { text = Name }}};
+
 # Associate symbol kinds with some definitions and declarations
 predicate DefinitionKind:
   {
@@ -280,7 +309,7 @@ predicate EntityKind:
 # introduce entity tags
 predicate TagDefinition:
   {
-    language: LanguageId,
+    language: lsif.LanguageId,
     defn: lsif.DefinitionMoniker,
     entity: lsif.Entity,
   }
@@ -321,5 +350,58 @@ predicate ToSrcRange:
   }
   { File, { A, B, C, D }, SrcRange } where
     SrcRange = { File, A, B, C, D };
+
+# entity search, recovering entities from symbol ids
+
+# if we have just the file and identifier we can probably find it (non-locals
+# only). O(defn in file)
+predicate SearchNonLocalByLocation:
+  {
+    file : src.File,
+    name : lsif.Name,
+    entity : lsif.Entity,
+  }
+  { File, Name, Entity } where
+    D = lsif.Definition { { File, Language } , { text = Name } };
+    DM = lsif.DefinitionMoniker { D, { just = { kind = K } } };
+    Import|Export|Implementation = K;
+    lsif.TagDefinition { Language, DM, Entity };
+
+# if we have all of file, identifier and moniker.
+# O(1) via moniker definition table
+predicate SearchByLocationAndMoniker:
+  {
+    file : src.File,
+    name : lsif.Name,
+    ident: lsif.MonikerId,
+    entity : lsif.Entity,
+  }
+  { File, Name, Ident, Entity } where
+    lsif.MonikerDefinition { Ident, Moniker, Defn };
+    { { File, Language } , { text = Name } } = Defn;
+    lsif.TagDefinition { Language, { Defn , { just = Moniker } } , Entity };
+
+# if we only have the moniker, we can probably still find it
+# O(1) via moniker definition table
+predicate SearchByMoniker:
+  {
+    ident : lsif.MonikerId,
+    entity : lsif.Entity,
+  }
+  { Ident, Entity } where
+    lsif.MonikerDefinition { Ident, Moniker, Defn };
+    { file = { language = Language }} = Defn;
+    lsif.TagDefinition { Language, { Defn, { just = Moniker }}, Entity };
+
+# global search by name fragments
+predicate SearchByName:
+  {
+    name: lsif.Name,
+    entity: lsif.Entity
+  }
+  { Name, Entity } where
+    lsif.NameDefinition { Name, DM };
+    { defn = { file = { language = Language } } } = DM;
+    lsif.TagDefinition { Language, DM, Entity };
 
 }

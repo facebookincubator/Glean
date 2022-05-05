@@ -7,13 +7,23 @@
 -}
 
 {-# LANGUAGE ApplicativeDo #-}
-module Glean.Indexer.LSIF ( indexer ) where
+module Glean.Indexer.LSIF (
+    indexer,
+    derive
+  ) where
 
 import Options.Applicative
+import Data.Text ( Text )
+import Control.Monad ( forM_ )
 
+import Glean.Derive
 import Glean.Indexer
 import Glean.Indexer.External
+import Glean.Write
 import Glean.LSIF.Driver as LSIF
+
+import Glean.Backend ( Backend )
+import qualified Glean
 
 data LSIF = LSIF
   -- no options currently
@@ -34,4 +44,20 @@ indexer = Indexer {
   indexerRun = \LSIF backend repo IndexerParams{..} -> do
     val <- LSIF.processLSIF indexerRoot
     sendJsonBatches backend repo "lsif" val
+    derive backend repo
   }
+
+derive :: Backend b => b -> Glean.Repo -> IO ()
+derive backend repo = forM_ lsifDerivedPredicates $ \pred_ ->
+  derivePredicate backend repo Nothing Nothing
+    (parseRef pred_) Nothing
+
+-- Should correspond to stored predicates in lsif.angle
+-- shared amongst all LSIF-based language indexers
+lsifDerivedPredicates :: [Text]
+lsifDerivedPredicates =
+  [
+    "lsif.MonikerDefinition"
+  , "lsif.NameLowerCase"
+  , "lsif.NameDefinition"
+  ]

@@ -15,8 +15,7 @@ import Glean.Regression.Snapshot
 import Glean.Regression.Snapshot.Driver
 
 main :: IO ()
-main =
-  withArgs ["--root", path] $
+main = withArgs ["--root", path] $
     testMain (driverFromIndexer RustLsif.indexer)
   where
     path = "glean/lang/rust-lsif/tests/cases"

@@ -1,0 +1,3 @@
+query: lsif.SearchByMoniker { ident = "example:createTempRepo" }
+perf: True
+transform: [gensort, []]

@@ -13,6 +13,7 @@ import Options.Applicative
 
 import Glean.Indexer
 import Glean.Indexer.External
+import Glean.Indexer.LSIF ( derive )
 import Glean.LSIF.Driver as LSIF
 
 newtype Go = Go
@@ -42,4 +43,5 @@ indexer = Indexer {
       }
     val <- LSIF.runIndexer params
     sendJsonBatches backend repo (lsifGoBinary <> "/lsif") val
+    derive backend repo
   }

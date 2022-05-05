@@ -13,14 +13,13 @@ module Glean.Glass.Search.Flow
   ( {- instances -}
   ) where
 
-import Data.Text as Text ( Text, pack, unpack )
-
-import System.FilePath ( joinPath )
+import Data.Text as Text ( Text )
 
 import Glean.Angle as Angle
 
 import Glean.Glass.Search.Class
 import Glean.Glass.Query ( entityLocation )
+import Glean.Glass.Utils ( joinFragments )
 
 import qualified Glean.Schema.CodeFlow.Types as Flow
 import qualified Glean.Schema.Flow.Types as Flow
@@ -43,9 +42,6 @@ instance Search Flow.Entity where
         path = joinFragments (init toks)
     a <- runSearch toks $ searchByFileModule path name
     return $ Flow.Entity_decl <$> a
-    where
-      -- opposite of SymbolId.Flow.pathFragments, reconstruct any path
-      joinFragments = Text.pack . joinPath . map Text.unpack
 
 -- With the Haste short module name and an identifier, find the decl
 searchByModule :: Text -> Text -> Angle (ResultLocation Flow.SomeDeclaration)
