@@ -31,6 +31,7 @@ import Glean.Angle as Angle
 import qualified Glean.Haxl.Repos as Glean
 import qualified Glean.Schema.Hack.Types as Hack
 import Glean.Schema.CodeHack.Types as Hack ( Entity(..) )
+import Data.Maybe (fromMaybe)
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Control.Monad.Trans.Maybe (MaybeT (..))
@@ -266,7 +267,8 @@ containerQualName Hack.ContainerDeclaration_EMPTY = Nothing
 qName :: Hack.QName -> Maybe ([Text], Text)
 qName Hack.QName{..} = do
  Hack.QName_key{..} <- qName_key
- (,) <$> namespaceQName qName_key_namespace_ <*> Hack.name_key qName_key_name
+ (,) (fromMaybe [] $ namespaceQName qName_key_namespace_) <$>
+  Hack.name_key qName_key_name
 
 namespaceQName :: Maybe Hack.NamespaceQName -> Maybe [Text]
 namespaceQName Nothing = Nothing
