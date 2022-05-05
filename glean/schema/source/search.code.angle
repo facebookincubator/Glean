@@ -1,6 +1,6 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema search.code.11 {
+schema search.code.12 {
 import code.20
 import code.cxx.3
 import code.hack.4
@@ -15,9 +15,9 @@ import pp1.1
 import python.3
 import rust.1
 import search.cxx.4
-import search.erlang.3
+import search.erlang.4
 import search.hack.7
-import search.hs.8
+import search.hs.9
 import thrift.4
 
 # global entity search by identifier name (or prefix)
@@ -134,7 +134,7 @@ predicate HsSearchByName:
     name: string,
     entity: code.Entity,
   }
-  { Name, E } where
+  { Name, { hs = E } } where
   search.hs.SearchByName { name = Name, entity = E }
 
 predicate HsSearchByLowerCaseName:
@@ -156,7 +156,7 @@ predicate ErlangSearchByName:
     name: string,
     entity: code.Entity,
   }
-  { Name, E } where
+  { Name, { erlang = E } } where
   search.erlang.SearchByName { name = Name, entity = E }
 
 predicate ErlangSearchByLowerCaseName:

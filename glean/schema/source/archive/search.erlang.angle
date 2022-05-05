@@ -46,3 +46,26 @@ schema search.erlang.2 {
     E = code.erlang.Entity { decl = {func = { fqn = { module = M, name = N, arity = A } } } }
 
 }
+
+schema search.erlang.3 {
+  import code.20
+  import code.erlang.1
+  import erlang.1
+
+  predicate SearchByName:
+    {
+      name: string,
+      entity: code.Entity,
+    } { Name, {erlang = E}} where
+    E = code.erlang.Entity { decl = {func = { fqn = { name = Name } } } }
+
+  predicate SearchByFQN:
+    {
+      module: string,
+      name: string,
+      arity: nat,
+      entity: code.Entity,
+    } {M, N, A, {erlang = E}} where
+    E = code.erlang.Entity { decl = {func = { fqn = { module = M, name = N, arity = A } } } }
+
+}

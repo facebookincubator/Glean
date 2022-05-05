@@ -1,15 +1,14 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema search.erlang.3 {
-  import code.20
+schema search.erlang.4 {
   import code.erlang.1
   import erlang.1
 
   predicate SearchByName:
     {
       name: string,
-      entity: code.Entity,
-    } { Name, {erlang = E}} where
+      entity: code.erlang.Entity,
+    } { Name, E } where
     E = code.erlang.Entity { decl = {func = { fqn = { name = Name } } } }
 
   predicate SearchByFQN:
@@ -17,8 +16,8 @@ schema search.erlang.3 {
       module: string,
       name: string,
       arity: nat,
-      entity: code.Entity,
-    } {M, N, A, {erlang = E}} where
+      entity: code.erlang.Entity,
+    } {M, N, A, E} where
     E = code.erlang.Entity { decl = {func = { fqn = { module = M, name = N, arity = A } } } }
 
 }

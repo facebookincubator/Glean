@@ -34,3 +34,19 @@ schema search.hs.7 {
 }
 
 schema search.hs.7 evolves search.hs.6
+
+schema search.hs.8 {
+  import code.20
+  import code.hs.2
+  import hs.2
+
+  predicate SearchByName:
+    {
+      name: string,
+      entity: code.Entity,
+    } { Name, {hs = E}} where
+    E =
+      code.hs.Entity { definition = {name = hs.DefinitionName Name }} |
+      code.hs.Entity {function_ = {name = hs.FunctionName Name}} |
+      code.hs.Entity {class_ = {name = hs.ClassName Name}};
+}
