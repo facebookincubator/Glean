@@ -112,7 +112,6 @@ import Glean.Glass.Range
       memoLineOffsets,
       getFile,
       getFileAndLines,
-      toLocation,
       resolveLocationToRange,
       FileInfo(FileInfo, offsets, srcFile, fileId, fileRepo) )
 import Glean.Glass.SymbolId
@@ -453,12 +452,12 @@ fetchSymbolReferences scsrepo lang toks limit b =
       Left err -> return ([], Just err)
       Right (query, searchErr) -> do
         locs::[Location] <-
-          searchReposWithLimit limit (Query.findReferences query) $
-            \(file, bytespan) ->
-              toLocation scsrepo file bytespan
+          searchReposWithLimit limit (Query.findReferenceRangeSpan query) $
+            \(targetFile, rspan) ->
+              locationFromCodeLocation scsrepo targetFile rspan
         return (locs, fmap logError searchErr)
 
--- | Symbol search for references as ranges
+-- | Symbol search for references as ranges.
 fetchSymbolReferenceRanges
   :: Glean.Backend b
   => RepoName
@@ -473,12 +472,9 @@ fetchSymbolReferenceRanges scsrepo lang toks limit b =
     case er of
       Left err -> return ([], Just err)
       Right (query, searchErr) ->  do
-        ranges <- searchReposWithLimit limit (Query.findReferences query) $
-          \(targetFile, span) -> do
-            -- memo convert all spans to ranges
-            moffsets <- memoLineOffsets targetFile
-            toLocationRange scsrepo targetFile $
-              fileByteSpanToExclusiveRange targetFile moffsets span
+        ranges <- searchReposWithLimit limit (Query.findReferenceRangeSpan query) $
+          \(targetFile, rspan) ->
+            locationRangeFromCodeLocation scsrepo targetFile rspan
         return (ranges, fmap logError searchErr)
 
 -- | Search for a symbol and return an Angle query that identifies the entity
@@ -965,7 +961,7 @@ searchEntityByString method query env@Glass.Env{..} req opts = do
                 loc <- locationRangeFromCodeLocation
                         repo location_file location_location
                 symbol <- toSymbolId repo entity
-                description <-
+                description <- -- describeEntity is non-optional?
                   describeEntity loc entity symbol
                     (symbolKindToSymbolKind <$> kind)
                 gleanRepo <- Glean.haxlRepo
