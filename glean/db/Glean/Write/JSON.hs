@@ -230,7 +230,10 @@ writeJsonFact
     r <- lift $ J.field obj "id"
     case r of
       Just (J.Int id)
-        | J.arity obj == 1 -> return (Fid id)
+        | J.arity obj == 1 ->
+          if id == fromFid invalidFid
+            then invalidFactIdError
+            else return (Fid id)
         | otherwise -> fact 1 (namedFact (Fid id)) obj
       _ -> fact 0 anonFact obj
     where
@@ -258,6 +261,19 @@ writeJsonFact
       [ "Expecting a fact, which should be of the form:"
       , indent 2 "{[\"id\" : N, ] \"key\": ... [, \"value\": ...]}"
       , "but got:"
+      , indent 2 (pretty (Text.decodeUtf8 enc))
+      ]
+
+  -- Defining a fact with ID 0 means "don't care"; we want this
+  -- behaviour because Thrift serialization will use ID 0 when the
+  -- "id" field is unspecified. However, we don't support referring to
+  -- fact ID 0 (see anonFact above), so catch and report that error
+  -- here rather than waiting for the typechecker.
+  invalidFactIdError :: WriteFacts a
+  invalidFactIdError = liftIO $ do
+    enc <- J.encode json
+    throwIO $ Thrift.Exception $ Text.pack $ show $ vcat
+      [ "Cannot use " <> pretty (fromFid invalidFid) <> " as a fact ID:"
       , indent 2 (pretty (Text.decodeUtf8 enc))
       ]
 
@@ -319,8 +335,9 @@ writeJsonFact
               get _ _ = termError typ v
           get 0 fields
     (NamedType (ExpandedType _ ty), val) -> jsonToTerm b ty val
-    (Predicate{}, J.Int n) ->
-      lift $ invoke $ glean_push_value_fact b $ Fid n
+    (Predicate{}, J.Int n)
+      | n == fromFid invalidFid -> invalidFactIdError
+      | otherwise -> lift $ invoke $ glean_push_value_fact b $ Fid n
     -- allow { "id": N } for predicate refs, this allows us to accept
     -- JSON-serialized Thrift facts.
     (Predicate (PidRef pid ref), val) ->

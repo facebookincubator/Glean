@@ -43,19 +43,24 @@ Substitution defineUntrustedBatch(
         max_ref = real_id;
       }
       return real_id;
-    } else if (!real_type) {
-      error("invalid fact {}", id);
     } else {
       auto pred = inventory.lookupPredicate(type);
       CHECK_NOTNULL(pred);
-      auto real_pred = inventory.lookupPredicate(real_type);
-      CHECK_NOTNULL(real_pred);
-      error("invalid reference to fact {}: expected {}.{}, got {}.{}",
-        id,
-        pred->name,
-        pred->version,
-        real_pred->name,
-        real_pred->version);
+      if (!real_type) {
+        error("unknown fact {}, expecting a fact of predicate {}.{}",
+            id,
+            pred->name,
+            pred->version);
+      } else {
+        auto real_pred = inventory.lookupPredicate(real_type);
+        CHECK_NOTNULL(real_pred);
+        error("invalid reference to fact {}: expected {}.{}, got {}.{}",
+              id,
+              pred->name,
+              pred->version,
+              real_pred->name,
+              real_pred->version);
+      }
     }
   });
 
