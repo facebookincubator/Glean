@@ -28,15 +28,21 @@ withNumCapabilities :: Maybe Int -> IO a -> IO a
 withNumCapabilities Nothing act = act
 withNumCapabilities (Just n) act = setNumCapabilities n >> act
 
+runDerive
+  :: Backend.Backend be => Config -> Set DerivePass -> be -> IO ()
+runDerive cfg passes be =
+  withEnv cfg allPredicates be $
+    forM_ (Set.toList passes) . dispatchDerive
+
 main :: IO ()
 main = withConfigOptions allOptions $ \((cfg, passes), cfgOpts) ->
   withNumCapabilities (cfgNumCapabilities cfg) $
   withEventBaseDataplane $ \evb ->
   withConfigProvider cfgOpts $ \cfgAPI ->
   Backend.withBackendWithDefaultOptions evb cfgAPI (cfgService cfg) $ \be ->
-  withEnv cfg allPredicates be $
-    forM_ (Set.toList passes) . dispatchDerive
+  runDerive cfg passes be
+
   where
-  allOptions :: O.ParserInfo (Config, Set DerivePass)
-  allOptions = O.info (O.helper <*> parser) O.fullDesc
-    where parser = (,) <$> options <*> optionsPasses
+    allOptions :: O.ParserInfo (Config, Set DerivePass)
+    allOptions = O.info (O.helper <*> parser) O.fullDesc
+      where parser = (,) <$> options <*> optionsPasses

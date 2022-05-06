@@ -977,6 +977,7 @@ library shell-lib
 library indexers
     import: fb-haskell, fb-cpp, deps
     hs-source-dirs:
+        glean/lang/clang
         glean/lang/flow
         glean/lang/hack
         glean/lang/typescript
@@ -987,6 +988,7 @@ library indexers
         glean/index/list
     exposed-modules:
         Glean.Indexer
+        Glean.Indexer.Cpp
         Glean.Indexer.External
         Glean.Indexer.Flow
         Glean.Indexer.Go
