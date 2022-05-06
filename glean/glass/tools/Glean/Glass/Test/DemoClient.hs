@@ -52,6 +52,7 @@ data Command
   | Describe SymbolId
   | FindRefs SymbolId
   | Resolve SymbolId
+  | Search RepoName Text
 
 options :: ParserInfo Options
 options = info (helper <*> parser) (fullDesc <>
@@ -88,17 +89,25 @@ options = info (helper <*> parser) (fullDesc <>
             ["Find the definition location of a symbol"
             ]
           )
+        ) <>
+        command "search" (info searchCommand
+          (progDesc $ unlines
+            ["Find entities matching (case-insensitive) string"
+            ]
+          )
         )
       return $ Options {..}
 
     cmd parser help = argument parser help
 
     symbolHelp = metavar "SYMBOL"
+    searchHelp = metavar "REPO/STR"
 
     listCommand = cmd readListRepoPath (metavar "REPO/PATH")
     describeCommand = cmd (Describe <$> readSymbol) symbolHelp
     findRefsCommand = cmd (FindRefs <$> readSymbol) symbolHelp
     resolveCommand = cmd (Resolve <$> readSymbol) symbolHelp
+    searchCommand = cmd readSearch searchHelp
 
 readService :: ReadM Service
 readService = do
@@ -108,6 +117,13 @@ readService = do
     (host, portStr) -> case textToInt portStr of
       Left _ -> fail ("Not a valid port: " <> show portStr)
       Right port -> return (Service host port)
+
+readSearch :: ReadM Command
+readSearch = do
+  repoStr <- Text.pack <$> readerAsk
+  case Text.breakOn "/" repoStr of
+    (_, "") -> fail "Not a valid repo/string"
+    (repo, str) -> return (Search (RepoName repo) (Text.tail str))
 
 readListRepoPath :: ReadM Command
 readListRepoPath = do
@@ -156,6 +172,7 @@ main = Glean.withOptions options $ \Options{..} ->
               Describe sym -> runDescribe sym
               FindRefs sym -> runFindRefs sym
               Resolve sym -> runResolve sym
+              Search repo str -> runSearch repo str
     mapM_ Text.putStrLn res
 
 runListSymbols :: Protocol p => RepoName -> Path -> GlassM p [Text]
@@ -176,6 +193,14 @@ runDescribe sym = do
       kind = textShow <$> symbolDescription_kind
       annot = textShow <$> symbolDescription_annotations
   return $ [loc,name] <> catMaybes [kind,annot]
+
+runSearch :: Protocol p => RepoName -> Text -> GlassM p [Text]
+runSearch repoName strName = do
+  SearchByNameResult syms _ <- searchByName req def
+  return (map textShow syms)
+  where
+    req = SearchByNameRequest ctx strName False True
+    ctx = SearchContext (Just repoName) Nothing{-lang-} def{- kinds -}
 
 runResolve :: Protocol p => SymbolId -> GlassM p [Text]
 runResolve sym = do
