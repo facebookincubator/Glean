@@ -46,7 +46,7 @@ searchByFQN (module_, name, arity) =
         field @"module" (string module_) $
         field @"name" (string name) $
         field @"arity" (nat arity) $
-        field @"entity" (alt @"erlang" ent)
+        field @"entity" ent
       end),
     entityLocation (alt @"erlang" ent) file rangespan
   ]

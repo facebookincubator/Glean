@@ -40,7 +40,7 @@ searchByName sym =
     wild .= predicate @Haskell.SearchByName (
       rec $
         field @"name" (string sym) $
-        field @"entity" (alt @"hs" ent)
+        field @"entity" ent
       end),
     entityLocation (alt @"hs" ent) file rangespan
   ]
