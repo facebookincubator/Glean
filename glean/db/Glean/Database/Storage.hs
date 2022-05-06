@@ -31,11 +31,11 @@ import Glean.Types (PredicateStats, Repo, SchemaInfo)
 
 -- | List of binary representation versions we can read
 readableVersions :: [DBVersion]
-readableVersions = [DBVersion 2, DBVersion 3]
+readableVersions = [DBVersion 3]
 
 -- | List of binary representation versions we can write
 writableVersions :: [DBVersion]
-writableVersions = [DBVersion 2, DBVersion 3]
+writableVersions = [DBVersion 3]
 
 -- | Check whether we can open a particular database version
 canOpenVersion :: Mode -> DBVersion -> Bool

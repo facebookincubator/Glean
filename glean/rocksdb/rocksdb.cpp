@@ -681,11 +681,7 @@ struct DatabaseImpl final : Database {
       return false;
     }
     binary::Output key;
-    if (db_version <= 2) {
-      key.fixed(id);
-    } else {
-      key.nat(id.toWord());
-    }
+    key.nat(id.toWord());
     val.Reset();
     auto s = container_.db->Get(
       rocksdb::ReadOptions(),
@@ -958,9 +954,6 @@ struct DatabaseImpl final : Database {
       from, to, startingId(), firstFreeId());
     if (!start) {
       return std::make_unique<rts::EmptyIterator>();
-    } else if (db_version <= 2) {
-      return std::make_unique<LegacyEnumerateIterator<Direction>>(
-        start, bound, this);
     } else {
       return std::make_unique<EnumerateIterator<Direction>>(start, bound, this);
     }
@@ -1020,11 +1013,7 @@ struct DatabaseImpl final : Database {
 
       {
         binary::Output k;
-        if (db_version <= 2) {
-          k.fixed(fact.id);
-        } else {
-          k.nat(fact.id.toWord());
-        }
+        k.nat(fact.id.toWord());
         binary::Output v;
         v.packed(fact.type);
         v.packed(fact.clause.key_size);
