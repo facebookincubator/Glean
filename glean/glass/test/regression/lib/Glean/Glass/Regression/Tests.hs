@@ -48,7 +48,6 @@ testDocumentSymbolListX path get =
             , documentSymbolsRequest_include_refs = True
             }
       res <- documentSymbolListX env req def
-      print res
       assertBool "documentSymbolListX"
         (not (null (documentSymbolListXResult_references res)) &&
          not (null (documentSymbolListXResult_definitions res)))

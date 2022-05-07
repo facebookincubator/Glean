@@ -1,0 +1,19 @@
+{
+    "sym": "test/js/imports/C",
+    "name": {
+        "localName": "C",
+        "container": "imports"
+    },
+    "comments": [],
+    "location": {
+        "filepath": "test/imports.js",
+        "repository": "test",
+        "range": {
+            "columnEnd": 22,
+            "columnBegin": 21,
+            "lineBegin": 29,
+            "lineEnd": 29
+        }
+    },
+    "repo_hash": "testhash"
+}

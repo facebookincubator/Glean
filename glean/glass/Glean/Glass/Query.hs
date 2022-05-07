@@ -92,7 +92,7 @@ fileEntityLocations fileid =
         rec $
           field @"file" (asPredicate (factId fileid)) $
           field @"location" location $
-          field @"entity" entity $
+          field @"entity" entity
         end)
       ]
 

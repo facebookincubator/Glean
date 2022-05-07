@@ -1,0 +1,1238 @@
+{
+    "revision": "testhash",
+    "references": [
+        {
+            "sym": "test/js/cjs_exports/plus",
+            "target": {
+                "filepath": "test/cjs_exports.js",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 14,
+                    "columnBegin": 10,
+                    "lineBegin": 11,
+                    "lineEnd": 11
+                }
+            },
+            "range": {
+                "columnEnd": 10,
+                "columnBegin": 8,
+                "lineBegin": 16,
+                "lineEnd": 16
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/cjs_exports/plus",
+            "target": {
+                "filepath": "test/cjs_exports.js",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 14,
+                    "columnBegin": 10,
+                    "lineBegin": 11,
+                    "lineEnd": 11
+                }
+            },
+            "range": {
+                "columnEnd": 16,
+                "columnBegin": 14,
+                "lineBegin": 25,
+                "lineEnd": 25
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/es_exports",
+            "target": {
+                "filepath": "test/es_exports.js",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 0,
+                    "columnBegin": 0,
+                    "lineBegin": 0,
+                    "lineEnd": 0
+                }
+            },
+            "range": {
+                "columnEnd": 16,
+                "columnBegin": 13,
+                "lineBegin": 14,
+                "lineEnd": 14
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/es_exports",
+            "target": {
+                "filepath": "test/es_exports.js",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 0,
+                    "columnBegin": 0,
+                    "lineBegin": 0,
+                    "lineEnd": 0
+                }
+            },
+            "range": {
+                "columnEnd": 17,
+                "columnBegin": 14,
+                "lineBegin": 24,
+                "lineEnd": 24
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/es_exports/C",
+            "target": {
+                "filepath": "test/es_exports.js.flow",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 15,
+                    "columnBegin": 14,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                }
+            },
+            "range": {
+                "columnEnd": 22,
+                "columnBegin": 21,
+                "lineBegin": 29,
+                "lineEnd": 29
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/es_exports/C",
+            "target": {
+                "filepath": "test/es_exports.js.flow",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 15,
+                    "columnBegin": 14,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                }
+            },
+            "range": {
+                "columnEnd": 11,
+                "columnBegin": 10,
+                "lineBegin": 31,
+                "lineEnd": 31
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/es_exports/bar",
+            "target": {
+                "filepath": "test/es_exports.js.flow",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 24,
+                    "columnBegin": 21,
+                    "lineBegin": 21,
+                    "lineEnd": 21
+                }
+            },
+            "range": {
+                "columnEnd": 21,
+                "columnBegin": 18,
+                "lineBegin": 24,
+                "lineEnd": 24
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/es_exports/baz",
+            "target": {
+                "filepath": "test/es_exports.js.flow",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 10,
+                    "columnBegin": 7,
+                    "lineBegin": 17,
+                    "lineEnd": 17
+                }
+            },
+            "range": {
+                "columnEnd": 25,
+                "columnBegin": 22,
+                "lineBegin": 13,
+                "lineEnd": 13
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/es_exports/baz",
+            "target": {
+                "filepath": "test/es_exports.js.flow",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 10,
+                    "columnBegin": 7,
+                    "lineBegin": 17,
+                    "lineEnd": 17
+                }
+            },
+            "range": {
+                "columnEnd": 22,
+                "columnBegin": 19,
+                "lineBegin": 27,
+                "lineEnd": 27
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/es_exports/bor",
+            "target": {
+                "filepath": "test/es_exports.js.flow",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 13,
+                    "columnBegin": 10,
+                    "lineBegin": 13,
+                    "lineEnd": 13
+                }
+            },
+            "range": {
+                "columnEnd": 20,
+                "columnBegin": 17,
+                "lineBegin": 13,
+                "lineEnd": 13
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/es_exports/bor",
+            "target": {
+                "filepath": "test/es_exports.js.flow",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 13,
+                    "columnBegin": 10,
+                    "lineBegin": 13,
+                    "lineEnd": 13
+                }
+            },
+            "range": {
+                "columnEnd": 17,
+                "columnBegin": 14,
+                "lineBegin": 23,
+                "lineEnd": 23
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/es_exports/d",
+            "target": {
+                "filepath": "test/es_exports.js.flow",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 6,
+                    "columnBegin": 5,
+                    "lineBegin": 19,
+                    "lineEnd": 19
+                }
+            },
+            "range": {
+                "columnEnd": 9,
+                "columnBegin": 8,
+                "lineBegin": 13,
+                "lineEnd": 13
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/es_exports/d",
+            "target": {
+                "filepath": "test/es_exports.js.flow",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 6,
+                    "columnBegin": 5,
+                    "lineBegin": 19,
+                    "lineEnd": 19
+                }
+            },
+            "range": {
+                "columnEnd": 18,
+                "columnBegin": 17,
+                "lineBegin": 21,
+                "lineEnd": 21
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/es_exports/d",
+            "target": {
+                "filepath": "test/es_exports.js.flow",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 6,
+                    "columnBegin": 5,
+                    "lineBegin": 19,
+                    "lineEnd": 19
+                }
+            },
+            "range": {
+                "columnEnd": 18,
+                "columnBegin": 15,
+                "lineBegin": 29,
+                "lineEnd": 29
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/es_exports/d",
+            "target": {
+                "filepath": "test/es_exports.js.flow",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 6,
+                    "columnBegin": 5,
+                    "lineBegin": 19,
+                    "lineEnd": 19
+                }
+            },
+            "range": {
+                "columnEnd": 11,
+                "columnBegin": 8,
+                "lineBegin": 32,
+                "lineEnd": 32
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/es_exports/foo",
+            "target": {
+                "filepath": "test/es_exports.js.flow",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 8,
+                    "columnBegin": 5,
+                    "lineBegin": 11,
+                    "lineEnd": 11
+                }
+            },
+            "range": {
+                "columnEnd": 15,
+                "columnBegin": 12,
+                "lineBegin": 13,
+                "lineEnd": 13
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/es_exports/foo",
+            "target": {
+                "filepath": "test/es_exports.js.flow",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 8,
+                    "columnBegin": 5,
+                    "lineBegin": 11,
+                    "lineEnd": 11
+                }
+            },
+            "range": {
+                "columnEnd": 25,
+                "columnBegin": 22,
+                "lineBegin": 24,
+                "lineEnd": 24
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/es_exports/num",
+            "target": {
+                "filepath": "test/es_exports.js.flow",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 16,
+                    "columnBegin": 13,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                }
+            },
+            "range": {
+                "columnEnd": 17,
+                "columnBegin": 14,
+                "lineBegin": 19,
+                "lineEnd": 19
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/es_exports/num",
+            "target": {
+                "filepath": "test/es_exports.js.flow",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 16,
+                    "columnBegin": 13,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                }
+            },
+            "range": {
+                "columnEnd": 11,
+                "columnBegin": 8,
+                "lineBegin": 23,
+                "lineEnd": 23
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/es_exports/num",
+            "target": {
+                "filepath": "test/es_exports.js.flow",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 16,
+                    "columnBegin": 13,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                }
+            },
+            "range": {
+                "columnEnd": 11,
+                "columnBegin": 8,
+                "lineBegin": 24,
+                "lineEnd": 24
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/es_exports/num",
+            "target": {
+                "filepath": "test/es_exports.js.flow",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 16,
+                    "columnBegin": 13,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                }
+            },
+            "range": {
+                "columnEnd": 11,
+                "columnBegin": 8,
+                "lineBegin": 25,
+                "lineEnd": 25
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/C",
+            "target": {
+                "filepath": "test/imports.js",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 22,
+                    "columnBegin": 21,
+                    "lineBegin": 29,
+                    "lineEnd": 29
+                }
+            },
+            "range": {
+                "columnEnd": 11,
+                "columnBegin": 10,
+                "lineBegin": 31,
+                "lineEnd": 31
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/a",
+            "target": {
+                "filepath": "test/imports.js",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 9,
+                    "columnBegin": 8,
+                    "lineBegin": 11,
+                    "lineEnd": 11
+                }
+            },
+            "range": {
+                "columnEnd": 19,
+                "columnBegin": 18,
+                "lineBegin": 23,
+                "lineEnd": 23
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/bar",
+            "target": {
+                "filepath": "test/imports.js",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 20,
+                    "columnBegin": 17,
+                    "lineBegin": 13,
+                    "lineEnd": 13
+                }
+            },
+            "range": {
+                "columnEnd": 17,
+                "columnBegin": 14,
+                "lineBegin": 23,
+                "lineEnd": 23
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/baz",
+            "target": {
+                "filepath": "test/imports.js",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 25,
+                    "columnBegin": 22,
+                    "lineBegin": 13,
+                    "lineEnd": 13
+                }
+            },
+            "range": {
+                "columnEnd": 22,
+                "columnBegin": 19,
+                "lineBegin": 27,
+                "lineEnd": 27
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/d",
+            "target": {
+                "filepath": "test/imports.js",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 9,
+                    "columnBegin": 8,
+                    "lineBegin": 13,
+                    "lineEnd": 13
+                }
+            },
+            "range": {
+                "columnEnd": 18,
+                "columnBegin": 17,
+                "lineBegin": 21,
+                "lineEnd": 21
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/fn",
+            "target": {
+                "filepath": "test/imports.js",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 10,
+                    "columnBegin": 8,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                }
+            },
+            "range": {
+                "columnEnd": 16,
+                "columnBegin": 14,
+                "lineBegin": 25,
+                "lineEnd": 25
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/foo",
+            "target": {
+                "filepath": "test/imports.js",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 15,
+                    "columnBegin": 12,
+                    "lineBegin": 13,
+                    "lineEnd": 13
+                }
+            },
+            "range": {
+                "columnEnd": 25,
+                "columnBegin": 22,
+                "lineBegin": 24,
+                "lineEnd": 24
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/num",
+            "target": {
+                "filepath": "test/imports.js",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 17,
+                    "columnBegin": 14,
+                    "lineBegin": 19,
+                    "lineEnd": 19
+                }
+            },
+            "range": {
+                "columnEnd": 11,
+                "columnBegin": 8,
+                "lineBegin": 23,
+                "lineEnd": 23
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/num",
+            "target": {
+                "filepath": "test/imports.js",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 17,
+                    "columnBegin": 14,
+                    "lineBegin": 19,
+                    "lineEnd": 19
+                }
+            },
+            "range": {
+                "columnEnd": 11,
+                "columnBegin": 8,
+                "lineBegin": 24,
+                "lineEnd": 24
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/num",
+            "target": {
+                "filepath": "test/imports.js",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 17,
+                    "columnBegin": 14,
+                    "lineBegin": 19,
+                    "lineEnd": 19
+                }
+            },
+            "range": {
+                "columnEnd": 11,
+                "columnBegin": 8,
+                "lineBegin": 25,
+                "lineEnd": 25
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/qux",
+            "target": {
+                "filepath": "test/imports.js",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 16,
+                    "columnBegin": 13,
+                    "lineBegin": 14,
+                    "lineEnd": 14
+                }
+            },
+            "range": {
+                "columnEnd": 17,
+                "columnBegin": 14,
+                "lineBegin": 24,
+                "lineEnd": 24
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/str",
+            "target": {
+                "filepath": "test/imports.js",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 18,
+                    "columnBegin": 15,
+                    "lineBegin": 29,
+                    "lineEnd": 29
+                }
+            },
+            "range": {
+                "columnEnd": 11,
+                "columnBegin": 8,
+                "lineBegin": 32,
+                "lineEnd": 32
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        }
+    ],
+    "definitions": [
+        {
+            "sym": "test/js/imports/C",
+            "range": {
+                "columnEnd": 22,
+                "columnBegin": 21,
+                "lineBegin": 29,
+                "lineEnd": 29
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/D",
+            "range": {
+                "columnEnd": 7,
+                "columnBegin": 6,
+                "lineBegin": 31,
+                "lineEnd": 31
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/a",
+            "range": {
+                "columnEnd": 9,
+                "columnBegin": 8,
+                "lineBegin": 11,
+                "lineEnd": 11
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/b",
+            "range": {
+                "columnEnd": 12,
+                "columnBegin": 11,
+                "lineBegin": 11,
+                "lineEnd": 11
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/bar",
+            "range": {
+                "columnEnd": 20,
+                "columnBegin": 17,
+                "lineBegin": 13,
+                "lineEnd": 13
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/baz",
+            "range": {
+                "columnEnd": 25,
+                "columnBegin": 22,
+                "lineBegin": 13,
+                "lineEnd": 13
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/c",
+            "range": {
+                "columnEnd": 15,
+                "columnBegin": 14,
+                "lineBegin": 11,
+                "lineEnd": 11
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/caz",
+            "range": {
+                "columnEnd": 10,
+                "columnBegin": 7,
+                "lineBegin": 27,
+                "lineEnd": 27
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/caz",
+            "range": {
+                "columnEnd": 10,
+                "columnBegin": 7,
+                "lineBegin": 27,
+                "lineEnd": 27
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/d",
+            "range": {
+                "columnEnd": 9,
+                "columnBegin": 8,
+                "lineBegin": 13,
+                "lineEnd": 13
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/e",
+            "range": {
+                "columnEnd": 6,
+                "columnBegin": 5,
+                "lineBegin": 21,
+                "lineEnd": 21
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/fn",
+            "range": {
+                "columnEnd": 10,
+                "columnBegin": 8,
+                "lineBegin": 16,
+                "lineEnd": 16
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/foo",
+            "range": {
+                "columnEnd": 15,
+                "columnBegin": 12,
+                "lineBegin": 13,
+                "lineEnd": 13
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/num",
+            "range": {
+                "columnEnd": 17,
+                "columnBegin": 14,
+                "lineBegin": 19,
+                "lineEnd": 19
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/qux",
+            "range": {
+                "columnEnd": 16,
+                "columnBegin": 13,
+                "lineBegin": 14,
+                "lineEnd": 14
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/s",
+            "range": {
+                "columnEnd": 6,
+                "columnBegin": 5,
+                "lineBegin": 32,
+                "lineEnd": 32
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/str",
+            "range": {
+                "columnEnd": 18,
+                "columnBegin": 15,
+                "lineBegin": 29,
+                "lineEnd": 29
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/x",
+            "range": {
+                "columnEnd": 6,
+                "columnBegin": 5,
+                "lineBegin": 23,
+                "lineEnd": 23
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/y",
+            "range": {
+                "columnEnd": 6,
+                "columnBegin": 5,
+                "lineBegin": 24,
+                "lineEnd": 24
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/js/imports/z",
+            "range": {
+                "columnEnd": 6,
+                "columnBegin": 5,
+                "lineBegin": 25,
+                "lineEnd": 25
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 2
+                    }
+                }
+            ]
+        }
+    ]
+}

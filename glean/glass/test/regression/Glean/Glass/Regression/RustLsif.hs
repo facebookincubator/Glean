@@ -8,15 +8,21 @@
 
 module Glean.Glass.Regression.RustLsif (main) where
 
+import Glean.Indexer.RustLsif as RustLsif
 import Test.HUnit
 
-import Glean.Indexer.RustLsif as RustLsif
-import Glean.Regression.Test
-
-import Glean.Glass.Types
+import Glean.Glass.Regression.Snapshot
 import Glean.Glass.Regression.Tests
+import Glean.Glass.Types
 
 main :: IO ()
-main = mainTestIndex "glass-regression-rust-lsif" RustLsif.indexer $ \get -> TestList
+main = mainGlassSnapshot testName testPath testIndexer unitTests
+  where
+    testName = "glass-regression-rust-lsif"
+    testPath = "glean/glass/test/regression/tests/rust-lsif"
+    testIndexer = RustLsif.indexer
+
+unitTests :: Getter -> [Test]
+unitTests get =
   [ testDocumentSymbolListX (Path "src/lib.rs") get
   ]

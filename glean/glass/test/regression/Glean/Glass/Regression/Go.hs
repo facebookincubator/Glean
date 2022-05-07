@@ -8,16 +8,12 @@
 
 module Glean.Glass.Regression.Go (main) where
 
-import Test.HUnit
-
 import Glean.Indexer.Go as Go
-import Glean.Regression.Test
-
-import Glean.Glass.Types
-import Glean.Glass.Regression.Tests
+import Glean.Glass.Regression.Snapshot
 
 main :: IO ()
-main = mainTestIndex "glass-regression-go" Go.indexer $ \get -> TestList
-  [ testDocumentSymbolListX
-      (Path "glean/lang/go/tests/cases/xrefs/leaphash.go") get
-  ]
+main = mainGlassSnapshot testName testPath testIndexer (const [])
+  where
+    testName = "glass-regression-go"
+    testPath = "glean/glass/test/regression/tests/go"
+    testIndexer = Go.indexer
