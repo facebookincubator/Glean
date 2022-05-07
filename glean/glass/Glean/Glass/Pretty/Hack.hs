@@ -24,6 +24,12 @@ module  Glean.Glass.Pretty.Hack
   , Visibility(..)
   , Static(..)
   , Async(..)
+  , Signature (..)
+  , HackType(..)
+  , ReturnType(..)
+  , DefaultValue(..)
+  , Inout(..)
+  , Parameter(..)
   ) where
 
 import qualified Glean
@@ -74,6 +80,13 @@ data Visibility = Public | Protected | Private | Internal deriving (Eq)
 data Static = Static | NotStatic deriving (Eq)
 data Async = Async | NotAsync deriving (Eq)
 
+newtype HackType = HackType { unHackType :: Text }
+newtype ReturnType = ReturnType { unReturnType :: Text }
+newtype DefaultValue = DefaultValue Text
+data Inout = Inout
+data Parameter = Parameter Name HackType (Maybe Inout) (Maybe DefaultValue)
+data Signature = Signature ReturnType [Parameter]
+
 data Decl
   = ClassConst Name
   | Enum QualName
@@ -81,10 +94,10 @@ data Decl
   | Class ClassMod QualName
   | Interface QualName
   | Enumerator QualName Name
-  | Function FunctionMod QualName
+  | Function FunctionMod QualName Signature
   | GlobalConst QualName
   | Namespace Qual
-  | Method MethodMod QualName Name
+  | Method MethodMod QualName Name Signature
   | Property Name
   | TypeConst Name
   | Typedef QualName
@@ -102,14 +115,16 @@ prettyDecl (Interface name) =
   "interface" <+> ppQualName name
 prettyDecl (Enumerator enum name) =
   ppQualName enum <::> ppName name
-prettyDecl (Function modifiers name) =
-  ppFunctionModifiers modifiers <+> "function" <+> ppQualName name
+prettyDecl (Function modifiers name signature) =
+  ppFunctionModifiers modifiers <+> "function" <+> ppQualName name <+>
+  ppSignature signature
 prettyDecl (GlobalConst name) =
   "const" <+> ppQualName name
 prettyDecl (Namespace name) =
   "namespace" <+> ppQual name
-prettyDecl (Method modifiers container name) =
-  ppMethodModifiers modifiers <+> ppQualName container <::> ppName name
+prettyDecl (Method modifiers container name signature) =
+  ppMethodModifiers modifiers <+> ppQualName container <::> ppName name <+>
+  ppSignature signature
 prettyDecl (Property name) =
   ppName name
 prettyDecl (TypeConst name) =
@@ -134,6 +149,30 @@ ppClassModifiers (ClassMod abstract final) =
   Text.unwords $ execWriter $ do
       when (abstract==Abstract) $ tell ["abstract"]
       when (final==Final) $ tell ["final"]
+
+ppSignature :: Signature -> Text
+ppSignature (Signature returnType params) =
+  "(" <>  Text.intercalate ", " (map ppParameter params) <> "):"
+   <+> ppReturnType returnType
+
+ppType :: HackType -> Text
+ppType (HackType t) = t
+
+ppReturnType :: ReturnType -> Text
+ppReturnType (ReturnType t) = ppType $ HackType t
+
+ppParameter :: Parameter -> Text
+ppParameter (Parameter name typeName inout defaultValue) =
+  ppInout inout <+> ppType typeName <+> ppName name <+>
+  ppDefaultValue defaultValue
+
+ppDefaultValue :: Maybe DefaultValue -> Text
+ppDefaultValue Nothing = ""
+ppDefaultValue (Just (DefaultValue defaultValue)) = "= '" <> defaultValue <> "'"
+
+ppInout :: Maybe Inout -> Text
+ppInout Nothing = ""
+ppInout (Just Inout) = "inout"
 
 ppMethodModifiers :: MethodMod -> Text
 ppMethodModifiers (MethodMod abstract final visibility static async) =
@@ -164,6 +203,7 @@ decl (Hack.Declaration_function_ fun@Hack.FunctionDeclaration{..}) = do
   Hack.FunctionDeclaration_key{..} <- liftMaybe functionDeclaration_key
   Hack.FunctionDefinition{..} <- maybeT $
     Glean.getFirstResult $
+    Glean.recursive $
     query @Hack.FunctionDefinition $
     predicate @Hack.FunctionDefinition $
       rec $
@@ -172,7 +212,9 @@ decl (Hack.Declaration_function_ fun@Hack.FunctionDeclaration{..}) = do
       end
   name <- liftMaybe $ qName functionDeclaration_key_name
   def <- liftMaybe functionDefinition_key
-  pure $ Function (modifiersForFunction def) $ QualName name
+  let sign = Hack.functionDefinition_key_signature def
+  pure $ Function (modifiersForFunction def) (QualName name)
+    (toSignature sign)
 decl (Hack.Declaration_globalConst Hack.GlobalConstDeclaration{..}) = do
   Hack.GlobalConstDeclaration_key{..} <- liftMaybe globalConstDeclaration_key
   name <- liftMaybe $ qName globalConstDeclaration_key_name
@@ -185,6 +227,7 @@ decl (Hack.Declaration_method meth@Hack.MethodDeclaration{..}) = do
   Hack.MethodDeclaration_key{..} <- liftMaybe methodDeclaration_key
   Hack.MethodDefinition{..} <- maybeT $
     Glean.getFirstResult $
+    Glean.recursive $
     query @Hack.MethodDefinition $
     predicate @Hack.MethodDefinition $
       rec $
@@ -193,8 +236,10 @@ decl (Hack.Declaration_method meth@Hack.MethodDeclaration{..}) = do
       end
   name <- liftMaybe $ Hack.name_key methodDeclaration_key_name
   def <- liftMaybe methodDefinition_key
+  let sign = Hack.methodDefinition_key_signature def
   container <- liftMaybe $ containerQualName methodDeclaration_key_container
-  pure $ Method (modifiersForMethod def) container $ Name name
+  pure $ Method (modifiersForMethod def) container (Name name)
+    (toSignature sign)
 decl (Hack.Declaration_property_ Hack.PropertyDeclaration{..}) = do
   Hack.PropertyDeclaration_key{..} <- liftMaybe propertyDeclaration_key
   name <- liftMaybe $ Hack.name_key propertyDeclaration_key_name
@@ -306,6 +351,36 @@ modifiersForMethod Hack.MethodDefinition_key {..} =
   )
   (if methodDefinition_key_isStatic then Static else NotStatic)
   (if methodDefinition_key_isAsync then Async else NotAsync)
+
+toSignature :: Hack.Signature -> Signature
+toSignature Hack.Signature {..} =
+  Signature
+  (ReturnType $ case signature_key of
+    Nothing -> unknownType
+    Just (Hack.Signature_key mtype _ _) -> unHackType $ toType mtype
+  )
+  (case signature_key of
+    Nothing -> []
+    Just (Hack.Signature_key _ params _) -> map toParameter params
+  )
+
+toType :: Maybe Hack.Type -> HackType
+toType Nothing = HackType unknownType
+toType (Just (Hack.Type _ mkey)) = HackType $ fromMaybe unknownType mkey
+
+toParameter :: Hack.Parameter -> Parameter
+toParameter (Hack.Parameter name mtype inout _ mdefaultValue _) =
+  Parameter
+  (toName name)
+  (toType mtype)
+  (if inout then Just Inout else Nothing)
+  (DefaultValue <$> mdefaultValue)
+
+toName :: Hack.Name -> Name
+toName (Hack.Name _ mkey) = Name $ fromMaybe "(anonymous)" mkey
+
+unknownType :: Text
+unknownType = "<unknown-type>"
 
 liftMaybe :: (MonadPlus m) => Maybe a -> m a
 liftMaybe = maybe mzero return
