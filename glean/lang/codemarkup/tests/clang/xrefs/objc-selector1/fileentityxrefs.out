@@ -94,5 +94,59 @@
         }
       }
     }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "xref": {
+        "target": {
+          "name": "s",
+          "file": { "key": "test.m" },
+          "location": {
+            "range": {
+              "file": { "key": "test.m" },
+              "lineBegin": 18,
+              "columnBegin": 11,
+              "lineEnd": 18,
+              "columnEnd": 14
+            }
+          },
+          "span": { "start": 328, "length": 1 }
+        },
+        "source": { "span": { "start": 395, "length": 1 } }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "s" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "call" } } },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "J *" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 18,
+                  "columnBegin": 11,
+                  "lineEnd": 18,
+                  "columnEnd": 14
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 ]

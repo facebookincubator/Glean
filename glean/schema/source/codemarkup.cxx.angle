@@ -1,10 +1,10 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.cxx.2 {
+schema codemarkup.cxx.3 {
 import src.1
-import code.cxx.3
+import code.cxx.4
 import codemarkup.types.1
-import cxx1.4
+import cxx1.5
 
 # Resolving locations to entities
 
@@ -421,6 +421,8 @@ predicate CxxAnnotation :
   }
   {{decl=D}, {attributes=As}} where
     ({ function_ = Decl } = D; cxx1.FunctionAttribute{declaration=Decl, attr=A}; As=[A]) |
-    ({ function_ = Decl } = D; !cxx1.FunctionAttribute{declaration=Decl}; As=[]:[cxx1.Attribute.4])
+    ({ function_ = Decl } = D; !cxx1.FunctionAttribute{declaration=Decl}; As=[]:[cxx1.Attribute])
 
 }
+
+schema codemarkup.cxx.3 evolves codemarkup.cxx.2

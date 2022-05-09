@@ -26,6 +26,39 @@
         {
           "target": {
             "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "s" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "call" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "J *" },
+                  "kind": { "local": { "kind": 2, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 16,
+                    "columnBegin": 11,
+                    "lineEnd": 16,
+                    "columnEnd": 14
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [ { "offset": 318, "length": 1 } ]
+        },
+        {
+          "target": {
+            "declaration": {
               "objcMethod": {
                 "key": {
                   "selector": { "key": [ "checkProtocol" ] },

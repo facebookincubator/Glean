@@ -2,6 +2,13 @@
   "@generated",
   {
     "key": {
+      "name_lowercase": "",
+      "kind": 7,
+      "ident": { "name": { "key": "" } }
+    }
+  },
+  {
+    "key": {
       "name_lowercase": "__amd64",
       "kind": 12,
       "ident": { "macro": { "key": "__amd64" } }

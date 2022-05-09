@@ -2,10 +2,10 @@
 
 # schema docmarkup is for structured information about comments
 # Once this is stable enough, perhaps merge with schema codemarkup
-schema docmarkup.10 {
+schema docmarkup.11 {
 
-import code.20
-import cxx1.4
+import code.21
+import cxx1.5
 import hack.6
 import java.4
 import src.1
@@ -134,4 +134,4 @@ predicate EntityComments :
 
 }
 
-schema docmarkup.10 evolves docmarkup.9
+schema docmarkup.11 evolves docmarkup.10

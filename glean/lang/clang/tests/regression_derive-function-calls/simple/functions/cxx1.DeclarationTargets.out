@@ -56,6 +56,34 @@
               }
             }
           }
+        },
+        {
+          "variable": {
+            "key": {
+              "kind": { "local": { "attribute": 0, "kind": 2 } },
+              "name": {
+                "key": {
+                  "name": { "key": "x" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "bar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    }
+                  }
+                }
+              },
+              "source": {
+                "columnBegin": 9,
+                "columnEnd": 13,
+                "file": { "key": "three.cpp" },
+                "lineBegin": 13,
+                "lineEnd": 13
+              },
+              "type": { "key": "int" }
+            }
+          }
         }
       ]
     }
@@ -118,6 +146,34 @@
                 "lineBegin": 13,
                 "lineEnd": 15
               }
+            }
+          }
+        },
+        {
+          "variable": {
+            "key": {
+              "kind": { "local": { "attribute": 0, "kind": 2 } },
+              "name": {
+                "key": {
+                  "name": { "key": "x" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "main" } } },
+                        "scope": { "global_": { } }
+                      }
+                    }
+                  }
+                }
+              },
+              "source": {
+                "columnBegin": 10,
+                "columnEnd": 14,
+                "file": { "key": "three.cpp" },
+                "lineBegin": 17,
+                "lineEnd": 17
+              },
+              "type": { "key": "int" }
             }
           }
         }

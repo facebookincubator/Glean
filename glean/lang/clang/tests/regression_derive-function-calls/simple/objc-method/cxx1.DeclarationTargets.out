@@ -90,6 +90,83 @@
               }
             }
           }
+        },
+        {
+          "variable": {
+            "key": {
+              "kind": {
+                "global_": { "attribute": 0, "definition": true, "kind": 0 }
+              },
+              "name": {
+                "key": {
+                  "name": { "key": "self" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "file": { "key": "<builtin>" },
+                "lineBegin": 1,
+                "lineEnd": 1
+              },
+              "type": { "key": "I *" }
+            }
+          }
+        },
+        {
+          "variable": {
+            "key": {
+              "kind": { "local": { "attribute": 0, "kind": 2 } },
+              "name": {
+                "key": { "name": { "key": "x" }, "scope": { "global_": { } } }
+              },
+              "source": {
+                "columnBegin": 14,
+                "columnEnd": 19,
+                "file": { "key": "test.m" },
+                "lineBegin": 28,
+                "lineEnd": 28
+              },
+              "type": { "key": "int" }
+            }
+          }
+        },
+        {
+          "variable": {
+            "key": {
+              "kind": { "local": { "attribute": 0, "kind": 2 } },
+              "name": {
+                "key": { "name": { "key": "x" }, "scope": { "global_": { } } }
+              },
+              "source": {
+                "columnBegin": 14,
+                "columnEnd": 19,
+                "file": { "key": "test.m" },
+                "lineBegin": 32,
+                "lineEnd": 32
+              },
+              "type": { "key": "int" }
+            }
+          }
+        },
+        {
+          "variable": {
+            "key": {
+              "kind": { "local": { "attribute": 0, "kind": 2 } },
+              "name": {
+                "key": { "name": { "key": "y" }, "scope": { "global_": { } } }
+              },
+              "source": {
+                "columnBegin": 24,
+                "columnEnd": 29,
+                "file": { "key": "test.m" },
+                "lineBegin": 32,
+                "lineEnd": 32
+              },
+              "type": { "key": "int" }
+            }
+          }
         }
       ]
     }
@@ -150,6 +227,65 @@
               }
             }
           }
+        },
+        {
+          "variable": {
+            "key": {
+              "kind": {
+                "global_": { "attribute": 0, "definition": true, "kind": 0 }
+              },
+              "name": {
+                "key": {
+                  "name": { "key": "self" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "file": { "key": "<builtin>" },
+                "lineBegin": 1,
+                "lineEnd": 1
+              },
+              "type": { "key": "I *" }
+            }
+          }
+        },
+        {
+          "variable": {
+            "key": {
+              "kind": { "local": { "attribute": 0, "kind": 2 } },
+              "name": {
+                "key": { "name": { "key": "x" }, "scope": { "global_": { } } }
+              },
+              "source": {
+                "columnBegin": 14,
+                "columnEnd": 19,
+                "file": { "key": "test.m" },
+                "lineBegin": 32,
+                "lineEnd": 32
+              },
+              "type": { "key": "int" }
+            }
+          }
+        },
+        {
+          "variable": {
+            "key": {
+              "kind": { "local": { "attribute": 0, "kind": 2 } },
+              "name": {
+                "key": { "name": { "key": "y" }, "scope": { "global_": { } } }
+              },
+              "source": {
+                "columnBegin": 24,
+                "columnEnd": 29,
+                "file": { "key": "test.m" },
+                "lineBegin": 32,
+                "lineEnd": 32
+              },
+              "type": { "key": "int" }
+            }
+          }
         }
       ]
     }
@@ -201,6 +337,29 @@
                 "lineBegin": 11,
                 "lineEnd": 11
               }
+            }
+          }
+        },
+        {
+          "variable": {
+            "key": {
+              "kind": {
+                "global_": { "attribute": 0, "definition": true, "kind": 0 }
+              },
+              "name": {
+                "key": {
+                  "name": { "key": "self" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "file": { "key": "<builtin>" },
+                "lineBegin": 1,
+                "lineEnd": 1
+              },
+              "type": { "key": "I *" }
             }
           }
         }
@@ -260,6 +419,47 @@
                 "lineBegin": 12,
                 "lineEnd": 12
               }
+            }
+          }
+        },
+        {
+          "variable": {
+            "key": {
+              "kind": {
+                "global_": { "attribute": 0, "definition": true, "kind": 0 }
+              },
+              "name": {
+                "key": {
+                  "name": { "key": "self" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "file": { "key": "<builtin>" },
+                "lineBegin": 1,
+                "lineEnd": 1
+              },
+              "type": { "key": "I *" }
+            }
+          }
+        },
+        {
+          "variable": {
+            "key": {
+              "kind": { "local": { "attribute": 0, "kind": 2 } },
+              "name": {
+                "key": { "name": { "key": "x" }, "scope": { "global_": { } } }
+              },
+              "source": {
+                "columnBegin": 14,
+                "columnEnd": 19,
+                "file": { "key": "test.m" },
+                "lineBegin": 28,
+                "lineEnd": 28
+              },
+              "type": { "key": "int" }
             }
           }
         }

@@ -180,5 +180,97 @@
         }
       }
     }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "location": {
+        "name": "f",
+        "file": { "key": "test.m" },
+        "location": {
+          "range": {
+            "file": { "key": "test.m" },
+            "lineBegin": 10,
+            "columnBegin": 24,
+            "lineEnd": 10,
+            "columnEnd": 35
+          }
+        },
+        "span": { "start": 268, "length": 1 }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "f" }, "scope": { "global_": { } } }
+                },
+                "type": { "key": "Protocol *" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 10,
+                  "columnBegin": 24,
+                  "lineEnd": 10,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "location": {
+        "name": "s",
+        "file": { "key": "test.m" },
+        "location": {
+          "range": {
+            "file": { "key": "test.m" },
+            "lineBegin": 16,
+            "columnBegin": 11,
+            "lineEnd": 16,
+            "columnEnd": 14
+          }
+        },
+        "span": { "start": 310, "length": 1 }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "s" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "call" } } },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "J *" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 16,
+                  "columnBegin": 11,
+                  "lineEnd": 16,
+                  "columnEnd": 14
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 ]

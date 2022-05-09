@@ -32,6 +32,39 @@
             {
               "target": {
                 "declaration": {
+                  "variable": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "bar" },
+                          "scope": {
+                            "local": {
+                              "key": {
+                                "name": { "key": { "name": { "key": "g" } } },
+                                "scope": { "global_": { } }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "type": { "key": "(lambda)" },
+                      "kind": { "local": { "kind": 0, "attribute": 0 } },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 16,
+                        "columnBegin": 3,
+                        "lineEnd": 19,
+                        "columnEnd": 3
+                      }
+                    }
+                  }
+                }
+              },
+              "ranges": [ { "offset": 336, "length": 3 } ]
+            },
+            {
+              "target": {
+                "declaration": {
                   "function_": {
                     "key": {
                       "name": {
@@ -83,6 +116,42 @@
                 }
               },
               "ranges": [ { "offset": 339, "length": 2 } ]
+            },
+            {
+              "target": {
+                "declaration": {
+                  "variable": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "bar" },
+                          "scope": {
+                            "local": {
+                              "key": {
+                                "name": { "key": { "name": { "key": "h" } } },
+                                "scope": { "global_": { } }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "type": { "key": "(lambda)" },
+                      "kind": { "local": { "kind": 0, "attribute": 0 } },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 24,
+                        "columnBegin": 3,
+                        "lineEnd": 27,
+                        "columnEnd": 3
+                      }
+                    }
+                  }
+                }
+              },
+              "ranges": [
+                { "offset": 424, "length": 3 },
+                { "offset": 10, "length": 3 }
+              ]
             },
             {
               "target": {

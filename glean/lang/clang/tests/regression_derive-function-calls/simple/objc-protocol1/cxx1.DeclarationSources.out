@@ -157,6 +157,67 @@
     "key": {
       "sources": [
         {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "call" } } },
+                  "scope": { "global_": { } }
+                }
+              },
+              "signature": {
+                "key": {
+                  "parameters": [
+                    { "name": { "key": "s" }, "type": { "key": "J *" } }
+                  ],
+                  "returns": { "key": "void" }
+                }
+              },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "file": { "key": "test.m" },
+                "lineBegin": 16,
+                "lineEnd": 19
+              }
+            }
+          }
+        }
+      ],
+      "target": {
+        "variable": {
+          "key": {
+            "kind": { "local": { "attribute": 0, "kind": 2 } },
+            "name": {
+              "key": {
+                "name": { "key": "s" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "call" } } },
+                      "scope": { "global_": { } }
+                    }
+                  }
+                }
+              }
+            },
+            "source": {
+              "columnBegin": 11,
+              "columnEnd": 14,
+              "file": { "key": "test.m" },
+              "lineBegin": 16,
+              "lineEnd": 16
+            },
+            "type": { "key": "J *" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "sources": [
+        {
           "objcContainer": {
             "key": {
               "id": { "interface_": { "key": "J" } },

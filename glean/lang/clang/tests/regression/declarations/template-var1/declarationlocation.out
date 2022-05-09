@@ -216,6 +216,46 @@
           "key": {
             "name": {
               "key": {
+                "name": { "key": "" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "f1" } } },
+                      "scope": { "global_": { } }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "T" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 20,
+              "columnBegin": 9,
+              "lineEnd": 20,
+              "columnEnd": 9
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 20,
+        "columnBegin": 9,
+        "lineEnd": 20,
+        "columnEnd": 9
+      },
+      "name": ""
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
                 "name": { "key": "x" },
                 "scope": {
                   "recordWithAccess": {

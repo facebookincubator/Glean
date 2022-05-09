@@ -26,7 +26,7 @@ int C::get() { return a; }
 using namespace facebook;
 
 int main() {
-  C c { global };
+  C local { global };
 
-  return TEST(c.get());
+  return TEST(local.get());
 }

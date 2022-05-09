@@ -263,6 +263,43 @@
             }
           },
           "ranges": [ { "offset": 432, "length": 3 } ]
+        },
+        {
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "baz" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "Foo" },
+                  "kind": { "local": { "kind": 2, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 27,
+                    "columnBegin": 10,
+                    "lineEnd": 27,
+                    "columnEnd": 14
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [
+            { "offset": 443, "length": 1 },
+            { "offset": 13, "length": 1 },
+            { "offset": 14, "length": 1 }
+          ]
         }
       ],
       "variable": [ ]

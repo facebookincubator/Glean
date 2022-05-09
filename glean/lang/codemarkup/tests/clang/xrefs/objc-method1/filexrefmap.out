@@ -29,6 +29,39 @@
         {
           "target": {
             "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "foo" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "setFoo" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "id<Foo>" },
+                  "kind": { "local": { "kind": 2, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.mm" },
+                    "lineBegin": 15,
+                    "columnBegin": 13,
+                    "lineEnd": 15,
+                    "columnEnd": 23
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [ { "offset": 316, "length": 3 } ]
+        },
+        {
+          "target": {
+            "declaration": {
               "objcMethod": {
                 "key": {
                   "selector": { "key": [ "setInt", "setDouble" ] },

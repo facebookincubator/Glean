@@ -201,17 +201,22 @@ main = do
             Entity_cxx (Entity_defn Definition_variable{}) ] -> True
           _ -> False
 
-      search "facebook::D::x" "public variable (f::D::x)" $ \r ->
+      search "local" "local variable" $ \r ->
         case sort r of
           [ Entity_cxx (Entity_decl Declaration_variable{}) ] -> True
           _ -> False
 
-      search "D::x" "public variable (D::x)" $ \r ->
+      search "facebook::D::i" "public variable (f::D::i)" $ \r ->
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_variable{}) ] -> True
+          _ -> False
+
+      search "D::i" "public variable (D::i)" $ \r ->
         case sort r of
           [ Entity_cxx (Entity_decl Declaration_variable{})] -> True
           _ -> False
 
-      search "x" "public variable (x)" $ \r ->
+      search "i" "public variable (i)" $ \r ->
         case sort r of
           [ Entity_cxx (Entity_decl Declaration_variable{})] -> True
           _ -> False

@@ -83,6 +83,39 @@
           }
         },
         {
+          "range": { "begin": 336, "end": 339 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "bar" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "g" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "(lambda)" },
+                  "kind": { "local": { "kind": 0, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 16,
+                    "columnBegin": 3,
+                    "lineEnd": 19,
+                    "columnEnd": 3
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 339, "end": 341 },
           "target": {
             "declaration": {
@@ -213,6 +246,39 @@
           }
         },
         {
+          "range": { "begin": 424, "end": 427 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "bar" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "h" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "(lambda)" },
+                  "kind": { "local": { "kind": 0, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 24,
+                    "columnBegin": 3,
+                    "lineEnd": 27,
+                    "columnEnd": 3
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 427, "end": 430 },
           "target": {
             "declaration": {
@@ -261,6 +327,39 @@
                     "file": { "key": "test.cpp" },
                     "lineBegin": 24,
                     "columnBegin": 22,
+                    "lineEnd": 27,
+                    "columnEnd": 3
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 434, "end": 437 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "bar" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "h" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "(lambda)" },
+                  "kind": { "local": { "kind": 0, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 24,
+                    "columnBegin": 3,
                     "lineEnd": 27,
                     "columnEnd": 3
                   }

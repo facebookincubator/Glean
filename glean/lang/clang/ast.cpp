@@ -1227,10 +1227,15 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       return Cxx::Declaration::variable(decl);
     }
 
-    static folly::Optional<Cxx::GlobalVariableKind> globalKind(
+    static std::variant<std::monostate, Cxx::GlobalVariableKind, Cxx::LocalVariableKind> variableKind(
         const clang::VarDecl *decl) {
       if (decl->isLocalVarDeclOrParm()) {
-        return folly::none;
+        if (decl->isLocalVarDecl()) {
+          return decl->isStaticLocal() ? Cxx::LocalVariableKind::StaticVariable
+                                       : Cxx::LocalVariableKind::SimpleVariable;
+        } else {
+          return Cxx::LocalVariableKind::Parameter;
+        }
       }
       if (decl->isStaticDataMember()) {
         return Cxx::GlobalVariableKind::StaticMember;
@@ -1239,9 +1244,9 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
           case clang::SC_None: return Cxx::GlobalVariableKind::SimpleVariable;
           case clang::SC_Extern: return Cxx::GlobalVariableKind::SimpleVariable;
           case clang::SC_Static: return Cxx::GlobalVariableKind::StaticVariable;
-          case clang::SC_PrivateExtern: return folly::none;
-          case clang::SC_Auto: return folly::none;
-          case clang::SC_Register: return folly::none;
+          case clang::SC_PrivateExtern: return {};
+          case clang::SC_Auto: return {};
+          case clang::SC_Register: return {};
         }
       }
     }
@@ -1257,33 +1262,64 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       }
     }
 
+    static Cxx::LocalVariableAttribute localAttribute(
+        const clang::VarDecl *decl) {
+      if (decl->isConstexpr()) {
+        return Cxx::LocalVariableAttribute::Constexpr;
+      } else {
+        return Cxx::LocalVariableAttribute::Plain;
+      }
+    }
+
     static folly::Optional<VarDecl> declare(
         ASTVisitor& visitor,
         const clang::VarDecl *decl,
         Cxx::Scope scope,
         Src::Range range) {
-      if (auto kind = globalKind(decl)) {
-        auto qname = visitor.db.fact<Cxx::QName>(
-          visitor.db.name(decl->getName()), scope);
+      return folly::variant_match<folly::Optional<VarDecl>>(
+        variableKind(decl),
+        [](std::monostate) {
+          return folly::none;
+        },
+        [&](Cxx::GlobalVariableKind kind) {
+          auto qname = visitor.db.fact<Cxx::QName>(
+            visitor.db.name(decl->getName()), scope);
 
-        return VarDecl
-            { {}
-            , qname
-            , visitor.db.fact<Cxx::VariableDeclaration>(
-                qname,
-                visitor.type(decl->getType()),
-                Cxx::VariableKind::global_(
-                  Cxx::GlobalVariable{
-                    kind.value(),
-                    globalAttribute(decl),
-                    decl->isThisDeclarationADefinition()
-                      == clang::VarDecl::Definition
-                }),
-                range)
-            };
-      } else {
-        return folly::none;
-      }
+          return VarDecl
+              { {}
+              , qname
+              , visitor.db.fact<Cxx::VariableDeclaration>(
+                  qname,
+                  visitor.type(decl->getType()),
+                  Cxx::VariableKind::global_(
+                    Cxx::GlobalVariable{
+                      kind,
+                      globalAttribute(decl),
+                      decl->isThisDeclarationADefinition()
+                        == clang::VarDecl::Definition
+                  }),
+                  range)
+              };
+        },
+        [&](Cxx::LocalVariableKind kind) {
+          auto qname = visitor.db.fact<Cxx::QName>(
+            visitor.db.name(decl->getName()), scope);
+
+          return VarDecl
+              { {}
+              , qname
+              , visitor.db.fact<Cxx::VariableDeclaration>(
+                  qname,
+                  visitor.type(decl->getType()),
+                  Cxx::VariableKind::local(
+                    Cxx::LocalVariable{
+                      kind,
+                      localAttribute(decl),
+                  }),
+                  range)
+              };
+        }
+      );
     }
 
     static Cxx::VariableKind fieldKind(
@@ -2079,25 +2115,20 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       const clang::NestedNameSpecifier * FOLLY_NULLABLE qualifier,
       clang::SourceRange range) {
     if (decl) {
-      // TODO: We aren't cross-referencing local variables for now but should
-      // eventually.
-      if (!clang::isa<clang::VarDecl>(decl)
-            || decl->getParentFunctionOrMethod() == nullptr) {
-        auto xref = XRef::unknown(decl);
-        if (auto fun = clang::dyn_cast<clang::FunctionDecl>(decl)) {
-          xref = XRef::toTemplatableDecl(funDecls, fun);
-        } else if (auto var = clang::dyn_cast<clang::VarDecl>(decl)) {
-          xref = XRef::toTemplatableDecl(varDecls, var);
-        } else if (auto field = clang::dyn_cast<clang::FieldDecl>(decl)) {
-          // TODO: can this ever happen? or will it always be a MemberExpr?
-          xref = XRef::toDecl(varDecls, field);
-        } else if (auto e = clang::dyn_cast<clang::EnumConstantDecl>(decl)) {
-          if (auto r = enumeratorDecls(e)) {
-            xref = XRef::to(e, Cxx::XRefTarget::enumerator(r->fact));
-          }
+      auto xref = XRef::unknown(decl);
+      if (auto fun = clang::dyn_cast<clang::FunctionDecl>(decl)) {
+        xref = XRef::toTemplatableDecl(funDecls, fun);
+      } else if (auto var = clang::dyn_cast<clang::VarDecl>(decl)) {
+        xref = XRef::toTemplatableDecl(varDecls, var);
+      } else if (auto field = clang::dyn_cast<clang::FieldDecl>(decl)) {
+        // TODO: can this ever happen? or will it always be a MemberExpr?
+        xref = XRef::toDecl(varDecls, field);
+      } else if (auto e = clang::dyn_cast<clang::EnumConstantDecl>(decl)) {
+        if (auto r = enumeratorDecls(e)) {
+          xref = XRef::to(e, Cxx::XRefTarget::enumerator(r->fact));
         }
-        usingTracker.inNameContext(qualifier, [&]{ xrefTarget(range, xref); });
       }
+      usingTracker.inNameContext(qualifier, [&]{ xrefTarget(range, xref); });
     }
   }
 
@@ -2390,6 +2421,17 @@ struct ASTConsumer : public clang::ASTConsumer {
       db->IndexFailure(ctx);
       return;
     }
+    ctx.setPrintingPolicy([&ctx] {
+      auto policy = ctx.getPrintingPolicy();
+      // This adjusted policy makes anonymous types such as lambdas be printed
+      // as "(lambda)" rather than "(lambda at /absolute/path/to/file:8:30)".
+      //
+      // This avoids indexing runs on different machines producing different
+      // results, saves a little bit of space, and the location info is
+      // generally available in the corresponding source range anyway.
+      policy.AnonymousTagLocations = false;
+      return policy;
+    }());
     ASTVisitor visitor(db, ctx);
     VLOG(1) << "traversing";
     visitor.TraverseDecl(ctx.getTranslationUnitDecl());

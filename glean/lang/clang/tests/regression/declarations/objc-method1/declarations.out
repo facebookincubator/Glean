@@ -64,6 +64,24 @@
         }
       },
       {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "x" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "int" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 12,
+              "columnBegin": 12,
+              "lineEnd": 12,
+              "columnEnd": 17
+            }
+          }
+        }
+      },
+      {
         "objcMethod": {
           "key": {
             "selector": { "key": [ "f3a", "f3b" ] },
@@ -91,6 +109,42 @@
         }
       },
       {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "x" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "int" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 13,
+              "columnBegin": 13,
+              "lineEnd": 13,
+              "columnEnd": 18
+            }
+          }
+        }
+      },
+      {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "y" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "int" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 13,
+              "columnBegin": 26,
+              "lineEnd": 13,
+              "columnEnd": 31
+            }
+          }
+        }
+      },
+      {
         "objcMethod": {
           "key": {
             "selector": { "key": [ "f4a", "" ] },
@@ -113,6 +167,42 @@
               "columnBegin": 1,
               "lineEnd": 14,
               "columnEnd": 29
+            }
+          }
+        }
+      },
+      {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "x" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "int" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 14,
+              "columnBegin": 13,
+              "lineEnd": 14,
+              "columnEnd": 18
+            }
+          }
+        }
+      },
+      {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "y" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "int" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 14,
+              "columnBegin": 23,
+              "lineEnd": 14,
+              "columnEnd": 28
             }
           }
         }

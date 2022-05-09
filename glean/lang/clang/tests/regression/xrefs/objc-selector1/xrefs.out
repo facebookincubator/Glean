@@ -106,6 +106,39 @@
           "target": { "objcSelector": { "key": [ "foo" ] } }
         },
         {
+          "range": { "begin": 395, "end": 396 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "s" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "call" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "J *" },
+                  "kind": { "local": { "kind": 2, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 18,
+                    "columnBegin": 11,
+                    "lineEnd": 18,
+                    "columnEnd": 14
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 397, "end": 410 },
           "target": {
             "declaration": {

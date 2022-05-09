@@ -1747,7 +1747,7 @@ optTest = dbTestCase $ \env repo -> do
         W = {"an".., 3}
     |]
   assertEqual "opt 1" (Just 2) $
-    factsSearched (PredicateRef "cxx1.Name" 1) lookupPid stats
+    factsSearched (PredicateRef "cxx1.Name" 5) lookupPid stats
 
   -- test that unification can optimise A = B | C, unifying A/B and A/C
   (_, stats) <- queryStats env repo $ angle @Cxx.Name
@@ -1758,7 +1758,7 @@ optTest = dbTestCase $ \env repo -> do
           {"def", cxx1.Name "def"}
     |]
   assertEqual "opt 2" (Just 2) $
-    factsSearched (PredicateRef "cxx1.Name" 1) lookupPid stats
+    factsSearched (PredicateRef "cxx1.Name" 5) lookupPid stats
 
   -- test for recursive substitution
   r <- runQuery_ env repo $ angleData @Nat $
@@ -2000,7 +2000,7 @@ reorderTest = dbTestCase $ \env repo -> do
     |]
   print r
   assertEqual "negation - reorder 5" Nothing $
-    factsSearched (PredicateRef "cxx1.Name" 1) lookupPid stats
+    factsSearched (PredicateRef "cxx1.Name" 5) lookupPid stats
 
   -- test for a bad case in reordering where the nested matches under
   -- `left` were being lifted out before the outer match.

@@ -42,6 +42,44 @@
             {
               "target": {
                 "declaration": {
+                  "variable": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "x" },
+                          "scope": {
+                            "local": {
+                              "key": {
+                                "name": { "key": { "name": { "key": "f" } } },
+                                "scope": { "global_": { } }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "type": { "key": "A<double>" },
+                      "kind": { "local": { "kind": 0, "attribute": 0 } },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 29,
+                        "columnBegin": 3,
+                        "lineEnd": 29,
+                        "columnEnd": 13
+                      }
+                    }
+                  }
+                }
+              },
+              "ranges": [
+                { "offset": 576, "length": 1 },
+                { "offset": 11, "length": 1 },
+                { "offset": 12, "length": 1 },
+                { "offset": 15, "length": 1 }
+              ]
+            },
+            {
+              "target": {
+                "declaration": {
                   "function_": {
                     "key": {
                       "name": {
@@ -194,6 +232,44 @@
             {
               "target": {
                 "declaration": {
+                  "variable": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "y" },
+                          "scope": {
+                            "local": {
+                              "key": {
+                                "name": { "key": { "name": { "key": "f" } } },
+                                "scope": { "global_": { } }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "type": { "key": "A<int>" },
+                      "kind": { "local": { "kind": 0, "attribute": 0 } },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 30,
+                        "columnBegin": 3,
+                        "lineEnd": 30,
+                        "columnEnd": 10
+                      }
+                    }
+                  }
+                }
+              },
+              "ranges": [
+                { "offset": 632, "length": 1 },
+                { "offset": 11, "length": 1 },
+                { "offset": 12, "length": 1 },
+                { "offset": 15, "length": 1 }
+              ]
+            },
+            {
+              "target": {
+                "declaration": {
                   "function_": {
                     "key": {
                       "name": {
@@ -335,6 +411,44 @@
               "ranges": [
                 { "offset": 657, "length": 3 },
                 { "offset": 15, "length": 3 }
+              ]
+            },
+            {
+              "target": {
+                "declaration": {
+                  "variable": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "z" },
+                          "scope": {
+                            "local": {
+                              "key": {
+                                "name": { "key": { "name": { "key": "f" } } },
+                                "scope": { "global_": { } }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "type": { "key": "A<bool>" },
+                      "kind": { "local": { "kind": 0, "attribute": 0 } },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 31,
+                        "columnBegin": 3,
+                        "lineEnd": 31,
+                        "columnEnd": 11
+                      }
+                    }
+                  }
+                }
+              },
+              "ranges": [
+                { "offset": 688, "length": 1 },
+                { "offset": 11, "length": 1 },
+                { "offset": 15, "length": 1 },
+                { "offset": 18, "length": 1 }
               ]
             },
             {

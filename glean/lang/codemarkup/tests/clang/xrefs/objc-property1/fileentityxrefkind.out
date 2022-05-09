@@ -66,5 +66,43 @@
       },
       "kind": 7
     }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "x" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "call" } } },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "I *" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 16,
+                  "columnBegin": 10,
+                  "lineEnd": 16,
+                  "columnEnd": 13
+                }
+              }
+            }
+          }
+        }
+      },
+      "kind": 14
+    }
   }
 ]

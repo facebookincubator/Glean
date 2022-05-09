@@ -253,6 +253,43 @@
               }
             }
           }
+        },
+        {
+          "range": { "begin": 495, "end": 496 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "bar" } } },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "N4" } }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "T" },
+                  "kind": { "local": { "kind": 2, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 31,
+                    "columnBegin": 31,
+                    "lineEnd": 31,
+                    "columnEnd": 33
+                  }
+                }
+              }
+            }
+          }
         }
       ]
     }

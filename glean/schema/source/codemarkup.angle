@@ -1,21 +1,21 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.25 {
+schema codemarkup.26 {
 import src.1
-import code.20
+import code.21
 import codemarkup.buck.2
-import codemarkup.cxx.2
+import codemarkup.cxx.3
 import codemarkup.erlang.2
 import codemarkup.flow.2
 import codemarkup.hack.2
 import codemarkup.haskell.2
 import codemarkup.lsif.2
-import codemarkup.pp.2
+import codemarkup.pp.3
 import codemarkup.python.2
 import codemarkup.rust.2
-import codemarkup.thrift.2
+import codemarkup.thrift.3
 import codemarkup.types.1
-import cxx1.4
+import cxx1.5
 import hack.6
 
 #
@@ -296,7 +296,7 @@ predicate CxxAnnotation :
   }
   {{cxx={decl=D}}, {cxx={attributes=As}}} where
     ({ function_ = Decl } = D; cxx1.FunctionAttribute{declaration=Decl, attr=A}; As=[A]) |
-    ({ function_ = Decl } = D; !cxx1.FunctionAttribute{declaration=Decl}; As=[]:[cxx1.Attribute.4])
+    ({ function_ = Decl } = D; !cxx1.FunctionAttribute{declaration=Decl}; As=[]:[cxx1.Attribute])
 
 
 #
@@ -359,3 +359,5 @@ predicate ContainsChildEntity :
     codemarkup.hack.HackContainsChildEntity { Parent, Child }
 
 }
+
+schema codemarkup.26 evolves codemarkup.25

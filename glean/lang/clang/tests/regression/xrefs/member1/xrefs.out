@@ -321,6 +321,39 @@
           }
         },
         {
+          "range": { "begin": 443, "end": 444 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "baz" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "Foo" },
+                  "kind": { "local": { "kind": 2, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 27,
+                    "columnBegin": 10,
+                    "lineEnd": 27,
+                    "columnEnd": 14
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 445, "end": 448 },
           "target": {
             "declaration": {
@@ -434,6 +467,39 @@
           }
         },
         {
+          "range": { "begin": 456, "end": 457 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "baz" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "Foo" },
+                  "kind": { "local": { "kind": 2, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 27,
+                    "columnBegin": 10,
+                    "lineEnd": 27,
+                    "columnEnd": 14
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 458, "end": 461 },
           "target": {
             "declaration": {
@@ -508,6 +574,39 @@
                     "columnBegin": 3,
                     "lineEnd": 11,
                     "columnEnd": 35
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 470, "end": 471 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "baz" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "Foo" },
+                  "kind": { "local": { "kind": 2, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 27,
+                    "columnBegin": 10,
+                    "lineEnd": 27,
+                    "columnEnd": 14
                   }
                 }
               }

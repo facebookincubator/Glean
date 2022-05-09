@@ -43,3 +43,107 @@ predicate PpEntityInfo:
   PpEntityKind { E, K }
 
 }
+
+schema codemarkup.pp.2 {
+import src.1
+import code.pp.1
+import codemarkup.types.1
+import cxx1.4
+import pp1.1
+
+#
+# Finding entities' locations
+#
+
+predicate PPEntityLocation:
+  {
+    entity: code.pp.Entity,
+    location: codemarkup.types.Location,
+  }
+  { Entity, { Name, File, { range = Range }, nothing } } where
+    { define = Define } = Entity;
+    cxx1.PPDefineLocation { Define, Name, File, Range};
+
+predicate PpFileEntityTraceLocations:
+  {
+    file: src.File,
+    trace: cxx1.Trace,
+    location: codemarkup.types.Location,
+    entity: code.pp.Entity,
+  }
+  { File, Trace, Location, Entity } where
+    PpResolveTraceLocation { Trace, Location, Entity };
+    codemarkup.types.Location { file = File } = Location;
+
+predicate PpResolveLocation:
+  {
+    location: codemarkup.types.Location,
+    entity: code.pp.Entity,
+  }
+  { { Str, File, Range, Span }, Entity } where
+    Trace = cxx1.Trace { file = File };
+    PpResolveTraceLocation { Trace, { Str, File, Range, Span }, Entity };
+
+predicate PpResolveTraceLocation:
+  {
+    trace : cxx1.Trace,
+    location: codemarkup.types.Location,
+    entity: code.pp.Entity,
+  }
+  { Trace, Location, Entity } where
+    Trace = cxx1.Trace { File, _, { events = PPDecls } };
+    ## preprocessor #defines
+    { define = Define } = PPDecls[..];
+    cxx1.PPDefineLocation { Define, Str, _, Range };
+    Location = codemarkup.types.Location { Str, File, { range = Range }, nothing };
+    { define = Define } = Entity;
+
+# C preprocessor uses of #defines as xrefs
+predicate PpFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.pp.Entity,
+  }
+  { File, XRef, Entity } where
+    Trace = cxx1.Trace { file = File };
+    PpFileEntityTraceXRefLocations { File, Trace, XRef, Entity };
+
+# C preprocessor uses of #defines and #includes.
+# N.B. uses are keyed by traces, not xmaps, for PP
+predicate PpFileEntityTraceXRefLocations:
+  {
+    file: src.File,
+    trace: cxx1.Trace,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.pp.Entity,
+  }
+  { File, Trace, XRef, Entity } where
+    cxx1.FilePPTraceXRefs { File, Trace, SrcRange, Entity };
+    cxx1.PPEntityLocation { Entity, Name, TargetFile, TargetRange };
+    { { Name, TargetFile, { range = TargetRange }, nothing }, { range = SrcRange } } = XRef;
+
+#
+# Language-specific symbol info
+#
+
+predicate PpEntityKind:
+  {
+    entity: code.pp.Entity,
+    kind: codemarkup.types.SymbolKind,
+  }
+  { Decl, Kind } where
+    ({ define = _ } = Decl; Macro = Kind ) |
+    ({ undef = _ } = Decl; Macro = Kind ) |
+    ({ include_ = _ } = Decl; File = Kind )
+
+# For backward compatibility:
+predicate PpEntityInfo:
+  {
+    entity: code.pp.Entity,
+    info: codemarkup.types.SymbolInfo,
+  }
+  { E, { kind = K, isAbstract = false } } where
+  PpEntityKind { E, K }
+
+}

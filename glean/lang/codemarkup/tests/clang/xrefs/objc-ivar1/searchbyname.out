@@ -104,5 +104,37 @@
         }
       }
     }
+  },
+  {
+    "key": {
+      "name": "self",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "self" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "J *" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 0, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "<builtin>" },
+                  "lineBegin": 1,
+                  "columnBegin": 1,
+                  "lineEnd": 1,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 ]

@@ -2701,5 +2701,12 @@
       "kind": 12,
       "ident": { "macro": { "key": "unix" } }
     }
+  },
+  {
+    "key": {
+      "name_lowercase": "x",
+      "kind": 7,
+      "ident": { "name": { "key": "x" } }
+    }
   }
 ]

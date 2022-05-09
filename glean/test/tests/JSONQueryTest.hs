@@ -567,7 +567,7 @@ jsonPrefixQueryTest = dbTestCase $ \env repo -> do
     -- every string field in the Thrift query types.
     query = def
       { userQuery_predicate = "cxx1.FunctionName"
-      , userQuery_predicate_version = Just 1
+      , userQuery_predicate_version = Just 5
       , userQuery_query =
           "{ \"key\" :" <>
           "  { \"name\":" <>

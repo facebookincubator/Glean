@@ -80,3 +80,5 @@ schema thrift.5 : thrift.4 {
     type_ : TypeSpecification,
   }
 }
+
+schema thrift.6 : thrift.5 {}

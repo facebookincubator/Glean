@@ -24,6 +24,39 @@
           }
         },
         {
+          "range": { "begin": 299, "end": 300 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "call" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "I *" },
+                  "kind": { "local": { "kind": 2, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 16,
+                    "columnBegin": 10,
+                    "lineEnd": 16,
+                    "columnEnd": 13
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 301, "end": 304 },
           "target": {
             "declaration": {
@@ -48,6 +81,39 @@
                     "columnBegin": 1,
                     "lineEnd": 12,
                     "columnEnd": 24
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 312, "end": 313 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "call" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "I *" },
+                  "kind": { "local": { "kind": 2, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 16,
+                    "columnBegin": 10,
+                    "lineEnd": 16,
+                    "columnEnd": 13
                   }
                 }
               }
@@ -105,6 +171,39 @@
                     "columnBegin": 1,
                     "lineEnd": 12,
                     "columnEnd": 24
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 333, "end": 334 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "call" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "I *" },
+                  "kind": { "local": { "kind": 2, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 16,
+                    "columnBegin": 10,
+                    "lineEnd": 16,
+                    "columnEnd": 13
                   }
                 }
               }

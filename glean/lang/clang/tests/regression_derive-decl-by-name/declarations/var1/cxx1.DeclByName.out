@@ -2676,6 +2676,20 @@
   },
   {
     "key": {
+      "name_lowercase": "l1",
+      "kind": 7,
+      "ident": { "name": { "key": "l1" } }
+    }
+  },
+  {
+    "key": {
+      "name_lowercase": "l2",
+      "kind": 7,
+      "ident": { "name": { "key": "l2" } }
+    }
+  },
+  {
+    "key": {
       "name_lowercase": "linux",
       "kind": 12,
       "ident": { "macro": { "key": "linux" } }
@@ -2718,6 +2732,13 @@
   },
   {
     "key": {
+      "name_lowercase": "t",
+      "kind": 7,
+      "ident": { "name": { "key": "t" } }
+    }
+  },
+  {
+    "key": {
       "name_lowercase": "unix",
       "kind": 12,
       "ident": { "macro": { "key": "unix" } }
@@ -2749,6 +2770,13 @@
       "name_lowercase": "v4",
       "kind": 7,
       "ident": { "name": { "key": "v4" } }
+    }
+  },
+  {
+    "key": {
+      "name_lowercase": "x1",
+      "kind": 7,
+      "ident": { "name": { "key": "x1" } }
     }
   }
 ]

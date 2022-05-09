@@ -181,6 +181,47 @@
         {
           "target": {
             "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "f" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "Foo" },
+                  "kind": { "local": { "kind": 0, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 57,
+                    "columnBegin": 3,
+                    "lineEnd": 57,
+                    "columnEnd": 7
+                  }
+                }
+              }
+            }
+          },
+          "ranges": [
+            { "offset": 926, "length": 1 },
+            { "offset": 11, "length": 1 },
+            { "offset": 16, "length": 1 },
+            { "offset": 19, "length": 1 },
+            { "offset": 16, "length": 1 },
+            { "offset": 21, "length": 1 },
+            { "offset": 11, "length": 1 }
+          ]
+        },
+        {
+          "target": {
+            "declaration": {
               "function_": {
                 "key": {
                   "name": {

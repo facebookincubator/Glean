@@ -1,10 +1,10 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.pp.2 {
+schema codemarkup.pp.3 {
 import src.1
 import code.pp.1
 import codemarkup.types.1
-import cxx1.4
+import cxx1.5
 import pp1.1
 
 #
@@ -103,3 +103,5 @@ predicate PpEntityInfo:
   PpEntityKind { E, K }
 
 }
+
+schema codemarkup.pp.3 evolves codemarkup.pp.2

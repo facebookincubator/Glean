@@ -17,7 +17,7 @@ extern int global;
 struct D;
 
 struct D {
-  int x;
+  int i;
 };
 
 class C;

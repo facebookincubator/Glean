@@ -158,6 +158,80 @@
                 { "offset": 62, "length": 1 },
                 { "offset": 10, "length": 1 }
               ]
+            },
+            {
+              "target": {
+                "declaration": {
+                  "variable": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "x" },
+                          "scope": {
+                            "local": {
+                              "key": {
+                                "name": { "key": { "name": { "key": "g" } } },
+                                "scope": { "global_": { } }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "type": { "key": "T" },
+                      "kind": { "local": { "kind": 2, "attribute": 0 } },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 8,
+                        "lineEnd": 21,
+                        "columnEnd": 10
+                      }
+                    }
+                  }
+                }
+              },
+              "ranges": [
+                { "offset": 342, "length": 1 },
+                { "offset": 8, "length": 1 },
+                { "offset": 8, "length": 1 }
+              ]
+            },
+            {
+              "target": {
+                "declaration": {
+                  "variable": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "y" },
+                          "scope": {
+                            "local": {
+                              "key": {
+                                "name": { "key": { "name": { "key": "g" } } },
+                                "scope": { "global_": { } }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "type": { "key": "T *" },
+                      "kind": { "local": { "kind": 2, "attribute": 0 } },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 13,
+                        "lineEnd": 21,
+                        "columnEnd": 16
+                      }
+                    }
+                  }
+                }
+              },
+              "ranges": [
+                { "offset": 366, "length": 1 },
+                { "offset": 9, "length": 1 },
+                { "offset": 9, "length": 1 }
+              ]
             }
           ],
           "variable": [ ]

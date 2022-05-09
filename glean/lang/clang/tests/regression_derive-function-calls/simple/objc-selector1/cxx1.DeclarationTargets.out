@@ -138,6 +138,34 @@
               "type": { "key": "SEL *" }
             }
           }
+        },
+        {
+          "variable": {
+            "key": {
+              "kind": { "local": { "attribute": 0, "kind": 2 } },
+              "name": {
+                "key": {
+                  "name": { "key": "s" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "call" } } },
+                        "scope": { "global_": { } }
+                      }
+                    }
+                  }
+                }
+              },
+              "source": {
+                "columnBegin": 11,
+                "columnEnd": 14,
+                "file": { "key": "test.m" },
+                "lineBegin": 18,
+                "lineEnd": 18
+              },
+              "type": { "key": "J *" }
+            }
+          }
         }
       ]
     }

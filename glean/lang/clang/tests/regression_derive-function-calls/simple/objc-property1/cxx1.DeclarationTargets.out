@@ -90,6 +90,34 @@
               }
             }
           }
+        },
+        {
+          "variable": {
+            "key": {
+              "kind": { "local": { "attribute": 0, "kind": 2 } },
+              "name": {
+                "key": {
+                  "name": { "key": "x" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "call" } } },
+                        "scope": { "global_": { } }
+                      }
+                    }
+                  }
+                }
+              },
+              "source": {
+                "columnBegin": 10,
+                "columnEnd": 13,
+                "file": { "key": "test.m" },
+                "lineBegin": 16,
+                "lineEnd": 16
+              },
+              "type": { "key": "I *" }
+            }
+          }
         }
       ]
     }

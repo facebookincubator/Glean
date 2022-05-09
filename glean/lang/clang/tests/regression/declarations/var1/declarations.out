@@ -481,6 +481,90 @@
         }
       },
       {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x1" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "f" } } },
+                      "scope": { "global_": { } }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "int" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 25,
+              "columnBegin": 8,
+              "lineEnd": 25,
+              "columnEnd": 13
+            }
+          }
+        }
+      },
+      {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "l1" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "f" } } },
+                      "scope": { "global_": { } }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "int" },
+            "kind": { "local": { "kind": 1, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 26,
+              "columnBegin": 3,
+              "lineEnd": 26,
+              "columnEnd": 15
+            }
+          }
+        }
+      },
+      {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "l2" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "f" } } },
+                      "scope": { "global_": { } }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "int" },
+            "kind": { "local": { "kind": 0, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 27,
+              "columnBegin": 3,
+              "lineEnd": 27,
+              "columnEnd": 8
+            }
+          }
+        }
+      },
+      {
         "record_": {
           "key": {
             "name": {
@@ -503,6 +587,53 @@
               "columnBegin": 3,
               "lineEnd": 28,
               "columnEnd": 3
+            }
+          }
+        }
+      },
+      {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "t" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": { "key": { "operator_": "operator()" } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": { "name": { "key": "f" } }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "int" },
+            "kind": { "local": { "kind": 0, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 28,
+              "columnBegin": 4,
+              "lineEnd": 28,
+              "columnEnd": 7
             }
           }
         }

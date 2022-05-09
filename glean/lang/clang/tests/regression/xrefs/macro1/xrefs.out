@@ -1402,6 +1402,39 @@
           }
         },
         {
+          "range": { "begin": 926, "end": 927 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "f" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "Foo" },
+                  "kind": { "local": { "kind": 0, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 57,
+                    "columnBegin": 3,
+                    "lineEnd": 57,
+                    "columnEnd": 7
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 928, "end": 931 },
           "target": {
             "declaration": {
@@ -1438,6 +1471,39 @@
                     "columnBegin": 3,
                     "lineEnd": 26,
                     "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 937, "end": 938 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "f" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "Foo" },
+                  "kind": { "local": { "kind": 0, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 57,
+                    "columnBegin": 3,
+                    "lineEnd": 57,
+                    "columnEnd": 7
                   }
                 }
               }
@@ -1488,6 +1554,39 @@
           }
         },
         {
+          "range": { "begin": 953, "end": 954 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "f" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "Foo" },
+                  "kind": { "local": { "kind": 0, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 57,
+                    "columnBegin": 3,
+                    "lineEnd": 57,
+                    "columnEnd": 7
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 955, "end": 966 },
           "target": {
             "declaration": {
@@ -1524,6 +1623,39 @@
                     "columnBegin": 3,
                     "lineEnd": 26,
                     "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 972, "end": 973 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "f" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "Foo" },
+                  "kind": { "local": { "kind": 0, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 57,
+                    "columnBegin": 3,
+                    "lineEnd": 57,
+                    "columnEnd": 7
                   }
                 }
               }
@@ -1574,6 +1706,39 @@
           }
         },
         {
+          "range": { "begin": 988, "end": 989 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "f" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "Foo" },
+                  "kind": { "local": { "kind": 0, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 57,
+                    "columnBegin": 3,
+                    "lineEnd": 57,
+                    "columnEnd": 7
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 990, "end": 1005 },
           "target": {
             "declaration": {
@@ -1603,6 +1768,39 @@
                     "columnBegin": 3,
                     "lineEnd": 28,
                     "columnEnd": 11
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 1009, "end": 1010 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "f" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "Foo" },
+                  "kind": { "local": { "kind": 0, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 57,
+                    "columnBegin": 3,
+                    "lineEnd": 57,
+                    "columnEnd": 7
                   }
                 }
               }
@@ -1651,6 +1849,39 @@
                     "columnBegin": 3,
                     "lineEnd": 27,
                     "columnEnd": 18
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 1020, "end": 1021 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "f" } } },
+                            "scope": { "global_": { } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "Foo" },
+                  "kind": { "local": { "kind": 0, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 57,
+                    "columnBegin": 3,
+                    "lineEnd": 57,
+                    "columnEnd": 7
                   }
                 }
               }

@@ -140,6 +140,19 @@ prettyVarPrefix kind = case kind of
         -- TODO: there is a bug with const
         Cxx.GlobalVariableAttribute_Constexpr -> todoEmpty
         Cxx.GlobalVariableAttribute__UNKNOWN{} -> todoEmpty
+  Cxx.VariableKind_local (Cxx.LocalVariable lv_kind attribute) ->
+    prefix1 <+> prefix2
+    where
+      prefix1 = case lv_kind of
+        Cxx.LocalVariableKind_StaticVariable -> "static"
+        Cxx.LocalVariableKind_SimpleVariable -> intentionallyEmpty
+        Cxx.LocalVariableKind_Parameter -> intentionallyEmpty
+        Cxx.LocalVariableKind__UNKNOWN{} -> intentionallyEmpty
+      prefix2 = case attribute of
+        Cxx.LocalVariableAttribute_Plain -> intentionallyEmpty
+        -- TODO: there is a bug with const
+        Cxx.LocalVariableAttribute_Constexpr -> todoEmpty
+        Cxx.LocalVariableAttribute__UNKNOWN{} -> todoEmpty
   Cxx.VariableKind_ivar _ -> intentionallyEmpty
   Cxx.VariableKind_EMPTY -> todoEmpty
 

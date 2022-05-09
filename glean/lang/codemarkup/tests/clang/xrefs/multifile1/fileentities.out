@@ -106,6 +106,112 @@
   },
   {
     "key": {
+      "file": { "key": "a.h" },
+      "location": {
+        "name": "x",
+        "file": { "key": "a.h" },
+        "location": {
+          "range": {
+            "file": { "key": "a.h" },
+            "lineBegin": 10,
+            "columnBegin": 3,
+            "lineEnd": 10,
+            "columnEnd": 5
+          }
+        },
+        "span": { "start": 236, "length": 1 }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "x" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "g" } } },
+                          "scope": {
+                            "namespace_": { "key": { "name": { "key": "A" } } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "A::T" },
+                "kind": { "local": { "kind": 0, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "a.h" },
+                  "lineBegin": 10,
+                  "columnBegin": 3,
+                  "lineEnd": 10,
+                  "columnEnd": 5
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "a.h" },
+      "location": {
+        "name": "x",
+        "file": { "key": "a.h" },
+        "location": {
+          "range": {
+            "file": { "key": "a.h" },
+            "lineBegin": 10,
+            "columnBegin": 3,
+            "lineEnd": 10,
+            "columnEnd": 5
+          }
+        },
+        "span": { "start": 236, "length": 1 }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "x" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "g" } } },
+                          "scope": {
+                            "namespace_": { "key": { "name": { "key": "B" } } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "B::T" },
+                "kind": { "local": { "kind": 0, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "a.h" },
+                  "lineBegin": 10,
+                  "columnBegin": 3,
+                  "lineEnd": 10,
+                  "columnEnd": 5
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "file": { "key": "test.cpp" },
       "location": {
         "name": "A",

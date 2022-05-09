@@ -341,6 +341,7 @@ cxxGetHyperlinks path = do  -- ApplicativeDo makes these parallel:
         key <- Glean.getKey r
         let mkind = case Cxx.variableDeclaration_key_kind key of
               Cxx.VariableKind_global_{} -> Just "variable"
+              Cxx.VariableKind_local{} -> Just "variable"
               Cxx.VariableKind_field{} -> Just "field"
               Cxx.VariableKind_ivar{} -> Just "ivar"
               Cxx.VariableKind_EMPTY -> Nothing

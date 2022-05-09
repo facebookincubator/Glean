@@ -286,3 +286,15 @@ predicate Qux : string
 predicate FooToFoo : Foo -> Foo
 
 }
+
+schema glean.test.5 : glean.test.4 {
+import code.cxx.4   # for Entity
+import pp1.1        # for Entity
+
+# Make a partial verion of code.Entity to test SymId encode/decode
+type Entity =
+  {
+    cxx : code.cxx.Entity |
+    pp : pp1.Define |
+  }
+}

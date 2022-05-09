@@ -402,6 +402,19 @@ prettyVariableDecl am decl = fromMaybe mempty $ do
                   [ txt keyword "constexpr" ]
                 Cxx.GlobalVariableAttribute__UNKNOWN{} -> []
           in kind ++ attribute
+        Cxx.VariableKind_local Cxx.LocalVariable{..} ->
+          let kind = case localVariable_kind of
+                Cxx.LocalVariableKind_SimpleVariable -> []
+                Cxx.LocalVariableKind_StaticVariable ->
+                  [ txt keyword "static" ]
+                Cxx.LocalVariableKind_Parameter -> []
+                Cxx.LocalVariableKind__UNKNOWN{} -> []
+              attribute = case localVariable_attribute of
+                Cxx.LocalVariableAttribute_Plain -> []
+                Cxx.LocalVariableAttribute_Constexpr ->
+                  [ txt keyword "constexpr" ]
+                Cxx.LocalVariableAttribute__UNKNOWN{} -> []
+          in kind ++ attribute
         Cxx.VariableKind_field Cxx.Field{..} ->
           [ txt keyword "mutable" | field_mutable_ ]
         Cxx.VariableKind_ivar Cxx.ObjcIVar{..} ->
@@ -409,6 +422,7 @@ prettyVariableDecl am decl = fromMaybe mempty $ do
         Cxx.VariableKind_EMPTY -> []
       trailing = case variableDeclaration_key_kind of
         Cxx.VariableKind_global_ {} -> []
+        Cxx.VariableKind_local {} -> []
         Cxx.VariableKind_field Cxx.Field{..} -> bs field_bitsize
         Cxx.VariableKind_ivar Cxx.ObjcIVar{..} -> bs objcIVar_bitsize
         Cxx.VariableKind_EMPTY-> []
