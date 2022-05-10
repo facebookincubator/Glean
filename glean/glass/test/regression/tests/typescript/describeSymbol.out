@@ -1,0 +1,20 @@
+{
+    "comments": [],
+    "kind": 14,
+    "location": {
+        "filepath": "glean/lang/typescript/tests/cases/xrefs/example.ts",
+        "range": {
+            "columnBegin": 17,
+            "columnEnd": 31,
+            "lineBegin": 46,
+            "lineEnd": 46
+        },
+        "repository": "test"
+    },
+    "name": {
+        "container": "example",
+        "localName": "createTempRepo"
+    },
+    "repo_hash": "testhash",
+    "sym": "test/ts/lsif/example%3AcreateTempRepo"
+}

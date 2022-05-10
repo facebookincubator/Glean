@@ -14,21 +14,13 @@ import Glean.Glass.Regression.Snapshot as Glass
 import Glean.Glass.Regression.Tests
 import Glean.Glass.Types
 import Glean.Indexer.Typescript as Typescript
-import Glean.Regression.Test
 
-{-
--- Until monikers for local ids are stable
 main :: IO ()
 main = mainGlassSnapshot testName testPath testIndexer unitTests
   where
     testName = "glass-regression-typescript"
     testPath = "glean/glass/test/regression/tests/typescript"
-    testIndexer = TypeScript.indexer
--}
-
-main :: IO ()
-main = mainTestIndex "glass-regression-typescript" Typescript.indexer $
-  TestList . unitTests
+    testIndexer = Typescript.indexer
 
 -- some legacy unit tests
 unitTests :: Glass.Getter -> [Test]
