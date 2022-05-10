@@ -66,10 +66,6 @@ predicate DeclarationNameSpan :
     span: Loc,
   }
 
-}
-
-schema thrift.5 : thrift.4 {
-
   ### Stubs
 
   predicate TypeSpecification : {
@@ -81,4 +77,6 @@ schema thrift.5 : thrift.4 {
   }
 }
 
+schema thrift.5 : thrift.4 {}
 schema thrift.6 : thrift.5 {}
+schema thrift.7 : thrift.6 {}

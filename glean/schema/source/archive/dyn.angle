@@ -51,3 +51,53 @@ predicate EntityDynamicReference:
     span: src.ByteSpan,
   }
 }
+
+schema dyn.3 {
+import code.18
+import src.1
+
+type Usage = enum {
+    # The entity was provably unused
+    Unused |
+    # The entity was possibly used but there is no guarantee
+    Enumerated |
+    # The entity was provably used
+    Used |
+}
+
+# A string describing where did we observe the usage
+predicate Environment: string
+
+predicate ObserverIdentifier: string
+
+# A dynamic usage can happen potentially in multiple ways (a callback might be
+# registered in multiple notification frameworks). This Observer type helps distinguish
+# between different ways an entity can be used.
+type Observer = {
+  # Interpret ObserverIdentifier as a symbol ID
+  symbol: ObserverIdentifier |
+  # Don't interpret ObserverIdentifier
+  other: ObserverIdentifier |
+}
+
+# Records the usage of a code entity
+predicate EntityUsage:
+  {
+    # The entity being used
+    entity: code.Entity,
+    # The thing observing this usage
+    observer: Observer,
+    usage: Usage,
+    environment: maybe Environment,
+  }
+
+predicate EntityDynamicReference:
+  {
+    # The entity being referenced
+    usage: EntityUsage,
+    # Usage site's file name
+    file: src.File,
+    # Usage site's location within `file`
+    span: src.ByteSpan,
+  }
+}

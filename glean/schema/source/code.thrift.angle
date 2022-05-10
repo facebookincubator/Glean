@@ -1,7 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema code.thrift.3 {
-import thrift.6
+schema code.thrift.4 {
+import thrift.7
 
 type Entity =
   {
@@ -19,4 +19,4 @@ type Annotations =
   }
 }
 
-schema code.thrift.3 evolves code.thrift.2
+schema code.thrift.4 evolves code.thrift.3

@@ -176,7 +176,7 @@ class GleanShellQuery(GleanShellTest):
 
         # Match and recursively expand
         output = self.shellCommand(
-            'glean.test.Predicate.4 { "pred" : { "key" : "bye" } }'
+            'glean.test.Predicate.5 { "pred" : { "key" : "bye" } }'
         )
         self.assertIn("2 results, 6 facts", output)
 
@@ -287,7 +287,7 @@ class GleanShellAngle(GleanShellTest):
 
         # Match and recursively expand
         output = self.shellCommand(
-            'B = sys.Blob "bye"; glean.test.Predicate.4 { pred = B }'
+            'B = sys.Blob "bye"; glean.test.Predicate.5 { pred = B }'
         )
         self.assertIn("2 results", output)
 
@@ -320,7 +320,7 @@ class GleanShellQueryProfiling(GleanShellTest):
             'glean.test.Predicate { pred = "hello" } | '
             + "glean.test.Predicate { nat = 42 }"
         )
-        self.assertIn("glean.test.Predicate.4 : 8", output)
+        self.assertIn("glean.test.Predicate.5 : 8", output)
         self.assertIn("sys.Blob.1 : 1", output)
 
 

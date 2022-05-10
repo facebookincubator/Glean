@@ -244,7 +244,7 @@ reorderTest = dbTestCase $ \env repo -> do
         }
     |]
   assertEqual "reorder nested 1" (Just 1) $
-    factsSearched (PredicateRef "glean.test.Tree" 4) lookupPid stats
+    factsSearched (PredicateRef "glean.test.Tree" 5) lookupPid stats
 
   -- Inner match is in a prefix position but irrefutable: do it last
   (_, stats) <- queryStats env repo $ angleData @Text
@@ -252,7 +252,7 @@ reorderTest = dbTestCase $ \env repo -> do
       X where glean.test.Tree { { label = "b" }, { just = { X, _, _ } }, _ }
     |]
   assertEqual "reorder nested 2" Nothing $
-    factsSearched (PredicateRef "glean.test.Tree" 4) lookupPid stats
+    factsSearched (PredicateRef "glean.test.Tree" 5) lookupPid stats
 
   -- Inner match is in a prefix position and refutable: do it first
   (_, stats) <- queryStats env repo $ angleData @Text
@@ -265,7 +265,7 @@ reorderTest = dbTestCase $ \env repo -> do
         }
     |]
   assertEqual "reorder nested 3" (Just 1) $
-    factsSearched (PredicateRef "glean.test.Tree" 4) lookupPid stats
+    factsSearched (PredicateRef "glean.test.Tree" 5) lookupPid stats
 
   -- inner match is in a prefix position (conditional on L being
   -- bound, which it is), and refutable, so do it first.
@@ -279,7 +279,7 @@ reorderTest = dbTestCase $ \env repo -> do
            { just = { { label = "d" }, _, _ } } }
     |]
   assertEqual "reorder nested 4" (Just 2) $
-    factsSearched (PredicateRef "glean.test.Tree" 4) lookupPid stats
+    factsSearched (PredicateRef "glean.test.Tree" 5) lookupPid stats
 
   -- point match in a non-prefix position: do it first
   (_, stats) <- queryStats env repo $ angle @Glean.Test.Predicate
@@ -300,7 +300,7 @@ reorderTest = dbTestCase $ \env repo -> do
         }
     |]
   assertEqual "reorder nested 6" (Just 1) $
-    factsSearched (PredicateRef "glean.test.Tree" 4) lookupPid stats
+    factsSearched (PredicateRef "glean.test.Tree" 5) lookupPid stats
 
   -- Nested matches on the rhs of a lookup should become lookups
   (_, stats) <- queryStats env repo $ angle @Glean.Test.Tree
@@ -314,7 +314,7 @@ reorderTest = dbTestCase $ \env repo -> do
           # and a lookup is always cheaper than a search.
     |]
   assertEqual "reorder nested 7" (Just 1) $
-    factsSearched (PredicateRef "glean.test.Tree" 4) lookupPid stats
+    factsSearched (PredicateRef "glean.test.Tree" 5) lookupPid stats
 
   -- Ordering where the nested query is in a prefix position of its
   -- parent and not a point query.
@@ -326,7 +326,7 @@ reorderTest = dbTestCase $ \env repo -> do
           # then the outer query becomes a prefix match.
     |]
   assertEqual "reorder nested 8" (Just 1) $
-    factsSearched (PredicateRef "glean.test.Edge" 4) lookupPid stats
+    factsSearched (PredicateRef "glean.test.Edge" 5) lookupPid stats
 
   -- negations are moved after the binding of the variables it mentions.
   r <- runQuery_ env repo $ angleData @Text
@@ -404,7 +404,7 @@ reorderTest = dbTestCase $ \env repo -> do
         }
     |]
   assertEqual "reorder nested 9" (Just 1) $
-    factsSearched (PredicateRef "glean.test.Tree" 4) lookupPid stats
+    factsSearched (PredicateRef "glean.test.Tree" 5) lookupPid stats
 
 angleQueryOptions :: Test
 angleQueryOptions = dbTestCase $ \env repo -> do

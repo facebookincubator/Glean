@@ -1,6 +1,6 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema code.21 {
+schema code.22 {
 import code.buck.1
 import code.cxx.4
 import code.erlang.1
@@ -12,7 +12,7 @@ import code.lsif.1
 import code.pp.1
 import code.python.1
 import code.rust.1
-import code.thrift.3
+import code.thrift.4
 
 type Entity =
   {
@@ -40,4 +40,4 @@ type Annotations =
   }
 }
 
-schema code.21 evolves code.20
+schema code.22 evolves code.21

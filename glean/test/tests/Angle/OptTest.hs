@@ -117,7 +117,7 @@ optTest = dbTestCase $ \env repo -> do
         }
     |]
   assertEqual "opt 4" (Just 4) $
-    factsSearched (PredicateRef "glean.test.Predicate" 4) lookupPid stats
+    factsSearched (PredicateRef "glean.test.Predicate" 5) lookupPid stats
 
   -- test for optimising away unmatchable alternative without
   -- removing matchable ones

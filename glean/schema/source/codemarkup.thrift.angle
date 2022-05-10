@@ -1,10 +1,10 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.thrift.3 {
+schema codemarkup.thrift.4 {
 import src.1
-import code.thrift.3
+import code.thrift.4
 import codemarkup.types.1
-import thrift.6
+import thrift.7
 
 #
 # Resolving locations to entities
@@ -68,4 +68,4 @@ predicate ThriftFileEntityXRefLocations:
 
 }
 
-schema codemarkup.thrift.3 evolves codemarkup.thrift.2
+schema codemarkup.thrift.4 evolves codemarkup.thrift.3

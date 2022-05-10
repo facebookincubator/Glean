@@ -3503,3 +3503,365 @@ predicate ContainsChildEntity :
     codemarkup.hack.HackContainsChildEntity { Parent, Child }
 
 }
+
+schema codemarkup.26 {
+import src.1
+import code.21
+import codemarkup.buck.2
+import codemarkup.cxx.3
+import codemarkup.erlang.2
+import codemarkup.flow.2
+import codemarkup.hack.2
+import codemarkup.haskell.2
+import codemarkup.lsif.2
+import codemarkup.pp.3
+import codemarkup.python.2
+import codemarkup.rust.2
+import codemarkup.thrift.3
+import codemarkup.types.1
+import cxx1.5
+import hack.6
+
+#
+# Public API
+#
+
+# Public language-agnostic API
+
+# Associates an entity with a symbol kind.
+# Note: available for partial indices where EntityInfo is incomplete.
+# this is used directly by Glass in Query.searchByLocalName
+predicate EntityKind:
+  {
+    entity: code.Entity,
+    kind: codemarkup.types.SymbolKind,
+  }
+  { Entity, Kind } where
+    (codemarkup.python.PythonEntityKind { E, Kind }; { python = E } = Entity) |
+    (codemarkup.cxx.CxxEntityKind { E, Kind }; { cxx = E } = Entity) |
+    (codemarkup.pp.PpEntityKind { E, Kind }; { pp = E } = Entity) |
+    (codemarkup.hack.HackEntityKind { E, Kind }; { hack = E } = Entity) |
+    (codemarkup.erlang.ErlangEntityKind { E, Kind }; { erlang = E } = Entity) |
+    (codemarkup.lsif.EntityInfo { E, { kind = Kind }}; { lsif = E } = Entity)
+
+# Retrieve information about an entity
+predicate EntityInfo:
+  {
+    entity: code.Entity,
+    info: codemarkup.types.SymbolInfo,
+  }
+  { Entity, Info } where
+    ( { kind = Kind, isAbstract = false } = Info;
+      ((codemarkup.python.PythonEntityKind { E, Kind };
+        { python = E } = Entity) |
+       (codemarkup.pp.PpEntityKind { E, Kind };
+        { pp = E } = Entity) |
+       (codemarkup.erlang.ErlangEntityKind { E, Kind };
+        { erlang = E } = Entity)
+      )
+    ) |
+    (codemarkup.cxx.CxxEntityInfo { E, Info }; { cxx = E } = Entity) |
+    (codemarkup.hack.HackEntityInfo { E, Info }; { hack = E } = Entity) |
+    (codemarkup.lsif.EntityInfo { E, Info }; { lsif = E } = Entity)
+
+# All entities defined in a src.File and their locations
+predicate FileEntityLocations:
+  {
+    file: src.File,
+    location: codemarkup.types.Location,
+    entity: code.Entity,
+  }
+  { File, Location, Entity } where
+    ResolveLocation { Location, Entity };
+    codemarkup.types.Location { file = File } = Location;
+
+# All entities defined in a src.File, and their kinds
+predicate FileEntityKinds:
+  {
+    file: src.File,
+    entity: code.Entity,
+    kind: codemarkup.types.SymbolKind,
+  }
+  { File, Entity, Kind } where
+    FileEntityLocations { File, _, Entity };
+    EntityKind { Entity, Kind };
+
+predicate FileEntityInfos:
+  {
+    file: src.File,
+    entity: code.Entity,
+    info: codemarkup.types.SymbolInfo,
+  }
+  { File, Entity, Info } where
+    FileEntityLocations { File, _, Entity };
+    EntityInfo { Entity, Info };
+
+# Map a location to the Entity declared there
+predicate ResolveLocation:
+  {
+    location: codemarkup.types.Location,
+    entity: code.Entity,
+  }
+  { Location, Entity } where
+    (codemarkup.hack.HackResolveLocation { Location, E };
+     { hack = E } = Entity) |
+    (codemarkup.python.PythonResolveLocation { Location, E };
+     { python = E } = Entity) |
+    (codemarkup.flow.FlowResolveLocation { Location, E };
+     { flow = E } = Entity) |
+    (codemarkup.cxx.CxxResolveLocation { Location, E };
+     { cxx = E } = Entity) |
+    (codemarkup.pp.PpResolveLocation { Location, E };
+     { pp = E } = Entity) |
+    (codemarkup.haskell.HaskellResolveLocation { Location, E };
+     { hs = E } = Entity) |
+    (codemarkup.rust.RustResolveLocation { Location, E };
+     { rust = E } = Entity) |
+    (codemarkup.buck.BuckResolveLocation { Location, E };
+     { buck = E } = Entity) |
+    (codemarkup.thrift.ThriftResolveLocation { Location, E };
+     { thrift = E } = Entity) |
+    (codemarkup.erlang.ErlangResolveLocation { Location, E };
+     { erlang = E } = Entity) |
+    (codemarkup.lsif.LsifResolveLocation { Location, E };
+     { lsif = E } = Entity);
+
+predicate EntityLocation:
+  {
+    entity: code.Entity,
+    location: codemarkup.types.Location,
+  }
+  { Entity, Location } where
+    (codemarkup.hack.HackEntityLocation { E, Location };
+     { hack = E } = Entity) |
+    (codemarkup.python.PythonEntityLocation { E, Location };
+     { python = E } = Entity) |
+    (codemarkup.flow.FlowEntityLocation { E, Location };
+     { flow = E } = Entity) |
+    (codemarkup.cxx.CxxEntityLocation { E, Location };
+     { cxx = E } = Entity) |
+    (codemarkup.pp.PPEntityLocation { E, Location };
+     { pp = E } = Entity) |
+    (codemarkup.haskell.HaskellEntityLocation { E, Location };
+     { hs = E } = Entity) |
+    (codemarkup.rust.RustEntityLocation { E, Location };
+     { rust = E } = Entity) |
+    (codemarkup.buck.BuckEntityLocation { E, Location };
+     { buck = E } = Entity) |
+    (codemarkup.thrift.ThriftEntityLocation { E, Location };
+     { thrift = E } = Entity) |
+    (codemarkup.erlang.ErlangEntityLocation { E, Location };
+     { erlang = E } = Entity) |
+    (codemarkup.lsif.LsifEntityLocation { E, Location };
+     { lsif = E } = Entity);
+
+# Finding xrefs. All references in a file and their targets
+predicate FileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.Entity,
+  }
+  { File, XRef, Entity } where
+    (codemarkup.hack.HackFileEntityXRefLocations { File, XRef, E };
+     { hack = E } = Entity) |
+    (codemarkup.flow.FlowFileEntityXRefLocations { File, XRef, E };
+     { flow = E } = Entity) |
+    (codemarkup.python.PythonFileEntityXRefLocations { File, XRef, E };
+     { python = E } = Entity) |
+    (codemarkup.cxx.CxxFileEntityXRefLocations { File, XRef, E };
+     { cxx = E } = Entity) |
+    (codemarkup.pp.PpFileEntityXRefLocations { File, XRef, E };
+     { pp = E } = Entity) |
+    (codemarkup.haskell.HaskellFileEntityXRefLocations { File, XRef, E };
+     { hs = E } = Entity) |
+    (codemarkup.rust.RustFileEntityXRefLocations { File, XRef, E };
+     { rust = E } = Entity) |
+    (codemarkup.buck.BuckFileEntityXRefLocations { File, XRef, E };
+     { buck = E } = Entity) |
+    (codemarkup.thrift.ThriftFileEntityXRefLocations { File, XRef, E };
+     { thrift = E } = Entity) |
+    (codemarkup.erlang.ErlangFileEntityXRefLocations { File, XRef, E };
+     { erlang = E } = Entity) |
+    (codemarkup.lsif.LsifFileEntityXRefLocations { File, XRef, E };
+     { lsif = E } = Entity);
+
+# Xrefs without the target location. This can be useful in cases
+# where we don't have a target location, but we don't need it. This
+# happens when indexing a subset of Hack files in a repo, for example.
+predicate FileEntityXRefSpans:
+  {
+    file: src.File,
+    span: src.ByteSpan,
+    entity: code.Entity,
+  }
+  { File, Span, Entity } where
+    (codemarkup.hack.HackFileEntityXRefSpans { File, Span, E };
+     { hack = E } = Entity) |
+    (
+      (codemarkup.flow.FlowFileEntityXRefLocations { File, XRef, E };
+       { flow = E } = Entity) |
+      (codemarkup.python.PythonFileEntityXRefLocations { File, XRef, E };
+       { python = E } = Entity) |
+      (codemarkup.cxx.CxxFileEntityXRefLocations { File, XRef, E };
+       { cxx = E } = Entity) |
+      (codemarkup.haskell.HaskellFileEntityXRefLocations { File, XRef, E };
+       { hs = E } = Entity) |
+      (codemarkup.rust.RustFileEntityXRefLocations { File, XRef, E };
+       { rust = E } = Entity) |
+      (codemarkup.buck.BuckFileEntityXRefLocations { File, XRef, E };
+       { buck = E } = Entity) |
+      (codemarkup.thrift.ThriftFileEntityXRefLocations { File, XRef, E };
+       { thrift = E } = Entity) |
+      (codemarkup.erlang.ErlangFileEntityXRefLocations { File, XRef, E };
+       { erlang = E } = Entity) |
+      (codemarkup.lsif.LsifFileEntityXRefLocations { File, XRef, E };
+       { lsif = E } = Entity);
+      { source = { span = Span }} = XRef
+    )
+
+# Finding xrefs. All references in a file, and their kinds
+predicate FileEntityXRefKinds:
+  {
+    file: src.File,
+    entity: code.Entity,
+    kind: codemarkup.types.SymbolKind,
+  }
+  { File, Entity, Kind } where
+    FileEntityXRefLocations { File, _, Entity };
+    EntityKind { Entity, Kind };
+
+predicate FileEntityXRefInfos:
+  {
+    file: src.File,
+    entity: code.Entity,
+    info: codemarkup.types.SymbolInfo,
+  }
+  { File, Entity, Info } where
+    FileEntityXRefLocations { File, _, Entity };
+    EntityInfo { Entity, Info };
+
+# Find references to a language entity
+# (deprecated in favor of more general codemarkup.EntityReferences)
+predicate EntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    span: src.ByteSpan
+  }
+  {Entity, File, Span} where
+    codemarkup.EntityReferences { Entity, File, { span = Span }}
+
+# Find references to a language entity (same as EntityUses but with RangeSpans)
+predicate EntityReferences:
+  {
+    target: code.Entity,
+    file: src.File,
+    range: codemarkup.types.RangeSpan
+  }
+  {Entity, File, RangeSpan} where
+  (
+    (codemarkup.hack.HackEntityUses { E, File, Span };
+     { hack = E } = Entity) |
+    (codemarkup.flow.FlowEntityUses { E, File, Span };
+     { flow = E } = Entity) |
+    (codemarkup.python.PythonEntityUses { E, File, Span };
+     { python = E } = Entity) |
+    (codemarkup.cxx.CxxEntityUses { E, File, Span }; { cxx = E } = Entity) |
+    (codemarkup.haskell.HaskellEntityUses { E, File, Span };
+     { hs = E } = Entity) |
+    (codemarkup.rust.RustEntityUses { E, File, Span };
+     { rust = E } = Entity) |
+    (codemarkup.buck.BuckEntityUses { E, File, Span };
+     { buck = E } = Entity) |
+    (codemarkup.erlang.ErlangEntityUses { E, File, Span };
+     { erlang = E } = Entity);
+    { span = Span } = RangeSpan;
+  ) | (
+    codemarkup.lsif.LsifEntityUses { E, File, Range };
+    { lsif = E } = Entity;
+    { range = Range } = RangeSpan;
+  )
+
+#
+# Annotations
+#
+
+predicate EntityAnnotations : code.Entity -> code.Annotations
+  E -> A where
+    CxxAnnotation{entity=E, anns=A} |
+    (codemarkup.hack.HackAnnotation{entity=HE, anns=HA};
+     { hack = HE } = E; { hack = HA } = A);
+
+predicate CxxAnnotation :
+  {
+    entity: code.Entity,
+    anns: code.Annotations,
+  }
+  {{cxx={decl=D}}, {cxx={attributes=As}}} where
+    ({ function_ = Decl } = D; cxx1.FunctionAttribute{declaration=Decl, attr=A}; As=[A]) |
+    ({ function_ = Decl } = D; !cxx1.FunctionAttribute{declaration=Decl}; As=[]:[cxx1.Attribute])
+
+
+#
+# Relations
+#
+
+predicate ExtendsParentEntity :
+  {
+    child: code.Entity,
+    parent: code.Entity
+  }
+  {C,P} where
+    ({hack={decl={container=Child}}}=C; {hack={decl={container=Parent}}}=P;
+      (
+        hack.ContainerParent{container=Child, parent=Parent}
+      )
+    ) |
+    ({cxx={decl={objcContainer=Child}}}=C; {cxx={decl={objcContainer=Parent}}}=P;
+      (
+        cxx1.ObjcImplements{implementation=Child, interface_=Parent} |
+        cxx1.ObjcContainerBase{declaration=Child, base=Parent}
+      )
+    ) |
+    ({cxx={decl={record_=Child}}}=C; {cxx={decl={record_=Parent}}}=P;
+      (
+        B[..]=cxx1.RecordBase{base=Parent}; cxx1.RecordDefinition{declaration=Child, bases=B}
+      )
+    )
+
+
+predicate ExtendsChildEntity :
+  {
+    parent: code.Entity,
+    child: code.Entity
+  }
+  {P,C} where
+    ({hack={decl={container=Parent}}}=P; {hack={decl={container=Child}}}=C;
+      (
+        hack.ContainerChild{container=Parent, child=Child}
+      )
+    ) |
+    ({cxx={decl={objcContainer=Parent}}}=P; {cxx={decl={objcContainer=Child}}}=C;
+      (
+        cxx1.ObjcInterfaceToImplementation{interface_=Parent, implementation=Child} |
+        cxx1.ObjcContainerInheritance{base=Parent, declaration=Child}
+      )
+    ) |
+    ({cxx={decl={record_=Parent}}}=P; {cxx={decl={record_=Child}}}=C;
+      (
+        cxx1.RecordDerived{base=Parent, derived=Child}
+      )
+    )
+
+predicate ContainsChildEntity :
+  {
+    parent: code.Entity,
+    child: code.Entity
+  }
+  { { hack = Parent }, { hack = Child } } where
+    codemarkup.hack.HackContainsChildEntity { Parent, Child }
+
+}
+
+schema codemarkup.26 evolves codemarkup.25

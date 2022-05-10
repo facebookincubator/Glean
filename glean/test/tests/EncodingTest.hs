@@ -101,7 +101,7 @@ mkE = do
 
   -- glean.test.Predicate has glean.test.KitchenSink as its key
   Just testPred <- return $ lookupPredicateRef
-    (Schema.PredicateRef "glean.test.Predicate" 4)
+    (Schema.PredicateRef "glean.test.Predicate" 5)
     dbSchema
 
   return $ E

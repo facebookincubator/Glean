@@ -33,3 +33,24 @@ type Annotations =
     annotations : [thrift.StructuredAnnotation] |
   }
 }
+
+schema code.thrift.3 {
+import thrift.6
+
+type Entity =
+  {
+    include_ : thrift.File |
+    named : thrift.NamedDecl |
+    exception_ : thrift.ExceptionName |
+    service_ : thrift.ServiceName |
+    constant : thrift.Constant |
+    enumValue : thrift.EnumValue |
+  }
+
+type Annotations =
+  {
+    annotations : [thrift.StructuredAnnotation] |
+  }
+}
+
+schema code.thrift.3 evolves code.thrift.2
