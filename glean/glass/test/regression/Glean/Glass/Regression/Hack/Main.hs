@@ -12,6 +12,6 @@ import System.Environment
 import qualified Glean.Glass.Regression.Hack as Glass
 
 main :: IO ()
-main = withArgs ["--root", path] Glass.main
+main = getArgs >>= \args -> withArgs (["--root", path] ++ args) Glass.main
   where
     path = "glean/lang/codemarkup/tests/hack/cases/xrefs"

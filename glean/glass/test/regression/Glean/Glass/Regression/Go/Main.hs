@@ -12,6 +12,6 @@ import System.Environment
 import qualified Glean.Glass.Regression.Go as Glass
 
 main :: IO ()
-main = withArgs ["--root", path] Glass.main
+main = getArgs >>= \args -> withArgs (["--root", path] ++ args) Glass.main
   where
     path = "glean/lang/go/tests/cases/xrefs"
