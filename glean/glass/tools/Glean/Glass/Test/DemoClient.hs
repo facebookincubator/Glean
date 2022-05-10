@@ -188,7 +188,7 @@ runListSymbols repo path = do
 runDescribe :: Protocol p => SymbolId -> GlassM p [Text]
 runDescribe sym = do
   SymbolDescription{..} <- describeSymbol sym def
-  let loc = pprLocationRange $ toLocationRange symbolDescription_location
+  let loc = pprLocationRange $ locationRange symbolDescription_location
       name = pprQName symbolDescription_name
       kind = textShow <$> symbolDescription_kind
       annot = textShow <$> symbolDescription_annotations
@@ -236,8 +236,8 @@ pprQName :: QualifiedName -> Text
 pprQName QualifiedName{..} =
   unName qualifiedName_container <> ":" <> unName qualifiedName_localName
 
-toLocationRange :: SymbolPath -> LocationRange
-toLocationRange SymbolPath{..} = LocationRange {
+locationRange :: SymbolPath -> LocationRange
+locationRange SymbolPath{..} = LocationRange {
     locationRange_repository = symbolPath_repository,
     locationRange_filepath = symbolPath_filepath,
     locationRange_range = symbolPath_range

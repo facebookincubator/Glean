@@ -7,7 +7,6 @@
 -}
 
 {-# LANGUAGE ApplicativeDo #-}
-{-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE ConstraintKinds #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 
@@ -104,16 +103,14 @@ import Glean.Glass.Repos
 import Glean.Glass.Path
     ( toGleanPath )
 import Glean.Glass.Range
-    ( locationFromCodeLocation,
-      locationRangeFromCodeLocation,
-      toLocationRange,
-      rangeSpanToRange,
-      fileByteSpanToExclusiveRange,
-      memoLineOffsets,
+    ( FileInfo(..),
       getFile,
       getFileAndLines,
-      resolveLocationToRange,
-      FileInfo(FileInfo, offsets, srcFile, fileId, fileRepo) )
+      rangeSpanToLocation,
+      rangeSpanToLocationRange,
+      memoRangeSpanToRange,
+      rangeSpanToRange,
+      resolveLocationToRange )
 import Glean.Glass.SymbolId
     ( entityToAngle,
       symbolTokens,
@@ -323,7 +320,7 @@ describeSymbol env@Glass.Env{..} sym_id _opts =
         One e -> return (e, Nothing)
         Many e _t -> return (e, Nothing)
       loc <- withRepo entityRepo $
-        locationRangeFromCodeLocation repo file rangespan
+        rangeSpanToLocationRange repo file rangespan
       kind <- withRepo entityRepo $ eitherToMaybe <$> findSymbolKind decl
       desc <- withRepo entityRepo $ describeEntity loc decl sym_id kind
       return (desc, err)
@@ -397,7 +394,7 @@ data GleanBackend b =
 
 backendRunHaxl
   :: Glean.Backend b => GleanBackend b -> (forall u. ReposHaxl u w a) -> IO a
-backendRunHaxl GleanBackend {..} =
+backendRunHaxl GleanBackend{..} =
   runHaxlAllRepos gleanBackend (fmap snd gleanDBs)
 
 withEntity
@@ -410,7 +407,7 @@ withEntity f scsrepo lang toks = do
   r <- Search.searchEntity lang toks
   (SearchEntity{..}, err) <- case r of
     None t -> throwM (ServerException t)
-    One e ->  return (e, Nothing)
+    One e -> return (e, Nothing)
     Many e t -> return (e, Just (EntitySearchFail t))
   (, fmap logError err) <$> withRepo entityRepo (f scsrepo file rangespan)
 
@@ -423,7 +420,7 @@ findSymbolLocation
   -> [Text]
   -> IO (Location, Maybe ErrorLogger)
 findSymbolLocation b repo lang toks = backendRunHaxl b $
-  withEntity locationFromCodeLocation repo lang toks
+  withEntity rangeSpanToLocation repo lang toks
 
 -- | Symbol search: try to resolve the line/col range of an entity
 findSymbolLocationRange
@@ -434,7 +431,7 @@ findSymbolLocationRange
   -> [Text]
   -> IO (LocationRange, Maybe ErrorLogger)
 findSymbolLocationRange b repo lang toks = backendRunHaxl b $
-  withEntity locationRangeFromCodeLocation repo lang toks
+  withEntity rangeSpanToLocationRange repo lang toks
 
 -- | Symbol search for references
 fetchSymbolReferences
@@ -454,7 +451,7 @@ fetchSymbolReferences scsrepo lang toks limit b =
         locs::[Location] <-
           searchReposWithLimit limit (Query.findReferenceRangeSpan query) $
             \(targetFile, rspan) ->
-              locationFromCodeLocation scsrepo targetFile rspan
+              rangeSpanToLocation scsrepo targetFile rspan
         return (locs, fmap logError searchErr)
 
 -- | Symbol search for references as ranges.
@@ -474,7 +471,7 @@ fetchSymbolReferenceRanges scsrepo lang toks limit b =
       Right (query, searchErr) ->  do
         ranges <- searchReposWithLimit limit (Query.findReferenceRangeSpan query) $
           \(targetFile, rspan) ->
-            locationRangeFromCodeLocation scsrepo targetFile rspan
+            rangeSpanToLocationRange scsrepo targetFile rspan
         return (ranges, fmap logError searchErr)
 
 -- | Search for a symbol and return an Angle query that identifies the entity
@@ -678,7 +675,7 @@ documentSymbolKinds _mlimit (Just Language_Cpp) _fileId =
 documentSymbolKinds mlimit _ fileId =
   searchFileAttributes Attributes.SymbolKindAttr mlimit fileId
 
--- \ External (non-local db) Attributes of symbols. Just Hack only for now
+-- | External (non-local db) Attributes of symbols. Just Hack only for now
 genericFetchFileAttributes
   :: (QueryType (Attributes.AttrRep key)
      , Attributes.ToAttributes key)
@@ -719,24 +716,23 @@ toReferenceSymbol
   -> Maybe Range.LineOffsets
   -> (Code.XRefLocation, Code.Entity)
   -> Glean.RepoHaxl u w (Code.Entity, ReferenceRangeSymbolX)
-toReferenceSymbol repoName file offsets (Code.XRefLocation{..},entity) = do
+toReferenceSymbol repoName file srcOffsets (Code.XRefLocation{..},entity) = do
 
   sym <- toSymbolId repoName entity
   attributes <- getStaticAttributes entity
 
-  moffsets <- memoLineOffsets location_file
-  let targetRange = rangeSpanToRange location_file moffsets location_location
-      targetNameRange =
-        fmap (fileByteSpanToExclusiveRange location_file moffsets) location_span
+  target <- rangeSpanToLocationRange repoName location_file
+    location_location
+  targetNameRange <- forM location_span
+    (memoRangeSpanToRange location_file . Code.RangeSpan_span)
 
-  target <- toLocationRange repoName location_file targetRange
-  return $ (entity,)
-    $ ReferenceRangeSymbolX sym range target attributes targetNameRange
+  return $ (entity,) $
+    ReferenceRangeSymbolX sym range target attributes targetNameRange
   where
     -- reference target is a Declaration and an Entity
     Code.Location{..} = xRefLocation_target
     -- resolved the local span to a location
-    range = rangeSpanToRange file offsets xRefLocation_source
+    range = rangeSpanToRange file srcOffsets xRefLocation_source
 
 -- | Building a resolved definition symbol is just taking a direct xref to it,
 -- and converting the bytespan, adding any static attributes
@@ -752,7 +748,8 @@ toDefinitionSymbol repoName file offsets (Code.Location{..}, entity) = do
   return $ (entity,) $ DefinitionSymbolX sym range attributes nameRange
   where
     range = rangeSpanToRange file offsets location_location
-    nameRange = fmap (fileByteSpanToExclusiveRange file offsets) location_span
+    nameRange = rangeSpanToRange file offsets . Code.RangeSpan_span <$>
+      location_span
 
 -- | Decorate an entity with 'static' attributes.
 -- These are static in that they are derivable from the entity and
@@ -958,7 +955,7 @@ searchEntityByString method query env@Glass.Env{..} req opts = do
           resultsAndDescriptions <-
             searchReposWithLimit limit (query caes reqKinds localName) $
               \result@(entity, Code.Location{..}, kind) -> do
-                loc <- locationRangeFromCodeLocation
+                loc <- rangeSpanToLocationRange
                         repo location_file location_location
                 symbol <- toSymbolId repo entity
                 description <- -- describeEntity is non-optional?
