@@ -25,7 +25,7 @@ PWD := $(shell /bin/pwd)
 #
 EXTRA_GHC_OPTS ?=
 
-CABAL = $(CABAL_BIN) --jobs --ghc-options='$(EXTRA_GHC_OPTS)' \
+CABAL = $(CABAL_BIN) --ghc-options='$(EXTRA_GHC_OPTS)' \
             -vnormal+nowrap --project-file=$(PWD)/cabal.project
 
 THRIFT_COMPILE := $(shell $(CABAL) -v0 list-bin exe:thrift-compiler)
