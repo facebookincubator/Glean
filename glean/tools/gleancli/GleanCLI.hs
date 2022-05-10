@@ -174,6 +174,7 @@ data ListCommand
   = List
       { listDbNames :: [String]
       , listFormat :: Maybe ShellPrintFormat
+      , listVerbosity :: DbVerbosity
       }
 
 instance Plugin ListCommand where
@@ -183,6 +184,11 @@ instance Plugin ListCommand where
       $ do
       listDbNames <- many $ strArgument (metavar "REPONAME")
       listFormat <- shellFormatOpt
+      listVerbosity <- flag DbSummarise DbDescribe (
+        short 'v' <>
+        long "--verbose" <>
+        help "include more details in tty/plain formats"
+        )
       return List{..}
 
   runCommand _ _ backend List{..} = do
@@ -194,7 +200,7 @@ instance Plugin ListCommand where
       xs = Thrift.listDatabasesResult_databases r
       dbs = filter f xs
       f db = null listDbNames || any (repoFilter db) listDbNames
-    putShellPrintLn listFormat $ dbs `withFormatOpts` DbSummarise
+    putShellPrintLn listFormat $ dbs `withFormatOpts` listVerbosity
 
 data StatusCommand
   = Status
