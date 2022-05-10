@@ -63,11 +63,6 @@ struct Inventory {
 // -----------------------------------------------------------------------------
 // DB metadata
 
-struct DatabaseBroken {
-  1: string task;
-  2: string reason;
-}
-
 union DatabaseIncomplete {
   1: glean.Tasks tasks;
 }
@@ -82,7 +77,7 @@ struct DatabaseFinalizing {}
 union Completeness {
   1: DatabaseIncomplete incomplete;
   3: DatabaseComplete complete;
-  4: DatabaseBroken broken;
+  4: glean.DatabaseBroken broken;
   5: DatabaseFinalizing finalizing;
 } (hs.prefix = "", hs.nonempty)
 

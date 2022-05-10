@@ -260,6 +260,12 @@ instance (ShellFormat DbVerbosity v)
       | Just t <- [Thrift.database_completed db]
       ]
       ++
+      [ "Broken:"
+          <+> (if Text.null task then emptyDoc else pretty task <> ": ")
+          <> pretty reason
+      | Just (Thrift.DatabaseBroken task reason) <- [Thrift.database_broken db]
+      ]
+      ++
       [ pretty key <> ":" <+> shellFormatText ctx opts value
       | (key, value) <- extras]
       ++

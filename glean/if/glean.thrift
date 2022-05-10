@@ -297,6 +297,11 @@ enum DatabaseStatus {
   Missing = 6,
 } (hs.nounknown)
 
+struct DatabaseBroken {
+  1: string task;
+  2: string reason;
+}
+
 struct Database {
   1: Repo repo;
 
@@ -331,6 +336,9 @@ struct Database {
 
   // What this DB depends on.
   11: optional Dependencies dependencies;
+
+  // If the DB is broken, this gives more details
+  12: optional DatabaseBroken broken;
 }
 
 struct PredicateStats {
