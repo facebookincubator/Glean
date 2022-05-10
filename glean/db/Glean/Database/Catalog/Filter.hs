@@ -32,8 +32,6 @@ module Glean.Database.Catalog.Filter
   , repoNameV
   , createdV
   , statusV
-  , completenessV
-  , CompletenessTag(..)
   , backedUpV
   , runFilter
   ) where
@@ -51,16 +49,17 @@ import GHC.Generics hiding (Meta)
 
 import Glean.Database.Meta
 import Glean.Types (Repo(..))
-import qualified Glean.Internal.Types as Thrift
 import qualified Glean.Types as Thrift
 
 -- | How a DB is available
 data Locality = Local | Restoring | Cloud
   deriving(Eq,Ord,Enum,Bounded,Show)
 
--- The status of a stacked database, ordered by increasing severity
+-- | The status of a stacked database, ordered by increasing severity.
+-- This is DatabaseStatus minus Restorable.
 data ItemStatus
   = ItemComplete
+  | ItemFinalizing
   | ItemIncomplete
   | ItemBroken
   | ItemRestoring
@@ -98,25 +97,6 @@ createdV = Value (metaCreated . itemMeta)
 
 statusV :: Value Thrift.DatabaseStatus
 statusV = Value (completenessStatus . itemMeta)
-
--- | DatabaseStatus doesn't distinguish Complete from Finalizing, so
--- to expose that distinction we need another form of status based on
--- the metaCompleteness.
-data CompletenessTag
-  = CompletenessIncomplete
-  | CompletenessComplete
-  | CompletenessBroken
-  | CompletenessFinalizing
-  deriving Eq
-
-completenessTag :: Thrift.Completeness -> CompletenessTag
-completenessTag Thrift.Incomplete{} = CompletenessIncomplete
-completenessTag Thrift.Complete{} = CompletenessComplete
-completenessTag Thrift.Broken{} = CompletenessBroken
-completenessTag Thrift.Finalizing{} = CompletenessFinalizing
-
-completenessV :: Value CompletenessTag
-completenessV = Value (completenessTag . metaCompleteness . itemMeta)
 
 entryStatusV :: Value ItemStatus
 entryStatusV = Value itemStatus

@@ -33,6 +33,7 @@ import Data.Typeable (Typeable)
 import GHC.Generics hiding (Meta)
 import System.Directory
 import System.FilePath
+import TextShow
 
 import Util.Control.Exception
 import Util.Graph
@@ -93,7 +94,7 @@ getTodo env@Env{..} sinbin = getFinalize <|> getRestore <|> getBackup
   where
     getFinalize = do
       dbs <- Catalog.list envCatalog [Local] $ do
-        completenessV .==. CompletenessFinalizing
+        statusV .==. DatabaseStatus_Finalizing
         latest
       case dbs of
         [] -> retry
@@ -109,7 +110,7 @@ getTodo env@Env{..} sinbin = getFinalize <|> getRestore <|> getBackup
       when (null restoring) retry
       avail <-  Catalog.list envCatalog [Local] $ do
         repoV `notInF` sinbin
-        completenessV .==. CompletenessComplete
+        statusV .==. DatabaseStatus_Complete
         newestByRepo
       case bestRestore restoring avail of
         [] -> retry
@@ -120,7 +121,7 @@ getTodo env@Env{..} sinbin = getFinalize <|> getRestore <|> getBackup
       let allowedRepoNames = databaseBackupPolicy_allowed policy
       dbs <- Catalog.list envCatalog [Local] $ do
         repoNameV `inF` allowedRepoNames
-        completenessV .==. CompletenessComplete
+        statusV .==. DatabaseStatus_Complete
         backedUpV .==. False
         latest
       case dbs of
@@ -304,20 +305,15 @@ doFinalize env@Env{..} repo =
       interrupted
         | Just AsyncCancelled{} <- fromException exc = True
         | otherwise = False
-    time <- getCurrentTime
 
     -- If we were interrupted, then keep the DB in the finalizing state
     -- and we'll try to finalize it again later.  If there was some other
-    -- exception, let's just ignore the finalize step and mark the DB
-    -- complete. This shouldn't happen, but we have no choice because we
-    -- report a DB in the finalizing state as complete to a client, so
-    -- we can't later report it as broken or incomplete.
+    -- exception, we'll mark the DB broken.
     atomically $ do
       notify envListener $ FinalizeFailed repo
       when (not interrupted) $
         void $ Catalog.modifyMeta envCatalog repo $ \meta -> return meta
-          { metaCompleteness = Complete $ DatabaseComplete $
-              utcTimeToPosixEpochTime time }
+          { metaCompleteness = Broken $ DatabaseBroken "finalize" (showt exc) }
     say logError $
       (if interrupted then "interrupted" else "failed") <>
       ": " <> show (exc :: SomeException)

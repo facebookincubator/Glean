@@ -32,6 +32,7 @@ import Glean.Database.Env
 import Glean.Database.Janitor
 import Glean.Database.Meta
 import Glean.Database.Types
+import Glean.Database.Work (finalizeWait)
 import Glean.Impl.ConfigProvider
 import Glean.Init
 import Glean.ServerConfig.Types as ServerTypes
@@ -150,6 +151,7 @@ makeDB env now (TestDbSpec repo good age deps) = do
         then Outcome_success Success
         else Outcome_failure $ Failure "failed"
     }
+  when good $ finalizeWait env repo
 
 basicBackupTest :: Test
 basicBackupTest = TestCase $ withTest $ withTestEnv

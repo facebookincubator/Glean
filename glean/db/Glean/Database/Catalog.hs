@@ -149,10 +149,7 @@ recalculateStatus Catalog{..} entry = do
         itemStatusFor Thrift.Complete{} = ItemComplete
         itemStatusFor Thrift.Incomplete{} = ItemIncomplete
         itemStatusFor Thrift.Broken{} = ItemBroken
-        itemStatusFor Thrift.Finalizing{} = ItemComplete
-        -- Report Finalizing as Complete: the DB is ready to be queried,
-        -- the finalize steps are administrative only and don't change
-        -- anything observable.
+        itemStatusFor Thrift.Finalizing{} = ItemFinalizing
 
       dependencyStatuses <- forM dependencies $ \dep ->
         maybe (return $ missingStatus dep) (readTVar . entryStatus) $
@@ -185,6 +182,7 @@ itemDatabaseStatus ItemIncomplete = Thrift.DatabaseStatus_Incomplete
 itemDatabaseStatus ItemRestoring = Thrift.DatabaseStatus_Restoring
 itemDatabaseStatus ItemBroken = Thrift.DatabaseStatus_Broken
 itemDatabaseStatus ItemMissing = Thrift.DatabaseStatus_Missing
+itemDatabaseStatus ItemFinalizing = Thrift.DatabaseStatus_Finalizing
 
 dirtyEntry :: Catalog -> Entry -> STM ()
 dirtyEntry cat entry = do

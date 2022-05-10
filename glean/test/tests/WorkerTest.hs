@@ -190,6 +190,7 @@ genTrace state = sized $ \n -> genSizedTrace n 0 [] state
 execTrace :: Env -> Repo -> Trace -> IO ()
 execTrace env repo (Trace actions expected) = do
   foldM_ exec mempty actions
+  when (expected == Thrift.DatabaseStatus_Complete) $ finalizeWait env repo
   status <- (fmap (Thrift.database_status . Thrift.getDatabaseResult_database))
     <$> atomically (Catalog.getLocalDatabase (envCatalog env) repo)
   assertEqual "status" (Just expected) status

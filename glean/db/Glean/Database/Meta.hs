@@ -74,10 +74,7 @@ completenessStatus meta = case metaCompleteness meta of
   Incomplete{} -> DatabaseStatus_Incomplete
   Complete{} -> DatabaseStatus_Complete
   Broken{} -> DatabaseStatus_Broken
-  Finalizing{} -> DatabaseStatus_Complete
-    -- Report Finalizing as Complete: the DB is ready to be queried,
-    -- the finalize steps are administrative only and don't change
-    -- anything observable.
+  Finalizing{} -> DatabaseStatus_Finalizing
 
 completenessTasks :: Meta -> Maybe (HashMap Text Task)
 completenessTasks meta = case metaCompleteness meta of

@@ -82,7 +82,7 @@ instance Storage Memory where
   computeOwnership _ _ = return (error "unimplemented computeOwnership")
   getUnitId _ _ = return (error "unimplemented getUnitId")
   getUnit _ _ = return (error "unimplemented getUnit")
-  storeOwnership _ = return (error "unimplemented storeOwnership")
+  storeOwnership _ _ = return ()  -- can't fail, otherwise we fail tests
   getOwnership _ = return Nothing
   addDefineOwnership _ _ =
     return (error "unimplemented addDefineOwnership")

@@ -289,7 +289,9 @@ enum DatabaseStatus {
   Broken = 3,
   // database does not exist locally, but can be restored from backup:
   Restorable = 4,
-  // DEPRECATED
+  // database is being finalized; no further writing is allowed, but
+  // it may be queried. Creation of a stacked DB is not allowed until
+  // the DB finishes finalizing and is in the Complete state.
   Finalizing = 5,
   // database or one of its dependencies are missing:
   Missing = 6,
