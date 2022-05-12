@@ -47,4 +47,6 @@ type Location =
     span: maybe src.ByteSpan,
   }
 
+type Visibility = enum { Public | Protected | Private }
+
 }

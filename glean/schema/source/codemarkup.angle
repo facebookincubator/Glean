@@ -298,6 +298,15 @@ predicate CxxAnnotation :
     ({ function_ = Decl } = D; cxx1.FunctionAttribute{declaration=Decl, attr=A}; As=[A]) |
     ({ function_ = Decl } = D; !cxx1.FunctionAttribute{declaration=Decl}; As=[]:[cxx1.Attribute])
 
+#
+# Visibility
+#
+
+predicate EntityVisibility : code.Entity -> codemarkup.types.Visibility
+  E -> V where
+    ({cxx=Entity}=E;codemarkup.cxx.CxxVisibility{entity=Entity, visibility=V}) |
+    ({hack=Entity}=E;codemarkup.hack.HackVisibility{entity=Entity, visibility=V})
+
 
 #
 # Relations

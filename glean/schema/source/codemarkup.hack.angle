@@ -168,6 +168,28 @@ predicate HackAnnotation :
     ({ typedef_ = Decl } = D; hack.TypedefDefinition{declaration=Decl, attributes=A})
 
 #
+# Visibility
+#
+
+predicate HackVisibility :
+  {
+    entity: code.hack.Entity,
+    visibility: codemarkup.types.Visibility,
+  }
+  {D, V} where
+    (
+      ({decl={ method = Decl }} = D; hack.MethodDefinition{declaration=Decl, visibility=Vis}) |
+      ({decl={ property_ = Decl }} = D; hack.PropertyDefinition{declaration=Decl, visibility=Vis})
+    );
+    (
+      Vis=(
+        (V=(Public:codemarkup.types.Visibility);(Public:hack.Visibility))|
+        (V=(Protected:codemarkup.types.Visibility);(Protected:hack.Visibility))|
+        (V=(Private:codemarkup.types.Visibility);(Private:hack.Visibility))
+      )
+    )
+
+#
 # Relations
 #
 

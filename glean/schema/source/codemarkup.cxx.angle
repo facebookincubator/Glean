@@ -423,6 +423,23 @@ predicate CxxAnnotation :
     ({ function_ = Decl } = D; cxx1.FunctionAttribute{declaration=Decl, attr=A}; As=[A]) |
     ({ function_ = Decl } = D; !cxx1.FunctionAttribute{declaration=Decl}; As=[]:[cxx1.Attribute])
 
+#
+# Visibility
+#
+
+predicate CxxVisibility:
+  {
+    entity: code.cxx.Entity,
+    visibility: codemarkup.types.Visibility,
+  }
+  { {decl=Decl}, Access } where
+    (
+      ({ function_ = {name={scope=Scope} } } = Decl) |
+      ({ enum_ = {name={scope=Scope} } } = Decl) |
+      ({ record_ = {name={scope=Scope} } } = Decl)
+    );
+    ({recordWithAccess={access=Access}}=Scope;{}:{})
+
 }
 
 schema codemarkup.cxx.3 evolves codemarkup.cxx.2
