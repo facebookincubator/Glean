@@ -50,7 +50,7 @@ import qualified Glean.Util.ThriftSource as ThriftSource
 import qualified Glean.Tailer as Tailer
 
 data Config = Config
-  { cfgRoot :: FilePath
+  { cfgRoot :: Maybe FilePath
   , cfgSchemaSource :: ThriftSource (SourceSchemas, Schemas)
   , cfgSchemaDir :: Maybe FilePath
       -- ^ Records whether we're reading the schema from a directory
@@ -78,13 +78,13 @@ data Config = Config
 
 instance Show Config where
   show c = unwords [ "Config {"
-    , "cfgRoot: " <> cfgRoot c
+    , "cfgRoot: " <> show (cfgRoot c)
     , "cfgServerConfig: " <> show (cfgServerConfig c)
     , "}" ]
 
 instance Default Config where
   def = Config
-    { cfgRoot = "."
+    { cfgRoot = Just "."
     , cfgSchemaSource = ThriftSource.value (error "undefined schema")
     , cfgSchemaDir = Nothing
     , cfgSchemaOverride = False
@@ -177,7 +177,15 @@ schemaSourceOption = option (eitherReader schemaSourceParser)
 
 options :: Parser Config
 options = do
-  cfgRoot <- strOption (long "db-root")
+  let
+    dbRoot = Just <$> strOption (
+      long "db-root" <>
+      metavar "DIR" <>
+      help "Directory containing databases")
+    dbTmp = flag' Nothing (
+      long "db-tmp" <>
+      help "Store databases in a temporary directory")
+  cfgRoot <- dbRoot <|> dbTmp
   ~(cfgSchemaDir, cfgSchemaSource) <-
     schemaSourceOption <|> dbSchemaSourceOption
   cfgSchemaOverride <- switch (long "db-schema-override")

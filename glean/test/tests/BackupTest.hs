@@ -83,8 +83,7 @@ withTestEnv
   -> ConfigAPI
   -> FilePath
   -> IO ()
-withTestEnv dbs init_server_cfg action evb cfgAPI backupdir =
-  withSystemTempDirectory "glean-dbtest" $ \dbdir -> do
+withTestEnv dbs init_server_cfg action evb cfgAPI backupdir = do
   (server_cfg, update_server_cfg) <- ThriftSource.mutable $ init_server_cfg def
     { config_backup = def
       { databaseBackupPolicy_allowed = mempty
@@ -98,7 +97,7 @@ withTestEnv dbs init_server_cfg action evb cfgAPI backupdir =
     }
   (l, events) <- recorder
   let config = def
-        { cfgRoot = dbdir
+        { cfgRoot = Nothing
         , cfgSchemaSource = schemaSourceFiles
         , cfgRecipeConfig = def
         , cfgServerConfig = server_cfg

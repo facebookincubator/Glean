@@ -18,6 +18,7 @@ import Data.Maybe
 import Data.Time
 import System.Clock (TimeSpec(..))
 import System.Timeout
+import System.IO.Temp
 
 import Logger.IO
 import Data.RateLimiterMap
@@ -94,14 +95,21 @@ initEnv
   -> Observed ServerConfig.Config
   -> IO Env
 initEnv evb cfg logger envSchemaSource envRecipeConfig envServerConfig =
-  do
+  let
+    withRoot Nothing io = withSystemTempDirectory "glean" $ \tmp -> do
+      logInfo $ "Storing temporary DBs in " <> tmp
+      io tmp
+    withRoot (Just dir) io = io dir
+  in
+  withRoot (cfgRoot cfg) $ \dbRoot -> do
+
     envCatalog <- do
-      Some store <- cfgCatalogStore cfg $ cfgRoot cfg
+      Some store <- cfgCatalogStore cfg dbRoot
       Catalog.open store
 
     server_cfg@ServerConfig.Config{..} <- Observed.get envServerConfig
 
-    Some envStorage <- cfgStorage cfg (cfgRoot cfg) server_cfg
+    Some envStorage <- cfgStorage cfg dbRoot server_cfg
     envActive <- newTVarIO mempty
     envDeleting <- newTVarIO mempty
     envStats <- Stats.new (TimeSpec 10 0)
@@ -131,7 +139,7 @@ initEnv evb cfg logger envSchemaSource envRecipeConfig envServerConfig =
     return Env
       { envEventBase = evb
       , envLogger = logger
-      , envRoot = cfgRoot cfg
+      , envRoot = dbRoot
       , envReadOnly = cfgReadOnly cfg
       , envMockWrites = cfgMockWrites cfg
       , envTailerOpts = cfgTailerOpts cfg

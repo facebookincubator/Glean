@@ -417,8 +417,7 @@ fakeSchemaKey :: Text
 fakeSchemaKey = "glean/schema"
 
 changeSchemaTest :: Test
-changeSchemaTest = TestCase $
-  withSystemTempDirectory "glean-dbtest" $ \root -> do
+changeSchemaTest = TestCase $ do
     let
       schema_v0 =
         [s|
@@ -449,7 +448,7 @@ changeSchemaTest = TestCase $
 
         let
           dbConfig = def
-            { cfgRoot = root
+            { cfgRoot = Nothing
             , cfgSchemaSource = ThriftSource.configWithDeserializer
                 fakeSchemaKey parseAndResolveSchema
             , cfgServerConfig = ThriftSource.value def

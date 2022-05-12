@@ -32,7 +32,6 @@ import Data.List (foldl')
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Text (Text)
-import System.IO.Temp
 
 import Util.EventBase
 
@@ -61,7 +60,7 @@ import Glean.Util.ThriftSource (ThriftSource)
 type Setting = Config -> Config
 
 setRoot :: FilePath -> Setting
-setRoot path cfg = cfg{ cfgRoot = path }
+setRoot path cfg = cfg{ cfgRoot = Just path }
 
 setRecipes :: Map Text Recipes -> Setting
 setRecipes recipes cfg = cfg
@@ -104,7 +103,7 @@ withTestEnv settings action =
     let
       dbConfig = foldl' (\acc f -> f acc)
         def
-          { cfgRoot = ""
+          { cfgRoot = Nothing
           , cfgRecipeConfig = ThriftSource.value Recipes.Config
               { config_recipes = mempty }
           , cfgSchemaSource = schemaSourceFiles
@@ -113,13 +112,7 @@ withTestEnv settings action =
           }
         settings
 
-      withConfig f
-        | null (cfgRoot dbConfig) =
-          withSystemTempDirectory "glean-dbtest" $ \root ->
-            f dbConfig{ cfgRoot = root }
-        | otherwise = f dbConfig
-
-    withConfig $ \cfg -> withDatabases evb cfg cfgAPI action
+    withDatabases evb dbConfig cfgAPI action
 
 kickOffTestDB
   :: Env -> Thrift.Repo -> (Thrift.KickOff -> Thrift.KickOff) -> IO ()

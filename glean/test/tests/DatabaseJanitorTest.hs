@@ -130,7 +130,7 @@ makeFakeDB schema root repo dbtime completeness stacked = do
 
 dbConfig :: FilePath -> ServerTypes.Config -> Glean.Database.Config.Config
 dbConfig dbdir serverConfig = def
-  { cfgRoot = dbdir
+  { cfgRoot = Just dbdir
   , cfgSchemaSource = schemaSourceFiles
   , cfgRecipeConfig = def
   , cfgServerConfig = ThriftSource.value serverConfig
