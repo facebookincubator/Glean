@@ -40,10 +40,16 @@ listDatabases env@Env{..} Thrift.ListDatabases{..} = do
   backups <-
     if listDatabases_includeBackups
       then do
-        sites <- atomically $ Backup.getAllSites env
-        restorables <- mapM
-          (\(prefix, site, _) -> listRestorable prefix site) sites
-        return $ reposToResults $ HashMap.unions restorables
+        -- Use the cache of restorable DBs populated by the janitor,
+        -- if one is available.
+        maybeLastFetch <- readTVarIO envCachedRestorableDBs
+        restorables <- case maybeLastFetch of
+          Just (_, dbs) -> return $ HashMap.fromList dbs
+          Nothing -> do
+            sites <- atomically $ Backup.getAllSites env
+            HashMap.unions <$> mapM
+              (\(prefix, site, _) -> listRestorable prefix site) sites
+        return $ reposToResults restorables
       else
         return mempty
   local <- atomically $ Catalog.getLocalDatabases envCatalog

@@ -82,7 +82,7 @@ runDatabaseJanitor env =
   closeIdleDatabases env
      (seconds $ fromIntegral databaseClosePolicy_close_after) mostRecent
 
-  backups <- fromMaybe [] <$> fetchBackups env
+  backups <- fetchBackups env
 
   localAndRestoring <- atomically $
     Catalog.list (envCatalog env) [Local,Restoring] everythingF
@@ -215,29 +215,29 @@ dbKeepRoots ServerConfig.Config{..} t (repoNm, dbs) = keepRoots
         ++ take retainAtLeast viableLocalDBs
 
 
-
 -- Fetches backups only if they haven't been fetched recently
-fetchBackups :: Env -> IO (Maybe [(Repo, Meta)])
+fetchBackups :: Env -> IO [(Repo, Meta)]
 fetchBackups env = do
   ServerConfig.Config{..} <- Observed.get (envServerConfig env)
   let syncPeriodSeconds = fromIntegral config_backup_list_sync_period
-  maybeLastFetch <- readTVarIO (envLastBackupsSync env)
+  maybeLastFetch <- readTVarIO (envCachedRestorableDBs env)
   now <- getCurrentTime
   case maybeLastFetch of
     Nothing -> fetch now
-    Just lastFetch | now `timeDiffInSeconds` lastFetch > syncPeriodSeconds ->
+    Just (lastFetch, dbs)
+      | now `timeDiffInSeconds` lastFetch > syncPeriodSeconds ->
         fetch now
-    _ ->
-      return Nothing
+      | otherwise -> return dbs
   where
     timeDiffInSeconds t1 t2 =
       timeSpanInSeconds $ fromUTCTime t1 `timeDiff` fromUTCTime t2
     fetch now = do
       logInfo "fetching restorable databases list"
-      atomically $ writeTVar (envLastBackupsSync env) (Just now)
-      loggingAction (runLogCmd "listRestorable" env) (const mempty) $
-        Just . concatMap HashMap.toList <$>
+      dbs <- loggingAction (runLogCmd "listRestorable" env) (const mempty) $
+        concatMap HashMap.toList <$>
           forRestoreSitesM env mempty listRestorable
+      atomically $ writeTVar (envCachedRestorableDBs env) (Just (now,dbs))
+      return dbs
 
 -- Group databases by repository name
 byRepoName :: [Item] -> [(Text, [Item])]

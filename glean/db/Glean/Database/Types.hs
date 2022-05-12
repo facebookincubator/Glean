@@ -32,6 +32,7 @@ import Util.EventBase (EventBaseDataplane)
 import Glean.Angle.Types
 import qualified Glean.Database.Backup.Backend as Backup
 import Glean.Database.Catalog (Catalog)
+import Glean.Database.Meta
 import Glean.Database.Schema.Types
 import Glean.Database.Stats (Stats)
 import Glean.Database.Storage (Database, Storage)
@@ -215,7 +216,7 @@ data Env = forall storage. Storage storage => Env
   , envLookupCacheStats :: LookupCache.Stats
   , envWarden :: Warden
   , envDatabaseJanitor :: TVar (Maybe UTCTime)
-  , envLastBackupsSync :: TVar (Maybe UTCTime)
+  , envCachedRestorableDBs :: TVar (Maybe (UTCTime, [(Thrift.Repo, Meta)]))
   , envWorkQueue :: WorkQueue
   , envHeartbeats :: Heartbeats
   , envWrites :: TVar (HashMap Text Write)

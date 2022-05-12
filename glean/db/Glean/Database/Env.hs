@@ -108,7 +108,7 @@ initEnv evb cfg logger envSchemaSource envRecipeConfig envServerConfig =
     envLookupCacheStats <- LookupCache.newStats
     envWarden <- Warden.create
     envDatabaseJanitor <- newTVarIO Nothing
-    envLastBackupsSync <- newTVarIO Nothing
+    envCachedRestorableDBs <- newTVarIO Nothing
 
     envLoggerRateLimit <-
       newRateLimiterMap (fromIntegral config_logging_rate_limit) 600
