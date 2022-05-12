@@ -31,8 +31,11 @@ method is chosen by these command-line flags:
 
 * `--service <tier>` or `--service <host>:<port>`  Connect to a remote Glean server.
 * `--db-root <dir>`  Use databases stored locally in the directory `<dir>`
+* `--db-tmp` Create a temporary directory to store DBs and delete it
+  when the program exits.
 
-These flags are accepted by all the Glean command-line tools, including `glean`.
+These flags are accepted by all the Glean command-line tools,
+including `glean` and `glean-server`.
 
 <FbInternalOnly>
 
