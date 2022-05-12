@@ -17,33 +17,48 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
+namespace {
+
+struct Fail {
+  std::atomic<bool> has_err = false;
+
+  template <class... Args>
+  void operator()(std::string fmt, Args&&... args) {
+    has_err.store(true);
+    rts::error(fmt, std::forward<Args>(args)...);
+  }
+
+  operator bool() {
+    return has_err.load();
+  }
+};
+
+}
+
 // Validates facts from startingId until firstFreeId until all items have been
 // validated or the validation limit is reached.
 void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
   const auto starting_id = facts.startingId();
   const auto first_free = facts.firstFreeId();
 
-  size_t elems = distance(starting_id, first_free);
-  size_t max_shards = 10000; // 0.4mb of mutexes
-  size_t lock_shard_size = std::min(elems, max_shards);
-  std::vector<std::mutex> locks(elems / lock_shard_size);
+  const auto end_id =
+    val.limit < first_free - starting_id
+      ? starting_id + val.limit
+      : first_free;
+  size_t elems = distance(starting_id, end_id);
+
+  size_t max_shard_size = 10000;
+  size_t lock_shard_size = std::min(elems, max_shard_size);
+  std::vector<std::mutex> locks((elems / lock_shard_size) + 1);
   std::vector<Pid> types(elems, Pid::invalid());
 
-  std::mutex err_lock;
-  std::string err;
-  std::atomic<bool> has_err = false;
-  auto fail([&](std::string msg) {
-    const std::lock_guard<std::mutex> lock(err_lock);
-    has_err.store(true);
-    err = msg;
-  });
-
-  auto has_failure([&]() {
-    return has_err.load();
-  });
+  Fail fail;
 
   // thread-safe type cache check
   auto expect_type([&](Id id, Pid type) {
+    if (id < starting_id || id >= end_id) {
+      fail("id {} out of range, expecting id of type {}", id, type);
+    }
     auto ix = distance(starting_id, id);
     size_t lock_ix = ix / lock_shard_size;
     const std::lock_guard<std::mutex> lock(locks.at(lock_ix));
@@ -63,19 +78,33 @@ void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
   Renamer checker(expect_type);
 
   std::atomic<size_t> count = 0;
+
+  size_t last_percent = 0;
+  std::mutex percent_lock;
+  auto report_progress([&]() {
+    const std::lock_guard<std::mutex> lock(percent_lock);
+    size_t percent = (100 * count.load()) / elems;
+    if (percent != last_percent) {
+      last_percent = percent;
+      VLOG(1) << percent << "%";
+    }
+  });
+
   auto validate_section([&](Id from, Id to) {
     auto allowed_id = from;
 
     for (auto i = facts.enumerate(from, to); auto fact = i->get(); i->next()) {
-      if (count.load() >= val.limit || has_failure()) {
+      if (fail) {
         break;
       }
       ++count;
 
+      VLOG(3) << "[" << fact.id.toWord() << "]";
+
       if (fact.id < allowed_id) {
         fail("enumeration out of order");
       }
-      if (fact.id >= first_free) {
+      if (fact.id >= end_id) {
         fail("fact id out of bounds");
       }
 
@@ -117,24 +146,14 @@ void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
     return starting_id + section * ids_per_section;
   });
 
-  auto last_percent = -1;
-  std::mutex percent_lock;
-  auto report_progress([&]() {
-    const std::lock_guard<std::mutex> lock(percent_lock);
-    size_t percent = (100 * count.load()) / elems;
-    if (percent != last_percent) {
-      last_percent = percent;
-      VLOG(2) << percent << "%";
-    }
-  });
-
   // validate multiple sections
   auto worker([&]() {
     while (true) {
       Id from = get_next_section_starting_id();
-      Id to = std::min(from + ids_per_section, first_free);
+      Id to = std::min(from + ids_per_section, end_id);
+      VLOG(2) << "worker: " << from.toWord() << "-" << to.toWord();
 
-      if (from >= first_free || count.load() >= val.limit || has_failure()) {
+      if (from >= end_id || fail) {
         break;
       }
 
@@ -150,11 +169,7 @@ void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
   }
 
   for (auto& w : workers) {
-    w.wait();
-  }
-
-  if (has_failure()) {
-    rts::error(err);
+    w.get();
   }
 }
 
