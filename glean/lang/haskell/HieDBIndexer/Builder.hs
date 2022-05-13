@@ -74,6 +74,7 @@ import OccName (occNameString)
 import System.Directory (doesFileExist)
 import System.FilePath (makeRelative, (</>), takeDirectory)
 import qualified Text.Printf as Text
+import TextShow (showt)
 
 {- | Build a Glean DB with XReference facts that will be used to power
  click-to-definition.
@@ -86,15 +87,15 @@ buildXrefMapFiles logger opts@HieDBIndexerOptions {..} = do
   let hiedbDir = takeDirectory hiedbPath
   withHieDb hiedbPath $ \db -> do
     when hiedbTrace $
-      setHieTrace db (Just $ putStrLn . Text.unpack . ("\n****TRACE: " <>))
-    putStrLn $ "Path of hiedb = " <> hiedbDir
-    putStrLn $ "Repo path = " <> repoPath
+      setHieTrace db (Just $ logMsg logger)
+    logMsg logger $ "Path of hiedb = " <> Text.pack hiedbPath
+    logMsg logger $ "Repo path = " <> Text.pack repoPath
 
     allVertices <- getDefsVertices logger repoPath db
 
     let numOfVertices = length allVertices
-    putStrLn $
-      "Number of vertices in the graph = " <> show numOfVertices
+    logMsg logger $
+      "Number of vertices in the graph = " <> showt numOfVertices
 
     filteredVertices <- filterM (srcFileExists repoPath) allVertices
 
@@ -108,7 +109,6 @@ buildXrefMapFiles logger opts@HieDBIndexerOptions {..} = do
     -- TODO(T96241762): add num of capabilities arg.
     let newChunkSize = div numOfVertices 10
         splitVertices = chunksOf newChunkSize filteredVertices
-
 
     batchOutputs <-
       mapConcurrently
