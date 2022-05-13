@@ -22,7 +22,7 @@ import Control.Exception (
   catch,
   handle,
  )
-import Control.Monad (when, filterM)
+import Control.Monad (unless, when, filterM)
 import Data.Array.Unboxed (
   listArray,
   (!),
@@ -85,6 +85,8 @@ buildXrefMapFiles ::
   IO (FileLineMap, [IndexerBatchOutput])
 buildXrefMapFiles logger opts@HieDBIndexerOptions {..} = do
   let hiedbDir = takeDirectory hiedbPath
+  itExists <- doesFileExist hiedbPath
+  unless itExists $ error $ "hiedb not found at " <> hiedbPath
   withHieDb hiedbPath $ \db -> do
     when hiedbTrace $
       setHieTrace db (Just $ logMsg logger)
