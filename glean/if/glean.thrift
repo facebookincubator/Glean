@@ -1065,11 +1065,6 @@ service GleanService extends fb303.FacebookService {
     3: UnknownPredicate u,
     4: IncompleteDependencies d,
   );
-
-  DerivationProgress pollDerivation(1: Handle h) throws (
-    1: Exception e,
-    2: UnknownDerivationHandle h,
-  );
 }
 
 struct PredicateAnnotation {

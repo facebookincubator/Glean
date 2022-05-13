@@ -7,8 +7,7 @@
 -}
 
 module Glean.Query.Derive
-  ( pollDerivation
-  , deriveStored
+  ( deriveStored
   ) where
 
 import System.Timeout
@@ -58,40 +57,8 @@ import Glean.Util.Mutex
 import Glean.Util.Time
 import Glean.Util.Warden
 
--- | Check the progress of a derivation
-pollDerivation :: Database.Env -> Thrift.Handle -> IO Thrift.DerivationProgress
-pollDerivation env handle = do
-  (repo, pred, _) <- derivationForHandle env handle
-  let query = def
-        { derivePredicateQuery_predicate = predicateRef_name pred
-        , derivePredicateQuery_predicate_version =
-            Just $ predicateRef_version pred
-        }
-  derivation@Derivation{..} <- deriveStoredImpl env noLogging repo query
-  case derivationError of
-    Just (_, err) -> throwIO err
-    Nothing -> do
-      elapsed <- getElapsedTime derivationStart
-      return $ if isFinished derivation
-        then Thrift.DerivationProgress_complete derivationStats
-        else Thrift.DerivationProgress_ongoing derivationStats
-          { userQueryStats_elapsed_ns = fromIntegral $ toDiffMicros elapsed }
-
 type LogResult =
   Either (DiffTimePoints, SomeException) Thrift.UserQueryStats -> IO ()
-
-noLogging :: LogResult
-noLogging = const mempty
-
-derivationForHandle
-  :: Database.Env
-  -> Thrift.Handle
-  -> IO (Repo, PredicateRef, Derivation)
-derivationForHandle env handle = do
-  derivations <- HashMap.toList <$> readTVarIO (envDerivations env)
-  case find ((handle ==) . derivationHandle . snd) derivations of
-    Nothing -> throwIO Thrift.UnknownDerivationHandle
-    Just ((repo, pred), d) -> return (repo, pred, d)
 
 deriveStored
   :: Database.Env
@@ -543,6 +510,5 @@ isWriteFinished env writeHandle = do
     Right (Thrift.FinishResponse_subst _) -> Right True
     Right _ -> Right False
     Left exc -> case fromException exc of
-      -- caused by concurrent calls to pollDerivation?
       Just Thrift.UnknownBatchHandle -> Right True
       Nothing -> Left exc

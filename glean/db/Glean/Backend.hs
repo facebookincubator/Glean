@@ -191,10 +191,6 @@ instance Backend LoggingBackend where
       (const mempty)
       (deriveStored env (runLogDerivationResult env log repo q) repo q)
 
-  pollDerivation (LoggingBackend env) handle =
-    loggingAction (runLogCmd "pollDerivation" env) logDerivationProgress $
-      pollDerivation env handle
-
   listDatabases (LoggingBackend env) req =
     loggingAction (runLogCmd "listDatabases" env) (const mempty) $
       Database.listDatabases env req
@@ -309,7 +305,6 @@ instance Backend Database.Env where
   userQuery = UserQuery.userQuery
 
   deriveStored = Derive.deriveStored
-  pollDerivation = Derive.pollDerivation
 
   listDatabases = Database.listDatabases
   getDatabase env repo = maybe (throwIO $ Thrift.UnknownDatabase repo) return
@@ -496,11 +491,6 @@ runLogDerivationResult env log repo Thrift.DerivePredicateQuery{..} res = do
           nanoseconds (fromIntegral userQueryStats_elapsed_ns)
     ]
 
-logDerivationProgress :: Thrift.DerivationProgress -> GleanServerLogger
-logDerivationProgress = \case
-      Thrift.DerivationProgress_ongoing _ -> mempty
-      Thrift.DerivationProgress_complete stats -> logQueryStats stats
-
 -- -----------------------------------------------------------------------------
 -- Backends that might be local or remote
 
@@ -551,7 +541,6 @@ instance Backend (Some LocalOrRemote) where
   userQueryFacts (Some backend) = userQueryFacts backend
   userQuery (Some backend) = userQuery backend
   deriveStored (Some backend) = deriveStored backend
-  pollDerivation (Some backend) = pollDerivation backend
 
   kickOffDatabase (Some backend) = kickOffDatabase backend
   finalizeDatabase (Some backend) = finalizeDatabase backend

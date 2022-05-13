@@ -88,9 +88,6 @@ handler State{..} req =
     Service.DeriveStored repo pred ->
       Backend.deriveStored backend (const mempty) repo pred
 
-    Service.PollDerivation handle ->
-      Backend.pollDerivation backend handle
-
     Service.PredicateStats repo Thrift.PredicateStatsOpts{..} ->
       Backend.predicateStats backend repo $
         if predicateStatsOpts_excludeBase then ExcludeBase else IncludeBase
