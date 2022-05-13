@@ -13,10 +13,12 @@
 module HieDBIndexer.Glean where
 
 import Control.Concurrent.Async (mapConcurrently_)
+import Control.Exception (Exception, throwIO)
 import Control.Monad (forM_)
 import Data.Array.Unboxed (elems)
 import qualified Data.HashMap.Strict as Map
 import qualified Data.Text as Text
+import Data.Typeable (Typeable)
 import qualified Glean hiding (options)
 import Glean.Angle.Types (SourceRef (..))
 import Glean.BuildInfo (buildRevision, buildRule)
@@ -38,9 +40,14 @@ import HieDBIndexer.Types (
   mkGleanByteSpan,
   mkGleanXReference,
  )
-import System.Exit (exitSuccess)
 import Text.Printf
 
+data IndexerException = DatabaseAlreadyExistsException
+  deriving (Show, Typeable)
+
+instance Exception IndexerException
+
+-- | Throws a 'DatabaseAlreadyExistsException'
 createGleanDB ::
   (Glean.Backend b) =>
   HieDBIndexerEnv b ->
@@ -52,7 +59,6 @@ createGleanDB _env@HieDBIndexerEnv {..} fileLinesMap batchOutputs = do
 
   let newRepo = Glean.Repo (Text.pack $ repoName cfg) hash
       buildHandle = buildRule <> "@" <> buildRevision
-      ifexists = putStrLn "DB already exists." >> exitSuccess
 
       fileLinesList = Map.toList fileLinesMap
 
@@ -102,8 +108,14 @@ createGleanDB _env@HieDBIndexerEnv {..} fileLinesMap batchOutputs = do
 
   if dontCreateDb cfg
     then finalWriter
-    else Glean.fillDatabase backend schemaVersion finalRepo buildHandle
-          ifexists finalWriter
+    else
+      Glean.fillDatabase
+        backend
+        schemaVersion
+        finalRepo
+        buildHandle
+        (throwIO DatabaseAlreadyExistsException)
+        finalWriter
 
   repoStats <- Glean.predicateStats backend finalRepo Glean.ExcludeBase
 
