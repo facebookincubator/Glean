@@ -1,0 +1,714 @@
+{
+    "revision": "testhash",
+    "references": [
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "target": {
+                "filepath": "src/lib.rs",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 9,
+                    "columnBegin": 4,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                }
+            },
+            "range": {
+                "columnEnd": 10,
+                "columnBegin": 5,
+                "lineBegin": 13,
+                "lineEnd": 13
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "target": {
+                "filepath": "src/lib.rs",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 16,
+                    "columnBegin": 15,
+                    "lineBegin": 12,
+                    "lineEnd": 12
+                }
+            },
+            "range": {
+                "columnEnd": 12,
+                "columnBegin": 11,
+                "lineBegin": 13,
+                "lineEnd": 13
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "target": {
+                "filepath": "src/lib.rs",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 11,
+                    "columnBegin": 10,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                }
+            },
+            "range": {
+                "columnEnd": 9,
+                "columnBegin": 8,
+                "lineBegin": 17,
+                "lineEnd": 17
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "target": {
+                "filepath": "src/lib.rs",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 21,
+                    "columnBegin": 18,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                }
+            },
+            "range": {
+                "columnEnd": 20,
+                "columnBegin": 17,
+                "lineBegin": 17,
+                "lineEnd": 17
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "target": {
+                "filepath": "src/lib.rs",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 9,
+                    "columnBegin": 4,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                }
+            },
+            "range": {
+                "columnEnd": 35,
+                "columnBegin": 30,
+                "lineBegin": 17,
+                "lineEnd": 17
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "target": {
+                "filepath": "src/lib.rs",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 11,
+                    "columnBegin": 10,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                }
+            },
+            "range": {
+                "columnEnd": 37,
+                "columnBegin": 36,
+                "lineBegin": 17,
+                "lineEnd": 17
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "target": {
+                "filepath": "src/lib.rs",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 21,
+                    "columnBegin": 18,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                }
+            },
+            "range": {
+                "columnEnd": 46,
+                "columnBegin": 43,
+                "lineBegin": 17,
+                "lineEnd": 17
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "target": {
+                "filepath": "src/lib.rs",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 11,
+                    "columnBegin": 10,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                }
+            },
+            "range": {
+                "columnEnd": 50,
+                "columnBegin": 49,
+                "lineBegin": 17,
+                "lineEnd": 17
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "target": {
+                "filepath": "src/lib.rs",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 16,
+                    "columnBegin": 15,
+                    "lineBegin": 22,
+                    "lineEnd": 22
+                }
+            },
+            "range": {
+                "columnEnd": 18,
+                "columnBegin": 17,
+                "lineBegin": 24,
+                "lineEnd": 24
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "target": {
+                "filepath": "src/lib.rs",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 14,
+                    "columnBegin": 13,
+                    "lineBegin": 24,
+                    "lineEnd": 24
+                }
+            },
+            "range": {
+                "columnEnd": 13,
+                "columnBegin": 12,
+                "lineBegin": 26,
+                "lineEnd": 26
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "target": {
+                "filepath": "src/lib.rs",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 16,
+                    "columnBegin": 13,
+                    "lineBegin": 23,
+                    "lineEnd": 23
+                }
+            },
+            "range": {
+                "columnEnd": 23,
+                "columnBegin": 20,
+                "lineBegin": 27,
+                "lineEnd": 27
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "target": {
+                "filepath": "src/lib.rs",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 16,
+                    "columnBegin": 13,
+                    "lineBegin": 23,
+                    "lineEnd": 23
+                }
+            },
+            "range": {
+                "columnEnd": 16,
+                "columnBegin": 13,
+                "lineBegin": 29,
+                "lineEnd": 29
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "target": {
+                "filepath": "src/lib.rs",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 14,
+                    "columnBegin": 13,
+                    "lineBegin": 24,
+                    "lineEnd": 24
+                }
+            },
+            "range": {
+                "columnEnd": 21,
+                "columnBegin": 20,
+                "lineBegin": 29,
+                "lineEnd": 29
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "target": {
+                "filepath": "src/lib.rs",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 14,
+                    "columnBegin": 13,
+                    "lineBegin": 24,
+                    "lineEnd": 24
+                }
+            },
+            "range": {
+                "columnEnd": 14,
+                "columnBegin": 13,
+                "lineBegin": 30,
+                "lineEnd": 30
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "target": {
+                "filepath": "src/lib.rs",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 16,
+                    "columnBegin": 15,
+                    "lineBegin": 37,
+                    "lineEnd": 37
+                }
+            },
+            "range": {
+                "columnEnd": 19,
+                "columnBegin": 18,
+                "lineBegin": 39,
+                "lineEnd": 39
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "target": {
+                "filepath": "src/lib.rs",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 16,
+                    "columnBegin": 13,
+                    "lineBegin": 38,
+                    "lineEnd": 38
+                }
+            },
+            "range": {
+                "columnEnd": 12,
+                "columnBegin": 9,
+                "lineBegin": 40,
+                "lineEnd": 40
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "target": {
+                "filepath": "src/lib.rs",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 10,
+                    "columnBegin": 9,
+                    "lineBegin": 39,
+                    "lineEnd": 39
+                }
+            },
+            "range": {
+                "columnEnd": 17,
+                "columnBegin": 16,
+                "lineBegin": 40,
+                "lineEnd": 40
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "target": {
+                "filepath": "src/lib.rs",
+                "repository": "test",
+                "range": {
+                    "columnEnd": 16,
+                    "columnBegin": 13,
+                    "lineBegin": 38,
+                    "lineEnd": 38
+                }
+            },
+            "range": {
+                "columnEnd": 8,
+                "columnBegin": 5,
+                "lineBegin": 42,
+                "lineEnd": 42
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        }
+    ],
+    "definitions": [
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "range": {
+                "columnEnd": 14,
+                "columnBegin": 8,
+                "lineBegin": 12,
+                "lineEnd": 12
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "range": {
+                "columnEnd": 16,
+                "columnBegin": 15,
+                "lineBegin": 12,
+                "lineEnd": 12
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "range": {
+                "columnEnd": 9,
+                "columnBegin": 4,
+                "lineBegin": 16,
+                "lineEnd": 16
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "range": {
+                "columnEnd": 11,
+                "columnBegin": 10,
+                "lineBegin": 16,
+                "lineEnd": 16
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "range": {
+                "columnEnd": 21,
+                "columnBegin": 18,
+                "lineBegin": 16,
+                "lineEnd": 16
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "range": {
+                "columnEnd": 14,
+                "columnBegin": 8,
+                "lineBegin": 22,
+                "lineEnd": 22
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "range": {
+                "columnEnd": 16,
+                "columnBegin": 15,
+                "lineBegin": 22,
+                "lineEnd": 22
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "range": {
+                "columnEnd": 16,
+                "columnBegin": 13,
+                "lineBegin": 23,
+                "lineEnd": 23
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "range": {
+                "columnEnd": 14,
+                "columnBegin": 13,
+                "lineBegin": 24,
+                "lineEnd": 24
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "range": {
+                "columnEnd": 14,
+                "columnBegin": 8,
+                "lineBegin": 37,
+                "lineEnd": 37
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "range": {
+                "columnEnd": 16,
+                "columnBegin": 15,
+                "lineBegin": 37,
+                "lineEnd": 37
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "range": {
+                "columnEnd": 16,
+                "columnBegin": 13,
+                "lineBegin": 38,
+                "lineEnd": 38
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        },
+        {
+            "sym": "test/rs/src/lib.rs/%3Cunknown%3E",
+            "range": {
+                "columnEnd": 10,
+                "columnBegin": 9,
+                "lineBegin": 39,
+                "lineEnd": 39
+            },
+            "attributes": [
+                {
+                    "key": "symbolLanguage",
+                    "attribute": {
+                        "aInteger": 10
+                    }
+                }
+            ]
+        }
+    ]
+}

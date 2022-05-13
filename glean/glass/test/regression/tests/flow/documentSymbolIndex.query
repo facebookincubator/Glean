@@ -1,0 +1,3 @@
+action: documentSymbolIndex
+args: {"include_refs":true,"filepath":"test/imports.js","repository":"test"}
+

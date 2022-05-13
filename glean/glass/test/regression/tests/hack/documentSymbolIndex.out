@@ -1,0 +1,904 @@
+{
+    "revision": "testhash",
+    "size": 31,
+    "symbols": {
+        "10": [
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 7
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "class RefClass"
+                    }
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 10,
+                    "lineEnd": 32
+                },
+                "sym": "test/php/RefClass"
+            },
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 13
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "interface SourceInterface"
+                    }
+                },
+                "range": {
+                    "columnBegin": 27,
+                    "columnEnd": 42,
+                    "lineBegin": 10,
+                    "lineEnd": 10
+                },
+                "sym": "test/php/SourceInterface",
+                "target": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 26,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "11": [
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 31
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "trait SourceTrait"
+                    }
+                },
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 18,
+                    "lineBegin": 11,
+                    "lineEnd": 11
+                },
+                "sym": "test/php/SourceTrait",
+                "target": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 18,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "13": [
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 16
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "const JAZZ"
+                    }
+                },
+                "range": {
+                    "columnBegin": 13,
+                    "columnEnd": 17,
+                    "lineBegin": 13,
+                    "lineEnd": 13
+                },
+                "sym": "test/php/RefClass/JAZZ"
+            }
+        ],
+        "15": [
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 9
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "raz"
+                    }
+                },
+                "range": {
+                    "columnBegin": 15,
+                    "columnEnd": 25,
+                    "lineBegin": 15,
+                    "lineEnd": 15
+                },
+                "sym": "test/php/RefClass/raz"
+            }
+        ],
+        "17": [
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 8
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "public static RefClass::foo (): int"
+                    }
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 4,
+                    "lineBegin": 17,
+                    "lineEnd": 19
+                },
+                "sym": "test/php/RefClass/foo"
+            }
+        ],
+        "18": [
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 16
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "const WALDO"
+                    }
+                },
+                "range": {
+                    "columnBegin": 22,
+                    "columnEnd": 27,
+                    "lineBegin": 18,
+                    "lineEnd": 18
+                },
+                "sym": "test/php/WALDO",
+                "target": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 16,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 14
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "function corge (): int"
+                    }
+                },
+                "range": {
+                    "columnBegin": 12,
+                    "columnEnd": 17,
+                    "lineBegin": 18,
+                    "lineEnd": 18
+                },
+                "sym": "test/php/corge",
+                "target": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 15,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "21": [
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 8
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "public RefClass::bazza (): int"
+                    }
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 4,
+                    "lineBegin": 21,
+                    "lineEnd": 23
+                },
+                "sym": "test/php/RefClass/bazza"
+            }
+        ],
+        "22": [
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 14
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "function corge (): int"
+                    }
+                },
+                "range": {
+                    "columnBegin": 16,
+                    "columnEnd": 21,
+                    "lineBegin": 22,
+                    "lineEnd": 22
+                },
+                "sym": "test/php/corge",
+                "target": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 15,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "25": [
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 8
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "public RefClass::bar (SourceClass::T $param): int"
+                    }
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 4,
+                    "lineBegin": 25,
+                    "lineEnd": 31
+                },
+                "sym": "test/php/RefClass/bar"
+            },
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 7
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "class SourceClass"
+                    }
+                },
+                "range": {
+                    "columnBegin": 23,
+                    "columnEnd": 34,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                },
+                "sym": "test/php/SourceClass",
+                "target": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 18,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 2
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "const T"
+                    }
+                },
+                "range": {
+                    "columnBegin": 36,
+                    "columnEnd": 37,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                },
+                "sym": "test/php/SourceClass/T",
+                "target": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 15,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "26": [
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 7
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "class SourceClass"
+                    }
+                },
+                "range": {
+                    "columnBegin": 19,
+                    "columnEnd": 30,
+                    "lineBegin": 26,
+                    "lineEnd": 26
+                },
+                "sym": "test/php/SourceClass",
+                "target": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 18,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "27": [
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 16
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "const JAZZ"
+                    }
+                },
+                "range": {
+                    "columnBegin": 67,
+                    "columnEnd": 71,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test/php/RefClass/JAZZ",
+                "target": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 17,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 7
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "class SourceClass"
+                    }
+                },
+                "range": {
+                    "columnBegin": 26,
+                    "columnEnd": 37,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test/php/SourceClass",
+                "target": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 18,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 16
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "const BAZ"
+                    }
+                },
+                "range": {
+                    "columnBegin": 39,
+                    "columnEnd": 42,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test/php/SourceClass/BAZ",
+                "target": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 16,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 9
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "daz"
+                    }
+                },
+                "range": {
+                    "columnBegin": 54,
+                    "columnEnd": 57,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test/php/SourceClass/daz",
+                "target": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 18,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 16
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "const WALDO"
+                    }
+                },
+                "range": {
+                    "columnBegin": 74,
+                    "columnEnd": 79,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test/php/WALDO",
+                "target": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 16,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 14
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "function corge (): int"
+                    }
+                },
+                "range": {
+                    "columnBegin": 16,
+                    "columnEnd": 21,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test/php/corge",
+                "target": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 15,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "28": [
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 12
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "enum Position"
+                    }
+                },
+                "range": {
+                    "columnBegin": 40,
+                    "columnEnd": 48,
+                    "lineBegin": 28,
+                    "lineEnd": 28
+                },
+                "sym": "test/php/Position",
+                "target": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 14,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 12
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "Position::Right"
+                    }
+                },
+                "range": {
+                    "columnBegin": 50,
+                    "columnEnd": 55,
+                    "lineBegin": 28,
+                    "lineEnd": 28
+                },
+                "sym": "test/php/Position/Right",
+                "target": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 8,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 8
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "public static RefClass::foo (): int"
+                    }
+                },
+                "range": {
+                    "columnBegin": 65,
+                    "columnEnd": 68,
+                    "lineBegin": 28,
+                    "lineEnd": 28
+                },
+                "sym": "test/php/RefClass/foo",
+                "target": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 26,
+                        "columnEnd": 29,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 8
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "public SourceTrait::quux (int $i): int"
+                    }
+                },
+                "range": {
+                    "columnBegin": 23,
+                    "columnEnd": 27,
+                    "lineBegin": 28,
+                    "lineEnd": 28
+                },
+                "sym": "test/php/SourceTrait/quux",
+                "target": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 23,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "29": [
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 8
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "public RefClass::bazza (): int"
+                    }
+                },
+                "range": {
+                    "columnBegin": 36,
+                    "columnEnd": 41,
+                    "lineBegin": 29,
+                    "lineEnd": 29
+                },
+                "sym": "test/php/RefClass/bazza",
+                "target": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 24,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 9
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "raz"
+                    }
+                },
+                "range": {
+                    "columnBegin": 23,
+                    "columnEnd": 26,
+                    "lineBegin": 29,
+                    "lineEnd": 29
+                },
+                "sym": "test/php/RefClass/raz",
+                "target": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 19,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 7
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "class SourceClass"
+                    }
+                },
+                "range": {
+                    "columnBegin": 46,
+                    "columnEnd": 57,
+                    "lineBegin": 29,
+                    "lineEnd": 29
+                },
+                "sym": "test/php/SourceClass",
+                "target": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 18,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 8
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "public SuperClass::superAdd (int $i, int $i): int"
+                    }
+                },
+                "range": {
+                    "columnBegin": 59,
+                    "columnEnd": 67,
+                    "lineBegin": 29,
+                    "lineEnd": 29
+                },
+                "sym": "test/php/SuperClass/superAdd",
+                "target": {
+                    "filepath": "www/SuperClass.php",
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 27,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "30": [
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 12
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "enum Position"
+                    }
+                },
+                "range": {
+                    "columnBegin": 46,
+                    "columnEnd": 54,
+                    "lineBegin": 30,
+                    "lineEnd": 30
+                },
+                "sym": "test/php/Position",
+                "target": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 14,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 12
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "Position::Center"
+                    }
+                },
+                "range": {
+                    "columnBegin": 56,
+                    "columnEnd": 62,
+                    "lineBegin": 30,
+                    "lineEnd": 30
+                },
+                "sym": "test/php/Position/Center",
+                "target": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 9,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolKind": {
+                        "aInteger": 14
+                    },
+                    "symbolLanguage": {
+                        "aInteger": 3
+                    },
+                    "symbolSignature": {
+                        "aString": "function corge (): int"
+                    }
+                },
+                "range": {
+                    "columnBegin": 66,
+                    "columnEnd": 71,
+                    "lineBegin": 30,
+                    "lineEnd": 30
+                },
+                "sym": "test/php/corge",
+                "target": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 15,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                }
+            }
+        ]
+    }
+}

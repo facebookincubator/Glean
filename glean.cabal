@@ -1951,13 +1951,18 @@ library glass-regression
     exposed-modules:
         Glean.Glass.Regression.Tests
         Glean.Glass.Regression.Util
+        Glean.Glass.Regression.Snapshot
     build-depends:
         glean:client-hs,
         glean:glass-lib,
         glean:if-glass-hs,
+        glean:indexers,
         glean:logger,
+        glean:regression-test-lib,
         glean:stubs,
         glean:util,
+        aeson-pretty,
+        yaml
 
 -- common to all regression tests
 common glass-regression-deps

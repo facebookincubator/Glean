@@ -1,0 +1,19 @@
+{
+    "comments": [],
+    "location": {
+        "filepath": "test/imports.js",
+        "range": {
+            "columnBegin": 21,
+            "columnEnd": 22,
+            "lineBegin": 29,
+            "lineEnd": 29
+        },
+        "repository": "test"
+    },
+    "name": {
+        "container": "imports",
+        "localName": "C"
+    },
+    "repo_hash": "testhash",
+    "sym": "test/js/imports/C"
+}

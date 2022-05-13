@@ -12,16 +12,20 @@ import Data.Bifunctor
 import Data.Text (Text)
 import Test.HUnit
 
-import Glean
 import Glean.Indexer.Hack as Hack
-import Glean.Util.Some
-import Glean.Regression.Test
-
 import Glean.Glass.Types
 import Glean.Glass.Regression.Tests
+import Glean.Glass.Regression.Snapshot as Glass
 
 main :: IO ()
-main = mainTestIndex "glass-regression-hack" Hack.indexer $ \get -> TestList
+main = mainGlassSnapshot testName testPath testIndexer unitTests
+  where
+    testName = "glass-regression-hack"
+    testPath = "glean/glass/test/regression/tests/hack"
+    testIndexer = Hack.indexer
+
+unitTests :: Getter -> [Test]
+unitTests get =
   [ testDocumentSymbolListX (Path "www/RefClass.php") get
   , testSymbolIdLookup get
   , testHackFindReferences get
@@ -30,7 +34,7 @@ main = mainTestIndex "glass-regression-hack" Hack.indexer $ \get -> TestList
   , testHackSearchRelated get
   ]
 
-testSymbolIdLookup :: IO (Some Backend, Repo) -> Test
+testSymbolIdLookup :: Getter -> Test
 testSymbolIdLookup get = TestLabel "describeSymbol" $ TestList [
   -- class
   "test/php/SourceClass" --> "www/SourceClass.php",
@@ -67,7 +71,7 @@ testSymbolIdLookup get = TestLabel "describeSymbol" $ TestList [
         (Path expected)
         get
 
-testHackFindReferences :: IO (Some Backend, Repo) -> Test
+testHackFindReferences :: Getter -> Test
 testHackFindReferences get = TestLabel "findReferences" $ TestList [
   "test/php/SourceClass" --> [("www/RefClass.php", 4),("www/SourceClass.php", 1)],
   "test/php/SuperClass/BAZ" --> [],
@@ -89,7 +93,7 @@ testHackFindReferences get = TestLabel "findReferences" $ TestList [
         (map (first Path) expected)
         get
 
-testHackDescribeSymbolComments :: IO (Some Backend, Repo) -> Test
+testHackDescribeSymbolComments :: Getter -> Test
 testHackDescribeSymbolComments get = TestLabel "describeSymbolComments" $
   TestList [
     "test/php/SourceClass" --> (10,1)
@@ -102,7 +106,7 @@ testHackDescribeSymbolComments get = TestLabel "describeSymbolComments" $
         expected
         get
 
-testHackAnnotations :: IO (Some Backend, Repo) -> Test
+testHackAnnotations :: Getter -> Test
 testHackAnnotations get = TestLabel "annotations" $ TestList [
   "test/php/SourceClass" --> [("TestAnnotation", "TestAnnotation(\"Text\")")]
   ]
@@ -114,7 +118,7 @@ testHackAnnotations get = TestLabel "annotations" $ TestList [
         expected
         get
 
-testHackSearchRelated :: IO (Some Backend, Repo) -> Test
+testHackSearchRelated :: Getter -> Test
 testHackSearchRelated get = TestLabel "searchRelated" $ TestList $ concat [
   "test/php/RefClass" `extends` "test/php/SourceInterface",
   "test/php/RefClass" `extends` "test/php/SourceTrait",

@@ -1,0 +1,21 @@
+{
+    "annotations": [],
+    "comments": [],
+    "kind": 12,
+    "location": {
+        "filepath": "www/TopLevel.php",
+        "range": {
+            "columnBegin": 1,
+            "columnEnd": 2,
+            "lineBegin": 16,
+            "lineEnd": 22
+        },
+        "repository": "test"
+    },
+    "name": {
+        "container": "",
+        "localName": "Position"
+    },
+    "repo_hash": "testhash",
+    "sym": "test/php/Position"
+}

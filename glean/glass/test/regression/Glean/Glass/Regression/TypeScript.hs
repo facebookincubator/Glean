@@ -10,18 +10,32 @@ module Glean.Glass.Regression.TypeScript (main) where
 
 import Test.HUnit
 
+import Glean.Glass.Regression.Snapshot as Glass
+import Glean.Glass.Regression.Tests
+import Glean.Glass.Types
 import Glean.Indexer.Typescript as Typescript
 import Glean.Regression.Test
 
-import Glean.Glass.Types
-import Glean.Glass.Regression.Tests
+{-
+-- Until monikers for local ids are stable
+main :: IO ()
+main = mainGlassSnapshot testName testPath testIndexer unitTests
+  where
+    testName = "glass-regression-typescript"
+    testPath = "glean/glass/test/regression/tests/typescript"
+    testIndexer = TypeScript.indexer
+-}
 
 main :: IO ()
-main = mainTestIndex "glass-regression-typescript" Typescript.indexer $ \get -> TestList
+main = mainTestIndex "glass-regression-typescript" Typescript.indexer $
+  TestList . unitTests
+
+-- some legacy unit tests
+unitTests :: Glass.Getter -> [Test]
+unitTests get =
   [ testDocumentSymbolListX path get
   , testResolveSymbol sym path get
   , testDescribeSymbolMatchesPath sym path get
---  , testSearchSymbolByName "createTempRepo" sym get
   ]
   where
     path = Path "glean/lang/typescript/tests/cases/xrefs/example.ts"
