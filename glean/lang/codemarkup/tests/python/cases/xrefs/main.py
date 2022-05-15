@@ -7,7 +7,7 @@
 # flake8: noqa
 
 from big_lib import big_func  # noqa
-from lib import HelperClass as Helper, func, helper_func
+from lib import func, helper_func, HelperClass as Helper
 
 
 def f() -> "None":
