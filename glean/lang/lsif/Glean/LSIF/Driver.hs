@@ -110,8 +110,10 @@ dropPrefixPaths = do
   -- typescript system paths
     [ home <> "/.config/yarn/global/node_modules"
     , "/usr/local/share/.config/yarn/global/node_modules"
+    -- tests/CI install path
+    , home <> "/.hsthrift/lib/node_modules"
    -- typescript with npm
-    , "/usr/lib/node_modules/"
+    , "/usr/lib/node_modules"
    -- rust system paths
     , "/usr/lib"
     , home <> "/.cargo/registry"

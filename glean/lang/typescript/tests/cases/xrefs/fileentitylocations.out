@@ -2,6 +2,146 @@
   "@generated",
   {
     "key": {
+      "file": {
+        "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+      },
+      "location": {
+        "name": "Error",
+        "file": {
+          "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+        },
+        "location": {
+          "range": {
+            "file": {
+              "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+            },
+            "lineBegin": 972,
+            "columnBegin": 11,
+            "lineEnd": 972,
+            "columnEnd": 15
+          }
+        }
+      },
+      "entity": {
+        "lsif": {
+          "typescript": {
+            "defn": {
+              "key": {
+                "defn": {
+                  "key": {
+                    "file": {
+                      "key": {
+                        "file": {
+                          "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+                        },
+                        "language": 49
+                      }
+                    },
+                    "range": {
+                      "key": {
+                        "range": {
+                          "lineBegin": 972,
+                          "columnBegin": 11,
+                          "lineEnd": 972,
+                          "columnEnd": 15
+                        },
+                        "fullRange": {
+                          "lineBegin": 972,
+                          "columnBegin": 1,
+                          "lineEnd": 976,
+                          "columnEnd": 1
+                        },
+                        "text": { "key": "Error" }
+                      }
+                    }
+                  }
+                },
+                "moniker": {
+                  "key": {
+                    "kind": 0,
+                    "scheme": { "key": "tsc" },
+                    "ident": { "key": "Error" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+      },
+      "location": {
+        "name": "Error",
+        "file": {
+          "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+        },
+        "location": {
+          "range": {
+            "file": {
+              "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+            },
+            "lineBegin": 984,
+            "columnBegin": 13,
+            "lineEnd": 984,
+            "columnEnd": 17
+          }
+        }
+      },
+      "entity": {
+        "lsif": {
+          "typescript": {
+            "defn": {
+              "key": {
+                "defn": {
+                  "key": {
+                    "file": {
+                      "key": {
+                        "file": {
+                          "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+                        },
+                        "language": 49
+                      }
+                    },
+                    "range": {
+                      "key": {
+                        "range": {
+                          "lineBegin": 984,
+                          "columnBegin": 13,
+                          "lineEnd": 984,
+                          "columnEnd": 17
+                        },
+                        "fullRange": {
+                          "lineBegin": 984,
+                          "columnBegin": 13,
+                          "lineEnd": 984,
+                          "columnEnd": 35
+                        },
+                        "text": { "key": "Error" }
+                      }
+                    }
+                  }
+                },
+                "moniker": {
+                  "key": {
+                    "kind": 0,
+                    "scheme": { "key": "tsc" },
+                    "ident": { "key": "Error" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
       "location": {
         "name": "",
@@ -123,146 +263,6 @@
                     "kind": 0,
                     "scheme": { "key": "tsc" },
                     "ident": { "key": "example:createTempRepo" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": "node_modules/@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
-      },
-      "location": {
-        "name": "Error",
-        "file": {
-          "key": "node_modules/@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
-        },
-        "location": {
-          "range": {
-            "file": {
-              "key": "node_modules/@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
-            },
-            "lineBegin": 972,
-            "columnBegin": 11,
-            "lineEnd": 972,
-            "columnEnd": 15
-          }
-        }
-      },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "defn": {
-                  "key": {
-                    "file": {
-                      "key": {
-                        "file": {
-                          "key": "node_modules/@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
-                        },
-                        "language": 49
-                      }
-                    },
-                    "range": {
-                      "key": {
-                        "range": {
-                          "lineBegin": 972,
-                          "columnBegin": 11,
-                          "lineEnd": 972,
-                          "columnEnd": 15
-                        },
-                        "fullRange": {
-                          "lineBegin": 972,
-                          "columnBegin": 1,
-                          "lineEnd": 976,
-                          "columnEnd": 1
-                        },
-                        "text": { "key": "Error" }
-                      }
-                    }
-                  }
-                },
-                "moniker": {
-                  "key": {
-                    "kind": 0,
-                    "scheme": { "key": "tsc" },
-                    "ident": { "key": "Error" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": "node_modules/@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
-      },
-      "location": {
-        "name": "Error",
-        "file": {
-          "key": "node_modules/@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
-        },
-        "location": {
-          "range": {
-            "file": {
-              "key": "node_modules/@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
-            },
-            "lineBegin": 984,
-            "columnBegin": 13,
-            "lineEnd": 984,
-            "columnEnd": 17
-          }
-        }
-      },
-      "entity": {
-        "lsif": {
-          "typescript": {
-            "defn": {
-              "key": {
-                "defn": {
-                  "key": {
-                    "file": {
-                      "key": {
-                        "file": {
-                          "key": "node_modules/@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
-                        },
-                        "language": 49
-                      }
-                    },
-                    "range": {
-                      "key": {
-                        "range": {
-                          "lineBegin": 984,
-                          "columnBegin": 13,
-                          "lineEnd": 984,
-                          "columnEnd": 17
-                        },
-                        "fullRange": {
-                          "lineBegin": 984,
-                          "columnBegin": 13,
-                          "lineEnd": 984,
-                          "columnEnd": 35
-                        },
-                        "text": { "key": "Error" }
-                      }
-                    }
-                  }
-                },
-                "moniker": {
-                  "key": {
-                    "kind": 0,
-                    "scheme": { "key": "tsc" },
-                    "ident": { "key": "Error" }
                   }
                 }
               }
