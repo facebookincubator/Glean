@@ -7,6 +7,78 @@
           "file": {
             "key": {
               "file": {
+                "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 972,
+                "columnBegin": 11,
+                "lineEnd": 972,
+                "columnEnd": 15
+              },
+              "fullRange": {
+                "lineBegin": 972,
+                "columnBegin": 1,
+                "lineEnd": 976,
+                "columnEnd": 1
+              },
+              "text": { "key": "Error" }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": { "text": { "key": "interface Error" }, "language": 49 }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 984,
+                "columnBegin": 13,
+                "lineEnd": 984,
+                "columnEnd": 17
+              },
+              "fullRange": {
+                "lineBegin": 984,
+                "columnBegin": 13,
+                "lineEnd": 984,
+                "columnEnd": 35
+              },
+              "text": { "key": "Error" }
+            }
+          }
+        }
+      },
+      "hover": {
+        "key": { "text": { "key": "interface Error" }, "language": 49 }
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
                 "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
               },
               "language": 49
@@ -1068,78 +1140,6 @@
       },
       "hover": {
         "key": { "text": { "key": "(property) git: Git" }, "language": 49 }
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "global/node_modules/typescript-lsif/lib/lib.es5.d.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 972,
-                "columnBegin": 11,
-                "lineEnd": 972,
-                "columnEnd": 15
-              },
-              "fullRange": {
-                "lineBegin": 972,
-                "columnBegin": 1,
-                "lineEnd": 976,
-                "columnEnd": 1
-              },
-              "text": { "key": "Error" }
-            }
-          }
-        }
-      },
-      "hover": {
-        "key": { "text": { "key": "interface Error" }, "language": 49 }
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "file": {
-            "key": {
-              "file": {
-                "key": "global/node_modules/typescript-lsif/lib/lib.es5.d.ts"
-              },
-              "language": 49
-            }
-          },
-          "range": {
-            "key": {
-              "range": {
-                "lineBegin": 984,
-                "columnBegin": 13,
-                "lineEnd": 984,
-                "columnEnd": 17
-              },
-              "fullRange": {
-                "lineBegin": 984,
-                "columnBegin": 13,
-                "lineEnd": 984,
-                "columnEnd": 35
-              },
-              "text": { "key": "Error" }
-            }
-          }
-        }
-      },
-      "hover": {
-        "key": { "text": { "key": "interface Error" }, "language": 49 }
       }
     }
   }

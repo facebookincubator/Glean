@@ -2,1167 +2,1167 @@
     "revision": "testhash",
     "size": 52,
     "symbols": {
-        "40": [
+        "11": [
             {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 7,
-                        "columnBegin": 2,
-                        "lineBegin": 25,
-                        "lineEnd": 25
-                    }
-                },
-                "range": {
-                    "columnEnd": 36,
-                    "columnBegin": 31,
-                    "lineBegin": 40,
-                    "lineEnd": 40
-                },
                 "attributes": {
                     "symbolLanguage": {
                         "aInteger": 14
                     }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 7,
-                        "columnBegin": 6,
-                        "lineBegin": 35,
-                        "lineEnd": 35
-                    }
                 },
                 "range": {
-                    "columnEnd": 38,
-                    "columnBegin": 37,
-                    "lineBegin": 40,
-                    "lineEnd": 40
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            }
-        ],
-        "36": [
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 7,
-                        "columnBegin": 2,
-                        "lineBegin": 25,
-                        "lineEnd": 25
-                    }
-                },
-                "range": {
-                    "columnEnd": 29,
-                    "columnBegin": 24,
-                    "lineBegin": 36,
-                    "lineEnd": 36
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 7,
-                        "columnBegin": 6,
-                        "lineBegin": 35,
-                        "lineEnd": 35
-                    }
-                },
-                "range": {
-                    "columnEnd": 31,
-                    "columnBegin": 30,
-                    "lineBegin": 36,
-                    "lineEnd": 36
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 7,
-                        "columnBegin": 2,
-                        "lineBegin": 25,
-                        "lineEnd": 25
-                    }
-                },
-                "range": {
-                    "columnEnd": 66,
-                    "columnBegin": 61,
-                    "lineBegin": 36,
-                    "lineEnd": 36
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 7,
-                        "columnBegin": 6,
-                        "lineBegin": 35,
-                        "lineEnd": 35
-                    }
-                },
-                "range": {
-                    "columnEnd": 68,
-                    "columnBegin": 67,
-                    "lineBegin": 36,
-                    "lineEnd": 36
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            }
-        ],
-        "46": [
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "range": {
-                    "columnEnd": 14,
-                    "columnBegin": 4,
-                    "lineBegin": 46,
-                    "lineEnd": 46
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 8,
-                        "columnBegin": 4,
-                        "lineBegin": 44,
-                        "lineEnd": 44
-                    }
-                },
-                "range": {
-                    "columnEnd": 36,
-                    "columnBegin": 32,
-                    "lineBegin": 46,
-                    "lineEnd": 46
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            }
-        ],
-        "48": [
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 8,
-                        "columnBegin": 4,
-                        "lineBegin": 44,
-                        "lineEnd": 44
-                    }
-                },
-                "range": {
-                    "columnEnd": 9,
-                    "columnBegin": 5,
-                    "lineBegin": 48,
-                    "lineEnd": 48
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 8,
-                        "columnBegin": 4,
-                        "lineBegin": 44,
-                        "lineEnd": 44
-                    }
-                },
-                "range": {
-                    "columnEnd": 16,
-                    "columnBegin": 12,
-                    "lineBegin": 48,
-                    "lineEnd": 48
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 14,
-                        "columnBegin": 4,
-                        "lineBegin": 46,
-                        "lineEnd": 46
-                    }
-                },
-                "range": {
-                    "columnEnd": 31,
-                    "columnBegin": 21,
-                    "lineBegin": 48,
-                    "lineEnd": 48
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            }
-        ],
-        "51": [
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 14,
-                        "columnBegin": 6,
-                        "lineBegin": 27,
-                        "lineEnd": 27
-                    }
-                },
-                "range": {
-                    "columnEnd": 12,
-                    "columnBegin": 4,
-                    "lineBegin": 51,
-                    "lineEnd": 51
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 14,
-                        "columnBegin": 2,
-                        "lineBegin": 28,
-                        "lineEnd": 28
-                    }
-                },
-                "range": {
-                    "columnEnd": 40,
-                    "columnBegin": 28,
-                    "lineBegin": 51,
-                    "lineEnd": 51
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 8,
-                        "columnBegin": 4,
-                        "lineBegin": 44,
-                        "lineEnd": 44
-                    }
-                },
-                "range": {
-                    "columnEnd": 46,
-                    "columnBegin": 42,
-                    "lineBegin": 51,
-                    "lineEnd": 51
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            }
-        ],
-        "67": [
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 17,
-                        "columnBegin": 6,
-                        "lineBegin": 58,
-                        "lineEnd": 58
-                    }
-                },
-                "range": {
-                    "columnEnd": 20,
                     "columnBegin": 9,
-                    "lineBegin": 67,
-                    "lineEnd": 67
+                    "columnEnd": 17,
+                    "lineBegin": 11,
+                    "lineEnd": 11
                 },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
+                "sym": "test/go/lsif/github.com/facebook/time"
             }
         ],
         "24": [
             {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
                 "range": {
+                    "columnBegin": 14,
                     "columnEnd": 18,
-                    "columnBegin": 14,
                     "lineBegin": 24,
                     "lineEnd": 24
                 },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
+            },
+            {
                 "attributes": {
                     "symbolLanguage": {
                         "aInteger": 14
                     }
-                }
-            },
-            {
-                "sym": "test/go/lsif/github.com/facebook/time%3ACompute",
+                },
                 "range": {
+                    "columnBegin": 6,
                     "columnEnd": 13,
-                    "columnBegin": 6,
                     "lineBegin": 24,
                     "lineEnd": 24
                 },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            }
-        ],
-        "60": [
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "range": {
-                    "columnEnd": 7,
-                    "columnBegin": 6,
-                    "lineBegin": 60,
-                    "lineEnd": 60
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 7,
-                        "columnBegin": 6,
-                        "lineBegin": 60,
-                        "lineEnd": 60
-                    }
-                },
-                "range": {
-                    "columnEnd": 15,
-                    "columnBegin": 14,
-                    "lineBegin": 60,
-                    "lineEnd": 60
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 7,
-                        "columnBegin": 6,
-                        "lineBegin": 60,
-                        "lineEnd": 60
-                    }
-                },
-                "range": {
-                    "columnEnd": 22,
-                    "columnBegin": 21,
-                    "lineBegin": 60,
-                    "lineEnd": 60
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            }
-        ],
-        "29": [
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 24,
-                        "columnBegin": 23,
-                        "lineBegin": 28,
-                        "lineEnd": 28
-                    }
-                },
-                "range": {
-                    "columnEnd": 7,
-                    "columnBegin": 6,
-                    "lineBegin": 29,
-                    "lineEnd": 29
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 24,
-                        "columnBegin": 23,
-                        "lineBegin": 28,
-                        "lineEnd": 28
-                    }
-                },
-                "range": {
-                    "columnEnd": 19,
-                    "columnBegin": 18,
-                    "lineBegin": 29,
-                    "lineEnd": 29
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            }
-        ],
-        "44": [
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "range": {
-                    "columnEnd": 8,
-                    "columnBegin": 4,
-                    "lineBegin": 44,
-                    "lineEnd": 44
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 7,
-                        "columnBegin": 2,
-                        "lineBegin": 25,
-                        "lineEnd": 25
-                    }
-                },
-                "range": {
-                    "columnEnd": 17,
-                    "columnBegin": 12,
-                    "lineBegin": 44,
-                    "lineEnd": 44
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 7,
-                        "columnBegin": 6,
-                        "lineBegin": 35,
-                        "lineEnd": 35
-                    }
-                },
-                "range": {
-                    "columnEnd": 19,
-                    "columnBegin": 18,
-                    "lineBegin": 44,
-                    "lineEnd": 44
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            }
-        ],
-        "58": [
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "range": {
-                    "columnEnd": 17,
-                    "columnBegin": 6,
-                    "lineBegin": 58,
-                    "lineEnd": 58
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            }
-        ],
-        "62": [
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 17,
-                        "columnBegin": 6,
-                        "lineBegin": 58,
-                        "lineEnd": 58
-                    }
-                },
-                "range": {
-                    "columnEnd": 15,
-                    "columnBegin": 4,
-                    "lineBegin": 62,
-                    "lineEnd": 62
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            }
-        ],
-        "32": [
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 24,
-                        "columnBegin": 23,
-                        "lineBegin": 28,
-                        "lineEnd": 28
-                    }
-                },
-                "range": {
-                    "columnEnd": 11,
-                    "columnBegin": 10,
-                    "lineBegin": 32,
-                    "lineEnd": 32
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            }
-        ],
-        "35": [
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "range": {
-                    "columnEnd": 7,
-                    "columnBegin": 6,
-                    "lineBegin": 35,
-                    "lineEnd": 35
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 7,
-                        "columnBegin": 6,
-                        "lineBegin": 35,
-                        "lineEnd": 35
-                    }
-                },
-                "range": {
-                    "columnEnd": 15,
-                    "columnBegin": 14,
-                    "lineBegin": 35,
-                    "lineEnd": 35
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 7,
-                        "columnBegin": 2,
-                        "lineBegin": 25,
-                        "lineEnd": 25
-                    }
-                },
-                "range": {
-                    "columnEnd": 27,
-                    "columnBegin": 22,
-                    "lineBegin": 35,
-                    "lineEnd": 35
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 7,
-                        "columnBegin": 6,
-                        "lineBegin": 35,
-                        "lineEnd": 35
-                    }
-                },
-                "range": {
-                    "columnEnd": 31,
-                    "columnBegin": 30,
-                    "lineBegin": 35,
-                    "lineEnd": 35
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            }
-        ],
-        "47": [
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 14,
-                        "columnBegin": 4,
-                        "lineBegin": 46,
-                        "lineEnd": 46
-                    }
-                },
-                "range": {
-                    "columnEnd": 17,
-                    "columnBegin": 7,
-                    "lineBegin": 47,
-                    "lineEnd": 47
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            }
-        ],
-        "11": [
-            {
-                "sym": "test/go/lsif/github.com/facebook/time",
-                "range": {
-                    "columnEnd": 17,
-                    "columnBegin": 9,
-                    "lineBegin": 11,
-                    "lineEnd": 11
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            }
-        ],
-        "64": [
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 17,
-                        "columnBegin": 6,
-                        "lineBegin": 58,
-                        "lineEnd": 58
-                    }
-                },
-                "range": {
-                    "columnEnd": 14,
-                    "columnBegin": 3,
-                    "lineBegin": 64,
-                    "lineEnd": 64
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 6,
-                        "columnBegin": 2,
-                        "lineBegin": 56,
-                        "lineEnd": 56
-                    }
-                },
-                "range": {
-                    "columnEnd": 22,
-                    "columnBegin": 18,
-                    "lineBegin": 64,
-                    "lineEnd": 64
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 7,
-                        "columnBegin": 6,
-                        "lineBegin": 60,
-                        "lineEnd": 60
-                    }
-                },
-                "range": {
-                    "columnEnd": 24,
-                    "columnBegin": 23,
-                    "lineBegin": 64,
-                    "lineEnd": 64
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 7,
-                        "columnBegin": 6,
-                        "lineBegin": 60,
-                        "lineEnd": 60
-                    }
-                },
-                "range": {
-                    "columnEnd": 31,
-                    "columnBegin": 30,
-                    "lineBegin": 64,
-                    "lineEnd": 64
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            }
-        ],
-        "39": [
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 14,
-                        "columnBegin": 6,
-                        "lineBegin": 27,
-                        "lineEnd": 27
-                    }
-                },
-                "range": {
-                    "columnEnd": 12,
-                    "columnBegin": 4,
-                    "lineBegin": 39,
-                    "lineEnd": 39
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 14,
-                        "columnBegin": 2,
-                        "lineBegin": 28,
-                        "lineEnd": 28
-                    }
-                },
-                "range": {
-                    "columnEnd": 40,
-                    "columnBegin": 28,
-                    "lineBegin": 39,
-                    "lineEnd": 39
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 7,
-                        "columnBegin": 2,
-                        "lineBegin": 25,
-                        "lineEnd": 25
-                    }
-                },
-                "range": {
-                    "columnEnd": 47,
-                    "columnBegin": 42,
-                    "lineBegin": 39,
-                    "lineEnd": 39
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 7,
-                        "columnBegin": 6,
-                        "lineBegin": 35,
-                        "lineEnd": 35
-                    }
-                },
-                "range": {
-                    "columnEnd": 49,
-                    "columnBegin": 48,
-                    "lineBegin": 39,
-                    "lineEnd": 39
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 7,
-                        "columnBegin": 2,
-                        "lineBegin": 25,
-                        "lineEnd": 25
-                    }
-                },
-                "range": {
-                    "columnEnd": 62,
-                    "columnBegin": 57,
-                    "lineBegin": 39,
-                    "lineEnd": 39
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 7,
-                        "columnBegin": 6,
-                        "lineBegin": 35,
-                        "lineEnd": 35
-                    }
-                },
-                "range": {
-                    "columnEnd": 64,
-                    "columnBegin": 63,
-                    "lineBegin": 39,
-                    "lineEnd": 39
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
+                "sym": "test/go/lsif/github.com/facebook/time%3ACompute"
             }
         ],
         "25": [
             {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "range": {
-                    "columnEnd": 7,
-                    "columnBegin": 2,
-                    "lineBegin": 25,
-                    "lineEnd": 25
-                },
                 "attributes": {
                     "symbolLanguage": {
                         "aInteger": 14
                     }
-                }
+                },
+                "range": {
+                    "columnBegin": 2,
+                    "columnEnd": 7,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
             },
             {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 32,
+                    "columnEnd": 36,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                },
                 "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
                     "range": {
-                        "columnEnd": 18,
                         "columnBegin": 14,
+                        "columnEnd": 18,
                         "lineBegin": 24,
                         "lineEnd": 24
-                    }
-                },
-                "range": {
-                    "columnEnd": 36,
-                    "columnBegin": 32,
-                    "lineBegin": 25,
-                    "lineEnd": 25
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            }
-        ],
-        "61": [
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 17,
-                        "columnBegin": 6,
-                        "lineBegin": 58,
-                        "lineEnd": 58
-                    }
-                },
-                "range": {
-                    "columnEnd": 17,
-                    "columnBegin": 6,
-                    "lineBegin": 61,
-                    "lineEnd": 61
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            }
-        ],
-        "56": [
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "range": {
-                    "columnEnd": 6,
-                    "columnBegin": 2,
-                    "lineBegin": 56,
-                    "lineEnd": 56
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                }
-            },
-            {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "repository": "test",
-                    "range": {
-                        "columnEnd": 14,
-                        "columnBegin": 6,
-                        "lineBegin": 27,
-                        "lineEnd": 27
-                    }
-                },
-                "range": {
-                    "columnEnd": 52,
-                    "columnBegin": 44,
-                    "lineBegin": 56,
-                    "lineEnd": 56
-                },
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
+                    },
+                    "repository": "test"
                 }
             }
         ],
         "27": [
             {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "range": {
-                    "columnEnd": 14,
-                    "columnBegin": 6,
-                    "lineBegin": 27,
-                    "lineEnd": 27
-                },
                 "attributes": {
                     "symbolLanguage": {
                         "aInteger": 14
                     }
-                }
+                },
+                "range": {
+                    "columnBegin": 6,
+                    "columnEnd": 14,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
             }
         ],
         "28": [
             {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "range": {
-                    "columnEnd": 14,
-                    "columnBegin": 2,
-                    "lineBegin": 28,
-                    "lineEnd": 28
-                },
                 "attributes": {
                     "symbolLanguage": {
                         "aInteger": 14
                     }
+                },
+                "range": {
+                    "columnBegin": 2,
+                    "columnEnd": 14,
+                    "lineBegin": 28,
+                    "lineEnd": 28
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 23,
+                    "columnEnd": 24,
+                    "lineBegin": 28,
+                    "lineEnd": 28
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
+            }
+        ],
+        "29": [
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 6,
+                    "columnEnd": 7,
+                    "lineBegin": 29,
+                    "lineEnd": 29
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 24,
+                        "lineBegin": 28,
+                        "lineEnd": 28
+                    },
+                    "repository": "test"
                 }
             },
             {
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "range": {
-                    "columnEnd": 24,
-                    "columnBegin": 23,
-                    "lineBegin": 28,
-                    "lineEnd": 28
-                },
                 "attributes": {
                     "symbolLanguage": {
                         "aInteger": 14
                     }
+                },
+                "range": {
+                    "columnBegin": 18,
+                    "columnEnd": 19,
+                    "lineBegin": 29,
+                    "lineEnd": 29
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 24,
+                        "lineBegin": 28,
+                        "lineEnd": 28
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "32": [
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 10,
+                    "columnEnd": 11,
+                    "lineBegin": 32,
+                    "lineEnd": 32
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 24,
+                        "lineBegin": 28,
+                        "lineEnd": 28
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "35": [
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 6,
+                    "columnEnd": 7,
+                    "lineBegin": 35,
+                    "lineEnd": 35
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 14,
+                    "columnEnd": 15,
+                    "lineBegin": 35,
+                    "lineEnd": 35
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 35,
+                        "lineEnd": 35
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 22,
+                    "columnEnd": 27,
+                    "lineBegin": 35,
+                    "lineEnd": 35
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 2,
+                        "columnEnd": 7,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 30,
+                    "columnEnd": 31,
+                    "lineBegin": 35,
+                    "lineEnd": 35
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 35,
+                        "lineEnd": 35
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "36": [
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 24,
+                    "columnEnd": 29,
+                    "lineBegin": 36,
+                    "lineEnd": 36
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 2,
+                        "columnEnd": 7,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 30,
+                    "columnEnd": 31,
+                    "lineBegin": 36,
+                    "lineEnd": 36
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 35,
+                        "lineEnd": 35
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 61,
+                    "columnEnd": 66,
+                    "lineBegin": 36,
+                    "lineEnd": 36
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 2,
+                        "columnEnd": 7,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 67,
+                    "columnEnd": 68,
+                    "lineBegin": 36,
+                    "lineEnd": 36
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 35,
+                        "lineEnd": 35
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "39": [
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 4,
+                    "columnEnd": 12,
+                    "lineBegin": 39,
+                    "lineEnd": 39
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 14,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 28,
+                    "columnEnd": 40,
+                    "lineBegin": 39,
+                    "lineEnd": 39
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 2,
+                        "columnEnd": 14,
+                        "lineBegin": 28,
+                        "lineEnd": 28
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 42,
+                    "columnEnd": 47,
+                    "lineBegin": 39,
+                    "lineEnd": 39
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 2,
+                        "columnEnd": 7,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 48,
+                    "columnEnd": 49,
+                    "lineBegin": 39,
+                    "lineEnd": 39
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 35,
+                        "lineEnd": 35
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 57,
+                    "columnEnd": 62,
+                    "lineBegin": 39,
+                    "lineEnd": 39
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 2,
+                        "columnEnd": 7,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 63,
+                    "columnEnd": 64,
+                    "lineBegin": 39,
+                    "lineEnd": 39
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 35,
+                        "lineEnd": 35
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "40": [
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 31,
+                    "columnEnd": 36,
+                    "lineBegin": 40,
+                    "lineEnd": 40
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 2,
+                        "columnEnd": 7,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 37,
+                    "columnEnd": 38,
+                    "lineBegin": 40,
+                    "lineEnd": 40
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 35,
+                        "lineEnd": 35
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "44": [
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 4,
+                    "columnEnd": 8,
+                    "lineBegin": 44,
+                    "lineEnd": 44
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 12,
+                    "columnEnd": 17,
+                    "lineBegin": 44,
+                    "lineEnd": 44
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 2,
+                        "columnEnd": 7,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 18,
+                    "columnEnd": 19,
+                    "lineBegin": 44,
+                    "lineEnd": 44
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 35,
+                        "lineEnd": 35
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "46": [
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 4,
+                    "columnEnd": 14,
+                    "lineBegin": 46,
+                    "lineEnd": 46
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 32,
+                    "columnEnd": 36,
+                    "lineBegin": 46,
+                    "lineEnd": 46
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 4,
+                        "columnEnd": 8,
+                        "lineBegin": 44,
+                        "lineEnd": 44
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "47": [
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 17,
+                    "lineBegin": 47,
+                    "lineEnd": 47
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 4,
+                        "columnEnd": 14,
+                        "lineBegin": 46,
+                        "lineEnd": 46
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "48": [
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 9,
+                    "lineBegin": 48,
+                    "lineEnd": 48
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 4,
+                        "columnEnd": 8,
+                        "lineBegin": 44,
+                        "lineEnd": 44
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 12,
+                    "columnEnd": 16,
+                    "lineBegin": 48,
+                    "lineEnd": 48
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 4,
+                        "columnEnd": 8,
+                        "lineBegin": 44,
+                        "lineEnd": 44
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 21,
+                    "columnEnd": 31,
+                    "lineBegin": 48,
+                    "lineEnd": 48
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 4,
+                        "columnEnd": 14,
+                        "lineBegin": 46,
+                        "lineEnd": 46
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "51": [
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 4,
+                    "columnEnd": 12,
+                    "lineBegin": 51,
+                    "lineEnd": 51
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 14,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 28,
+                    "columnEnd": 40,
+                    "lineBegin": 51,
+                    "lineEnd": 51
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 2,
+                        "columnEnd": 14,
+                        "lineBegin": 28,
+                        "lineEnd": 28
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 42,
+                    "columnEnd": 46,
+                    "lineBegin": 51,
+                    "lineEnd": 51
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 4,
+                        "columnEnd": 8,
+                        "lineBegin": 44,
+                        "lineEnd": 44
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "56": [
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 2,
+                    "columnEnd": 6,
+                    "lineBegin": 56,
+                    "lineEnd": 56
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 44,
+                    "columnEnd": 52,
+                    "lineBegin": 56,
+                    "lineEnd": 56
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 14,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "58": [
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 6,
+                    "columnEnd": 17,
+                    "lineBegin": 58,
+                    "lineEnd": 58
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
+            }
+        ],
+        "60": [
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 6,
+                    "columnEnd": 7,
+                    "lineBegin": 60,
+                    "lineEnd": 60
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 14,
+                    "columnEnd": 15,
+                    "lineBegin": 60,
+                    "lineEnd": 60
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 60,
+                        "lineEnd": 60
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 21,
+                    "columnEnd": 22,
+                    "lineBegin": 60,
+                    "lineEnd": 60
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 60,
+                        "lineEnd": 60
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "61": [
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 6,
+                    "columnEnd": 17,
+                    "lineBegin": 61,
+                    "lineEnd": 61
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 17,
+                        "lineBegin": 58,
+                        "lineEnd": 58
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "62": [
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 4,
+                    "columnEnd": 15,
+                    "lineBegin": 62,
+                    "lineEnd": 62
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 17,
+                        "lineBegin": 58,
+                        "lineEnd": 58
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "64": [
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 14,
+                    "lineBegin": 64,
+                    "lineEnd": 64
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 17,
+                        "lineBegin": 58,
+                        "lineEnd": 58
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 18,
+                    "columnEnd": 22,
+                    "lineBegin": 64,
+                    "lineEnd": 64
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 2,
+                        "columnEnd": 6,
+                        "lineBegin": 56,
+                        "lineEnd": 56
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 23,
+                    "columnEnd": 24,
+                    "lineBegin": 64,
+                    "lineEnd": 64
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 60,
+                        "lineEnd": 60
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 30,
+                    "columnEnd": 31,
+                    "lineBegin": 64,
+                    "lineEnd": 64
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 60,
+                        "lineEnd": 60
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "67": [
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 20,
+                    "lineBegin": 67,
+                    "lineEnd": 67
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 17,
+                        "lineBegin": 58,
+                        "lineEnd": 58
+                    },
+                    "repository": "test"
                 }
             }
         ]
