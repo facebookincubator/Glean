@@ -255,7 +255,7 @@
       },
       "location": {
         "file": { "key": "main.py" },
-        "location": { "span": { "length": 11, "start": 278 } },
+        "location": { "span": { "length": 11, "start": 297 } },
         "name": "main.Helper"
       }
     }
@@ -318,7 +318,7 @@
       },
       "location": {
         "file": { "key": "main.py" },
-        "location": { "span": { "length": 4, "start": 301 } },
+        "location": { "span": { "length": 4, "start": 278 } },
         "name": "main.func"
       }
     }
@@ -339,7 +339,7 @@
       },
       "location": {
         "file": { "key": "main.py" },
-        "location": { "span": { "length": 11, "start": 307 } },
+        "location": { "span": { "length": 11, "start": 284 } },
         "name": "main.helper_func"
       }
     }

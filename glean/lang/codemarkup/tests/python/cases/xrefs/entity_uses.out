@@ -388,7 +388,7 @@
   {
     "key": {
       "file": { "key": "main.py" },
-      "span": { "length": 4, "start": 301 },
+      "span": { "length": 4, "start": 278 },
       "target": {
         "python": {
           "decl": {
@@ -526,10 +526,12 @@
   {
     "key": {
       "file": { "key": "main.py" },
-      "span": { "length": 11, "start": 278 },
+      "span": { "length": 11, "start": 284 },
       "target": {
         "python": {
-          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.helper_func" } } }
+          }
         }
       }
     }
@@ -537,12 +539,10 @@
   {
     "key": {
       "file": { "key": "main.py" },
-      "span": { "length": 11, "start": 307 },
+      "span": { "length": 11, "start": 297 },
       "target": {
         "python": {
-          "decl": {
-            "func": { "key": { "name": { "key": "lib.helper_func" } } }
-          }
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
         }
       }
     }
