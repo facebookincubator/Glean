@@ -42,15 +42,16 @@ jobs:
 
       - name: Install indexers (flow)
         run: |
-          export FLOW=0.175.1
+          export FLOW=0.178.0
           wget "https://github.com/facebook/flow/releases/download/v${FLOW}/flow-linux-arm64-v${FLOW}.zip"
           unzip "flow-linux-arm64-v${FLOW}.zip"
           mkdir -p "$HOME"/.hsthrift/bin && mv flow/flow "$HOME"/.hsthrift/bin
 
       - name: Install indexer (typescript)
         run: |
-          apt-get install -y yarnpkg
-          yarnpkg global add @sourcegraph/lsif-tsc
+          curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
+          apt-get install -y nodejs
+          npm install -g @sourcegraph/lsif-tsc
 
       - name: Install indexer (rust)
         run: |
