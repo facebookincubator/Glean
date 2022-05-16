@@ -60,13 +60,18 @@ discoverTests root = go ""
         else subdirTests
 
 -- | Run one test and its *.query files, return (*.out, *.perf) 'FilePath'.
-runTest :: Driver opts -> opts -> TestConfig -> IO [FilePath]
-runTest Driver{..} driverOpts testIn =
+runTest
+  :: Driver opts
+  -> opts
+  -> FilePath    -- ^ test root
+  -> TestConfig
+  -> IO [FilePath]
+runTest Driver{..} driverOpts root testIn =
   withTestDatabase (indexerRun driverIndexer driverOpts) testIn $
     queryMakeOuts testIn
   where
     queryMakeOuts test backend repo = do
-      queries <- get_queries (testProjectRoot test) mempty (testRoot test)
+      queries <- get_queries root mempty (testRoot test)
       fmap concat $ forM (Map.elems queries) $ \query -> do
         (result, perf) <- runQuery
           backend
@@ -129,7 +134,7 @@ executeTest cfg driver driverOpts base_group group diff subdir =
         , testSchemaVersion = cfgSchemaVersion cfg
         }
   createDirectoryIfMissing True $ testOutput test
-  outputs <- runTest driver driverOpts test
+  outputs <- runTest driver driverOpts (cfgRoot cfg) test
   fmap mconcat $ forM outputs $ \output -> do
     let base = testRoot test </> takeFileName output
         specific
