@@ -108,8 +108,10 @@ dropPrefixPaths = do
   home <- Text.pack <$> getHomeDirectory
   return $ map ("file://" <>)
   -- typescript system paths
-    [ home <> "/.config/yarn"
-    , "/usr/local/share/.config/yarn"
+    [ home <> "/.config/yarn/global/node_modules"
+    , "/usr/local/share/.config/yarn/global/node_modules"
+   -- typescript with npm
+    , "/usr/lib/node_modules/"
    -- rust system paths
     , "/usr/lib"
     , home <> "/.cargo/registry"
