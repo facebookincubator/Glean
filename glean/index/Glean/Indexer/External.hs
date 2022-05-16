@@ -26,6 +26,7 @@ import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Types as Aeson
 import Data.Char(isAlphaNum)
 import qualified Data.HashMap.Strict as HashMap
+import qualified Data.List.Extra as L
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Options.Applicative as O
@@ -60,7 +61,7 @@ externalIndexer = Indexer
 data Flavour = Json | Server
 
 data Ext = Ext
-  { extBinary :: FilePath
+  { extRunScript :: FilePath
   , extArgs :: [String]
   , extFlavour :: Flavour
   , extDerivePredicates :: [Text]
@@ -68,9 +69,9 @@ data Ext = Ext
 
 extOptions :: O.Parser Ext
 extOptions = do
-  extBinary <- O.strOption $
+  extRunScript <- O.strOption $
     O.long "binary" <> O.metavar "PATH" <>
-    O.help "binary to run to produce facts, arguments supplied by --arg/--args"
+    O.help "script to run to produce facts, arguments supplied by --arg/--args"
   extArgs <- fmap concat $ O.many $
     fmap (:[]) (O.strOption $ O.long "arg" <> O.metavar "ARG")
     O.<|>
@@ -120,7 +121,8 @@ execExternal Ext{..} env repo IndexerParams{..} = do index; derive
     Json -> do
       withSystemTempDirectory "glean-json" $ \jsonBatchDir -> do
       let jsonVars = HashMap.insert "JSON_BATCH_DIR" jsonBatchDir vars
-      callProcess extBinary (map (subst jsonVars) extArgs)
+      callCommand
+        (unwords (extRunScript : map (quoteArg . subst jsonVars) extArgs))
       files <- listDirectory jsonBatchDir
       stream maxConcurrency (forM_ files) $ \file -> do
         batches <- fileToBatches (jsonBatchDir </> file)
@@ -130,7 +132,8 @@ execExternal Ext{..} env repo IndexerParams{..} = do index; derive
       let
         go service = do
           let serverVars = HashMap.insert "GLEAN_SERVER" service vars
-          callProcess extBinary (map (subst serverVars) extArgs)
+          callCommand
+            (unwords (extRunScript : map (quoteArg . subst serverVars) extArgs))
       case backendKind env of
         BackendEnv env -> do
           fb303 <- newFb303 "gleandriver"
@@ -150,6 +153,15 @@ execExternal Ext{..} env repo IndexerParams{..} = do index; derive
         HashMap.lookupDefault ("${" <> var <> "}") var vars ++ subst vars rest
   subst vars (c:s) = c : subst vars s
   subst _ "" = ""
+
+  -- Quotes a value to allow it to be safely exposed to the shell
+  -- The method used is to replace ' with '"'"' and wrap the value inside
+  -- single quotes. This works for POSIX shells.
+  quoteArg t =  q <> L.intercalate "'\"'\"'" (L.splitOn q t) <> q
+    where
+      q = "'"
+
+
 
 sendJsonBatches
   :: LocalOrRemote.LocalOrRemote b

@@ -42,7 +42,7 @@ indexer = Indexer {
   indexerOptParser = options,
   indexerRun = \Hack{..} -> do
     let ext = Ext {
-          extBinary = hackBinary,
+          extRunScript = hackBinary,
           extFlavour = Json,
           extArgs =
             [ "${TEST_ROOT}"

@@ -35,7 +35,7 @@ indexer = Indexer {
   indexerOptParser = options,
   indexerRun = \Flow{..} -> do
     let ext = Ext {
-          extBinary = flowBinary,
+          extRunScript = flowBinary,
           extFlavour = Json,
           extArgs =
             [ "glean"
