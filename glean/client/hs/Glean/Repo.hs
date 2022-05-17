@@ -10,6 +10,8 @@ module Glean.Repo
   ( -- * Listing repos
     getLatestRepo
   , getLatestRepos
+  , getRepo
+  , getRepos
   , LatestRepos(..)
   , NoDatabase(..)
     -- * Database util
@@ -40,14 +42,14 @@ instance Control.Exception.Exception NoDatabase
 -- | Collecting 'getLatestRepo' for every available repo in the backend
 newtype LatestRepos = LatestRepos{ latestRepos :: Map Text Repo }
 
--- | Ask the server which databases are available, and select the
--- latest complete database for all repo names selected by the predicate.
-getLatestRepos
+-- | Ask the server which databases are available, and return
+-- list of repo.
+getRepos
   :: Backend be
   => be
-  -> (Text -> Bool)  -- ^ Predicate to choose repo names to include
-  -> IO LatestRepos
-getLatestRepos backend keepName = do
+  -> (Repo -> Bool)  -- ^ Predicate to choose repo
+  -> IO [Repo]
+getRepos backend pred = do
   let
     -- If we're connecting to a tier and using shards, then we can
     -- assume that DBs in the Restoring state are usable, because
@@ -60,7 +62,7 @@ getLatestRepos backend keepName = do
       (database_status == DatabaseStatus_Complete
         || usingShards backend &&
            database_status == DatabaseStatus_Restoring) &&
-      keepName (repo_name database_repo) &&
+      pred database_repo &&
       isNothing database_expire_time
   xss <- groupSortOn (repo_name . database_repo) . filter ok <$>
     localDatabases backend
@@ -68,8 +70,28 @@ getLatestRepos backend keepName = do
         let
           sorted = sortBy (flip compare `on` database_created_since_epoch) xs
         in checkRestorableAvailable backend sorted
-      assemble rs = LatestRepos $ Map.fromList [ (repo_name r, r) | r <- rs ]
-  assemble . catMaybes <$> mapM pickRepo xss
+  catMaybes <$> mapM pickRepo xss
+
+
+-- | Ask the server which databases are available, and return the first one that
+-- matches the predicate.
+getRepo
+  :: Backend be
+  => be
+  -> (Repo -> Bool)  -- ^ Predicate to choose repo
+  -> IO (Maybe Repo)
+getRepo backend pred = listToMaybe <$> getRepos backend pred
+
+-- | Ask the server which databases are available, and select the
+-- latest complete database for all repo names selected by the predicate.
+getLatestRepos
+  :: Backend be
+  => be
+  -> (Text -> Bool)  -- ^ Predicate to choose repo names to include
+  -> IO LatestRepos
+getLatestRepos backend keepName = do
+  let assemble rs = LatestRepos $ Map.fromList [ (repo_name r, r) | r <- rs ]
+  assemble <$> getRepos backend (keepName . repo_name)
 
 -- | Ask the server which databases are available, and select the
 -- latest complete database for the given repo name.
