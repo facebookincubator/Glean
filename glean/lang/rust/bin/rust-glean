@@ -1,8 +1,8 @@
 #!/usr/bin/env dotslash
 
-// @generated SignedSource<<e632e295a231cdc4b46a940e6e874a85>>
+// @generated SignedSource<<da152a707b8b12216a3d16ce9d5bf70d>>
 // MSDK schedule URL: https://our.intern.facebook.com/intern/msdk/bump/?action=view&schedule_fbid=541795853491538
-// sandcastle build trigger URL: https://our.intern.facebook.com/intern/sandcastle/job/22517998793513902/
+// sandcastle build trigger URL: https://our.intern.facebook.com/intern/sandcastle/job/13510799548696850/
 
 {
     "name": "rust_glean",
@@ -10,18 +10,18 @@
     "build_info": {
         "config_script": "fbcode/glean/lang/rust/facebook/rust_glean.dotslash.py",
         "commit_repo": "fbsource",
-        "commit_hash": "6dd05133b676127630f6b4b8556501258010cc37",
-        "commit_date": "2022-05-10 06:03:31 PDT",
-        "commit_timestamp": 1652187811,
-        "msdk_package_fbid": "3102094260003858"
+        "commit_hash": "3b182c2e3cb9849883ff7ab349ca4cf0b4a80aad",
+        "commit_date": "2022-05-17 06:03:06 PDT",
+        "commit_timestamp": 1652792586,
+        "msdk_package_fbid": "5096727140409229"
     },
     "signatures": {
-        "msdk": "<<crypto.managed_sdk.mac:AeX07sDrvNi-cna_b38NtRIezC26E3nqpRsNrIMjuEu0smLC>>"
+        "msdk": "<<crypto.managed_sdk.mac:AeUt5abvuOvDuqNFKm15apvabH4yPhCFaFLTqztwsiE7poUB>>"
     },
     "platforms": {
         "linux": {
             "scheme": "everstore",
-            "handle": "GBVWsxDaKySDZ3ECAEmChRoiEcFeblMqAAAA",
+            "handle": "GKLbwRChRbmCsf8AAFEMxJtRv09eblMqAAAA",
             "extract": {
                 "path": "rust-glean",
                 "decompress": "tar.gz"
