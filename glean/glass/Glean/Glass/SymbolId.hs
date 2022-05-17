@@ -53,7 +53,7 @@ import Glean.Glass.Types as Glass
 
 import Glean.Angle ( alt, Angle )
 import qualified Glean.Haxl.Repos as Glean
-import Glean.Util.ToAngle
+import Glean.Util.ToAngle ( ToAngle(toAngle) )
 
 import Glean.Glass.SymbolId.Class
     ( Symbol(..),

@@ -9,6 +9,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nn: u64\n```"
                         }
                     },
                     "range": {
@@ -23,6 +26,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nbasics\n```\n\n```rust\npub fn sum_f1(n: u64) -> u64\n```"
                         }
                     },
                     "range": {
@@ -39,6 +45,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nn: u64\n```"
                         }
                     },
                     "range": {
@@ -63,6 +72,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nbasics\n```\n\n```rust\nfn f1_go(n: u64, acc: u64) -> u64\n```"
                         }
                     },
                     "range": {
@@ -89,6 +101,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nn: u64\n```"
                         }
                     },
                     "range": {
@@ -103,6 +118,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nacc: u64\n```"
                         }
                     },
                     "range": {
@@ -117,6 +135,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nbasics\n```\n\n```rust\nfn f1_go(n: u64, acc: u64) -> u64\n```"
                         }
                     },
                     "range": {
@@ -133,6 +154,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nn: u64\n```"
                         }
                     },
                     "range": {
@@ -157,6 +181,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nn: u64\n```"
                         }
                     },
                     "range": {
@@ -181,6 +208,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nn: u64\n```"
                         }
                     },
                     "range": {
@@ -205,6 +235,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nacc: u64\n```"
                         }
                     },
                     "range": {
@@ -229,6 +262,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nacc: u64\n```"
                         }
                     },
                     "range": {
@@ -253,6 +289,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nbasics\n```\n\n```rust\nfn f1_go(n: u64, acc: u64) -> u64\n```"
                         }
                     },
                     "range": {
@@ -279,6 +318,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nn: u64\n```"
                         }
                     },
                     "range": {
@@ -293,6 +335,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nbasics\n```\n\n```rust\npub fn sum_f2(n: u64) -> u64\n```"
                         }
                     },
                     "range": {
@@ -309,6 +354,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nlet mut acc: u64\n```"
                         }
                     },
                     "range": {
@@ -325,6 +373,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nn: u64\n```"
                         }
                     },
                     "range": {
@@ -349,6 +400,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nlet mut m: u64\n```"
                         }
                     },
                     "range": {
@@ -365,6 +419,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nlet mut m: u64\n```"
                         }
                     },
                     "range": {
@@ -391,6 +448,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nlet mut acc: u64\n```"
                         }
                     },
                     "range": {
@@ -417,6 +477,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nlet mut acc: u64\n```"
                         }
                     },
                     "range": {
@@ -441,6 +504,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nlet mut m: u64\n```"
                         }
                     },
                     "range": {
@@ -467,6 +533,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nlet mut m: u64\n```"
                         }
                     },
                     "range": {
@@ -493,6 +562,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nn: u64\n```"
                         }
                     },
                     "range": {
@@ -507,6 +579,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nbasics\n```\n\n```rust\npub fn sum_f3(n: u64) -> u64\n```"
                         }
                     },
                     "range": {
@@ -523,6 +598,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nlet mut acc: u64\n```"
                         }
                     },
                     "range": {
@@ -539,6 +617,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nn: u64\n```"
                         }
                     },
                     "range": {
@@ -563,6 +644,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nm: u64\n```"
                         }
                     },
                     "range": {
@@ -579,6 +663,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nlet mut acc: u64\n```"
                         }
                     },
                     "range": {
@@ -603,6 +690,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nm: u64\n```"
                         }
                     },
                     "range": {
@@ -629,6 +719,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 10
+                        },
+                        "symbolSignature": {
+                            "aString": "\n```rust\nlet mut acc: u64\n```"
                         }
                     },
                     "range": {

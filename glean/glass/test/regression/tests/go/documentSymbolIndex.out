@@ -9,6 +9,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\npackage leaphash\n```"
                         }
                     },
                     "range": {
@@ -25,6 +28,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar data string\n```"
                         }
                     },
                     "range": {
@@ -39,6 +45,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nfunc Compute(data string) string\n```\n\n---\n\nCompute returns the sha1 sum of all non whitespace characters in data excluding comments. Since it includes logic for special lines specific to the leap-second.list format its not a general purpose function and should be only used to verify the integrity of an official leap-second.list document. \n\n"
                         }
                     },
                     "range": {
@@ -55,6 +64,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar data string\n```"
                         }
                     },
                     "range": {
@@ -79,6 +91,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar lines []string\n```"
                         }
                     },
                     "range": {
@@ -95,6 +110,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar filtered string\n```"
                         }
                     },
                     "range": {
@@ -111,6 +129,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar filterBlanks func(r rune) rune\n```"
                         }
                     },
                     "range": {
@@ -125,6 +146,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar r rune\n```"
                         }
                     },
                     "range": {
@@ -141,6 +165,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar r rune\n```"
                         }
                     },
                     "range": {
@@ -165,6 +192,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar r rune\n```"
                         }
                     },
                     "range": {
@@ -191,6 +221,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar r rune\n```"
                         }
                     },
                     "range": {
@@ -217,6 +250,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar lines []string\n```"
                         }
                     },
                     "range": {
@@ -241,6 +277,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar i int\n```"
                         }
                     },
                     "range": {
@@ -255,6 +294,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar i int\n```"
                         }
                     },
                     "range": {
@@ -279,6 +321,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar i int\n```"
                         }
                     },
                     "range": {
@@ -305,6 +350,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar lines []string\n```"
                         }
                     },
                     "range": {
@@ -329,6 +377,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar lines []string\n```"
                         }
                     },
                     "range": {
@@ -353,6 +404,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar i int\n```"
                         }
                     },
                     "range": {
@@ -377,6 +431,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar i int\n```"
                         }
                     },
                     "range": {
@@ -403,6 +460,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar lines []string\n```"
                         }
                     },
                     "range": {
@@ -427,6 +487,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar lines []string\n```"
                         }
                     },
                     "range": {
@@ -451,6 +514,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar filtered string\n```"
                         }
                     },
                     "range": {
@@ -475,6 +541,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar filterBlanks func(r rune) rune\n```"
                         }
                     },
                     "range": {
@@ -499,6 +568,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar i int\n```"
                         }
                     },
                     "range": {
@@ -523,6 +595,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar i int\n```"
                         }
                     },
                     "range": {
@@ -549,6 +624,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar lines []string\n```"
                         }
                     },
                     "range": {
@@ -573,6 +651,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar i int\n```"
                         }
                     },
                     "range": {
@@ -599,6 +680,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar lines []string\n```"
                         }
                     },
                     "range": {
@@ -623,6 +707,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar i int\n```"
                         }
                     },
                     "range": {
@@ -647,6 +734,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar line string\n```"
                         }
                     },
                     "range": {
@@ -663,6 +753,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar line string\n```"
                         }
                     },
                     "range": {
@@ -687,6 +780,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar commentPos int\n```"
                         }
                     },
                     "range": {
@@ -703,6 +799,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar commentPos int\n```"
                         }
                     },
                     "range": {
@@ -729,6 +828,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar line string\n```"
                         }
                     },
                     "range": {
@@ -753,6 +855,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar line string\n```"
                         }
                     },
                     "range": {
@@ -777,6 +882,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar commentPos int\n```"
                         }
                     },
                     "range": {
@@ -803,6 +911,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar filtered string\n```"
                         }
                     },
                     "range": {
@@ -827,6 +938,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar filterBlanks func(r rune) rune\n```"
                         }
                     },
                     "range": {
@@ -851,6 +965,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar line string\n```"
                         }
                     },
                     "range": {
@@ -877,6 +994,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar filtered string\n```"
                         }
                     },
                     "range": {
@@ -901,6 +1021,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar hash string\n```"
                         }
                     },
                     "range": {
@@ -917,6 +1040,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar groupedHash string\n```"
                         }
                     },
                     "range": {
@@ -933,6 +1059,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar i int\n```"
                         }
                     },
                     "range": {
@@ -947,6 +1076,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar i int\n```"
                         }
                     },
                     "range": {
@@ -971,6 +1103,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar i int\n```"
                         }
                     },
                     "range": {
@@ -997,6 +1132,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar groupedHash string\n```"
                         }
                     },
                     "range": {
@@ -1023,6 +1161,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar groupedHash string\n```"
                         }
                     },
                     "range": {
@@ -1049,6 +1190,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar hash string\n```"
                         }
                     },
                     "range": {
@@ -1073,6 +1217,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar groupedHash string\n```"
                         }
                     },
                     "range": {
@@ -1097,6 +1244,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar i int\n```"
                         }
                     },
                     "range": {
@@ -1121,6 +1271,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar i int\n```"
                         }
                     },
                     "range": {
@@ -1147,6 +1300,9 @@
                     "attributes": {
                         "symbolLanguage": {
                             "aInteger": 14
+                        },
+                        "symbolSignature": {
+                            "aString": "```go\nvar groupedHash string\n```"
                         }
                     },
                     "range": {

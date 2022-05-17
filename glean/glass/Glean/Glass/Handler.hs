@@ -751,8 +751,8 @@ toDefinitionSymbol repoName offsets (Code.Location{..}, entity) = do
 
 -- | Decorate an entity with 'static' attributes.
 -- These are static in that they are derivable from the entity and
--- schema information alone, without additional repos
---
+-- schema information alone, without additional repos.
+-- They're expected to be cheap, as we call these once per entity in a file
 getStaticAttributes :: Code.Entity -> Glean.RepoHaxl u w AttributeList
 getStaticAttributes e = do
   mParent <- toSymbolParent e -- the "parent" of the symbol
