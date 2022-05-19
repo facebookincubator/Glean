@@ -8,7 +8,6 @@
 
 {-# LANGUAGE ApplicativeDo #-}
 {-# LANGUAGE TypeApplications #-}
-{-# LANGUAGE RecordWildCards #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 
 module Glean.Glass.SymbolId

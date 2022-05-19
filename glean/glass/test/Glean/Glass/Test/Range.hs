@@ -21,22 +21,18 @@ import TestRunner ( testRunner )
 import Glean.Init ( withUnitTest )
 
 import Glean.Glass.Range
-    ( exclusiveRangeToFileByteSpan,
-      fileByteSpanToExclusiveRange,
-      inclusiveRangeToExclusiveRange )
 import Glean (toNat)
 
 import qualified Glean.Glass.Types as Glass
 import qualified Glean.Schema.Src.Types as Src
 import qualified Glean.Util.Range as Range
+import qualified Glean.Schema.CodemarkupTypes.Types as Code
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestList
       [ TestLabel name $
-         testByteSpanToRange bs glass_range offs
-      , TestLabel ("inverse-" <> name) $
-         testRangeToByteSpan glass_range bs offs
+         testByteSpanToExcRange bs glass_range offs
       , TestLabel ("inc-exl-range" <> name) $
          testIncRangeToExcRange src_range glass_range
       ]
@@ -45,20 +41,19 @@ main = withUnitTest $ testRunner $ TestList
           (Range.byteSpanToRange bs)
   ]
 
-testByteSpanToRange :: Src.ByteSpan -> Glass.Range -> Range.LineOffsets -> Test
-testByteSpanToRange bs expected offs = TestCase $ expected @=? actual
+-- covnersion from glean-internal bytespan to glass range
+testByteSpanToExcRange
+  :: Src.ByteSpan -> Glass.Range -> Range.LineOffsets -> Test
+testByteSpanToExcRange bs expected offs = TestCase $ expected @=? actual
   where
-    actual = fileByteSpanToExclusiveRange dummyfile (Just offs) bs
+    actual = rangeSpanToRange dummyfile (Just offs) (Code.RangeSpan_span bs)
 
-testRangeToByteSpan :: Glass.Range -> Src.ByteSpan -> Range.LineOffsets -> Test
-testRangeToByteSpan grange expected offs = TestCase $ expected @=? actual
-  where
-    actual = exclusiveRangeToFileByteSpan dummyfile (Just offs) grange
-
-testIncRangeToExcRange :: Src.Range -> Glass.Range -> Test
+-- covnersion from glean-internal inclusive-end range to glass range
+testIncRangeToExcRange
+  :: Src.Range -> Glass.Range -> Test
 testIncRangeToExcRange src_range expected = TestCase $ expected @=? actual
   where
-    actual = inclusiveRangeToExclusiveRange src_range
+    actual = rangeSpanToRange dummyfile Nothing (Code.RangeSpan_range src_range)
 
 dummyfile :: Src.File
 dummyfile = Src.File 0 Nothing
