@@ -240,7 +240,7 @@ buildXRefMapForBatch ::
 buildXRefMapForBatch
   resolveHieFile
   logger
-  HieDBIndexerOptions {..}
+  HieDBIndexerOptions{}
   db
   fileLinesSumMap
   (counter, vertices) = traceMsg logger fullTraceMsg $ do
