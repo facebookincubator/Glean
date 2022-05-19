@@ -31,7 +31,7 @@
                     "lineBegin": 24,
                     "lineEnd": 24
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/24/14/24/18"
             },
             {
                 "attributes": {
@@ -56,26 +56,12 @@
                     }
                 },
                 "range": {
-                    "columnBegin": 2,
-                    "columnEnd": 7,
-                    "lineBegin": 25,
-                    "lineEnd": 25
-                },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
-            },
-            {
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                },
-                "range": {
                     "columnBegin": 32,
                     "columnEnd": 36,
                     "lineBegin": 25,
                     "lineEnd": 25
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/24/14/24/18",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -86,6 +72,20 @@
                     },
                     "repository": "test"
                 }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 2,
+                    "columnEnd": 7,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/25/2/25/7"
             }
         ],
         "27": [
@@ -101,7 +101,7 @@
                     "lineBegin": 27,
                     "lineEnd": 27
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/27/6/27/14"
             }
         ],
         "28": [
@@ -117,7 +117,7 @@
                     "lineBegin": 28,
                     "lineEnd": 28
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/28/2/28/14"
             },
             {
                 "attributes": {
@@ -131,7 +131,7 @@
                     "lineBegin": 28,
                     "lineEnd": 28
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/28/23/28/24"
             }
         ],
         "29": [
@@ -147,7 +147,7 @@
                     "lineBegin": 29,
                     "lineEnd": 29
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/28/23/28/24",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -171,7 +171,7 @@
                     "lineBegin": 29,
                     "lineEnd": 29
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/28/23/28/24",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -197,7 +197,7 @@
                     "lineBegin": 32,
                     "lineEnd": 32
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/28/23/28/24",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -218,50 +218,12 @@
                     }
                 },
                 "range": {
-                    "columnBegin": 6,
-                    "columnEnd": 7,
-                    "lineBegin": 35,
-                    "lineEnd": 35
-                },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
-            },
-            {
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                },
-                "range": {
-                    "columnBegin": 14,
-                    "columnEnd": 15,
-                    "lineBegin": 35,
-                    "lineEnd": 35
-                },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "range": {
-                        "columnBegin": 6,
-                        "columnEnd": 7,
-                        "lineBegin": 35,
-                        "lineEnd": 35
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                },
-                "range": {
                     "columnBegin": 22,
                     "columnEnd": 27,
                     "lineBegin": 35,
                     "lineEnd": 35
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/25/2/25/7",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -280,12 +242,50 @@
                     }
                 },
                 "range": {
+                    "columnBegin": 6,
+                    "columnEnd": 7,
+                    "lineBegin": 35,
+                    "lineEnd": 35
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/35/6/35/7"
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 14,
+                    "columnEnd": 15,
+                    "lineBegin": 35,
+                    "lineEnd": 35
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/35/6/35/7",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 35,
+                        "lineEnd": 35
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
                     "columnBegin": 30,
                     "columnEnd": 31,
                     "lineBegin": 35,
                     "lineEnd": 35
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/35/6/35/7",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -311,7 +311,31 @@
                     "lineBegin": 36,
                     "lineEnd": 36
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/25/2/25/7",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 2,
+                        "columnEnd": 7,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 61,
+                    "columnEnd": 66,
+                    "lineBegin": 36,
+                    "lineEnd": 36
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/25/2/25/7",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -335,7 +359,7 @@
                     "lineBegin": 36,
                     "lineEnd": 36
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/35/6/35/7",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -354,36 +378,12 @@
                     }
                 },
                 "range": {
-                    "columnBegin": 61,
-                    "columnEnd": 66,
-                    "lineBegin": 36,
-                    "lineEnd": 36
-                },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "range": {
-                        "columnBegin": 2,
-                        "columnEnd": 7,
-                        "lineBegin": 25,
-                        "lineEnd": 25
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                },
-                "range": {
                     "columnBegin": 67,
                     "columnEnd": 68,
                     "lineBegin": 36,
                     "lineEnd": 36
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/35/6/35/7",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -404,12 +404,60 @@
                     }
                 },
                 "range": {
+                    "columnBegin": 42,
+                    "columnEnd": 47,
+                    "lineBegin": 39,
+                    "lineEnd": 39
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/25/2/25/7",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 2,
+                        "columnEnd": 7,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 57,
+                    "columnEnd": 62,
+                    "lineBegin": 39,
+                    "lineEnd": 39
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/25/2/25/7",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 2,
+                        "columnEnd": 7,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
                     "columnBegin": 4,
                     "columnEnd": 12,
                     "lineBegin": 39,
                     "lineEnd": 39
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/27/6/27/14",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -433,7 +481,7 @@
                     "lineBegin": 39,
                     "lineEnd": 39
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/28/2/28/14",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -452,36 +500,12 @@
                     }
                 },
                 "range": {
-                    "columnBegin": 42,
-                    "columnEnd": 47,
-                    "lineBegin": 39,
-                    "lineEnd": 39
-                },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "range": {
-                        "columnBegin": 2,
-                        "columnEnd": 7,
-                        "lineBegin": 25,
-                        "lineEnd": 25
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                },
-                "range": {
                     "columnBegin": 48,
                     "columnEnd": 49,
                     "lineBegin": 39,
                     "lineEnd": 39
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/35/6/35/7",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -500,36 +524,12 @@
                     }
                 },
                 "range": {
-                    "columnBegin": 57,
-                    "columnEnd": 62,
-                    "lineBegin": 39,
-                    "lineEnd": 39
-                },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "range": {
-                        "columnBegin": 2,
-                        "columnEnd": 7,
-                        "lineBegin": 25,
-                        "lineEnd": 25
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                },
-                "range": {
                     "columnBegin": 63,
                     "columnEnd": 64,
                     "lineBegin": 39,
                     "lineEnd": 39
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/35/6/35/7",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -555,7 +555,7 @@
                     "lineBegin": 40,
                     "lineEnd": 40
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/25/2/25/7",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -579,7 +579,7 @@
                     "lineBegin": 40,
                     "lineEnd": 40
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/35/6/35/7",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -600,26 +600,12 @@
                     }
                 },
                 "range": {
-                    "columnBegin": 4,
-                    "columnEnd": 8,
-                    "lineBegin": 44,
-                    "lineEnd": 44
-                },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
-            },
-            {
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                },
-                "range": {
                     "columnBegin": 12,
                     "columnEnd": 17,
                     "lineBegin": 44,
                     "lineEnd": 44
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/25/2/25/7",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -643,7 +629,7 @@
                     "lineBegin": 44,
                     "lineEnd": 44
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/35/6/35/7",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -654,9 +640,7 @@
                     },
                     "repository": "test"
                 }
-            }
-        ],
-        "46": [
+            },
             {
                 "attributes": {
                     "symbolLanguage": {
@@ -665,12 +649,14 @@
                 },
                 "range": {
                     "columnBegin": 4,
-                    "columnEnd": 14,
-                    "lineBegin": 46,
-                    "lineEnd": 46
+                    "columnEnd": 8,
+                    "lineBegin": 44,
+                    "lineEnd": 44
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
-            },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/44/4/44/8"
+            }
+        ],
+        "46": [
             {
                 "attributes": {
                     "symbolLanguage": {
@@ -683,7 +669,7 @@
                     "lineBegin": 46,
                     "lineEnd": 46
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/44/4/44/8",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -694,6 +680,20 @@
                     },
                     "repository": "test"
                 }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 4,
+                    "columnEnd": 14,
+                    "lineBegin": 46,
+                    "lineEnd": 46
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/46/4/46/14"
             }
         ],
         "47": [
@@ -709,7 +709,7 @@
                     "lineBegin": 47,
                     "lineEnd": 47
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/46/4/46/14",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -735,7 +735,7 @@
                     "lineBegin": 48,
                     "lineEnd": 48
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/44/4/44/8",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -759,7 +759,7 @@
                     "lineBegin": 48,
                     "lineEnd": 48
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/44/4/44/8",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -783,7 +783,7 @@
                     "lineBegin": 48,
                     "lineEnd": 48
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/46/4/46/14",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -809,7 +809,7 @@
                     "lineBegin": 51,
                     "lineEnd": 51
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/27/6/27/14",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -833,7 +833,7 @@
                     "lineBegin": 51,
                     "lineEnd": 51
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/28/2/28/14",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -857,7 +857,7 @@
                     "lineBegin": 51,
                     "lineEnd": 51
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/44/4/44/8",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -878,26 +878,12 @@
                     }
                 },
                 "range": {
-                    "columnBegin": 2,
-                    "columnEnd": 6,
-                    "lineBegin": 56,
-                    "lineEnd": 56
-                },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
-            },
-            {
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                },
-                "range": {
                     "columnBegin": 44,
                     "columnEnd": 52,
                     "lineBegin": 56,
                     "lineEnd": 56
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/27/6/27/14",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -908,6 +894,20 @@
                     },
                     "repository": "test"
                 }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
+                    "columnBegin": 2,
+                    "columnEnd": 6,
+                    "lineBegin": 56,
+                    "lineEnd": 56
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/56/2/56/6"
             }
         ],
         "58": [
@@ -923,7 +923,7 @@
                     "lineBegin": 58,
                     "lineEnd": 58
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/58/6/58/17"
             }
         ],
         "60": [
@@ -939,7 +939,7 @@
                     "lineBegin": 60,
                     "lineEnd": 60
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E"
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/60/6/60/7"
             },
             {
                 "attributes": {
@@ -953,7 +953,7 @@
                     "lineBegin": 60,
                     "lineEnd": 60
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/60/6/60/7",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -977,7 +977,7 @@
                     "lineBegin": 60,
                     "lineEnd": 60
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/60/6/60/7",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -1003,7 +1003,7 @@
                     "lineBegin": 61,
                     "lineEnd": 61
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/58/6/58/17",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -1029,7 +1029,7 @@
                     "lineBegin": 62,
                     "lineEnd": 62
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/58/6/58/17",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -1050,36 +1050,12 @@
                     }
                 },
                 "range": {
-                    "columnBegin": 3,
-                    "columnEnd": 14,
-                    "lineBegin": 64,
-                    "lineEnd": 64
-                },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
-                "target": {
-                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
-                    "range": {
-                        "columnBegin": 6,
-                        "columnEnd": 17,
-                        "lineBegin": 58,
-                        "lineEnd": 58
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": {
-                    "symbolLanguage": {
-                        "aInteger": 14
-                    }
-                },
-                "range": {
                     "columnBegin": 18,
                     "columnEnd": 22,
                     "lineBegin": 64,
                     "lineEnd": 64
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/56/2/56/6",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -1098,12 +1074,36 @@
                     }
                 },
                 "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 14,
+                    "lineBegin": 64,
+                    "lineEnd": 64
+                },
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/58/6/58/17",
+                "target": {
+                    "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 17,
+                        "lineBegin": 58,
+                        "lineEnd": 58
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": {
+                    "symbolLanguage": {
+                        "aInteger": 14
+                    }
+                },
+                "range": {
                     "columnBegin": 23,
                     "columnEnd": 24,
                     "lineBegin": 64,
                     "lineEnd": 64
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/60/6/60/7",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -1127,7 +1127,7 @@
                     "lineBegin": 64,
                     "lineEnd": 64
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/60/6/60/7",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {
@@ -1153,7 +1153,7 @@
                     "lineBegin": 67,
                     "lineEnd": 67
                 },
-                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cunknown%3E",
+                "sym": "test/go/glean/lang/go/tests/cases/xrefs/leaphash.go/%3Cglobal%3E/58/6/58/17",
                 "target": {
                     "filepath": "glean/lang/go/tests/cases/xrefs/leaphash.go",
                     "range": {

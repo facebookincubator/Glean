@@ -1,3 +1,0 @@
-query: lsif.SearchByLocationAndMoniker { file = "glean/lang/go/tests/cases/xrefs/leaphash.go", ident = "github.com/facebook/time" }
-perf: True
-transform: [gensort, []]

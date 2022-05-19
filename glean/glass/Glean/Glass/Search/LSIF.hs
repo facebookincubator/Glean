@@ -15,6 +15,7 @@ module Glean.Glass.Search.LSIF
 
 import Data.Text as Text ( Text )
 import Data.Coerce
+import Util.Text
 
 import Glean.Angle as Angle
 
@@ -34,11 +35,25 @@ instance Search Lsif.Entity where
   symbolSearch toks@("lsif":rest) =
     runSearch toks $ searchByMoniker (joinFragments rest)
 
-  -- case 1: <local> with path/ name and moniker
+  -- case 1a) <local> with no identifier
   symbolSearch toks
-    | ident:"<local>":name:revpath <- rtoks
-    = runSearch toks $ searchByLocationAndMoniker
-        (joinFragments (reverse revpath)) name ident
+    | ceT:leT:cbT:lbT:"<local>":revpath <- reverse toks
+    , Right lb <- textToInt lbT
+    , Right cb <- textToInt cbT
+    , Right le <- textToInt leT
+    , Right ce <- textToInt ceT
+    = runSearch toks $ searchByExactLocation
+        (joinFragments (reverse revpath)) lb cb le ce
+
+  -- case 1b) <local> with identifier
+  symbolSearch toks
+    | ceT:leT:cbT:lbT:name:"<local>":revpath <- reverse toks
+    , Right lb <- textToInt lbT
+    , Right cb <- textToInt cbT
+    , Right le <- textToInt leT
+    , Right ce <- textToInt ceT
+    = runSearch toks $ searchByExactLocationAndName
+        (joinFragments (reverse revpath)) name lb cb le ce
 
   -- case 3: only path and name
     | name:revpath <- rtoks
@@ -63,23 +78,6 @@ searchByMoniker ident =
       entityLocation (alt @"lsif" ent) file rangespan
     ]
 
-searchByLocationAndMoniker
-  :: Text -> Text -> Text -> Angle (ResultLocation Lsif.Entity)
-searchByLocationAndMoniker path name ident =
-  vars $ \(ent :: Angle Lsif.Entity) (file :: Angle Src.File)
-      (rangespan :: Angle Code.RangeSpan) ->
-    tuple (ent,file,rangespan) `where_` [
-      file .= predicate @Src.File (string path),
-      wild .= predicate @LSIF.SearchByLocationAndMoniker (
-        rec $
-          field @"file" (asPredicate file) $
-          field @"name" (string name) $
-          field @"ident" (string ident) $
-          field @"entity" (cast ent)
-        end),
-      entityLocation (alt @"lsif" ent) file rangespan
-    ]
-
 searchNonLocalByLocation
   :: Text -> Text -> Angle (ResultLocation Lsif.Entity)
 searchNonLocalByLocation path name =
@@ -91,6 +89,53 @@ searchNonLocalByLocation path name =
         rec $
           field @"file" (asPredicate file) $
           field @"name" (string name) $
+          field @"entity" (cast ent)
+        end),
+      entityLocation (alt @"lsif" ent) file rangespan
+    ]
+
+searchByExactLocation
+  :: Text -> Int -> Int -> Int -> Int
+  -> Angle (ResultLocation Lsif.Entity)
+searchByExactLocation path lb cb le ce =
+  vars $ \(ent :: Angle Lsif.Entity) (file :: Angle Src.File)
+      (rangespan :: Angle Code.RangeSpan) ->
+    tuple (ent,file,rangespan) `where_` [
+      file .= predicate @Src.File (string path),
+      wild .= predicate @LSIF.SearchByExactLocation (
+        rec $
+          field @"file" (asPredicate file) $
+          field @"span" (
+            rec $
+              field @"lineBegin" (nat (fromIntegral lb)) $
+              field @"columnBegin" (nat (fromIntegral cb)) $
+              field @"lineEnd" (nat (fromIntegral le)) $
+              field @"columnEnd" (nat (fromIntegral ce - 1))
+            end) $
+          field @"entity" (cast ent)
+        end),
+      entityLocation (alt @"lsif" ent) file rangespan
+    ]
+
+searchByExactLocationAndName
+  :: Text -> Text -> Int -> Int -> Int -> Int
+  -> Angle (ResultLocation Lsif.Entity)
+searchByExactLocationAndName path name lb cb le ce =
+  vars $ \(ent :: Angle Lsif.Entity) (file :: Angle Src.File)
+      (rangespan :: Angle Code.RangeSpan) ->
+    tuple (ent,file,rangespan) `where_` [
+      file .= predicate @Src.File (string path),
+      wild .= predicate @LSIF.SearchByExactLocationAndName (
+        rec $
+          field @"file" (asPredicate file) $
+          field @"name" (string name) $
+          field @"span" (
+            rec $
+              field @"lineBegin" (nat (fromIntegral lb)) $
+              field @"columnBegin" (nat (fromIntegral cb)) $
+              field @"lineEnd" (nat (fromIntegral le)) $
+              field @"columnEnd" (nat (fromIntegral ce - 1))
+            end) $
           field @"entity" (cast ent)
         end),
       entityLocation (alt @"lsif" ent) file rangespan

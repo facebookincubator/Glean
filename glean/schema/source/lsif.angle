@@ -367,19 +367,30 @@ predicate SearchNonLocalByLocation:
     Import|Export|Implementation = K;
     lsif.TagDefinition { Language, DM, Entity };
 
-# if we have all of file, identifier and moniker.
-# O(1) via moniker definition table
-predicate SearchByLocationAndMoniker:
+# if we have file, identifier and position, search for exact location of a local
+predicate SearchByExactLocationAndName:
   {
     file : src.File,
     name : lsif.Name,
-    ident: lsif.MonikerId,
+    span : lsif.RangeSpan,
     entity : lsif.Entity,
   }
-  { File, Name, Ident, Entity } where
-    lsif.MonikerDefinition { Ident, Moniker, Defn };
-    { { File, Language } , { text = Name } } = Defn;
-    lsif.TagDefinition { Language, { Defn , { just = Moniker } } , Entity };
+  { File, Name, Range, Entity } where
+    D = lsif.Definition { { File, Language } , { text = Name, range = Range } };
+    DM = lsif.DefinitionMoniker { defn = D };
+    lsif.TagDefinition { Language, DM, Entity };
+
+# Just search by exact location
+predicate SearchByExactLocation:
+  {
+    file : src.File,
+    span : lsif.RangeSpan,
+    entity : lsif.Entity,
+  }
+  { File, Range, Entity } where
+    D = lsif.Definition { { File, Language } , { range = Range } };
+    DM = lsif.DefinitionMoniker { defn = D };
+    lsif.TagDefinition { Language, DM, Entity };
 
 # if we only have the moniker, we can probably still find it
 # O(1) via moniker definition table
