@@ -31,16 +31,23 @@ import Control.Monad
 import qualified Data.ByteString.Char8 as BC
 import qualified Data.HashMap.Strict as HashMap
 import Data.List
+import qualified Data.Map.Strict as Map
+import Data.Map.Strict (Map)
 import Data.Maybe
 import qualified Data.Set as Set
+import Data.Text (Text)
+import qualified Data.Text as Text
+import qualified Data.Text.IO as Text
 import Data.Text.Prettyprint.Doc hiding ((<>))
-import qualified Data.Text.IO as Text ( writeFile )
+import qualified Data.Tree as Tree
+import Data.Tree (Tree(..))
 import Options.Applicative
 import System.Directory
 import System.FilePath
 
 import Util.IO
 import Util.Timing
+import Util.OptParse (commandParser)
 
 import Glean.Query.Types
 import Glean.Angle.Types hiding (Array, String, Nat)
@@ -60,29 +67,30 @@ data WhichVersion
   | OneVersion Version
 
 data Options = Options
+  { input :: Either FilePath FilePath
+  , version :: WhichVersion
+  , omitArchive :: Bool
+  , actOptions :: Either GraphOptions GenOptions
+  }
+
+data GraphOptions = GraphOptions
+  { targetSchema :: Maybe String
+  , depth :: Maybe Int
+  , reverseDeps :: Bool
+  , topologicalSort :: Bool
+  }
+
+data GenOptions =  GenOptions
   { thrift :: Maybe FilePath
   , cpp :: Maybe FilePath
   , hackjson :: Maybe FilePath
   , hs :: Maybe FilePath
   , source :: Maybe FilePath
-  , input :: Either FilePath FilePath
   , install_dir :: FilePath
-  , version :: WhichVersion
-  , omitArchive :: Bool
   }
 
 options :: Parser Options
 options = do
-  thrift <- optional $ strOption $
-    long "thrift" <> metavar "FILE"
-  cpp <- optional $ strOption $
-    long "cpp" <> metavar "FILE"
-  hackjson <- optional $ strOption $
-    long "hackjson" <> metavar "FILE"
-  hs <- optional $ strOption $
-    long "hs" <> metavar "FILE"
-  source <- optional $ strOption $
-    long "source" <> metavar "FILE"
   omitArchive <- switch $
     long "omit-archive" <>
     help ("ignore .angle files under archive/ directories. " <>
@@ -92,27 +100,67 @@ options = do
     dir = strOption (long "dir" <> metavar "DIR")
     oneFile = strOption (long "input" <> metavar "FILE")
   input <- (Left <$> oneFile) <|> (Right <$> dir)
-  install_dir <- strOption $
-    long "install_dir" <> short 'd' <> metavar "DIR" <> value ""
   let
     allVersions = flag' AllVersions (long "all-versions")
     justVersion = fmap OneVersion $ option auto $
       long "version" <> metavar "VERSION" <>
       help "version of the schema to generate code for"
   version <- allVersions <|> justVersion <|> pure HighestVersion
+  actOptions <-
+    fmap Left graphOptions <|>
+    fmap Right genOptions
   return Options{..}
+  where
+    graphOptions = do
+      commandParser "graph"
+        (progDesc "View the dependency graph of a local schema") $ do
+        reverseDeps <- switch
+          (  long "reverse-deps"
+          <> help "view reverse dependencies instead"
+          )
+        topologicalSort <- switch
+          (  long "topsort"
+          <> help "print a topologically sorted list of dependencies"
+          )
+        targetSchema <- optional $ strOption
+          (  long "schema-name"
+          <> metavar "SCHEMA"
+          <> help
+            ("reference schema. "
+            <> "If unspecified the latest version of `all`is used.")
+          )
+        depth <- optional $ option auto
+          (  long "depth"
+          <> metavar "INT"
+          <> help "restrict how many levels deep the tree should go"
+          )
+        return GraphOptions{..}
+
+    genOptions = do
+      thrift <- optional $ strOption $
+        long "thrift" <> metavar "FILE"
+      cpp <- optional $ strOption $
+        long "cpp" <> metavar "FILE"
+      hackjson <- optional $ strOption $
+        long "hackjson" <> metavar "FILE"
+      hs <- optional $ strOption $
+        long "hs" <> metavar "FILE"
+      source <- optional $ strOption $
+        long "source" <> metavar "FILE"
+      install_dir <- strOption $
+        long "install_dir" <> short 'd' <> metavar "DIR" <> value ""
+      return GenOptions{..}
 
 main :: IO ()
 main = do
-  opts <- execParser (info (options <**> helper) fullDesc)
-
+  Options{..} <- execParser (info (options <**> helper) fullDesc)
   (src, sourceSchemas, schemas) <- reportTime "parse/resolve/typecheck" $ do
-    str <- case input opts of
+    str <- case input of
       Left one -> BC.readFile one
       Right dir -> do
         files <- listDirectoryRecursive dir
         catSchemaFiles $
-          if omitArchive opts
+          if omitArchive
             then filter (not . ("/archive/" `isInfixOf`)) files
             else files
     (sourceSchemas, schemas) <- case parseAndResolveSchema str of
@@ -131,9 +179,76 @@ main = do
         when (rmLocSchemas sourceSchemas /= rmLocSchemas schemasRoundTrip) $
           throwIO $ ErrorCall "schema did not roundtrip successfully"
 
-  forM_ (source opts) $ \f -> BC.writeFile f src
+  versions <- case version of
+    HighestVersion ->
+      case schemasHighestVersion schemas of
+        Just ver -> return [(ver, Nothing)]
+        Nothing -> fail "missing 'all' schema"
+    OneVersion v -> return [(v, Nothing)]
+    AllVersions -> do
+      let withPath v = (v, Just $ 'v' : show v)
+      return $ withPath <$> HashMap.keys (schemasSchemas schemas)
 
-  reportTime "gen" $ gen opts schemas
+  case actOptions of
+    Left opts -> graph opts sourceSchemas (fst <$> versions)
+    Right opts -> do
+      forM_ (source opts) $ \f -> BC.writeFile f src
+      reportTime "gen" $ gen opts versions schemas
+
+graph :: GraphOptions -> SourceSchemas -> [Version] -> IO ()
+graph opts schemas versions =
+  Text.putStrLn $ schemaGraph deps versions opts
+  where
+    dependencies SourceSchema{..} =
+      schemaInherits ++ [ name | SourceImport name <- schemaDecls ]
+
+    deps = Map.fromList
+      [ (schemaName s, dependencies s) | s <- srcSchemas schemas ]
+
+schemaGraph :: Map Text [Text] -> [Version] -> GraphOptions -> Text
+schemaGraph deps' versionsOfAll GraphOptions{..} =
+  Text.unlines $ if topologicalSort
+    then topsort forest
+    else drawTree <$> forest
+  where
+    schemas = Text.pack <$> maybe schemasAll pure targetSchema
+    schemasAll = map (\v -> "all." <> show v) versionsOfAll
+    forest = map (mkTree deps 1) schemas
+    deps
+      | reverseDeps =
+          Map.fromListWith (<>) $ concatMap (\(s,ss) -> (,[s]) <$> ss) $
+            Map.toList deps'
+      | otherwise = deps'
+    mkTree graph depth' root = Tree.Node root subtree
+      where
+        subtree = map (mkTree graph (depth' + 1)) children
+        continue = maybe True (depth' <=) depth
+        children
+          | continue = Map.findWithDefault [] root graph
+          | otherwise = []
+
+    drawTree :: Tree Text -> Text
+    drawTree (Node root children) = Text.unlines $ root : draw children
+      where
+      draw [] = []
+      draw (x:xs) = drawNode (null xs) x <> draw xs
+      drawNode isLast (Node name children) =
+        (pre <> name) : map (spacer <>) (draw children)
+        where
+          (spacer, pre) = if isLast
+            then ("    ", "└── ")
+            else ("│   ", "├── ")
+
+    topsort :: Ord a => [Tree a] -> [a]
+    topsort forest = reverse postorder
+      where
+        postorder = go mempty forest (const [])
+          where
+            go seen [] cont = cont seen
+            go seen (Node node children : rest) cont
+              | node `Set.member` seen = go seen rest cont
+              | otherwise = go (Set.insert node seen) children $
+                 \seen' -> node : go seen' rest cont
 
 -- | Remove source location information from a schema's AST
 rmLocSchemas :: SourceSchemas_ a -> SourceSchemas_ ()
@@ -189,18 +304,9 @@ rmLocSchemas (SourceSchemas version schemas evolves) =
     rmLocField (Field name pat) =
       Field name (rmLocPat pat)
 
-gen :: Options -> Schemas -> IO ()
-gen Options{..} Schemas{..} = do
-  case version of
-    HighestVersion -> do
-      highestVersion <- case schemasHighestVersion of
-        Just ver -> return ver
-        Nothing -> fail "missing 'all' schema"
-      genFor highestVersion Nothing
-    OneVersion v -> genFor v Nothing
-    AllVersions ->
-      forM_ (HashMap.keys schemasSchemas) $ \v ->
-        genFor v (Just ('v' : show v))
+gen :: GenOptions -> [(Version, Maybe FilePath)] -> Schemas -> IO ()
+gen GenOptions{..} versions Schemas{..} =
+  mapM_ (uncurry genFor) versions
   where
   genFor :: Version -> Maybe FilePath -> IO ()
   genFor ver dir = case HashMap.lookup ver schemasSchemas of
