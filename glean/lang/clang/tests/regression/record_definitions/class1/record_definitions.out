@@ -103,6 +103,37 @@
       "members": {
         "key": [
           {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "u" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "B" },
+                            "scope": { "global_": { } }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "U" },
+                "kind": { "field": { "mutable_": false } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 21,
+                  "columnBegin": 3,
+                  "lineEnd": 21,
+                  "columnEnd": 5
+                }
+              }
+            }
+          },
+          {
             "function_": {
               "key": {
                 "name": {
@@ -136,6 +167,37 @@
                   "columnBegin": 3,
                   "lineEnd": 22,
                   "columnEnd": 27
+                }
+              }
+            }
+          },
+          {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "varB" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "B" },
+                            "scope": { "global_": { } }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "field": { "mutable_": false } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 24,
+                  "columnBegin": 3,
+                  "lineEnd": 24,
+                  "columnEnd": 10
                 }
               }
             }

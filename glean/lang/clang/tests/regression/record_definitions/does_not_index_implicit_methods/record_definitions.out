@@ -31,6 +31,48 @@
       "members": {
         "key": [
           {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "a" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "A" },
+                            "scope": {
+                              "local": {
+                                "key": {
+                                  "name": {
+                                    "key": {
+                                      "name": { "key": "calcSomething" }
+                                    }
+                                  },
+                                  "scope": { "global_": { } }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "field": { "mutable_": false } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 13,
+                  "columnBegin": 9,
+                  "lineEnd": 13,
+                  "columnEnd": 13
+                }
+              }
+            }
+          },
+          {
             "function_": {
               "key": {
                 "name": {
@@ -111,7 +153,52 @@
         }
       },
       "bases": [ ],
-      "members": { "key": [ ] }
+      "members": {
+        "key": [
+          {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "a_" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "B" },
+                            "scope": {
+                              "local": {
+                                "key": {
+                                  "name": {
+                                    "key": {
+                                      "name": { "key": "calcSomething" }
+                                    }
+                                  },
+                                  "scope": { "global_": { } }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "struct A" },
+                "kind": { "field": { "mutable_": false } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 23,
+                  "columnBegin": 9,
+                  "lineEnd": 23,
+                  "columnEnd": 19
+                }
+              }
+            }
+          }
+        ]
+      }
     }
   },
   {
@@ -144,6 +231,48 @@
       "bases": [ ],
       "members": {
         "key": [
+          {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "c" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "ExplictMethods" },
+                            "scope": {
+                              "local": {
+                                "key": {
+                                  "name": {
+                                    "key": {
+                                      "name": { "key": "calcSomething" }
+                                    }
+                                  },
+                                  "scope": { "global_": { } }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "field": { "mutable_": false } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 30,
+                  "columnBegin": 9,
+                  "lineEnd": 30,
+                  "columnEnd": 13
+                }
+              }
+            }
+          },
           {
             "function_": {
               "key": {

@@ -430,6 +430,37 @@
                 "members": {
                   "key": [
                     {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "ptr" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Foo" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "Ptr" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 18,
+                            "columnBegin": 3,
+                            "lineEnd": 18,
+                            "columnEnd": 9
+                          }
+                        }
+                      }
+                    },
+                    {
                       "function_": {
                         "key": {
                           "name": {
@@ -509,6 +540,37 @@
                 "bases": [ ],
                 "members": {
                   "key": [
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "value" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Ptr" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "void *" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 10,
+                            "columnBegin": 3,
+                            "lineEnd": 10,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    },
                     {
                       "function_": {
                         "key": {

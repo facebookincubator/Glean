@@ -469,7 +469,41 @@
                     "isVirtual": false
                   }
                 ],
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "u" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "B" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "U" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 21,
+                            "columnBegin": 3,
+                            "lineEnd": 21,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }

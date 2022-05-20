@@ -1,6 +1,5 @@
 [
   "@generated",
-  { "key": [ ] },
   {
     "key": [
       {
@@ -302,6 +301,160 @@
               "columnBegin": 5,
               "lineEnd": 29,
               "columnEnd": 18
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "key": [
+      {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "Local" },
+                        "scope": {
+                          "local": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "f1" } } },
+                              "scope": { "global_": { } }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "unsigned int" },
+            "kind": { "field": { "mutable_": false, "bitsize": 0 } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 22,
+              "columnBegin": 5,
+              "lineEnd": 22,
+              "columnEnd": 26
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "key": [
+      {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "Local" },
+                        "scope": {
+                          "local": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "f2" } } },
+                              "scope": { "global_": { } }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "unsigned int" },
+            "kind": { "field": { "mutable_": false, "bitsize": 0 } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 29,
+              "columnBegin": 5,
+              "lineEnd": 29,
+              "columnEnd": 18
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "key": [
+      {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "U1" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "unsigned int" },
+            "kind": { "field": { "mutable_": false, "bitsize": 0 } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 11,
+              "columnBegin": 3,
+              "lineEnd": 11,
+              "columnEnd": 24
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "key": [
+      {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "U2" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "unsigned int" },
+            "kind": { "field": { "mutable_": false, "bitsize": 0 } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 16,
+              "columnBegin": 3,
+              "lineEnd": 16,
+              "columnEnd": 16
             }
           }
         }

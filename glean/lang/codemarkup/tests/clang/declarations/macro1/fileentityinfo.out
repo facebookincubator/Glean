@@ -710,7 +710,80 @@
                   }
                 },
                 "bases": [ ],
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "x" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "X" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "N2" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 26,
+                            "columnBegin": 1,
+                            "lineEnd": 26,
+                            "columnEnd": 8
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "y" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "X" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "N2" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 26,
+                            "columnBegin": 1,
+                            "lineEnd": 26,
+                            "columnEnd": 8
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
@@ -748,7 +821,45 @@
                   }
                 },
                 "bases": [ ],
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "x" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "X" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "N3" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 39,
+                            "columnBegin": 9,
+                            "lineEnd": 39,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
@@ -786,7 +897,45 @@
                   }
                 },
                 "bases": [ ],
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "x" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "X" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "N4" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 46,
+                            "columnBegin": 9,
+                            "lineEnd": 46,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
@@ -824,7 +973,80 @@
                   }
                 },
                 "bases": [ ],
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "x" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Y" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "N2" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 27,
+                            "columnBegin": 1,
+                            "lineEnd": 27,
+                            "columnEnd": 9
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "y" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Y" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "N2" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 27,
+                            "columnBegin": 1,
+                            "lineEnd": 27,
+                            "columnEnd": 9
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
@@ -862,7 +1084,45 @@
                   }
                 },
                 "bases": [ ],
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "x" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Y" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "N3" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 40,
+                            "columnBegin": 10,
+                            "lineEnd": 40,
+                            "columnEnd": 14
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
@@ -900,7 +1160,45 @@
                   }
                 },
                 "bases": [ ],
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "y" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Y" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "N4" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 47,
+                            "columnBegin": 10,
+                            "lineEnd": 47,
+                            "columnEnd": 14
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }
@@ -938,7 +1236,115 @@
                   }
                 },
                 "bases": [ ],
-                "members": { "key": [ ] }
+                "members": {
+                  "key": [
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "x" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Z" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "N2" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 28,
+                            "columnBegin": 1,
+                            "lineEnd": 28,
+                            "columnEnd": 39
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "y" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Z" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "N2" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 28,
+                            "columnBegin": 1,
+                            "lineEnd": 28,
+                            "columnEnd": 39
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "z" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Z" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "N2" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "field": { "mutable_": false } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 28,
+                            "columnBegin": 1,
+                            "lineEnd": 28,
+                            "columnEnd": 39
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           }

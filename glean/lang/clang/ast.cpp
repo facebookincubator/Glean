@@ -1042,6 +1042,10 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
           if (auto m = visitor.varDecls(vd)) {
             members.push_back(Cxx::Declaration::variable(m->decl));
           }
+        } else if (auto fd = clang::dyn_cast<clang::FieldDecl>(mem)) {
+          if (auto m = visitor.varDecls(fd)) {
+            members.push_back(Cxx::Declaration::variable(m->decl));
+          }
         } else if (auto tad = clang::dyn_cast<clang::TypeAliasDecl>(mem)) {
           if (auto m = visitor.typeAliasDecls(tad)) {
             members.push_back(Cxx::Declaration::typeAlias(m->decl));
