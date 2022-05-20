@@ -66,24 +66,13 @@ createGleanDB _env@HieDBIndexerEnv {..} fileLinesMap batchOutputs = do
 
   printf "Creating Glean DB %s/%s\n" (repoName cfg) hash
 
-  finalRepo <-
-    if dontCreateDb cfg
-      then do
-        -- Don't create a DB when running regression tests.
-        Glean.ListDatabasesResult {Glean.listDatabasesResult_databases = dbs} <-
-          Glean.listDatabases backend (Glean.ListDatabases False)
-        case dbs of
-          (x : _) -> return $ Glean.database_repo x
-          [] -> error "No existing DB found!"
-      else return newRepo
-
   let batchWriter IndexerBatchOutput {..} = do
-        Glean.basicWriter backend finalRepo allPredicates $
+        Glean.basicWriter backend newRepo allPredicates $
           gleanWriter nodeDefs xrefList
 
       finalWriter = do
         -- Write FileLines facts first.
-        Glean.basicWriter backend finalRepo allPredicates $
+        Glean.basicWriter backend newRepo allPredicates $
           gleanFileLinesWriter fileLinesList
 
         -- Open each output file and write the definitions and xrefs
@@ -98,7 +87,7 @@ createGleanDB _env@HieDBIndexerEnv {..} fileLinesMap batchOutputs = do
           ( \s ->
               derivePredicate
                 backend
-                finalRepo
+                newRepo
                 Nothing
                 Nothing
                 (mkPredRef s)
@@ -114,15 +103,15 @@ createGleanDB _env@HieDBIndexerEnv {..} fileLinesMap batchOutputs = do
       Glean.fillDatabase
         backend
         schemaVersion
-        finalRepo
+        newRepo
         buildHandle
         (throwIO DatabaseAlreadyExistsException)
         finalWriter
 
   predicates <-
     Thrift.schemaInfo_predicateIds
-      <$> Glean.getSchemaInfo backend finalRepo
-  repoStats <- Glean.predicateStats backend finalRepo Glean.ExcludeBase
+      <$> Glean.getSchemaInfo backend newRepo
+  repoStats <- Glean.predicateStats backend newRepo Glean.ExcludeBase
   let readableStats =
         [ printf " - %s: count = %d, size = %d"
           (Text.unpack predicateRef_name)
