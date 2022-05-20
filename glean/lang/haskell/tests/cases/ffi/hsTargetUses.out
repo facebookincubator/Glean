@@ -1,0 +1,489 @@
+[
+  "@generated",
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.Constructor" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 2936, "length": 18 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 471, "length": 11 },
+        { "start": 2920, "length": 11 },
+        { "start": 2936, "length": 11 },
+        { "start": 2979, "length": 11 },
+        { "start": 3007, "length": 11 },
+        { "start": 3046, "length": 11 },
+        { "start": 3095, "length": 11 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.FFIResultBuf" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 3366, "length": 25 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 531, "length": 12 },
+        { "start": 3351, "length": 12 },
+        { "start": 3366, "length": 12 },
+        { "start": 3779, "length": 12 },
+        { "start": 3866, "length": 12 },
+        { "start": 4149, "length": 12 },
+        { "start": 4229, "length": 12 },
+        { "start": 4667, "length": 12 },
+        { "start": 4762, "length": 12 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.wORD64_SIZE" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 3412, "length": 11 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 3393, "length": 11 },
+        { "start": 3412, "length": 11 },
+        { "start": 3843, "length": 11 },
+        { "start": 4293, "length": 11 },
+        { "start": 4826, "length": 11 },
+        { "start": 4888, "length": 11 },
+        { "start": 4969, "length": 11 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Util.FFI.:>" },
+          "source": {
+            "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+            "span": { "start": 1234, "length": 38 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+      "uses": [
+        { "start": 1191, "length": 2 },
+        { "start": 1234, "length": 4 },
+        { "start": 1459, "length": 2 },
+        { "start": 1533, "length": 2 },
+        { "start": 1538, "length": 2 },
+        { "start": 1622, "length": 2 },
+        { "start": 1627, "length": 2 },
+        { "start": 1632, "length": 2 },
+        { "start": 1724, "length": 2 },
+        { "start": 1729, "length": 2 },
+        { "start": 1734, "length": 2 },
+        { "start": 1739, "length": 2 },
+        { "start": 1839, "length": 2 },
+        { "start": 1844, "length": 2 },
+        { "start": 1849, "length": 2 },
+        { "start": 1854, "length": 2 },
+        { "start": 1859, "length": 2 },
+        { "start": 1967, "length": 2 },
+        { "start": 1972, "length": 2 },
+        { "start": 1977, "length": 2 },
+        { "start": 1982, "length": 2 },
+        { "start": 1987, "length": 2 },
+        { "start": 1992, "length": 2 },
+        { "start": 2108, "length": 2 },
+        { "start": 2113, "length": 2 },
+        { "start": 2118, "length": 2 },
+        { "start": 2123, "length": 2 },
+        { "start": 2128, "length": 2 },
+        { "start": 2133, "length": 2 },
+        { "start": 2138, "length": 2 },
+        { "start": 2262, "length": 2 },
+        { "start": 2267, "length": 2 },
+        { "start": 2272, "length": 2 },
+        { "start": 2277, "length": 2 },
+        { "start": 2282, "length": 2 },
+        { "start": 2287, "length": 2 },
+        { "start": 2292, "length": 2 },
+        { "start": 2297, "length": 2 },
+        { "start": 2429, "length": 2 },
+        { "start": 2434, "length": 2 },
+        { "start": 2439, "length": 2 },
+        { "start": 2444, "length": 2 },
+        { "start": 2449, "length": 2 },
+        { "start": 2454, "length": 2 },
+        { "start": 2459, "length": 2 },
+        { "start": 2464, "length": 2 },
+        { "start": 2469, "length": 2 },
+        { "start": 3241, "length": 2 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Util.FFI.FFIError" },
+          "source": {
+            "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+            "span": { "start": 594, "length": 46 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+      "uses": [
+        { "start": 265, "length": 8 },
+        { "start": 602, "length": 8 },
+        { "start": 613, "length": 8 },
+        { "start": 661, "length": 8 },
+        { "start": 697, "length": 8 },
+        { "start": 777, "length": 8 },
+        { "start": 837, "length": 8 },
+        { "start": 1169, "length": 8 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Util.FFI.FFIError" },
+          "source": {
+            "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+            "span": { "start": 613, "length": 27 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+      "uses": [
+        { "start": 265, "length": 8 },
+        { "start": 602, "length": 8 },
+        { "start": 613, "length": 8 },
+        { "start": 661, "length": 8 },
+        { "start": 697, "length": 8 },
+        { "start": 777, "length": 8 },
+        { "start": 837, "length": 8 },
+        { "start": 1169, "length": 8 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Util.FFI.FFIFun" },
+          "source": {
+            "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+            "span": { "start": 2498, "length": 76 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+      "uses": [
+        { "start": 310, "length": 6 },
+        { "start": 2504, "length": 6 },
+        { "start": 2585, "length": 6 },
+        { "start": 2585, "length": 19 },
+        { "start": 2694, "length": 6 },
+        { "start": 2694, "length": 14 },
+        { "start": 3065, "length": 45 },
+        { "start": 3078, "length": 6 },
+        { "start": 3091, "length": 6 },
+        { "start": 3835, "length": 6 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Util.FFI.List" },
+          "source": {
+            "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+            "span": { "start": 1195, "length": 77 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+      "uses": [
+        { "start": 300, "length": 4 },
+        { "start": 1200, "length": 4 },
+        { "start": 1223, "length": 4 },
+        { "start": 1247, "length": 4 },
+        { "start": 1258, "length": 4 },
+        { "start": 1320, "length": 4 },
+        { "start": 2561, "length": 4 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Util.FFI.Nil" },
+          "source": {
+            "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+            "span": { "start": 1216, "length": 15 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+      "uses": [
+        { "start": 1216, "length": 3 },
+        { "start": 1392, "length": 3 },
+        { "start": 2680, "length": 3 },
+        { "start": 2774, "length": 3 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Util.FFI.Res" },
+          "source": {
+            "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+            "span": { "start": 2521, "length": 17 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+      "uses": [
+        { "start": 2526, "length": 3 },
+        { "start": 2567, "length": 3 },
+        { "start": 2618, "length": 3 },
+        { "start": 2722, "length": 3 },
+        { "start": 3124, "length": 3 },
+        { "start": 3148, "length": 3 },
+        { "start": 3852, "length": 3 },
+        { "start": 3877, "length": 3 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Util.FFI.Tup" },
+          "source": {
+            "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+            "span": { "start": 1297, "length": 11 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+      "uses": [
+        { "start": 1302, "length": 3 },
+        { "start": 1331, "length": 3 },
+        { "start": 1371, "length": 3 },
+        { "start": 1435, "length": 3 },
+        { "start": 1504, "length": 3 },
+        { "start": 1589, "length": 3 },
+        { "start": 1687, "length": 3 },
+        { "start": 1798, "length": 3 },
+        { "start": 1922, "length": 3 },
+        { "start": 2059, "length": 3 },
+        { "start": 2209, "length": 3 },
+        { "start": 2372, "length": 3 },
+        { "start": 3872, "length": 3 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Util.FFI.Tuple" },
+          "source": {
+            "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+            "span": { "start": 1274, "length": 63 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+      "uses": [
+        { "start": 322, "length": 5 },
+        { "start": 1280, "length": 5 },
+        { "start": 1348, "length": 5 },
+        { "start": 1348, "length": 9 },
+        { "start": 1411, "length": 5 },
+        { "start": 1411, "length": 10 },
+        { "start": 1479, "length": 5 },
+        { "start": 1479, "length": 11 },
+        { "start": 1562, "length": 5 },
+        { "start": 1562, "length": 13 },
+        { "start": 1658, "length": 5 },
+        { "start": 1658, "length": 15 },
+        { "start": 1767, "length": 5 },
+        { "start": 1767, "length": 17 },
+        { "start": 1889, "length": 5 },
+        { "start": 1889, "length": 19 },
+        { "start": 2024, "length": 5 },
+        { "start": 2024, "length": 21 },
+        { "start": 2172, "length": 5 },
+        { "start": 2172, "length": 23 },
+        { "start": 2333, "length": 5 },
+        { "start": 2333, "length": 25 },
+        { "start": 3845, "length": 5 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Util.FFI.call" },
+          "source": {
+            "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+            "span": { "start": 1063, "length": 4 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+      "uses": [
+        { "start": 292, "length": 4 },
+        { "start": 1035, "length": 4 },
+        { "start": 1063, "length": 4 },
+        { "start": 2662, "length": 4 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Util.FFI.ffiErrorMessage" },
+          "source": {
+            "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+            "span": { "start": 680, "length": 15 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+      "uses": [
+        { "start": 275, "length": 15 },
+        { "start": 642, "length": 15 },
+        { "start": 680, "length": 15 },
+        { "start": 801, "length": 15 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Util.FFI.hs_ffi_free_error" },
+          "source": {
+            "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+            "span": { "start": 495, "length": 97 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+      "uses": [
+        { "start": 544, "length": 17 },
+        { "start": 1135, "length": 17 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Util.FFI.invoke" },
+          "source": {
+            "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+            "span": { "start": 3885, "length": 6 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+      "uses": [
+        { "start": 333, "length": 6 },
+        { "start": 3824, "length": 6 },
+        { "start": 3885, "length": 6 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Util.FFI.invoke" },
+          "source": {
+            "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+            "span": { "start": 3885, "length": 6 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [ { "start": 4320, "length": 6 }, { "start": 4983, "length": 6 } ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Util.FFI.invoke'" },
+          "source": {
+            "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+            "span": { "start": 2541, "length": 33 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+      "uses": [
+        { "start": 2541, "length": 7 },
+        { "start": 2643, "length": 7 },
+        { "start": 2742, "length": 7 },
+        { "start": 3156, "length": 7 },
+        { "start": 3196, "length": 7 },
+        { "start": 3907, "length": 7 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Util.FFI.tuple" },
+          "source": {
+            "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+            "span": { "start": 1311, "length": 26 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+      "uses": [
+        { "start": 1311, "length": 5 },
+        { "start": 1386, "length": 5 },
+        { "start": 1450, "length": 5 },
+        { "start": 1524, "length": 5 },
+        { "start": 1613, "length": 5 },
+        { "start": 1715, "length": 5 },
+        { "start": 1830, "length": 5 },
+        { "start": 1958, "length": 5 },
+        { "start": 2099, "length": 5 },
+        { "start": 2253, "length": 5 },
+        { "start": 2420, "length": 5 },
+        { "start": 3899, "length": 5 }
+      ]
+    }
+  }
+]

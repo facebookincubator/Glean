@@ -27,6 +27,7 @@ import Data.Array.Unboxed (
   listArray,
   (!),
  )
+import Data.Bifunctor (second)
 import Data.Char (isAlphaNum)
 import Data.Containers.ListUtils (nubOrd)
 import Data.HashMap.Strict (HashMap)
@@ -114,7 +115,7 @@ buildXrefMapFiles logger opts@HieDBIndexerOptions {..} = do
 
     batchOutputs <-
       mapConcurrently
-        (buildXRefMapForBatch resolveHieFile logger opts db fileLinesSumMap)
+        (buildXRefMapForBatch logger opts db fileLinesSumMap)
         $ zip [1 .. (newChunkSize + 1)] splitVertices
 
     when (Map.size fileLineLengthMap == 0) $
@@ -156,7 +157,7 @@ mkFileLinesMap resolveHieFile logger allVertices = traceMsg logger "mkFileLinesM
   return (fileLinesSumMap, fileLinesLengthMap)
   where
     !filepathsSet = Set.toList $ Set.fromList $
-      map (getFilePathsFromVertex resolveHieFile) allVertices
+      map (second resolveHieFile . getFilePathsFromVertex) allVertices
 
 data LineLengthBuilderOutput = LineLengthBuilderOutput
   { srcFp :: !FilePath
@@ -225,12 +226,11 @@ sourceFileLineLengths nc hieFp = do
   return $ lineLengths ++ [1]
 
 -- Get the source and hie filepaths from the Vertex.
-getFilePathsFromVertex :: (FilePath -> FilePath) -> Vertex -> (FilePath, FilePath)
-getFilePathsFromVertex resolveHieFile (_, srcFp, hieFp, _, _, _, _, _) =
-  (srcFp, resolveHieFile hieFp)
+getFilePathsFromVertex :: Vertex -> (FilePath, FilePath)
+getFilePathsFromVertex (_, srcFp, hieFp, _, _, _, _, _) =
+  (srcFp, hieFp)
 
 buildXRefMapForBatch ::
-  (FilePath -> FilePath) ->
   Tracer Text ->
   HieDBIndexerOptions ->
   HieDb ->
@@ -238,7 +238,6 @@ buildXRefMapForBatch ::
   (Int, [Vertex]) ->
   IO IndexerBatchOutput
 buildXRefMapForBatch
-  resolveHieFile
   logger
   HieDBIndexerOptions{}
   db
@@ -251,7 +250,7 @@ buildXRefMapForBatch
     let !nodeDefinitions = mkNodeDefinitions fileLinesSumMap vertices
 
         !srcAndHiePaths = nubOrd $
-          map (getFilePathsFromVertex resolveHieFile) vertices
+          map getFilePathsFromVertex vertices
 
     logMsg logger $
       prependBatchNum $

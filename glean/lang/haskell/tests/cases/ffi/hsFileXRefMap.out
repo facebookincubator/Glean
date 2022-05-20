@@ -1,0 +1,1099 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "fbcode/common/hs/util/Util/FFI.hs" },
+      "refs": [
+        {
+          "target": { "definition": { "key": "GHC.ForeignPtr.ForeignPtr" } },
+          "spans": [ { "start": 623, "length": 10 } ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Ptr.Ptr" } },
+          "spans": [
+            { "start": 3099, "length": 3 },
+            { "start": 3129, "length": 3 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Util.FFI.ffiErrorMessage" } },
+          "spans": [
+            { "start": 275, "length": 15 },
+            { "start": 642, "length": 15 },
+            { "start": 680, "length": 15 },
+            { "start": 801, "length": 15 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Util.FFI.invoke'" } },
+          "spans": [
+            { "start": 2541, "length": 7 },
+            { "start": 2643, "length": 7 },
+            { "start": 2742, "length": 7 },
+            { "start": 3156, "length": 7 },
+            { "start": 3196, "length": 7 },
+            { "start": 3907, "length": 7 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Types.:" } },
+          "spans": [
+            { "start": 1266, "length": 2 },
+            { "start": 3145, "length": 2 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Foreign.Storable.peek" } },
+          "spans": [ { "start": 3219, "length": 4 } ]
+        },
+        {
+          "target": { "definition": { "key": "Util.FFI.tuple" } },
+          "spans": [
+            { "start": 1311, "length": 5 },
+            { "start": 1386, "length": 5 },
+            { "start": 1450, "length": 5 },
+            { "start": 1524, "length": 5 },
+            { "start": 1613, "length": 5 },
+            { "start": 1715, "length": 5 },
+            { "start": 1830, "length": 5 },
+            { "start": 1958, "length": 5 },
+            { "start": 2099, "length": 5 },
+            { "start": 2253, "length": 5 },
+            { "start": 2420, "length": 5 },
+            { "start": 3899, "length": 5 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Tuple.()" } },
+          "spans": [ { "start": 1398, "length": 2 } ]
+        },
+        {
+          "target": { "definition": { "key": "Util.FFI.Tuple" } },
+          "spans": [
+            { "start": 322, "length": 5 },
+            { "start": 1280, "length": 5 },
+            { "start": 1348, "length": 5 },
+            { "start": 1348, "length": 9 },
+            { "start": 1411, "length": 5 },
+            { "start": 1411, "length": 10 },
+            { "start": 1479, "length": 5 },
+            { "start": 1479, "length": 11 },
+            { "start": 1562, "length": 5 },
+            { "start": 1562, "length": 13 },
+            { "start": 1658, "length": 5 },
+            { "start": 1658, "length": 15 },
+            { "start": 1767, "length": 5 },
+            { "start": 1767, "length": 17 },
+            { "start": 1889, "length": 5 },
+            { "start": 1889, "length": 19 },
+            { "start": 2024, "length": 5 },
+            { "start": 2024, "length": 21 },
+            { "start": 2172, "length": 5 },
+            { "start": 2172, "length": 23 },
+            { "start": 2333, "length": 5 },
+            { "start": 2333, "length": 25 },
+            { "start": 3845, "length": 5 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Base.when" } },
+          "spans": [ { "start": 1086, "length": 4 } ]
+        },
+        {
+          "target": { "definition": { "key": "Foreign.Marshal.Utils.with" } },
+          "spans": [ { "start": 373, "length": 4 } ]
+        },
+        {
+          "target": { "definition": { "key": "Foreign.C.String.CString" } },
+          "spans": [
+            { "start": 575, "length": 7 },
+            { "start": 1046, "length": 7 },
+            { "start": 2596, "length": 7 },
+            { "start": 2626, "length": 7 }
+          ]
+        },
+        {
+          "target": {
+            "definition": { "key": "Foreign.ForeignPtr.Imp.newForeignPtr" }
+          },
+          "spans": [ { "start": 1121, "length": 13 } ]
+        },
+        {
+          "target": { "definition": { "key": "Foreign.C.Types.CChar" } },
+          "spans": [ { "start": 634, "length": 5 } ]
+        },
+        {
+          "target": { "definition": { "key": "Foreign.C.String.peekCString" } },
+          "spans": [ { "start": 750, "length": 11 } ]
+        },
+        {
+          "target": {
+            "definition": { "key": "GHC.IO.Unsafe.unsafePerformIO" }
+          },
+          "spans": [
+            { "start": 431, "length": 15 },
+            { "start": 714, "length": 15 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Base.fmap" } },
+          "spans": [ { "start": 3894, "length": 4 } ]
+        },
+        {
+          "target": {
+            "definition": { "key": "Foreign.ForeignPtr.Imp.withForeignPtr" }
+          },
+          "spans": [ { "start": 732, "length": 14 } ]
+        },
+        {
+          "target": { "definition": { "key": "Util.FFI.Nil" } },
+          "spans": [
+            { "start": 1216, "length": 3 },
+            { "start": 1392, "length": 3 },
+            { "start": 2680, "length": 3 },
+            { "start": 2774, "length": 3 }
+          ]
+        },
+        {
+          "target": {
+            "definition": { "key": "Foreign.Marshal.Utils.withMany" }
+          },
+          "spans": [ { "start": 379, "length": 8 } ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Classes./=" } },
+          "spans": [ { "start": 1094, "length": 2 } ]
+        },
+        {
+          "target": { "definition": { "key": "Util.FFI.Res" } },
+          "spans": [
+            { "start": 2526, "length": 3 },
+            { "start": 2567, "length": 3 },
+            { "start": 2618, "length": 3 },
+            { "start": 2722, "length": 3 },
+            { "start": 3124, "length": 3 },
+            { "start": 3148, "length": 3 },
+            { "start": 3852, "length": 3 },
+            { "start": 3877, "length": 3 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Types.IO" } },
+          "spans": [
+            { "start": 586, "length": 2 },
+            { "start": 1043, "length": 2 },
+            { "start": 1057, "length": 2 },
+            { "start": 2557, "length": 2 },
+            { "start": 2593, "length": 2 },
+            { "start": 2623, "length": 2 },
+            { "start": 2702, "length": 2 },
+            { "start": 2727, "length": 2 },
+            { "start": 3868, "length": 2 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Util.FFI.:>" } },
+          "spans": [
+            { "start": 1191, "length": 2 },
+            { "start": 1234, "length": 4 },
+            { "start": 1459, "length": 2 },
+            { "start": 1533, "length": 2 },
+            { "start": 1538, "length": 2 },
+            { "start": 1622, "length": 2 },
+            { "start": 1627, "length": 2 },
+            { "start": 1632, "length": 2 },
+            { "start": 1724, "length": 2 },
+            { "start": 1729, "length": 2 },
+            { "start": 1734, "length": 2 },
+            { "start": 1739, "length": 2 },
+            { "start": 1839, "length": 2 },
+            { "start": 1844, "length": 2 },
+            { "start": 1849, "length": 2 },
+            { "start": 1854, "length": 2 },
+            { "start": 1859, "length": 2 },
+            { "start": 1967, "length": 2 },
+            { "start": 1972, "length": 2 },
+            { "start": 1977, "length": 2 },
+            { "start": 1982, "length": 2 },
+            { "start": 1987, "length": 2 },
+            { "start": 1992, "length": 2 },
+            { "start": 2108, "length": 2 },
+            { "start": 2113, "length": 2 },
+            { "start": 2118, "length": 2 },
+            { "start": 2123, "length": 2 },
+            { "start": 2128, "length": 2 },
+            { "start": 2133, "length": 2 },
+            { "start": 2138, "length": 2 },
+            { "start": 2262, "length": 2 },
+            { "start": 2267, "length": 2 },
+            { "start": 2272, "length": 2 },
+            { "start": 2277, "length": 2 },
+            { "start": 2282, "length": 2 },
+            { "start": 2287, "length": 2 },
+            { "start": 2292, "length": 2 },
+            { "start": 2297, "length": 2 },
+            { "start": 2429, "length": 2 },
+            { "start": 2434, "length": 2 },
+            { "start": 2439, "length": 2 },
+            { "start": 2444, "length": 2 },
+            { "start": 2449, "length": 2 },
+            { "start": 2454, "length": 2 },
+            { "start": 2459, "length": 2 },
+            { "start": 2464, "length": 2 },
+            { "start": 2469, "length": 2 },
+            { "start": 3241, "length": 2 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Util.FFI.FFIFun" } },
+          "spans": [
+            { "start": 310, "length": 6 },
+            { "start": 2504, "length": 6 },
+            { "start": 2585, "length": 6 },
+            { "start": 2585, "length": 19 },
+            { "start": 2694, "length": 6 },
+            { "start": 2694, "length": 14 },
+            { "start": 3065, "length": 45 },
+            { "start": 3078, "length": 6 },
+            { "start": 3091, "length": 6 },
+            { "start": 3835, "length": 6 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Ptr.FunPtr" } },
+          "spans": [ { "start": 567, "length": 6 } ]
+        },
+        {
+          "target": { "definition": { "key": "Util.FFI.FFIError" } },
+          "spans": [
+            { "start": 265, "length": 8 },
+            { "start": 602, "length": 8 },
+            { "start": 613, "length": 8 },
+            { "start": 661, "length": 8 },
+            { "start": 697, "length": 8 },
+            { "start": 777, "length": 8 },
+            { "start": 837, "length": 8 },
+            { "start": 1169, "length": 8 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Util.FFI.hs_ffi_free_error" } },
+          "spans": [
+            { "start": 544, "length": 17 },
+            { "start": 1135, "length": 17 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Show.show" } },
+          "spans": [ { "start": 794, "length": 4 } ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Base.String" } },
+          "spans": [ { "start": 673, "length": 6 } ]
+        },
+        {
+          "target": { "definition": { "key": "Util.FFI.Tup" } },
+          "spans": [
+            { "start": 1302, "length": 3 },
+            { "start": 1331, "length": 3 },
+            { "start": 1371, "length": 3 },
+            { "start": 1435, "length": 3 },
+            { "start": 1504, "length": 3 },
+            { "start": 1589, "length": 3 },
+            { "start": 1687, "length": 3 },
+            { "start": 1798, "length": 3 },
+            { "start": 1922, "length": 3 },
+            { "start": 2059, "length": 3 },
+            { "start": 2209, "length": 3 },
+            { "start": 2372, "length": 3 },
+            { "start": 3872, "length": 3 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Show.Show" } },
+          "spans": [
+            { "start": 772, "length": 4 },
+            { "start": 772, "length": 13 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Ptr.nullPtr" } },
+          "spans": [ { "start": 1097, "length": 7 } ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Base.." } },
+          "spans": [ { "start": 3905, "length": 1 } ]
+        },
+        {
+          "target": { "definition": { "key": "Util.FFI.List" } },
+          "spans": [
+            { "start": 300, "length": 4 },
+            { "start": 1200, "length": 4 },
+            { "start": 1223, "length": 4 },
+            { "start": 1247, "length": 4 },
+            { "start": 1258, "length": 4 },
+            { "start": 1320, "length": 4 },
+            { "start": 2561, "length": 4 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Util.FFI.call" } },
+          "spans": [
+            { "start": 292, "length": 4 },
+            { "start": 1035, "length": 4 },
+            { "start": 1063, "length": 4 },
+            { "start": 2662, "length": 4 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Exception.Type.Exception" } },
+          "spans": [
+            { "start": 827, "length": 9 },
+            { "start": 827, "length": 18 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.IO.throwIO" } },
+          "spans": [ { "start": 1159, "length": 7 } ]
+        },
+        {
+          "target": { "definition": { "key": "Util.FFI.invoke" } },
+          "spans": [
+            { "start": 333, "length": 6 },
+            { "start": 3824, "length": 6 },
+            { "start": 3885, "length": 6 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Base.$" } },
+          "spans": [
+            { "start": 730, "length": 1 },
+            { "start": 1106, "length": 1 },
+            { "start": 1167, "length": 1 },
+            { "start": 3175, "length": 1 },
+            { "start": 3237, "length": 1 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Base.return" } },
+          "spans": [
+            { "start": 2673, "length": 6 },
+            { "start": 2767, "length": 6 },
+            { "start": 3230, "length": 6 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Foreign.Storable.Storable" } },
+          "spans": [ { "start": 3066, "length": 8 } ]
+        },
+        {
+          "target": { "definition": { "key": "Foreign.Marshal.Alloc.alloca" } },
+          "spans": [ { "start": 3168, "length": 6 } ]
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "refs": [
+        {
+          "target": { "definition": { "key": "GHC.ForeignPtr.ForeignPtr" } },
+          "spans": [
+            { "start": 2464, "length": 10 },
+            { "start": 2499, "length": 10 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Base.>>=" } },
+          "spans": [ { "start": 2759, "length": 3 } ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Ptr.Ptr" } },
+          "spans": [
+            { "start": 999, "length": 3 },
+            { "start": 1145, "length": 3 },
+            { "start": 1274, "length": 3 },
+            { "start": 1439, "length": 3 },
+            { "start": 1660, "length": 3 },
+            { "start": 1755, "length": 3 },
+            { "start": 1882, "length": 3 },
+            { "start": 2026, "length": 3 },
+            { "start": 2120, "length": 3 },
+            { "start": 2416, "length": 3 },
+            { "start": 2558, "length": 3 },
+            { "start": 2718, "length": 3 },
+            { "start": 2797, "length": 3 },
+            { "start": 3380, "length": 3 },
+            { "start": 4168, "length": 3 },
+            { "start": 4686, "length": 3 },
+            { "start": 4695, "length": 3 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.usingMalloced" } },
+          "spans": [
+            { "start": 367, "length": 13 },
+            { "start": 2009, "length": 13 },
+            { "start": 2048, "length": 13 },
+            { "start": 2179, "length": 13 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.unwrap" } },
+          "spans": [
+            { "start": 2484, "length": 6 },
+            { "start": 2681, "length": 6 },
+            { "start": 2847, "length": 6 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.with" } },
+          "spans": [
+            { "start": 463, "length": 4 },
+            { "start": 2771, "length": 4 },
+            { "start": 2820, "length": 4 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.withStatic" } },
+          "spans": [
+            { "start": 509, "length": 10 },
+            { "start": 3020, "length": 10 },
+            { "start": 3083, "length": 10 }
+          ]
+        },
+        {
+          "target": {
+            "definition": { "key": "Glean.FFI.unsafeMallocedVector" }
+          },
+          "spans": [
+            { "start": 296, "length": 20 },
+            { "start": 1399, "length": 20 },
+            { "start": 1492, "length": 20 }
+          ]
+        },
+        {
+          "target": {
+            "definition": { "key": "Control.Exception.Base.finally" }
+          },
+          "spans": [ { "start": 2080, "length": 9 } ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.ffiBuf2" } },
+          "spans": [
+            { "start": 571, "length": 7 },
+            { "start": 4612, "length": 7 },
+            { "start": 4741, "length": 7 },
+            { "start": 4753, "length": 7 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.copyByteString" } },
+          "spans": [
+            { "start": 252, "length": 14 },
+            { "start": 1127, "length": 14 },
+            { "start": 1178, "length": 14 },
+            { "start": 1840, "length": 14 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Types.:" } },
+          "spans": [
+            { "start": 2355, "length": 1 },
+            { "start": 2382, "length": 1 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Foreign.Storable.peek" } },
+          "spans": [
+            { "start": 4349, "length": 4 },
+            { "start": 5010, "length": 4 },
+            { "start": 5021, "length": 4 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.construct" } },
+          "spans": [
+            { "start": 452, "length": 9 },
+            { "start": 2689, "length": 9 },
+            { "start": 2733, "length": 9 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Tuple.()" } },
+          "spans": [
+            { "start": 4315, "length": 2 },
+            { "start": 4848, "length": 2 },
+            { "start": 4910, "length": 2 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Foreign.Marshal.Utils.with" } },
+          "spans": [ { "start": 612, "length": 4 } ]
+        },
+        {
+          "target": { "definition": { "key": "Foreign.C.String.CString" } },
+          "spans": [
+            { "start": 4180, "length": 7 },
+            { "start": 4707, "length": 7 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.Static" } },
+          "spans": [
+            { "start": 497, "length": 6 },
+            { "start": 2866, "length": 6 },
+            { "start": 3034, "length": 6 },
+            { "start": 3132, "length": 6 }
+          ]
+        },
+        {
+          "target": {
+            "definition": { "key": "Foreign.ForeignPtr.Imp.newForeignPtr" }
+          },
+          "spans": [
+            { "start": 1530, "length": 13 },
+            { "start": 2593, "length": 13 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.withUTF8Text" } },
+          "spans": [
+            { "start": 320, "length": 12 },
+            { "start": 1635, "length": 12 },
+            { "start": 1693, "length": 12 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.withFFIResultBuf" } },
+          "spans": [
+            { "start": 545, "length": 16 },
+            { "start": 3758, "length": 16 },
+            { "start": 3809, "length": 16 }
+          ]
+        },
+        {
+          "target": {
+            "definition": { "key": "Control.Exception.Base.bracket" }
+          },
+          "spans": [ { "start": 3183, "length": 7 } ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Base.assert" } },
+          "spans": [
+            { "start": 4258, "length": 6 },
+            { "start": 4791, "length": 6 },
+            { "start": 4853, "length": 6 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Err.undefined" } },
+          "spans": [
+            { "start": 3434, "length": 9 },
+            { "start": 4274, "length": 9 },
+            { "start": 4807, "length": 9 },
+            { "start": 4869, "length": 9 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Base.fmap" } },
+          "spans": [ { "start": 2581, "length": 4 } ]
+        },
+        {
+          "target": {
+            "definition": { "key": "Foreign.ForeignPtr.Imp.withForeignPtr" }
+          },
+          "spans": [ { "start": 2831, "length": 14 } ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.using" } },
+          "spans": [
+            { "start": 521, "length": 5 },
+            { "start": 3113, "length": 5 },
+            { "start": 3123, "length": 5 },
+            { "start": 3172, "length": 5 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.List.reverse" } },
+          "spans": [ { "start": 2332, "length": 7 } ]
+        },
+        {
+          "target": {
+            "definition": { "key": "Foreign.Marshal.Utils.withMany" }
+          },
+          "spans": [ { "start": 618, "length": 8 } ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Ptr.plusPtr" } },
+          "spans": [ { "start": 4959, "length": 9 } ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Word.Word64" } },
+          "spans": [
+            { "start": 3384, "length": 6 },
+            { "start": 3447, "length": 6 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Foreign.C.Types.CSize" } },
+          "spans": [
+            { "start": 1009, "length": 5 },
+            { "start": 1155, "length": 5 },
+            { "start": 1284, "length": 5 },
+            { "start": 1448, "length": 5 },
+            { "start": 1670, "length": 5 },
+            { "start": 1765, "length": 5 },
+            { "start": 1892, "length": 5 }
+          ]
+        },
+        {
+          "target": {
+            "definition": {
+              "key": "Data.ByteString.Unsafe.unsafeUseAsCStringLen"
+            }
+          },
+          "spans": [ { "start": 1054, "length": 24 } ]
+        },
+        {
+          "target": {
+            "definition": { "key": "Data.ByteString.Internal.ByteString" }
+          },
+          "spans": [
+            { "start": 694, "length": 10 },
+            { "start": 984, "length": 10 },
+            { "start": 1167, "length": 10 },
+            { "start": 1296, "length": 10 }
+          ]
+        },
+        {
+          "target": {
+            "definition": { "key": "Data.Text.Encoding.decodeUtf8With" }
+          },
+          "spans": [
+            { "start": 1797, "length": 19 },
+            { "start": 1936, "length": 19 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Types.IO" } },
+          "spans": [
+            { "start": 1018, "length": 2 },
+            { "start": 1027, "length": 2 },
+            { "start": 1164, "length": 2 },
+            { "start": 1293, "length": 2 },
+            { "start": 1457, "length": 2 },
+            { "start": 1679, "length": 2 },
+            { "start": 1688, "length": 2 },
+            { "start": 1774, "length": 2 },
+            { "start": 1901, "length": 2 },
+            { "start": 2035, "length": 2 },
+            { "start": 2043, "length": 2 },
+            { "start": 2130, "length": 2 },
+            { "start": 2138, "length": 2 },
+            { "start": 2228, "length": 2 },
+            { "start": 2237, "length": 2 },
+            { "start": 2261, "length": 2 },
+            { "start": 2270, "length": 2 },
+            { "start": 2425, "length": 2 },
+            { "start": 2567, "length": 2 },
+            { "start": 2644, "length": 2 },
+            { "start": 2714, "length": 2 },
+            { "start": 2728, "length": 2 },
+            { "start": 2806, "length": 2 },
+            { "start": 2815, "length": 2 },
+            { "start": 2905, "length": 2 },
+            { "start": 2949, "length": 2 },
+            { "start": 2971, "length": 2 },
+            { "start": 3069, "length": 2 },
+            { "start": 3078, "length": 2 },
+            { "start": 3144, "length": 2 },
+            { "start": 3158, "length": 2 },
+            { "start": 3167, "length": 2 },
+            { "start": 3795, "length": 2 },
+            { "start": 3804, "length": 2 },
+            { "start": 4177, "length": 2 },
+            { "start": 4194, "length": 2 },
+            { "start": 4704, "length": 2 },
+            { "start": 4721, "length": 2 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Ptr.castPtr" } },
+          "spans": [
+            { "start": 1098, "length": 7 },
+            { "start": 1218, "length": 7 },
+            { "start": 1371, "length": 7 },
+            { "start": 4334, "length": 7 },
+            { "start": 4355, "length": 7 },
+            { "start": 4923, "length": 7 },
+            { "start": 4945, "length": 7 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Types.[]" } },
+          "spans": [ { "start": 2323, "length": 2 } ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.release" } },
+          "spans": [
+            { "start": 443, "length": 7 },
+            { "start": 2616, "length": 7 },
+            { "start": 2650, "length": 7 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.FFIResultBuf" } },
+          "spans": [
+            { "start": 531, "length": 12 },
+            { "start": 3351, "length": 12 },
+            { "start": 3366, "length": 12 },
+            { "start": 3779, "length": 12 },
+            { "start": 3866, "length": 12 },
+            { "start": 4149, "length": 12 },
+            { "start": 4229, "length": 12 },
+            { "start": 4667, "length": 12 },
+            { "start": 4762, "length": 12 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Tuple.(,)" } },
+          "spans": [ { "start": 5002, "length": 3 } ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Ptr.FunPtr" } },
+          "spans": [ { "start": 2408, "length": 6 } ]
+        },
+        {
+          "target": { "definition": { "key": "Data.Text.Internal.Text" } },
+          "spans": [
+            { "start": 809, "length": 4 },
+            { "start": 1651, "length": 4 },
+            { "start": 1777, "length": 4 },
+            { "start": 1904, "length": 4 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.usingManyMalloced" } },
+          "spans": [
+            { "start": 382, "length": 17 },
+            { "start": 2098, "length": 17 },
+            { "start": 2143, "length": 17 }
+          ]
+        },
+        {
+          "target": {
+            "definition": { "key": "Glean.FFI.unsafeMallocedByteString" }
+          },
+          "spans": [
+            { "start": 268, "length": 24 },
+            { "start": 1246, "length": 24 },
+            { "start": 1307, "length": 24 },
+            { "start": 1979, "length": 24 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.create" } },
+          "spans": [
+            { "start": 435, "length": 6 },
+            { "start": 2536, "length": 6 },
+            { "start": 2572, "length": 6 },
+            { "start": 2763, "length": 6 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.wrap" } },
+          "spans": [
+            { "start": 2456, "length": 4 },
+            { "start": 2586, "length": 4 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Types.Int" } },
+          "spans": [ { "start": 3408, "length": 3 } ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.unsafeMallocedUTF8" } },
+          "spans": [
+            { "start": 344, "length": 18 },
+            { "start": 1860, "length": 18 },
+            { "start": 1909, "length": 18 }
+          ]
+        },
+        {
+          "target": {
+            "definition": { "key": "Data.ByteString.packCStringLen" }
+          },
+          "spans": [ { "start": 1199, "length": 17 } ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Base.." } },
+          "spans": [
+            { "start": 1724, "length": 1 },
+            { "start": 2591, "length": 1 },
+            { "start": 2679, "length": 1 },
+            { "start": 3864, "length": 1 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.destroy" } },
+          "spans": [
+            { "start": 2514, "length": 7 },
+            { "start": 2607, "length": 7 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.destroyStatic" } },
+          "spans": [
+            { "start": 2883, "length": 13 },
+            { "start": 3194, "length": 13 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.Destroy" } },
+          "spans": [
+            { "start": 414, "length": 7 },
+            { "start": 2396, "length": 7 },
+            { "start": 2525, "length": 7 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Foreign.Storable.sizeOf" } },
+          "spans": [
+            { "start": 3426, "length": 6 },
+            { "start": 4266, "length": 6 },
+            { "start": 4799, "length": 6 },
+            { "start": 4861, "length": 6 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Util.FFI.invoke" } },
+          "spans": [
+            { "start": 4320, "length": 6 },
+            { "start": 4983, "length": 6 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Classes.<=" } },
+          "spans": [
+            { "start": 4290, "length": 2 },
+            { "start": 4823, "length": 2 },
+            { "start": 4885, "length": 2 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.Object" } },
+          "spans": [
+            { "start": 423, "length": 6 },
+            { "start": 2439, "length": 6 },
+            { "start": 2546, "length": 6 },
+            { "start": 2627, "length": 6 },
+            { "start": 2702, "length": 6 },
+            { "start": 2779, "length": 6 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Base.$" } },
+          "spans": [
+            { "start": 1081, "length": 1 },
+            { "start": 1569, "length": 1 },
+            { "start": 1617, "length": 1 },
+            { "start": 2330, "length": 1 },
+            { "start": 2369, "length": 1 },
+            { "start": 2754, "length": 1 },
+            { "start": 3860, "length": 1 },
+            { "start": 4306, "length": 1 },
+            { "start": 4327, "length": 1 },
+            { "start": 4839, "length": 1 },
+            { "start": 4901, "length": 1 },
+            { "start": 4953, "length": 1 },
+            { "start": 4990, "length": 1 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.constructor" } },
+          "spans": [
+            { "start": 484, "length": 11 },
+            { "start": 2956, "length": 11 },
+            { "start": 2993, "length": 11 }
+          ]
+        },
+        {
+          "target": {
+            "definition": { "key": "Foreign.Marshal.Alloc.allocaBytes" }
+          },
+          "spans": [ { "start": 3830, "length": 11 } ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.Constructor" } },
+          "spans": [
+            { "start": 471, "length": 11 },
+            { "start": 2920, "length": 11 },
+            { "start": 2936, "length": 11 },
+            { "start": 2979, "length": 11 },
+            { "start": 3007, "length": 11 },
+            { "start": 3046, "length": 11 },
+            { "start": 3095, "length": 11 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.ffiBuf" } },
+          "spans": [
+            { "start": 563, "length": 6 },
+            { "start": 4109, "length": 6 },
+            { "start": 4210, "length": 6 },
+            { "start": 4221, "length": 6 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Data.Foldable.foldr" } },
+          "spans": [ { "start": 2173, "length": 5 } ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Num.*" } },
+          "spans": [ { "start": 3855, "length": 1 } ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Base.return" } },
+          "spans": [
+            { "start": 1562, "length": 6 },
+            { "start": 4308, "length": 6 },
+            { "start": 4841, "length": 6 },
+            { "start": 4903, "length": 6 }
+          ]
+        },
+        {
+          "target": {
+            "definition": { "key": "Data.Text.Encoding.Error.lenientDecode" }
+          },
+          "spans": [
+            { "start": 1817, "length": 18 },
+            { "start": 1956, "length": 18 }
+          ]
+        },
+        {
+          "target": {
+            "definition": {
+              "key": "Data.Vector.Storable.unsafeFromForeignPtr0"
+            }
+          },
+          "spans": [ { "start": 1571, "length": 42 } ]
+        },
+        {
+          "target": {
+            "definition": { "key": "GHC.ForeignPtr.finalizeForeignPtr" }
+          },
+          "spans": [ { "start": 2660, "length": 18 } ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Real.fromIntegral" } },
+          "spans": [
+            { "start": 1110, "length": 12 },
+            { "start": 1229, "length": 12 },
+            { "start": 1382, "length": 12 },
+            { "start": 1619, "length": 12 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.wORD64_SIZE" } },
+          "spans": [
+            { "start": 3393, "length": 11 },
+            { "start": 3412, "length": 11 },
+            { "start": 3843, "length": 11 },
+            { "start": 4293, "length": 11 },
+            { "start": 4826, "length": 11 },
+            { "start": 4888, "length": 11 },
+            { "start": 4969, "length": 11 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Data.Vector.Storable.Vector" } },
+          "spans": [ { "start": 1461, "length": 27 } ]
+        },
+        {
+          "target": { "definition": { "key": "Foreign.Storable.Storable" } },
+          "spans": [
+            { "start": 1425, "length": 8 },
+            { "start": 4132, "length": 8 },
+            { "start": 4638, "length": 8 },
+            { "start": 4650, "length": 8 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.IO.Exception.assertError" } },
+          "spans": [
+            { "start": 4258, "length": 6 },
+            { "start": 4791, "length": 6 },
+            { "start": 4853, "length": 6 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.IO.mask_" } },
+          "spans": [ { "start": 2748, "length": 5 } ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.withMany" } },
+          "spans": [
+            { "start": 401, "length": 8 },
+            { "start": 2204, "length": 8 },
+            { "start": 2275, "length": 8 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "Foreign.Marshal.Alloc.free" } },
+          "spans": [ { "start": 2090, "length": 4 } ]
+        },
+        {
+          "target": {
+            "definition": {
+              "key": "Data.ByteString.Unsafe.unsafePackMallocCStringLen"
+            }
+          },
+          "spans": [ { "start": 1340, "length": 29 } ]
+        },
+        {
+          "target": { "definition": { "key": "Data.Functor.<$>" } },
+          "spans": [
+            { "start": 1836, "length": 3 },
+            { "start": 1975, "length": 3 },
+            { "start": 5006, "length": 3 }
+          ]
+        },
+        {
+          "target": {
+            "definition": { "key": "Foreign.Marshal.Alloc.finalizerFree" }
+          },
+          "spans": [ { "start": 1544, "length": 13 } ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.fromUTF8" } },
+          "spans": [
+            { "start": 334, "length": 8 },
+            { "start": 1743, "length": 8 },
+            { "start": 1782, "length": 8 }
+          ]
+        },
+        {
+          "target": {
+            "definition": { "key": "Data.Text.Encoding.encodeUtf8" }
+          },
+          "spans": [ { "start": 1726, "length": 15 } ]
+        },
+        {
+          "target": { "definition": { "key": "Glean.FFI.unsafeWithBytes" } },
+          "spans": [
+            { "start": 235, "length": 15 },
+            { "start": 965, "length": 15 },
+            { "start": 1032, "length": 15 },
+            { "start": 1708, "length": 15 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Base.<*>" } },
+          "spans": [ { "start": 5017, "length": 3 } ]
+        }
+      ]
+    }
+  }
+]
