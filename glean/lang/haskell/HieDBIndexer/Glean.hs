@@ -17,6 +17,7 @@ import Control.Exception (Exception, throwIO)
 import Control.Monad (forM_)
 import Data.Array.Unboxed (elems)
 import qualified Data.HashMap.Strict as Map
+import qualified Data.Map as AMap
 import qualified Data.Text as Text
 import Data.Typeable (Typeable)
 import qualified Glean hiding (options)
@@ -28,6 +29,7 @@ import qualified Glean.Schema.Hs as Hs
 import qualified Glean.Schema.Hs.Types as Hs
 import qualified Glean.Schema.Src as Src
 import qualified Glean.Schema.Src.Types as Src
+import qualified Glean.Types as Thrift
 import HieDBIndexer.Options (HieDBIndexerEnv (..), HieDBIndexerOptions (..))
 import HieDBIndexer.Types (
   Definition (..),
@@ -62,7 +64,7 @@ createGleanDB _env@HieDBIndexerEnv {..} fileLinesMap batchOutputs = do
 
       fileLinesList = Map.toList fileLinesMap
 
-  printf "Creating Glean DB %s/%s" (repoName cfg) hash
+  printf "Creating Glean DB %s/%s\n" (repoName cfg) hash
 
   finalRepo <-
     if dontCreateDb cfg
@@ -117,9 +119,21 @@ createGleanDB _env@HieDBIndexerEnv {..} fileLinesMap batchOutputs = do
         (throwIO DatabaseAlreadyExistsException)
         finalWriter
 
+  predicates <-
+    Thrift.schemaInfo_predicateIds
+      <$> Glean.getSchemaInfo backend finalRepo
   repoStats <- Glean.predicateStats backend finalRepo Glean.ExcludeBase
+  let readableStats =
+        [ printf " - %s: count = %d, size = %d"
+          (Text.unpack predicateRef_name)
+          predicateStats_count
+          predicateStats_size
+        | (p, Thrift.PredicateStats {..}) <- AMap.toList repoStats
+        , Just Thrift.PredicateRef {..} <- [AMap.lookup p predicates]
+        ]
 
-  putStrLn $ "Repo stats: " <> show repoStats
+  putStrLn "Repo stats: "
+  mapM_ putStrLn readableStats
 
 -- | Given a FileXRefMap, create and write Glean facts to a database.
 gleanWriter ::
