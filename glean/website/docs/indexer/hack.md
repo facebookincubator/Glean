@@ -44,7 +44,6 @@ Hack source can also be indexed directly from the Glean shell:
 hh_server DIR --write-symbol-info JSON \
   --config symbol_write_include_hhi=false \
   --config symbolindex_search_provider=NoIndex \
-  --config use_mini_state=true \
   --config lazy_decl=true \
   --config lazy_parse=true \
   --config lazy_init2=true \

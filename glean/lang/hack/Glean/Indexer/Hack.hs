@@ -66,7 +66,6 @@ indexer = Indexer {
           [ "symbol_write_include_hhi=false"
           , "symbol_write_root_path=" <> hackWriteRoot
           , "symbolindex_search_provider=NoIndex"
-          , "use_mini_state=true"
           , "lazy_decl=true"
           , "lazy_parse=true"
           , "lazy_init2=true"
