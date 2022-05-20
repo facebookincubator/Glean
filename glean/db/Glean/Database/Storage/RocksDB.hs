@@ -14,6 +14,7 @@ module Glean.Database.Storage.RocksDB
 import qualified Codec.Archive.Tar as Tar
 import Control.Exception
 import Control.Monad
+import qualified Data.ByteString.Lazy as LBS
 import qualified Data.HashMap.Strict as HashMap
 import Data.Int
 import Data.List (unzip4)
@@ -220,10 +221,14 @@ instance Storage RocksDB where
     where
       path = scratch </> "backup"
 
-  restore rocks repo scratch bytes = do
+  restore rocks repo scratch scratch_file = do
     createDirectoryIfMissing True scratch_restore
     createDirectoryIfMissing True scratch_db
+    bytes <- LBS.readFile scratch_file
     Tar.unpack scratch_restore $ Tar.read bytes
+    -- to avoid retaining an extra copy of the DB during restore,
+    -- delete the input file now.
+    removeFile scratch_file
     withCString scratch_db $ \p_target ->
       withCString (scratch_restore </> "backup") $ \p_source ->
       invoke $ glean_rocksdb_restore p_target p_source

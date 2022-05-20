@@ -135,12 +135,14 @@ class CanLookup (Database s) => Storage s where
           -- ^ function which expects the serialised database
     -> IO a
 
-  -- | Restore a database. The scratch directory which can be used for storing
-  -- intermediate files is guaranteed to be empty and will be deleted after
-  -- the operation completes.
+  -- | Restore a database. The scratch directory which can be used for
+  -- storing intermediate files is guaranteed to be empty and will be
+  -- deleted after the operation completes. The implementation may
+  -- delete the serialized database file after it has been consumed,
+  -- to reduce the number of copies of the DB on disk during a restore.
   restore
     :: s   -- ^ storage
     -> Repo  -- ^ repo
     -> FilePath  -- ^ scratch directory
-    -> Lazy.ByteString  -- ^ serialiased database (produced by 'backup')
+    -> FilePath  -- ^ file containing the serialiased database (produced by 'backup')
     -> IO ()

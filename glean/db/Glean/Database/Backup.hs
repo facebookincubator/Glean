@@ -17,7 +17,6 @@ import Control.Concurrent.Async
 import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
-import qualified Data.ByteString.Lazy as LBS
 import qualified Data.HashMap.Strict as HashMap
 import Data.HashSet (HashSet)
 import qualified Data.HashSet as HashSet
@@ -234,10 +233,9 @@ doRestore env@Env{..} repo meta
           scratch_file = scratch </> "file"
       -- TODO: implement buffered downloads in Manifold client
       void $ Backend.restore site repo scratch_file
-      bytes <- LBS.readFile scratch_file
       say logInfo "restoring"
       createDirectoryIfMissing True scratch_restore
-      Storage.restore envStorage repo scratch_restore bytes
+      Storage.restore envStorage repo scratch_restore scratch_file
       say logInfo "adding"
       Catalog.finishRestoring envCatalog repo
       atomically $ notify envListener $ RestoreFinished repo
