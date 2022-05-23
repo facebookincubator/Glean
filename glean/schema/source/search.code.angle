@@ -192,5 +192,3 @@ predicate LsifSearchByLowerCaseName:
   lsif.SearchByName { NameCase, Entity }
 
 }
-
-schema search.code.14 evolves search.code.13

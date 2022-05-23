@@ -51,5 +51,3 @@ predicate EntityDynamicReference:
     span: src.ByteSpan,
   }
 }
-
-schema dyn.4 evolves dyn.3
