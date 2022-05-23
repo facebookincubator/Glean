@@ -57,7 +57,9 @@ optionsWith other = O.info (O.helper <*> ((,) <$> parser <*> other)) O.fullDesc
       projectRoot <- if null (cfgProjectRoot cfg)
         then getCurrentDirectory
         else makeAbsolute $ cfgProjectRoot cfg
-      root <- makeAbsolute $ cfgRoot cfg
+      -- We do `equalFilePath root` in the code that searches for test cases,
+      -- which requires `canonicalizePath` for correctness
+      root <- canonicalizePath $ cfgRoot cfg
       replace <- mapM makeAbsolute $ cfgReplace cfg
       return $ cfg {
         cfgProjectRoot = projectRoot,

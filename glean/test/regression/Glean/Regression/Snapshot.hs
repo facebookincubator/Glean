@@ -63,7 +63,7 @@ discoverTests root = go ""
 runTest
   :: Driver opts
   -> opts
-  -> FilePath    -- ^ test root
+  -> FilePath    -- ^ test root, canonicalized
   -> TestConfig
   -> IO [FilePath]
 runTest Driver{..} driverOpts root testIn =
@@ -90,7 +90,7 @@ runTest Driver{..} driverOpts root testIn =
       let qs' = Map.union qs $ Map.fromList
             [ (file, path </> file)
             | file <- files, ".query" `isExtensionOf` file ]
-      if path == root
+      if equalFilePath path root
         then return qs'
         else get_queries root qs' $ takeDirectory path
 
