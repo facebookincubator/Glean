@@ -84,20 +84,19 @@ memoRangeSpanToRange
   -> Glean.RepoHaxl u w Range
 memoRangeSpanToRange file rangespan@Code.RangeSpan_span{} = do
   mOffsets <- memoLineOffsets file
-  return $ rangeSpanToRange  file mOffsets rangespan
-memoRangeSpanToRange file rangespan =
-  pure $ rangeSpanToRange file Nothing rangespan
+  return $ rangeSpanToRange mOffsets rangespan
+memoRangeSpanToRange _ rangespan =
+  pure $ rangeSpanToRange Nothing rangespan
 
 -- | Glean provides either a bytespan or a range for a symbol location.
 -- Normalize it to Glass.Range (exclusive of end line/col spans)
 -- Only use this if you know the offsets are already memoized.
-rangeSpanToRange
-  :: Src.File -> Maybe Range.LineOffsets -> Code.RangeSpan -> Range
-rangeSpanToRange file offsets (Code.RangeSpan_span span) =
-  fileByteSpanToExclusiveRange file offsets span
-rangeSpanToRange _ _ (Code.RangeSpan_range range) =
+rangeSpanToRange :: Maybe Range.LineOffsets -> Code.RangeSpan -> Range
+rangeSpanToRange offsets (Code.RangeSpan_span span) =
+  fileByteSpanToExclusiveRange offsets span
+rangeSpanToRange _ (Code.RangeSpan_range range) =
   inclusiveRangeToExclusiveRange range
-rangeSpanToRange _ _ Code.RangeSpan_EMPTY =
+rangeSpanToRange _ Code.RangeSpan_EMPTY =
   unexpected
 
 -- | Convert a client-side target locator to a specific line/col range
@@ -108,8 +107,7 @@ resolveLocationToRange repo Location{..} = do
   let path = toGleanPath location_repository location_filepath
   efile <- getFileAndLines repo path
   return $ flip fmap efile $ \ FileInfo{..} ->
-    fileByteSpanToExclusiveRange srcFile offsets
-      (spanFromSpan location_span)
+    fileByteSpanToExclusiveRange offsets (spanFromSpan location_span)
   where
     -- Span un-conversion
     spanFromSpan :: ByteSpan -> Src.ByteSpan
@@ -162,14 +160,27 @@ unexpected = error "unexpected RangeSpan"
 -- end Warning: if the file doesn't have src.FileLines facts and the language
 -- schema uses span instead of range, the exclusive range will be incorrect (see
 -- type RangeSpan in codemarkup.angle)
+-- Note: This logic is similar to `Range.byteRangeToRange` except this function
+-- handles empty spans correctly. Inclusive bounds can't support empty spans.
 fileByteSpanToExclusiveRange
-  :: Src.File -> Maybe Range.LineOffsets -> Src.ByteSpan -> Glass.Range
-fileByteSpanToExclusiveRange _ Nothing _ = def
-fileByteSpanToExclusiveRange file (Just lineoffs) bytespan =
-  let range = Range.byteRangeToRange
-        file lineoffs
-        (Range.byteSpanToRange bytespan)
-  in inclusiveRangeToExclusiveRange range
+  :: Maybe Range.LineOffsets -> Src.ByteSpan -> Glass.Range
+fileByteSpanToExclusiveRange Nothing _ = def
+fileByteSpanToExclusiveRange (Just lineoffs) bytespan =
+  let -- be careful subtracting Word64 to avoid wrap-around
+      be@Range.ByteRange{..} = Range.byteSpanToRange bytespan
+      -- Convert from 0-based col to 1-based col for Src.Range
+      (range_lineBegin, range_columnBegin) =
+        Range.byteOffsetToLineCol lineoffs byteRange_begin
+      (range_lineEnd, range_columnEnd) =
+        Range.byteOffsetToLineCol
+          lineoffs (Range.byteRangeExclusiveEnd be)
+  in Glass.Range {
+    range_lineBegin = fromIntegral range_lineBegin,
+    range_columnBegin = fromIntegral $ range_columnBegin + 1,
+    range_lineEnd = fromIntegral range_lineEnd,
+    range_columnEnd = fromIntegral $ range_columnEnd + 1
+  }
+
 
 -- | (internal) Glean's Src.Range is inclusive of start/end. Glass is exclusive
 -- of end

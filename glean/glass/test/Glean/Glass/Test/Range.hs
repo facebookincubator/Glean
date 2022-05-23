@@ -29,11 +29,15 @@ import qualified Glean.Util.Range as Range
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 
 main :: IO ()
-main = withUnitTest $ testRunner $ TestList
+main = withUnitTest $ testRunner $ TestList $
   [ TestList
       [ TestLabel name $
          testByteSpanToExcRange bs glass_range offs
-      , TestLabel ("inc-exl-range" <> name) $
+      ]
+  | (name,bs,glass_range,offs) <- empty : examples
+  ] ++
+  [ TestList
+      [ TestLabel ("inc-exl-range" <> name) $
          testIncRangeToExcRange src_range glass_range
       ]
   | (name,bs,glass_range,offs) <- examples
@@ -46,17 +50,25 @@ testByteSpanToExcRange
   :: Src.ByteSpan -> Glass.Range -> Range.LineOffsets -> Test
 testByteSpanToExcRange bs expected offs = TestCase $ expected @=? actual
   where
-    actual = rangeSpanToRange dummyfile (Just offs) (Code.RangeSpan_span bs)
+    actual = rangeSpanToRange (Just offs) (Code.RangeSpan_span bs)
 
 -- covnersion from glean-internal inclusive-end range to glass range
 testIncRangeToExcRange
   :: Src.Range -> Glass.Range -> Test
 testIncRangeToExcRange src_range expected = TestCase $ expected @=? actual
   where
-    actual = rangeSpanToRange dummyfile Nothing (Code.RangeSpan_range src_range)
+    actual = rangeSpanToRange Nothing (Code.RangeSpan_range src_range)
 
 dummyfile :: Src.File
 dummyfile = Src.File 0 Nothing
+
+empty :: (String, Src.ByteSpan, Glass.Range, Range.LineOffsets)
+empty =
+  ("empty"
+    , bytespan 0 0
+    , range 1 1 1 1
+    , filemap "ab     \n"
+  )
 
 examples :: [(String, Src.ByteSpan, Glass.Range, Range.LineOffsets)]
 examples =

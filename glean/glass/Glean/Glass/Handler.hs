@@ -547,9 +547,9 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit includeRefs b mlang =
 
       -- mark up symbols into normal format with static attributes
       refs1 <- withRepo fileRepo $
-        mapM (toReferenceSymbol scsrepo srcFile offsets) xrefs
+        mapM (toReferenceSymbol scsrepo offsets) xrefs
       defs1 <- withRepo fileRepo $
-        mapM (toDefinitionSymbol scsrepo srcFile offsets) defns
+        mapM (toDefinitionSymbol scsrepo offsets) defns
 
       let (refs, defs) = Attributes.extendAttributes
             (Attributes.fromSymbolId Attributes.SymbolKindAttr)
@@ -712,11 +712,10 @@ searchFileAttributes key mlimit fileId = do
 -- | Like toReferenceSymbol but we convert the xref target to a src.Range
 toReferenceSymbol
   :: RepoName
-  -> Src.File
   -> Maybe Range.LineOffsets
   -> (Code.XRefLocation, Code.Entity)
   -> Glean.RepoHaxl u w (Code.Entity, ReferenceRangeSymbolX)
-toReferenceSymbol repoName file srcOffsets (Code.XRefLocation{..},entity) = do
+toReferenceSymbol repoName srcOffsets (Code.XRefLocation{..},entity) = do
 
   sym <- toSymbolId repoName entity
   attributes <- getStaticAttributes entity
@@ -732,23 +731,22 @@ toReferenceSymbol repoName file srcOffsets (Code.XRefLocation{..},entity) = do
     -- reference target is a Declaration and an Entity
     Code.Location{..} = xRefLocation_target
     -- resolved the local span to a location
-    range = rangeSpanToRange file srcOffsets xRefLocation_source
+    range = rangeSpanToRange srcOffsets xRefLocation_source
 
 -- | Building a resolved definition symbol is just taking a direct xref to it,
 -- and converting the bytespan, adding any static attributes
 toDefinitionSymbol
   :: RepoName
-  -> Src.File
   -> Maybe Range.LineOffsets
   -> (Code.Location, Code.Entity)
   -> Glean.RepoHaxl u w (Code.Entity, DefinitionSymbolX)
-toDefinitionSymbol repoName file offsets (Code.Location{..}, entity) = do
+toDefinitionSymbol repoName offsets (Code.Location{..}, entity) = do
   sym <- toSymbolId repoName entity
   attributes <- getStaticAttributes entity
   return $ (entity,) $ DefinitionSymbolX sym range attributes nameRange
   where
-    range = rangeSpanToRange file offsets location_location
-    nameRange = rangeSpanToRange file offsets . Code.RangeSpan_span <$>
+    range = rangeSpanToRange offsets location_location
+    nameRange = rangeSpanToRange offsets . Code.RangeSpan_span <$>
       location_span
 
 -- | Decorate an entity with 'static' attributes.
