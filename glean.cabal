@@ -1152,6 +1152,7 @@ executable hiedb-indexer
         glean:client-hs,
         glean:client-hs-local,
         glean:core,
+        glean:if-glean-hs,
         glean:lib,
         glean:schema,
         glean:stubs,
