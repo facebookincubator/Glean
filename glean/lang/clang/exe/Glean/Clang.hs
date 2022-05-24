@@ -35,7 +35,9 @@ options = info (helper <*> parser) fullDesc
       <*> strOption
             ( long "inventory"
            <> short 'i'
-           <> help "Path to the schema inventory file"
+           <> help ("Path to the schema inventory file. Extract from glean with "
+            <> " `glean write-serialized-inventory --repo $repo $out`"
+           )
            <> metavar "FILE"
             )
       <*> strOption
@@ -50,6 +52,10 @@ options = info (helper <*> parser) fullDesc
            <> help "Extra arguments to pass to clang (in addition to the ones dictated by CMake)"
            <> value ""
            <> showDefault
+            )
+      <*> switch
+            ( long "verbose"
+            <> help "Enable verbose logging from subprocesses"
             )
 
 main :: IO ()

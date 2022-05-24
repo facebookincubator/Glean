@@ -15,6 +15,9 @@ import System.FilePath
 import System.Environment
 import System.IO.Temp
 import System.Process
+import Util.Log
+import Control.Concurrent.Async
+import System.IO
 
 data CppIndexerOpts = CppIndexerOpts
   { -- | directory with the root CMakeLists.txt
@@ -27,6 +30,8 @@ data CppIndexerOpts = CppIndexerOpts
     cfgCMakeTarget :: String
   , -- | extra clang arguments
     cfgClangArgs :: String
+    -- | verbose output
+  , cfgVerbose :: Bool
   }
 
 data IndexError
@@ -43,56 +48,64 @@ data IndexError
 type IndexM = ExceptT IndexError IO
 
 -- | Generate @compile_commands.json@ file for a CMake project
-generateBuildCommands ::
-  CppIndexerOpts ->
-  -- | path to (temporary) cmake build dir
-  FilePath ->
-  -- | path to @compile_commands.jsonà file, when successful
-  IndexM FilePath
-generateBuildCommands indexOpts buildDir = do
-  (ex, out, err) <- liftIO (readProcessWithExitCode "cmake" args "")
+-- Takes path to (temporary) cmake build dir and path to @compile_commands.json@
+-- file, when successful
+generateBuildCommands :: CppIndexerOpts -> FilePath -> IndexM FilePath
+generateBuildCommands opts@CppIndexerOpts{..} buildDir = do
+  ex <- liftIO $ spawnAndConcurrentLog opts "cmake" args
   case ex of
     ExitSuccess -> return (buildDir </> "compile_commands.json")
-    ExitFailure i -> throwError $ CMakeError i out err
+    ExitFailure i -> throwError $ CMakeError i [] []
   where
-    args =
-      words (cfgClangArgs indexOpts)
-        ++ [ "-DCMAKE_EXPORT_COMPILE_COMMANDS=1"
-           , "-S"
-           , cfgCppSrcDir indexOpts
-           , "-B"
-           , buildDir
-           ]
+    args = words cfgClangArgs++
+      [ "-DCMAKE_EXPORT_COMPILE_COMMANDS=1"
+      , "-S"
+      , cfgCppSrcDir
+      , "-B"
+      , buildDir
+      ]
 
 -- | buildDir is path to (temporary) cmake build dir
 runIndexer :: CppIndexerOpts -> FilePath -> IndexM ()
-runIndexer indexOpts buildDir = withClangIndex $ \exe -> do
-  liftIO $ putStrLn $ "Indexing with: " ++ unwords (exe : args)
-  (ex, out, err) <- liftIO $ readProcessWithExitCode exe args ""
-  -- Uncomment to see C++ indexer output. TODO: hide behind a --verbose flag?
-  -- liftIO $ do
-  --   print ex
-  --   putStrLn "---"
-  --   putStrLn out
-  --   putStrLn "---"
-  --   putStrLn err
-  --   putStrLn "---"
+runIndexer opts@CppIndexerOpts{..} buildDir = withClangIndex $ \exe -> do
+  liftIO $ logInfo $ "Indexing with: " ++ unwords (exe : args)
+  ex <- liftIO $ spawnAndConcurrentLog opts exe args
   case ex of
     ExitSuccess -> return ()
-    ExitFailure i -> throwError $ IndexerError i out err
+    ExitFailure i -> throwError $ IndexerError i [] []
   where
     args =
       [ "-cdb_dir"
       , buildDir
       , "-cdb_target"
-      , cfgCMakeTarget indexOpts
+      , cfgCMakeTarget
       , "-root"
-      , cfgCppSrcDir indexOpts
+      , cfgCppSrcDir
       , "-dump"
-      , cfgDumpFile indexOpts
+      , cfgDumpFile
       , "--inventory"
-      , cfgInventory indexOpts
+      , cfgInventory
+      , "-logtostderr"
       ]
+
+-- | Simple concurrent logger. Spawn the process and asynchronously log
+-- concise or full contents to stdout. Should use a fancy progress bar really
+spawnAndConcurrentLog :: CppIndexerOpts -> FilePath -> [String] -> IO ExitCode
+spawnAndConcurrentLog CppIndexerOpts{..} exe args = do
+  (_, Just hout, Just herr, ph) <- createProcess (proc exe args)
+      { std_out = CreatePipe, std_err = CreatePipe }
+  withAsync (log hout) $ \asyncOut ->
+    withAsync (log herr) $ \asyncErr -> do
+      status <- waitForProcess ph
+      cancel asyncOut
+      cancel asyncErr
+      putStr "\n" >> hFlush stdout
+      return status
+  where
+    log h = mapM_ draw . lines =<< hGetContents h
+    draw s
+      | cfgVerbose = putStrLn s
+      | otherwise = putChar '.' >> hFlush stdout
 
 withClangIndex :: (FilePath -> IndexM ()) -> IndexM ()
 withClangIndex f = do
@@ -116,18 +129,10 @@ clangIndexExe :: String
 clangIndexExe = "glean-clang-index"
 
 indexCMake :: CppIndexerOpts -> IndexM ()
-indexCMake indexOpts =
-  withSystemTempDirectory "glean-cmake" $ \tmpDir -> do
-    compileCommandsPath <- generateBuildCommands indexOpts tmpDir
-    -- Uncomment the 5 lines below to see what happens if we additionally try to
-    -- build the project.
-    -- (ex, out, err) <- liftIO $
-    --   readProcessWithExitCode "cmake" ["--build", tmpDir] ""
-    -- liftIO $ do
-    --   putStrLn ("stdout:\n" ++ out ++ "\n---")
-    --   putStrLn ("stderr:\n" ++ err ++ "\n---")
-
-    exists <- liftIO (doesFileExist compileCommandsPath)
-    when (not exists) $
-      throwError (CMakeCommandsFileMissing compileCommandsPath)
-    runIndexer indexOpts tmpDir
+indexCMake indexOpts = withSystemTempDirectory "glean-cmake" $ \tmpDir -> do
+  compileCommandsPath <- generateBuildCommands indexOpts tmpDir
+  logInfo $ "Using cmake build commands from " <> compileCommandsPath
+  exists <- liftIO (doesFileExist compileCommandsPath)
+  when (not exists) $
+    throwError (CMakeCommandsFileMissing compileCommandsPath)
+  runIndexer indexOpts tmpDir
