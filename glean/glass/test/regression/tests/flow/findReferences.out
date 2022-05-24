@@ -1,10 +1,13 @@
 [
-    {
-        "filepath": "test/imports.js",
-        "repository": "test",
-        "span": {
-            "length": 1,
-            "start": 668
+    "@generated",
+    [
+        {
+            "filepath": "test/imports.js",
+            "repository": "test",
+            "span": {
+                "length": 1,
+                "start": 668
+            }
         }
-    }
+    ]
 ]

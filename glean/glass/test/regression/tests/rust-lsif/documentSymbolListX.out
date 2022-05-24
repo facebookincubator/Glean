@@ -1,714 +1,717 @@
-{
-    "definitions": [
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 15,
-                "columnEnd": 16,
-                "lineBegin": 12,
-                "lineEnd": 12
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/12/15/12/16"
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 8,
-                "columnEnd": 14,
-                "lineBegin": 12,
-                "lineEnd": 12
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/12/8/12/14"
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 10,
-                "columnEnd": 11,
-                "lineBegin": 16,
-                "lineEnd": 16
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/10/16/11"
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 18,
-                "columnEnd": 21,
-                "lineBegin": 16,
-                "lineEnd": 16
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/18/16/21"
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 4,
-                "columnEnd": 9,
-                "lineBegin": 16,
-                "lineEnd": 16
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/4/16/9"
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 15,
-                "columnEnd": 16,
-                "lineBegin": 22,
-                "lineEnd": 22
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/22/15/22/16"
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 8,
-                "columnEnd": 14,
-                "lineBegin": 22,
-                "lineEnd": 22
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/22/8/22/14"
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 13,
-                "columnEnd": 16,
-                "lineBegin": 23,
-                "lineEnd": 23
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/23/13/23/16"
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 13,
-                "columnEnd": 14,
-                "lineBegin": 24,
-                "lineEnd": 24
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/24/13/24/14"
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 15,
-                "columnEnd": 16,
-                "lineBegin": 37,
-                "lineEnd": 37
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/37/15/37/16"
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 8,
-                "columnEnd": 14,
-                "lineBegin": 37,
-                "lineEnd": 37
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/37/8/37/14"
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 13,
-                "columnEnd": 16,
-                "lineBegin": 38,
-                "lineEnd": 38
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/38/13/38/16"
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 9,
-                "columnEnd": 10,
-                "lineBegin": 39,
-                "lineEnd": 39
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/39/9/39/10"
-        }
-    ],
-    "references": [
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 11,
-                "columnEnd": 12,
-                "lineBegin": 13,
-                "lineEnd": 13
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/12/15/12/16",
-            "target": {
-                "filepath": "src/lib.rs",
+[
+    "@generated",
+    {
+        "definitions": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
                 "range": {
                     "columnBegin": 15,
                     "columnEnd": 16,
                     "lineBegin": 12,
                     "lineEnd": 12
                 },
-                "repository": "test"
-            }
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 8,
-                "columnEnd": 9,
-                "lineBegin": 17,
-                "lineEnd": 17
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/12/15/12/16"
             },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/10/16/11",
-            "target": {
-                "filepath": "src/lib.rs",
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 8,
+                    "columnEnd": 14,
+                    "lineBegin": 12,
+                    "lineEnd": 12
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/12/8/12/14"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
                 "range": {
                     "columnBegin": 10,
                     "columnEnd": 11,
                     "lineBegin": 16,
                     "lineEnd": 16
                 },
-                "repository": "test"
-            }
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 36,
-                "columnEnd": 37,
-                "lineBegin": 17,
-                "lineEnd": 17
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/10/16/11"
             },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/10/16/11",
-            "target": {
-                "filepath": "src/lib.rs",
-                "range": {
-                    "columnBegin": 10,
-                    "columnEnd": 11,
-                    "lineBegin": 16,
-                    "lineEnd": 16
-                },
-                "repository": "test"
-            }
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 49,
-                "columnEnd": 50,
-                "lineBegin": 17,
-                "lineEnd": 17
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/10/16/11",
-            "target": {
-                "filepath": "src/lib.rs",
-                "range": {
-                    "columnBegin": 10,
-                    "columnEnd": 11,
-                    "lineBegin": 16,
-                    "lineEnd": 16
-                },
-                "repository": "test"
-            }
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 17,
-                "columnEnd": 20,
-                "lineBegin": 17,
-                "lineEnd": 17
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/18/16/21",
-            "target": {
-                "filepath": "src/lib.rs",
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
                 "range": {
                     "columnBegin": 18,
                     "columnEnd": 21,
                     "lineBegin": 16,
                     "lineEnd": 16
                 },
-                "repository": "test"
-            }
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 43,
-                "columnEnd": 46,
-                "lineBegin": 17,
-                "lineEnd": 17
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/18/16/21"
             },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/18/16/21",
-            "target": {
-                "filepath": "src/lib.rs",
-                "range": {
-                    "columnBegin": 18,
-                    "columnEnd": 21,
-                    "lineBegin": 16,
-                    "lineEnd": 16
-                },
-                "repository": "test"
-            }
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 5,
-                "columnEnd": 10,
-                "lineBegin": 13,
-                "lineEnd": 13
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/4/16/9",
-            "target": {
-                "filepath": "src/lib.rs",
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
                 "range": {
                     "columnBegin": 4,
                     "columnEnd": 9,
                     "lineBegin": 16,
                     "lineEnd": 16
                 },
-                "repository": "test"
-            }
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 30,
-                "columnEnd": 35,
-                "lineBegin": 17,
-                "lineEnd": 17
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/4/16/9"
             },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/4/16/9",
-            "target": {
-                "filepath": "src/lib.rs",
-                "range": {
-                    "columnBegin": 4,
-                    "columnEnd": 9,
-                    "lineBegin": 16,
-                    "lineEnd": 16
-                },
-                "repository": "test"
-            }
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 17,
-                "columnEnd": 18,
-                "lineBegin": 24,
-                "lineEnd": 24
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/22/15/22/16",
-            "target": {
-                "filepath": "src/lib.rs",
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
                 "range": {
                     "columnBegin": 15,
                     "columnEnd": 16,
                     "lineBegin": 22,
                     "lineEnd": 22
                 },
-                "repository": "test"
-            }
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 20,
-                "columnEnd": 23,
-                "lineBegin": 27,
-                "lineEnd": 27
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/22/15/22/16"
             },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/23/13/23/16",
-            "target": {
-                "filepath": "src/lib.rs",
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 8,
+                    "columnEnd": 14,
+                    "lineBegin": 22,
+                    "lineEnd": 22
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/22/8/22/14"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
                 "range": {
                     "columnBegin": 13,
                     "columnEnd": 16,
                     "lineBegin": 23,
                     "lineEnd": 23
                 },
-                "repository": "test"
-            }
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 13,
-                "columnEnd": 16,
-                "lineBegin": 29,
-                "lineEnd": 29
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/23/13/23/16"
             },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/23/13/23/16",
-            "target": {
-                "filepath": "src/lib.rs",
-                "range": {
-                    "columnBegin": 13,
-                    "columnEnd": 16,
-                    "lineBegin": 23,
-                    "lineEnd": 23
-                },
-                "repository": "test"
-            }
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 12,
-                "columnEnd": 13,
-                "lineBegin": 26,
-                "lineEnd": 26
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/24/13/24/14",
-            "target": {
-                "filepath": "src/lib.rs",
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
                 "range": {
                     "columnBegin": 13,
                     "columnEnd": 14,
                     "lineBegin": 24,
                     "lineEnd": 24
                 },
-                "repository": "test"
-            }
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 20,
-                "columnEnd": 21,
-                "lineBegin": 29,
-                "lineEnd": 29
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/24/13/24/14"
             },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/24/13/24/14",
-            "target": {
-                "filepath": "src/lib.rs",
-                "range": {
-                    "columnBegin": 13,
-                    "columnEnd": 14,
-                    "lineBegin": 24,
-                    "lineEnd": 24
-                },
-                "repository": "test"
-            }
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 13,
-                "columnEnd": 14,
-                "lineBegin": 30,
-                "lineEnd": 30
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/24/13/24/14",
-            "target": {
-                "filepath": "src/lib.rs",
-                "range": {
-                    "columnBegin": 13,
-                    "columnEnd": 14,
-                    "lineBegin": 24,
-                    "lineEnd": 24
-                },
-                "repository": "test"
-            }
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 18,
-                "columnEnd": 19,
-                "lineBegin": 39,
-                "lineEnd": 39
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/37/15/37/16",
-            "target": {
-                "filepath": "src/lib.rs",
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
                 "range": {
                     "columnBegin": 15,
                     "columnEnd": 16,
                     "lineBegin": 37,
                     "lineEnd": 37
                 },
-                "repository": "test"
-            }
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 9,
-                "columnEnd": 12,
-                "lineBegin": 40,
-                "lineEnd": 40
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/37/15/37/16"
             },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/38/13/38/16",
-            "target": {
-                "filepath": "src/lib.rs",
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 8,
+                    "columnEnd": 14,
+                    "lineBegin": 37,
+                    "lineEnd": 37
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/37/8/37/14"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
                 "range": {
                     "columnBegin": 13,
                     "columnEnd": 16,
                     "lineBegin": 38,
                     "lineEnd": 38
                 },
-                "repository": "test"
-            }
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 5,
-                "columnEnd": 8,
-                "lineBegin": 42,
-                "lineEnd": 42
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/38/13/38/16"
             },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/38/13/38/16",
-            "target": {
-                "filepath": "src/lib.rs",
-                "range": {
-                    "columnBegin": 13,
-                    "columnEnd": 16,
-                    "lineBegin": 38,
-                    "lineEnd": 38
-                },
-                "repository": "test"
-            }
-        },
-        {
-            "attributes": [
-                {
-                    "attribute": {
-                        "aInteger": 10
-                    },
-                    "key": "symbolLanguage"
-                }
-            ],
-            "range": {
-                "columnBegin": 16,
-                "columnEnd": 17,
-                "lineBegin": 40,
-                "lineEnd": 40
-            },
-            "sym": "test/rs/src/lib.rs/%3Cglobal%3E/39/9/39/10",
-            "target": {
-                "filepath": "src/lib.rs",
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
                 "range": {
                     "columnBegin": 9,
                     "columnEnd": 10,
                     "lineBegin": 39,
                     "lineEnd": 39
                 },
-                "repository": "test"
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/39/9/39/10"
             }
-        }
-    ],
-    "revision": "testhash"
-}
+        ],
+        "references": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 12,
+                    "lineBegin": 13,
+                    "lineEnd": 13
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/12/15/12/16",
+                "target": {
+                    "filepath": "src/lib.rs",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 16,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 8,
+                    "columnEnd": 9,
+                    "lineBegin": 17,
+                    "lineEnd": 17
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/10/16/11",
+                "target": {
+                    "filepath": "src/lib.rs",
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 11,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 36,
+                    "columnEnd": 37,
+                    "lineBegin": 17,
+                    "lineEnd": 17
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/10/16/11",
+                "target": {
+                    "filepath": "src/lib.rs",
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 11,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 49,
+                    "columnEnd": 50,
+                    "lineBegin": 17,
+                    "lineEnd": 17
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/10/16/11",
+                "target": {
+                    "filepath": "src/lib.rs",
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 11,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 17,
+                    "columnEnd": 20,
+                    "lineBegin": 17,
+                    "lineEnd": 17
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/18/16/21",
+                "target": {
+                    "filepath": "src/lib.rs",
+                    "range": {
+                        "columnBegin": 18,
+                        "columnEnd": 21,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 43,
+                    "columnEnd": 46,
+                    "lineBegin": 17,
+                    "lineEnd": 17
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/18/16/21",
+                "target": {
+                    "filepath": "src/lib.rs",
+                    "range": {
+                        "columnBegin": 18,
+                        "columnEnd": 21,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 10,
+                    "lineBegin": 13,
+                    "lineEnd": 13
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/4/16/9",
+                "target": {
+                    "filepath": "src/lib.rs",
+                    "range": {
+                        "columnBegin": 4,
+                        "columnEnd": 9,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 30,
+                    "columnEnd": 35,
+                    "lineBegin": 17,
+                    "lineEnd": 17
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/16/4/16/9",
+                "target": {
+                    "filepath": "src/lib.rs",
+                    "range": {
+                        "columnBegin": 4,
+                        "columnEnd": 9,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 17,
+                    "columnEnd": 18,
+                    "lineBegin": 24,
+                    "lineEnd": 24
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/22/15/22/16",
+                "target": {
+                    "filepath": "src/lib.rs",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 16,
+                        "lineBegin": 22,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 20,
+                    "columnEnd": 23,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/23/13/23/16",
+                "target": {
+                    "filepath": "src/lib.rs",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 16,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 13,
+                    "columnEnd": 16,
+                    "lineBegin": 29,
+                    "lineEnd": 29
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/23/13/23/16",
+                "target": {
+                    "filepath": "src/lib.rs",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 16,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 12,
+                    "columnEnd": 13,
+                    "lineBegin": 26,
+                    "lineEnd": 26
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/24/13/24/14",
+                "target": {
+                    "filepath": "src/lib.rs",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 14,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 20,
+                    "columnEnd": 21,
+                    "lineBegin": 29,
+                    "lineEnd": 29
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/24/13/24/14",
+                "target": {
+                    "filepath": "src/lib.rs",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 14,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 13,
+                    "columnEnd": 14,
+                    "lineBegin": 30,
+                    "lineEnd": 30
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/24/13/24/14",
+                "target": {
+                    "filepath": "src/lib.rs",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 14,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 18,
+                    "columnEnd": 19,
+                    "lineBegin": 39,
+                    "lineEnd": 39
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/37/15/37/16",
+                "target": {
+                    "filepath": "src/lib.rs",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 16,
+                        "lineBegin": 37,
+                        "lineEnd": 37
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 12,
+                    "lineBegin": 40,
+                    "lineEnd": 40
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/38/13/38/16",
+                "target": {
+                    "filepath": "src/lib.rs",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 16,
+                        "lineBegin": 38,
+                        "lineEnd": 38
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 8,
+                    "lineBegin": 42,
+                    "lineEnd": 42
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/38/13/38/16",
+                "target": {
+                    "filepath": "src/lib.rs",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 16,
+                        "lineBegin": 38,
+                        "lineEnd": 38
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 16,
+                    "columnEnd": 17,
+                    "lineBegin": 40,
+                    "lineEnd": 40
+                },
+                "sym": "test/rs/src/lib.rs/%3Cglobal%3E/39/9/39/10",
+                "target": {
+                    "filepath": "src/lib.rs",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 39,
+                        "lineEnd": 39
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "revision": "testhash"
+    }
+]

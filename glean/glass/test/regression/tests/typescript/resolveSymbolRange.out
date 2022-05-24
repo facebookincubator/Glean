@@ -1,10 +1,13 @@
-{
-    "filepath": "glean/lang/typescript/tests/cases/xrefs/example.ts",
-    "range": {
-        "columnBegin": 17,
-        "columnEnd": 31,
-        "lineBegin": 46,
-        "lineEnd": 46
-    },
-    "repository": "test"
-}
+[
+    "@generated",
+    {
+        "filepath": "glean/lang/typescript/tests/cases/xrefs/example.ts",
+        "range": {
+            "columnBegin": 17,
+            "columnEnd": 31,
+            "lineBegin": 46,
+            "lineEnd": 46
+        },
+        "repository": "test"
+    }
+]

@@ -1,18 +1,21 @@
 [
-    {
-        "filepath": "www/RefClass.php",
-        "repository": "test",
-        "span": {
-            "length": 8,
-            "start": 689
+    "@generated",
+    [
+        {
+            "filepath": "www/RefClass.php",
+            "repository": "test",
+            "span": {
+                "length": 8,
+                "start": 689
+            }
+        },
+        {
+            "filepath": "www/RefClass.php",
+            "repository": "test",
+            "span": {
+                "length": 8,
+                "start": 845
+            }
         }
-    },
-    {
-        "filepath": "www/RefClass.php",
-        "repository": "test",
-        "span": {
-            "length": 8,
-            "start": 845
-        }
-    }
+    ]
 ]
