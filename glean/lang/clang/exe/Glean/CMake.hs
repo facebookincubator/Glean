@@ -64,11 +64,8 @@ generateBuildCommands indexOpts buildDir = do
            , buildDir
            ]
 
-runIndexer ::
-  CppIndexerOpts ->
-  -- | path to (temporary) cmake build dir
-  FilePath ->
-  IndexM ()
+-- | buildDir is path to (temporary) cmake build dir
+runIndexer :: CppIndexerOpts -> FilePath -> IndexM ()
 runIndexer indexOpts buildDir = withClangIndex $ \exe -> do
   liftIO $ putStrLn $ "Indexing with: " ++ unwords (exe : args)
   (ex, out, err) <- liftIO $ readProcessWithExitCode exe args ""
@@ -97,6 +94,7 @@ runIndexer indexOpts buildDir = withClangIndex $ \exe -> do
       , cfgInventory indexOpts
       ]
 
+withClangIndex :: (FilePath -> IndexM ()) -> IndexM ()
 withClangIndex f = do
   -- check $PATH
   mPath <- liftIO $ findExecutable clangIndexExe

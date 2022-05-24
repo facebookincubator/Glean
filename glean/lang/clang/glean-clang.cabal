@@ -88,8 +88,9 @@ common fb-haskell
         TypeFamilies
         TypeSynonymInstances
         NondecreasingIndentation
-  if flag(opt)
-     ghc-options: -O2
+    ghc-options: -Wall -Wno-orphans -Wno-name-shadowing
+    if flag(opt)
+      ghc-options: -O2
 
 common fb-cpp
   cxx-options: -DOSS=1 -std=c++17
