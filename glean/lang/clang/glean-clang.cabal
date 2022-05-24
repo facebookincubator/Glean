@@ -13,7 +13,6 @@ author:              Facebook, Inc.
 maintainer:          Glean-team@fb.com
 copyright:           (c) Facebook, All Rights Reserved
 build-type:          Custom
-extra-source-files:  CHANGELOG.md
 
 -- These bits of code live in their own package because we want the custom setup
 -- to detect LLVM/clang, but this is not compatible with glean.cabal's use of
