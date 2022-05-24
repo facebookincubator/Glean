@@ -54,9 +54,9 @@ options = info (helper <*> parser) fullDesc
 
 main :: IO ()
 main = execParser options >>= go
-
-  where go opts = do
-          r <- runExceptT (indexCMake opts)
-          case r of
-            Left e  -> error $ "Indexing error: " ++ show e
-            Right _ -> putStrLn "Indexing OK."
+  where
+    go opts = do
+      r <- runExceptT (indexCMake opts)
+      case r of
+        Left e  -> error $ "Indexing error: " ++ show e
+        Right _ -> putStrLn "Indexing OK."

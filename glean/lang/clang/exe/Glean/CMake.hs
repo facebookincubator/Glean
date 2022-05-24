@@ -12,6 +12,7 @@ import Control.Monad.Except
 import System.Directory
 import System.Exit
 import System.FilePath
+import System.Environment
 import System.IO.Temp
 import System.Process
 
@@ -35,6 +36,8 @@ data IndexError
     CMakeCommandsFileMissing FilePath
   | -- | indexer exit code, stdout, stderr
     IndexerError Int String String
+  | -- | path to glean-clang-index not found
+    ClangIndexNotFound String
   deriving (Show)
 
 type IndexM = ExceptT IndexError IO
@@ -66,10 +69,9 @@ runIndexer ::
   -- | path to (temporary) cmake build dir
   FilePath ->
   IndexM ()
-runIndexer indexOpts buildDir = do
-  liftIO $ putStrLn $
-    "calling:\t " ++ unwords ("glean-clang-index" : args)
-  (ex, out, err) <- liftIO $ readProcessWithExitCode "glean-clang-index" args ""
+runIndexer indexOpts buildDir = withClangIndex $ \exe -> do
+  liftIO $ putStrLn $ "Indexing with: " ++ unwords (exe : args)
+  (ex, out, err) <- liftIO $ readProcessWithExitCode exe args ""
   -- Uncomment to see C++ indexer output. TODO: hide behind a --verbose flag?
   -- liftIO $ do
   --   print ex
@@ -94,6 +96,26 @@ runIndexer indexOpts buildDir = do
       , "--inventory"
       , cfgInventory indexOpts
       ]
+
+withClangIndex f = do
+  -- check $PATH
+  mPath <- liftIO $ findExecutable clangIndexExe
+  case mPath of
+    Just exe -> f exe
+    Nothing -> do -- well maybe we are in-tree, check local build
+      wrapperExePath <- liftIO $getExecutablePath
+      let searchPath = takeDirectory (takeDirectory wrapperExePath) </>
+            clangIndexExe
+      mPath <- liftIO $ findExecutablesInDirectories [searchPath] clangIndexExe
+      case mPath of
+        [] -> throwError $ ClangIndexNotFound $
+                "Could not find " <> clangIndexExe <>
+                   " in $PATH or " <> searchPath
+        exe:_ -> f exe
+
+-- Canonical name for the clang-linked indexer executable
+clangIndexExe :: String
+clangIndexExe = "glean-clang-index"
 
 indexCMake :: CppIndexerOpts -> IndexM ()
 indexCMake indexOpts =
