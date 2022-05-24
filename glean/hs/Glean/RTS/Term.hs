@@ -27,8 +27,15 @@ import Glean.RTS.Types (Fid)
 -- -----------------------------------------------------------------------------
 -- Runtime terms
 
--- | Decoded data for a key or value of a predicate.
--- The 'ref' varies: 'Fid', 'Match'
+-- | Haskell representation of a Glean term, i.e. the key or value of
+-- a fact. These are stored binary-encoded in the DB (see
+-- "Glean.Typed.Binary").
+--
+-- Parameterised over @ref@, the representation of a fact
+-- reference. This type is often extended by instantiating @ref@. For
+-- example we represent query patterns by instantiating @ref@ with a
+-- pattern type in the query engine, see "Glean.Query.Typecheck.Types".
+
 data Term ref
   = Byte {-# UNPACK #-} !Word8
   | Nat {-# UNPACK #-} !Word64
