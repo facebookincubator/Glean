@@ -16,9 +16,11 @@ predicate PPEntityLocation:
     entity: code.pp.Entity,
     location: codemarkup.types.Location,
   }
-  { Entity, { Name, File, { range = Range }, nothing } } where
-    { define = Define } = Entity;
-    cxx1.PPDefineLocation { Define, Name, File, Range};
+  ({ { define = Define }, { Name, File, { range = Range }, nothing } } where
+    { pp1.Macro Name, Range } = Define;
+    { file = File } = Range ) |
+  ({ { include_ = File }, { Name, File, { span = {0, 0} }, nothing } } where
+    src.File Name = File )
 
 predicate PpFileEntityTraceLocations:
   {
@@ -76,8 +78,8 @@ predicate PpFileEntityTraceXRefLocations:
   }
   { File, Trace, XRef, Entity } where
     cxx1.FilePPTraceXRefs { File, Trace, SrcRange, Entity };
-    cxx1.PPEntityLocation { Entity, Name, TargetFile, TargetRange };
-    { { Name, TargetFile, { range = TargetRange }, nothing }, { range = SrcRange } } = XRef;
+    PPEntityLocation { Entity, Location };
+    { Location, { range = SrcRange } } = XRef;
 
 #
 # Language-specific symbol info
