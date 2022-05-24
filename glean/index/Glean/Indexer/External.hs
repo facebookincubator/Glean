@@ -119,7 +119,7 @@ execExternal Ext{..} env repo IndexerParams{..} = do index; derive
 
   index = case extFlavour of
     Json -> do
-      withSystemTempDirectory "glean-json" $ \jsonBatchDir -> do
+      jsonBatchDir <- createTempDirectory indexerOutput "glean-json"
       let jsonVars = HashMap.insert "JSON_BATCH_DIR" jsonBatchDir vars
       callCommand
         (unwords (extRunScript : map (quoteArg . subst jsonVars) extArgs))
