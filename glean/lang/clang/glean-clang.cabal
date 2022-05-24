@@ -28,65 +28,34 @@ build-type:          Custom
 -- include/library directories, necessary for 'glean-clang-index' C++ program
 -- which uses the clang/llvm libraries.
 custom-setup
-  setup-depends: base
-               , Cabal >= 3.6
-               , containers
+  setup-depends:
+    base,
+    Cabal >= 3.6,
+    containers
 
 flag opt
      default: False
 
--- copied from the main cabal file, probably a lot of superfluous deps here
 common deps
     build-depends:
-        fb-util,
-        thrift-cpp-channel,
-        thrift-lib,
-        HUnit,
-        safe,
-        scientific,
-        text-show,
-        uuid,
-        extra,
-        aeson,
-        data-default,
-        temporary,
-        clock,
-        STMonadTrans,
-        utf8-string,
-        optparse-applicative,
-        ansi-terminal,
-        json,
-        regex-base,
-        regex-pcre,
-        base >=4.11.1 && <4.15,
         array ^>=0.5.2.0,
         async ^>=2.2.1,
-        attoparsec ^>=0.13.2.3,
-        unordered-containers ^>=0.2.9.0,
+        base >=4.11.1 && <4.15,
         containers,
-        contravariant ^>=1.5,
-        text ^>=1.2.3.0,
-        bytestring ^>=0.10.8.2,
-        vector ^>=0.12.0.1,
-        transformers ^>=0.5.5.0,
-        network-uri ^>=2.6.1.0,
-        stm ^>=2.5.0.0,
-        directory ^>=1.3.1.5,
-        filepath ^>=1.4.2,
-        exceptions ^>=0.10.0,
-        mtl ^>=2.2.2,
-        unix ^>=2.7.2.2,
-        process ^>=1.6.3.0,
-        prettyprinter >=1.2.1 && <1.7,
-        time >=1.8.0.2 && <1.12,
-        binary ^>=0.8.5.1,
+        data-default,
         deepseq ^>=1.4.3.0,
-        hashable >=1.2.7.0 && <1.4,
-        tar ^>=0.5.1.0,
-        ghc-prim >=0.5.2.0 && <0.7,
-        parsec ^>=3.1.13.0,
-        haxl >= 2.1.2.0 && < 2.4,
-        hinotify ^>= 0.4.1
+        directory ^>=1.3.1.5,
+        fb-util,
+        filepath ^>=1.4.2,
+        optparse-applicative,
+        process ^>=1.6.3.0,
+        stm ^>=2.5.0.0,
+        temporary,
+        text ^>=1.2.3.0,
+        thrift-cpp-channel,
+        thrift-lib,
+        unordered-containers ^>=0.2.9.0,
+        vector ^>=0.12.0.1,
 
 common exe
   ghc-options: -threaded
@@ -169,29 +138,30 @@ executable glean-clang-index
         glean:if-glean-cpp,
         glean:if-internal-cpp,
         glean:client-cpp
-    extra-libraries: clangFrontend,
-                     clangSerialization,
-                     clangDriver,
-                     clangParse,
-                     clangSema,
-                     clangAnalysis,
-                     clangAST,
-                     clangASTMatchers,
-                     clangEdit,
-                     clangFrontendTool,
-                     clangIndex,
-                     clangToolingCore,
-                     clangTooling,
-                     clangFormat,
-                     clangLex,
-                     clangBasic,
-                     LLVM,
-                     folly,
-                     glog,
-                     pthread,
-                     fmt,
-                     gflags,
-                     atomic
+    extra-libraries:
+        clangFrontend,
+        clangSerialization,
+        clangDriver,
+        clangParse,
+        clangSema,
+        clangAnalysis,
+        clangAST,
+        clangASTMatchers,
+        clangEdit,
+        clangFrontendTool,
+        clangIndex,
+        clangToolingCore,
+        clangTooling,
+        clangFormat,
+        clangLex,
+        clangBasic,
+        LLVM,
+        folly,
+        glog,
+        pthread,
+        fmt,
+        gflags,
+        atomic
     cxx-options: -fexceptions -DOSS=1 -std=c++17
     if arch(x86_64)
       cxx-options: -DGLEAN_X86_64 -march=haswell
