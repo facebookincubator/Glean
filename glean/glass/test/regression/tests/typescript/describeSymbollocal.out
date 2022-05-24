@@ -1,20 +1,23 @@
-{
-    "comments": [],
-    "kind": 9,
-    "location": {
-        "filepath": "glean/lang/typescript/tests/cases/xrefs/example.ts",
-        "range": {
-            "columnBegin": 20,
-            "columnEnd": 23,
-            "lineBegin": 51,
-            "lineEnd": 51
+[
+    "@generated",
+    {
+        "comments": [],
+        "kind": 9,
+        "location": {
+            "filepath": "glean/lang/typescript/tests/cases/xrefs/example.ts",
+            "range": {
+                "columnBegin": 20,
+                "columnEnd": 23,
+                "lineBegin": 51,
+                "lineEnd": 51
+            },
+            "repository": "test"
         },
-        "repository": "test"
-    },
-    "name": {
-        "container": "",
-        "localName": "git"
-    },
-    "repo_hash": "testhash",
-    "sym": "test/ts/glean/lang/typescript/tests/cases/xrefs/example.ts/%3Clocal%3E/git/51/20/51/23"
-}
+        "name": {
+            "container": "",
+            "localName": "git"
+        },
+        "repo_hash": "testhash",
+        "sym": "test/ts/glean/lang/typescript/tests/cases/xrefs/example.ts/%3Clocal%3E/git/51/20/51/23"
+    }
+]

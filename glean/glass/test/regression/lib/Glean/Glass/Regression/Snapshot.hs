@@ -8,6 +8,10 @@
 
 {-# LANGUAGE ApplicativeDo #-}
 
+--
+-- Simple snapshot testing framework for Glass methods
+--
+
 module Glean.Glass.Regression.Snapshot where
 
 import Data.Aeson
@@ -40,10 +44,6 @@ import qualified Glean.Glass.Handler as Glass
 import Glean.Glass.Types as Glass
 import Glean.Glass.Env as Glass ( Env )
 import Glean.Glass.Regression.Util as Glass ( withTestEnv )
-
---
--- Simple snapshot testing framework for Glass methods
---
 
 newtype Cfg =
   Cfg {
@@ -184,8 +184,11 @@ parseAsObject file args = case decodeObjectAsThriftJson args of
   Right req -> pure req
 
 writeResult :: (ToJSON a, SortedResponse a) => FilePath -> a -> IO ()
-writeResult oFile res = B.writeFile oFile (J.encodePretty' cfg $ sorted res)
+writeResult oFile res = B.writeFile oFile content
   where
+    generatedTag = '@':"generated"
+    content = J.encodePretty' cfg $ (generatedTag,sorted res)
+
     cfg = J.defConfig {
       J.confCompare = compare
     }
