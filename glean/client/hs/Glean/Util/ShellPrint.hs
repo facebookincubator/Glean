@@ -317,6 +317,7 @@ instance (ShellFormat DbVerbosity v)
       , "expires" .= jsonMaybeTime (Thrift.database_expire_time db)
       , "shard" .= J.toJSON (dbShard $ Thrift.database_repo db)
       , "source" .= maybe J.Null jsonTime (Thrift.database_repo_hash_time db)
+      , "properties" .= shellFormatJson ctx () (Thrift.database_properties db)
       ] ++
       [ jsonKeyFrom key .= shellFormatJson ctx opts value
       | (key, value) <- extras]
