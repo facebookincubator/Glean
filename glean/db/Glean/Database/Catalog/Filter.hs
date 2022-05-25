@@ -122,7 +122,7 @@ everythingF = return ()
 queryableF :: Filter ()
 queryableF =
   inF entryStatusV $
-    HashSet.fromList [ItemComplete, ItemIncomplete, ItemBroken]
+    HashSet.fromList [ItemComplete, ItemIncomplete, ItemBroken, ItemFinalizing]
 
 -- | Require that a field has a specific value
 (.==.) :: Eq a => Value a -> a -> Filter ()
