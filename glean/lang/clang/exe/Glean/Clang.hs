@@ -35,7 +35,9 @@ options = info (helper <*> parser) fullDesc
       <*> strOption
             ( long "inventory"
            <> short 'i'
-           <> help "Path to the schema inventory file"
+           <> help ("Path to the schema inventory file. Extract from glean with "
+            <> " `glean write-serialized-inventory --repo $repo $out`"
+           )
            <> metavar "FILE"
             )
       <*> strOption
@@ -51,12 +53,16 @@ options = info (helper <*> parser) fullDesc
            <> value ""
            <> showDefault
             )
+      <*> switch
+            ( long "verbose"
+            <> help "Enable verbose logging from subprocesses"
+            )
 
 main :: IO ()
 main = execParser options >>= go
-
-  where go opts = do
-          r <- runExceptT (indexCMake opts)
-          case r of
-            Left e  -> error $ "Indexing error: " ++ show e
-            Right _ -> putStrLn "Indexing OK."
+  where
+    go opts = do
+      r <- runExceptT (indexCMake opts)
+      case r of
+        Left e  -> error $ "Indexing error: " ++ show e
+        Right _ -> putStrLn "Indexing OK."

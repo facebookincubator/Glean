@@ -1076,30 +1076,6 @@ executable glean-hyperlink
         wai,
         warp
 
-library clang-derive-lib
-    import: fb-haskell, fb-cpp, deps
-    hs-source-dirs: glean/lang/clang
-    exposed-modules:
-        Derive.Env
-        Derive.Lib
-        Derive.Types
-    other-modules:
-        Derive.Common
-        Derive.CxxDeclarationSources
-        Derive.CxxDeclarationTargets
-        Derive.CxxSame
-        Derive.CxxTargetUses
-        Derive.Generic
-    build-depends:
-        glean:client-hs,
-        glean:client-hs-local,
-        glean:core,
-        glean:lib,
-        glean:schema,
-        glean:util,
-        ghc-compact,
-        vector-algorithms,
-
 library hack-derive-lib
     import: fb-haskell, fb-cpp, deps
     hs-source-dirs: glean/lang/hack
@@ -1429,22 +1405,6 @@ library regression-test-lib
         glean:util,
         split,
         yaml
-
--- library clang-derive-test
---      import: fb-haskell, fb-cpp, deps
---      hs-source-dirs: glean/lang/clang/tests
---      exposed-modules:
--- Missing Glean.Clang.Test
---         Glean.Clang.Test.DerivePass
---         Glean.Regression.Driver.DeriveFunctionCalls
---         Glean.Regression.Driver.DeriveDeclFamilies
---         Glean.Regression.Driver.DeriveObjcInheritance
---         Glean.Regression.Driver.DeriveDeclByName
---         Glean.Regression.Driver.DocBlock
---         Glean.Regression.Driver.Clang
---      build-depends:
---         glean:regression-test-lib,
---         glean:clang-derive-lib,
 
 test-suite hack-derive-test
     import: fb-haskell, fb-cpp, deps
