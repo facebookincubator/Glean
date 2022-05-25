@@ -81,7 +81,7 @@ import qualified Control.Concurrent.Async as Async
 
 import qualified Glean.Glass.Attributes as Attributes
 import Glean.Glass.Base
-    ( GleanPath(..) )
+    ( GleanPath(..), SymbolRepoPath(..) )
 import Glean.Glass.Logging
     ( LogRepo(..),
       ErrorTy(..),
@@ -101,7 +101,7 @@ import Glean.Glass.Repos
       filterRepoLang,
       GleanDBAttrName(GleanDBAttrName, gleanAttrDBName) )
 import Glean.Glass.Path
-    ( toGleanPath )
+    ( toGleanPath, fromGleanPath )
 import Glean.Glass.Range
     ( FileInfo(..),
       getFile,
@@ -371,7 +371,9 @@ searchBySymbolId env@Glass.Env{..} symbolPrefix opts = do
           backendRunHaxl GleanBackend{..} $ do
             symids <-  queryAllRepos $ do
               entities <- prefixSearchEntity lang limit tokens
-              mapM (toSymbolId repo) $ take limit entities
+              forM (take limit entities) $ \(entity, file, _) -> do
+                path <- GleanPath <$> Glean.keyOf file
+                toSymbolId (fromGleanPath repo path) entity
             return (take limit symids, Nothing)
     limit = maybe 50 fromIntegral $ requestOptions_limit opts
 
@@ -383,7 +385,8 @@ data FileReference =
   }
 
 toFileReference :: RepoName -> Path -> FileReference
-toFileReference repo path = FileReference repo (toGleanPath repo path)
+toFileReference repo path =
+  FileReference repo (toGleanPath $ SymbolRepoPath repo path)
 
 -- | Bundle of glean db handle resources
 data GleanBackend b =
@@ -547,9 +550,9 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit includeRefs b mlang =
 
       -- mark up symbols into normal format with static attributes
       refs1 <- withRepo fileRepo $
-        mapM (toReferenceSymbol scsrepo offsets) xrefs
+        mapM (toReferenceSymbol scsrepo srcFile offsets) xrefs
       defs1 <- withRepo fileRepo $
-        mapM (toDefinitionSymbol scsrepo offsets) defns
+        mapM (toDefinitionSymbol scsrepo srcFile offsets) defns
 
       let (refs, defs) = Attributes.extendAttributes
             (Attributes.fromSymbolId Attributes.SymbolKindAttr)
@@ -712,12 +715,13 @@ searchFileAttributes key mlimit fileId = do
 -- | Like toReferenceSymbol but we convert the xref target to a src.Range
 toReferenceSymbol
   :: RepoName
+  -> Src.File
   -> Maybe Range.LineOffsets
   -> (Code.XRefLocation, Code.Entity)
   -> Glean.RepoHaxl u w (Code.Entity, ReferenceRangeSymbolX)
-toReferenceSymbol repoName srcOffsets (Code.XRefLocation{..},entity) = do
-
-  sym <- toSymbolId repoName entity
+toReferenceSymbol repoName file srcOffsets (Code.XRefLocation {..}, entity) = do
+  path <- GleanPath <$> Glean.keyOf file
+  sym <- toSymbolId (fromGleanPath repoName path) entity
   attributes <- getStaticAttributes entity
 
   target <- rangeSpanToLocationRange repoName location_file
@@ -737,11 +741,13 @@ toReferenceSymbol repoName srcOffsets (Code.XRefLocation{..},entity) = do
 -- and converting the bytespan, adding any static attributes
 toDefinitionSymbol
   :: RepoName
+  -> Src.File
   -> Maybe Range.LineOffsets
   -> (Code.Location, Code.Entity)
   -> Glean.RepoHaxl u w (Code.Entity, DefinitionSymbolX)
-toDefinitionSymbol repoName offsets (Code.Location{..}, entity) = do
-  sym <- toSymbolId repoName entity
+toDefinitionSymbol repoName file offsets (Code.Location {..}, entity) = do
+  path <- GleanPath <$> Glean.keyOf file
+  sym <- toSymbolId (fromGleanPath repoName path) entity
   attributes <- getStaticAttributes entity
   return $ (entity,) $ DefinitionSymbolX sym range attributes nameRange
   where
@@ -955,7 +961,8 @@ searchEntityByString method query env@Glass.Env{..} req opts = do
               \result@(entity, Code.Location{..}, kind) -> do
                 loc <- rangeSpanToLocationRange
                         repo location_file location_location
-                symbol <- toSymbolId repo entity
+                path <- GleanPath <$> Glean.keyOf location_file
+                symbol <- toSymbolId (fromGleanPath repo path) entity
                 description <- -- describeEntity is non-optional?
                   describeEntity loc entity symbol
                     (symbolKindToSymbolKind <$> kind)
@@ -966,8 +973,10 @@ searchEntityByString method query env@Glass.Env{..} req opts = do
           symbols <- if terse
             then
               mapM
-                (\(gleanRepo, (entity, _, _)) ->
-                  withRepo gleanRepo $ toSymbolId repo entity) results
+                (\(gleanRepo, (entity, Code.Location{..}, _)) ->
+                    withRepo gleanRepo $ do
+                      path <- GleanPath <$> Glean.keyOf location_file
+                      toSymbolId (fromGleanPath repo path) entity) results
             else return $ map symbolDescription_sym descriptions
           return (SearchByNameResult symbols mDescriptions, Nothing)
     localName = searchByNameRequest_name req

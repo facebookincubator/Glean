@@ -23,7 +23,8 @@ import Glean.Glass.Search.Class as Search
     ( Search(symbolSearch),
       SearchResult(..),
       SearchEntity(..),
-      PrefixSearch(..))
+      PrefixSearch(..),
+      ResultLocation)
 import qualified Glean.Glass.Search.Cxx ({- instances -})
 import qualified Glean.Glass.Search.Flow ({- instances -})
 import qualified Glean.Glass.Search.Hack ({- instances -})
@@ -57,9 +58,12 @@ prefixSearchEntity
   :: Language
   -> Int
   -> [Text]
-  -> Glean.RepoHaxl u w [Code.Entity]
+  -> Glean.RepoHaxl u w [ResultLocation Code.Entity]
 prefixSearchEntity lang lim toks = case lang of
-  Language_Hack -> fmap Code.Entity_hack <$> Search.prefixSearch lim toks
-  Language_Python -> fmap Code.Entity_python <$> Search.prefixSearch lim toks
+  Language_Hack ->
+    fmap (mapFst Code.Entity_hack) <$> Search.prefixSearch lim toks
+  Language_Python ->
+    fmap (mapFst Code.Entity_python) <$> Search.prefixSearch lim toks
   lang -> throwM $ ServerException $
     "prefixSearchEntity: language not supported: " <> toShortCode lang
+  where mapFst f (x, y, z) = (f x, y, z)

@@ -49,17 +49,19 @@ instance Search Hack.Declaration where
   symbolSearch [] = return $ None "Hack.symbolSearch: empty path"
 
 instance PrefixSearch Hack.Entity where
-  prefixSearch lim toks = fmap Hack.Entity_decl <$> prefixSearch lim toks
+  prefixSearch lim toks =
+    fmap (mapFst Hack.Entity_decl) <$> prefixSearch lim toks
+    where mapFst f (x, y, z) = (f x, y, z)
 
 instance PrefixSearch Hack.Declaration where
   prefixSearch lim [] = prefixSearch lim [""]
-  prefixSearch lim [pName] = fmap resultToDecl <$> searchWithLimit (Just lim) $
+  prefixSearch lim [pName] = searchWithLimit (Just lim) $
     prefixSearchInNamespace [] pName
   prefixSearch lim toks = do
     let (name:rest@(context:ns)) = reverse toks
-    a <- fmap resultToDecl <$> searchWithLimit (Just lim) $
+    a <- searchWithLimit (Just lim) $
         prefixSearchInNamespace rest name
-    b <- fmap resultToDecl <$> searchWithLimit (Just lim) $
+    b <- searchWithLimit (Just lim) $
         prefixSearchInContainerOrEnum ns context name
     return $ a ++ b
 

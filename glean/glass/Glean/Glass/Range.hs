@@ -42,7 +42,7 @@ import Glean.Glass.Types
       RepoName,
       Range(range_columnEnd, range_lineEnd, range_columnBegin,
             range_lineBegin) )
-import Glean.Glass.Base ( GleanPath(..) )
+import Glean.Glass.Base ( GleanPath(..),  SymbolRepoPath(..))
 import Glean.Glass.Path ( toGleanPath, fromGleanPath )
 import Glean.Glass.Logging
     ( ErrorTy(NoSrcFileFact) )
@@ -104,7 +104,7 @@ rangeSpanToRange _ Code.RangeSpan_EMPTY =
 resolveLocationToRange
   :: Glean.Repo -> Location -> Glean.RepoHaxl u w (Either ErrorTy Range)
 resolveLocationToRange repo Location{..} = do
-  let path = toGleanPath location_repository location_filepath
+  let path = toGleanPath $ SymbolRepoPath location_repository location_filepath
   efile <- getFileAndLines repo path
   return $ flip fmap efile $ \ FileInfo{..} ->
     fileByteSpanToExclusiveRange offsets (spanFromSpan location_span)
@@ -225,7 +225,7 @@ toLocation
   :: RepoName -> Src.File -> Src.ByteSpan -> Glean.RepoHaxl u w Location
 toLocation repo file bytespan = do
   path <- GleanPath <$> Glean.keyOf file
-  let (location_repository, location_filepath) =
+  let SymbolRepoPath location_repository location_filepath =
         fromGleanPath repo path
   return $ Location {
        location_repository = location_repository,
@@ -246,7 +246,7 @@ toLocationRange
   :: RepoName -> Src.File -> Range -> Glean.RepoHaxl u w LocationRange
 toLocationRange repo file range = do
   path <- GleanPath <$> Glean.keyOf file
-  let (locationRange_repository, locationRange_filepath) =
+  let SymbolRepoPath locationRange_repository locationRange_filepath =
         fromGleanPath repo path
   return $ LocationRange {
        locationRange_repository = locationRange_repository,

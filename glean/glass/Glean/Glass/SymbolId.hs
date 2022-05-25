@@ -33,6 +33,9 @@ module Glean.Glass.SymbolId
   -- * Qualified names
   , toQualifiedName
 
+  -- reexports
+  , SymbolRepoPath(..)
+
   ) where
 
 import Data.Text ( Text )
@@ -43,6 +46,7 @@ import qualified Data.Text as Text
 import Data.Tuple ( swap )
 import qualified Network.URI.Encode as URI
 
+import Glean.Glass.Base (SymbolRepoPath(..))
 import Glean.Glass.Types as Glass
     ( DefinitionKind(DefinitionKind_Definition),
       SymbolKind,
@@ -88,9 +92,9 @@ import Glean.Schema.CodeErlang.Types as Erlang ( Entity(Entity_decl) )
 --
 -- If we can't encode the entity, it is still useful to return the path and
 -- file, as this is enough to navigate with.
---
-toSymbolId :: RepoName -> Code.Entity -> Glean.RepoHaxl u w SymbolId
-toSymbolId (RepoName repo) entity = do
+toSymbolId
+  :: SymbolRepoPath -> Code.Entity -> Glean.RepoHaxl u w SymbolId
+toSymbolId SymbolRepoPath{symbolRepo=Glass.RepoName repo} entity = do
   let fileType = toShortCode (entityLanguage entity)
   eqname <- try $ toSymbol entity
   return $ case eqname of

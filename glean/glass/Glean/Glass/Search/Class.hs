@@ -82,4 +82,4 @@ runSearch toks query = do
 
 -- | Search for entities based on the prefix of their symbol ids
 class PrefixSearch t where
-  prefixSearch :: Int -> [Text] -> RepoHaxl u w [t]
+  prefixSearch :: Int -> [Text] -> RepoHaxl u w [ResultLocation t]

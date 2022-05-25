@@ -39,12 +39,14 @@ instance Search Py.Declaration where
     None "Python.symbolSearch: invalid query"
 
 instance PrefixSearch Py.Entity where
-  prefixSearch lim params = fmap Py.Entity_decl <$> prefixSearch lim params
+  prefixSearch lim params =
+    fmap (mapFst Py.Entity_decl) <$> prefixSearch lim params
+    where mapFst f (x, y, z) = (f x, y, z)
 
 instance PrefixSearch Py.Declaration where
-  prefixSearch lim [loc] = fmap resultToDecl <$> searchWithLimit (Just lim) $
+  prefixSearch lim [loc] = searchWithLimit (Just lim) $
     prefixSearchByFQName "" (Just loc)
-  prefixSearch lim [loc, pfqname] = fmap resultToDecl <$> searchWithLimit (Just lim) $
+  prefixSearch lim [loc, pfqname] = searchWithLimit (Just lim) $
     prefixSearchByFQName pfqname (Just loc)
   prefixSearch _ _ = throwM $ ServerException "Python.prefixSearch: too many /"
 

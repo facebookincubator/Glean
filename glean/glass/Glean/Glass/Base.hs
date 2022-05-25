@@ -9,6 +9,7 @@
 module Glean.Glass.Base
   ( GleanDBName(..)
   , GleanPath(..)
+  , SymbolRepoPath(..)
   , GleanDBAttrName(..)
   ) where
 
@@ -16,6 +17,7 @@ import Data.String
 import Data.Text (Text)
 
 import Glean.Glass.Attributes.Class as Attributes
+import qualified Glean.Glass.Types as Glass
 import Glean.Glass.Utils
 
 -- | Type of glean dbs
@@ -30,6 +32,16 @@ instance IsString GleanDBName where fromString = GleanDBName . fromString
 --
 newtype GleanPath = GleanPath { gleanPath :: Text }
   deriving Eq
+
+
+--
+-- | A path relative to the given repo root
+--
+data SymbolRepoPath = SymbolRepoPath
+  { symbolRepo :: Glass.RepoName
+  , symbolPath :: Glass.Path
+  }
+  deriving (Show, Eq)
 
 -- | A little existential type key for attributes
 data GleanDBAttrName =

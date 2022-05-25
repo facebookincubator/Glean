@@ -24,17 +24,25 @@ import Data.Text (Text)
 import GHC.Generics (Generic)
 import qualified Data.HashSet as HashSet
 
+import Util.Text (textShow)
+
+import qualified Glean
 import Glean.Angle as Angle
 import Glean.Haxl.Repos (RepoHaxl, ReposHaxl, withRepo)
+import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Codemarkup.Types as Code
 import qualified Glean.Schema.Code.Types as Code
+import qualified Glean.Schema.Src.Types as Src
 
-import Glean.Glass.Logging (ErrorLogger)
-import Glean.Glass.Search (SearchEntity(..), SearchResult(..))
-import Glean.Glass.SymbolId (entityToAngle, toSymbolId)
 import qualified Glean.Glass.Search as Search
+import Glean.Glass.Search.Class
+import Glean.Glass.Base (GleanPath (..))
+import qualified Glean.Glass.Query as Query
+import Glean.Glass.Logging (ErrorLogger)
+import Glean.Glass.Path
+import Glean.Glass.SymbolId (entityToAngle, toSymbolId)
 import Glean.Glass.Types
-import Glean.Glass.Utils (searchRecursiveWithLimit)
+import Glean.Glass.Utils (fetchData, searchRecursiveWithLimit)
 
 data Recursive
   = Recursive
@@ -87,9 +95,24 @@ toSymbolIds
   -> RelatedEntities
   -> RepoHaxl u w RelatedSymbols
 toSymbolIds repo RelatedEntities{..} = do
-  relatedSymbols_parent <- toSymbolId repo parent
-  relatedSymbols_child <- toSymbolId repo child
+  (parentLocation, childLocation) <-
+    case (entityToAngle parent, entityToAngle child) of
+      (Right parent, Right child) -> (,)
+        <$> (fetchData $ locationAngle parent)
+        <*> (fetchData $ locationAngle child)
+      (Left t, _) -> throwM (ServerException t)
+      (_, Left t) -> throwM (ServerException t)
+  relatedSymbols_parent <- symbol repo parent parentLocation
+  relatedSymbols_child <-  symbol repo child childLocation
   pure $ RelatedSymbols {..}
+  where
+    symbol repo entity location = case location of
+      Just (entity, file, _) -> do
+        path <- GleanPath <$> Glean.keyOf file
+        toSymbolId (fromGleanPath repo path) entity
+      Nothing -> throwM $
+        ServerException $ "Failed to get location for: " <> textShow entity
+
 
 searchRelation
   :: Int
@@ -198,3 +221,13 @@ searchChildExtendsAngle entity =
     rec $
       field @"parent" entity
     end)
+
+
+locationAngle :: Angle Code.Entity -> Angle (ResultLocation Code.Entity)
+locationAngle entity =
+  vars $ \(entity' :: Angle Code.Entity) (file :: Angle Src.File)
+      (rangespan :: Angle Code.RangeSpan) ->
+    tuple (entity', file, rangespan) `where_` [
+      entity' .= sig @Code.Entity entity,
+      Query.entityLocation entity file rangespan
+    ]
