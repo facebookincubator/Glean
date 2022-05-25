@@ -1,0 +1,3 @@
+query: lsif.EntityKind _
+perf: True
+transform: [gensort, []]

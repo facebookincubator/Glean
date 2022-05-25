@@ -1,0 +1,3 @@
+query: lsif.HoverContent _
+perf: True
+transform: [gensort, []]

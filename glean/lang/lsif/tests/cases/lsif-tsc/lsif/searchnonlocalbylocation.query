@@ -1,0 +1,3 @@
+query: lsif.SearchNonLocalByLocation _
+perf: True
+transform: [gensort, []]

@@ -1,0 +1,67 @@
+[
+  "@generated",
+  { "key": { "nameLowerCase": "", "name": { "key": "" } } },
+  { "key": { "nameLowerCase": "addres", "name": { "key": "addRes" } } },
+  { "key": { "nameLowerCase": "author", "name": { "key": "author" } } },
+  { "key": { "nameLowerCase": "commit", "name": { "key": "commit" } } },
+  {
+    "key": {
+      "nameLowerCase": "constructor(private dir: string) {\u000a    const res = shell.exec('git init', {cwd: dir, silent: true});\u000a    if (res.code !== 0) {\u000a      throw new error(`git init exited with code ${res.code}.\u000astderr: ${res.stderr}\u000astdout: ${res.stdout}`);\u000a    }\u000a    // doesn't matter currently\u000a    shell.exec('git config user.email \"test@jc-verse.com\"', {\u000a      cwd: dir,\u000a      silent: true,\u000a    });\u000a    shell.exec('git config user.name \"test\"', {cwd: dir, silent: true});\u000a\u000a    shell.exec('git commit --allow-empty -m \"first commit\"', {\u000a      cwd: dir,\u000a      silent: true,\u000a    });\u000a  }",
+      "name": {
+        "key": "constructor(private dir: string) {\u000a    const res = shell.exec('git init', {cwd: dir, silent: true});\u000a    if (res.code !== 0) {\u000a      throw new Error(`git init exited with code ${res.code}.\u000astderr: ${res.stderr}\u000astdout: ${res.stdout}`);\u000a    }\u000a    // Doesn't matter currently\u000a    shell.exec('git config user.email \"test@jc-verse.com\"', {\u000a      cwd: dir,\u000a      silent: true,\u000a    });\u000a    shell.exec('git config user.name \"Test\"', {cwd: dir, silent: true});\u000a\u000a    shell.exec('git commit --allow-empty -m \"First commit\"', {\u000a      cwd: dir,\u000a      silent: true,\u000a    });\u000a  }"
+      }
+    }
+  },
+  {
+    "key": {
+      "nameLowerCase": "createtemprepo",
+      "name": { "key": "createTempRepo" }
+    }
+  },
+  { "key": { "nameLowerCase": "cwd", "name": { "key": "cwd" } } },
+  { "key": { "nameLowerCase": "date", "name": { "key": "date" } } },
+  { "key": { "nameLowerCase": "dir", "name": { "key": "dir" } } },
+  { "key": { "nameLowerCase": "error", "name": { "key": "Error" } } },
+  { "key": { "nameLowerCase": "fs", "name": { "key": "fs" } } },
+  { "key": { "nameLowerCase": "git", "name": { "key": "Git" } } },
+  { "key": { "nameLowerCase": "git", "name": { "key": "git" } } },
+  { "key": { "nameLowerCase": "msg", "name": { "key": "msg" } } },
+  { "key": { "nameLowerCase": "os", "name": { "key": "os" } } },
+  { "key": { "nameLowerCase": "path", "name": { "key": "path" } } },
+  { "key": { "nameLowerCase": "repodir", "name": { "key": "repoDir" } } },
+  { "key": { "nameLowerCase": "res", "name": { "key": "res" } } },
+  { "key": { "nameLowerCase": "shell", "name": { "key": "shell" } } },
+  { "key": { "nameLowerCase": "silent", "name": { "key": "silent" } } },
+  {
+    "key": {
+      "nameLowerCase": "{\u000a      cwd: dir,\u000a      silent: true,\u000a    }",
+      "name": {
+        "key": "{\u000a      cwd: dir,\u000a      silent: true,\u000a    }"
+      }
+    }
+  },
+  {
+    "key": {
+      "nameLowerCase": "{cwd: dir, silent: true}",
+      "name": { "key": "{cwd: dir, silent: true}" }
+    }
+  },
+  {
+    "key": {
+      "nameLowerCase": "{cwd: this.dir, silent: true}",
+      "name": { "key": "{cwd: this.dir, silent: true}" }
+    }
+  },
+  {
+    "key": {
+      "nameLowerCase": "{repodir, git}",
+      "name": { "key": "{repoDir, git}" }
+    }
+  },
+  {
+    "key": {
+      "nameLowerCase": "{repodir: string; git: git}",
+      "name": { "key": "{repoDir: string; git: Git}" }
+    }
+  }
+]

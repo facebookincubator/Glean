@@ -1928,6 +1928,16 @@ test-suite glean-snapshot-java-lsif
     if !flag(java-lsif-tests)
         buildable: False
 
+test-suite glean-snapshot-lsif
+    import: fb-haskell, deps
+    hs-source-dirs: glean/lang/codemarkup/tests/lsif/
+    type: exitcode-stdio-1.0
+    main-is: Glean/Regression/Lsif/Main.hs
+    ghc-options: -main-is Glean.Regression.Lsif.Main
+    build-depends:
+        glean:regression-test-lib,
+        glean:indexers
+
 ------------------------------------------------------------------------
 -- glass regression tests
 --

@@ -1,0 +1,3 @@
+query: lsif.EntityLocation _
+perf: True
+transform: [gensort, []]

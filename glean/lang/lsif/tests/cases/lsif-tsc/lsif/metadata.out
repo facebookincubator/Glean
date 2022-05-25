@@ -1,0 +1,20 @@
+[
+  "@generated",
+  {
+    "key": {
+      "lsifVersion": "0.4.3",
+      "positionEncoding": "utf-16",
+      "toolInfo": {
+        "toolName": "lsif-tsc",
+        "toolArgs": [
+          "-o",
+          "dump.lsif",
+          "xrefs/example.ts",
+          "--project-root",
+          "test"
+        ],
+        "version": "0.4.3"
+      }
+    }
+  }
+]
