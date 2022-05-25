@@ -28,8 +28,10 @@ module Glean.Schema.Gen.Main
 
 import Control.Exception
 import Control.Monad
+import Data.Bifoldable (bifoldMap)
 import qualified Data.ByteString.Char8 as BC
 import qualified Data.HashMap.Strict as HashMap
+import qualified Data.IntMap.Strict as IntMap
 import Data.List
 import qualified Data.Map.Strict as Map
 import Data.Map.Strict (Map)
@@ -50,10 +52,14 @@ import Util.Timing
 import Util.OptParse (commandParser)
 
 import Glean.Query.Types
+import Glean.Query.Typecheck (tcQueryDeps)
+import Glean.Query.Codegen (QueryWithInfo(..))
 import Glean.Angle.Types hiding (Array, String, Nat)
 import Glean.Angle.Parser
 import Glean.Database.Config (catSchemaFiles)
 import Glean.Database.Schema
+import Glean.RTS.Types (PidRef(..), ExpandedType(..))
+import Glean.Schema.Util (showPredicateRef)
 import Glean.Schema.Gen.Thrift
 import Glean.Schema.Gen.Cpp ( genSchemaCpp )
 import Glean.Schema.Gen.HackJson ( genSchemaHackJson )
@@ -74,11 +80,14 @@ data Options = Options
   }
 
 data GraphOptions = GraphOptions
-  { targetSchema :: Maybe String
-  , depth :: Maybe Int
+  { target :: Maybe Text
+  , maxDepth :: Maybe Int
   , reverseDeps :: Bool
   , topologicalSort :: Bool
+  , graphType :: GraphType
   }
+
+data GraphType = SchemaGraph | PredicateGraph
 
 data GenOptions =  GenOptions
   { thrift :: Maybe FilePath
@@ -122,18 +131,23 @@ options = do
           (  long "topsort"
           <> help "print a topologically sorted list of dependencies"
           )
-        targetSchema <- optional $ strOption
-          (  long "schema-name"
-          <> metavar "SCHEMA"
+        target <- optional $ strOption
+          (  long "root"
+          <> metavar "NODE"
           <> help
-            ("reference schema. "
+            ("reference schema/predicate. "
             <> "If unspecified the latest version of `all`is used.")
           )
-        depth <- optional $ option auto
+        maxDepth <- optional $ option auto
           (  long "depth"
           <> metavar "INT"
           <> help "restrict how many levels deep the tree should go"
           )
+        graphType <- flag SchemaGraph PredicateGraph
+          (  long "predicates"
+          <> help "show a graph of predicates rather than of schemas"
+          )
+
         return GraphOptions{..}
 
     genOptions = do
@@ -154,7 +168,8 @@ options = do
 main :: IO ()
 main = do
   Options{..} <- execParser (info (options <**> helper) fullDesc)
-  (src, sourceSchemas, schemas) <- reportTime "parse/resolve/typecheck" $ do
+  (src, sourceSchemas, schemas, dbschema) <-
+    reportTime "parse/resolve/typecheck" $ do
     str <- case input of
       Left one -> BC.readFile one
       Right dir -> do
@@ -166,9 +181,9 @@ main = do
     (sourceSchemas, schemas) <- case parseAndResolveSchema str of
       Left err -> throwIO $ ErrorCall $ err
       Right schema -> return schema
-    -- just for typechecking
-    void $ newDbSchema sourceSchemas schemas readWriteContent
-    return (str, sourceSchemas, schemas)
+    -- for typechecking
+    dbschema <- newDbSchema sourceSchemas schemas readWriteContent
+    return (str, sourceSchemas, schemas, dbschema)
 
   reportTime "checking schema roundtrip" $ do
     let pp = show (pretty sourceSchemas)
@@ -190,39 +205,71 @@ main = do
       return $ withPath <$> HashMap.keys (schemasSchemas schemas)
 
   case actOptions of
-    Left opts -> graph opts sourceSchemas (fst <$> versions)
+    Left opts -> graph opts dbschema sourceSchemas (fst <$> versions)
     Right opts -> do
       forM_ (source opts) $ \f -> BC.writeFile f src
       reportTime "gen" $ gen opts versions schemas
 
-graph :: GraphOptions -> SourceSchemas -> [Version] -> IO ()
-graph opts schemas versions =
-  Text.putStrLn $ schemaGraph deps versions opts
+graph :: GraphOptions -> DbSchema -> SourceSchemas -> [Version] -> IO ()
+graph opts dbschema sourceSchemas versions =
+  Text.putStrLn $ drawGraph opts graph roots
+  where
+    (roots, graph) = case graphType opts of
+      PredicateGraph ->
+        let graph = predicateGraph dbschema
+            roots = maybe (Map.keys graph) pure (target opts)
+        in (roots, graph)
+      SchemaGraph ->
+        let everyAllSchema  = map (\v -> "all." <> Text.pack (show v)) versions
+            roots = maybe everyAllSchema pure (target opts)
+        in (roots, schemaGraph sourceSchemas)
+
+schemaGraph :: SourceSchemas -> Map Text [Text]
+schemaGraph sourceSchemas = Map.fromList
+  [ (schemaName s, dependencies s) | s <- srcSchemas sourceSchemas ]
   where
     dependencies SourceSchema{..} =
       schemaInherits ++ [ name | SourceImport name <- schemaDecls ]
 
-    deps = Map.fromList
-      [ (schemaName s, dependencies s) | s <- srcSchemas schemas ]
+predicateGraph :: DbSchema -> Map Text [Text]
+predicateGraph dbschema = Map.fromList
+  [ (ref, deps)
+  | details <- IntMap.elems (predicatesById dbschema)
+  , let ref = showPredicateRef (predicateRef details)
+        deps = showPredicateRef <$> Set.toList (dependencies details)
+  ]
+  where
+    dependencies details = keyValueDeps <> derivationDeps
+      where
+        keyValueDeps =
+          typeDeps (predicateKeyType details) <>
+          typeDeps (predicateValueType details)
+        derivationDeps = case predicateDeriving details of
+          Derive _ (QueryWithInfo query _ _) -> tcQueryDeps query
+          _ -> mempty
+    typeDeps = bifoldMap overPidRef overExpanded
+      where
+        overExpanded (ExpandedType _ ty) = typeDeps ty
+        overPidRef (PidRef _ ref) = Set.singleton ref
 
-schemaGraph :: Map Text [Text] -> [Version] -> GraphOptions -> Text
-schemaGraph deps' versionsOfAll GraphOptions{..} =
+drawGraph :: GraphOptions -> Map Text [Text] -> [Text] -> Text
+drawGraph GraphOptions{..} deps' roots =
   Text.unlines $ if topologicalSort
     then topsort forest
     else drawTree <$> forest
   where
-    schemas = Text.pack <$> maybe schemasAll pure targetSchema
-    schemasAll = map (\v -> "all." <> show v) versionsOfAll
-    forest = map (mkTree deps 1) schemas
+    forest = map (mkTree deps mempty 1) roots
     deps
       | reverseDeps =
           Map.fromListWith (<>) $ concatMap (\(s,ss) -> (,[s]) <$> ss) $
             Map.toList deps'
       | otherwise = deps'
-    mkTree graph depth' root = Tree.Node root subtree
+    mkTree graph seen depth root = Tree.Node root subtree
       where
-        subtree = map (mkTree graph (depth' + 1)) children
-        continue = maybe True (depth' <=) depth
+        subtree = map (mkTree graph (Set.insert root seen) (depth + 1)) children
+        continue = notRecursing && canGoDeeper
+          where notRecursing  = not (root `Set.member` seen)
+                canGoDeeper = maybe True (depth <=) maxDepth
         children
           | continue = Map.findWithDefault [] root graph
           | otherwise = []
