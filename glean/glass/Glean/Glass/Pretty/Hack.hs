@@ -8,7 +8,7 @@
 
 {-# LANGUAGE TypeApplications #-}
 
-module  Glean.Glass.Pretty.Hack
+module Glean.Glass.Pretty.Hack
   ( prettyHackSignature
     -- for testing
   , prettyDecl

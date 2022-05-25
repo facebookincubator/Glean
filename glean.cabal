@@ -1194,6 +1194,7 @@ library glass-lib
         Glean.Glass.Pretty.Annotations
         Glean.Glass.Pretty.Cxx
         Glean.Glass.Pretty.Hack
+        Glean.Glass.Pretty.LSIF
         Glean.Glass.Query
         Glean.Glass.Query.Cxx
         Glean.Glass.Range
