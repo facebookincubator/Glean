@@ -10,7 +10,7 @@ module Glean.Glass.Path where
 
 import qualified Data.Text as Text
 
-import Glean.Glass.Base ( SymbolRepoPath(SymbolRepoPath), GleanPath(GleanPath) )
+import Glean.Glass.Base ( SymbolRepoPath(..), GleanPath(GleanPath) )
 import qualified Glean.Glass.Types as Glass
 
 -- TODO: We probably want to read the repo config from a file, or put it in a
