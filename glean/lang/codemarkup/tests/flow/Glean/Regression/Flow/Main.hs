@@ -8,14 +8,14 @@
 
 module Glean.Regression.Flow.Main ( main ) where
 
-import System.Environment ( withArgs )
+import System.Environment
 
 import Glean.Indexer.Flow as Flow
 import Glean.Regression.Snapshot
 import Glean.Regression.Snapshot.Driver
 
 main :: IO ()
-main = withArgs ["--root", path] $ testMain driver
+main = getArgs >>= \args -> withArgs (args ++["--root", path]) $ testMain driver
   where
       driver = driverFromIndexer Flow.indexer
       path = "glean/lang/codemarkup/tests/flow/cases"

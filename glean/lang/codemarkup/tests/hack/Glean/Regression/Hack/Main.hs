@@ -8,14 +8,14 @@
 
 module Glean.Regression.Hack.Main ( main ) where
 
-import System.Environment ( withArgs )
+import System.Environment
 
 import Glean.Indexer.Hack as Hack
 import Glean.Regression.Snapshot
 import Glean.Regression.Snapshot.Driver
 
 main :: IO ()
-main = withArgs ["--root", path] $ testMain driver
+main = getArgs >>= \args -> withArgs (args ++["--root", path]) $ testMain driver
   where
       driver = driverFromIndexer Hack.indexer
       path = "glean/lang/codemarkup/tests/hack/cases"
