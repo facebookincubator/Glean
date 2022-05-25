@@ -843,5 +843,75 @@
         "name": "T"
       }
     }
+  },
+  {
+    "key": {
+      "entity": { "pp": { "include_": { "key": "www/Namespace.php" } } },
+      "location": {
+        "file": { "key": "www/Namespace.php" },
+        "location": { "span": { "length": 0, "start": 0 } },
+        "name": "www/Namespace.php"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": { "pp": { "include_": { "key": "www/RefClass.php" } } },
+      "location": {
+        "file": { "key": "www/RefClass.php" },
+        "location": { "span": { "length": 0, "start": 0 } },
+        "name": "www/RefClass.php"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": { "pp": { "include_": { "key": "www/SourceClass.php" } } },
+      "location": {
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "length": 0, "start": 0 } },
+        "name": "www/SourceClass.php"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": { "pp": { "include_": { "key": "www/SourceInterface.php" } } },
+      "location": {
+        "file": { "key": "www/SourceInterface.php" },
+        "location": { "span": { "length": 0, "start": 0 } },
+        "name": "www/SourceInterface.php"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": { "pp": { "include_": { "key": "www/SourceTrait.php" } } },
+      "location": {
+        "file": { "key": "www/SourceTrait.php" },
+        "location": { "span": { "length": 0, "start": 0 } },
+        "name": "www/SourceTrait.php"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": { "pp": { "include_": { "key": "www/SuperClass.php" } } },
+      "location": {
+        "file": { "key": "www/SuperClass.php" },
+        "location": { "span": { "length": 0, "start": 0 } },
+        "name": "www/SuperClass.php"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": { "pp": { "include_": { "key": "www/TopLevel.php" } } },
+      "location": {
+        "file": { "key": "www/TopLevel.php" },
+        "location": { "span": { "length": 0, "start": 0 } },
+        "name": "www/TopLevel.php"
+      }
+    }
   }
 ]
