@@ -1,0 +1,23 @@
+[
+    "@generated",
+    {
+        "comments": [],
+        "kind": 8,
+        "location": {
+            "filepath": "src/main/java/com/glean/app/App.java",
+            "range": {
+                "columnBegin": 24,
+                "columnEnd": 34,
+                "lineBegin": 23,
+                "lineEnd": 23
+            },
+            "repository": "test"
+        },
+        "name": {
+            "container": "com/glean/app/App#getMessage()",
+            "localName": "<unknown>"
+        },
+        "repo_hash": "testhash",
+        "sym": "test/java/lsif/com/glean/app/App%23getMessage%28%29"
+    }
+]

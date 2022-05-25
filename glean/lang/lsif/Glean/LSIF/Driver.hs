@@ -27,9 +27,10 @@ module Glean.LSIF.Driver (
 import Control.Exception ( throwIO, ErrorCall(ErrorCall) )
 import Control.Monad.State.Strict
 import Data.Text ( Text )
-import Data.List
+import Data.List ( intersperse )
 import System.Directory ( getHomeDirectory, withCurrentDirectory, makeAbsolute )
-import System.FilePath ( (</>), takeBaseName )
+import System.FilePath
+    ( (</>), dropTrailingPathSeparator, takeBaseName )
 import System.IO.Temp ( withSystemTempDirectory )
 import System.Process ( callProcess, callCommand )
 import Text.Printf ( printf )
@@ -60,7 +61,7 @@ runIndexer params@LsifIndexerParams{..} = do
   withSystemTempDirectory "glean-lsif" $ \lsifDir -> do
     let lsifFile = lsifDir </> "index.lsif"
     runLSIFIndexer params { lsifRoot = repoDir } lsifFile
-    processLSIF lsifFile
+    processLSIF repoDir lsifFile
 
 -- | Run the lsif-tsc indexer on a repository,
 -- put lsif dump output into outputFile
@@ -75,10 +76,10 @@ runLSIFIndexer LsifIndexerParams{..} outputFile =
       else callProcess lsifBinary args
 
 -- | Convert an lsif json dump into Glean lsif.angle JSON object
-processLSIF :: FilePath -> IO Aeson.Value
-processLSIF lsifFile = do
+processLSIF :: FilePath -> FilePath -> IO Aeson.Value
+processLSIF repoDir lsifFile = do
   logInfo $ "Using LSIF from " <> lsifFile
-  toLsifAngle =<< Lazy.readFile lsifFile
+  toLsifAngle repoDir =<< Lazy.readFile lsifFile
 
 -- | Write json to file
 writeJSON :: FilePath -> Aeson.Value -> IO ()
@@ -103,8 +104,8 @@ encodeChunks file vs = bracketContents file $ mapM_ writeChunk $
 
 -- Get some likely prefix paths to drop from indexers
 -- E.g. typescript with a yarn install puts .config/yarn paths for libraries
-dropPrefixPaths :: IO [Text]
-dropPrefixPaths = do
+dropPrefixPaths :: FilePath -> IO [Text]
+dropPrefixPaths repoDir = do
   home <- Text.pack <$> getHomeDirectory
   return $ map ("file://" <>)
   -- typescript system paths
@@ -119,11 +120,13 @@ dropPrefixPaths = do
     , home <> "/.cargo/registry"
     , home <> "/.rustup/toolchains/stable-x86_64-unknown-linux-gnu"
     , home <> "/.rustup/toolchains/stable-aarch64-unknown-linux-gnu"
+    -- repoDir root, so everything is repo-relative
+    , Text.pack (dropTrailingPathSeparator repoDir)
     ]
 
-toLsifAngle :: Lazy.ByteString -> IO Aeson.Value
-toLsifAngle str = do
-  paths <- dropPrefixPaths
+toLsifAngle :: FilePath -> Lazy.ByteString -> IO Aeson.Value
+toLsifAngle repoDir str = do
+  paths <- dropPrefixPaths repoDir
   (facts, env) <- parseChunks paths str
   logInfo "Generating cross-references"
   let !xrefs = evalState LSIF.emitFileFactSets  env

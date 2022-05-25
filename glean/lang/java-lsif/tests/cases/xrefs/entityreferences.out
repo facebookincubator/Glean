@@ -1,0 +1,651 @@
+[
+  "@generated",
+  {
+    "key": {
+      "target": {
+        "lsif": {
+          "go": {
+            "defn": {
+              "key": {
+                "defn": {
+                  "key": {
+                    "file": {
+                      "key": {
+                        "file": {
+                          "key": "src/main/java/com/glean/app/App.java"
+                        },
+                        "language": 22
+                      }
+                    },
+                    "range": {
+                      "key": {
+                        "range": {
+                          "lineBegin": 15,
+                          "columnBegin": 24,
+                          "lineEnd": 15,
+                          "columnEnd": 30
+                        },
+                        "text": { "key": "" }
+                      }
+                    }
+                  }
+                },
+                "moniker": {
+                  "key": {
+                    "kind": 0,
+                    "scheme": { "key": "semanticdb" },
+                    "ident": { "key": "com/glean/app/App#message" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "src/main/java/com/glean/app/App.java" },
+      "range": {
+        "range": {
+          "file": { "key": "src/main/java/com/glean/app/App.java" },
+          "lineBegin": 24,
+          "columnBegin": 12,
+          "lineEnd": 24,
+          "columnEnd": 18
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "lsif": {
+          "go": {
+            "defn": {
+              "key": {
+                "defn": {
+                  "key": {
+                    "file": {
+                      "key": {
+                        "file": {
+                          "key": "src/main/java/com/glean/app/App.java"
+                        },
+                        "language": 22
+                      }
+                    },
+                    "range": {
+                      "key": {
+                        "range": {
+                          "lineBegin": 17,
+                          "columnBegin": 10,
+                          "lineEnd": 17,
+                          "columnEnd": 12
+                        },
+                        "text": { "key": "" }
+                      }
+                    }
+                  }
+                },
+                "moniker": {
+                  "key": {
+                    "kind": 0,
+                    "scheme": { "key": "semanticdb" },
+                    "ident": { "key": "com/glean/app/App#`<init>`()" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "src/main/java/com/glean/app/App.java" },
+      "range": {
+        "range": {
+          "file": { "key": "src/main/java/com/glean/app/App.java" },
+          "lineBegin": 20,
+          "columnBegin": 28,
+          "lineEnd": 20,
+          "columnEnd": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "lsif": {
+          "go": {
+            "defn": {
+              "key": {
+                "defn": {
+                  "key": {
+                    "file": {
+                      "key": {
+                        "file": {
+                          "key": "src/main/java/com/glean/app/App.java"
+                        },
+                        "language": 22
+                      }
+                    },
+                    "range": {
+                      "key": {
+                        "range": {
+                          "lineBegin": 23,
+                          "columnBegin": 24,
+                          "lineEnd": 23,
+                          "columnEnd": 33
+                        },
+                        "text": { "key": "" }
+                      }
+                    }
+                  }
+                },
+                "moniker": {
+                  "key": {
+                    "kind": 0,
+                    "scheme": { "key": "semanticdb" },
+                    "ident": { "key": "com/glean/app/App#getMessage()" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "src/main/java/com/glean/app/App.java" },
+      "range": {
+        "range": {
+          "file": { "key": "src/main/java/com/glean/app/App.java" },
+          "lineBegin": 20,
+          "columnBegin": 34,
+          "lineEnd": 20,
+          "columnEnd": 43
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "lsif": {
+          "java": {
+            "defn": {
+              "key": {
+                "defn": {
+                  "key": {
+                    "file": {
+                      "key": {
+                        "file": {
+                          "key": "src/main/java/com/glean/app/App.java"
+                        },
+                        "language": 22
+                      }
+                    },
+                    "range": {
+                      "key": {
+                        "range": {
+                          "lineBegin": 15,
+                          "columnBegin": 24,
+                          "lineEnd": 15,
+                          "columnEnd": 30
+                        },
+                        "text": { "key": "" }
+                      }
+                    }
+                  }
+                },
+                "moniker": {
+                  "key": {
+                    "kind": 0,
+                    "scheme": { "key": "semanticdb" },
+                    "ident": { "key": "com/glean/app/App#message" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "src/main/java/com/glean/app/App.java" },
+      "range": {
+        "range": {
+          "file": { "key": "src/main/java/com/glean/app/App.java" },
+          "lineBegin": 24,
+          "columnBegin": 12,
+          "lineEnd": 24,
+          "columnEnd": 18
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "lsif": {
+          "java": {
+            "defn": {
+              "key": {
+                "defn": {
+                  "key": {
+                    "file": {
+                      "key": {
+                        "file": {
+                          "key": "src/main/java/com/glean/app/App.java"
+                        },
+                        "language": 22
+                      }
+                    },
+                    "range": {
+                      "key": {
+                        "range": {
+                          "lineBegin": 17,
+                          "columnBegin": 10,
+                          "lineEnd": 17,
+                          "columnEnd": 12
+                        },
+                        "text": { "key": "" }
+                      }
+                    }
+                  }
+                },
+                "moniker": {
+                  "key": {
+                    "kind": 0,
+                    "scheme": { "key": "semanticdb" },
+                    "ident": { "key": "com/glean/app/App#`<init>`()" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "src/main/java/com/glean/app/App.java" },
+      "range": {
+        "range": {
+          "file": { "key": "src/main/java/com/glean/app/App.java" },
+          "lineBegin": 20,
+          "columnBegin": 28,
+          "lineEnd": 20,
+          "columnEnd": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "lsif": {
+          "java": {
+            "defn": {
+              "key": {
+                "defn": {
+                  "key": {
+                    "file": {
+                      "key": {
+                        "file": {
+                          "key": "src/main/java/com/glean/app/App.java"
+                        },
+                        "language": 22
+                      }
+                    },
+                    "range": {
+                      "key": {
+                        "range": {
+                          "lineBegin": 23,
+                          "columnBegin": 24,
+                          "lineEnd": 23,
+                          "columnEnd": 33
+                        },
+                        "text": { "key": "" }
+                      }
+                    }
+                  }
+                },
+                "moniker": {
+                  "key": {
+                    "kind": 0,
+                    "scheme": { "key": "semanticdb" },
+                    "ident": { "key": "com/glean/app/App#getMessage()" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "src/main/java/com/glean/app/App.java" },
+      "range": {
+        "range": {
+          "file": { "key": "src/main/java/com/glean/app/App.java" },
+          "lineBegin": 20,
+          "columnBegin": 34,
+          "lineEnd": 20,
+          "columnEnd": 43
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "defn": {
+                  "key": {
+                    "file": {
+                      "key": {
+                        "file": {
+                          "key": "src/main/java/com/glean/app/App.java"
+                        },
+                        "language": 22
+                      }
+                    },
+                    "range": {
+                      "key": {
+                        "range": {
+                          "lineBegin": 15,
+                          "columnBegin": 24,
+                          "lineEnd": 15,
+                          "columnEnd": 30
+                        },
+                        "text": { "key": "" }
+                      }
+                    }
+                  }
+                },
+                "moniker": {
+                  "key": {
+                    "kind": 0,
+                    "scheme": { "key": "semanticdb" },
+                    "ident": { "key": "com/glean/app/App#message" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "src/main/java/com/glean/app/App.java" },
+      "range": {
+        "range": {
+          "file": { "key": "src/main/java/com/glean/app/App.java" },
+          "lineBegin": 24,
+          "columnBegin": 12,
+          "lineEnd": 24,
+          "columnEnd": 18
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "defn": {
+                  "key": {
+                    "file": {
+                      "key": {
+                        "file": {
+                          "key": "src/main/java/com/glean/app/App.java"
+                        },
+                        "language": 22
+                      }
+                    },
+                    "range": {
+                      "key": {
+                        "range": {
+                          "lineBegin": 17,
+                          "columnBegin": 10,
+                          "lineEnd": 17,
+                          "columnEnd": 12
+                        },
+                        "text": { "key": "" }
+                      }
+                    }
+                  }
+                },
+                "moniker": {
+                  "key": {
+                    "kind": 0,
+                    "scheme": { "key": "semanticdb" },
+                    "ident": { "key": "com/glean/app/App#`<init>`()" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "src/main/java/com/glean/app/App.java" },
+      "range": {
+        "range": {
+          "file": { "key": "src/main/java/com/glean/app/App.java" },
+          "lineBegin": 20,
+          "columnBegin": 28,
+          "lineEnd": 20,
+          "columnEnd": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "lsif": {
+          "rust": {
+            "defn": {
+              "key": {
+                "defn": {
+                  "key": {
+                    "file": {
+                      "key": {
+                        "file": {
+                          "key": "src/main/java/com/glean/app/App.java"
+                        },
+                        "language": 22
+                      }
+                    },
+                    "range": {
+                      "key": {
+                        "range": {
+                          "lineBegin": 23,
+                          "columnBegin": 24,
+                          "lineEnd": 23,
+                          "columnEnd": 33
+                        },
+                        "text": { "key": "" }
+                      }
+                    }
+                  }
+                },
+                "moniker": {
+                  "key": {
+                    "kind": 0,
+                    "scheme": { "key": "semanticdb" },
+                    "ident": { "key": "com/glean/app/App#getMessage()" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "src/main/java/com/glean/app/App.java" },
+      "range": {
+        "range": {
+          "file": { "key": "src/main/java/com/glean/app/App.java" },
+          "lineBegin": 20,
+          "columnBegin": 34,
+          "lineEnd": 20,
+          "columnEnd": 43
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "lsif": {
+          "typescript": {
+            "defn": {
+              "key": {
+                "defn": {
+                  "key": {
+                    "file": {
+                      "key": {
+                        "file": {
+                          "key": "src/main/java/com/glean/app/App.java"
+                        },
+                        "language": 22
+                      }
+                    },
+                    "range": {
+                      "key": {
+                        "range": {
+                          "lineBegin": 15,
+                          "columnBegin": 24,
+                          "lineEnd": 15,
+                          "columnEnd": 30
+                        },
+                        "text": { "key": "" }
+                      }
+                    }
+                  }
+                },
+                "moniker": {
+                  "key": {
+                    "kind": 0,
+                    "scheme": { "key": "semanticdb" },
+                    "ident": { "key": "com/glean/app/App#message" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "src/main/java/com/glean/app/App.java" },
+      "range": {
+        "range": {
+          "file": { "key": "src/main/java/com/glean/app/App.java" },
+          "lineBegin": 24,
+          "columnBegin": 12,
+          "lineEnd": 24,
+          "columnEnd": 18
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "lsif": {
+          "typescript": {
+            "defn": {
+              "key": {
+                "defn": {
+                  "key": {
+                    "file": {
+                      "key": {
+                        "file": {
+                          "key": "src/main/java/com/glean/app/App.java"
+                        },
+                        "language": 22
+                      }
+                    },
+                    "range": {
+                      "key": {
+                        "range": {
+                          "lineBegin": 17,
+                          "columnBegin": 10,
+                          "lineEnd": 17,
+                          "columnEnd": 12
+                        },
+                        "text": { "key": "" }
+                      }
+                    }
+                  }
+                },
+                "moniker": {
+                  "key": {
+                    "kind": 0,
+                    "scheme": { "key": "semanticdb" },
+                    "ident": { "key": "com/glean/app/App#`<init>`()" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "src/main/java/com/glean/app/App.java" },
+      "range": {
+        "range": {
+          "file": { "key": "src/main/java/com/glean/app/App.java" },
+          "lineBegin": 20,
+          "columnBegin": 28,
+          "lineEnd": 20,
+          "columnEnd": 30
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "lsif": {
+          "typescript": {
+            "defn": {
+              "key": {
+                "defn": {
+                  "key": {
+                    "file": {
+                      "key": {
+                        "file": {
+                          "key": "src/main/java/com/glean/app/App.java"
+                        },
+                        "language": 22
+                      }
+                    },
+                    "range": {
+                      "key": {
+                        "range": {
+                          "lineBegin": 23,
+                          "columnBegin": 24,
+                          "lineEnd": 23,
+                          "columnEnd": 33
+                        },
+                        "text": { "key": "" }
+                      }
+                    }
+                  }
+                },
+                "moniker": {
+                  "key": {
+                    "kind": 0,
+                    "scheme": { "key": "semanticdb" },
+                    "ident": { "key": "com/glean/app/App#getMessage()" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "src/main/java/com/glean/app/App.java" },
+      "range": {
+        "range": {
+          "file": { "key": "src/main/java/com/glean/app/App.java" },
+          "lineBegin": 20,
+          "columnBegin": 34,
+          "lineEnd": 20,
+          "columnEnd": 43
+        }
+      }
+    }
+  }
+]

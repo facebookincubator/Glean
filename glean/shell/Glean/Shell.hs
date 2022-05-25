@@ -379,8 +379,7 @@ helptext mode = vcat
       [ ("database [<db>]",
             "Use database <db>")
       , ("index <lang> <dir>",
-            "Index source files in <dir> and create a database. <lang> supports "
-            <> "only flow currently.")
+            "Index source files in <dir> and create a database.")
       , ("list [<db>]",
             "List available databases which match <db>")
       , ("list-all [<db>]",

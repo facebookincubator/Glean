@@ -186,6 +186,13 @@ predicate MonikerDefinition:
     lsif.DefinitionMoniker { Defn, { just = Moniker }};
     { ident = Ident } = Moniker;
 
+# some monikers have enough structure to record symbol kinds
+predicate MonikerSymbolKind:
+  {
+    moniker : lsif.Moniker,
+    kind : lsif.SymbolKind
+  }
+
 # reverse index from identifer to defn (for search)
 predicate NameDefinition:
   {
@@ -231,6 +238,7 @@ type Entity =
     typescript : lsif.SomeEntity |
     go : lsif.SomeEntity |
     rust : lsif.SomeEntity |
+    java : lsif.SomeEntity |
   }
 
 # Base entities in LSIF are definitions and declartions
@@ -293,14 +301,18 @@ predicate EntityUses:
     lsif.ToSrcRange { File, Range, SrcRange };
 
 # and for codemarkup.EntityKind
+# either the kind was recorded in the DefinitionKind table, or the Moniker was
+# used to construct a kind.
 predicate EntityKind:
   {
     entity: lsif.Entity,
     kind: lsif.SymbolKind,
   }
   { Entity, Kind } where
-    lsif.EntityDefinition { Entity, { defn = Defn }};
-    lsif.DefinitionKind { Defn, Kind };
+    lsif.EntityDefinition { Entity, { Defn, Moniker }};
+    if lsif.DefinitionKind { Defn, Kind }
+      then ( Kind = Kind )
+      else ( { just = M } = Moniker; lsif.MonikerSymbolKind { M, Kind });
 
 #
 # Helpers for working with language tags and entities
@@ -316,7 +328,8 @@ predicate TagDefinition:
   { Language, Defn, Entity } where
     ( TypeScript = Language; { typescript = { defn = Defn } } = Entity) |
     ( Go = Language; { go = { defn = Defn } } = Entity) |
-    ( Rust = Language; { rust = { defn = Defn } } = Entity);
+    ( Rust = Language; { rust = { defn = Defn } } = Entity) |
+    ( Java = Language; { java = { defn = Defn } } = Entity)
 
 # eliminate entity tags
 predicate EntityDefinition:
@@ -327,7 +340,8 @@ predicate EntityDefinition:
   { Entity, Defn } where
     ({ typescript = { defn = Defn }} = Entity; ) |
     ({ go = { defn = Defn }} = Entity; ) |
-    ({ rust = { defn = Defn }} = Entity; );
+    ({ rust = { defn = Defn }} = Entity; ) |
+    ({ java = { defn = Defn }} = Entity; )
 
 # Just need to elaborate lsif.RangeSpan with a File key
 predicate DefinitionLocation:

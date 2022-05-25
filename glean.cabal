@@ -81,6 +81,10 @@ flag go-tests
 flag rust-tests
      default: True
 
+-- run tests that require lsif-java
+flag java-lsif-tests
+     default: True
+
 common deps
     build-depends:
         fb-util,
@@ -978,12 +982,13 @@ library indexers
     import: fb-haskell, fb-cpp, deps
     hs-source-dirs:
         glean/lang/flow
-        glean/lang/hack
-        glean/lang/typescript
         glean/lang/go
         glean/lang/haskell
+        glean/lang/hack
+        glean/lang/java-lsif
         glean/lang/lsif/indexer
         glean/lang/rust-lsif
+        glean/lang/typescript
         glean/index
         glean/index/list
     exposed-modules:
@@ -993,9 +998,10 @@ library indexers
         Glean.Indexer.Go
         Glean.Indexer.Hack
         Glean.Indexer.Haskell
+        Glean.Indexer.JavaLsif
+        Glean.Indexer.LSIF
         Glean.Indexer.RustLsif
         Glean.Indexer.Typescript
-        Glean.Indexer.LSIF
         Glean.Indexer.List
     build-depends:
         glean:client-hs,
@@ -1152,6 +1158,7 @@ library lsif
         Data.LSIF.Angle
         Data.LSIF.Env
         Data.LSIF.JSON
+        Data.LSIF.Moniker
         Data.LSIF.Types
         Glean.LSIF.Driver
     build-depends:
@@ -1908,6 +1915,18 @@ test-suite glean-snapshot-go
     if !flag(go-tests)
         buildable: False
 
+test-suite glean-snapshot-java-lsif
+    import: fb-haskell, deps
+    hs-source-dirs: glean/lang/java-lsif/tests
+    type: exitcode-stdio-1.0
+    main-is: Glean/Regression/JavaLsif/Main.hs
+    ghc-options: -main-is Glean.Regression.JavaLsif.Main
+    build-depends:
+        glean:regression-test-lib,
+        glean:indexers
+    if !flag(java-lsif-tests)
+        buildable: False
+
 ------------------------------------------------------------------------
 -- glass regression tests
 --
@@ -2015,6 +2034,18 @@ test-suite glass-regression-rust-lsif
         glean:indexers,
         glean:lsif
     if !flag(rust-tests)
+        buildable: False
+
+test-suite glass-regression-java-lsif
+    import: glass-regression-deps, fb-haskell, deps
+    type: exitcode-stdio-1.0
+    main-is: Glean/Glass/Regression/JavaLsif/Main.hs
+    ghc-options: -main-is Glean.Glass.Regression.JavaLsif.Main
+    other-modules: Glean.Glass.Regression.JavaLsif
+    build-depends:
+        glean:indexers,
+        glean:lsif
+    if !flag(java-lsif-tests)
         buildable: False
 
 test-suite glass-regression-python

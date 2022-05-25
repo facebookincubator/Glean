@@ -142,6 +142,7 @@ shortCodeTable =
   , (Language_Erlang , "erl")
   , (Language_Go , "go")
   , (Language_TypeScript , "ts")
+  , (Language_Java , "java")
   ]
 
 languageToCode :: Map.Map Language Text
@@ -179,7 +180,8 @@ entityLanguage e = case e of
   Code.Entity_lsif Lsif.Entity_go{} -> Language_Go
   Code.Entity_lsif Lsif.Entity_typescript{} -> Language_TypeScript
   Code.Entity_lsif Lsif.Entity_rust{} -> Language_Rust
-  Code.Entity_lsif Lsif.Entity_EMPTY -> Language__UNKNOWN 0
+  Code.Entity_lsif Lsif.Entity_java{} -> Language_Java
+  Code.Entity_lsif _ -> Language__UNKNOWN 0
   Code.Entity_EMPTY -> Language__UNKNOWN 0
 
 -- | An encoded Entity.
@@ -202,6 +204,7 @@ instance Symbol Code.Entity where
     Code.Entity_lsif (Lsif.Entity_typescript x) -> toSymbol x
     Code.Entity_lsif (Lsif.Entity_go x) -> toSymbol x
     Code.Entity_lsif (Lsif.Entity_rust x) -> toSymbol x
+    Code.Entity_lsif (Lsif.Entity_java x) -> toSymbol x
     _ -> throwM $ SymbolError "Language not supported"
 
 -- | Top level with error handler, to catch attempts to query
@@ -226,6 +229,8 @@ entityToAngle e = case e of
     alt @"lsif" (alt @"go" (toAngle x))
   Code.Entity_lsif (Lsif.Entity_rust x) -> Right $
     alt @"lsif" (alt @"rust" (toAngle x))
+  Code.Entity_lsif (Lsif.Entity_java x) -> Right $
+    alt @"lsif" (alt @"java" (toAngle x))
   _ -> Left $
     "Unsupported language: " <> toShortCode (entityLanguage e)
 
@@ -239,6 +244,7 @@ instance ToQName Code.Entity where
     Code.Entity_lsif (Lsif.Entity_typescript x) -> toQName x
     Code.Entity_lsif (Lsif.Entity_go x) -> toQName x
     Code.Entity_lsif (Lsif.Entity_rust x) -> toQName x
+    Code.Entity_lsif (Lsif.Entity_java x) -> toQName x
     _ -> return $ Left "Language unsupported"
 
 instance ToSymbolParent Code.Entity where

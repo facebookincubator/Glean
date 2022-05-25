@@ -42,7 +42,7 @@ indexer = Indexer {
   indexerDescription = "Index an LSIF file",
   indexerOptParser = options,
   indexerRun = \LSIF backend repo IndexerParams{..} -> do
-    val <- LSIF.processLSIF indexerRoot
+    val <- LSIF.processLSIF indexerRoot indexerRoot
     sendJsonBatches backend repo "lsif" val
     derive backend repo
   }

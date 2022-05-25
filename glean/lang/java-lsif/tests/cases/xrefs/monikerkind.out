@@ -1,0 +1,111 @@
+[
+  "@generated",
+  {
+    "key": {
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "semanticdb" },
+          "ident": { "key": "com/glean/app/App" }
+        }
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "semanticdb" },
+          "ident": { "key": "com/glean/app/App#`<init>`()" }
+        }
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "semanticdb" },
+          "ident": { "key": "com/glean/app/App#getMessage()" }
+        }
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "semanticdb" },
+          "ident": { "key": "com/glean/app/App#main()" }
+        }
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "semanticdb" },
+          "ident": { "key": "com/glean/app/App#message" }
+        }
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "moniker": {
+        "key": {
+          "kind": 2,
+          "scheme": { "key": "semanticdb" },
+          "ident": { "key": "java/io/PrintStream#println(+8)" }
+        }
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "moniker": {
+        "key": {
+          "kind": 2,
+          "scheme": { "key": "semanticdb" },
+          "ident": { "key": "java/lang/String" }
+        }
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "moniker": {
+        "key": {
+          "kind": 2,
+          "scheme": { "key": "semanticdb" },
+          "ident": { "key": "java/lang/System" }
+        }
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "moniker": {
+        "key": {
+          "kind": 2,
+          "scheme": { "key": "semanticdb" },
+          "ident": { "key": "java/lang/System#out" }
+        }
+      },
+      "kind": 5
+    }
+  }
+]

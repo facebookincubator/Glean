@@ -26,9 +26,10 @@ import qualified Glean.Indexer.Hack as Hack
 #ifdef FACEBOOK
 import qualified Glean.Indexer.Python as Python
 #endif
-import qualified Glean.Indexer.Typescript as Typescript
 import qualified Glean.Indexer.Go as Go
+import qualified Glean.Indexer.JavaLsif as JavaLsif
 import qualified Glean.Indexer.RustLsif as RustLsif
+import qualified Glean.Indexer.Typescript as Typescript
 import qualified Glean.Indexer.LSIF as LSIF
 import qualified Glean.Indexer.Haskell as Hs
 
@@ -43,10 +44,11 @@ indexers =
   , SomeIndexer Python.indexer
 #endif
   , SomeIndexer Hs.indexer
-  , SomeIndexer Typescript.indexer
   , SomeIndexer Go.indexer
-  , SomeIndexer RustLsif.indexer
+  , SomeIndexer JavaLsif.indexer
   , SomeIndexer LSIF.indexer
+  , SomeIndexer RustLsif.indexer
+  , SomeIndexer Typescript.indexer
   ]
 
 cmdLineParser :: Parser RunIndexer

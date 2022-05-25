@@ -20,9 +20,9 @@ use it for:
 ## Status
 
 Glean is pre-release software. There are many rough edges; there are
-only two language indexers available initially (JavaScript and Hack); the
-build system is not as smooth as we would like. However, we want to
-make it available for you to experiment with and contribute to.
+limited language indexers available initially; the build system is not as smooth
+as we would like. However, we want to make it available for you to experiment
+with and contribute to.
 
 We'd love to hear feedback! If you run into problems or have
 suggestions please file an
@@ -30,29 +30,37 @@ suggestions please file an
 
 ## Language coverage
 
-There is currently support for:
+There is currently full support for:
 
 * [JavaScript/Flow](https://glean.software/docs/indexer/flow)
 * [Hack](https://glean.software/docs/indexer/hack)
+
+We are actively adding support for:
+
+* C++
+* Haskell
+* Rust
 
 Indexers for these languages exist but aren't in the open source
 release yet; we hope to make these available in the future:
 
 * Python
-* C++
 * Objective-C
 * Java
-* Rust
-* Haskell
 * Erlang
 * Thrift
 * Buck
 
-We have added experimental support for [LSIF](https://lsif.dev) indexers, starting with:
+We have also added support for the [LSIF](https://lsif.dev) code indexing format.
+The following LSIF indexers are supported:
 
 * [TypeScript](https://glean.software/docs/indexer/lsif-typescript)
 * [Go](https://glean.software/docs/indexer/lsif-go)
 * [Rust](https://glean.software/docs/indexer/lsif-rust)
+* [Java](https://glean.software/docs/indexer/lsif-java)
+
+LSIF indexers are more limited than full language indexers, but are sufficient
+for common code navigation and symbol search use cases.
 
 ## License
 

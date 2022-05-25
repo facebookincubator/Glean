@@ -9,3 +9,5 @@ glean/lang/clang/schema.h
 glean/schema/hs
 glean/schema/thrift
 glean/schema/v[0-9]*
+glean/lang/java-lsif/tests/cases/xrefs/target
+dump.lsif

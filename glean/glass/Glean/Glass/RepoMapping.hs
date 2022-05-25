@@ -30,6 +30,7 @@ gleanIndices = Map.fromList
       ,("test", Language_Go)
       ,("test", Language_TypeScript)
       ,("test", Language_Rust)
+      ,("test", Language_Java)
       ])
   ]
 

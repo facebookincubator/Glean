@@ -80,6 +80,14 @@ jobs:
           curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/${RUST_ANALYZER}/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > "$HOME"/.hsthrift/bin/rust-analyzer
           chmod +x "$HOME"/.hsthrift/bin/rust-analyzer
 
+      - name: Install indexer (java)
+        run: |
+          apt-get install -y default-jdk maven
+          curl -fLo coursier https://git.io/coursier-cli && chmod +x coursier
+          export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
+          ./coursier bootstrap --standalone -o lsif-java com.sourcegraph:lsif-java_2.13:0.8.0-RC1 --main-class com.sourcegraph.lsif_java.LsifJava
+          mkdir -p "$HOME"/.hsthrift/bin && cp lsif-java "$HOME"/.hsthrift/bin
+
       - name: Fetch hsthrift and build folly, fizz, wangle, fbthrift, rocksdb
         run: ./install_deps.sh
       - name: Nuke build artifacts
