@@ -895,45 +895,5 @@
         "name": "str"
       }
     }
-  },
-  {
-    "key": {
-      "entity": { "pp": { "include_": { "key": "test/cjs_exports.js" } } },
-      "location": {
-        "file": { "key": "test/cjs_exports.js" },
-        "location": { "span": { "length": 0, "start": 0 } },
-        "name": "test/cjs_exports.js"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": { "pp": { "include_": { "key": "test/es_exports.js" } } },
-      "location": {
-        "file": { "key": "test/es_exports.js" },
-        "location": { "span": { "length": 0, "start": 0 } },
-        "name": "test/es_exports.js"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": { "pp": { "include_": { "key": "test/es_exports.js.flow" } } },
-      "location": {
-        "file": { "key": "test/es_exports.js.flow" },
-        "location": { "span": { "length": 0, "start": 0 } },
-        "name": "test/es_exports.js.flow"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": { "pp": { "include_": { "key": "test/imports.js" } } },
-      "location": {
-        "file": { "key": "test/imports.js" },
-        "location": { "span": { "length": 0, "start": 0 } },
-        "name": "test/imports.js"
-      }
-    }
   }
 ]

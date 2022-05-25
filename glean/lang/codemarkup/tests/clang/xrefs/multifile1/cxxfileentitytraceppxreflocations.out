@@ -339,7 +339,15 @@
         "target": {
           "name": "a.h",
           "file": { "key": "a.h" },
-          "location": { "span": { "start": 0, "length": 0 } }
+          "location": {
+            "range": {
+              "file": { "key": "a.h" },
+              "lineBegin": 1,
+              "columnBegin": 1,
+              "lineEnd": 1,
+              "columnEnd": 1
+            }
+          }
         },
         "source": {
           "range": {
@@ -693,7 +701,15 @@
         "target": {
           "name": "a.h",
           "file": { "key": "a.h" },
-          "location": { "span": { "start": 0, "length": 0 } }
+          "location": {
+            "range": {
+              "file": { "key": "a.h" },
+              "lineBegin": 1,
+              "columnBegin": 1,
+              "lineEnd": 1,
+              "columnEnd": 1
+            }
+          }
         },
         "source": {
           "range": {

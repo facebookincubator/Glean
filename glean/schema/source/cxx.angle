@@ -1237,7 +1237,6 @@ predicate FilePPTraceXRefs:
       { include_ = TargetFile } = Entity; )
 
 # Definition location for a pp1.Define
-# (deprecated)
 predicate PPEntityLocation :
   {
     entity : PpEntity,
