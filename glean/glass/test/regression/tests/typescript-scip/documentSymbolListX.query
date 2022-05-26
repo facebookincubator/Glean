@@ -1,0 +1,2 @@
+action: documentSymbolListX
+args: {"include_refs":true,"filepath":"example.ts","repository":"test"}

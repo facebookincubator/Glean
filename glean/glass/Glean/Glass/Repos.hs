@@ -165,6 +165,7 @@ filetype (Path file)
   | ".erl" `Text.isSuffixOf` file = Just Language_Erlang
   | ".go" `Text.isSuffixOf` file = Just Language_Go
   | ".ts" `Text.isSuffixOf` file = Just Language_TypeScript
+  | ".tsx" `Text.isSuffixOf` file = Just Language_TypeScript
 
   | "TARGETS" `Text.isSuffixOf` file = Just Language_Buck
   | "BUCK" `Text.isSuffixOf` file = Just Language_Buck

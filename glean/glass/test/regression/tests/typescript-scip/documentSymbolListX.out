@@ -1,0 +1,1281 @@
+[
+    "@generated",
+    {
+        "definitions": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nvar res: any\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 14,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                },
+                "sym": "test/ts/example.ts/%3Cglobal%3E/16/11/16/14"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nvar addRes: any\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 17,
+                    "lineBegin": 35,
+                    "lineEnd": 35
+                },
+                "sym": "test/ts/example.ts/%3Cglobal%3E/35/11/35/17"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) repoDir: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 36,
+                    "columnEnd": 43,
+                    "lineBegin": 46,
+                    "lineEnd": 46
+                },
+                "sym": "test/ts/example.ts/%3Cglobal%3E/46/36/46/43"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) git: Git\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 53,
+                    "columnEnd": 56,
+                    "lineBegin": 46,
+                    "lineEnd": 46
+                },
+                "sym": "test/ts/example.ts/%3Cglobal%3E/46/53/46/56"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nvar repoDir: any\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 16,
+                    "lineBegin": 47,
+                    "lineEnd": 47
+                },
+                "sym": "test/ts/example.ts/%3Cglobal%3E/47/9/47/16"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nvar git: Git\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 12,
+                    "lineBegin": 49,
+                    "lineEnd": 49
+                },
+                "sym": "test/ts/example.ts/%3Cglobal%3E/49/9/49/12"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\nclass Git\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 10,
+                    "lineBegin": 14,
+                    "lineEnd": 14
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/Git%23"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) dir: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 23,
+                    "columnEnd": 26,
+                    "lineBegin": 15,
+                    "lineEnd": 15
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/Git%23%60%3Cconstructor%3E%60%28%29.%28dir%29"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(method) commit(msg: string, date: string, author: string): void\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 9,
+                    "lineBegin": 34,
+                    "lineEnd": 34
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/Git%23commit%28%29."
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(parameter) author: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 37,
+                    "columnEnd": 43,
+                    "lineBegin": 34,
+                    "lineEnd": 34
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/Git%23commit%28%29.%28author%29"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(parameter) date: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 23,
+                    "columnEnd": 27,
+                    "lineBegin": 34,
+                    "lineEnd": 34
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/Git%23commit%28%29.%28date%29"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(parameter) msg: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 10,
+                    "columnEnd": 13,
+                    "lineBegin": 34,
+                    "lineEnd": 34
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/Git%23commit%28%29.%28msg%29"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\nfunction createTempRepo(): { repoDir: string; git: Git; }\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 17,
+                    "columnEnd": 31,
+                    "lineBegin": 46,
+                    "lineEnd": 46
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/createTempRepo%28%29."
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) cwd: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 41,
+                    "columnEnd": 44,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/cwd0%3A"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) cwd: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 10,
+                    "lineBegin": 24,
+                    "lineEnd": 24
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/cwd1%3A"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) cwd: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 48,
+                    "columnEnd": 51,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/cwd2%3A"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) cwd: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 10,
+                    "lineBegin": 30,
+                    "lineEnd": 30
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/cwd3%3A"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) cwd: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 45,
+                    "columnEnd": 48,
+                    "lineBegin": 35,
+                    "lineEnd": 35
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/cwd4%3A"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) git: Git\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 20,
+                    "columnEnd": 23,
+                    "lineBegin": 51,
+                    "lineEnd": 51
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/git0%3A"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) repoDir: any\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 18,
+                    "lineBegin": 51,
+                    "lineEnd": 51
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/repoDir0%3A"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) silent: boolean\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 51,
+                    "columnEnd": 57,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/silent0%3A"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) silent: boolean\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 13,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/silent1%3A"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) silent: boolean\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 58,
+                    "columnEnd": 64,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/silent2%3A"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) silent: boolean\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 13,
+                    "lineBegin": 31,
+                    "lineEnd": 31
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/silent3%3A"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) silent: boolean\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 60,
+                    "columnEnd": 66,
+                    "lineBegin": 35,
+                    "lineEnd": 35
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/silent4%3A"
+            }
+        ],
+        "references": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nvar res: any\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 12,
+                    "lineBegin": 17,
+                    "lineEnd": 17
+                },
+                "sym": "test/ts/example.ts/%3Cglobal%3E/16/11/16/14",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 14,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nvar res: any\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 52,
+                    "columnEnd": 55,
+                    "lineBegin": 18,
+                    "lineEnd": 18
+                },
+                "sym": "test/ts/example.ts/%3Cglobal%3E/16/11/16/14",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 14,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nvar res: any\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 14,
+                    "lineBegin": 19,
+                    "lineEnd": 19
+                },
+                "sym": "test/ts/example.ts/%3Cglobal%3E/16/11/16/14",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 14,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nvar res: any\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 14,
+                    "lineBegin": 20,
+                    "lineEnd": 20
+                },
+                "sym": "test/ts/example.ts/%3Cglobal%3E/16/11/16/14",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 14,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nvar addRes: any\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 15,
+                    "lineBegin": 36,
+                    "lineEnd": 36
+                },
+                "sym": "test/ts/example.ts/%3Cglobal%3E/35/11/35/17",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 17,
+                        "lineBegin": 35,
+                        "lineEnd": 35
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nvar addRes: any\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 51,
+                    "columnEnd": 57,
+                    "lineBegin": 37,
+                    "lineEnd": 37
+                },
+                "sym": "test/ts/example.ts/%3Cglobal%3E/35/11/35/17",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 17,
+                        "lineBegin": 35,
+                        "lineEnd": 35
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nvar addRes: any\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 17,
+                    "lineBegin": 38,
+                    "lineEnd": 38
+                },
+                "sym": "test/ts/example.ts/%3Cglobal%3E/35/11/35/17",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 17,
+                        "lineBegin": 35,
+                        "lineEnd": 35
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nvar addRes: any\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 17,
+                    "lineBegin": 39,
+                    "lineEnd": 39
+                },
+                "sym": "test/ts/example.ts/%3Cglobal%3E/35/11/35/17",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 17,
+                        "lineBegin": 35,
+                        "lineEnd": 35
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nvar repoDir: any\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 23,
+                    "columnEnd": 30,
+                    "lineBegin": 49,
+                    "lineEnd": 49
+                },
+                "sym": "test/ts/example.ts/%3Cglobal%3E/47/9/47/16",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 16,
+                        "lineBegin": 47,
+                        "lineEnd": 47
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nvar repoDir: any\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 18,
+                    "lineBegin": 51,
+                    "lineEnd": 51
+                },
+                "sym": "test/ts/example.ts/%3Cglobal%3E/47/9/47/16",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 16,
+                        "lineBegin": 47,
+                        "lineEnd": 47
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 5
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\nvar git: Git\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 20,
+                    "columnEnd": 23,
+                    "lineBegin": 51,
+                    "lineEnd": 51
+                },
+                "sym": "test/ts/example.ts/%3Cglobal%3E/49/9/49/12",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 12,
+                        "lineBegin": 49,
+                        "lineEnd": 49
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\nclass Git\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 58,
+                    "columnEnd": 61,
+                    "lineBegin": 46,
+                    "lineEnd": 46
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/Git%23",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\nclass Git\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 19,
+                    "columnEnd": 22,
+                    "lineBegin": 49,
+                    "lineEnd": 49
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/Git%23",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) dir: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 46,
+                    "columnEnd": 49,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/Git%23%60%3Cconstructor%3E%60%28%29.%28dir%29",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) dir: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 12,
+                    "columnEnd": 15,
+                    "lineBegin": 24,
+                    "lineEnd": 24
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/Git%23%60%3Cconstructor%3E%60%28%29.%28dir%29",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) dir: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 53,
+                    "columnEnd": 56,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/Git%23%60%3Cconstructor%3E%60%28%29.%28dir%29",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) dir: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 12,
+                    "columnEnd": 15,
+                    "lineBegin": 30,
+                    "lineEnd": 30
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/Git%23%60%3Cconstructor%3E%60%28%29.%28dir%29",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) dir: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 55,
+                    "columnEnd": 58,
+                    "lineBegin": 35,
+                    "lineEnd": 35
+                },
+                "sym": "test/ts/lsif/%60example.ts%60/Git%23%60%3Cconstructor%3E%60%28%29.%28dir%29",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "revision": "testhash"
+    }
+]

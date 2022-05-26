@@ -7,7 +7,7 @@
 -}
 
 {-# LANGUAGE ApplicativeDo #-}
-module Glean.Indexer.Typescript ( indexer ) where
+module Glean.Indexer.TypescriptLsif ( indexer ) where
 
 import Options.Applicative
 
@@ -31,7 +31,7 @@ options = do
 
 indexer :: Indexer Typescript
 indexer = Indexer {
-  indexerShortName = "typescript",
+  indexerShortName = "typescript-lsif",
   indexerDescription = "Index Typescript code",
   indexerOptParser = options,
   indexerRun = \Typescript{..} backend repo IndexerParams{..} -> do

@@ -24,6 +24,7 @@ import Control.Applicative ( Alternative((<|>)) )
 
 import Data.Maybe ( fromMaybe )
 import Data.LSIF.Types
+import Data.LSIF.Gen
 
 instance FromJSON LSIF where
   parseJSON = withArray "LSIF" $ fmap LSIF . V.mapM parseJSON
@@ -37,10 +38,6 @@ instance FromJSON KeyFact where
       "edge" -> parseEdge o
       _ -> fail $ "FromJSON.KeyFact: unknown object type: " <> show type_
     return KeyFact{..}
-
-instance FromJSON Id
-instance ToJSON Id where
-  toEncoding = genericToEncoding defaultOptions
 
 parseDiagnostic :: Value -> Parser Diagnostic
 parseDiagnostic (Object o) = Diagnostic
@@ -56,15 +53,6 @@ parseHoverContents (Object o) = HoverSignature
   <*> o .: "value"
 parseHoverContents (String s) = pure (HoverText s)
 parseHoverContents v = fail ("Unrecognized value in hover contents: " <> show v)
-
-instance FromJSON MonikerKind where
-  parseJSON (String str) = case str of
-    "export" -> pure Export
-    "local" -> pure Local
-    "import" -> pure Import
-    "implementation" -> pure Implementation
-    s -> fail ("FromJSON.MonikerKind: unknown kind: " <> show s)
-  parseJSON s = fail ("FromJSON.MonikerKind: unknown kind: " <> show s)
 
 instance FromJSON Marker where
   parseJSON (String str) = case str of
@@ -135,10 +123,6 @@ parseVertex o = do
         (V.mapM (withObject "documentSymbolId" (.: "id"))) rs
 
     _ -> pure LsifUnknown
-
-instance FromJSON  Position where
-
-instance FromJSON Range where
 
 instance FromJSON Tag where
   parseJSON (Object o) = do

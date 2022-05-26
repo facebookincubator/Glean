@@ -1,0 +1,103 @@
+[
+  "@generated",
+  {
+    "key": {
+      "text": {
+        "key": "```ts\u000a(method) commit(msg: string, date: string, author: string): void\u000a```"
+      },
+      "language": 56
+    }
+  },
+  {
+    "key": {
+      "text": { "key": "```ts\u000a(parameter) author: string\u000a```" },
+      "language": 56
+    }
+  },
+  {
+    "key": {
+      "text": { "key": "```ts\u000a(parameter) date: string\u000a```" },
+      "language": 56
+    }
+  },
+  {
+    "key": {
+      "text": { "key": "```ts\u000a(parameter) msg: string\u000a```" },
+      "language": 56
+    }
+  },
+  {
+    "key": {
+      "text": { "key": "```ts\u000a(property) cwd: string\u000a```" },
+      "language": 56
+    }
+  },
+  {
+    "key": {
+      "text": { "key": "```ts\u000a(property) dir: string\u000a```" },
+      "language": 56
+    }
+  },
+  {
+    "key": {
+      "text": { "key": "```ts\u000a(property) git: Git\u000a```" },
+      "language": 56
+    }
+  },
+  {
+    "key": {
+      "text": { "key": "```ts\u000a(property) repoDir: any\u000a```" },
+      "language": 56
+    }
+  },
+  {
+    "key": {
+      "text": { "key": "```ts\u000a(property) repoDir: string\u000a```" },
+      "language": 56
+    }
+  },
+  {
+    "key": {
+      "text": { "key": "```ts\u000a(property) silent: boolean\u000a```" },
+      "language": 56
+    }
+  },
+  {
+    "key": {
+      "text": { "key": "```ts\u000aclass Git\u000a```" },
+      "language": 56
+    }
+  },
+  {
+    "key": {
+      "text": {
+        "key": "```ts\u000afunction createTempRepo(): { repoDir: string; git: Git; }\u000a```"
+      },
+      "language": 56
+    }
+  },
+  {
+    "key": {
+      "text": { "key": "```ts\u000avar addRes: any\u000a```" },
+      "language": 56
+    }
+  },
+  {
+    "key": {
+      "text": { "key": "```ts\u000avar git: Git\u000a```" },
+      "language": 56
+    }
+  },
+  {
+    "key": {
+      "text": { "key": "```ts\u000avar repoDir: any\u000a```" },
+      "language": 56
+    }
+  },
+  {
+    "key": {
+      "text": { "key": "```ts\u000avar res: any\u000a```" },
+      "language": 56
+    }
+  }
+]

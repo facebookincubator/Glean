@@ -1,0 +1,2 @@
+query: codemarkup.EntityKind { entity = { lsif = { typescript = _ } } }
+transform: [gensort, []]

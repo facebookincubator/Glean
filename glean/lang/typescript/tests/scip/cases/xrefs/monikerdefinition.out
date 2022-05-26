@@ -1,0 +1,573 @@
+[
+  "@generated",
+  {
+    "key": {
+      "ident": { "key": "`example.ts`/Git#" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "`example.ts`/Git#" },
+          "ident": { "key": "`example.ts`/Git#" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": { "file": { "key": "example.ts" }, "language": 49 }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 14,
+                "columnBegin": 7,
+                "lineEnd": 14,
+                "columnEnd": 9
+              },
+              "text": { "key": "" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "`example.ts`/Git#`<constructor>`().(dir)" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "`example.ts`/Git#`<constructor>`().(dir)" },
+          "ident": { "key": "`example.ts`/Git#`<constructor>`().(dir)" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": { "file": { "key": "example.ts" }, "language": 49 }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 15,
+                "columnBegin": 23,
+                "lineEnd": 15,
+                "columnEnd": 25
+              },
+              "text": { "key": "" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "`example.ts`/Git#commit()." },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "`example.ts`/Git#commit()." },
+          "ident": { "key": "`example.ts`/Git#commit()." }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": { "file": { "key": "example.ts" }, "language": 49 }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 34,
+                "columnBegin": 3,
+                "lineEnd": 34,
+                "columnEnd": 8
+              },
+              "text": { "key": "" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "`example.ts`/Git#commit().(author)" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "`example.ts`/Git#commit().(author)" },
+          "ident": { "key": "`example.ts`/Git#commit().(author)" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": { "file": { "key": "example.ts" }, "language": 49 }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 34,
+                "columnBegin": 37,
+                "lineEnd": 34,
+                "columnEnd": 42
+              },
+              "text": { "key": "" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "`example.ts`/Git#commit().(date)" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "`example.ts`/Git#commit().(date)" },
+          "ident": { "key": "`example.ts`/Git#commit().(date)" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": { "file": { "key": "example.ts" }, "language": 49 }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 34,
+                "columnBegin": 23,
+                "lineEnd": 34,
+                "columnEnd": 26
+              },
+              "text": { "key": "" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "`example.ts`/Git#commit().(msg)" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "`example.ts`/Git#commit().(msg)" },
+          "ident": { "key": "`example.ts`/Git#commit().(msg)" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": { "file": { "key": "example.ts" }, "language": 49 }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 34,
+                "columnBegin": 10,
+                "lineEnd": 34,
+                "columnEnd": 12
+              },
+              "text": { "key": "" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "`example.ts`/createTempRepo()." },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "`example.ts`/createTempRepo()." },
+          "ident": { "key": "`example.ts`/createTempRepo()." }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": { "file": { "key": "example.ts" }, "language": 49 }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 46,
+                "columnBegin": 17,
+                "lineEnd": 46,
+                "columnEnd": 30
+              },
+              "text": { "key": "" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "`example.ts`/cwd0:" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "`example.ts`/cwd0:" },
+          "ident": { "key": "`example.ts`/cwd0:" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": { "file": { "key": "example.ts" }, "language": 49 }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 16,
+                "columnBegin": 41,
+                "lineEnd": 16,
+                "columnEnd": 43
+              },
+              "text": { "key": "" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "`example.ts`/cwd1:" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "`example.ts`/cwd1:" },
+          "ident": { "key": "`example.ts`/cwd1:" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": { "file": { "key": "example.ts" }, "language": 49 }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 24,
+                "columnBegin": 7,
+                "lineEnd": 24,
+                "columnEnd": 9
+              },
+              "text": { "key": "" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "`example.ts`/cwd2:" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "`example.ts`/cwd2:" },
+          "ident": { "key": "`example.ts`/cwd2:" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": { "file": { "key": "example.ts" }, "language": 49 }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 27,
+                "columnBegin": 48,
+                "lineEnd": 27,
+                "columnEnd": 50
+              },
+              "text": { "key": "" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "`example.ts`/cwd3:" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "`example.ts`/cwd3:" },
+          "ident": { "key": "`example.ts`/cwd3:" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": { "file": { "key": "example.ts" }, "language": 49 }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 30,
+                "columnBegin": 7,
+                "lineEnd": 30,
+                "columnEnd": 9
+              },
+              "text": { "key": "" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "`example.ts`/cwd4:" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "`example.ts`/cwd4:" },
+          "ident": { "key": "`example.ts`/cwd4:" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": { "file": { "key": "example.ts" }, "language": 49 }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 35,
+                "columnBegin": 45,
+                "lineEnd": 35,
+                "columnEnd": 47
+              },
+              "text": { "key": "" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "`example.ts`/git0:" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "`example.ts`/git0:" },
+          "ident": { "key": "`example.ts`/git0:" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": { "file": { "key": "example.ts" }, "language": 49 }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 51,
+                "columnBegin": 20,
+                "lineEnd": 51,
+                "columnEnd": 22
+              },
+              "text": { "key": "" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "`example.ts`/repoDir0:" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "`example.ts`/repoDir0:" },
+          "ident": { "key": "`example.ts`/repoDir0:" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": { "file": { "key": "example.ts" }, "language": 49 }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 51,
+                "columnBegin": 11,
+                "lineEnd": 51,
+                "columnEnd": 17
+              },
+              "text": { "key": "" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "`example.ts`/silent0:" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "`example.ts`/silent0:" },
+          "ident": { "key": "`example.ts`/silent0:" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": { "file": { "key": "example.ts" }, "language": 49 }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 16,
+                "columnBegin": 51,
+                "lineEnd": 16,
+                "columnEnd": 56
+              },
+              "text": { "key": "" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "`example.ts`/silent1:" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "`example.ts`/silent1:" },
+          "ident": { "key": "`example.ts`/silent1:" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": { "file": { "key": "example.ts" }, "language": 49 }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 25,
+                "columnBegin": 7,
+                "lineEnd": 25,
+                "columnEnd": 12
+              },
+              "text": { "key": "" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "`example.ts`/silent2:" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "`example.ts`/silent2:" },
+          "ident": { "key": "`example.ts`/silent2:" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": { "file": { "key": "example.ts" }, "language": 49 }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 27,
+                "columnBegin": 58,
+                "lineEnd": 27,
+                "columnEnd": 63
+              },
+              "text": { "key": "" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "`example.ts`/silent3:" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "`example.ts`/silent3:" },
+          "ident": { "key": "`example.ts`/silent3:" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": { "file": { "key": "example.ts" }, "language": 49 }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 31,
+                "columnBegin": 7,
+                "lineEnd": 31,
+                "columnEnd": 12
+              },
+              "text": { "key": "" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "`example.ts`/silent4:" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "`example.ts`/silent4:" },
+          "ident": { "key": "`example.ts`/silent4:" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": { "file": { "key": "example.ts" }, "language": 49 }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 35,
+                "columnBegin": 60,
+                "lineEnd": 35,
+                "columnEnd": 65
+              },
+              "text": { "key": "" }
+            }
+          }
+        }
+      }
+    }
+  }
+]

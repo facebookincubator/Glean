@@ -1,0 +1,2 @@
+query: lsif.EntityKind { entity = { typescript = _ } } 
+transform: [gensort, []]

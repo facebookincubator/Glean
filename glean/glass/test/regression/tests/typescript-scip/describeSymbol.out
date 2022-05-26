@@ -1,0 +1,22 @@
+[
+    "@generated",
+    {
+        "comments": [],
+        "location": {
+            "filepath": "example.ts",
+            "range": {
+                "columnBegin": 17,
+                "columnEnd": 31,
+                "lineBegin": 46,
+                "lineEnd": 46
+            },
+            "repository": "test"
+        },
+        "name": {
+            "container": "`example.ts`/createTempRepo().",
+            "localName": "<unknown>"
+        },
+        "repo_hash": "testhash",
+        "sym": "test/ts/lsif/%60example.ts%60/createTempRepo%28%29."
+    }
+]

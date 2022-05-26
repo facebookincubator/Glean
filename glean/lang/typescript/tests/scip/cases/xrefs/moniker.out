@@ -1,0 +1,136 @@
+[
+  "@generated",
+  {
+    "key": {
+      "kind": 0,
+      "scheme": { "key": "`example.ts`/Git#" },
+      "ident": { "key": "`example.ts`/Git#" }
+    }
+  },
+  {
+    "key": {
+      "kind": 0,
+      "scheme": { "key": "`example.ts`/Git#`<constructor>`().(dir)" },
+      "ident": { "key": "`example.ts`/Git#`<constructor>`().(dir)" }
+    }
+  },
+  {
+    "key": {
+      "kind": 0,
+      "scheme": { "key": "`example.ts`/Git#commit()." },
+      "ident": { "key": "`example.ts`/Git#commit()." }
+    }
+  },
+  {
+    "key": {
+      "kind": 0,
+      "scheme": { "key": "`example.ts`/Git#commit().(author)" },
+      "ident": { "key": "`example.ts`/Git#commit().(author)" }
+    }
+  },
+  {
+    "key": {
+      "kind": 0,
+      "scheme": { "key": "`example.ts`/Git#commit().(date)" },
+      "ident": { "key": "`example.ts`/Git#commit().(date)" }
+    }
+  },
+  {
+    "key": {
+      "kind": 0,
+      "scheme": { "key": "`example.ts`/Git#commit().(msg)" },
+      "ident": { "key": "`example.ts`/Git#commit().(msg)" }
+    }
+  },
+  {
+    "key": {
+      "kind": 0,
+      "scheme": { "key": "`example.ts`/createTempRepo()." },
+      "ident": { "key": "`example.ts`/createTempRepo()." }
+    }
+  },
+  {
+    "key": {
+      "kind": 0,
+      "scheme": { "key": "`example.ts`/cwd0:" },
+      "ident": { "key": "`example.ts`/cwd0:" }
+    }
+  },
+  {
+    "key": {
+      "kind": 0,
+      "scheme": { "key": "`example.ts`/cwd1:" },
+      "ident": { "key": "`example.ts`/cwd1:" }
+    }
+  },
+  {
+    "key": {
+      "kind": 0,
+      "scheme": { "key": "`example.ts`/cwd2:" },
+      "ident": { "key": "`example.ts`/cwd2:" }
+    }
+  },
+  {
+    "key": {
+      "kind": 0,
+      "scheme": { "key": "`example.ts`/cwd3:" },
+      "ident": { "key": "`example.ts`/cwd3:" }
+    }
+  },
+  {
+    "key": {
+      "kind": 0,
+      "scheme": { "key": "`example.ts`/cwd4:" },
+      "ident": { "key": "`example.ts`/cwd4:" }
+    }
+  },
+  {
+    "key": {
+      "kind": 0,
+      "scheme": { "key": "`example.ts`/git0:" },
+      "ident": { "key": "`example.ts`/git0:" }
+    }
+  },
+  {
+    "key": {
+      "kind": 0,
+      "scheme": { "key": "`example.ts`/repoDir0:" },
+      "ident": { "key": "`example.ts`/repoDir0:" }
+    }
+  },
+  {
+    "key": {
+      "kind": 0,
+      "scheme": { "key": "`example.ts`/silent0:" },
+      "ident": { "key": "`example.ts`/silent0:" }
+    }
+  },
+  {
+    "key": {
+      "kind": 0,
+      "scheme": { "key": "`example.ts`/silent1:" },
+      "ident": { "key": "`example.ts`/silent1:" }
+    }
+  },
+  {
+    "key": {
+      "kind": 0,
+      "scheme": { "key": "`example.ts`/silent2:" },
+      "ident": { "key": "`example.ts`/silent2:" }
+    }
+  },
+  {
+    "key": {
+      "kind": 0,
+      "scheme": { "key": "`example.ts`/silent3:" },
+      "ident": { "key": "`example.ts`/silent3:" }
+    }
+  },
+  {
+    "key": {
+      "kind": 0,
+      "scheme": { "key": "`example.ts`/silent4:" },
+      "ident": { "key": "`example.ts`/silent4:" }
+    }
+  }
+]

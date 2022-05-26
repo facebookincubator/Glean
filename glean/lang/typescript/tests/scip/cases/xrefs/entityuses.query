@@ -1,0 +1,2 @@
+query: lsif.EntityUses { target = { typescript = _ } } 
+transform: [gensort, []]

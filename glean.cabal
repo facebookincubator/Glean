@@ -967,7 +967,6 @@ library shell-lib
         glean:client-hs-local,
         glean:indexers,
         glean:util,
-        glean:lsif,
         haskeline >=0.7.3 && <0.8,
         json,
         monad-control,
@@ -977,14 +976,15 @@ library shell-lib
 library indexers
     import: fb-haskell, fb-cpp, deps
     hs-source-dirs:
-        glean/lang/flow
-        glean/lang/hack
-        glean/lang/typescript
-        glean/lang/go
-        glean/lang/lsif/indexer
-        glean/lang/rust-lsif
         glean/index
         glean/index/list
+        glean/lang/flow
+        glean/lang/go
+        glean/lang/hack
+        glean/lang/lsif/indexer
+        glean/lang/rust-lsif
+        glean/lang/scip/indexer
+        glean/lang/typescript
     exposed-modules:
         Glean.Indexer
         Glean.Indexer.External
@@ -992,8 +992,10 @@ library indexers
         Glean.Indexer.Go
         Glean.Indexer.Hack
         Glean.Indexer.RustLsif
-        Glean.Indexer.Typescript
+        Glean.Indexer.TypescriptLsif
+        Glean.Indexer.TypescriptScip
         Glean.Indexer.LSIF
+        Glean.Indexer.SCIP
         Glean.Indexer.List
     build-depends:
         glean:client-hs,
@@ -1002,6 +1004,7 @@ library indexers
         glean:handler,
         glean:lib,
         glean:lsif,
+        glean:scip,
         glean:stubs,
         glean:util,
         thrift-server
@@ -1146,12 +1149,38 @@ library lsif
     exposed-modules:
         Data.LSIF.Angle
         Data.LSIF.Env
+        Data.LSIF.Gen
         Data.LSIF.JSON
         Data.LSIF.Types
         Glean.LSIF.Driver
     build-depends:
         aeson,
         split,
+
+-- SCIP support. Not on hackage yet:
+--
+-- Haskell bindings https://github.com/donsbot/if-proto-scip-hs
+-- Specification https://github.com/sourcegraph/scip
+--
+library if-proto-scip-hs
+    import: fb-haskell, deps
+    exposed-modules:
+        Proto.Scip,
+        Proto.Scip_Fields
+    hs-source-dirs: glean/lang/scip/proto
+    build-depends: proto-lens-runtime
+
+library scip
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs: glean/lang/scip
+    exposed-modules:
+        Data.SCIP.Angle
+        Glean.SCIP.Driver
+    build-depends:
+        glean:if-proto-scip-hs,
+        glean:lsif,
+        microlens,
+        proto-lens,
 
 -- -----------------------------------------------------------------------------
 -- Glass services
@@ -1891,6 +1920,18 @@ test-suite glean-snapshot-typescript
     if !flag(typescript-tests)
         buildable: False
 
+test-suite glean-snapshot-typescript-scip
+    import: fb-haskell, deps
+    hs-source-dirs: glean/lang/codemarkup/tests/typescript-scip
+    type: exitcode-stdio-1.0
+    main-is: Glean/Regression/TypescriptScip/Main.hs
+    ghc-options: -main-is Glean.Regression.TypescriptScip.Main
+    build-depends:
+        glean:regression-test-lib,
+        glean:indexers
+    if !flag(typescript-tests)
+        buildable: False
+
 test-suite glean-snapshot-go
     import: fb-haskell, deps
     hs-source-dirs: glean/lang/codemarkup/tests/go/
@@ -1982,6 +2023,18 @@ test-suite glass-regression-typescript
     main-is: Glean/Glass/Regression/TypeScript/Main.hs
     ghc-options: -main-is Glean.Glass.Regression.TypeScript.Main
     other-modules: Glean.Glass.Regression.TypeScript
+    build-depends:
+        glean:indexers,
+        glean:lsif
+    if !flag(typescript-tests)
+        buildable: False
+
+test-suite glass-regression-typescript-scip
+    import: glass-regression-deps, fb-haskell, deps
+    type: exitcode-stdio-1.0
+    main-is: Glean/Glass/Regression/TypeScriptScip/Main.hs
+    ghc-options: -main-is Glean.Glass.Regression.TypeScriptScip.Main
+    other-modules: Glean.Glass.Regression.TypeScriptScip
     build-depends:
         glean:indexers,
         glean:lsif

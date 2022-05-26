@@ -13,7 +13,7 @@ import Test.HUnit
 import Glean.Glass.Regression.Snapshot as Glass
 import Glean.Glass.Regression.Tests
 import Glean.Glass.Types
-import Glean.Indexer.Typescript as Typescript
+import Glean.Indexer.TypescriptLsif as Typescript
 
 main :: IO ()
 main = mainGlassSnapshot testName testPath testIndexer unitTests

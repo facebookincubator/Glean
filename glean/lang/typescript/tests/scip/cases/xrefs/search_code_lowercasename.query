@@ -1,0 +1,2 @@
+query: search.code.SearchByLowerCaseName _
+transform: [gensort, []]

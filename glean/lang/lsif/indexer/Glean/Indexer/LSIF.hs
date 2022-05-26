@@ -6,7 +6,6 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE ApplicativeDo #-}
 module Glean.Indexer.LSIF (
     indexer,
     derive

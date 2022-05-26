@@ -12,15 +12,14 @@
 -- These represent VS Code LSP-like bulk requests for symbol information
 --
 
-{-# LANGUAGE DeriveGeneric #-}
-
 module Data.LSIF.Types where
 
 -- types only
-import Data.Int ( Int64 )
 import Data.Text ( Text )
 import Data.Vector ( Vector )
 import GHC.Generics ( Generic )
+
+import Data.LSIF.Gen ( Id, MonikerKind, Range )
 
 -- | LSIF document facts. Fact with id N is at vector index N+1
 newtype LSIF = LSIF (Vector KeyFact)
@@ -32,13 +31,6 @@ data KeyFact
       id_ :: {-# UNPACK #-}!Id,
       fact :: !Fact
   }
-
--- | An Id to identify a vertex or an edge.
-newtype Id = Id Int64
-  deriving (Generic, Eq)
-
--- let's put these in unboxed vectors when we find them
-
 
 -- | LSIF records of various sorts. Constructors correspond to labels
 -- We flatten edges and vertices here, as they will all be serialized back to
@@ -133,25 +125,12 @@ data Diagnostic
       diagnosticRange :: {-# UNPACK #-}!Range
   }
 
-data MonikerKind = Export | Local | Import | Implementation
-  deriving (Enum)
 
 data Marker = Begin | End
 
 data Scope = DocumentScope | ProjectScope
 
--- | A 0-indexed line/character-offset point in a document
-data Position = Position {
-      line :: {-# UNPACK #-} !Int64,
-      character :: {-# UNPACK #-} !Int64
-    }
-  deriving (Generic)
 
-data Range = Range {
-      start :: {-# UNPACK #-} !Position,
-      end :: {-# UNPACK #-} !Position
-    }
-  deriving (Generic)
 
 -- | LSIF tags, very close to LSP method call results
 data Tag
