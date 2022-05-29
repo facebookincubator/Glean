@@ -16,6 +16,7 @@
 module HieDBIndexer.Builder (buildXrefMapFiles) where
 
 import Control.Concurrent.Async (mapConcurrently)
+import Control.Concurrent (getNumCapabilities)
 import Control.Exception (
   Exception (displayException),
   SomeException,
@@ -100,7 +101,20 @@ buildXrefMapFiles logger opts@HieDBIndexerOptions {..} = do
     logMsg logger $
       "Number of vertices in the graph = " <> showt numOfVertices
 
-    filteredVertices <- filterM (srcFileExists repoPath) allVertices
+    let repoFiles = nubOrd (map (srcFile repoPath) allVertices)
+    missingFiles <- Set.fromList <$>
+      filterM (fmap not . doesFileExist) repoFiles
+
+    let filteredVertices =
+          filter ((`Set.notMember` missingFiles) . srcFile repoPath) allVertices
+        numOfFilteredVertices = length filteredVertices
+        difference = numOfVertices - numOfFilteredVertices
+
+    unless (difference == 0) $
+      logMsg logger $
+        "Ignoring " <> showt difference <>
+        " vertices due to missing src files: \n" <>
+          Text.unlines [ " - " <> Text.pack m | m <- Set.toList missingFiles]
 
     let resolveHieFile = if relocatableDb then (hiedbDir </>) else id
     -- We need the fileLinesSumMap to convert range to bytespan and the
@@ -109,23 +123,22 @@ buildXrefMapFiles logger opts@HieDBIndexerOptions {..} = do
     (fileLinesSumMap, fileLineLengthMap) <-
       mkFileLinesMap resolveHieFile logger filteredVertices
 
-    -- TODO(T96241762): add num of capabilities arg.
-    let newChunkSize = div numOfVertices 10
+    numCapabilities <- getNumCapabilities
+    let newChunkSize = max 1 (div numOfFilteredVertices numCapabilities)
         splitVertices = chunksOf newChunkSize filteredVertices
 
     batchOutputs <-
       mapConcurrently
         (buildXRefMapForBatch logger opts db fileLinesSumMap)
-        $ zip [1 .. (newChunkSize + 1)] splitVertices
+        $ zip [1 .. ] splitVertices
 
     when (Map.size fileLineLengthMap == 0) $
       error "File line map is empty!!"
 
     return (fileLineLengthMap, batchOutputs)
 
-srcFileExists :: FilePath -> Vertex -> IO Bool
-srcFileExists repoPath (_, srcFp, _, _, _, _, _, _) =
-  doesFileExist $ repoPath </> srcFp
+srcFile :: FilePath -> Vertex -> FilePath
+srcFile repoPath (_, srcFp, _, _, _, _, _, _) = repoPath </> srcFp
 
 {- | Mapping of file to the length of each of its lines.
  This is need to convert ranges in the files to byte spans, which is the

@@ -7,6 +7,29 @@
           "name": { "key": "Glean.FFI.Constructor" },
           "source": {
             "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 2912, "length": 42 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 471, "length": 11 },
+        { "start": 2920, "length": 11 },
+        { "start": 2936, "length": 11 },
+        { "start": 2979, "length": 11 },
+        { "start": 3007, "length": 11 },
+        { "start": 3046, "length": 11 },
+        { "start": 3095, "length": 11 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.Constructor" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
             "span": { "start": 2936, "length": 18 }
           }
         }
@@ -20,6 +43,50 @@
         { "start": 3007, "length": 11 },
         { "start": 3046, "length": 11 },
         { "start": 3095, "length": 11 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.Destroy" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 2391, "length": 40 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 414, "length": 7 },
+        { "start": 2396, "length": 7 },
+        { "start": 2525, "length": 7 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.FFIResultBuf" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 3343, "length": 48 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 531, "length": 12 },
+        { "start": 3351, "length": 12 },
+        { "start": 3366, "length": 12 },
+        { "start": 3779, "length": 12 },
+        { "start": 3866, "length": 12 },
+        { "start": 4149, "length": 12 },
+        { "start": 4229, "length": 12 },
+        { "start": 4667, "length": 12 },
+        { "start": 4762, "length": 12 }
       ]
     }
   },
@@ -52,6 +119,393 @@
     "key": {
       "target": {
         "key": {
+          "name": { "key": "Glean.FFI.Object" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 2433, "length": 101 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 423, "length": 6 },
+        { "start": 2439, "length": 6 },
+        { "start": 2546, "length": 6 },
+        { "start": 2627, "length": 6 },
+        { "start": 2702, "length": 6 },
+        { "start": 2779, "length": 6 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.Static" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 2860, "length": 50 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 497, "length": 6 },
+        { "start": 2866, "length": 6 },
+        { "start": 3034, "length": 6 },
+        { "start": 3132, "length": 6 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.construct" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 2733, "length": 9 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 452, "length": 9 },
+        { "start": 2689, "length": 9 },
+        { "start": 2733, "length": 9 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.constructor" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 2993, "length": 11 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 484, "length": 11 },
+        { "start": 2956, "length": 11 },
+        { "start": 2993, "length": 11 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.copyByteString" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 1178, "length": 14 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 252, "length": 14 },
+        { "start": 1127, "length": 14 },
+        { "start": 1178, "length": 14 },
+        { "start": 1840, "length": 14 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.create" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 2572, "length": 6 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 435, "length": 6 },
+        { "start": 2536, "length": 6 },
+        { "start": 2572, "length": 6 },
+        { "start": 2763, "length": 6 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.destroy" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 2514, "length": 20 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [ { "start": 2514, "length": 7 }, { "start": 2607, "length": 7 } ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.destroyStatic" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 2883, "length": 27 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 2883, "length": 13 },
+        { "start": 3194, "length": 13 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.ffiBuf" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 4221, "length": 6 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 563, "length": 6 },
+        { "start": 4109, "length": 6 },
+        { "start": 4210, "length": 6 },
+        { "start": 4221, "length": 6 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.ffiBuf2" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 4753, "length": 7 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 571, "length": 7 },
+        { "start": 4612, "length": 7 },
+        { "start": 4741, "length": 7 },
+        { "start": 4753, "length": 7 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.fromUTF8" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 1782, "length": 8 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 334, "length": 8 },
+        { "start": 1743, "length": 8 },
+        { "start": 1782, "length": 8 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.release" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 2650, "length": 7 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 443, "length": 7 },
+        { "start": 2616, "length": 7 },
+        { "start": 2650, "length": 7 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.unsafeMallocedByteString" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 1307, "length": 24 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 268, "length": 24 },
+        { "start": 1246, "length": 24 },
+        { "start": 1307, "length": 24 },
+        { "start": 1979, "length": 24 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.unsafeMallocedUTF8" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 1909, "length": 18 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 344, "length": 18 },
+        { "start": 1860, "length": 18 },
+        { "start": 1909, "length": 18 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.unsafeMallocedVector" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 1492, "length": 20 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 296, "length": 20 },
+        { "start": 1399, "length": 20 },
+        { "start": 1492, "length": 20 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.unsafeWithBytes" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 1032, "length": 15 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 235, "length": 15 },
+        { "start": 965, "length": 15 },
+        { "start": 1032, "length": 15 },
+        { "start": 1708, "length": 15 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.unwrap" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 2484, "length": 27 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 2484, "length": 6 },
+        { "start": 2681, "length": 6 },
+        { "start": 2847, "length": 6 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.using" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 3172, "length": 5 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 521, "length": 5 },
+        { "start": 3113, "length": 5 },
+        { "start": 3123, "length": 5 },
+        { "start": 3172, "length": 5 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.usingMalloced" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 2048, "length": 13 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 367, "length": 13 },
+        { "start": 2009, "length": 13 },
+        { "start": 2048, "length": 13 },
+        { "start": 2179, "length": 13 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.usingManyMalloced" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 2143, "length": 17 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 382, "length": 17 },
+        { "start": 2098, "length": 17 },
+        { "start": 2143, "length": 17 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
           "name": { "key": "Glean.FFI.wORD64_SIZE" },
           "source": {
             "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
@@ -69,6 +523,116 @@
         { "start": 4888, "length": 11 },
         { "start": 4969, "length": 11 }
       ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.with" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 2820, "length": 4 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 463, "length": 4 },
+        { "start": 2771, "length": 4 },
+        { "start": 2820, "length": 4 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.withFFIResultBuf" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 3809, "length": 16 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 545, "length": 16 },
+        { "start": 3758, "length": 16 },
+        { "start": 3809, "length": 16 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.withMany" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 2275, "length": 8 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 401, "length": 8 },
+        { "start": 2204, "length": 8 },
+        { "start": 2275, "length": 8 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.withStatic" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 3083, "length": 10 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 509, "length": 10 },
+        { "start": 3020, "length": 10 },
+        { "start": 3083, "length": 10 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.withUTF8Text" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 1693, "length": 12 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [
+        { "start": 320, "length": 12 },
+        { "start": 1635, "length": 12 },
+        { "start": 1693, "length": 12 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "Glean.FFI.wrap" },
+          "source": {
+            "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+            "span": { "start": 2456, "length": 25 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/hs/Glean/FFI.hs" },
+      "uses": [ { "start": 2456, "length": 4 }, { "start": 2586, "length": 4 } ]
     }
   },
   {

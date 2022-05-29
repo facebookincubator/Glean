@@ -6,6 +6,248 @@
         "hs": {
           "definition": {
             "key": {
+              "name": { "key": "Lib.HaxlMaybe.catchNotFoundToNothing" },
+              "source": {
+                "file": { "key": "Lib/HaxlMaybe.hs" },
+                "span": { "length": 22, "start": 698 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/HaxlMaybe.hs" },
+        "location": { "span": { "length": 22, "start": 698 } },
+        "name": "Lib.HaxlMaybe.catchNotFoundToNothing"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.HaxlMaybe.chain" },
+              "source": {
+                "file": { "key": "Lib/HaxlMaybe.hs" },
+                "span": { "length": 5, "start": 339 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/HaxlMaybe.hs" },
+        "location": { "span": { "length": 5, "start": 339 } },
+        "name": "Lib.HaxlMaybe.chain"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.HaxlMaybe.chainMay" },
+              "source": {
+                "file": { "key": "Lib/HaxlMaybe.hs" },
+                "span": { "length": 8, "start": 234 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/HaxlMaybe.hs" },
+        "location": { "span": { "length": 8, "start": 234 } },
+        "name": "Lib.HaxlMaybe.chainMay"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.HaxlMaybe.firstJust" },
+              "source": {
+                "file": { "key": "Lib/HaxlMaybe.hs" },
+                "span": { "length": 9, "start": 519 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/HaxlMaybe.hs" },
+        "location": { "span": { "length": 9, "start": 519 } },
+        "name": "Lib.HaxlMaybe.firstJust"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.HaxlMaybe.fromThrowable" },
+              "source": {
+                "file": { "key": "Lib/HaxlMaybe.hs" },
+                "span": { "length": 13, "start": 992 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/HaxlMaybe.hs" },
+        "location": { "span": { "length": 13, "start": 992 } },
+        "name": "Lib.HaxlMaybe.fromThrowable"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.HaxlMaybe.mapMaybeM" },
+              "source": {
+                "file": { "key": "Lib/HaxlMaybe.hs" },
+                "span": { "length": 9, "start": 1264 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/HaxlMaybe.hs" },
+        "location": { "span": { "length": 9, "start": 1264 } },
+        "name": "Lib.HaxlMaybe.mapMaybeM"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.HaxlMaybe.traverseMay" },
+              "source": {
+                "file": { "key": "Lib/HaxlMaybe.hs" },
+                "span": { "length": 11, "start": 431 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/HaxlMaybe.hs" },
+        "location": { "span": { "length": 11, "start": 431 } },
+        "name": "Lib.HaxlMaybe.traverseMay"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.HaxlMaybe.withDefaultMaybe" },
+              "source": {
+                "file": { "key": "Lib/HaxlMaybe.hs" },
+                "span": { "length": 16, "start": 1094 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/HaxlMaybe.hs" },
+        "location": { "span": { "length": 16, "start": 1094 } },
+        "name": "Lib.HaxlMaybe.withDefaultMaybe"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.Input.InputKey.InputKey" },
+              "source": {
+                "file": { "key": "Lib/Input/InputKey.hs" },
+                "span": { "length": 13, "start": 283 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/Input/InputKey.hs" },
+        "location": { "span": { "length": 13, "start": 283 } },
+        "name": "Lib.Input.InputKey.InputKey"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.Input.InputKey.InputKey" },
+              "source": {
+                "file": { "key": "Lib/Input/InputKey.hs" },
+                "span": { "length": 34, "start": 262 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/Input/InputKey.hs" },
+        "location": { "span": { "length": 34, "start": 262 } },
+        "name": "Lib.Input.InputKey.InputKey"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.Input.InputKey.fetch" },
+              "source": {
+                "file": { "key": "Lib/Input/InputKey.hs" },
+                "span": { "length": 5, "start": 353 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/Input/InputKey.hs" },
+        "location": { "span": { "length": 5, "start": 353 } },
+        "name": "Lib.Input.InputKey.fetch"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
               "name": { "key": "Lib.Input.InputKey.fetchDefault" },
               "source": {
                 "file": { "key": "Lib/Input/InputKey.hs" },
@@ -72,6 +314,72 @@
         "hs": {
           "definition": {
             "key": {
+              "name": { "key": "Lib.Input.InputKey.fetchId" },
+              "source": {
+                "file": { "key": "Lib/Input/InputKey.hs" },
+                "span": { "length": 7, "start": 557 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/Input/InputKey.hs" },
+        "location": { "span": { "length": 7, "start": 557 } },
+        "name": "Lib.Input.InputKey.fetchId"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.Input.InputKey.fetchIdMay" },
+              "source": {
+                "file": { "key": "Lib/Input/InputKey.hs" },
+                "span": { "length": 10, "start": 800 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/Input/InputKey.hs" },
+        "location": { "span": { "length": 10, "start": 800 } },
+        "name": "Lib.Input.InputKey.fetchIdMay"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.Input.InputKey.fetchMay" },
+              "source": {
+                "file": { "key": "Lib/Input/InputKey.hs" },
+                "span": { "length": 8, "start": 433 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/Input/InputKey.hs" },
+        "location": { "span": { "length": 8, "start": 433 } },
+        "name": "Lib.Input.InputKey.fetchMay"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
               "name": { "key": "Lib.Input.InputKey.fetchThrift" },
               "source": {
                 "file": { "key": "Lib/Input/InputKey.hs" },
@@ -129,6 +437,182 @@
         "file": { "key": "Lib/Input/InputKey.hs" },
         "location": { "span": { "length": 9, "start": 1982 } },
         "name": "Lib.Input.InputKey.withInput"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.Thrift.Internal.unknownEnumErrorMsg" },
+              "source": {
+                "file": { "key": "Lib/Thrift/Internal.hs" },
+                "span": { "length": 19, "start": 164 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/Thrift/Internal.hs" },
+        "location": { "span": { "length": 19, "start": 164 } },
+        "name": "Lib.Thrift.Internal.unknownEnumErrorMsg"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.Thrift.ThriftException" },
+              "source": {
+                "file": { "key": "Lib/Thrift.hs" },
+                "span": { "length": 20, "start": 611 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/Thrift.hs" },
+        "location": { "span": { "length": 20, "start": 611 } },
+        "name": "Lib.Thrift.ThriftException"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.Thrift.ThriftException" },
+              "source": {
+                "file": { "key": "Lib/Thrift.hs" },
+                "span": { "length": 68, "start": 585 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/Thrift.hs" },
+        "location": { "span": { "length": 68, "start": 585 } },
+        "name": "Lib.Thrift.ThriftException"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.Thrift.deserializeCompact" },
+              "source": {
+                "file": { "key": "Lib/Thrift.hs" },
+                "span": { "length": 18, "start": 1143 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/Thrift.hs" },
+        "location": { "span": { "length": 18, "start": 1143 } },
+        "name": "Lib.Thrift.deserializeCompact"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.Thrift.deserializeEntSchemaThriftStruct" },
+              "source": {
+                "file": { "key": "Lib/Thrift.hs" },
+                "span": { "length": 32, "start": 1355 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/Thrift.hs" },
+        "location": { "span": { "length": 32, "start": 1355 } },
+        "name": "Lib.Thrift.deserializeEntSchemaThriftStruct"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.Thrift.deserializeJSON" },
+              "source": {
+                "file": { "key": "Lib/Thrift.hs" },
+                "span": { "length": 15, "start": 936 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/Thrift.hs" },
+        "location": { "span": { "length": 15, "start": 936 } },
+        "name": "Lib.Thrift.deserializeJSON"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.Thrift.serializeJSON" },
+              "source": {
+                "file": { "key": "Lib/Thrift.hs" },
+                "span": { "length": 13, "start": 834 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/Thrift.hs" },
+        "location": { "span": { "length": 13, "start": 834 } },
+        "name": "Lib.Thrift.serializeJSON"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "Lib.Thrift.unknownEnumError" },
+              "source": {
+                "file": { "key": "Lib/Thrift.hs" },
+                "span": { "length": 16, "start": 1831 }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "Lib/Thrift.hs" },
+        "location": { "span": { "length": 16, "start": 1831 } },
+        "name": "Lib.Thrift.unknownEnumError"
       }
     }
   }
