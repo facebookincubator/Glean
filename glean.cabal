@@ -1118,6 +1118,7 @@ executable hiedb-indexer
     main-is: HieDBIndexer/Main.hs
     other-modules:
         HieDBIndexer.Builder
+        HieDBIndexer.DefaultMain
         HieDBIndexer.Glean
         HieDBIndexer.Options
         HieDBIndexer.Trace

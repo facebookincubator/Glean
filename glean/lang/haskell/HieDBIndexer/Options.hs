@@ -15,7 +15,6 @@ module HieDBIndexer.Options where
 
 import Data.Text (Text)
 import qualified Glean (Backend)
-import qualified Glean.LocalOrRemote as Glean
 import Options.Applicative (
   Parser,
   ParserInfo,
@@ -35,8 +34,7 @@ import Options.Applicative (
  )
 
 data HieDBIndexerOptions = HieDBIndexerOptions
-  { cfgService :: Glean.Service
-  , hiedbPath :: FilePath
+  { hiedbPath :: FilePath
   , verbosity :: Int
   , hiedbTrace :: Bool
   , repoName :: String
@@ -44,8 +42,8 @@ data HieDBIndexerOptions = HieDBIndexerOptions
   , repoPath :: FilePath
   , chunkSize :: Int
   , dontCreateDb :: Bool
-  , relocatableDb :: Bool
-    -- ^ Relative paths to hie files will be resolved relative to the hiedb
+  , -- | Relative paths to hie files will be resolved relative to the hiedb
+    relocatableDb :: Bool
   }
 
 data HieDBIndexerEnv b = HieDBIndexerEnv
@@ -58,8 +56,6 @@ options = info (helper <*> parser) fullDesc
   where
     parser :: Parser HieDBIndexerOptions
     parser = do
-      cfgService <- Glean.options
-
       hiedbPath <-
         strOption
           ( long "db-path"
@@ -108,11 +104,11 @@ options = info (helper <*> parser) fullDesc
           )
 
       repoHash <-
-          strOption
-            ( long "repo-hash"
-                <> metavar "REPO_HASH"
-                <> help "Hash of the DB to be created."
-            )
+        strOption
+          ( long "repo-hash"
+              <> metavar "REPO_HASH"
+              <> help "Hash of the DB to be created."
+          )
       chunkSize <-
         option
           auto
@@ -138,6 +134,6 @@ options = info (helper <*> parser) fullDesc
       relocatableDb <-
         switch
           ( long "relocatable-db"
-          <> help "Relative .hie paths will be resolved from the hiedb folder"
+              <> help "Relative .hie paths will be resolved from the hiedb folder"
           )
       return HieDBIndexerOptions {..}
