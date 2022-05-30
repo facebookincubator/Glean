@@ -318,6 +318,8 @@ instance (ShellFormat DbVerbosity v)
       , "shard" .= J.toJSON (dbShard $ Thrift.database_repo db)
       , "source" .= maybe J.Null jsonTime (Thrift.database_repo_hash_time db)
       , "properties" .= shellFormatJson ctx () (Thrift.database_properties db)
+      , "dependencies" .= maybe J.Null J.toJSON
+        (Thrift.database_dependencies db)
       ] ++
       [ jsonKeyFrom key .= shellFormatJson ctx opts value
       | (key, value) <- extras]
