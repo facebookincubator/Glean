@@ -1,0 +1,56 @@
+[
+  "@generated",
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "A.a" },
+          "source": {
+            "file": { "key": "fbcode/glean/lang/haskell/tests/code/A.hs" },
+            "span": { "start": 281, "length": 1 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/lang/haskell/tests/code/A.hs" },
+      "uses": [
+        { "start": 228, "length": 1 },
+        { "start": 269, "length": 1 },
+        { "start": 281, "length": 1 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "A.a" },
+          "source": {
+            "file": { "key": "fbcode/glean/lang/haskell/tests/code/A.hs" },
+            "span": { "start": 281, "length": 1 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/lang/haskell/tests/code/B.hs" },
+      "uses": [ { "start": 306, "length": 1 } ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "name": { "key": "B.b" },
+          "source": {
+            "file": { "key": "fbcode/glean/lang/haskell/tests/code/B.hs" },
+            "span": { "start": 284, "length": 1 }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/lang/haskell/tests/code/B.hs" },
+      "uses": [
+        { "start": 228, "length": 1 },
+        { "start": 273, "length": 1 },
+        { "start": 284, "length": 1 }
+      ]
+    }
+  }
+]
