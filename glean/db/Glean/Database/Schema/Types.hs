@@ -27,7 +27,6 @@ import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
-import Data.Set (Set)
 
 import Glean.Angle.Types as Schema hiding (Type, FieldDef)
 import qualified Glean.Angle.Types as Schema
@@ -49,8 +48,6 @@ data DbSchema = DbSchema
   , predicatesById :: IntMap PredicateDetails
   , predicatesTransformations  :: IntMap PredicateTransformation
      -- ^ keyed by predicate requested
-  , predicatesDeps :: IntMap (Set Pid)
-     -- ^ transitive predicate dependencies
   , schemaTypesByRef :: HashMap TypeRef TypeDetails
   , schemaTypesByName :: IntMap (HashMap Name TypeDetails)
      -- ^ points to the type for each name in schema "all"

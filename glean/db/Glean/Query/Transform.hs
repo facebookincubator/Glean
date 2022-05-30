@@ -39,7 +39,7 @@ import Glean.Schema.Util (showPredicateRef)
 import Glean.Query.Codegen
 import Glean.Query.Typecheck.Types
 import Glean.Database.Schema
-import Glean.Database.Schema.Transform (transformPat, transitiveDeps)
+import Glean.Database.Schema.Transform (transformPat)
 import Glean.Database.Schema.Types
 import Glean.RTS.Types
 import Glean.RTS.Foreign.Query (QueryResults(..))
@@ -201,6 +201,29 @@ transformationsFor schema ty =
       showRef to <> " evolves "
       <> Text.intercalate " and " (showRef <$> Set.toList froms)
       where showRef = showPredicateRef . predicateRef . detailsFor
+
+transitiveDeps :: (Pid -> PredicateDetails) -> Pid -> [Pid]
+transitiveDeps = transitive . predicateDeps
+  where
+    -- All predicates mentioned in a predicate's type.
+    -- Does not include predicates from the derivation query.
+    predicateDeps :: (Pid -> PredicateDetails) -> Pid -> [Pid]
+    predicateDeps detailsFor pred =
+      typeDeps (predicateKeyType details) <>
+        typeDeps (predicateValueType details)
+      where
+        details = detailsFor pred
+        typeDeps = bifoldMap overPidRef overExpanded
+        overExpanded (ExpandedType _ ty) = typeDeps ty
+        overPidRef (PidRef pid _) = [pid]
+
+    transitive :: Ord a => (a -> [a]) -> a -> [a]
+    transitive next root = Set.elems $ go (next root) mempty
+      where
+        go [] visited = visited
+        go (x:xs) visited
+          | x `Set.member`visited = go xs visited
+          | otherwise = go xs $ go (next x) $ Set.insert x visited
 
 -- | Transform predicates inside the type but keep its structure.
 transformType :: DbSchema -> Type -> Type

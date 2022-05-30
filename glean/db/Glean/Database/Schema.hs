@@ -56,7 +56,6 @@ import Data.Tuple (swap)
 import Glean.RTS.Foreign.Inventory as Inventory
 import Glean.Database.Schema.Types
 import Glean.Database.Schema.Transform (mkPredicateTransformation)
-import qualified Glean.Database.Schema.Transform as Transform
 import Glean.RTS.Traverse
 import Glean.RTS.Typecheck
 import Glean.RTS.Types as RTS
@@ -397,19 +396,12 @@ mkDbSchema override getPids dbContent source base addition = do
         | ResolvedSchema{..} <- resolvedAlls
         ]
 
-      dependencies = fmap f byId
-        where
-          f = Set.fromList
-            . Transform.transitiveDeps (detailsFor byId)
-            . predicatePid
-
   return $ DbSchema
     { predicatesByRef = byRef
     , predicatesByName = predicatesByName
     , predicatesById = byId
     , predicatesTransformations =
         mkTransformations dbContent override byId byRef resolved
-    , predicatesDeps = dependencies
     , schemaTypesByRef = tcEnvTypes env
     , schemaTypesByName = schemaTypesByName
     , schemaInventory = inventory predicates

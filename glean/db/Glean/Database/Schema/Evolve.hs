@@ -9,7 +9,6 @@
 module Glean.Database.Schema.Evolve
   ( mkPredicateEvolution
   , evolvePat
-  , transitiveDeps
   ) where
 
 import Data.List (elemIndex)
@@ -56,29 +55,6 @@ mkPredicateEvolution detailsFor oldPid newPid
       evolve old new pat = evolvePat overUnit overVar old new pat
       overUnit _ _ () = ()
       overVar _ _ var = var
-
-transitiveDeps :: (Pid -> PredicateDetails) -> Pid -> [Pid]
-transitiveDeps = transitive . predicateDeps
-  where
-    -- All predicates mentioned in a predicate's type.
-    -- Does not include predicates from the derivation query.
-    predicateDeps :: (Pid -> PredicateDetails) -> Pid -> [Pid]
-    predicateDeps detailsFor pred =
-      typeDeps (predicateKeyType details) <>
-        typeDeps (predicateValueType details)
-      where
-        details = detailsFor pred
-        typeDeps = bifoldMap overPidRef overExpanded
-        overExpanded (ExpandedType _ ty) = typeDeps ty
-        overPidRef (PidRef pid _) = [pid]
-
-    transitive :: Ord a => (a -> [a]) -> a -> [a]
-    transitive next root = Set.elems $ go (next root) mempty
-      where
-        go [] visited = visited
-        go (x:xs) visited
-          | x `Set.member`visited = go xs visited
-          | otherwise = go xs $ go (next x) $ Set.insert x visited
 
 evolvePat :: (Show a, Show b)
   => (Type -> Type -> a -> c)
