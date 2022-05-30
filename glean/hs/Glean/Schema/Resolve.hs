@@ -10,29 +10,20 @@
 
 module Glean.Schema.Resolve
   ( resolveSchema
-  , Schema(..)
-  , Schemas(..)
-  , ResolvedSchema(..)
   , parseAndResolveSchema
-  , Scope
-  , RefTarget(..)
-  , resolveRef
+  , Schemas(..)
   , resolveType
-  , LookupResult(..)
   , lookupResultToExcept
-  , SchemaRef(..)
-  , schemaRef
   , resolveEvolves
   ) where
 
+import Control.Applicative
 import Control.Monad.Except
-import Control.Applicative ((<|>))
-import Data.Bifunctor (first)
+import Data.Bifunctor
 import Data.ByteString (ByteString)
 import Data.Char
 import Data.Graph
-import Data.Foldable (asum)
-import Data.Hashable (Hashable)
+import Data.Foldable
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashSet as HashSet
@@ -40,46 +31,24 @@ import Data.HashSet (HashSet)
 import Data.List
 import Data.Map (Map)
 import qualified Data.Map as Map
+import Data.Maybe
 import qualified Data.Set as Set
-import Data.Set (Set)
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Text.Prettyprint.Doc hiding (group)
-import Data.Tree
-import GHC.Generics
 import TextShow
 
 import Glean.Angle.Parser
 import Glean.Angle.Types
+import Glean.Schema.Types
 import Glean.Schema.Util
 
 -- | A set of schemas
 data Schemas = Schemas
-  { schemasSchemas :: HashMap Version Schema
-    -- ^ These correspond to the schemas named all.<version>. Later we
-    -- will move towards using named schemas exclusively rather than
-    -- these monolithic schemas.
-  , schemasHighestVersion :: Maybe Version
-  , schemasResolved :: [ResolvedSchema]
+  { schemasHighestVersion :: Maybe Version
+  , schemasResolved :: [ResolvedSchemaRef]
     -- ^ Resolved schemas in dependency order
   }
-
--- | One version of the special schema "all"
---  This type is used for code generation.
-data Schema = Schema
-  { schemaVersion :: Version
-  , schemaTypes :: HashMap Name (Set Version)
-  , schemaPredicates :: HashMap Name (Set Version)
-  -- ^ the types and predicates here include everything this
-  -- schema uses transitively.
-  }
-  deriving Eq
-
--- | Identify a schema
-data SchemaRef = SchemaRef Name Version
-  deriving (Eq, Ord, Show, Generic)
-
-instance Hashable SchemaRef
 
 -- | Useful packaging of 'parseSchema' and 'resolveSchema'. Note that
 -- parsing and resolution of a schema is a pure function.
@@ -128,64 +97,26 @@ resolveSchema SourceSchemas{..} = runExcept $ do
   -- Resolve all the references in each individual schema
   finalEnv <- resolveSchemas HashMap.empty sccs
 
-  -- Pick out the schemas called "all.<version>", find all their
-  -- dependencies, and construct our top level schemas from these.
-  -- Eventually when we move to using named schemas more consistently,
-  -- this set of hacks can go away.
-  let
-    -- We also need to do a DFS for each all.<version> schema so that
-    -- we can find the transitive closure of types and predicates that
-    -- it refers to. Sadly this means building the graph again because
-    -- stronglyConnComp doesn't let us get the graph it built.
-    --
-    -- However we don't want edges from evolves here, only actual
-    -- dependencies.
-    (graph, fromVertex, toVertex) = graphFromEdges (edges schemaDependencies)
-
-    resolvedAllSchemas =
-      [ (n, schema)
-      | (n, schema) <- HashMap.toList finalEnv
-      , resolvedSchemaName schema == "all" ]
-
-  allTheSchemas <-
-    forM resolvedAllSchemas $ \(name,r) -> do
-      v <- case toVertex name of
-        Just v -> return v
-        _ -> throwError "internal error: resolveSchema"
-      let
-        reachable = map fromVertex $ concatMap flatten (dfs graph [v])
-        deps =
-          [ r | (_,n,_) <- reachable, Just r <- [HashMap.lookup n finalEnv] ]
-        types = HashMap.unions (map resolvedSchemaTypes deps)
-        preds = HashMap.unions (map resolvedSchemaPredicates deps)
-      return Schema
-        { schemaVersion = resolvedSchemaVersion r
-        , schemaTypes = HashMap.fromListWith Set.union
-            [ (name, Set.singleton version)
-            | TypeRef name version <- HashMap.keys types
-            ]
-        , schemaPredicates = HashMap.fromListWith Set.union
-            [ (name, Set.singleton version)
-            | PredicateRef name version <- HashMap.keys preds
-            ]
-        }
-
   let
     resolved =
         [ schema
         | AcyclicSCC one <- sccs
         , Just schema <- [HashMap.lookup (schemaName one) finalEnv ] ]
 
+    allSchemas =
+      [ schema
+      | schema@ResolvedSchema{..} <- HashMap.elems finalEnv
+      , resolvedSchemaName == "all"
+      ]
+
   -- Check whether any schema is evolved by multiple schemas.
   _ <- either throwError return $ resolveEvolves resolved
 
   return Schemas
-    { schemasSchemas = HashMap.fromList
-        [ (schemaVersion s, s) | s <- allTheSchemas ]
-    , schemasHighestVersion =
-        if null allTheSchemas
+    { schemasHighestVersion =
+        if null allSchemas
            then Nothing
-           else Just (maximum $ map schemaVersion allTheSchemas)
+           else Just (maximum $ map resolvedSchemaVersion allSchemas)
     , schemasResolved = resolved
     }
 
@@ -198,7 +129,7 @@ resolveSchema SourceSchemas{..} = runExcept $ do
 -- know whether to serve facts from C or from B. Therefore we disallow
 -- multiple schemas to evolve a single one.
 resolveEvolves
-  :: [ResolvedSchema] -- ^ in dependency order
+  :: [ResolvedSchemaRef] -- ^ in dependency order
   -> Either Text (HashMap SchemaRef SchemaRef)
 resolveEvolves resolved = do
   checkLawfulEvolves
@@ -218,7 +149,7 @@ resolveEvolves resolved = do
           <> ": "
           <> Text.unwords (map showSchemaRef newList)
 
-    resolvedByRef :: Map SchemaRef ResolvedSchema
+    resolvedByRef :: Map SchemaRef ResolvedSchemaRef
     resolvedByRef = Map.fromList [(schemaRef s, s) | s <- resolved ]
 
 
@@ -233,17 +164,14 @@ resolveEvolves resolved = do
         , Just old <- [Map.lookup oldRef resolvedByRef]
         ]
 
-showSchemaRef :: SchemaRef -> Text
-showSchemaRef (SchemaRef name version) =
-  name <> "." <> Text.pack (show version)
 
 -- Check for back compatibility and map each predicate to their evolved
 -- counterpart in the the evolvedBy map
 evolveOneSchema
-  :: HashMap TypeRef TypeDef           -- ^ all type definitions
+  :: HashMap TypeRef ResolvedTypeDef  -- ^ all type definitions
   -> HashMap PredicateRef PredicateRef -- ^ all predicate evolutions till now.
                                        -- value evolves key
-  -> (ResolvedSchema, ResolvedSchema)
+  -> (ResolvedSchemaRef, ResolvedSchemaRef)
   -> Either Text (HashMap PredicateRef PredicateRef)
 evolveOneSchema types evolvedBy (new, old) = do
   checkBackCompatibility
@@ -274,7 +202,7 @@ evolveOneSchema types evolvedBy (new, old) = do
         Just err -> throwError $
           "cannot evolve predicate " <> predicateRef_name ref <> ": " <> err
 
-    canEvolve' :: Type -> Type -> Maybe Text
+    canEvolve' :: ResolvedType -> ResolvedType -> Maybe Text
     canEvolve' = canEvolve types evolvedBy'
 
     -- add evolutions from current schema
@@ -287,7 +215,7 @@ evolveOneSchema types evolvedBy (new, old) = do
             Nothing -> acc
             Just newPred -> HashMap.insert oldPred (predicateDefRef newPred) acc
 
-    newPredsByName :: HashMap Name PredicateDef
+    newPredsByName :: HashMap Name ResolvedPredicateDef
     newPredsByName = mapKeys predicateRef_name (exportedPredicates new)
 
     mapKeys f = HashMap.fromList . map (first f) . HashMap.toList
@@ -295,51 +223,14 @@ evolveOneSchema types evolvedBy (new, old) = do
     exportedPredicates ResolvedSchema{..} =
       resolvedSchemaPredicates <> resolvedSchemaReExportedPredicates
 
-schemaRef :: ResolvedSchema -> SchemaRef
-schemaRef ResolvedSchema{..} =
-  SchemaRef resolvedSchemaName resolvedSchemaVersion
-
-type Environment = HashMap Name ResolvedSchema
-
-data ResolvedSchema = ResolvedSchema
-  { resolvedSchemaName :: Name
-  , resolvedSchemaVersion :: Version
-  , resolvedSchemaAngleVersion :: AngleVersion
-  , resolvedSchemaTypes :: HashMap TypeRef TypeDef
-    -- ^ types that are defined by this schema
-  , resolvedSchemaReExportedTypes :: HashMap TypeRef TypeDef
-    -- ^ types that are inherited and re-exported by this schema
-  , resolvedSchemaPredicates :: HashMap PredicateRef PredicateDef
-    -- ^ predicates that are defined by this schema
-  , resolvedSchemaReExportedPredicates :: HashMap PredicateRef PredicateDef
-    -- ^ predicates that are inherited and re-exported by this schema
-  , resolvedSchemaScope :: Scope
-    -- ^ we save the scope here because it will be used for typechecking
-    -- the DerivingInfo later.
-  , resolvedSchemaDeriving :: HashMap PredicateRef SourceDerivingInfo
-    -- ^ deriving declarations, for predicates defined in this schema
-    -- or an inherited schema.
-  , resolvedSchemaEvolves :: Set SchemaRef
-    -- ^ schemas evolves by this schema.
-  }
-
-data RefTarget = RefType TypeRef | RefPred PredicateRef
-  deriving (Eq,Ord,Show)
-
-showTarget :: RefTarget -> Text
-showTarget (RefType (TypeRef name version)) =
-  name <> "." <> showt version
-showTarget (RefPred (PredicateRef name version)) =
-  name <> "." <> showt version
-
-type Scope = SourceRef -> LookupResult
+type Environment = HashMap Name ResolvedSchemaRef
 
 resolveOneSchema
   :: Environment
   -> AngleVersion
   -> [Name]
   -> SourceSchema
-  -> Except Text ResolvedSchema
+  -> Except Text ResolvedSchemaRef
 
 resolveOneSchema env angleVersion evolves SourceSchema{..} =
   flip catchError (\e -> throwError $ "In " <> schemaName <> ":\n  " <> e) $ do
@@ -363,96 +254,123 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
   -- All the schemas we imported
   imports <- traverse schemaByName [ name | SourceImport name <- schemaDecls ]
 
-  localPreds <- forM [ p | SourcePredicate p <- schemaDecls ] $
-    \def@PredicateDef{..} -> case predicateDefRef of
-      SourceRef name Nothing -> do
-        let ref = PredicateRef (namespace <> "." <> name) version
-        return (name,  ref, def)
-      SourceRef name (Just explicitVersion) -> do
-        let ref = PredicateRef (namespace <> "." <> name) explicitVersion
-        return (name, ref, def)
-
-  localTypes <- forM [ p | SourceType p <- schemaDecls ] $
-    \def@TypeDef{..} ->
-      case typeDefRef of
-        SourceRef name Nothing -> do
-          let ref = TypeRef (namespace <> "." <> name) version
-          return (name, ref, def)
-        SourceRef name (Just explicitVersion) -> do
-          let ref = TypeRef (namespace <> "." <> name) explicitVersion
-          return (name, ref, def)
-
-  -- Build the scope: a mapping from unversioned names to RefTarget
   let
-    -- local definitions are in scope unqualified and qualified
-    unqualLocalScope :: HashMap Name [RefTarget]
-    unqualLocalScope = HashMap.fromListWith (++) $
-      [ (name, [RefPred r]) | (name, r, _) <- localPreds ] ++
-      [ (name, [RefType r]) | (name, r, _) <- localTypes ]
-
-    qualLocalScope :: HashMap Name [RefTarget]
-    qualLocalScope = HashMap.fromListWith (++) $
-      [ (qualify name, [RefPred r]) | (name, r, _) <- localPreds ] ++
-      [ (qualify name, [RefType r]) | (name, r, _) <- localTypes ]
-
-    -- inherited definitions are in scope unqualified and qualified
-    --   (but unqualified local names override unqualified inherited names)
-    qualInheritedScope :: HashMap Name (Set RefTarget)
-    qualInheritedScope = HashMap.fromListWith Set.union
-      [ (name, Set.singleton target)
-      | schema <- inherits
-      , (name, target) <- allRefs schema
-      ]
-
-    unqualInheritedScope :: HashMap Name (Set RefTarget)
-    unqualInheritedScope = HashMap.fromListWith Set.union
-      [ (unqualify name, Set.singleton target)
-      | schema <- inherits
-      , (name, target) <- allRefs schema
-      ]
-
-    -- imported names are in scope qualified.
-    importedScope :: HashMap Name (Set RefTarget)
-    importedScope =
-      foldr (HashMap.unionWith Set.union) HashMap.empty
-        [ fmap Set.singleton $ HashMap.fromList $ allRefs schema
-        | schema <- imports
-        ]
-
-    allRefs :: ResolvedSchema -> [(Name, RefTarget)]
-    allRefs ResolvedSchema{..} =
-      [ (typeRef_name ref, RefType ref)
-      | ref <- HashMap.keys $
-          resolvedSchemaTypes <> resolvedSchemaReExportedTypes ] ++
-      [ (predicateRef_name ref, RefPred ref)
-      | ref <- HashMap.keys $
-          resolvedSchemaPredicates <> resolvedSchemaReExportedPredicates ]
-
     qualify :: Name -> Name
     qualify x = namespace <> "." <> x
 
     unqualify :: Name -> Name
     unqualify = snd . splitDot
 
-    scope = resolveRef $
-      HashMap.union (fmap Set.fromList unqualLocalScope) $
-      HashMap.union unqualInheritedScope $
-      HashMap.unionWith Set.union (fmap Set.fromList qualLocalScope) $
-      HashMap.unionWith Set.union qualInheritedScope importedScope
+    localPreds =
+      [ let
+          SourceRef name explicitVersion = predicateDefRef p
+          thisVersion = fromMaybe version explicitVersion
+          qname = qualify name
+        in
+          (name, PredicateRef qname thisVersion, p)
+      | SourcePredicate p <- schemaDecls
+      ]
+
+    localTypes =
+      [ let
+          SourceRef name explicitVersion = typeDefRef p
+          thisVersion = fromMaybe version explicitVersion
+          qname = qualify name
+        in
+          (name, TypeRef qname thisVersion, p)
+      | SourceType p <- schemaDecls
+      ]
 
   -- Check for multiple definitions of the same name/version.
   -- Multiple definitions of the same name is OK: an unqualified
   -- reference will be rejected as ambiguous, but can be resolved by
   -- using an explicit version.
-  forM_ (HashMap.toList unqualLocalScope) $ \(_, targets) -> do
-    let perTarget = Map.fromListWith (+) $
-          [ ((predicateRef_name, predicateRef_version), 1::Int)
-          | RefPred PredicateRef{..} <- targets] ++
-          [ ((typeRef_name, typeRef_version), 1)
-          | RefType TypeRef{..} <- targets]
-    forM (Map.toList perTarget) $ \((name,ver), num) ->
-      when (num > 1) $ throwError $
-       "multiple definitions for: " <> name <> "." <> showt ver
+  let
+    numRefs = HashMap.fromListWith (+) $
+      [ ((predicateRef_name, predicateRef_version), 1::Int)
+      | (_, PredicateRef{..}, _) <- localPreds ] ++
+      [ ((typeRef_name, typeRef_version), 1)
+      | (_, TypeRef{..}, _) <- localTypes]
+  forM_ (HashMap.toList numRefs) $ \((name,ver), num) -> do
+    when (num > 1) $ throwError $
+      "multiple definitions for: " <> name <> "." <> showt ver
+
+  -- Build the scope: a mapping from unversioned names to RefTarget
+  let
+    -- inherited definitions are in scope unqualified and qualified
+    --   (but unqualified local names override unqualified inherited names)
+    qualInheritedScope :: NameEnv RefResolved
+    qualInheritedScope = HashMap.fromListWith Set.union
+      [ entry
+      | schema <- inherits
+      , (name, ver, target) <- allRefs schema
+      , entry <- [
+          (SourceRef name Nothing, Set.singleton target),
+          (SourceRef name (Just ver), Set.singleton target) ]
+      ]
+
+    unqualInheritedScope :: NameEnv RefResolved
+    unqualInheritedScope = HashMap.fromListWith Set.union
+      [ entry
+      | schema <- inherits
+      , (name, ver, target) <- allRefs schema
+      , entry <- [
+          (SourceRef (unqualify name) Nothing, Set.singleton target),
+          (SourceRef (unqualify name) (Just ver), Set.singleton target) ]
+      ]
+
+    -- imported names are in scope qualified.
+    importedScope :: NameEnv RefResolved
+    importedScope = HashMap.fromListWith Set.union
+        [ entry
+        | schema <- imports
+        , (name, ver, target) <- allRefs schema
+        , entry <- [
+            (SourceRef name Nothing, Set.singleton target),
+            (SourceRef name (Just ver), Set.singleton target) ]
+        ]
+
+    allRefs :: ResolvedSchemaRef -> [(Name, Version, RefResolved)]
+    allRefs ResolvedSchema{..} =
+      [ (typeRef_name ref, typeRef_version ref, RefType (typeDefRef def))
+      | (ref, def) <- HashMap.toList $
+          resolvedSchemaTypes <> resolvedSchemaReExportedTypes ] ++
+      [ (predicateRef_name ref, predicateRef_version ref,
+          RefPred (predicateDefRef def))
+      | (ref, def) <- HashMap.toList $
+          resolvedSchemaPredicates <> resolvedSchemaReExportedPredicates ]
+
+    -- local definitions are in scope unqualified and qualified
+    unqualLocalScope :: NameEnv RefResolved
+    unqualLocalScope = HashMap.fromListWith Set.union unqualLocalEntities
+
+    qualLocalScope :: NameEnv RefResolved
+    qualLocalScope = HashMap.fromListWith Set.union
+      [ (SourceRef (qualify name) ver, target)
+      | (SourceRef name ver, target) <- unqualLocalEntities ]
+
+    unqualLocalEntities =
+      [ entry
+      | (name, r, _) <- localPreds
+      , let target = Set.singleton (RefPred r)
+      , entry <- [
+          (SourceRef name Nothing, target),
+          (SourceRef name (Just (predicateRef_version r)), target) ]
+      ] ++
+      [ entry
+      | (name, r, _) <- localTypes
+      , let target = Set.singleton (RefType r)
+      , entry <- [
+          (SourceRef name Nothing, target),
+          (SourceRef name (Just (typeRef_version r)), target) ]
+      ]
+
+    scope =
+      HashMap.union unqualLocalScope $
+      HashMap.union unqualInheritedScope $
+      HashMap.unionWith Set.union qualLocalScope $
+      HashMap.unionWith Set.union qualInheritedScope
+      importedScope
 
   -- Check for inheriting multiple versions of a predicate/types
   --
@@ -462,10 +380,10 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
   -- inevitably have name clashes, but we don't care about what it
   -- exports.
   unless (namespace == "all") $
-    forM_ (HashMap.toList unqualInheritedScope) $ \(name, targets) -> do
-      case Set.toList targets of
+    forM_ (HashMap.toList unqualInheritedScope) $ \(ref, targets) -> do
+      case Set.elems targets of
         (_:_:_) -> throwError $
-          "inherited schemas give multiple definitions for: " <> name
+          "inherited schemas give multiple definitions for: " <> showRef ref
         _ -> return ()
 
   -- resolve type definitions
@@ -493,9 +411,9 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
     -- scope of predicates that we can specify queries for. Namely
     -- locally-defined predicates and inherited predicates.
     predScope = resolveRef $
-      HashMap.union (fmap Set.fromList unqualLocalScope) $
+      HashMap.union unqualLocalScope $
       HashMap.union unqualInheritedScope $
-      HashMap.unionWith Set.union (fmap Set.fromList qualLocalScope)
+      HashMap.unionWith Set.union qualLocalScope
       qualInheritedScope
 
   -- resolve queries
@@ -505,7 +423,7 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
       ref <- case ty of
         RefPred ref -> return ref
         RefType ref -> throwError $
-          "cannot define a query for a typedef: " <> showTarget (RefType ref)
+          "cannot define a query for a typedef: " <> showRef ref
       return (ref, derive)
 
   let
@@ -575,10 +493,10 @@ data Opt = Option | Field
 --      evolved-by
 --
 canEvolve
-  :: HashMap TypeRef TypeDef -- ^ type definitions
+  :: HashMap TypeRef ResolvedTypeDef -- ^ type definitions
   -> HashMap PredicateRef PredicateRef -- ^ current evolutions map
-  -> Type                    -- ^ updated type
-  -> Type                    -- ^ old type
+  -> ResolvedType                    -- ^ updated type
+  -> ResolvedType                    -- ^ old type
   -> Maybe Text              -- ^ compatibility error
 canEvolve types evolvedBy new old = go new old
   where
@@ -599,8 +517,8 @@ canEvolve types evolvedBy new old = go new old
     go (Array new) (Array old) = go new old
     go (Predicate new) (Predicate old)
       | evolved new /= evolved old = Just
-          $ "type changed from " <> showPredicateRef old
-          <> " to " <> showPredicateRef new
+          $ "type changed from " <> showRef old
+          <> " to " <> showRef new
       | otherwise = Nothing
     go (Enumerated new) (Enumerated old) =
       compareFieldList Option new' old'
@@ -665,8 +583,12 @@ canEvolve types evolvedBy new old = go new old
     showOpt Option = "option"
     showOpt Field = "field"
 
-
-resolveType :: AngleVersion -> Scope -> SourceType -> Except Text Type
+resolveType
+  :: (ShowRef t, ShowRef p)
+  => AngleVersion
+  -> NameEnv (RefTarget p t)
+  -> SourceType
+  -> Except Text (Type_ p t)
 resolveType ver scope typ = go typ
   where
   go typ = case typ of
@@ -683,7 +605,7 @@ resolveType ver scope typ = go typ
     Boolean -> return Boolean
 
   goRef ref = do
-    target <- lookupResultToExcept ref $ scope ref
+    target <- lookupResultToExcept ref $ resolveRef scope ref
     case target of
       RefType ref -> return (NamedType ref)
       RefPred ref -> return (Predicate ref)
@@ -699,34 +621,14 @@ resolveType ver scope typ = go typ
 
   goField (FieldDef name ty) = FieldDef name <$> go ty
 
-data LookupResult
-  = OutOfScope
-  | Ambiguous [RefTarget]
-  | ResolvesTo RefTarget
 
-lookupResultToExcept :: SourceRef -> LookupResult -> Except Text RefTarget
-lookupResultToExcept ref OutOfScope =
-  throwError $ "not in scope: " <> showSourceRef ref
-lookupResultToExcept ref (Ambiguous targets) =
-  throwError $ showSourceRef ref <> " is ambiguous. It could refer to: " <>
-      Text.intercalate ", " (map showTarget targets)
-lookupResultToExcept _ (ResolvesTo target) = return target
-
-resolveRef :: HashMap Name (Set RefTarget) -> Scope
-resolveRef scope (SourceRef name Nothing) =
-  case maybe [] Set.toList $ HashMap.lookup name scope of
-    [] -> OutOfScope
-    [one] -> ResolvesTo one
-    many -> Ambiguous many
-resolveRef scope (SourceRef name (Just ver)) =
-  let targets = maybe [] Set.toList $ HashMap.lookup name scope
-  in
-      case [ RefType r | RefType r <- targets, typeRef_version r == ver ]
-        ++ [ RefPred r | RefPred r <- targets, predicateRef_version r == ver ]
-      of
-        [] -> OutOfScope
-        [one] -> ResolvesTo one
-        many -> Ambiguous many
+lookupResultToExcept
+  :: (ShowRef t, ShowRef p)
+  => SourceRef
+  -> LookupResult (RefTarget p t)
+  -> Except Text (RefTarget p t)
+lookupResultToExcept ref res =
+  either throwError return (lookupResultToEither ref res)
 
 
 checkFieldName :: Name -> Except Text ()

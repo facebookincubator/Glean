@@ -18,8 +18,7 @@ module Glean.Schema.Util
   , tupleSchema
   , parseRef
   , convertRef
-  , showSourceRef
-  , showPredicateRef
+  , ShowRef(..)
   , NameSpaces
   , splitDot
   , SourceRef(..)
@@ -86,13 +85,19 @@ convertRef p = SourceRef
   { sourceRefName = predicateRef_name p
   , sourceRefVersion = Just (fromIntegral (predicateRef_version p)) }
 
--- | Render the SourceRef to @name@ or @name.ver@
-showSourceRef :: SourceRef -> Text
-showSourceRef (SourceRef name Nothing) = name
-showSourceRef (SourceRef name (Just ver)) = name <> "." <> showt ver
+class ShowRef t where
+  showRef :: t -> Text
 
-showPredicateRef :: PredicateRef -> Text
-showPredicateRef = showSourceRef . convertRef
+-- | Render the SourceRef to @name@ or @name.ver@
+instance ShowRef SourceRef where
+  showRef (SourceRef name Nothing) = name
+  showRef (SourceRef name (Just ver)) = name <> "." <> showt ver
+
+instance ShowRef TypeRef where
+  showRef (TypeRef name ver) = name <> "." <> showt ver
+
+instance ShowRef PredicateRef where
+  showRef = showRef . convertRef
 
 type NameSpaces = [Text]
 

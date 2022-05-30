@@ -64,6 +64,7 @@ import Util.TimeSec
 
 import qualified Glean hiding (options)
 import qualified Glean.BuildInfo as BuildInfo
+import Glean.Angle.Types as SchemaTypes
 import Glean.Backend.Remote (clientInfo, StackedDbOpts(..))
 import Glean.Database.Ownership
 import Glean.Database.Schema.Types (DbSchema(..))
@@ -76,7 +77,7 @@ import Glean.LocalOrRemote as Glean hiding (options)
 import Glean.RTS.Types (Pid(..), Fid(..))
 import Glean.RTS.Foreign.Query (interruptRunningQueries)
 import Glean.Schema.Resolve
-import Glean.Angle.Types as SchemaTypes
+import Glean.Schema.Types
 import Glean.Schema.Util
 import Glean.Shell.Index
 import Glean.Shell.Terminal
@@ -1247,7 +1248,7 @@ setupLocalSchema service = do
         schema <- parseSchemaDir dir
           `catch` \(e :: ErrorCall) -> do
             print e
-            return (SourceSchemas 0 [] [], Schemas mempty Nothing [])
+            return (SourceSchemas 0 [] [], Schemas Nothing [])
         (schemaTS, update) <- ThriftSource.mutable schema
         let
           updateSchema :: Eval ()
@@ -1300,7 +1301,7 @@ instance Plugin ShellCommand where
         { backend = Some backend
         , repo = Nothing
         , mode = cfgMode cfg
-        , schemas = Schemas mempty Nothing []
+        , schemas = Schemas Nothing []
         , schemaInfo = def
         , limit = cfgLimit cfg
         , timeout = Just 10000      -- Sensible default for fresh shell.

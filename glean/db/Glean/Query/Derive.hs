@@ -48,6 +48,7 @@ import Glean.Internal.Types hiding (Predicate)
 import qualified Glean.Query.UserQuery as UserQuery
 import Glean.Query.Typecheck (tcQueryDeps)
 import Glean.Query.Codegen
+import Glean.Schema.Types
 import Glean.Schema.Util
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types as Thrift hiding (Byte, Nat, Exception)
@@ -147,7 +148,7 @@ deriveStoredImpl env@Env{..} log repo req@Thrift.DerivePredicateQuery{..} = do
     onErr :: PredicateRef -> SomeException -> IO a
     onErr pred e = do
       logError $ "Failed derivation of " <>
-        Text.unpack (showPredicateRef pred) <> ": " <> show e
+        Text.unpack (showRef pred) <> ": " <> show e
       now <- getTimePoint
       void $ overDerivation env repo pred
         (\d -> d { derivationError = Just (now, e) })
@@ -176,9 +177,10 @@ getPredicate
   -> IO PredicateDetails
 getPredicate env repo schema ref = do
   schemaVersion <- UserQuery.schemaVersionForQuery env schema repo Nothing
-  case lookupPredicate ref schemaVersion schema of
-    Nothing -> throwIO Thrift.UnknownPredicate
-    Just details -> return details
+  case lookupSourceRef ref schemaVersion schema of
+    ResolvesTo (RefPred pred)
+      | Just details <- lookupPredicateRef pred schema -> return details
+    _ -> throwIO Thrift.UnknownPredicate
 
 overDerivation
   :: Database.Env
@@ -213,7 +215,7 @@ save Env{..} repo pred derivation@Derivation{..} = do
           { metaCompleteness = Broken (DatabaseBroken task reason)
           }
       where
-        task = "derivation of " <> showPredicateRef pred
+        task = "derivation of " <> showRef pred
         reason = Text.pack (show err)
 
 isCompletePred
@@ -256,7 +258,7 @@ getPredicateDetails schema pred =
   case lookupPredicateRef pred schema of
     Just details -> details
     Nothing -> error $
-      "unknown predicate: " <> Text.unpack (showPredicateRef pred)
+      "unknown predicate: " <> Text.unpack (showRef pred)
 
 -- | exhaust a query (until there is no more continuation)
 runDerivation
@@ -343,7 +345,7 @@ runDerivation env repo pred Thrift.DerivePredicateQuery{..} = do
 
       stream parallelism producer worker
 
-    allFacts ref = showPredicateRef ref <> " _"
+    allFacts ref = showRef ref <> " _"
 
     outerQuery pred batchSize = def
       { userQuery_query = Text.encodeUtf8 $ allFacts (predicateRef pred)

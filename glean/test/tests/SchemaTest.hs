@@ -409,9 +409,14 @@ schemaTypeShadowing = TestCase $ do
     ]
     [s| x.P (x.Q _) |]
     $ \_ response _ ->
+      -- This used to silently default to the latest version, but now
+      -- we give an ambiguity error.  It's your responsibility to make
+      -- sure there are no overlapping names exposed by the "all"
+      -- schema.
       case response of
-        Right _ -> assertBool "newest type shadows older one" True
-        Left err -> assertFailure (show err)
+        Left err | "ambiguous" `isInfixOf` show err ->
+          assertBool "ambiguous identifier" True
+        _ -> assertFailure (show response)
 
 fakeSchemaKey :: Text
 fakeSchemaKey = "glean/schema"
@@ -1769,7 +1774,7 @@ schemaEvolvesTransformations = TestList
         Right values -> return values
         Left err ->
           assertFailure $ "unable to decode "
-          <> unpack (showPredicateRef ref) <> " : " <> show err
+          <> unpack (showRef ref) <> " : " <> show err
 
     binResults :: UserQueryResults -> IO UserQueryResultsBin
     binResults UserQueryResults{..} =

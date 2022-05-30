@@ -8,6 +8,7 @@
 
 {-# LANGUAGE DeriveFunctor #-}
 {-# LANGUAGE DeriveFoldable  #-}
+{-# LANGUAGE DeriveAnyClass  #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 
 -- | Types representing a source-level schema
@@ -54,9 +55,11 @@ module Glean.Angle.Types
   , SourceDecl_(..)
   ) where
 
+import Data.Hashable
 import Data.Text.Prettyprint.Doc
 import Data.Bifunctor
 import Data.Bifoldable
+import GHC.Generics
 
 import Glean.Query.Types hiding (Nat, String, Array)
 import Glean.Types (PredicateRef(..), TypeRef(..), Version)
@@ -146,7 +149,7 @@ data SourceRef = SourceRef
   { sourceRefName :: Name
   , sourceRefVersion :: Maybe Version
   }
-  deriving (Show, Eq, Ord)
+  deriving (Show, Eq, Ord, Generic, Hashable)
 
 data FieldDef_ pref tref = FieldDef
   { fieldDefName :: Name

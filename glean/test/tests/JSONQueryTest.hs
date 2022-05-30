@@ -128,7 +128,7 @@ jsonQueryErrorCases = dbTestCase $ \env repo -> do
   assertBool "jsonQuery - invalid predicate" $
     case r of
       Left (BadQuery e)
-        | "unknown predicate" `Text.isPrefixOf` e -> True
+        | "not in scope" `Text.isPrefixOf` e -> True
       _ -> False
 
   -- valid JSON, but not a valid query

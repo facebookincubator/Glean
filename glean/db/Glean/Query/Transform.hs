@@ -35,7 +35,7 @@ import qualified Data.Set as Set
 import Data.Set (Set)
 
 import qualified Glean.Angle.Types as Type
-import Glean.Schema.Util (showPredicateRef)
+import Glean.Schema.Util (showRef)
 import Glean.Query.Codegen
 import Glean.Query.Typecheck.Types
 import Glean.Database.Schema
@@ -198,9 +198,9 @@ transformationsFor schema ty =
 
     showRepeated :: (Pid, Set Pid) -> Text
     showRepeated (to, froms) =
-      showRef to <> " evolves "
-      <> Text.intercalate " and " (showRef <$> Set.toList froms)
-      where showRef = showPredicateRef . predicateRef . detailsFor
+      showPid to <> " evolves "
+      <> Text.intercalate " and " (showPid <$> Set.toList froms)
+      where showPid = showRef . predicateRef . detailsFor
 
 transitiveDeps :: (Pid -> PredicateDetails) -> Pid -> [Pid]
 transitiveDeps = transitive . predicateDeps

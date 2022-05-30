@@ -15,7 +15,7 @@ module Glean.Database.Schema
   , newDbSchema
   , newMergedDbSchema
   , Override(..)
-  , lookupPid, lookupPredicate, lookupPredicateRef, lookupTypeRef
+  , lookupPid, lookupPredicateRef, lookupTypeRef
   , validateNewSchema
   , DbContent
   , readOnlyContent
@@ -61,8 +61,9 @@ import Glean.RTS.Typecheck
 import Glean.RTS.Types as RTS
 
 import Glean.Angle.Types as Schema
-import Glean.Schema.Resolve hiding (schemaPredicates)
-import Glean.Schema.Util (showSourceRef, showPredicateRef)
+import Glean.Schema.Resolve
+import Glean.Schema.Types
+import Glean.Schema.Util (showRef)
 import Glean.Query.Codegen (QueryWithInfo(..))
 import Glean.Query.Typecheck
 import qualified Glean.Types as Thrift
@@ -176,7 +177,7 @@ thinSchemaInfo DbSchema{..} predicateStats =
   -- Names of schemas that define one or more non-empty predicates
   neededSchemas :: [Name]
   neededSchemas =
-    [ showSourceRef (SourceRef resolvedSchemaName (Just resolvedSchemaVersion))
+    [ showRef (SourceRef resolvedSchemaName (Just resolvedSchemaVersion))
     | ResolvedSchema{..} <- schemaResolved
     , any (`HashSet.member` nonEmptyPredicates)
         (HashMap.keys resolvedSchemaPredicates)
@@ -286,7 +287,7 @@ mkDbSchema
   -> DbContent
   -> Schema.SourceSchemas
   -> Schemas
-  -> [ResolvedSchema]
+  -> [ResolvedSchemaRef]
   -> IO DbSchema
 mkDbSchema override getPids dbContent source base addition = do
   let resolved = schemasResolved base <> addition
@@ -338,9 +339,10 @@ mkDbSchema override getPids dbContent source base addition = do
           in
           throwIO $ Thrift.Exception
           $ "use of " <> feature  <> " is not allowed in a stored predicate: "
-          <> showPredicateRef predicateRef
+          <> showRef predicateRef
 
   let predicates = HashMap.elems (tcEnvPredicates env)
+      types = HashMap.elems (tcEnvTypes env)
 
       byId = IntMap.fromList
         [ (fromIntegral (fromPid predicatePid), deets)
@@ -353,26 +355,6 @@ mkDbSchema override getPids dbContent source base addition = do
       maxPid = maybe lowestPid (Pid . fromIntegral . fst)
         (IntMap.lookupMax byId)
 
-      mkPredicatesByName predicates = HashMap.fromListWith latest
-        [ (predicateRef_name ref, deets)
-        | ref <- predicates
-        , Just deets <- [HashMap.lookup ref byRef] ]
-        where
-        latest a b
-          | predicateRef_version (predicateRef a) >
-            predicateRef_version (predicateRef b) = a
-          | otherwise = b
-
-      mkSchemaTypesByName types = HashMap.fromListWith latest
-        [ (typeRef_name ref, deets)
-        | ref <- types
-        , Just deets@TypeDetails{} <- [HashMap.lookup ref (tcEnvTypes env)] ]
-        where
-        latest a b
-          | typeRef_version (typeRef a) >
-            typeRef_version (typeRef b) = a
-          | otherwise = b
-
       resolvedAlls = filter ((== "all") . resolvedSchemaName) resolved
 
       -- When a query mentions an unversioned predicate, we use a default
@@ -382,28 +364,34 @@ mkDbSchema override getPids dbContent source base addition = do
         [] -> Nothing
         xs -> Just $ maximum $ map resolvedSchemaVersion xs
 
-      predicatesByName = IntMap.fromList
-        [ (fromIntegral resolvedSchemaVersion,
-             mkPredicatesByName (
-               HashMap.keys resolvedSchemaReExportedPredicates))
-        | ResolvedSchema{..} <- resolvedAlls
+      -- In the environment that we use for resolving names in queries
+      -- and derivations later, we need to accept explicitly versioned
+      -- references to predicates and types even for those predicates
+      -- and types that are not visible in the scope of the "all" schema.
+      versionedNameEnv = HashMap.fromList
+        [ (SourceRef name (Just ver), Set.singleton target)
+        | (name, ver, target) <-
+            [ (predicateRef_name r, predicateRef_version r, RefPred r)
+            | PredicateDetails{..} <- predicates
+            , let r = predicateRef ] ++
+            [ (typeRef_name r, typeRef_version r, RefType r)
+            | TypeDetails{..} <- types
+            , let r = typeRef ]
         ]
 
-      schemaTypesByName = IntMap.fromList
+      schemaEnvs = IntMap.fromList
         [ (fromIntegral resolvedSchemaVersion,
-            mkSchemaTypesByName (
-              HashMap.keys resolvedSchemaReExportedTypes))
+           HashMap.union resolvedSchemaScope versionedNameEnv)
         | ResolvedSchema{..} <- resolvedAlls
         ]
 
   return $ DbSchema
     { predicatesByRef = byRef
-    , predicatesByName = predicatesByName
     , predicatesById = byId
     , predicatesTransformations =
         mkTransformations dbContent override byId byRef resolved
+    , schemaEnvs = schemaEnvs
     , schemaTypesByRef = tcEnvTypes env
-    , schemaTypesByName = schemaTypesByName
     , schemaInventory = inventory predicates
     , schemaResolved = resolved
     , schemaSource = source
@@ -422,7 +410,7 @@ mkTransformations
   -> Override
   -> IntMap PredicateDetails
   -> HashMap PredicateRef PredicateDetails
-  -> [ResolvedSchema]
+  -> [ResolvedSchemaRef]
   -> IntMap PredicateTransformation
 mkTransformations DbWritable _ _ _ _ = mempty
 mkTransformations (DbReadOnly stats) override byId byRef resolved =
@@ -441,7 +429,7 @@ transformedPredicates
   :: HashMap Pid PredicateStats
   -> Override
   -> HashMap PredicateRef PredicateDetails
-  -> [ResolvedSchema]
+  -> [ResolvedSchemaRef]
   -> Map Pid Pid -- ^ when key pred is requested, get value pred from db
 transformedPredicates stats override byRef resolved =
   HashMap.foldMapWithKey mapPredicates schemaTransformations
@@ -534,7 +522,7 @@ transformedPredicates stats override byRef resolved =
           TakeOld -> old
           _ -> new
 
-    exportsResolved :: ResolvedSchema -> Map Name PidRef
+    exportsResolved :: ResolvedSchemaRef -> Map Name PidRef
     exportsResolved schema = Map.fromList
       [ (predicateRef_name ref, PidRef (predicatePid details) ref)
       | ref <- HashMap.keys $
@@ -563,7 +551,7 @@ typecheckSchema
   -> DbContent
   -> Bool  -- ^ True: this schema is stored in the DB
   -> TcEnv
-  -> ResolvedSchema
+  -> ResolvedSchemaRef
   -> IO TcEnv
 typecheckSchema override refToPid dbContent stored
     TcEnv{..} ResolvedSchema{..} = do

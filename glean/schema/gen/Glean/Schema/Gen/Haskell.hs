@@ -24,9 +24,9 @@ import TextShow
 
 import Glean.Schema.Gen.Utils
 import Glean.Angle.Types
+import Glean.Schema.Types
 
-
-genSchemaHS :: Version -> [PredicateDef] -> [TypeDef] -> [(FilePath,Text)]
+genSchemaHS :: Version -> [ResolvedPredicateDef] -> [ResolvedTypeDef] -> [(FilePath,Text)]
 genSchemaHS _version preddefs typedefs =
   ("hs" </> "TARGETS", genTargets declsPerNamespace) :
   [ ("thrift" </> Text.unpack (underscored namespaces) <> "_include" <.> "hs",
@@ -54,8 +54,8 @@ genSchemaHS _version preddefs typedefs =
 
     doGen
       :: Mode
-      -> [PredicateDef]
-      -> [TypeDef]
+      -> [ResolvedPredicateDef]
+      -> [ResolvedTypeDef]
       -> [Text]
     doGen mode preds types = concat gen ++ reverse extra
       where
@@ -65,7 +65,7 @@ genSchemaHS _version preddefs typedefs =
          return (ps ++ ts)
 
 genTargets
-  :: HashMap NameSpaces ([NameSpaces], [PredicateDef], [TypeDef])
+  :: HashMap NameSpaces ([NameSpaces], [ResolvedPredicateDef], [ResolvedTypeDef])
   -> Text
 genTargets info =
   Text.unlines $
@@ -93,7 +93,7 @@ genTargets info =
 
 genAllPredicates
   :: NameSpaces
-  -> [PredicateDef]
+  -> [ResolvedPredicateDef]
   -> Text
 genAllPredicates namespace preds = Text.unlines $
   [ "-- @" <> "generated"
@@ -224,7 +224,7 @@ localOrExternal :: NameSpaces -> Text -> (NameSpaces, Text)
 localOrExternal here name = if null ns then (here,x) else (ns,x)
   where (ns,x) = splitDot name
 
-shareTypeDef :: Mode -> Bool -> NameSpaces -> Type -> M Text
+shareTypeDef :: Mode -> Bool -> NameSpaces -> ResolvedType -> M Text
 shareTypeDef mode genSub here t = do
   (no, name) <- nameThisType t
   case no of
@@ -236,7 +236,7 @@ shareTypeDef mode genSub here t = do
     _otherwise -> return ()
   return (haskellTypeName mode (localOrExternal here name))
 
-haskellTy :: NameSpaces -> Type -> M Text
+haskellTy :: NameSpaces -> ResolvedType -> M Text
 haskellTy = haskellTy_ PredId Data True
 
 -- | how to render predicate types in haskellTy
@@ -247,7 +247,7 @@ haskellTy_
   -> Mode
   -> Bool -- ^ generate nested type definitions
   -> NameSpaces
-  -> Type
+  -> ResolvedType
   -> M Text
 haskellTy_ withId mode genSub here t = case t of
   -- Leafs
@@ -277,7 +277,7 @@ haskellTy_ withId mode genSub here t = case t of
   Enumerated _ -> shareTypeDef mode genSub here t
 
 
-genPredicate :: Mode -> PredicateDef -> M [Text]
+genPredicate :: Mode -> ResolvedPredicateDef -> M [Text]
 genPredicate mode PredicateDef{..}
   | provided (predicateRef_name predicateDefRef) = return []
   | otherwise = do
@@ -362,7 +362,7 @@ genPredicate mode PredicateDef{..}
 define_kt
   :: Mode
   -> NameSpaces
-  -> Type
+  -> ResolvedType
   -> (NameSpaces, Text)
   -> M (Text, [Text])
 define_kt mode here typ name_kt = case typ of
@@ -390,7 +390,7 @@ define_kt mode here typ name_kt = case typ of
       , typeDefType = t }
     return (ref,def)
 
-genType :: Mode -> TypeDef -> M [Text]
+genType :: Mode -> ResolvedTypeDef -> M [Text]
 genType mode TypeDef{typeDefRef = TypeRef{..}, ..}
   | provided typeRef_name = return []
   | otherwise =
@@ -400,7 +400,7 @@ genType mode TypeDef{typeDefRef = TypeRef{..}, ..}
     Enumerated vals -> enumDef mode typeRef_name typeRef_version vals
     _ -> return []
 
-structDef :: Mode -> Name -> Version -> [FieldDef] -> M [Text]
+structDef :: Mode -> Name -> Version -> [ResolvedFieldDef] -> M [Text]
 structDef mode ident ver fields = do
   let typeRef = TypeRef ident ver
   sName@(here,root) <- typeName typeRef
@@ -469,7 +469,7 @@ structDef mode ident ver fields = do
 -- inline. Getting this right is super painful, but I don't know a
 -- better solution.
 --
-toQuery :: NameSpaces -> Type -> M Text
+toQuery :: NameSpaces -> ResolvedType -> M Text
 toQuery here ty = go False here ty
   where
   go named here ty = case ty of
@@ -492,7 +492,7 @@ toQuery here ty = go False here ty
       withTopLevelHint root $ do
         m <- typeDef t
         case m of
-          Nothing -> error "toQuery: arrayTyName"
+          Nothing -> error $ "toQuery: arrayTyName: " <> show t
           Just ty -> go True here ty
     _other -> return "Glean.toQuery"
 
@@ -506,7 +506,7 @@ toQuery here ty = go False here ty
 -- in the future.
 --
 -- First argument is the normal type renaming.
-toQueryType :: (FieldDef -> M Text) -> NameSpaces -> FieldDef -> M Text
+toQueryType :: (ResolvedFieldDef -> M Text) -> NameSpaces -> ResolvedFieldDef -> M Text
 toQueryType fieldTypeName here field = case fieldDefType field of
   Array elemTy | elemTy /= Byte -> do
     (_, name) <- withUnionFieldHint (fieldDefName field) $
@@ -527,7 +527,7 @@ toQueryConTypeName "Glean.Byte" = "Glean.Byte"
 toQueryConTypeName n = n
 
 
-unionDef :: Mode -> Name -> Version -> [FieldDef] -> M [Text]
+unionDef :: Mode -> Name -> Version -> [ResolvedFieldDef] -> M [Text]
 unionDef mode ident ver fields = do
   let typeRef = TypeRef ident ver
   uName@(here,root) <- typeName typeRef
@@ -708,7 +708,7 @@ sourceTypeDef name version =
       ]
 
 
-emitFieldTypes :: Text -> Text -> [(FieldDef, Text)] -> Text
+emitFieldTypes :: Text -> Text -> [(ResolvedFieldDef, Text)] -> Text
 emitFieldTypes family name fields =
   "type instance " <> family <> " " <> name <> " = " <> go fields
   where

@@ -76,10 +76,8 @@ predicateTypecheckers schema args = do
     [] -> return $ schemaPredicates schema
     refs -> forM refs $ \ref -> do
       let sourceRef = parseRef ref
-      maybe
-        (die $ "unknown predicate '" ++ Text.unpack ref ++ "'")
-        return
-        $ lookupPredicate sourceRef LatestSchemaAll schema
+      either (die . Text.unpack) return
+        $ lookupPredicateSourceRef sourceRef LatestSchemaAll schema
   forM_ (sortOn predicateRef preds) $ \PredicateDetails{..} -> do
     mapM_ Text.putStrLn $ disassemble
       ("ptc_"

@@ -32,6 +32,7 @@ import Data.Bifoldable (bifoldMap)
 import qualified Data.ByteString.Char8 as BC
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.IntMap.Strict as IntMap
+import Data.Graph
 import Data.List
 import qualified Data.Map.Strict as Map
 import Data.Map.Strict (Map)
@@ -42,7 +43,6 @@ import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
 import Data.Text.Prettyprint.Doc hiding ((<>))
 import qualified Data.Tree as Tree
-import Data.Tree (Tree(..))
 import Options.Applicative
 import System.Directory
 import System.FilePath
@@ -59,13 +59,14 @@ import Glean.Angle.Parser
 import Glean.Database.Config (catSchemaFiles)
 import Glean.Database.Schema
 import Glean.RTS.Types (PidRef(..), ExpandedType(..))
-import Glean.Schema.Util (showPredicateRef)
+import Glean.Schema.Util (showRef)
 import Glean.Schema.Gen.Thrift
 import Glean.Schema.Gen.Cpp ( genSchemaCpp )
 import Glean.Schema.Gen.HackJson ( genSchemaHackJson )
 import Glean.Schema.Gen.Haskell ( genSchemaHS )
 import Glean.Schema.Gen.Utils ( Mode(..) )
 import Glean.Schema.Resolve
+import Glean.Schema.Types
 
 data WhichVersion
   = AllVersions
@@ -194,18 +195,66 @@ main = do
         when (rmLocSchemas sourceSchemas /= rmLocSchemas schemasRoundTrip) $
           throwIO $ ErrorCall "schema did not roundtrip successfully"
 
+  let
+    -- We have to ensure the types and predicates exported by each
+    -- "all" schema is transitively closed, otherwise either the code
+    -- generator will fail, or the generated code will fail to compile.
+    allSchemas =
+      [ schema {
+          resolvedSchemaReExportedPredicates = preds,
+          resolvedSchemaReExportedTypes = types
+        }
+      | schema <- schemasResolved schemas
+      , resolvedSchemaName schema == "all"
+      , let
+          deps :: [ResolvedSchemaRef]
+          deps =
+            [ s
+            | Just v <- [toVertex (showSchemaRef (schemaRef schema))]
+            , (_, n, _) <- reachableFrom v
+            , Just s <- [HashMap.lookup n schemaMap]
+            ]
+          types = HashMap.unions (map resolvedSchemaTypes deps)
+          preds = HashMap.unions (map resolvedSchemaPredicates deps)
+      ]
+
+    (depGraph, fromVertex, toVertex) = graphFromEdges edges
+
+    reachableFrom v = map fromVertex $
+      concatMap Tree.flatten (dfs depGraph [v])
+
+    schemaDependencies SourceSchema{..} =
+      schemaInherits ++ [ name | SourceImport name <- schemaDecls ]
+
+    edges =
+      [ (schema, schemaName schema, schemaDependencies schema)
+      | schema <- srcSchemas sourceSchemas ]
+
+    schemaMap = HashMap.fromList
+      [ (showSchemaRef (schemaRef s), s) | s <- schemasResolved schemas ]
+
+    findVersion v = listToMaybe
+      [ s | s@ResolvedSchema{..} <- allSchemas
+      , resolvedSchemaVersion == v
+      ]
+
   versions <- case version of
     HighestVersion ->
       case schemasHighestVersion schemas of
-        Just ver -> return [(ver, Nothing)]
-        Nothing -> fail "missing 'all' schema"
-    OneVersion v -> return [(v, Nothing)]
+        Just ver | Just schema <- findVersion ver ->
+          return [(ver, schema, Nothing)]
+        _otherwise -> fail "missing 'all' schema"
+    OneVersion v ->
+      case findVersion v of
+        Just schema -> return [(v, schema, Nothing)]
+        Nothing -> fail $ "can't find all." <> show v
     AllVersions -> do
-      let withPath v = (v, Just $ 'v' : show v)
-      return $ withPath <$> HashMap.keys (schemasSchemas schemas)
+      let withPath schema = (v, schema, Just $ 'v' : show v)
+            where v = resolvedSchemaVersion schema
+      return $ withPath <$> allSchemas
 
   case actOptions of
-    Left opts -> graph opts dbschema sourceSchemas (fst <$> versions)
+    Left opts -> graph opts dbschema sourceSchemas [ v | (v,_,_) <- versions ]
     Right opts -> do
       forM_ (source opts) $ \f -> BC.writeFile f src
       reportTime "gen" $ gen opts versions schemas
@@ -235,8 +284,8 @@ predicateGraph :: DbSchema -> Map Text [Text]
 predicateGraph dbschema = Map.fromList
   [ (ref, deps)
   | details <- IntMap.elems (predicatesById dbschema)
-  , let ref = showPredicateRef (predicateRef details)
-        deps = showPredicateRef <$> Set.toList (dependencies details)
+  , let ref = showRef (predicateRef details)
+        deps = showRef <$> Set.toList (dependencies details)
   ]
   where
     dependencies details = keyValueDeps <> derivationDeps
@@ -351,37 +400,24 @@ rmLocSchemas (SourceSchemas version schemas evolves) =
     rmLocField (Field name pat) =
       Field name (rmLocPat pat)
 
-gen :: GenOptions -> [(Version, Maybe FilePath)] -> Schemas -> IO ()
+gen
+  :: GenOptions
+  -> [(Version, ResolvedSchemaRef, Maybe FilePath)]
+  -> Schemas
+  -> IO ()
 gen GenOptions{..} versions Schemas{..} =
-  mapM_ (uncurry genFor) versions
+  mapM_ genFor versions
   where
-  genFor :: Version -> Maybe FilePath -> IO ()
-  genFor ver dir = case HashMap.lookup ver schemasSchemas of
-    Nothing -> fail $ "schema version " ++ show ver ++ " undefined"
-    Just Schema{..} -> do
+  genFor :: (Version, ResolvedSchemaRef, Maybe FilePath) -> IO ()
+  genFor (_, ResolvedSchema{..}, dir) = do
       let
-        allTypes = HashMap.unions (map resolvedSchemaTypes schemasResolved)
-        allPreds = HashMap.unions (map resolvedSchemaPredicates schemasResolved)
+        ts = HashMap.elems resolvedSchemaReExportedTypes
+        ps = HashMap.elems resolvedSchemaReExportedPredicates
 
-        ts =
-          [ typedef
-          | (name, versions) <- HashMap.toList schemaTypes
-          , version <- Set.toList versions
-          , Just typedef <-
-              [HashMap.lookup (TypeRef name version) allTypes]
-          ]
-        ps =
-          [ pred
-          | (name,versions) <- HashMap.toList schemaPredicates
-          , version <- Set.toList versions
-          , Just pred <-
-              [HashMap.lookup (PredicateRef name version) allPreds]
-          ]
-      let
         doGen _ Nothing = return ()
         doGen gen (Just output) = do
           let odir = install_dir </> fromMaybe "" dir </> output
-          forM_ (gen ver ps ts) $ \(file,text) -> do
+          forM_ (gen resolvedSchemaVersion ps ts) $ \(file,text) -> do
             let path = odir </> file
             createDirectoryIfMissing True (takeDirectory path)
             Text.writeFile path (text <> "\n")

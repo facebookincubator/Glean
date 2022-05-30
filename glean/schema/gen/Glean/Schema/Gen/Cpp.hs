@@ -25,9 +25,10 @@ import TextShow
 
 import Glean.Schema.Gen.Utils hiding (pushDefs, popDefs)
 import Glean.Angle.Types hiding (schemaName)
+import Glean.Schema.Types
 
 
-genSchemaCpp :: Version -> [PredicateDef] -> [TypeDef] -> [(FilePath,Text)]
+genSchemaCpp :: Version -> [ResolvedPredicateDef] -> [ResolvedTypeDef] -> [(FilePath,Text)]
 genSchemaCpp version preddefs typedefs =
   [("", leading <> newline <> newline <> body)]
   where
@@ -47,7 +48,7 @@ genSchemaCpp version preddefs typedefs =
     body = Text.intercalate (newline <> newline) pieces
 
 -- Check against hardcoded list of what glean.h provides
-provided :: (NameSpaces, Text) -> Maybe Type
+provided :: (NameSpaces, Text) -> Maybe ResolvedType
 provided (_,ident) = Map.lookup ident known
   where known = Map.fromList [("Unit", unitT)]
 
@@ -256,7 +257,7 @@ popDefs = state $ \s -> (reverse s, [])
 -- Types
 
 -- | Generate a representation type
-reprTy :: NameSpaces -> Type -> CppGen Text
+reprTy :: NameSpaces -> ResolvedType -> CppGen Text
 reprTy here t = case t of
   -- Leaves
   Byte{} -> return "Byte" -- glean.h hardcoded here
@@ -287,7 +288,7 @@ reprTy here t = case t of
       else return $ "Repr<" <> cppNameIn here name <> ">"
   Enumerated elts -> return $ "Enum<" <> showt (length elts) <> ">"
 
-shareTypeDef :: NameSpaces -> Type -> CppGen Text
+shareTypeDef :: NameSpaces -> ResolvedType -> CppGen Text
 shareTypeDef here t = do
   (no, name) <- nameThisType t
   case no of
@@ -303,7 +304,7 @@ shareTypeDef here t = do
   return name
 
 -- | Generate a value type
-valueTy :: NameSpaces -> Type -> CppGen Text
+valueTy :: NameSpaces -> ResolvedType -> CppGen Text
 valueTy here t = case t of
   -- Leaves
   Byte{} -> return "uint8_t" -- glean.h hardcoded here
@@ -377,7 +378,7 @@ genDecl (TypeDecl TypeDef{..}) = withExtra $ do
         _other -> aliasDef name typeDefType
 
 
-aliasDef :: (NameSpaces,Text) -> Type -> CppGen [(NameSpaces, (Text, Text))]
+aliasDef :: (NameSpaces,Text) -> ResolvedType -> CppGen [(NameSpaces, (Text, Text))]
 aliasDef name@(spaces,ident) aTy
   | isJust (provided name) = return []
   | otherwise = do
@@ -405,7 +406,7 @@ relops name fields = concatMap relop ["==","!=","<","<=",">",">="]
       , ["}"] ]
     tie xs = "std::tie(" <> Text.intercalate "," xs <> ")"
 
-mkReprDecl :: (NameSpaces,Text) -> Type -> CppGen (NameSpaces, (Text,Text))
+mkReprDecl :: (NameSpaces,Text) -> ResolvedType -> CppGen (NameSpaces, (Text,Text))
 mkReprDecl name typ = do
   rTy <- reprTy reprNamespace typ
   let
@@ -418,7 +419,7 @@ mkReprDecl name typ = do
 
 recordDef
   :: (NameSpaces, Text)
-  -> [FieldDef]
+  -> [ResolvedFieldDef]
   -> CppGen [(NameSpaces, (Text, Text))]
 recordDef (spaces,name) fields = do
   rDecl <- mkReprDecl (spaces,name) (Record fields)
@@ -451,7 +452,7 @@ recordDef (spaces,name) fields = do
 -- Would really prefer std::variant from later C++ standard
 unionDef
   :: (NameSpaces,Text)
-  -> [FieldDef]
+  -> [ResolvedFieldDef]
   -> CppGen [(NameSpaces, (Text, Text))]
 unionDef (spaces,name) fields = do
   let

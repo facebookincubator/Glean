@@ -30,14 +30,15 @@ import TextShow
 
 import Glean.Schema.Gen.Utils
 import Glean.Angle.Types
+import Glean.Schema.Types
 import Glean.Schema.Util
 
 genSchemaThrift
   :: Mode
   -> Maybe String
   -> Version
-  -> [PredicateDef]
-  -> [TypeDef]
+  -> [ResolvedPredicateDef]
+  -> [ResolvedTypeDef]
   -> [(FilePath, Text)]
 genSchemaThrift mode versionDir version preddefs typedefs =
   (dir </> "TARGETS",
@@ -62,7 +63,7 @@ genTargets
   :: Mode
   -> Text   -- "/v1" or ""
   -> Version
-  -> HashMap NameSpaces ([NameSpaces], [PredicateDef], [TypeDef])
+  -> HashMap NameSpaces ([NameSpaces], [ResolvedPredicateDef], [ResolvedTypeDef])
   -> Text
 genTargets mode slashVn version info =
   Text.unlines
@@ -208,8 +209,8 @@ genNamespace
   -> Version
   -> NamePolicy
   -> [NameSpaces]
-  -> [PredicateDef]
-  -> [TypeDef]
+  -> [ResolvedPredicateDef]
+  -> [ResolvedTypeDef]
   -> Text
 genNamespace mode slashVn namespaces version namePolicy deps preddefs typedefs
  = Text.intercalate (newline <> newline) (header : pieces)
@@ -227,7 +228,7 @@ genNamespace mode slashVn namespaces version namePolicy deps preddefs typedefs
 
   namespace = dotted namespaces
 
-  preddefToVersionPair :: PredicateDef -> M Text
+  preddefToVersionPair :: ResolvedPredicateDef -> M Text
   preddefToVersionPair PredicateDef{..} = do
     (_, name) <- predicateName predicateDefRef
     let ver = showt (predicateRef_version predicateDefRef)
@@ -293,7 +294,7 @@ indentLines = map (\t -> if Text.null t then t else "  " <> t)
 optionalize :: Text -> Text
 optionalize name = "optional " <> name
 
-shareTypeDef :: NameSpaces -> Type -> M Text
+shareTypeDef :: NameSpaces -> ResolvedType -> M Text
 shareTypeDef here t = do
   (no, name) <- nameThisType t
   case no of
@@ -306,7 +307,7 @@ shareTypeDef here t = do
   return name
 
 
-thriftTy :: NameSpaces -> Type -> M Text
+thriftTy :: NameSpaces -> ResolvedType -> M Text
 thriftTy here t = case t of
   -- Basic types
   Byte{} -> return "glean.Byte"
@@ -382,7 +383,7 @@ makeRefField = mkField
   , "swift.recursive_reference = \"true\""
   ]
 
-genPred :: NameSpaces -> PredicateDef -> M ([Text], [Text])
+genPred :: NameSpaces -> ResolvedPredicateDef -> M ([Text], [Text])
 genPred here PredicateDef{..} = do
   mode <- getMode
   let query = isQuery mode
@@ -476,7 +477,7 @@ genPred here PredicateDef{..} = do
   extra <- popDefs
   return (define_id : define,  extra ++ define_key ++ define_value)
 
-needsRefType :: Type -> M Bool
+needsRefType :: ResolvedType -> M Bool
 needsRefType t = do
   realType <- repType t
   case realType of
@@ -493,7 +494,7 @@ needsRefType t = do
       _ -> return False
 
 -- Make the thriftTy type text, and the [Text] declaration block
-define_kt :: NameSpaces -> Type -> (NameSpaces, Text) -> M (Text, [Text])
+define_kt :: NameSpaces -> ResolvedType -> (NameSpaces, Text) -> M (Text, [Text])
 define_kt here typ name_kt = do
   let gname = joinDot name_kt
   ref <- thriftTy here (NamedType (TypeRef gname 0))
@@ -520,7 +521,7 @@ makeEnumerated name vals = do
           | null py3Annot = ""
           | otherwise = " (" <> Text.intercalate ", " py3Annot <> ")"
 
-genType :: NameSpaces -> TypeDef -> M [Text]
+genType :: NameSpaces -> ResolvedTypeDef -> M [Text]
 genType here TypeDef{..} = addExtraDecls $ do
   tName@(_, root) <- typeName typeDefRef
   mode <- getMode

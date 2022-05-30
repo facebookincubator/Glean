@@ -10,9 +10,9 @@ module Glean.Query.Typecheck
   ( typecheck
   , typecheckDeriving
   , NameResolutionPolicy(..)
+  , nameResolutionPolicyToNameEnv
   , TcEnv(..)
   , emptyTcEnv
-  , toScope
   , tcQueryDeps
   , tcQueryUsesNegation
   , UseOfNegation(..)
@@ -51,6 +51,7 @@ import qualified Glean.RTS.Term as RTS
 import Glean.Database.Schema.Types
 import Glean.Schema.Util
 import Glean.Schema.Resolve
+import Glean.Schema.Types
 
 data TcEnv = TcEnv
   { tcEnvTypes :: HashMap TypeRef TypeDetails
@@ -216,11 +217,11 @@ typecheckStatement (SourceStatement lhs rhs0) = do
   lhs' <- typecheckPattern ContextPat ty lhs
   return $ TcStatement ty lhs' rhs'
 
-resolveTypeOrPred :: Text -> T (Maybe RefTarget)
+resolveTypeOrPred :: Text -> T (Maybe RefResolved)
 resolveTypeOrPred txt = do
-  policy <- gets tcNameResolutionPolicy
+  scope <- gets tcNameEnv
   let ref = parseRef txt
-  case toScope policy ref of
+  case resolveRef scope ref of
     ResolvesTo target -> return (Just target)
     OutOfScope -> return Nothing
     other -> do
@@ -347,9 +348,10 @@ inferExpr ctx pat = case pat of
     (e', ty) <- inferExpr ctx e
     return (RTS.Alt 1 e', Maybe ty)
   TypeSignature s e ty -> do
-    policy <- gets tcNameResolutionPolicy
+    scope <- gets tcNameEnv
     v <- gets tcAngleVersion
-    ty' <- lift $ resolveType v (toScope policy) ty
+    ty' <- lift $ resolveType v scope ty
+    policy <- gets tcNameResolutionPolicy
     typ <- convertType s policy ty'
     (,typ) <$> typecheckPattern ctx typ e
 
@@ -519,9 +521,10 @@ typecheckPattern ctx typ pat = case (typ, pat) of
     return $ Ref (MatchFid (Fid (fromIntegral fid)))
 
   (ty, TypeSignature s e sigty) -> do
-    policy <- gets tcNameResolutionPolicy
+    scope <- gets tcNameEnv
     v <- gets tcAngleVersion
-    rsigty <- lift $ resolveType v (toScope policy) sigty
+    rsigty <- lift $ resolveType v scope sigty
+    policy <- gets tcNameResolutionPolicy
     sigty' <- convertType s policy rsigty
     if ty `eqType` sigty'
       then typecheckPattern ctx ty e
@@ -641,6 +644,7 @@ data TcMode = TcModeQuery | TcModePredicate
 data TypecheckState = TypecheckState
   { tcEnv :: TcEnv
   , tcAngleVersion :: AngleVersion
+  , tcNameEnv :: NameEnv RefResolved
   , tcNameResolutionPolicy :: NameResolutionPolicy
   , tcNextVar :: Int
   , tcScope :: HashMap Name Var
@@ -658,7 +662,7 @@ data TypecheckState = TypecheckState
 
 -- | Name resolution policy
 data NameResolutionPolicy
-  = UseScope Scope (Schema.Type -> Maybe Type)
+  = UseScope (NameEnv RefResolved) (Schema.Type -> Maybe Type)
     -- ^ Use a Scope mapping names to targets, and unversioned names are
     -- ambiguous unless there is exactly one version in scope.
   | Qualified DbSchema SchemaVersion
@@ -668,22 +672,15 @@ data NameResolutionPolicy
     -- policy is used when typechecking queries, where we currently
     -- have no means to establish a Scope.
 
-toScope :: NameResolutionPolicy -> Scope
-toScope (UseScope scope _) = scope
-toScope (Qualified dbSchema schemaVer) = lookup
-  where
-  lookup ref@(SourceRef name maybeVer)
-    | Just details <- lookupPredicate ref schemaVer dbSchema =
-      ResolvesTo (RefPred (predicateRef details))
-    | Just details <- lookupType ref schemaVer dbSchema =
-      ResolvesTo (RefType (typeRef details))
-    | Just version <- maybeVer
-    -- detect temporary predicates that might have been serialized
-    -- see Glean.Query.Flatten.captureKey
-    , tempPredicateRef == PredicateRef name version =
-      ResolvesTo (RefPred tempPredicateRef)
-    | otherwise =
-      OutOfScope
+nameResolutionPolicyToNameEnv :: NameResolutionPolicy -> NameEnv RefResolved
+nameResolutionPolicyToNameEnv (UseScope scope _) = scope
+nameResolutionPolicyToNameEnv (Qualified dbSchema schemaVer) =
+  fromMaybe HashMap.empty (schemaNameEnv dbSchema schemaVer)
+    `HashMap.union`
+      HashMap.fromList [
+        (SourceRef (predicateRef_name tempPredicateRef) (Just 0),
+          Set.singleton (RefPred tempPredicateRef))
+      ]
 
 initialTypecheckState
   :: TcEnv
@@ -694,6 +691,7 @@ initialTypecheckState
 initialTypecheckState tcEnv version policy mode = TypecheckState
   { tcEnv = tcEnv
   , tcAngleVersion = version
+  , tcNameEnv = nameResolutionPolicyToNameEnv policy
   , tcNameResolutionPolicy = policy
   , tcNextVar = 0
   , tcScope = HashMap.empty

@@ -659,15 +659,9 @@ userQueryImpl
 
     let ref = SourceRef userQuery_predicate userQuery_predicate_version
     details@PredicateDetails{..} <-
-      case lookupPredicate ref schemaVersion schema of
-        Nothing -> throwIO $ Thrift.BadQuery $ mconcat
-          [ "unknown predicate: "
-          , userQuery_predicate
-          , maybe
-              ""
-              (\ver -> "." <> Text.pack (show ver))
-              userQuery_predicate_version ]
-        Just details -> return details
+      case lookupPredicateSourceRef ref schemaVersion schema of
+        Left err -> throwIO $ Thrift.BadQuery err
+        Right details -> return details
 
     let
       opts = fromMaybe def userQuery_options
@@ -820,7 +814,7 @@ schemaVersionForQuery env schema repo qversion = do
         ]
   where
     isAvailable version =
-      fromIntegral version `IntMap.member` predicatesByName schema
+      fromIntegral version `IntMap.member` schemaEnvs schema
 
 compileAngleQuery
   :: SchemaVersion
@@ -926,14 +920,13 @@ checkPredicatesMatch
   -> SchemaVersion
   -> IO ()
 checkPredicatesMatch dbSchema details predicate schemaVer = do
-  case lookupPredicate predicate schemaVer dbSchema of
-    Nothing -> throwIO $ Thrift.BadQuery $
-      "unknown predicate: " <> showSourceRef predicate
-    Just details' ->
+  case lookupPredicateSourceRef predicate schemaVer dbSchema of
+    Left err -> throwIO $ Thrift.BadQuery err
+    Right details' ->
       if predicatePid details == predicatePid details'
         then return ()
         else throwIO $ Thrift.BadQuery $ mconcat
-          [ "predicate " <> showSourceRef predicate <>
+          [ "predicate " <> showRef predicate <>
             " does not match type of query: "
           <> predicateRef_name (predicateRef details) <> "."
           <> showt (predicateRef_version (predicateRef details)) ]
@@ -1234,7 +1227,7 @@ serializeType = Text.encodeUtf8 . renderStrict . layoutCompact . pretty
 compileType :: DbSchema -> SchemaVersion -> ByteString -> IO Type
 compileType schema version src = do
   parsed <- checkParsed $ Angle.parseType src
-  let scope = toScope (Qualified schema version)
+  let scope = nameResolutionPolicyToNameEnv (Qualified schema version)
   resolved <- checkResolved $ resolveType latestAngleVersion scope parsed
   checkConverted $ dbSchemaRtsType schema resolved
   where

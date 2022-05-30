@@ -192,6 +192,9 @@ predicate DerivedKeyValue2 :
 } # glean.test.1
 
 
+schema glean.test.4 : glean.test.1 {
+}
+
 schema glean.test.5 : glean.test.1 {
 import sys.1
 import code.cxx.4   # for Entity

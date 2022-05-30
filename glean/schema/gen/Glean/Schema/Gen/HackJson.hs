@@ -29,6 +29,7 @@ import GHC.Generics
 import Util.Text (textShow)
 
 import Glean.Angle.Types
+import Glean.Schema.Types
 
 data HackGenData = HackGenData
   { generated :: Text
@@ -91,15 +92,19 @@ instance Aeson.ToJSON FieldInfo where
 
 data Context = Context
   { contextCycles :: HashMap VersionedReference Bool
-  , contextPredMap :: HashMap PredicateRef PredicateDef
-  , contextTypeMap :: HashMap TypeRef TypeDef
+  , contextPredMap :: HashMap PredicateRef ResolvedPredicateDef
+  , contextTypeMap :: HashMap TypeRef ResolvedTypeDef
   , contextPredLatest :: HashMap Text Version
   , contextTypeLatest :: HashMap Text Version
   }
 
 type HackEnum = (Text, [(Text, Text)])
 
-genSchemaHackJson :: Version -> [PredicateDef] -> [TypeDef] -> [(FilePath,Text)]
+genSchemaHackJson
+  :: Version
+  -> [ResolvedPredicateDef]
+  -> [ResolvedTypeDef]
+  -> [(FilePath,Text)]
 genSchemaHackJson _version preddefs typedefs = HashMap.toList files
   where
     predMap = HashMap.fromList $ map (\p -> (predicateDefRef p, p)) preddefs
@@ -142,7 +147,7 @@ genSchemaHackJson _version preddefs typedefs = HashMap.toList files
 
 genTypeOfDef
   :: Context
-  -> Either PredicateDef TypeDef
+  -> Either ResolvedPredicateDef ResolvedTypeDef
   -> Writer [HackEnum] (Text, GenType)
 genTypeOfDef ctx def@(Left PredicateDef{..}) = (,) (refClassname ref) <$>
   case (predicateDefKeyType, predicateDefValueType) of
@@ -177,7 +182,7 @@ genTypeOfDef ctx def@(Right TypeDef{..}) = (,) (refClassname ref) <$>
 fieldInfoFor
   :: Text
   -> Context
-  -> FieldDef
+  -> ResolvedFieldDef
   -> Writer [HackEnum] FieldInfo
 fieldInfoFor className Context{..} FieldDef{..} = do
   angleTypeRepr <- runReaderT (angleTypeReprFor fieldDefType) angleTypeReprCtx
@@ -198,8 +203,8 @@ fieldInfoFor className Context{..} FieldDef{..} = do
 data AngleTypeReprContext = AngleTypeReprContext
   { ctxClassName :: Text
   , ctxFieldName :: Text
-  , ctxPredMap :: HashMap PredicateRef PredicateDef
-  , ctxTypeMap :: HashMap TypeRef TypeDef
+  , ctxPredMap :: HashMap PredicateRef ResolvedPredicateDef
+  , ctxTypeMap :: HashMap TypeRef ResolvedTypeDef
   , ctxPredLatest :: HashMap Text Version
   , ctxTypeLatest :: HashMap Text Version
   }
@@ -233,7 +238,7 @@ instance Aeson.ToJSON AngleTypeRepr where
 -- Generating a class for Angle types that hold an Enumeration requires
 -- creating a definition for that enum which is what the state holds
 angleTypeReprFor
-  :: Type
+  :: ResolvedType
   -> ReaderT AngleTypeReprContext (Writer [HackEnum]) AngleTypeRepr
 angleTypeReprFor (Predicate ref) = do
   ctx <- ask
@@ -253,7 +258,7 @@ angleTypeReprFor (Predicate ref) = do
 angleTypeReprFor ty = angleTypeInnerReprFor ty
 
 angleTypeInnerReprFor
-  :: Type
+  :: ResolvedType
   -> ReaderT AngleTypeReprContext (Writer [HackEnum]) AngleTypeRepr
 angleTypeInnerReprFor Byte = return ByteTInt
 angleTypeInnerReprFor Nat = return NatTInt
@@ -312,7 +317,7 @@ angleTypeInnerReprFor (Enumerated alts) = do
   return $ EnumeratedTEnum alts enumName
 angleTypeInnerReprFor Boolean = return BooleanTBool
 
-defFile :: Either PredicateDef TypeDef -> FilePath
+defFile :: Either ResolvedPredicateDef ResolvedTypeDef -> FilePath
 defFile (Left p) = fileFor $ predicateDefName p
 defFile (Right t) = fileFor $ typeDefName t
 
@@ -321,7 +326,10 @@ refClassname Reference{..} | refLatest = "GS" <> hackCase refName
 refClassname Reference{..} =
   "GS" <> hackCase refName <> "_DEPRECATED" <> textShow refVersion
 
-defRef :: Context -> Either PredicateDef TypeDef -> VersionedReference
+defRef
+  :: Context
+  -> Either ResolvedPredicateDef ResolvedTypeDef
+  -> VersionedReference
 defRef Context{..} (Left PredicateDef{..}) =
   prefVref contextPredLatest predicateDefRef
 defRef Context{..} (Right TypeDef{..}) =
@@ -346,10 +354,10 @@ trefVref ctxTypeLatest TypeRef{..} = Reference
       HashMap.lookup typeRef_name ctxTypeLatest == Just typeRef_version
   }
 
-predicateDefName :: PredicateDef -> Text
+predicateDefName :: ResolvedPredicateDef -> Text
 predicateDefName = predicateRef_name . predicateDefRef
 
-typeDefName :: TypeDef -> Text
+typeDefName :: ResolvedTypeDef -> Text
 typeDefName = typeRef_name . typeDefRef
 
 hackCase :: Text -> Text
@@ -375,7 +383,7 @@ namespaceFor file = (<>) "GS" $
 -- would cause a recursive shape to be generated (these are not allowed in Hack)
 cyclesInDefs
   :: Context
-  -> [Either PredicateDef TypeDef]
+  -> [Either ResolvedPredicateDef ResolvedTypeDef]
   -> [(VersionedReference, Bool)]
 cyclesInDefs ctx defs = concatMap hasCycles sccs
  where
@@ -385,13 +393,13 @@ cyclesInDefs ctx defs = concatMap hasCycles sccs
   sccs = stronglyConnComp
     [ (def, defNode def, outEdges def) | def <- defs ]
 
-  defNode :: Either PredicateDef TypeDef -> (Name,Version)
+  defNode :: Either ResolvedPredicateDef ResolvedTypeDef -> (Name,Version)
   defNode (Left PredicateDef{..}) =
     (predicateRef_name predicateDefRef, predicateRef_version predicateDefRef)
   defNode (Right TypeDef{..}) =
     (typeRef_name typeDefRef, typeRef_version typeDefRef)
 
-  outEdges :: Either PredicateDef TypeDef -> [(Name,Version)]
+  outEdges :: Either ResolvedPredicateDef ResolvedTypeDef -> [(Name,Version)]
   outEdges d = case d of
     Left PredicateDef{..} ->
       outEdgesTs [predicateDefKeyType, predicateDefValueType]
@@ -401,7 +409,7 @@ cyclesInDefs ctx defs = concatMap hasCycles sccs
   outEdgesTs = concatMap outEdgesT
   outEdgesFields fields = outEdgesTs [ ty | FieldDef _ ty <- fields ]
 
-  outEdgesT :: Type -> [(Name,Version)]
+  outEdgesT :: ResolvedType -> [(Name,Version)]
   outEdgesT Byte{} = []
   outEdgesT Nat{} = []
   outEdgesT Boolean{} = []

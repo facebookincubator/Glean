@@ -11,11 +11,12 @@ module Glean.Database.Schema.Types
   , PredicateDetails(..)
   , PredicateTransformation(..)
   , SchemaVersion(..)
-  , lookupPredicate
+  , schemaNameEnv
+  , lookupSourceRef
+  , lookupPredicateSourceRef
   , lookupPredicateRef
   , lookupPid
   , TypeDetails(..)
-  , lookupType
   , lookupTypeRef
   , dbSchemaRtsType
   , mkRtsType
@@ -27,6 +28,7 @@ import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
+import Data.Text (Text)
 
 import Glean.Angle.Types as Schema hiding (Type, FieldDef)
 import qualified Glean.Angle.Types as Schema
@@ -38,21 +40,22 @@ import Glean.RTS.Typecheck
 import Glean.RTS.Traverse
 import Glean.RTS.Types (Pid(..), Type, PidRef(..), FieldDef, ExpandedType(..))
 import Glean.Types as Thrift
-import Glean.Schema.Resolve
+import Glean.Schema.Types
+import Glean.Schema.Util
 
 -- | The Schema used by a DB
 data DbSchema = DbSchema
   { predicatesByRef :: HashMap PredicateRef PredicateDetails
-  , predicatesByName :: IntMap (HashMap Name PredicateDetails)
-     -- ^ points to the predicate for each name in schema "all"
   , predicatesById :: IntMap PredicateDetails
   , predicatesTransformations  :: IntMap PredicateTransformation
      -- ^ keyed by predicate requested
   , schemaTypesByRef :: HashMap TypeRef TypeDetails
-  , schemaTypesByName :: IntMap (HashMap Name TypeDetails)
-     -- ^ points to the type for each name in schema "all"
+
+  , schemaEnvs :: IntMap (NameEnv RefResolved)
+     -- ^ for each version of "all", environment of types/predicates
+
   , schemaInventory :: Inventory
-  , schemaResolved :: [ResolvedSchema]
+  , schemaResolved :: [ResolvedSchemaRef]
   , schemaSource :: SourceSchemas
   , schemaMaxPid :: Pid
   , schemaLatestVersion :: Version
@@ -104,32 +107,43 @@ allSchemaVersion :: DbSchema -> SchemaVersion -> Version
 allSchemaVersion _ (SpecificSchemaAll v) = v
 allSchemaVersion dbSchema LatestSchemaAll = schemaLatestVersion dbSchema
 
-lookupPredicate
+schemaNameEnv :: DbSchema -> SchemaVersion -> Maybe (NameEnv RefResolved)
+schemaNameEnv dbSchema schemaVer =
+  IntMap.lookup (fromIntegral (allSchemaVersion dbSchema schemaVer))
+     (schemaEnvs dbSchema)
+
+lookupSourceRef
   :: SourceRef
   -> SchemaVersion
      -- ^ schema version to use if predicate version is Nothing
   -> DbSchema
-  -> Maybe PredicateDetails
-lookupPredicate (SourceRef name (Just ver)) _ dbSchema =
-  lookupPredicateRef (PredicateRef name ver) dbSchema
-lookupPredicate (SourceRef name Nothing) schemaVer dbSchema =
-  HashMap.lookup name =<<
-    IntMap.lookup (fromIntegral (allSchemaVersion dbSchema schemaVer))
-      (predicatesByName dbSchema)
+  -> LookupResult RefResolved
+lookupSourceRef ref schemaVer dbSchema =
+  case schemaNameEnv dbSchema schemaVer of
+    Nothing -> OutOfScope
+    Just env -> resolveRef env ref
+
+lookupPredicateSourceRef
+  :: SourceRef
+  -> SchemaVersion
+     -- ^ schema version to use if predicate version is Nothing
+  -> DbSchema
+  -> Either Text PredicateDetails
+lookupPredicateSourceRef ref schemaVer dbSchema =
+  case lookupResultToEither ref $ lookupSourceRef ref schemaVer dbSchema of
+    Right (RefPred pred)
+      | Just details <- lookupPredicateRef pred dbSchema -> Right details
+      | otherwise -> Left $
+        "internal error: " <> showRef pred <> " not found"
+    Right (RefType _) ->
+      Left $ showRef ref <> " is a type, not a predicate"
+    Left err -> Left err
 
 lookupPredicateRef :: PredicateRef -> DbSchema -> Maybe PredicateDetails
 lookupPredicateRef ref = HashMap.lookup ref . predicatesByRef
 
 lookupPid :: Pid -> DbSchema -> Maybe PredicateDetails
 lookupPid (Pid pid) = IntMap.lookup (fromIntegral pid) . predicatesById
-
-lookupType :: SourceRef -> SchemaVersion -> DbSchema -> Maybe TypeDetails
-lookupType (SourceRef name (Just v)) _ dbSchema =
-  lookupTypeRef (TypeRef name v) dbSchema
-lookupType (SourceRef name Nothing) schemaVer dbSchema =
-  HashMap.lookup name =<<
-    IntMap.lookup (fromIntegral (allSchemaVersion dbSchema schemaVer))
-      (schemaTypesByName dbSchema)
 
 lookupTypeRef :: TypeRef -> DbSchema -> Maybe TypeDetails
 lookupTypeRef ref  = HashMap.lookup ref . schemaTypesByRef

@@ -401,7 +401,7 @@ instance Plugin StatsCommand where
     when (not $ null matchRefsArgsNotPresent) $ do
       forM_ matchRefsArgsNotPresent $ \ref -> do
         hPutStrLn stderr $ Text.unpack $
-          "No facts found for: " <> showSourceRef ref
+          "No facts found for: " <> showRef ref
       when statsSetExitCode $
         exitWith $ ExitFailure 100
     where

@@ -65,23 +65,24 @@ import TextShow
 import Util.List
 
 import Glean.Angle.Types
+import Glean.Schema.Types
 import Glean.Schema.Util
 
 
 -- -----------------------------------------------------------------------------
 -- Types
 
-unitT :: Type
+unitT :: ResolvedType
 unitT = Record []
 
-isByt :: Type -> Bool
+isByt :: ResolvedType -> Bool
 isByt Byte = True
 isByt _ = False
 
 -- | Return 'True' if we should generate a new type in Thrift for a
 -- predicate key type.  If the type is a base type or is already a
 -- typedef, there's no need to generate a new named type.
-shouldNameKeyType :: Type -> Bool
+shouldNameKeyType :: ResolvedType -> Bool
 shouldNameKeyType Record{} = True
 shouldNameKeyType Sum{} = True
 shouldNameKeyType _ = False
@@ -90,8 +91,8 @@ shouldNameKeyType _ = False
 -- Dependency analysis of decls
 
 data SomeDecl
-  = PredicateDecl PredicateDef
-  | TypeDecl TypeDef
+  = PredicateDecl ResolvedPredicateDef
+  | TypeDecl ResolvedTypeDef
 
 type Node = (Name,Version)
 
@@ -122,7 +123,7 @@ orderDecls decls = map betterNotBeAnyCyclesIn sccs
   outEdgesTs = concatMap outEdgesT
   outEdgesFields fields = outEdgesTs [ ty | FieldDef _ ty <- fields ]
 
-  outEdgesT :: Type -> [Node]
+  outEdgesT :: ResolvedType -> [Node]
   outEdgesT Byte{} = []
   outEdgesT Nat{} = []
   outEdgesT Boolean{} = []
@@ -176,9 +177,9 @@ underscored :: NameSpaces -> Text
 underscored = Text.intercalate "_"
 
 sortDeclsByNamespace
-  :: [PredicateDef]
-  -> [TypeDef]
-  -> HashMap NameSpaces ([PredicateDef], [TypeDef])
+  :: [ResolvedPredicateDef]
+  -> [ResolvedTypeDef]
+  -> HashMap NameSpaces ([ResolvedPredicateDef], [ResolvedTypeDef])
 sortDeclsByNamespace preds types =
   HashMap.fromListWith combine $
     [ (namespace, ([pred],[]))
@@ -236,7 +237,7 @@ data Env = Env
       --
       -- Note: the 'Text' are sometimes 'Safe' and sometimes not 'Safe'
   , namePolicy :: NamePolicy
-  , typeEnv :: HashMap (Name, Version) TypeDef
+  , typeEnv :: HashMap (Name, Version) ResolvedTypeDef
   }
 
 data NamePolicy = NamePolicy
@@ -244,7 +245,7 @@ data NamePolicy = NamePolicy
   , typeNames :: HashMap TypeRef (NameSpaces,Text)
   }
 
-mkNamePolicy :: [PredicateDef] -> [TypeDef] -> NamePolicy
+mkNamePolicy :: [ResolvedPredicateDef] -> [ResolvedTypeDef] -> NamePolicy
 mkNamePolicy preds types = NamePolicy{..}
   where
   nameMap = HashMap.fromListWith (++) $
@@ -345,7 +346,7 @@ runM
   :: Mode
   -> s
   -> NamePolicy
-  -> [TypeDef]
+  -> [ResolvedTypeDef]
   -> ReaderT Env (State s) a
   -> (a, s)
 
@@ -374,7 +375,7 @@ data NewOrOld = New | Old
 
 -- Make a name for a type. The returned name is assumed to be in the
 -- current namespace.
-nameThisType :: Monad m => Type -> ReaderT Env m (NewOrOld, Text)
+nameThisType :: Monad m => ResolvedType -> ReaderT Env m (NewOrOld, Text)
 nameThisType (Record []) = return (Old, "builtin.Unit")
 nameThisType _ = do
   Env{..} <- ask
@@ -384,7 +385,7 @@ nameThisType _ = do
       [] -> error "nameThisType: empty hint"
   return (New, name)
 
-repType :: Monad m => Type -> ReaderT Env m (Maybe Type)
+repType :: Monad m => ResolvedType -> ReaderT Env m (Maybe ResolvedType)
 repType (NamedType tr) = do
   maybeTy <- typeDef tr
   case maybeTy of
@@ -392,7 +393,7 @@ repType (NamedType tr) = do
     Just ty -> repType ty
 repType t = return (Just t)
 
-typeDef :: Monad m => TypeRef -> ReaderT Env m (Maybe Type)
+typeDef :: Monad m => TypeRef -> ReaderT Env m (Maybe ResolvedType)
 typeDef TypeRef{..} = do
   te <- typeEnv <$> ask
   case HashMap.lookup (typeRef_name, typeRef_version) te of
@@ -452,8 +453,8 @@ popDefs = state $ \ s -> (reverse s, mempty)
 
 
 addNamespaceDependencies
-  :: HashMap NameSpaces ([PredicateDef], [TypeDef])
-  -> HashMap NameSpaces ([NameSpaces], [PredicateDef], [TypeDef])
+  :: HashMap NameSpaces ([ResolvedPredicateDef], [ResolvedTypeDef])
+  -> HashMap NameSpaces ([NameSpaces], [ResolvedPredicateDef], [ResolvedTypeDef])
 addNamespaceDependencies nss =
   HashMap.fromList
     [ (ns, (outEdges ns preds types, preds, types))
@@ -465,17 +466,17 @@ addNamespaceDependencies nss =
       ["builtin"] :  -- builtin is always a dep, so we can get builtin.Unit
       concat (map outEdgesPred preds ++ map outEdgesTypeDef types)
 
-  outEdgesPred :: PredicateDef -> [NameSpaces]
+  outEdgesPred :: ResolvedPredicateDef -> [NameSpaces]
   outEdgesPred PredicateDef{..} =
     outEdgesTs [predicateDefKeyType, predicateDefValueType]
 
-  outEdgesTypeDef :: TypeDef -> [NameSpaces]
+  outEdgesTypeDef :: ResolvedTypeDef -> [NameSpaces]
   outEdgesTypeDef TypeDef{..} = outEdgesT typeDefType
 
   outEdgesTs = concatMap outEdgesT
   outEdgesFields fields = outEdgesTs [ ty | FieldDef _ ty <- fields ]
 
-  outEdgesT :: Type -> [NameSpaces]
+  outEdgesT :: ResolvedType -> [NameSpaces]
   outEdgesT Byte{} = []
   outEdgesT Nat{} = []
   outEdgesT Boolean{} = []

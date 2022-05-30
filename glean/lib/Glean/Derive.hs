@@ -20,7 +20,7 @@ import Glean.Query.Thrift.Internal
 import Glean.Types
 import Glean
 import qualified Glean.Schema.Builtin.Types as Builtin
-import Glean.Schema.Util (showSourceRef)
+import Glean.Schema.Util (showRef)
 import Util.Log
 
 -- | Compute and store the specified derived predicate
@@ -59,11 +59,11 @@ derivePredicate backend repo maxBytes maxResults s parallel = loop
 
     SourceRef name version = s
 
-    predicate = unwords [Glean.showRepo repo, Text.unpack $ showSourceRef s]
+    predicate = unwords [Glean.showRepo repo, Text.unpack $ showRef s]
 
     report status stats = do
       putStrLn $ unwords
-        [ Text.unpack $ showSourceRef s
+        [ Text.unpack $ showRef s
         , ":"
         , show $ userQueryStats_num_facts stats
         , "facts"
