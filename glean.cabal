@@ -982,6 +982,7 @@ library indexers
         glean/lang/hack
         glean/lang/typescript
         glean/lang/go
+        glean/lang/haskell
         glean/lang/lsif/indexer
         glean/lang/rust-lsif
         glean/index
@@ -992,6 +993,7 @@ library indexers
         Glean.Indexer.Flow
         Glean.Indexer.Go
         Glean.Indexer.Hack
+        Glean.Indexer.Haskell
         Glean.Indexer.RustLsif
         Glean.Indexer.Typescript
         Glean.Indexer.LSIF

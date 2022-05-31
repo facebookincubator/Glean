@@ -30,6 +30,7 @@ import qualified Glean.Indexer.Typescript as Typescript
 import qualified Glean.Indexer.Go as Go
 import qualified Glean.Indexer.RustLsif as RustLsif
 import qualified Glean.Indexer.LSIF as LSIF
+import qualified Glean.Indexer.Haskell as Hs
 
 data SomeIndexer = forall opts . SomeIndexer (Indexer opts)
 
@@ -41,6 +42,7 @@ indexers =
 #ifdef FACEBOOK
   , SomeIndexer Python.indexer
 #endif
+  , SomeIndexer Hs.indexer
   , SomeIndexer Typescript.indexer
   , SomeIndexer Go.indexer
   , SomeIndexer RustLsif.indexer
