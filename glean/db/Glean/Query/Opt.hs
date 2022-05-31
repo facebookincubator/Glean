@@ -565,11 +565,11 @@ expandStmt (FlatStatement stmtTy lhs (TermGenerator rhs)) =
     (Nat a, Nat b) | a == b -> []
     (String a, String b) | a == b -> []
     (Array ts, Array us)
-      | Type.Array eltTy <- derefType ty
+      | Type.ArrayTy eltTy <- derefType ty
       , length ts == length us -> concat (zipWith (expand eltTy) ts us)
     (ByteArray b, ByteArray c) | b == c -> []
     (Tuple ts, Tuple us)
-      | Type.Record fields <- derefType ty ->
+      | Type.RecordTy fields <- derefType ty ->
         concat (zipWith3 expand (map fieldDefType fields) ts us)
     (Alt n x, Alt m y)
       | n == m, Just fields <- sumLike (derefType ty) ->

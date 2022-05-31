@@ -260,33 +260,33 @@ popDefs = state $ \s -> (reverse s, [])
 reprTy :: NameSpaces -> ResolvedType -> CppGen Text
 reprTy here t = case t of
   -- Leaves
-  Byte{} -> return "Byte" -- glean.h hardcoded here
-  Nat{} -> return "Nat"   -- glean.h hardcoded here
-  Boolean{} -> return "Bool"
-  String{} -> return "String"
+  ByteTy{} -> return "Byte" -- glean.h hardcoded here
+  NatTy{} -> return "Nat"   -- glean.h hardcoded here
+  BooleanTy{} -> return "Bool"
+  StringTy{} -> return "String"
   -- Containers
-  Array ty -> do
+  ArrayTy ty -> do
     rTy <- reprTy here ty
     return $ "Array<" <> rTy <> ">"
-  Record fields -> do
+  RecordTy fields -> do
     ts <- mapM (reprTy here . fieldDefType) fields
     return $ "Tuple<" <> Text.intercalate ", " ts <> ">"
-  Sum fields -> do
+  SumTy fields -> do
     ts <- mapM (reprTy here . fieldDefType) fields
     return $ "Sum<" <> Text.intercalate ", " ts <> ">"
-  Maybe ty -> do
+  MaybeTy ty -> do
     rTy <- reprTy here ty
     return $ "Maybe<" <> rTy <> ">"
   -- References
-  Predicate pref -> do
+  PredicateTy pref -> do
     name <- schemaName <$> predicateName pref
     return (cppNameIn here name)
-  NamedType tref -> do
+  NamedTy tref -> do
     name <- schemaName <$> typeName tref
     if isJust (provided name)
       then return $ cppNameIn here (builtinName (snd name))
       else return $ "Repr<" <> cppNameIn here name <> ">"
-  Enumerated elts -> return $ "Enum<" <> showt (length elts) <> ">"
+  EnumeratedTy elts -> return $ "Enum<" <> showt (length elts) <> ">"
 
 shareTypeDef :: NameSpaces -> ResolvedType -> CppGen Text
 shareTypeDef here t = do
@@ -307,30 +307,30 @@ shareTypeDef here t = do
 valueTy :: NameSpaces -> ResolvedType -> CppGen Text
 valueTy here t = case t of
   -- Leaves
-  Byte{} -> return "uint8_t" -- glean.h hardcoded here
-  Nat{} -> return "uint64_t" -- glean.h hardcoded here
-  Boolean{} -> return "bool" -- glean.h hardcoded here
-  String{} -> return "std::string"
+  ByteTy{} -> return "uint8_t" -- glean.h hardcoded here
+  NatTy{} -> return "uint64_t" -- glean.h hardcoded here
+  BooleanTy{} -> return "bool" -- glean.h hardcoded here
+  StringTy{} -> return "std::string"
   -- Containers
-  Array ty -> do
+  ArrayTy ty -> do
     vTy <- valueTy here ty
     return $ "std::vector<" <> vTy <> ">"
-  Record fields -> do
+  RecordTy fields -> do
     ts <- mapM (valueTy here . fieldDefType) fields
     return $ "std::tuple<" <> Text.intercalate ", " ts <> ">"
-  Sum fields -> do
+  SumTy fields -> do
     ts <- mapM (valueTy here .fieldDefType) fields
     return $ "boost::variant<" <> Text.intercalate ", " (altsOf ts) <> ">"
-  Maybe ty ->
-    valueTy here $ Sum
+  MaybeTy ty ->
+    valueTy here $ SumTy
       [ FieldDef "^Nothing^" unitT
       , FieldDef "^Just^" ty ]
-  Enumerated{} -> shareTypeDef here t
+  EnumeratedTy{} -> shareTypeDef here t
   -- References, Fact is a phantom-typed Id
-  Predicate pref -> do
+  PredicateTy pref -> do
     name <- schemaName <$> predicateName pref
     return $ "Fact<" <> cppNameIn here name <> ">"
-  NamedType tref -> do
+  NamedTy tref -> do
     name <- schemaName <$> typeName tref
     case provided name of
       Just ty -> valueTy here ty
@@ -372,9 +372,9 @@ genDecl (TypeDecl TypeDef{..}) = withExtra $ do
     then return []
     else do
       case typeDefType of
-        Record fields -> recordDef name fields
-        Sum fields -> unionDef name fields
-        Enumerated vals -> enumDef name vals
+        RecordTy fields -> recordDef name fields
+        SumTy fields -> unionDef name fields
+        EnumeratedTy vals -> enumDef name vals
         _other -> aliasDef name typeDefType
 
 
@@ -422,7 +422,7 @@ recordDef
   -> [ResolvedFieldDef]
   -> CppGen [(NameSpaces, (Text, Text))]
 recordDef (spaces,name) fields = do
-  rDecl <- mkReprDecl (spaces,name) (Record fields)
+  rDecl <- mkReprDecl (spaces,name) (RecordTy fields)
   fieldTys <- mapM field fields
   return [rDecl, (spaces, (declare, define fieldTys))]
   where
@@ -483,8 +483,8 @@ unionDef (spaces,name) fields = do
                 <> ")")
       (args, ret) <- case ty of
           -- special case, Unit is not a concrete type
-        NamedType (TypeRef "builtin.Unit" _) -> tuple []
-        Record fields -> tuple fields
+        NamedTy (TypeRef "builtin.Unit" _) -> tuple []
+        RecordTy fields -> tuple fields
         _ -> do
           vTy <- valueTy spaces ty
           return ("const " <> vTy <> "& a", "a")
@@ -497,7 +497,7 @@ unionDef (spaces,name) fields = do
 
   static_constructors <-
     concat <$> mapM static_constructor (zip3 field_names theTs theAlts)
-  rDecl <- mkReprDecl (spaces,name) (Sum fields)
+  rDecl <- mkReprDecl (spaces,name) (SumTy fields)
   let
     outputRepr =
       [ "void outputRepr(Output<Repr<" <> ident <> ">> out) const {"
@@ -523,7 +523,7 @@ enumDef
   -> [Name]
   -> CppGen [(NameSpaces, (Text, Text))]
 enumDef (spaces,name) eVals = do
-  rDecl <- mkReprDecl (spaces,name) (Enumerated eVals)
+  rDecl <- mkReprDecl (spaces,name) (EnumeratedTy eVals)
   return  [ rDecl, (spaces, (declare, define)) ]
   where
     ident = cppIdent name

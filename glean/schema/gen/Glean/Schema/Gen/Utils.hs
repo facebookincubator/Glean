@@ -73,18 +73,18 @@ import Glean.Schema.Util
 -- Types
 
 unitT :: ResolvedType
-unitT = Record []
+unitT = RecordTy []
 
 isByt :: ResolvedType -> Bool
-isByt Byte = True
+isByt ByteTy = True
 isByt _ = False
 
 -- | Return 'True' if we should generate a new type in Thrift for a
 -- predicate key type.  If the type is a base type or is already a
 -- typedef, there's no need to generate a new named type.
 shouldNameKeyType :: ResolvedType -> Bool
-shouldNameKeyType Record{} = True
-shouldNameKeyType Sum{} = True
+shouldNameKeyType RecordTy{} = True
+shouldNameKeyType SumTy{} = True
 shouldNameKeyType _ = False
 
 -- -----------------------------------------------------------------------------
@@ -124,17 +124,17 @@ orderDecls decls = map betterNotBeAnyCyclesIn sccs
   outEdgesFields fields = outEdgesTs [ ty | FieldDef _ ty <- fields ]
 
   outEdgesT :: ResolvedType -> [Node]
-  outEdgesT Byte{} = []
-  outEdgesT Nat{} = []
-  outEdgesT Boolean{} = []
-  outEdgesT String{} = []
-  outEdgesT (Array ty) = outEdgesT ty
-  outEdgesT (Maybe ty) = outEdgesT ty
-  outEdgesT (Record fields)  = outEdgesFields fields
-  outEdgesT (Sum fields)  = outEdgesFields fields
-  outEdgesT (NamedType (TypeRef name ver)) = [(name,ver)]
-  outEdgesT Predicate{} = [] -- See Note [predicate type references]
-  outEdgesT Enumerated{} = []
+  outEdgesT ByteTy{} = []
+  outEdgesT NatTy{} = []
+  outEdgesT BooleanTy{} = []
+  outEdgesT StringTy{} = []
+  outEdgesT (ArrayTy ty) = outEdgesT ty
+  outEdgesT (MaybeTy ty) = outEdgesT ty
+  outEdgesT (RecordTy fields)  = outEdgesFields fields
+  outEdgesT (SumTy fields)  = outEdgesFields fields
+  outEdgesT (NamedTy (TypeRef name ver)) = [(name,ver)]
+  outEdgesT PredicateTy{} = [] -- See Note [predicate type references]
+  outEdgesT EnumeratedTy{} = []
 
 {- Note [predicate type references]
 
@@ -376,7 +376,7 @@ data NewOrOld = New | Old
 -- Make a name for a type. The returned name is assumed to be in the
 -- current namespace.
 nameThisType :: Monad m => ResolvedType -> ReaderT Env m (NewOrOld, Text)
-nameThisType (Record []) = return (Old, "builtin.Unit")
+nameThisType (RecordTy []) = return (Old, "builtin.Unit")
 nameThisType _ = do
   Env{..} <- ask
   let
@@ -386,7 +386,7 @@ nameThisType _ = do
   return (New, name)
 
 repType :: Monad m => ResolvedType -> ReaderT Env m (Maybe ResolvedType)
-repType (NamedType tr) = do
+repType (NamedTy tr) = do
   maybeTy <- typeDef tr
   case maybeTy of
     Nothing -> return Nothing
@@ -477,14 +477,14 @@ addNamespaceDependencies nss =
   outEdgesFields fields = outEdgesTs [ ty | FieldDef _ ty <- fields ]
 
   outEdgesT :: ResolvedType -> [NameSpaces]
-  outEdgesT Byte{} = []
-  outEdgesT Nat{} = []
-  outEdgesT Boolean{} = []
-  outEdgesT String{} = []
-  outEdgesT (Array ty) = outEdgesT ty
-  outEdgesT (Maybe ty) = outEdgesT ty
-  outEdgesT (Record fields)  = outEdgesFields fields
-  outEdgesT (Sum fields)  = outEdgesFields fields
-  outEdgesT (NamedType (TypeRef name _)) = [fst (splitDot name)]
-  outEdgesT (Predicate (PredicateRef name _)) = [fst (splitDot name)]
-  outEdgesT Enumerated{} = []
+  outEdgesT ByteTy{} = []
+  outEdgesT NatTy{} = []
+  outEdgesT BooleanTy{} = []
+  outEdgesT StringTy{} = []
+  outEdgesT (ArrayTy ty) = outEdgesT ty
+  outEdgesT (MaybeTy ty) = outEdgesT ty
+  outEdgesT (RecordTy fields)  = outEdgesFields fields
+  outEdgesT (SumTy fields)  = outEdgesFields fields
+  outEdgesT (NamedTy (TypeRef name _)) = [fst (splitDot name)]
+  outEdgesT (PredicateTy (PredicateRef name _)) = [fst (splitDot name)]
+  outEdgesT EnumeratedTy{} = []

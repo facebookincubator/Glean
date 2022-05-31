@@ -33,11 +33,11 @@ import Util.Text
 import Glean.Angle.Types
 
 unit :: Type_ a b
-unit = Record []
+unit = RecordTy []
 
 -- | A maybe type is equivalent to a sum type with {nothing,just} fields.
 lowerMaybe :: Type_ a b -> Type_ a b
-lowerMaybe param = Sum (maybeFields param)
+lowerMaybe param = SumTy (maybeFields param)
 
 maybeFields :: Type_ a b -> [FieldDef_ a b]
 maybeFields param =
@@ -45,19 +45,19 @@ maybeFields param =
   , FieldDef "just" param ]
 
 lowerBool :: Type_ a b
-lowerBool = Sum boolFields
+lowerBool = SumTy boolFields
 
 boolFields :: [FieldDef_ a b]
 boolFields = [FieldDef "false" unit, FieldDef "true" unit]
 
 lowerEnum :: [Name] -> Type_ a b
-lowerEnum ides = Sum (enumFields ides)
+lowerEnum ides = SumTy (enumFields ides)
 
 enumFields :: [Name] -> [FieldDef_ a b]
 enumFields ides = [FieldDef ide unit | ide <- ides]
 
 tupleSchema :: [Type_ a b] -> Type_ a b
-tupleSchema tys = Record
+tupleSchema tys = RecordTy
   [ FieldDef ("tuplefield" <> Text.pack (show n)) ty
   | (n,ty) <- zip [0::Int ..] tys ]
 

@@ -74,10 +74,9 @@ import Data.Word
 import GHC.TypeLits hiding (Nat)
 import TextShow
 
-import Glean.Angle.Types (SourcePat', SourceType,
-  SourceStatement', SourceQuery')
-import Glean.Query.Types hiding (Field, SourceStatement)
-import qualified Glean.Query.Types as Angle
+import Glean.Angle.Types hiding
+  (SourcePat, SourceStatement, SourceQuery, Field, Type)
+import qualified Glean.Angle.Types as Angle
 import Glean.Query.Thrift.Internal as Thrift hiding (query)
 import Glean.Typed hiding (end)
 import Glean.Types (Nat, Byte)
@@ -108,7 +107,7 @@ display :: Angle t -> Text
 display (Angle m) = render $
   case evalState m 0 of
     NestedQuery _ q -> q
-    t -> SourceQuery (Just t) []
+    t -> Angle.SourceQuery (Just t) []
 
 -- | Build a query. It can returns facts of a predicate:
 --
@@ -162,7 +161,7 @@ predicate (Angle pat) = Angle $ do
 where_ :: Angle t -> [AngleStatement] -> Angle t
 where_ t stmts = Angle $
   NestedQuery DSL <$>
-    (SourceQuery <$> (Just <$> gen t) <*> mapM genStmt stmts)
+    (Angle.SourceQuery <$> (Just <$> gen t) <*> mapM genStmt stmts)
 
 not_ :: [AngleStatement] -> AngleStatement
 not_ stmts = unit' .= Angle (Negation DSL <$> gen t)
@@ -235,7 +234,7 @@ array xs = Angle $ Array DSL <$> mapM gen xs
 tuple :: AngleTuple a => a -> Angle (AngleTupleTy a)
 tuple = fromTuple
 
-type SourceField = Angle.Field SpanAngleDSL Name SourceType
+type SourceField = Angle.Field SpanAngleDSL SourceRef SourceRef
 
 -- | Match a record. Zero or more of the fields may be matched.
 --

@@ -111,7 +111,7 @@ instance Type Word64 where
   buildRtsValue b x = FFI.call $ RTS.glean_push_value_nat b x
   decodeRtsValue = Decoder $ \DecoderEnv{..} ->
     FFI.ffiBuf buf $ RTS.glean_pop_value_nat begin end
-  sourceType _ = Angle.Nat
+  sourceType _ = Angle.NatTy
 
 instance Type ByteString where
   buildRtsValue b xs = BS.unsafeUseAsCStringLen xs $ \(p,n) -> do
@@ -121,7 +121,7 @@ instance Type ByteString where
     size <- FFI.ffiBuf buf $ RTS.glean_pop_value_array begin end
     ptr <- FFI.ffiBuf buf $ RTS.glean_pop_value_bytes begin end size
     BS.unsafePackMallocCStringLen (castPtr ptr, fromIntegral size)
-  sourceType _ = Angle.Array Angle.Nat
+  sourceType _ = Angle.ArrayTy Angle.NatTy
 
 instance Type Text where
   buildRtsValue b s = FFI.withUTF8Text s $ \p n ->
@@ -129,7 +129,7 @@ instance Type Text where
   decodeRtsValue = Decoder $ \DecoderEnv{..} -> do
     (p,n) <- FFI.invoke $ RTS.glean_pop_value_string begin end
     FFI.unsafeMallocedUTF8 (castPtr p) n
-  sourceType _ = Angle.String
+  sourceType _ = Angle.StringTy
 
 -- | The instance for () does not encode or decode bytes, it is vacuous
 instance Type () where
@@ -145,7 +145,7 @@ instance Type Bool where
   buildRtsValue b True = buildRtsSelector b 1
   decodeRtsValue = enumD fail
     where fail = Decoder $ \_ -> decodeFail "bool selector out of range"
-  sourceType _ = Angle.Boolean
+  sourceType _ = Angle.BooleanTy
 
 
 instance Type Nat where
@@ -154,7 +154,7 @@ instance Type Nat where
   decodeRtsValue = Decoder $ \DecoderEnv{..} ->
     fmap (Nat . fromIntegral)
          (FFI.ffiBuf buf (RTS.glean_pop_value_nat begin end))
-  sourceType _ = Angle.Nat
+  sourceType _ = Angle.NatTy
 
 instance Type Byte where
   buildRtsValue b byt = FFI.call $
@@ -162,7 +162,7 @@ instance Type Byte where
   decodeRtsValue = Decoder $ \DecoderEnv{..} ->
     fmap (Byte . fromIntegral)
          (FFI.ffiBuf buf (RTS.glean_pop_value_byte begin end))
-  sourceType _ = Angle.Byte
+  sourceType _ = Angle.ByteTy
 
 -- -----------------------------------------------------------------------------
 -- Containers
@@ -176,7 +176,7 @@ instance Type a => Type [a] where
     size <- FFI.ffiBuf buf $ RTS.glean_pop_value_array begin end
     replicateM (fromIntegral size) (runDecoder decodeRtsValue env)
 
-  sourceType _ = Angle.Array (sourceType (Proxy @a))
+  sourceType _ = Angle.ArrayTy (sourceType (Proxy @a))
 
 -- | 'Maybe' is alias pattern for sum of () | 'a' (in this order)
 instance Type a => Type (Maybe a) where
@@ -187,7 +187,7 @@ instance Type a => Type (Maybe a) where
   decodeRtsValue = sumD
     (Decoder $ \_ -> decodeFail "maybe selector out of range")
     [pure Nothing, Just <$> decodeRtsValue]
-  sourceType _ = Angle.Maybe (sourceType (Proxy @a))
+  sourceType _ = Angle.MaybeTy (sourceType (Proxy @a))
 
 -- -----------------------------------------------------------------------------
 

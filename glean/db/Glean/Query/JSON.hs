@@ -162,13 +162,13 @@ encodeFact
     Buffer.fillByteString 8 $ do
       -- NOTE: We hardcode the field numbers for id, key and value here.
       encObjectBegin
-      encObjectField Nothing 1 "id" Nat dkey
+      encObjectField Nothing 1 "id" NatTy dkey
         $ encNat $ fromIntegral $ fromFid fid
       encObjectSep
       encObjectField (Just 1) 2 "key" predicateKeyType dkey
         $ encode expanded encoder dkey predicateKeyType
       case predicateValueType of
-        Schema.Record [] -> return () -- omit "value" field if value is unit
+        Schema.RecordTy [] -> return () -- omit "value" field if value is unit
         _other -> do
           encObjectSep
           encObjectField (Just 2) 3 "value"
@@ -193,19 +193,19 @@ encode
 encode expanded Encoder{..} !d = enc
   where
     enc typ = case typ of
-      Byte -> do
+      ByteTy -> do
         x <- liftST $ RTS.dByte d
         encByte x
-      Nat{} -> do
+      NatTy{} -> do
         x <- liftST $ RTS.dNat d
         encNat x
-      String{} -> do
+      StringTy{} -> do
         (x,n) <- liftST $ RTS.dTrustedStringRef d
         encMangledString x $ fromIntegral n
-      Array elty -> do
+      ArrayTy elty -> do
         size <- liftST $ RTS.dArray d
         case elty of
-          Byte{} -> do
+          ByteTy{} -> do
             ref <- liftST $ RTS.dByteStringRef d size
             encBinary ref
           _ -> do
@@ -222,12 +222,12 @@ encode expanded Encoder{..} !d = enc
                       go (n-1)
                 go (size-1)
             encArrayEnd
-      Record fieldTys -> do
+      RecordTy fieldTys -> do
         encObjectBegin
         -- We need to carry both the current and previous field numbers as
         -- Thrift encodes deltas between those.
         let field prev (i, FieldDef name ety) = case ety of
-              Maybe ety -> do
+              MaybeTy ety -> do
                 sel <- liftST $ RTS.dSelector d
                 if sel == 0
                   then return prev
@@ -235,31 +235,31 @@ encode expanded Encoder{..} !d = enc
               ty -> enc_field prev i name ty d
         foldM_ field Nothing $ zip [1..] fieldTys
         encObjectEnd
-      Sum fieldTys -> do
+      SumTy fieldTys -> do
         sel <- liftST $ RTS.dSelector d
         encObjectBegin
         void $ case atMay fieldTys (fromIntegral sel) of
           Just (FieldDef name ty) -> do
             enc_field Nothing (fromIntegral sel + 1) name ty d
           Nothing ->
-            enc_field Nothing (length fieldTys + 1) "UNKNOWN" (Record []) d
+            enc_field Nothing (length fieldTys + 1) "UNKNOWN" (RecordTy []) d
         encObjectEnd
-      NamedType (ExpandedType _ ty) -> enc ty
-      Enumerated _ -> do
+      NamedTy (ExpandedType _ ty) -> enc ty
+      EnumeratedTy _ -> do
         x <- liftST $ RTS.dSelector d
         encNat $ fromIntegral x
-      Maybe{} -> liftST $ encodingError "unsupported Maybe"
-      Boolean{} -> do
+      MaybeTy{} -> liftST $ encodingError "unsupported Maybe"
+      BooleanTy{} -> do
         x <- liftST $ RTS.dSelector d
         encBool (x /= 0)
-      Predicate{} -> do
+      PredicateTy{} -> do
         fid <- liftST $ RTS.dFact d
         let id = fromIntegral (fromFid fid)
         case IntMap.lookup id expanded of
           Just bs ->  Buffer.byteString bs
           Nothing -> do
             encObjectBegin
-            encObjectField Nothing 1 "id" Nat d
+            encObjectField Nothing 1 "id" NatTy d
               $ encNat $ fromIntegral id
             encObjectEnd
 
@@ -332,17 +332,17 @@ type ThriftType = Word8
 
 -- | Compute the Thrift type for a 'Type'
 thriftType :: Type -> ThriftType
-thriftType Byte{} = 3
-thriftType Nat{} = 6
-thriftType String{} = 8
-thriftType (Array Byte{}) = 8
-thriftType Array{} = 9
-thriftType Record{} = 12
-thriftType Sum{} = 12
-thriftType (NamedType (ExpandedType _ ty)) = thriftType ty
-thriftType Enumerated{} = 5 -- spec says enums are i32
-thriftType Boolean{} = 1
-thriftType Predicate{} = 12
+thriftType ByteTy{} = 3
+thriftType NatTy{} = 6
+thriftType StringTy{} = 8
+thriftType (ArrayTy ByteTy{}) = 8
+thriftType ArrayTy{} = 9
+thriftType RecordTy{} = 12
+thriftType SumTy{} = 12
+thriftType (NamedTy (ExpandedType _ ty)) = thriftType ty
+thriftType EnumeratedTy{} = 5 -- spec says enums are i32
+thriftType BooleanTy{} = 1
+thriftType PredicateTy{} = 12
 thriftType typ =
   throw $ EncodingError $ "thrifTType: invalid type " ++ show typ
 
@@ -447,9 +447,9 @@ matchToJSON
   -> RTS.Match (Nested Fid)
   -> FactsToJSON OrderedValue
 matchToJSON env opts typ term = case (typ,term) of
-  (Predicate{}, RTS.Wildcard) -> return (OrderedObject [])
+  (PredicateTy{}, RTS.Wildcard) -> return (OrderedObject [])
   (_, RTS.Wildcard) -> return $ OrderedValue Aeson.Null
-  (Sum fieldTys, RTS.MatchTerm (NestedSum mode fields)) -> do
+  (SumTy fieldTys, RTS.MatchTerm (NestedSum mode fields)) -> do
     flds <- forM (zip fieldTys fields) $ \(FieldDef name ty, term) -> do
       jsonField <- mapM (queryToJSON env opts ty) term
       return $ (name,) <$> jsonField
@@ -457,13 +457,13 @@ matchToJSON env opts typ term = case (typ,term) of
                   (("any", OrderedValue $ Aeson.Bool True) :)
                | otherwise = id
     return $ OrderedObject $ addAny $ catMaybes flds
-  (Array ty, RTS.MatchTerm (NestedArray term)) -> do
+  (ArrayTy ty, RTS.MatchTerm (NestedArray term)) -> do
     term' <- queryToJSON env opts ty term
     return $ OrderedObject [ ("every", term') ]
-  (Predicate{}, RTS.MatchTerm (NestedRef (Fid id))) ->
+  (PredicateTy{}, RTS.MatchTerm (NestedRef (Fid id))) ->
     return $ OrderedObject
       [ ("id", OrderedValue $ Aeson.Number (fromIntegral id)) ]
-  (Predicate{}, RTS.MatchTerm (NestedPred details mids mterm)) -> do
+  (PredicateTy{}, RTS.MatchTerm (NestedPred details mids mterm)) -> do
     let
       idsField = case mids of
         Nothing -> []
@@ -476,7 +476,7 @@ matchToJSON env opts typ term = case (typ,term) of
         let !PredicateDetails{..} = details
         json <- queryToJSON env opts predicateKeyType term
         return $ OrderedObject $ ("key", json) : idsField
-  (String{}, RTS.PrefixWildcard s) -> return $
+  (StringTy{}, RTS.PrefixWildcard s) -> return $
     OrderedObject [("prefix", OrderedValue $ Aeson.String (Text.decodeUtf8 s))]
   (_,_) ->
    throwError $ "queryToJSON: "
@@ -496,29 +496,29 @@ queryToJSON env opts@Thrift.UserQueryOptions{..} typ t = case (typ,t) of
   (_, RTS.Byte w) -> return $ OrderedValue $ Aeson.Number (fromIntegral w)
   (_, RTS.Nat w) -> return $ OrderedValue $ Aeson.Number (fromIntegral w)
   (_, RTS.String s) -> return $ OrderedValue $ Aeson.String $ Text.decodeUtf8 s
-  (Array Byte, RTS.ByteArray bs)
+  (ArrayTy ByteTy, RTS.ByteArray bs)
     | userQueryOptions_no_base64_binary ->
       return $ OrderedValue $ Aeson.String (Text.decodeUtf8 bs)
     | otherwise ->
       return $ OrderedValue $ Aeson.String (encodeBase64Text bs)
-  (Array ty, RTS.Array vals) ->
+  (ArrayTy ty, RTS.Array vals) ->
      OrderedArray . Vector.fromList <$> mapM (queryToJSON env opts ty) vals
-  (Record fieldTys, RTS.Tuple terms) -> fmap OrderedObject
+  (RecordTy fieldTys, RTS.Tuple terms) -> fmap OrderedObject
     $ forM (zip fieldTys terms) $ \(FieldDef name ty, term) -> do
       json <- queryToJSON env opts ty term
       return (name, json)
-  (Sum fieldTys, RTS.Alt n term)
+  (SumTy fieldTys, RTS.Alt n term)
     | Just (FieldDef name ty) <- atMay fieldTys (fromIntegral n) -> do
     json <- queryToJSON env opts ty term
     return $ OrderedObject [(name,json)]
-  (NamedType (ExpandedType _ ty), term) ->
+  (NamedTy (ExpandedType _ ty), term) ->
     queryToJSON env opts ty term
-  (Enumerated _, RTS.Alt n _) ->
+  (EnumeratedTy _, RTS.Alt n _) ->
     return $ OrderedValue $ Aeson.Number (fromIntegral n)
-  (Maybe ty, term) ->
+  (MaybeTy ty, term) ->
     queryToJSON env opts (lowerMaybe ty) term
-  (Boolean{}, RTS.Alt 0 _) -> return $ OrderedValue $ Aeson.Bool False
-  (Boolean{}, RTS.Alt 1 _) -> return $ OrderedValue $ Aeson.Bool True
+  (BooleanTy{}, RTS.Alt 0 _) -> return $ OrderedValue $ Aeson.Bool False
+  (BooleanTy{}, RTS.Alt 1 _) -> return $ OrderedValue $ Aeson.Bool True
   (_, RTS.Ref ref) -> matchToJSON env opts typ ref
   (typ, term) ->
      throwError $ "queryToJSON: "

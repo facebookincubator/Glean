@@ -780,11 +780,11 @@ checkStoredType
   -> IO ()
 checkStoredType preds types def ty = go ty
   where
-  go (Array ty) = go ty
-  go (Maybe ty) = go ty
-  go (Record fields) = forM_ fields $ \(FieldDef _ ty) -> go ty
-  go (Sum fields) = forM_ fields $ \(FieldDef _ ty) -> go ty
-  go (Predicate (PidRef _ ref)) = case HashMap.lookup ref preds of
+  go (ArrayTy ty) = go ty
+  go (MaybeTy ty) = go ty
+  go (RecordTy fields) = forM_ fields $ \(FieldDef _ ty) -> go ty
+  go (SumTy fields) = forM_ fields $ \(FieldDef _ ty) -> go ty
+  go (PredicateTy (PidRef _ ref)) = case HashMap.lookup ref preds of
     Just PredicateDetails{..} -> case predicateDeriving of
       Derive DerivedAndStored _ -> return ()
       Derive _ _ -> throwIO $ ErrorCall $ show $
@@ -792,7 +792,7 @@ checkStoredType preds types def ty = go ty
          " refers to non-stored derived predicate " <> pretty ref
       _ -> return ()
     Nothing -> error "checkStoredType"
-  go (NamedType (ExpandedType ref _)) = case HashMap.lookup ref types of
+  go (NamedTy (ExpandedType ref _)) = case HashMap.lookup ref types of
     Just TypeDetails{..} -> go typeType
     Nothing -> error "checkStoredType"
   go _ = return ()

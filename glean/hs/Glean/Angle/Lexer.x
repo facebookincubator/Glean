@@ -32,8 +32,7 @@ import Data.Text (Text)
 import qualified Data.Text.Encoding as Text
 import Data.Word (Word64)
 
-import Glean.Query.Types (SrcSpan(..), SrcLoc(..))
-import Glean.Angle.Types (AngleVersion, latestAngleVersion)
+import Glean.Angle.Types (SrcSpan(..), SrcLoc(..), AngleVersion, latestAngleVersion)
 }
 
 %wrapper "monadUserState-bytestring"

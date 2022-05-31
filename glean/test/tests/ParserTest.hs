@@ -22,8 +22,8 @@ import TestRunner
 import Util.String.Quasi
 
 import Glean.Angle.Parser
+import Glean.Angle.Types
 import Glean.Init
-import Glean.Query.Types as Query
 import Glean.Schema.Resolve
 
 queryParser :: Test
@@ -32,7 +32,7 @@ queryParser = TestCase $ do
   either print (putDoc . pretty) r
   assertBool "simple query" $ case r of
     Right (SourceQuery Nothing [
-      SourceStatement (Wildcard _) (App _ _pred [Query.String _ _str])]) -> True
+      SourceStatement (Wildcard _) (App _ _pred [String _ _str])]) -> True
     _ -> False
 
   -- lexer error

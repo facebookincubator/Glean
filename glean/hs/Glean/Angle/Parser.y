@@ -23,10 +23,8 @@ import Data.Text.Prettyprint.Doc (pretty)
 
 import Glean.Angle.Lexer
 import Glean.Schema.Util
-import Glean.Query.Types
 import Glean.Types hiding (Query, Nat)
-import qualified Glean.Angle.Types as Schema
-import Glean.Angle.Types (AngleVersion, SourcePat, SourceStatement, SourceQuery, SourceType)
+import Glean.Angle.Types as Schema
 }
 
 %tokentype { Located Token }
@@ -162,7 +160,7 @@ apat
   | '(' ')'                         {% ifVersionOrOlder 1 $2 (Tuple (s $1 $2) []) }
   | '(' seplist2(pattern,',') ')'   {% ifVersionOrOlder 1 $3 (Tuple (s $1 $3) $2) }
 
-field :: { Field SrcSpan Name SourceType }
+field :: { Field SrcSpan SourceRef SourceRef }
 field
   : fieldname '=' pattern  { Field $1 $3 }
 
@@ -242,18 +240,18 @@ optval
 
 type :: { Located Schema.SourceType }
 type
-  : 'byte'                                  { L (sspan $1)   Schema.Byte }
-  | 'nat'                                   { L (sspan $1)   Schema.Nat }
-  | 'string'                                { L (sspan $1)   Schema.String }
-  | '[' type ']'                            { L (s $1 $3)  $ Schema.Array (lval $2) }
-  | '{' seplist0_(fielddef, ',') '}'        { L (s $1 $3)  $ Schema.Record $2 }
-  | '{' fielddef '|' '}'                    { L (s $1 $4)  $ Schema.Sum [$2] }
-  | '{' seplist2_(fielddef, '|')  '}'       { L (s $1 $3)  $ Schema.Sum $2 }
-  | 'enum' '{' seplist_(fieldname, '|') '}' { L (s $1 $4)  $ Schema.Enumerated $3 }
-  | name                                    { L (sspan $1) $ Schema.Predicate (parseRef $ lval $1) }
+  : 'byte'                                  { L (sspan $1)   Schema.ByteTy }
+  | 'nat'                                   { L (sspan $1)   Schema.NatTy }
+  | 'string'                                { L (sspan $1)   Schema.StringTy }
+  | '[' type ']'                            { L (s $1 $3)  $ Schema.ArrayTy (lval $2) }
+  | '{' seplist0_(fielddef, ',') '}'        { L (s $1 $3)  $ Schema.RecordTy $2 }
+  | '{' fielddef '|' '}'                    { L (s $1 $4)  $ Schema.SumTy [$2] }
+  | '{' seplist2_(fielddef, '|')  '}'       { L (s $1 $3)  $ Schema.SumTy $2 }
+  | 'enum' '{' seplist_(fieldname, '|') '}' { L (s $1 $4)  $ Schema.EnumeratedTy $3 }
+  | name                                    { L (sspan $1) $ Schema.PredicateTy (parseRef $ lval $1) }
      -- resolved to typedef/predicate later
-  | 'maybe' type                            { L (s $1 $2)  $ Schema.Maybe (lval $2) }
-  | 'bool'                                  { L (sspan $1) $ Schema.Boolean }
+  | 'maybe' type                            { L (s $1 $2)  $ Schema.MaybeTy (lval $2) }
+  | 'bool'                                  { L (sspan $1) $ Schema.BooleanTy }
   | '(' type ')'                            { L (s $1 $3)  $ lval $2 }
 
 fielddef :: { Schema.SourceFieldDef }

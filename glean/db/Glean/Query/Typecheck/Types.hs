@@ -19,7 +19,7 @@ module Glean.Query.Typecheck.Types
 import Data.Text.Prettyprint.Doc hiding ((<>), enclose)
 
 import Glean.Query.Codegen
-import Glean.Query.Types as Parser
+import Glean.Angle.Types hiding (Type)
 import Glean.RTS.Types as RTS
 import Glean.RTS.Term as RTS hiding (Match(..))
 

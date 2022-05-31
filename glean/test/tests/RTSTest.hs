@@ -41,18 +41,18 @@ instance Arbitrary PidRef where
 
 instance Arbitrary Type where
   arbitrary = oneof
-    [ pure T.Byte
-    , pure T.Nat
-    , pure T.String
-    , T.Array <$> arbitrary
-    , T.Record . fields <$> children 0
-    , T.Sum . fields <$> children 1
-    , T.Predicate <$> arbitrary
-    , T.Maybe <$> arbitrary
+    [ pure T.ByteTy
+    , pure T.NatTy
+    , pure T.StringTy
+    , T.ArrayTy <$> arbitrary
+    , T.RecordTy . fields <$> children 0
+    , T.SumTy . fields <$> children 1
+    , T.PredicateTy <$> arbitrary
+    , T.MaybeTy <$> arbitrary
     , sized $ \n -> do
         k <- choose (0, max 0 n)
-        return $ T.Enumerated ["E" <> Text.pack (show i) | i <- [0 .. k]]
-    , pure T.Boolean
+        return $ T.EnumeratedTy ["E" <> Text.pack (show i) | i <- [0 .. k]]
+    , pure T.BooleanTy
     ]
     where
       children i = sized $ \n -> do
@@ -64,27 +64,28 @@ instance Arbitrary Type where
           | (i,ty) <- zip [0..] tys ]
 
 valueFor :: Type -> Gen Value
-valueFor T.Byte = Byte <$> arbitrary
-valueFor T.Nat = Nat <$> arbitrary
-valueFor T.String = String . Text.encodeUtf8 <$> arbitrary
-valueFor (T.Array ty)
-  | T.Byte <- derefType ty = ByteArray . BS.pack <$> arbitrary
+valueFor T.ByteTy = Byte <$> arbitrary
+valueFor T.NatTy = Nat <$> arbitrary
+valueFor T.StringTy = String . Text.encodeUtf8 <$> arbitrary
+valueFor (T.ArrayTy ty)
+  | T.ByteTy <- derefType ty = ByteArray . BS.pack <$> arbitrary
   | otherwise = fmap Array $ sized $ \n -> do
       k <- choose (0,n)
       vectorOf k $ resize (n `div` k) $ valueFor ty
-valueFor (T.Record fields) = Tuple <$> mapM (valueFor . T.fieldDefType) fields
-valueFor (T.Sum fields) = do
+valueFor (T.RecordTy fields) =
+  Tuple <$> mapM (valueFor . T.fieldDefType) fields
+valueFor (T.SumTy fields) = do
   (i, field) <- elements $ zip [0..] fields
   Alt i <$> valueFor (T.fieldDefType field)
-valueFor T.Predicate{} = Ref <$> arbitrary
-valueFor (T.NamedType (ExpandedType _ ty)) = valueFor ty
-valueFor (T.Maybe ty) = do
+valueFor T.PredicateTy{} = Ref <$> arbitrary
+valueFor (T.NamedTy (ExpandedType _ ty)) = valueFor ty
+valueFor (T.MaybeTy ty) = do
   b <- arbitrary
   if b then Alt 1 <$> valueFor ty else return $ Alt 0 $ Tuple []
-valueFor (T.Enumerated names) = do
+valueFor (T.EnumeratedTy names) = do
   i <- choose (0, fromIntegral (length names - 1))
   return $ Alt i $ Tuple []
-valueFor T.Boolean = do
+valueFor T.BooleanTy = do
   i <- choose (0,1)
   return $ Alt i $ Tuple []
 
@@ -109,5 +110,6 @@ main = withUnitTest $ testRunner $ TestList
 
     -- test strings more thoroughly as they are quite complicated
   , TestLabel "string typecheck" $ TestCase $ assertProperty "mismatch" $
-      forAll (valueFor T.String) $ \val -> prop_typecheckValue T.String val
+      forAll (valueFor T.StringTy) $ \val ->
+        prop_typecheckValue T.StringTy val
   ]

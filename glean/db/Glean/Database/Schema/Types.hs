@@ -176,22 +176,22 @@ mkRtsType
 mkRtsType lookupType lookupPid = rtsType
   where
     rtsType :: Schema.Type -> Maybe Type
-    rtsType Schema.Byte = return Schema.Byte
-    rtsType Schema.Nat = return Schema.Nat
-    rtsType (Schema.Array elty) = Schema.Array <$> rtsType elty
-    rtsType (Schema.Record fields) = Schema.Record <$> mapM fieldType fields
-    rtsType (Schema.Sum fields) = Schema.Sum <$> mapM fieldType fields
-    rtsType Schema.String = return Schema.String
-    rtsType (Schema.Predicate ref) = do
+    rtsType Schema.ByteTy = return Schema.ByteTy
+    rtsType Schema.NatTy = return Schema.NatTy
+    rtsType (Schema.ArrayTy elty) = Schema.ArrayTy <$> rtsType elty
+    rtsType (Schema.RecordTy fields) = Schema.RecordTy <$> mapM fieldType fields
+    rtsType (Schema.SumTy fields) = Schema.SumTy <$> mapM fieldType fields
+    rtsType Schema.StringTy = return Schema.StringTy
+    rtsType (Schema.PredicateTy ref) = do
       pid <- lookupPid ref
-      return (Schema.Predicate (PidRef pid ref))
+      return (Schema.PredicateTy (PidRef pid ref))
     -- TODO: This will loop if we have recursive typedefs but we don't allow
     -- those at the moment.
-    rtsType (Schema.NamedType ref) =
-      Schema.NamedType . ExpandedType ref <$> lookupType ref
-    rtsType (Schema.Maybe eltTy) = Schema.Maybe <$> rtsType eltTy
-    rtsType (Schema.Enumerated names) = return (Schema.Enumerated names)
-    rtsType Schema.Boolean = return Schema.Boolean
+    rtsType (Schema.NamedTy ref) =
+      Schema.NamedTy . ExpandedType ref <$> lookupType ref
+    rtsType (Schema.MaybeTy eltTy) = Schema.MaybeTy <$> rtsType eltTy
+    rtsType (Schema.EnumeratedTy names) = return (Schema.EnumeratedTy names)
+    rtsType Schema.BooleanTy = return Schema.BooleanTy
 
     fieldType :: Schema.FieldDef -> Maybe FieldDef
     fieldType (Schema.FieldDef name ty) = Schema.FieldDef name <$> rtsType ty

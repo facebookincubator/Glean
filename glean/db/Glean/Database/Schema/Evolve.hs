@@ -63,9 +63,9 @@ evolvePat :: (Show a, Show b)
   -> Type
   -> Term (Match a b)
   -> Term (Match c d)
-evolvePat innerL innerR old@(Type.NamedType _) new pat =
+evolvePat innerL innerR old@(Type.NamedTy _) new pat =
   evolvePat innerL innerR (derefType old) new pat
-evolvePat innerL innerR old new@(Type.NamedType _) pat =
+evolvePat innerL innerR old new@(Type.NamedTy _) pat =
   evolvePat innerL innerR old (derefType new) pat
 evolvePat innerL innerR old new pat = case pat of
   Byte x -> Byte x
@@ -86,14 +86,14 @@ evolvePat innerL innerR old new pat = case pat of
     MatchPrefix prefix rest -> MatchPrefix prefix $ evolve old new rest
     MatchExt extra -> MatchExt $ innerL old new extra
   Alt oldIx term
-    | Type.Boolean <- old
-    , Type.Boolean <- new ->
+    | Type.BooleanTy <- old
+    , Type.BooleanTy <- new ->
         evolve lowerBool lowerBool pat
     | Type.Maybe oldTy <- old
     , Type.Maybe newTy <- new ->
         evolve (lowerMaybe oldTy) (lowerMaybe newTy) pat
-    | Type.Enumerated oldAlts <- old
-    , Type.Enumerated newAlts <- new ->
+    | Type.EnumeratedTy oldAlts <- old
+    , Type.EnumeratedTy newAlts <- new ->
         evolve
           (lowerEnum oldAlts)
           (lowerEnum newAlts)
@@ -114,8 +114,8 @@ evolvePat innerL innerR old new pat = case pat of
     , Type.Array newTy <- new ->
       Array $ evolve oldTy newTy <$> terms
   Tuple terms
-    | Type.Record oldFields <- old
-    , Type.Record newFields <- new
+    | Type.RecordTy oldFields <- old
+    , Type.RecordTy newFields <- new
     ->  let termsMap = Map.fromList
               [ (name, (oldTy, term))
               | (FieldDef name oldTy, term) <- zip oldFields terms ]
@@ -187,15 +187,15 @@ mkValueTransformation from to = go from to
           $ \(FieldDef name def, ix) -> (name, (ix, def))
 
     go :: Type -> Type -> Maybe (Value -> Value)
-    go from@(Type.NamedType _) to = go (derefType from) to
-    go from to@(Type.NamedType _) = go from (derefType to)
+    go from@(Type.NamedTy _) to = go (derefType from) to
+    go from to@(Type.NamedTy _) = go from (derefType to)
     go Type.Byte Type.Byte = Nothing
     go Type.Nat Type.Nat = Nothing
     go Type.String Type.String = Nothing
-    go Type.Boolean Type.Boolean = Nothing
+    go Type.BooleanTy Type.BooleanTy = Nothing
     go (Type.Maybe from) (Type.Maybe to) = go (lowerMaybe from) (lowerMaybe to)
     go (Type.Predicate _) (Type.Predicate _) = Nothing
-    go (Type.Enumerated from) (Type.Enumerated to) =
+    go (Type.EnumeratedTy from) (Type.EnumeratedTy to) =
       go (lowerEnum from) (lowerEnum to)
     go (Type.Array from) (Type.Array to) = do
       f <- go from to
@@ -203,7 +203,7 @@ mkValueTransformation from to = go from to
         Array vs -> Array (map f vs)
         _ -> error $ "expected Array, got " <> show term
 
-    go (Type.Record from) (Type.Record to) =
+    go (Type.RecordTy from) (Type.RecordTy to) =
       let transformationsMap = transformationsFor from to
           transformations =
             [ (field, transform)

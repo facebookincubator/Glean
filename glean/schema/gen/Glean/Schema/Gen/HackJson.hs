@@ -28,7 +28,7 @@ import GHC.Generics
 
 import Util.Text (textShow)
 
-import Glean.Angle.Types
+import Glean.Angle.Types hiding (Struct, KeyValue)
 import Glean.Schema.Types
 
 data HackGenData = HackGenData
@@ -151,11 +151,11 @@ genTypeOfDef
   -> Writer [HackEnum] (Text, GenType)
 genTypeOfDef ctx def@(Left PredicateDef{..}) = (,) (refClassname ref) <$>
   case (predicateDefKeyType, predicateDefValueType) of
-    (Record fields, Record[]) -> ClassType . Struct . ClassGenTypeData
+    (RecordTy fields, RecordTy[]) -> ClassType . Struct . ClassGenTypeData
       ref cycles <$> mapM (fieldInfoFor (refClassname ref) ctx) fields
-    (Sum fields, Record[]) -> ClassType . Union . ClassGenTypeData
+    (SumTy fields, RecordTy[]) -> ClassType . Union . ClassGenTypeData
       ref cycles <$> mapM (fieldInfoFor (refClassname ref) ctx) fields
-    (ty, Record[]) -> ClassType . Wrapper . ClassGenTypeData
+    (ty, RecordTy[]) -> ClassType . Wrapper . ClassGenTypeData
       ref cycles <$> mapM (fieldInfoFor (refClassname ref) ctx)
         [FieldDef "key" ty]
     (tyKey, tyValue) -> ClassType . KeyValue . ClassGenTypeData
@@ -166,13 +166,13 @@ genTypeOfDef ctx def@(Left PredicateDef{..}) = (,) (refClassname ref) <$>
     cycles = HashMap.lookupDefault True ref $ contextCycles ctx
 genTypeOfDef ctx def@(Right TypeDef{..}) = (,) (refClassname ref) <$>
   case typeDefType of
-    Record fields ->
+    RecordTy fields ->
       ClassType . Struct . ClassGenTypeData ref cycles <$>
         mapM (fieldInfoFor (refClassname ref) ctx) fields
-    Sum fields ->
+    SumTy fields ->
       ClassType . Union . ClassGenTypeData ref cycles <$>
         mapM (fieldInfoFor (refClassname ref) ctx) fields
-    Enumerated alts -> return $ EnumType alts
+    EnumeratedTy alts -> return $ EnumType alts
     ty -> AliasType . fieldInfoType <$>
       fieldInfoFor (refClassname ref) ctx (FieldDef "value" ty)
   where
@@ -240,15 +240,15 @@ instance Aeson.ToJSON AngleTypeRepr where
 angleTypeReprFor
   :: ResolvedType
   -> ReaderT AngleTypeReprContext (Writer [HackEnum]) AngleTypeRepr
-angleTypeReprFor (Predicate ref) = do
+angleTypeReprFor (PredicateTy ref) = do
   ctx <- ask
   case lookupPredDefKeyValue ctx ref of
     -- If the predicate has value of type {} and the key is a String
     -- avoid wrapping it in a class. This makes writing queries more
     -- concise
-    Just (String, Record []) ->
-      PredicateT ref (classname ctx) <$> angleTypeInnerReprFor String
-    _ -> angleTypeInnerReprFor (Predicate ref)
+    Just (StringTy, RecordTy []) ->
+      PredicateT ref (classname ctx) <$> angleTypeInnerReprFor StringTy
+    _ -> angleTypeInnerReprFor (PredicateTy ref)
     where
       lookupPredDefKeyValue ctx pref = do
         PredicateDef{..} <- HashMap.lookup pref $ ctxPredMap ctx
@@ -260,26 +260,26 @@ angleTypeReprFor ty = angleTypeInnerReprFor ty
 angleTypeInnerReprFor
   :: ResolvedType
   -> ReaderT AngleTypeReprContext (Writer [HackEnum]) AngleTypeRepr
-angleTypeInnerReprFor Byte = return ByteTInt
-angleTypeInnerReprFor Nat = return NatTInt
-angleTypeInnerReprFor String = return StringTString
-angleTypeInnerReprFor (Array ty) = ArrayTVec <$> angleTypeInnerReprFor ty
-angleTypeInnerReprFor (Record fields) =
+angleTypeInnerReprFor ByteTy = return ByteTInt
+angleTypeInnerReprFor NatTy = return NatTInt
+angleTypeInnerReprFor StringTy = return StringTString
+angleTypeInnerReprFor (ArrayTy ty) = ArrayTVec <$> angleTypeInnerReprFor ty
+angleTypeInnerReprFor (RecordTy fields) =
   RecordTShape <$> mapM f fields
   where
     f FieldDef{..} =
       (,) fieldDefName <$> angleTypeInnerReprFor fieldDefType
-angleTypeInnerReprFor (Sum fields) =
+angleTypeInnerReprFor (SumTy fields) =
   SumTShape <$> mapM f fields
   where
     f FieldDef{..} =
       (,) fieldDefName <$> angleTypeInnerReprFor fieldDefType
-angleTypeInnerReprFor (Predicate ref) = do
+angleTypeInnerReprFor (PredicateTy ref) = do
   ctx <- ask
   case lookupPredDefKeyValue ctx ref of
     Nothing -> return $
       PredicateTNamed ref $ classname ctx
-    Just (_k, Record []) -> return $
+    Just (_k, RecordTy []) -> return $
       PredicateTNamed ref $ classname ctx
     Just (_k, _v) -> return $
       PredicateTKeyValue ref $ classname ctx
@@ -289,14 +289,14 @@ angleTypeInnerReprFor (Predicate ref) = do
         return (predicateDefKeyType, predicateDefValueType)
       classname AngleTypeReprContext{..} =
         refClassname $ prefVref ctxPredLatest ref
-angleTypeInnerReprFor (NamedType ref) = do
+angleTypeInnerReprFor (NamedTy ref) = do
   ctx <- ask
   case lookupTypeDefType ctx ref of
-    Just (Enumerated alts) ->
+    Just (EnumeratedTy alts) ->
       return $ NamedTypeTEnum alts ref $ classname ctx
     Nothing -> return $ NamedTypeTNamed ref $ classname ctx
-    Just Record{} -> return $ NamedTypeTNamed ref $ classname ctx
-    Just Sum{} -> return $ NamedTypeTNamed ref $ classname ctx
+    Just RecordTy{} -> return $ NamedTypeTNamed ref $ classname ctx
+    Just SumTy{} -> return $ NamedTypeTNamed ref $ classname ctx
     Just t ->
       NamedTypeTAlias ref (classname ctx) <$>
         angleTypeInnerReprFor t
@@ -305,8 +305,8 @@ angleTypeInnerReprFor (NamedType ref) = do
       HashMap.lookup tref (ctxTypeMap ctx)
     classname AngleTypeReprContext{..} =
       refClassname $ trefVref ctxTypeLatest ref
-angleTypeInnerReprFor (Maybe t) = MaybeTOption <$> angleTypeInnerReprFor t
-angleTypeInnerReprFor (Enumerated alts) = do
+angleTypeInnerReprFor (MaybeTy t) = MaybeTOption <$> angleTypeInnerReprFor t
+angleTypeInnerReprFor (EnumeratedTy alts) = do
   AngleTypeReprContext{..} <- ask
   let
     enumName =
@@ -315,7 +315,7 @@ angleTypeInnerReprFor (Enumerated alts) = do
     f name = (name, name)
   tell [enum]
   return $ EnumeratedTEnum alts enumName
-angleTypeInnerReprFor Boolean = return BooleanTBool
+angleTypeInnerReprFor BooleanTy = return BooleanTBool
 
 defFile :: Either ResolvedPredicateDef ResolvedTypeDef -> FilePath
 defFile (Left p) = fileFor $ predicateDefName p
@@ -410,14 +410,14 @@ cyclesInDefs ctx defs = concatMap hasCycles sccs
   outEdgesFields fields = outEdgesTs [ ty | FieldDef _ ty <- fields ]
 
   outEdgesT :: ResolvedType -> [(Name,Version)]
-  outEdgesT Byte{} = []
-  outEdgesT Nat{} = []
-  outEdgesT Boolean{} = []
-  outEdgesT String{} = []
-  outEdgesT (Array ty) = outEdgesT ty
-  outEdgesT (Maybe ty) = outEdgesT ty
-  outEdgesT (Record fields)  = outEdgesFields fields
-  outEdgesT (Sum fields)  = outEdgesFields fields
-  outEdgesT (NamedType (TypeRef name ver)) = [(name,ver)]
-  outEdgesT (Predicate (PredicateRef name ver)) = [(name,ver)]
-  outEdgesT Enumerated{} = []
+  outEdgesT ByteTy{} = []
+  outEdgesT NatTy{} = []
+  outEdgesT BooleanTy{} = []
+  outEdgesT StringTy{} = []
+  outEdgesT (ArrayTy ty) = outEdgesT ty
+  outEdgesT (MaybeTy ty) = outEdgesT ty
+  outEdgesT (RecordTy fields)  = outEdgesFields fields
+  outEdgesT (SumTy fields)  = outEdgesFields fields
+  outEdgesT (NamedTy (TypeRef name ver)) = [(name,ver)]
+  outEdgesT (PredicateTy (PredicateRef name ver)) = [(name,ver)]
+  outEdgesT EnumeratedTy{} = []

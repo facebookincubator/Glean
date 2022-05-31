@@ -283,13 +283,13 @@ writeJsonFact
     -> J.Value                            -- ^ the JSON value
     -> WriteFacts ()
   jsonToTerm b typ v = case (typ, v) of
-    (Nat, J.Int n) ->
+    (NatTy, J.Int n) ->
       lift $ invoke $ glean_push_value_nat b $ fromIntegral n
-    (Byte, J.Int n) ->
+    (ByteTy, J.Int n) ->
       lift $ invoke $ glean_push_value_byte b $ fromIntegral n
-    (String, J.String (J.ByteStringRef p n)) ->
+    (StringTy, J.String (J.ByteStringRef p n)) ->
       lift $ invoke $ glean_push_value_string b (castPtr p) n
-    (Array Byte, J.String (J.ByteStringRef p n))
+    (ArrayTy ByteTy, J.String (J.ByteStringRef p n))
       | sendJsonBatchOptions_no_base64_binary -> lift $ do
           invoke $ glean_push_value_array b n
           invoke $ glean_push_value_bytes b (castPtr p) n
@@ -299,13 +299,13 @@ writeJsonFact
           FFI.unsafeWithBytes bytes $ \ptr len -> do
             invoke $ glean_push_value_array b len
             invoke $ glean_push_value_bytes b (castPtr ptr) len
-    (Array ty, J.Array arr) -> do
+    (ArrayTy ty, J.Array arr) -> do
       let !n = J.size arr
       lift $ invoke $ glean_push_value_array b $ fromIntegral n
       when (n > 0) $ forM_ [0 .. n-1] $ \i -> do
         x <- lift $ J.index arr i
         jsonToTerm b ty x
-    (Record fields, J.Object obj) -> do
+    (RecordTy fields, J.Object obj) -> do
       let
         doField !n (FieldDef name ty) = do
           r <- lift $ J.field obj $ Text.encodeUtf8 name
@@ -319,7 +319,7 @@ writeJsonFact
       n <- foldM doField 0 fields
       -- ensure that all the fields mentioned in the fact are valid
       when (J.arity obj /= n) $ termError typ v
-    (Sum fields, J.Object obj)
+    (SumTy fields, J.Object obj)
       | J.arity obj == 1 -> do
           let -- this is O(number of alternatives) but I don't expect this is
               -- a problem
@@ -334,13 +334,13 @@ writeJsonFact
                   Nothing -> get (n+1) rest
               get _ _ = termError typ v
           get 0 fields
-    (NamedType (ExpandedType _ ty), val) -> jsonToTerm b ty val
-    (Predicate{}, J.Int n)
+    (NamedTy (ExpandedType _ ty), val) -> jsonToTerm b ty val
+    (PredicateTy{}, J.Int n)
       | n == fromFid invalidFid -> invalidFactIdError
       | otherwise -> lift $ invoke $ glean_push_value_fact b $ Fid n
     -- allow { "id": N } for predicate refs, this allows us to accept
     -- JSON-serialized Thrift facts.
-    (Predicate (PidRef pid ref), val) ->
+    (PredicateTy (PidRef pid ref), val) ->
       -- Facts can be nested. We know from the schema the predicate of
       -- the fact at this position.
       case lookupPid pid dbSchema of
@@ -348,15 +348,15 @@ writeJsonFact
         Just deets -> do
           fid <- factToTerm deets val
           lift $ invoke $ glean_push_value_fact b fid
-    (Enumerated vals, J.Int n)
+    (EnumeratedTy vals, J.Int n)
       | fromIntegral n < length vals ->
         lift $ invoke $ glean_push_value_selector b $ fromIntegral n
-    (Maybe ty, val) -> do
+    (MaybeTy ty, val) -> do
       lift $ invoke $ glean_push_value_selector b 1
       jsonToTerm b ty val
-    (Boolean, J.Bool False) ->
+    (BooleanTy, J.Bool False) ->
       lift $ invoke $ glean_push_value_selector b 0
-    (Boolean, J.Bool True) ->
+    (BooleanTy, J.Bool True) ->
       lift $ invoke $ glean_push_value_selector b 1
     _otherwise -> termError typ v
 
@@ -365,22 +365,22 @@ writeJsonFact
   -- here.
   defaultValue :: Builder -> Type -> IO ()
   defaultValue b typ = case typ of
-    Byte -> invoke $ glean_push_value_byte b 0
-    Nat -> invoke $ glean_push_value_nat b 0
-    String -> invoke $ glean_push_value_string b nullPtr 0
-    Array{} -> invoke $ glean_push_value_array b 0
-    Record fields ->
+    ByteTy -> invoke $ glean_push_value_byte b 0
+    NatTy -> invoke $ glean_push_value_nat b 0
+    StringTy -> invoke $ glean_push_value_string b nullPtr 0
+    ArrayTy{} -> invoke $ glean_push_value_array b 0
+    RecordTy fields ->
       mapM_ (defaultValue b) [ty | FieldDef _ ty <- fields ]
-    Sum (FieldDef _ ty : _) -> do
+    SumTy (FieldDef _ ty : _) -> do
       invoke $ glean_push_value_selector b 0
       defaultValue b ty
-    NamedType (ExpandedType _ ty) -> defaultValue b ty
-    Predicate{} -> throwError $ "no default for a predicate reference; "
+    NamedTy (ExpandedType _ ty) -> defaultValue b ty
+    PredicateTy{} -> throwError $ "no default for a predicate reference; "
       ++ "JSON might be missing a predicate ref, "
       ++ "or include one in an unexpected location"
-    Enumerated{} -> invoke $ glean_push_value_selector b 0
-    Maybe ty -> defaultValue b (lowerMaybe ty)
-    Boolean -> invoke $ glean_push_value_selector b 0
+    EnumeratedTy{} -> invoke $ glean_push_value_selector b 0
+    MaybeTy ty -> defaultValue b (lowerMaybe ty)
+    BooleanTy -> invoke $ glean_push_value_selector b 0
     _otherwise -> throwError $ "internal: defaultValue: " <> show typ
 
   throwError :: MonadIO m => String -> m a
@@ -401,19 +401,19 @@ writeJsonFact
     punctuate ", " [ dquotes (pretty f) | FieldDef f _ <- fields ]
 
   expecting :: Type -> Doc ann
-  expecting Nat = "number"
-  expecting Byte = "number"
-  expecting String = "string"
-  expecting (Array Byte) = "string"
-  expecting Array{} = "[..]"
-  expecting (Record fields) =
+  expecting NatTy = "number"
+  expecting ByteTy = "number"
+  expecting StringTy = "string"
+  expecting (ArrayTy ByteTy) = "string"
+  expecting ArrayTy{} = "[..]"
+  expecting (RecordTy fields) =
     "{..} (allowed fields: " <> allowed fields <> ")"
-  expecting (Sum fields) =
+  expecting (SumTy fields) =
     "{\"field\" : value} (allowed fields: " <> allowed fields <> ")"
-  expecting (Enumerated vals) =
+  expecting (EnumeratedTy vals) =
     "number (< " <> pretty (length vals) <> ")"
-  expecting (Maybe ty) =
+  expecting (MaybeTy ty) =
     expecting (lowerMaybe ty)
-  expecting Boolean = "true or false"
-  expecting Predicate{} = "N, or {\"id\": N }, where N is a fact ID"
+  expecting BooleanTy = "true or false"
+  expecting PredicateTy{} = "N, or {\"id\": N }, where N is a fact ID"
   expecting _ = error "expecting"

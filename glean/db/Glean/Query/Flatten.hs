@@ -45,7 +45,7 @@ flatten dbSchema _ver deriveStored typechecked = do
   let returnTy = derefType $ transformType dbSchema $ qiReturnType typechecked
       deriveStoredPred =
         case returnTy of
-          Schema.Predicate (PidRef _ pref) | deriveStored -> Just pref
+          Angle.PredicateTy (PidRef _ pref) | deriveStored -> Just pref
           _ -> Nothing
       state = initialFlattenState
         dbSchema
@@ -461,7 +461,7 @@ captureKey
   -> Type
   -> F (FlatQuery, Type)
 captureKey dbSchema (FlatQuery pat Nothing stmts) ty
-  | Angle.Predicate pidRef@(PidRef pid _) <- ty  = do
+  | Angle.PredicateTy pidRef@(PidRef pid _) <- ty  = do
   let
     -- look for $result = pred pat
     -- replace it with  $result = pred ($key @ pat)
@@ -573,7 +573,7 @@ captureKey dbSchema (FlatQuery pat Nothing stmts) ty
   --    $key is the key
     let
       pidRef = PidRef (tempPid dbSchema) tempPredicateRef
-      pidTy = Angle.Predicate pidRef
+      pidTy = Angle.PredicateTy pidRef
       retTy = tupleSchema [pidTy, ty, unit]
 
     fidVar <- fresh pidTy

@@ -63,7 +63,7 @@ toGenerators dbSchema deriveStored details term =
   ty = predicateKeyType details
   queryTy = tupleSchema [predTy, ty]
   pidRef = PidRef pid ref
-  predTy = Angle.Predicate pidRef
+  predTy = Angle.PredicateTy pidRef
 
   compileResult = flip runStateT 0 $ do
     pat <- nestedTerm ty term
@@ -88,19 +88,19 @@ toGenerators dbSchema deriveStored details term =
     (_, RTS.Nat n) -> return (RTS.Nat n)
     (_, RTS.String s) -> return (RTS.String s)
     (_, RTS.ByteArray bs) -> return (RTS.ByteArray bs)
-    (Angle.Array elemTy, RTS.Array vs) ->
+    (Angle.ArrayTy elemTy, RTS.Array vs) ->
       RTS.Array <$> mapM (nestedTerm elemTy) vs
-    (Angle.Record fieldDefs, RTS.Tuple fields) ->
+    (Angle.RecordTy fieldDefs, RTS.Tuple fields) ->
       RTS.Tuple <$>
         zipWithM nestedTerm (map Angle.fieldDefType fieldDefs) fields
-    (Angle.Sum fields, RTS.Alt n term) ->
+    (Angle.SumTy fields, RTS.Alt n term) ->
       RTS.Alt n <$>
         nestedTerm (Angle.fieldDefType (fields !! fromIntegral n)) term
     (ty, RTS.Ref match) -> nestedMatch ty match
-    (Angle.NamedType (ExpandedType _ ty), term) -> nestedTerm ty term
-    (Angle.Maybe ty, term) -> nestedTerm (lowerMaybe ty) term
-    (Angle.Enumerated names, term) -> nestedTerm (lowerEnum names) term
-    (Angle.Boolean, term) -> nestedTerm lowerBool term
+    (Angle.NamedTy (ExpandedType _ ty), term) -> nestedTerm ty term
+    (Angle.MaybeTy ty, term) -> nestedTerm (lowerMaybe ty) term
+    (Angle.EnumeratedTy names, term) -> nestedTerm (lowerEnum names) term
+    (Angle.BooleanTy, term) -> nestedTerm lowerBool term
     (ty,term) -> error $
       "nestedTerm: " <> show ty <> " " <> show (void term)
 
@@ -131,7 +131,7 @@ toGenerators dbSchema deriveStored details term =
         (RTS.Ref (MatchWild predicateValueType))))))
   nestedMatch ty (RTS.MatchTerm NestedPred{}) =
     return (RTS.Ref (MatchWild ty))
-  nestedMatch ty@(Angle.Sum fields)
+  nestedMatch ty@(Angle.SumTy fields)
       (RTS.MatchTerm (NestedSum SumMatchThese alts))
     -- Just one alt: compile directly to a match on Alt
     | [(ix,ty,alt)] <-
@@ -152,10 +152,10 @@ toGenerators dbSchema deriveStored details term =
     return (RTS.Ref (MatchWild ty))
   nestedMatch ty (RTS.MatchTerm NestedArray{}) =
     return (RTS.Ref (MatchWild ty))
-  nestedMatch (Angle.NamedType (ExpandedType _ ty)) term = nestedMatch ty term
-  nestedMatch Angle.Boolean term = nestedMatch lowerBool term
-  nestedMatch (Angle.Maybe t) term = nestedMatch (lowerMaybe t) term
-  nestedMatch (Angle.Enumerated names) term = nestedMatch (lowerEnum names) term
+  nestedMatch (Angle.NamedTy (ExpandedType _ ty)) term = nestedMatch ty term
+  nestedMatch Angle.BooleanTy term = nestedMatch lowerBool term
+  nestedMatch (Angle.MaybeTy t) term = nestedMatch (lowerMaybe t) term
+  nestedMatch (Angle.EnumeratedTy names) term = nestedMatch (lowerEnum names) term
   nestedMatch _ _ = error "nestedMatch"
 
   or ty = foldr f (RTS.Ref (MatchNever ty))

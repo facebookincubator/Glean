@@ -81,7 +81,8 @@ class (Type p, Type (KeyType p), Type (ValueType p)) => Predicate p where
 
 -- | Retrieve the Angle representation of the type
 predicateSourceType :: Predicate p => Proxy p -> Angle.SourceType
-predicateSourceType proxy = Angle.Predicate $ Angle.convertRef (getName proxy)
+predicateSourceType proxy =
+  Angle.PredicateTy $ Angle.convertRef (getName proxy)
 
 justId :: Predicate p => IdOf p -> p
 justId x = mkFact x Nothing Nothing

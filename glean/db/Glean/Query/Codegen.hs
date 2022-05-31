@@ -50,10 +50,10 @@ import qualified Util.FFI as FFI
 import Util.Log
 import qualified Util.Log.Text as TextLog
 
+import Glean.Angle.Types (IsWild(..))
 import qualified Glean.Angle.Types as Angle
 import Glean.Bytecode.Types
 import qualified Glean.FFI as FFI
-import Glean.Query.Types (IsWild(..))
 import Glean.RTS
 import Glean.RTS.Builder
 import Glean.RTS.Bytecode.Code
@@ -494,8 +494,8 @@ compileQuery (QueryWithInfo query numVars ty) = do
   -- Tell the query engine how to traverse results for expanding
   -- nested facts.
   (pid, traverse) <- case derefType ty of
-    Angle.Record [ pidfield, key, val ]
-      | Angle.Predicate (PidRef pid ref) <-
+    Angle.RecordTy [ pidfield, key, val ]
+      | Angle.PredicateTy (PidRef pid ref) <-
           derefType (Angle.fieldDefType pidfield) -> do
         traverse <- case ref of
           PredicateRef "_tmp_" _ -> Just <$>

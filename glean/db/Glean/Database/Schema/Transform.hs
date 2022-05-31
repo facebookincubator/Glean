@@ -18,12 +18,11 @@ import Data.Maybe (fromMaybe, listToMaybe, isJust)
 import Data.Text (Text)
 import Data.Word (Word64)
 
-import Glean.Angle.Types (FieldDef_(..))
-import qualified Glean.Angle.Types as Type
+import Glean.Angle.Types as Type hiding (Tuple, Type, SourcePat_(..))
 import Glean.Query.Codegen
 import Glean.Database.Schema.Types
 import qualified Glean.RTS as RTS
-import Glean.RTS.Types
+import Glean.RTS.Types as RTS
 import Glean.RTS.Term (Value, Term(..))
 import Glean.Schema.Util (lowerMaybe, lowerBool, lowerEnum)
 import qualified Glean.Types as Thrift
@@ -61,9 +60,9 @@ transformPat :: (Show a, Show b)
   -> Type
   -> Term (Match a b)
   -> Term (Match c d)
-transformPat innerL innerR from@(Type.NamedType _) to pat =
+transformPat innerL innerR from@(NamedTy _) to pat =
   transformPat innerL innerR (derefType from) to pat
-transformPat innerL innerR from to@(Type.NamedType _) pat =
+transformPat innerL innerR from to@(NamedTy _) pat =
   transformPat innerL innerR from (derefType to) pat
 transformPat innerL innerR from to pat = case pat of
   Byte x -> Byte x
@@ -83,26 +82,26 @@ transformPat innerL innerR from to pat = case pat of
       (transform from to b)
     MatchPrefix prefix rest -> MatchPrefix prefix $ transform from to rest
     MatchArrayPrefix _ty prefix
-      | Type.Array fromElem <- from
-      , Type.Array toElem <- to
+      | ArrayTy fromElem <- from
+      , ArrayTy toElem <- to
       -> MatchArrayPrefix toElem (map (transform fromElem toElem) prefix)
       | otherwise -> error "unexpected"
     MatchExt extra -> MatchExt $ innerL from to extra
   Alt fromIx term
-    | Type.Boolean <- from
-    , Type.Boolean <- to ->
+    | BooleanTy <- from
+    , BooleanTy <- to ->
         transform lowerBool lowerBool pat
-    | Type.Maybe fromTy <- from
-    , Type.Maybe toTy <- to ->
+    | MaybeTy fromTy <- from
+    , MaybeTy toTy <- to ->
         transform (lowerMaybe fromTy) (lowerMaybe toTy) pat
-    | Type.Enumerated fromAlts <- from
-    , Type.Enumerated toAlts <- to ->
+    | EnumeratedTy fromAlts <- from
+    , EnumeratedTy toAlts <- to ->
         transform
           (lowerEnum fromAlts)
           (lowerEnum toAlts)
           pat
-    | Type.Sum fromAlts <- from
-    , Type.Sum toAlts <- to
+    | SumTy fromAlts <- from
+    , SumTy toAlts <- to
     -- alternatives could change order
     , Just fromAlt <- fromAlts `maybeAt` fromIntegral fromIx
     , Just toIx <-
@@ -113,12 +112,12 @@ transformPat innerL innerR from to pat = case pat of
           (fieldDefType toAlt)
           term
   Array terms
-    | Type.Array fromTy <- from
-    , Type.Array toTy <- to ->
+    | ArrayTy fromTy <- from
+    , ArrayTy toTy <- to ->
       Array $ transform fromTy toTy <$> terms
   Tuple terms
-    | Type.Record fromFields <- from
-    , Type.Record toFields <- to
+    | RecordTy fromFields <- from
+    , RecordTy toFields <- to
     ->  let termsMap = Map.fromList
               [ (name, (fromTy, term))
               | (FieldDef name fromTy, term) <- zip fromFields terms ]
@@ -166,8 +165,8 @@ mkValueTransformation from to = go from to
 
     -- one entry for each common field
     transformationsFor
-      :: [FieldDef]
-      -> [FieldDef]
+      :: [RTS.FieldDef]
+      -> [RTS.FieldDef]
       -> Map Text (Maybe (Word64, Value -> Value))
     transformationsFor from to =
       Map.intersectionWith trans fromFields toFields
@@ -190,23 +189,23 @@ mkValueTransformation from to = go from to
           $ \(FieldDef name def, ix) -> (name, (ix, def))
 
     go :: Type -> Type -> Maybe (Value -> Value)
-    go from@(Type.NamedType _) to = go (derefType from) to
-    go from to@(Type.NamedType _) = go from (derefType to)
-    go Type.Byte Type.Byte = Nothing
-    go Type.Nat Type.Nat = Nothing
-    go Type.String Type.String = Nothing
-    go Type.Boolean Type.Boolean = Nothing
-    go (Type.Maybe from) (Type.Maybe to) = go (lowerMaybe from) (lowerMaybe to)
-    go (Type.Predicate _) (Type.Predicate _) = Nothing
-    go (Type.Enumerated from) (Type.Enumerated to) =
+    go from@(NamedTy _) to = go (derefType from) to
+    go from to@(NamedTy _) = go from (derefType to)
+    go ByteTy ByteTy = Nothing
+    go NatTy NatTy = Nothing
+    go StringTy StringTy = Nothing
+    go BooleanTy BooleanTy = Nothing
+    go (MaybeTy from) (MaybeTy to) = go (lowerMaybe from) (lowerMaybe to)
+    go (PredicateTy _) (PredicateTy _) = Nothing
+    go (EnumeratedTy from) (EnumeratedTy to) =
       go (lowerEnum from) (lowerEnum to)
-    go (Type.Array from) (Type.Array to) = do
+    go (ArrayTy from) (ArrayTy to) = do
       f <- go from to
       return $ \term -> case term of
         Array vs -> Array (map f vs)
         _ -> error $ "expected Array, got " <> show term
 
-    go (Type.Record from) (Type.Record to) =
+    go (RecordTy from) (RecordTy to) =
       let transformations = transformationsFor from to
           sameFieldCount = length from == length to
           -- implies same field order as well
@@ -229,7 +228,7 @@ mkValueTransformation from to = go from to
             contentsByName = Map.fromList $ zip (names from) contents
         _ -> error $ "expected Tuple, got " <> show term
 
-    go (Type.Sum from) (Type.Sum to) =
+    go (SumTy from) (SumTy to) =
       let transformations = transformationsFor from to
           safeAltCount = length from <= length to
           sameAltContents = Map.null (Map.filter isJust transformations)
@@ -256,5 +255,5 @@ mkValueTransformation from to = go from to
 
 defaultValue :: Type -> Value
 defaultValue ty = case ty of
-  Type.Maybe _ -> Alt 0 (Tuple [])
+  MaybeTy _ -> Alt 0 (Tuple [])
   _ -> error $ "type doesn't have a default value: " <> show ty

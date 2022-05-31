@@ -310,13 +310,13 @@ shareTypeDef here t = do
 thriftTy :: NameSpaces -> ResolvedType -> M Text
 thriftTy here t = case t of
   -- Basic types
-  Byte{} -> return "glean.Byte"
-  Nat{} -> return "glean.Nat"
-  Boolean{} -> return "bool"
-  String{} -> return "string"
+  ByteTy{} -> return "glean.Byte"
+  NatTy{} -> return "glean.Nat"
+  BooleanTy{} -> return "bool"
+  StringTy{} -> return "string"
   -- Containers
-  Array Byte -> return "binary"
-  Array ty -> do
+  ArrayTy ByteTy -> return "binary"
+  ArrayTy ty -> do
     query <- isQuery <$> getMode
     if query then do
       -- like shareTypeDef but we want to hint the typedef name, not
@@ -331,9 +331,9 @@ thriftTy here t = case t of
     else do
       inner <- thriftTy here ty
       return $ "list<" <> inner  <> ">"
-  Record{} -> shareTypeDef here t
-  Sum{} -> shareTypeDef here t
-  Maybe tInner -> do
+  RecordTy{} -> shareTypeDef here t
+  SumTy{} -> shareTypeDef here t
+  MaybeTy tInner -> do
     query <- isQuery <$> getMode
     if query then
       shareTypeDef here (lowerMaybe tInner)
@@ -341,13 +341,13 @@ thriftTy here t = case t of
       inner <- thriftTy here tInner
       return (optionalize inner)
   -- References
-  Predicate pred -> do
+  PredicateTy pred -> do
     mode <- getMode
     thriftName mode here <$> predicateName pred
-  NamedType typeRef -> do
+  NamedTy typeRef -> do
     mode <- getMode
     thriftName mode here <$> typeName typeRef
-  Enumerated _ -> shareTypeDef here t
+  EnumeratedTy _ -> shareTypeDef here t
 
 mkField :: [Text] -> Text -> Int -> Name -> Text -> Text
 mkField annots structOrUnion i p t =
@@ -418,10 +418,10 @@ genPred here PredicateDef{..} = do
   -- These aren't very useful except for documentation purposes, so that
   -- you can refer to an Id by its typeref name in APIs.
   (type_id, define_id) <- do
-    let target_type = NamedType (TypeRef "glean.Id" 0)
+    let target_type = NamedTy (TypeRef "glean.Id" 0)
     type_id <- thriftTy here target_type
     let d = "typedef " <> type_id <> " " <> thriftName mode here name_id
-    new_alias <- thriftTy here (NamedType (TypeRef (joinDot name_id) 0))
+    new_alias <- thriftTy here (NamedTy (TypeRef (joinDot name_id) 0))
     return (new_alias, d)
 
   (type_key, define_key) <-
@@ -486,18 +486,18 @@ needsRefType t = do
       -- so no recusive loop, so we do not need a ref type
       return False
     Just rep -> case rep of
-      Record{} -> return True
-      Sum{} -> return True
-      Predicate{} -> return True
-      Array t -> needsRefType t
-      Maybe t -> needsRefType t
+      RecordTy{} -> return True
+      SumTy{} -> return True
+      PredicateTy{} -> return True
+      ArrayTy t -> needsRefType t
+      MaybeTy t -> needsRefType t
       _ -> return False
 
 -- Make the thriftTy type text, and the [Text] declaration block
 define_kt :: NameSpaces -> ResolvedType -> (NameSpaces, Text) -> M (Text, [Text])
 define_kt here typ name_kt = do
   let gname = joinDot name_kt
-  ref <- thriftTy here (NamedType (TypeRef gname 0))
+  ref <- thriftTy here (NamedTy (TypeRef gname 0))
   def <- genType here TypeDef
     { typeDefRef = TypeRef gname 0
     , typeDefType = typ }
@@ -552,8 +552,8 @@ genType here TypeDef{..} = addExtraDecls $ do
       return [define]
 
   case typeDefType of
-    Record fields -> structLike "struct" fields withRecordFieldHint []
-    Sum fields -> structLike structOrUnion fields withUnionFieldHint anyField
+    RecordTy fields -> structLike "struct" fields withRecordFieldHint []
+    SumTy fields -> structLike structOrUnion fields withUnionFieldHint anyField
       where
         structOrUnion = if query then "struct" else "union"
         anyField
@@ -561,7 +561,7 @@ genType here TypeDef{..} = addExtraDecls $ do
           | otherwise = []
 
     -- queries on arrays:
-    Array ty | query, not (isByt ty) -> do
+    ArrayTy ty | query, not (isByt ty) -> do
       inner <- thriftTy here ty
       let
         fields =
@@ -572,7 +572,7 @@ genType here TypeDef{..} = addExtraDecls $ do
           [ "union " <> name <> " {" ] ++ indentLines fields ++ [ "}" ]
       return [define]
 
-    Enumerated vals -> makeEnumerated name vals
+    EnumeratedTy vals -> makeEnumerated name vals
 
     _other_ty -> do
       t <- thriftTy here typeDefType

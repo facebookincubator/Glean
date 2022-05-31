@@ -51,10 +51,9 @@ import Util.IO
 import Util.Timing
 import Util.OptParse (commandParser)
 
-import Glean.Query.Types
 import Glean.Query.Typecheck (tcQueryDeps)
 import Glean.Query.Codegen (QueryWithInfo(..))
-import Glean.Angle.Types hiding (Array, String, Nat)
+import Glean.Angle.Types
 import Glean.Angle.Parser
 import Glean.Database.Config (catSchemaFiles)
 import Glean.Database.Schema
@@ -396,7 +395,7 @@ rmLocSchemas (SourceSchemas version schemas evolves) =
       FactId _ x y -> FactId () x y
       TypeSignature _ x t -> TypeSignature () (rmLocPat x) t
 
-    rmLocField :: Field a Name SourceType -> Field () Name SourceType
+    rmLocField :: Field a SourceRef SourceRef -> Field () SourceRef SourceRef
     rmLocField (Field name pat) =
       Field name (rmLocPat pat)
 

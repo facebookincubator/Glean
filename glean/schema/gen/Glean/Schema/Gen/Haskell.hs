@@ -251,30 +251,30 @@ haskellTy_
   -> M Text
 haskellTy_ withId mode genSub here t = case t of
   -- Leafs
-  Byte{} -> return "Glean.Byte"
-  Nat{} -> return "Glean.Nat"
-  Boolean{} -> return "Prelude.Bool"
-  String{} -> return "Data.Text.Text"
-  Array Byte -> return "Data.ByteString.ByteString"
-  Array tInner -> do
+  ByteTy{} -> return "Glean.Byte"
+  NatTy{} -> return "Glean.Nat"
+  BooleanTy{} -> return "Prelude.Bool"
+  StringTy{} -> return "Data.Text.Text"
+  ArrayTy ByteTy -> return "Data.ByteString.ByteString"
+  ArrayTy tInner -> do
     inner <- haskellTy_ withId mode genSub here tInner
     return $ "[" <> inner <> "]"
-  Record{} -> shareTypeDef mode genSub here t
-  Sum{} -> shareTypeDef mode genSub here t
-  Maybe ty -> do
+  RecordTy{} -> shareTypeDef mode genSub here t
+  SumTy{} -> shareTypeDef mode genSub here t
+  MaybeTy ty -> do
     inner <- haskellTy_ withId mode genSub here ty
     return (optionalize inner)
   -- References
-  Predicate pred -> do
+  PredicateTy pred -> do
     let wrap = case withId of
           PredName -> id
           PredId -> ("Glean.IdOf" <>!)
           PredKey -> ("Glean.KeyType " <>)
     wrap . haskellTypeName mode <$> predicateName pred
 
-  NamedType typeRef ->
+  NamedTy typeRef ->
     haskellTypeName mode <$> typeName typeRef
-  Enumerated _ -> shareTypeDef mode genSub here t
+  EnumeratedTy _ -> shareTypeDef mode genSub here t
 
 
 genPredicate :: Mode -> ResolvedPredicateDef -> M [Text]
@@ -366,17 +366,17 @@ define_kt
   -> (NameSpaces, Text)
   -> M (Text, [Text])
 define_kt mode here typ name_kt = case typ of
-  Byte{} -> leaf
-  Nat{} -> leaf
-  String{} -> leaf
-  Record [] -> leaf
-  Record _fields -> alias typ
-  Array{} -> alias typ
-  Sum [] -> leaf
-  Sum _fields -> alias typ
-  Maybe{} -> alias typ
-  Predicate{} -> leaf
-  NamedType{} -> alias typ
+  ByteTy{} -> leaf
+  NatTy{} -> leaf
+  StringTy{} -> leaf
+  RecordTy [] -> leaf
+  RecordTy _fields -> alias typ
+  ArrayTy{} -> alias typ
+  SumTy [] -> leaf
+  SumTy _fields -> alias typ
+  MaybeTy{} -> alias typ
+  PredicateTy{} -> leaf
+  NamedTy{} -> alias typ
   _other -> die "define_kt" (show typ)
  where
    gname = joinDot name_kt
@@ -384,7 +384,7 @@ define_kt mode here typ name_kt = case typ of
    leaf = (,) <$> return (haskellTypeName mode name_kt) <*> return []
 
    alias t = do
-    ref <- haskellTy here (NamedType (TypeRef gname 0))
+    ref <- haskellTy here (NamedTy (TypeRef gname 0))
     def <- genType mode TypeDef
       { typeDefRef = TypeRef (joinDot name_kt) 0
       , typeDefType = t }
@@ -395,9 +395,9 @@ genType mode TypeDef{typeDefRef = TypeRef{..}, ..}
   | provided typeRef_name = return []
   | otherwise =
   case typeDefType of
-    Record fields -> structDef mode typeRef_name typeRef_version fields
-    Sum fields -> unionDef mode typeRef_name typeRef_version fields
-    Enumerated vals -> enumDef mode typeRef_name typeRef_version vals
+    RecordTy fields -> structDef mode typeRef_name typeRef_version fields
+    SumTy fields -> unionDef mode typeRef_name typeRef_version fields
+    EnumeratedTy vals -> enumDef mode typeRef_name typeRef_version vals
     _ -> return []
 
 structDef :: Mode -> Name -> Version -> [ResolvedFieldDef] -> M [Text]
@@ -473,13 +473,13 @@ toQuery :: NameSpaces -> ResolvedType -> M Text
 toQuery here ty = go False here ty
   where
   go named here ty = case ty of
-    Array elemTy | elemTy /= Byte -> do
+    ArrayTy elemTy | elemTy /= ByteTy -> do
       (_, name) <-
         (if named then id else withRecordFieldHint "array") $ nameThisType ty
       let qname = haskellTypeName Query (here, name)
       elemToQuery <- toQuery here elemTy
       return $ "(" <> qname <> "_exact . Prelude.map " <> elemToQuery <> ")"
-    Maybe elemTy -> do
+    MaybeTy elemTy -> do
       (_, name) <- nameThisType ty
       let qname = qFieldName (here, name)
       elemToQuery <- withRecordFieldHint "just_" $ toQuery here elemTy
@@ -487,7 +487,7 @@ toQuery here ty = go False here ty
         qname <> "_nothing = Prelude.Just Data.Default.def}) " <>
         "(\\x -> Data.Default.def { " <> qname <> "_just = Prelude.Just (" <>
         elemToQuery <> " x)}))"
-    NamedType t -> do
+    NamedTy t -> do
       (here,root) <- typeName t
       withTopLevelHint root $ do
         m <- typeDef t
@@ -508,7 +508,7 @@ toQuery here ty = go False here ty
 -- First argument is the normal type renaming.
 toQueryType :: (ResolvedFieldDef -> M Text) -> NameSpaces -> ResolvedFieldDef -> M Text
 toQueryType fieldTypeName here field = case fieldDefType field of
-  Array elemTy | elemTy /= Byte -> do
+  ArrayTy elemTy | elemTy /= ByteTy -> do
     (_, name) <- withUnionFieldHint (fieldDefName field) $
       withRecordFieldHint "array" $ nameThisType (fieldDefType field)
     let qname = haskellTypeName Query (here, name)
@@ -699,7 +699,7 @@ enumDef mode ident ver eVals = do
 
 sourceTypeDef :: Name -> Version -> Text
 sourceTypeDef name version =
-  "sourceType _ = Angle.NamedType " <> paren sourceRef
+  "sourceType _ = Angle.NamedTy " <> paren sourceRef
   where
     sourceRef = Text.unwords
       [ "Angle.SourceRef"

@@ -114,7 +114,7 @@ transformQuery schema q@(TcQuery ty _ _ _) = transformTcQuery ty Nothing q
             (transform from to else_)
         TcFactGen pref key val -> transformTcFactGen pref key val
         TcElementsOfArray pat -> TcElementsOfArray $
-          transform (Type.Array from) (Type.Array to) pat
+          transform (Type.ArrayTy from) (Type.ArrayTy to) pat
         TcQueryGen q -> TcQueryGen $ transformTcQuery from (Just to) q
         TcNegation stmts -> TcNegation $ fmap transformStmt stmts
         TcPrimCall op pats -> TcPrimCall op $ transformInnerPat <$> pats

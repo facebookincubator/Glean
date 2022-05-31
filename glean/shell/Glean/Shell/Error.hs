@@ -24,7 +24,7 @@ import qualified Data.Text as Text
 import qualified Data.Text.Prettyprint.Doc.Render.Terminal as Pretty
 import qualified Text.Parsec as Parsec
 
-import Glean.Query.Types
+import Glean.Angle.Types
 
 type Ann = Pretty.AnsiStyle
 

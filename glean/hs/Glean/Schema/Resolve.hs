@@ -477,7 +477,7 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
     , resolvedSchemaEvolves = Set.fromList (schemaRef <$> schemaEvolves)
     }
 
-data Opt = Option | Field
+data Opt = Option | FieldOpt
 
 -- | Check if a type is backward and forward compatible.
 --
@@ -504,30 +504,30 @@ canEvolve types evolvedBy new old = go new old
       Just v -> typeDefType v
       Nothing -> error $ "unknown type " <> show ty
 
-    go (NamedType new) (NamedType old)
+    go (NamedTy new) (NamedTy old)
       | new == old = Nothing
       | otherwise = go (get new) (get old)
-    go (NamedType t) old = go (get t) old
-    go new (NamedType t) = go new (get t)
-    go (Maybe new) (Maybe old) = go new old
-    go Byte Byte = Nothing
-    go Nat Nat = Nothing
-    go String String = Nothing
-    go Boolean Boolean = Nothing
-    go (Array new) (Array old) = go new old
-    go (Predicate new) (Predicate old)
+    go (NamedTy t) old = go (get t) old
+    go new (NamedTy t) = go new (get t)
+    go (MaybeTy new) (MaybeTy old) = go new old
+    go ByteTy ByteTy = Nothing
+    go NatTy NatTy = Nothing
+    go StringTy StringTy = Nothing
+    go BooleanTy BooleanTy = Nothing
+    go (ArrayTy new) (ArrayTy old) = go new old
+    go (PredicateTy new) (PredicateTy old)
       | evolved new /= evolved old = Just
           $ "type changed from " <> showRef old
           <> " to " <> showRef new
       | otherwise = Nothing
-    go (Enumerated new) (Enumerated old) =
+    go (EnumeratedTy new) (EnumeratedTy old) =
       compareFieldList Option new' old'
       where
         new' = map unitOpt new
         old' = map unitOpt old
-        unitOpt name = FieldDef name (Record [])
-    go (Sum new) (Sum old) = compareFieldList Option new old
-    go (Record new) (Record old) = compareFieldList Field new old
+        unitOpt name = FieldDef name (RecordTy [])
+    go (SumTy new) (SumTy old) = compareFieldList Option new old
+    go (RecordTy new) (RecordTy old) = compareFieldList FieldOpt new old
     go _ _ = Just "type changed"
 
     -- get most evolved version of a predicate
@@ -558,7 +558,7 @@ canEvolve types evolvedBy new old = go new old
           Map.filter (not . hasDefaultValue . fieldDefType) addedFields
 
         hasDefaultValue ty = case ty of
-          Maybe _ -> True
+          MaybeTy _ -> True
           _ -> False
 
         removedFieldsError = case Map.keys removedFields of
@@ -568,7 +568,7 @@ canEvolve types evolvedBy new old = go new old
 
         newRequiredFieldsError = case optName of
           Option -> Nothing
-          Field -> case newRequiredFields of
+          FieldOpt -> case newRequiredFields of
             [] -> Nothing
             _ -> Just $ Text.unlines
               [ Text.unwords [ "required" , plural optName newRequiredFields
@@ -581,7 +581,7 @@ canEvolve types evolvedBy new old = go new old
     plural s [_] = showOpt s
     plural s _ = showOpt s <> "s"
     showOpt Option = "option"
-    showOpt Field = "field"
+    showOpt FieldOpt = "field"
 
 resolveType
   :: (ShowRef t, ShowRef p)
@@ -592,23 +592,23 @@ resolveType
 resolveType ver scope typ = go typ
   where
   go typ = case typ of
-    Byte -> return Byte
-    Nat -> return Nat
-    String -> return String
-    Array ty -> Array <$> go ty
-    Record fields -> do checkFields fields; Record <$> mapM goField fields
-    Sum fields -> do checkFields fields; Sum <$> mapM goField fields
-    Predicate ref -> goRef ref
-    NamedType ref -> goRef ref  -- shouldn't happen, but handle it anyway
-    Maybe ty -> Maybe <$> go ty
-    Enumerated names -> do mapM_ checkName names; return (Enumerated names)
-    Boolean -> return Boolean
+    ByteTy -> return ByteTy
+    NatTy -> return NatTy
+    StringTy -> return StringTy
+    ArrayTy ty -> ArrayTy <$> go ty
+    RecordTy fields -> do checkFields fields; RecordTy <$> mapM goField fields
+    SumTy fields -> do checkFields fields; SumTy <$> mapM goField fields
+    PredicateTy ref -> goRef ref
+    NamedTy ref -> goRef ref  -- shouldn't happen, but handle it anyway
+    MaybeTy ty -> MaybeTy <$> go ty
+    EnumeratedTy names -> do mapM_ checkName names; return (EnumeratedTy names)
+    BooleanTy -> return BooleanTy
 
   goRef ref = do
     target <- lookupResultToExcept ref $ resolveRef scope ref
     case target of
-      RefType ref -> return (NamedType ref)
-      RefPred ref -> return (Predicate ref)
+      RefType ref -> return (NamedTy ref)
+      RefPred ref -> return (PredicateTy ref)
 
   checkFields fields = do
     sequence_

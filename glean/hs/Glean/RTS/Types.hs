@@ -105,60 +105,60 @@ type FieldDef = FieldDef_ PidRef ExpandedType
 
 -- | Construct the representation of a Type
 repType :: Type -> Rep Pid
-repType Byte = ByteRep
-repType Nat = NatRep
-repType String = StringRep
-repType (Array ty) = ArrayRep (repType ty)
-repType (Record fields) =
+repType ByteTy = ByteRep
+repType NatTy = NatRep
+repType StringTy = StringRep
+repType (ArrayTy ty) = ArrayRep (repType ty)
+repType (RecordTy fields) =
   TupleRep [ repType ty | FieldDef _ ty <- fields ]
-repType (Sum fields) =
+repType (SumTy fields) =
   SumRep [ repType ty | FieldDef _ ty <- fields ]
-repType (Predicate (PidRef pid _)) = PredicateRep pid
-repType (NamedType (ExpandedType _ ty)) = repType ty
-repType (Maybe ty) = repType (lowerMaybe ty)
-repType (Enumerated names) = repType (lowerEnum names)
-repType Boolean = repType lowerBool
+repType (PredicateTy (PidRef pid _)) = PredicateRep pid
+repType (NamedTy (ExpandedType _ ty)) = repType ty
+repType (MaybeTy ty) = repType (lowerMaybe ty)
+repType (EnumeratedTy names) = repType (lowerEnum names)
+repType BooleanTy = repType lowerBool
 
 sumLike :: Type -> Maybe [Glean.RTS.Types.FieldDef]
-sumLike (Sum fs) = Just fs
-sumLike (Maybe ty) = Just (maybeFields ty)
-sumLike (Enumerated names) = Just (enumFields names)
-sumLike Boolean = Just boolFields
+sumLike (SumTy fs) = Just fs
+sumLike (MaybeTy ty) = Just (maybeFields ty)
+sumLike (EnumeratedTy names) = Just (enumFields names)
+sumLike BooleanTy = Just boolFields
 sumLike _ = Nothing
 
 -- | Compare types for (structural) equality
 eqType :: Type -> Type -> Bool
 eqType a b = case (a,b) of
-  (Byte, Byte) -> True
-  (Nat, Nat) -> True
-  (String, String) -> True
-  (Array a, Array b) -> a `eqType` b
-  (Record as, Record bs) ->
+  (ByteTy, ByteTy) -> True
+  (NatTy, NatTy) -> True
+  (StringTy, StringTy) -> True
+  (ArrayTy a, ArrayTy b) -> a `eqType` b
+  (RecordTy as, RecordTy bs) ->
     -- structural equality for records, so that e.g. tuples work as records
     length as == length bs &&
     and [ eqType a b | (FieldDef _ a, FieldDef _ b) <- zip as bs ]
-  (Sum as, Sum bs) ->
+  (SumTy as, SumTy bs) ->
     length as == length bs &&
     and [ eqType a b | (FieldDef _ a, FieldDef _ b) <- zip as bs ]
-  (Predicate (PidRef p _), Predicate (PidRef q _)) -> p == q
-  (NamedType (ExpandedType n t), NamedType (ExpandedType m u)) ->
+  (PredicateTy (PidRef p _), PredicateTy (PidRef q _)) -> p == q
+  (NamedTy (ExpandedType n t), NamedTy (ExpandedType m u)) ->
     n == m || t `eqType` u
-  (NamedType (ExpandedType _ t), u) -> t `eqType` u
-  (t, NamedType (ExpandedType _ u)) -> t `eqType` u
-  (Maybe t, Maybe u) -> t `eqType` u
-  (Maybe t, u) -> lowerMaybe t `eqType` u
-  (t, Maybe u) -> t `eqType` lowerMaybe u
-  (Enumerated xs, Enumerated ys) -> xs == ys
-  (Enumerated xs, t) -> lowerEnum xs `eqType` t
-  (t, Enumerated xs) -> t `eqType` lowerEnum xs
-  (Boolean, Boolean) -> True
-  (Boolean, t) -> lowerBool `eqType` t
-  (t, Boolean) -> t `eqType` lowerBool
+  (NamedTy (ExpandedType _ t), u) -> t `eqType` u
+  (t, NamedTy (ExpandedType _ u)) -> t `eqType` u
+  (MaybeTy t, MaybeTy u) -> t `eqType` u
+  (MaybeTy t, u) -> lowerMaybe t `eqType` u
+  (t, MaybeTy u) -> t `eqType` lowerMaybe u
+  (EnumeratedTy xs, EnumeratedTy ys) -> xs == ys
+  (EnumeratedTy xs, t) -> lowerEnum xs `eqType` t
+  (t, EnumeratedTy xs) -> t `eqType` lowerEnum xs
+  (BooleanTy, BooleanTy) -> True
+  (BooleanTy, t) -> lowerBool `eqType` t
+  (t, BooleanTy) -> t `eqType` lowerBool
   _ -> False
 
--- | dereference NamedType on the outside of a Type
+-- | dereference NamedTy on the outside of a Type
 derefType :: Type -> Type
-derefType (NamedType (ExpandedType _ ty)) = derefType ty
+derefType (NamedTy (ExpandedType _ ty)) = derefType ty
 derefType ty = ty
 
 -- | Type describing the raw representation of a value. This makes

@@ -39,11 +39,10 @@ import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import Data.Text.Prettyprint.Doc hiding ((<>), enclose)
 
-import Glean.Angle.Types hiding (Type, String, Array, Nat)
+import Glean.Angle.Types hiding (Type)
 import qualified Glean.Angle.Types as Schema
 import Glean.Query.Codegen
 import Glean.Query.Typecheck.Types
-import Glean.Query.Types as Parser
 import Glean.RTS.Types as RTS
 import Glean.RTS.Term hiding
   (Tuple, ByteArray, String, Array, Nat, Wildcard, Variable, Match(..))
@@ -172,7 +171,7 @@ ignoreResult p = case p of
   where
     fullSpan = sourcePatSpan p
     startPos = mkSpan (startLoc fullSpan) (startLoc fullSpan)
-    empty = TypeSignature startPos (Parser.Tuple startPos []) unit
+    empty = TypeSignature startPos (Tuple startPos []) unit
 
 inferQuery :: IsSrcSpan s => Context -> SourceQuery' s -> T TcQuery
 inferQuery ctx q = do
@@ -239,40 +238,40 @@ data Context = ContextExpr | ContextPat
 -- disallowed.
 inferExpr :: IsSrcSpan s => Context -> SourcePat' s -> T (TcPat, Type)
 inferExpr ctx pat = case pat of
-  Parser.Nat _ w -> return (RTS.Nat w, Schema.Nat)
+  Nat _ w -> return (RTS.Nat w, NatTy)
     -- how would we do ByteTy?
-  Parser.String _ s ->
-    return (RTS.String (Text.encodeUtf8 s), Schema.String)
+  String _ s ->
+    return (RTS.String (Text.encodeUtf8 s), StringTy)
   StringPrefix _ s ->
     return
-      (RTS.Ref (MatchPrefix (Text.encodeUtf8 s) (mkWild Schema.String)),
-        Schema.String)
-  Parser.ByteArray _ b ->
-    return (RTS.ByteArray b, Schema.Array Schema.Byte)
+      (RTS.Ref (MatchPrefix (Text.encodeUtf8 s) (mkWild StringTy)),
+        StringTy)
+  ByteArray _ b ->
+    return (RTS.ByteArray b, ArrayTy ByteTy)
   (App _ (StringPrefix _ s) [pat]) -> do
-    rest <- typecheckPattern ctx Schema.String pat
-    return (RTS.Ref (MatchPrefix (Text.encodeUtf8 s) rest), Schema.String)
-  Parser.Tuple _ ts -> do
+    rest <- typecheckPattern ctx StringTy pat
+    return (RTS.Ref (MatchPrefix (Text.encodeUtf8 s) rest), StringTy)
+  Tuple _ ts -> do
     (ts,tys) <- unzip <$> mapM (inferExpr ctx) ts
     return (RTS.Tuple ts, tupleSchema tys)
-  Parser.Array _ [] ->
-    return (RTS.Array [], Schema.Array (Schema.Record []))
-  Parser.Array _ (t:ts) -> do
+  Array _ [] ->
+    return (RTS.Array [], ArrayTy (RecordTy []))
+  Array _ (t:ts) -> do
     (t',ty) <- inferExpr ctx t
     ts' <- mapM (typecheckPattern ctx ty) ts
-    return (RTS.Array (t':ts'), Schema.Array ty)
-  Parser.ArrayPrefix _ (t:|ts) -> do
+    return (RTS.Array (t':ts'), ArrayTy ty)
+  ArrayPrefix _ (t:|ts) -> do
     (t',ty) <- inferExpr ctx t
     ts' <- mapM (typecheckPattern ctx ty) ts
     let tcPat = RTS.Ref (MatchArrayPrefix ty (t':ts'))
-    return (tcPat, Schema.Array ty)
+    return (tcPat, ArrayTy ty)
   Variable span name
-    | name == "false" -> return (falseVal, Boolean)
-    | name == "true" -> return (trueVal, Boolean)
+    | name == "false" -> return (falseVal, BooleanTy)
+    | name == "true" -> return (trueVal, BooleanTy)
     | name /= "nothing" -> inferVar ctx span name
       -- "nothing" by itself can't be inferred, we want to fall
       -- through to the type error message.
-  Parser.FactId _ (Just pred) fid -> do
+  FactId _ (Just pred) fid -> do
     isFactIdAllowed pat
     res <- resolveTypeOrPred pred
     case res of
@@ -286,7 +285,7 @@ inferExpr ctx pat = case pat of
           Just details -> return (predicatePid details)
         return (
           Ref (MatchFid (Fid (fromIntegral fid))),
-          Schema.Predicate (PidRef pid ref))
+          PredicateTy (PidRef pid ref))
       _other -> prettyErrorIn pat $ "not a predicate: " <> pretty pred
   App span var@(Variable _ txt) args@(arg:_)
     | Just (primOp, primArgTys, retTy) <- HashMap.lookup txt primitives -> do
@@ -335,7 +334,7 @@ inferExpr ctx pat = case pat of
   ElementsOfArray _ e -> do
     (e', ty) <- inferExpr ContextExpr e
     case ty of
-      (Schema.Array elemTy) ->
+      (ArrayTy elemTy) ->
         return (Ref (MatchExt (Typed elemTy (TcElementsOfArray e'))), elemTy)
       _other -> prettyErrorIn pat $
         nest 4 $ vcat
@@ -346,7 +345,7 @@ inferExpr ctx pat = case pat of
   -- we can infer { just = E } as a maybe:
   Struct _ [ Field "just" e ] -> do
     (e', ty) <- inferExpr ctx e
-    return (RTS.Alt 1 e', Maybe ty)
+    return (RTS.Alt 1 e', MaybeTy ty)
   TypeSignature s e ty -> do
     scope <- gets tcNameEnv
     v <- gets tcAngleVersion
@@ -377,62 +376,62 @@ convertType span policy ty = do
 -- low-level pattern with type-annotated variables.
 typecheckPattern :: IsSrcSpan s => Context -> Type -> SourcePat' s -> T TcPat
 typecheckPattern ctx typ pat = case (typ, pat) of
-  (Schema.Byte, Parser.Nat _ w) -> return (RTS.Byte (fromIntegral w))
-  (Schema.Nat, Parser.Nat _ w) -> return (RTS.Nat w)
-  (Schema.String, Parser.String _ s) ->
+  (ByteTy, Nat _ w) -> return (RTS.Byte (fromIntegral w))
+  (NatTy, Nat _ w) -> return (RTS.Nat w)
+  (StringTy, String _ s) ->
     return (RTS.String (Text.encodeUtf8 s))
-  (Schema.String, StringPrefix _ s) ->
-    return (RTS.Ref (MatchPrefix (Text.encodeUtf8 s) (mkWild Schema.String)))
-  (Schema.String, App _ (StringPrefix _ s) [pat]) -> do
-    pat' <- typecheckPattern ctx Schema.String pat
+  (StringTy, StringPrefix _ s) ->
+    return (RTS.Ref (MatchPrefix (Text.encodeUtf8 s) (mkWild StringTy)))
+  (StringTy, App _ (StringPrefix _ s) [pat]) -> do
+    pat' <- typecheckPattern ctx StringTy pat
     return (RTS.Ref (MatchPrefix (Text.encodeUtf8 s) pat'))
-  (Schema.Array Schema.Byte, Parser.String _ s) ->
+  (ArrayTy ByteTy, String _ s) ->
     return (RTS.ByteArray (Text.encodeUtf8 s))
-  (Schema.Array Schema.Byte, Parser.ByteArray _ s) ->
+  (ArrayTy ByteTy, ByteArray _ s) ->
     return (RTS.ByteArray s)
-  (Schema.Array elemTy, Parser.Array _ pats) ->
+  (ArrayTy elemTy, Array _ pats) ->
     RTS.Array <$> mapM (typecheckPattern ctx elemTy) pats
-  (Schema.Array elemTy, Parser.ArrayPrefix _ pre) -> do
+  (ArrayTy elemTy, ArrayPrefix _ pre) -> do
     pre <- mapM (typecheckPattern ctx elemTy) pre
     let match = MatchArrayPrefix elemTy (toList pre)
     return (RTS.Ref match)
-  (Record fields, Parser.Tuple _ pats) | length fields == length pats ->
+  (RecordTy fields, Tuple _ pats) | length fields == length pats ->
     RTS.Tuple <$>
       mapM (\(t,p) -> typecheckPattern ctx t p)
         (zip (map fieldDefType fields) pats)
-  (Record fieldSchema, Struct _ fields)
+  (RecordTy fieldSchema, Struct _ fields)
     | all (`elem` map fieldDefName fieldSchema) (map fieldName fields) ->
       RTS.Tuple <$> mapM doField fieldSchema
     where
-      fieldName (Parser.Field name _) = name
-      doField (Schema.FieldDef name ty) =
-        case [ pat | Parser.Field name' pat <- fields, name == name' ] of
+      fieldName (Field name _) = name
+      doField (FieldDef name ty) =
+        case [ pat | Field name' pat <- fields, name == name' ] of
           (pat:_) -> typecheckPattern ctx ty pat
           [] -> return (mkWild ty)
         -- missing field is a wildcard
 
   -- v1 syntax for sum type patterns was "con pat", but this could also
   -- be a type annotation:
-  (Sum fields, App _ (Variable _ fieldName) [pat]) -> do
+  (SumTy fields, App _ (Variable _ fieldName) [pat]) -> do
     v <- gets tcAngleVersion
     if v >= 2 then checkTypeAnn fieldName pat else do
     case lookupField fieldName fields of
       (ty, n):_ -> RTS.Alt n <$> typecheckPattern ctx ty pat
       _ -> checkTypeAnn fieldName pat
 
-  (Sum fields, Struct _ [Field fieldName pat]) ->
+  (SumTy fields, Struct _ [Field fieldName pat]) ->
     case lookupField fieldName fields of
       (ty, n) :_ -> RTS.Alt n <$> typecheckPattern ctx ty pat
       _ -> patTypeErrorDesc ("unknown alt: " <> fieldName) pat typ
   -- 'field' is shorthand for '{ field = _ }' when matching a sum type
-  (Sum fields, Variable _ fieldName)
+  (SumTy fields, Variable _ fieldName)
     | ((ty, n):_)  <- lookupField fieldName fields ->
       return (RTS.Alt n (mkWild ty))
-  (Sum _, Struct _ _) ->
+  (SumTy _, Struct _ _) ->
     patTypeErrorDesc
       "matching on a sum type should have the form { field = pattern }"
       pat typ
-  (Schema.NamedType (ExpandedType _ ty), term) -> typecheckPattern ctx ty term
+  (NamedTy (ExpandedType _ ty), term) -> typecheckPattern ctx ty term
   (ty, App span (Variable _ txt) args@(arg:_))
     | Just (primOp, primArgTys, retTy) <- HashMap.lookup txt primitives -> do
         unless (ty `eqType` retTy) $
@@ -443,22 +442,22 @@ typecheckPattern ctx typ pat = case (typ, pat) of
     res <- resolveTypeOrPred txt
     case res of
       Just (RefPred ref')
-        | Schema.Predicate (PidRef _ ref) <- ty
+        | PredicateTy (PidRef _ ref) <- ty
         , ref == ref' -> fst <$> tcFactGenerator ref arg
       Just (RefType ref) -> typeAnn ref arg
       _otherwise -> patTypeError pat ty
 
-  (Maybe elemTy, pat) ->
+  (MaybeTy elemTy, pat) ->
     typecheckPattern ctx (lowerMaybe elemTy) pat
-  (Schema.Enumerated names, Variable _ name)
+  (EnumeratedTy names, Variable _ name)
     | Just n <- elemIndex name names ->
     return (RTS.Alt (fromIntegral n) (RTS.Tuple []))
-  (Schema.Boolean, Variable _ name)
+  (BooleanTy, Variable _ name)
     | name == "false" -> return falseVal
     | name == "true" -> return trueVal
 
   (ty, ElementsOfArray _ pat) -> do
-    pat' <- typecheckPattern ContextExpr (Schema.Array ty) pat
+    pat' <- typecheckPattern ContextExpr (ArrayTy ty) pat
     return (Ref (MatchExt (Typed ty (TcElementsOfArray pat'))))
 
   (ty, OrPattern _ left right) -> do
@@ -509,7 +508,7 @@ typecheckPattern ctx typ pat = case (typ, pat) of
     TcQuery _ _ _ stmts <- enclose $ typecheckQuery ctx unit query
     return $ Ref (MatchExt (Typed unit (TcNegation stmts)))
 
-  (Schema.Predicate (PidRef _ ref), Parser.FactId _ mbRef fid) -> do
+  (PredicateTy (PidRef _ ref), FactId _ mbRef fid) -> do
     isFactIdAllowed pat
     case mbRef of
       Nothing -> return ()
@@ -534,13 +533,13 @@ typecheckPattern ctx typ pat = case (typ, pat) of
         -- { f = X : key } can be used to force the pattern X to
         -- match the key type instead of the fact ID.
         case ty of
-          Schema.Predicate (PidRef _ ref) -> do
+          PredicateTy (PidRef _ ref) -> do
             fst <$> tcFactGenerator ref pat
           _ -> patTypeError pat ty
 
   -- A match on a predicate type with a pattern that is not a wildcard
   -- or a variable does a nested match on the key of the predicate:
-  (Schema.Predicate (PidRef _ ref), pat) | not (isVar pat) ->
+  (PredicateTy (PidRef _ ref), pat) | not (isVar pat) ->
     fst <$> tcFactGenerator ref pat
 
   (ty, Wildcard{}) -> return (mkWild ty)
@@ -554,7 +553,7 @@ typecheckPattern ctx typ pat = case (typ, pat) of
   where
 
   lookupField fieldName fields =
-    [ (ty, n) | (Schema.FieldDef name ty, n) <- zip fields [0..]
+    [ (ty, n) | (FieldDef name ty, n) <- zip fields [0..]
     , name == fieldName ]
 
   checkTypeAnn fieldName pat = do
@@ -593,7 +592,7 @@ tcFactGenerator ref pat = do
       return (kpat', mkWild predicateValueType)
   let
     pidRef = (PidRef predicatePid ref)
-    ty = Schema.Predicate pidRef
+    ty = PredicateTy pidRef
   return
     ( Ref (MatchExt (Typed ty (TcFactGen pidRef kpat' vpat')))
     , ty)
@@ -623,7 +622,7 @@ trueVal = RTS.Alt 1 (RTS.Tuple [])
 -- illegal in an expression.
 mkWild :: Type -> TcPat
 mkWild ty
-  | Record [] <- derefType ty = RTS.Tuple []
+  | RecordTy [] <- derefType ty = RTS.Tuple []
   | otherwise = RTS.Ref (MatchWild ty)
 
 patTypeError :: (IsSrcSpan s, Pretty ty) => SourcePat' s -> ty -> T a
@@ -936,22 +935,22 @@ primitives :: HashMap Text (PrimOp, [PrimArgType], Type)
 primitives = HashMap.fromList
   [ ("prim.toLower"
     , (PrimOpToLower
-      , [Check Schema.String]
-      , Schema.String
+      , [Check StringTy]
+      , StringTy
       )
     )
   , ("prim.length"
     , (PrimOpLength
       , [InferAndCheck polyArray "prim.length takes an array as input"]
-      , Schema.Nat
+      , NatTy
       )
     )
   , ("prim.relToAbsByteSpans"
     , (PrimOpRelToAbsByteSpans
       -- prim.relToAbsByteSpans takes an array of pairs as input and
       -- returns an array of pairs as output
-      , [Check (Schema.Array (tupleSchema [Schema.Nat, Schema.Nat]))]
-      , Schema.Array (tupleSchema [Schema.Nat, Schema.Nat])
+      , [Check (ArrayTy (tupleSchema [NatTy, NatTy]))]
+      , ArrayTy (tupleSchema [NatTy, NatTy])
       )
     )
   , ("prim.gtNat", binaryNatOp PrimOpGtNat)
@@ -968,11 +967,11 @@ primitives = HashMap.fromList
     )
   ]
   where
-    polyArray (Schema.Array _) = True
+    polyArray (ArrayTy _) = True
     polyArray _ = False
 
-    binaryNatOp op = (op, [Check Schema.Nat, Check Schema.Nat], unit)
-    binaryNatArith op = (op, [Check Schema.Nat, Check Schema.Nat], Schema.Nat)
+    binaryNatOp op = (op, [Check NatTy, Check NatTy], unit)
+    binaryNatArith op = (op, [Check NatTy, Check NatTy], NatTy)
 
 type VarSet = HashSet Name
 
@@ -985,9 +984,9 @@ type VarSet = HashSet Name
 varsPat :: IsSrcSpan s => SourcePat' s -> VarSet -> VarSet
 varsPat pat r = case pat of
   Variable _ v -> HashSet.insert v r
-  Parser.Array _ ps -> foldr varsPat r ps
-  Parser.ArrayPrefix _ ps -> foldr varsPat r ps
-  Parser.Tuple _ ps -> foldr varsPat r ps
+  Array _ ps -> foldr varsPat r ps
+  ArrayPrefix _ ps -> foldr varsPat r ps
+  Tuple _ ps -> foldr varsPat r ps
   Struct _ fs -> foldr (\(Field _ p) r -> varsPat p r) r fs
   App _ f ps -> varsPat f $! foldr varsPat r ps
   KeyValue _ k v -> varsPat k (varsPat v r)
@@ -997,10 +996,10 @@ varsPat pat r = case pat of
   NestedQuery _ q -> varsQuery q r
   Negation{} -> r -- Note (1) above
   TypeSignature _ p _ -> varsPat p r
-  Parser.Nat{} -> r
-  Parser.String{} -> r
+  Nat{} -> r
+  String{} -> r
   StringPrefix{} -> r
-  Parser.ByteArray{} -> r
+  ByteArray{} -> r
   Wildcard{} -> r
   FactId{} -> r
   Never{} -> r

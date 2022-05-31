@@ -34,25 +34,25 @@ typecheck
   -> Code ()
 typecheck rename input inputend output = tc
   where
-    tc Byte = do
+    tc ByteTy = do
       size <- constant 1
       local $ \ptr -> do
         move input ptr
         inputBytes input inputend size
         outputBytes ptr input output
-    tc Nat = local $ \reg -> do
+    tc NatTy = local $ \reg -> do
       inputNat input inputend reg
       outputNat reg output
-    tc String =
+    tc StringTy =
       local $ \ptr -> do
         move input ptr
         inputSkipUntrustedString input inputend
         outputBytes ptr input output
-    tc (Array elty) = local $ \size -> do
+    tc (ArrayTy elty) = local $ \size -> do
       inputNat input inputend size
       outputNat size output
       case derefType elty of
-        Byte -> local $ \ptr -> do
+        ByteTy -> local $ \ptr -> do
           move input ptr
           inputBytes input inputend size
           outputBytes ptr input output
@@ -63,8 +63,8 @@ typecheck rename input inputend output = tc
           decrAndJumpIfNot0 size loop
           end <- label
           return ()
-    tc (Record fields) = mapM_ (tc . fieldDefType) fields
-    tc (Sum fields) = mdo
+    tc (RecordTy fields) = mapM_ (tc . fieldDefType) fields
+    tc (SumTy fields) = mdo
       local $ \sel -> do
         inputNat input inputend sel
         outputNat sel output
@@ -77,13 +77,13 @@ typecheck rename input inputend output = tc
         return alt
       end <- label
       return ()
-    tc (Predicate (PidRef (Pid pid) _)) = local $ \ide -> do
+    tc (PredicateTy (PidRef (Pid pid) _)) = local $ \ide -> do
       t <- constant $ fromIntegral pid
       inputNat input inputend ide
       callFun_2_1 rename ide t ide
       outputNat ide output
-    tc (NamedType (ExpandedType _ ty)) = tc ty
-    tc (Maybe ty) = mdo
+    tc (NamedTy (ExpandedType _ ty)) = tc ty
+    tc (MaybeTy ty) = mdo
       local $ \sel -> do
         inputNat input inputend sel
         outputNat sel output
@@ -93,8 +93,8 @@ typecheck rename input inputend output = tc
       tc ty
       end <- label
       return ()
-    tc (Enumerated names) = tcEnum $ fromIntegral $ length names
-    tc Boolean = tcEnum 2
+    tc (EnumeratedTy names) = tcEnum $ fromIntegral $ length names
+    tc BooleanTy = tcEnum 2
 
     tcEnum arity = mdo
       k <- constant arity

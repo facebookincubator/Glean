@@ -56,7 +56,7 @@ import Util.Timing
 import Util.Log
 
 import qualified Glean.Angle.Parser as Angle
-import Glean.Angle.Types hiding (Type, FieldDef)
+import Glean.Angle.Types hiding (Type, FieldDef, SourcePat_(..))
 import qualified Glean.Angle.Types as Angle
 import Glean.Database.Schema.Types
 import Glean.Database.Open
@@ -518,8 +518,8 @@ userQueryImpl
           return (returnType, compileTime, irDiag, cont)
 
     details@PredicateDetails{..} <- case returnType of
-      Angle.Record
-          [ Angle.FieldDef _ (Angle.Predicate (PidRef pid ref))
+      Angle.RecordTy
+          [ Angle.FieldDef _ (Angle.PredicateTy (PidRef pid ref))
           , Angle.FieldDef _ keyTy
           , Angle.FieldDef _ valTy ] -> do
         let
@@ -992,7 +992,7 @@ parseQuery dbSchema Thrift.UserQueryOptions{..} details val =
   jsonToPredMatch details@PredicateDetails{..} val = do
     let
       badQuery :: Except String a
-      badQuery = queryError (Predicate (PidRef predicatePid predicateRef)) val
+      badQuery = queryError (PredicateTy (PidRef predicatePid predicateRef)) val
     case val of
       Aeson.Object obj -> do
         case sortOn fst $ HashMap.toList obj of
@@ -1041,20 +1041,20 @@ parseQuery dbSchema Thrift.UserQueryOptions{..} details val =
     -> Aeson.Value
     -> Except String (Term (Match (Nested Fid)))
   jsonToValMatch typ val = case (typ,val) of
-    (Nat, Aeson.Number n) | Just i <- toBoundedInteger n ->
+    (NatTy, Aeson.Number n) | Just i <- toBoundedInteger n ->
       return (RTS.Nat i)
-    (Byte, Aeson.Number n) | Just i <- toBoundedInteger n ->
+    (ByteTy, Aeson.Number n) | Just i <- toBoundedInteger n ->
       return (RTS.Byte i)
-    (String, Aeson.String s) -> return $ RTS.String $ Text.encodeUtf8 s
-    (String, Aeson.Object obj)
+    (StringTy, Aeson.String s) -> return $ RTS.String $ Text.encodeUtf8 s
+    (StringTy, Aeson.Object obj)
       | [("prefix", Aeson.String s)] <- HashMap.toList obj ->
          return (Ref (PrefixWildcard (Text.encodeUtf8 s)))
-    (Array Byte, Aeson.String s)
+    (ArrayTy ByteTy, Aeson.String s)
       | userQueryOptions_no_base64_binary ->
         return (ByteArray (Text.encodeUtf8 s))
       | otherwise ->
         return (ByteArray (decodeBase64 (Text.encodeUtf8 s)))
-    (Array ty, Aeson.Object obj)
+    (ArrayTy ty, Aeson.Object obj)
       | Just val <- HashMap.lookup "every" obj -> do
         query <- jsonToValMatch ty val
         if refutableNested query
@@ -1062,7 +1062,7 @@ parseQuery dbSchema Thrift.UserQueryOptions{..} details val =
           else return (Ref (MatchTerm (NestedArray query)))
       | Just (Aeson.Array vec) <- HashMap.lookup "exact" obj ->
         RTS.Array <$> mapM (jsonToValMatch ty) (Vector.toList vec)
-    (Record fields, Aeson.Object obj)
+    (RecordTy fields, Aeson.Object obj)
       -- ensure that all the fields mentioned in the query are valid
       | all (`elem` map fieldDefName fields) (HashMap.keys obj) -> do
       let
@@ -1071,19 +1071,19 @@ parseQuery dbSchema Thrift.UserQueryOptions{..} details val =
             jsonToValMatch ty val
         doField _ = return (Ref Wildcard) -- missing field is a wildcard
       Tuple <$> mapM doField fields
-    (Sum fields, Aeson.Object obj) -> matchSum fields obj
-    (NamedType (ExpandedType _ ty), val) -> jsonToValMatch ty val
-    (Predicate (PidRef pid ref), val) ->
+    (SumTy fields, Aeson.Object obj) -> matchSum fields obj
+    (NamedTy (ExpandedType _ ty), val) -> jsonToValMatch ty val
+    (PredicateTy (PidRef pid ref), val) ->
       case lookupPid pid dbSchema of
         Nothing -> throwError $ "unknown predicate " ++ show (pretty ref)
         Just deets -> Ref <$> jsonToPredMatch deets val
-    (Enumerated vals, Aeson.Number n)
+    (EnumeratedTy vals, Aeson.Number n)
       | Just i <- toBoundedInteger n, fromIntegral i < length vals ->
         return (Alt i (Tuple []))
-    (Maybe ty, val) ->
+    (MaybeTy ty, val) ->
       jsonToValMatch (lowerMaybe ty) val
-    (Boolean{}, Aeson.Bool False) -> return (Alt 0 (Tuple []))
-    (Boolean{}, Aeson.Bool True) -> return (Alt 1 (Tuple []))
+    (BooleanTy{}, Aeson.Bool False) -> return (Alt 0 (Tuple []))
+    (BooleanTy{}, Aeson.Bool True) -> return (Alt 1 (Tuple []))
     -- null can be used anywhere to indicate a wildcard. This is only
     -- possible when sending raw JSON queries, not when using the
     -- Thrift query types, but it enables a bit more flexibility. For
@@ -1106,30 +1106,30 @@ parseQuery dbSchema Thrift.UserQueryOptions{..} details val =
     ]
     where
       thing
-        | Predicate{} <- typ = "predicate"
+        | PredicateTy{} <- typ = "predicate"
         | otherwise = "type"
 
       allowed fields = hcat $
         punctuate ", " [ dquotes (pretty f) | Angle.FieldDef f _ <- fields ]
 
       expecting :: Type -> Doc ann
-      expecting Nat{} = "number"
-      expecting Byte{} = "number"
-      expecting String{} = "string"
-      expecting (Array Byte{}) = "string"
-      expecting Array{} = vcat
+      expecting NatTy{} = "number"
+      expecting ByteTy{} = "number"
+      expecting StringTy{} = "string"
+      expecting (ArrayTy ByteTy{}) = "string"
+      expecting ArrayTy{} = vcat
         [ "{ \"exact\": [...] } or"
         , "{ \"every\": ... }" ]
-      expecting (Record fields) =
+      expecting (RecordTy fields) =
         "{..} (allowed fields: " <> allowed fields <> ")"
-      expecting (Sum fields) =
+      expecting (SumTy fields) =
         "{\"any\": true|false, ..} (allowed fields: " <> allowed fields <> ")"
-      expecting (Enumerated vals) =
+      expecting (EnumeratedTy vals) =
         "number (< " <> pretty (length vals) <> ")"
-      expecting (Maybe ty) =
+      expecting (MaybeTy ty) =
         expecting (lowerMaybe ty)
-      expecting Boolean{} = "true or false"
-      expecting Predicate{} = vcat
+      expecting BooleanTy{} = "true or false"
+      expecting PredicateTy{} = vcat
         [ "{\"get\": {}} or"
         , "{\"id\": N} or"
         , "{\"key\": ...}" ]
@@ -1163,7 +1163,7 @@ parseQuery dbSchema Thrift.UserQueryOptions{..} details val =
     -- when "any":False, all fields must be present in the schema
     | all (`elem` ("any" : map fieldDefName fields)) (HashMap.keys obj) = do
       RTS.Ref . MatchTerm . NestedSum SumMatchThese <$> parseAlts
-    | otherwise = queryError (Sum fields) (Aeson.Object obj)
+    | otherwise = queryError (SumTy fields) (Aeson.Object obj)
     where
     parseAlts = forM fields $ \(Angle.FieldDef name ty) ->
       case HashMap.lookup name obj of
