@@ -30,11 +30,16 @@ import Options.Applicative (
   showDefault,
   strOption,
   switch,
-  value,
+  value, (<|>), some, strArgument
  )
 
-data HieDBIndexerOptions = HieDBIndexerOptions
-  { hiedbPath :: FilePath
+-- | Either a HieDB or a set of folders to recursively search for .hie files
+data Sources
+  = HieDB FilePath        -- ^ Path to a hiedb
+  | HieFiles [FilePath]   -- ^ Paths to search recursively for .hie files
+
+data HieDBIndexerOptions sources = HieDBIndexerOptions
+  { sources :: sources
   , verbosity :: Int
   , hiedbTrace :: Bool
   , repoName :: String
@@ -42,26 +47,31 @@ data HieDBIndexerOptions = HieDBIndexerOptions
   , repoPath :: FilePath
   , chunkSize :: Int
   , dontCreateDb :: Bool
-  , -- | Relative paths to hie files will be resolved relative to the hiedb
-    relocatableDb :: Bool
   }
 
 data HieDBIndexerEnv b = HieDBIndexerEnv
   { backend :: Glean.Backend b => b
-  , cfg :: HieDBIndexerOptions
+  , cfg :: HieDBIndexerOptions FilePath
   }
 
-options :: ParserInfo HieDBIndexerOptions
-options = info (helper <*> parser) fullDesc
+sourcesP :: Parser Sources
+sourcesP = HieDB <$> hiedbP <|> (HieFiles <$> hieFilesP)
   where
-    parser :: Parser HieDBIndexerOptions
-    parser = do
-      hiedbPath <-
-        strOption
+    hiedbP = strOption
           ( long "db-path"
               <> metavar "HIEDB_PATH"
               <> help "Path to the HieDB that will be used to get XReferences"
           )
+    hieFilesP = some
+      (strArgument (metavar "PATH" <> help "Tree containing .hie files"))
+
+options :: ParserInfo (HieDBIndexerOptions Sources)
+options = info (helper <*> parser) fullDesc
+  where
+    parser :: Parser (HieDBIndexerOptions Sources)
+    parser = do
+
+      sources <- sourcesP
 
       -- TODO(T96241762): change this argument name when using it with fbcode.
       -- Also add a new argument for the cache directory name, that will be used
@@ -129,11 +139,5 @@ options = info (helper <*> parser) fullDesc
                     , " Needed for the regression tests."
                     ]
                 )
-          )
-
-      relocatableDb <-
-        switch
-          ( long "relocatable-db"
-              <> help "Relative .hie paths will be resolved from the hiedb folder"
           )
       return HieDBIndexerOptions {..}

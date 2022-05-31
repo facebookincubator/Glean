@@ -1121,6 +1121,7 @@ executable hiedb-indexer
         HieDBIndexer.Builder
         HieDBIndexer.DefaultMain
         HieDBIndexer.Glean
+        HieDBIndexer.HieDB
         HieDBIndexer.Options
         HieDBIndexer.Trace
         HieDBIndexer.Types

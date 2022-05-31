@@ -28,7 +28,6 @@ import Data.Array.Unboxed (
   listArray,
   (!),
  )
-import Data.Bifunctor (second)
 import Data.Char (isAlphaNum)
 import Data.Containers.ListUtils (nubOrd)
 import Data.HashMap.Strict (HashMap)
@@ -74,7 +73,7 @@ import Module (moduleNameString)
 import NameCache (NameCache, initNameCache)
 import OccName (occNameString)
 import System.Directory (doesFileExist)
-import System.FilePath (makeRelative, (</>), takeDirectory)
+import System.FilePath (makeRelative, (</>))
 import qualified Text.Printf as Text
 import TextShow (showt)
 
@@ -83,16 +82,15 @@ import TextShow (showt)
 -}
 buildXrefMapFiles ::
   Tracer Text ->
-  HieDBIndexerOptions ->
+  HieDBIndexerOptions FilePath ->
   IO (FileLineMap, [IndexerBatchOutput])
 buildXrefMapFiles logger opts@HieDBIndexerOptions {..} = do
-  let hiedbDir = takeDirectory hiedbPath
-  itExists <- doesFileExist hiedbPath
-  unless itExists $ error $ "hiedb not found at " <> hiedbPath
-  withHieDb hiedbPath $ \db -> do
+  itExists <- doesFileExist sources
+  unless itExists $ error $ "hiedb not found at " <> sources
+  withHieDb sources $ \db -> do
     when hiedbTrace $
       setHieTrace db (Just $ logMsg logger)
-    logMsg logger $ "Path of hiedb = " <> Text.pack hiedbPath
+    logMsg logger $ "Path of hiedb = " <> Text.pack sources
     logMsg logger $ "Repo path = " <> Text.pack repoPath
 
     allVertices <- getDefsVertices logger repoPath db
@@ -116,12 +114,11 @@ buildXrefMapFiles logger opts@HieDBIndexerOptions {..} = do
         " vertices due to missing src files: \n" <>
           Text.unlines [ " - " <> Text.pack m | m <- Set.toList missingFiles]
 
-    let resolveHieFile = if relocatableDb then (hiedbDir </>) else id
     -- We need the fileLinesSumMap to convert range to bytespan and the
     -- fileLinesLengthMap to create the `Src.FileLines` facts needed by
     -- codemarkup.
     (fileLinesSumMap, fileLineLengthMap) <-
-      mkFileLinesMap resolveHieFile logger filteredVertices
+      mkFileLinesMap logger filteredVertices
 
     numCapabilities <- getNumCapabilities
     let newChunkSize = max 1 (div numOfFilteredVertices numCapabilities)
@@ -152,11 +149,10 @@ facts needed for code browing (e.g. Shiny needs it).
  TBD: explain both maps.
 -}
 mkFileLinesMap ::
-  (FilePath -> FilePath) ->
   Tracer Text ->
   [Vertex] ->
   IO (FileLineMap, FileLineMap)
-mkFileLinesMap resolveHieFile logger allVertices = traceMsg logger "mkFileLinesMap" $ do
+mkFileLinesMap logger allVertices = traceMsg logger "mkFileLinesMap" $ do
   uniqSupply <- mkSplitUniqSupply 'z'
   let nc = initNameCache uniqSupply []
   bothLineMaps <-
@@ -170,7 +166,7 @@ mkFileLinesMap resolveHieFile logger allVertices = traceMsg logger "mkFileLinesM
   return (fileLinesSumMap, fileLinesLengthMap)
   where
     !filepathsSet = Set.toList $ Set.fromList $
-      map (second resolveHieFile . getFilePathsFromVertex) allVertices
+      map getFilePathsFromVertex allVertices
 
 data LineLengthBuilderOutput = LineLengthBuilderOutput
   { srcFp :: !FilePath
@@ -245,7 +241,7 @@ getFilePathsFromVertex (_, srcFp, hieFp, _, _, _, _, _) =
 
 buildXRefMapForBatch ::
   Tracer Text ->
-  HieDBIndexerOptions ->
+  HieDBIndexerOptions a ->
   HieDb ->
   FileLineMap ->
   (Int, [Vertex]) ->
