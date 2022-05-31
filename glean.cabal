@@ -465,6 +465,7 @@ library core
         Glean.Query.Types
         Glean.Repo.Text
         Glean.Schema.Resolve
+        Glean.Schema.Types
         Glean.Schema.Util
 
         Glean.Backend.Remote
@@ -1129,6 +1130,7 @@ executable hiedb-indexer
         glean:client-hs,
         glean:client-hs-local,
         glean:core,
+        glean:db,
         glean:if-glean-hs,
         glean:lib,
         glean:schema,
