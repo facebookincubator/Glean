@@ -26,8 +26,8 @@
                 "range": {
                     "columnBegin": 14,
                     "columnEnd": 17,
-                    "lineBegin": 13,
-                    "lineEnd": 13
+                    "lineBegin": 12,
+                    "lineEnd": 12
                 },
                 "sym": "test/java/lsif/com/glean/app/App"
             },
@@ -55,8 +55,8 @@
                 "range": {
                     "columnBegin": 10,
                     "columnEnd": 13,
-                    "lineBegin": 17,
-                    "lineEnd": 17
+                    "lineBegin": 16,
+                    "lineEnd": 16
                 },
                 "sym": "test/java/lsif/com/glean/app/App%23%60%3Cinit%3E%60%28%29"
             },
@@ -84,8 +84,8 @@
                 "range": {
                     "columnBegin": 24,
                     "columnEnd": 34,
-                    "lineBegin": 23,
-                    "lineEnd": 23
+                    "lineBegin": 22,
+                    "lineEnd": 22
                 },
                 "sym": "test/java/lsif/com/glean/app/App%23getMessage%28%29"
             },
@@ -113,8 +113,8 @@
                 "range": {
                     "columnBegin": 22,
                     "columnEnd": 26,
-                    "lineBegin": 19,
-                    "lineEnd": 19
+                    "lineBegin": 18,
+                    "lineEnd": 18
                 },
                 "sym": "test/java/lsif/com/glean/app/App%23main%28%29"
             },
@@ -142,8 +142,8 @@
                 "range": {
                     "columnBegin": 24,
                     "columnEnd": 31,
-                    "lineBegin": 15,
-                    "lineEnd": 15
+                    "lineBegin": 14,
+                    "lineEnd": 14
                 },
                 "sym": "test/java/lsif/com/glean/app/App%23message"
             },
@@ -165,10 +165,10 @@
                 "range": {
                     "columnBegin": 36,
                     "columnEnd": 40,
-                    "lineBegin": 19,
-                    "lineEnd": 19
+                    "lineBegin": 18,
+                    "lineEnd": 18
                 },
-                "sym": "test/java/src/main/java/com/glean/app/App.java/%3Clocal%3E/19/36/19/40"
+                "sym": "test/java/src/main/java/com/glean/app/App.java/%3Clocal%3E/18/36/18/40"
             }
         ],
         "references": [
@@ -196,8 +196,8 @@
                 "range": {
                     "columnBegin": 28,
                     "columnEnd": 31,
-                    "lineBegin": 20,
-                    "lineEnd": 20
+                    "lineBegin": 19,
+                    "lineEnd": 19
                 },
                 "sym": "test/java/lsif/com/glean/app/App%23%60%3Cinit%3E%60%28%29",
                 "target": {
@@ -205,8 +205,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 13,
-                        "lineBegin": 17,
-                        "lineEnd": 17
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 }
@@ -235,8 +235,8 @@
                 "range": {
                     "columnBegin": 34,
                     "columnEnd": 44,
-                    "lineBegin": 20,
-                    "lineEnd": 20
+                    "lineBegin": 19,
+                    "lineEnd": 19
                 },
                 "sym": "test/java/lsif/com/glean/app/App%23getMessage%28%29",
                 "target": {
@@ -244,8 +244,8 @@
                     "range": {
                         "columnBegin": 24,
                         "columnEnd": 34,
-                        "lineBegin": 23,
-                        "lineEnd": 23
+                        "lineBegin": 22,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 }
@@ -274,8 +274,8 @@
                 "range": {
                     "columnBegin": 12,
                     "columnEnd": 19,
-                    "lineBegin": 24,
-                    "lineEnd": 24
+                    "lineBegin": 23,
+                    "lineEnd": 23
                 },
                 "sym": "test/java/lsif/com/glean/app/App%23message",
                 "target": {
@@ -283,8 +283,8 @@
                     "range": {
                         "columnBegin": 24,
                         "columnEnd": 31,
-                        "lineBegin": 15,
-                        "lineEnd": 15
+                        "lineBegin": 14,
+                        "lineEnd": 14
                     },
                     "repository": "test"
                 }
