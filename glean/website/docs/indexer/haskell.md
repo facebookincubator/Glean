@@ -1,5 +1,5 @@
 ---
-id: indexer-haskell
+id: haskell
 title: Haskell
 sidebar_label: Haskell
 ---

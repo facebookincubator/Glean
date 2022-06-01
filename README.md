@@ -34,11 +34,11 @@ There is currently full support for:
 
 * [JavaScript/Flow](https://glean.software/docs/indexer/flow)
 * [Hack](https://glean.software/docs/indexer/hack)
+* [Haskell](https://glean.software/docs/indexer/haskell)
 
 We are actively adding support for:
 
 * C++
-* Haskell
 * Rust
 
 Indexers for these languages exist but aren't in the open source
