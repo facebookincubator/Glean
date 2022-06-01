@@ -76,6 +76,7 @@ module.exports = {
                    'indexer/lsif-typescript',
                    'indexer/lsif-go',
                    'indexer/lsif-rust',
+                   'indexer/lsif-java',
 
                ],
            },

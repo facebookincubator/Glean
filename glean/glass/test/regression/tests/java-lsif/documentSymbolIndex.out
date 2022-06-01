@@ -1,0 +1,230 @@
+[
+    "@generated",
+    {
+        "revision": "testhash",
+        "size": 9,
+        "symbols": {
+            "13": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 7
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 5
+                        },
+                        "symbolSignature": {
+                            "aString": "```java\npublic class App\n```\n---\nHello world! "
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 17,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "sym": "test/java/lsif/com/glean/app/App"
+                }
+            ],
+            "15": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 5
+                        },
+                        "symbolSignature": {
+                            "aString": "```java\nprivate final String message\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 24,
+                        "columnEnd": 31,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "sym": "test/java/lsif/com/glean/app/App%23message"
+                }
+            ],
+            "17": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 5
+                        },
+                        "symbolSignature": {
+                            "aString": "```java\npublic App()\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 13,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "sym": "test/java/lsif/com/glean/app/App%23%60%3Cinit%3E%60%28%29"
+                }
+            ],
+            "19": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 5
+                        },
+                        "symbolSignature": {
+                            "aString": "```java\npublic static void main(String[] args)\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 22,
+                        "columnEnd": 26,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "sym": "test/java/lsif/com/glean/app/App%23main%28%29"
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 5
+                        },
+                        "symbolSignature": {
+                            "aString": "```java\nString[] args\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 36,
+                        "columnEnd": 40,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "sym": "test/java/src/main/java/com/glean/app/App.java/%3Clocal%3E/19/36/19/40"
+                }
+            ],
+            "20": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 5
+                        },
+                        "symbolSignature": {
+                            "aString": "```java\npublic App()\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 28,
+                        "columnEnd": 31,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "sym": "test/java/lsif/com/glean/app/App%23%60%3Cinit%3E%60%28%29",
+                    "target": {
+                        "filepath": "src/main/java/com/glean/app/App.java",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 13,
+                            "lineBegin": 17,
+                            "lineEnd": 17
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 5
+                        },
+                        "symbolSignature": {
+                            "aString": "```java\nprivate final String getMessage()\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 34,
+                        "columnEnd": 44,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "sym": "test/java/lsif/com/glean/app/App%23getMessage%28%29",
+                    "target": {
+                        "filepath": "src/main/java/com/glean/app/App.java",
+                        "range": {
+                            "columnBegin": 24,
+                            "columnEnd": 34,
+                            "lineBegin": 23,
+                            "lineEnd": 23
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "23": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 5
+                        },
+                        "symbolSignature": {
+                            "aString": "```java\nprivate final String getMessage()\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 24,
+                        "columnEnd": 34,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "sym": "test/java/lsif/com/glean/app/App%23getMessage%28%29"
+                }
+            ],
+            "24": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 5
+                        },
+                        "symbolSignature": {
+                            "aString": "```java\nprivate final String message\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 12,
+                        "columnEnd": 19,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "sym": "test/java/lsif/com/glean/app/App%23message",
+                    "target": {
+                        "filepath": "src/main/java/com/glean/app/App.java",
+                        "range": {
+                            "columnBegin": 24,
+                            "columnEnd": 31,
+                            "lineBegin": 15,
+                            "lineEnd": 15
+                        },
+                        "repository": "test"
+                    }
+                }
+            ]
+        }
+    }
+]

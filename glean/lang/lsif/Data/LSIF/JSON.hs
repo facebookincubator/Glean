@@ -101,7 +101,7 @@ parseVertex o = do
       <*> o .:? "tag"
     "document" -> Document
       <$> o .: "uri"
-      <*> o .: "languageId"
+      <*> (o .: "languageId" <|> o .: "language")
     "moniker" -> Moniker
       <$> o .: "kind"
       <*> o .: "scheme"

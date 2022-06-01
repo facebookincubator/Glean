@@ -11,7 +11,7 @@
   
   Commands:
     :database [<db>]                         Use database <db>
-    :index <lang> <dir>                      Index source files in <dir> and create a database. <lang> supports only flow currently.
+    :index <lang> <dir>                      Index source files in <dir> and create a database.
     :list [<db>]                             List available databases which match <db>
     :list-all [<db>]                         List available databases and restorable backups which match <db>
     :debug off|[-]ir|[-]bytecode|all         Enable/disable query debugging options

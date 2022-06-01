@@ -51,6 +51,7 @@ searchEntity lang toks = case lang of
   Language_Go -> fmap Code.Entity_lsif <$> Search.symbolSearch toks
   Language_TypeScript -> fmap Code.Entity_lsif <$> Search.symbolSearch toks
   Language_Rust -> fmap Code.Entity_lsif <$> Search.symbolSearch toks
+  Language_Java -> fmap Code.Entity_lsif <$> Search.symbolSearch toks
   lang ->
     return $ None $ "searchEntity: language not supported: " <> toShortCode lang
 

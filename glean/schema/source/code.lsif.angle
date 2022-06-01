@@ -8,6 +8,7 @@ type Entity =
     typescript : lsif.SomeEntity |
     go : lsif.SomeEntity |
     rust : lsif.SomeEntity |
+    java : lsif.SomeEntity |
   }
 
 }

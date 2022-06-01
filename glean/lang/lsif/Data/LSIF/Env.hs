@@ -133,8 +133,8 @@ type Parse a = forall m . Monad m => StateT Env m a
 data VertexType
   = ProjectType -- lsif.Project.1
   | FileType -- src.File / lsif.Document.1
-  | DefinitionType -- Item property:null
-  | ReferenceType -- Item property:references
+  | DefinitionType
+  | ReferenceType -- Item property:references or tag:reference
   | DeclarationType
   deriving (Eq, Show)
 
