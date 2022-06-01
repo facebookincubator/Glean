@@ -353,9 +353,8 @@ parseSchema :: ByteString -> Either String Schema.SourceSchemas
 parseSchema bs
   | Just bs1 <- B.stripPrefix "version: " bs
   , Just (ver, bs2) <- B.readInt bs1 = parseWith bs2 ver
-  | otherwise = parseWith bs 1
-  -- The "version" header was added at version 1, so if the header is
-  -- omitted, assume we are using syntax version 1 for backwards compatibility.
+  | otherwise = parseWith bs latestAngleVersion
+  -- if the header is omitted, assume we are using the latest version
   where
   parseWith bs ver =
     runAlex (LB.fromStrict bs) $ do

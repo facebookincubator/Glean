@@ -96,7 +96,7 @@ schemaParser = TestCase $ do
           x8  : { a : X, },  # trailing comma in a record
           x9  : { a : X, b : Y },
           # field names can be keywords:
-          x10 : { byte : byte, nat : nat, string : string, bool : bool },
+          x10 : { nat : nat },
           x11 : { a : X | },  # singleton sum type
           x12 : { a : X | b : Y },
           x13 : { a : X | b : Y | }, # trailing |
@@ -109,7 +109,7 @@ schemaParser = TestCase $ do
       predicate X : Y
 
       # predicate names can also be keywords
-      predicate type : { nat | bool }
+      predicate type : { nat | bool_ }
     }
   |]
   either print (putDoc . pretty) r

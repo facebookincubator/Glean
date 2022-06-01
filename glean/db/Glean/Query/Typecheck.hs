@@ -763,8 +763,7 @@ freeVariablesAreErrors = do
 unboundVariablesAreErrors :: T ()
 unboundVariablesAreErrors = do
   TypecheckState{..} <- get
-  when (varBinding tcAngleVersion) $
-    unboundVariablesAreErrors_ tcUses tcBindings
+  unboundVariablesAreErrors_ tcUses tcBindings
 
 unboundVariablesAreErrors_ :: VarSet -> VarSet -> T ()
 unboundVariablesAreErrors_ uses binds = do
@@ -787,9 +786,7 @@ unboundVariablesAreErrors_ uses binds = do
 checkVarCase :: IsSrcSpan span => span -> Name -> T ()
 checkVarCase span name
   | Just (h,_) <- Text.uncons name, not (isUpper h) = do
-    v <- gets tcAngleVersion
-    when (caseRestriction v) $
-      prettyErrorAt span $
+    prettyErrorAt span $
       "variable does not begin with an upper-case letter: " <>
         pretty name
   | otherwise = return ()
@@ -806,20 +803,6 @@ prettyErrorAt span doc = prettyError $ vcat
   , doc
   ]
 
-oldOrPattern :: T a -> (a -> T b) -> T (a,b)
-oldOrPattern ta tb = do
-  a <- enclose ta
-  b <- enclose (tb a)
-  return (a,b)
-  where
-  -- | prevent variables defined in a scope from escaping
-  enclose :: T a -> T a
-  enclose rn = do
-    TypecheckState{..} <- get
-    r <- rn
-    modify $ \state -> state { tcScope = tcScope }
-    return r
-
 -- | Typechecking A|B
 --
 -- 1. The set of variables that are considered to be *bound* by this
@@ -830,8 +813,6 @@ oldOrPattern ta tb = do
 --
 disjunction :: VarSet -> T a -> VarSet -> (a -> T b) -> T (a,b)
 disjunction varsA ta varsB tb = do
-  v <- gets tcAngleVersion
-  if not (varBinding v) then oldOrPattern ta tb else do
   state0 <- get
   (a, usesA, bindsA) <- oneBranch varsA ta
   (b, usesB, bindsB) <- oneBranch varsB (tb a)

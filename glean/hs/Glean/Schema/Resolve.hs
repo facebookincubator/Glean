@@ -66,6 +66,7 @@ parseAndResolveSchema str =
 --
 resolveSchema :: SourceSchemas -> Either Text Schemas
 resolveSchema SourceSchemas{..} = runExcept $ do
+  checkAngleVersion srcAngleVersion
   let
     -- dependency analysis: we want to process schemas in dependency
     -- order, and detect cycles in evolves declarations.
@@ -589,7 +590,7 @@ resolveType
   -> NameEnv (RefTarget p t)
   -> SourceType
   -> Except Text (Type_ p t)
-resolveType ver scope typ = go typ
+resolveType _ver scope typ = go typ
   where
   go typ = case typ of
     ByteTy -> return ByteTy
@@ -614,10 +615,8 @@ resolveType ver scope typ = go typ
     sequence_
       [ throwError $ "duplicate field: " <> x
         | x:_:_ <- group $ sort $ map fieldDefName fields ]
-    when (checkReservedWordsInFieldNames ver) $
-      mapM_ (checkName . fieldDefName) fields
-    when (caseRestriction ver) $
-      mapM_ (checkFieldName . fieldDefName) fields
+    mapM_ (checkName . fieldDefName) fields
+    mapM_ (checkFieldName . fieldDefName) fields
 
   goField (FieldDef name ty) = FieldDef name <$> go ty
 
@@ -630,6 +629,10 @@ lookupResultToExcept
 lookupResultToExcept ref res =
   either throwError return (lookupResultToEither ref res)
 
+checkAngleVersion :: AngleVersion -> Except Text ()
+checkAngleVersion v =
+  unless (v >= latestSupportedAngleVersion) $
+    throwError $ "Angle version " <> showt v <> " is not supported"
 
 checkFieldName :: Name -> Except Text ()
 checkFieldName n =

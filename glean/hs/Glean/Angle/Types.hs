@@ -72,9 +72,7 @@ module Glean.Angle.Types
   -- * Versions of the Angle syntax
   , AngleVersion
   , latestAngleVersion
-  , checkReservedWordsInFieldNames
-  , caseRestriction
-  , varBinding
+  , latestSupportedAngleVersion
 
   ) where
 
@@ -394,17 +392,8 @@ data SourceDecl_ s
 -- syntax to be understood.
 type AngleVersion = Int
 
-checkReservedWordsInFieldNames :: AngleVersion -> Bool
-checkReservedWordsInFieldNames = (> 2)
-
--- | Variables must begin with an upper-case letter, field names with
--- a lower-case letter.
-caseRestriction :: AngleVersion -> Bool
-caseRestriction = (> 3)
-
--- | New variable binding rules
-varBinding :: AngleVersion -> Bool
-varBinding = (> 4)
+latestSupportedAngleVersion :: AngleVersion
+latestSupportedAngleVersion = 5
 
 latestAngleVersion :: AngleVersion
 latestAngleVersion = 5

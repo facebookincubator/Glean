@@ -16,7 +16,6 @@ import Control.Exception
 import Control.Monad
 import Data.Bifunctor (first)
 import Data.Default
-import Data.Either
 import qualified Data.HashMap.Strict as HashMap
 import Data.HashMap.Strict (HashMap)
 import Data.List
@@ -358,9 +357,6 @@ schemaReservedWord = TestCase $ do
         schema all.1 : error.1 {}
       |]
 
-  withSchema 2 schema $ \r ->
-    assertBool "schemaReservedWord" $ isRight r
-
   withSchema latestAngleVersion schema $ \r ->
     assertBool "schemaReservedWord" $
       case r of
@@ -378,9 +374,6 @@ schemaUpperCaseField = TestCase $ do
 
         schema all.1 : error.1 {}
       |]
-
-  withSchema 3 schema $ \r ->
-    assertBool "schemaUpperCaseField" $ isRight r
 
   withSchema latestAngleVersion schema $ \r ->
     assertBool "schemaUpperCaseField" $
