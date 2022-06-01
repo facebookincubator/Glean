@@ -31,13 +31,33 @@ instance Search Cxx.Entity where
   symbolSearch [] =
     return $ None "Cxx.symbolSearch: empty path"
   symbolSearch t@[name] = do
-    runSearch t $ searchByNameAndScope False [] name
+    runSearch t $
+      searchByScope t .|
+      searchByNameAndScope False [] name
   symbolSearch t@(_:_) = do
-    runSearch t $ searchByNameAndScope False (init t) (last t)
+    runSearch t $
+      searchByScope t .|
+      searchByNameAndScope False (init t) (last t)
 
 --
 -- Entity search for C++
 --
+searchByScope
+  :: [Text] -> Angle (ResultLocation Cxx.Entity)
+searchByScope ns =
+  vars $ \(entity :: Angle Cxx.Entity) (file :: Angle Src.File)
+      (rangespan :: Angle Code.RangeSpan) ->
+    tuple (entity, file, rangespan) `where_` [
+      wild .= predicate @Cxx.SearchByScope (
+        rec $
+          field @"scope" (scopeQuery ns) $
+          field @"entity" entity
+        end),
+      entityLocation (alt @"cxx" entity) file rangespan
+    ]
+  where
+    scopeQuery ns = scope (reverse ns)
+
 searchByNameAndScope
   :: Bool -> [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
 searchByNameAndScope isPrefix ns name =

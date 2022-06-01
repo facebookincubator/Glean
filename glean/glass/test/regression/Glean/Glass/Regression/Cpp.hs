@@ -54,8 +54,10 @@ testCppFindReferences get = TestLabel "findReferences" $ TestList [
 
 testSymbolIdLookup :: IO (Some Backend, Repo) -> Test
 testSymbolIdLookup get = TestLabel "describeSymbol" $ TestList [
+  "test/cpp/foo" --> "test.cpp",
   "test/cpp/foo/f" --> "test.cpp",
   "test/cpp/foo/S" --> "test.cpp",
+  "test/cpp/foo/bar" --> "test.cpp",
   "test/cpp/foo/bar/T" --> "test.cpp",
   "test/cpp/foo/bar/g" --> "test.cpp"
   ]
