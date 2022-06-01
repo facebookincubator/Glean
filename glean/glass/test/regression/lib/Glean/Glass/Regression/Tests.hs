@@ -12,6 +12,7 @@ module Glean.Glass.Regression.Tests (
   testFindReferences,
   testDescribeSymbolComments,
   testDescribeSymbolHasAnnotations,
+  testDescribeSymbolHasVisibility,
   testSearchRelated,
   testResolveSymbol,
   testSearchSymbolByName
@@ -115,6 +116,18 @@ testDescribeSymbolHasAnnotations sym@(SymbolId name) anns get =
         (maybe []
           (map $ \Annotation{..} -> (annotation_name, annotation_source))
           symbolDescription_annotations)
+
+-- | Test that describeSymbol has a specific visibility
+testDescribeSymbolHasVisibility
+  :: SymbolId -> Visibility -> Getter -> Test
+testDescribeSymbolHasVisibility sym@(SymbolId name) vis get =
+  TestLabel (Text.unpack name) $ TestCase $ do
+    (backend, _repo) <- get
+    withTestEnv backend $ \env -> do
+      SymbolDescription{..} <- describeSymbol env sym def
+      assertEqual "describeSymbol Visibility equal"
+        (Just vis)
+        symbolDescription_visibility
 
 -- | Test findReferences and findReferenceRanges: given a SymbolId check
 -- that the number of references returned for each Path matches the input.

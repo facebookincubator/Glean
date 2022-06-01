@@ -31,6 +31,7 @@ unitTests get =
   , testHackFindReferences get
   , testHackDescribeSymbolComments get
   , testHackAnnotations get
+  , testHackVisibility get
   , testHackSearchRelated get
   ]
 
@@ -114,6 +115,18 @@ testHackAnnotations get = TestLabel "annotations" $ TestList [
     (-->) :: Text -> [(Text, Text)] -> Test
     sym --> expected =
       testDescribeSymbolHasAnnotations
+        (SymbolId sym)
+        expected
+        get
+
+testHackVisibility :: Getter -> Test
+testHackVisibility get = TestLabel "visibility" $ TestList [
+  "test/php/SourceClass/daz" --> Visibility_Public
+  ]
+  where
+    (-->) :: Text -> Visibility -> Test
+    sym --> expected =
+      testDescribeSymbolHasVisibility
         (SymbolId sym)
         expected
         get

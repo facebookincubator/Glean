@@ -183,6 +183,7 @@ import Glean.Glass.Attributes.SymbolKind
 import Glean.Glass.Annotations (getAnnotationsForEntity)
 import Glean.Glass.Comments (getCommentsForEntity)
 import Glean.Glass.SearchRelated (searchRelatedSymbols, Recursive(..))
+import Glean.Glass.Visibility (getVisibilityForEntity)
 
 
 -- | Runner for methods that are keyed by a file path
@@ -932,11 +933,14 @@ describeEntity
     Right anns -> return anns
     Left err -> throwM $ ServerException err
   comments <- getCommentsForEntity locationRange_repository decl
+  visibility <- getVisibilityForEntity decl
+  symbolDescription_visibility <- case visibility of
+    Right vis -> return vis
+    Left err -> throwM $ ServerException err
   symbolDescription_comments <- case comments of
     Right comments -> return comments
     Left err -> throwM $ ServerException err
   let symbolDescription_repo_hash = Glean.repo_hash repo
-  let symbolDescription_visibility = Nothing
   return SymbolDescription{..}
 
 -- | Returns entities based on a string needle and an Angle query. Shared
