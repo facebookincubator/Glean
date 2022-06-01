@@ -462,7 +462,6 @@ library core
         Glean.Angle.Parser
         Glean.Angle.Types
         Glean.Query.Angle
-        Glean.Query.Types
         Glean.Repo.Text
         Glean.Schema.Resolve
         Glean.Schema.Types
