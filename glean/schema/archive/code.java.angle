@@ -34,7 +34,6 @@ type Annotations =
   }
 }
 
-#Nothing mentions code.java.4, nor should. It was incorrect
 schema code.java.4 {
 import java.5
 
@@ -45,20 +44,3 @@ type Entity =
     file_ : java.JavaFile |
   }
 }
-
-schema code.java.5 {
-import java.6
-
-type Entity =
-  {
-    class_ : java.ClassDeclaration |
-    definition_ : java.Definition |
-  }
-
- type Annotations =
- {
-   annotations : [java.Annotation] |
- }
-
-}
-schema code.java.5 evolves code.java.3

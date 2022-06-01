@@ -24,6 +24,7 @@ import Glean.Schema.CodeJava.Types as Java
 import Glean.Schema.CodePp.Types as Pp
 import Glean.Schema.CodePython.Types as Python
 import Glean.Schema.Hack.Types as Hack
+import Glean.Schema.Java.Types as Java
 import Glean.Schema.Flow.Types as Flow
 import Glean.Schema.Python.Types as Python
 import Glean.Schema.Query.Code.Types as Query.Code
@@ -78,6 +79,11 @@ trimCodeEntity = \case
 
     trimJava = \case
       Java.Entity_class_ x -> trim x
+      Java.Entity_definition_ y -> Java.Entity_definition_ $ case y of
+         Java.Definition_class_ x ->  trim x
+         Java.Definition_enum_ x -> trim x
+         Java.Definition_interface_ x -> trim x
+         Java.Definition_EMPTY -> error "trimJava: unexpected"
       Java.Entity_EMPTY -> error "trimJava: unexpected"
 
     trimHs = \case
@@ -202,7 +208,9 @@ instance Prune Query.Cxx.Declaration where
 
 instance Prune Query.Code.Java.Entity where
   prune d@Query.Code.Java.Entity{..} = d
-    { Query.Code.Java.entity_class_ = fmap prune entity_class_ }
+    { Query.Code.Java.entity_class_ = fmap prune entity_class_
+    , Query.Code.Java.entity_definition_ = fmap prune entity_definition_
+    }
 
 instance Prune Query.Java.ClassDeclaration where
   prune (Query.Java.ClassDeclaration_with_key k) =
@@ -212,6 +220,32 @@ instance Prune Query.Java.ClassDeclaration where
 instance Prune Query.Java.ClassDeclaration_key where
   prune Query.Java.ClassDeclaration_key{..} = def
     { Query.Java.classDeclaration_key_name = classDeclaration_key_name }
+
+instance Prune Query.Java.InterfaceDeclaration where
+  prune (Query.Java.InterfaceDeclaration_with_key k) =
+    Query.Java.InterfaceDeclaration_with_key (prune k)
+  prune other = other
+
+instance Prune Query.Java.InterfaceDeclaration_key where
+  prune Query.Java.InterfaceDeclaration_key{..} = def
+    { Query.Java.interfaceDeclaration_key_name = interfaceDeclaration_key_name }
+
+instance Prune Query.Java.EnumDeclaration where
+  prune (Query.Java.EnumDeclaration_with_key k) =
+    Query.Java.EnumDeclaration_with_key (prune k)
+  prune other = other
+
+instance Prune Query.Java.EnumDeclaration_key where
+  prune Query.Java.EnumDeclaration_key{..} = def
+    { Query.Java.enumDeclaration_key_name = enumDeclaration_key_name }
+
+instance Prune Query.Java.Definition where
+  prune d@Query.Java.Definition{..} = d
+    { Query.Java.definition_class_ = fmap prune definition_class_
+    , Query.Java.definition_enum_ = fmap prune definition_enum_
+    , Query.Java.definition_interface_ = fmap prune definition_interface_
+    , Query.Java.definition_any = False
+    }
 
 instance Prune Query.Pp.Define where
   prune (Query.Pp.Define_with_key k) = Query.Pp.Define_with_key (prune k)

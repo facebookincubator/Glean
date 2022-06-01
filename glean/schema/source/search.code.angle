@@ -1,7 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema search.code.14 {
-import code.22
+schema search.code.15 {
+import code.23
 import code.cxx.4
 import code.hack.4
 import code.python.1
@@ -192,3 +192,5 @@ predicate LsifSearchByLowerCaseName:
   lsif.SearchByName { NameCase, Entity }
 
 }
+
+schema search.code.15 evolves search.code.14

@@ -1,8 +1,8 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.28 {
+schema codemarkup.27 {
 import src.1
-import code.23
+import code.22
 import codemarkup.buck.2
 import codemarkup.cxx.3
 import codemarkup.erlang.2
@@ -369,4 +369,4 @@ predicate ContainsChildEntity :
 
 }
 
-schema codemarkup.27 evolves codemarkup.26
+schema codemarkup.26 evolves codemarkup.25

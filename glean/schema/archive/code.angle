@@ -1,13 +1,13 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema code.23 {
+schema code.22 {
 import code.buck.1
 import code.cxx.4
 import code.erlang.1
 import code.flow.2
 import code.hack.4
 import code.hs.2
-import code.java.5
+import code.java.3
 import code.lsif.1
 import code.pp.1
 import code.python.1
@@ -40,4 +40,4 @@ type Annotations =
   }
 }
 
-schema code.23 evolves code.22
+schema code.22 evolves code.21
