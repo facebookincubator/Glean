@@ -85,6 +85,18 @@ predicate SearchByNameAndScope :
       Entity = code.cxx.Entity { enumerator = E };
     )
 
+predicate SearchByScope :
+  {
+    scope : cxx1.Scope,
+    entity : code.cxx.Entity,
+  }
+  {Scope, Entity} where
+    (
+        {namespace_= QName } = Scope;
+        NS = cxx1.NamespaceDeclaration { name = QName };
+        Entity = code.cxx.Entity { decl = { namespace_ = NS } };
+    )
+
 predicate SearchBySelector :
   {
     selector : cxx1.ObjcSelector,
