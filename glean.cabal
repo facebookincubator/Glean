@@ -83,7 +83,7 @@ flag rust-tests
 
 -- run tests that require lsif-java
 flag java-lsif-tests
-     default: True
+     default: False
 
 common deps
     build-depends:
