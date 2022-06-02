@@ -39,7 +39,7 @@ instance ToSymbolSignature Code.Entity where
       Lsif.Entity_go x -> LSIF.prettyLsifSignature x
       Lsif.Entity_typescript x -> LSIF.prettyLsifSignature x
       Lsif.Entity_rust x -> LSIF.prettyLsifSignature x
-      Lsif.Entity_java x -> LSIF.prettyLsifSignature x
+      -- Lsif.Entity_java x -> LSIF.prettyLsifSignature x
       Lsif.Entity_EMPTY -> pure Nothing
     -- otherwise
     _ -> return Nothing

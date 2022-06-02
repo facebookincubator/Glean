@@ -238,7 +238,6 @@ type Entity =
     typescript : lsif.SomeEntity |
     go : lsif.SomeEntity |
     rust : lsif.SomeEntity |
-    java : lsif.SomeEntity |
   }
 
 # Base entities in LSIF are definitions and declartions
@@ -328,8 +327,7 @@ predicate TagDefinition:
   { Language, Defn, Entity } where
     ( TypeScript = Language; { typescript = { defn = Defn } } = Entity) |
     ( Go = Language; { go = { defn = Defn } } = Entity) |
-    ( Rust = Language; { rust = { defn = Defn } } = Entity) |
-    ( Java = Language; { java = { defn = Defn } } = Entity)
+    ( Rust = Language; { rust = { defn = Defn } } = Entity)
 
 # eliminate entity tags
 predicate EntityDefinition:
@@ -340,8 +338,7 @@ predicate EntityDefinition:
   { Entity, Defn } where
     ({ typescript = { defn = Defn }} = Entity; ) |
     ({ go = { defn = Defn }} = Entity; ) |
-    ({ rust = { defn = Defn }} = Entity; ) |
-    ({ java = { defn = Defn }} = Entity; )
+    ({ rust = { defn = Defn }} = Entity; )
 
 # Just need to elaborate lsif.RangeSpan with a File key
 predicate DefinitionLocation:
