@@ -1239,6 +1239,7 @@ library glass-lib
         Glean.Glass.SymbolMap
         Glean.Glass.SymbolSig
         Glean.Glass.Utils
+        Glean.Glass.Visibility
     build-depends:
         glean:client-hs,
         glean:client-hs-local,
