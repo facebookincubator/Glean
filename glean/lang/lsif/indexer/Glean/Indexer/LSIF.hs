@@ -25,11 +25,17 @@ import Glean.LSIF.Driver as LSIF
 import Glean.Backend ( Backend )
 import qualified Glean
 
-data LSIF = LSIF
+newtype LSIF = LSIF
+  { lsifIndexFile :: FilePath
+  }
   -- no options currently
 
 options :: Parser LSIF
-options = pure LSIF
+options = do
+  lsifIndexFile <- strOption $
+    long "input" <>
+    help "path to an lsif index file"
+  return LSIF{..}
 
 -- | An indexer that just slurps an existing LSIF file. Usage:
 --
@@ -41,8 +47,8 @@ indexer = Indexer {
   indexerShortName = "lsif",
   indexerDescription = "Index an LSIF file",
   indexerOptParser = options,
-  indexerRun = \LSIF backend repo IndexerParams{..} -> do
-    val <- LSIF.processLSIF indexerRoot indexerRoot
+  indexerRun = \LSIF{..} backend repo IndexerParams{..} -> do
+    val <- LSIF.processLSIF indexerRoot lsifIndexFile
     sendJsonBatches backend repo "lsif" val
     derive backend repo
   }

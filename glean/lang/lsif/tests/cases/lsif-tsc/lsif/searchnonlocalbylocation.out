@@ -1,0 +1,207 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": {
+        "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+      },
+      "name": { "key": "Error" },
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "defn": {
+                "key": {
+                  "file": {
+                    "key": {
+                      "file": {
+                        "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+                      },
+                      "language": 49
+                    }
+                  },
+                  "range": {
+                    "key": {
+                      "range": {
+                        "lineBegin": 972,
+                        "columnBegin": 11,
+                        "lineEnd": 972,
+                        "columnEnd": 15
+                      },
+                      "fullRange": {
+                        "lineBegin": 972,
+                        "columnBegin": 1,
+                        "lineEnd": 976,
+                        "columnEnd": 1
+                      },
+                      "text": { "key": "Error" }
+                    }
+                  }
+                }
+              },
+              "moniker": {
+                "key": {
+                  "kind": 0,
+                  "scheme": { "key": "tsc" },
+                  "ident": { "key": "Error" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": {
+        "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+      },
+      "name": { "key": "Error" },
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "defn": {
+                "key": {
+                  "file": {
+                    "key": {
+                      "file": {
+                        "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+                      },
+                      "language": 49
+                    }
+                  },
+                  "range": {
+                    "key": {
+                      "range": {
+                        "lineBegin": 984,
+                        "columnBegin": 13,
+                        "lineEnd": 984,
+                        "columnEnd": 17
+                      },
+                      "fullRange": {
+                        "lineBegin": 984,
+                        "columnBegin": 13,
+                        "lineEnd": 984,
+                        "columnEnd": 35
+                      },
+                      "text": { "key": "Error" }
+                    }
+                  }
+                }
+              },
+              "moniker": {
+                "key": {
+                  "kind": 0,
+                  "scheme": { "key": "tsc" },
+                  "ident": { "key": "Error" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "name": { "key": "" },
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "defn": {
+                "key": {
+                  "file": {
+                    "key": {
+                      "file": {
+                        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+                      },
+                      "language": 49
+                    }
+                  },
+                  "range": {
+                    "key": {
+                      "range": {
+                        "lineBegin": 1,
+                        "columnBegin": 1,
+                        "lineEnd": 1,
+                        "columnEnd": 1
+                      },
+                      "fullRange": {
+                        "lineBegin": 1,
+                        "columnBegin": 1,
+                        "lineEnd": 53,
+                        "columnEnd": 1
+                      },
+                      "text": { "key": "" }
+                    }
+                  }
+                }
+              },
+              "moniker": {
+                "key": {
+                  "kind": 0,
+                  "scheme": { "key": "tsc" },
+                  "ident": { "key": "xrefs/example:" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/typescript/tests/cases/xrefs/example.ts" },
+      "name": { "key": "createTempRepo" },
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "defn": {
+                "key": {
+                  "file": {
+                    "key": {
+                      "file": {
+                        "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+                      },
+                      "language": 49
+                    }
+                  },
+                  "range": {
+                    "key": {
+                      "range": {
+                        "lineBegin": 46,
+                        "columnBegin": 17,
+                        "lineEnd": 46,
+                        "columnEnd": 30
+                      },
+                      "fullRange": {
+                        "lineBegin": 46,
+                        "columnBegin": 1,
+                        "lineEnd": 52,
+                        "columnEnd": 1
+                      },
+                      "text": { "key": "createTempRepo" }
+                    }
+                  }
+                }
+              },
+              "moniker": {
+                "key": {
+                  "kind": 0,
+                  "scheme": { "key": "tsc" },
+                  "ident": { "key": "xrefs/example:createTempRepo" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

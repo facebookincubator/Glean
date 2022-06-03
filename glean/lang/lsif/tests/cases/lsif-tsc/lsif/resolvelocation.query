@@ -1,0 +1,3 @@
+query: lsif.ResolveLocation _
+perf: True
+transform: [gensort, []]

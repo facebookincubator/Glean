@@ -1,0 +1,1315 @@
+[
+  "@generated",
+  {
+    "key": {
+      "ident": { "key": "/3ilkNU7r8n/bOPJ3NTzdg==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "/3ilkNU7r8n/bOPJ3NTzdg==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 9,
+                "columnBegin": 8,
+                "lineEnd": 9,
+                "columnEnd": 9
+              },
+              "fullRange": {
+                "lineBegin": 9,
+                "columnBegin": 8,
+                "lineEnd": 9,
+                "columnEnd": 9
+              },
+              "text": { "key": "fs" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "2KWvaBXXYDS6DOtPVXTLSg==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "2KWvaBXXYDS6DOtPVXTLSg==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 35,
+                "columnBegin": 60,
+                "lineEnd": 35,
+                "columnEnd": 65
+              },
+              "fullRange": {
+                "lineBegin": 35,
+                "columnBegin": 60,
+                "lineEnd": 35,
+                "columnEnd": 71
+              },
+              "text": { "key": "silent" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "6oRU0FEWsBkauPrY845SNw==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "6oRU0FEWsBkauPrY845SNw==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 16,
+                "columnBegin": 41,
+                "lineEnd": 16,
+                "columnEnd": 43
+              },
+              "fullRange": {
+                "lineBegin": 16,
+                "columnBegin": 41,
+                "lineEnd": 16,
+                "columnEnd": 48
+              },
+              "text": { "key": "cwd" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "8/W47Qe+eKcZWPFcHfTq+A==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "8/W47Qe+eKcZWPFcHfTq+A==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 51,
+                "columnBegin": 11,
+                "lineEnd": 51,
+                "columnEnd": 17
+              },
+              "fullRange": {
+                "lineBegin": 51,
+                "columnBegin": 11,
+                "lineEnd": 51,
+                "columnEnd": 17
+              },
+              "text": { "key": "repoDir" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "DrRDAVwBuB8//qgD4G6vsw==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "DrRDAVwBuB8//qgD4G6vsw==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 15,
+                "columnBegin": 23,
+                "lineEnd": 15,
+                "columnEnd": 25
+              },
+              "fullRange": {
+                "lineBegin": 15,
+                "columnBegin": 15,
+                "lineEnd": 15,
+                "columnEnd": 33
+              },
+              "text": { "key": "dir" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "Error" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "Error" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 972,
+                "columnBegin": 11,
+                "lineEnd": 972,
+                "columnEnd": 15
+              },
+              "fullRange": {
+                "lineBegin": 972,
+                "columnBegin": 1,
+                "lineEnd": 976,
+                "columnEnd": 1
+              },
+              "text": { "key": "Error" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "Error" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "Error" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "@sourcegraph/lsif-tsc/node_modules/typescript-lsif/lib/lib.es5.d.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 984,
+                "columnBegin": 13,
+                "lineEnd": 984,
+                "columnEnd": 17
+              },
+              "fullRange": {
+                "lineBegin": 984,
+                "columnBegin": 13,
+                "lineEnd": 984,
+                "columnEnd": 35
+              },
+              "text": { "key": "Error" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "H2BjkjYFKHK2g/SrRiraKw==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "H2BjkjYFKHK2g/SrRiraKw==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 47,
+                "columnBegin": 9,
+                "lineEnd": 47,
+                "columnEnd": 15
+              },
+              "fullRange": {
+                "lineBegin": 47,
+                "columnBegin": 9,
+                "lineEnd": 47,
+                "columnEnd": 73
+              },
+              "text": { "key": "repoDir" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "MXizKnmQrEiV01i7nXwNZg==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "MXizKnmQrEiV01i7nXwNZg==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 25,
+                "columnBegin": 7,
+                "lineEnd": 25,
+                "columnEnd": 12
+              },
+              "fullRange": {
+                "lineBegin": 25,
+                "columnBegin": 7,
+                "lineEnd": 25,
+                "columnEnd": 18
+              },
+              "text": { "key": "silent" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "OS2DeYmSOjD1jqrzXKhpTA==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "OS2DeYmSOjD1jqrzXKhpTA==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 24,
+                "columnBegin": 7,
+                "lineEnd": 24,
+                "columnEnd": 9
+              },
+              "fullRange": {
+                "lineBegin": 24,
+                "columnBegin": 7,
+                "lineEnd": 24,
+                "columnEnd": 14
+              },
+              "text": { "key": "cwd" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "PV2UKnevUWrKmi62yZCPxw==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "PV2UKnevUWrKmi62yZCPxw==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 34,
+                "columnBegin": 23,
+                "lineEnd": 34,
+                "columnEnd": 26
+              },
+              "fullRange": {
+                "lineBegin": 34,
+                "columnBegin": 23,
+                "lineEnd": 34,
+                "columnEnd": 34
+              },
+              "text": { "key": "date" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "QmlCVXEvEHOkprU24SNlTQ==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "QmlCVXEvEHOkprU24SNlTQ==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 27,
+                "columnBegin": 48,
+                "lineEnd": 27,
+                "columnEnd": 50
+              },
+              "fullRange": {
+                "lineBegin": 27,
+                "columnBegin": 48,
+                "lineEnd": 27,
+                "columnEnd": 55
+              },
+              "text": { "key": "cwd" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "SJDIrS79+ZvyznHsGiB0aA==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "SJDIrS79+ZvyznHsGiB0aA==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 27,
+                "columnBegin": 58,
+                "lineEnd": 27,
+                "columnEnd": 63
+              },
+              "fullRange": {
+                "lineBegin": 27,
+                "columnBegin": 58,
+                "lineEnd": 27,
+                "columnEnd": 69
+              },
+              "text": { "key": "silent" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "SbzU1kTxGFRppwtKeIRKTw==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "SbzU1kTxGFRppwtKeIRKTw==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 16,
+                "columnBegin": 51,
+                "lineEnd": 16,
+                "columnEnd": 56
+              },
+              "fullRange": {
+                "lineBegin": 16,
+                "columnBegin": 51,
+                "lineEnd": 16,
+                "columnEnd": 62
+              },
+              "text": { "key": "silent" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "Xe/oVGdzHsPMcp/jT7efIA==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "Xe/oVGdzHsPMcp/jT7efIA==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 10,
+                "columnBegin": 8,
+                "lineEnd": 10,
+                "columnEnd": 9
+              },
+              "fullRange": {
+                "lineBegin": 10,
+                "columnBegin": 8,
+                "lineEnd": 10,
+                "columnEnd": 9
+              },
+              "text": { "key": "os" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "bDxqAVHOAEYeNM/JZWPnfw==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "bDxqAVHOAEYeNM/JZWPnfw==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 14,
+                "columnBegin": 7,
+                "lineEnd": 14,
+                "columnEnd": 9
+              },
+              "fullRange": {
+                "lineBegin": 14,
+                "columnBegin": 1,
+                "lineEnd": 42,
+                "columnEnd": 3
+              },
+              "text": { "key": "Git" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "cMWem4hzsMDi90CHoBNtXw==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "cMWem4hzsMDi90CHoBNtXw==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 34,
+                "columnBegin": 3,
+                "lineEnd": 34,
+                "columnEnd": 8
+              },
+              "fullRange": {
+                "lineBegin": 34,
+                "columnBegin": 3,
+                "lineEnd": 41,
+                "columnEnd": 5
+              },
+              "text": { "key": "commit" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "j+nmV5YwNbXy1Mof9jmnKQ==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "j+nmV5YwNbXy1Mof9jmnKQ==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 34,
+                "columnBegin": 37,
+                "lineEnd": 34,
+                "columnEnd": 42
+              },
+              "fullRange": {
+                "lineBegin": 34,
+                "columnBegin": 37,
+                "lineEnd": 34,
+                "columnEnd": 50
+              },
+              "text": { "key": "author" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "lLyvUTnUL2R6gYM3muutpA==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "lLyvUTnUL2R6gYM3muutpA==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 46,
+                "columnBegin": 53,
+                "lineEnd": 46,
+                "columnEnd": 55
+              },
+              "fullRange": {
+                "lineBegin": 46,
+                "columnBegin": 53,
+                "lineEnd": 46,
+                "columnEnd": 60
+              },
+              "text": { "key": "git" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "p+PC9LVIdT2oFZs0vcGtVw==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "p+PC9LVIdT2oFZs0vcGtVw==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 34,
+                "columnBegin": 10,
+                "lineEnd": 34,
+                "columnEnd": 12
+              },
+              "fullRange": {
+                "lineBegin": 34,
+                "columnBegin": 10,
+                "lineEnd": 34,
+                "columnEnd": 20
+              },
+              "text": { "key": "msg" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "qMNSTrHPsyVs4BByx+9Uqg==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "qMNSTrHPsyVs4BByx+9Uqg==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 16,
+                "columnBegin": 11,
+                "lineEnd": 16,
+                "columnEnd": 13
+              },
+              "fullRange": {
+                "lineBegin": 16,
+                "columnBegin": 11,
+                "lineEnd": 16,
+                "columnEnd": 64
+              },
+              "text": { "key": "res" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "qqIuhjgAEHuvPBHYbuZo6g==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "qqIuhjgAEHuvPBHYbuZo6g==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 12,
+                "columnBegin": 8,
+                "lineEnd": 12,
+                "columnEnd": 12
+              },
+              "fullRange": {
+                "lineBegin": 12,
+                "columnBegin": 8,
+                "lineEnd": 12,
+                "columnEnd": 12
+              },
+              "text": { "key": "shell" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "r/Me+CD8NHpy0CFNYm8sxg==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "r/Me+CD8NHpy0CFNYm8sxg==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 31,
+                "columnBegin": 7,
+                "lineEnd": 31,
+                "columnEnd": 12
+              },
+              "fullRange": {
+                "lineBegin": 31,
+                "columnBegin": 7,
+                "lineEnd": 31,
+                "columnEnd": 18
+              },
+              "text": { "key": "silent" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "sE471BNk/mmaIFs3fV7IgA==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "sE471BNk/mmaIFs3fV7IgA==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 46,
+                "columnBegin": 36,
+                "lineEnd": 46,
+                "columnEnd": 42
+              },
+              "fullRange": {
+                "lineBegin": 46,
+                "columnBegin": 36,
+                "lineEnd": 46,
+                "columnEnd": 51
+              },
+              "text": { "key": "repoDir" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "tkLaxPqTSg2t3Bz/AFfyqA==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "tkLaxPqTSg2t3Bz/AFfyqA==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 35,
+                "columnBegin": 11,
+                "lineEnd": 35,
+                "columnEnd": 16
+              },
+              "fullRange": {
+                "lineBegin": 35,
+                "columnBegin": 11,
+                "lineEnd": 35,
+                "columnEnd": 73
+              },
+              "text": { "key": "addRes" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "unuGKRIK8r9JmeGmmYSuyQ==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "unuGKRIK8r9JmeGmmYSuyQ==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 49,
+                "columnBegin": 9,
+                "lineEnd": 49,
+                "columnEnd": 11
+              },
+              "fullRange": {
+                "lineBegin": 49,
+                "columnBegin": 9,
+                "lineEnd": 49,
+                "columnEnd": 30
+              },
+              "text": { "key": "git" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "uohnSbZfKL4/TSBf2dWjDQ==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "uohnSbZfKL4/TSBf2dWjDQ==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 30,
+                "columnBegin": 7,
+                "lineEnd": 30,
+                "columnEnd": 9
+              },
+              "fullRange": {
+                "lineBegin": 30,
+                "columnBegin": 7,
+                "lineEnd": 30,
+                "columnEnd": 14
+              },
+              "text": { "key": "cwd" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "v83aZsZCnJK//0WR5WviEw==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "v83aZsZCnJK//0WR5WviEw==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 35,
+                "columnBegin": 45,
+                "lineEnd": 35,
+                "columnEnd": 47
+              },
+              "fullRange": {
+                "lineBegin": 35,
+                "columnBegin": 45,
+                "lineEnd": 35,
+                "columnEnd": 57
+              },
+              "text": { "key": "cwd" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "wEwUGshHNl4TXLInwmyCEQ==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "wEwUGshHNl4TXLInwmyCEQ==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 51,
+                "columnBegin": 20,
+                "lineEnd": 51,
+                "columnEnd": 22
+              },
+              "fullRange": {
+                "lineBegin": 51,
+                "columnBegin": 20,
+                "lineEnd": 51,
+                "columnEnd": 22
+              },
+              "text": { "key": "git" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "xNcXk0Yd/DItq5M5KNHgeA==" },
+      "moniker": {
+        "key": {
+          "kind": 1,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "xNcXk0Yd/DItq5M5KNHgeA==" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 11,
+                "columnBegin": 8,
+                "lineEnd": 11,
+                "columnEnd": 11
+              },
+              "fullRange": {
+                "lineBegin": 11,
+                "columnBegin": 8,
+                "lineEnd": 11,
+                "columnEnd": 11
+              },
+              "text": { "key": "path" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "xrefs/example:" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "xrefs/example:" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 1,
+                "columnBegin": 1,
+                "lineEnd": 1,
+                "columnEnd": 1
+              },
+              "fullRange": {
+                "lineBegin": 1,
+                "columnBegin": 1,
+                "lineEnd": 53,
+                "columnEnd": 1
+              },
+              "text": { "key": "" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "ident": { "key": "xrefs/example:createTempRepo" },
+      "moniker": {
+        "key": {
+          "kind": 0,
+          "scheme": { "key": "tsc" },
+          "ident": { "key": "xrefs/example:createTempRepo" }
+        }
+      },
+      "defn": {
+        "key": {
+          "file": {
+            "key": {
+              "file": {
+                "key": "glean/lang/typescript/tests/cases/xrefs/example.ts"
+              },
+              "language": 49
+            }
+          },
+          "range": {
+            "key": {
+              "range": {
+                "lineBegin": 46,
+                "columnBegin": 17,
+                "lineEnd": 46,
+                "columnEnd": 30
+              },
+              "fullRange": {
+                "lineBegin": 46,
+                "columnBegin": 1,
+                "lineEnd": 52,
+                "columnEnd": 1
+              },
+              "text": { "key": "createTempRepo" }
+            }
+          }
+        }
+      }
+    }
+  }
+]

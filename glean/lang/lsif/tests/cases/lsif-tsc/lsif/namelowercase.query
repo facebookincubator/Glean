@@ -1,0 +1,3 @@
+query: lsif.NameLowerCase _
+perf: True
+transform: [gensort, []]

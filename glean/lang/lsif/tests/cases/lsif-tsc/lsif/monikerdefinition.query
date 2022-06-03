@@ -1,0 +1,3 @@
+query: lsif.MonikerDefinition _
+perf: True
+transform: [gensort, []]

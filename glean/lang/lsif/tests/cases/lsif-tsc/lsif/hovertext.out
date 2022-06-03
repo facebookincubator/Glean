@@ -1,0 +1,27 @@
+[
+  "@generated",
+  {
+    "key": "(method) Git.commit(msg: string, date: string, author: string): void"
+  },
+  { "key": "(parameter) author: string" },
+  { "key": "(parameter) date: string" },
+  { "key": "(parameter) msg: string" },
+  { "key": "(property) Git.dir: string" },
+  { "key": "(property) cwd: string" },
+  { "key": "(property) git: Git" },
+  { "key": "(property) repoDir: string" },
+  { "key": "(property) silent: boolean" },
+  { "key": "class Git" },
+  { "key": "const addRes: any" },
+  { "key": "const git: Git" },
+  { "key": "const repoDir: any" },
+  { "key": "const res: any" },
+  {
+    "key": "function createTempRepo(): {\u000a    repoDir: string;\u000a    git: Git;\u000a}"
+  },
+  { "key": "import fs" },
+  { "key": "import os" },
+  { "key": "import path" },
+  { "key": "import shell" },
+  { "key": "interface Error" }
+]

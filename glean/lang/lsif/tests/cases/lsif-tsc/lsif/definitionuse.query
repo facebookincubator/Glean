@@ -1,0 +1,3 @@
+query: lsif.DefinitionUse _
+perf: True
+transform: [gensort, []]

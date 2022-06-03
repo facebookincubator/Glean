@@ -1,0 +1,3 @@
+query: lsif.Document _
+perf: True
+transform: [gensort, []]
