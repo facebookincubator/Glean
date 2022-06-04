@@ -2,8 +2,8 @@
 
 # Language-agnostic schema for modelling dynamic dispatch. This is useful for capturing
 # usages or references of symbols that can't be inferred via static analysis.
-schema dyn.5 {
-import code.23
+schema dyn.6 {
+import code.24
 import src.1
 
 type Usage = enum {
@@ -51,5 +51,3 @@ predicate EntityDynamicReference:
     span: src.ByteSpan,
   }
 }
-schema dyn.5 evolves dyn.4
-

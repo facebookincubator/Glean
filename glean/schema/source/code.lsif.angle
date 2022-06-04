@@ -1,13 +1,22 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema code.lsif.1 {
-import lsif.1
+schema code.lsif.2 {
+import lsif.2
 
 type Entity =
   {
-    typescript : lsif.SomeEntity |
+    erlang : lsif.SomeEntity |
+    fsharp : lsif.SomeEntity |
     go : lsif.SomeEntity |
+    haskell : lsif.SomeEntity |
+    java : lsif.SomeEntity |
+    kotlin : lsif.SomeEntity |
+    ocaml : lsif.SomeEntity |
+    python : lsif.SomeEntity |
     rust : lsif.SomeEntity |
+    scala : lsif.SomeEntity |
+    swift : lsif.SomeEntity |
+    typescript : lsif.SomeEntity |
   }
 
 }

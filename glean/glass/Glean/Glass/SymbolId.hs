@@ -201,9 +201,21 @@ instance Symbol Code.Entity where
     Code.Entity_buck x -> toSymbol x
     Code.Entity_thrift x -> toSymbol x
     Code.Entity_erlang x -> toSymbol x
-    Code.Entity_lsif (Lsif.Entity_typescript x) -> toSymbol x
-    Code.Entity_lsif (Lsif.Entity_go x) -> toSymbol x
-    Code.Entity_lsif (Lsif.Entity_rust x) -> toSymbol x
+    Code.Entity_lsif ent -> case ent of -- enumerate all variants for lsif
+      Lsif.Entity_erlang se -> toSymbol se
+      Lsif.Entity_fsharp se -> toSymbol se
+      Lsif.Entity_go se -> toSymbol se
+      Lsif.Entity_haskell se -> toSymbol se
+      Lsif.Entity_java se -> toSymbol se
+      Lsif.Entity_kotlin se -> toSymbol se
+      Lsif.Entity_ocaml se -> toSymbol se
+      Lsif.Entity_python se -> toSymbol se
+      Lsif.Entity_rust se -> toSymbol se
+      Lsif.Entity_scala se -> toSymbol se
+      Lsif.Entity_swift se -> toSymbol se
+      Lsif.Entity_typescript se -> toSymbol se
+      Lsif.Entity_EMPTY -> throwM $ SymbolError "Unknown LSIF language"
+
     -- Code.Entity_lsif (Lsif.Entity_java x) -> toSymbol x
     _ -> throwM $ SymbolError "Language not supported"
 
@@ -223,14 +235,21 @@ entityToAngle e = case e of
     alt @"hs" (toAngle x)
   Code.Entity_erlang (Erlang.Entity_decl x) -> Right $
     alt @"erlang" (alt @"decl" (toAngle x))
-  Code.Entity_lsif (Lsif.Entity_typescript x) -> Right $
-    alt @"lsif" (alt @"typescript" (toAngle x))
-  Code.Entity_lsif (Lsif.Entity_go x) -> Right $
-    alt @"lsif" (alt @"go" (toAngle x))
-  Code.Entity_lsif (Lsif.Entity_rust x) -> Right $
-    alt @"lsif" (alt @"rust" (toAngle x))
-  -- Code.Entity_lsif (Lsif.Entity_java x) -> Right $
-  --   alt @"lsif" (alt @"java" (toAngle x))
+  -- lsif languages, enumerate all lang constructors
+  Code.Entity_lsif se -> alt @"lsif" <$> case se of
+      Lsif.Entity_erlang x -> Right $ alt @"erlang" (toAngle x)
+      Lsif.Entity_fsharp x -> Right $ alt @"fsharp" (toAngle x)
+      Lsif.Entity_go x -> Right $ alt @"go" (toAngle x)
+      Lsif.Entity_haskell x -> Right $ alt @"haskell" (toAngle x)
+      Lsif.Entity_java x -> Right $ alt @"java" (toAngle x)
+      Lsif.Entity_kotlin x -> Right $ alt @"kotlin" (toAngle x)
+      Lsif.Entity_ocaml x -> Right $ alt @"ocaml" (toAngle x)
+      Lsif.Entity_python x -> Right $ alt @"python" (toAngle x)
+      Lsif.Entity_rust x -> Right $ alt @"rust" (toAngle x)
+      Lsif.Entity_scala x -> Right $ alt @"scala" (toAngle x)
+      Lsif.Entity_swift x -> Right $ alt @"swift" (toAngle x)
+      Lsif.Entity_typescript x -> Right $ alt @"typescript" (toAngle x)
+      Lsif.Entity_EMPTY -> Left "toAngle: Unknown LSIF language"
   _ -> Left $
     "Unsupported language: " <> toShortCode (entityLanguage e)
 
@@ -241,11 +260,21 @@ instance ToQName Code.Entity where
     Code.Entity_flow x -> toQName x
     Code.Entity_cxx x -> toQName x
     Code.Entity_erlang x -> toQName x
-    Code.Entity_lsif (Lsif.Entity_typescript x) -> toQName x
-    Code.Entity_lsif (Lsif.Entity_go x) -> toQName x
-    Code.Entity_lsif (Lsif.Entity_rust x) -> toQName x
-    -- Code.Entity_lsif (Lsif.Entity_java x) -> toQName x
-    _ -> return $ Left "Language unsupported"
+    Code.Entity_lsif se -> case se of -- enumerate all cases for lsif
+      Lsif.Entity_erlang x -> toQName x
+      Lsif.Entity_fsharp x -> toQName x
+      Lsif.Entity_go x -> toQName x
+      Lsif.Entity_haskell x -> toQName x
+      Lsif.Entity_java x -> toQName x
+      Lsif.Entity_kotlin x -> toQName x
+      Lsif.Entity_ocaml x -> toQName x
+      Lsif.Entity_python x -> toQName x
+      Lsif.Entity_rust x -> toQName x
+      Lsif.Entity_scala x -> toQName x
+      Lsif.Entity_swift x -> toQName x
+      Lsif.Entity_typescript x -> toQName x
+      Lsif.Entity_EMPTY -> pure $ Left "LSIF language unsupported"
+    _ -> pure $ Left "Language unsupported"
 
 instance ToSymbolParent Code.Entity where
   toSymbolParent e = case e of

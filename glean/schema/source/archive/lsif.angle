@@ -1,6 +1,6 @@
 # Copyright (c) Meta, Inc. and its affiliates.
 
-schema lsif.2 {
+schema lsif.1 {
 
 import src.1
 
@@ -41,8 +41,6 @@ type LanguageId =
     R | Razor | Ruby | Rust | SCSS | Scala | ShaderLab | Shell | SQL | Swift |
     TypeScript | TypeScriptReact | TeX | VisualBasic | XML | XSL | YAML |
     UnknownLanguage |
-# extend the specification with things
-    Kotlin | OCaml
   }
 
 # Opaque identifiers
@@ -235,23 +233,11 @@ type Location =
 }
 
 # Tagged entity by language. Tags should match shape of code.lsif.angle
-# We use the lsif.LanguageId tag associated with lsif.Document (provided by the indexer)
-# to work out the language of the entity. List is known active indexers and generic lsif that 
-# people might plausibly try to load
 type Entity =
   {
-    erlang : lsif.SomeEntity |
-    fsharp : lsif.SomeEntity |
-    go : lsif.SomeEntity |
-    haskell : lsif.SomeEntity |
-    java : lsif.SomeEntity |
-    kotlin : lsif.SomeEntity |
-    ocaml : lsif.SomeEntity |
-    python : lsif.SomeEntity |
-    rust : lsif.SomeEntity |
-    scala : lsif.SomeEntity |
-    swift : lsif.SomeEntity |
     typescript : lsif.SomeEntity |
+    go : lsif.SomeEntity |
+    rust : lsif.SomeEntity |
   }
 
 # Base entities in LSIF are definitions and declartions
@@ -339,40 +325,20 @@ predicate TagDefinition:
     entity: lsif.Entity,
   }
   { Language, Defn, Entity } where
-    { defn = Defn }  = SE : lsif.SomeEntity;
-    ( Erlang = Language; { erlang = SE }) |
-    ( FSharp = Language; { fsharp = SE }) |
-    ( Go = Language; { go = SE }) |
-    ( Haskell = Language; { haskell = SE }) |
-    ( Java = Language; { java = SE }) |
-    ( Kotlin = Language; { kotlin = SE }) |
-    ( OCaml = Language; { ocaml = SE }) |
-    ( Python = Language; { python = SE }) |
-    ( Rust = Language; { rust = SE }) |
-    ( Scala = Language; { scala = SE }) |
-    ( Swift = Language; { swift = SE }) |
-    ( TypeScript = Language; { typescript = SE }) = Entity;
+    ( TypeScript = Language; { typescript = { defn = Defn } } = Entity) |
+    ( Go = Language; { go = { defn = Defn } } = Entity) |
+    ( Rust = Language; { rust = { defn = Defn } } = Entity)
 
-# eliminate entity tags. inverse of TagDefinition
+# eliminate entity tags
 predicate EntityDefinition:
   {
     entity : lsif.Entity,
     defn : lsif.DefinitionMoniker,
   }
   { Entity, Defn } where
-    ({ erlang = SE }) |
-    ({ fsharp = SE }) |
-    ({ go = SE }) |
-    ({ haskell = SE }) |
-    ({ java = SE }) |
-    ({ kotlin = SE }) |
-    ({ ocaml = SE }) |
-    ({ python = SE }) |
-    ({ rust = SE }) |
-    ({ scala = SE }) |
-    ({ swift = SE }) |
-    ({ typescript = SE }) = Entity;
-    { defn = Defn } = SE;
+    ({ typescript = { defn = Defn }} = Entity; ) |
+    ({ go = { defn = Defn }} = Entity; ) |
+    ({ rust = { defn = Defn }} = Entity; )
 
 # Just need to elaborate lsif.RangeSpan with a File key
 predicate DefinitionLocation:

@@ -60,3 +60,113 @@ predicate LsifEntityUses:
   lsif.EntityUses { E, File, Range }
 
 }
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema codemarkup.lsif.2 {
+import src.1
+import code.lsif.1
+import codemarkup.types.1
+import lsif.1
+
+#
+# Resolving locations to entities
+#
+
+predicate LsifResolveLocation:
+  {
+    location: codemarkup.types.Location,
+    entity: code.lsif.Entity,
+  }
+  { { Name, File, { range = Range }, nothing }, Entity } where
+    lsif.ResolveLocation { { Name, File, Range }, Entity };
+
+#
+# Finding entities' locations
+#
+
+predicate LsifEntityLocation:
+  {
+    entity: code.lsif.Entity,
+    location: codemarkup.types.Location,
+  }
+  { Entity, { Name, File, { range = Range }, nothing } } where
+    lsif.EntityLocation { Entity, { Name, File, Range } };
+
+#
+# Finding references in a file
+#
+
+predicate LsifFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.lsif.Entity,
+  }
+  { File, XRefLocation, Entity } where
+    lsif.FileEntityXRefLocation { File, SrcRange, TargetLocation, Entity };
+    { Name, TargetFile, TargetRange } = TargetLocation;
+    { { Name, TargetFile, { range = TargetRange }, nothing },
+      { range = SrcRange }} = XRefLocation;
+
+#
+# Language entity uses
+#
+
+predicate LsifEntityUses:
+  {
+    target: code.lsif.Entity,
+    file: src.File,
+    range: src.Range, # n.b src.Range
+  }
+  { E, File, Range } where
+  lsif.EntityUses { E, File, Range }
+
+#
+# symbol kinds
+#
+
+predicate EntityInfo:
+  {
+    entity: code.lsif.Entity,
+    info: codemarkup.types.SymbolInfo
+  }
+  { Entity, { kind = Kind, isAbstract = false } } where
+    lsif.EntityKind { Entity, Lsif };
+    LsifKindToKind { Lsif, Kind };
+
+# maps vscode lsp kinds to codemarkup kinds, which use different enums
+predicate LsifKindToKind:
+  {
+    lsif: lsif.SymbolKind,
+    kind: codemarkup.types.SymbolKind
+  }
+  { Lsif, Kind } where
+    ( File = Lsif; File = Kind ) |
+    ( Module = Lsif; Module = Kind ) |
+    ( Namespace = Lsif; Namespace = Kind ) |
+    ( Package = Lsif; Package = Kind ) |
+    ( Class_ = Lsif; Class_ = Kind ) |
+    ( Method = Lsif; Method = Kind ) |
+    ( Property = Lsif; Property = Kind ) |
+    ( Field = Lsif; Field = Kind ) |
+    ( Constructor = Lsif; Constructor = Kind ) |
+    ( Enum = Lsif; Enum = Kind ) |
+    ( Interface = Lsif; Interface = Kind ) |
+    ( Function = Lsif; Function = Kind ) |
+    ( Variable = Lsif; Variable = Kind ) |
+    ( Constant = Lsif; Constant = Kind ) |
+    ( String = Lsif; String = Kind  ) |
+    ( Number = Lsif; Number = Kind ) |
+    ( Boolean = Lsif; Boolean = Kind ) |
+    ( Array = Lsif; Array = Kind ) |
+    ( Object_ = Lsif; Object_ = Kind ) |
+    ( Key = Lsif; Key = Kind ) |
+    ( Null = Lsif; Null = Kind ) |
+    ( EnumMember = Lsif; Enumerator = Kind ) | # n.b different names
+    ( Struct = Lsif; Struct = Kind ) |
+    ( Event = Lsif; Event = Kind ) |
+    ( Operator = Lsif; Operator = Kind ) |
+    ( TypeParameter = Lsif; TypeParameter = Kind );
+    # no Unknown, and can't distinguish Union, Macro or Trait
+
+}

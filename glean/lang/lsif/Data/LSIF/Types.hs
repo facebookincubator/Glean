@@ -314,4 +314,7 @@ data LanguageId
   | XSL -- "xsl"
   | YAML -- "yaml"
   | UnknownLanguage
+  -- extensions from Meta
+  | Kotlin
+  | OCaml
   deriving (Enum)

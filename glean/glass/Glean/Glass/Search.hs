@@ -47,7 +47,7 @@ searchEntity lang toks = case lang of
   Language_JavaScript -> fmap Code.Entity_flow <$> Search.symbolSearch toks
   Language_Haskell -> fmap Code.Entity_hs <$> Search.symbolSearch toks
   Language_Erlang -> fmap Code.Entity_erlang <$> Search.symbolSearch toks
-  -- via lsif
+  -- limited set via lsif
   Language_Go -> fmap Code.Entity_lsif <$> Search.symbolSearch toks
   Language_TypeScript -> fmap Code.Entity_lsif <$> Search.symbolSearch toks
   Language_Rust -> fmap Code.Entity_lsif <$> Search.symbolSearch toks

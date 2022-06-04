@@ -34,12 +34,20 @@ instance ToSymbolSignature Code.Entity where
     Code.Entity_pp{} -> pure Nothing
     -- hack pretty signatures
     Code.Entity_hack x -> Hack.prettyHackSignature x
-    -- lsif languages
+    -- lsif languages, just enumerate completely to stay total
     Code.Entity_lsif e -> case e of
+      Lsif.Entity_erlang x -> LSIF.prettyLsifSignature x
+      Lsif.Entity_fsharp x -> LSIF.prettyLsifSignature x
       Lsif.Entity_go x -> LSIF.prettyLsifSignature x
-      Lsif.Entity_typescript x -> LSIF.prettyLsifSignature x
+      Lsif.Entity_haskell x -> LSIF.prettyLsifSignature x
+      Lsif.Entity_java x -> LSIF.prettyLsifSignature x
+      Lsif.Entity_kotlin x -> LSIF.prettyLsifSignature x
+      Lsif.Entity_ocaml x -> LSIF.prettyLsifSignature x
+      Lsif.Entity_python x -> LSIF.prettyLsifSignature x
       Lsif.Entity_rust x -> LSIF.prettyLsifSignature x
-      -- Lsif.Entity_java x -> LSIF.prettyLsifSignature x
+      Lsif.Entity_scala x -> LSIF.prettyLsifSignature x
+      Lsif.Entity_swift x -> LSIF.prettyLsifSignature x
+      Lsif.Entity_typescript x -> LSIF.prettyLsifSignature x
       Lsif.Entity_EMPTY -> pure Nothing
     -- otherwise
     _ -> return Nothing

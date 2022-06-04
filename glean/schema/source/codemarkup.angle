@@ -1,15 +1,15 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.28 {
+schema codemarkup.29 {
 import src.1
-import code.23
+import code.24
 import codemarkup.buck.2
 import codemarkup.cxx.3
 import codemarkup.erlang.2
 import codemarkup.flow.2
 import codemarkup.hack.2
 import codemarkup.haskell.2
-import codemarkup.lsif.2
+import codemarkup.lsif.3
 import codemarkup.pp.3
 import codemarkup.python.2
 import codemarkup.rust.2
@@ -368,5 +368,3 @@ predicate ContainsChildEntity :
     codemarkup.hack.HackContainsChildEntity { Parent, Child }
 
 }
-
-schema codemarkup.27 evolves codemarkup.26
