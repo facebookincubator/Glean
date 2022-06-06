@@ -110,12 +110,16 @@ qNameQuery :: Glean.IdOf Py.Name -> Angle (Py.Name, Py.Name)
 qNameQuery nameId = vars $
   \ (lname :: Angle Py.Name)
     (pname :: Angle Py.Name)
-    (psname :: Angle Py.SName) ->
+    (psname :: Angle Py.SName)
+    (maybe_psname :: Angle (maybe Py.SName_key)) ->
     tuple (lname, pname) `where_` [
         wild .= predicate @Py.NameToSName (factId nameId
           .-> predicate @Py.SName (rec $
               field @"local_name" (asPredicate lname) $
-              field @"parent" (just $ asPredicate psname)
+              field @"parent" maybe_psname
             end))
-      , wild .= (predicate @Py.SNameToName $ psname .-> pname)
+      , wild .=
+          or_ [ just (asPredicate psname) .= maybe_psname,
+                wild .= (predicate @Py.SNameToName $ psname .-> pname) ]
+              [ nothing .= maybe_psname, pname .= predicate @Py.Name "" ]
       ]
