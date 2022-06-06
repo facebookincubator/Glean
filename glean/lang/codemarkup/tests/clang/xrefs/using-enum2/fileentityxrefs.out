@@ -10,13 +10,13 @@
           "location": {
             "range": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 19,
+              "lineBegin": 12,
               "columnBegin": 1,
-              "lineEnd": 23,
+              "lineEnd": 15,
               "columnEnd": 1
             }
           },
-          "span": { "start": 331, "length": 2 }
+          "span": { "start": 279, "length": 2 }
         },
         "source": { "span": { "start": 428, "length": 2 } }
       },
@@ -33,9 +33,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 19,
+                  "lineBegin": 12,
                   "columnBegin": 1,
-                  "lineEnd": 23,
+                  "lineEnd": 15,
                   "columnEnd": 1
                 }
               }

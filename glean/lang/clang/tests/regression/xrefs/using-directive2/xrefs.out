@@ -1293,9 +1293,9 @@
                   "name": { "key": { "name": { "key": "N2" } } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 53,
+                    "lineBegin": 36,
                     "columnBegin": 1,
-                    "lineEnd": 69,
+                    "lineEnd": 51,
                     "columnEnd": 1
                   }
                 }
@@ -1484,9 +1484,9 @@
                   "name": { "key": { "name": { "key": "N2" } } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 53,
+                    "lineBegin": 36,
                     "columnBegin": 1,
-                    "lineEnd": 69,
+                    "lineEnd": 51,
                     "columnEnd": 1
                   }
                 }

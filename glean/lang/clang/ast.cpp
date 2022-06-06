@@ -2107,7 +2107,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
           if (auto ns = spec->getAsNamespace()) {
             xrefTarget(
               db.rangeOfToken(loc.getLocalSourceRange()),
-              XRef::toDecl(namespaces, ns));
+              XRef::toDecl(namespaces, ns->getCanonicalDecl()));
           }
         }
         return Base::TraverseNestedNameSpecifierLoc(loc);
