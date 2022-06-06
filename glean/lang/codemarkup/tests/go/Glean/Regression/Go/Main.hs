@@ -8,14 +8,14 @@
 
 module Glean.Regression.Go.Main ( main ) where
 
-import System.Environment ( withArgs )
+import System.Environment
 
 import Glean.Indexer.Go as Go
 import Glean.Regression.Snapshot
 import Glean.Regression.Snapshot.Driver
 
 main :: IO ()
-main = withArgs ["--root", path] $
+main = getArgs >>= \args -> withArgs (args ++ ["--root", path]) $
     testMain (driverFromIndexer Go.indexer)
   where
     path = "glean/lang/go/tests/cases"

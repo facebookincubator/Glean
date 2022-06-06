@@ -131,8 +131,8 @@ type Parse a = forall m . Monad m => StateT Env m a
 -- It is useful to record the type of ids along the way
 -- We can infer these types from the use of the id, as edges lightly typed
 data VertexType
-  = ProjectType -- lsif.Project.1
-  | FileType -- src.File / lsif.Document.1
+  = ProjectType -- lsif.Project
+  | FileType -- src.File / lsif.Document
   | DefinitionType
   | ReferenceType -- Item property:references or tag:reference
   | DeclarationType

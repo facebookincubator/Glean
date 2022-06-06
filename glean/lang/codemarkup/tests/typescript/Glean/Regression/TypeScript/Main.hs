@@ -8,14 +8,14 @@
 
 module Glean.Regression.TypeScript.Main ( main ) where
 
-import System.Environment ( withArgs )
+import System.Environment
 
 import Glean.Indexer.Typescript as Typescript
 import Glean.Regression.Snapshot
 import Glean.Regression.Snapshot.Driver
 
 main :: IO ()
-main = withArgs ["--root", path] $
+main = getArgs >>= \args -> withArgs (args ++ ["--root", path]) $
     testMain (driverFromIndexer Typescript.indexer)
   where
     path = "glean/lang/typescript/tests/cases"
