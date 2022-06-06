@@ -15,16 +15,25 @@ module Glean.Schema.Types (
   RefTarget(..), RefResolved,
 
   -- * Resolved abstract syntax
+  ResolvedPat,
   ResolvedType,
   ResolvedFieldDef,
   ResolvedTypeDef,
   ResolvedPredicateDef,
+  ResolvedQuery,
+  ResolvedDeriving,
+
+  ResolvedPat',
+  ResolvedStatement',
+  ResolvedQuery',
+  ResolvedDeriving',
 
   -- * Name environments and resolution
   NameEnv,
   mapNameEnv,
   LookupResult(..),
   resolveRef,
+  resolveRefFiltered,
   lookupResultToEither,
 
   -- * Resolved schemas
@@ -97,10 +106,13 @@ lookupResultToEither _ (ResolvesTo target) = Right target
 
 -- | Resolve a name (@SourceRef@) with respect to a scope (@NameEnv@)
 resolveRef :: NameEnv t -> SourceRef -> LookupResult t
-resolveRef scope ref =
+resolveRef scope ref = resolveRefFiltered scope (const True) ref
+
+resolveRefFiltered :: NameEnv t -> (t -> Bool) -> SourceRef -> LookupResult t
+resolveRefFiltered scope p ref =
   case HashMap.lookup ref scope of
     Nothing -> OutOfScope
-    Just set -> case Set.toList set of
+    Just set -> case filter p $ Set.toList set of
       [] -> OutOfScope
       [one] -> ResolvesTo one
       many -> Ambiguous many
@@ -110,7 +122,17 @@ resolveRef scope ref =
 type ResolvedType = Type_ PredicateRef TypeRef
 type ResolvedFieldDef = FieldDef_ PredicateRef TypeRef
 type ResolvedTypeDef = TypeDef_ PredicateRef TypeRef
-type ResolvedPredicateDef = PredicateDef_ PredicateRef TypeRef SourceQuery
+type ResolvedPredicateDef = PredicateDef_ SrcSpan PredicateRef TypeRef
+type ResolvedPat = SourcePat_ SrcSpan PredicateRef TypeRef
+type ResolvedStatement = SourceStatement_ SrcSpan PredicateRef TypeRef
+type ResolvedQuery = SourceQuery_ ResolvedPat ResolvedStatement
+type ResolvedDeriving = DerivingInfo ResolvedQuery
+
+-- Versions of the above types abstracted over the source spans
+type ResolvedPat' s = SourcePat_ s PredicateRef TypeRef
+type ResolvedStatement' s = SourceStatement_ s PredicateRef TypeRef
+type ResolvedQuery' s = SourceQuery_ (ResolvedPat' s) (ResolvedStatement' s)
+type ResolvedDeriving' s = DerivingInfo (ResolvedQuery' s)
 
 -- | A 'ResolvedSchema' is used during schema resolution to resolve
 -- schemas that import or inherit from this schema.
@@ -123,15 +145,18 @@ data ResolvedSchema p t = ResolvedSchema
   , resolvedSchemaReExportedTypes :: HashMap TypeRef (TypeDef_ p t)
     -- ^ types that are inherited and re-exported by this schema
   , resolvedSchemaPredicates ::
-    HashMap PredicateRef (PredicateDef_ p t SourceQuery)
+      HashMap PredicateRef (PredicateDef_ SrcSpan p t)
     -- ^ predicates that are defined by this schema
   , resolvedSchemaReExportedPredicates ::
-      HashMap PredicateRef (PredicateDef_ p t SourceQuery)
+      HashMap PredicateRef (PredicateDef_ SrcSpan p t)
     -- ^ predicates that are inherited and re-exported by this schema
-  , resolvedSchemaScope :: NameEnv (RefTarget p t)
-    -- ^ we save the scope here because it will be used for typechecking
-    -- the DerivingInfo later.
-  , resolvedSchemaDeriving :: HashMap PredicateRef SourceDerivingInfo
+  , resolvedSchemaUnqualScope :: NameEnv (RefTarget p t)
+    -- ^ The scope exposed by this schema, unqualified. This will be
+    -- used when the schema is inherited.
+  , resolvedSchemaQualScope :: NameEnv (RefTarget p t)
+    -- ^ The scope exposed by this schema, qualified. This will be
+    -- used when the schema is inherited or imported.
+  , resolvedSchemaDeriving :: HashMap PredicateRef (DerivingInfo (Query_ p t))
     -- ^ deriving declarations, for predicates defined in this schema
     -- or an inherited schema.
   , resolvedSchemaEvolves :: Set SchemaRef

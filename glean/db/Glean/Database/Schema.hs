@@ -381,7 +381,9 @@ mkDbSchema override getPids dbContent source base addition = do
 
       schemaEnvs = IntMap.fromList
         [ (fromIntegral resolvedSchemaVersion,
-           HashMap.union resolvedSchemaScope versionedNameEnv)
+           HashMap.union resolvedSchemaUnqualScope $
+           HashMap.union resolvedSchemaQualScope
+           versionedNameEnv)
         | ResolvedSchema{..} <- resolvedAlls
         ]
 
@@ -635,9 +637,8 @@ typecheckSchema override refToPid dbContent stored
       , tcEnvTypes = types
       }
 
-    tcDeriving pred info = runExcept $ do
-      typecheckDeriving env resolvedSchemaAngleVersion
-          (UseScope resolvedSchemaScope rtsType) pred info
+    tcDeriving pred info = runExcept $
+      typecheckDeriving env resolvedSchemaAngleVersion rtsType pred info
 
   -- Typecheck all the derivations, which can be for predicates in
   -- this schema or for any schema it inherits from.

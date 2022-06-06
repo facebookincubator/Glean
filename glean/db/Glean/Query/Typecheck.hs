@@ -9,8 +9,7 @@
 module Glean.Query.Typecheck
   ( typecheck
   , typecheckDeriving
-  , NameResolutionPolicy(..)
-  , nameResolutionPolicyToNameEnv
+  , ToRtsType
   , TcEnv(..)
   , emptyTcEnv
   , tcQueryDeps
@@ -49,7 +48,6 @@ import Glean.RTS.Term hiding
 import qualified Glean.RTS.Term as RTS
 import Glean.Database.Schema.Types
 import Glean.Schema.Util
-import Glean.Schema.Resolve
 import Glean.Schema.Types
 
 data TcEnv = TcEnv
@@ -60,6 +58,8 @@ data TcEnv = TcEnv
 emptyTcEnv :: TcEnv
 emptyTcEnv = TcEnv HashMap.empty HashMap.empty
 
+type ToRtsType = Schema.Type -> Maybe Type
+
 -- | Typecheck a 'SourceQuery' which is in terms of schema types and
 -- turn it into a 'TypecheckedQuery' which is in terms of raw Terms,
 -- ready for compiling to bytecode.
@@ -67,17 +67,17 @@ typecheck
   :: IsSrcSpan s
   => DbSchema
   -> AngleVersion
-  -> NameResolutionPolicy
-  -> SourceQuery' s
+  -> ToRtsType
+  -> ResolvedQuery' s
   -> Except Text TypecheckedQuery
-typecheck dbSchema ver policy query = do
+typecheck dbSchema ver rtsType query = do
   let
     tcEnv = TcEnv
       { tcEnvPredicates = predicatesByRef dbSchema
       , tcEnvTypes = schemaTypesByRef dbSchema
       }
   (q@(TcQuery ty _ _ _), TypecheckState{..}) <-
-    let state = initialTypecheckState tcEnv ver policy TcModeQuery in
+    let state = initialTypecheckState tcEnv ver rtsType TcModeQuery in
     flip runStateT state $ do
       modify $ \s -> s { tcVisible = varsQuery query mempty }
       inferQuery ContextExpr query
@@ -89,13 +89,13 @@ typecheckDeriving
   :: IsSrcSpan s
   => TcEnv
   -> AngleVersion
-  -> NameResolutionPolicy
+  -> ToRtsType
   -> PredicateDetails
-  -> SourceDerivingInfo' s
+  -> ResolvedDeriving' s
   -> Except Text (DerivingInfo TypecheckedQuery)
-typecheckDeriving tcEnv ver policy PredicateDetails{..} derivingInfo = do
+typecheckDeriving tcEnv ver rtsType PredicateDetails{..} derivingInfo = do
   (d, _) <-
-    let state = initialTypecheckState tcEnv ver policy TcModePredicate
+    let state = initialTypecheckState tcEnv ver rtsType TcModePredicate
     in
     flip runStateT state $ do
     flip catchError
@@ -141,8 +141,8 @@ typecheckDeriving tcEnv ver policy PredicateDetails{..} derivingInfo = do
 
 needsResult
   :: IsSrcSpan s
-  => SourceQuery' s
-  -> T (SourcePat' s, [SourceStatement' s])
+  => ResolvedQuery' s
+  -> T (ResolvedPat' s, [ResolvedStatement' s])
 needsResult (SourceQuery (Just p) stmts) = return (p,stmts)
 needsResult q@(SourceQuery Nothing stmts) = case reverse stmts of
   (SourceStatement (Variable s v) _ : _) ->
@@ -157,7 +157,7 @@ needsResult q@(SourceQuery Nothing stmts) = case reverse stmts of
     err = "the last statement should be an expression: " <> pretty q
 
 -- add a unit result if the pattern doesn't have a result.
-ignoreResult :: IsSrcSpan s => SourcePat' s -> SourcePat' s
+ignoreResult :: IsSrcSpan s => ResolvedPat' s -> ResolvedPat' s
 ignoreResult p = case p of
   OrPattern s a b -> OrPattern s (ignoreResult a) (ignoreResult b)
   IfPattern s a b c -> IfPattern s a (ignoreResult b) (ignoreResult c)
@@ -173,25 +173,30 @@ ignoreResult p = case p of
     startPos = mkSpan (startLoc fullSpan) (startLoc fullSpan)
     empty = TypeSignature startPos (Tuple startPos []) unit
 
-inferQuery :: IsSrcSpan s => Context -> SourceQuery' s -> T TcQuery
+inferQuery :: IsSrcSpan s => Context -> ResolvedQuery' s -> T TcQuery
 inferQuery ctx q = do
   (head,stmts) <- needsResult q
   stmts' <- mapM typecheckStatement stmts
   (head', ty) <- inferExpr ctx head
   return (TcQuery ty head' Nothing stmts')
 
-typecheckQuery :: IsSrcSpan s => Context -> Type -> SourceQuery' s -> T TcQuery
+typecheckQuery
+  :: IsSrcSpan s
+  => Context
+  -> Type
+  -> ResolvedQuery' s
+  -> T TcQuery
 typecheckQuery ctx ty q = do
   (head,stmts) <- needsResult q
   head' <- typecheckPattern ctx  ty head
   stmts' <- mapM typecheckStatement stmts
   return (TcQuery ty head' Nothing stmts')
 
-unexpectedValue :: IsSrcSpan a => SourcePat' a -> T b
+unexpectedValue :: IsSrcSpan a => ResolvedPat' a -> T b
 unexpectedValue pat = prettyErrorIn pat
   "a key/value pattern (X -> Y) cannot be used here"
 
-typecheckStatement :: IsSrcSpan s => SourceStatement' s -> T TcStatement
+typecheckStatement :: IsSrcSpan s => ResolvedStatement' s -> T TcStatement
 typecheckStatement (SourceStatement lhs rhs0) = do
   let
     ignoreTopResult (OrPattern s a b) =
@@ -216,17 +221,6 @@ typecheckStatement (SourceStatement lhs rhs0) = do
   lhs' <- typecheckPattern ContextPat ty lhs
   return $ TcStatement ty lhs' rhs'
 
-resolveTypeOrPred :: Text -> T (Maybe RefResolved)
-resolveTypeOrPred txt = do
-  scope <- gets tcNameEnv
-  let ref = parseRef txt
-  case resolveRef scope ref of
-    ResolvesTo target -> return (Just target)
-    OutOfScope -> return Nothing
-    other -> do
-      void $ lift $ lookupResultToExcept ref other
-      return Nothing
-
 -- | The context in which we're typechecking: either an expression or
 -- a pattern.
 data Context = ContextExpr | ContextPat
@@ -236,7 +230,7 @@ data Context = ContextExpr | ContextPat
 -- don't allow structs or alts. Variables must be occurrences
 -- (because this is a term, not a pattern), and Wildcards are
 -- disallowed.
-inferExpr :: IsSrcSpan s => Context -> SourcePat' s -> T (TcPat, Type)
+inferExpr :: IsSrcSpan s => Context -> ResolvedPat' s -> T (TcPat, Type)
 inferExpr ctx pat = case pat of
   Nat _ w -> return (RTS.Nat w, NatTy)
     -- how would we do ByteTy?
@@ -271,41 +265,13 @@ inferExpr ctx pat = case pat of
     | name /= "nothing" -> inferVar ctx span name
       -- "nothing" by itself can't be inferred, we want to fall
       -- through to the type error message.
-  FactId _ (Just pred) fid -> do
-    isFactIdAllowed pat
-    res <- resolveTypeOrPred pred
-    case res of
-      Nothing -> prettyErrorIn pat $
-        "unknown type or predicate in literal fact ID: " <> pretty pred
-      Just (RefPred ref) -> do
-        TcEnv{..} <- gets tcEnv
-        pid <- case HashMap.lookup ref tcEnvPredicates of
-          Nothing -> prettyErrorIn pat
-            $ "inferExpr: " <> pretty ref
-          Just details -> return (predicatePid details)
-        return (
-          Ref (MatchFid (Fid (fromIntegral fid))),
-          PredicateTy (PidRef pid ref))
-      _other -> prettyErrorIn pat $ "not a predicate: " <> pretty pred
-  App span var@(Variable _ txt) args@(arg:_)
-    | Just (primOp, primArgTys, retTy) <- HashMap.lookup txt primitives -> do
-        args' <- primInferAndCheck span args primOp primArgTys
-        return
-            ( RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args')))
-            , retTy )
-    | otherwise -> do
-      res <- resolveTypeOrPred txt
-      case res of
-        Nothing -> prettyErrorIn var
-          $ "unknown type or predicate while inferring application: "
-          <> pretty txt
-        Just (RefPred ref) -> tcFactGenerator ref arg
-        Just (RefType ref) -> do
-          TcEnv{..} <- gets tcEnv
-          case HashMap.lookup ref tcEnvTypes of
-            Nothing -> prettyErrorIn var $ "unknown type: " <> pretty txt
-            Just TypeDetails{..} ->
-              (,typeType) <$> typecheckPattern ctx typeType arg
+  Prim span primOp args -> do
+    let (primArgTys, retTy) = primOpType primOp
+    args' <- primInferAndCheck span args primOp primArgTys
+    return
+      ( RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args')))
+      , retTy )
+  Clause _ pred pat -> tcFactGenerator pred pat
   OrPattern _ a b -> do
     ((a', ty), b') <-
       disjunction
@@ -347,11 +313,8 @@ inferExpr ctx pat = case pat of
     (e', ty) <- inferExpr ctx e
     return (RTS.Alt 1 e', MaybeTy ty)
   TypeSignature s e ty -> do
-    scope <- gets tcNameEnv
-    v <- gets tcAngleVersion
-    ty' <- lift $ resolveType v scope ty
-    policy <- gets tcNameResolutionPolicy
-    typ <- convertType s policy ty'
+    rtsType <- gets tcRtsType
+    typ <- convertType s rtsType ty
     (,typ) <$> typecheckPattern ctx typ e
 
   v@KeyValue{} -> unexpectedValue v
@@ -363,18 +326,15 @@ inferExpr ctx pat = case pat of
     ]
 
 convertType
-  :: IsSrcSpan s => s -> NameResolutionPolicy -> Schema.Type -> T Type
-convertType span policy ty = do
-  let rtsType = case policy of
-        UseScope _ rtsType -> rtsType
-        Qualified dbSchema _ -> dbSchemaRtsType dbSchema
+  :: IsSrcSpan s => s -> ToRtsType -> Schema.Type -> T Type
+convertType span rtsType ty = do
   case rtsType ty of
     Just typ -> return typ
     Nothing -> prettyErrorAt span "cannot convert type"
 
 -- | Check that the pattern has the correct type, and generate the
 -- low-level pattern with type-annotated variables.
-typecheckPattern :: IsSrcSpan s => Context -> Type -> SourcePat' s -> T TcPat
+typecheckPattern :: IsSrcSpan s => Context -> Type -> ResolvedPat' s -> T TcPat
 typecheckPattern ctx typ pat = case (typ, pat) of
   (ByteTy, Nat _ w) -> return (RTS.Byte (fromIntegral w))
   (NatTy, Nat _ w) -> return (RTS.Nat w)
@@ -410,15 +370,6 @@ typecheckPattern ctx typ pat = case (typ, pat) of
           [] -> return (mkWild ty)
         -- missing field is a wildcard
 
-  -- v1 syntax for sum type patterns was "con pat", but this could also
-  -- be a type annotation:
-  (SumTy fields, App _ (Variable _ fieldName) [pat]) -> do
-    v <- gets tcAngleVersion
-    if v >= 2 then checkTypeAnn fieldName pat else do
-    case lookupField fieldName fields of
-      (ty, n):_ -> RTS.Alt n <$> typecheckPattern ctx ty pat
-      _ -> checkTypeAnn fieldName pat
-
   (SumTy fields, Struct _ [Field fieldName pat]) ->
     case lookupField fieldName fields of
       (ty, n) :_ -> RTS.Alt n <$> typecheckPattern ctx ty pat
@@ -432,21 +383,22 @@ typecheckPattern ctx typ pat = case (typ, pat) of
       "matching on a sum type should have the form { field = pattern }"
       pat typ
   (NamedTy (ExpandedType _ ty), term) -> typecheckPattern ctx ty term
-  (ty, App span (Variable _ txt) args@(arg:_))
-    | Just (primOp, primArgTys, retTy) <- HashMap.lookup txt primitives -> do
-        unless (ty `eqType` retTy) $
-          patTypeError pat ty
-        args' <- primInferAndCheck span args primOp primArgTys
-        return (RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args'))))
-    | otherwise -> do
-    res <- resolveTypeOrPred txt
-    case res of
-      Just (RefPred ref')
-        | PredicateTy (PidRef _ ref) <- ty
-        , ref == ref' -> fst <$> tcFactGenerator ref arg
-      Just (RefType ref) -> typeAnn ref arg
-      _otherwise -> patTypeError pat ty
-
+  (ty, Prim span primOp args) -> do
+    let (primArgTys, retTy) = primOpType primOp
+    unless (ty `eqType` retTy) $
+      patTypeError pat ty
+    args' <- primInferAndCheck span args primOp primArgTys
+    return (RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args'))))
+  (PredicateTy (PidRef _ ref), Clause _ ref' arg) ->
+    if ref == ref'
+      then fst <$> tcFactGenerator ref arg
+      else patTypeError pat typ
+      -- Note: we don't automatically fall back to matching against
+      -- the key type here, unlike in other cases where the expected
+      -- type is a predicate type. Arguably it would be more correct,
+      -- but doing so produces more confusing error messages because
+      -- we report a type error with the key type as the expected type
+      -- instead of the original type from the context.
   (MaybeTy elemTy, pat) ->
     typecheckPattern ctx (lowerMaybe elemTy) pat
   (EnumeratedTy names, Variable _ name)
@@ -508,23 +460,13 @@ typecheckPattern ctx typ pat = case (typ, pat) of
     TcQuery _ _ _ stmts <- enclose $ typecheckQuery ctx unit query
     return $ Ref (MatchExt (Typed unit (TcNegation stmts)))
 
-  (PredicateTy (PidRef _ ref), FactId _ mbRef fid) -> do
+  (PredicateTy _, FactId _ Nothing fid) -> do
     isFactIdAllowed pat
-    case mbRef of
-      Nothing -> return ()
-      Just txt -> do
-        res <- resolveTypeOrPred txt
-        case res of
-          Just (RefPred ref') | ref == ref' -> return ()
-          _otherwise -> patTypeError pat typ
     return $ Ref (MatchFid (Fid (fromIntegral fid)))
 
   (ty, TypeSignature s e sigty) -> do
-    scope <- gets tcNameEnv
-    v <- gets tcAngleVersion
-    rsigty <- lift $ resolveType v scope sigty
-    policy <- gets tcNameResolutionPolicy
-    sigty' <- convertType s policy rsigty
+    rtsType <- gets tcRtsType
+    sigty' <- convertType s rtsType sigty
     if ty `eqType` sigty'
       then typecheckPattern ctx ty e
       else
@@ -556,26 +498,10 @@ typecheckPattern ctx typ pat = case (typ, pat) of
     [ (ty, n) | (FieldDef name ty, n) <- zip fields [0..]
     , name == fieldName ]
 
-  checkTypeAnn fieldName pat = do
-    res <- resolveTypeOrPred fieldName
-    case res of
-      Just (RefType ref) -> typeAnn ref pat
-      _otherwise -> patTypeError pat typ
-
-  typeAnn ref pat = do
-    TcEnv{..} <- gets tcEnv
-    case HashMap.lookup ref tcEnvTypes of
-      Nothing ->
-        patTypeErrorDesc ("unknown type: " <> Text.pack (show (pretty ref)))
-          pat typ
-      Just TypeDetails{..} -> do
-        unless (typ `eqType` typeType) $ patTypeError pat typ
-        typecheckPattern ctx typeType pat
-
 tcFactGenerator
   :: IsSrcSpan s
   => PredicateRef
-  -> SourcePat' s
+  -> ResolvedPat' s
   -> T (TcPat, Type)
 tcFactGenerator ref pat = do
   TcEnv{..} <- gets tcEnv
@@ -597,7 +523,7 @@ tcFactGenerator ref pat = do
     ( Ref (MatchExt (Typed ty (TcFactGen pidRef kpat' vpat')))
     , ty)
 
-isVar :: IsSrcSpan s => SourcePat' s -> Bool
+isVar :: IsSrcSpan s => ResolvedPat' s -> Bool
 isVar Wildcard{} = True
 isVar Variable{} = True
 isVar _ = False
@@ -605,7 +531,7 @@ isVar _ = False
 -- | Fact Id patterns (#1234 or #pred 1234) are only allowed in
 -- queries, not in derived predicates, because they potentially allow
 -- a type-incorrect fact to be constructed.
-isFactIdAllowed :: IsSrcSpan s => SourcePat' s -> T ()
+isFactIdAllowed :: IsSrcSpan s => ResolvedPat' s -> T ()
 isFactIdAllowed pat = do
   mode <- gets tcMode
   when (mode /= TcModeQuery) $ prettyErrorIn pat $
@@ -625,11 +551,11 @@ mkWild ty
   | RecordTy [] <- derefType ty = RTS.Tuple []
   | otherwise = RTS.Ref (MatchWild ty)
 
-patTypeError :: (IsSrcSpan s, Pretty ty) => SourcePat' s -> ty -> T a
+patTypeError :: (IsSrcSpan s, Pretty ty) => ResolvedPat' s -> ty -> T a
 patTypeError = patTypeErrorDesc "type error in pattern"
 
 patTypeErrorDesc
-  :: (IsSrcSpan s, Pretty ty) => Text -> SourcePat' s -> ty -> T a
+  :: (IsSrcSpan s, Pretty ty) => Text -> ResolvedPat' s -> ty -> T a
 patTypeErrorDesc desc q ty = prettyErrorIn q $
   nest 4 $ vcat
     [ pretty desc
@@ -643,8 +569,7 @@ data TcMode = TcModeQuery | TcModePredicate
 data TypecheckState = TypecheckState
   { tcEnv :: TcEnv
   , tcAngleVersion :: AngleVersion
-  , tcNameEnv :: NameEnv RefResolved
-  , tcNameResolutionPolicy :: NameResolutionPolicy
+  , tcRtsType :: ToRtsType
   , tcNextVar :: Int
   , tcScope :: HashMap Name Var
     -- ^ Variables that we have types for, and have allocated a Var
@@ -659,39 +584,16 @@ data TypecheckState = TypecheckState
   , tcMode :: TcMode
   }
 
--- | Name resolution policy
-data NameResolutionPolicy
-  = UseScope (NameEnv RefResolved) (Schema.Type -> Maybe Type)
-    -- ^ Use a Scope mapping names to targets, and unversioned names are
-    -- ambiguous unless there is exactly one version in scope.
-  | Qualified DbSchema SchemaVersion
-    -- ^ Predicates and type names must be qualified by the schema
-    -- name, and unversioned references are resolved by some version
-    -- of the "all" schema specified by the SchemaVersion.  This
-    -- policy is used when typechecking queries, where we currently
-    -- have no means to establish a Scope.
-
-nameResolutionPolicyToNameEnv :: NameResolutionPolicy -> NameEnv RefResolved
-nameResolutionPolicyToNameEnv (UseScope scope _) = scope
-nameResolutionPolicyToNameEnv (Qualified dbSchema schemaVer) =
-  fromMaybe HashMap.empty (schemaNameEnv dbSchema schemaVer)
-    `HashMap.union`
-      HashMap.fromList [
-        (SourceRef (predicateRef_name tempPredicateRef) (Just 0),
-          Set.singleton (RefPred tempPredicateRef))
-      ]
-
 initialTypecheckState
   :: TcEnv
   -> AngleVersion
-  -> NameResolutionPolicy
+  -> ToRtsType
   -> TcMode
   -> TypecheckState
-initialTypecheckState tcEnv version policy mode = TypecheckState
+initialTypecheckState tcEnv version rtsType mode = TypecheckState
   { tcEnv = tcEnv
   , tcAngleVersion = version
-  , tcNameEnv = nameResolutionPolicyToNameEnv policy
-  , tcNameResolutionPolicy = policy
+  , tcRtsType = rtsType
   , tcNextVar = 0
   , tcScope = HashMap.empty
   , tcVisible = HashSet.empty
@@ -794,7 +696,7 @@ checkVarCase span name
 prettyError :: Doc ann -> T a
 prettyError = throwError . Text.pack . show
 
-prettyErrorIn :: IsSrcSpan s => SourcePat' s -> Doc ann -> T a
+prettyErrorIn :: IsSrcSpan s => ResolvedPat' s -> Doc ann -> T a
 prettyErrorIn pat doc = prettyErrorAt (sourcePatSpan pat) doc
 
 prettyErrorAt :: IsSrcSpan span => span -> Doc ann -> T a
@@ -871,7 +773,7 @@ data PrimArgType
 primInferAndCheck
   :: IsSrcSpan s
   => s
-  -> [SourcePat' s]
+  -> [ResolvedPat' s]
   -> PrimOp
   -> [PrimArgType]
   -> T [TcPat]
@@ -879,7 +781,7 @@ primInferAndCheck span args primOp argTys =
   reverse . map fst <$> checkArgs [] args argTys
   where
     checkArgs :: IsSrcSpan s =>
-      [(TcPat, Type)] -> [SourcePat' s] -> [PrimArgType] -> T [(TcPat, Type)]
+      [(TcPat, Type)] -> [ResolvedPat' s] -> [PrimArgType] -> T [(TcPat, Type)]
     checkArgs acc [] [] = return acc
     checkArgs acc (arg:args) (check:pats) = do
       let prevArgTy = snd <$> listToMaybe acc
@@ -892,7 +794,7 @@ primInferAndCheck span args primOp argTys =
           ++ " arguments, found " ++ show (length args)
 
     checkArg :: IsSrcSpan s =>
-      Maybe Type -> SourcePat' s -> PrimArgType -> T (TcPat, Type)
+      Maybe Type -> ResolvedPat' s -> PrimArgType -> T (TcPat, Type)
     checkArg _ arg (Check argTy) =
       (,argTy) <$> typecheckPattern ContextExpr argTy arg
     checkArg _ arg (InferAndCheck argCheck debugString) = do
@@ -912,47 +814,30 @@ primInferAndCheckError span primOp debugString =
   , pretty debugString
   ]
 
-primitives :: HashMap Text (PrimOp, [PrimArgType], Type)
-primitives = HashMap.fromList
-  [ ("prim.toLower"
-    , (PrimOpToLower
-      , [Check StringTy]
-      , StringTy
-      )
-    )
-  , ("prim.length"
-    , (PrimOpLength
-      , [InferAndCheck polyArray "prim.length takes an array as input"]
-      , NatTy
-      )
-    )
-  , ("prim.relToAbsByteSpans"
-    , (PrimOpRelToAbsByteSpans
-      -- prim.relToAbsByteSpans takes an array of pairs as input and
-      -- returns an array of pairs as output
-      , [Check (ArrayTy (tupleSchema [NatTy, NatTy]))]
-      , ArrayTy (tupleSchema [NatTy, NatTy])
-      )
-    )
-  , ("prim.gtNat", binaryNatOp PrimOpGtNat)
-  , ("prim.geNat", binaryNatOp PrimOpGeNat)
-  , ("prim.ltNat", binaryNatOp PrimOpLtNat)
-  , ("prim.leNat", binaryNatOp PrimOpLeNat)
-  , ("prim.neNat", binaryNatOp PrimOpNeNat)
-  , ("prim.addNat", binaryNatArith PrimOpAddNat)
-  , ("prim.neExpr"
-    , ( PrimOpNeExpr
-      , [CheckAllEqual, CheckAllEqual]
-      , unit
-      )
-    )
-  ]
+primOpType :: PrimOp -> ([PrimArgType], Type)
+primOpType op = case op of
+  PrimOpToLower -> ([Check StringTy], StringTy)
+  PrimOpLength ->
+    let
+      polyArray (ArrayTy _) = True
+      polyArray _ = False
+    in
+    ( [InferAndCheck polyArray "prim.length takes an array as input"]
+    , NatTy)
+  PrimOpRelToAbsByteSpans ->
+    -- prim.relToAbsByteSpans takes an array of pairs as input and
+    -- returns an array of pairs as output
+    ( [Check (ArrayTy (tupleSchema [NatTy, NatTy]))]
+    , ArrayTy (tupleSchema [NatTy, NatTy]) )
+  PrimOpGtNat -> binaryNatOp
+  PrimOpGeNat -> binaryNatOp
+  PrimOpLtNat -> binaryNatOp
+  PrimOpLeNat -> binaryNatOp
+  PrimOpNeNat -> binaryNatOp
+  PrimOpAddNat -> ([Check NatTy, Check NatTy], NatTy)
+  PrimOpNeExpr -> ([CheckAllEqual, CheckAllEqual], unit)
   where
-    polyArray (ArrayTy _) = True
-    polyArray _ = False
-
-    binaryNatOp op = (op, [Check NatTy, Check NatTy], unit)
-    binaryNatArith op = (op, [Check NatTy, Check NatTy], NatTy)
+    binaryNatOp = ([Check NatTy, Check NatTy], unit)
 
 type VarSet = HashSet Name
 
@@ -962,7 +847,7 @@ type VarSet = HashSet Name
 --    scope. They can bind variables that are already part of the scope, but if
 --    the same variable appears in all branches but not in the enclosing scope
 --    then each occurrence will be treated as a separate variable.
-varsPat :: IsSrcSpan s => SourcePat' s -> VarSet -> VarSet
+varsPat :: IsSrcSpan s => ResolvedPat' s -> VarSet -> VarSet
 varsPat pat r = case pat of
   Variable _ v -> HashSet.insert v r
   Array _ ps -> foldr varsPat r ps
@@ -984,8 +869,10 @@ varsPat pat r = case pat of
   Wildcard{} -> r
   FactId{} -> r
   Never{} -> r
+  Clause _ _ p -> varsPat p r
+  Prim _ _ ps -> foldr varsPat r ps
 
-varsQuery :: IsSrcSpan s => SourceQuery' s -> VarSet -> VarSet
+varsQuery :: IsSrcSpan s => ResolvedQuery' s -> VarSet -> VarSet
 varsQuery (SourceQuery head stmts) r =
   foldr varsStmt (foldr varsPat r head) stmts
   where

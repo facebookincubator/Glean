@@ -12,6 +12,7 @@ module Glean.Database.Schema.Types
   , PredicateTransformation(..)
   , SchemaVersion(..)
   , schemaNameEnv
+  , addTmpPredicate
   , lookupSourceRef
   , lookupPredicateSourceRef
   , lookupPredicateRef
@@ -28,6 +29,7 @@ import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
+import qualified Data.Set as Set
 import Data.Text (Text)
 
 import Glean.Angle.Types as Schema hiding (Type, FieldDef)
@@ -111,6 +113,11 @@ schemaNameEnv :: DbSchema -> SchemaVersion -> Maybe (NameEnv RefResolved)
 schemaNameEnv dbSchema schemaVer =
   IntMap.lookup (fromIntegral (allSchemaVersion dbSchema schemaVer))
      (schemaEnvs dbSchema)
+
+addTmpPredicate :: NameEnv RefResolved -> NameEnv RefResolved
+addTmpPredicate =
+  HashMap.insert tmp (Set.singleton (RefPred tempPredicateRef))
+  where tmp = SourceRef (predicateRef_name tempPredicateRef) (Just 0)
 
 lookupSourceRef
   :: SourceRef

@@ -32,11 +32,14 @@ module Glean.Angle.Types
   , SourceQuery_(..)
   , SourceStatement_(..)
   , SourcePat_(..)
+  , PrimOp(..)
 
   -- * Schemas and definitions
   , TypeDef_(..)
   , FieldDef_(..)
   , PredicateDef_(..)
+  , Statement_
+  , Query_
   , Type
   , FieldDef
   , TypeDef
@@ -74,6 +77,8 @@ module Glean.Angle.Types
   , latestAngleVersion
   , latestSupportedAngleVersion
 
+  -- * Pretty printing
+  , prettyStatement
   ) where
 
 import qualified Data.Aeson as Aeson
@@ -137,7 +142,8 @@ data SourceQuery_ head stmt = SourceQuery
   }
   deriving (Eq, Show)
 
-data SourceStatement_ pat = SourceStatement pat pat
+data SourceStatement_ s p t =
+  SourceStatement (SourcePat_ s p t) (SourcePat_ s p t)
   deriving (Eq, Show)
 
 data SourcePat_ s p t
@@ -158,7 +164,7 @@ data SourcePat_ s p t
   | ElementsOfArray s (SourcePat_ s p t)
   | OrPattern s (SourcePat_ s p t) (SourcePat_ s p t)
   | NestedQuery s
-      (SourceQuery_ (SourcePat_ s p t) (SourceStatement_ (SourcePat_ s p t)))
+      (SourceQuery_ (SourcePat_ s p t) (SourceStatement_ s p t))
   | Negation s (SourcePat_ s p t)
   | FactId s (Maybe Text) Word64
   | TypeSignature s (SourcePat_ s p t) (Type_ p t)
@@ -169,9 +175,28 @@ data SourcePat_ s p t
       , then_ :: SourcePat_ s p t
       , else_ :: SourcePat_ s p t
       }
+
+  -- The following forms are introduced by the resolver, and replace
+  -- the Variable and App forms produced by the parser.
+  | Clause s p (SourcePat_ s p t)
+  | Prim s PrimOp [SourcePat_ s p t]
  deriving (Eq, Show)
 
 data Field s p t = Field FieldName (SourcePat_ s p t)
+  deriving (Eq, Show)
+
+-- | Primitive operations
+data PrimOp
+  = PrimOpToLower
+  | PrimOpLength
+  | PrimOpRelToAbsByteSpans
+  | PrimOpGtNat
+  | PrimOpGeNat
+  | PrimOpLtNat
+  | PrimOpLeNat
+  | PrimOpNeNat
+  | PrimOpAddNat
+  | PrimOpNeExpr
   deriving (Eq, Show)
 
 sourcePatSpan :: SourcePat_ s p t -> s
@@ -196,6 +221,8 @@ sourcePatSpan = \case
   FactId s _ _ -> s
   TypeSignature s _ _ -> s
   Never s -> s
+  Clause s _ _ -> s
+  Prim s _ _ -> s
 
 -- -----------------------------------------------------------------------------
 -- Types
@@ -304,13 +331,17 @@ data TypeDef_ pref tref = TypeDef
   deriving Eq
 
 -- | A definition of a predicate
-data PredicateDef_ pref tref query = PredicateDef
+data PredicateDef_ s pref tref = PredicateDef
   { predicateDefRef :: pref
   , predicateDefKeyType :: Type_ pref tref
   , predicateDefValueType :: Type_ pref tref
-  , predicateDefDeriving :: DerivingInfo query
+  , predicateDefDeriving ::
+      DerivingInfo
+        (SourceQuery_
+          (SourcePat_ s pref tref)
+          (SourceStatement_ s pref tref))
   }
-  deriving (Eq, Functor)
+  deriving Eq
 
 -- | How to derive a predicate
 data DerivingInfo q
@@ -333,10 +364,10 @@ data DeriveWhen
   deriving Eq
 
 type SourcePat' s = SourcePat_ s SourceRef SourceRef
-type SourceStatement' s = SourceStatement_ (SourcePat' s)
+type SourceStatement' s = SourceStatement_ s SourceRef SourceRef
 type SourceQuery' s = SourceQuery_ (SourcePat' s) (SourceStatement' s)
 type SourceDerivingInfo' s = DerivingInfo (SourceQuery' s)
-type SourcePredicateDef' s = PredicateDef_ SourceRef SourceRef (SourceQuery' s)
+type SourcePredicateDef' s = PredicateDef_ s SourceRef SourceRef
 
 type SourcePat = SourcePat' SrcSpan
 type SourceStatement = SourceStatement' SrcSpan
@@ -351,10 +382,13 @@ type SourceSchema = SourceSchema_ SrcSpan
 type SourceEvolves = SourceEvolves_ SrcSpan
 type SourceDecl = SourceDecl_ SrcSpan
 
+type Statement_ p t = SourceStatement_ SrcSpan p t
+type Query_ p t = SourceQuery_ (SourcePat_ SrcSpan p t)  (Statement_ p t)
+
 type Type = Type_ PredicateRef TypeRef
 type FieldDef = FieldDef_ PredicateRef TypeRef
 type TypeDef = TypeDef_ PredicateRef TypeRef
-type PredicateDef = PredicateDef_ PredicateRef TypeRef SourceQuery
+type PredicateDef = PredicateDef_ SrcSpan PredicateRef TypeRef
 
 data SourceEvolves_ s = SourceEvolves
   { evolvesSpan :: s
@@ -435,8 +469,8 @@ instance (Pretty pref, Pretty tref) => Pretty (Type_ pref tref) where
 instance (Pretty pref, Pretty tref) => Pretty (FieldDef_ pref tref) where
   pretty (FieldDef n ty) = pretty n <> " : " <> pretty ty
 
-instance (Pretty pref, Pretty tref, Pretty query) =>
-    Pretty (PredicateDef_ pref tref query) where
+instance (Pretty pref, Pretty tref) =>
+    Pretty (PredicateDef_ s pref tref) where
   pretty PredicateDef{..} =
     hang 2 $ sep $
       [ "predicate" <+> pretty predicateDefRef <+> ":"
@@ -555,6 +589,9 @@ instance (Pretty p, Pretty t) => Pretty (SourcePat_ s p t) where
   pretty (FactId _ (Just p) n) = "$" <> pretty p <+> pretty n
   pretty (TypeSignature _ p t) = prettyArg p <+> ":" <+> pretty t
   pretty (Never _) = "never"
+  pretty (Clause _ p pat) = pretty p <+> prettyArg pat
+  pretty (Prim _ p pats) =
+    pretty p <+> hsep (punctuate " " (map prettyArg pats))
 
 instance (Pretty pat, Pretty stmt) => Pretty (SourceQuery_ pat stmt) where
   pretty (SourceQuery maybeHead stmts) = case stmts of
@@ -565,9 +602,11 @@ instance (Pretty pat, Pretty stmt) => Pretty (SourceQuery_ pat stmt) where
     where
     pstmts = punctuate ";" (map pretty stmts)
 
-instance Pretty pat => Pretty (SourceStatement_ pat) where
-  pretty (SourceStatement lhs rhs) =
-    hang 2 $ sep [pretty lhs <+> "=", pretty rhs]
+instance (Pretty p, Pretty t) => Pretty (SourceStatement_ s p t) where
+  pretty (SourceStatement lhs rhs) = prettyStatement lhs rhs
+
+prettyStatement :: Pretty pat => pat -> pat -> Doc ann
+prettyStatement lhs rhs = hang 2 $ sep [pretty lhs <+> "=", pretty rhs]
 
 prettyArg :: (Pretty p, Pretty t) => SourcePat_ s p t -> Doc ann
 prettyArg pat = case pat of
@@ -591,3 +630,17 @@ prettyArg pat = case pat of
   Negation{} -> pretty pat
   FactId{} -> pretty pat
   Never{} -> pretty pat
+  Clause{} -> parens $ pretty pat
+  Prim{} -> parens $ pretty pat
+
+instance Pretty PrimOp where
+  pretty PrimOpToLower = "prim.toLower"
+  pretty PrimOpLength = "prim.length"
+  pretty PrimOpRelToAbsByteSpans = "prim.relToAbsByteSpans"
+  pretty PrimOpGtNat = "prim.gtNat"
+  pretty PrimOpGeNat = "prim.geNat"
+  pretty PrimOpLtNat = "prim.ltNat"
+  pretty PrimOpLeNat = "prim.leNat"
+  pretty PrimOpNeNat = "prim.neNat"
+  pretty PrimOpAddNat = "prim.addNat"
+  pretty PrimOpNeExpr = "prim.neExpr"

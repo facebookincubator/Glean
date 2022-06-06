@@ -360,7 +360,8 @@ rmLocSchemas (SourceSchemas version schemas evolves) =
     rmLocDecl :: SourceDecl_ a -> SourceDecl_ ()
     rmLocDecl = \case
       SourceImport name -> SourceImport name
-      SourcePredicate pred -> SourcePredicate $ rmLocQuery <$> pred
+      SourcePredicate pred -> SourcePredicate $ pred
+        { predicateDefDeriving = rmLocQuery <$> predicateDefDeriving pred }
       SourceType typeDef -> SourceType typeDef
       SourceDeriving ref deriv -> SourceDeriving ref $ rmLocQuery <$> deriv
 
@@ -394,6 +395,8 @@ rmLocSchemas (SourceSchemas version schemas evolves) =
       NestedQuery _ query -> NestedQuery () $ rmLocQuery query
       FactId _ x y -> FactId () x y
       TypeSignature _ x t -> TypeSignature () (rmLocPat x) t
+      Clause _ x y -> Clause () x (rmLocPat y)
+      Prim _ p ps -> Prim () p (rmLocPat <$> ps)
 
     rmLocField :: Field a SourceRef SourceRef -> Field () SourceRef SourceRef
     rmLocField (Field name pat) =

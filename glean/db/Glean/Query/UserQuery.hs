@@ -87,7 +87,7 @@ import Glean.Query.JSON
 import Glean.Query.Nested
 import Glean.Query.Nested.Compile
 import Glean.Query.Nested.Types
-import Glean.Schema.Resolve (resolveType)
+import Glean.Schema.Resolve
 import Glean.Schema.Util
 import Glean.Util.Observed as Observed
 import Glean.Query.Typecheck
@@ -827,8 +827,15 @@ compileAngleQuery ver dbSchema source stored = do
   parsed <- checkBadQuery Text.pack $ Angle.parseQuery source
   vlog 2 $ "parsed query: " <> show (pretty parsed)
 
+  let scope = addTmpPredicate $ fromMaybe HashMap.empty $
+        schemaNameEnv dbSchema ver
+
+  resolved <- checkBadQuery id $ runExcept $
+    runResolve latestAngleVersion scope $ resolveQuery parsed
+  vlog 2 $ "resolved query: " <> show (pretty resolved)
+
   typechecked <- checkBadQuery id $ runExcept $
-    typecheck dbSchema latestAngleVersion (Qualified dbSchema ver) parsed
+    typecheck dbSchema latestAngleVersion (dbSchemaRtsType dbSchema) resolved
   vlog 2 $ "typechecked query: " <> show (pretty (qiQuery typechecked))
 
   (flattened, appliedTrans) <- checkBadQuery id $ runExcept $
@@ -1227,8 +1234,10 @@ serializeType = Text.encodeUtf8 . renderStrict . layoutCompact . pretty
 compileType :: DbSchema -> SchemaVersion -> ByteString -> IO Type
 compileType schema version src = do
   parsed <- checkParsed $ Angle.parseType src
-  let scope = nameResolutionPolicyToNameEnv (Qualified schema version)
-  resolved <- checkResolved $ resolveType latestAngleVersion scope parsed
+  let scope = addTmpPredicate $ fromMaybe HashMap.empty $
+        schemaNameEnv schema version
+  resolved <- checkResolved $ runResolve latestAngleVersion scope $
+    resolveType parsed
   checkConverted $ dbSchemaRtsType schema resolved
   where
     checkParsed = either (badQuery . Text.pack) return

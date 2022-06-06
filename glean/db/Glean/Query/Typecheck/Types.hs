@@ -40,7 +40,7 @@ data TcStatement = TcStatement Type TcPat TcPat
   deriving Show
 
 instance Pretty TcStatement where
-  pretty (TcStatement _ lhs rhs) = pretty (SourceStatement lhs rhs)
+  pretty (TcStatement _ lhs rhs) = prettyStatement lhs rhs
 
 data Typed x = Typed Type x
   deriving Show

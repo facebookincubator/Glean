@@ -110,7 +110,7 @@
 
   $ query "A B"
   [>] A B (re)
-  unknown type or predicate while inferring application: A
+  not in scope: A
        
   1 |  A B
        ^
@@ -119,7 +119,7 @@
 
   $ query "A B"
   [>] A B (re)
-  unknown type or predicate while inferring application: A
+  not in scope: A
        
   1 |  A B
        ^

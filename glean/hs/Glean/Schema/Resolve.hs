@@ -15,9 +15,12 @@ module Glean.Schema.Resolve
   , resolveType
   , lookupResultToExcept
   , resolveEvolves
+  , runResolve
+  , resolveQuery
   ) where
 
 import Control.Applicative
+import Control.Monad.Reader
 import Control.Monad.Except
 import Data.Bifunctor
 import Data.ByteString (ByteString)
@@ -259,8 +262,10 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
     qualify :: Name -> Name
     qualify x = namespace <> "." <> x
 
-    unqualify :: Name -> Name
-    unqualify = snd . splitDot
+    qualifyNameEnv :: NameEnv t -> NameEnv t
+    qualifyNameEnv env = HashMap.fromList
+      [ (SourceRef (qualify name) ver, target)
+      | (SourceRef name ver, target) <- HashMap.toList env ]
 
     localPreds =
       [ let
@@ -301,69 +306,40 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
     -- inherited definitions are in scope unqualified and qualified
     --   (but unqualified local names override unqualified inherited names)
     qualInheritedScope :: NameEnv RefResolved
-    qualInheritedScope = HashMap.fromListWith Set.union
-      [ entry
-      | schema <- inherits
-      , (name, ver, target) <- allRefs schema
-      , entry <- [
-          (SourceRef name Nothing, Set.singleton target),
-          (SourceRef name (Just ver), Set.singleton target) ]
-      ]
+    qualInheritedScope = unionNameEnvs $ map resolvedSchemaQualScope inherits
 
     unqualInheritedScope :: NameEnv RefResolved
-    unqualInheritedScope = HashMap.fromListWith Set.union
-      [ entry
-      | schema <- inherits
-      , (name, ver, target) <- allRefs schema
-      , entry <- [
-          (SourceRef (unqualify name) Nothing, Set.singleton target),
-          (SourceRef (unqualify name) (Just ver), Set.singleton target) ]
-      ]
+    unqualInheritedScope = unionNameEnvs $ map resolvedSchemaUnqualScope inherits
 
-    -- imported names are in scope qualified.
+    -- imported names are in scope qualified only
     importedScope :: NameEnv RefResolved
-    importedScope = HashMap.fromListWith Set.union
-        [ entry
-        | schema <- imports
-        , (name, ver, target) <- allRefs schema
-        , entry <- [
-            (SourceRef name Nothing, Set.singleton target),
-            (SourceRef name (Just ver), Set.singleton target) ]
-        ]
+    importedScope = unionNameEnvs $ map resolvedSchemaQualScope imports
 
-    allRefs :: ResolvedSchemaRef -> [(Name, Version, RefResolved)]
-    allRefs ResolvedSchema{..} =
-      [ (typeRef_name ref, typeRef_version ref, RefType (typeDefRef def))
-      | (ref, def) <- HashMap.toList $
-          resolvedSchemaTypes <> resolvedSchemaReExportedTypes ] ++
-      [ (predicateRef_name ref, predicateRef_version ref,
-          RefPred (predicateDefRef def))
-      | (ref, def) <- HashMap.toList $
-          resolvedSchemaPredicates <> resolvedSchemaReExportedPredicates ]
+    unionNameEnvs :: [NameEnv RefResolved] -> NameEnv RefResolved
+    unionNameEnvs = foldl' (HashMap.unionWith Set.union) HashMap.empty
+
+    nameEntries name ver target =
+      [ (SourceRef name Nothing, set),
+        (SourceRef name (Just ver), set) ]
+      where set = Set.singleton target
 
     -- local definitions are in scope unqualified and qualified
     unqualLocalScope :: NameEnv RefResolved
     unqualLocalScope = HashMap.fromListWith Set.union unqualLocalEntities
 
     qualLocalScope :: NameEnv RefResolved
-    qualLocalScope = HashMap.fromListWith Set.union
-      [ (SourceRef (qualify name) ver, target)
-      | (SourceRef name ver, target) <- unqualLocalEntities ]
+    qualLocalScope = qualifyNameEnv unqualLocalScope
 
     unqualLocalEntities =
+      -- P and P.1 for each local predicate
       [ entry
       | (name, r, _) <- localPreds
-      , let target = Set.singleton (RefPred r)
-      , entry <- [
-          (SourceRef name Nothing, target),
-          (SourceRef name (Just (predicateRef_version r)), target) ]
+      , entry <- nameEntries name (predicateRef_version r) (RefPred r)
       ] ++
+      -- T and T.1 for each local type
       [ entry
       | (name, r, _) <- localTypes
-      , let target = Set.singleton (RefType r)
-      , entry <- [
-          (SourceRef name Nothing, target),
-          (SourceRef name (Just (typeRef_version r)), target) ]
+      , entry <- nameEntries name (typeRef_version r) (RefType r)
       ]
 
     scope =
@@ -391,7 +367,7 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
   types <- forM localTypes $
     \(name, ref, TypeDef{..}) -> do
       checkName name
-      type' <- resolveType angleVersion scope typeDefType
+      type' <- runResolve angleVersion scope (resolveType typeDefType)
       return (name, TypeDef
         { typeDefRef = ref
         , typeDefType = type' })
@@ -400,13 +376,14 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
   predicates <- forM localPreds $
     \(name, ref, PredicateDef{..}) -> do
       checkName name
-      key <- resolveType angleVersion scope predicateDefKeyType
-      value <- resolveType angleVersion scope predicateDefValueType
-      return (name, PredicateDef
-        { predicateDefRef = ref
-        , predicateDefKeyType = key
-        , predicateDefValueType = value
-        , predicateDefDeriving = NoDeriving })
+      runResolve angleVersion scope $ do
+        key <- resolveType predicateDefKeyType
+        value <- resolveType predicateDefValueType
+        return (name, PredicateDef
+          { predicateDefRef = ref
+          , predicateDefKeyType = key
+          , predicateDefValueType = value
+          , predicateDefDeriving = NoDeriving })
 
   let
     -- scope of predicates that we can specify queries for. Namely
@@ -423,12 +400,13 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
       ty <- lookupResultToExcept ref $ predScope ref
       ref <- case ty of
         RefPred ref -> return ref
-        RefType ref -> throwError $
-          "cannot define a query for a typedef: " <> showRef ref
-      return (ref, derive)
+        _ -> throwError $ showRef ref <> " is not a predicate"
+      resolved <- runResolve angleVersion scope (resolveDeriving derive)
+      return (ref, resolved)
 
   let
-    localTypeNames = HashSet.fromList $ map fst types
+    localTypeNames = HashSet.fromList $
+      map (typeRef_name . typeDefRef . snd) types
 
     localTypes = HashMap.fromList
       [ (typeDefRef def, def) | (_, def) <- types ]
@@ -442,11 +420,11 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
         , (ref, def) <- HashMap.toList $
             resolvedSchemaTypes schema <>
             resolvedSchemaReExportedTypes schema
-        , let name =  unqualify (typeRef_name ref)
-        , not (name `HashSet.member` localTypeNames)
+        , not (typeRef_name ref `HashSet.member` localTypeNames)
         ]
 
-    localPredicateNames = HashSet.fromList $ map fst predicates
+    localPredicateNames = HashSet.fromList $
+      [ predicateRef_name (predicateDefRef def) | (_, def) <- predicates ]
 
     localPredicates = HashMap.fromList
       [ (predicateDefRef def, def) | (_, def) <- predicates ]
@@ -459,9 +437,15 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
         , (ref, def) <- HashMap.toList $
             resolvedSchemaPredicates schema <>
             resolvedSchemaReExportedPredicates schema
-        , let name =  unqualify (predicateRef_name ref)
-        , not (name `HashSet.member` localPredicateNames)
+        , not (predicateRef_name ref `HashSet.member` localPredicateNames)
         ]
+
+    exportedUnqualScope = HashMap.union unqualLocalScope unqualInheritedScope
+      -- Note: local names override inherited names
+
+    exportedQualScope = HashMap.union (qualifyNameEnv exportedUnqualScope)
+      qualInheritedScope
+
 
   schemaEvolves <- traverse schemaByName evolves
 
@@ -473,10 +457,12 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
     , resolvedSchemaReExportedTypes = reExportedTypes
     , resolvedSchemaPredicates = localPredicates
     , resolvedSchemaReExportedPredicates = reExportedPredicates
-    , resolvedSchemaScope = scope
+    , resolvedSchemaUnqualScope = exportedUnqualScope
+    , resolvedSchemaQualScope = exportedQualScope
     , resolvedSchemaDeriving = HashMap.fromList localDeriving
     , resolvedSchemaEvolves = Set.fromList (schemaRef <$> schemaEvolves)
     }
+
 
 data Opt = Option | FieldOpt
 
@@ -584,13 +570,8 @@ canEvolve types evolvedBy new old = go new old
     showOpt Option = "option"
     showOpt FieldOpt = "field"
 
-resolveType
-  :: (ShowRef t, ShowRef p)
-  => AngleVersion
-  -> NameEnv (RefTarget p t)
-  -> SourceType
-  -> Except Text (Type_ p t)
-resolveType _ver scope typ = go typ
+resolveType :: (ShowRef t, ShowRef p) => SourceType -> Resolve p t (Type_ p t)
+resolveType typ = go typ
   where
   go typ = case typ of
     ByteTy -> return ByteTy
@@ -602,11 +583,15 @@ resolveType _ver scope typ = go typ
     PredicateTy ref -> goRef ref
     NamedTy ref -> goRef ref  -- shouldn't happen, but handle it anyway
     MaybeTy ty -> MaybeTy <$> go ty
-    EnumeratedTy names -> do mapM_ checkName names; return (EnumeratedTy names)
+    EnumeratedTy names -> lift $ do
+      mapM_ checkName names
+      return (EnumeratedTy names)
     BooleanTy -> return BooleanTy
 
   goRef ref = do
-    target <- lookupResultToExcept ref $ resolveRef scope ref
+    scope <- getScope
+    target <- lift $ lookupResultToExcept ref $
+      resolveRef scope ref
     case target of
       RefType ref -> return (NamedTy ref)
       RefPred ref -> return (PredicateTy ref)
@@ -615,8 +600,9 @@ resolveType _ver scope typ = go typ
     sequence_
       [ throwError $ "duplicate field: " <> x
         | x:_:_ <- group $ sort $ map fieldDefName fields ]
-    mapM_ (checkName . fieldDefName) fields
-    mapM_ (checkFieldName . fieldDefName) fields
+    lift $ do
+      mapM_ (checkName . fieldDefName) fields
+      mapM_ (checkFieldName . fieldDefName) fields
 
   goField (FieldDef name ty) = FieldDef name <$> go ty
 
@@ -742,3 +728,143 @@ reservedWords = HashSet.fromList [
 
 instance Pretty Schemas where
   pretty Schemas{} = mempty -- TODO
+
+-- -----------------------------------------------------------------------------
+-- Resolving queries
+
+runResolve
+  :: AngleVersion
+  -> NameEnv (RefTarget p t)
+  -> Resolve p t a
+  -> Except Text a
+runResolve ver scope act = runReaderT act (ver,scope)
+
+type Resolve p t a =
+  ReaderT (AngleVersion, NameEnv (RefTarget p t)) (Except Text) a
+
+getScope :: Resolve p t (NameEnv (RefTarget p t))
+getScope = asks snd
+
+resolveDeriving
+  :: (ShowRef t, ShowRef p)
+  => SourceDerivingInfo' SrcSpan
+  -> Resolve p t (DerivingInfo (Query_ p t))
+resolveDeriving NoDeriving = return NoDeriving
+resolveDeriving (Derive when query) = Derive when <$> resolveQuery query
+
+resolveQuery
+  :: (ShowRef t, ShowRef p)
+  => SourceQuery
+  -> Resolve p t (Query_ p t)
+resolveQuery (SourceQuery head stmts) =
+  SourceQuery
+    <$> mapM resolvePat head
+    <*> mapM resolveStatement stmts
+
+resolvePat
+  :: (ShowRef t, ShowRef p)
+  => SourcePat
+  -> Resolve p t (SourcePat_ SrcSpan p t)
+resolvePat pat = case pat of
+  Nat s i -> return (Nat s i)
+  String s t -> return (String s t)
+  StringPrefix s t -> return (StringPrefix s t)
+  ByteArray s b -> return (ByteArray s b)
+  Array s pats -> Array s <$> mapM resolvePat pats
+  ArrayPrefix s pats -> ArrayPrefix s <$> mapM resolvePat pats
+  Tuple s pats -> Tuple s <$> mapM resolvePat pats
+  Wildcard s -> return (Wildcard s)
+  TypeSignature s pat ty ->
+    TypeSignature s
+      <$> resolvePat pat
+      <*> resolveType ty
+  Variable s n -> return (Variable s n)
+  FactId s Nothing id -> return (FactId s Nothing id)
+  FactId s (Just pred) id -> do
+    res <- resolveTypeOrPred s pred
+    case res of
+      RefPred ref ->
+        return (TypeSignature s (FactId s Nothing id) (PredicateTy ref))
+      _other -> prettyErrorIn pat $ "not a predicate: " <> pretty pred
+  OrPattern s l r -> OrPattern s <$> resolvePat l <*> resolvePat r
+  Negation s pat -> Negation s <$> resolvePat pat
+  Never s -> return (Never s)
+  IfPattern s cond then_ else_ ->
+    IfPattern s
+      <$> resolvePat cond
+      <*> resolvePat then_
+      <*> resolvePat else_
+  ElementsOfArray s pat -> ElementsOfArray s <$> resolvePat pat
+  KeyValue s k v -> KeyValue s <$> resolvePat k <*> resolvePat v
+  NestedQuery s q -> NestedQuery s <$> resolveQuery q
+  Struct s fields -> Struct s <$> mapM resolveField fields
+    where resolveField (Field n pat) = Field n <$> resolvePat pat
+  App s (Variable svar txt) args
+    | Just primOp <- HashMap.lookup txt primitives -> do
+      Prim s primOp <$> mapM resolvePat args
+    | otherwise ->
+    case args of
+      [arg] -> do
+        arg' <- resolvePat arg
+        res <- resolveTypeOrPred svar txt
+        case res of
+          RefPred ref -> return (Clause s ref arg')
+          RefType ref -> return (TypeSignature s arg' (NamedTy ref))
+            -- The syntax "T pat" for "pat : T" is something we might
+            -- consider deprecating later. For now it's just desugared
+            -- here.
+      _ -> prettyErrorIn pat "unexpected extra argument(s)"
+  App s (StringPrefix a b) [pat] -> do
+    pat' <- resolvePat pat
+    return (App s (StringPrefix a b) [pat'])
+  App{} -> prettyErrorIn pat "invalid pattern"
+  Clause{} -> internal
+  Prim{} -> internal
+  where
+  internal = throwError $ "internal: unexpected: " <>
+    Text.pack (show (pretty pat))
+
+resolveTypeOrPred
+  :: (ShowRef p, ShowRef t)
+  => SrcSpan
+  -> Name
+  -> Resolve p t (RefTarget p t)
+resolveTypeOrPred span txt = do
+  scope <- getScope
+  let ref = parseRef txt
+  case lookupResultToEither ref $ resolveRef scope ref of
+    Left s -> prettyErrorAt span (pretty s)
+    Right r -> return r
+
+prettyError :: Doc ann -> Resolve p t a
+prettyError = throwError . Text.pack . show
+
+prettyErrorIn :: IsSrcSpan s => SourcePat' s -> Doc ann -> Resolve p t a
+prettyErrorIn pat doc = prettyErrorAt (sourcePatSpan pat) doc
+
+prettyErrorAt :: IsSrcSpan span => span -> Doc ann -> Resolve p t a
+prettyErrorAt span doc = prettyError $ vcat
+  [ pretty span
+  , doc
+  ]
+
+resolveStatement
+  :: (ShowRef t, ShowRef p)
+  => SourceStatement
+  -> Resolve p t (Statement_ p t)
+resolveStatement (SourceStatement l r) =
+  SourceStatement <$> resolvePat l <*> resolvePat r
+
+primitives :: HashMap Text PrimOp
+primitives = HashMap.fromList
+  [ ("prim.toLower", PrimOpToLower)
+  , ("prim.length", PrimOpLength)
+  , ("prim.relToAbsByteSpans", PrimOpRelToAbsByteSpans)
+  , ("prim.gtNat", PrimOpGtNat)
+  , ("prim.geNat", PrimOpGeNat)
+  , ("prim.ltNat", PrimOpLtNat)
+  , ("prim.leNat", PrimOpLeNat)
+  , ("prim.neNat", PrimOpNeNat)
+  , ("prim.addNat", PrimOpAddNat)
+  , ("prim.neExpr", PrimOpNeExpr)
+  ]

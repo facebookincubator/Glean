@@ -97,7 +97,7 @@ angleErrorTests = dbTestCase $ \env repo -> do
   print r
   assertBool "angle - unknown predicate" $
     case r of
-      Left (BadQuery x) -> "unknown type or predicate" `Text.isInfixOf` x
+      Left (BadQuery x) -> "not in scope" `Text.isInfixOf` x
       _ -> False
 
   -- general type error

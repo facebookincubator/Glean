@@ -50,7 +50,7 @@ import qualified Util.FFI as FFI
 import Util.Log
 import qualified Util.Log.Text as TextLog
 
-import Glean.Angle.Types (IsWild(..))
+import Glean.Angle.Types (IsWild(..), PrimOp(..))
 import qualified Glean.Angle.Types as Angle
 import Glean.Bytecode.Types
 import qualified Glean.FFI as FFI
@@ -175,20 +175,6 @@ data Generator_ var
 
 type Generator = Generator_ Var
 
-
--- | Primitive operations
-data PrimOp
-  = PrimOpToLower
-  | PrimOpLength
-  | PrimOpRelToAbsByteSpans
-  | PrimOpGtNat
-  | PrimOpGeNat
-  | PrimOpLtNat
-  | PrimOpLeNat
-  | PrimOpNeNat
-  | PrimOpAddNat
-  | PrimOpNeExpr
-  deriving (Eq, Show)
 
 data Var = Var
   { varType :: Type
@@ -1693,14 +1679,3 @@ instance Pretty Generator where
   pretty (ArrayElementGenerator _ arr) = pretty arr <> "[..]"
   pretty (PrimCall op args) = hsep (pretty op : map pretty args)
 
-instance Pretty PrimOp where
-  pretty PrimOpToLower = "prim.toLower"
-  pretty PrimOpLength = "prim.length"
-  pretty PrimOpRelToAbsByteSpans = "prim.relToAbsByteSpans"
-  pretty PrimOpGtNat = "prim.gtNat"
-  pretty PrimOpGeNat = "prim.geNat"
-  pretty PrimOpLtNat = "prim.ltNat"
-  pretty PrimOpLeNat = "prim.leNat"
-  pretty PrimOpNeNat = "prim.neNat"
-  pretty PrimOpAddNat = "prim.addNat"
-  pretty PrimOpNeExpr = "prim.neExpr"
