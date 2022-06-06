@@ -8,14 +8,14 @@
 
 module Glean.Regression.RustLsif.Main ( main ) where
 
-import System.Environment ( withArgs )
+import System.Environment
 
 import Glean.Indexer.RustLsif as RustLsif
 import Glean.Regression.Snapshot
 import Glean.Regression.Snapshot.Driver
 
 main :: IO ()
-main = withArgs ["--root", path] $
+main = getArgs >>= \args -> withArgs (args ++ ["--root", path]) $
     testMain (driverFromIndexer RustLsif.indexer)
   where
     path = "glean/lang/rust-lsif/tests/cases"

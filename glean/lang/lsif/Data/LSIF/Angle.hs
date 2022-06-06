@@ -55,10 +55,14 @@ generateJSON hm = concat $ mapMaybe (\k -> gen k <$> HashMap.lookup k hm) keys
     gen k = emitPredicate . Predicate k
     keys = sortOn dependencyOrder (HashMap.keys hm)
 
+-- | Try to be slightly robust about which version of the lsif facts we generate
+lsifSchemaVersion :: Int
+lsifSchemaVersion = 2
+
 emitPredicate :: Predicate -> [Value]
 emitPredicate (Predicate name facts) =
   [ object
-    [ "predicate" .= text name
+    [ "predicate" .= text (name <> "." <> Text.pack (show lsifSchemaVersion))
     , "facts" .= Array (V.fromList chunk)
     ]
   | chunk <- chunksOf 10000 facts
@@ -66,21 +70,21 @@ emitPredicate (Predicate name facts) =
 
 dependencyOrder :: Text -> Int
 dependencyOrder p = case p of
-  "lsif.Document.1" -> 0
+  "lsif.Document" -> 0
   "lsif.Project" -> 0
-  "lsif.Range.1" -> 1
+  "lsif.Range" -> 1
   "lsif.HoverContent" -> 2
   "lsif.Moniker" -> 3
-  -- these refer to Range.1
-  "lsif.Definition.1" -> 10
-  "lsif.Declaration.1" -> 11
-  -- these refer to Declaration.1, Range.1
-  "lsif.Reference.1" -> 12
-  "lsif.DefinitionHover.1" ->  13
-  "lsif.DefinitionUse.1" -> 14
-  "lsif.ProjectDocument.1" -> 15
-  "lsif.DefinitionMoniker.1" ->  16
-  "lsif.DefinitionKind.1" ->  17
+  -- these refer to Range
+  "lsif.Definition" -> 10
+  "lsif.Declaration" -> 11
+  -- these refer to Declaration, Range
+  "lsif.Reference" -> 12
+  "lsif.DefinitionHover" ->  13
+  "lsif.DefinitionUse" -> 14
+  "lsif.ProjectDocument" -> 15
+  "lsif.DefinitionMoniker" ->  16
+  "lsif.DefinitionKind" ->  17
   -- everything else, in the middle
   _ -> 5
 
@@ -109,7 +113,7 @@ factToAngle :: KeyFact -> Parse [Predicate]
 
 factToAngle (KeyFact _ MetaData{..}) = do
   appendRoot projectRoot
-  predicate "lsif.Metadata.1" ([
+  predicate "lsif.Metadata" ([
     "lsifVersion" .= version,
     "positionEncoding" .= positionEncoding
     ] ++ (case toolInfo of -- optional
@@ -124,10 +128,10 @@ factToAngle (KeyFact _ MetaData{..}) = do
 
 factToAngle (KeyFact n Project{..}) = do
   insertType n ProjectType
-  predicateId "lsif.Project.1" n [ "kind" .= fromEnum kind ]
+  predicateId "lsif.Project" n [ "kind" .= fromEnum kind ]
 
 factToAngle (KeyFact _ PackageInformation{..}) =
-  predicate "lsif.PackageInformation.1" [
+  predicate "lsif.PackageInformation" [
     "name" .= name,
     "manager" .= manager,
     "version" .= version
@@ -140,7 +144,7 @@ factToAngle (KeyFact _ PackageInformation{..}) =
 factToAngle (KeyFact n Document{..}) = do
   insertType n FileType
   path <- filterRoot uri
-  predicateId "lsif.Document.1" n
+  predicateId "lsif.Document" n
     [ "file" .= string path, -- n.b. anonymous src.File fact
       "language" .= fromEnum language
     ]
@@ -228,7 +232,7 @@ factToAngle (KeyFact n (SymbolRange range mtag)) = do
     Nothing -> pure ()
 
   -- emit a range fact for this id
-  predicateId "lsif.Range.1" n $
+  predicateId "lsif.Range" n $
     [ "range" .= toRange range
     , "text" .= maybe (string "" {- better to use nothing? -}) toName mtag
     ] ++ mFullRange
@@ -354,7 +358,7 @@ emitProjects :: Id -> IdVector -> Maybe Predicate
 emitProjects projId ids
   | U.null ids = Nothing
   | otherwise = Just $
-      Predicate "lsif.ProjectDocument.1"
+      Predicate "lsif.ProjectDocument"
         (map (\rangeId -> (object . pure . key)
           [ "file" .= rangeId
           , "project" .= projId
@@ -367,7 +371,7 @@ emitSymbolKinds fileId ids = do
     mapM (generateSymbolKindFacts fileId . Id) (U.toList ids)
   if null factBodies
     then pure Nothing
-    else return $ Just $ Predicate "lsif.DefinitionKind.1" factBodies
+    else return $ Just $ Predicate "lsif.DefinitionKind" factBodies
 
 emitMonikers :: Id -> IdVector -> Parse (Maybe Predicate)
 emitMonikers fileId ids = do
@@ -375,7 +379,7 @@ emitMonikers fileId ids = do
     mapM (generateMonikerFacts fileId . Id) (U.toList ids)
   if null factBodies
     then pure Nothing
-    else return $ Just $ Predicate "lsif.DefinitionMoniker.1" factBodies
+    else return $ Just $ Predicate "lsif.DefinitionMoniker" factBodies
 
 emitHovers :: Id -> IdVector -> Parse (Maybe Predicate)
 emitHovers fileId ids = do
@@ -383,7 +387,7 @@ emitHovers fileId ids = do
     mapM (generateHoverFacts fileId . Id) (U.toList ids)
   if null hoverBodies
     then pure Nothing
-    else return $ Just $ Predicate "lsif.DefinitionHover.1" hoverBodies
+    else return $ Just $ Predicate "lsif.DefinitionHover" hoverBodies
 
 emitReferences :: Id -> IdVector -> Parse (Maybe Predicate)
 emitReferences fileId ids = do
@@ -392,7 +396,7 @@ emitReferences fileId ids = do
   if null xrefBodies
     then pure Nothing
     else return $ Just $
-      Predicate "lsif.Reference.1" $
+      Predicate "lsif.Reference" $
         map (object . pure . key) xrefBodies
 
 emitTargetUses :: Id -> IdVector -> Parse (Maybe Predicate)
@@ -402,7 +406,7 @@ emitTargetUses fileId ids = do
   if null useBodies
     then pure Nothing
     else return $ Just $
-      Predicate "lsif.DefinitionUse.1" $
+      Predicate "lsif.DefinitionUse" $
         map (object . pure . key) useBodies
 
 -- For each refId, look up the result set, find the result sets file and defs
@@ -438,10 +442,10 @@ generateTargetUses fileId refRangeId =
       ]
 
 emitDefinitions :: Id_ FileTy -> IdVector -> Maybe Predicate
-emitDefinitions = emitDeclDefs "lsif.Definition.1"
+emitDefinitions = emitDeclDefs "lsif.Definition"
 
 emitDeclarations :: Id_ FileTy -> IdVector -> Maybe Predicate
-emitDeclarations = emitDeclDefs "lsif.Declaration.1"
+emitDeclarations = emitDeclDefs "lsif.Declaration"
 
 emitDeclDefs :: Text -> Id_ FileTy -> IdVector -> Maybe Predicate
 emitDeclDefs name fileId ids
