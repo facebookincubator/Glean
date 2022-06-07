@@ -157,9 +157,10 @@ const char *glean_inventory_equal(
 const char *glean_snapshot_new(
     Lookup *base,
     int64_t boundary,
-    Lookup **snapshot) {
+    Lookup **snapshot_) {
   return ffi::wrap([=] {
-    *snapshot = new Snapshot(base, Id::fromThrift(boundary));
+    std::unique_ptr<Lookup> s = snapshot(base, Id::fromThrift(boundary));
+    *snapshot_ = s.release();
   });
 }
 

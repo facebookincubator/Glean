@@ -168,34 +168,34 @@ struct EmptyLookup final : Lookup {
 };
 
 /**
- * A Lookup which ignores all facts with Ids from the given one up. Since we
- * assign Ids sequentially, this effectively implements a snapshot of the
- * database.
+ * A Lookup which ignores all facts with Ids outside of the range [from, upto).
+ * Returned facts may reference Ids lower than 'from'.
  *
  */
-
-struct Snapshot : Lookup {
-  Snapshot(Lookup *b, Id i) : base_(b), boundary_(i) {}
+struct Section : Lookup {
+  Section(Lookup *b, Id from, Id upto)
+    : base_(b), low_boundary_(from), high_boundary_(upto)
+    {}
 
   Id idByKey(Pid type, folly::ByteRange key) override {
     auto id = base()->idByKey(type, key);
-    return id < boundary() ? id : Id::invalid();
+    return isWithinBounds(id) ? id : Id::invalid();
   }
 
   Pid typeById(Id id) override {
-    return id < boundary() ? base()->typeById(id) : Pid::invalid();
+    return isWithinBounds(id) ? base()->typeById(id) : Pid::invalid();
   }
 
   bool factById(Id id, std::function<void(Pid, Fact::Clause)> f) override {
-    return id < boundary() && base()->factById(id, std::move(f));
+    return isWithinBounds(id) && base()->factById(id, std::move(f));
   }
 
   Id startingId() const override {
-    return std::min(base()->startingId(), boundary());
+    return std::max(lowBoundary(), std::min(highBoundary(), base()->startingId()));
   }
 
   Id firstFreeId() const override {
-    return std::min(boundary(), base()->firstFreeId());
+    return std::max(lowBoundary(), std::min(highBoundary(), base()->firstFreeId()));
   }
 
   Interval count(Pid pid) const override {
@@ -214,14 +214,31 @@ struct Snapshot : Lookup {
     return base_;
   }
 
-  Id boundary() const {
-    return boundary_;
+  Id lowBoundary() const {
+    return low_boundary_;
+  }
+
+  Id highBoundary() const {
+    return high_boundary_;
+  }
+
+  bool isWithinBounds(Id id) const {
+    return lowBoundary() <= id && id < highBoundary();
   }
 
 private:
   Lookup *base_;
-  Id boundary_;
+  Id low_boundary_;
+  Id high_boundary_;
 };
+
+/**
+ * A Lookup which ignores all facts with Ids from the given one up. Since we
+ * assign Ids sequentially, this effectively implements a snapshot of the
+ * database.
+ *
+ */
+std::unique_ptr<Lookup> snapshot(Lookup *b, Id upto);
 
 }
 }

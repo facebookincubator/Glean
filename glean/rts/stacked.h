@@ -87,7 +87,7 @@ struct StackedBase : Iface {
       folly::ByteRange start,
       size_t prefix_size) override {
     return FactIterator::merge(
-      Snapshot(base, mid).seek(type, start, prefix_size),
+      snapshot(base, mid)->seek(type, start, prefix_size),
       stacked->seek(type, start, prefix_size),
       prefix_size);
   }

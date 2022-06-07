@@ -99,46 +99,57 @@ std::unique_ptr<FactIterator> FactIterator::merge(
 }
 
 
-std::unique_ptr<FactIterator> Snapshot::enumerate(Id from, Id upto) {
-  if (from >= boundary()) {
+std::unique_ptr<FactIterator> Section::enumerate(Id from, Id upto) {
+  if (upto <= lowBoundary() || highBoundary() <= from) {
     return std::make_unique<EmptyIterator>();
   } else {
     return base()->enumerate(
-      from,
-      upto ? std::min(upto, boundary()) : boundary());
+      std::max(from, lowBoundary()),
+      upto ? std::min(upto, highBoundary()) : highBoundary());
   }
 }
 
-std::unique_ptr<FactIterator> Snapshot::enumerateBack(Id from, Id downto) {
-  if (downto >= boundary()) {
+std::unique_ptr<FactIterator> Section::enumerateBack(Id from, Id downto) {
+  if (from <= lowBoundary() || highBoundary() <= downto) {
     return std::make_unique<EmptyIterator>();
   } else {
     return base()->enumerate(
-      from ? std::min(from, boundary()) : boundary(),
-      downto);
+      from ? std::min(from, highBoundary()) : highBoundary(),
+      std::max(downto, lowBoundary()));
   }
 }
 
-std::unique_ptr<FactIterator> Snapshot::seek(
+std::unique_ptr<FactIterator> Section::seek(
     Pid type, folly::ByteRange start, size_t prefix_size) {
   struct Iterator final : FactIterator {
-    Iterator(std::unique_ptr<FactIterator> base, Id boundary)
-      : base_(std::move(base)), boundary_(boundary)
+    Iterator(std::unique_ptr<FactIterator> base, Id upto, Id from)
+      : base_(std::move(base)), high_boundary_(upto), low_boundary_(from)
       {}
 
     void next() override { base_->next(); }
 
     Fact::Ref get(Demand demand) override {
       auto r = base_->get(demand);
-      return r && r.id < boundary_ ? r : Fact::Ref::invalid();
+
+      while (r && !isWithinBounds(r.id)) {
+        r = base_->get(demand);
+      }
+
+      return r;
+    }
+
+    bool isWithinBounds(Id id) {
+      return low_boundary_ <= id && id < high_boundary_;
     }
 
     std::unique_ptr<FactIterator> base_;
-    Id boundary_;
+    Id high_boundary_;
+    Id low_boundary_;
   };
   return std::make_unique<Iterator>(
     base()->seek(type, start, prefix_size),
-    boundary());
+    highBoundary(),
+    lowBoundary());
 }
 
 namespace {
@@ -227,6 +238,11 @@ std::unique_ptr<FactIterator> FactIterator::filter(
     std::make_unique<FilterIterator>(
         std::move(base),
         std::move(visible));
+}
+
+
+std::unique_ptr<Lookup> snapshot(Lookup *b, Id upto) {
+  return std::make_unique<Section>(Section(b, Id::invalid(), upto));
 }
 
 }
