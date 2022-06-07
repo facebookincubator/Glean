@@ -150,9 +150,23 @@ data SourceQuery_ s p t = SourceQuery
   }
   deriving (Eq, Show)
 
+instance Bifunctor (SourceQuery_ s) where
+  bimap f g (SourceQuery h s) =
+    SourceQuery (fmap (bimap f g) h) (fmap (bimap f g) s)
+
+instance Bifoldable (SourceQuery_ s) where
+  bifoldMap f g (SourceQuery h s) =
+    foldMap (bifoldMap f g) h <> foldMap (bifoldMap f g) s
+
 data SourceStatement_ s p t =
   SourceStatement (SourcePat_ s p t) (SourcePat_ s p t)
   deriving (Eq, Show)
+
+instance Bifunctor (SourceStatement_ s) where
+  bimap f g (SourceStatement l r) = SourceStatement (bimap f g l) (bimap f g r)
+
+instance Bifoldable (SourceStatement_ s) where
+  bifoldMap f g (SourceStatement l r) = bifoldMap f g l <> bifoldMap f g r
 
 data SourcePat_ s p t
   = Nat s Word64
@@ -189,8 +203,67 @@ data SourcePat_ s p t
   | Prim s PrimOp [SourcePat_ s p t]
  deriving (Eq, Show)
 
+instance Bifunctor (SourcePat_ s) where
+  bimap f g pat = case pat of
+    Nat s w -> Nat s w
+    String s t -> String s t
+    StringPrefix s t -> StringPrefix s t
+    ByteArray s t -> ByteArray s t
+    Array s pats -> Array s (fmap (bimap f g) pats)
+    ArrayPrefix s pats -> ArrayPrefix s (fmap (bimap f g) pats)
+    Tuple s pats -> Tuple s (map (bimap f g) pats)
+    Struct s fields -> Struct s (map (bimap f g) fields)
+    App s l r -> App s (bimap f g l) (map (bimap f g) r)
+    KeyValue s k v -> KeyValue s (bimap f g k) (bimap f g v)
+    Wildcard s -> Wildcard s
+    Variable s n -> Variable s n
+    ElementsOfArray s pat -> ElementsOfArray s (bimap f g pat)
+    OrPattern s l r -> OrPattern s (bimap f g l) (bimap f g r)
+    NestedQuery s (SourceQuery head stmts) ->
+      NestedQuery s (SourceQuery (fmap (bimap f g) head)
+        (fmap (bimap f g) stmts))
+    Negation s pat -> Negation s (bimap f g pat)
+    FactId s n w -> FactId s n w
+    TypeSignature s pat ty -> TypeSignature s (bimap f g pat) (bimap f g ty)
+    Never s -> Never s
+    IfPattern s a b c -> IfPattern s (bimap f g a) (bimap f g b) (bimap f g c)
+    Clause s p pat -> Clause s (f p) (bimap f g pat)
+    Prim s p pats -> Prim s p (fmap (bimap f g) pats)
+
+instance Bifoldable (SourcePat_ s) where
+  bifoldMap f g = \case
+    Nat{} -> mempty
+    String{} -> mempty
+    StringPrefix{} -> mempty
+    ByteArray{} -> mempty
+    Array _ pats -> foldMap (bifoldMap f g) pats
+    ArrayPrefix _ pats -> foldMap (bifoldMap f g) pats
+    Tuple _ pats -> foldMap (bifoldMap f g) pats
+    Struct _ fields -> foldMap (bifoldMap f g) fields
+    App _ l r -> foldMap (bifoldMap f g) (l:r)
+    KeyValue _ k v -> bifoldMap f g k <> bifoldMap f g v
+    Wildcard{} -> mempty
+    Variable{} -> mempty
+    ElementsOfArray _ pat -> bifoldMap f g pat
+    OrPattern _ l r -> bifoldMap f g l <> bifoldMap f g r
+    NestedQuery _ (SourceQuery head stmts) ->
+      foldMap (bifoldMap f g) head <> foldMap (bifoldMap f g) stmts
+    Negation _ pat -> bifoldMap f g pat
+    FactId{} -> mempty
+    TypeSignature _ pat ty -> bifoldMap f g pat <> bifoldMap f g ty
+    Never{} -> mempty
+    IfPattern _ a b c -> bifoldMap f g a <> bifoldMap f g b <> bifoldMap f g c
+    Clause _ p pat -> f p <> bifoldMap f g pat
+    Prim _ _ pats -> foldMap (bifoldMap f g) pats
+
 data Field s p t = Field FieldName (SourcePat_ s p t)
   deriving (Eq, Show)
+
+instance Bifunctor (Field s) where
+  bimap f g (Field n pat) = Field n (bimap f g pat)
+
+instance Bifoldable (Field s) where
+  bifoldMap f g (Field _ pat) = bifoldMap f g pat
 
 -- | Primitive operations
 data PrimOp
