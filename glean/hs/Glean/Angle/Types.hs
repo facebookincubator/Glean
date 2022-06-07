@@ -24,6 +24,14 @@ module Glean.Angle.Types
   , IsSrcSpan(..)
   , SrcSpan(..)
   , SrcLoc(..)
+  , rmLocSchemas
+  , rmLocSchema
+  , rmLocEvolves
+  , rmLocDecl
+  , rmLocQuery
+  , rmLocStatement
+  , rmLocPat
+  , rmLocField
 
   -- * Types
   , Type_(..)
@@ -639,3 +647,62 @@ instance Pretty PrimOp where
   pretty PrimOpNeNat = "prim.neNat"
   pretty PrimOpAddNat = "prim.addNat"
   pretty PrimOpNeExpr = "prim.neExpr"
+
+-- -----------------------------------------------------------------------------
+-- Removing source locations from the AST
+
+rmLocSchemas :: SourceSchemas_ a -> SourceSchemas_ ()
+rmLocSchemas (SourceSchemas version schemas evolves) =
+  SourceSchemas version (rmLocSchema <$> schemas) (rmLocEvolves <$> evolves)
+
+rmLocSchema :: SourceSchema_ a -> SourceSchema_ ()
+rmLocSchema (SourceSchema name inherits decls) =
+  SourceSchema name inherits $ rmLocDecl <$> decls
+
+rmLocEvolves :: SourceEvolves_ a -> SourceEvolves_ ()
+rmLocEvolves (SourceEvolves _ a b) = SourceEvolves () a b
+
+rmLocDecl :: SourceDecl_ a -> SourceDecl_ ()
+rmLocDecl = \case
+  SourceImport name -> SourceImport name
+  SourcePredicate pred -> SourcePredicate $ pred
+    { predicateDefDeriving = rmLocQuery <$> predicateDefDeriving pred }
+  SourceType typeDef -> SourceType typeDef
+  SourceDeriving ref deriv -> SourceDeriving ref $ rmLocQuery <$> deriv
+
+rmLocQuery :: SourceQuery_ s p t -> SourceQuery_ () p t
+rmLocQuery (SourceQuery mhead stmts) =
+  SourceQuery (rmLocPat <$> mhead) (rmLocStatement <$> stmts)
+
+rmLocStatement :: SourceStatement_ s p t -> SourceStatement_ () p t
+rmLocStatement (SourceStatement x y) =
+  SourceStatement (rmLocPat x) (rmLocPat y)
+
+rmLocPat :: SourcePat_ s p t -> SourcePat_ () p t
+rmLocPat = \case
+  Nat _ x -> Nat () x
+  String _ x -> String () x
+  StringPrefix _ x -> StringPrefix () x
+  ByteArray _ x -> ByteArray () x
+  Array _ xs -> Array () (rmLocPat <$> xs)
+  ArrayPrefix _ xs -> ArrayPrefix () (rmLocPat <$> xs)
+  Tuple _ xs -> Tuple () (rmLocPat <$> xs)
+  Struct _ xs -> Struct () (rmLocField <$> xs)
+  App _ x xs -> App () (rmLocPat x) (rmLocPat <$> xs)
+  KeyValue _ x y -> KeyValue () (rmLocPat x) (rmLocPat y)
+  Wildcard _ -> Wildcard ()
+  Never _ -> Never ()
+  Variable _ v -> Variable () v
+  ElementsOfArray _ x -> ElementsOfArray () (rmLocPat x)
+  OrPattern _ x y -> OrPattern () (rmLocPat x) (rmLocPat y)
+  IfPattern _ x y z -> IfPattern () (rmLocPat x) (rmLocPat y) (rmLocPat z)
+  Negation _ x -> Negation () (rmLocPat x)
+  NestedQuery _ query -> NestedQuery () $ rmLocQuery query
+  FactId _ x y -> FactId () x y
+  TypeSignature _ x t -> TypeSignature () (rmLocPat x) t
+  Clause _ x y -> Clause () x (rmLocPat y)
+  Prim _ p ps -> Prim () p (rmLocPat <$> ps)
+
+rmLocField :: Field s p t -> Field () p t
+rmLocField (Field name pat) =
+  Field name (rmLocPat pat)
