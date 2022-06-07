@@ -90,6 +90,7 @@ module Glean.Angle.Types
   ) where
 
 import qualified Data.Aeson as Aeson
+import Data.Binary
 import Data.ByteString (ByteString)
 import qualified Data.ByteString.Lazy as BL
 import Data.Hashable
@@ -97,7 +98,6 @@ import Data.List.NonEmpty (NonEmpty, toList)
 import Data.Text (Text)
 import qualified Data.Text.Encoding as Text
 import Data.Text.Prettyprint.Doc
-import Data.Word
 import Data.Bifunctor
 import Data.Bifoldable
 import GHC.Generics
@@ -148,7 +148,9 @@ data SourceQuery_ s p t = SourceQuery
   { srcQueryHead :: Maybe (SourcePat_ s p t)
   , srcQueryStmts :: [SourceStatement_ s p t]
   }
-  deriving (Eq, Show)
+  deriving (Eq, Show, Generic)
+
+instance (Binary p, Binary t) => Binary (SourceQuery_ () p t)
 
 instance Bifunctor (SourceQuery_ s) where
   bimap f g (SourceQuery h s) =
@@ -160,7 +162,9 @@ instance Bifoldable (SourceQuery_ s) where
 
 data SourceStatement_ s p t =
   SourceStatement (SourcePat_ s p t) (SourcePat_ s p t)
-  deriving (Eq, Show)
+  deriving (Eq, Show, Generic)
+
+instance (Binary p, Binary t) => Binary (SourceStatement_ () p t)
 
 instance Bifunctor (SourceStatement_ s) where
   bimap f g (SourceStatement l r) = SourceStatement (bimap f g l) (bimap f g r)
@@ -201,7 +205,9 @@ data SourcePat_ s p t
   -- the Variable and App forms produced by the parser.
   | Clause s p (SourcePat_ s p t)
   | Prim s PrimOp [SourcePat_ s p t]
- deriving (Eq, Show)
+ deriving (Eq, Show, Generic)
+
+instance (Binary p, Binary t) => Binary (SourcePat_ () p t)
 
 instance Bifunctor (SourcePat_ s) where
   bimap f g pat = case pat of
@@ -257,7 +263,9 @@ instance Bifoldable (SourcePat_ s) where
     Prim _ _ pats -> foldMap (bifoldMap f g) pats
 
 data Field s p t = Field FieldName (SourcePat_ s p t)
-  deriving (Eq, Show)
+  deriving (Eq, Show, Generic)
+
+instance (Binary p, Binary t) => Binary (Field () p t)
 
 instance Bifunctor (Field s) where
   bimap f g (Field n pat) = Field n (bimap f g pat)
@@ -277,7 +285,9 @@ data PrimOp
   | PrimOpNeNat
   | PrimOpAddNat
   | PrimOpNeExpr
-  deriving (Eq, Show)
+  deriving (Eq, Show, Generic)
+
+instance Binary PrimOp
 
 sourcePatSpan :: SourcePat_ s p t -> s
 sourcePatSpan = \case
@@ -329,7 +339,9 @@ data Type_ pref tref
     -- enum { a | b } => { a : {}, b : {} }
   | BooleanTy
     -- bool => { false : {} | true : {} }
-  deriving (Eq, Show, Functor, Foldable)
+  deriving (Eq, Show, Functor, Foldable, Generic)
+
+instance (Binary pref, Binary tref) => Binary (Type_ pref tref)
 
 instance Bifunctor Type_ where
   bimap f g = \case
@@ -395,7 +407,9 @@ data FieldDef_ pref tref = FieldDef
   { fieldDefName :: Name
   , fieldDefType :: Type_ pref tref
   }
-  deriving (Eq, Show, Functor, Foldable)
+  deriving (Eq, Show, Functor, Foldable, Generic)
+
+instance (Binary pref, Binary tref) => Binary (FieldDef_ pref tref)
 
 instance Bifunctor FieldDef_ where
   bimap f g (FieldDef n ty)  = FieldDef n $ bimap f g ty
@@ -423,7 +437,9 @@ data PredicateDef_ s pref tref = PredicateDef
 data DerivingInfo q
   = NoDeriving
   | Derive DeriveWhen q
-  deriving (Eq, Functor)
+  deriving (Eq, Functor, Foldable, Show, Generic)
+
+instance Binary q => Binary (DerivingInfo q)
 
 data DeriveWhen
   = DeriveOnDemand
@@ -437,7 +453,11 @@ data DeriveWhen
     -- ^ derived only when the DB has no facts of this predicate.
     -- This is used to add derivations for backwards compatibility
     -- during a schema migration.
-  deriving Eq
+  deriving (Eq, Show, Generic)
+
+instance Binary DeriveWhen
+
+-- Source (parsed) abstract syntax
 
 type SourcePat' s = SourcePat_ s SourceRef SourceRef
 type SourceStatement' s = SourceStatement_ s SourceRef SourceRef
