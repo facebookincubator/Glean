@@ -24,17 +24,18 @@ import Glean.LSIF.Driver as LSIF
 
 import Glean.Backend ( Backend )
 import qualified Glean
+import System.Directory (doesFileExist)
+import Util.OptParse (maybeStrOption)
 
 newtype LSIF = LSIF
-  { lsifIndexFile :: FilePath
+  { lsifIndexFile :: Maybe FilePath
   }
-  -- no options currently
 
 options :: Parser LSIF
 options = do
-  lsifIndexFile <- strOption $
+  lsifIndexFile <- maybeStrOption (
     long "input" <>
-    help "path to an lsif index file"
+    help "Optional path to a specific lsif index file")
   return LSIF{..}
 
 -- | An indexer that just slurps an existing LSIF file. Usage:
@@ -48,7 +49,14 @@ indexer = Indexer {
   indexerDescription = "Index an LSIF file",
   indexerOptParser = options,
   indexerRun = \LSIF{..} backend repo IndexerParams{..} -> do
-    val <- LSIF.processLSIF indexerRoot lsifIndexFile
+    lsifFile <- case lsifIndexFile of
+      Just f -> pure f
+      Nothing -> do -- then indexerRoot should be an lsif file
+        mFile <- doesFileExist indexerRoot
+        if mFile
+          then pure indexerRoot
+          else error "Neither --input nor --root are lsif files"
+    val <- LSIF.processLSIF indexerRoot lsifFile
     sendJsonBatches backend repo "lsif" val
     derive backend repo
   }
@@ -62,8 +70,7 @@ derive backend repo = forM_ lsifDerivedPredicates $ \pred_ ->
 -- shared amongst all LSIF-based language indexers
 lsifDerivedPredicates :: [Text]
 lsifDerivedPredicates =
-  [
-    "lsif.MonikerDefinition"
+  [ "lsif.MonikerDefinition"
   , "lsif.NameLowerCase"
   , "lsif.NameDefinition"
   ]
