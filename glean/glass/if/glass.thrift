@@ -250,7 +250,9 @@ enum Visibility {
   Public = 20,
   Protected = 30,
   Private = 40,
-}
+} (
+  hack.attributes = "\GraphQLEnum('GlassVisibility'), \SelfDescriptive, \Oncalls('code_indexing')",
+)
 
 // A symbol description extends the symbol id with additional attributes
 struct SymbolDescription {
