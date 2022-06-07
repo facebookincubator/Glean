@@ -21,6 +21,7 @@ module Glean.Schema.Types (
   ResolvedTypeDef,
   ResolvedPredicateDef,
   ResolvedQuery,
+  ResolvedStatement,
   ResolvedDeriving,
 
   ResolvedPat',
@@ -125,13 +126,13 @@ type ResolvedTypeDef = TypeDef_ PredicateRef TypeRef
 type ResolvedPredicateDef = PredicateDef_ SrcSpan PredicateRef TypeRef
 type ResolvedPat = SourcePat_ SrcSpan PredicateRef TypeRef
 type ResolvedStatement = SourceStatement_ SrcSpan PredicateRef TypeRef
-type ResolvedQuery = SourceQuery_ ResolvedPat ResolvedStatement
+type ResolvedQuery = SourceQuery_ SrcSpan PredicateRef TypeRef
 type ResolvedDeriving = DerivingInfo ResolvedQuery
 
 -- Versions of the above types abstracted over the source spans
 type ResolvedPat' s = SourcePat_ s PredicateRef TypeRef
 type ResolvedStatement' s = SourceStatement_ s PredicateRef TypeRef
-type ResolvedQuery' s = SourceQuery_ (ResolvedPat' s) (ResolvedStatement' s)
+type ResolvedQuery' s = SourceQuery_ s PredicateRef TypeRef
 type ResolvedDeriving' s = DerivingInfo (ResolvedQuery' s)
 
 -- | A 'ResolvedSchema' is used during schema resolution to resolve

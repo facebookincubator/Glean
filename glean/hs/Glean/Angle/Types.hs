@@ -136,9 +136,9 @@ data SrcLoc = SrcLoc
 -- -----------------------------------------------------------------------------
 -- Queries
 
-data SourceQuery_ head stmt = SourceQuery
-  { srcQueryHead :: Maybe head
-  , srcQueryStmts :: [stmt]
+data SourceQuery_ s p t = SourceQuery
+  { srcQueryHead :: Maybe (SourcePat_ s p t)
+  , srcQueryStmts :: [SourceStatement_ s p t]
   }
   deriving (Eq, Show)
 
@@ -163,8 +163,7 @@ data SourcePat_ s p t
   | Variable s Name
   | ElementsOfArray s (SourcePat_ s p t)
   | OrPattern s (SourcePat_ s p t) (SourcePat_ s p t)
-  | NestedQuery s
-      (SourceQuery_ (SourcePat_ s p t) (SourceStatement_ s p t))
+  | NestedQuery s (SourceQuery_ s p t)
   | Negation s (SourcePat_ s p t)
   | FactId s (Maybe Text) Word64
   | TypeSignature s (SourcePat_ s p t) (Type_ p t)
@@ -335,11 +334,7 @@ data PredicateDef_ s pref tref = PredicateDef
   { predicateDefRef :: pref
   , predicateDefKeyType :: Type_ pref tref
   , predicateDefValueType :: Type_ pref tref
-  , predicateDefDeriving ::
-      DerivingInfo
-        (SourceQuery_
-          (SourcePat_ s pref tref)
-          (SourceStatement_ s pref tref))
+  , predicateDefDeriving :: DerivingInfo (SourceQuery_ s pref tref)
   }
   deriving Eq
 
@@ -365,7 +360,7 @@ data DeriveWhen
 
 type SourcePat' s = SourcePat_ s SourceRef SourceRef
 type SourceStatement' s = SourceStatement_ s SourceRef SourceRef
-type SourceQuery' s = SourceQuery_ (SourcePat' s) (SourceStatement' s)
+type SourceQuery' s = SourceQuery_ s SourceRef SourceRef
 type SourceDerivingInfo' s = DerivingInfo (SourceQuery' s)
 type SourcePredicateDef' s = PredicateDef_ s SourceRef SourceRef
 
@@ -383,12 +378,12 @@ type SourceEvolves = SourceEvolves_ SrcSpan
 type SourceDecl = SourceDecl_ SrcSpan
 
 type Statement_ p t = SourceStatement_ SrcSpan p t
-type Query_ p t = SourceQuery_ (SourcePat_ SrcSpan p t)  (Statement_ p t)
 
 type Type = Type_ PredicateRef TypeRef
 type FieldDef = FieldDef_ PredicateRef TypeRef
 type TypeDef = TypeDef_ PredicateRef TypeRef
 type PredicateDef = PredicateDef_ SrcSpan PredicateRef TypeRef
+type Query_ p t = SourceQuery_ SrcSpan p t
 
 data SourceEvolves_ s = SourceEvolves
   { evolvesSpan :: s
@@ -593,7 +588,7 @@ instance (Pretty p, Pretty t) => Pretty (SourcePat_ s p t) where
   pretty (Prim _ p pats) =
     pretty p <+> hsep (punctuate " " (map prettyArg pats))
 
-instance (Pretty pat, Pretty stmt) => Pretty (SourceQuery_ pat stmt) where
+instance (Pretty p, Pretty t) => Pretty (SourceQuery_ s p t) where
   pretty (SourceQuery maybeHead stmts) = case stmts of
     [] -> pretty maybeHead
     _ -> case maybeHead of
