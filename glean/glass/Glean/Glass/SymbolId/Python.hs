@@ -111,7 +111,7 @@ qNameQuery nameId = vars $
   \ (lname :: Angle Py.Name)
     (pname :: Angle Py.Name)
     (psname :: Angle Py.SName)
-    (maybe_psname :: Angle (maybe Py.SName_key)) ->
+    (maybe_psname :: Angle (Maybe Py.SName_key)) ->
     tuple (lname, pname) `where_` [
         wild .= predicate @Py.NameToSName (factId nameId
           .-> predicate @Py.SName (rec $
