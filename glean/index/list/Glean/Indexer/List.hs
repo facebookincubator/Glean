@@ -20,6 +20,7 @@ import Options.Applicative
 import Util.OptParse
 
 import Glean.Indexer
+import qualified Glean.Indexer.Cpp as Cpp
 import qualified Glean.Indexer.External as External
 import qualified Glean.Indexer.Flow as Flow
 import qualified Glean.Indexer.Hack as Hack
@@ -37,7 +38,8 @@ data SomeIndexer = forall opts . SomeIndexer (Indexer opts)
 
 indexers :: [SomeIndexer]
 indexers =
-  [ SomeIndexer External.externalIndexer
+  [ SomeIndexer Cpp.indexer
+  , SomeIndexer External.externalIndexer
   , SomeIndexer Flow.indexer
   , SomeIndexer Hack.indexer
 #ifdef FACEBOOK

@@ -99,31 +99,7 @@ common fb-cpp
   if flag(opt)
      cxx-options: -O3
 
-library
-    import: fb-haskell, fb-cpp, deps
-    exposed-modules:
-        Derive
-        Derive.Common
-        Derive.CxxDeclarationSources
-        Derive.CxxDeclarationTargets
-        Derive.CxxSame
-        Derive.CxxTargetUses
-        Derive.Env
-        Derive.Generic
-        Derive.Lib
-        Derive.Types
-    build-depends:
-        ghc-compact,
-        glean:client-hs,
-        glean:client-hs-local,
-        glean:core,
-        glean:db,
-        glean:lib,
-        glean:schema,
-        glean:util,
-        vector-algorithms
-
-executable glean-clang-index
+executable clang-index
     import: fb-cpp
     ghc-options: -no-hs-main
     main-is: index.cpp
@@ -169,12 +145,28 @@ executable glean-clang-index
     if flag(opt)
       cxx-options: -O3
 
-executable glean-clang
+executable clang-derive
     import: fb-haskell, fb-cpp, deps, exe
-    main-is: Glean/Clang.hs
-    hs-source-dirs: exe
-    other-modules: Glean.CMake
-    ghc-options: -main-is Glean.Clang
+    main-is: Derive.hs
+    hs-source-dirs: .
+    ghc-options: -main-is Derive
     build-depends:
-        glean-clang,
-        mtl
+        ghc-compact,
+        glean:client-hs,
+        glean:client-hs-local,
+        glean:core,
+        glean:db,
+        glean:lib,
+        glean:schema,
+        glean:util,
+        vector-algorithms
+    other-modules:
+        Derive.Common
+        Derive.CxxDeclarationSources
+        Derive.CxxDeclarationTargets
+        Derive.CxxSame
+        Derive.CxxTargetUses
+        Derive.Env
+        Derive.Generic
+        Derive.Lib
+        Derive.Types
