@@ -14,14 +14,21 @@ import Test.HUnit
 
 import Glean
 import Glean.Indexer.Python as Python
-import Glean.Regression.Test
 import Glean.Util.Some
 
+import Glean.Glass.Regression.Snapshot
 import Glean.Glass.Types
 import Glean.Glass.Regression.Tests
 
 main :: IO ()
-main = mainTestIndex "glass-regression-python" Python.indexer $ \get -> TestList
+main = mainGlassSnapshot testName testPath testIndexer unitTests
+  where
+    testName = "glass-regression-python"
+    testPath = "glean/glass/test/regression/tests/python"
+    testIndexer = Python.indexer
+
+unitTests :: Getter -> [Test]
+unitTests get =
   [ testDocumentSymbolListX (Path "all.py") get
   , testSymbolIdLookup get
   , testPythonFindReferences get

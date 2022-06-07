@@ -1,0 +1,95 @@
+[
+    "@generated",
+    [
+        {
+            "filepath": "all.py",
+            "range": {
+                "columnBegin": 21,
+                "columnEnd": 29,
+                "lineBegin": 4,
+                "lineEnd": 4
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "all.py",
+            "range": {
+                "columnBegin": 22,
+                "columnEnd": 32,
+                "lineBegin": 20,
+                "lineEnd": 20
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "big_lib/relative.py",
+            "range": {
+                "columnBegin": 15,
+                "columnEnd": 23,
+                "lineBegin": 5,
+                "lineEnd": 5
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "big_lib/relative.py",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 9,
+                "lineBegin": 8,
+                "lineEnd": 8
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "lib.py",
+            "range": {
+                "columnBegin": 21,
+                "columnEnd": 29,
+                "lineBegin": 5,
+                "lineEnd": 5
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "main.py",
+            "range": {
+                "columnBegin": 21,
+                "columnEnd": 29,
+                "lineBegin": 5,
+                "lineEnd": 5
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "main.py",
+            "range": {
+                "columnBegin": 5,
+                "columnEnd": 13,
+                "lineBegin": 11,
+                "lineEnd": 11
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "shadow.py",
+            "range": {
+                "columnBegin": 21,
+                "columnEnd": 29,
+                "lineBegin": 5,
+                "lineEnd": 5
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "shadow.py",
+            "range": {
+                "columnBegin": 12,
+                "columnEnd": 20,
+                "lineBegin": 22,
+                "lineEnd": 22
+            },
+            "repository": "test"
+        }
+    ]
+]

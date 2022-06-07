@@ -1,0 +1,23 @@
+[
+    "@generated",
+    {
+        "comments": [],
+        "kind": 14,
+        "location": {
+            "filepath": "all.py",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 21,
+                "lineBegin": 10,
+                "lineEnd": 12
+            },
+            "repository": "test"
+        },
+        "name": {
+            "container": "all",
+            "localName": "fn"
+        },
+        "repo_hash": "testhash",
+        "sym": "test/py/all.py/all.fn"
+    }
+]
