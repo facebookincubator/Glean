@@ -7,7 +7,7 @@
 -}
 
 {-# LANGUAGE ApplicativeDo #-}
-module Glean.Indexer.Cpp ( indexer ) where
+module Glean.Indexer.Cpp ( indexer, findExecutableRecursive ) where
 
 import Control.Concurrent.Async
 import Data.Proxy
@@ -34,6 +34,8 @@ import Glean.Util.Service
 import qualified Data.ByteString as BS
 import qualified Glean.Handler as GleanHandler
 import qualified Thrift.Server.CppServer as CppServer
+import Control.Monad (filterM)
+import Control.Monad.Extra (concatMapM)
 
 data Clang = Clang
   { clangIndexBin     :: Maybe FilePath -- ^ path to @clang-index@ binary
@@ -154,6 +156,9 @@ spawnAndConcurrentLog verbose exe args = do
       | verbose = putStrLn s
       | otherwise = putChar '.' >> hFlush stdout
 
+--
+-- We need to find clang-index and clang-derive in $PATH or in-tree
+--
 withExe :: FilePath -> Maybe FilePath -> (FilePath -> IO ()) -> IO ()
 withExe _ (Just exePath) f = do
   exeExists <- doesFileExist exePath
@@ -167,11 +172,33 @@ withExe exeName Nothing  f = do
     Just exe -> f exe
     Nothing -> do -- well maybe we are in-tree, check local build
       wrapperExePath <- getExecutablePath
-      let searchPath = takeDirectory (takeDirectory wrapperExePath) </>
-            exeName
-      mPath <- findExecutablesInDirectories [searchPath] exeName
-      case mPath of
-        [] -> error $
-                "Could not find " <> exeName <>
-                   " in $PATH or " <> searchPath
-        exe:_ -> f exe
+      case inTreeSearchPath wrapperExePath of
+        Just path -> do
+          mPath <- findExecutableRecursive exeName path
+          case mPath of
+            [] -> error $ "Could not find " <> exeName <>
+                     " in $PATH or in " <> path
+            exe:_ -> f exe
+        Nothing -> error $ "Could not find " <> exeName <> " in $PATH"
+
+-- determine if we are invoking glean in-tree, to find the clang-* binaries
+inTreeSearchPath :: FilePath -> Maybe FilePath
+inTreeSearchPath exePath = do
+  case reverse (splitDirectories  exePath) of
+    -- definitely running in tree:
+    ("glean":"glean":"build":"glean":"x":_:xs) -> Just $ joinPath (reverse xs)
+    _ -> Nothing
+
+-- do a silly recursive search in the dist-newstyle under the ghc dirs
+-- > findExecutableRecursive "clang-index" ..path
+--
+findExecutableRecursive :: String -> FilePath -> IO [FilePath]
+findExecutableRecursive exeName dirPath = do
+  mFound <- findExecutablesInDirectories [dirPath] exeName
+  case mFound of
+    exe:_ -> return [exe]
+    [] -> do
+      dirs <- listDirectory dirPath
+      let subDirs = map (dirPath </>) dirs
+      subdirs <- filterM doesDirectoryExist subDirs
+      concatMapM (findExecutableRecursive exeName) subdirs
