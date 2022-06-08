@@ -33,7 +33,7 @@ import Util.Control.Exception
 import Util.EventBase
 import Util.String.Quasi
 
-import Glean.Angle.Types (latestAngleVersion)
+import Glean.Angle.Types (latestAngleVersion, Type_(..))
 import Glean.Backend
 import Glean.Database.Open
 import Glean.Database.Config
@@ -1054,7 +1054,11 @@ schemaEvolves = TestList
   ]
 
 schemaEvolvesTransformations :: Test
-schemaEvolvesTransformations = TestList
+schemaEvolvesTransformations =
+  let nothing = RTS.Alt 0 unit
+      unit = RTS.Tuple []
+  in
+  TestList
   [ TestLabel "backcompat - remove field" $ TestCase $ do
     withSchemaAndFacts []
       [s|
@@ -1076,7 +1080,7 @@ schemaEvolvesTransformations = TestList
         assertEqual "result count" 1 (length facts)
 
   , TestLabel "forwardcompat - maps new optional field to default value" $
-    TestCase $ do
+    TestCase $
     withSchemaAndFacts []
       [s|
         schema x.1 {
@@ -1094,10 +1098,56 @@ schemaEvolvesTransformations = TestList
       ]
       [s| x.P.2 _ |]
       $ \byRef response _ -> do
-        let nothing = RTS.Alt 0 unit
-            unit = RTS.Tuple []
         facts <- decodeResultsAs (SourceRef "x.P" (Just 2)) byRef response
         assertEqual "result content" [RTS.Tuple [RTS.String "A", nothing]] facts
+
+  , TestLabel "forwardcompat - matches new field against default value" $
+    TestCase $
+    withSchemaAndFacts []
+      [s|
+        schema x.1 {
+          predicate P : { a : string }
+        }
+        schema x.2 {
+          predicate P : { a : string, b : maybe string }
+        }
+        schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
+      |]
+      [ mkBatch (PredicateRef "x.P" 1)
+          [ [s|{ "key": { "a": "A" } }|]
+          , [s|{ "key": { "a": "B" } }|]
+          ]
+      ]
+      -- should match { "A", nothing}, but not { "B", { just = "A" }}
+      [s| x.P.2 { "A", nothing } |
+          x.P.2 { "B", { just = "A" } }
+      |]
+      $ \byRef response _ -> do
+        facts <- decodeResultsAs (SourceRef "x.P" (Just 2)) byRef response
+        assertEqual "result content" [RTS.Tuple [RTS.String "A", nothing]] facts
+
+  , TestLabel "forwardcompat - binds new field's default value" $
+    TestCase $
+    withSchemaAndFacts []
+      [s|
+        schema x.1 {
+          predicate P : { a : string }
+        }
+        schema x.2 {
+          predicate P : { a : string, b : maybe string }
+        }
+        schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
+      |]
+      [ mkBatch (PredicateRef "x.P" 1)
+          [ [s|{ "key": { "a": "A" } }|]
+          ]
+      ]
+      [s| X where x.P.2 { _, X } |]
+      $ \_ response _ -> do
+        facts <- decodeResultsAsTy (MaybeTy StringTy) response
+        assertEqual "result content" [nothing] facts
 
   , TestLabel "backcompat - change field order" $ TestCase $ do
     withSchemaAndFacts []
@@ -1211,7 +1261,6 @@ schemaEvolvesTransformations = TestList
         -- the unknown alternative has an index one greater than
         -- the last alternative index of x.P.1.
         let unknown = RTS.Alt 1 unit
-            unit = RTS.Tuple []
         facts <- decodeResultsAs (SourceRef "x.P" (Just 1)) byRef response
         assertEqual "result count"
           [unknown, RTS.Alt 0 (RTS.String "A"), unknown] facts
@@ -1240,7 +1289,6 @@ schemaEvolvesTransformations = TestList
         -- the unknown alternative has an index one greater than
         -- the last alternative index of x.P.1.
         let unknown = RTS.Alt 1 unit
-            unit = RTS.Tuple []
         facts <- decodeResultsAs (SourceRef "x.P" (Just 1)) byRef response
         assertEqual "result count"
           [unknown, RTS.Alt 0 (RTS.Tuple []), unknown] facts
@@ -1739,37 +1787,45 @@ schemaEvolvesTransformations = TestList
       $ \_ (Right results) _ -> do
         let Just ty = userQueryResults_type results
         assertEqual "result type" "x.P.1" ty
-
   ]
   where
     decodeResultsAs _ _ (Left err) = assertFailure $ "BadQuery: " <> show err
     decodeResultsAs ref byRef (Right results) =  do
-      decodeResultFacts userQueryResultsBin_facts ref byRef results
+      decodeResultFacts userQueryResultsBin_facts (keyType ref byRef) results
+
+    decodeResultsAsTy _ (Left err) = assertFailure $ "BadQuery: " <> show err
+    decodeResultsAsTy ty (Right results) =  do
+      decodeResultFacts userQueryResultsBin_facts ty results
 
     decodeNestedAs _ _ (Left err) = assertFailure $ "BadQuery: " <> show err
     decodeNestedAs ref byRef (Right results) = do
-      decodeResultFacts userQueryResultsBin_nestedFacts ref byRef results
+      decodeResultFacts userQueryResultsBin_nestedFacts
+        (keyType ref byRef) results
 
-    decodeResultFacts f ref dbSchema results = do
+    decodeResultFacts f ty results = do
       bin <- binResults results
       let keys = fmap fact_key $ Map.elems $ f bin
-      case lookupPredicateSourceRef ref LatestSchemaAll dbSchema of
-        Left err -> assertFailure $ "can't find predicate: " <>
-          unpack (showRef ref) <> ": " <> unpack err
-        Right details -> do
-          let ty = predicateKeyType details
-          decoded <- sequence <$> mapM (decodeAs ty) keys
-          case decoded of
-            Right values -> return values
-            Left err ->
-              assertFailure $ "unable to decode "
-              <> unpack (showRef ref) <> " : " <> show err
+      decoded <- sequence <$> mapM (decodeAs ty) keys
+      case decoded of
+        Right values -> return values
+        Left err ->
+          assertFailure $ "unable to decode : " <> show err
 
     binResults :: UserQueryResults -> IO UserQueryResultsBin
     binResults UserQueryResults{..} =
       case userQueryResults_results of
         UserQueryEncodedResults_bin b -> return b
         _ -> assertFailure "wrong encoding"
+
+    keyType
+      :: SourceRef
+      -> DbSchema
+      -> RTS.Type
+    keyType ref dbSchema =
+      case lookupPredicateSourceRef ref LatestSchemaAll dbSchema of
+        Left err -> error $ "can't find predicate: " <>
+          unpack (showRef ref) <> ": " <> unpack err
+        Right details -> predicateKeyType details
 
     decodeAs :: RTS.Type -> ByteString -> IO (Either String RTS.Value)
     decodeAs ty bs = do

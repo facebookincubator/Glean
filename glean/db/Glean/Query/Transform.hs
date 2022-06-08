@@ -40,6 +40,7 @@ import Glean.Schema.Util (showRef, lowerEnum, lowerMaybe, lowerBool)
 import Glean.Query.Codegen
 import Glean.Query.Typecheck.Types
 import Glean.Database.Schema
+import Glean.Database.Schema.Transform (defaultValue)
 import Glean.Database.Schema.Types
 import Glean.RTS.Term (Term(..))
 import Glean.RTS.Types
@@ -209,15 +210,48 @@ transformQuery schema q@(TcQuery ty _ _ _) = transformTcQuery ty Nothing q
       Tuple terms
         | RecordTy fromFields <- from
         , RecordTy toFields <- to
-        ->  let termsMap = Map.fromList
-                  [ (name, (fromTy, term))
-                  | (FieldDef name fromTy, term) <- zip fromFields terms ]
-                termForField  (FieldDef name toTy) =
-                  case Map.lookup name termsMap of
-                    Just (fromTy, term) -> transform fromTy toTy term
-                    Nothing -> Ref (MatchWild toTy)
-            in
-            Tuple $ fmap termForField toFields
+        ->
+          let
+            fromMap = Map.fromList
+              [ (name, (fromTy, term))
+              | (FieldDef name fromTy, term) <- zip fromFields terms ]
+
+            termForField  (FieldDef name toTy) =
+              case Map.lookup name fromMap of
+                Just (fromTy, term) -> transform fromTy toTy term
+                -- Field in 'to' missing in 'from'.
+                -- We can accept any value here.
+                Nothing -> Ref (MatchWild toTy)
+
+            -- fields in 'from' missing in 'to'
+            extraFields = Map.elems $ fromMap `Map.withoutKeys` toFieldNames
+              where toFieldNames = Set.fromList $ map fieldDefName toFields
+
+            -- Imagine we have
+            --
+            --  predicate P.1 { x : Q }
+            --  predicate P.2 { x : Q, y : maybe R }
+            --
+            -- If we are converting a query for P.2 like
+            --
+            --    _ = P.2 { X, Y }
+            --
+            -- into one for P.1, we want the result to be:
+            --
+            --    _ = (P.1 { X } where Y = <default value for R>)
+            --
+            matchDefaultValue (fromTy, term) =
+              TcStatement fromTy term (defaultValue fromTy)
+
+            where_ p ss =
+              Ref $ MatchExt $ Typed to $ TcQueryGen $
+              TcQuery to p Nothing ss
+
+            transformed = Tuple $ fmap termForField toFields
+          in
+          if null extraFields
+          then transformed
+          else transformed `where_` map matchDefaultValue extraFields
 
       _ -> error "unexpected"
 
