@@ -21,10 +21,10 @@ module Glean.Query.Transform
 
 import Data.Bifunctor
 import Data.Bifoldable
-import Data.List.Extra (nubOrd)
+import Data.List.Extra (nubOrd, elemIndex)
 import qualified Data.Map.Strict as Map
 import Data.Map.Strict (Map)
-import Data.Maybe (fromMaybe, mapMaybe)
+import Data.Maybe (fromMaybe, mapMaybe, listToMaybe)
 import qualified Data.IntMap.Strict as IntMap
 import Data.Int (Int64)
 import Data.IntMap.Strict (IntMap)
@@ -35,12 +35,13 @@ import qualified Data.Set as Set
 import Data.Set (Set)
 
 import qualified Glean.Angle.Types as Type
-import Glean.Schema.Util (showRef)
+import Glean.Angle.Types (Type_(..), FieldDef_(..))
+import Glean.Schema.Util (showRef, lowerEnum, lowerMaybe, lowerBool)
 import Glean.Query.Codegen
 import Glean.Query.Typecheck.Types
 import Glean.Database.Schema
-import Glean.Database.Schema.Transform (transformPat)
 import Glean.Database.Schema.Types
+import Glean.RTS.Term (Term(..))
 import Glean.RTS.Types
 import Glean.RTS.Foreign.Query (QueryResults(..))
 import qualified Glean.Types as Thrift
@@ -143,15 +144,85 @@ transformQuery schema q@(TcQuery ty _ _ _) = transformTcQuery ty Nothing q
       (predicateValueType tAvailable)
       pat
 
+    overTyped from to0 (Typed _ pat) =
+      let to = transformType schema to0 in
+      Typed to (transformTcTerm from to pat)
+
+    overVar _ to0 (Var _ vid name) =
+      let to = transformType schema to0 in
+      Var to vid name
+
     transform :: Type -> Type -> TcPat -> TcPat
-    transform = transformPat overTyped overVar
-      where
-        overTyped from to0 (Typed _ pat) =
-          let to = transformType schema to0 in
-          Typed to (transformTcTerm from to pat)
-        overVar _ to0 (Var _ vid name) =
-          let to = transformType schema to0 in
-          Var to vid name
+    transform from@(NamedTy _) to pat = transform (derefType from) to pat
+    transform from to@(NamedTy _) pat = transform from (derefType to) pat
+    transform from to pat = case pat of
+      Byte x -> Byte x
+      Nat x -> Nat x
+      ByteArray x -> ByteArray x
+      String x -> String x
+      Ref match -> Ref $ case match of
+        -- we can keep variable bindings as they are given any value of type T
+        -- assigned to a variable will have been changed to type transformed(T).
+        MatchBind var -> MatchBind $ overVar from to var
+        MatchVar var -> MatchVar $ overVar from to var
+        MatchWild _ -> MatchWild to
+        MatchNever _ -> MatchNever to
+        MatchFid fid -> MatchFid fid
+        MatchAnd a b -> MatchAnd
+          (transform from to a)
+          (transform from to b)
+        MatchPrefix prefix rest -> MatchPrefix prefix $ transform from to rest
+        MatchArrayPrefix _ty prefix
+          | ArrayTy fromElem <- from
+          , ArrayTy toElem <- to
+          -> MatchArrayPrefix toElem (map (transform fromElem toElem) prefix)
+          | otherwise -> error "unexpected"
+        MatchExt extra -> MatchExt $ overTyped from to extra
+      Alt fromIx term
+        | BooleanTy <- from
+        , BooleanTy <- to ->
+            transform lowerBool lowerBool pat
+        | MaybeTy fromTy <- from
+        , MaybeTy toTy <- to ->
+            transform (lowerMaybe fromTy) (lowerMaybe toTy) pat
+        | EnumeratedTy fromAlts <- from
+        , EnumeratedTy toAlts <- to ->
+            transform
+              (lowerEnum fromAlts)
+              (lowerEnum toAlts)
+              pat
+        | SumTy fromAlts <- from
+        , SumTy toAlts <- to
+        -- alternatives could change order
+        , Just fromAlt <- fromAlts `maybeAt` fromIntegral fromIx
+        , Just toIx <-
+            elemIndex (fieldDefName fromAlt) (fieldDefName <$> toAlts)
+        , Just toAlt <- toAlts `maybeAt` toIx ->
+            Alt (fromIntegral toIx) $ transform
+              (fieldDefType fromAlt)
+              (fieldDefType toAlt)
+              term
+      Array terms
+        | ArrayTy fromTy <- from
+        , ArrayTy toTy <- to ->
+          Array $ transform fromTy toTy <$> terms
+      Tuple terms
+        | RecordTy fromFields <- from
+        , RecordTy toFields <- to
+        ->  let termsMap = Map.fromList
+                  [ (name, (fromTy, term))
+                  | (FieldDef name fromTy, term) <- zip fromFields terms ]
+                termForField  (FieldDef name toTy) =
+                  case Map.lookup name termsMap of
+                    Just (fromTy, term) -> transform fromTy toTy term
+                    Nothing -> Ref (MatchWild toTy)
+            in
+            Tuple $ fmap termForField toFields
+
+      _ -> error "unexpected"
+
+    maybeAt list ix = listToMaybe (drop ix list)
+
 
 -- | Transformations for a type and all its transitively nested types
 -- It is an error if the type uses multiple versions of the same predicate.

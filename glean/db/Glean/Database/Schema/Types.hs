@@ -37,7 +37,6 @@ import Glean.Angle.Types as Schema hiding (Type, FieldDef)
 import Glean.Angle.Hash
 import qualified Glean.Angle.Types as Schema
 import Glean.Query.Typecheck.Types
-import Glean.Query.Codegen (Pat)
 import Glean.RTS.Foreign.Bytecode (Subroutine)
 import Glean.RTS.Foreign.Inventory (Inventory)
 import Glean.RTS.Typecheck
@@ -76,11 +75,6 @@ data PredicateTransformation = PredicateTransformation
     -- ^ the predicate that was queried for
   , tAvailable :: PredicateDetails
     -- ^ the predicate we have in the database
-  , tTransformKey :: Pat -> Pat
-  , tTransformValue :: Pat -> Pat
-    -- ^ requested -> available
-    -- transform a query patterns that matche the requested predicate into
-    -- one that matches the predicates available.
   , tTransformFactBack :: Thrift.Fact -> Thrift.Fact
     -- ^ available -> requested
     -- ^ transform a fact of the available predicate into a fact

@@ -8,23 +8,21 @@
 
 module Glean.Database.Schema.Transform
   ( mkPredicateTransformation
-  , transformPat
+  , defaultValue
   ) where
 
-import Data.List (elemIndex)
 import qualified Data.Map.Strict as Map
 import Data.Map.Strict (Map)
-import Data.Maybe (fromMaybe, listToMaybe, isJust)
+import Data.Maybe (fromMaybe, isJust)
 import Data.Text (Text)
 import Data.Word (Word64)
 
-import Glean.Angle.Types as Type hiding (Tuple, Type, SourcePat_(..))
-import Glean.Query.Codegen
+import Glean.Angle.Types (Type_(..), FieldDef_(..))
 import Glean.Database.Schema.Types
 import qualified Glean.RTS as RTS
 import Glean.RTS.Types as RTS
 import Glean.RTS.Term (Value, Term(..))
-import Glean.Schema.Util (lowerMaybe, lowerBool, lowerEnum)
+import Glean.Schema.Util (lowerMaybe, lowerEnum)
 import qualified Glean.Types as Thrift
 
 mkPredicateTransformation
@@ -37,100 +35,13 @@ mkPredicateTransformation detailsFor fromPid toPid
   | otherwise = Just PredicateTransformation
     { tRequested = from
     , tAvailable = to
-    , tTransformKey = transform
-        (predicateKeyType from)
-        (predicateKeyType to)
-    , tTransformValue = transform
-        (predicateValueType from)
-        (predicateValueType to)
     , tTransformFactBack = fromMaybe id $
         mkFactTransformation to from
     }
   where
       to = detailsFor toPid
       from = detailsFor fromPid
-      transform from to pat = transformPat overUnit overVar from to pat
-      overUnit _ _ () = ()
-      overVar _ _ var = var
 
-transformPat :: (Show a, Show b)
-  => (Type -> Type -> a -> c)
-  -> (Type -> Type -> b -> d)
-  -> Type
-  -> Type
-  -> Term (Match a b)
-  -> Term (Match c d)
-transformPat innerL innerR from@(NamedTy _) to pat =
-  transformPat innerL innerR (derefType from) to pat
-transformPat innerL innerR from to@(NamedTy _) pat =
-  transformPat innerL innerR from (derefType to) pat
-transformPat innerL innerR from to pat = case pat of
-  Byte x -> Byte x
-  Nat x -> Nat x
-  ByteArray x -> ByteArray x
-  String x -> String x
-  Ref match -> Ref $ case match of
-    -- we can keep variable bindings as they are given any value of type T
-    -- assigned to a variable will have been changed to type transformed(T).
-    MatchBind var -> MatchBind $ innerR from to var
-    MatchVar var -> MatchVar $ innerR from to var
-    MatchWild _ -> MatchWild to
-    MatchNever _ -> MatchNever to
-    MatchFid fid -> MatchFid fid
-    MatchAnd a b -> MatchAnd
-      (transform from to a)
-      (transform from to b)
-    MatchPrefix prefix rest -> MatchPrefix prefix $ transform from to rest
-    MatchArrayPrefix _ty prefix
-      | ArrayTy fromElem <- from
-      , ArrayTy toElem <- to
-      -> MatchArrayPrefix toElem (map (transform fromElem toElem) prefix)
-      | otherwise -> error "unexpected"
-    MatchExt extra -> MatchExt $ innerL from to extra
-  Alt fromIx term
-    | BooleanTy <- from
-    , BooleanTy <- to ->
-        transform lowerBool lowerBool pat
-    | MaybeTy fromTy <- from
-    , MaybeTy toTy <- to ->
-        transform (lowerMaybe fromTy) (lowerMaybe toTy) pat
-    | EnumeratedTy fromAlts <- from
-    , EnumeratedTy toAlts <- to ->
-        transform
-          (lowerEnum fromAlts)
-          (lowerEnum toAlts)
-          pat
-    | SumTy fromAlts <- from
-    , SumTy toAlts <- to
-    -- alternatives could change order
-    , Just fromAlt <- fromAlts `maybeAt` fromIntegral fromIx
-    , Just toIx <-
-        elemIndex (fieldDefName fromAlt) (fieldDefName <$> toAlts)
-    , Just toAlt <- toAlts `maybeAt` toIx ->
-        Alt (fromIntegral toIx) $ transform
-          (fieldDefType fromAlt)
-          (fieldDefType toAlt)
-          term
-  Array terms
-    | ArrayTy fromTy <- from
-    , ArrayTy toTy <- to ->
-      Array $ transform fromTy toTy <$> terms
-  Tuple terms
-    | RecordTy fromFields <- from
-    , RecordTy toFields <- to
-    ->  let termsMap = Map.fromList
-              [ (name, (fromTy, term))
-              | (FieldDef name fromTy, term) <- zip fromFields terms ]
-            termForField  (FieldDef name toTy) =
-              case Map.lookup name termsMap of
-                Just (fromTy, term) -> transform fromTy toTy term
-                Nothing -> Ref (MatchWild toTy)
-        in
-        Tuple $ fmap termForField toFields
-  _ -> error "unexpected"
-  where
-    maybeAt list ix = listToMaybe (drop ix list)
-    transform = transformPat innerL innerR
 
 mkFactTransformation
   :: PredicateDetails
@@ -253,7 +164,7 @@ mkValueTransformation from to = go from to
       error $ "invalid type conversion: "
         <> show from <> " to " <> show to
 
-defaultValue :: Type -> Value
+defaultValue :: Type -> Term a
 defaultValue ty = case ty of
   MaybeTy _ -> Alt 0 (Tuple [])
   _ -> error $ "type doesn't have a default value: " <> show ty
