@@ -15,7 +15,6 @@ module Glean.Database.Test
   , setSchemaVersion
   , setMemoryStorage
   , setDBVersion
-  , setSchemaOverride
   , setCompactOnCompletion
   , withTestEnv
   , kickOffTestDB
@@ -84,9 +83,6 @@ setDBVersion :: ServerConfig.DBVersion -> Setting
 setDBVersion ver cfg = cfg
   { cfgServerConfig = cfgServerConfig cfg <&> \scfg -> scfg
       { ServerConfig.config_db_create_version = Just ver } }
-
-setSchemaOverride :: Setting
-setSchemaOverride cfg = cfg { cfgSchemaOverride = True }
 
 setCompactOnCompletion :: Setting
 setCompactOnCompletion cfg = cfg

@@ -145,7 +145,6 @@ initEnv evb cfg logger envSchemaSource envRecipeConfig envServerConfig =
       , envTailerOpts = cfgTailerOpts cfg
       , envListener = cfgListener cfg
       , envGetCreationTime = getCurrentTime
-      , envSchemaOverride = cfgSchemaOverride cfg
       , envSchemaVersion = cfgSchemaVersion cfg
       , envBackupBackends = HashMap.fromList
           [

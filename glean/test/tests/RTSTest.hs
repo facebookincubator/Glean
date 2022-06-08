@@ -27,6 +27,7 @@ import Glean.RTS.Foreign.Typecheck as Bytecode
 import Glean.RTS.Typecheck
 import Glean.RTS.Types
 import Glean.RTS.Term
+import Glean.Angle.Hash
 
 instance Arbitrary Fid where
   arbitrary = Fid <$> choose (1024,0x1FFFFFFFFFFF)
@@ -37,7 +38,7 @@ instance Arbitrary Pid where
 instance Arbitrary PidRef where
   arbitrary = do
     pid <- arbitrary
-    return $ PidRef pid $ T.PredicateRef ("P" <> Text.pack (show pid)) 1
+    return $ PidRef pid $ T.PredicateId ("P" <> Text.pack (show pid)) hash0
 
 instance Arbitrary Type where
   arbitrary = oneof

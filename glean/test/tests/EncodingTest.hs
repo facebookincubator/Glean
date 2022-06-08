@@ -31,6 +31,7 @@ import Glean.Query.JSON
 import Glean.RTS
 import Glean.RTS.Builder
 import Glean.Database.Schema
+import Glean.Database.Schema.Types
 import Glean.Typed.Binary
 import Glean.Types
 import Glean.Schema.GleanTest.Types as Glean.Test
@@ -100,8 +101,9 @@ mkE = do
   dbSchema <- newDbSchema sourceSchemas schemas readWriteContent
 
   -- glean.test.Predicate has glean.test.KitchenSink as its key
-  Just testPred <- return $ lookupPredicateRef
-    (Schema.PredicateRef "glean.test.Predicate" 5)
+  Right testPred <- return $ lookupPredicateSourceRef
+    (Schema.SourceRef "glean.test.Predicate" (Just 5))
+    LatestSchemaAll
     dbSchema
 
   return $ E

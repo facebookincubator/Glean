@@ -12,9 +12,9 @@ module Glean.Database.Logger (
 ) where
 
 import qualified Glean.Database.Types as Database
-import Glean.Angle.Types (PredicateRef(..))
 import qualified Glean.Types as Thrift
 import qualified Logger.GleanDatabaseStats as Logger
+import Glean.Types
 
 
 logDBStatistics
@@ -41,7 +41,8 @@ logDBStatistics env Thrift.Repo{..} preds size = do
   let queries  =
         [ mconcat
           [ Logger.setPredicateName predicateRef_name
-          , Logger.setPredicateVersion $ fromIntegral predicateRef_version
+          , Logger.setPredicateVersion 0
+          -- TODO: add predicate hash
           , Logger.setPredicateCount $ fromIntegral predicateStats_count
           , Logger.setPredicateSize $ fromIntegral predicateStats_size
           ]

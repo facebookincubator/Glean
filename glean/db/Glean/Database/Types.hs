@@ -202,7 +202,6 @@ data Env = forall storage. Storage storage => Env
   , envSchemaSource :: Observed (SourceSchemas, Schemas)
   , envSchemaUpdateSignal :: TMVar ()
     -- ^ The schema source, and its parsed/resolved form are both cached here.
-  , envSchemaOverride :: Bool
   , envSchemaVersion :: Maybe Version
   , envRecipeConfig :: Observed Recipes.Config
   , envServerConfig :: Observed ServerConfig.Config
@@ -220,7 +219,7 @@ data Env = forall storage. Storage storage => Env
   , envWorkQueue :: WorkQueue
   , envHeartbeats :: Heartbeats
   , envWrites :: TVar (HashMap Text Write)
-  , envDerivations :: TVar (HashMap (Thrift.Repo, PredicateRef) Derivation)
+  , envDerivations :: TVar (HashMap (Thrift.Repo, PredicateId) Derivation)
   , envWriteQueues :: WriteQueues
   , envTailerOpts :: Tailer.TailerOptions
   , envTailers :: TVar (HashMap TailerKey Tailer)

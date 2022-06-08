@@ -48,17 +48,21 @@ import Glean.RTS.Term hiding
 import qualified Glean.RTS.Term as RTS
 import Glean.Database.Schema.Types
 import Glean.Schema.Util
-import Glean.Schema.Types
 
 data TcEnv = TcEnv
-  { tcEnvTypes :: HashMap TypeRef TypeDetails
-  , tcEnvPredicates :: HashMap PredicateRef PredicateDetails
+  { tcEnvTypes :: HashMap TypeId TypeDetails
+  , tcEnvPredicates :: HashMap PredicateId PredicateDetails
   }
 
 emptyTcEnv :: TcEnv
 emptyTcEnv = TcEnv HashMap.empty HashMap.empty
 
 type ToRtsType = Schema.Type -> Maybe Type
+
+type Pat' s = SourcePat_ s PredicateId TypeId
+type Statement' s = SourceStatement_ s PredicateId TypeId
+type Query' s = SourceQuery_ s PredicateId TypeId
+type DerivingInfo' s = DerivingInfo (Query' s)
 
 -- | Typecheck a 'SourceQuery' which is in terms of schema types and
 -- turn it into a 'TypecheckedQuery' which is in terms of raw Terms,
@@ -68,13 +72,13 @@ typecheck
   => DbSchema
   -> AngleVersion
   -> ToRtsType
-  -> ResolvedQuery' s
+  -> Query' s
   -> Except Text TypecheckedQuery
 typecheck dbSchema ver rtsType query = do
   let
     tcEnv = TcEnv
-      { tcEnvPredicates = predicatesByRef dbSchema
-      , tcEnvTypes = schemaTypesByRef dbSchema
+      { tcEnvPredicates = predicatesById dbSchema
+      , tcEnvTypes = typesById dbSchema
       }
   (q@(TcQuery ty _ _ _), TypecheckState{..}) <-
     let state = initialTypecheckState tcEnv ver rtsType TcModeQuery in
@@ -91,7 +95,7 @@ typecheckDeriving
   -> AngleVersion
   -> ToRtsType
   -> PredicateDetails
-  -> ResolvedDeriving' s
+  -> DerivingInfo' s
   -> Except Text (DerivingInfo TypecheckedQuery)
 typecheckDeriving tcEnv ver rtsType PredicateDetails{..} derivingInfo = do
   (d, _) <-
@@ -141,8 +145,8 @@ typecheckDeriving tcEnv ver rtsType PredicateDetails{..} derivingInfo = do
 
 needsResult
   :: IsSrcSpan s
-  => ResolvedQuery' s
-  -> T (ResolvedPat' s, [ResolvedStatement' s])
+  => Query' s
+  -> T (Pat' s, [Statement' s])
 needsResult (SourceQuery (Just p) stmts) = return (p,stmts)
 needsResult q@(SourceQuery Nothing stmts) = case reverse stmts of
   (SourceStatement (Variable s v) _ : _) ->
@@ -157,7 +161,7 @@ needsResult q@(SourceQuery Nothing stmts) = case reverse stmts of
     err = "the last statement should be an expression: " <> pretty q
 
 -- add a unit result if the pattern doesn't have a result.
-ignoreResult :: IsSrcSpan s => ResolvedPat' s -> ResolvedPat' s
+ignoreResult :: IsSrcSpan s => Pat' s -> Pat' s
 ignoreResult p = case p of
   OrPattern s a b -> OrPattern s (ignoreResult a) (ignoreResult b)
   IfPattern s a b c -> IfPattern s a (ignoreResult b) (ignoreResult c)
@@ -173,7 +177,7 @@ ignoreResult p = case p of
     startPos = mkSpan (startLoc fullSpan) (startLoc fullSpan)
     empty = TypeSignature startPos (Tuple startPos []) unit
 
-inferQuery :: IsSrcSpan s => Context -> ResolvedQuery' s -> T TcQuery
+inferQuery :: IsSrcSpan s => Context -> Query' s -> T TcQuery
 inferQuery ctx q = do
   (head,stmts) <- needsResult q
   stmts' <- mapM typecheckStatement stmts
@@ -184,7 +188,7 @@ typecheckQuery
   :: IsSrcSpan s
   => Context
   -> Type
-  -> ResolvedQuery' s
+  -> Query' s
   -> T TcQuery
 typecheckQuery ctx ty q = do
   (head,stmts) <- needsResult q
@@ -192,11 +196,11 @@ typecheckQuery ctx ty q = do
   stmts' <- mapM typecheckStatement stmts
   return (TcQuery ty head' Nothing stmts')
 
-unexpectedValue :: IsSrcSpan a => ResolvedPat' a -> T b
+unexpectedValue :: IsSrcSpan a => Pat' a -> T b
 unexpectedValue pat = prettyErrorIn pat
   "a key/value pattern (X -> Y) cannot be used here"
 
-typecheckStatement :: IsSrcSpan s => ResolvedStatement' s -> T TcStatement
+typecheckStatement :: IsSrcSpan s => Statement' s -> T TcStatement
 typecheckStatement (SourceStatement lhs rhs0) = do
   let
     ignoreTopResult (OrPattern s a b) =
@@ -230,7 +234,7 @@ data Context = ContextExpr | ContextPat
 -- don't allow structs or alts. Variables must be occurrences
 -- (because this is a term, not a pattern), and Wildcards are
 -- disallowed.
-inferExpr :: IsSrcSpan s => Context -> ResolvedPat' s -> T (TcPat, Type)
+inferExpr :: IsSrcSpan s => Context -> Pat' s -> T (TcPat, Type)
 inferExpr ctx pat = case pat of
   Nat _ w -> return (RTS.Nat w, NatTy)
     -- how would we do ByteTy?
@@ -334,7 +338,7 @@ convertType span rtsType ty = do
 
 -- | Check that the pattern has the correct type, and generate the
 -- low-level pattern with type-annotated variables.
-typecheckPattern :: IsSrcSpan s => Context -> Type -> ResolvedPat' s -> T TcPat
+typecheckPattern :: IsSrcSpan s => Context -> Type -> Pat' s -> T TcPat
 typecheckPattern ctx typ pat = case (typ, pat) of
   (ByteTy, Nat _ w) -> return (RTS.Byte (fromIntegral w))
   (NatTy, Nat _ w) -> return (RTS.Nat w)
@@ -500,8 +504,8 @@ typecheckPattern ctx typ pat = case (typ, pat) of
 
 tcFactGenerator
   :: IsSrcSpan s
-  => PredicateRef
-  -> ResolvedPat' s
+  => PredicateId
+  -> Pat' s
   -> T (TcPat, Type)
 tcFactGenerator ref pat = do
   TcEnv{..} <- gets tcEnv
@@ -523,7 +527,7 @@ tcFactGenerator ref pat = do
     ( Ref (MatchExt (Typed ty (TcFactGen pidRef kpat' vpat')))
     , ty)
 
-isVar :: IsSrcSpan s => ResolvedPat' s -> Bool
+isVar :: IsSrcSpan s => Pat' s -> Bool
 isVar Wildcard{} = True
 isVar Variable{} = True
 isVar _ = False
@@ -531,7 +535,7 @@ isVar _ = False
 -- | Fact Id patterns (#1234 or #pred 1234) are only allowed in
 -- queries, not in derived predicates, because they potentially allow
 -- a type-incorrect fact to be constructed.
-isFactIdAllowed :: IsSrcSpan s => ResolvedPat' s -> T ()
+isFactIdAllowed :: IsSrcSpan s => Pat' s -> T ()
 isFactIdAllowed pat = do
   mode <- gets tcMode
   when (mode /= TcModeQuery) $ prettyErrorIn pat $
@@ -551,11 +555,11 @@ mkWild ty
   | RecordTy [] <- derefType ty = RTS.Tuple []
   | otherwise = RTS.Ref (MatchWild ty)
 
-patTypeError :: (IsSrcSpan s, Pretty ty) => ResolvedPat' s -> ty -> T a
+patTypeError :: (IsSrcSpan s, Pretty ty) => Pat' s -> ty -> T a
 patTypeError = patTypeErrorDesc "type error in pattern"
 
 patTypeErrorDesc
-  :: (IsSrcSpan s, Pretty ty) => Text -> ResolvedPat' s -> ty -> T a
+  :: (IsSrcSpan s, Pretty ty) => Text -> Pat' s -> ty -> T a
 patTypeErrorDesc desc q ty = prettyErrorIn q $
   nest 4 $ vcat
     [ pretty desc
@@ -696,7 +700,7 @@ checkVarCase span name
 prettyError :: Doc ann -> T a
 prettyError = throwError . Text.pack . show
 
-prettyErrorIn :: IsSrcSpan s => ResolvedPat' s -> Doc ann -> T a
+prettyErrorIn :: IsSrcSpan s => Pat' s -> Doc ann -> T a
 prettyErrorIn pat doc = prettyErrorAt (sourcePatSpan pat) doc
 
 prettyErrorAt :: IsSrcSpan span => span -> Doc ann -> T a
@@ -773,7 +777,7 @@ data PrimArgType
 primInferAndCheck
   :: IsSrcSpan s
   => s
-  -> [ResolvedPat' s]
+  -> [Pat' s]
   -> PrimOp
   -> [PrimArgType]
   -> T [TcPat]
@@ -781,7 +785,7 @@ primInferAndCheck span args primOp argTys =
   reverse . map fst <$> checkArgs [] args argTys
   where
     checkArgs :: IsSrcSpan s =>
-      [(TcPat, Type)] -> [ResolvedPat' s] -> [PrimArgType] -> T [(TcPat, Type)]
+      [(TcPat, Type)] -> [Pat' s] -> [PrimArgType] -> T [(TcPat, Type)]
     checkArgs acc [] [] = return acc
     checkArgs acc (arg:args) (check:pats) = do
       let prevArgTy = snd <$> listToMaybe acc
@@ -794,7 +798,7 @@ primInferAndCheck span args primOp argTys =
           ++ " arguments, found " ++ show (length args)
 
     checkArg :: IsSrcSpan s =>
-      Maybe Type -> ResolvedPat' s -> PrimArgType -> T (TcPat, Type)
+      Maybe Type -> Pat' s -> PrimArgType -> T (TcPat, Type)
     checkArg _ arg (Check argTy) =
       (,argTy) <$> typecheckPattern ContextExpr argTy arg
     checkArg _ arg (InferAndCheck argCheck debugString) = do
@@ -847,7 +851,7 @@ type VarSet = HashSet Name
 --    scope. They can bind variables that are already part of the scope, but if
 --    the same variable appears in all branches but not in the enclosing scope
 --    then each occurrence will be treated as a separate variable.
-varsPat :: IsSrcSpan s => ResolvedPat' s -> VarSet -> VarSet
+varsPat :: IsSrcSpan s => Pat' s -> VarSet -> VarSet
 varsPat pat r = case pat of
   Variable _ v -> HashSet.insert v r
   Array _ ps -> foldr varsPat r ps
@@ -872,14 +876,14 @@ varsPat pat r = case pat of
   Clause _ _ p -> varsPat p r
   Prim _ _ ps -> foldr varsPat r ps
 
-varsQuery :: IsSrcSpan s => ResolvedQuery' s -> VarSet -> VarSet
+varsQuery :: IsSrcSpan s => Query' s -> VarSet -> VarSet
 varsQuery (SourceQuery head stmts) r =
   foldr varsStmt (foldr varsPat r head) stmts
   where
   varsStmt (SourceStatement a b) r = varsPat a $! varsPat b r
 
 -- | Capture all predicates that appear in a query
-tcQueryDeps :: TcQuery -> Set PredicateRef
+tcQueryDeps :: TcQuery -> Set PredicateId
 tcQueryDeps q = Set.fromList $ map getRef (overQuery q)
   where
     getRef (PidRef _ ref) = ref

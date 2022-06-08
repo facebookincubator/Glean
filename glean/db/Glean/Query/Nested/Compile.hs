@@ -59,7 +59,7 @@ toGenerators dbSchema deriveStored details term =
     (,evolutions) <$> reorder dbSchema optimised
   where
   pid = predicatePid details
-  ref = predicateRef details
+  ref = predicateId details
   ty = predicateKeyType details
   queryTy = tupleSchema [predTy, ty]
   pidRef = PidRef pid ref
@@ -127,7 +127,7 @@ toGenerators dbSchema deriveStored details term =
       | refutableNested term = do
     pat <- nestedTerm predicateKeyType term
     return (RTS.Ref (MatchExt
-      (Typed ty (TcFactGen (PidRef predicatePid predicateRef) pat
+      (Typed ty (TcFactGen (PidRef predicatePid predicateId) pat
         (RTS.Ref (MatchWild predicateValueType))))))
   nestedMatch ty (RTS.MatchTerm NestedPred{}) =
     return (RTS.Ref (MatchWild ty))

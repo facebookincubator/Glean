@@ -81,7 +81,7 @@ lowestFid = Fid fIRST_FREE_ID
 -- -----------------------------------------------------------------------------
 -- Runtime types
 
-data PidRef = PidRef Pid PredicateRef
+data PidRef = PidRef Pid PredicateId
   deriving Show
 
 instance Eq PidRef where
@@ -93,7 +93,7 @@ instance Ord PidRef where
 instance Pretty PidRef where
   pretty (PidRef _ ref) = pretty ref
 
-data ExpandedType = ExpandedType TypeRef Type
+data ExpandedType = ExpandedType TypeId Type
   deriving (Show, Eq)
 
 instance Pretty ExpandedType where

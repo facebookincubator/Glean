@@ -250,7 +250,7 @@ pid :: PidRef -> Pid
 pid (PidRef x _) = x
 
 pidRef :: PredicateDetails -> PidRef
-pidRef details = PidRef (predicatePid details) (predicateRef details)
+pidRef details = PidRef (predicatePid details) (predicateId details)
 
 -- ========================
 -- Transform back

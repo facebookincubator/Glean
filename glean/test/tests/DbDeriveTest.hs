@@ -10,10 +10,12 @@
 {-# LANGUAGE TypeApplications #-}
 module DbDeriveTest (main) where
 
+import Control.Exception
 import Data.Default
 import Test.HUnit
 import Util.String.Quasi
 import Data.Proxy
+import qualified Data.Text as Text
 import Control.Concurrent
 import Control.Monad
 import Control.Concurrent.Async
@@ -24,7 +26,10 @@ import TestRunner
 
 import qualified Glean
 import Glean hiding (deriveStored)
+import Glean.Angle.Types
 import Glean.Init
+import Glean.Database.Open
+import Glean.Database.Schema.Types
 import Glean.Database.Test
 import Glean.Database.Types
 import qualified Glean.Database.Catalog as Catalog
@@ -106,11 +111,16 @@ deriveTestCases runDerive env repo = do
 
   -- should not confuse predicates from different repos
   let pred = Proxy @Glean.Test.StoredRevStringPairWithA
-  addDummyDerivationForPredicate (getName pred) env
+      PredicateRef{..} = getName pred
+      sref = SourceRef predicateRef_name (Just predicateRef_version)
+  pid <- withOpenDatabase env repo $ \opendb ->
+    either (throwIO . ErrorCall . Text.unpack) return $
+      lookupPredicateSourceRef sref LatestSchemaAll (odbSchema opendb)
+  addDummyDerivationForPredicate (predicateId pid) env
   derivedCount <- derive pred
   assertEqual "deriveTest - repo check" 1 derivedCount
 
-addDummyDerivationForPredicate :: PredicateRef -> Env -> IO ()
+addDummyDerivationForPredicate :: PredicateId -> Env -> IO ()
 addDummyDerivationForPredicate pred env =
   let repo = Thrift.Repo "name" "hash"
   in

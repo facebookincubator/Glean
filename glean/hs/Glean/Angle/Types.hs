@@ -19,6 +19,8 @@ module Glean.Angle.Types
   , Version
   , PredicateRef(..)
   , TypeRef(..)
+  , PredicateId(..)
+  , TypeId(..)
 
   -- * Source locations
   , IsSrcSpan(..)
@@ -102,6 +104,7 @@ import Data.Bifunctor
 import Data.Bifoldable
 import GHC.Generics
 
+import Glean.Angle.Hash
 import Glean.Types (PredicateRef(..), TypeRef(..), Version)
 
 
@@ -381,11 +384,11 @@ Glean:
 These are the types from the parser. Predicates and types may be
 unqualified and don't necessarily have versions.
 
-> type Type = Type_ PredicateRef TypeRef
+> type Type = Type_ PredicateId TypeId
 
 These are the types after name resolution
 (Glean.Schema.Resolve). Predicates and Types are fully qualified and
-refer to specific versions
+refer to specific hashes.
 
 > type RTS.Type = Type_ PidRef ExpandedType
 
@@ -433,6 +436,25 @@ data PredicateDef_ s pref tref = PredicateDef
   }
   deriving Eq
 
+-- | Globally unique identifier for a predicate. This is not the same
+-- as a Pid, which is unique only within a particular DB.
+data PredicateId = PredicateId
+  { predicateIdName :: Text  -- ^ e.g. python.Name
+  , predicateIdHash :: Hash
+  } deriving (Eq, Ord, Generic, Hashable, Show)
+
+instance Binary PredicateId
+  -- TODO maybe just serialize the hash?
+
+-- | Globally unique identifier for a type.
+data TypeId = TypeId
+  { typeIdName :: Text -- ^ e.g. python.Declaration
+  , typeIdHash :: Hash
+  } deriving (Eq, Ord, Generic, Hashable, Show)
+
+instance Binary TypeId
+  -- TODO maybe just serialize the hash?
+
 -- | How to derive a predicate
 data DerivingInfo q
   = NoDeriving
@@ -479,11 +501,6 @@ type SourceEvolves = SourceEvolves_ SrcSpan
 type SourceDecl = SourceDecl_ SrcSpan
 
 type Statement_ p t = SourceStatement_ SrcSpan p t
-
-type Type = Type_ PredicateRef TypeRef
-type FieldDef = FieldDef_ PredicateRef TypeRef
-type TypeDef = TypeDef_ PredicateRef TypeRef
-type PredicateDef = PredicateDef_ SrcSpan PredicateRef TypeRef
 type Query_ p t = SourceQuery_ SrcSpan p t
 
 data SourceEvolves_ s = SourceEvolves
@@ -515,6 +532,13 @@ data SourceDecl_ s
   | SourceDeriving SourceRef (SourceDerivingInfo' s)
   deriving (Eq)
 
+-- Abstract syntax with global Ids
+
+type Type = Type_ PredicateId TypeId
+type FieldDef = FieldDef_ PredicateId TypeId
+type TypeDef = TypeDef_ PredicateId TypeId
+type PredicateDef = PredicateDef_ SrcSpan PredicateId TypeId
+
 -- -----------------------------------------------------------------------------
 
 -- | Version of the syntax. This is required so that we can change the
@@ -535,6 +559,12 @@ instance Pretty SourceRef where
   pretty (SourceRef name ver) = pretty name <> case ver of
     Nothing -> mempty
     Just ver -> "." <> pretty ver
+
+instance Pretty PredicateId where
+  pretty (PredicateId name hash) = pretty name <> "." <> pretty (show hash)
+
+instance Pretty TypeId where
+  pretty (TypeId name hash) = pretty name <> "." <> pretty (show hash)
 
 instance Pretty (SourceEvolves_ s) where
   pretty (SourceEvolves _ new old) =

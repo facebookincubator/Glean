@@ -8,6 +8,7 @@
 
 module Glean.Database.Schema.Types
   ( DbSchema(..)
+  , RefTargetId
   , PredicateDetails(..)
   , PredicateTransformation(..)
   , SchemaVersion(..)
@@ -15,13 +16,13 @@ module Glean.Database.Schema.Types
   , addTmpPredicate
   , lookupSourceRef
   , lookupPredicateSourceRef
-  , lookupPredicateRef
+  , lookupPredicateId
   , lookupPid
   , TypeDetails(..)
-  , lookupTypeRef
+  , lookupTypeId
   , dbSchemaRtsType
   , mkRtsType
-  , tempPredicateRef
+  , tempPredicateId
   , tempPid
   ) where
 
@@ -33,6 +34,7 @@ import qualified Data.Set as Set
 import Data.Text (Text)
 
 import Glean.Angle.Types as Schema hiding (Type, FieldDef)
+import Glean.Angle.Hash
 import qualified Glean.Angle.Types as Schema
 import Glean.Query.Typecheck.Types
 import Glean.Query.Codegen (Pat)
@@ -45,16 +47,19 @@ import Glean.Types as Thrift
 import Glean.Schema.Types
 import Glean.Schema.Util
 
+type RefTargetId = RefTarget PredicateId TypeId
+
 -- | The Schema used by a DB
 data DbSchema = DbSchema
-  { predicatesByRef :: HashMap PredicateRef PredicateDetails
-  , predicatesById :: IntMap PredicateDetails
+  { predicatesById :: HashMap PredicateId PredicateDetails
+  , typesById :: HashMap TypeId TypeDetails
+
+  , schemaEnvs :: IntMap (NameEnv RefTargetId)
+     -- ^ for each version of "all", environment of types/predicates
+
+  , predicatesByPid :: IntMap PredicateDetails
   , predicatesTransformations  :: IntMap PredicateTransformation
      -- ^ keyed by predicate requested
-  , schemaTypesByRef :: HashMap TypeRef TypeDetails
-
-  , schemaEnvs :: IntMap (NameEnv RefResolved)
-     -- ^ for each version of "all", environment of types/predicates
 
   , schemaInventory :: Inventory
   , schemaResolved :: [ResolvedSchemaRef]
@@ -83,12 +88,14 @@ data PredicateTransformation = PredicateTransformation
   }
 
 data TypeDetails = TypeDetails
-  { typeRef :: TypeRef
+  { typeId :: TypeId
+  , typeRef :: TypeRef
   , typeType :: Type
   }
 
 data PredicateDetails = PredicateDetails
   { predicatePid :: Pid
+  , predicateId :: PredicateId
   , predicateRef :: PredicateRef
   , predicateSchema :: PredicateDef
   , predicateKeyType :: Type
@@ -109,22 +116,22 @@ allSchemaVersion :: DbSchema -> SchemaVersion -> Version
 allSchemaVersion _ (SpecificSchemaAll v) = v
 allSchemaVersion dbSchema LatestSchemaAll = schemaLatestVersion dbSchema
 
-schemaNameEnv :: DbSchema -> SchemaVersion -> Maybe (NameEnv RefResolved)
+schemaNameEnv :: DbSchema -> SchemaVersion -> Maybe (NameEnv RefTargetId)
 schemaNameEnv dbSchema schemaVer =
   IntMap.lookup (fromIntegral (allSchemaVersion dbSchema schemaVer))
      (schemaEnvs dbSchema)
 
-addTmpPredicate :: NameEnv RefResolved -> NameEnv RefResolved
+addTmpPredicate :: NameEnv RefTargetId -> NameEnv RefTargetId
 addTmpPredicate =
-  HashMap.insert tmp (Set.singleton (RefPred tempPredicateRef))
-  where tmp = SourceRef (predicateRef_name tempPredicateRef) (Just 0)
+  HashMap.insert tmp (Set.singleton (RefPred tempPredicateId))
+  where tmp = SourceRef (predicateIdName tempPredicateId) (Just 0)
 
 lookupSourceRef
   :: SourceRef
   -> SchemaVersion
      -- ^ schema version to use if predicate version is Nothing
   -> DbSchema
-  -> LookupResult RefResolved
+  -> LookupResult RefTargetId
 lookupSourceRef ref schemaVer dbSchema =
   case schemaNameEnv dbSchema schemaVer of
     Nothing -> OutOfScope
@@ -139,24 +146,24 @@ lookupPredicateSourceRef
 lookupPredicateSourceRef ref schemaVer dbSchema =
   case lookupResultToEither ref $ lookupSourceRef ref schemaVer dbSchema of
     Right (RefPred pred)
-      | Just details <- lookupPredicateRef pred dbSchema -> Right details
+      | Just details <- lookupPredicateId pred dbSchema -> Right details
       | otherwise -> Left $
         "internal error: " <> showRef pred <> " not found"
     Right (RefType _) ->
       Left $ showRef ref <> " is a type, not a predicate"
     Left err -> Left err
 
-lookupPredicateRef :: PredicateRef -> DbSchema -> Maybe PredicateDetails
-lookupPredicateRef ref = HashMap.lookup ref . predicatesByRef
+lookupPredicateId :: PredicateId -> DbSchema -> Maybe PredicateDetails
+lookupPredicateId ref = HashMap.lookup ref . predicatesById
 
 lookupPid :: Pid -> DbSchema -> Maybe PredicateDetails
-lookupPid (Pid pid) = IntMap.lookup (fromIntegral pid) . predicatesById
+lookupPid (Pid pid) = IntMap.lookup (fromIntegral pid) . predicatesByPid
 
-lookupTypeRef :: TypeRef -> DbSchema -> Maybe TypeDetails
-lookupTypeRef ref  = HashMap.lookup ref . schemaTypesByRef
+lookupTypeId :: TypeId -> DbSchema -> Maybe TypeDetails
+lookupTypeId ref  = HashMap.lookup ref . typesById
 
-tempPredicateRef :: PredicateRef
-tempPredicateRef = PredicateRef "_tmp_" 0
+tempPredicateId :: PredicateId
+tempPredicateId = PredicateId "_tmp_" hash0
 
 tempPid :: DbSchema -> Pid
 tempPid = succ . schemaMaxPid
@@ -165,20 +172,20 @@ tempPid = succ . schemaMaxPid
 dbSchemaRtsType :: DbSchema -> Schema.Type -> Maybe Type
 dbSchemaRtsType dbSchema = mkRtsType lookupType lookupPid
   where
-  lookupType ref = typeType <$> lookupTypeRef ref dbSchema
-  lookupPid ref = case lookupPredicateRef ref dbSchema of
+  lookupType ref = typeType <$> lookupTypeId ref dbSchema
+  lookupPid ref = case lookupPredicateId ref dbSchema of
     Just pid -> Just $ predicatePid pid
     -- detect temporary predicates that might have been serialized
     -- see Glean.Query.Flatten.captureKey
-    _ | tempPredicateRef == ref -> Just $ tempPid dbSchema
+    _ | tempPredicateId == ref -> Just $ tempPid dbSchema
     _ -> Nothing
 
 -- | Convert from Schema Types to RTS Types. This involves
 -- 1. PredicateRef -> PidRef
 -- 2. Expand NamedTypes
 mkRtsType
-  :: (TypeRef -> Maybe Type)
-  -> (PredicateRef -> Maybe Pid)
+  :: (TypeId -> Maybe Type)
+  -> (PredicateId -> Maybe Pid)
   -> Schema.Type -> Maybe Type
 mkRtsType lookupType lookupPid = rtsType
   where

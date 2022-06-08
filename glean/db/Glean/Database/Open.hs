@@ -213,7 +213,7 @@ setupSchema Env{..} _ handle (Create _ initial) = do
   schema <- case initial of
     Nothing -> newDbSchema source currentSchema readWriteContent
     Just info ->
-      newMergedDbSchema info source currentSchema TakeOld readWriteContent
+      newMergedDbSchema info source currentSchema AllowChanges readWriteContent
   storeSchema handle $ toSchemaInfo schema
   return schema
 setupSchema Env{..} repo handle mode = do
@@ -235,7 +235,7 @@ setupSchema Env{..} repo handle mode = do
         (source, currentSchema) <- Observed.get envSchemaSource
         stats <- Storage.predicateStats handle
         newMergedDbSchema info source currentSchema
-          (if envSchemaOverride then TakeNew else TakeOld)
+          AllowChanges
           (readOnlyContent stats)
     Nothing ->
       dbError repo "DB has no stored schema"

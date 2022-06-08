@@ -14,8 +14,8 @@ module Glean.Database.Schema
   , fromSchemaInfo, toSchemaInfo
   , newDbSchema
   , newMergedDbSchema
-  , Override(..)
-  , lookupPid, lookupPredicateRef, lookupTypeRef
+  , CheckChanges(..)
+  , lookupPid
   , validateNewSchema
   , DbContent
   , readOnlyContent
@@ -24,12 +24,11 @@ module Glean.Database.Schema
   ) where
 
 import Control.Applicative ((<|>))
-import Control.Arrow (second)
 import Control.Exception
 import Control.Monad
 import Control.Monad.Except
-import Control.Monad.Extra (whenJust)
 import Control.Monad.State as State
+import Data.Bifunctor
 import Data.ByteString (ByteString)
 import Data.Graph
 import Data.Hashable
@@ -47,11 +46,13 @@ import Data.Map (Map)
 import Data.Maybe
 import qualified Data.Set as Set
 import qualified Data.Text as Text
-import Data.Text (Text)
 import qualified Data.Text.Encoding as Text
 import Data.Text.Prettyprint.Doc
 import Data.Text.Prettyprint.Doc.Render.Text
 import Data.Tuple (swap)
+import TextShow
+
+import Util.Log.Text
 
 import Glean.RTS.Foreign.Inventory as Inventory
 import Glean.Database.Schema.Types
@@ -59,15 +60,14 @@ import Glean.Database.Schema.Transform (mkPredicateTransformation)
 import Glean.RTS.Traverse
 import Glean.RTS.Typecheck
 import Glean.RTS.Types as RTS
-
 import Glean.Angle.Types as Schema
 import Glean.Schema.Resolve
-import Glean.Schema.Types
 import Glean.Schema.Util (showRef)
 import Glean.Query.Codegen (QueryWithInfo(..))
 import Glean.Query.Typecheck
-import qualified Glean.Types as Thrift
-import Glean.Types (PredicateStats(..))
+import Glean.Types as Thrift
+import Glean.Schema.Types
+import Glean.Database.Schema.ComputeIds
 
 -- | Used to decide whether to activate 'derive default' definitions and
 -- 'evolves' directives.
@@ -87,10 +87,10 @@ readWriteContent = DbWritable
 
 
 schemaSize :: DbSchema -> Int
-schemaSize = HashMap.size . predicatesByRef
+schemaSize = HashMap.size . predicatesById
 
 schemaPredicates :: DbSchema -> [PredicateDetails]
-schemaPredicates = HashMap.elems . predicatesByRef
+schemaPredicates = HashMap.elems . predicatesById
 
 
 fromSchemaInfo :: Thrift.SchemaInfo -> DbContent -> IO DbSchema
@@ -118,8 +118,8 @@ toSchemaInfo DbSchema{..} = Thrift.SchemaInfo
   { schemaInfo_schema =
       Text.encodeUtf8 $ renderStrict $ layoutCompact $ pretty schemaSource
   , schemaInfo_predicateIds = Map.fromList
-      [(fromPid $ predicatePid p, predicateRef p)
-        | p <- HashMap.elems predicatesByRef]
+      [ (fromPid $ predicatePid p, predicateRef p)
+      | p <- HashMap.elems predicatesById ]
   }
 
 -- | Produce a "thinned" SchemaInfo, containing only the schemas
@@ -149,7 +149,7 @@ thinSchemaInfo DbSchema{..} predicateStats =
           , srcEvolves = [] }
     , schemaInfo_predicateIds = Map.fromList
         [ (fromPid $ predicatePid p, predicateRef p)
-        | p <- HashMap.elems predicatesByRef
+        | p <- HashMap.elems predicatesById
         {-
           TODO: we should also filter out Pids of predicates that were
           removed from the schema:
@@ -171,7 +171,7 @@ thinSchemaInfo DbSchema{..} predicateStats =
     [ predicateRef pred
     | (pid, stats) <- predicateStats
     , predicateStats_count stats /= 0
-    , Just pred <- [IntMap.lookup (fromIntegral $ fromPid pid) predicatesById]
+    , Just pred <- [IntMap.lookup (fromIntegral $ fromPid pid) predicatesByPid]
     ]
 
   -- Names of schemas that define one or more non-empty predicates
@@ -207,19 +207,18 @@ thinSchemaInfo DbSchema{..} predicateStats =
             close (deps ++ ns) (HashMap.insert n schema r)
 
 
-data Override
-  = TakeOld
-  | TakeNew
+data CheckChanges
+  = AllowChanges
   | MustBeEqual
 
 newMergedDbSchema
   :: Thrift.SchemaInfo                  -- ^ schema from a DB
   -> SourceSchemas                      -- ^ current schema source
   -> Schemas                            -- ^ current schema
-  -> Override                           -- ^ override DB schema?
+  -> CheckChanges                           -- ^ validate DB schema?
   -> DbContent
   -> IO DbSchema
-newMergedDbSchema Thrift.SchemaInfo{..} source current override dbContent = do
+newMergedDbSchema Thrift.SchemaInfo{..} source current validate dbContent = do
   let
     -- predicates in the schema from the DB
     oldPredPids = HashMap.fromList
@@ -241,7 +240,7 @@ newMergedDbSchema Thrift.SchemaInfo{..} source current override dbContent = do
 
   -- For the "source", we'll use the current schema source. It doesn't
   -- reflect what's in the DB, but it reflects what you can query for.
-  mkDbSchema override  (lookupPids (succ maxOldPid)) dbContent source
+  mkDbSchema validate  (lookupPids (succ maxOldPid)) dbContent source
     fromDBResolved
     (schemasResolved current)
 
@@ -254,7 +253,8 @@ newDbSchema
   -> DbContent
   -> IO DbSchema
 newDbSchema str schemas dbContent =
-  mkDbSchema TakeOld (zipWith const [lowestPid ..]) dbContent str schemas []
+  mkDbSchema AllowChanges (zipWith const [lowestPid ..])
+    dbContent str schemas []
 
 inventory :: [PredicateDetails] -> Inventory
 inventory ps = Inventory.new
@@ -279,47 +279,69 @@ mkDbSchemaFromSource getPids dbContent source = do
   case parseAndResolveSchema source of
     Left str -> throwIO $ ErrorCall str
     Right (srcSchemas, resolved) ->
-      mkDbSchema TakeOld getPids dbContent srcSchemas resolved []
+      mkDbSchema AllowChanges getPids dbContent srcSchemas resolved []
 
 mkDbSchema
-  :: Override   -- later schemas override earlier ones?
+  :: CheckChanges
   -> ([PredicateRef] -> [Pid])
   -> DbContent
   -> Schema.SourceSchemas
   -> Schemas
   -> [ResolvedSchemaRef]
   -> IO DbSchema
-mkDbSchema override getPids dbContent source base addition = do
-  let resolved = schemasResolved base <> addition
-  let refs = HashMap.keys
-        $ HashMap.unions
-        $ map resolvedSchemaPredicates resolved
-  let pids = getPids refs
-  let refToPid = HashMap.fromList
-        $ filter (\(_,pid) -> pid /= Pid Thrift.iNVALID_ID)
-        $ zip refs pids
+mkDbSchema validate getPids dbContent source base addition = do
+  let
+    resolved = schemasResolved base <> addition
 
-  -- typecheck the schemas in dependency order, building up an
-  -- environment containing all the known predicates and types.
-  envStored <- foldM
-    (typecheckSchema override refToPid dbContent True)
-    emptyTcEnv
-    (schemasResolved base)
+    refs =
+        [ (ref, def)
+        | schema <- resolved
+        , (ref, def) <- HashMap.toList (resolvedSchemaPredicates schema)
+        ]
 
-  -- Now typecheck the additional schemas we want to merge in. Clashes
-  -- are resolved according to the value of override, which under
-  -- normal circumstances (TakeOld) means the schema stored in the DB
-  -- takes precedence.
-  env <- foldM
-    (typecheckSchema override refToPid dbContent False)
-    envStored
-    addition
+    pids = getPids (map fst refs)
+
+    stored = computeIds (schemasResolved base)
+    added = computeIds addition
+
+    refToIdEnv = RefToIdEnv {
+        typeRefToId = HashMap.union
+          (typeRefToId (schemaRefToIdEnv added))
+          (typeRefToId (schemaRefToIdEnv stored)),
+        predRefToId = HashMap.union
+          (predRefToId (schemaRefToIdEnv added))
+          (predRefToId (schemaRefToIdEnv stored))
+      }
+
+    -- added overrides stored above. This mostly shouldn't happen, and
+    -- validate would fail if the schemas differ, but in the case
+    -- where the new schema adds a default derivation to the old
+    -- schema, we want the new derivation to take effect.
+
+    idToPid = HashMap.fromList
+        [ (id, pid)
+        | ((ref, _), pid) <- zip refs pids
+        , pid /= Pid Thrift.iNVALID_ID
+        , Just id <- [HashMap.lookup ref (predRefToId refToIdEnv)]
+        ]
+
+    verStored = maybe latestAngleVersion resolvedSchemaAngleVersion
+      (listToMaybe (schemasResolved base))
+
+    verAdded =  maybe latestAngleVersion resolvedSchemaAngleVersion
+      (listToMaybe addition)
+
+  checkForChanges validate stored added
+
+  -- typecheck all the schemas, producing PredicateDetails / TypeDetails
+  tcEnv <- typecheckSchemas idToPid dbContent
+    verStored stored verAdded added
 
   -- Check the invariant that stored predicates do not make use of
   -- negation or refer to derived predicates that make use of it.
   -- See Note [Negation in stored predicates]
   let
-    usingNegation = usesOfNegation (tcEnvPredicates env)
+    usingNegation = usesOfNegation (tcEnvPredicates tcEnv)
     isStored = \case
       NoDeriving -> True
       Derive when _ -> case when of
@@ -328,9 +350,9 @@ mkDbSchema override getPids dbContent source base addition = do
         DeriveIfEmpty -> True
     useOfNegation ref = HashMap.lookup ref usingNegation
 
-  forM_ (tcEnvPredicates env) $ \PredicateDetails{..} ->
+  forM_ (tcEnvPredicates tcEnv) $ \PredicateDetails{..} ->
     when (isStored predicateDeriving) $
-      case useOfNegation predicateRef of
+      case useOfNegation predicateId of
         Nothing -> return ()
         Just use ->
           let feature = case use of
@@ -341,21 +363,17 @@ mkDbSchema override getPids dbContent source base addition = do
           $ "use of " <> feature  <> " is not allowed in a stored predicate: "
           <> showRef predicateRef
 
-  let predicates = HashMap.elems (tcEnvPredicates env)
-      types = HashMap.elems (tcEnvTypes env)
+  let predicates = HashMap.elems (tcEnvPredicates tcEnv)
 
-      byId = IntMap.fromList
+      byPid = IntMap.fromList
         [ (fromIntegral (fromPid predicatePid), deets)
         | deets@PredicateDetails{..} <- predicates ]
 
-      byRef = HashMap.fromList
-        [ (predicateRef, deets)
-        | deets@PredicateDetails{..} <- predicates ]
-
       maxPid = maybe lowestPid (Pid . fromIntegral . fst)
-        (IntMap.lookupMax byId)
+        (IntMap.lookupMax byPid)
 
-      resolvedAlls = filter ((== "all") . resolvedSchemaName) resolved
+      resolvedAlls =
+        [ schema | schema <- resolved, resolvedSchemaName schema == "all" ]
 
       -- When a query mentions an unversioned predicate, we use a default
       -- version of the predicate. The default version is whatever is
@@ -371,35 +389,85 @@ mkDbSchema override getPids dbContent source base addition = do
       versionedNameEnv = HashMap.fromList
         [ (SourceRef name (Just ver), Set.singleton target)
         | (name, ver, target) <-
-            [ (predicateRef_name r, predicateRef_version r, RefPred r)
-            | PredicateDetails{..} <- predicates
-            , let r = predicateRef ] ++
-            [ (typeRef_name r, typeRef_version r, RefType r)
-            | TypeDetails{..} <- types
-            , let r = typeRef ]
+            [ (predicateRef_name r, predicateRef_version r, RefPred t)
+            | (r, t) <- HashMap.toList (predRefToId refToIdEnv) ] ++
+            [ (typeRef_name r, typeRef_version r, RefType t)
+            | (r, t) <- HashMap.toList (typeRefToId refToIdEnv) ]
         ]
 
       schemaEnvs = IntMap.fromList
         [ (fromIntegral resolvedSchemaVersion,
-           HashMap.union resolvedSchemaUnqualScope $
-           HashMap.union resolvedSchemaQualScope
-           versionedNameEnv)
+          HashMap.union
+            (mapNameEnv (Just . refsToIds refToIdEnv)
+              resolvedSchemaUnqualScope) $
+           HashMap.union
+             (mapNameEnv (Just . refsToIds refToIdEnv)
+               resolvedSchemaQualScope)
+             versionedNameEnv)
         | ResolvedSchema{..} <- resolvedAlls
         ]
 
+  vlog 2 $ "DB schema has " <>
+    showt (HashMap.size (hashedTypes stored)) <> " types/" <>
+    showt (HashMap.size (hashedPreds stored)) <>
+    " predicates, global schema has " <>
+    showt (HashMap.size (hashedTypes added)) <> " types/" <>
+    showt (HashMap.size (hashedPreds added)) <>
+    " predicates, final schema has " <>
+    showt (HashMap.size (tcEnvTypes tcEnv)) <> " types/" <>
+    showt (HashMap.size (tcEnvPredicates tcEnv)) <> " predicates."
+
+  vlog 2 $ "all schemas: " <> Text.intercalate " " (
+    map (showSchemaRef . schemaRef) resolvedAlls)
+
   return $ DbSchema
-    { predicatesByRef = byRef
-    , predicatesById = byId
-    , predicatesTransformations =
-        mkTransformations dbContent override byId byRef resolved
+    { predicatesById = tcEnvPredicates tcEnv
+    , typesById = tcEnvTypes tcEnv
     , schemaEnvs = schemaEnvs
-    , schemaTypesByRef = tcEnvTypes env
+    , predicatesByPid = byPid
+    , predicatesTransformations =
+        mkTransformations dbContent byPid (tcEnvPredicates tcEnv)
+          refToIdEnv resolved
     , schemaInventory = inventory predicates
     , schemaResolved = resolved
     , schemaSource = source
     , schemaMaxPid = maxPid
     , schemaLatestVersion = fromMaybe 0 latestVer
     }
+
+-- | Check that predicates with the same name/version have the same definitions.
+-- This is done by comparing Ids, which are hashes of the representation.
+checkForChanges
+  :: CheckChanges
+  -> HashedSchema
+  -> HashedSchema
+  -> IO ()
+checkForChanges AllowChanges _ _ = return ()
+checkForChanges MustBeEqual
+    (HashedSchema typesStored predsStored _)
+    (HashedSchema typesAdded predsAdded _) = do
+  let (_, (errors, _, _)) = runState go ([], HashMap.empty, HashMap.empty)
+  unless (null errors) $
+    throwIO $ Thrift.Exception $ Text.intercalate "\n\n" errors
+  where
+  go = do
+    let types = HashMap.toList typesStored ++ HashMap.toList typesAdded
+    forM_ types $ \(id, (ref, _)) -> do
+      (errs, pids, tids) <- State.get
+      let (err, tids') = insert "type" ref id tids
+      State.put (err <> errs, pids, tids')
+    let preds = HashMap.toList predsStored ++ HashMap.toList predsAdded
+    forM_ preds $ \(id, (ref, _)) -> do
+      (errs, pids, tids) <- State.get
+      let (err, pids') = insert "predicate" ref id pids
+      State.put (err <> errs, pids', tids)
+
+  insert thing ref id tids
+    | Just id' <- HashMap.lookup ref tids =
+      if id == id'
+        then ([], tids)
+        else ([thing <> " " <> showRef ref <> " has changed"], tids)
+    | otherwise = ([], HashMap.insert ref id tids)
 
 detailsFor :: IntMap PredicateDetails -> Pid -> PredicateDetails
 detailsFor byId pid =
@@ -409,17 +477,17 @@ detailsFor byId pid =
 
 mkTransformations
   :: DbContent
-  -> Override
   -> IntMap PredicateDetails
-  -> HashMap PredicateRef PredicateDetails
+  -> HashMap PredicateId PredicateDetails
+  -> RefToIdEnv
   -> [ResolvedSchemaRef]
   -> IntMap PredicateTransformation
 mkTransformations DbWritable _ _ _ _ = mempty
-mkTransformations (DbReadOnly stats) override byId byRef resolved =
+mkTransformations (DbReadOnly stats) byId byRef refToId resolved =
   IntMap.fromList
     [ (fromIntegral (fromPid old), evolution)
     | (old, new) <- Map.toList $
-        transformedPredicates stats override byRef resolved
+        transformedPredicates stats byRef refToId resolved
     , Just evolution <- [mkTransformation old new]
     ]
   where
@@ -429,11 +497,11 @@ mkTransformations (DbReadOnly stats) override byId byRef resolved =
 -- ^ Create a map of which should be transformed into which
 transformedPredicates
   :: HashMap Pid PredicateStats
-  -> Override
-  -> HashMap PredicateRef PredicateDetails
+  -> HashMap PredicateId PredicateDetails
+  -> RefToIdEnv
   -> [ResolvedSchemaRef]
   -> Map Pid Pid -- ^ when key pred is requested, get value pred from db
-transformedPredicates stats override byRef resolved =
+transformedPredicates stats byRef refToId resolved =
   HashMap.foldMapWithKey mapPredicates schemaTransformations
   where
     schemaTransformations :: HashMap SchemaRef SchemaRef
@@ -478,7 +546,8 @@ transformedPredicates stats override byRef resolved =
       schema <- find ((sref ==) . schemaRef) resolved
       let definedPreds = map predicatePid
             $ mapMaybe (`HashMap.lookup` byRef)
-            $ HashMap.keys
+            $ mapMaybe ((`HashMap.lookup` (predRefToId refToId)) . predicateDefRef)
+            $ HashMap.elems
             $ resolvedSchemaPredicates schema
       return $ any predicateHasFactsInDb definedPreds
 
@@ -520,17 +589,16 @@ transformedPredicates stats override byRef resolved =
       [ (schemaRef schema, exportsResolved schema )
       | schema <- resolved ]
       where
-        choose new old = case override of
-          TakeOld -> old
-          _ -> new
+        choose new _old = new
 
     exportsResolved :: ResolvedSchemaRef -> Map Name PidRef
     exportsResolved schema = Map.fromList
-      [ (predicateRef_name ref, PidRef (predicatePid details) ref)
-      | ref <- HashMap.keys $
+      [ (predicateIdName id, PidRef (predicatePid details) id)
+      | ref <- map predicateDefRef $ HashMap.elems $
           resolvedSchemaPredicates schema
           <> resolvedSchemaReExportedPredicates schema
-      , Just details <- return $ HashMap.lookup ref byRef
+      , Just id <- [HashMap.lookup ref (predRefToId refToId)]
+      , Just details <- return $ HashMap.lookup id byRef
       ]
 
 {- Note [Negation in stored predicates]
@@ -545,179 +613,22 @@ To keep the overhead on incremental databases as low as possible, stored
 derived predicates are not allowed to use negation.
 -}
 
-type Error = Text
-
-typecheckSchema
-  :: Override  -- ^ new schema overrides existing types/predicates?
-  -> HashMap PredicateRef Pid
+typecheckSchemas
+  :: HashMap PredicateId Pid
   -> DbContent
-  -> Bool  -- ^ True: this schema is stored in the DB
-  -> TcEnv
-  -> ResolvedSchemaRef
+  -> AngleVersion
+  -> HashedSchema
+       -- ^ Stored in the DB
+  -> AngleVersion
+  -> HashedSchema
+       -- ^ Added from the global schema
   -> IO TcEnv
-typecheckSchema override refToPid dbContent stored
-    TcEnv{..} ResolvedSchema{..} = do
 
-  predicates <- fmap catMaybes $
-    forM (HashMap.toList resolvedSchemaPredicates) $ \(ref,def) ->
-      case
-          ( HashMap.lookup ref refToPid
-          , rtsType $ predicateDefKeyType def
-          , rtsType $ predicateDefValueType def ) of
-        (Just pid, Just keyType, Just valueType) -> do
-          typecheck <- checkSignature keyType valueType
-          traversal <- genTraversal keyType valueType
-          return $ Just PredicateDetails
-            { predicatePid = pid
-            , predicateRef = ref
-            , predicateSchema = def
-            , predicateKeyType = keyType
-            , predicateValueType = valueType
-            , predicateTraversal = traversal
-            , predicateTypecheck = typecheck
-            , predicateDeriving = NoDeriving
-            , predicateInStoredSchema = stored
-            }
-        _ -> return Nothing
-  let
-    insert
-      :: (Eq k, Hashable k)
-      => (v -> v -> Maybe Error)
-      -> HashMap k v
-      -> (k,v)
-      -> State [Error] (HashMap k v)
-    insert cmp hmap (k,v) = case override of
-      TakeOld -> return $ takeOld hmap (k,v)
-      TakeNew -> return $ takeNew hmap (k,v)
-      MustBeEqual
-        | Just oldV <- HashMap.lookup k hmap -> do
-          whenJust (cmp oldV v) $ \err -> State.modify (err:)
-          return hmap
-        | otherwise -> return $ takeNew hmap (k,v)
-
-    takeOld m (k,v) = HashMap.insertWith (\_ old -> old) k v m
-    takeNew m (k,v) = HashMap.insert k v m
-
-    mergePredicates = insert comparePredicates
-    mergeTypes = insert compareTypes
-
-    comparePredicates a b
-      | sameKeyType && sameValueType = Nothing
-      | otherwise = Just err
-      where
-        sameKeyType = predicateKeyType a `eqType` predicateKeyType b
-        sameValueType = predicateValueType a `eqType` predicateValueType b
-        err = "predicate " <> Text.pack (show (pretty (predicateRef a)))
-            <> " has changed"
-
-    compareTypes a b
-      | typeType a `eqType` typeType b = Nothing
-      | otherwise = Just $ "type " <>
-          Text.pack (show (pretty (typeRef a))) <> " has changed"
-
-    ((preds, types), errors) = flip runState [] $ do
-      preds <- foldM mergePredicates tcEnvPredicates
-          [ (predicateRef, details)
-          | details@PredicateDetails{..} <- predicates ]
-
-      types <- foldM mergeTypes tcEnvTypes
-          [ (ref, TypeDetails ref ty)
-          | (ref, Just ty) <- HashMap.toList typedefs ]
-
-      return (preds, types)
-
-  unless (null errors) $
-    throwIO $ Thrift.Exception $ Text.intercalate "\n\n" errors
+typecheckSchemas idToPid dbContent
+    verStored (HashedSchema typesStored predsStored _)
+    verAdded (HashedSchema typesAdded predsAdded _) = do
 
   let
-    -- Build the environment in which we typecheck predicates from
-    -- this schema.
-    env = TcEnv
-      { tcEnvPredicates = preds
-      , tcEnvTypes = types
-      }
-
-    tcDeriving pred info = runExcept $
-      typecheckDeriving env resolvedSchemaAngleVersion rtsType pred info
-
-  -- Typecheck all the derivations, which can be for predicates in
-  -- this schema or for any schema it inherits from.
-  typecheckedPredicates <-
-    fmap catMaybes $
-    forM (HashMap.toList resolvedSchemaDeriving) $ \(ref, info) ->
-      case HashMap.lookup ref preds of
-        Nothing -> return Nothing
-        Just pred -> case tcDeriving pred info of
-          Left err -> throwIO $ ErrorCall $ Text.unpack err
-          Right tc ->
-            return (Just (predicateRef pred, pred { predicateDeriving = tc }))
-
-  let
-    -- we want to attach a deriving to an existing predicate if:
-    --   1. overriding is on, or
-    --   2. if 'derive default', then iff this is a read-only DB and
-    --      the predicate is empty
-    --   3. both the predicate and the derivation come from a stored schema,
-    --      or both come from a non-stored schema
-    --
-    -- That is, we don't attach a deriving to a predicate in the
-    -- stored schema if the deriving wasn't present when the DB was
-    -- created.
-    addDeriving details
-      | Derive DeriveIfEmpty _ <- predicateDeriving details =
-        case dbContent of
-          DbWritable -> False
-          DbReadOnly stats ->
-            maybe True ((== 0) . predicateStats_count)
-              (HashMap.lookup (predicatePid details) stats)
-      | TakeNew <- override = True
-      | predicateInStoredSchema details == stored = True
-      | otherwise = False
-
-    mergeDeriving m item@(_, details)
-      | addDeriving details = takeNew m item
-      | otherwise = takeOld m item
-
-    -- Build the final environment.
-    finalPreds = foldl' mergeDeriving preds typecheckedPredicates
-
-  -- Check the invariant that stored predicates do not refer to derived
-  -- predicates. We have to defer this check until last, because
-  -- derivations may have been attached to existing predicates now. We
-  -- have to check
-  --  (a) all the predicates in this schema, and
-  --  (b) all the predicates that have derivations in this schema
-  forM_ (map predicateRef predicates ++ map fst typecheckedPredicates) $ \ref ->
-    case HashMap.lookup ref finalPreds of
-      Nothing -> return ()
-      Just PredicateDetails{..} -> do
-        let
-          check = do
-            checkStoredType finalPreds types ref predicateKeyType
-            checkStoredType finalPreds types ref predicateValueType
-        case predicateDeriving of
-          NoDeriving -> return ()
-             -- In principle we should really enforce that predicates without
-             -- a derivation don't refer to non-stored derived predicates.
-             -- However, this can crop up in benign ways with backwards
-             -- compatibility. For example,
-             --
-             -- schema S.2 : S.1 {
-             --   predicate P : T default P.1 ...
-             --   predicate Q : P
-             -- }
-             --
-             -- if we have no facts of P.2 then the derivation would be
-             -- enabled, and Q doesn't make sense. But there won't be any
-             -- facts of Q either, so it doesn't matter.
-          Derive DerivedAndStored _ -> check
-          _ -> return ()
-
-  return env
-    { tcEnvPredicates = finalPreds
-    }
-
-  where
     -- NOTE: We store Maybe Type rather than filtering out those typedefs
     -- for which rtsType returns Nothing here because we need to be sufficiently
     -- lazy to tie the knot in rtsType. We get Nothing for typedefs which refer
@@ -727,22 +638,123 @@ typecheckSchema override refToPid dbContent stored
     --
     -- Also note we need a lazy HashMap here to avoid forcing the
     -- elements too early, which would also cause a loop.
-    typedefs :: Lazy.HashMap.HashMap TypeRef (Maybe RTS.Type)
+    typedefs :: Lazy.HashMap.HashMap TypeId (TypeRef, Maybe RTS.Type)
     typedefs = Lazy.HashMap.fromList
-      [ (ref, rtsType (typeDefType def))
-      | (ref, def) <- Lazy.HashMap.toList resolvedSchemaTypes ]
+      [ (id, (ref, rtsType (typeDefType def)))
+      | (id, (ref, def)) <-
+          HashMap.toList typesStored ++ HashMap.toList typesAdded ]
 
-    lookupType :: TypeRef -> Maybe RTS.Type
+    lookupType :: TypeId -> Maybe RTS.Type
     lookupType ref =
       case Lazy.HashMap.lookup ref typedefs of
-        Nothing -> typeType <$> Lazy.HashMap.lookup ref tcEnvTypes
-        Just r -> r
+        Nothing -> Nothing
+        Just (_, r) -> r
 
-    rtsType = mkRtsType lookupType (`HashMap.lookup` refToPid)
+    rtsType = mkRtsType lookupType (`HashMap.lookup` idToPid)
+
+  let
+    preds =
+      map (True,) (HashMap.toList predsStored) ++
+      map (False,) (HashMap.toList predsAdded)
+
+  predicates <- fmap catMaybes $ forM preds $ \(stored, (id,(ref,def))) ->
+      case
+          ( HashMap.lookup (predicateDefRef def) idToPid
+          , rtsType $ predicateDefKeyType def
+          , rtsType $ predicateDefValueType def ) of
+        (Just pid, Just keyType, Just valueType) -> do
+          typecheck <- checkSignature keyType valueType
+          traversal <- genTraversal keyType valueType
+          return $ Just PredicateDetails
+            { predicatePid = pid
+            , predicateRef = ref
+            , predicateId = id
+            , predicateSchema = def
+            , predicateKeyType = keyType
+            , predicateValueType = valueType
+            , predicateTraversal = traversal
+            , predicateTypecheck = typecheck
+            , predicateDeriving = NoDeriving
+            , predicateInStoredSchema = stored
+            }
+        _ -> return Nothing
+
+  let
+    preds = HashMap.fromList
+        [ (predicateId, details)
+        | details@PredicateDetails{..} <- predicates ]
+
+    types = HashMap.fromList
+        [ (id, TypeDetails id ref ty)
+        | (id, (ref, Just ty)) <- HashMap.toList typedefs ]
+
+    -- Build the environment in which we typecheck predicates from
+    -- this schema.
+    env = TcEnv
+      { tcEnvPredicates = preds
+      , tcEnvTypes = types
+      }
+
+    tcDeriving pred stored info =
+      either (throwIO . ErrorCall . Text.unpack) return $ runExcept $
+        typecheckDeriving env angleVersion rtsType pred info
+      where angleVersion = if stored then verStored else verAdded
+
+  -- typecheck the derivations
+  predsWithDerivations <- forM predicates $ \details -> do
+    drv <- tcDeriving details (predicateInStoredSchema details) $
+      predicateDefDeriving (predicateSchema details)
+    let
+      enable = return details { predicateDeriving = drv }
+      disable = return details { predicateDeriving = NoDeriving }
+    if
+      | Derive DeriveIfEmpty _ <- drv ->
+        case dbContent of
+          DbWritable -> disable
+          DbReadOnly stats -> do
+            case HashMap.lookup (predicatePid details) stats of
+              Nothing -> enable
+              Just stats
+                | predicateStats_count stats == 0 -> enable
+                | otherwise -> disable
+      | otherwise -> enable
+
+  let
+    finalPreds = HashMap.fromList
+      [ (predicateId details, details) | details <- predsWithDerivations ]
+
+  -- Check the invariant that stored predicates do not refer to derived
+  -- predicates. We have to defer this check until last, because
+  -- derivations may have been attached to existing predicates now.
+  forM_ predsWithDerivations $ \PredicateDetails{..} -> do
+    let
+      check = do
+        checkStoredType finalPreds types predicateId predicateKeyType
+        checkStoredType finalPreds types predicateId predicateValueType
+    case predicateDeriving of
+      NoDeriving -> return ()
+         -- In principle we should really enforce that predicates without
+         -- a derivation don't refer to non-stored derived predicates.
+         -- However, this can crop up in benign ways with backwards
+         -- compatibility. For example,
+         --
+         -- schema S.2 : S.1 {
+         --   predicate P : T default P.1 ...
+         --   predicate Q : P
+         -- }
+         --
+         -- if we have no facts of P.2 then the derivation would be
+         -- enabled, and Q doesn't make sense. But there won't be any
+         -- facts of Q either, so it doesn't matter.
+      Derive DerivedAndStored _ -> check
+      _ -> return ()
+
+  return env { tcEnvPredicates = finalPreds }
+
 
 usesOfNegation
-  :: HashMap PredicateRef PredicateDetails
-  -> HashMap PredicateRef UseOfNegation
+  :: HashMap PredicateId PredicateDetails
+  -> HashMap PredicateId UseOfNegation
 usesOfNegation preds =
   foldl' recordUseOfNegation mempty derivations
   where
@@ -757,7 +769,7 @@ usesOfNegation preds =
       = HashMap.delete ref usesNegation
 
     -- derivations in dependency order with flag for use of negation
-    derivations :: [(Maybe UseOfNegation, PredicateRef, [PredicateRef])]
+    derivations :: [(Maybe UseOfNegation, PredicateId, [PredicateId])]
     derivations = toPred . getNode <$> reverse (topSort graph)
       where
         (graph, getNode, _) = graphFromEdges
@@ -768,15 +780,15 @@ usesOfNegation preds =
           ]
         fromPred (b, p, ps) = (b, toKey p, map toKey ps)
         toPred (b, k, ks)   = (b, fromKey k, map fromKey ks)
-        toKey (PredicateRef n v) = (n, v)
-        fromKey (n, v) = PredicateRef n v
+        toKey (PredicateId n v) = (n, v)
+        fromKey (n, v) = PredicateId n v
 
 -- | Check that the type of a stored predicate doesn't refer to any
 -- derived predicates.
 checkStoredType
-  :: HashMap PredicateRef PredicateDetails
-  -> HashMap TypeRef TypeDetails
-  -> PredicateRef
+  :: HashMap PredicateId PredicateDetails
+  -> HashMap TypeId TypeDetails
+  -> PredicateId
   -> RTS.Type
   -> IO ()
 checkStoredType preds types def ty = go ty

@@ -98,7 +98,9 @@ deriveStoredImpl env@Env{..} log repo req@Thrift.DerivePredicateQuery{..} = do
   let sourceRef = SourceRef
         derivePredicateQuery_predicate
         derivePredicateQuery_predicate_version
-  pred <- predicateRef <$> getPredicate env repo odbSchema sourceRef
+  details <- getPredicate env repo odbSchema sourceRef
+  let pred = predicateId details
+      ref = predicateRef details
   handle <- UUID.toText <$> UUID.nextRandom
   now <- getTimePoint
 
@@ -110,9 +112,9 @@ deriveStoredImpl env@Env{..} log repo req@Thrift.DerivePredicateQuery{..} = do
         Nothing -> do
           checkConstraints odbSchema pred
           let new = newDerivation now handle
-          save env repo pred new
-          return $ handleAll (onErr pred) $ unmask $ do
-            kickOff pred
+          save env repo ref pred new
+          return $ handleAll (onErr ref pred) $ unmask $ do
+            kickOff ref pred
             shortWait env pred new
   where
     newDerivation now handle = Derivation
@@ -124,17 +126,18 @@ deriveStoredImpl env@Env{..} log repo req@Thrift.DerivePredicateQuery{..} = do
       , derivationHandle = handle
       }
 
-    kickOff :: PredicateRef -> IO ()
-    kickOff pred = do
-      spawn_ envWarden $ handleAll (onErr pred) $ do
-        runDerivation env repo pred req
-        enqueueCheckpoint env repo $ void $ finishDerivation env log repo pred
+    kickOff :: PredicateRef -> PredicateId -> IO ()
+    kickOff ref pred = do
+      spawn_ envWarden $ handleAll (onErr ref pred) $ do
+        runDerivation env repo ref pred req
+        enqueueCheckpoint env repo $ void $
+          finishDerivation env log repo ref pred
 
     -- When we kick off a new derivation, wait a short time (1s) for
     -- it to finish. This enables tests and short indexing runs to
     -- avoid the 1s wait per derivation that would normally happen
     -- before we poll for the result.
-    shortWait :: Env -> PredicateRef -> Derivation -> IO Derivation
+    shortWait :: Env -> PredicateId -> Derivation -> IO Derivation
     shortWait Env{..} pred drv = do
       r <- timeout 1000000 $ atomically $ do
         m <- HashMap.lookup (repo, pred) <$> readTVar envDerivations
@@ -145,16 +148,16 @@ deriveStoredImpl env@Env{..} log repo req@Thrift.DerivePredicateQuery{..} = do
             return d
       return (fromMaybe drv r)
 
-    onErr :: PredicateRef -> SomeException -> IO a
-    onErr pred e = do
+    onErr :: PredicateRef -> PredicateId -> SomeException -> IO a
+    onErr ref pred e = do
       logError $ "Failed derivation of " <>
-        Text.unpack (showRef pred) <> ": " <> show e
+        Text.unpack (showRef ref) <> ": " <> show e
       now <- getTimePoint
-      void $ overDerivation env repo pred
+      void $ overDerivation env repo ref pred
         (\d -> d { derivationError = Just (now, e) })
       throwIO e
 
-    checkConstraints :: DbSchema -> PredicateRef -> STM ()
+    checkConstraints :: DbSchema -> PredicateId -> STM ()
     checkConstraints schema pred = do
       unless (isDerivedAndStored schema pred) $
         throwSTM Thrift.NotAStoredPredicate
@@ -167,7 +170,8 @@ deriveStoredImpl env@Env{..} log repo req@Thrift.DerivePredicateQuery{..} = do
             dependencies = transitive (predicateDeps schema) pred
             incomplete = filter (not . complete) dependencies
         unless (null incomplete) $
-          throwSTM $ Thrift.IncompleteDependencies incomplete
+          throwSTM $ Thrift.IncompleteDependencies $
+            map (predicateRef . getPredicateDetails schema) incomplete
 
 getPredicate
   :: Env
@@ -179,22 +183,29 @@ getPredicate env repo schema ref = do
   schemaVersion <- UserQuery.schemaVersionForQuery env schema repo Nothing
   case lookupSourceRef ref schemaVersion schema of
     ResolvesTo (RefPred pred)
-      | Just details <- lookupPredicateRef pred schema -> return details
+      | Just details <- lookupPredicateId pred schema -> return details
     _ -> throwIO Thrift.UnknownPredicate
 
 overDerivation
   :: Database.Env
   -> Repo
   -> PredicateRef
+  -> PredicateId
   -> (Derivation -> Derivation)
   -> IO Derivation
-overDerivation env repo pred f = atomically $ do
+overDerivation env repo ref pred f = atomically $ do
   derivation <- f <$> getDerivation env repo pred
-  save env repo pred derivation
+  save env repo ref pred derivation
   return derivation
 
-save :: Database.Env -> Repo -> PredicateRef -> Derivation -> STM ()
-save Env{..} repo pred derivation@Derivation{..} = do
+save
+  :: Database.Env
+  -> Repo
+  -> PredicateRef
+  -> PredicateId
+  -> Derivation
+  -> STM ()
+save Env{..} repo ref pred derivation@Derivation{..} = do
   case derivationError of
     Just e -> markDbBroken e
     Nothing -> when (isFinished derivation) markPredicateAsComplete
@@ -204,7 +215,7 @@ save Env{..} repo pred derivation@Derivation{..} = do
       $ Catalog.modifyMeta envCatalog repo
       $ \meta -> return meta
           { metaCompletePredicates =
-            insertUnique pred $ metaCompletePredicates meta
+            insertUnique ref $ metaCompletePredicates meta
           }
 
     insertUnique x xs = x : filter (/= x) xs
@@ -215,22 +226,24 @@ save Env{..} repo pred derivation@Derivation{..} = do
           { metaCompleteness = Broken (DatabaseBroken task reason)
           }
       where
-        task = "derivation of " <> showRef pred
+        task = "derivation of " <> showRef ref
         reason = Text.pack (show err)
 
 isCompletePred
   :: [PredicateRef]
   -> DbSchema
-  -> PredicateRef
+  -> PredicateId
   -> Bool
 isCompletePred completePreds schema pred =
-  case predicateDeriving $ getPredicateDetails schema pred of
+  case predicateDeriving details of
     NoDeriving -> True
     Derive DeriveIfEmpty _ -> False
     Derive DeriveOnDemand _ -> True
-    Derive DerivedAndStored _ -> pred `elem` completePreds
+    Derive DerivedAndStored _ -> predicateRef details `elem` completePreds
+  where
+  details = getPredicateDetails schema pred
 
-isDerivedAndStored :: DbSchema -> PredicateRef -> Bool
+isDerivedAndStored :: DbSchema -> PredicateId -> Bool
 isDerivedAndStored schema pred =
   case predicateDeriving $ getPredicateDetails schema pred of
     Derive DerivedAndStored _ -> True
@@ -245,7 +258,7 @@ transitive next root = Set.elems $ go (next root) mempty
       | otherwise = go xs $ go (next x) $ Set.insert x visited
 
 -- | predicates which are queried to derive this predicate
-predicateDeps :: DbSchema -> PredicateRef -> [PredicateRef]
+predicateDeps :: DbSchema -> PredicateId -> [PredicateId]
 predicateDeps schema pred =
   case predicateDeriving of
     Derive _ QueryWithInfo{..} -> toList $ tcQueryDeps qiQuery
@@ -253,9 +266,9 @@ predicateDeps schema pred =
   where
     PredicateDetails{..} = getPredicateDetails schema pred
 
-getPredicateDetails :: DbSchema -> PredicateRef -> PredicateDetails
+getPredicateDetails :: DbSchema -> PredicateId -> PredicateDetails
 getPredicateDetails schema pred =
-  case lookupPredicateRef pred schema of
+  case lookupPredicateId pred schema of
     Just details -> details
     Nothing -> error $
       "unknown predicate: " <> Text.unpack (showRef pred)
@@ -265,12 +278,13 @@ runDerivation
   :: Database.Env
   -> Thrift.Repo
   -> PredicateRef
+  -> PredicateId
   -> Thrift.DerivePredicateQuery
   -> IO ()
-runDerivation env repo pred Thrift.DerivePredicateQuery{..} = do
+runDerivation env repo ref pred Thrift.DerivePredicateQuery{..} = do
   readDatabase env repo $ \odb lookup ->
     case derivePredicateQuery_parallel of
-      Nothing -> deriveQuery odb lookup (query (allFacts pred))
+      Nothing -> deriveQuery odb lookup (query (allFacts ref))
       Just par -> parallelDerivation odb lookup par
 
   where
@@ -395,7 +409,7 @@ runDerivation env repo pred Thrift.DerivePredicateQuery{..} = do
       }
 
     addProgress (stats, _mcont, mWriteHandle) =
-      void $ overDerivation env repo pred $ \d@Derivation{..} -> d
+      void $ overDerivation env repo ref pred $ \d@Derivation{..} -> d
         { derivationStats = mergeStats derivationStats stats
         , derivationPendingWrites = maybeToList mWriteHandle
             ++ derivationPendingWrites
@@ -425,15 +439,16 @@ finishDerivation
   -> LogResult
   -> Repo
   -> PredicateRef
+  -> PredicateId
   -> IO Derivation
-finishDerivation env log repo pred = do
+finishDerivation env log repo ref pred = do
   vlog 1 $ "finishDerivation: " <> show pred
   derivation <- atomically (getDerivation env repo pred)
   finished <- finishedWrites derivation
   when (isNothing (derivationError derivation) && isRight finished)
     finishOwnership
   now <- getTimePoint
-  derivation <- overDerivation env repo pred $ withProgress now finished
+  derivation <- overDerivation env repo ref pred $ withProgress now finished
   logResult log derivation
   return derivation
   where
@@ -471,7 +486,7 @@ finishDerivation env log repo pred = do
         writing <- case odbWriting of
           Nothing -> throwIO $ Thrift.Exception "finishOwnership: read only"
           Just writing -> return writing
-        details <- case lookupPredicateRef pred odbSchema of
+        details <- case lookupPredicateId pred odbSchema of
           Nothing -> throwIO $ Thrift.Exception "finishOwnership: no pid"
           Just details -> return details
         maybeOwnership <- readTVarIO odbOwnership
@@ -484,7 +499,7 @@ finishDerivation env log repo pred = do
               (predicatePid details)
             Storage.storeOwnership odbHandle computed
 
-getDerivation :: Database.Env -> Repo -> PredicateRef -> STM Derivation
+getDerivation :: Database.Env -> Repo -> PredicateId -> STM Derivation
 getDerivation env repo pred = do
   ds <- readTVar (envDerivations env)
   case HashMap.lookup (repo, pred) ds of
