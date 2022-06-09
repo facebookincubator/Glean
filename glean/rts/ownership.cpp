@@ -269,7 +269,7 @@ std::unique_ptr<ComputedOwnership> computeOwnership(
     OwnershipUnitIterator *iter) {
   uint32_t numUnits;
   auto t = makeAutoTimer("computeOwnership");
-  LOG(INFO) << "computing ownership";
+  VLOG(1) << "computing ownership";
   auto utrie = fillOwnership(iter,numUnits);
   t.log("fillOwnership");
   auto usets = collectUsets(numUnits,utrie);
