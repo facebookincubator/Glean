@@ -32,13 +32,13 @@ suggestions please file an
 
 There is currently full support for:
 
-* [JavaScript/Flow](https://glean.software/docs/indexer/flow)
+* [C++ and C](https://glean.software/docs/indexer/cxx)
 * [Hack](https://glean.software/docs/indexer/hack)
 * [Haskell](https://glean.software/docs/indexer/haskell)
+* [JavaScript/Flow](https://glean.software/docs/indexer/flow)
 
 We are actively adding support for:
 
-* C++
 * Rust
 
 Indexers for these languages exist but aren't in the open source

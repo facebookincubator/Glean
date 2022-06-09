@@ -71,6 +71,7 @@ module.exports = {
            {
                'Indexers': [
                    'indexer/intro',
+                   'indexer/cxx',
                    'indexer/flow',
                    'indexer/hack',
                    'indexer/haskell',
