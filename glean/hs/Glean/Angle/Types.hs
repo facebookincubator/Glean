@@ -441,7 +441,10 @@ data PredicateDef_ s pref tref = PredicateDef
 data PredicateId = PredicateId
   { predicateIdName :: Text  -- ^ e.g. python.Name
   , predicateIdHash :: Hash
-  } deriving (Eq, Ord, Generic, Hashable, Show)
+  } deriving (Eq, Ord, Generic, Show)
+
+instance Hashable PredicateId where
+  hashWithSalt s (PredicateId _ h) = hashFingerprint s h
 
 instance Binary PredicateId
   -- TODO maybe just serialize the hash?
@@ -450,7 +453,10 @@ instance Binary PredicateId
 data TypeId = TypeId
   { typeIdName :: Text -- ^ e.g. python.Declaration
   , typeIdHash :: Hash
-  } deriving (Eq, Ord, Generic, Hashable, Show)
+  } deriving (Eq, Ord, Generic, Show)
+
+instance Hashable TypeId where
+  hashWithSalt s (TypeId _ h) = hashFingerprint s h
 
 instance Binary TypeId
   -- TODO maybe just serialize the hash?

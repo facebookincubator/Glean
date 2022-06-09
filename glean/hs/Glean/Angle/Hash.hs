@@ -16,11 +16,13 @@ module Glean.Angle.Hash
   , hash0
   , hashString
   , hashByteString
+  , hashFingerprint
   ) where
 
 import Data.ByteString.Lazy (ByteString)
 import qualified Data.ByteString.Lazy as LB
 import Data.ByteString.Unsafe (unsafeUseAsCStringLen)
+import Data.Hashable
 import Foreign (castPtr)
 import GHC.Fingerprint as GHC
 import System.IO.Unsafe ( unsafeDupablePerformIO )
@@ -38,3 +40,8 @@ hashByteString :: ByteString -> Hash
 hashByteString bs = unsafeDupablePerformIO $ do
   unsafeUseAsCStringLen (LB.toStrict bs) $ \(ptr, len) ->
     GHC.fingerprintData (castPtr ptr) (fromIntegral len)
+
+-- | For building Hashable instances. Avoiding an orphan instance by
+-- making this a function instead.
+hashFingerprint :: Int -> Hash -> Int
+hashFingerprint salt (GHC.Fingerprint _ w) = hashWithSalt salt w
