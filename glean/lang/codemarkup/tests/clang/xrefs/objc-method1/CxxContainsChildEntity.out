@@ -1,0 +1,135 @@
+[
+  "@generated",
+  {
+    "key": {
+      "parent": {
+        "decl": {
+          "objcContainer": {
+            "key": {
+              "id": { "implementation": { "key": "Bar" } },
+              "source": {
+                "file": { "key": "test.mm" },
+                "lineBegin": 25,
+                "columnBegin": 1,
+                "lineEnd": 35,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "decl": {
+          "objcMethod": {
+            "key": {
+              "selector": { "key": [ "fooBar" ] },
+              "container": { "implementation": { "key": "Bar" } },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "isInstance": true,
+              "isOptional": false,
+              "isAccessor": false,
+              "source": {
+                "file": { "key": "test.mm" },
+                "lineBegin": 30,
+                "columnBegin": 1,
+                "lineEnd": 33,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "decl": {
+          "objcContainer": {
+            "key": {
+              "id": { "interface_": { "key": "Bar" } },
+              "source": {
+                "file": { "key": "test.mm" },
+                "lineBegin": 19,
+                "columnBegin": 1,
+                "lineEnd": 23,
+                "columnEnd": 4
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "foo" }, "scope": { "global_": { } } }
+              },
+              "type": { "key": "id<Foo>" },
+              "kind": { "ivar": { "synthesize": false } },
+              "source": {
+                "file": { "key": "test.mm" },
+                "lineBegin": 20,
+                "columnBegin": 3,
+                "lineEnd": 20,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "decl": {
+          "objcContainer": {
+            "key": {
+              "id": { "protocol": { "key": "Foo" } },
+              "source": {
+                "file": { "key": "test.mm" },
+                "lineBegin": 9,
+                "columnBegin": 1,
+                "lineEnd": 13,
+                "columnEnd": 4
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "decl": {
+          "objcMethod": {
+            "key": {
+              "selector": { "key": [ "setInt", "setDouble" ] },
+              "container": { "protocol": { "key": "Foo" } },
+              "signature": {
+                "key": {
+                  "returns": { "key": "void" },
+                  "parameters": [
+                    { "name": { "key": "x" }, "type": { "key": "int" } },
+                    { "name": { "key": "y" }, "type": { "key": "double" } }
+                  ]
+                }
+              },
+              "isInstance": true,
+              "isOptional": false,
+              "isAccessor": false,
+              "source": {
+                "file": { "key": "test.mm" },
+                "lineBegin": 11,
+                "columnBegin": 1,
+                "lineEnd": 11,
+                "columnEnd": 42
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

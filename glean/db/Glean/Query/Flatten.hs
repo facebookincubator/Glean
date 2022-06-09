@@ -231,10 +231,10 @@ flattenFactGen pidRef@(PidRef pid _) kpat vpat = do
           return (mempty, FactGenerator pidRef kpat vpat)
         Schema.Derive when query
           | Schema.DerivedAndStored <- when
-          , Just predicateRef /= deriveStored ->
+          , Just predicateId /= deriveStored ->
                return (mempty, FactGenerator pidRef kpat vpat)
           | otherwise -> do
-            calling predicateRef $ do
+            calling predicateId $ do
               qtransformed <- transformTypeCheckedQuery query
               query' <-
                 expandDerivedPredicateCall details kpat vpat qtransformed
@@ -244,7 +244,7 @@ flattenFactGen pidRef@(PidRef pid _) kpat vpat = do
 
 -- | Catch recursive derived predicates and throw an error, as a
 -- temporary measure until we can handle them.
-calling :: Schema.PredicateRef -> F a -> F a
+calling :: Schema.PredicateId -> F a -> F a
 calling ref inner = do
   stack <- gets flStack
   when (ref `elem` stack) $
@@ -572,7 +572,7 @@ captureKey dbSchema (FlatQuery pat Nothing stmts) ty
   --    $fid is the fact ID
   --    $key is the key
     let
-      pidRef = PidRef (tempPid dbSchema) tempPredicateRef
+      pidRef = PidRef (tempPid dbSchema) tempPredicateId
       pidTy = Angle.PredicateTy pidRef
       retTy = tupleSchema [pidTy, ty, unit]
 

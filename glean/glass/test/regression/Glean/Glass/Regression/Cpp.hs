@@ -34,6 +34,7 @@ main = do
       , testCppFindReferences get
       , testSymbolIdLookup get
       , testCppDescribeSymbolComments get
+      , testCppSearchRelated get
       ]
 
 testCppFindReferences :: IO (Some Backend, Repo) -> Test
@@ -81,3 +82,23 @@ testCppDescribeSymbolComments get = TestLabel "describeSymbolComments" $
         (SymbolId sym)
         expected
         get
+
+testCppSearchRelated :: IO (Some Backend, Repo) -> Test
+testCppSearchRelated get = TestLabel "searchRelated" $ TestList $ concat [
+  "test/cpp/foo" `contains` "test/cpp/foo/S",
+  "test/cpp/foo" `contains` "test/cpp/foo/bar",
+  "test/cpp/foo/bar" `contains` "test/cpp/foo/bar/g"
+  ]
+  where
+    contains :: Text -> Text -> [Test]
+    contains = contains' False
+    contains' :: Bool -> Text -> Text -> [Test]
+    contains' recurse parent child =
+      [ testSearchRelated
+          (SymbolId parent)
+          recurse
+          RelationDirection_Child
+          RelationType_Contains
+          (SymbolId parent, SymbolId child)
+          get
+      ]

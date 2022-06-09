@@ -756,7 +756,7 @@ reorderStmt stmt@(FlatStatement ty lhs gen)
       stmts <- f `catchErrorRestore` \e' -> attemptBindFromType e' f
       let
         pid = Schema.predicatePid details
-        ref = Schema.predicateRef details
+        ref = Schema.predicateId details
         p = PidRef pid ref
         tyKey = Schema.predicateKeyType details
         tyValue = Schema.predicateValueType details

@@ -1261,7 +1261,7 @@ setupLocalSchema service = do
             liftIO $ update (const new)
             let
               numSchemas = length (srcSchemas (schemaSource db))
-              numPredicates = HashMap.size (predicatesByRef db)
+              numPredicates = HashMap.size (predicatesById db)
             output $ "reloading schema [" <>
               pretty numSchemas <> " schemas, " <>
               pretty numPredicates <> " predicates]"
@@ -1270,9 +1270,7 @@ setupLocalSchema service = do
           -- allows the local schema to override whatever was in the DB,
           -- and also allows the local schema to take effect when the
           -- DB is writable.
-          dbConfig' = dbConfig
-            { DB.cfgSchemaSource = schemaTS
-            , DB.cfgSchemaOverride = True }
+          dbConfig' = dbConfig { DB.cfgSchemaSource = schemaTS }
 
         return
           ( Local dbConfig' logging

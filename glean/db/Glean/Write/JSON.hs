@@ -38,6 +38,7 @@ import Util.FFI (invoke)
 
 import Glean.Database.Open
 import Glean.Database.Write.Batch
+import Glean.Database.Schema.Types
 import Glean.Database.Types as Database
 import qualified Glean.FFI as FFI
 import Glean.RTS as RTS
@@ -45,7 +46,6 @@ import Glean.RTS.Builder
 import Glean.RTS.Constants
 import qualified Glean.RTS.Foreign.JSON as J
 import Glean.RTS.Foreign.Subst as Subst (Subst, empty)
-import Glean.Database.Schema
 import Glean.RTS.Types
 import Glean.Angle.Types hiding (Type)
 import Glean.Schema.Util
@@ -130,15 +130,15 @@ writeFacts dbSchema opts builder@FactBuilder{..} pred factList unit = do
         HashMap.insertWith (++) unit [Fid before, Fid (after-1)]
 
 predDetailsForWriting :: DbSchema -> PredicateRef -> IO PredicateDetails
-predDetailsForWriting dbSchema pred = do
-  case lookupPredicateRef pred dbSchema of
-    Just info -> assert (predicateInStoredSchema info) $ return info
+predDetailsForWriting dbSchema (PredicateRef name ver) = do
+  let sourceRef = SourceRef name (Just ver)
+  case lookupPredicateSourceRef sourceRef LatestSchemaAll dbSchema of
+    Right info ->
+      assert (predicateInStoredSchema info) $ return info
       -- it should be impossible for predicateInStoredSchema to be
       -- False because we don't update the schema of a writable DB.
-    _otherwise -> throwIO $ Thrift.Exception $
-      "unknown predicate: " <>
-        predicateRef_name pred <> "." <>
-        showt (predicateRef_version pred)
+    Left err ->
+      throwIO $ Thrift.Exception err
 
 writeFact
   :: DbSchema
@@ -150,7 +150,6 @@ writeFact
 writeFact dbSchema opts builders details str =
   J.withParsed str $ \json ->
     runReaderT (writeJsonFact dbSchema opts details json) builders
-
 
 
 data FactBuilder = FactBuilder

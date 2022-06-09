@@ -20,7 +20,7 @@ import Control.Exception
 import Control.Monad
 import Control.Monad.Except
 import qualified Data.Aeson as Aeson
-import Data.Bifunctor (first)
+import Data.Bifunctor (first, bimap)
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy as LB
@@ -58,6 +58,7 @@ import Util.Log
 import qualified Glean.Angle.Parser as Angle
 import Glean.Angle.Types hiding (Type, FieldDef, SourcePat_(..))
 import qualified Glean.Angle.Types as Angle
+import Glean.Schema.Types (ResolvedType)
 import Glean.Database.Schema.Types
 import Glean.Database.Open
 import Glean.Database.Types as Database
@@ -532,9 +533,10 @@ userQueryImpl
             -- when we compile it to bytecode).
             PredicateDetails
               { predicatePid = pid
+              , predicateRef = PredicateRef (predicateIdName ref) 0
               , predicateKeyType = keyTy
               , predicateValueType = valTy
-              , predicateRef = ref
+              , predicateId = ref
               , predicateSchema = error "predicateSchema"
               , predicateTraversal = error "predicateTraversal"
               , predicateTypecheck = error "predicateTypecheck"
@@ -542,7 +544,7 @@ userQueryImpl
               , predicateInStoredSchema = False
               }
         return $ fromMaybe tmpDetails
-          $ IntMap.lookup (fromIntegral (fromPid pid)) predicatesById
+          $ IntMap.lookup (fromIntegral (fromPid pid)) predicatesByPid
       _ -> throwIO $ Thrift.BadQuery
         "only queries for facts are currently supported"
 
@@ -615,15 +617,12 @@ userQueryImpl
       Just bs -> do
         nextId <- firstFreeId derived
         return $ Just $
-          mkUserQueryCont appliedTrans (Right returnType) bs nextId
+          mkUserQueryCont schema appliedTrans (Right returnType) bs nextId
 
     stats <- getStats qResults
 
     when (isJust userCont) $
       addStatValueType "glean.query.truncated" 1 Stats.Sum
-
-    let pred = predicateRef_name predicateRef <> "." <>
-          showt (predicateRef_version predicateRef)
 
     let results = Results
           { resFacts = Vector.toList queryResultsFacts
@@ -634,7 +633,7 @@ userQueryImpl
           , resDiags = irDiag ++ queryDiag
           , resWriteHandle = maybeWriteHandle
           , resFactsSearched = queryResultsStats
-          , resType = Just pred
+          , resType = Just (showRef predicateRef)
           , resBytecodeSize = Just bytecodeSize
           , resCompileTime = Just compileTime
           , resExecutionTime = Just queryResultsElapsedNs
@@ -666,8 +665,7 @@ userQueryImpl
     let
       opts = fromMaybe def userQuery_options
       stored = Thrift.userQueryOptions_store_derived_facts opts
-      pred = predicateRef_name predicateRef <> "." <>
-          showt (predicateRef_version predicateRef)
+      pred = showRef predicateRef
 
       mkResults pids firstId derived appliedTrans qResults defineOwners = do
         let QueryResults{..} = transformResultsBack appliedTrans qResults
@@ -675,7 +673,8 @@ userQueryImpl
           Nothing -> return Nothing
           Just bs -> do
             nextId <- firstFreeId derived
-            return $ Just $ mkUserQueryCont appliedTrans (Left pids) bs nextId
+            return $ Just $
+              mkUserQueryCont schema appliedTrans (Left pids) bs nextId
 
         stats <- getStats qResults
         when (isJust userCont) $
@@ -999,7 +998,7 @@ parseQuery dbSchema Thrift.UserQueryOptions{..} details val =
   jsonToPredMatch details@PredicateDetails{..} val = do
     let
       badQuery :: Except String a
-      badQuery = queryError (PredicateTy (PidRef predicatePid predicateRef)) val
+      badQuery = queryError (PredicateTy (PidRef predicatePid predicateId)) val
     case val of
       Aeson.Object obj -> do
         case sortOn fst $ HashMap.toList obj of
@@ -1178,12 +1177,13 @@ parseQuery dbSchema Thrift.UserQueryOptions{..} details val =
         Nothing -> return Nothing
 
 mkUserQueryCont
-  :: Transformations
+  :: DbSchema
+  -> Transformations
   -> Either (Set Pid) Type
   -> ByteString
   -> Fid
   -> Thrift.UserQueryCont
-mkUserQueryCont appliedTrans contInfo cont nextId =
+mkUserQueryCont dbSchema appliedTrans contInfo cont nextId =
   hashUserQueryCont $ Thrift.UserQueryCont
   { userQueryCont_continuation = cont
   , userQueryCont_nextId = fromFid nextId
@@ -1195,7 +1195,7 @@ mkUserQueryCont appliedTrans contInfo cont nextId =
   }
   where
     returnType = case contInfo of
-      Right ty -> Just $ serializeType ty
+      Right ty -> Just $ serializeType dbSchema ty
       Left _ -> Nothing
     pids = case contInfo of
       Right _ -> []
@@ -1228,8 +1228,25 @@ hashUserQueryCont Thrift.UserQueryCont{..} = Thrift.UserQueryCont
   , ..
   }
 
-serializeType :: Type -> ByteString
-serializeType = Text.encodeUtf8 . renderStrict . layoutCompact . pretty
+serializeType :: DbSchema -> Type -> ByteString
+serializeType dbSchema =
+  Text.encodeUtf8 . renderStrict . layoutCompact . pretty . toRefs
+  where
+  -- map PredicateId/TypeId back to PredicateRef/TypeRef before
+  -- printing, because compileType will parse it as a normal source
+  -- type. We could shortcut all of this by either making the parser
+  -- accept a fully resolved type, or using some other serialization
+  -- mechanism.
+  toRefs :: Type -> ResolvedType
+  toRefs = bimap toPredRef toTypeRef
+  toPredRef (PidRef _ id)
+    | id == tempPredicateId = PredicateRef (predicateIdName tempPredicateId) 0
+    | otherwise =
+    maybe (error ("toPredRef: " <> Text.unpack (showRef id))) predicateRef $
+      lookupPredicateId id dbSchema
+  toTypeRef (ExpandedType id _) =
+    maybe (error ("toPredRef: " <> Text.unpack (showRef id))) typeRef $
+      lookupTypeId id dbSchema
 
 compileType :: DbSchema -> SchemaVersion -> ByteString -> IO Type
 compileType schema version src = do
@@ -1246,4 +1263,4 @@ compileType schema version src = do
 
     badQuery :: Text -> IO a
     badQuery err = throwIO $ Thrift.BadQuery $ Text.unlines
-      ["unable to compile type: ", err]
+      ["unable to compile type: ", err, "type was: ", Text.decodeUtf8 src]

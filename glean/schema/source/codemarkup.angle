@@ -364,7 +364,8 @@ predicate ContainsChildEntity :
     parent: code.Entity,
     child: code.Entity
   }
-  { { hack = Parent }, { hack = Child } } where
-    codemarkup.hack.HackContainsChildEntity { Parent, Child }
+  { Parent, Child } where
+    (codemarkup.hack.HackContainsChildEntity { P, C }; Parent={hack=P}:code.Entity; Child={hack=C}:code.Entity)|
+    (codemarkup.cxx.CxxContainsChildEntity  { P, C }; Parent={cxx=P}:code.Entity; Child={cxx=C}:code.Entity)
 
 }

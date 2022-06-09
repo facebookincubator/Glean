@@ -56,11 +56,6 @@ data Config = Config
       -- ^ Records whether we're reading the schema from a directory
       -- of source files or not, because some clients (the shell) want
       -- to know this, and it's not avaialble from the ThriftSource.
-  , cfgSchemaOverride :: Bool
-      -- ^ If True, when merging the schema stored in the DB with the
-      -- current schema, predicates and types from the DB schema are
-      -- replaced with those from the current schema. NOTE: this
-      -- option is dangerous and is only for testing.
   , cfgSchemaVersion :: Maybe Version
       -- ^ If set, this is the version of the "all" schema that is
       -- used to resolve unversioned predicates in a query.
@@ -87,7 +82,6 @@ instance Default Config where
     { cfgRoot = Just "."
     , cfgSchemaSource = ThriftSource.value (error "undefined schema")
     , cfgSchemaDir = Nothing
-    , cfgSchemaOverride = False
     , cfgSchemaVersion = Nothing
     , cfgRecipeConfig = def
     , cfgServerConfig = def
@@ -188,7 +182,7 @@ options = do
   cfgRoot <- dbRoot <|> dbTmp
   ~(cfgSchemaDir, cfgSchemaSource) <-
     schemaSourceOption <|> dbSchemaSourceOption
-  cfgSchemaOverride <- switch (long "db-schema-override")
+  _ignored_for_backwards_compat <- switch (long "db-schema-override")
   cfgSchemaVersion <- optional $ option auto
     ( long "schema-version"
     <> metavar "VERSION"

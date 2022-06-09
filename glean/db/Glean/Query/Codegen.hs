@@ -484,7 +484,7 @@ compileQuery (QueryWithInfo query numVars ty) = do
       | Angle.PredicateTy (PidRef pid ref) <-
           derefType (Angle.fieldDefType pidfield) -> do
         traverse <- case ref of
-          PredicateRef "_tmp_" _ -> Just <$>
+          Angle.PredicateId "_tmp_" _ -> Just <$>
             -- detect temporary predicates, see Glean.Query.Flatten.captureKey
             -- TODO: matching like this is a bit janky.
             genTraversal (Angle.fieldDefType key) (Angle.fieldDefType val)

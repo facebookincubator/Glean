@@ -282,7 +282,7 @@ schemaGraph sourceSchemas = Map.fromList
 predicateGraph :: DbSchema -> Map Text [Text]
 predicateGraph dbschema = Map.fromList
   [ (ref, deps)
-  | details <- IntMap.elems (predicatesById dbschema)
+  | details <- IntMap.elems (predicatesByPid dbschema)
   , let ref = showRef (predicateRef details)
         deps = showRef <$> Set.toList (dependencies details)
   ]

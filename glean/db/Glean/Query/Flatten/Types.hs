@@ -109,9 +109,9 @@ instance Pretty FlatStatement where
 data FlattenState = FlattenState
   { flDbSchema :: DbSchema
   , flNextVar :: Int
-  , flDeriveStored :: Maybe PredicateRef
+  , flDeriveStored :: Maybe PredicateId
     -- ^ we should derive this DerivedAndStored predicate
-  , flStack :: [PredicateRef]
+  , flStack :: [PredicateId]
     -- ^ Stack of derived predicates, to prevent recursion. (for now,
     -- until we have support for recursion).
   }
@@ -119,7 +119,7 @@ data FlattenState = FlattenState
 initialFlattenState
   :: DbSchema
   -> Int
-  -> Maybe PredicateRef
+  -> Maybe PredicateId
   -> FlattenState
 initialFlattenState dbSchema nextVar deriveStored = FlattenState
   { flDbSchema = dbSchema

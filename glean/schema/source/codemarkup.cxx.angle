@@ -440,6 +440,52 @@ predicate CxxVisibility:
     );
     ({recordWithAccess={access=Access}}=Scope;{}:{})
 
+#
+# Relations
+#
+
+predicate CxxContainsChildEntity :
+  {
+    parent: code.cxx.Entity,
+    child: code.cxx.Entity
+  }
+  { { decl = Container }, Member } where
+    (
+      { namespace_ = Decl } = Container;
+      { name = NQN } = Decl;
+      Scope = cxx1.Scope {namespace_ = NQN};
+      Member = (
+        (
+          Q = cxx1.QName { scope = Scope };
+          (
+            code.cxx.Entity { decl = { record_ = { name = Q }}}  |
+            code.cxx.Entity { decl = { variable = { name = Q }}} |
+            code.cxx.Entity { decl = { typeAlias = { name = Q }}} |
+            code.cxx.Entity { decl = { enum_ = { name = Q }}}
+          )
+        ) | (
+          D = cxx1.FunctionDeclaration { name = { scope = Scope } };
+          code.cxx.Entity { decl = { function_ = D } }
+        ) | (
+          D = cxx1.NamespaceDeclaration { name = { parent = { just = NQN } } };
+          code.cxx.Entity { decl = { namespace_ = D } }
+        )
+      )
+    ) |
+    (
+      (
+        (
+          { record_ = Decl } = Container;
+          cxx1.RecordDefinition { declaration = Decl, members = cxx1.Declarations Members }
+        ) |
+        (
+          { objcContainer = Decl } = Container;
+          cxx1.ObjcContainerDefinition { declaration = Decl, members = cxx1.Declarations Members }
+        )
+      );
+      Member = code.cxx.Entity {decl = Members[..]}
+    )
+
 }
 
 schema codemarkup.cxx.3 evolves codemarkup.cxx.2

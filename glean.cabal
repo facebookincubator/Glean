@@ -462,6 +462,7 @@ library core
         Glean.Write.SendQueue
         Glean.Write.SendAndRebaseQueue
 
+        Glean.Angle.Hash
         Glean.Angle.Lexer
         Glean.Angle.Parser
         Glean.Angle.Types
@@ -520,6 +521,7 @@ library db
         Glean.Database.Ownership
         Glean.Database.Repo
         Glean.Database.Schema
+        Glean.Database.Schema.ComputeIds
         Glean.Database.Schema.Transform
         Glean.Database.Schema.Types
         Glean.Database.Stats
@@ -1667,6 +1669,7 @@ test-suite dbderive
     ghc-options: -main-is DbDeriveTest
     build-depends:
         glean:client-hs,
+        glean:core,
         glean:db,
         glean:if-glean-hs,
         glean:if-internal-hs,
