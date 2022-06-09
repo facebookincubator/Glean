@@ -21,6 +21,7 @@ import Control.Applicative ((<|>))
 import Control.Monad.Except
 import Control.Monad.State
 import Data.Bifoldable
+import Data.Bifunctor
 import Data.Char
 import Data.Foldable (toList)
 import Data.List.Extra (firstJust)
@@ -159,7 +160,8 @@ needsResult q@(SourceQuery Nothing stmts) = case reverse stmts of
   _ ->
     prettyError err
   where
-    err = "the last statement should be an expression: " <> pretty q
+    err = "the last statement should be an expression: " <>
+      pretty (readable q)
 
 -- add a unit result if the pattern doesn't have a result.
 ignoreResult :: IsSrcSpan s => Pat' s -> Pat' s
@@ -310,7 +312,7 @@ inferExpr ctx pat = case pat of
       _other -> prettyErrorIn pat $
         nest 4 $ vcat
           [ "type error in array element generator:"
-          , "expression: " <> pretty e
+          , "expression: " <> pretty (readable e)
           , "does not have an array type"
           ]
   -- we can infer { just = E } as a maybe:
@@ -325,8 +327,8 @@ inferExpr ctx pat = case pat of
   v@KeyValue{} -> unexpectedValue v
 
   _ -> prettyErrorIn pat $ nest 4 $ vcat
-    [ "can't infer the type of: " <> pretty pat
-    , "try adding a type annotation like (" <> pretty pat <> " : T)"
+    [ "can't infer the type of: " <> pretty (readable pat)
+    , "try adding a type annotation like (" <> pretty (readable pat) <> " : T)"
     , "or reverse the statement (Q = P instead of P = Q)"
     ]
 
@@ -540,7 +542,8 @@ isFactIdAllowed :: IsSrcSpan s => Pat' s -> T ()
 isFactIdAllowed pat = do
   mode <- gets tcMode
   when (mode /= TcModeQuery) $ prettyErrorIn pat $
-    "fact IDs are not allowed in a derived predicate: " <> pretty pat
+    "fact IDs are not allowed in a derived predicate: " <>
+      pretty (readable pat)
 
 falseVal, trueVal :: TcPat
 falseVal = RTS.Alt 0 (RTS.Tuple [])
@@ -556,16 +559,15 @@ mkWild ty
   | RecordTy [] <- derefType ty = RTS.Tuple []
   | otherwise = RTS.Ref (MatchWild ty)
 
-patTypeError :: (IsSrcSpan s, Pretty ty) => Pat' s -> ty -> T a
+patTypeError :: (IsSrcSpan s) => Pat' s -> Type -> T a
 patTypeError = patTypeErrorDesc "type error in pattern"
 
-patTypeErrorDesc
-  :: (IsSrcSpan s, Pretty ty) => Text -> Pat' s -> ty -> T a
+patTypeErrorDesc :: (IsSrcSpan s) => Text -> Pat' s -> Type -> T a
 patTypeErrorDesc desc q ty = prettyErrorIn q $
   nest 4 $ vcat
     [ pretty desc
-    , "pattern: " <> pretty q
-    , "expected type: " <> pretty ty
+    , "pattern: " <> pretty (readable q)
+    , "expected type: " <> pretty (readableType ty)
     ]
 
 data TcMode = TcModeQuery | TcModePredicate
@@ -653,8 +655,8 @@ varOcc ctx span name ty = do
       | otherwise -> prettyErrorAt span $
         nest 4 $ vcat
           [ "type mismatch for variable " <> pretty name
-          , "type of variable: " <> pretty ty'
-          , "expected type: " <> pretty ty
+          , "type of variable: " <> pretty (readableType ty')
+          , "expected type: " <> pretty (readableType ty)
           ]
 
 freeVariablesAreErrors :: T ()
@@ -963,3 +965,12 @@ tcTermUsesNegation = \case
   TcPrimCall _ xs -> firstJust tcPatUsesNegation xs
   -- one can replicate negation using if statements
   TcIf{} -> Just IfStatement
+
+-- | Strip out the hashes before printing types and things in error messages
+readable :: Bifunctor t => t PredicateId TypeId -> t PredicateRef TypeRef
+readable = bimap predicateIdRef typeIdRef
+
+readableType :: Bifunctor t => t PidRef ExpandedType -> t PredicateRef TypeRef
+readableType = bimap pred typ
+  where pred (PidRef _ id) = predicateIdRef id
+        typ (ExpandedType id _) = typeIdRef id
