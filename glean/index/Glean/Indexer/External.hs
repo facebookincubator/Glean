@@ -18,6 +18,7 @@ module Glean.Indexer.External
   , Ext(..)
   , Flavour(..)
   , sendJsonBatches
+  , withExecutable
   ) where
 
 import Control.Exception
@@ -34,6 +35,7 @@ import System.Directory
 import System.FilePath
 import System.IO.Temp
 import System.Process
+import System.Environment
 
 import Control.Concurrent.Stream (stream)
 import Facebook.Fb303
@@ -121,19 +123,20 @@ execExternal Ext{..} env repo IndexerParams{..} = do index; derive
     Json -> do
       jsonBatchDir <- createTempDirectory indexerOutput "glean-json"
       let jsonVars = HashMap.insert "JSON_BATCH_DIR" jsonBatchDir vars
-      callCommand
-        (unwords (extRunScript : map (quoteArg . subst jsonVars) extArgs))
-      files <- listDirectory jsonBatchDir
-      stream maxConcurrency (forM_ files) $ \file -> do
-        batches <- fileToBatches (jsonBatchDir </> file)
-        void $ LocalOrRemote.sendJsonBatch env repo batches Nothing
+      withExecutable extRunScript Nothing $ \exeRunBin -> do
+        callCommand
+          (unwords (exeRunBin : map (quoteArg . subst jsonVars) extArgs))
+        files <- listDirectory jsonBatchDir
+        stream maxConcurrency (forM_ files) $ \file -> do
+          batches <- fileToBatches (jsonBatchDir </> file)
+          void $ LocalOrRemote.sendJsonBatch env repo batches Nothing
 
     Server -> do
       let
         go service = do
           let serverVars = HashMap.insert "GLEAN_SERVER" service vars
-          callCommand
-            (unwords (extRunScript : map (quoteArg . subst serverVars) extArgs))
+          withExecutable extRunScript Nothing $ \exeRunBin -> callCommand
+            (unwords (exeRunBin : map (quoteArg . subst serverVars) extArgs))
       case backendKind env of
         BackendEnv env -> do
           fb303 <- newFb303 "gleandriver"
@@ -161,8 +164,6 @@ execExternal Ext{..} env repo IndexerParams{..} = do index; derive
     where
       q = "'"
 
-
-
 sendJsonBatches
   :: LocalOrRemote.LocalOrRemote b
   => b
@@ -175,3 +176,50 @@ sendJsonBatches backend repo msg val = do
     Aeson.Error s -> throwIO $ ErrorCall $ msg <> ": " <> s
     Aeson.Success x -> return x
   void $ LocalOrRemote.sendJsonBatch backend repo batches Nothing
+
+--
+-- We need to find clang-index,clang-derive, hiedb-indexer etc in $PATH or
+-- in-tree.
+--
+withExecutable :: String -> Maybe FilePath -> (FilePath -> IO ()) -> IO ()
+withExecutable _exeName (Just exePath) f = do
+  exeExists <- doesFileExist exePath
+  if exeExists
+    then f exePath
+    else error $ exePath ++ " does not exist"
+withExecutable exeName Nothing f = do
+  mPath <- findExecutable exeName -- check $PATH
+  case mPath of
+    Just exe -> f exe
+    Nothing -> do -- well maybe we are in-tree, check local build
+      wrapperExePath <- getExecutablePath
+      case inTreeSearchPath wrapperExePath of
+        Just path -> do
+          mPath <- findExecutableRecursive exeName path
+          case mPath of
+            [] -> error $ "Could not find " <> exeName <>
+                     " in $PATH or in " <> path
+            exe:_ -> f exe
+        Nothing -> error $ "Could not find " <> exeName <> " in $PATH"
+
+-- determine if we are invoking glean in-tree, to find the clang-* binaries
+inTreeSearchPath :: FilePath -> Maybe FilePath
+inTreeSearchPath exePath = do
+  case reverse (splitDirectories  exePath) of
+    -- definitely running in tree:
+    ("glean":"glean":"build":"glean":"x":_:xs) -> Just $ joinPath (reverse xs)
+    _ -> Nothing
+
+-- do a silly recursive search in the dist-newstyle under the ghc dirs
+-- > findExecutableRecursive "clang-index" ..path
+--
+findExecutableRecursive :: String -> FilePath -> IO [FilePath]
+findExecutableRecursive exeName dirPath = do
+  mFound <- findExecutablesInDirectories [dirPath] exeName
+  case mFound of
+    exe:_ -> return [exe]
+    [] -> do
+      dirs <- listDirectory dirPath
+      let subDirs = map (dirPath </>) dirs
+      subdirs <- filterM doesDirectoryExist subDirs
+      concat <$> mapM (findExecutableRecursive exeName) subdirs

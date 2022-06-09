@@ -7,13 +7,11 @@
 -}
 
 {-# LANGUAGE ApplicativeDo #-}
-module Glean.Indexer.Cpp ( indexer, findExecutableRecursive ) where
+module Glean.Indexer.Cpp ( indexer ) where
 
 import Control.Concurrent.Async
 import Data.Proxy
 import Options.Applicative
-import System.Directory
-import System.Environment
 import System.Exit
 import System.FilePath
 import System.IO
@@ -27,6 +25,7 @@ import Facebook.Service
 import Glean (sendBatch, clientConfig_serv, showRepo)
 import Glean.Backend (thriftBackendClientConfig)
 import Glean.Indexer
+import Glean.Indexer.External ( withExecutable )
 import Glean.LocalOrRemote ( BackendKind(..),
   LocalOrRemote(..), serializeInventory )
 import Glean.Util.Service
@@ -34,7 +33,6 @@ import Glean.Util.Service
 import qualified Data.ByteString as BS
 import qualified Glean.Handler as GleanHandler
 import qualified Thrift.Server.CppServer as CppServer
-import Control.Monad (filterM)
 
 data Clang = Clang
   { clangIndexBin     :: Maybe FilePath -- ^ path to @clang-index@ binary
@@ -84,53 +82,54 @@ indexer = Indexer {
     derive clangVerbose clangDeriveBin backend repo
   }
 
-  where generateInventory backend repo outFile =
-          serializeInventory backend repo >>= BS.writeFile outFile
+  where
+    generateInventory backend repo outFile =
+      serializeInventory backend repo >>= BS.writeFile outFile
 
-        cmake verbose srcDir tmpDir = withExe "cmake" Nothing $ \cmakeBin ->
-          spawnAndConcurrentLog verbose cmakeBin
-            [ "-DCMAKE_EXPORT_COMPILE_COMMANDS=1"
-            , "-S", srcDir
-            , "-B", tmpDir
-            ]
+    cmake verbose srcDir tmpDir = withExecutable "cmake" Nothing $ \cmakeBin ->
+      spawnAndConcurrentLog verbose cmakeBin
+        [ "-DCMAKE_EXPORT_COMPILE_COMMANDS=1"
+        , "-S", srcDir
+        , "-B", tmpDir
+        ]
 
-        index verbose indexBin inventory srcDir buildDir outFile =
-          withExe "clang-index" indexBin $ \clangIndex -> do
-            let args = [ "-cdb_dir", buildDir
-                       , "-cdb_target", "all"
-                       , "-root", srcDir
-                       , "-dump", outFile
-                       , "--inventory", inventory
-                       , "-logtostderr"
-                       ]
-            logInfo $ "Indexing with: " ++ unwords (clangIndex : args)
-            spawnAndConcurrentLog verbose clangIndex args
+    index verbose indexBin inventory srcDir buildDir outFile =
+      withExecutable "clang-index" indexBin $ \clangIndex -> do
+        let args = [ "-cdb_dir", buildDir
+                    , "-cdb_target", "all"
+                    , "-root", srcDir
+                    , "-dump", outFile
+                    , "--inventory", inventory
+                    , "-logtostderr"
+                    ]
+        logInfo $ "Indexing with: " ++ unwords (clangIndex : args)
+        spawnAndConcurrentLog verbose clangIndex args
 
-        writeToDB backend repo dataFile = do
-          dat <- BS.readFile dataFile
-          case deserializeGen (Proxy :: Proxy Compact) dat of
-            Left parseError -> error parseError
-            Right batch     -> sendBatch backend repo batch
+    writeToDB backend repo dataFile = do
+      dat <- BS.readFile dataFile
+      case deserializeGen (Proxy :: Proxy Compact) dat of
+        Left parseError -> error parseError
+        Right batch     -> sendBatch backend repo batch
 
-        derive verbose deriveBin backend repo =
-          withExe "clang-derive" deriveBin $ \clangDerive -> do
-            let go service = spawnAndConcurrentLog verbose clangDerive
-                  [ "--repo", showRepo repo
-                  , "--service", service
-                  ]
-            case backendKind backend of
-              BackendEnv env -> do
-                fb303 <- newFb303 "gleandriver"
-                let state = GleanHandler.State fb303 env
-                withBackgroundFacebookService
-                  (GleanHandler.fb303State state)
-                  (GleanHandler.handler state)
-                  CppServer.defaultOptions
-                  $ \server ->
-                    go ("localhost:" <> show (CppServer.serverPort server))
-              BackendThrift thrift -> do
-                let clientConfig = thriftBackendClientConfig thrift
-                go $ serviceToString (clientConfig_serv clientConfig)
+    derive verbose deriveBin backend repo =
+      withExecutable "clang-derive" deriveBin $ \clangDerive -> do
+        let go service = spawnAndConcurrentLog verbose clangDerive
+              [ "--repo", showRepo repo
+              , "--service", service
+              ]
+        case backendKind backend of
+          BackendEnv env -> do
+            fb303 <- newFb303 "gleandriver"
+            let state = GleanHandler.State fb303 env
+            withBackgroundFacebookService
+              (GleanHandler.fb303State state)
+              (GleanHandler.handler state)
+              CppServer.defaultOptions
+              $ \server ->
+                go ("localhost:" <> show (CppServer.serverPort server))
+          BackendThrift thrift -> do
+            let clientConfig = thriftBackendClientConfig thrift
+            go $ serviceToString (clientConfig_serv clientConfig)
 
 -- | Simple concurrent logger. Spawn the process and asynchronously log
 -- concise or full contents to stdout. Should use a fancy progress bar really
@@ -155,49 +154,3 @@ spawnAndConcurrentLog verbose exe args = do
       | verbose = putStrLn s
       | otherwise = putChar '.' >> hFlush stdout
 
---
--- We need to find clang-index and clang-derive in $PATH or in-tree
---
-withExe :: FilePath -> Maybe FilePath -> (FilePath -> IO ()) -> IO ()
-withExe _ (Just exePath) f = do
-  exeExists <- doesFileExist exePath
-  if exeExists
-    then f exePath
-    else error $ exePath ++ " does not exist"
-withExe exeName Nothing  f = do
-  -- check $PATH
-  mPath <- findExecutable exeName
-  case mPath of
-    Just exe -> f exe
-    Nothing -> do -- well maybe we are in-tree, check local build
-      wrapperExePath <- getExecutablePath
-      case inTreeSearchPath wrapperExePath of
-        Just path -> do
-          mPath <- findExecutableRecursive exeName path
-          case mPath of
-            [] -> error $ "Could not find " <> exeName <>
-                     " in $PATH or in " <> path
-            exe:_ -> f exe
-        Nothing -> error $ "Could not find " <> exeName <> " in $PATH"
-
--- determine if we are invoking glean in-tree, to find the clang-* binaries
-inTreeSearchPath :: FilePath -> Maybe FilePath
-inTreeSearchPath exePath = do
-  case reverse (splitDirectories  exePath) of
-    -- definitely running in tree:
-    ("glean":"glean":"build":"glean":"x":_:xs) -> Just $ joinPath (reverse xs)
-    _ -> Nothing
-
--- do a silly recursive search in the dist-newstyle under the ghc dirs
--- > findExecutableRecursive "clang-index" ..path
---
-findExecutableRecursive :: String -> FilePath -> IO [FilePath]
-findExecutableRecursive exeName dirPath = do
-  mFound <- findExecutablesInDirectories [dirPath] exeName
-  case mFound of
-    exe:_ -> return [exe]
-    [] -> do
-      dirs <- listDirectory dirPath
-      let subDirs = map (dirPath </>) dirs
-      subdirs <- filterM doesDirectoryExist subDirs
-      concat <$> mapM (findExecutableRecursive exeName) subdirs

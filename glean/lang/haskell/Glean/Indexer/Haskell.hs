@@ -27,7 +27,7 @@ options =
           <> value "hiedb-indexer"
           <> metavar "PATH"
           <> showDefault
-          <> help "path to the hiedb indexer binary"
+          <> help "Path to the hiedb-indexer binary"
       )
     <*> strOption
       ( long "source-root"
@@ -41,30 +41,27 @@ options =
       )
 
 indexer :: Indexer Haskell
-indexer =
-  Indexer
-    { indexerShortName = "haskell-hie"
-    , indexerDescription = "Index Haskell code"
-    , indexerOptParser = options
-    , indexerRun = \Haskell {..} -> do
-        let ext =
-              Ext
-                { extRunScript = haskellBinary
-                , extFlavour = Server
-                , extArgs =
-                    [ "--service"
-                    , "${GLEAN_SERVER}"
-                    , "--repo-name"
-                    , "${TEST_REPO_NAME}"
-                    , "--repo-hash"
-                    , "${TEST_REPO_HASH}"
-                    , "--repo-path"
-                    , haskellRepoRoot
-                    , "--dont-create-db"
-                    , "${TEST_ROOT}"
-                    , ""
-                    ]
-                , extDerivePredicates = []
-                }
-        indexerRun externalIndexer ext
-    }
+indexer = Indexer
+  { indexerShortName = "haskell-hie"
+  , indexerDescription = "Index Haskell code"
+  , indexerOptParser = options
+  , indexerRun = \Haskell{..} -> do
+      indexerRun externalIndexer $ Ext
+        { extRunScript = haskellBinary
+        , extFlavour = Server
+        , extArgs =
+            [ "--service"
+            , "${GLEAN_SERVER}"
+            , "--repo-name"
+            , "${TEST_REPO_NAME}"
+            , "--repo-hash"
+            , "${TEST_REPO_HASH}"
+            , "--repo-path"
+            , haskellRepoRoot
+            , "--dont-create-db"
+            , "${TEST_ROOT}"
+            , ""
+            ]
+        , extDerivePredicates = []
+        }
+  }
