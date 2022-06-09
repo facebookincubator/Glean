@@ -38,7 +38,8 @@ instance Arbitrary Pid where
 instance Arbitrary PidRef where
   arbitrary = do
     pid <- arbitrary
-    return $ PidRef pid $ T.PredicateId ("P" <> Text.pack (show pid)) hash0
+    return $ PidRef pid $
+      T.PredicateId (T.PredicateRef ("P" <> Text.pack (show pid)) 0) hash0
 
 instance Arbitrary Type where
   arbitrary = oneof

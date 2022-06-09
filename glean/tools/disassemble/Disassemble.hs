@@ -78,11 +78,12 @@ predicateTypecheckers schema args = do
       let sourceRef = parseRef ref
       either (die . Text.unpack) return
         $ lookupPredicateSourceRef sourceRef LatestSchemaAll schema
-  forM_ (sortOn predicateRef preds) $ \PredicateDetails{..} -> do
+  forM_ (sortOn predicateRef preds) $ \d@PredicateDetails{..} -> do
+    let PredicateRef{..} = predicateRef d
     mapM_ Text.putStrLn $ disassemble
       ("ptc_"
-        <> predicateRef_name predicateRef
+        <> predicateRef_name
         <> "."
-        <> Text.pack (show $ predicateRef_version predicateRef))
+        <> Text.pack (show $ predicateRef_version))
       predicateTypecheck
     putStrLn ""

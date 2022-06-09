@@ -49,7 +49,7 @@ dump backend repo withBatch = doDump =<< loadDbSchema backend repo
                   fact_value
                 `catchAll` \exc -> throwIO $ ErrorCall $ show exc
             withBatch JsonFactBatch
-              { jsonFactBatch_predicate = predicateRef
+              { jsonFactBatch_predicate = predicateRef details
               , jsonFactBatch_facts = jsonFacts
               , jsonFactBatch_unit = Nothing -- TODO?
               }

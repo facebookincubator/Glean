@@ -20,6 +20,7 @@ module Glean.Angle.Types
   , PredicateRef(..)
   , TypeRef(..)
   , PredicateId(..)
+  , tempPredicateId
   , TypeId(..)
 
   -- * Source locations
@@ -439,24 +440,42 @@ data PredicateDef_ s pref tref = PredicateDef
 -- | Globally unique identifier for a predicate. This is not the same
 -- as a Pid, which is unique only within a particular DB.
 data PredicateId = PredicateId
-  { predicateIdName :: Text  -- ^ e.g. python.Name
-  , predicateIdHash :: Hash
-  } deriving (Eq, Ord, Generic, Show)
+  { predicateIdRef :: PredicateRef  -- ^ e.g. python.Name.1
+  , predicateIdHash :: {-# UNPACK #-} !Hash
+  } deriving (Ord, Generic, Show)
 
 instance Hashable PredicateId where
   hashWithSalt s (PredicateId _ h) = hashFingerprint s h
+
+instance Eq PredicateId where
+  PredicateId _ a == PredicateId _ b = a == b
+
+instance Binary PredicateRef where
+  put (PredicateRef a b) = put a >> put b
+  get = PredicateRef <$> get <*> get
 
 instance Binary PredicateId
   -- TODO maybe just serialize the hash?
 
 -- | Globally unique identifier for a type.
 data TypeId = TypeId
-  { typeIdName :: Text -- ^ e.g. python.Declaration
-  , typeIdHash :: Hash
-  } deriving (Eq, Ord, Generic, Show)
+  { typeIdRef :: TypeRef -- ^ e.g. python.Declaration.1
+  , typeIdHash :: {-# UNPACK #-} !Hash
+  } deriving (Ord, Generic, Show)
 
 instance Hashable TypeId where
   hashWithSalt s (TypeId _ h) = hashFingerprint s h
+
+instance Eq TypeId where
+  TypeId _ a == TypeId _ b = a == b
+
+-- Used by query compilation
+tempPredicateId :: PredicateId
+tempPredicateId = PredicateId (PredicateRef "_tmp_" 0) hash0
+
+instance Binary TypeRef where
+  put (TypeRef a b) = put a >> put b
+  get = TypeRef <$> get <*> get
 
 instance Binary TypeId
   -- TODO maybe just serialize the hash?

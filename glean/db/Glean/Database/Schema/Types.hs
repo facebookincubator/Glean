@@ -10,6 +10,7 @@ module Glean.Database.Schema.Types
   ( DbSchema(..)
   , RefTargetId
   , PredicateDetails(..)
+  , predicateRef
   , PredicateTransformation(..)
   , SchemaVersion(..)
   , schemaNameEnv
@@ -34,7 +35,6 @@ import qualified Data.Set as Set
 import Data.Text (Text)
 
 import Glean.Angle.Types as Schema hiding (Type, FieldDef)
-import Glean.Angle.Hash
 import qualified Glean.Angle.Types as Schema
 import Glean.Query.Typecheck.Types
 import Glean.RTS.Foreign.Bytecode (Subroutine)
@@ -83,14 +83,12 @@ data PredicateTransformation = PredicateTransformation
 
 data TypeDetails = TypeDetails
   { typeId :: TypeId
-  , typeRef :: TypeRef
   , typeType :: Type
   }
 
 data PredicateDetails = PredicateDetails
   { predicatePid :: Pid
   , predicateId :: PredicateId
-  , predicateRef :: PredicateRef
   , predicateSchema :: PredicateDef
   , predicateKeyType :: Type
   , predicateValueType :: Type
@@ -101,6 +99,9 @@ data PredicateDetails = PredicateDetails
     -- ^ True if this prediate is part of the schema stored in the DB.
     -- Only predicates in the stored schema can be written.
   }
+
+predicateRef :: PredicateDetails -> PredicateRef
+predicateRef = predicateIdRef . predicateId
 
 data SchemaVersion
   = LatestSchemaAll
@@ -117,8 +118,10 @@ schemaNameEnv dbSchema schemaVer =
 
 addTmpPredicate :: NameEnv RefTargetId -> NameEnv RefTargetId
 addTmpPredicate =
-  HashMap.insert tmp (Set.singleton (RefPred tempPredicateId))
-  where tmp = SourceRef (predicateIdName tempPredicateId) (Just 0)
+  HashMap.insert sourceRef (Set.singleton (RefPred tempPredicateId))
+  where
+  PredicateRef name ver = predicateIdRef tempPredicateId
+  sourceRef = SourceRef name (Just ver)
 
 lookupSourceRef
   :: SourceRef
@@ -155,9 +158,6 @@ lookupPid (Pid pid) = IntMap.lookup (fromIntegral pid) . predicatesByPid
 
 lookupTypeId :: TypeId -> DbSchema -> Maybe TypeDetails
 lookupTypeId ref  = HashMap.lookup ref . typesById
-
-tempPredicateId :: PredicateId
-tempPredicateId = PredicateId "_tmp_" hash0
 
 tempPid :: DbSchema -> Pid
 tempPid = succ . schemaMaxPid

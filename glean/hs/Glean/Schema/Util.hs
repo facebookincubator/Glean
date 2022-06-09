@@ -100,10 +100,10 @@ instance ShowRef PredicateRef where
   showRef = showRef . convertRef
 
 instance ShowRef PredicateId where
-  showRef (PredicateId name hash) = name <> "." <> Text.pack (show hash)
+  showRef (PredicateId name hash) = showRef name <> "." <> Text.pack (show hash)
 
 instance ShowRef TypeId where
-  showRef (TypeId name hash) = name <> "." <> Text.pack (show hash)
+  showRef (TypeId name hash) = showRef name <> "." <> Text.pack (show hash)
 
 type NameSpaces = [Text]
 

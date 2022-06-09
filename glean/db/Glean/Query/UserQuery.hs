@@ -533,7 +533,6 @@ userQueryImpl
             -- when we compile it to bytecode).
             PredicateDetails
               { predicatePid = pid
-              , predicateRef = PredicateRef (predicateIdName ref) 0
               , predicateKeyType = keyTy
               , predicateValueType = valTy
               , predicateId = ref
@@ -617,7 +616,7 @@ userQueryImpl
       Just bs -> do
         nextId <- firstFreeId derived
         return $ Just $
-          mkUserQueryCont schema appliedTrans (Right returnType) bs nextId
+          mkUserQueryCont appliedTrans (Right returnType) bs nextId
 
     stats <- getStats qResults
 
@@ -633,7 +632,7 @@ userQueryImpl
           , resDiags = irDiag ++ queryDiag
           , resWriteHandle = maybeWriteHandle
           , resFactsSearched = queryResultsStats
-          , resType = Just (showRef predicateRef)
+          , resType = Just (showRef (predicateRef details))
           , resBytecodeSize = Just bytecodeSize
           , resCompileTime = Just compileTime
           , resExecutionTime = Just queryResultsElapsedNs
@@ -665,7 +664,7 @@ userQueryImpl
     let
       opts = fromMaybe def userQuery_options
       stored = Thrift.userQueryOptions_store_derived_facts opts
-      pred = showRef predicateRef
+      pred = showRef (predicateRef details)
 
       mkResults pids firstId derived appliedTrans qResults defineOwners = do
         let QueryResults{..} = transformResultsBack appliedTrans qResults
@@ -674,7 +673,7 @@ userQueryImpl
           Just bs -> do
             nextId <- firstFreeId derived
             return $ Just $
-              mkUserQueryCont schema appliedTrans (Left pids) bs nextId
+              mkUserQueryCont appliedTrans (Left pids) bs nextId
 
         stats <- getStats qResults
         when (isJust userCont) $
@@ -737,7 +736,7 @@ userQueryImpl
             { Thrift.userQueryFacts_facts =
               [ def { Thrift.factQuery_id = i
                     , Thrift.factQuery_predicate_version =
-                        Just (predicateRef_version predicateRef) }
+                        Just (predicateRef_version (predicateRef details)) }
               | Fid i <- ids ]
             , Thrift.userQueryFacts_options = Just opts }
 
@@ -1177,13 +1176,12 @@ parseQuery dbSchema Thrift.UserQueryOptions{..} details val =
         Nothing -> return Nothing
 
 mkUserQueryCont
-  :: DbSchema
-  -> Transformations
+  :: Transformations
   -> Either (Set Pid) Type
   -> ByteString
   -> Fid
   -> Thrift.UserQueryCont
-mkUserQueryCont dbSchema appliedTrans contInfo cont nextId =
+mkUserQueryCont appliedTrans contInfo cont nextId =
   hashUserQueryCont $ Thrift.UserQueryCont
   { userQueryCont_continuation = cont
   , userQueryCont_nextId = fromFid nextId
@@ -1195,7 +1193,7 @@ mkUserQueryCont dbSchema appliedTrans contInfo cont nextId =
   }
   where
     returnType = case contInfo of
-      Right ty -> Just $ serializeType dbSchema ty
+      Right ty -> Just $ serializeType ty
       Left _ -> Nothing
     pids = case contInfo of
       Right _ -> []
@@ -1228,8 +1226,8 @@ hashUserQueryCont Thrift.UserQueryCont{..} = Thrift.UserQueryCont
   , ..
   }
 
-serializeType :: DbSchema -> Type -> ByteString
-serializeType dbSchema =
+serializeType :: Type -> ByteString
+serializeType =
   Text.encodeUtf8 . renderStrict . layoutCompact . pretty . toRefs
   where
   -- map PredicateId/TypeId back to PredicateRef/TypeRef before
@@ -1239,14 +1237,8 @@ serializeType dbSchema =
   -- mechanism.
   toRefs :: Type -> ResolvedType
   toRefs = bimap toPredRef toTypeRef
-  toPredRef (PidRef _ id)
-    | id == tempPredicateId = PredicateRef (predicateIdName tempPredicateId) 0
-    | otherwise =
-    maybe (error ("toPredRef: " <> Text.unpack (showRef id))) predicateRef $
-      lookupPredicateId id dbSchema
-  toTypeRef (ExpandedType id _) =
-    maybe (error ("toPredRef: " <> Text.unpack (showRef id))) typeRef $
-      lookupTypeId id dbSchema
+  toPredRef (PidRef _ id) = predicateIdRef id
+  toTypeRef (ExpandedType id _) = typeIdRef id
 
 compileType :: DbSchema -> SchemaVersion -> ByteString -> IO Type
 compileType schema version src = do

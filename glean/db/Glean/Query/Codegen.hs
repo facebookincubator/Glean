@@ -50,7 +50,7 @@ import qualified Util.FFI as FFI
 import Util.Log
 import qualified Util.Log.Text as TextLog
 
-import Glean.Angle.Types (IsWild(..), PrimOp(..))
+import Glean.Angle.Types (IsWild(..), PrimOp(..), tempPredicateId)
 import qualified Glean.Angle.Types as Angle
 import Glean.Bytecode.Types
 import qualified Glean.FFI as FFI
@@ -483,12 +483,14 @@ compileQuery (QueryWithInfo query numVars ty) = do
     Angle.RecordTy [ pidfield, key, val ]
       | Angle.PredicateTy (PidRef pid ref) <-
           derefType (Angle.fieldDefType pidfield) -> do
-        traverse <- case ref of
-          Angle.PredicateId "_tmp_" _ -> Just <$>
+        traverse <-
+          if ref == tempPredicateId then
+            Just <$>
             -- detect temporary predicates, see Glean.Query.Flatten.captureKey
             -- TODO: matching like this is a bit janky.
-            genTraversal (Angle.fieldDefType key) (Angle.fieldDefType val)
-          _otherwise -> return Nothing
+              genTraversal (Angle.fieldDefType key) (Angle.fieldDefType val)
+          else
+            return Nothing
         return (Just pid, traverse)
     _other -> throwIO $ ErrorCall "unrecognised query return type"
 

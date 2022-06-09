@@ -9,6 +9,7 @@
 module Glean.Database.Schema
   ( DbSchema(..)
   , PredicateDetails(..)
+  , predicateRef
   , TypeDetails(..)
   , schemaSize, schemaPredicates
   , fromSchemaInfo, toSchemaInfo
@@ -260,11 +261,11 @@ inventory :: [PredicateDetails] -> Inventory
 inventory ps = Inventory.new
   [ Inventory.CompiledPredicate
       { compiledPid = predicatePid
-      , compiledRef = predicateRef
+      , compiledRef = predicateRef d
       , compiledTypecheck = predicateTypecheck
       , compiledTraversal = predicateTraversal
       }
-    | PredicateDetails{..} <- ps ]
+    | d@PredicateDetails{..} <- ps ]
 
 -- |
 -- Make a DbSchema for an existing database, using the predicates
@@ -350,7 +351,7 @@ mkDbSchema validate getPids dbContent source base addition = do
         DeriveIfEmpty -> True
     useOfNegation ref = HashMap.lookup ref usingNegation
 
-  forM_ (tcEnvPredicates tcEnv) $ \PredicateDetails{..} ->
+  forM_ (tcEnvPredicates tcEnv) $ \d@PredicateDetails{..} ->
     when (isStored predicateDeriving) $
       case useOfNegation predicateId of
         Nothing -> return ()
@@ -361,7 +362,7 @@ mkDbSchema validate getPids dbContent source base addition = do
           in
           throwIO $ Thrift.Exception
           $ "use of " <> feature  <> " is not allowed in a stored predicate: "
-          <> showRef predicateRef
+          <> showRef (predicateRef d)
 
   let predicates = HashMap.elems (tcEnvPredicates tcEnv)
 
@@ -452,14 +453,14 @@ checkForChanges MustBeEqual
   where
   go = do
     let types = HashMap.toList typesStored ++ HashMap.toList typesAdded
-    forM_ types $ \(id, (ref, _)) -> do
+    forM_ types $ \(id, _) -> do
       (errs, pids, tids) <- State.get
-      let (err, tids') = insert "type" ref id tids
+      let (err, tids') = insert "type" (typeIdRef id) id tids
       State.put (err <> errs, pids, tids')
     let preds = HashMap.toList predsStored ++ HashMap.toList predsAdded
-    forM_ preds $ \(id, (ref, _)) -> do
+    forM_ preds $ \(id, _) -> do
       (errs, pids, tids) <- State.get
-      let (err, pids') = insert "predicate" ref id pids
+      let (err, pids') = insert "predicate" (predicateIdRef id) id pids
       State.put (err <> errs, pids', tids)
 
   insert thing ref id tids
@@ -593,7 +594,8 @@ transformedPredicates stats byRef refToId resolved =
 
     exportsResolved :: ResolvedSchemaRef -> Map Name PidRef
     exportsResolved schema = Map.fromList
-      [ (predicateIdName id, PidRef (predicatePid details) id)
+      [ (predicateRef_name (predicateIdRef id),
+          PidRef (predicatePid details) id)
       | ref <- map predicateDefRef $ HashMap.elems $
           resolvedSchemaPredicates schema
           <> resolvedSchemaReExportedPredicates schema
@@ -638,17 +640,16 @@ typecheckSchemas idToPid dbContent
     --
     -- Also note we need a lazy HashMap here to avoid forcing the
     -- elements too early, which would also cause a loop.
-    typedefs :: Lazy.HashMap.HashMap TypeId (TypeRef, Maybe RTS.Type)
+    typedefs :: Lazy.HashMap.HashMap TypeId (Maybe RTS.Type)
     typedefs = Lazy.HashMap.fromList
-      [ (id, (ref, rtsType (typeDefType def)))
-      | (id, (ref, def)) <-
-          HashMap.toList typesStored ++ HashMap.toList typesAdded ]
+      [ (id, rtsType (typeDefType def))
+      | (id, def) <- HashMap.toList typesStored ++ HashMap.toList typesAdded ]
 
     lookupType :: TypeId -> Maybe RTS.Type
     lookupType ref =
       case Lazy.HashMap.lookup ref typedefs of
         Nothing -> Nothing
-        Just (_, r) -> r
+        Just r -> r
 
     rtsType = mkRtsType lookupType (`HashMap.lookup` idToPid)
 
@@ -657,7 +658,7 @@ typecheckSchemas idToPid dbContent
       map (True,) (HashMap.toList predsStored) ++
       map (False,) (HashMap.toList predsAdded)
 
-  predicates <- fmap catMaybes $ forM preds $ \(stored, (id,(ref,def))) ->
+  predicates <- fmap catMaybes $ forM preds $ \(stored, (id,def)) ->
       case
           ( HashMap.lookup (predicateDefRef def) idToPid
           , rtsType $ predicateDefKeyType def
@@ -667,7 +668,6 @@ typecheckSchemas idToPid dbContent
           traversal <- genTraversal keyType valueType
           return $ Just PredicateDetails
             { predicatePid = pid
-            , predicateRef = ref
             , predicateId = id
             , predicateSchema = def
             , predicateKeyType = keyType
@@ -685,8 +685,8 @@ typecheckSchemas idToPid dbContent
         | details@PredicateDetails{..} <- predicates ]
 
     types = HashMap.fromList
-        [ (id, TypeDetails id ref ty)
-        | (id, (ref, Just ty)) <- HashMap.toList typedefs ]
+        [ (id, TypeDetails id ty)
+        | (id, Just ty) <- HashMap.toList typedefs ]
 
     -- Build the environment in which we typecheck predicates from
     -- this schema.

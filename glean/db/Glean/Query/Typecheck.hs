@@ -104,7 +104,8 @@ typecheckDeriving tcEnv ver rtsType PredicateDetails{..} derivingInfo = do
     flip runStateT state $ do
     flip catchError
       (\e -> throwError $ "In " <>
-        Text.pack (show (pretty predicateRef)) <> ":\n  " <> e) $ do
+        Text.pack (show (pretty (predicateIdRef predicateId))) <>
+          ":\n  " <> e) $ do
       case derivingInfo of
         NoDeriving -> return NoDeriving
         Derive deriveWhen q -> do
