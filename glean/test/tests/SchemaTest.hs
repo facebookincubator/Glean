@@ -893,7 +893,7 @@ schemaEvolves = TestList
           Right _ -> True
           Left _ -> False
 
-  , TestLabel "cannot remove option" $ TestCase $ do
+  , TestLabel "can remove option" $ TestCase $ do
     withSchema latestAngleVersion
       [s|
         schema test.1 {
@@ -906,12 +906,10 @@ schemaEvolves = TestList
         schema all.1 : test.1, test.2 {}
       |]
       $ \r ->
-      assertBool "error states missing option" $
+      assertBool "succeeds creating schema" $
         case r of
-          Left err ->
-            "missing required option: c"
-            `isInfixOf` show err
-          Right _ -> False
+          Right _ -> True
+          Left _ -> False
 
 
   , TestLabel "can change order of options" $ TestCase $ do

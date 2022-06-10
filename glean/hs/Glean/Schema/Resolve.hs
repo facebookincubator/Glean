@@ -545,8 +545,9 @@ canEvolve types evolvedBy new old = go new old
         newRequiredFields = Map.keys (required addedFields)
         removedRequiredFields = Map.keys (required removedFields)
 
-        removedFieldsError =
-          case removedRequiredFields  of
+        removedFieldsError = case optName of
+          Option -> Nothing
+          FieldOpt -> case removedRequiredFields  of
             [] -> Nothing
             fields -> Just $ "missing required " <> plural optName fields
               <> ": " <> Text.unwords fields
