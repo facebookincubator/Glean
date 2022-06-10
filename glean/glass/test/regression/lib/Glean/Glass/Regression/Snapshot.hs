@@ -12,7 +12,12 @@
 -- Simple snapshot testing framework for Glass methods
 --
 
-module Glean.Glass.Regression.Snapshot where
+module Glean.Glass.Regression.Snapshot (
+    mainGlassSnapshot,
+    mainGlassSnapshotGeneric,
+    Cfg(..),
+    Output, Getter
+  ) where
 
 import Data.Aeson
 import qualified Data.Aeson as Aeson
@@ -25,6 +30,7 @@ import System.Exit ( ExitCode(ExitFailure, ExitSuccess) )
 import System.FilePath
 import System.IO.Temp (withSystemTempDirectory)
 import System.Process ( readProcessWithExitCode )
+import Options.Applicative (Parser)
 import Test.HUnit ( Test(..), assertFailure )
 import qualified Data.Aeson.Encode.Pretty as J
 import qualified Data.ByteString as S
@@ -37,13 +43,14 @@ import qualified Thrift.Protocol.JSON as Thrift
 
 import Glean ( Repo, Backend )
 import Glean.Util.Some ( Some )
-import Glean.Regression.Test ( mainTestIndex )
+import Glean.Regression.Test
 import qualified Glean.Indexer as Glean
 
 import qualified Glean.Glass.Handler as Glass
 import Glean.Glass.Types as Glass
 import Glean.Glass.Env as Glass ( Env )
 import Glean.Glass.Regression.Util as Glass ( withTestEnv )
+import qualified Glean.Regression.Snapshot.Driver as Glean
 
 newtype Cfg =
   Cfg {
@@ -65,6 +72,8 @@ instance FromJSON Query where
 
 type Output = FilePath
 
+type Getter = IO (Some Backend, Repo)
+
 findQueries :: FilePath -> IO (Map.Map String FilePath)
 findQueries root = do
   files <- listDirectory root
@@ -83,21 +92,39 @@ parseQuery qfile = do
     Right q ->
       return q
 
-type Getter = IO (Some Backend, Repo)
-
 mainGlassSnapshot
   :: String
   -> FilePath
   -> Glean.Indexer opts
   -> (Getter -> [Test])
   -> IO ()
-mainGlassSnapshot testName testRoot indexer extras = do
+mainGlassSnapshot testName testRoot indexer extras =
+  mainGlassSnapshot_ testName testRoot
+    (Glean.driverFromIndexer indexer) (pure ()) extras
+
+mainGlassSnapshotGeneric
+  :: String
+  -> FilePath
+  -> Glean.Driver opts
+  -> (Getter -> [Test])
+  -> IO ()
+mainGlassSnapshotGeneric testName testRoot driver extras =
+  mainGlassSnapshot_ testName testRoot driver (pure ()) extras
+
+mainGlassSnapshot_
+  :: String
+  -> FilePath
+  -> Glean.Driver opts
+  -> Parser extraOpts
+  -> (Getter -> [Test])
+  -> IO ()
+mainGlassSnapshot_ testName testRoot driver extraOpts extras = do
   -- just check for --replace, everything else is passed through
   -- really want to compose these with the underlying testsuite's options
   cfgReplace <- ("--replace" `elem`) <$> getArgs
   qs <- findQueries testRoot
   withOutput cfgOutput $ \temp ->
-    mainTestIndex testName indexer $ \get ->
+    mainTestIndexGeneric driver extraOpts testName $ \_ _ _ _ get ->
       TestList $ testAll cfgReplace temp qs get : extras get
   where
     cfgOutput = Nothing
@@ -187,7 +214,7 @@ writeResult :: (ToJSON a, SortedResponse a) => FilePath -> a -> IO ()
 writeResult oFile res = B.writeFile oFile content
   where
     generatedTag = '@':"generated"
-    content = J.encodePretty' cfg $ (generatedTag,sorted res)
+    content = J.encodePretty' cfg (generatedTag,sorted res)
 
     cfg = J.defConfig {
       J.confCompare = compare
@@ -197,12 +224,13 @@ class SortedResponse a where
   sorted :: a -> a
 
 instance SortedResponse DocumentSymbolListXResult where
-  sorted (DocumentSymbolListXResult refs defs rev) =
-    DocumentSymbolListXResult (sorted refs) (sorted defs) rev
+  sorted (DocumentSymbolListXResult refs defs _rev) =
+    DocumentSymbolListXResult (sorted refs) (sorted defs) (Revision "testhash")
+      -- n.b. don't want to include any test group revision tags
 
 instance SortedResponse DocumentSymbolIndex where
-  sorted (DocumentSymbolIndex syms rev size) =
-    DocumentSymbolIndex (Map.map sort syms) rev size
+  sorted (DocumentSymbolIndex syms _rev size) =
+    DocumentSymbolIndex (Map.map sort syms) (Revision "testhash") size
 
 instance SortedResponse SearchByNameResult where
   sorted (SearchByNameResult syms deets) =
@@ -218,7 +246,8 @@ instance Ord a => SortedResponse [a] where
 instance SortedResponse Range where sorted = id
 instance SortedResponse Location where sorted = id
 instance SortedResponse LocationRange where sorted = id
-instance SortedResponse SymbolDescription where sorted = id
+instance SortedResponse SymbolDescription where
+  sorted sd = sd { symbolDescription_repo_hash = "testhash" }
 
 diff :: FilePath -> FilePath -> IO ()
 diff outGenerated outSpec = do

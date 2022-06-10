@@ -13,31 +13,30 @@ import qualified Glean.Clang.Test.DerivePass as DerivePass
 
 import Test.HUnit
 
-import Glean.Regression.Test
-
 import Data.Bifunctor
 import Data.Text (Text)
 
-import Glean
-import Glean.Util.Some
-
 import Glean.Glass.Types
 import Glean.Glass.Regression.Tests
+import Glean.Glass.Regression.Snapshot
 
 main :: IO ()
-main = do
-  let driver = DerivePass.driver [DeriveTargetUses, DeriveDeclFamilies]
-  let name = "glass-regression-cpp"
-  mainTestIndexGeneric driver (pure ()) name $ \_ _ _ _ get ->
-    TestList
-      [ testDocumentSymbolListX (Path "test.cpp") get
-      , testCppFindReferences get
-      , testSymbolIdLookup get
-      , testCppDescribeSymbolComments get
-      , testCppSearchRelated get
-      ]
+main = mainGlassSnapshotGeneric testName testPath driver unitTests
+  where
+    driver = DerivePass.driver [DeriveTargetUses, DeriveDeclFamilies]
+    testName = "glass-regression-cpp"
+    testPath = "glean/glass/test/regression/tests/cpp"
 
-testCppFindReferences :: IO (Some Backend, Repo) -> Test
+unitTests :: Getter -> [Test]
+unitTests get =
+  [ testDocumentSymbolListX (Path "test.cpp") get
+  , testCppFindReferences get
+  , testSymbolIdLookup get
+  , testCppDescribeSymbolComments get
+  , testCppSearchRelated get
+  ]
+
+testCppFindReferences :: Getter -> Test
 testCppFindReferences get = TestLabel "findReferences" $ TestList [
   "test/cpp/foo/S" --> [("test.cpp", 1)],
   "test/cpp/foo/bar/T" --> [("test.cpp", 1)],
@@ -53,7 +52,7 @@ testCppFindReferences get = TestLabel "findReferences" $ TestList [
         (map (first Path) expected)
         get
 
-testSymbolIdLookup :: IO (Some Backend, Repo) -> Test
+testSymbolIdLookup :: Getter -> Test
 testSymbolIdLookup get = TestLabel "describeSymbol" $ TestList [
   "test/cpp/foo" --> "test.cpp",
   "test/cpp/foo/f" --> "test.cpp",
@@ -70,7 +69,7 @@ testSymbolIdLookup get = TestLabel "describeSymbol" $ TestList [
         (Path expected)
         get
 
-testCppDescribeSymbolComments :: IO (Some Backend, Repo) -> Test
+testCppDescribeSymbolComments :: Getter -> Test
 testCppDescribeSymbolComments get = TestLabel "describeSymbolComments" $
   TestList [
     "test/cpp/foo/f" --> (13,1)
@@ -83,7 +82,7 @@ testCppDescribeSymbolComments get = TestLabel "describeSymbolComments" $
         expected
         get
 
-testCppSearchRelated :: IO (Some Backend, Repo) -> Test
+testCppSearchRelated :: Getter -> Test
 testCppSearchRelated get = TestLabel "searchRelated" $ TestList $ concat [
   "test/cpp/foo" `contains` "test/cpp/foo/S",
   "test/cpp/foo" `contains` "test/cpp/foo/bar",

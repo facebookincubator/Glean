@@ -1,0 +1,24 @@
+[
+    "@generated",
+    {
+        "annotations": [],
+        "comments": [],
+        "kind": 14,
+        "location": {
+            "filepath": "test.cpp",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 2,
+                "lineBegin": 26,
+                "lineEnd": 31
+            },
+            "repository": "test"
+        },
+        "name": {
+            "container": "",
+            "localName": "h"
+        },
+        "repo_hash": "testhash",
+        "sym": "test/cpp/h"
+    }
+]

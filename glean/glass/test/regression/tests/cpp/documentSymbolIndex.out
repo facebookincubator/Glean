@@ -1,0 +1,712 @@
+[
+    "@generated",
+    {
+        "revision": "testhash",
+        "size": 19,
+        "symbols": {
+            "11": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolSignature": {
+                            "aString": "struct foo::S"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 8,
+                        "columnEnd": 9,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 12,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "sym": "test/cpp/foo/S"
+                }
+            ],
+            "16": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolParent": {
+                            "aString": "foo"
+                        },
+                        "symbolSignature": {
+                            "aString": "void foo::f()"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "sym": "test/cpp/foo/f"
+                }
+            ],
+            "18": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 6
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolSignature": {
+                            "aString": "namespace foo::bar"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 11,
+                        "columnEnd": 14,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 18,
+                        "lineEnd": 23
+                    },
+                    "sym": "test/cpp/foo/bar"
+                }
+            ],
+            "20": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolSignature": {
+                            "aString": "struct foo::bar::T"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 8,
+                        "columnEnd": 9,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 12,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "sym": "test/cpp/foo/bar/T"
+                }
+            ],
+            "21": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolParent": {
+                            "aString": "bar"
+                        },
+                        "symbolSignature": {
+                            "aString": "void foo::bar::g()"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "sym": "test/cpp/foo/bar/g"
+                }
+            ],
+            "26": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolSignature": {
+                            "aString": "void ::h()"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 26,
+                        "lineEnd": 26
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 26,
+                        "lineEnd": 31
+                    },
+                    "sym": "test/cpp/h"
+                }
+            ],
+            "27": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 6
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolSignature": {
+                            "aString": "namespace foo"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 6,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "sym": "test/cpp/foo",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 9,
+                            "lineEnd": 24
+                        },
+                        "repository": "test"
+                    },
+                    "targetName": {
+                        "columnBegin": 11,
+                        "columnEnd": 14,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolParent": {
+                            "aString": "S"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct foo::S"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 9,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "sym": "test/cpp/foo/S",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 12,
+                            "lineBegin": 11,
+                            "lineEnd": 11
+                        },
+                        "repository": "test"
+                    },
+                    "targetName": {
+                        "columnBegin": 8,
+                        "columnEnd": 9,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolParent": {
+                            "aString": "s"
+                        },
+                        "symbolSignature": {
+                            "aString": "foo::S s"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 10,
+                        "columnEnd": 11,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 11,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "sym": "test/cpp/h/s"
+                }
+            ],
+            "28": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 6
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolSignature": {
+                            "aString": "namespace foo"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 6,
+                        "lineBegin": 28,
+                        "lineEnd": 28
+                    },
+                    "sym": "test/cpp/foo",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 9,
+                            "lineEnd": 24
+                        },
+                        "repository": "test"
+                    },
+                    "targetName": {
+                        "columnBegin": 11,
+                        "columnEnd": 14,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 6
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolParent": {
+                            "aString": "foo"
+                        },
+                        "symbolSignature": {
+                            "aString": "namespace foo::bar"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 11,
+                        "lineBegin": 28,
+                        "lineEnd": 28
+                    },
+                    "sym": "test/cpp/foo/bar",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 18,
+                            "lineEnd": 23
+                        },
+                        "repository": "test"
+                    },
+                    "targetName": {
+                        "columnBegin": 11,
+                        "columnEnd": 14,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolParent": {
+                            "aString": "T"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct foo::bar::T"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 14,
+                        "lineBegin": 28,
+                        "lineEnd": 28
+                    },
+                    "sym": "test/cpp/foo/bar/T",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 12,
+                            "lineBegin": 20,
+                            "lineEnd": 20
+                        },
+                        "repository": "test"
+                    },
+                    "targetName": {
+                        "columnBegin": 8,
+                        "columnEnd": 9,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolParent": {
+                            "aString": "t"
+                        },
+                        "symbolSignature": {
+                            "aString": "foo::bar::T t"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 15,
+                        "columnEnd": 16,
+                        "lineBegin": 28,
+                        "lineEnd": 28
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 16,
+                        "lineBegin": 28,
+                        "lineEnd": 28
+                    },
+                    "sym": "test/cpp/h/t"
+                }
+            ],
+            "29": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 6
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolSignature": {
+                            "aString": "namespace foo"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 6,
+                        "lineBegin": 29,
+                        "lineEnd": 29
+                    },
+                    "sym": "test/cpp/foo",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 9,
+                            "lineEnd": 24
+                        },
+                        "repository": "test"
+                    },
+                    "targetName": {
+                        "columnBegin": 11,
+                        "columnEnd": 14,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolParent": {
+                            "aString": "foo"
+                        },
+                        "symbolSignature": {
+                            "aString": "void foo::f()"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 9,
+                        "lineBegin": 29,
+                        "lineEnd": 29
+                    },
+                    "sym": "test/cpp/foo/f",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 9,
+                            "lineBegin": 16,
+                            "lineEnd": 16
+                        },
+                        "repository": "test"
+                    },
+                    "targetName": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    }
+                }
+            ],
+            "30": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 6
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolSignature": {
+                            "aString": "namespace foo"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 6,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "sym": "test/cpp/foo",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 9,
+                            "lineEnd": 24
+                        },
+                        "repository": "test"
+                    },
+                    "targetName": {
+                        "columnBegin": 11,
+                        "columnEnd": 14,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 6
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolParent": {
+                            "aString": "foo"
+                        },
+                        "symbolSignature": {
+                            "aString": "namespace foo::bar"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 11,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "sym": "test/cpp/foo/bar",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 18,
+                            "lineEnd": 23
+                        },
+                        "repository": "test"
+                    },
+                    "targetName": {
+                        "columnBegin": 11,
+                        "columnEnd": 14,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 14
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolParent": {
+                            "aString": "bar"
+                        },
+                        "symbolSignature": {
+                            "aString": "void foo::bar::g()"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 14,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "sym": "test/cpp/foo/bar/g",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 9,
+                            "lineBegin": 21,
+                            "lineEnd": 21
+                        },
+                        "repository": "test"
+                    },
+                    "targetName": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    }
+                }
+            ],
+            "9": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 6
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolSignature": {
+                            "aString": "namespace foo"
+                        }
+                    },
+                    "nameRange": {
+                        "columnBegin": 11,
+                        "columnEnd": 14,
+                        "lineBegin": 9,
+                        "lineEnd": 9
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 9,
+                        "lineEnd": 24
+                    },
+                    "sym": "test/cpp/foo"
+                }
+            ]
+        }
+    }
+]
