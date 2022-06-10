@@ -525,8 +525,6 @@ canEvolve types evolvedBy new old = go new old
         names = map fieldDefName
         oldByName = Map.fromList (zip (names old) old)
         newByName = Map.fromList (zip (names new) new)
-        addedFields = Map.difference newByName oldByName
-        removedFields = Map.difference oldByName newByName
         matchingFields =
           [ (name, fNew, fOld)
           | FieldDef name fNew <- new
@@ -537,17 +535,21 @@ canEvolve types evolvedBy new old = go new old
             addLocation err =
               "in " <> showOpt optName <> " '" <> name <> "', " <> err
 
-        newRequiredFields = Map.keys $
-          Map.filter (not . hasDefaultValue . fieldDefType) addedFields
-
-        hasDefaultValue ty = case ty of
+        addedFields = Map.difference newByName oldByName
+        removedFields = Map.difference oldByName newByName
+        required fields = Map.filter (not . hasDefault . fieldDefType) fields
+        hasDefault ty = case ty of
           MaybeTy _ -> True
           _ -> False
 
-        removedFieldsError = case Map.keys removedFields of
-          [] -> Nothing
-          fields -> Just $ plural optName fields <>
-            " missing: " <> Text.unwords fields
+        newRequiredFields = Map.keys (required addedFields)
+        removedRequiredFields = Map.keys (required removedFields)
+
+        removedFieldsError =
+          case removedRequiredFields  of
+            [] -> Nothing
+            fields -> Just $ "missing required " <> plural optName fields
+              <> ": " <> Text.unwords fields
 
         newRequiredFieldsError = case optName of
           Option -> Nothing

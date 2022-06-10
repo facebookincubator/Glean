@@ -766,7 +766,7 @@ schemaEvolves = TestList
           Right _ -> True
           Left _ -> False
 
-  , TestLabel "cannot remove field" $ TestCase $ do
+  , TestLabel "cannot remove required field" $ TestCase $ do
     withSchema latestAngleVersion
       [s|
         schema test.1 {
@@ -782,9 +782,27 @@ schemaEvolves = TestList
       assertBool "throws error stating missing field" $
         case r of
           Left err ->
-            "cannot evolve predicate test.P: field missing: b"
+            "cannot evolve predicate test.P: missing required field: b"
             `isInfixOf` show err
           Right _ -> False
+
+  , TestLabel "can remove optional field" $ TestCase $ do
+    withSchema latestAngleVersion
+      [s|
+        schema test.1 {
+          predicate P : { a : nat, b: maybe string }
+        }
+        schema test.2 {
+          predicate P : { a : nat }
+        }
+        schema test.2 evolves test.1
+        schema all.1 : test.1, test.2 {}
+      |]
+      $ \r ->
+      assertBool "succeeds creating schema" $
+        case r of
+          Right _ -> True
+          Left _ -> False
 
   , TestLabel "can change order of fields" $ TestCase $ do
     withSchema latestAngleVersion
@@ -891,7 +909,7 @@ schemaEvolves = TestList
       assertBool "error states missing option" $
         case r of
           Left err ->
-            "option missing: c"
+            "missing required option: c"
             `isInfixOf` show err
           Right _ -> False
 
@@ -1059,7 +1077,7 @@ schemaEvolvesTransformations =
       unit = RTS.Tuple []
   in
   TestList
-  [ TestLabel "backcompat - remove field" $ TestCase $ do
+  [ TestLabel "backcompat - remove optional field" $ TestCase $ do
     withSchemaAndFacts []
       [s|
         schema x.1 {
@@ -1073,6 +1091,26 @@ schemaEvolvesTransformations =
       |]
       [ mkBatch (PredicateRef "x.P" 2)
           [ [s|{ "key": { "a": 2, "b": "val" } }|] ]
+      ]
+      [s| x.P.1 _ |]
+      $ \byRef response _ -> do
+        facts <- decodeResultsAs (SourceRef "x.P" (Just 1)) byRef response
+        assertEqual "result count" 1 (length facts)
+
+  , TestLabel "backcompat - fill optional field's default value" $ TestCase $ do
+    withSchemaAndFacts []
+      [s|
+        schema x.1 {
+          predicate P: { a : nat, b: maybe string }
+        }
+        schema x.2 {
+          predicate P: { a : nat }
+        }
+        schema x.2 evolves x.1
+        schema all.1 : x.1, x.2 {}
+      |]
+      [ mkBatch (PredicateRef "x.P" 2)
+          [ [s|{ "key": { "a": 2 } }|] ]
       ]
       [s| x.P.1 _ |]
       $ \byRef response _ -> do
