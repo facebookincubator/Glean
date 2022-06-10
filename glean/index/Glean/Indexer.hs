@@ -51,7 +51,7 @@ data IndexerParams = IndexerParams
     -- in multiple different ways. The interpretation of "group" is up
     -- to the indexing backend; indexers that don't need to support
     -- groups can ignore this.
-  }
+  } deriving Show
 
 -- | An indexer composed of two separate indexing tasks. The left
 -- indexer is run before the right indexer.  This is useful when we

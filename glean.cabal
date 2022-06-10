@@ -65,6 +65,10 @@ flag opt
 flag benchmarks
      default: False
 
+-- run tests that require clang
+flag clang-tests
+     default: True
+
 -- run tests that require hhvm, typically Linux/x86_64
 flag hack-tests
      default: True
@@ -1436,6 +1440,20 @@ library regression-test-lib
         glean:util,
         split,
         yaml
+
+test-suite clang-test
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs: glean/lang/clang/tests
+    type: exitcode-stdio-1.0
+    main-is: Glean/Regression/Driver/Clang.hs
+    other-modules: Glean.Clang.Test
+    ghc-options: -main-is Glean.Regression.Driver.Clang
+    build-depends:
+       glean:regression-test-lib,
+       glean:indexers,
+       glean:lib
+    if !flag(clang-tests)
+        buildable: False
 
 test-suite hack-derive-test
     import: fb-haskell, fb-cpp, deps

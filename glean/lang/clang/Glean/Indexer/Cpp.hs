@@ -7,9 +7,12 @@
 -}
 
 {-# LANGUAGE ApplicativeDo #-}
-module Glean.Indexer.Cpp ( indexer, findExecutableRecursive ) where
+module Glean.Indexer.Cpp
+  ( indexerWith, indexer, indexerNoDeriv, Clang(..)
+  , findExecutableRecursive ) where
 
 import Control.Concurrent.Async
+import Control.Monad
 import Data.Proxy
 import Options.Applicative
 import System.Directory
@@ -20,7 +23,6 @@ import System.IO
 import System.Process
 import Thrift.Protocol (deserializeGen)
 import Thrift.Protocol.Compact (Compact)
-import Util.Log
 
 import Facebook.Fb303
 import Facebook.Service
@@ -34,7 +36,6 @@ import Glean.Util.Service
 import qualified Data.ByteString as BS
 import qualified Glean.Handler as GleanHandler
 import qualified Thrift.Server.CppServer as CppServer
-import Control.Monad (filterM)
 
 data Clang = Clang
   { clangIndexBin     :: Maybe FilePath -- ^ path to @clang-index@ binary
@@ -42,13 +43,13 @@ data Clang = Clang
   , clangCompileDBDir :: Maybe FilePath
       -- ^ (optional) path to pre-existing @compile_commands.json@
   , clangVerbose      :: Bool -- ^ display debugging information
-  }
+  } deriving Show
 
 options :: Parser Clang
 options = do
   clangIndexBin <- optional $ strOption $
     long "indexer" <>
-    help "path to the glean-clang-index binary"
+    help "path to the clang-index binary"
   clangDeriveBin <- optional $ strOption $
     long "deriver" <>
     help "path to the clang-derive binary"
@@ -61,8 +62,18 @@ options = do
     help "Enable verbose logging from subprocesses"
   return Clang{..}
 
+-- | Standard indexer, that also runs the deriver
 indexer :: Indexer Clang
-indexer = Indexer {
+indexer = indexerWith True
+
+-- | Indexing only, no deriving
+indexerNoDeriv :: Indexer Clang
+indexerNoDeriv = indexerWith False
+
+-- | C++ indexer. The 'Bool' specifies whether the indexer
+--   also runs the deriver.
+indexerWith :: Bool -> Indexer Clang
+indexerWith deriveToo = Indexer {
   indexerShortName = "cpp-cmake",
   indexerDescription = "Index C++ code with CMake (via Clang)",
   indexerOptParser = options,
@@ -81,7 +92,8 @@ indexer = Indexer {
     writeToDB backend repo indexerData
 
     -- deriving
-    derive clangVerbose clangDeriveBin backend repo
+    when deriveToo $
+      derive clangVerbose clangDeriveBin backend repo
   }
 
   where generateInventory backend repo outFile =
@@ -103,7 +115,6 @@ indexer = Indexer {
                        , "--inventory", inventory
                        , "-logtostderr"
                        ]
-            logInfo $ "Indexing with: " ++ unwords (clangIndex : args)
             spawnAndConcurrentLog verbose clangIndex args
 
         writeToDB backend repo dataFile = do
@@ -186,6 +197,8 @@ inTreeSearchPath exePath = do
   case reverse (splitDirectories  exePath) of
     -- definitely running in tree:
     ("glean":"glean":"build":"glean":"x":_:xs) -> Just $ joinPath (reverse xs)
+    ("clang-test":"clang-test":"build":"clang-test":"t":_:xs) -> Just $
+      joinPath (reverse xs)
     _ -> Nothing
 
 -- do a silly recursive search in the dist-newstyle under the ghc dirs
