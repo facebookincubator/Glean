@@ -21,6 +21,7 @@ module Glean.Glass.Regression.Snapshot (
 
 import Data.Aeson
 import qualified Data.Aeson as Aeson
+import qualified Data.Aeson.Types as Aeson ( parse )
 import Data.Default
 import Data.List ( sort )
 import Data.Text ( Text )
@@ -174,6 +175,8 @@ evalQuery glassEnv qFile Query{..} oFile = case action of
     (Glass.searchByNamePrefix glassEnv)
   "searchBySymbolId" -> withSymbolId oFile args
     (Glass.searchBySymbolId glassEnv)
+  "searchRelated" -> withObjectAndSymbolId qFile oFile args
+    (Glass.searchRelated glassEnv)
 
   _ -> error $ "Invalid action: " <> show action
 
@@ -202,6 +205,30 @@ withObjectArgs
 withObjectArgs qFile oFile args f = do
   req <- parseAsObject qFile args
   res <- f req def
+  writeResult oFile res
+
+withObjectAndSymbolId
+ :: (Thrift.Protocol.ThriftStruct req, ToJSON req, ToJSON a, SortedResponse a)
+ => FilePath
+ -> FilePath
+ -> Value
+ -> (SymbolId -> RequestOptions -> req -> IO a) -> IO ()
+withObjectAndSymbolId qFile oFile args f = do
+  let argParser = withObject "symbol-and-request" $ \o -> do
+        sym <- o .: "symbol"
+        req <- o .: "request"
+        pure (SymbolId sym, req)
+
+  (sym, rawReq) <- case Aeson.parse argParser args of
+    Success (a, b) -> pure (a,b)
+    Error str -> assertFailure $
+        "Invalid json in " <> qFile <> " : " <> str
+
+  req <- case decodeObjectAsThriftJson rawReq of
+          Left str -> assertFailure $
+            "Invalid args in " <> qFile <> " : " <> str
+          Right req -> pure req
+  res <- f sym def req
   writeResult oFile res
 
 parseAsObject
@@ -246,6 +273,8 @@ instance Ord a => SortedResponse [a] where
 instance SortedResponse Range where sorted = id
 instance SortedResponse Location where sorted = id
 instance SortedResponse LocationRange where sorted = id
+instance SortedResponse SearchRelatedResult where
+  sorted (SearchRelatedResult xs) = SearchRelatedResult (sorted xs)
 instance SortedResponse SymbolDescription where
   sorted sd = sd { symbolDescription_repo_hash = "testhash" }
 
