@@ -22,6 +22,7 @@ module Glean.Schema.Resolve
 import Control.Applicative
 import Control.Monad.Reader
 import Control.Monad.Except
+import Control.Monad.Extra (whenJust)
 import Data.Bifunctor
 import Data.ByteString (ByteString)
 import Data.Char
@@ -184,16 +185,11 @@ evolveOneSchema types evolvedBy (new, old) = do
     checkBackCompatibility :: Either Text ()
     checkBackCompatibility =
       forM_ (resolvedSchemaPredicates old) $ \oldDef -> do
-        newDef <- matchNew oldDef
-        evolveDef newDef oldDef
+        whenJust (matchNew oldDef) $ \newDef ->
+          evolveDef newDef oldDef
 
-    matchNew oldDef =
-      let name = predicateRef_name $ predicateDefRef oldDef
-      in case HashMap.lookup name newPredsByName of
-        Just newDef -> return newDef
-        Nothing ->
-          throwError $ "missing evolved predicate "
-          <> name <> " from " <> showSchemaRef (schemaRef old)
+    matchNew oldDef = HashMap.lookup name newPredsByName
+      where name = predicateRef_name $ predicateDefRef oldDef
 
     evolveDef
       (PredicateDef ref key val _)

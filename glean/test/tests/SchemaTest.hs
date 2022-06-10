@@ -823,7 +823,7 @@ schemaEvolves = TestList
           Right _ -> True
           Left _ -> False
 
-  , TestLabel "cannot remove predicate" $ TestCase $ do
+  , TestLabel "can remove a predicate" $ TestCase $ do
     withSchema latestAngleVersion
       [s|
         schema test.1 {
@@ -834,10 +834,10 @@ schemaEvolves = TestList
         schema all.1 : test.1, test.2 {}
       |]
       $ \r ->
-      assertBool "errors stating missing predicate" $
+      assertBool "succeeds creating schema" $
         case r of
-          Left err -> "missing evolved predicate" `isInfixOf` show err
-          Right _ -> False
+          Right _ -> True
+          Left _ -> False
 
   , TestLabel "can add option" $ TestCase $ do
     withSchema latestAngleVersion
