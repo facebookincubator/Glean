@@ -372,6 +372,8 @@ runLogQueryFacts cmd env repo Thrift.UserQueryFacts{..} log =
   runLogRepo cmd env repo $ log
     <> maybe mempty logQueryOptions userQueryFacts_options
     <> maybe mempty logQueryClientInfo userQueryFacts_client_info
+    <> maybe mempty (Logger.setSchemaId . Thrift.unSchemaId)
+        userQueryFacts_schema_id
 
 runLogQuery
   :: Text
@@ -389,6 +391,8 @@ runLogQuery cmd env repo Thrift.UserQuery{..} log = do
         userQuery_predicate_version
     , maybe mempty (Logger.setSchemaVersion . fromIntegral)
         userQuery_schema_version
+    , maybe mempty (Logger.setSchemaId . Thrift.unSchemaId)
+        userQuery_schema_id
     , maybe mempty logQueryOptions userQuery_options
     , maybe mempty logQueryClientInfo userQuery_client_info
     ]
