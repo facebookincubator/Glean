@@ -593,6 +593,15 @@ predicate Inheritance :
   stored { Base, Subclass } where
     Subclass = ClassDeclaration { extends_ = { just = Base } }
 
+predicate XRefFile :
+{
+  xref: XRef,
+  file: src.File,
+}
+  stored {Xref, File} where
+    FileXRefs {file = File, xrefs = Xs};
+    Xref = Xs[..];
+
 #An import, whether specific, an entire package, or static
 predicate ImportDeclaration :
 {
