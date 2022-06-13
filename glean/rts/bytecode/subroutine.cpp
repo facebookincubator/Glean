@@ -284,6 +284,10 @@ struct Eval {
     (*a.fun)(a.src1, a.src2, a.src3, a.src4, a.src5);
   }
 
+  FOLLY_ALWAYS_INLINE void execute(CallFun_5_1 a) {
+    *a.dst = (*a.fun)(a.src1, a.src2, a.src3, a.src4, a.src5);
+  }
+
   FOLLY_ALWAYS_INLINE void execute(Select a) {
     if (a.sel < a.tgts_size) {
       pc += std::ptrdiff_t(a.tgts[a.sel]);

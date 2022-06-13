@@ -51,7 +51,7 @@ data Usage
 --
 -- BUMP THIS WHENEVER YOU CHANGE THE BYTECODE EVEN IF YOU JUST ADD INSTRUCTIONS
 version :: Int
-version = 5
+version = 6
 
 -- | Lowest bytecode version supported by the current engine.
 --
@@ -320,12 +320,21 @@ instructions =
       , Arg "dst" Word Store ]
 
   , Insn "CallFun_5_0" FallThrough
-      [ Arg "fun" (Fun [Word,Word,Word,Word,Word] Word) Load
+      [ Arg "fun" (Fun [Word,Word,Word,Word,Word] Void) Load
       , Arg "src1" Word Load
       , Arg "src2" Word Load
       , Arg "src3" Word Load
       , Arg "src4" Word Load
       , Arg "src5" Word Load ]
+
+  , Insn "CallFun_5_1" FallThrough
+      [ Arg "fun" (Fun [Word,Word,Word,Word,Word] Word) Load
+      , Arg "src1" Word Load
+      , Arg "src2" Word Load
+      , Arg "src3" Word Load
+      , Arg "src4" Word Load
+      , Arg "src5" Word Load
+      , Arg "dst" Word Store ]
 
   , Insn "CallFun_2_2" FallThrough
       [ Arg "fun" (Fun [Word,Word,DataPtr] Word) Load
