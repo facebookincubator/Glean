@@ -125,6 +125,8 @@ data SourceRef = SourceRef
   }
   deriving (Show, Eq, Ord, Generic, Hashable)
 
+instance Binary SourceRef
+
 -- -----------------------------------------------------------------------------
 -- Source locations
 

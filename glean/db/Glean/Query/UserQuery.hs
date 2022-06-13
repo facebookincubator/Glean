@@ -812,7 +812,7 @@ schemaVersionForQuery env schema repo qversion = do
         ]
   where
     isAvailable version =
-      fromIntegral version `IntMap.member` schemaEnvs schema
+      fromIntegral version `IntMap.member` legacyAllVersions schema
 
 compileAngleQuery
   :: SchemaVersion

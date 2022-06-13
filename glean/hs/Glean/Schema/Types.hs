@@ -44,6 +44,7 @@ module Glean.Schema.Types (
 ) where
 
 import Data.Bifunctor
+import Data.Binary
 import Data.Hashable
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
@@ -68,7 +69,9 @@ instance Hashable SchemaRef
 
 -- | The target of a reference
 data RefTarget p t = RefPred p | RefType t
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Ord, Show, Generic)
+
+instance (Binary p, Binary t) => Binary (RefTarget p t)
 
 instance Bifunctor RefTarget where
   bimap f _ (RefPred p) = RefPred (f p)
