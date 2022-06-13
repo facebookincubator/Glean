@@ -158,6 +158,22 @@ std::unique_ptr<FactIterator> FactSet::seek(
   }
 }
 
+std::unique_ptr<FactIterator> FactSet::seekWithinSection(
+    Pid type,
+    folly::ByteRange start,
+    size_t prefix_size,
+    Id from,
+    Id to ) {
+  if (from <= startingId() && firstFreeId() <= to) {
+    return seek(type, start, prefix_size);
+  }
+
+  // We have no use case for actually performing a bounded
+  // seek of a FactSet, therefore we would rather know if
+  // anything tries to trigger it.
+  error("FactSet::seekWithinSection: bounds too narrow");
+}
+
 Id FactSet::define(Pid type, Fact::Clause clause, Id) {
   if (clause.key_size > Fact::MAX_KEY_SIZE) {
     error("key too large: {}", clause.key_size);

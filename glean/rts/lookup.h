@@ -128,6 +128,17 @@ struct Lookup {
     folly::ByteRange start,
     size_t prefix_size
   ) = 0;
+
+  // Perform a seek on a section of the Lookup.
+  // Results will have Ids within the range [from, utpto).
+  // Facts can reference Ids outside of the specified range.
+  virtual std::unique_ptr<FactIterator> seekWithinSection(
+    Pid type,
+    folly::ByteRange start,
+    size_t prefix_size,
+    Id from,
+    Id to
+  ) = 0;
 };
 
 /**
@@ -164,17 +175,22 @@ struct EmptyLookup final : Lookup {
     return std::make_unique<EmptyIterator>();
   }
 
+  std::unique_ptr<FactIterator> seekWithinSection(
+      Pid, folly::ByteRange, size_t, Id, Id) override {
+    return std::make_unique<EmptyIterator>();
+  }
+
   static EmptyLookup& instance();
 };
 
 /**
- * A Lookup which ignores all facts with Ids outside of the range [from, upto).
+ * A Lookup which ignores all facts with Ids outside of the range [from, to).
  * Returned facts may reference Ids lower than 'from'.
  *
  */
 struct Section : Lookup {
-  Section(Lookup *b, Id from, Id upto)
-    : base_(b), low_boundary_(from), high_boundary_(upto)
+  Section(Lookup *b, Id from, Id to)
+    : base_(b), low_boundary_(from), high_boundary_(to)
     {}
 
   Id idByKey(Pid type, folly::ByteRange key) override {
@@ -210,6 +226,13 @@ struct Section : Lookup {
     folly::ByteRange start,
     size_t prefix_size) override;
 
+  std::unique_ptr<FactIterator> seekWithinSection(
+    Pid type,
+    folly::ByteRange start,
+    size_t prefix_size,
+    Id from,
+    Id to) override;
+
   Lookup *base() const {
     return base_;
   }
@@ -238,7 +261,7 @@ private:
  * database.
  *
  */
-std::unique_ptr<Lookup> snapshot(Lookup *b, Id upto);
+std::unique_ptr<Lookup> snapshot(Lookup *b, Id to);
 
 }
 }

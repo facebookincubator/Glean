@@ -141,6 +141,13 @@ public:
     std::unique_ptr<FactIterator>
       seek(Pid type, folly::ByteRange start, size_t prefix_size) override;
 
+    std::unique_ptr<FactIterator> seekWithinSection(
+      Pid type,
+      folly::ByteRange start,
+      size_t prefix_size,
+      Id from,
+      Id to) override;
+
     Lookup *base;
     LookupCache *cache;
   };

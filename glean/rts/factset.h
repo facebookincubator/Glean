@@ -201,6 +201,13 @@ public:
     folly::ByteRange start,
     size_t prefix_size) override;
 
+  std::unique_ptr<FactIterator> seekWithinSection(
+    Pid type,
+    folly::ByteRange start,
+    size_t prefix_size,
+    Id from,
+    Id to) override;
+
   // Define implementation
 
   Id define(Pid type, Fact::Clause, Id max_ref = Id::invalid()) override;

@@ -152,6 +152,15 @@ std::unique_ptr<FactIterator> Section::seek(
     lowBoundary());
 }
 
+std::unique_ptr<FactIterator> Section::seekWithinSection(
+    Pid type, folly::ByteRange start, size_t prefix_size, Id from, Id upto) {
+  if (from <= lowBoundary() && highBoundary() <= upto) {
+    return seek(type, start, prefix_size);
+  } else {
+    return Section(base_, from, upto).seek(type, start, prefix_size);
+  }
+}
+
 namespace {
 
 struct AppendIterator final : FactIterator {

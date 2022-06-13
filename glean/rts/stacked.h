@@ -87,9 +87,27 @@ struct StackedBase : Iface {
       folly::ByteRange start,
       size_t prefix_size) override {
     return FactIterator::merge(
-      snapshot(base, mid)->seek(type, start, prefix_size),
+      base->seekWithinSection(type, start, prefix_size, Id::invalid(), mid),
       stacked->seek(type, start, prefix_size),
       prefix_size);
+  }
+
+  std::unique_ptr<FactIterator> seekWithinSection(
+      Pid type,
+      folly::ByteRange start,
+      size_t prefix_size,
+      Id from,
+      Id to) override {
+    if (to <= mid) {
+      return base->seekWithinSection(type, start, prefix_size, from, to);
+    } else if (mid <= from) {
+      return stacked->seekWithinSection(type, start, prefix_size, from, to);
+    } else {
+      return FactIterator::merge(
+        base->seekWithinSection(type, start, prefix_size, from, mid),
+        stacked->seekWithinSection(type, start, prefix_size, mid, to),
+        prefix_size);
+    }
   }
 
 protected:

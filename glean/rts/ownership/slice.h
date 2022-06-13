@@ -125,6 +125,19 @@ struct Sliced : Lookup {
         });
   }
 
+  std::unique_ptr<FactIterator> seekWithinSection(
+      Pid type,
+      folly::ByteRange start,
+      size_t prefix_size,
+      Id from,
+      Id to) override {
+    return FactIterator::filter(
+        base_->seekWithinSection(type, start, prefix_size, from, to),
+        [&](Id id) {
+          return slice_->visible(ownership_->getOwner(id));
+        });
+  }
+
  private:
   Lookup *base_;
   Slice *slice_;

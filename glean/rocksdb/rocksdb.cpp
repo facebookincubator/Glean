@@ -812,6 +812,25 @@ struct DatabaseImpl final : Database {
       this);
   }
 
+  std::unique_ptr<rts::FactIterator> seekWithinSection(
+      Pid type,
+      folly::ByteRange start,
+      size_t prefix_size,
+      Id from,
+      Id upto) override {
+
+    if (from <= startingId() && firstFreeId() <= upto) {
+      // seek in the entirety of the Lookup
+      return seek(type, start, prefix_size);
+    }
+
+    if (upto <= startingId() || firstFreeId() <= from) {
+      return std::make_unique<EmptyIterator>();
+    }
+
+    return Section(this, from, upto).seek(type, start, prefix_size);
+  }
+
   // Legacy DBs don't store fact ids as 8 byte little-endian numbers so we can't
   // seek over those in lexicographic order. Instead, just look up each fact id
   // in the DB (much slower).

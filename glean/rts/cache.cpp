@@ -216,6 +216,15 @@ std::unique_ptr<FactIterator>LookupCache::Anchor::seek(
   return base->seek(type, start, prefix_size);
 }
 
+std::unique_ptr<FactIterator>LookupCache::Anchor::seekWithinSection(
+    Pid type,
+    folly::ByteRange start,
+    size_t prefix_size,
+    Id from,
+    Id to) {
+  return base->seekWithinSection(type, start, prefix_size, from, to);
+}
+
 void LookupCache::insert(Fact::unique_ptr owned) {
   folly::SharedMutex::WriteHolder delete_write(nullptr);
   Fact::intrusive_list dead;
