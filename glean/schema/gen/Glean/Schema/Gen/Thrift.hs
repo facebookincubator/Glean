@@ -30,21 +30,24 @@ import TextShow
 
 import Glean.Schema.Gen.Utils
 import Glean.Angle.Types
+import Glean.Angle.Hash
 import Glean.Schema.Types
 import Glean.Schema.Util
 
 genSchemaThrift
   :: Mode
   -> Maybe String
+  -> Hash
   -> Version
   -> [ResolvedPredicateDef]
   -> [ResolvedTypeDef]
   -> [(FilePath, Text)]
-genSchemaThrift mode versionDir version preddefs typedefs =
+genSchemaThrift mode versionDir hash version preddefs typedefs =
   (dir </> "TARGETS",
     genTargets mode slashVn version declsPerNamespace) :
   [ ( dir </> Text.unpack (underscored namespaces) ++ ".thrift"
-    , genNamespace mode slashVn namespaces version namePolicy deps preds types)
+    , genNamespace mode slashVn namespaces version
+        hash namePolicy deps preds types)
   | (namespaces, (deps, preds, types)) <- HashMap.toList declsPerNamespace ]
   where
   dir = case mode of
@@ -207,12 +210,14 @@ genNamespace
   -> Text                               -- "/v1" or ""
   -> NameSpaces
   -> Version
+  -> Hash
   -> NamePolicy
   -> [NameSpaces]
   -> [ResolvedPredicateDef]
   -> [ResolvedTypeDef]
   -> Text
-genNamespace mode slashVn namespaces version namePolicy deps preddefs typedefs
+genNamespace mode slashVn namespaces version
+    hash namePolicy deps preddefs typedefs
  = Text.intercalate (newline <> newline) (header : pieces)
  where
   someDecls = map PredicateDecl preddefs ++ map TypeDecl typedefs
@@ -273,6 +278,7 @@ genNamespace mode slashVn namespaces version namePolicy deps preddefs typedefs
     if namespace /= "builtin" then [] else
     [ "// Schema version"
     , "const i64 version = " <> showt version
+    , "const glean.SchemaId schema_id = " <> showt (show hash)
     ]
 
 

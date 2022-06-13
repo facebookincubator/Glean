@@ -53,6 +53,7 @@ import Util.OptParse (commandParser)
 
 import Glean.Query.Typecheck (tcQueryDeps)
 import Glean.Query.Codegen (QueryWithInfo(..))
+import Glean.Angle.Hash
 import Glean.Angle.Types
 import Glean.Angle.Parser
 import Glean.Database.Config (catSchemaFiles)
@@ -237,23 +238,29 @@ main = do
       , resolvedSchemaVersion == v
       ]
 
+    verToHash = legacyAllVersions dbschema
+
+    hashOf ver = case IntMap.lookup (fromIntegral ver) verToHash of
+      Nothing -> error $ "no schema version: " <> show ver
+      Just hash -> hash
+
   versions <- case version of
     HighestVersion ->
       case schemasHighestVersion schemas of
         Just ver | Just schema <- findVersion ver ->
-          return [(ver, schema, Nothing)]
+          return [(ver, hashOf ver, schema, Nothing)]
         _otherwise -> fail "missing 'all' schema"
     OneVersion v ->
       case findVersion v of
-        Just schema -> return [(v, schema, Nothing)]
+        Just schema -> return [(v, hashOf v, schema, Nothing)]
         Nothing -> fail $ "can't find all." <> show v
     AllVersions -> do
-      let withPath schema = (v, schema, Just $ 'v' : show v)
+      let withPath schema = (v, hashOf v, schema, Just $ 'v' : show v)
             where v = resolvedSchemaVersion schema
       return $ withPath <$> allSchemas
 
   case actOptions of
-    Left opts -> graph opts dbschema sourceSchemas [ v | (v,_,_) <- versions ]
+    Left opts -> graph opts dbschema sourceSchemas [ v | (v,_,_,_) <- versions ]
     Right opts -> do
       forM_ (source opts) $ \f -> BC.writeFile f src
       reportTime "gen" $ gen opts versions schemas
@@ -347,14 +354,14 @@ drawGraph GraphOptions{..} deps' roots =
 
 gen
   :: GenOptions
-  -> [(Version, ResolvedSchemaRef, Maybe FilePath)]
+  -> [(Version, Hash, ResolvedSchemaRef, Maybe FilePath)]
   -> Schemas
   -> IO ()
 gen GenOptions{..} versions Schemas{..} =
   mapM_ genFor versions
   where
-  genFor :: (Version, ResolvedSchemaRef, Maybe FilePath) -> IO ()
-  genFor (_, ResolvedSchema{..}, dir) = do
+  genFor :: (Version, Hash, ResolvedSchemaRef, Maybe FilePath) -> IO ()
+  genFor (_, hash, ResolvedSchema{..}, dir) = do
       let
         ts = HashMap.elems resolvedSchemaReExportedTypes
         ps = HashMap.elems resolvedSchemaReExportedPredicates
@@ -369,5 +376,5 @@ gen GenOptions{..} versions Schemas{..} =
       doGen genSchemaCpp cpp
       doGen genSchemaHackJson hackjson
       doGen genSchemaHS hs
-      doGen (genSchemaThrift Data dir) thrift
-      doGen (genSchemaThrift Query dir) thrift
+      doGen (genSchemaThrift Data dir hash) thrift
+      doGen (genSchemaThrift Query dir hash) thrift
