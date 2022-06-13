@@ -529,7 +529,11 @@ struct FatalLLVMError : std::runtime_error {
   using std::runtime_error::runtime_error;
 };
 
+#if LLVM_VERSION_MAJOR > 13
+void handleLLVMError(void *, const char* reason, bool) {
+#else
 void handleLLVMError(void *, const std::string& reason, bool) {
+#endif
   throw FatalLLVMError(reason);
 }
 
