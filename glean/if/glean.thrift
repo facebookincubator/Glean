@@ -62,6 +62,21 @@ struct TypeRef {
 typedef string (hs.type = "ByteString") UnitName
 
 // -----------------------------------------------------------------------------
+// Schema types
+
+// Globally unique identifier for a complete schema.
+//
+// The `SchemaId` for the current schema can be obtained at
+// compile time from `schema_id` in the generated `builtin.thrift`
+// file.
+//
+// The `SchemaId` is passed from the client to the server along
+// with a query, so that the server knows which schema to use to
+// interpret the query.
+
+typedef string SchemaId (hs.newtype)
+
+// -----------------------------------------------------------------------------
 // Runtime types
 
 // Values of type 'nat'
@@ -535,9 +550,9 @@ struct DerivePredicateQuery {
   5: optional DerivePredicateOptions options;
   // How to parallelise derivation
   6: optional ParallelDerivation parallel;
-  // If supplied, then any unversioned predicates in the query are
-  // resolved using this version of the "all" schema. Otherwise, they
-  // are resolved to the latest version of the "all" schema.
+  // Deprecated. The predicate/version is interpreted relative to the
+  // version of the schema given by the glean.schema_version property
+  // in the DB.
   7: optional Version schema_version;
 }
 
@@ -644,7 +659,11 @@ struct UserQuery {
   // Acceptable encodings for the results in order of preference. The server
   // guarantees to return one of these encodings or fail.
   7: optional UserQueryClientInfo client_info;
-// Information about who is making the call
+  // Information about who is making the call
+
+  // Specifies the version of the schema used to resolve the query. If
+  // omitted, use the schema specified by the DB.
+  8: optional SchemaId schema_id;
 }
 
 struct UserQueryStats {
@@ -737,12 +756,13 @@ struct UserQueryFacts {
   // Note: in the case of userQueryFacts, the length of the 'facts'
   // list in the returned UserQueryResults is guaranteed to be the
   // same length as this list.
-  3: optional Version schema_version; // see UserQuery
+  3: optional Version schema_version; // deprecated
   4: optional UserQueryOptions options;
   5: list<UserQueryEncoding> encodings = [];
   // Acceptable encodings for the results in order of preference.
   6: optional UserQueryClientInfo client_info;
-// Information about who is making the call
+  // Information about who is making the call
+  7: optional SchemaId schema_id; // see UserQuery
 }
 
 struct UserQueryClientInfo {
