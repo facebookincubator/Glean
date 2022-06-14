@@ -84,9 +84,7 @@ testCppDescribeSymbolComments get = TestLabel "describeSymbolComments" $
 
 testCppSearchRelated :: Getter -> Test
 testCppSearchRelated get = TestLabel "searchRelated" $ TestList $ concat [
-  "test/cpp/foo" `contains` "test/cpp/foo/S",
-  "test/cpp/foo" `contains` "test/cpp/foo/bar",
-  "test/cpp/foo/bar" `contains` "test/cpp/foo/bar/g"
+  "test/cpp/foo" `contains` "test/cpp/foo/S"
   ]
   where
     contains :: Text -> Text -> [Test]

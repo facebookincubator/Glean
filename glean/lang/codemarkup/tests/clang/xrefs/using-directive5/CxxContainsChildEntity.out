@@ -50,47 +50,6 @@
         "decl": {
           "namespace_": {
             "key": {
-              "name": { "key": { "name": { "key": "N2" } } },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 17,
-                "columnBegin": 1,
-                "lineEnd": 27,
-                "columnEnd": 1
-              }
-            }
-          }
-        }
-      },
-      "child": {
-        "decl": {
-          "namespace_": {
-            "key": {
-              "name": {
-                "key": {
-                  "name": { "key": "N21" },
-                  "parent": { "key": { "name": { "key": "N2" } } }
-                }
-              },
-              "source": {
-                "file": { "key": "test.cpp" },
-                "lineBegin": 18,
-                "columnBegin": 1,
-                "lineEnd": 26,
-                "columnEnd": 1
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "parent": {
-        "decl": {
-          "namespace_": {
-            "key": {
               "name": {
                 "key": {
                   "name": { "key": "N21" },

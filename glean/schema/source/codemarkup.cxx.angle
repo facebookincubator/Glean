@@ -466,9 +466,6 @@ predicate CxxContainsChildEntity :
         ) | (
           D = cxx1.FunctionDeclaration { name = { scope = Scope } };
           code.cxx.Entity { decl = { function_ = D } }
-        ) | (
-          D = cxx1.NamespaceDeclaration { name = { parent = { just = NQN } } };
-          code.cxx.Entity { decl = { namespace_ = D } }
         )
       )
     ) |

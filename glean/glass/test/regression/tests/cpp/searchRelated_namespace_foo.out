@@ -7,10 +7,6 @@
                 "parent": "test/cpp/foo"
             },
             {
-                "child": "test/cpp/foo/bar",
-                "parent": "test/cpp/foo"
-            },
-            {
                 "child": "test/cpp/foo/f",
                 "parent": "test/cpp/foo"
             },
