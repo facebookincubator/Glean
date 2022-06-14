@@ -39,7 +39,7 @@
                     "columnBegin": 1,
                     "columnEnd": 2,
                     "lineBegin": 9,
-                    "lineEnd": 24
+                    "lineEnd": 33
                 },
                 "sym": "test/cpp/foo"
             },
@@ -114,14 +114,14 @@
                 "nameRange": {
                     "columnBegin": 11,
                     "columnEnd": 14,
-                    "lineBegin": 18,
-                    "lineEnd": 18
+                    "lineBegin": 27,
+                    "lineEnd": 27
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 18,
-                    "lineEnd": 23
+                    "lineBegin": 27,
+                    "lineEnd": 32
                 },
                 "sym": "test/cpp/foo/bar"
             },
@@ -155,14 +155,14 @@
                 "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 9,
-                    "lineBegin": 20,
-                    "lineEnd": 20
+                    "lineBegin": 29,
+                    "lineEnd": 29
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 12,
-                    "lineBegin": 20,
-                    "lineEnd": 20
+                    "lineBegin": 29,
+                    "lineEnd": 29
                 },
                 "sym": "test/cpp/foo/bar/T"
             },
@@ -202,14 +202,14 @@
                 "nameRange": {
                     "columnBegin": 6,
                     "columnEnd": 7,
-                    "lineBegin": 21,
-                    "lineEnd": 21
+                    "lineBegin": 30,
+                    "lineEnd": 30
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 9,
-                    "lineBegin": 21,
-                    "lineEnd": 21
+                    "lineBegin": 30,
+                    "lineEnd": 30
                 },
                 "sym": "test/cpp/foo/bar/g"
             },
@@ -264,6 +264,94 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "void foo::foo()"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 6,
+                    "columnEnd": 9,
+                    "lineBegin": 19,
+                    "lineEnd": 19
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 19,
+                    "lineEnd": 21
+                },
+                "sym": "test/cpp/foo/foo"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "void foo::foo()"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 6,
+                    "columnEnd": 9,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 11,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                },
+                "sym": "test/cpp/foo/foo"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aString": "void ::h()"
                         },
                         "key": "symbolSignature"
@@ -290,14 +378,14 @@
                 "nameRange": {
                     "columnBegin": 6,
                     "columnEnd": 7,
-                    "lineBegin": 26,
-                    "lineEnd": 26
+                    "lineBegin": 35,
+                    "lineEnd": 35
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 26,
-                    "lineEnd": 31
+                    "lineBegin": 35,
+                    "lineEnd": 41
                 },
                 "sym": "test/cpp/h"
             },
@@ -337,14 +425,14 @@
                 "nameRange": {
                     "columnBegin": 10,
                     "columnEnd": 11,
-                    "lineBegin": 27,
-                    "lineEnd": 27
+                    "lineBegin": 36,
+                    "lineEnd": 36
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 11,
-                    "lineBegin": 27,
-                    "lineEnd": 27
+                    "lineBegin": 36,
+                    "lineEnd": 36
                 },
                 "sym": "test/cpp/h/s"
             },
@@ -384,14 +472,14 @@
                 "nameRange": {
                     "columnBegin": 15,
                     "columnEnd": 16,
-                    "lineBegin": 28,
-                    "lineEnd": 28
+                    "lineBegin": 37,
+                    "lineEnd": 37
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 16,
-                    "lineBegin": 28,
-                    "lineEnd": 28
+                    "lineBegin": 37,
+                    "lineEnd": 37
                 },
                 "sym": "test/cpp/h/t"
             }
@@ -427,8 +515,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 6,
-                    "lineBegin": 27,
-                    "lineEnd": 27
+                    "lineBegin": 36,
+                    "lineEnd": 36
                 },
                 "sym": "test/cpp/foo",
                 "target": {
@@ -437,7 +525,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 9,
-                        "lineEnd": 24
+                        "lineEnd": 33
                     },
                     "repository": "test"
                 },
@@ -478,8 +566,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 6,
-                    "lineBegin": 28,
-                    "lineEnd": 28
+                    "lineBegin": 37,
+                    "lineEnd": 37
                 },
                 "sym": "test/cpp/foo",
                 "target": {
@@ -488,7 +576,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 9,
-                        "lineEnd": 24
+                        "lineEnd": 33
                     },
                     "repository": "test"
                 },
@@ -529,8 +617,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 6,
-                    "lineBegin": 29,
-                    "lineEnd": 29
+                    "lineBegin": 38,
+                    "lineEnd": 38
                 },
                 "sym": "test/cpp/foo",
                 "target": {
@@ -539,7 +627,7 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 9,
-                        "lineEnd": 24
+                        "lineEnd": 33
                     },
                     "repository": "test"
                 },
@@ -580,8 +668,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 6,
-                    "lineBegin": 30,
-                    "lineEnd": 30
+                    "lineBegin": 39,
+                    "lineEnd": 39
                 },
                 "sym": "test/cpp/foo",
                 "target": {
@@ -590,7 +678,58 @@
                         "columnBegin": 1,
                         "columnEnd": 2,
                         "lineBegin": 9,
-                        "lineEnd": 24
+                        "lineEnd": 33
+                    },
+                    "repository": "test"
+                },
+                "targetName": {
+                    "columnBegin": 11,
+                    "columnEnd": 14,
+                    "lineBegin": 9,
+                    "lineEnd": 9
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "namespace foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 6
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 6,
+                    "lineBegin": 40,
+                    "lineEnd": 40
+                },
+                "sym": "test/cpp/foo",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 9,
+                        "lineEnd": 33
                     },
                     "repository": "test"
                 },
@@ -637,8 +776,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 9,
-                    "lineBegin": 27,
-                    "lineEnd": 27
+                    "lineBegin": 36,
+                    "lineEnd": 36
                 },
                 "sym": "test/cpp/foo/S",
                 "target": {
@@ -694,8 +833,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 11,
-                    "lineBegin": 28,
-                    "lineEnd": 28
+                    "lineBegin": 37,
+                    "lineEnd": 37
                 },
                 "sym": "test/cpp/foo/bar",
                 "target": {
@@ -703,16 +842,16 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 18,
-                        "lineEnd": 23
+                        "lineBegin": 27,
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 },
                 "targetName": {
                     "columnBegin": 11,
                     "columnEnd": 14,
-                    "lineBegin": 18,
-                    "lineEnd": 18
+                    "lineBegin": 27,
+                    "lineEnd": 27
                 }
             },
             {
@@ -751,8 +890,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 11,
-                    "lineBegin": 30,
-                    "lineEnd": 30
+                    "lineBegin": 40,
+                    "lineEnd": 40
                 },
                 "sym": "test/cpp/foo/bar",
                 "target": {
@@ -760,16 +899,16 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 18,
-                        "lineEnd": 23
+                        "lineBegin": 27,
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 },
                 "targetName": {
                     "columnBegin": 11,
                     "columnEnd": 14,
-                    "lineBegin": 18,
-                    "lineEnd": 18
+                    "lineBegin": 27,
+                    "lineEnd": 27
                 }
             },
             {
@@ -808,8 +947,8 @@
                 "range": {
                     "columnBegin": 13,
                     "columnEnd": 14,
-                    "lineBegin": 28,
-                    "lineEnd": 28
+                    "lineBegin": 37,
+                    "lineEnd": 37
                 },
                 "sym": "test/cpp/foo/bar/T",
                 "target": {
@@ -817,16 +956,16 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 12,
-                        "lineBegin": 20,
-                        "lineEnd": 20
+                        "lineBegin": 29,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 },
                 "targetName": {
                     "columnBegin": 8,
                     "columnEnd": 9,
-                    "lineBegin": 20,
-                    "lineEnd": 20
+                    "lineBegin": 29,
+                    "lineEnd": 29
                 }
             },
             {
@@ -865,8 +1004,8 @@
                 "range": {
                     "columnBegin": 13,
                     "columnEnd": 14,
-                    "lineBegin": 30,
-                    "lineEnd": 30
+                    "lineBegin": 40,
+                    "lineEnd": 40
                 },
                 "sym": "test/cpp/foo/bar/g",
                 "target": {
@@ -874,16 +1013,16 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 9,
-                        "lineBegin": 21,
-                        "lineEnd": 21
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
                 "targetName": {
                     "columnBegin": 6,
                     "columnEnd": 7,
-                    "lineBegin": 21,
-                    "lineEnd": 21
+                    "lineBegin": 30,
+                    "lineEnd": 30
                 }
             },
             {
@@ -922,8 +1061,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 9,
-                    "lineBegin": 29,
-                    "lineEnd": 29
+                    "lineBegin": 38,
+                    "lineEnd": 38
                 },
                 "sym": "test/cpp/foo/f",
                 "target": {
@@ -941,6 +1080,279 @@
                     "columnEnd": 7,
                     "lineBegin": 16,
                     "lineEnd": 16
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "void foo::foo()"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 6,
+                    "columnEnd": 9,
+                    "lineBegin": 19,
+                    "lineEnd": 19
+                },
+                "sym": "test/cpp/foo/foo",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 11,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "targetName": {
+                    "columnBegin": 6,
+                    "columnEnd": 9,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "void foo::foo()"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 6,
+                    "columnEnd": 9,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                },
+                "sym": "test/cpp/foo/foo",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 19,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "targetName": {
+                    "columnBegin": 6,
+                    "columnEnd": 9,
+                    "lineBegin": 19,
+                    "lineEnd": 19
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "void foo::foo()"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 6,
+                    "columnEnd": 9,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                },
+                "sym": "test/cpp/foo/foo",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 19,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "targetName": {
+                    "columnBegin": 6,
+                    "columnEnd": 9,
+                    "lineBegin": 19,
+                    "lineEnd": 19
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "void foo::foo()"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 8,
+                    "columnEnd": 11,
+                    "lineBegin": 39,
+                    "lineEnd": 39
+                },
+                "sym": "test/cpp/foo/foo",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 19,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "targetName": {
+                    "columnBegin": 6,
+                    "columnEnd": 9,
+                    "lineBegin": 19,
+                    "lineEnd": 19
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "void foo::foo()"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 8,
+                    "columnEnd": 11,
+                    "lineBegin": 39,
+                    "lineEnd": 39
+                },
+                "sym": "test/cpp/foo/foo",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 11,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "targetName": {
+                    "columnBegin": 6,
+                    "columnEnd": 9,
+                    "lineBegin": 25,
+                    "lineEnd": 25
                 }
             }
         ],

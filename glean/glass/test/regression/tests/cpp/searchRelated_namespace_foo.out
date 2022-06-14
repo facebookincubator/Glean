@@ -13,6 +13,14 @@
             {
                 "child": "test/cpp/foo/f",
                 "parent": "test/cpp/foo"
+            },
+            {
+                "child": "test/cpp/foo/foo",
+                "parent": "test/cpp/foo"
+            },
+            {
+                "child": "test/cpp/foo/foo",
+                "parent": "test/cpp/foo"
             }
         ]
     }
