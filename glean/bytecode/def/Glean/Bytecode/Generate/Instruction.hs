@@ -59,7 +59,7 @@ version = 6
 -- TO THE END OF THE LIST (in which case the new engine can still execute
 -- old bytecode)
 lowestSupportedVersion :: Int
-lowestSupportedVersion = 5
+lowestSupportedVersion = 6
 
 -- | Definitions of all bytecode instructions
 instructions :: [Insn]
