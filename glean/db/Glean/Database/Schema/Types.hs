@@ -12,7 +12,7 @@ module Glean.Database.Schema.Types
   , PredicateDetails(..)
   , predicateRef
   , PredicateTransformation(..)
-  , SchemaVersion(..)
+  , SchemaSelector(..)
   , schemaNameEnv
   , hashNameEnv
   , addTmpPredicate
@@ -118,18 +118,18 @@ predicateRef = predicateIdRef . predicateId
 hashNameEnv :: NameEnv (RefTarget PredicateId TypeId) -> Hash
 hashNameEnv env = hashByteString (Binary.encode (sort (HashMap.toList env)))
 
-data SchemaVersion
+data SchemaSelector
   = LatestSchemaAll
   | SpecificSchemaAll Version -- deprecated
   | SpecificSchemaHash Hash
 
-allSchemaVersion :: DbSchema -> SchemaVersion -> Maybe Hash
+allSchemaVersion :: DbSchema -> SchemaSelector -> Maybe Hash
 allSchemaVersion _ (SpecificSchemaHash v) = Just v
 allSchemaVersion dbSchema (SpecificSchemaAll v) =
   IntMap.lookup (fromIntegral v) (legacyAllVersions dbSchema)
 allSchemaVersion dbSchema LatestSchemaAll = Just (schemaLatestVersion dbSchema)
 
-schemaNameEnv :: DbSchema -> SchemaVersion -> Maybe (NameEnv RefTargetId)
+schemaNameEnv :: DbSchema -> SchemaSelector -> Maybe (NameEnv RefTargetId)
 schemaNameEnv dbSchema schemaVer = do
   hash <- allSchemaVersion dbSchema schemaVer
   Map.lookup hash (schemaEnvs dbSchema)
@@ -143,7 +143,7 @@ addTmpPredicate =
 
 lookupSourceRef
   :: SourceRef
-  -> SchemaVersion
+  -> SchemaSelector
      -- ^ schema version to use if predicate version is Nothing
   -> DbSchema
   -> LookupResult RefTargetId
@@ -154,7 +154,7 @@ lookupSourceRef ref schemaVer dbSchema =
 
 lookupPredicateSourceRef
   :: SourceRef
-  -> SchemaVersion
+  -> SchemaSelector
      -- ^ schema version to use if predicate version is Nothing
   -> DbSchema
   -> Either Text PredicateDetails

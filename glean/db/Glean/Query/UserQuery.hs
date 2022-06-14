@@ -800,7 +800,7 @@ schemaVersionForQuery
   -> DbSchema
   -> Thrift.Repo
   -> Maybe Thrift.Version -- ^ version specified by the client
-  -> IO SchemaVersion
+  -> IO SchemaSelector
 schemaVersionForQuery env schema repo qversion = do
   dbSchemaVersion <- getDbSchemaVersion env repo
   return $ maybe LatestSchemaAll SpecificSchemaAll
@@ -815,7 +815,7 @@ schemaVersionForQuery env schema repo qversion = do
       fromIntegral version `IntMap.member` legacyAllVersions schema
 
 compileAngleQuery
-  :: SchemaVersion
+  :: SchemaSelector
     -- ^ Schema version to resolve unversioned predicates
   -> DbSchema
   -> ByteString
@@ -922,7 +922,7 @@ checkPredicatesMatch
   :: DbSchema
   -> PredicateDetails
   -> SourceRef
-  -> SchemaVersion
+  -> SchemaSelector
   -> IO ()
 checkPredicatesMatch dbSchema details predicate schemaVer = do
   case lookupPredicateSourceRef predicate schemaVer dbSchema of
@@ -1240,7 +1240,7 @@ serializeType =
   toPredRef (PidRef _ id) = predicateIdRef id
   toTypeRef (ExpandedType id _) = typeIdRef id
 
-compileType :: DbSchema -> SchemaVersion -> ByteString -> IO Type
+compileType :: DbSchema -> SchemaSelector -> ByteString -> IO Type
 compileType schema version src = do
   parsed <- checkParsed $ Angle.parseType src
   let scope = addTmpPredicate $ fromMaybe HashMap.empty $
