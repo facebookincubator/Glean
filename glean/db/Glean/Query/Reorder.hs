@@ -254,7 +254,7 @@ reorderStmtGroup scope stmts =
     -- matches at most one thing, matches everything, or something else
     -- (PatternMatch).
     isCandidate
-      (FlatStatement _ (Ref v) (FactGenerator _ key _))
+      (FlatStatement _ (Ref v) (FactGenerator _ key _ _))
       | Just (Var _ x _) <- matchVar v =
         Just (x, classifyPattern lhsScope key) -- TODO lookupScope here is wrong
     isCandidate _ = Nothing
@@ -344,7 +344,7 @@ reorderStmtGroup scope stmts =
         new_slow_searches =
           [ y
           | Just stmts <- [usesOf x]
-          , (_,_,FlatStatement _ (Ref v) (FactGenerator _ key _)) <- stmts
+          , (_,_,FlatStatement _ (Ref v) (FactGenerator _ key _ _)) <- stmts
           , Just (Var _ y _) <- [matchVar v]
           , PatternSearchesAll <-
               [classifyPattern (IntSet.delete x lhsScope) key]
@@ -608,7 +608,7 @@ prefixVars
   -> VarSet
 prefixVars lookups scope stmt = prefixVarsStmt stmt
   where
-  prefixVarsStmt (FlatStatement _ _ (FactGenerator _ key _)) =
+  prefixVarsStmt (FlatStatement _ _ (FactGenerator _ key _ _)) =
       prefixVarsTerm key IntSet.empty
   prefixVarsStmt FlatStatement{} = IntSet.empty
   prefixVarsStmt (FlatNegation stmtss) = prefixVarsStmts stmtss
@@ -764,6 +764,7 @@ reorderStmt stmt@(FlatStatement ty lhs gen)
           FactGenerator p
             (Ref (MatchWild tyKey))
             (Ref (MatchWild tyValue))
+            SeekOnAllFacts
       -- V = p {key=_, value=_}
       -- LHS = RHS
       return $ CgStatement (Ref (MatchBind var)) pat : stmts

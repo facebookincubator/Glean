@@ -101,8 +101,11 @@ instance FixBindOrder Generator where
     DerivedFactGenerator pid
       <$> fixBindOrder isPat key
       <*> fixBindOrder isPat val
-  fixBindOrder _ (FactGenerator pid kpat vpat) =
-    FactGenerator pid <$> fixBindOrder IsPat kpat <*> fixBindOrder IsPat vpat
+  fixBindOrder _ (FactGenerator pid kpat vpat range) =
+    FactGenerator pid <$>
+      fixBindOrder IsPat kpat <*>
+      fixBindOrder IsPat vpat <*>
+      pure range
   fixBindOrder _ (PrimCall op pats) =
     PrimCall op <$> mapM (fixBindOrder IsExpr) pats
 

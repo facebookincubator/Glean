@@ -228,11 +228,11 @@ flattenFactGen pidRef@(PidRef pid _) kpat vpat = do
     Just details@PredicateDetails{..} ->
       case predicateDeriving of
         Schema.NoDeriving ->
-          return (mempty, FactGenerator pidRef kpat vpat)
+          return (mempty, FactGenerator pidRef kpat vpat SeekOnAllFacts)
         Schema.Derive when query
           | Schema.DerivedAndStored <- when
           , Just predicateId /= deriveStored ->
-               return (mempty, FactGenerator pidRef kpat vpat)
+               return (mempty, FactGenerator pidRef kpat vpat SeekOnAllFacts)
           | otherwise -> do
             calling predicateId $ do
               qtransformed <- transformTypeCheckedQuery query
@@ -474,7 +474,7 @@ captureKey dbSchema (FlatQuery pat Nothing stmts) ty
     captureStmt idVar keyVar maybeValVar
       (FlatStatement ty
         lhs@(Ref (MatchBind (Var _ v' _)))
-        (FactGenerator pid kpat vpat))
+        (FactGenerator pid kpat vpat range))
       | idVar == v' = do
         let kpat' = Ref (MatchAnd (Ref (MatchBind keyVar)) kpat)
             vpat' = case maybeValVar of
@@ -482,7 +482,7 @@ captureKey dbSchema (FlatQuery pat Nothing stmts) ty
               Just valVar -> Ref (MatchAnd (Ref (MatchBind valVar)) vpat)
         return
           ( singletonGroup
-              (FlatStatement ty lhs (FactGenerator pid kpat' vpat'))
+              (FlatStatement ty lhs (FactGenerator pid kpat' vpat' range))
           , Just
             ( Ref (MatchVar keyVar)
             , maybe (Tuple []) (Ref . MatchVar) maybeValVar ))
@@ -553,7 +553,8 @@ captureKey dbSchema (FlatQuery pat Nothing stmts) ty
         lookup = FlatStatement ty pat
           (FactGenerator pidRef
             (Ref (MatchBind keyVar))
-            (Ref (maybe (MatchWild predicateValueType) MatchBind maybeValVar)))
+            (Ref (maybe (MatchWild predicateValueType) MatchBind maybeValVar))
+            SeekOnAllFacts)
 
   | otherwise = do
   -- We have

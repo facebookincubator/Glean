@@ -17,6 +17,7 @@ module Glean.Query.Codegen
   , CgStatement
   , Generator_(..)
   , Generator
+  , SeekSection(..)
   , Var(..)
   , Match(..)
   , matchVar
@@ -125,6 +126,23 @@ data CgStatement_ var
 
 type CgStatement = CgStatement_ Var
 
+-- | Should a `seek` call be restricted to a section of the database?
+--
+-- When performing a query over a stacked database we have three levels
+--  * base db
+--  * stacked db
+--  * writable FactSet
+--
+-- The writable FactSet is there to store facts from derived predicates
+-- generated during the querying.
+--
+-- This type specifies which of these sections should be be covered in a seek.
+data SeekSection
+  = SeekOnAllFacts -- ^ base + stacked + writable
+  | SeekOnBase -- ^ base only
+  | SeekOnStacked -- ^ stacked only
+  deriving (Show)
+
 -- | A generator produces a finite series of terms
 data Generator_ var
     -- | Enumerate facts of a predicate matching a pattern
@@ -146,6 +164,9 @@ data Generator_ var
 
       -- | match the fact value
     , generatorValue :: Pat_ var
+
+      -- | restrict the range of fact ids this generator can produce.
+    , generatorSeekSection :: SeekSection
     }
 
     -- | Generate values
@@ -374,7 +395,7 @@ findOutputs q = findOutputsQuery q IntSet.empty
      foldr (flip (foldr findOutputsStmt)) r [cond, then_, else_]
 
   findOutputsGen :: Generator -> IntSet -> IntSet
-  findOutputsGen (FactGenerator _ kpat vpat) r =
+  findOutputsGen (FactGenerator _ kpat vpat _) r =
     foldr findOutputsMatch (foldr findOutputsMatch r vpat) kpat
   findOutputsGen (TermGenerator t) r = findOutputsPat t r
   findOutputsGen (DerivedFactGenerator _ k v) r =
@@ -677,7 +698,8 @@ compileStatements
         compileGen gen (Just (vars ! var)) $ compile rest
 
       -- <pat> = <fact gen> is a lookup if <pat> is known
-      compile (CgStatement pat (FactGenerator (PidRef pid _) kpat vpat) : rest)
+      compile
+        (CgStatement pat (FactGenerator (PidRef pid _) kpat vpat _) : rest)
         | Just load <- patIsExactFid vars pat = mdo
           let
             patOutput
@@ -950,8 +972,9 @@ compileStatements
 
         inner
 
-      compileGen (FactGenerator (PidRef pid _) kpat vpat) maybeReg inner = do
-        compileFactGenerator regs vars pid kpat vpat maybeReg inner
+      compileGen
+        (FactGenerator (PidRef pid _) kpat vpat range) maybeReg inner = do
+        compileFactGenerator regs vars pid kpat vpat range maybeReg inner
 
 
 
@@ -962,11 +985,12 @@ compileFactGenerator
   -> Pid
   -> Pat
   -> Pat
+  -> SeekSection
   -> Maybe (Register 'Word)
   -> Code a
   -> Code a
 compileFactGenerator (QueryRegs{..} :: QueryRegs s)
-    vars pid kpat vpat maybeReg inner =
+    vars pid kpat vpat _ maybeReg inner =
 
   local $ \seekTok -> local $ \prefix_size -> do
 
@@ -1667,7 +1691,7 @@ instance Pretty CgStatement where
         hang 2 (sep [sep ("(" : punctuate ";" (map pretty stmts)), ")"])
 
 instance Pretty Generator where
-  pretty (FactGenerator pred kpat vpat)
+  pretty (FactGenerator pred kpat vpat _)
     | isWild vpat || isUnit vpat = pretty pred <+> pretty kpat
     | otherwise = pretty pred <+> pretty kpat <+> "->" <+> pretty vpat
     where

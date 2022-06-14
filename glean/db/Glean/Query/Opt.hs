@@ -162,8 +162,8 @@ class Apply t where
   apply :: t -> U t
 
 instance Apply Generator where
-  apply (FactGenerator pid key val) =
-    FactGenerator pid <$> apply key <*> apply val
+  apply (FactGenerator pid key val range) =
+    FactGenerator pid <$> apply key <*> apply val <*> pure range
   apply (TermGenerator x) = TermGenerator <$> apply x
   apply (DerivedFactGenerator pid key val) =
     DerivedFactGenerator pid <$> apply key <*> apply val
@@ -321,7 +321,7 @@ unifyStmt :: FlatStatement -> U Bool
 unifyStmt (FlatStatement _ lhs rhs)
   | neverMatches lhs = return False
   | TermGenerator rhs' <- rhs = unify lhs rhs'
-  | FactGenerator _ key val <- rhs = return $
+  | FactGenerator _ key val _ <- rhs = return $
       not (neverMatches key || neverMatches val)
   | otherwise = return True
 unifyStmt FlatNegation{} = return True
@@ -504,7 +504,7 @@ stmtScope FlatConditional{} r = r
   -- contents of if-patterns are not part of the "current scope"
 
 genScope :: Generator -> VarSet -> VarSet
-genScope (FactGenerator _ key val) r = termScope key $! termScope val r
+genScope (FactGenerator _ key val _) r = termScope key $! termScope val r
 genScope (TermGenerator pat) r = termScope pat r
 genScope (DerivedFactGenerator _ key val) r = termScope key $! termScope val r
 genScope (ArrayElementGenerator _ exp) r = termScope exp r

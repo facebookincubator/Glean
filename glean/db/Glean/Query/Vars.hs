@@ -42,7 +42,7 @@ instance VarsOf FlatStatement where
       varsStmts stmts r = foldr (\g r -> foldr varsOf r g) r stmts
 
 instance VarsOf Generator where
-  varsOf (FactGenerator _ key val) r = varsOf key $! varsOf val r
+  varsOf (FactGenerator _ key val _) r = varsOf key $! varsOf val r
   varsOf (TermGenerator exp) r = varsOf exp r
   varsOf (DerivedFactGenerator _ key val) r = varsOf key $! varsOf val r
   varsOf (ArrayElementGenerator _ arr) r = varsOf arr r
