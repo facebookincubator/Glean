@@ -1,0 +1,2 @@
+query: codemarkup.cxx.CxxResolveDeclarationToEntity { decl = { function_ = _ } }
+transform: [gensort, []]

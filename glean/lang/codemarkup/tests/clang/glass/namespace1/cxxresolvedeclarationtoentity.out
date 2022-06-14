@@ -1,0 +1,117 @@
+[
+  "@generated",
+  {
+    "key": {
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "foo" } } },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "foo" } } }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 19,
+              "columnBegin": 1,
+              "lineEnd": 21,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "entity": {
+        "defn": {
+          "function_": {
+            "key": {
+              "declaration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "foo" } } },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "foo" } } }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 19,
+                    "columnBegin": 1,
+                    "lineEnd": 21,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "isInline": false
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "h" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 35,
+              "columnBegin": 1,
+              "lineEnd": 41,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "entity": {
+        "defn": {
+          "function_": {
+            "key": {
+              "declaration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "h" } } },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 35,
+                    "columnBegin": 1,
+                    "lineEnd": 41,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "isInline": false
+            }
+          }
+        }
+      }
+    }
+  }
+]
