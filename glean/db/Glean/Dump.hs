@@ -38,7 +38,7 @@ dump backend repo withBatch = doDump =<< loadDbSchema backend repo
         vlog 1 (printf "%d facts for predicate %d\n" (length facts) pid)
         case lookupPid (Pid pid) dbSchema of
           Nothing -> throwIO $ ErrorCall $ "unknown predicate Id: " <> show pid
-          Just details@PredicateDetails{..} -> do
+          Just details@PredicateDetails{} -> do
             jsonFacts <- forM (reverse facts) $ \(fid, Fact{..}) ->
                 factToJSON
                   True
