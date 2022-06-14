@@ -558,7 +558,10 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit includeRefs b mlang =
       let (refs, defs) = Attributes.extendAttributes
             (Attributes.fromSymbolId Attributes.SymbolKindAttr)
               kindMap refs1 defs1
-      let revision = Revision (Glean.repo_hash fileRepo)
+      let repohash = Glean.repo_hash fileRepo
+
+      -- TODO (T122759515): Get repo revision from db properties
+      let revision = Revision $ Text.take 40 repohash
 
       return (DocumentSymbols {..}, merr)
 
