@@ -112,3 +112,6 @@ setRequestContinuationSize _ = GleanServerLogger
 
 setResponseContinuationSize :: Int -> GleanServerLogger
 setResponseContinuationSize _ = GleanServerLogger
+
+setSchemaId :: Text -> GleanServerLogger
+setSchemaId _ = GleanServerLogger

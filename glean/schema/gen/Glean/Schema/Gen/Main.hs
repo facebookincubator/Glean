@@ -180,7 +180,7 @@ main = do
             then filter (not . ("/archive/" `isInfixOf`)) files
             else files
     (sourceSchemas, schemas) <- case parseAndResolveSchema str of
-      Left err -> throwIO $ ErrorCall $ err
+      Left err -> throwIO $ ErrorCall err
       Right schema -> return schema
     -- for typechecking
     dbschema <- newDbSchema sourceSchemas schemas readWriteContent
@@ -263,7 +263,7 @@ main = do
     Left opts -> graph opts dbschema sourceSchemas [ v | (v,_,_,_) <- versions ]
     Right opts -> do
       forM_ (source opts) $ \f -> BC.writeFile f src
-      reportTime "gen" $ gen opts versions schemas
+      reportTime "gen" $ gen opts versions
 
 graph :: GraphOptions -> DbSchema -> SourceSchemas -> [Version] -> IO ()
 graph opts dbschema sourceSchemas versions =
@@ -355,9 +355,8 @@ drawGraph GraphOptions{..} deps' roots =
 gen
   :: GenOptions
   -> [(Version, Hash, ResolvedSchemaRef, Maybe FilePath)]
-  -> Schemas
   -> IO ()
-gen GenOptions{..} versions Schemas{..} =
+gen GenOptions{..} versions =
   mapM_ genFor versions
   where
   genFor :: (Version, Hash, ResolvedSchemaRef, Maybe FilePath) -> IO ()
