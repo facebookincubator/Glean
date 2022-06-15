@@ -112,9 +112,12 @@ fillDatabase env mversion repo handle ifexists action =
     r <- kickOffDatabase env def
       { kickOff_repo = repo
       , kickOff_fill = Just $ KickOffFill_writeHandle handle
-      , kickOff_properties = HashMap.fromList
+      , kickOff_properties = HashMap.fromList $
           [ ("glean.schema_version", Text.pack $ show version)
           | Just version <- [mversion]
+          ] <>
+          [ ("glean.schema_id", id)
+          | Just (SchemaId id) <- [schemaId env]
           ]
       }
     when (kickOffResponse_alreadyExists r) ifexists

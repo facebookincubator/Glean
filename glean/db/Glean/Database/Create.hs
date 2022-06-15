@@ -31,6 +31,7 @@ import Facebook.Process
 import Util.Defer
 import Util.Log
 
+import Glean.Angle.Hash
 import Glean.BuildInfo
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Exception
@@ -41,6 +42,7 @@ import Glean.Database.Open
 import Glean.Database.Types
 import Glean.Database.Work
 import Glean.Database.Schema (toSchemaInfo)
+import Glean.Database.Schema.Types
 import Glean.Internal.Types
 import qualified Glean.Recipes.Types as Recipes
 import Glean.RTS.Foreign.Lookup (firstFreeId)
@@ -146,9 +148,22 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
                             "couldn't create: " <> Text.pack (show exc)
                         }
                       })
-            unmask $ void $ Async.wait opener
+            OpenDB{..} <- unmask $ Async.wait opener
+            addSchemaIdProperty envCatalog kickOff_repo
+              (schemaLatestVersion odbSchema)
             return $ Thrift.KickOffResponse False
   where
+    addSchemaIdProperty :: Catalog.Catalog -> Repo -> Hash -> IO ()
+    addSchemaIdProperty catalog repo hash =
+      void $ atomically $ Catalog.modifyMeta catalog repo $ \meta ->
+        return meta { metaProperties =
+          HashMap.insertWith
+            (\_ old -> old)  -- if one was provided already, keep it
+            "glean.schema_id"
+            (Text.pack (show hash))
+            (metaProperties meta)
+          }
+
     schemaProperties = do
       (_,schemas) <- Observed.get envSchemaSource
       currentVersion <- case schemasHighestVersion schemas of

@@ -60,3 +60,5 @@ propertiesTest = TestCase $ withTestEnv [] $ \env -> do
   Database{..} <- getDatabase
   assertBool "sets glean.schema_version by default" $
     all (`elem` HashMap.keys database_properties) ["glean.schema_version"]
+  assertBool "sets glean.schema_id by default" $
+    all (`elem` HashMap.keys database_properties) ["glean.schema_id"]
