@@ -159,7 +159,10 @@ runDatabaseJanitor env@Env{envShardManager = SomeShardManager sm} = do
   -- so that the backup thread can't jump in early and pick one
   atomically $ sequence_ restores
 
-  -- TODO catalog dbs available but not in my shards
+  atomically $ Catalog.resetElsewhere (envCatalog env) $
+    [ item
+      -- Nothing means the db is not in any of the shards assigned to this node
+    | (item, Nothing) <- keepAnnotatedWithShard]
 
   forM_ byRepo $ \(repoNm, dbs) -> do
     let prefix = "glean.db." <> Text.encodeUtf8 repoNm

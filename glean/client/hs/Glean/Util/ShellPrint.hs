@@ -188,6 +188,7 @@ instance ShellFormat o Thrift.DatabaseStatus where
   shellFormatText _ctx _ status =
     case status of
       Thrift.DatabaseStatus_Complete -> parens "complete"
+      Thrift.DatabaseStatus_Available -> parens "available elsewhere"
       Thrift.DatabaseStatus_Finalizing -> parens "finalizing"
       Thrift.DatabaseStatus_Incomplete -> parens "incomplete"
       Thrift.DatabaseStatus_Restoring -> parens "restoring"
@@ -197,6 +198,7 @@ instance ShellFormat o Thrift.DatabaseStatus where
   shellFormatJson _ctx _ status = J.toJSON @String $
       case status of
         Thrift.DatabaseStatus_Complete -> "COMPLETE"
+        Thrift.DatabaseStatus_Available-> "AVAILABLE"
         Thrift.DatabaseStatus_Finalizing -> "FINALIZING"
         Thrift.DatabaseStatus_Incomplete -> "INCOMPLETE"
         Thrift.DatabaseStatus_Restoring -> "RESTORING"
@@ -223,6 +225,7 @@ instance ShellFormat o Thrift.Repo where
 statusColour :: Thrift.DatabaseStatus -> Color
 statusColour status = case status of
   Thrift.DatabaseStatus_Complete -> Green
+  Thrift.DatabaseStatus_Available -> Green
   Thrift.DatabaseStatus_Finalizing -> Green
   Thrift.DatabaseStatus_Incomplete -> Blue
   Thrift.DatabaseStatus_Restoring -> Black

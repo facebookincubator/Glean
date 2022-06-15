@@ -59,6 +59,7 @@ data Locality = Local | Restoring | Cloud
 -- This is DatabaseStatus minus Restorable.
 data ItemStatus
   = ItemComplete
+  | ItemElsewhere -- available, but in another shard
   | ItemFinalizing
   | ItemIncomplete
   | ItemBroken

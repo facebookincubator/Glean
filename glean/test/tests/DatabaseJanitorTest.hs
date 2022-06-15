@@ -159,7 +159,10 @@ serverConfig backupdir = def
   }
 
 listDBs :: Env -> IO [Thrift.Database]
-listDBs env = listDatabasesResult_databases <$> listDatabases env def
+listDBs env =
+  filter hereDBs . listDatabasesResult_databases <$> listDatabases env def
+  where
+    hereDBs Database{..} = database_status /= DatabaseStatus_Available
 
 waitDel :: Env -> IO ()
 waitDel env = atomically $ do
@@ -443,6 +446,20 @@ shardingTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
       ["0001"]
       (sort $ map (repo_hash . database_repo) dbs)
 
+elsewhereTest :: Test
+elsewhereTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
+  myShards <- newIORef ["0001", "0003"] -- initial shard assignment
+  let cfg = (dbConfig dbdir (serverConfig backupdir))
+        { cfgShardManager = SomeShardManager $ shardByRepo myShards}
+  withDatabases evb cfg cfgAPI $ \env -> do
+    runDatabaseJanitor env
+    waitDel env
+
+    dbs <- listDatabasesResult_databases <$> listDatabases env def
+    assertEqual "dbs available with the default retention policy"
+      ["0001", "0002", "0003", "0004"]
+      (sort $ map (repo_hash . database_repo) dbs)
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "deleteOldDBs" deleteOldDBsTest
@@ -453,4 +470,5 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "openNewestDB" openNewestTest
   , TestLabel "closeIdleDBs" closeIdleDBsTest
   , TestLabel "sharding" shardingTest
+  , TestLabel "availableElsewhere" elsewhereTest
   ]

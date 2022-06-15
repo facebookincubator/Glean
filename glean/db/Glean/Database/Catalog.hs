@@ -30,6 +30,7 @@ module Glean.Database.Catalog
   , startRestoring
   , finishRestoring
   , abortRestoring
+  , resetElsewhere
   , getLocalDatabases
   , getLocalDatabase
   ) where
@@ -178,6 +179,7 @@ recalculateDepsStatus Catalog{..} repo = do
 
 itemDatabaseStatus :: ItemStatus -> Thrift.DatabaseStatus
 itemDatabaseStatus ItemComplete = Thrift.DatabaseStatus_Complete
+itemDatabaseStatus ItemElsewhere = Thrift.DatabaseStatus_Available
 itemDatabaseStatus ItemIncomplete = Thrift.DatabaseStatus_Incomplete
 itemDatabaseStatus ItemRestoring = Thrift.DatabaseStatus_Restoring
 itemDatabaseStatus ItemBroken = Thrift.DatabaseStatus_Broken
@@ -455,6 +457,23 @@ abortRestoring cat repo = do
     { entriesRestoring = HashMap.delete repo entriesRestoring
     , .. }
   recalculateDepsStatus cat repo
+
+-- | Reset the catalog of items available elsewhere to the ones given
+resetElsewhere :: Catalog -> [Item] -> STM ()
+resetElsewhere cat items = do
+  Entries{..} <- getEntries cat
+  statuses <- HashMap.traverseWithKey (\_ -> readTVar . entryStatus) entriesLive
+  let entryElsewhere k = HashMap.lookup k statuses == Just ItemElsewhere
+      entriesNotElsewhere =
+        HashMap.filterWithKey (\k _ -> not (entryElsewhere k)) entriesLive
+  entriesElsewhere <- forM items $ \Item{..} -> do
+    e <- mkEntry itemRepo itemMeta
+    writeTVar (entryStatus e) ItemElsewhere
+    return (itemRepo, e)
+  writeTVar (catEntries cat) $ Just Entries
+    { entriesLive = entriesNotElsewhere <> HashMap.fromList entriesElsewhere
+    , ..
+    }
 
 getLocalDatabases :: Catalog -> STM (HashMap Repo Thrift.GetDatabaseResult)
 getLocalDatabases cat = do

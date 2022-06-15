@@ -293,8 +293,10 @@ exception InvalidDependency {
 exception UnknownBatchHandle {}
 
 enum DatabaseStatus {
-  // database is available and complete:
+  // database is complete and available on this server:
   Complete = 0,
+  // database is complete and available elsewhere:
+  Available = 7,
   // database is currently being created. Can be queried, but results
   // may be incomplete:
   Incomplete = 1,

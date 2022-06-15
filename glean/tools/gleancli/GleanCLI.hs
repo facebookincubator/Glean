@@ -233,6 +233,7 @@ instance Plugin StatusCommand where
     where
     exitCode db = case Thrift.database_status db of
       Thrift.DatabaseStatus_Complete -> ExitSuccess
+      Thrift.DatabaseStatus_Available -> ExitFailure 107
       Thrift.DatabaseStatus_Incomplete -> ExitFailure 101
       Thrift.DatabaseStatus_Restoring -> ExitFailure 102
       Thrift.DatabaseStatus_Broken -> ExitFailure 103
