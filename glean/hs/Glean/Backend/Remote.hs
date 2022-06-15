@@ -27,7 +27,7 @@ module Glean.Backend.Remote
   , defaultClientConfigSource
 
     -- * Shards
-  , Shard
+  , DbShard
   , dbShard
 
     -- * More operations
@@ -348,7 +348,7 @@ instance Backend ThriftBackend where
   displayBackend = show
 
   hasDatabase ThriftBackend{..} repo = do
-    let serv = thriftServiceWithShard thriftBackendService (Just (dbShard repo))
+    let serv = thriftServiceWithDbShard thriftBackendService (Just (dbShard repo))
     hosts <- getSelection thriftBackendEventBase serv 1
     return (not (null hosts))
 
@@ -376,7 +376,7 @@ withShard (ThriftBackend ClientConfig{..} evb serv _) repo act =
   where
     unsharded = runThrift evb serv act
     shard = dbShard repo
-    sharded = runThrift evb (thriftServiceWithShard serv (Just shard)) act
+    sharded = runThrift evb (thriftServiceWithDbShard serv (Just shard)) act
 
 withoutShard
   :: ThriftBackend
@@ -384,7 +384,7 @@ withoutShard
   -> IO a
 withoutShard (ThriftBackend _ evb serv _) req = runThrift evb serv req
 
-dbShard :: Thrift.Repo -> Shard
+dbShard :: Thrift.Repo -> DbShard
 dbShard Thrift.Repo{..} =
   unsafeDupablePerformIO $ B.unsafeUseAsCStringLen repo $ \(ptr,len) -> do
       -- Use GHC's md5 binding. If this ever changes then the test in

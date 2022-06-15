@@ -39,7 +39,7 @@ import qualified Glean.Handler as GleanHandler
 import qualified Glean.Index as Index
 import Glean.Index.GleanIndexingService.Service
 import Glean.Server.Config as Config
-import Glean.Server.Shard
+import Glean.Server.PublishShards
 import Glean.Types as Thrift
 import Glean.Util.ConfigProvider
 import Glean.Util.Periodic
@@ -48,7 +48,7 @@ import Glean.Util.Time
 databasesUpdatedCallback
   :: EventBaseDataplane
   -> ShardKey
-  -> MVar (Maybe [Shard])
+  -> MVar (Maybe [DbShard])
   -> HashSet Repo
   -> IO ()
 databasesUpdatedCallback evb shardKey currentShards dbs = swallow $ do
@@ -96,10 +96,10 @@ dbUpdateNotifierThread Env{..} callback = doPeriodically (seconds 30) $ do
 
 withShardsUpdater :: EventBaseDataplane -> Config -> Env -> IO a -> IO a
 withShardsUpdater evb cfg env action
-  | cfgSetShards cfg = do
+  | cfgPublishShards cfg = do
     port <- case cfgPort cfg of
       Just port -> return port
-      Nothing -> die "--set-shards requires --port"
+      Nothing -> die "--publish-shards requires --port"
     currentShards <- newMVar Nothing
     key <- getShardKey evb port
     withAsync

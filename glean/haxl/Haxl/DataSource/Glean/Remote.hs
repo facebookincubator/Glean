@@ -47,9 +47,9 @@ remoteFetch (ThriftBackend config evb ts clientInfo) =
   let
     ts' repo = case clientConfig_use_shards config of
       NO_SHARDS -> ts
-      USE_SHARDS -> thriftServiceWithShard ts (Just (dbShard repo))
+      USE_SHARDS -> thriftServiceWithDbShard ts (Just (dbShard repo))
       USE_SHARDS_AND_FALLBACK ->
-        thriftServiceWithShard ts (Just (dbShard repo)) -- TODO
+        thriftServiceWithDbShard ts (Just (dbShard repo)) -- TODO
 
   forM_ (HashMap.toList $ requestByRepo requests) $ \(repo, requests) -> do
     runThrift evb (ts' repo) $ do
@@ -84,9 +84,9 @@ remoteQuery (ThriftBackend config evb ts clientInfo) =
   where
   ts' repo = case clientConfig_use_shards config of
     NO_SHARDS -> ts
-    USE_SHARDS -> thriftServiceWithShard ts (Just (dbShard repo))
+    USE_SHARDS -> thriftServiceWithDbShard ts (Just (dbShard repo))
     USE_SHARDS_AND_FALLBACK ->
-      thriftServiceWithShard ts (Just (dbShard repo)) -- TODO
+      thriftServiceWithDbShard ts (Just (dbShard repo)) -- TODO
 
   fetch :: BlockedFetch GleanQuery -> IO ()
   fetch (BlockedFetch (QueryReq q repo stream) rvar) =

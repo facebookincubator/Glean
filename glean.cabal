@@ -150,7 +150,7 @@ library stubs
         Glean.BuildInfo
         Glean.Datasource.Scribe.Write
         Glean.Init
-        Glean.Server.Shard
+        Glean.Server.PublishShards
         Glean.Index
         Glean.Username
         ServiceData.Types

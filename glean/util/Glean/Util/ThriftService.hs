@@ -10,7 +10,7 @@ module Glean.Util.ThriftService
   ( ThriftServiceOptions(..)
   , IsThriftService(..)
   , thriftService
-  , Shard
+  , DbShard
   , runThriftInefficiently
   ) where
 
@@ -28,12 +28,14 @@ newtype ThriftServiceOptions = ThriftServiceOptions
   { processingTimeout :: Maybe Double   -- in seconds
   } deriving (Default, Show)
 
-type Shard = Text -- should be a number, I think
+-- | Used by the Glean client to request a node containing a specific db
+type DbShard = Text -- should be a number, I think
 
 -- | A Thrift service that can be called
 class IsThriftService t where
   mkThriftService :: Service -> ThriftServiceOptions -> t s
-  thriftServiceWithShard :: t s -> Maybe Shard -> t s
+  -- | Request a node with a specific Db
+  thriftServiceWithDbShard :: t s -> Maybe DbShard -> t s
   runThrift :: EventBaseDataplane -> t s -> Thrift s a -> IO a
   getSelection :: EventBaseDataplane -> t s -> Int -> IO [(HostName,PortNumber)]
 

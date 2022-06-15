@@ -45,7 +45,7 @@ instance IsThriftService ThriftService where
       }
   mkThriftService _ _ = error "basic-thriftservice does not support Tier"
 
-  thriftServiceWithShard t _ = t  -- shards are irrelevant if we have host/port
+  thriftServiceWithDbShard t _ = t  -- shards are irrelevant if we have host/port
 
   runThrift evb ThriftService{..} action = do
     addrs <- getAddrInfo
