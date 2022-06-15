@@ -10,6 +10,7 @@ module Glean.Database.Janitor
   ( runDatabaseJanitor
   ) where
 
+import Control.Concurrent.Async (withAsync, wait)
 import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad.Extra
@@ -20,6 +21,7 @@ import Data.List (sortOn)
 import qualified Data.Map as Map
 import Data.Maybe
 import Data.Ord
+import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text.Encoding as Text
 import Data.Time
@@ -47,6 +49,9 @@ import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types hiding (Database)
 import qualified Glean.Types as Thrift
 import Glean.Util.Observed as Observed
+import Glean.Util.ShardManager
+    ( ShardManager(getAssignedShards, dbToShard),
+      SomeShardManager(SomeShardManager) )
 import Glean.Util.Time
 
 {- |
@@ -58,12 +63,13 @@ The database janitor has the following functions:
   - publish counters of local db states.
 -}
 runDatabaseJanitor :: Env -> IO ()
-runDatabaseJanitor env =
+runDatabaseJanitor env@Env{envShardManager = SomeShardManager sm} = do
   loggingAction (runLogCmd "janitor" env) (const mempty) $ do
   logInfo "running database janitor"
 
   config@ServerConfig.Config{..} <- Observed.get (envServerConfig env)
 
+  withAsync (getAssignedShards sm) $ \assignedShardsAsync -> do
   let
     !ServerConfig.DatabaseRetentionPolicy{} = config_retention
     !ServerConfig.DatabaseRestorePolicy{} = config_restore
@@ -93,7 +99,7 @@ runDatabaseJanitor env =
   -- used by the server to know when to advertise the server as alive.
   let done = atomically $ writeTVar (envDatabaseJanitor env) (Just t)
   flip finally done $ do
-
+  myShards <- Set.fromList <$> wait assignedShardsAsync
   let
     allDBs :: [Item]
     allDBs =
@@ -107,7 +113,8 @@ runDatabaseJanitor env =
     keepRoots = concatMap (dbKeepRoots config t) byRepo
 
     -- Ensure we keep dependencies for stacked dbs
-    keep = transitiveClosureBy itemRepo (catMaybes . dependencies) keepRoots
+    keep =
+      transitiveClosureBy itemRepo (catMaybes . dependencies) keepRoots
     dependencies = stacked . metaDependencies . itemMeta
     stacked (Just (Thrift.Dependencies_stacked repo)) =
       [repo `Map.lookup` repoMap]
@@ -117,11 +124,24 @@ runDatabaseJanitor env =
     repoMap =
       Map.fromList $ map (\item -> (itemRepo item, item)) allDBs
 
-    missingDependencies = any isNothing $ concatMap dependencies keep
-    delete =
-      [ repo | Item repo Local _ _ <- allDBs, repo `notElem` map itemRepo keep ]
-    fetch = filter ((==Cloud) . itemLocality) keep
+    keepAnnotatedWithShard =
+      [ (item, guard (shard `Set.member` myShards) >> pure shard)
+      | item <- keep
+      , let shard = itemToShard item
+      ]
 
+    keepInThisNode =
+      mapMaybe (\(item, shard) -> item <$ shard) keepAnnotatedWithShard
+
+    delete =
+      [ repo | Item repo Local _ _ <- allDBs
+      , repo `notElem` map itemRepo keepInThisNode ]
+
+    fetch = filter (\Item{..} -> itemLocality == Cloud) keepInThisNode
+
+    itemToShard Item{..} = dbToShard sm itemRepo (metaDependencies itemMeta)
+
+    missingDependencies = any isNothing $ concatMap dependencies keep
   when missingDependencies $ logInfo "some dbs are missing dependencies"
 
   forM_ delete $ \repo -> do
@@ -138,6 +158,8 @@ runDatabaseJanitor env =
   -- register all the restoring DBs together in a single transaction,
   -- so that the backup thread can't jump in early and pick one
   atomically $ sequence_ restores
+
+  -- TODO catalog dbs available but not in my shards
 
   forM_ byRepo $ \(repoNm, dbs) -> do
     let prefix = "glean.db." <> Text.encodeUtf8 repoNm
@@ -167,6 +189,7 @@ runDatabaseJanitor env =
             | Item{itemLocality=Local, ..} <- dbs ]
     unless (null dbAges) $ void $
       setCounter (prefix <> ".age") $ minimum dbAges
+  -- TODO publish shard size counters
 
 
 -- The target set of DBs we want usable on the disk. This is a set of

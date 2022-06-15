@@ -16,6 +16,7 @@ import qualified Data.ByteString.Lazy as LB
 import Data.Default
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashSet as HashSet
+import Data.IORef
 import Data.List
 import Data.Maybe
 import qualified Data.Text as Text
@@ -45,6 +46,7 @@ import Glean.Database.Open (isDatabaseClosed, withOpenDatabase)
 import Glean.Database.Types
 import Glean.Database.Schema
 import Glean.Impl.ConfigProvider
+import Glean.Impl.ShardManager
 import Glean.Init
 import Glean.RTS.Types (lowestFid)
 import Glean.ServerConfig.Types as ServerTypes
@@ -413,6 +415,34 @@ closeIdleDBsTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   assertBool "regular DB closed after" normalDbClosed
   assertBool "blacklisted DB open after" blackListedDbStillOpen
 
+-- | A shard manager that uses repo hashes as shards,
+-- and a dynamic shard assignment
+shardByRepo :: IORef [Text.Text] -> ShardManager Text.Text
+shardByRepo refShardAssignment =
+  ShardManager (readIORef refShardAssignment) (\repo _ -> repo_hash repo)
+
+shardingTest :: Test
+shardingTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
+  myShards <- newIORef ["0001", "0003"] -- initial shard assignment
+  let cfg = (dbConfig dbdir (serverConfig backupdir))
+        { cfgShardManager = SomeShardManager $ shardByRepo myShards}
+  withDatabases evb cfg cfgAPI $ \env -> do
+    runDatabaseJanitor env
+    waitDel env
+    dbs <- listDBs env
+    assertEqual "initial shard assignment"
+      ["0001", "0003"]
+      (sort $ map (repo_hash . database_repo) dbs)
+
+    -- update the shard assignment and verify
+    writeIORef myShards ["0001"]
+    runDatabaseJanitor env
+    waitDel env
+    dbs <- listDBs env
+    assertEqual "shard assignment: removed 0003"
+      ["0001"]
+      (sort $ map (repo_hash . database_repo) dbs)
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "deleteOldDBs" deleteOldDBsTest
@@ -422,4 +452,5 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "backupRestore" backupRestoreTest
   , TestLabel "openNewestDB" openNewestTest
   , TestLabel "closeIdleDBs" closeIdleDBsTest
+  , TestLabel "sharding" shardingTest
   ]
