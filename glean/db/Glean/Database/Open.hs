@@ -9,7 +9,7 @@
 module Glean.Database.Open (
   lookupActiveDatabase, withActiveDatabase, usingActiveDatabase,
   withOpenDatabase, withOpenDatabaseStack, withWritableDatabase,
-  readDatabase,
+  readDatabase, readDatabaseWithBoundaries,
   asyncOpenDB,
   newDB, acquireDB, releaseDB,
   isDatabaseClosed,
@@ -42,8 +42,10 @@ import qualified Glean.Database.Storage as Storage
 import Glean.Database.Meta (Meta(..))
 import Glean.Database.Schema
 import Glean.Database.Types
+import Glean.Query.Codegen (Boundaries, flatBoundaries, stackedBoundaries)
 import Glean.Repo.Text
 import qualified Glean.RTS.Foreign.Lookup as Lookup
+import Glean.RTS.Foreign.Lookup (Lookup)
 import qualified Glean.RTS.Foreign.LookupCache as LookupCache
 import qualified Glean.RTS.Foreign.Ownership as Ownership
 import qualified Glean.RTS.Foreign.Stacked as Stacked
@@ -107,16 +109,24 @@ withOpenDatabaseStack env@Env{..} repo action = go repo [] where
       Just (Thrift.Dependencies_stacked baseRepo) ->
         go baseRepo results'
 
-withOpenDBLookup :: Env -> Repo -> OpenDB -> (Lookup.Lookup -> IO a) -> IO a
+withOpenDBLookup
+  :: Env
+  -> Repo
+  -> OpenDB
+  -> (Boundaries -> Lookup -> IO a)
+  -> IO a
 withOpenDBLookup env@Env{..} repo
     OpenDB{ odbHandle = handle, odbBaseSlice = baseSlice } f = do
   deps <- atomically $ metaDependencies <$> Catalog.readMeta envCatalog repo
   case deps of
-    Nothing -> Lookup.withCanLookup handle f
+    Nothing -> Lookup.withCanLookup handle $ \lookup -> do
+      bounds <- flatBoundaries lookup
+      f bounds lookup
     Just (Thrift.Dependencies_stacked base_repo) ->
       readDatabase env base_repo $ \_ base ->
-      Lookup.withCanLookup handle $ \lookup ->
-      Lookup.withCanLookup (Stacked.stacked base lookup) f
+      Lookup.withCanLookup handle $ \lookup -> do
+        bounds <- stackedBoundaries base lookup
+        Lookup.withCanLookup (Stacked.stacked base lookup) (f bounds)
     Just (Thrift.Dependencies_pruned update) -> do
       let base_repo = Thrift.pruned_base update
       case baseSlice of
@@ -131,8 +141,9 @@ withOpenDBLookup env@Env{..} repo
             Just own -> do
               let baseLookup = Ownership.sliced own slice base
               Lookup.withCanLookup baseLookup $ \sliced ->
-                Lookup.withCanLookup handle $ \lookup ->
-                Lookup.withCanLookup (Stacked.stacked sliced lookup) f
+                Lookup.withCanLookup handle $ \lookup -> do
+                bounds <- stackedBoundaries sliced lookup
+                Lookup.withCanLookup (Stacked.stacked sliced lookup) (f bounds)
 
 withWritableDatabase :: Env -> Repo -> (WriteQueue -> IO a) -> IO a
 withWritableDatabase env repo action =
@@ -145,8 +156,19 @@ readDatabase
   -> Repo
   -> (OpenDB -> Lookup.Lookup -> IO a)
   -> IO a
-readDatabase env repo f = withOpenDatabase env repo $ \odb ->
-  withOpenDBLookup env repo odb $ f odb
+readDatabase env repo f =
+  readDatabaseWithBoundaries env repo $ \odb _ lookup ->
+  f odb lookup
+
+readDatabaseWithBoundaries
+  :: Env
+  -> Repo
+  -> (OpenDB -> Boundaries -> Lookup -> IO a)
+  -> IO a
+readDatabaseWithBoundaries env repo f =
+  withOpenDatabase env repo $ \odb ->
+  withOpenDBLookup env repo odb $ \bounds lookup ->
+    f odb bounds lookup
 
 newDB :: Repo -> STM DB
 newDB repo = DB repo

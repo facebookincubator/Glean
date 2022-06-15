@@ -24,6 +24,9 @@ module Glean.Query.Codegen
   , Pat
   , Expr
   , PrimOp(..)
+  , Boundaries
+  , flatBoundaries
+  , stackedBoundaries
   ) where
 
 import Control.Exception
@@ -62,6 +65,7 @@ import Glean.RTS.Bytecode.Disassemble
 import Glean.RTS.Bytecode.Gen.Issue
 import Glean.RTS.Bytecode.Gen.Instruction (Insn(..))
 import Glean.RTS.Foreign.Bytecode
+import Glean.RTS.Foreign.Lookup (Lookup, startingId, firstFreeId)
 import Glean.RTS.Foreign.Query
 import Glean.RTS.Traverse
 import Glean.RTS.Types
@@ -412,14 +416,41 @@ findOutputs q = findOutputsQuery q IntSet.empty
   findOutputsMatch (MatchAnd a b) r = findOutputsPat a (findOutputsPat b r)
   findOutputsMatch _ r = r
 
+-- | The database boundaries we are interested in to implement
+-- sectioned 'seek' calls.
+data Boundaries
+  = FlatBoundaries SectionBoundaries
+  | StackedBoundaries SectionBoundaries SectionBoundaries
+
+-- | Limits of a section of a database. Represents the range [start, end).
+data SectionBoundaries = SectionBoundaries
+  { _section_start :: Fid
+  , _section_end :: Fid
+  }
+
+flatBoundaries :: Lookup -> IO Boundaries
+flatBoundaries lookup = FlatBoundaries <$> sectionBounds lookup
+
+stackedBoundaries :: Lookup -> Lookup -> IO Boundaries
+stackedBoundaries base added =
+  StackedBoundaries
+    <$> sectionBounds base
+    <*> sectionBounds added
+
+sectionBounds :: Lookup -> IO SectionBoundaries
+sectionBounds lookup = SectionBoundaries
+  <$> startingId lookup
+  <*> firstFreeId lookup
+
 compileQuery
-  :: CodegenQuery
+  :: Boundaries
+  -> CodegenQuery
      -- ^ The query to compile. NB. no type checking or validation is
      -- done on this; we assume that earlier phases have done this.  A
      -- malformed query can cause a crash.
   -> IO CompiledQuery
 
-compileQuery (QueryWithInfo query numVars ty) = do
+compileQuery bounds (QueryWithInfo query numVars ty) = do
   vlog 2 $ show (pretty query)
 
   (idTerm, resultKey, resultValue, stmts) <- case query of
@@ -447,7 +478,7 @@ compileQuery (QueryWithInfo query numVars ty) = do
     -- resultKeyReg/resultValueReg is where we build up result values
     output $ \resultKeyOutput ->
       output $ \resultValueOutput ->
-      compileStatements regs stmts vars $ mdo
+      compileStatements bounds regs stmts vars $ mdo
         -- If the result term is a variable, avoid unnecessarily
         -- copying it into resultOutput and just use it directly.
         resultKeyReg <- case resultKey of
@@ -645,14 +676,16 @@ compileTermGen term vars maybeReg andThen = do
     andThen
 
 compileStatements
-  :: forall a s.
-     QueryRegs s
+  :: forall a s
+  .  Boundaries
+  -> QueryRegs s
   -> [CgStatement]
   -> Vector (Register 'Word)    -- ^ registers for variables
   -> Code a                     -- ^ @andThen@: code to insert after
                                 -- the result is constructed.
   -> Code a
 compileStatements
+  bounds
   regs@(QueryRegs{..} :: QueryRegs s)
   stmts
   vars
@@ -666,7 +699,7 @@ compileStatements
         local $ \innerRet -> mdo
           let
             compileBranch stmts =
-              compileStatements regs stmts vars $ mdo
+              compileStatements bounds regs stmts vars $ mdo
                 site <- callSite
                 loadLabel ret innerRet
                 jump doInner
@@ -675,7 +708,7 @@ compileStatements
 
           -- if
           loadConst 1 failed
-          thenSite <- compileStatements regs cond vars $ do
+          thenSite <- compileStatements bounds regs cond vars $ do
           -- then
             loadConst 0 failed
             compileBranch then_
@@ -759,7 +792,7 @@ compileStatements
       compile (CgNegation stmts : rest) = mdo
         local $ \seekLevel -> do
           currentSeek seekLevel
-          compileStatements regs stmts vars $ do
+          compileStatements bounds regs stmts vars $ do
             endSeek seekLevel
             jump fail
         a <- compile rest
@@ -790,7 +823,7 @@ compileStatements
       compile (CgDisjunction stmtss : rest) =
         local $ \innerRet -> mdo
         sites <- forM stmtss $ \stmts -> do
-          compileStatements regs stmts vars $ mdo
+          compileStatements bounds regs stmts vars $ mdo
             site <- callSite
             loadLabel ret_ innerRet
             jump doInner
@@ -974,13 +1007,14 @@ compileStatements
 
       compileGen
         (FactGenerator (PidRef pid _) kpat vpat range) maybeReg inner = do
-        compileFactGenerator regs vars pid kpat vpat range maybeReg inner
+        compileFactGenerator bounds regs vars pid kpat vpat range maybeReg inner
 
 
 
 compileFactGenerator
-  :: forall a s.
-     QueryRegs s
+  :: forall a s
+  .  Boundaries
+  -> QueryRegs s
   -> Vector (Register 'Word)    -- ^ registers for variables
   -> Pid
   -> Pat
@@ -989,7 +1023,7 @@ compileFactGenerator
   -> Maybe (Register 'Word)
   -> Code a
   -> Code a
-compileFactGenerator (QueryRegs{..} :: QueryRegs s)
+compileFactGenerator _ (QueryRegs{..} :: QueryRegs s)
     vars pid kpat vpat _ maybeReg inner =
 
   local $ \seekTok -> local $ \prefix_size -> do
@@ -1628,7 +1662,8 @@ data QueryRegs s = QueryRegs
   }
 
 generateQueryCode
-  :: (forall s . QueryRegs s -> Code ()) -> IO (Subroutine CompiledQuery)
+  :: (forall s . QueryRegs s -> Code ())
+  -> IO (Subroutine CompiledQuery)
 generateQueryCode f = generate Optimised $
   \ ((seek_, currentSeek_, endSeek_, next_, lookupKey_),
     (result_, resultWithPid_, newDerivedFact_),

@@ -133,10 +133,10 @@ genericUserQuery
 {-# INLINE genericUserQuery #-}
 genericUserQuery env repo query enc = do
   config@ServerConfig.Config{..} <- Observed.get (envServerConfig env)
-  readDatabase env repo $ \odb lookup ->
+  readDatabaseWithBoundaries env repo $ \odb bounds lookup ->
     maybe id limitAllocsThrow config_query_alloc_limit
       $ performUserQuery enc (odbSchema odb)
-      $ userQueryImpl env odb config lookup repo query
+      $ userQueryImpl env odb config bounds lookup repo query
 
 -- | A generic implementation of lookup queries.
 genericUserQueryFacts
@@ -450,19 +450,21 @@ userQueryWrites
   :: Database.Env
   -> OpenDB
   -> ServerConfig.Config
+  -> Boundaries
   -> Lookup
   -> Thrift.Repo
   -> Thrift.UserQuery
   -> IO (Thrift.UserQueryStats, Maybe Thrift.UserQueryCont, Maybe Thrift.Handle)
-userQueryWrites env odb config lookup repo q = do
+userQueryWrites env odb config bounds lookup repo q = do
   Results{..} <- withStats $
-    userQueryImpl env odb config lookup repo q
+    userQueryImpl env odb config bounds lookup repo q
   return (resStats, resCont, resWriteHandle)
 
 userQueryImpl
   :: Database.Env
   -> OpenDB
   -> ServerConfig.Config
+  -> Boundaries
   -> Lookup
   -> Thrift.Repo
   -> Thrift.UserQuery
@@ -473,6 +475,7 @@ userQueryImpl
   env
   odb
   config
+  bounds
   lookup
   repo
   Thrift.UserQuery{..}
@@ -597,12 +600,16 @@ userQueryImpl
                 (disassemble "Query" $ compiledQuerySub sub)
               | Thrift.queryDebugOptions_bytecode debug ]
 
-          bracket (compileQuery query) (release . compiledQuerySub) $ \sub -> do
-            results <- transformResultsBack appliedTrans <$>
-              executeCompiled schemaInventory defineOwners stack sub limits
-            diags <- evaluate $ force (bytecodeDiag sub) -- don't keep sub alive
-            sz <- evaluate $ Bytecode.size (compiledQuerySub sub)
-            return (results, appliedTrans, diags, sz)
+          bracket
+            (compileQuery bounds query)
+            (release . compiledQuerySub)
+            $ \sub -> do
+              results <- transformResultsBack appliedTrans <$>
+                executeCompiled schemaInventory defineOwners stack sub limits
+              diags <-
+                evaluate $ force (bytecodeDiag sub) -- don't keep sub alive
+              sz <- evaluate $ Bytecode.size (compiledQuerySub sub)
+              return (results, appliedTrans, diags, sz)
 
     -- If we're storing derived facts, queue them for writing and
     -- return the handle.
@@ -647,6 +654,7 @@ userQueryImpl
   env
   odb
   config
+  bounds
   lookup
   repo
   Thrift.UserQuery{..} = do
@@ -754,7 +762,9 @@ userQueryImpl
             derived <- FactSet.new nextId
             defineOwners <- mkDefineOwners nextId
             let stack = stacked lookup derived
-            qResults <- bracket (compileQuery gens) (release . compiledQuerySub)
+            qResults <- bracket
+              (compileQuery bounds gens)
+              (release . compiledQuerySub)
               $ \sub -> executeCompiled schemaInventory defineOwners stack
                 sub limits
             mkResults pids nextId derived appliedTrans qResults defineOwners

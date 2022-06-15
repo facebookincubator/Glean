@@ -282,25 +282,26 @@ runDerivation
   -> Thrift.DerivePredicateQuery
   -> IO ()
 runDerivation env repo ref pred Thrift.DerivePredicateQuery{..} = do
-  readDatabase env repo $ \odb lookup ->
+  readDatabaseWithBoundaries env repo $ \odb bounds lookup ->
     case derivePredicateQuery_parallel of
-      Nothing -> deriveQuery odb lookup (query (allFacts ref))
-      Just par -> parallelDerivation odb lookup par
+      Nothing -> deriveQuery odb bounds lookup (query (allFacts ref))
+      Just par -> parallelDerivation odb bounds lookup par
 
   where
-    deriveQuery odb lookup q = do
+    deriveQuery odb bounds lookup q = do
       config <- Observed.get (envServerConfig env)
-      result <- try $ UserQuery.userQueryWrites env odb config lookup repo q
+      result <- try $
+        UserQuery.userQueryWrites env odb config bounds lookup repo q
       case result of
         Left Thrift.Retry{..} ->
-          retry retry_seconds (deriveQuery odb lookup q)
+          retry retry_seconds (deriveQuery odb bounds lookup q)
         Right res@(_, mcont, _) -> do
           addProgress res
           case mcont of
-            Just cont -> deriveQuery odb lookup $ q `withCont` cont
+            Just cont -> deriveQuery odb bounds lookup $ q `withCont` cont
             Nothing -> return ()
 
-    parallelDerivation odb lookup ParallelDerivation{..} = do
+    parallelDerivation odb bounds lookup ParallelDerivation{..} = do
       outerPred <- getPredicate env repo (odbSchema odb)
         (parseRef parallelDerivation_outer_predicate)
 
@@ -348,7 +349,7 @@ runDerivation env repo ref pred Thrift.DerivePredicateQuery{..} = do
 
         worker :: [Id] -> IO ()
         worker fids =
-          deriveQuery odb lookup
+          deriveQuery odb bounds lookup
             (query (outer <> parallelDerivation_inner_query))
           where
           outer =
