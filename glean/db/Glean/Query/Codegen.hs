@@ -1023,8 +1023,8 @@ compileFactGenerator
   -> Maybe (Register 'Word)
   -> Code a
   -> Code a
-compileFactGenerator _ (QueryRegs{..} :: QueryRegs s)
-    vars pid kpat vpat _ maybeReg inner =
+compileFactGenerator bounds (QueryRegs{..} :: QueryRegs s)
+    vars pid kpat vpat section maybeReg inner =
 
   local $ \seekTok -> local $ \prefix_size -> do
 
@@ -1091,12 +1091,25 @@ compileFactGenerator _ (QueryRegs{..} :: QueryRegs s)
   -- hasPrefix is True if there is a prefix pattern *and* there is a
   -- non-empty pattern to match after the prefix.
   let hasPrefix = not (emptyPrefix kchunks) && not (all isWild remaining)
+      seek' typ ptr end tok =
+        case (section, bounds) of
+          (SeekOnAllFacts, _) -> seek typ ptr end tok
+          (SeekOnBase, StackedBoundaries (SectionBoundaries from to) _) ->
+            seekBetween from to
+          (SeekOnStacked, StackedBoundaries _ (SectionBoundaries from to)) ->
+            seekBetween from to
+          _ -> error "unexpected section seek on non-stacked db"
+        where
+          seekBetween from to = do
+            pfrom <- constant $ fromIntegral $ fromFid from
+            pto <- constant $ fromIntegral $ fromFid to
+            seekWithinSection typ ptr end pfrom pto tok
 
   typ <- constant (fromIntegral (fromPid pid))
   local $ \ptr -> local $ \ptrend -> do
     loadPrefix ptr ptrend
     when hasPrefix $ ptrDiff ptr ptrend prefix_size
-    seek typ ptr ptrend seekTok
+    seek' typ ptr ptrend seekTok
 
   -- for each fact...
   loop <- label
@@ -1596,6 +1609,15 @@ data QueryRegs s = QueryRegs
      -> Register 'Word -- (output) token
      -> Code ()
 
+  , seekWithinSection
+     :: Register 'Word -- predicate id
+     -> Register 'DataPtr -- prefix
+     -> Register 'DataPtr -- prefix end
+     -> Register 'Word -- section start
+     -> Register 'Word -- section end
+     -> Register 'Word -- (output) token
+     -> Code ()
+
     -- | Fetch the current seek token
   , currentSeek
      :: Register 'Word
@@ -1665,13 +1687,22 @@ generateQueryCode
   :: (forall s . QueryRegs s -> Code ())
   -> IO (Subroutine CompiledQuery)
 generateQueryCode f = generate Optimised $
-  \ ((seek_, currentSeek_, endSeek_, next_, lookupKey_),
-    (result_, resultWithPid_, newDerivedFact_),
+  \ ((seek_, seekWithinSection_, currentSeek_, endSeek_, next_),
+    (lookupKey_, result_, resultWithPid_, newDerivedFact_),
     saveState,
     maxResults, maxBytes) ->
   let
     seek typ ptr end tok =
       callFun_3_1 seek_ typ (castRegister ptr) (castRegister end) tok
+
+    seekWithinSection typ ptr end pfrom pto tok =
+      callFun_5_1 seekWithinSection_
+        typ
+        (castRegister ptr)
+        (castRegister end)
+        (castRegister pfrom)
+        (castRegister pto)
+        tok
 
     currentSeek tok = callFun_0_1 currentSeek_ tok
 

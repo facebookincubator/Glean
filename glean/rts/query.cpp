@@ -50,6 +50,8 @@ struct QueryExecutor {
   //
   IterToken seek(Pid type, folly::ByteRange key);
 
+  IterToken seekWithinSection(Pid type, folly::ByteRange key, Id from, Id upto);
+
   //
   // Returns the current seek token, so that the state can be reset in
   // the future using endSeek(). This is used for implementing
@@ -211,6 +213,20 @@ uint64_t QueryExecutor::seek(Pid type, folly::ByteRange key) {
   DVLOG(5) << "seek(" << type.toWord() << ") = " << token;
   iters.emplace_back(Iter{facts.seek(type, key, key.size()),
                           type, Id::invalid(), key.size(), true});
+  return static_cast<uint64_t>(token);
+};
+
+uint64_t QueryExecutor::seekWithinSection(
+    Pid type, folly::ByteRange key, Id from, Id upto) {
+  auto token = iters.size();
+  DVLOG(5) << "seekWithinSection(" << type.toWord() << ") = " << token;
+  iters.emplace_back(Iter{
+      facts.seekWithinSection(type, key, key.size(), from, upto),
+      type,
+      Id::invalid(),
+      key.size(),
+      true
+  });
   return static_cast<uint64_t>(token);
 };
 
@@ -578,7 +594,7 @@ std::unique_ptr<QueryResults> executeQuery (
   // IF YOU BREAK BACKWARD COMPATIBILITY HERE, BUMP version IN
   // Glean.Bytecode.Generate.Instruction
   //
-  // IF YOU ALSO BREAK FORWARD COMPATIBILITY, BUMP latestSupportedVersion AS
+  // IF YOU ALSO BREAK FORWARD COMPATIBILITY, BUMP lowestSupportedVersion AS
   // WELL
 
   const std::function<uint64_t(uint64_t, uint64_t, uint64_t)> seek_ =
@@ -588,6 +604,19 @@ std::unique_ptr<QueryResults> executeQuery (
             folly::ByteRange(
                 reinterpret_cast<uint8_t *>(prefix),
                 reinterpret_cast<uint8_t *>(end)));
+      };
+
+  const std::function<uint64_t(uint64_t, uint64_t, uint64_t, uint64_t, uint64_t)>
+    seekWithinSection_ =
+    [&](uint64_t type, uint64_t prefix, uint64_t end,
+        uint64_t from, uint64_t upto) {
+        return q.seekWithinSection(
+            Pid::fromWord(type),
+            folly::ByteRange(
+                reinterpret_cast<uint8_t *>(prefix),
+                reinterpret_cast<uint8_t *>(end)),
+            Id::fromWord(from),
+            Id::fromWord(upto));
       };
 
 
@@ -666,6 +695,7 @@ std::unique_ptr<QueryResults> executeQuery (
   }
 
   args.push_back(reinterpret_cast<uint64_t>(&seek_));
+  args.push_back(reinterpret_cast<uint64_t>(&seekWithinSection_));
   args.push_back(reinterpret_cast<uint64_t>(&currentSeek_));
   args.push_back(reinterpret_cast<uint64_t>(&endSeek_));
   args.push_back(reinterpret_cast<uint64_t>(&next_));
