@@ -2,7 +2,7 @@
     "@generated",
     {
         "revision": "testhash",
-        "size": 35,
+        "size": 36,
         "symbols": {
             "1": [
                 {
@@ -261,6 +261,33 @@
                         "lineEnd": 17
                     },
                     "sym": "test/py/all.py/all.LocalClass.meth"
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 7
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 30,
+                        "columnEnd": 38,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "sym": "test/py/lib.py/lib.HelperClass",
+                    "target": {
+                        "filepath": "lib.py",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 13,
+                            "lineBegin": 9,
+                            "lineEnd": 16
+                        },
+                        "repository": "test"
+                    }
                 }
             ],
             "17": [
