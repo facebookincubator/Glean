@@ -14,7 +14,7 @@ import Control.Exception
 import Options.Applicative
 
 import Util.EventBase
-import Glean.Backend as Glean
+import Glean.LocalOrRemote as Glean
   -- Don't use Glean.LocalOrRemote, because we don't want to link to
   -- the schema here.
 import Glean.Impl.ConfigProvider
