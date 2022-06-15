@@ -203,6 +203,7 @@ data Env = forall storage. Storage storage => Env
   , envSchemaUpdateSignal :: TMVar ()
     -- ^ The schema source, and its parsed/resolved form are both cached here.
   , envSchemaVersion :: Maybe Version
+  , envSchemaId :: Maybe Thrift.SchemaId
   , envRecipeConfig :: Observed Recipes.Config
   , envServerConfig :: Observed ServerConfig.Config
   , envBackupBackends :: Backup.Backends

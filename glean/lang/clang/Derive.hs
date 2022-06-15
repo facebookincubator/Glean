@@ -17,6 +17,7 @@ import qualified Options.Applicative as O
 
 import Util.EventBase (withEventBaseDataplane)
 
+import Glean.Schema.Builtin.Types (schema_id)
 import Glean.Util.ConfigProvider
 
 import Derive.Env
@@ -39,7 +40,8 @@ main = withConfigOptions allOptions $ \((cfg, passes), cfgOpts) ->
   withNumCapabilities (cfgNumCapabilities cfg) $
   withEventBaseDataplane $ \evb ->
   withConfigProvider cfgOpts $ \cfgAPI ->
-  Backend.withBackendWithDefaultOptions evb cfgAPI (cfgService cfg) $ \be ->
+  Backend.withBackendWithDefaultOptions evb cfgAPI (cfgService cfg)
+    (Just schema_id) $ \be ->
   runDerive cfg passes be
 
   where

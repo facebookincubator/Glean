@@ -14,6 +14,7 @@ module IncludeTree (main) where
 import Glean hiding (options)
 import qualified Glean (options)
 import Glean.Impl.ConfigProvider
+import Glean.Schema.Builtin.Types (schema_id)
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import Glean.Util.ConfigProvider
 import Glean.Util.PredMap (PredMap)
@@ -137,5 +138,5 @@ main =
   withConfigOptions options $ \(cfg, cfgOpts) ->
     withEventBaseDataplane $ \ebd ->
       withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) ->
-        withRemoteBackend ebd cfgAPI (cfgService cfg) $ \be ->
+        withRemoteBackend ebd cfgAPI (cfgService cfg) (Just schema_id) $ \be ->
           processTranslationUnitTrace be cfg

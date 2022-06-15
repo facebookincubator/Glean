@@ -29,6 +29,7 @@ import Util.EventBase
 import qualified Glean
 import Glean.Angle as Angle
 import Glean.Impl.ConfigProvider
+import Glean.Schema.Builtin.Types (schema_id)
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import Glean.Util.ConfigProvider
 import Glean.Util.Range
@@ -56,7 +57,7 @@ main = do
   withConfigOptions options $ \(cfg, cfgOpts) ->
     withEventBaseDataplane $ \evb ->
       withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) ->
-        Glean.withRemoteBackend evb cfgAPI (cfgService cfg)
+        Glean.withRemoteBackend evb cfgAPI (cfgService cfg) (Just schema_id)
           $ \backend -> do
             repo <- Glean.getLatestRepo backend "fbsource"
             doQuery backend cfg repo

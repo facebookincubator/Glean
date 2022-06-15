@@ -151,7 +151,8 @@ main =
   let
     settings = maybe id (setTimeout . fromIntegral) cfgThriftTimeout
   in
-  withRemoteBackendSettings evb cfgAPI cfgService settings $ \backend -> do
+  withRemoteBackendSettings evb cfgAPI cfgService Nothing settings
+      $ \backend -> do
     Stats{..} <- newStats
     let
       doRequest =

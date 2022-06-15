@@ -12,6 +12,7 @@ module HieDBIndexer.Main where
 
 import qualified Glean.Backend as Glean
 import Glean.Init (withOptions)
+import Glean.Schema.Builtin.Types (schema_id)
 import Glean.Util.ConfigProvider
 import HieDBIndexer.DefaultMain
 import qualified HieDBIndexer.Options as HieDB
@@ -28,5 +29,5 @@ main = do
   withOptions opts $ \(cfg, svc) ->
     withEventBaseDataplane $ \evb ->
       withConfigProvider defaultConfigOptions $ \cfgAPI ->
-        Glean.withBackendWithDefaultOptions evb cfgAPI svc $
+        Glean.withBackendWithDefaultOptions evb cfgAPI svc (Just schema_id) $
           defaultMain tracer cfg

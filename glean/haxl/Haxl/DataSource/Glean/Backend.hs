@@ -34,7 +34,8 @@ syncGet
   -> PerformFetch GleanGet
 syncGet env = SyncFetch $ \requests -> do
   forM_ (HashMap.toList $ requestByRepo requests) $ \(repo, requests) -> do
-    results <- userQueryFacts env repo (mkRequest Nothing requests)
+    let schema = schemaId env
+    results <- userQueryFacts env repo (mkRequest Nothing schema requests)
     putResults results requests
 
 

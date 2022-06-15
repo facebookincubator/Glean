@@ -1288,7 +1288,8 @@ instance Plugin ShellCommand where
 
   withService evb cfgAPI service cfg = do
     (service', updateSchema) <- setupLocalSchema service
-    Glean.withBackendWithDefaultOptions evb cfgAPI service' $ \backend -> do
+    Glean.withBackendWithDefaultOptions evb cfgAPI
+      service' Nothing $ \backend -> do
     withSystemTempFile "scratch-query.angle" $ \q handle -> do
       hClose handle
       client_info <- clientInfo

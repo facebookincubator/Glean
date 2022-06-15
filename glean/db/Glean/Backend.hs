@@ -100,10 +100,11 @@ withBackendWithDefaultOptions
   :: EventBaseDataplane
   -> ConfigAPI
   -> Service
+  -> Maybe Thrift.SchemaId
   -> (forall b. LocalOrRemote b => b -> IO a)
   -> IO a
-withBackendWithDefaultOptions evb cfgapi service =
-  withBackend evb cfgapi service id
+withBackendWithDefaultOptions evb cfgapi service schema =
+  withBackend evb cfgapi service schema id
 
 -- | Use the provided 'Service' to make a 'Backend', applying some
 -- 'Settings' if this is a remote backend. (note in fact that it
@@ -113,12 +114,14 @@ withBackend
   :: EventBaseDataplane
   -> ConfigAPI
   -> Service
+  -> Maybe Thrift.SchemaId
   -> Settings
   -> (forall b. LocalOrRemote b => b -> IO a)
   -> IO a
-withBackend evb cfgapi service settings inner = case service of
+withBackend evb cfgapi service schema settings inner = case service of
   Local cfg logging ->
-    Database.withDatabases evb cfg cfgapi $
+    let cfg' = cfg { Database.cfgSchemaId = schema } in
+    Database.withDatabases evb cfg' cfgapi $
       case logging of
         EnableLogging -> inner . LoggingBackend
         DisableLogging -> inner
@@ -131,6 +134,7 @@ withBackend evb cfgapi service settings inner = case service of
       evb
       (thriftServiceWithTimeout config' opts)
       client
+      schema
 
 -- | Command-line options to specify a 'Service' that we can connect to.
 -- The 'Service' is either a remote Glean server (e.g. @--service=<host>:port@)
@@ -264,6 +268,7 @@ instance Backend LoggingBackend where
   displayBackend (LoggingBackend b) = displayBackend b
   hasDatabase (LoggingBackend b) repo = hasDatabase b repo
   maybeRemote (LoggingBackend b) = maybeRemote b
+  schemaId (LoggingBackend b) = schemaId b
 
 
 instance Backend Database.Env where
@@ -341,6 +346,8 @@ instance Backend Database.Env where
       _ -> True
 
   maybeRemote _ = Nothing
+
+  schemaId = Database.envSchemaId
 
 -- -----------------------------------------------------------------------------
 -- DbSchema
@@ -564,6 +571,7 @@ instance Backend (Some LocalOrRemote) where
   displayBackend (Some backend) = displayBackend backend
   hasDatabase (Some backend) = hasDatabase backend
   maybeRemote (Some backend) = maybeRemote backend
+  schemaId (Some backend) = schemaId backend
 
 instance LocalOrRemote (Some LocalOrRemote) where
   backendKind (Some b) = backendKind b

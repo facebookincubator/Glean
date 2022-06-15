@@ -159,6 +159,10 @@ class Backend a where
   -- | If this is a remote backend, get its ThriftBackend.
   maybeRemote :: a -> Maybe ThriftBackend
 
+  -- | The schema version the client wants to use. This is sent along
+  -- with queries.
+  schemaId :: a -> Maybe Thrift.SchemaId
+
 -- | The exception includes the length of time from start to error
 type LogDerivationResult =
   Either (DiffTimePoints, SomeException) Thrift.UserQueryStats -> IO ()
@@ -169,13 +173,16 @@ data ThriftBackend = ThriftBackend
   , thriftBackendEventBase :: EventBaseDataplane
   , thriftBackendService :: ThriftService GleanService
   , thriftBackendClientInfo :: Thrift.UserQueryClientInfo
+  , thriftBackendSchemaId :: Maybe Thrift.SchemaId
   }
 
 instance Show ThriftBackend where
   show tb = unwords [ "ThriftBackend {(",
     "thriftBackendClientConfig: (" <> show (thriftBackendClientConfig tb),
-    "), thriftBackendService: (" <> show (thriftBackendService tb ),
-    "), thriftBackendClientInfo: (" <> show (thriftBackendClientInfo tb ), ")}"]
+    "), thriftBackendService: (" <> show (thriftBackendService tb),
+    "), thriftBackendClientInfo: (" <> show (thriftBackendClientInfo tb),
+    "), thriftBackendSchemaId: (" <> show (thriftBackendSchemaId tb),
+    ")}"]
 
 
 instance Backend (Some Backend) where
@@ -209,6 +216,7 @@ instance Backend (Some Backend) where
   displayBackend (Some backend) = displayBackend backend
   hasDatabase (Some backend) = hasDatabase backend
   maybeRemote (Some backend) = maybeRemote backend
+  schemaId (Some backend) = schemaId backend
 
 type Settings
   = (ClientConfig,ThriftServiceOptions)
@@ -231,10 +239,11 @@ withRemoteBackend
   => EventBaseDataplane
   -> cfg
   -> ThriftSource ClientConfig
+  -> Maybe Thrift.SchemaId
   -> (forall b . Backend b => b -> IO a)
   -> IO a
-withRemoteBackend evb cfg configSource inner =
-  withRemoteBackendSettings evb cfg configSource id inner
+withRemoteBackend evb cfg configSource schema inner =
+  withRemoteBackendSettings evb cfg configSource schema id inner
 
 -- | Construct a 'Backend' for interacting with a Glean server, using
 -- the given 'Settings'.
@@ -243,10 +252,11 @@ withRemoteBackendSettings
   => EventBaseDataplane
   -> cfg
   -> ThriftSource ClientConfig
+  -> Maybe Thrift.SchemaId
   -> Settings
   -> (forall b . Backend b => b -> IO a)
   -> IO a
-withRemoteBackendSettings evb configAPI configSource settings inner = do
+withRemoteBackendSettings evb configAPI configSource schema settings inner = do
   config <- ThriftSource.loadDefault configAPI configSource
   client <- clientInfo
   let (config', opts) = settings (config, def)
@@ -255,7 +265,7 @@ withRemoteBackendSettings evb configAPI configSource settings inner = do
     evb
     (thriftServiceWithTimeout config' opts)
     client
-
+    schema
 
 thriftServiceWithTimeout
   :: IsThriftService t
@@ -354,12 +364,14 @@ instance Backend ThriftBackend where
 
   maybeRemote = Just
 
+  schemaId ThriftBackend{..} = thriftBackendSchemaId
+
 withShard
   :: ThriftBackend
   -> Thrift.Repo
   -> Thrift GleanService a
   -> IO a
-withShard (ThriftBackend ClientConfig{..} evb serv _) repo act =
+withShard (ThriftBackend ClientConfig{..} evb serv _ _) repo act =
   case clientConfig_use_shards of
     NO_SHARDS -> unsharded
     USE_SHARDS -> sharded
@@ -382,7 +394,7 @@ withoutShard
   :: ThriftBackend
   -> Thrift GleanService a
   -> IO a
-withoutShard (ThriftBackend _ evb serv _) req = runThrift evb serv req
+withoutShard (ThriftBackend _ evb serv _ _) req = runThrift evb serv req
 
 dbShard :: Thrift.Repo -> DbShard
 dbShard Thrift.Repo{..} =
@@ -421,7 +433,7 @@ localDatabases be =
 usingShards :: Backend b => b -> Bool
 usingShards backend =
   case maybeRemote backend of
-    Just (ThriftBackend ClientConfig{..} _ _ _) ->
+    Just (ThriftBackend { thriftBackendClientConfig = ClientConfig{..} }) ->
       clientConfig_use_shards /= NO_SHARDS
     _otherwise -> False
 

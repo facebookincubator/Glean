@@ -31,5 +31,5 @@ main = withOptions options $ \(cfg, service) ->
   withNumCapabilities (cfgNumCapabilities cfg) $
   withEventBaseDataplane $ \evb ->
   withConfigProvider defaultConfigOptions $ \cfgAPI ->
-  Glean.withRemoteBackend evb (cfgAPI::ConfigAPI) service $ \be ->
+  Glean.withRemoteBackend evb (cfgAPI::ConfigAPI) service Nothing $ \be ->
   Derive.All.derive be cfg

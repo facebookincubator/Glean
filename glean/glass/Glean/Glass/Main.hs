@@ -31,6 +31,7 @@ import Glean.LocalOrRemote as Glean
     LocalOrRemote(..),
     BackendKind(..),
     withBackendWithDefaultOptions )
+import Glean.Schema.Builtin.Types (schema_id)
 import Glean.Util.ConfigProvider
     ( ConfigProvider(defaultConfigOptions, withConfigProvider) )
 import Glean.Util.Some ( Some(Some) )
@@ -68,7 +69,8 @@ withEnv name service _ refreshFreq f =
   withConfigProvider defaultConfigOptions $ \cfgapi ->
   withLogger cfgapi $ \logger ->
   withFb303 name $ \fb303 ->
-  withBackendWithDefaultOptions evp cfgapi service $ \backend ->
+  withBackendWithDefaultOptions evp cfgapi service (Just schema_id)
+    $ \backend ->
   withLatestRepos backend refreshFreq $ \latestGleanRepos ->
     f Glass.Env
       { gleanBackend = Some backend

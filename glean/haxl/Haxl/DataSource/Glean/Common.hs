@@ -24,6 +24,7 @@ module Haxl.DataSource.Glean.Common
 import Control.Exception
 import Control.Monad
 import Control.Monad.IO.Class
+import Data.Coerce
 import Data.Default
 import Data.Hashable
 import Data.HashMap.Strict (HashMap)
@@ -91,8 +92,12 @@ intId :: IdOf p -> Id
 intId id = fromIntegral (fromFid (idOf id))
 
 
-mkRequest :: Maybe UserQueryClientInfo -> [BlockedFetch GleanGet] -> UserQueryFacts
-mkRequest minfo requests = def
+mkRequest
+  :: Maybe UserQueryClientInfo
+  -> Maybe SchemaId
+  -> [BlockedFetch GleanGet]
+  -> UserQueryFacts
+mkRequest minfo schema requests = def
   { userQueryFacts_facts = map toFactQuery requests
   , userQueryFacts_options = Just def
     { userQueryOptions_expand_results = False
@@ -101,6 +106,7 @@ mkRequest minfo requests = def
        Just (fromIntegral (length requests)) }
   , userQueryFacts_encodings = [UserQueryEncoding_bin def]
   , userQueryFacts_client_info = minfo
+  , userQueryFacts_schema_id = coerce schema
   }
   where
     toFactQuery :: BlockedFetch GleanGet -> FactQuery

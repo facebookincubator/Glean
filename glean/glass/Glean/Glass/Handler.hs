@@ -1064,7 +1064,7 @@ withIndexingService
 withIndexingService env act =
   case mThriftBackend of
     Nothing -> err "no remote service connection available"
-    Just (ThriftBackend config evb _ _) -> do
+    Just (ThriftBackend config evb _ _ _) -> do
       let service :: ThriftService GleanIndexingService
           service = thriftServiceWithTimeout config opts
           onErr e = err $ "glean error: " <> Text.pack (show e)

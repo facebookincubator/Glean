@@ -37,6 +37,7 @@ import Glean.Pretty.Code ()
 import Glean.Pretty.Cxx ()
 import Glean.Pretty.Hs ()
 import Glean.Pretty.Search ()
+import Glean.Schema.Builtin.Types (schema_id)
 import Glean.Schema.Code.Types as Code
 import Glean.Schema.CodeCxx.Types as Cxx
 import Glean.Schema.CodeJava.Types as Java
@@ -145,7 +146,8 @@ main = do
   withConfigOptions options $ \(cfg, cfgOpts) ->
     withEventBaseDataplane $ \evb ->
       withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) -> do
-        Glean.withRemoteBackend evb cfgAPI (cfgService cfg) $ \be -> do
+        Glean.withRemoteBackend evb cfgAPI (cfgService cfg) (Just schema_id)
+            $ \be -> do
           doQuery (Some be) cfg
 
 doQuery :: Some Glean.Backend -> Config -> IO ()

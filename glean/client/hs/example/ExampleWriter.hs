@@ -23,6 +23,7 @@ import Util.EventBase
 import qualified Glean
 import Glean.BuildInfo
 import Glean.Impl.ConfigProvider
+import Glean.Schema.Builtin.Types (schema_id)
 import Glean.Schema.Src as Src
 import Glean.Schema.Src.Types as Src
 import Glean.Schema.Cxx1 as Cxx
@@ -46,7 +47,8 @@ main =
   withConfigOptions options $ \(cfg, cfgOpts) ->
   withEventBaseDataplane $ \evb ->
   withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) ->
-  Glean.withRemoteBackend evb cfgAPI (cfgService cfg) create
+  Glean.withRemoteBackend evb cfgAPI (cfgService cfg) (Just schema_id)
+    create
 
 
 create :: Glean.Backend b => b -> IO ()

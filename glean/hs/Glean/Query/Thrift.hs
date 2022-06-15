@@ -43,7 +43,7 @@ import Util.Log.Text
 
 import Glean.Typed.Binary
 import Glean.Types as Thrift
-import Glean.Backend.Remote (Backend(userQuery))
+import Glean.Backend.Remote (Backend(..))
 import Glean.Query.Thrift.Internal
 import Glean.Write.SendBatch
 
@@ -94,6 +94,7 @@ runQueryPage be repo cont (Query query) = do
           (fromMaybe def (userQuery_options query))
             { userQueryOptions_continuation = cont }
       , userQuery_encodings = [UserQueryEncoding_bin def]
+      , userQuery_schema_id = schemaId be
       }
   UserQueryResults{..} <- userQuery be repo query'
   mapM_ reportUserQueryStats userQueryResults_stats

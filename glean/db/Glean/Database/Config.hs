@@ -43,6 +43,7 @@ import Glean.DefaultConfigs
 import qualified Glean.Recipes.Types as Recipes
 import Glean.Schema.Resolve
 import qualified Glean.ServerConfig.Types as ServerConfig
+import Glean.Types
 import Glean.Util.Some
 import Glean.Util.Trace (Listener)
 import Glean.Util.ThriftSource (ThriftSource)
@@ -57,8 +58,12 @@ data Config = Config
       -- of source files or not, because some clients (the shell) want
       -- to know this, and it's not avaialble from the ThriftSource.
   , cfgSchemaVersion :: Maybe Version
-      -- ^ If set, this is the version of the "all" schema that is
-      -- used to resolve unversioned predicates in a query.
+      -- ^ (deprecated) If set, this is the version of the "all"
+      -- schema that is used to resolve unversioned predicates in a
+      -- query.
+  , cfgSchemaId :: Maybe SchemaId
+      -- ^ If set, this is the version of the schema that is used to
+      -- interpret a query.
   , cfgRecipeConfig :: ThriftSource Recipes.Config
   , cfgServerConfig :: ThriftSource ServerConfig.Config
   , cfgStorage :: FilePath -> ServerConfig.Config -> IO (Some Storage)
@@ -83,6 +88,7 @@ instance Default Config where
     , cfgSchemaSource = ThriftSource.value (error "undefined schema")
     , cfgSchemaDir = Nothing
     , cfgSchemaVersion = Nothing
+    , cfgSchemaId = Nothing
     , cfgRecipeConfig = def
     , cfgServerConfig = def
     , cfgStorage = \root scfg -> Some <$> RocksDB.newStorage root scfg
@@ -190,6 +196,14 @@ options = do
       "version of \"all\" schema to use when resolving references " <>
       "to unversioned predicates in a query (mostly for testing purposes; " <>
       "defaults to the latest version)")
+    )
+  cfgSchemaId <- fmap (fmap SchemaId) $ optional $ option auto
+    ( long "schema-id"
+    <> metavar "ID"
+    <> help (
+      "version of schema to use when resolving queries " <>
+      "(mostly for testing purposes; defaults to the version this binary " <>
+      "was compiled against)")
     )
 
   cfgRecipeConfig <- recipesConfigThriftSource

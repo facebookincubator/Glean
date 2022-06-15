@@ -15,6 +15,7 @@ module Hyperlink (main) where
 
 import Data.Function
 import Control.Monad
+import Glean.Schema.Builtin.Types (schema_id)
 import qualified Glean.Schema.Src.Types as Src
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.Pp1.Types as Pp1
@@ -530,7 +531,7 @@ main =
   withConfigOptions options $ \(cfg, cfgOpts) ->
   withEventBaseDataplane $ \evb ->
   withConfigProvider cfgOpts $ \(configAPI :: ConfigAPI) -> do
-    Glean.withRemoteBackend evb configAPI (cfgService cfg)
+    Glean.withRemoteBackend evb configAPI (cfgService cfg) (Just schema_id)
       $ \backend -> do
       repo <- case cfgRepoHash cfg of
         Nothing -> Glean.getLatestRepo backend (cfgRepoName cfg)
