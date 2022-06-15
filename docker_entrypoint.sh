@@ -23,10 +23,10 @@ elif mount | grep '/glean-demo/code' >/dev/null ; then
     rm -Rf db/${REPO_NAME}
     mkdir -p /tmp/flow-index-out
     flow glean code --output-dir /tmp/flow-index-out --write-root ""
-    glean --db-root db --db-schema dir:schema/source create --repo ${REPO_NAME}/0
-    glean --db-root db --db-schema dir:schema/source write --repo ${REPO_NAME}/0 /tmp/flow-index-out/*
-    glean --db-root db --db-schema dir:schema/source derive --repo ${REPO_NAME}/0 flow.FileXRef flow.FileDeclaration
-    glean --db-root db --db-schema dir:schema/source finish --repo ${REPO_NAME}/0
+    glean --db-root db --schema dir:schema/source create --repo ${REPO_NAME}/0
+    glean --db-root db --schema dir:schema/source write --repo ${REPO_NAME}/0 /tmp/flow-index-out/*
+    glean --db-root db --schema dir:schema/source derive --repo ${REPO_NAME}/0 flow.FileXRef flow.FileDeclaration
+    glean --db-root db --schema dir:schema/source finish --repo ${REPO_NAME}/0
     rm -Rf /tmp/flow-index-out
 fi
 

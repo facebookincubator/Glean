@@ -77,10 +77,10 @@ ADD docker_entrypoint.sh docker_entrypoint.sh
 RUN mkdir -p db /tmp/flow-index-out
 
 RUN flow glean code --output-dir /tmp/flow-index-out --write-root "" && \
-    glean --db-root db --db-schema dir:schema/source create --repo react/0 && \
-    glean --db-root db --db-schema dir:schema/source write --repo react/0 /tmp/flow-index-out/* && \
-    glean --db-root db --db-schema dir:schema/source derive --repo react/0 flow.FileXRef flow.FileDeclaration && \
-    glean --db-root db --db-schema dir:schema/source finish --repo react/0 && \
+    glean --db-root db --schema dir:schema/source create --repo react/0 && \
+    glean --db-root db --schema dir:schema/source write --repo react/0 /tmp/flow-index-out/* && \
+    glean --db-root db --schema dir:schema/source derive --repo react/0 flow.FileXRef flow.FileDeclaration && \
+    glean --db-root db --schema dir:schema/source finish --repo react/0 && \
     rm -Rf /tmp/flow-index-out
 
 ENV REPO_NAME=react
