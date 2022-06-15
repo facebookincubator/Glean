@@ -40,6 +40,7 @@ import Glean.Database.Storage
 import qualified Glean.Database.Storage.Memory as Memory
 import qualified Glean.Database.Storage.RocksDB as RocksDB
 import Glean.DefaultConfigs
+import Glean.Impl.ShardManager
 import qualified Glean.Recipes.Types as Recipes
 import Glean.Schema.Resolve
 import qualified Glean.ServerConfig.Types as ServerConfig
@@ -74,6 +75,7 @@ data Config = Config
   , cfgListener :: Listener
       -- ^ A 'Listener' which might get notified about various events related
       -- to databases. This is for testing support only.
+  , cfgShardManager :: SomeShardManager
   }
 
 instance Show Config where
@@ -97,6 +99,7 @@ instance Default Config where
     , cfgMockWrites = False
     , cfgTailerOpts = def
     , cfgListener = mempty
+    , cfgShardManager = SomeShardManager noSharding
     }
 
 -- | Read the schema definition from the ConfigProvider
@@ -218,6 +221,7 @@ options = do
   return Config
     { cfgCatalogStore = cfgCatalogStore def
     , cfgListener = mempty
+    , cfgShardManager = SomeShardManager noSharding
     , .. }
   where
     recipesConfigThriftSource = option (eitherReader ThriftSource.parse)

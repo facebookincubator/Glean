@@ -51,6 +51,7 @@ import qualified Glean.Types as Thrift
 import Glean.Util.Metric (Point)
 import Glean.Util.Mutex
 import Glean.Util.Observed
+import Glean.Util.ShardManager
 import Glean.Util.Time
 import Glean.Util.Trace (Listener)
 import Glean.Util.Warden
@@ -233,6 +234,7 @@ data Env = forall storage. Storage storage => Env
       -- ^ Yield the creation time for a DB. Is normally getCurrentTime but
       -- can be changed for testing where 1s granularity might not be enough
       -- to distinguish databases.
+  , envShardManager :: SomeShardManager
   }
 
 instance Show Env where
