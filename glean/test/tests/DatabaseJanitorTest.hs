@@ -159,10 +159,12 @@ serverConfig backupdir = def
   }
 
 listDBs :: Env -> IO [Thrift.Database]
-listDBs env =
-  filter hereDBs . listDatabasesResult_databases <$> listDatabases env def
+listDBs env = filter hereDBs <$> listAllDBs env
   where
     hereDBs Database{..} = database_status /= DatabaseStatus_Available
+
+listAllDBs :: Env -> IO [Database]
+listAllDBs env = listDatabasesResult_databases <$> listDatabases env def
 
 waitDel :: Env -> IO ()
 waitDel env = atomically $ do
@@ -449,15 +451,28 @@ shardingTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
 elsewhereTest :: Test
 elsewhereTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   myShards <- newIORef ["0001", "0003"] -- initial shard assignment
-  let cfg = (dbConfig dbdir (serverConfig backupdir))
+  let cfg = (dbConfig dbdir (serverConfig backupdir)
+        { config_retention = def
+          { databaseRetentionPolicy_default_retention = def
+            { retention_delete_if_older =
+                Just $ fromIntegral $ timeSpanInSeconds $ days 10
+            , retention_retain_at_least = Just 10 }
+          }
+        })
         { cfgShardManager = SomeShardManager $ shardByRepo myShards}
   withDatabases evb cfg cfgAPI $ \env -> do
+
+    dbs <- listDBs env
+    assertEqual "before"
+      [ "0001", "0002", "0003", "0004", "0005", "0006"]
+      (sort (map (repo_hash . database_repo) dbs))
+
     runDatabaseJanitor env
     waitDel env
+    dbs <- listAllDBs env
 
-    dbs <- listDatabasesResult_databases <$> listDatabases env def
-    assertEqual "dbs available with the default retention policy"
-      ["0001", "0002", "0003", "0004"]
+    assertEqual "after: dbs available with the retention policy"
+      [ "0001", "0002", "0003", "0004", "0005", "0006"]
       (sort $ map (repo_hash . database_repo) dbs)
 
 main :: IO ()
