@@ -941,11 +941,20 @@ predicate ObjcContainerInheritance :
 
 predicate Attribute : string
 
+# Lookup functions with a particular attribute
 predicate FunctionAttribute :
-    {
-        attr : Attribute,
-        declaration : FunctionDeclaration,
-    }
+  {
+    attr : Attribute,
+    declaration : FunctionDeclaration,
+  }
+
+# Inverse of FunctionAttribute. Lookup attributes using function decls as keys
+predicate FunctionDeclAttribute :
+  {
+    decl : FunctionDeclaration,
+    attr : Attribute,
+  } stored
+  { Decl, Attr } where cxx1.FunctionAttribute { Attr, Decl }
 
 # ObjCContainerId to Name
 predicate ObjContainerIdName :
