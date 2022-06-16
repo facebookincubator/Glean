@@ -46,13 +46,13 @@ import Glean.Database.Open (isDatabaseClosed, withOpenDatabase)
 import Glean.Database.Types
 import Glean.Database.Schema
 import Glean.Impl.ConfigProvider
-import Glean.Impl.ShardManager
 import Glean.Init
 import Glean.RTS.Types (lowestFid)
 import Glean.ServerConfig.Types as ServerTypes
 import Glean.Internal.Types
 import Glean.Types as Thrift
 import Glean.Util.ConfigProvider
+import Glean.Util.ShardManager
 import Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.Time (seconds)
 

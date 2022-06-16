@@ -7,11 +7,7 @@
 -}
 
 module Glean.Impl.ShardManager
-  ( noSharding
-  , module Glean.Util.ShardManager
+  ( module Glean.Util.ShardManager
   ) where
 import Glean.Util.ShardManager
 
--- | A sharding strategy with a single shard and trivial shard assignment
-noSharding :: ShardManager ()
-noSharding = ShardManager (pure [()]) (pure $ const ())

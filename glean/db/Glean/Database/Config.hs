@@ -40,11 +40,11 @@ import Glean.Database.Storage
 import qualified Glean.Database.Storage.Memory as Memory
 import qualified Glean.Database.Storage.RocksDB as RocksDB
 import Glean.DefaultConfigs
-import Glean.Impl.ShardManager
 import qualified Glean.Recipes.Types as Recipes
 import Glean.Schema.Resolve
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types
+import Glean.Util.ShardManager
 import Glean.Util.Some
 import Glean.Util.Trace (Listener)
 import Glean.Util.ThriftSource (ThriftSource)

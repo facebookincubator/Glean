@@ -9,6 +9,7 @@
 module Glean.Util.ShardManager
   ( ShardManager(..)
   , SomeShardManager(..)
+  , noSharding
   ) where
 
 import qualified Glean.Types as Glean
@@ -17,6 +18,10 @@ data ShardManager shard = ShardManager
   { getAssignedShards :: IO [shard]
   , dbToShard :: Glean.Repo -> Maybe Glean.Dependencies -> shard
   }
+
+-- | A sharding strategy with a single shard and trivial shard assignment
+noSharding :: ShardManager ()
+noSharding = ShardManager (pure [()]) (\_ _ -> ())
 
 -- | An existential wrapper around a 'ShardManager'
 data SomeShardManager where
