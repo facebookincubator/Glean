@@ -29,6 +29,7 @@ import Control.Exception
 import Control.Monad
 import Control.Monad.Except
 import Control.Monad.State as State
+import Data.Bifunctor
 import Data.ByteString (ByteString)
 import Data.Graph
 import Data.Hashable
@@ -95,15 +96,24 @@ schemaPredicates = HashMap.elems . predicatesById
 
 
 fromSchemaInfo :: Thrift.SchemaInfo -> DbContent -> IO DbSchema
-fromSchemaInfo info@Thrift.SchemaInfo{..} dbContent =
+fromSchemaInfo Thrift.SchemaInfo{..} dbContent =
   mkDbSchemaFromSource
-    (Just (schemaInfoPids info))
+    (mkGetPids schemaInfo_predicateIds)
     dbContent
     schemaInfo_schema
 
-schemaInfoPids :: Thrift.SchemaInfo -> HashMap PredicateRef Pid
-schemaInfoPids Thrift.SchemaInfo{..} = HashMap.fromList
-  [ (ref, Pid pid) | (pid, ref) <- Map.toList schemaInfo_predicateIds ]
+mkGetPids :: Map Thrift.Id PredicateRef -> [PredicateRef] -> [Pid]
+mkGetPids m refs =
+  let by_ref = HashMap.fromList
+        $ map (second Pid . swap)
+        $ Map.toList m
+  in
+  map
+    (\ref -> HashMap.lookupDefault
+      (Pid Thrift.iNVALID_ID)
+      ref
+      by_ref)
+    refs
 
 toSchemaInfo :: DbSchema -> Thrift.SchemaInfo
 toSchemaInfo DbSchema{..} = Thrift.SchemaInfo
@@ -210,8 +220,21 @@ newMergedDbSchema
   -> CheckChanges                           -- ^ validate DB schema?
   -> DbContent
   -> IO DbSchema
-newMergedDbSchema info@Thrift.SchemaInfo{..} source current validate dbContent = do
+newMergedDbSchema Thrift.SchemaInfo{..} source current validate dbContent = do
   let
+    -- predicates in the schema from the DB
+    oldPredPids = HashMap.fromList
+       $ map (second Pid . swap)
+       $ Map.toList schemaInfo_predicateIds
+
+    maxOldPid = maximum $ lowestPid : map Pid (Map.keys schemaInfo_predicateIds)
+
+    lookupPids !newpid (ref : rest)
+      | Just pid <- HashMap.lookup ref oldPredPids =
+        pid : lookupPids newpid rest
+      | otherwise = newpid : lookupPids (succ newpid) rest
+    lookupPids _ [] = []
+
   (_fromDBSource, fromDBResolved) <-
     case parseAndResolveSchema schemaInfo_schema of
       Left msg -> throwIO $ ErrorCall msg
@@ -219,7 +242,7 @@ newMergedDbSchema info@Thrift.SchemaInfo{..} source current validate dbContent =
 
   -- For the "source", we'll use the current schema source. It doesn't
   -- reflect what's in the DB, but it reflects what you can query for.
-  mkDbSchema validate  (Just (schemaInfoPids info)) dbContent source
+  mkDbSchema validate  (lookupPids (succ maxOldPid)) dbContent source
     fromDBResolved
     (schemasResolved current)
 
@@ -232,7 +255,8 @@ newDbSchema
   -> DbContent
   -> IO DbSchema
 newDbSchema str schemas dbContent =
-  mkDbSchema AllowChanges Nothing dbContent str schemas []
+  mkDbSchema AllowChanges (zipWith const [lowestPid ..])
+    dbContent str schemas []
 
 inventory :: [PredicateDetails] -> Inventory
 inventory ps = Inventory.new
@@ -249,51 +273,38 @@ inventory ps = Inventory.new
 -- stored in the database.  Anything in the 'Schemas' but not
 -- in the database is dropped from the 'DbSchema'
 mkDbSchemaFromSource
-  :: Maybe (HashMap PredicateRef Pid)
+  :: ([PredicateRef] -> [Pid])
   -> DbContent
   -> ByteString
   -> IO DbSchema
-mkDbSchemaFromSource knownPids dbContent source = do
+mkDbSchemaFromSource getPids dbContent source = do
   case parseAndResolveSchema source of
     Left str -> throwIO $ ErrorCall str
     Right (srcSchemas, resolved) ->
-      mkDbSchema AllowChanges knownPids dbContent srcSchemas resolved []
+      mkDbSchema AllowChanges getPids dbContent srcSchemas resolved []
 
 mkDbSchema
   :: CheckChanges
-  -> Maybe (HashMap PredicateRef Pid)
+  -> ([PredicateRef] -> [Pid])
   -> DbContent
   -> Schema.SourceSchemas
   -> Schemas
   -> [ResolvedSchemaRef]
   -> IO DbSchema
-mkDbSchema validate knownPids dbContent source base addition = do
+mkDbSchema validate getPids dbContent source base addition = do
   let
     resolved = schemasResolved base <> addition
 
-    stored = computeIds (schemasResolved base)
-    added = computeIds addition
-
-    -- Assign Pids to predicates.
-    --  - predicates in the stored schema get Pids from the SchemaInfo
-    --    (unless this is a new DB, in which case we'll assign fresh Pids)
-    --  - predicates in the merged schema get new fresh Pids.
-
-    storedPids = case knownPids of
-      Nothing -> zip (HashMap.keys (hashedPreds stored)) [lowestPid..]
-      Just pidMap ->
-        [ (id, HashMap.lookupDefault (Pid Thrift.iNVALID_ID) ref pidMap)
-        | (id, _) <- HashMap.toList (hashedPreds stored)
-        , let ref = predicateIdRef id
+    refs =
+        [ (ref, def)
+        | schema <- resolved
+        , (ref, def) <- HashMap.toList (resolvedSchemaPredicates schema)
         ]
 
-    nextPid = maybe lowestPid succ $ maximumMay (map snd storedPids)
+    pids = getPids (map fst refs)
 
-    addedPids = zip ids [nextPid ..]
-      where ids = filter (not . isStoredPred) (HashMap.keys (hashedPreds added))
-            isStoredPred id = HashMap.member id (hashedPreds stored)
-
-    idToPid = HashMap.fromList (storedPids ++ addedPids)
+    stored = computeIds (schemasResolved base)
+    added = computeIds addition
 
     refToIdEnv = RefToIdEnv {
         typeRefToId = HashMap.union
@@ -308,6 +319,13 @@ mkDbSchema validate knownPids dbContent source base addition = do
     -- validate would fail if the schemas differ, but in the case
     -- where the new schema adds a default derivation to the old
     -- schema, we want the new derivation to take effect.
+
+    idToPid = HashMap.fromList
+        [ (id, pid)
+        | ((ref, _), pid) <- zip refs pids
+        , pid /= Pid Thrift.iNVALID_ID
+        , Just id <- [HashMap.lookup ref (predRefToId refToIdEnv)]
+        ]
 
     verStored = maybe latestAngleVersion resolvedSchemaAngleVersion
       (listToMaybe (schemasResolved base))

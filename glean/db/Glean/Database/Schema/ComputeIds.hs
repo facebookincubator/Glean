@@ -78,13 +78,8 @@ attachDerivations schemas =
   allDerivings = HashMap.unions (map resolvedSchemaDeriving schemas)
 
   attach ref def = case HashMap.lookup ref allDerivings of
-    Just drv | not (isDefaultDeriving drv) -> def { predicateDefDeriving = drv }
-      -- see Note [overriding default deriving]
-    _ -> def
-
-isDefaultDeriving :: DerivingInfo q -> Bool
-isDefaultDeriving (Derive DeriveIfEmpty _) = True
-isDefaultDeriving _ = False
+    Just drv -> def { predicateDefDeriving = drv }
+    Nothing -> def
 
 -- | Compute the PredicateId / TypeId for each definition, and substitute for
 -- PredicateRef/TypeRef with PredicateId/TypeId inside all the definitions
@@ -150,28 +145,11 @@ computeIds schemas = flip evalState emptyRefToIdEnv $ do
           updateDefWithHash hash <$> resolveDef def
 
   env <- State.get
-
-  let preds = HashMap.fromList
-        [ (predicateDefRef def, def) | RefPred def <- defs]
-
-      -- see Note [overriding default deriving]
-      attachDefaultDerivings preds = foldr attach preds
-        [ (id, drv)
-        | schema <- schemas
-        , (ref, drv) <- HashMap.toList (resolvedSchemaDeriving schema)
-        , isDefaultDeriving drv
-        , Just id <- [HashMap.lookup ref (predRefToId env)]
-        ]
-        where
-        attach (id,drv) = HashMap.adjust f id
-          where
-          f (PredicateDef id key val _) =
-            PredicateDef id key val (fmap (refsToIds env) drv)
-
   return HashedSchema {
       hashedTypes = HashMap.fromList
         [ (typeDefRef def, def) | RefType def <- defs],
-      hashedPreds = attachDefaultDerivings preds,
+      hashedPreds = HashMap.fromList
+        [ (predicateDefRef def, def) | RefPred def <- defs],
       schemaRefToIdEnv = env
     }
 
@@ -232,10 +210,13 @@ resolveQuery
 resolveQuery env (SourceQuery head stmts) =
   SourceQuery (refsToIds env <$> head) (refsToIds env <$> stmts)
 
--- Serialize a definition to produce its hash.  Note that the hash
--- includes the PredicateRef/TypeRef: two predicates or types are the
--- same only if they the same name, same version, and same
--- representation.
+-- Serialize a definition to produce its hash.
+-- TODO: we're including the Ref in the serialization here
+-- because we need to distinguish e.g. cxx1.Name.4 from
+-- cxx1.Name.5 because those will have different Pids, even though
+-- they have the same representation. When we start using
+-- PredicateIds on the client side too, and assign Pids per
+-- PredicateId, then we can remove showRef below.
 fingerprintDef :: Def -> Hash
 fingerprintDef (RefType (TypeDef id ty)) =
   hashByteString (Binary.encode (showRef ref, ty))
@@ -243,21 +224,3 @@ fingerprintDef (RefType (TypeDef id ty)) =
 fingerprintDef (RefPred (PredicateDef id key val drv)) =
   hashByteString (Binary.encode (showRef ref, key, val, fmap rmLocQuery drv))
   where ref = predicateIdRef id
-
-{- Note [overriding default deriving]
-
-If we add a "deriving P default" declaration for a predicate P to the
-schema, after a DB was created with P, we would like this to work: the
-new P should get the same Pid, so queries still work.
-
-But, if the derivation is included in the hash, the new P with the
-deriving decl will get a different hash. It's difficult to resolve
-this later, because we only want the derivation to take effect if the
-two Ps are really the same (they have the same types).
-
-So the hack to solve this for now is to ignore the "derive default"
-derivations when computing hashes, and add them back in
-afterwards. The old and the new Ps will get the same hashes, if they
-really only differ in their derivations.
-
--}
