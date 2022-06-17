@@ -16,7 +16,7 @@ import qualified Data.Text as Text
 
 import Glean
 import qualified Glean.Backend as Backend
-import Glean.Database.Test (withEmptyTestDB)
+import Glean.Database.Test (withEmptyTestDB, completeTestDB)
 import Glean.Database.Open
 import Glean.Database.Write.Batch
 import qualified Glean.Schema.Sys.Types as Sys
@@ -66,4 +66,5 @@ withBenchDB num act = withEmptyTestDB [] $ \env repo -> do
     mapM_ (makeFact @Cxx.FunctionName . Cxx.FunctionName_key_name) ynames
 
   void $ syncWriteDatabase env repo batch
+  completeTestDB env repo
   act env repo

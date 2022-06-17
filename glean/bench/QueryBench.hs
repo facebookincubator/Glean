@@ -11,6 +11,7 @@
 module QueryBench (main) where
 
 import Control.Concurrent.Async
+import Control.Monad (void)
 import Criterion.Types
 import Data.Default
 import Data.Text (Text)
@@ -93,9 +94,14 @@ main = benchmarkMain $ \run -> withBenchDB 100000 $ \env repo -> do
          glean.test.Predicate { array_of_nat = [N, ..]}
        |]
 
+  let stacked = Repo "test" "stacked"
+  void $ kickOffDatabase env def
+    { kickOff_repo = stacked
+    , kickOff_fill = Just $ KickOffFill_writeHandle ""
+    , kickOff_dependencies = Just $ Dependencies_stacked repo
+    }
   run
-    [
-      bgroup "thrift"
+    [ bgroup "thrift"
       [ bench "simple" $ whnfIO $
           runQuery env repo simpleQueryThrift
       , bench "nested" $ whnfIO $
@@ -128,5 +134,11 @@ main = benchmarkMain $ \run -> withBenchDB 100000 $ \env repo -> do
           runQuery_ env repo compile3
       , bench "array_prefix" $ whnfIO $
           runQuery_ env repo arrayPrefix
+      , bgroup "stacked"
+        [ bench "page" $ whnfIO $
+            runQuery_ env repo pageAngle
+        , bench "pagenested" $ whnfIO $
+            runQuery_ env repo pageNestedAngle
+        ]
       ]
     ]
