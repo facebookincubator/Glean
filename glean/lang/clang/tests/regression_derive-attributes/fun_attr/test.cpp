@@ -16,3 +16,12 @@ void f2();
 
 CK_RENDER
 void render();
+
+/* should be able to put an attribute on a specific enum member
+ * but the indexer only tracks function attributes for now
+ */
+enum OperationMode {
+  OM_Invalid,
+  OM_Normal,
+  OM_Terrified __attribute__((deprecated)),
+};

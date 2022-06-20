@@ -1,0 +1,119 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "f1" } } },
+                  "scope": { "global_": { } }
+                }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 1,
+                "lineEnd": 10,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      },
+      "anns": { "attributes": [ { "key": "cpu_specific(ivybridge)" } ] }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "f2" } } },
+                  "scope": { "global_": { } }
+                }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 12,
+                "columnBegin": 1,
+                "lineEnd": 13,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      },
+      "anns": { "attributes": [ { "key": "annotate(\"Hello\")" } ] }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "f2" } } },
+                  "scope": { "global_": { } }
+                }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 12,
+                "columnBegin": 1,
+                "lineEnd": 13,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      },
+      "anns": { "attributes": [ { "key": "annotate(\"Test\")" } ] }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "render" } } },
+                  "scope": { "global_": { } }
+                }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 17,
+                "columnBegin": 1,
+                "lineEnd": 18,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      },
+      "anns": { "attributes": [ { "key": "annotate(\"OnRender\")" } ] }
+    }
+  }
+]
