@@ -289,6 +289,15 @@ Id QueryExecutor::newDerivedFact(
     size_t keySize) {
   Fact::Clause clause = Fact::Clause::from(key->bytes(), keySize);
   auto id = facts.define(type, clause);
+  if (id == Id::invalid()) {
+    if (auto predicate = inventory.lookupPredicate(type)) {
+      error(
+        "query for {} produced facts with identical keys "
+        "but different values", predicate->name);
+    } else {
+      error("unknown pid: {}", type.toWord());
+    }
+  }
 
   // If we are going to store this derived fact in the DB, we need to
   // know its ownership set, which is determined by the facts it was
