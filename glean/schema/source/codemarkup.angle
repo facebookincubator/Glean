@@ -1,10 +1,10 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.29 {
+schema codemarkup.30 {
 import src.1
 import code.24
 import codemarkup.buck.2
-import codemarkup.cxx.3
+import codemarkup.cxx.4
 import codemarkup.erlang.2
 import codemarkup.flow.2
 import codemarkup.hack.2
@@ -285,18 +285,10 @@ predicate EntityReferences:
 
 predicate EntityAnnotations : code.Entity -> code.Annotations
   E -> A where
-    CxxAnnotation{entity=E, anns=A} |
-    (codemarkup.hack.HackAnnotation{entity=HE, anns=HA};
-     { hack = HE } = E; { hack = HA } = A);
-
-predicate CxxAnnotation :
-  {
-    entity: code.Entity,
-    anns: code.Annotations,
-  }
-  {{cxx={decl=D}}, {cxx={attributes=As}}} where
-    ({ function_ = Decl } = D; cxx1.FunctionAttribute{declaration=Decl, attr=A}; As=[A]) |
-    ({ function_ = Decl } = D; !cxx1.FunctionAttribute{declaration=Decl}; As=[]:[cxx1.Attribute])
+    ( codemarkup.cxx.CxxAnnotation { Ent, Anns };
+      { cxx = Ent } = E; { cxx = Anns } = A ) |
+    ( codemarkup.hack.HackAnnotation{ Ent, Anns };
+     { hack = Ent } = E; { hack = Anns } = A );
 
 #
 # Visibility

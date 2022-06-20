@@ -1,6 +1,6 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.cxx.3 {
+schema codemarkup.cxx.4 {
 import src.1
 import code.cxx.4
 import codemarkup.types.1
@@ -414,14 +414,15 @@ predicate CxxDeclInfo:
 # Annotations
 #
 
-predicate CxxAnnotation :
+predicate CxxAnnotation:
   {
     entity: code.cxx.Entity,
     anns: code.cxx.Annotations,
   }
-  {{decl=D}, {attributes=As}} where
-    ({ function_ = Decl } = D; cxx1.FunctionAttribute{declaration=Decl, attr=A}; As=[A]) |
-    ({ function_ = Decl } = D; !cxx1.FunctionAttribute{declaration=Decl}; As=[]:[cxx1.Attribute])
+  {{ decl = Decl }, { attributes = As }} where
+    { function_ = F } = Decl;
+    ( cxx1.FunctionDeclAttribute { F, A }; As=[A] ) |
+    (!cxx1.FunctionDeclAttribute { F, _ }; As=[]:[cxx1.Attribute]);
 
 #
 # Visibility
@@ -485,4 +486,4 @@ predicate CxxContainsChildEntity :
 
 }
 
-schema codemarkup.cxx.3 evolves codemarkup.cxx.2
+schema codemarkup.cxx.4 evolves codemarkup.cxx.3
