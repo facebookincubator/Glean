@@ -53,6 +53,7 @@ import TextShow
 import Util.Log.Text
 
 import Glean.RTS.Foreign.Inventory as Inventory
+import Glean.Database.Config
 import Glean.Database.Schema.Types
 import Glean.Database.Schema.Transform (mkPredicateTransformation)
 import Glean.RTS.Traverse
@@ -117,35 +118,34 @@ data CheckChanges
   | MustBeEqual
 
 newMergedDbSchema
-  :: Thrift.SchemaInfo                  -- ^ schema from a DB
-  -> SourceSchemas                      -- ^ current schema source
-  -> Schemas                            -- ^ current schema
-  -> CheckChanges                           -- ^ validate DB schema?
+  :: Thrift.SchemaInfo  -- ^ schema from a DB
+  -> ProcessedSchema  -- ^ current schema
+  -> CheckChanges  -- ^ validate DB schema?
   -> DbContent
   -> IO DbSchema
-newMergedDbSchema info@Thrift.SchemaInfo{..} source current validate dbContent = do
+newMergedDbSchema info@Thrift.SchemaInfo{..} current validate
+    dbContent = do
   let
-  (_fromDBSource, fromDBResolved) <-
-    case parseAndResolveSchema schemaInfo_schema of
-      Left msg -> throwIO $ ErrorCall msg
-      Right resolved -> return resolved
+  fromDB <- case processSchema schemaInfo_schema of
+    Left msg -> throwIO $ ErrorCall msg
+    Right resolved -> return resolved
 
   -- For the "source", we'll use the current schema source. It doesn't
   -- reflect what's in the DB, but it reflects what you can query for.
-  mkDbSchema validate  (Just (schemaInfoPids info)) dbContent source
-    fromDBResolved
-    (schemasResolved current)
+  mkDbSchema validate  (Just (schemaInfoPids info)) dbContent
+    fromDB current
 
 -- | Build a DbSchema from parsed/resolved Schemas. Note that we still need
 -- the original source for the schema for 'toSchemaInfo' (otherwise we would
 -- need to pretty-print the resolved Schemas back into source.
 newDbSchema
-  :: SourceSchemas
-  -> Schemas
+  :: ProcessedSchema
   -> DbContent
   -> IO DbSchema
-newDbSchema str schemas dbContent =
-  mkDbSchema AllowChanges Nothing dbContent str schemas []
+newDbSchema (ProcessedSchema source resolved hashed) dbContent =
+  mkDbSchema AllowChanges Nothing dbContent
+    (ProcessedSchema source resolved hashed)
+    (ProcessedSchema source (ResolvedSchemas Nothing []) emptyHashedSchema)
 
 inventory :: [PredicateDetails] -> Inventory
 inventory ps = Inventory.new
@@ -167,25 +167,25 @@ mkDbSchemaFromSource
   -> ByteString
   -> IO DbSchema
 mkDbSchemaFromSource knownPids dbContent source = do
-  case parseAndResolveSchema source of
+  case processSchema source of
     Left str -> throwIO $ ErrorCall str
-    Right (srcSchemas, resolved) ->
-      mkDbSchema AllowChanges knownPids dbContent srcSchemas resolved []
+    Right (ProcessedSchema source resolved hashed) ->
+      mkDbSchema AllowChanges knownPids dbContent
+        (ProcessedSchema source resolved hashed)
+        (ProcessedSchema source (ResolvedSchemas Nothing []) emptyHashedSchema)
 
 mkDbSchema
   :: CheckChanges
   -> Maybe (HashMap PredicateRef Pid)
   -> DbContent
-  -> Schema.SourceSchemas
-  -> Schemas
-  -> [ResolvedSchemaRef]
+  -> ProcessedSchema
+  -> ProcessedSchema
   -> IO DbSchema
-mkDbSchema validate knownPids dbContent source base addition = do
+mkDbSchema validate knownPids dbContent
+    (ProcessedSchema _ resolvedStored stored)
+    (ProcessedSchema sourceAdded resolvedAdded added) = do
   let
-    resolved = schemasResolved base <> addition
-
-    stored = computeIds (schemasResolved base)
-    added = computeIds addition
+    resolved = schemasResolved resolvedStored <> schemasResolved resolvedAdded
 
     -- Assign Pids to predicates.
     --  - predicates in the stored schema get Pids from the SchemaInfo
@@ -223,10 +223,10 @@ mkDbSchema validate knownPids dbContent source base addition = do
     -- schema, we want the new derivation to take effect.
 
     verStored = maybe latestAngleVersion resolvedSchemaAngleVersion
-      (listToMaybe (schemasResolved base))
+      (listToMaybe (schemasResolved resolvedStored))
 
     verAdded =  maybe latestAngleVersion resolvedSchemaAngleVersion
-      (listToMaybe addition)
+      (listToMaybe (schemasResolved resolvedAdded))
 
   checkForChanges validate stored added
 
@@ -332,7 +332,7 @@ mkDbSchema validate knownPids dbContent source base addition = do
           refToIdEnv resolved
     , schemaInventory = inventory predicates
     , schemaResolved = resolved
-    , schemaSource = source
+    , schemaSource = sourceAdded
     , schemaMaxPid = maxPid
     , schemaLatestVersion = latestHash
     }
@@ -709,16 +709,15 @@ checkStoredType preds types def ty = go ty
   go _ = return ()
 
 
-validateNewSchema :: ByteString -> SourceSchemas -> Schemas -> IO ()
-validateNewSchema newSrc curSrc curSchemas = do
-  (newSource, newResolved) <- case parseAndResolveSchema newSrc of
+validateNewSchema :: ByteString -> ProcessedSchema -> IO ()
+validateNewSchema newSrc current = do
+  schema <- case processSchema newSrc of
     Left msg -> throwIO $ Thrift.Exception $ Text.pack msg
     Right resolved -> return resolved
 
-  curDbSchema <- newDbSchema curSrc curSchemas readWriteContent
+  curDbSchema <- newDbSchema schema readWriteContent
   void $ newMergedDbSchema
     (toSchemaInfo curDbSchema)
-    newSource
-    newResolved
+    current
     MustBeEqual
     readWriteContent

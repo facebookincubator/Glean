@@ -47,7 +47,6 @@ import Glean.Init
 import qualified Glean.RTS as RTS
 import qualified Glean.RTS.Term as RTS
 import qualified Glean.RTS.Types as RTS
-import Glean.Schema.Resolve
 import Glean.Schema.Util
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types as Thrift
@@ -87,7 +86,7 @@ mergeSchemaTest = TestCase $
 
     -- create an extended schema
     let newSchemaFile = root </> "schema"
-    (source,_) <- parseSchemaDir schemaSourceDir
+    (ProcessedSchema source _ _) <- parseSchemaDir schemaSourceDir
     writeFile newSchemaFile (show (pretty source))
     appendFile newSchemaFile
       [s|
@@ -447,7 +446,7 @@ changeSchemaTest = TestCase $ do
           dbConfig = def
             { cfgRoot = Nothing
             , cfgSchemaSource = ThriftSource.configWithDeserializer
-                fakeSchemaKey parseAndResolveSchema
+                fakeSchemaKey processSchema
             , cfgServerConfig = ThriftSource.value def
                 { ServerConfig.config_db_rocksdb_cache_mb = 0 }
             }
@@ -1907,9 +1906,9 @@ withSchemaAndFacts customSettings schema facts query act =
 
   -- get PredicateDetails
   dbSchema <- do
-    (sourceSchemas, schemas) <- either error return
-      $ parseAndResolveSchema $ encodeUtf8 $ pack schema
-    newDbSchema sourceSchemas schemas readWriteContent
+    schema <- either error return
+      $ processSchema $ encodeUtf8 $ pack schema
+    newDbSchema schema readWriteContent
 
   let run q = do
         -- open db for querying

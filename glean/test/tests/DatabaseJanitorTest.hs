@@ -77,8 +77,8 @@ setupBasicDBs :: FilePath -> IO ()
 setupBasicDBs dbdir = do
   now <- getCurrentTime
   let age t = addUTCTime (negate (fromIntegral (timeSpanInSeconds t))) now
-  (sourceSchemas, currentSchema) <- parseSchemaDir schemaSourceDir
-  schema <- newDbSchema sourceSchemas currentSchema readWriteContent
+  schema <- parseSchemaDir schemaSourceDir
+  schema <- newDbSchema schema readWriteContent
   -- populate a dir with various DBs
   makeFakeDB schema dbdir (Repo "test" "0001") (age (days 0)) complete Nothing
   makeFakeDB schema dbdir (Repo "test" "0002") (age (days 2)) broken Nothing

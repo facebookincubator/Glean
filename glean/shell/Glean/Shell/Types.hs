@@ -42,6 +42,7 @@ import Glean
 import qualified Glean.Types as Thrift
 import Glean.LocalOrRemote (LocalOrRemote)
 import Glean.Schema.Resolve
+import Glean.Schema.Types
 import Glean.Util.Some
 
 data Statement pat
@@ -121,7 +122,7 @@ data ShellState = ShellState
   { backend :: Some LocalOrRemote
   , repo :: Maybe Repo
   , mode :: ShellMode
-  , schemas :: Schemas
+  , schemas :: ResolvedSchemas
   , schemaInfo :: Thrift.SchemaInfo
   , limit :: Int64
   , timeout :: Maybe Int64

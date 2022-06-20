@@ -26,9 +26,8 @@ serializeTest inventory = TestCase $ assertBool "roundtrip" $
 
 main :: IO ()
 main = withUnitTest $ do
-  (schemaSource, schemas) <- parseSchemaDir schemaSourceDir
-  inventory <- schemaInventory <$>
-    newDbSchema schemaSource schemas readWriteContent
+  schema <- parseSchemaDir schemaSourceDir
+  inventory <- schemaInventory <$> newDbSchema schema readWriteContent
 
   testRunner $ TestList
     [ TestLabel "serialize" $ serializeTest inventory

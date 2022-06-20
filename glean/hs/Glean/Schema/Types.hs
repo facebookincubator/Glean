@@ -38,6 +38,7 @@ module Glean.Schema.Types (
   lookupResultToEither,
 
   -- * Resolved schemas
+  ResolvedSchemas(..),
   ResolvedSchema(..),
   ResolvedSchemaRef,
   schemaRef,
@@ -172,3 +173,10 @@ type ResolvedSchemaRef = ResolvedSchema PredicateRef TypeRef
 schemaRef :: ResolvedSchema p t -> SchemaRef
 schemaRef ResolvedSchema{..} =
   SchemaRef resolvedSchemaName resolvedSchemaVersion
+
+-- | A set of schemas after name resolution
+data ResolvedSchemas = ResolvedSchemas
+  { schemasHighestVersion :: Maybe Version
+  , schemasResolved :: [ResolvedSchemaRef]
+    -- ^ Resolved schemas in dependency order
+  }

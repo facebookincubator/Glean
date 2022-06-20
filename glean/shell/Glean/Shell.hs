@@ -69,14 +69,14 @@ import Glean.Backend.Remote (clientInfo, StackedDbOpts(..))
 import Glean.Database.Ownership
 import Glean.Database.Schema.Types (DbSchema(..))
 import Glean.Database.Schema (newDbSchema, readWriteContent)
-import Glean.Database.Config (parseSchemaDir)
+import Glean.Database.Schema.ComputeIds (emptyHashedSchema)
+import Glean.Database.Config (parseSchemaDir, ProcessedSchema(..))
 import qualified Glean.Database.Config as DB (Config(..))
 import Glean.Indexer
 import Glean.Indexer.List
 import Glean.LocalOrRemote as Glean hiding (options)
 import Glean.RTS.Types (Pid(..), Fid(..))
 import Glean.RTS.Foreign.Query (interruptRunningQueries)
-import Glean.Schema.Resolve
 import Glean.Schema.Types
 import Glean.Schema.Util
 import Glean.Shell.Index
@@ -199,7 +199,7 @@ withRepo f = do
 
 getSchemaCmd :: String -> Eval ()
 getSchemaCmd str = do
-  Schemas{..} <- schemas <$> getState
+  ResolvedSchemas{..} <- schemas <$> getState
   let
     txt = Text.pack (strip str)
 
@@ -1156,7 +1156,7 @@ fromVocabulary str words =
 
 availablePredicates :: Eval [String]
 availablePredicates = do
-  Schemas{..} <- schemas <$> getState
+  ResolvedSchemas{..} <- schemas <$> getState
   let
     refs = concatMap (HashMap.keys . resolvedSchemaPredicates) schemasResolved
     withVer =
@@ -1167,7 +1167,7 @@ availablePredicates = do
 
 availableTypes :: Eval [String]
 availableTypes = do
-  Schemas{..} <- schemas <$> getState
+  ResolvedSchemas{..} <- schemas <$> getState
   let
     refs = concatMap (HashMap.keys . resolvedSchemaTypes) schemasResolved
     withVer =
@@ -1247,17 +1247,20 @@ setupLocalSchema service = do
         schema <- parseSchemaDir dir
           `catch` \(e :: ErrorCall) -> do
             print e
-            return (SourceSchemas 0 [] [], Schemas Nothing [])
+            return $ ProcessedSchema
+              (SourceSchemas 0 [] [])
+              (ResolvedSchemas Nothing [])
+              emptyHashedSchema
         (schemaTS, update) <- ThriftSource.mutable schema
         let
           updateSchema :: Eval ()
           updateSchema = do
-            new@(source,resolved) <- liftIO $ parseSchemaDir dir
+            new <- liftIO $ parseSchemaDir dir
             -- convert to a DbSchema, because this forces
             -- typechecking of the derived predicates. Otherwise we
             -- won't notice type errors until after the schema is
             -- updated below.
-            db <- liftIO $ newDbSchema source resolved readWriteContent
+            db <- liftIO $ newDbSchema new readWriteContent
             liftIO $ update (const new)
             let
               numSchemas = length (srcSchemas (schemaSource db))
@@ -1299,7 +1302,7 @@ instance Plugin ShellCommand where
         { backend = Some backend
         , repo = Nothing
         , mode = cfgMode cfg
-        , schemas = Schemas Nothing []
+        , schemas = ResolvedSchemas Nothing []
         , schemaInfo = def
         , limit = cfgLimit cfg
         , timeout = Just 10000      -- Sensible default for fresh shell.

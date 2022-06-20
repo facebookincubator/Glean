@@ -11,7 +11,6 @@
 module Glean.Schema.Resolve
   ( resolveSchema
   , parseAndResolveSchema
-  , Schemas(..)
   , resolveType
   , lookupResultToExcept
   , resolveEvolves
@@ -47,16 +46,11 @@ import Glean.Angle.Types
 import Glean.Schema.Types
 import Glean.Schema.Util
 
--- | A set of schemas
-data Schemas = Schemas
-  { schemasHighestVersion :: Maybe Version
-  , schemasResolved :: [ResolvedSchemaRef]
-    -- ^ Resolved schemas in dependency order
-  }
-
 -- | Useful packaging of 'parseSchema' and 'resolveSchema'. Note that
 -- parsing and resolution of a schema is a pure function.
-parseAndResolveSchema :: ByteString -> Either String (SourceSchemas, Schemas)
+parseAndResolveSchema
+  :: ByteString
+  -> Either String (SourceSchemas, ResolvedSchemas)
 parseAndResolveSchema str =
   case parseSchema str of
     Left str -> Left str
@@ -65,10 +59,10 @@ parseAndResolveSchema str =
       Right r -> Right (ss, r)
 
 --
--- | Turn 'SourceSchemas' into a 'Schemas' by resolving all the
+-- | Turn 'SourceSchemas' into a 'ResolvedSchemas' by resolving all the
 -- references and checking for validity.
 --
-resolveSchema :: SourceSchemas -> Either Text Schemas
+resolveSchema :: SourceSchemas -> Either Text ResolvedSchemas
 resolveSchema SourceSchemas{..} = runExcept $ do
   checkAngleVersion srcAngleVersion
   let
@@ -117,7 +111,7 @@ resolveSchema SourceSchemas{..} = runExcept $ do
   -- Check whether any schema is evolved by multiple schemas.
   _ <- either throwError return $ resolveEvolves resolved
 
-  return Schemas
+  return ResolvedSchemas
     { schemasHighestVersion =
         if null allSchemas
            then Nothing
@@ -724,9 +718,6 @@ reservedWords = HashSet.fromList [
     "_tmp_"
   ]
 
-
-instance Pretty Schemas where
-  pretty Schemas{} = mempty -- TODO
 
 -- -----------------------------------------------------------------------------
 -- Resolving queries

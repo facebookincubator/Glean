@@ -34,7 +34,6 @@ import Data.Text (Text)
 
 import Util.EventBase
 
-import Glean.Angle.Types (SourceSchemas)
 import Glean.Backend
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Config
@@ -46,7 +45,6 @@ import Glean.Impl.ConfigProvider ()
 import qualified Glean.Internal.Types as Thrift
 import Glean.Recipes.Types (Recipes)
 import qualified Glean.Recipes.Types as Recipes
-import Glean.Schema.Resolve
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Typed
 import qualified Glean.Types as Thrift
@@ -67,7 +65,7 @@ setRecipes recipes cfg = cfg
         { config_recipes = recipes }
   }
 
-setSchemaSource :: ThriftSource (SourceSchemas, Schemas) -> Setting
+setSchemaSource :: ThriftSource ProcessedSchema -> Setting
 setSchemaSource source cfg = cfg{ cfgSchemaSource = source }
 
 setSchemaPath :: FilePath -> Setting

@@ -56,7 +56,7 @@ import Glean.Query.Codegen (QueryWithInfo(..))
 import Glean.Angle.Hash
 import Glean.Angle.Types
 import Glean.Angle.Parser
-import Glean.Database.Config (catSchemaFiles)
+import Glean.Database.Config hiding (options)
 import Glean.Database.Schema
 import Glean.RTS.Types (PidRef(..), ExpandedType(..))
 import Glean.Schema.Util (showRef)
@@ -65,7 +65,6 @@ import Glean.Schema.Gen.Cpp ( genSchemaCpp )
 import Glean.Schema.Gen.HackJson ( genSchemaHackJson )
 import Glean.Schema.Gen.Haskell ( genSchemaHS )
 import Glean.Schema.Gen.Utils ( Mode(..) )
-import Glean.Schema.Resolve
 import Glean.Schema.Types
 
 data WhichVersion
@@ -169,7 +168,7 @@ options = do
 main :: IO ()
 main = do
   Options{..} <- execParser (info (options <**> helper) fullDesc)
-  (src, sourceSchemas, schemas, dbschema) <-
+  (src, (ProcessedSchema sourceSchemas resolved _), dbschema) <-
     reportTime "parse/resolve/typecheck" $ do
     str <- case input of
       Left one -> BC.readFile one
@@ -179,12 +178,12 @@ main = do
           if omitArchive
             then filter (not . ("/archive/" `isInfixOf`)) files
             else files
-    (sourceSchemas, schemas) <- case parseAndResolveSchema str of
-      Left err -> throwIO $ ErrorCall err
+    schema <- case processSchema str of
+      Left err -> throwIO $ ErrorCall $ err
       Right schema -> return schema
     -- for typechecking
-    dbschema <- newDbSchema sourceSchemas schemas readWriteContent
-    return (str, sourceSchemas, schemas, dbschema)
+    dbschema <- newDbSchema schema readWriteContent
+    return (str, schema, dbschema)
 
   reportTime "checking schema roundtrip" $ do
     let pp = show (pretty sourceSchemas)
@@ -204,7 +203,7 @@ main = do
           resolvedSchemaReExportedPredicates = preds,
           resolvedSchemaReExportedTypes = types
         }
-      | schema <- schemasResolved schemas
+      | schema <- schemasResolved resolved
       , resolvedSchemaName schema == "all"
       , let
           deps :: [ResolvedSchemaRef]
@@ -231,7 +230,7 @@ main = do
       | schema <- srcSchemas sourceSchemas ]
 
     schemaMap = HashMap.fromList
-      [ (showSchemaRef (schemaRef s), s) | s <- schemasResolved schemas ]
+      [ (showSchemaRef (schemaRef s), s) | s <- schemasResolved resolved ]
 
     findVersion v = listToMaybe
       [ s | s@ResolvedSchema{..} <- allSchemas
@@ -246,7 +245,7 @@ main = do
 
   versions <- case version of
     HighestVersion ->
-      case schemasHighestVersion schemas of
+      case schemasHighestVersion resolved of
         Just ver | Just schema <- findVersion ver ->
           return [(ver, hashOf ver, schema, Nothing)]
         _otherwise -> fail "missing 'all' schema"

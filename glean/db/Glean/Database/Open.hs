@@ -231,13 +231,13 @@ updateLookupCacheStats env =
 
 setupSchema :: Storage s => Env -> Repo -> Database s -> Mode -> IO DbSchema
 setupSchema Env{..} _ handle (Create _ initial) = do
-  (source, currentSchema) <- Observed.get envSchemaSource
-  schema <- case initial of
-    Nothing -> newDbSchema source currentSchema readWriteContent
+  schema <- Observed.get envSchemaSource
+  dbSchema <- case initial of
+    Nothing -> newDbSchema schema readWriteContent
     Just info ->
-      newMergedDbSchema info source currentSchema AllowChanges readWriteContent
-  storeSchema handle $ toSchemaInfo schema
-  return schema
+      newMergedDbSchema info schema AllowChanges readWriteContent
+  storeSchema handle $ toSchemaInfo dbSchema
+  return dbSchema
 setupSchema Env{..} repo handle mode = do
   stored <- retrieveSchema repo handle
   case stored of
@@ -254,11 +254,9 @@ setupSchema Env{..} repo handle mode = do
         -- merge the schema in the DB with the current schema, so
         -- that we can query for derived predicates that weren't
         -- stored in the DB when it was created.
-        (source, currentSchema) <- Observed.get envSchemaSource
+        schema <- Observed.get envSchemaSource
         stats <- Storage.predicateStats handle
-        newMergedDbSchema info source currentSchema
-          AllowChanges
-          (readOnlyContent stats)
+        newMergedDbSchema info schema AllowChanges (readOnlyContent stats)
     Nothing ->
       dbError repo "DB has no stored schema"
 

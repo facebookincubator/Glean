@@ -25,7 +25,6 @@ import Data.RateLimiterMap
 import Util.EventBase
 import Util.Log
 
-import Glean.Angle.Types (SourceSchemas)
 import qualified Glean.RTS.Foreign.LookupCache as LookupCache
 import Glean.Database.Backup (backuper)
 #ifdef FACEBOOK
@@ -46,7 +45,6 @@ import Glean.Database.Writes
 import Glean.Impl.ConfigProvider
 import qualified Glean.Recipes.Types as Recipes
 import qualified Glean.ServerConfig.Types as ServerConfig
-import Glean.Schema.Resolve
 import Glean.Util.Observed as Observed
 import Glean.Util.Periodic
 import Glean.Util.Some
@@ -90,7 +88,7 @@ initEnv
   :: EventBaseDataplane
   -> Config
   -> Logger
-  -> Observed (SourceSchemas, Schemas)
+  -> Observed ProcessedSchema
   -> Observed Recipes.Config
   -> Observed ServerConfig.Config
   -> IO Env

@@ -13,6 +13,7 @@ module Glean.Database.Schema.ComputeIds
   , ResolvedSchemaId
   , refsToIds
   , HashedSchema(..)
+  , emptyHashedSchema
   ) where
 
 import Control.Monad
@@ -39,6 +40,13 @@ data HashedSchema = HashedSchema
   , schemaRefToIdEnv :: RefToIdEnv
   }
 
+emptyHashedSchema :: HashedSchema
+emptyHashedSchema = HashedSchema
+  { hashedTypes = HashMap.empty
+  , hashedPreds =  HashMap.empty
+  , schemaRefToIdEnv = emptyRefToIdEnv
+  }
+
 type Def_ p t = RefTarget p t
 
 type DefResolved = Def_ ResolvedPredicateDef ResolvedTypeDef
@@ -48,6 +56,9 @@ data RefToIdEnv = RefToIdEnv
   { typeRefToId :: HashMap TypeRef TypeId
   , predRefToId :: HashMap PredicateRef PredicateId
   }
+
+emptyRefToIdEnv :: RefToIdEnv
+emptyRefToIdEnv = RefToIdEnv HashMap.empty HashMap.empty
 
 type ResolvedSchemaId = ResolvedSchema PredicateId TypeId
 
@@ -65,9 +76,6 @@ refsToIds (RefToIdEnv tids pids) =
     lookupTypeId m p = HashMap.findWithDefault err p m
       where
         err = error $ "lookupTypeId: " <> Text.unpack (showRef p)
-
-emptyRefToIdEnv :: RefToIdEnv
-emptyRefToIdEnv = RefToIdEnv HashMap.empty HashMap.empty
 
 attachDerivations
   :: [ResolvedSchemaRef]

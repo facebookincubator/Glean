@@ -287,8 +287,8 @@ instance Backend Database.Env where
     return . toSchemaInfo . Database.odbSchema
 
   validateSchema env (Thrift.ValidateSchema str) = do
-    (curSrc, curSchemas)  <- get (Database.envSchemaSource env)
-    validateNewSchema str curSrc curSchemas
+    schema  <- get (Database.envSchemaSource env)
+    validateNewSchema str schema
 
   predicateStats env repo ExcludeBase =
     withOpenDatabase env repo $ \Database.OpenDB{..} ->

@@ -97,8 +97,8 @@ data E = E
 mkE :: IO E
 mkE = do
   -- Build the DbSchema
-  (sourceSchemas, schemas) <- parseSchemaDir schemaSourceDir
-  dbSchema <- newDbSchema sourceSchemas schemas readWriteContent
+  schema <- parseSchemaDir schemaSourceDir
+  dbSchema <- newDbSchema schema readWriteContent
 
   -- glean.test.Predicate has glean.test.KitchenSink as its key
   Right testPred <- return $ lookupPredicateSourceRef

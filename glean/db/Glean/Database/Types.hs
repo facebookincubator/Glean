@@ -32,6 +32,7 @@ import Util.EventBase (EventBaseDataplane)
 import Glean.Angle.Types
 import qualified Glean.Database.Backup.Backend as Backup
 import Glean.Database.Catalog (Catalog)
+import Glean.Database.Config
 import Glean.Database.Meta
 import Glean.Database.Schema.Types
 import Glean.Database.Stats (Stats)
@@ -43,7 +44,6 @@ import qualified Glean.RTS.Foreign.LookupCache as LookupCache
 import Glean.RTS.Foreign.Ownership (Ownership, Slice)
 import Glean.RTS.Foreign.Subst (Subst)
 import Glean.RTS.Types (Fid(..))
-import Glean.Schema.Resolve (Schemas)
 import qualified Glean.Recipes.Types as Recipes
 import qualified Glean.ServerConfig.Types as ServerConfig
 import qualified Glean.Tailer as Tailer
@@ -200,7 +200,7 @@ data Env = forall storage. Storage storage => Env
   , envRoot :: FilePath
   , envCatalog :: Catalog
   , envStorage :: storage
-  , envSchemaSource :: Observed (SourceSchemas, Schemas)
+  , envSchemaSource :: Observed ProcessedSchema
   , envSchemaUpdateSignal :: TMVar ()
     -- ^ The schema source, and its parsed/resolved form are both cached here.
   , envSchemaVersion :: Maybe Version

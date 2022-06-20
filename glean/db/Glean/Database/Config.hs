@@ -9,6 +9,8 @@
 {-# LANGUAGE ApplicativeDo, CPP #-}
 module Glean.Database.Config (
   Config(..), options,
+  processSchema,
+  ProcessedSchema(..),
   schemaSourceConfig,
   catSchemaFiles,
   schemaSourceFiles,
@@ -36,12 +38,14 @@ import Util.IO (listDirectoryRecursive)
 import Glean.Angle.Types
 import qualified Glean.Database.Catalog.Local.Files as Catalog.Local.Files
 import qualified Glean.Database.Catalog.Store as Catalog
+import Glean.Database.Schema.ComputeIds
 import Glean.Database.Storage
 import qualified Glean.Database.Storage.Memory as Memory
 import qualified Glean.Database.Storage.RocksDB as RocksDB
 import Glean.DefaultConfigs
 import qualified Glean.Recipes.Types as Recipes
 import Glean.Schema.Resolve
+import Glean.Schema.Types
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types
 import Glean.Util.ShardManager
@@ -53,7 +57,7 @@ import qualified Glean.Tailer as Tailer
 
 data Config = Config
   { cfgRoot :: Maybe FilePath
-  , cfgSchemaSource :: ThriftSource (SourceSchemas, Schemas)
+  , cfgSchemaSource :: ThriftSource ProcessedSchema
   , cfgSchemaDir :: Maybe FilePath
       -- ^ Records whether we're reading the schema from a directory
       -- of source files or not, because some clients (the shell) want
@@ -102,29 +106,54 @@ instance Default Config where
     , cfgShardManager = SomeShardManager noSharding
     }
 
+-- | The schema that we've read from the filesystem or the configs. We
+-- need this in three forms:
+--
+-- * SourceSchemas: the parsed source, which we'll store back in DBs
+--   that we create
+--
+-- * ResolvedSchemas: after name resolution, which is needed to
+--   support "evolves". TODO: just keep the bits we need from this
+--
+-- * HashedSchema: after hashing all the names (ComputeIds)
+--
+data ProcessedSchema = ProcessedSchema
+  { procSchemaSource :: SourceSchemas
+  , procSchemaResolved :: ResolvedSchemas
+  , procSchemaHashed :: HashedSchema
+  }
+
+processSchema :: ByteString -> Either String ProcessedSchema
+processSchema str =
+  case parseAndResolveSchema str of
+    Left str -> Left str
+    Right (ss, r) -> Right $
+      ProcessedSchema ss r (computeIds (schemasResolved r))
+
 -- | Read the schema definition from the ConfigProvider
-schemaSourceConfig :: ThriftSource (SourceSchemas, Schemas)
+schemaSourceConfig :: ThriftSource ProcessedSchema
 schemaSourceConfig =
   ThriftSource.configWithDeserializer schemaConfigPath
-     parseAndResolveSchema
+     processSchema
 
 -- | Read the schema files from the source tree
-schemaSourceFiles :: ThriftSource (SourceSchemas, Schemas)
+schemaSourceFiles :: ThriftSource ProcessedSchema
 schemaSourceFiles = schemaSourceFilesFromDir schemaSourceDir
 
 -- | Read the schema from a single file
-schemaSourceFile :: FilePath -> ThriftSource (SourceSchemas, Schemas)
-schemaSourceFile f = ThriftSource.fileWithDeserializer f parseAndResolveSchema
+schemaSourceFile :: FilePath -> ThriftSource ProcessedSchema
+schemaSourceFile f = ThriftSource.fileWithDeserializer f
+  processSchema
 
 -- | Read schema files from the given directory
-schemaSourceFilesFromDir :: FilePath -> ThriftSource (SourceSchemas, Schemas)
+schemaSourceFilesFromDir :: FilePath -> ThriftSource ProcessedSchema
 schemaSourceFilesFromDir = ThriftSource.once . parseSchemaDir
 
 -- | Read schema files from a directory
-parseSchemaDir :: FilePath -> IO (SourceSchemas, Schemas)
+parseSchemaDir :: FilePath -> IO ProcessedSchema
 parseSchemaDir dir = do
   str <- catSchemaFiles =<< listDirectoryRecursive dir
-  case parseAndResolveSchema str of
+  case processSchema str of
     Left err -> throwIO $ ErrorCall err
     Right schema -> return schema
 
@@ -149,7 +178,7 @@ schemaSourceDir = "glean/schema/source"
 -- \"config:PATH\", \"dir:PATH\", and \"file:PATH\" sources.
 schemaSourceParser
   :: String
-  -> Either String (Maybe FilePath, ThriftSource (SourceSchemas, Schemas))
+  -> Either String (Maybe FilePath, ThriftSource ProcessedSchema)
 schemaSourceParser "config" = Right (Nothing, schemaSourceConfig)
 schemaSourceParser "dir" =
   Right (Just schemaSourceDir, schemaSourceFilesFromDir schemaSourceDir)
@@ -160,11 +189,12 @@ schemaSourceParser s
   | ':' `notElem` s =
     Right (Just s, ThriftSource.once $ parseSchemaDir s)
   | otherwise =
-    (Nothing,) <$> ThriftSource.parseWithDeserializer s parseAndResolveSchema
+    (Nothing,) <$> ThriftSource.parseWithDeserializer s
+      processSchema
 
 -- | Deprecated --db-schema option; use --schema instead.
 dbSchemaSourceOption
-  :: Parser (Maybe FilePath, ThriftSource (SourceSchemas, Schemas))
+  :: Parser (Maybe FilePath, ThriftSource ProcessedSchema)
 dbSchemaSourceOption = option (eitherReader schemaSourceParser)
   (  long "db-schema"
   <> hidden
@@ -172,7 +202,7 @@ dbSchemaSourceOption = option (eitherReader schemaSourceParser)
   <> value (Nothing, schemaSourceConfig))
 
 schemaSourceOption
-  :: Parser (Maybe FilePath, ThriftSource (SourceSchemas, Schemas))
+  :: Parser (Maybe FilePath, ThriftSource ProcessedSchema)
 schemaSourceOption = option (eitherReader schemaSourceParser)
   (  long "schema"
   <> metavar "(dir | config | file:FILE | dir:DIR | config:PATH | DIR)"

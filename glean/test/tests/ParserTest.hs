@@ -63,7 +63,7 @@ schemaParser = TestCase $ do
 #FILE parsertest.angle
     parse error
   |]
-  either print (putDoc . pretty) r
+  either print (putDoc . pretty . fst) r
   assertBool "schema parser 1" $ case r of
     Left s -> "line 1, column 5\nparsertest.angle:" `isInfixOf` s
     _ -> False
@@ -112,7 +112,7 @@ schemaParser = TestCase $ do
       predicate type : { nat | bool_ }
     }
   |]
-  either print (putDoc . pretty) r
+  either print (putDoc . pretty . fst) r
   assertBool "schema parser 1" $ case r of
     Right _ -> True
     _ -> False
@@ -170,7 +170,7 @@ schemaResolver = TestCase $ do
       type Y = test.X
     }
   |]
-  either print (putDoc . pretty) r
+  either print (putDoc . pretty . fst) r
   assertBool "schema resolver 6" $ case r of
     Left s -> "not in scope: test.X" `isInfixOf` s
     _ -> False
@@ -187,7 +187,7 @@ schemaResolver = TestCase $ do
       predicate Z : { a: test.Y.2, b: test.X.3 }
     }
   |]
-  either print (putDoc . pretty) r
+  either print (putDoc . pretty . fst) r
   assertBool "schema resolver 7" $ isRight r
 
   -- imported names are not in scope unqualified
@@ -198,7 +198,7 @@ schemaResolver = TestCase $ do
       type Y = X
     }
   |]
-  either print (putDoc . pretty) r
+  either print (putDoc . pretty . fst) r
   assertBool "schema resolver 8" $ case r of
     Left s -> "not in scope: X" `isInfixOf` s
     _ -> False
@@ -213,7 +213,7 @@ schemaResolver = TestCase $ do
       type Y = a.X
     }
   |]
-  either print (putDoc . pretty) r
+  either print (putDoc . pretty . fst) r
   assertBool "schema resolver 9" $ case r of
     Left s -> "a.X is ambiguous" `isInfixOf` s
     _ -> False
@@ -226,7 +226,7 @@ schemaResolver = TestCase $ do
       type Y = X
     }
   |]
-  either print (putDoc . pretty) r
+  either print (putDoc . pretty . fst) r
   assertBool "schema resolver 10" $ case r of
     Left s -> "inherited schemas give multiple definitions for: X" `isInfixOf` s
     _ -> False
@@ -241,7 +241,7 @@ schemaResolver = TestCase $ do
       type Y = a.X.2
     }
   |]
-  either print (putDoc . pretty) r
+  either print (putDoc . pretty . fst) r
   assertBool "schema resolver 11" $ isRight r
 
   -- no ambiguity when we inherit
@@ -253,7 +253,7 @@ schemaResolver = TestCase $ do
       type Y = a.X  # picks the latest version of a.X
     }
   |]
-  either print (putDoc . pretty) r
+  either print (putDoc . pretty . fst) r
   assertBool "schema resolver 12" $ isRight r
 
   let r = parseAndResolveSchema [s|
@@ -266,7 +266,7 @@ schemaResolver = TestCase $ do
     # refers to the same thing.
     schema test.1 : a.2, a.3 {}
   |]
-  either print (putDoc . pretty) r
+  either print (putDoc . pretty . fst) r
   assertBool "schema resolver 12a" $ isRight r
 
   let r = parseAndResolveSchema [s|
@@ -279,7 +279,7 @@ schemaResolver = TestCase $ do
     # different things.
     schema test.1 : a.1, a.3 {}
   |]
-  either print (putDoc . pretty) r
+  either print (putDoc . pretty . fst) r
   assertBool "schema resolver 12b" $ case r of
     Left s -> "inherited schemas give multiple definitions for: X" `isInfixOf` s
     _ -> False
