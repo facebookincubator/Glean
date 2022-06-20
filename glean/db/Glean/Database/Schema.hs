@@ -21,7 +21,6 @@ module Glean.Database.Schema
   , DbContent
   , readOnlyContent
   , readWriteContent
-  , thinSchemaInfo
   ) where
 
 import Control.Applicative ((<|>))
@@ -29,16 +28,13 @@ import Control.Exception
 import Control.Monad
 import Control.Monad.Except
 import Control.Monad.State as State
-import Data.Bifunctor
 import Data.ByteString (ByteString)
+import Data.Foldable
 import Data.Graph
 import Data.Hashable
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashMap.Lazy as Lazy.HashMap
-import qualified Data.HashSet as HashSet
-import Data.HashSet (HashSet)
-import Data.List (foldl', find)
 import Data.List.Extra (firstJust)
 import qualified Data.IntMap as IntMap
 import Data.IntMap (IntMap)
@@ -96,24 +92,15 @@ schemaPredicates = HashMap.elems . predicatesById
 
 
 fromSchemaInfo :: Thrift.SchemaInfo -> DbContent -> IO DbSchema
-fromSchemaInfo Thrift.SchemaInfo{..} dbContent =
+fromSchemaInfo info@Thrift.SchemaInfo{..} dbContent =
   mkDbSchemaFromSource
-    (mkGetPids schemaInfo_predicateIds)
+    (Just (schemaInfoPids info))
     dbContent
     schemaInfo_schema
 
-mkGetPids :: Map Thrift.Id PredicateRef -> [PredicateRef] -> [Pid]
-mkGetPids m refs =
-  let by_ref = HashMap.fromList
-        $ map (second Pid . swap)
-        $ Map.toList m
-  in
-  map
-    (\ref -> HashMap.lookupDefault
-      (Pid Thrift.iNVALID_ID)
-      ref
-      by_ref)
-    refs
+schemaInfoPids :: Thrift.SchemaInfo -> HashMap PredicateRef Pid
+schemaInfoPids Thrift.SchemaInfo{..} = HashMap.fromList
+  [ (ref, Pid pid) | (pid, ref) <- Map.toList schemaInfo_predicateIds ]
 
 toSchemaInfo :: DbSchema -> Thrift.SchemaInfo
 toSchemaInfo DbSchema{..} = Thrift.SchemaInfo
@@ -123,90 +110,6 @@ toSchemaInfo DbSchema{..} = Thrift.SchemaInfo
       [ (fromPid $ predicatePid p, predicateRef p)
       | p <- HashMap.elems predicatesById ]
   }
-
--- | Produce a "thinned" SchemaInfo, containing only the schemas
--- necessary to describe the facts in the DB.  The idea is that
---
--- 1. It's less brittle than storing all current schemas, because
---    there's less chance for conflict when we open the DB and merge
---    its schema with the global schema later.
---
--- 2. We don't store irrelevant information.
---
-thinSchemaInfo
-  :: DbSchema
-  -> [(Pid, PredicateStats)]
-  -> (Thrift.SchemaInfo, [Name])
-thinSchemaInfo DbSchema{..} predicateStats =
-  (schemaInfo, map schemaName allNeededSchemas)
-  where
-  schemaInfo = Thrift.SchemaInfo
-    { schemaInfo_schema =
-        Text.encodeUtf8 $ renderStrict $ layoutCompact $ pretty $ schemaSource
-          { srcSchemas = allNeededSchemas
-          -- schema evolvolutions only work when the older schema contains no
-          -- facts. Thinning will remove the older factless schema and the
-          -- evolution will have no meaning. Therefore we always drop schema
-          -- evolutions.
-          , srcEvolves = [] }
-    , schemaInfo_predicateIds = Map.fromList
-        [ (fromPid $ predicatePid p, predicateRef p)
-        | p <- HashMap.elems predicatesById
-        {-
-          TODO: we should also filter out Pids of predicates that were
-          removed from the schema:
-
-          , predicateRef p `HashSet.member` nonEmptyPredicates
-
-          but the problem is that those Pids will end up being
-          reassigned, which can cause problems for suspending/resuming
-          queries. The proper fix for this will be to use PredicateRefs
-          not Pids in suspended queries, but this workaround will work
-          in most cases for now.
-        -}
-        ]
-    }
-
-  -- Predicates that have some facts
-  nonEmptyPredicates :: HashSet PredicateRef
-  nonEmptyPredicates = HashSet.fromList
-    [ predicateRef pred
-    | (pid, stats) <- predicateStats
-    , predicateStats_count stats /= 0
-    , Just pred <- [IntMap.lookup (fromIntegral $ fromPid pid) predicatesByPid]
-    ]
-
-  -- Names of schemas that define one or more non-empty predicates
-  neededSchemas :: [Name]
-  neededSchemas =
-    [ showRef (SourceRef resolvedSchemaName (Just resolvedSchemaVersion))
-    | ResolvedSchema{..} <- schemaResolved
-    , any (`HashSet.member` nonEmptyPredicates)
-        (HashMap.keys resolvedSchemaPredicates)
-    ]
-
-  -- Maps names of schemas to their source and dependencies
-  sourceSchemaMap :: HashMap Name (SourceSchema, [Name])
-  sourceSchemaMap = HashMap.fromList
-    [ (schemaName schema, (schema, deps))
-    | schema <- srcSchemas schemaSource
-    , let deps =
-            schemaInherits schema ++
-            [ n | SourceImport n <- schemaDecls schema ]
-    ]
-
-  -- All source schemas that either define a non-empty predicate, or
-  -- are a (transitive) dependency of such a schema.
-  allNeededSchemas = HashMap.elems (close neededSchemas HashMap.empty)
-    where
-    close [] r = r
-    close (n:ns) r
-      | n `HashMap.member` r = close ns r
-      | otherwise =
-        case HashMap.lookup n sourceSchemaMap of
-          Nothing -> close ns r -- shouldn't happen really
-          Just (schema, deps) ->
-            close (deps ++ ns) (HashMap.insert n schema r)
 
 
 data CheckChanges
@@ -220,21 +123,8 @@ newMergedDbSchema
   -> CheckChanges                           -- ^ validate DB schema?
   -> DbContent
   -> IO DbSchema
-newMergedDbSchema Thrift.SchemaInfo{..} source current validate dbContent = do
+newMergedDbSchema info@Thrift.SchemaInfo{..} source current validate dbContent = do
   let
-    -- predicates in the schema from the DB
-    oldPredPids = HashMap.fromList
-       $ map (second Pid . swap)
-       $ Map.toList schemaInfo_predicateIds
-
-    maxOldPid = maximum $ lowestPid : map Pid (Map.keys schemaInfo_predicateIds)
-
-    lookupPids !newpid (ref : rest)
-      | Just pid <- HashMap.lookup ref oldPredPids =
-        pid : lookupPids newpid rest
-      | otherwise = newpid : lookupPids (succ newpid) rest
-    lookupPids _ [] = []
-
   (_fromDBSource, fromDBResolved) <-
     case parseAndResolveSchema schemaInfo_schema of
       Left msg -> throwIO $ ErrorCall msg
@@ -242,7 +132,7 @@ newMergedDbSchema Thrift.SchemaInfo{..} source current validate dbContent = do
 
   -- For the "source", we'll use the current schema source. It doesn't
   -- reflect what's in the DB, but it reflects what you can query for.
-  mkDbSchema validate  (lookupPids (succ maxOldPid)) dbContent source
+  mkDbSchema validate  (Just (schemaInfoPids info)) dbContent source
     fromDBResolved
     (schemasResolved current)
 
@@ -255,8 +145,7 @@ newDbSchema
   -> DbContent
   -> IO DbSchema
 newDbSchema str schemas dbContent =
-  mkDbSchema AllowChanges (zipWith const [lowestPid ..])
-    dbContent str schemas []
+  mkDbSchema AllowChanges Nothing dbContent str schemas []
 
 inventory :: [PredicateDetails] -> Inventory
 inventory ps = Inventory.new
@@ -273,38 +162,51 @@ inventory ps = Inventory.new
 -- stored in the database.  Anything in the 'Schemas' but not
 -- in the database is dropped from the 'DbSchema'
 mkDbSchemaFromSource
-  :: ([PredicateRef] -> [Pid])
+  :: Maybe (HashMap PredicateRef Pid)
   -> DbContent
   -> ByteString
   -> IO DbSchema
-mkDbSchemaFromSource getPids dbContent source = do
+mkDbSchemaFromSource knownPids dbContent source = do
   case parseAndResolveSchema source of
     Left str -> throwIO $ ErrorCall str
     Right (srcSchemas, resolved) ->
-      mkDbSchema AllowChanges getPids dbContent srcSchemas resolved []
+      mkDbSchema AllowChanges knownPids dbContent srcSchemas resolved []
 
 mkDbSchema
   :: CheckChanges
-  -> ([PredicateRef] -> [Pid])
+  -> Maybe (HashMap PredicateRef Pid)
   -> DbContent
   -> Schema.SourceSchemas
   -> Schemas
   -> [ResolvedSchemaRef]
   -> IO DbSchema
-mkDbSchema validate getPids dbContent source base addition = do
+mkDbSchema validate knownPids dbContent source base addition = do
   let
     resolved = schemasResolved base <> addition
 
-    refs =
-        [ (ref, def)
-        | schema <- resolved
-        , (ref, def) <- HashMap.toList (resolvedSchemaPredicates schema)
-        ]
-
-    pids = getPids (map fst refs)
-
     stored = computeIds (schemasResolved base)
     added = computeIds addition
+
+    -- Assign Pids to predicates.
+    --  - predicates in the stored schema get Pids from the SchemaInfo
+    --    (unless this is a new DB, in which case we'll assign fresh Pids)
+    --  - predicates in the merged schema get new fresh Pids.
+
+    storedPids = case knownPids of
+      Nothing -> zip (HashMap.keys (hashedPreds stored)) [lowestPid..]
+      Just pidMap ->
+        [ (id, HashMap.lookupDefault (Pid Thrift.iNVALID_ID) ref pidMap)
+        | (id, _) <- HashMap.toList (hashedPreds stored)
+        , let ref = predicateIdRef id
+        ]
+
+    nextPid = maybe lowestPid succ $ maximumMay (map snd storedPids)
+
+    addedPids = zip ids [nextPid ..]
+      where ids = filter (not . isStoredPred) (HashMap.keys (hashedPreds added))
+            isStoredPred id = HashMap.member id (hashedPreds stored)
+
+    idToPid = HashMap.fromList (storedPids ++ addedPids)
 
     refToIdEnv = RefToIdEnv {
         typeRefToId = HashMap.union
@@ -319,13 +221,6 @@ mkDbSchema validate getPids dbContent source base addition = do
     -- validate would fail if the schemas differ, but in the case
     -- where the new schema adds a default derivation to the old
     -- schema, we want the new derivation to take effect.
-
-    idToPid = HashMap.fromList
-        [ (id, pid)
-        | ((ref, _), pid) <- zip refs pids
-        , pid /= Pid Thrift.iNVALID_ID
-        , Just id <- [HashMap.lookup ref (predRefToId refToIdEnv)]
-        ]
 
     verStored = maybe latestAngleVersion resolvedSchemaAngleVersion
       (listToMaybe (schemasResolved base))
@@ -660,36 +555,37 @@ typecheckSchemas idToPid dbContent
     rtsType = mkRtsType lookupType (`HashMap.lookup` idToPid)
 
   let
-    preds =
-      map (True,) (HashMap.toList predsStored) ++
-      map (False,) (HashMap.toList predsAdded)
-
-  predicates <- fmap catMaybes $ forM preds $ \(stored, (id,def)) ->
-      case
+    add preds (stored, (id,def))
+      | HashMap.member id preds = return preds
+        -- If we have already seen this predicate, no need to
+        -- typecheck it again.
+      | otherwise =
+        case
           ( HashMap.lookup (predicateDefRef def) idToPid
           , rtsType $ predicateDefKeyType def
           , rtsType $ predicateDefValueType def ) of
         (Just pid, Just keyType, Just valueType) -> do
           typecheck <- checkSignature keyType valueType
           traversal <- genTraversal keyType valueType
-          return $ Just PredicateDetails
-            { predicatePid = pid
-            , predicateId = id
-            , predicateSchema = def
-            , predicateKeyType = keyType
-            , predicateValueType = valueType
-            , predicateTraversal = traversal
-            , predicateTypecheck = typecheck
-            , predicateDeriving = NoDeriving
-            , predicateInStoredSchema = stored
-            }
-        _ -> return Nothing
+          let details = PredicateDetails
+                { predicatePid = pid
+                , predicateId = id
+                , predicateSchema = def
+                , predicateKeyType = keyType
+                , predicateValueType = valueType
+                , predicateTraversal = traversal
+                , predicateTypecheck = typecheck
+                , predicateDeriving = NoDeriving
+                , predicateInStoredSchema = stored
+                }
+          return $ HashMap.insert id details preds
+        _ -> return preds
+
+  preds <- foldM add HashMap.empty $
+    map (True,) (HashMap.toList predsStored) ++
+    map (False,) (HashMap.toList predsAdded)
 
   let
-    preds = HashMap.fromList
-        [ (predicateId, details)
-        | details@PredicateDetails{..} <- predicates ]
-
     types = HashMap.fromList
         [ (id, TypeDetails id ty)
         | (id, Just ty) <- HashMap.toList typedefs ]
@@ -707,7 +603,7 @@ typecheckSchemas idToPid dbContent
       where angleVersion = if stored then verStored else verAdded
 
   -- typecheck the derivations
-  predsWithDerivations <- forM predicates $ \details -> do
+  finalPreds <- forM preds $ \details -> do
     drv <- tcDeriving details (predicateInStoredSchema details) $
       predicateDefDeriving (predicateSchema details)
     let
@@ -725,14 +621,10 @@ typecheckSchemas idToPid dbContent
                 | otherwise -> disable
       | otherwise -> enable
 
-  let
-    finalPreds = HashMap.fromList
-      [ (predicateId details, details) | details <- predsWithDerivations ]
-
   -- Check the invariant that stored predicates do not refer to derived
   -- predicates. We have to defer this check until last, because
   -- derivations may have been attached to existing predicates now.
-  forM_ predsWithDerivations $ \PredicateDetails{..} -> do
+  forM_ finalPreds $ \PredicateDetails{..} -> do
     let
       check = do
         checkStoredType finalPreds types predicateId predicateKeyType

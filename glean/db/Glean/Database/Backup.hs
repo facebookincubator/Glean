@@ -26,7 +26,6 @@ import qualified Data.Map as Map
 import Data.Maybe
 import Data.Ord
 import Data.Text (Text)
-import qualified Data.Text as Text
 import Data.Time (getCurrentTime)
 import Data.Typeable (Typeable)
 import GHC.Generics hiding (Meta)
@@ -45,7 +44,6 @@ import Glean.Database.Backup.Locator
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Catalog.Filter
 import Glean.Database.CompletePredicates
-import Glean.Database.Data (storeSchema)
 import qualified Glean.Database.Logger as Logger
 import Glean.Database.Meta
 import Glean.Database.Repo
@@ -54,7 +52,6 @@ import Glean.Database.Open (withOpenDatabase, schemaUpdated)
 import Glean.Database.Types
 import Glean.Database.Schema
 import Glean.Logger
-import Glean.Repo.Text
 import Glean.ServerConfig.Types (DatabaseBackupPolicy(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Internal.Types as Thrift
@@ -280,11 +277,10 @@ doFinalize env@Env{..} repo =
     when (not (metaAxiomComplete meta)) $ syncCompletePredicates env repo
 
     config <- Observed.get envServerConfig
-    withOpenDatabase env repo $ \odb@OpenDB{..} -> do
+    withOpenDatabase env repo $ \OpenDB{..} -> do
       when (ServerConfig.config_compact_on_completion config) $ do
         say logInfo "optimising"
         Storage.optimize odbHandle
-      thinSchema repo odb
 
     -- update and re-merge our internal representation of the schema
     schemaUpdated env (Just repo)
@@ -319,14 +315,6 @@ doFinalize env@Env{..} repo =
     return False
   where
     say log s = log $ inRepo repo $ "finalize: " ++ s
-
-thinSchema :: Repo -> OpenDB -> IO ()
-thinSchema repo OpenDB{..} = do
-  stats <- Storage.predicateStats odbHandle
-  let (newSchemaInfo, names) = thinSchemaInfo odbSchema stats
-  storeSchema odbHandle newSchemaInfo
-  logInfo $ "thinned schema for " <> showRepo repo <> " contains " <>
-    intercalate ", " (map Text.unpack names)
 
 -- | Back up databases forever.
 backuper :: Env -> IO ()

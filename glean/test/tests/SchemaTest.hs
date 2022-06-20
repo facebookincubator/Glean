@@ -2094,6 +2094,67 @@ thinSchemaTest = TestCase $
 
        void $ deleteDatabase env repo0
 
+stackedSchemaTest :: Test
+stackedSchemaTest = TestCase $
+  withSystemTempDirectory "glean-dbtest" $ \root -> do
+    let
+      schema_v0_file = root <> "schema0"
+      schema_v0 =
+        [s|
+          schema x.1 {
+            predicate P : string
+          }
+
+          schema y.1 {
+            predicate Q : string
+          }
+
+          schema all.1 : x.1, y.1 {}
+        |]
+    writeFile schema_v0_file schema_v0
+
+    -- Test a stacked DB:
+    --    base: 1 fact of x.P
+    --    stacked: 1 fact of y.Q
+    -- make sure that we can query x.P on the stacked DB.
+    --
+    -- This tickled a bug in the schema handling at one point, where
+    -- we were over-eagerly removing schemas from the base DB and then
+    -- assigning the wrong Pid to the predicates in the stacked DB.
+
+    withEmptyTestDB [setRoot root, setSchemaPath schema_v0_file]
+      $ \env repo -> do
+        void $ syncWriteJsonBatch env repo
+          [ mkBatch (PredicateRef "x.P" 1)
+              [ "{ \"key\" : \"a\" }" ]
+          ]
+          Nothing
+        completeTestDB env repo
+
+        let stacked = Repo "stacked" "0"
+        kickOffTestDB env stacked $ \x -> x
+          { Thrift.kickOff_dependencies =
+             Just $ Thrift.Dependencies_stacked repo }
+        void $ syncWriteJsonBatch env stacked
+          [ mkBatch (PredicateRef "y.Q" 1)
+              [ "{ \"key\" : \"b\" }" ]
+          ]
+          Nothing
+        completeTestDB env stacked
+
+        r <- try $ angleQuery env stacked "x.P _"
+        print (r :: Either BadQuery UserQueryResults)
+        assertEqual "stacked 1" 1 $ case r of
+          Right UserQueryResults{..} -> length userQueryResults_facts
+          _ -> error "bad query"
+
+        r <- try $ angleQuery env stacked "y.Q _"
+        print (r :: Either BadQuery UserQueryResults)
+        assertEqual "stacked 2" 1 $ case r of
+          Right UserQueryResults{..} -> length userQueryResults_facts
+          _ -> error "bad query"
+
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList $
   [ TestLabel "mergeSchemaTest" mergeSchemaTest
@@ -2111,4 +2172,5 @@ main = withUnitTest $ testRunner $ TestList $
   , TestLabel "schemaUnversioned" schemaUnversioned
   , TestLabel "schemaEvolves"  schemaEvolves
   , TestLabel "schemaEvolvesTransformations" schemaEvolvesTransformations
+  , TestLabel "stackedSchemaTest" stackedSchemaTest
   ] ++ schemaNegation
