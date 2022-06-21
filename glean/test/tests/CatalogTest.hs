@@ -192,7 +192,8 @@ stackedDbsTest = TestCase $ withMemCatalog $ \_ cat -> do
     metaA = meta
     metaB = meta{metaDependencies=Just $ Dependencies_stacked repoA}
     metaC = meta{metaDependencies=Just $ Dependencies_stacked repoB}
-    meta = def{metaCompleteness=Complete $ DatabaseComplete $ PosixEpochTime 0}
+    meta = def
+      {metaCompleteness=Complete $ DatabaseComplete (PosixEpochTime 0) Nothing}
 
     status cat repo = do
       result <- atomically $ Catalog.getLocalDatabase cat repo

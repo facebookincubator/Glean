@@ -69,6 +69,8 @@ union DatabaseIncomplete {
 
 struct DatabaseComplete {
   1: glean.PosixEpochTime time;
+  // Disk space used by the db in bytes
+  2: optional i64 bytes;
 }
 
 struct DatabaseFinalizing {}

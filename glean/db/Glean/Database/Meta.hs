@@ -98,7 +98,7 @@ metaToThriftDatabase status expire repo Meta{..} = Database
   , database_expire_time = utcTimeToPosixEpochTime <$> expire
   , database_properties = metaProperties
   , database_completed = case metaCompleteness of
-      Complete (DatabaseComplete time) -> Just time
+      Complete DatabaseComplete{databaseComplete_time=t} -> Just t
       _ -> Nothing
   , database_repo_hash_time = metaRepoHashTime
   , database_dependencies = metaDependencies

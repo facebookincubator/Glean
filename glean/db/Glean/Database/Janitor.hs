@@ -43,6 +43,7 @@ import Glean.Database.Repo
 import Glean.Database.Restore
 import Glean.Database.Open
 import Glean.Database.Types
+import Glean.Internal.Types
 import Glean.Logger
 import Glean.Repo.Text
 import qualified Glean.ServerConfig.Types as ServerConfig
@@ -51,7 +52,8 @@ import qualified Glean.Types as Thrift
 import Glean.Util.Observed as Observed
 import Glean.Util.ShardManager
     ( ShardManager(getAssignedShards, dbToShard),
-      SomeShardManager(SomeShardManager), BaseOfStack (BaseOfStack) )
+      SomeShardManager(SomeShardManager), BaseOfStack (BaseOfStack),
+      countersForShardSizes )
 import Glean.Util.Time
 
 {- |
@@ -100,6 +102,7 @@ runDatabaseJanitor env@Env{envShardManager = SomeShardManager sm} = do
   let done = atomically $ writeTVar (envDatabaseJanitor env) (Just t)
   flip finally done $ do
   myShards <- Set.fromList <$> wait assignedShardsAsync
+  logInfo $ "Assigned shards: " <> show myShards
   let
     allDBs :: [Item]
     allDBs =
@@ -132,13 +135,13 @@ runDatabaseJanitor env@Env{envShardManager = SomeShardManager sm} = do
       ]
 
     keepInThisNode =
-      mapMaybe (\(item, shard) -> item <$ shard) keepAnnotatedWithShard
+      mapMaybe (\(item, shard) -> (item,) <$> shard) keepAnnotatedWithShard
 
     delete =
       [ repo | Item repo Local _ _ <- allDBs
-      , repo `notElem` map itemRepo keepInThisNode ]
+      , repo `notElem` map (itemRepo . fst) keepInThisNode ]
 
-    fetch = filter (\Item{..} -> itemLocality == Cloud) keepInThisNode
+    fetch = filter (\(Item{..},_) -> itemLocality == Cloud) keepInThisNode
 
     itemToShard item = dbToShard sm
       (BaseOfStack $ last $ itemRepo item : repoStack item)
@@ -163,7 +166,7 @@ runDatabaseJanitor env@Env{envShardManager = SomeShardManager sm} = do
         repoRetention config_retention $ Thrift.repo_name repo
     expireDatabase (fromIntegral <$> retention_expire_delay) env repo
 
-  restores <- fmap catMaybes $ forM fetch $ \Item{..} ->
+  restores <- fmap catMaybes $ forM fetch $ \(Item{..}, _) ->
     ifRestoreRepo env Nothing itemRepo $ do
       logInfo $ "Restoring: " ++ showRepo itemRepo ++
         " ("  ++ showNominalDiffTime (dbAge t itemMeta) ++ " old)"
@@ -205,8 +208,19 @@ runDatabaseJanitor env@Env{envShardManager = SomeShardManager sm} = do
             | Item{itemLocality=Local, ..} <- dbs ]
     unless (null dbAges) $ void $
       setCounter (prefix <> ".age") $ minimum dbAges
-  -- TODO publish shard size counters
 
+  -- Report shard stats for dynamic sharding assignment
+  mapM_ (\(n,v) -> setCounter (Text.encodeUtf8 n) v) $
+    countersForShardSizes sm $
+    Map.fromListWith (+) $
+    [ (shard, bytes)
+    | (item, shard) <- keepInThisNode
+    , Complete DatabaseComplete{databaseComplete_bytes = Just bytes} <-
+        [metaCompleteness (itemMeta item)]
+    ] ++
+    [ (shard, 0)
+    | shard <- toList myShards
+    , shard `notElem` Set.fromList (map snd keepInThisNode)]
 
 -- The target set of DBs we want usable on the disk. This is a set of
 -- DBs that satisfies the policy.

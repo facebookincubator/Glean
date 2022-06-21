@@ -17,6 +17,7 @@ import Control.Concurrent.Async
 import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
+import qualified Data.ByteString.Lazy as LBS
 import qualified Data.HashMap.Strict as HashMap
 import Data.HashSet (HashSet)
 import qualified Data.HashSet as HashSet
@@ -200,12 +201,27 @@ doBackup env@Env{..} repo prefix site =
                 Just 0 -> Nothing
                 ttl -> fromIntegral <$> ttl
         meta <- atomically $ Catalog.readMeta envCatalog repo
-        Backend.backup site repo (metaToProps meta) ttl bytes
+        let metaWithBytes = meta {
+              metaCompleteness = case metaCompleteness meta of
+                Complete DatabaseComplete{..} ->
+                  Complete DatabaseComplete
+                    {databaseComplete_bytes = Just (LBS.length bytes)
+                    ,..}
+                _ -> metaCompleteness meta
+        }
+        Backend.backup site repo (metaToProps metaWithBytes) ttl bytes
     Logger.logDBStatistics env repo stats dataSize
     say logInfo "finished"
     atomically $ do
       void $ Catalog.modifyMeta envCatalog repo $ \meta -> return meta
-        { metaBackup = Just $ toRepoLocator prefix site repo }
+        { metaBackup = Just $ toRepoLocator prefix site repo
+        , metaCompleteness = case metaCompleteness meta of
+          Complete DatabaseComplete{..} ->
+            Complete DatabaseComplete
+              {databaseComplete_bytes = Just (fromIntegral dataSize)
+              ,..}
+          other -> other
+        }
       notify envListener $ BackupFinished repo
     return True
   `catch` \exc -> do
@@ -288,8 +304,10 @@ doFinalize env@Env{..} repo =
     time <- getCurrentTime
     atomically $ do
       void $ Catalog.modifyMeta envCatalog repo $ \meta -> return meta
-        { metaCompleteness = Complete $ DatabaseComplete $
-            utcTimeToPosixEpochTime time }
+        { metaCompleteness = Complete $ DatabaseComplete
+          (utcTimeToPosixEpochTime time)
+          Nothing -- the size gets updated after a backup
+        }
       notify envListener $ FinalizeFinished repo
     say logInfo "finished"
     return True

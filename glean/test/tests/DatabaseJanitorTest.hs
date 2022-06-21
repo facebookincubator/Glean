@@ -70,7 +70,7 @@ withTest setup action =
     action evb cfgAPI dbdir backupdir
 
 complete, broken :: UTCTime -> Completeness
-complete = Complete . DatabaseComplete . utcTimeToPosixEpochTime
+complete = Complete . (`DatabaseComplete` Nothing) . utcTimeToPosixEpochTime
 broken _ = Broken (DatabaseBroken "index" "TESTING")
 
 setupBasicDBs :: FilePath -> IO ()
@@ -424,8 +424,9 @@ closeIdleDBsTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
 -- and a dynamic shard assignment
 shardByRepo :: IORef [Text.Text] -> ShardManager Text.Text
 shardByRepo refShardAssignment = ShardManager
-    (readIORef refShardAssignment)
-    (\(BaseOfStack Repo{..}) -> repo_hash)
+  (readIORef refShardAssignment)
+  (\(BaseOfStack Repo{..}) -> repo_hash)
+  (pure [])
 
 shardingTest :: Test
 shardingTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do

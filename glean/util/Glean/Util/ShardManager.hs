@@ -14,6 +14,9 @@ module Glean.Util.ShardManager
   ) where
 
 import qualified Glean.Types as Glean
+import Data.Int (Int64)
+import Data.Map (Map)
+import Data.Text (Text)
 
 -- | The base db of a stack (or a single db)
 newtype BaseOfStack = BaseOfStack Glean.Repo
@@ -25,15 +28,17 @@ data ShardManager shard = ShardManager
     --   Takes as input the base of the stack.
     --   For non stacked dbs, this is just the db itself.
   , dbToShard :: BaseOfStack -> shard   -- See note [DB to Shard]
+  , countersForShardSizes :: Map shard Int64 -> [(Text, Int)]
   }
 
 -- | A sharding strategy with a single shard and trivial shard assignment
 noSharding :: ShardManager ()
-noSharding = ShardManager (pure [()]) (const ())
+noSharding = ShardManager (pure [()]) (const ()) (const mempty)
 
 -- | An existential wrapper around a 'ShardManager'
 data SomeShardManager where
-  SomeShardManager :: Ord shard => ShardManager shard -> SomeShardManager
+  SomeShardManager
+    :: (Ord shard, Show shard) => ShardManager shard -> SomeShardManager
 
 {- Note: [DB to Shard]
 
