@@ -29,6 +29,7 @@ module Glean.Backend.Remote
     -- * Shards
   , DbShard
   , dbShard
+  , dbShardWord
 
     -- * More operations
   , SchemaPredicates
@@ -397,12 +398,15 @@ withoutShard
 withoutShard (ThriftBackend _ evb serv _ _) req = runThrift evb serv req
 
 dbShard :: Thrift.Repo -> DbShard
-dbShard Thrift.Repo{..} =
+dbShard = Text.pack . show . dbShardWord
+
+dbShardWord :: Thrift.Repo -> Word64
+dbShardWord Thrift.Repo{..} =
   unsafeDupablePerformIO $ B.unsafeUseAsCStringLen repo $ \(ptr,len) -> do
       -- Use GHC's md5 binding. If this ever changes then the test in
       -- hs/tests/TestShard.hs will detect it.
     Fingerprint w _ <- fingerprintData (castPtr ptr) len
-    return $ Text.pack (show (w `shiftR` 1))
+    return (w `shiftR` 1)
        -- SR doesn't like shards >= 0x8000000000000000
   where
   repo = Text.encodeUtf8 repo_name <> "/" <> Text.encodeUtf8 repo_hash

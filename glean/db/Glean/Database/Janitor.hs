@@ -51,7 +51,7 @@ import qualified Glean.Types as Thrift
 import Glean.Util.Observed as Observed
 import Glean.Util.ShardManager
     ( ShardManager(getAssignedShards, dbToShard),
-      SomeShardManager(SomeShardManager) )
+      SomeShardManager(SomeShardManager), BaseOfStack (BaseOfStack) )
 import Glean.Util.Time
 
 {- |
@@ -109,6 +109,7 @@ runDatabaseJanitor env@Env{envShardManager = SomeShardManager sm} = do
         , repo `notElem` map itemRepo localAndRestoring  ]
 
     byRepo = byRepoName allDBs
+    byRepoMap = Map.fromList $ [(itemRepo item, item) | item <- allDBs]
 
     keepRoots = concatMap (dbKeepRoots config t) byRepo
 
@@ -139,7 +140,19 @@ runDatabaseJanitor env@Env{envShardManager = SomeShardManager sm} = do
 
     fetch = filter (\Item{..} -> itemLocality == Cloud) keepInThisNode
 
-    itemToShard Item{..} = dbToShard sm itemRepo (metaDependencies itemMeta)
+    itemToShard item = dbToShard sm
+      (BaseOfStack $ last $ itemRepo item : repoStack item)
+
+    repoStack Item{..} = case metaDependencies itemMeta of
+      Just (Dependencies_stacked base) ->
+        base :
+        repoStack (errorIfDepsNotPresent $ Map.lookup base byRepoMap)
+      Just (Dependencies_pruned Pruned{..}) ->
+        pruned_base :
+        repoStack (errorIfDepsNotPresent $ Map.lookup pruned_base byRepoMap)
+      Nothing -> []
+
+    errorIfDepsNotPresent = fromMaybe (error "dependencies must be retained")
 
     missingDependencies = any isNothing $ concatMap dependencies keep
   when missingDependencies $ logInfo "some dbs are missing dependencies"

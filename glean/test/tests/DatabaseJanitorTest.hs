@@ -423,8 +423,9 @@ closeIdleDBsTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
 -- | A shard manager that uses repo hashes as shards,
 -- and a dynamic shard assignment
 shardByRepo :: IORef [Text.Text] -> ShardManager Text.Text
-shardByRepo refShardAssignment =
-  ShardManager (readIORef refShardAssignment) (\repo _ -> repo_hash repo)
+shardByRepo refShardAssignment = ShardManager
+    (readIORef refShardAssignment)
+    (\(BaseOfStack Repo{..}) -> repo_hash)
 
 shardingTest :: Test
 shardingTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
