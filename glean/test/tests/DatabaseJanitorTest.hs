@@ -430,7 +430,7 @@ shardByRepo refShardAssignment = ShardManager
 
 shardingTest :: Test
 shardingTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
-  myShards <- newIORef ["0001", "0003"] -- initial shard assignment
+  myShards <- newIORef ["0001"] -- initial shard assignment
   let cfg = (dbConfig dbdir (serverConfig backupdir))
         {cfgShardManager = \_ k -> k $ SomeShardManager $ shardByRepo myShards}
   withDatabases evb cfg cfgAPI $ \env -> do
@@ -438,17 +438,31 @@ shardingTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
     waitDel env
     dbs <- listDBs env
     assertEqual "initial shard assignment"
-      ["0001", "0003"]
+      ["0001"]
       (sort $ map (repo_hash . database_repo) dbs)
 
     -- update the shard assignment and verify
-    writeIORef myShards ["0001"]
+    writeIORef myShards []
     runDatabaseJanitor env
     waitDel env
     dbs <- listDBs env
     assertEqual "shard assignment: removed 0003"
-      ["0001"]
+      []
       (sort $ map (repo_hash . database_repo) dbs)
+
+shardingStacksTest :: Test
+shardingStacksTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
+  myShards <- newIORef ["0006"] -- initial shard assignment
+  let cfg = (dbConfig dbdir (serverConfig backupdir))
+        {cfgShardManager = \_ k -> k $ SomeShardManager $ shardByRepo myShards}
+  withDatabases evb cfg cfgAPI $ \env -> do
+    runDatabaseJanitor env
+    waitDel env
+    dbs <- listDBs env
+    assertEqual "all dbs in the stack belong to the shard"
+      ["0003", "0004", "0005", "0006"]
+      (sort $ map (repo_hash . database_repo) dbs)
+
 
 elsewhereTest :: Test
 elsewhereTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
@@ -487,5 +501,6 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "openNewestDB" openNewestTest
   , TestLabel "closeIdleDBs" closeIdleDBsTest
   , TestLabel "sharding" shardingTest
+  , TestLabel "shardingStacks" shardingStacksTest
   , TestLabel "availableElsewhere" elsewhereTest
   ]
