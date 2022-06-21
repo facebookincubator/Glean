@@ -48,6 +48,7 @@ import Glean.Schema.Resolve
 import Glean.Schema.Types
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types
+import Glean.Util.Observed
 import Glean.Util.ShardManager
 import Glean.Util.Some
 import Glean.Util.Trace (Listener)
@@ -79,7 +80,9 @@ data Config = Config
   , cfgListener :: Listener
       -- ^ A 'Listener' which might get notified about various events related
       -- to databases. This is for testing support only.
-  , cfgShardManager :: SomeShardManager
+  , cfgShardManager
+    :: forall a
+    . Observed ServerConfig.Config -> (SomeShardManager -> IO a) -> IO a
   }
 
 instance Show Config where
@@ -103,7 +106,7 @@ instance Default Config where
     , cfgMockWrites = False
     , cfgTailerOpts = def
     , cfgListener = mempty
-    , cfgShardManager = SomeShardManager noSharding
+    , cfgShardManager = \_ k -> k $ SomeShardManager noSharding
     }
 
 -- | The schema that we've read from the filesystem or the configs. We
@@ -251,7 +254,7 @@ options = do
   return Config
     { cfgCatalogStore = cfgCatalogStore def
     , cfgListener = mempty
-    , cfgShardManager = SomeShardManager noSharding
+    , cfgShardManager = \_ k -> k $ SomeShardManager noSharding
     , .. }
   where
     recipesConfigThriftSource = option (eitherReader ThriftSource.parse)

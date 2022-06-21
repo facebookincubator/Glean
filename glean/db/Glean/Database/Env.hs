@@ -99,7 +99,8 @@ initEnv evb cfg logger envSchemaSource envRecipeConfig envServerConfig =
       io tmp
     withRoot (Just dir) io = io dir
   in
-  withRoot (cfgRoot cfg) $ \dbRoot -> do
+  withRoot (cfgRoot cfg) $ \dbRoot ->
+  cfgShardManager cfg envServerConfig $ \shardManager -> do
     envCatalog <- do
       Some store <- cfgCatalogStore cfg dbRoot
       Catalog.open store
@@ -144,7 +145,7 @@ initEnv evb cfg logger envSchemaSource envRecipeConfig envServerConfig =
       , envGetCreationTime = getCurrentTime
       , envSchemaVersion = cfgSchemaVersion cfg
       , envSchemaId = cfgSchemaId cfg
-      , envShardManager = cfgShardManager cfg
+      , envShardManager = shardManager
       , envBackupBackends = HashMap.fromList
           [
 #if FACEBOOK

@@ -430,7 +430,7 @@ shardingTest :: Test
 shardingTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   myShards <- newIORef ["0001", "0003"] -- initial shard assignment
   let cfg = (dbConfig dbdir (serverConfig backupdir))
-        { cfgShardManager = SomeShardManager $ shardByRepo myShards}
+        {cfgShardManager = \_ k -> k $ SomeShardManager $ shardByRepo myShards}
   withDatabases evb cfg cfgAPI $ \env -> do
     runDatabaseJanitor env
     waitDel env
@@ -459,7 +459,7 @@ elsewhereTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
             , retention_retain_at_least = Just 10 }
           }
         })
-        { cfgShardManager = SomeShardManager $ shardByRepo myShards}
+        {cfgShardManager = \_ k -> k $ SomeShardManager $ shardByRepo myShards}
   withDatabases evb cfg cfgAPI $ \env -> do
 
     dbs <- listDBs env
