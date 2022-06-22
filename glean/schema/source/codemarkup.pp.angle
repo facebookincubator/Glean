@@ -29,6 +29,7 @@ predicate PPEntityLocation:
       { Name, File, { span = {0,0} }, nothing } = Location;
     );
 
+# (deprecated, use PpResolveTraceLocation)
 predicate PpFileEntityTraceLocations:
   {
     file: src.File,
@@ -49,6 +50,8 @@ predicate PpResolveLocation:
     Trace = cxx1.Trace { file = File };
     PpResolveTraceLocation { Trace, { Str, File, Range, Span }, Entity };
 
+# Keyed by trace, find all locations and entities tied to that (file) trace
+# just #defines definitions at the moment
 predicate PpResolveTraceLocation:
   {
     trace : cxx1.Trace,

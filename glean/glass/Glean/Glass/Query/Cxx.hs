@@ -46,7 +46,7 @@ import Glean.Glass.Utils
 -- consistently index.
 --
 -- Definitions in file:
--- * codemarkup.CxxFileEntityTraceLocations
+-- * codemarkup.{cxx,pp}.{Cxx,Pp}ResolveTraceLocations
 --
 -- Computing xrefs:
 -- * fixed xrefs
@@ -110,7 +110,7 @@ fileEntityLocations
   -> Glean.IdOf Cxx.Trace
   -> Glean.RepoHaxl u w [(Code.Location, Code.Entity)]
 fileEntityLocations mlimit traceId = searchRecursiveWithLimit mlimit $
-  cxxFileEntityTraceLocations traceId
+  cxxPpResolveTraceLocations traceId
 
 -- | Find xrefs from this file, and their associated entities,
 -- using a specific FileXRefMap annd cxx1.Trace
@@ -340,10 +340,10 @@ cxxFileXRefs fileId =
 --
 -- Find file entities for a specific trace associated with a file
 --
-cxxFileEntityTraceLocations
+cxxPpResolveTraceLocations
   :: Glean.IdOf Cxx.Trace
   -> Angle (Code.Location, Code.Entity)
-cxxFileEntityTraceLocations traceId =
+cxxPpResolveTraceLocations traceId =
   vars $ \(location :: Angle Code.Location)
           (entity :: Angle Code.Entity)
           (cxx_entity :: Angle Cxx.Entity)
@@ -351,7 +351,7 @@ cxxFileEntityTraceLocations traceId =
     tuple (location,entity) `where_` [
       wild .=
         [
-          wild .= predicate @Code.CxxFileEntityTraceLocations (
+          wild .= predicate @Code.CxxResolveTraceLocation (
             rec $
               field @"trace" (asPredicate (factId traceId)) $
               field @"location" location $
@@ -359,7 +359,7 @@ cxxFileEntityTraceLocations traceId =
             end),
           entity .= sig (alt @"cxx" cxx_entity)
         ] `or_` [
-          wild .= predicate @Code.PpFileEntityTraceLocations (
+          wild .= predicate @Code.PpResolveTraceLocation (
             rec $
               field @"trace" (asPredicate (factId traceId)) $
               field @"location" location $

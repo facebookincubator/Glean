@@ -19,6 +19,7 @@ predicate CxxResolveLocation:
     CxxResolveTraceLocation { Trace, { Str, File, Range, Span }, Entity };
 
 # Like FileEntityLocations but indexed by a specific Trace (for Cxx)
+# (deprecated, use CxxResolveTraceLocation)
 predicate CxxFileEntityTraceLocations:
   {
     file: src.File,
