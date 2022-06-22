@@ -479,7 +479,7 @@ cxxFileEntityXMapVariableXRefDeclToDefs xrefId =
         end)
       ]
 
--- C preprocessor #define uses associated with a file and a trace
+-- C preprocessor #define uses associated with a cxx1.Trace
 cxxFileEntityTracePPXRefLocations
   :: Glean.IdOf Cxx.Trace
   -> Angle (Code.XRefLocation, Code.Entity)

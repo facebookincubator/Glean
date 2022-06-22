@@ -67,6 +67,7 @@ predicate PpResolveTraceLocation:
     { define = Define } = Entity;
 
 # C preprocessor uses of #defines as xrefs
+# (deprecated)
 predicate PpFileEntityXRefLocations:
   {
     file: src.File,
@@ -79,6 +80,7 @@ predicate PpFileEntityXRefLocations:
 
 # C preprocessor uses of #defines and #includes.
 # N.B. uses are keyed by traces, not xmaps, for PP
+# (deprecated)
 predicate PpFileEntityTraceXRefLocations:
   {
     file: src.File,
@@ -87,6 +89,20 @@ predicate PpFileEntityTraceXRefLocations:
     entity: code.pp.Entity,
   }
   { File, Trace, XRef, Entity } where
+    cxx1.FilePPTraceXRefs { File, Trace, SrcRange, Entity };
+    PPEntityLocation { Entity, Location };
+    { Location, { range = SrcRange } } = XRef;
+
+# C preprocessor uses of #defines and #includes.
+# N.B. uses are keyed by traces, not xmaps, for PP
+predicate PpEntityTraceXRefLocations:
+  {
+    trace: cxx1.Trace,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.pp.Entity,
+  }
+  { Trace, XRef, Entity } where
+    { file = File } = Trace;
     cxx1.FilePPTraceXRefs { File, Trace, SrcRange, Entity };
     PPEntityLocation { Entity, Location };
     { Location, { range = SrcRange } } = XRef;
