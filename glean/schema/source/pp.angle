@@ -3,7 +3,8 @@
 schema pp1.1 {
 import src.1
 
-# Preprocessor #include
+# Preprocessor #include occurences. Each occurence of a #include
+# Note that there may be many such facts for a given src.File
 predicate Include :
   {
     file : src.File,       # file being included
