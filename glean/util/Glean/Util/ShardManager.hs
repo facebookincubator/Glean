@@ -23,7 +23,10 @@ newtype BaseOfStack = BaseOfStack Glean.Repo
 
 -- | An abstraction for sharding Glean DBs across multiple servers
 data ShardManager shard = ShardManager
-  { getAssignedShards :: IO [shard]
+  {
+    -- | Returns the list of shards for the current server.
+    --   Nothing means fall back to no sharding.
+    getAssignedShards :: IO (Maybe [shard])
     -- | Mapping from DB stacks to shard identifiers.
     --   Takes as input the base of the stack.
     --   For non stacked dbs, this is just the db itself.
@@ -31,9 +34,15 @@ data ShardManager shard = ShardManager
   , countersForShardSizes :: Map shard Int64 -> [(Text, Int)]
   }
 
+data NoSharding = NoSharding
+  deriving (Eq, Ord, Show)
+
 -- | A sharding strategy with a single shard and trivial shard assignment
-noSharding :: ShardManager ()
-noSharding = ShardManager (pure [()]) (const ()) (const mempty)
+noSharding :: ShardManager NoSharding
+noSharding = ShardManager
+  (pure (Just [NoSharding]))
+  (const NoSharding)
+  (const mempty)
 
 -- | An existential wrapper around a 'ShardManager'
 data SomeShardManager where

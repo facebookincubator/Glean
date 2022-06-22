@@ -10,7 +10,6 @@ module Glean.Database.Janitor
   ( runDatabaseJanitor
   ) where
 
-import Control.Concurrent.Async (withAsync, wait)
 import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad.Extra
@@ -53,7 +52,7 @@ import Glean.Util.Observed as Observed
 import Glean.Util.ShardManager
     ( ShardManager(getAssignedShards, dbToShard),
       SomeShardManager(SomeShardManager), BaseOfStack (BaseOfStack),
-      countersForShardSizes )
+      countersForShardSizes, noSharding )
 import Glean.Util.Time
 
 {- |
@@ -64,14 +63,29 @@ The database janitor has the following functions:
   - delete dbs we don't need any longer.
   - publish counters of local db states.
 -}
+
 runDatabaseJanitor :: Env -> IO ()
 runDatabaseJanitor env@Env{envShardManager = SomeShardManager sm} = do
+  maybeShards <- getAssignedShards sm
+  case maybeShards of
+    Just shards -> runWithShards env (Set.fromList shards) sm
+    Nothing -> do
+      Just myShards <- getAssignedShards noSharding
+      runWithShards env (Set.fromList myShards) noSharding
+
+runWithShards
+  :: (Show shard, Ord shard)
+  => Env
+  -> Set.Set shard
+  -> ShardManager shard
+  -> IO ()
+runWithShards env myShards sm = do
   loggingAction (runLogCmd "janitor" env) (const mempty) $ do
   logInfo "running database janitor"
+  logInfo $ "Assigned shards: " <> show myShards
 
   config@ServerConfig.Config{..} <- Observed.get (envServerConfig env)
 
-  withAsync (getAssignedShards sm) $ \assignedShardsAsync -> do
   let
     !ServerConfig.DatabaseRetentionPolicy{} = config_retention
     !ServerConfig.DatabaseRestorePolicy{} = config_restore
@@ -101,8 +115,7 @@ runDatabaseJanitor env@Env{envShardManager = SomeShardManager sm} = do
   -- used by the server to know when to advertise the server as alive.
   let done = atomically $ writeTVar (envDatabaseJanitor env) (Just t)
   flip finally done $ do
-  myShards <- Set.fromList <$> wait assignedShardsAsync
-  logInfo $ "Assigned shards: " <> show myShards
+
   let
     allDBs :: [Item]
     allDBs =

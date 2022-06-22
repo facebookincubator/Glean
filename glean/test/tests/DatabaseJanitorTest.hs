@@ -422,9 +422,9 @@ closeIdleDBsTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
 
 -- | A shard manager that uses repo hashes as shards,
 -- and a dynamic shard assignment
-shardByRepo :: IORef [Text.Text] -> ShardManager Text.Text
+shardByRepo :: IO (Maybe [Text.Text]) -> ShardManager Text.Text
 shardByRepo refShardAssignment = ShardManager
-  (readIORef refShardAssignment)
+  refShardAssignment
   (\(BaseOfStack Repo{..}) -> repo_hash)
   (pure [])
 
@@ -432,7 +432,8 @@ shardingTest :: Test
 shardingTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   myShards <- newIORef ["0001"] -- initial shard assignment
   let cfg = (dbConfig dbdir (serverConfig backupdir))
-        {cfgShardManager = \_ k -> k $ SomeShardManager $ shardByRepo myShards}
+        {cfgShardManager = \_ k -> k $ SomeShardManager $
+          shardByRepo (Just <$> readIORef myShards)}
   withDatabases evb cfg cfgAPI $ \env -> do
     runDatabaseJanitor env
     waitDel env
@@ -454,7 +455,8 @@ shardingStacksTest :: Test
 shardingStacksTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   myShards <- newIORef ["0006"] -- initial shard assignment
   let cfg = (dbConfig dbdir (serverConfig backupdir))
-        {cfgShardManager = \_ k -> k $ SomeShardManager $ shardByRepo myShards}
+        {cfgShardManager = \_ k -> k $ SomeShardManager $
+          shardByRepo (Just <$> readIORef myShards)}
   withDatabases evb cfg cfgAPI $ \env -> do
     runDatabaseJanitor env
     waitDel env
@@ -463,10 +465,23 @@ shardingStacksTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
       ["0003", "0004", "0005", "0006"]
       (sort $ map (repo_hash . database_repo) dbs)
 
+shardingFallbackTest :: Test
+shardingFallbackTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
+  let cfg = (dbConfig dbdir (serverConfig backupdir))
+        {cfgShardManager = \_ k ->
+          k $ SomeShardManager $ shardByRepo (pure Nothing)}
+  withDatabases evb cfg cfgAPI $ \env -> do
+    runDatabaseJanitor env
+    waitDel env
+    dbs <- listDBs env
+    assertEqual "falls back to no sharding"
+      ["0001", "0002", "0003", "0004", "0005", "0006"]
+      (sort $ map (repo_hash . database_repo) dbs)
+
 
 elsewhereTest :: Test
 elsewhereTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
-  myShards <- newIORef ["0001", "0003"] -- initial shard assignment
+  let myShards = pure $ Just ["0001", "0003"]
   let cfg = (dbConfig dbdir (serverConfig backupdir)
         { config_retention = def
           { databaseRetentionPolicy_default_retention = def
@@ -502,5 +517,6 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "closeIdleDBs" closeIdleDBsTest
   , TestLabel "sharding" shardingTest
   , TestLabel "shardingStacks" shardingStacksTest
+  , TestLabel "shardingFallback" shardingFallbackTest
   , TestLabel "availableElsewhere" elsewhereTest
   ]
