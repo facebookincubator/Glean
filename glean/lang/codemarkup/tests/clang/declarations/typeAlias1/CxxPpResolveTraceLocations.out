@@ -1,0 +1,243 @@
+[
+  "@generated",
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "Foo",
+        "file": { "key": "test.mm" },
+        "location": {
+          "range": {
+            "file": { "key": "test.mm" },
+            "lineBegin": 9,
+            "columnBegin": 1,
+            "lineEnd": 10,
+            "columnEnd": 4
+          }
+        },
+        "span": { "start": 231, "length": 3 }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "objcContainer": {
+              "key": {
+                "id": { "protocol": { "key": "Foo" } },
+                "source": {
+                  "file": { "key": "test.mm" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 10,
+                  "columnEnd": 4
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "T",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 9,
+            "columnBegin": 1,
+            "lineEnd": 9,
+            "columnEnd": 13
+          }
+        },
+        "span": { "start": 233, "length": 1 }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "typeAlias": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "T" }, "scope": { "global_": { } } }
+                },
+                "type": { "key": "int" },
+                "kind": 0,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 9,
+                  "columnEnd": 13
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "U",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 10,
+            "columnBegin": 1,
+            "lineEnd": 10,
+            "columnEnd": 11
+          }
+        },
+        "span": { "start": 242, "length": 1 }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "typeAlias": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "U" }, "scope": { "global_": { } } }
+                },
+                "type": { "key": "T" },
+                "kind": 1,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 10,
+                  "columnBegin": 1,
+                  "lineEnd": 10,
+                  "columnEnd": 11
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "U",
+        "file": { "key": "test.mm" },
+        "location": {
+          "range": {
+            "file": { "key": "test.mm" },
+            "lineBegin": 12,
+            "columnBegin": 1,
+            "lineEnd": 12,
+            "columnEnd": 17
+          }
+        },
+        "span": { "start": 248, "length": 1 }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "typeAlias": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "U" }, "scope": { "global_": { } } }
+                },
+                "type": { "key": "id<Foo>" },
+                "kind": 1,
+                "source": {
+                  "file": { "key": "test.mm" },
+                  "lineBegin": 12,
+                  "columnBegin": 1,
+                  "lineEnd": 12,
+                  "columnEnd": 17
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "x",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 12,
+            "columnBegin": 1,
+            "lineEnd": 12,
+            "columnEnd": 3
+          }
+        },
+        "span": { "start": 252, "length": 1 }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "x" }, "scope": { "global_": { } } }
+                },
+                "type": { "key": "T" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 0, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 12,
+                  "columnBegin": 1,
+                  "lineEnd": 12,
+                  "columnEnd": 3
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "y",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 13,
+            "columnBegin": 1,
+            "lineEnd": 13,
+            "columnEnd": 3
+          }
+        },
+        "span": { "start": 257, "length": 1 }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "y" }, "scope": { "global_": { } } }
+                },
+                "type": { "key": "U" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 0, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 13,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 3
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

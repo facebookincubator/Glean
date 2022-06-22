@@ -1,0 +1,6 @@
+query: |
+  { Loc, Ent } where
+    ( codemarkup.cxx.CxxResolveTraceLocation { _, Loc, CxxEnt }; { cxx = CxxEnt } = Ent : code.Entity ) |
+    ( codemarkup.pp.PpResolveTraceLocation { _, Loc, PpEnt }; { pp = PpEnt } = Ent : code.Entity );
+perf: true
+transform: [gensort, []]
