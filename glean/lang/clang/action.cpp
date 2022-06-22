@@ -13,6 +13,7 @@
 #include "common/fbwhoami/FbWhoAmI.h"
 #else
 #include <folly/ExceptionWrapper.h>
+#define LOG_VIA_LOGGER_ASYNC(l)
 #endif
 
 namespace facebook {
@@ -50,8 +51,6 @@ ActionLogger::ActionLogger(const std::string& name,
     start = Clock::now();
   }
 }
-
-#define LOG_VIA_LOGGER_ASYNC(l)
 
 ActionLogger::~ActionLogger() {
   if (enabled) {
