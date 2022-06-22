@@ -6,6 +6,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+struct T {};
+void f() {};
+
 void g() {
   T x;
   f();

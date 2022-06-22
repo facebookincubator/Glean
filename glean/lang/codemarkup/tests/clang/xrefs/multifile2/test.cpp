@@ -7,6 +7,6 @@
  */
 
 #include "a.h"
-#include <b.h>
+#include "b.h"
 
 namespace {}
