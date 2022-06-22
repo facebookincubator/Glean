@@ -9,6 +9,7 @@
 module Derive.Lib
   ( dispatchDerive
   , allPredicates
+  , allManualPasses
   , DerivePass(..)
   , optionsPasses
   ) where
