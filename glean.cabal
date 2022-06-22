@@ -376,7 +376,6 @@ library util
         Glean.Database.Backup.Backend
         Glean.Impl.ThriftService
         Glean.Impl.ConfigProvider
-        Glean.Impl.ShardManager
         Glean.Impl.TestConfigProvider
         Glean.Tailer.Types
         Glean.Util.Bisect

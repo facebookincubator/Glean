@@ -11,12 +11,13 @@ module Glean.Util.ShardManager
   , SomeShardManager(..)
   , BaseOfStack(..)
   , noSharding
+  , shardByRepo
   ) where
 
-import qualified Glean.Types as Glean
 import Data.Int (Int64)
 import Data.Map (Map)
 import Data.Text (Text)
+import qualified Glean.Types as Glean
 
 -- | The base db of a stack (or a single db)
 newtype BaseOfStack = BaseOfStack Glean.Repo
@@ -63,3 +64,13 @@ data SomeShardManager where
   A simple way to enforce this invariant is to use the base of the stack for
   computing the shard id for all the dbs in the stack.
 -}
+
+-- | Shard by repo name using the provided dynamic shard assignment.
+--   If the shard assignment is 'Nothing', fall back to no sharding
+shardByRepo :: IO (Maybe [Text]) -> ShardManager Text
+shardByRepo getAssignedShards =
+  ShardManager {
+    getAssignedShards = getAssignedShards,
+    dbToShard = \(BaseOfStack db) -> Glean.repo_name db,
+    countersForShardSizes = const []
+  }

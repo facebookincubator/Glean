@@ -29,6 +29,7 @@ import qualified Data.ByteString.Char8 as B
 import qualified Data.ByteString.UTF8 as UTF8
 import Data.Default
 import Data.List
+import qualified Data.Set as Set
 import qualified Data.Text as Text
 import Options.Applicative
 import System.FilePath
@@ -49,6 +50,7 @@ import Glean.Schema.Types
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types
 import Glean.Util.Observed
+import qualified Glean.Util.Observed as Observed
 import Glean.Util.ShardManager
 import Glean.Util.Some
 import Glean.Util.Trace (Listener)
@@ -106,8 +108,27 @@ instance Default Config where
     , cfgMockWrites = False
     , cfgTailerOpts = def
     , cfgListener = mempty
-    , cfgShardManager = \_ k -> k $ SomeShardManager noSharding
+    , cfgShardManager = defaultShardManagerConfig
     }
+
+defaultShardManagerConfig
+  :: Observed ServerConfig.Config -> (SomeShardManager -> IO b) -> IO b
+defaultShardManagerConfig serverConfig callback = do
+  config <- Observed.get serverConfig
+  case ServerConfig.config_sharding config of
+    ServerConfig.ShardingPolicy_no_shards{} ->
+      callback $ SomeShardManager noSharding
+    ServerConfig.ShardingPolicy_static_assignment{} ->
+      callback $ SomeShardManager $ shardByRepo $ do
+        config <- Observed.get serverConfig
+        case ServerConfig.config_sharding config of
+          ServerConfig.ShardingPolicy_static_assignment assignment ->
+            return $ Just $ Set.toList $
+              ServerConfig.staticShardsPolicy_shards assignment
+          _ ->
+            return Nothing
+    other ->
+      error $ "Unsupported sharding policy: " <> show other
 
 -- | The schema that we've read from the filesystem or the configs. We
 -- need this in three forms:
@@ -254,7 +275,7 @@ options = do
   return Config
     { cfgCatalogStore = cfgCatalogStore def
     , cfgListener = mempty
-    , cfgShardManager = \_ k -> k $ SomeShardManager noSharding
+    , cfgShardManager = cfgShardManager def
     , .. }
   where
     recipesConfigThriftSource = option (eitherReader ThriftSource.parse)
