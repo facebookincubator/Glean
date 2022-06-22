@@ -1,0 +1,67 @@
+[
+  "@generated",
+  {
+    "key": {
+      "xmap": {
+        "key": {
+          "file": { "key": "test.m" },
+          "fixed": [
+            {
+              "target": {
+                "declaration": {
+                  "objcContainer": {
+                    "key": {
+                      "id": { "interface_": { "key": "I" } },
+                      "source": {
+                        "file": { "key": "test.m" },
+                        "lineBegin": 9,
+                        "columnBegin": 1,
+                        "lineEnd": 13,
+                        "columnEnd": 4
+                      }
+                    }
+                  }
+                }
+              },
+              "ranges": [
+                { "offset": 263, "length": 1 },
+                { "offset": 17, "length": 1 }
+              ]
+            },
+            {
+              "target": {
+                "declaration": {
+                  "objcMethod": {
+                    "key": {
+                      "selector": { "key": [ "foo" ] },
+                      "container": { "interface_": { "key": "I" } },
+                      "signature": {
+                        "key": {
+                          "returns": { "key": "int" },
+                          "parameters": [ ]
+                        }
+                      },
+                      "isInstance": false,
+                      "isOptional": false,
+                      "isAccessor": false,
+                      "source": {
+                        "file": { "key": "test.m" },
+                        "lineBegin": 11,
+                        "columnBegin": 1,
+                        "lineEnd": 11,
+                        "columnEnd": 11
+                      }
+                    }
+                  }
+                }
+              },
+              "ranges": [ { "offset": 282, "length": 3 } ]
+            }
+          ],
+          "variable": [ ]
+        }
+      },
+      "externals": [ ]
+    }
+  }
+]

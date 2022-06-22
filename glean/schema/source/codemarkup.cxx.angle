@@ -119,7 +119,7 @@ predicate CxxFileEntityFixedXRefLocations:
     CxxFileEntityTraceFixedXRefLocations { File, _, XRef, Entity }
 
 # Fixed C++ xrefs only, for a specific trace (FileXRefMap)
-# (deprecated)
+# (deprecated, use CxxFileEntityXMapFixedXRefLocations)
 predicate CxxFileEntityTraceFixedXRefLocations:
   {
     file: src.File,
@@ -239,36 +239,6 @@ predicate CxxDefToDeclFamilyXRefTargetLocation:
     { Name, TargetFile, { range = Range }, { just = Span } } = Location;
     { decl = Decl2 } = Entity;
 
-# "Variable" external XRefs only, for a specific trace (FileXRefMap)
-# todo: we should really zip these in Angle and export them as XRefLocations
-predicate CxxFileEntityTraceVariableXRefLocations:
-  {
-    file: src.File,
-    trace: cxx1.FileXRefMap,
-    spans: [src.ByteSpans], # n.b. relative bytespan array
-    targets : [cxx1.XRefTarget],
-  }
-  { File, Trace, ByteSpanSpans, Targets } where
-    cxx1.FileXRefMap { file = File, variable = ByteSpanSpans } = Trace;
-    cxx1.FileXRefs { Trace, Targets };
-
-# Bulk fetch any declaration locations associated with the xref targets
-# Rather than O(n) calls to map over the external target xrefs,
-# we can bulk-fetch all locations in one go, saving a lot of calls
-# (deprecated)
-predicate CxxFileEntityTraceVariableXRefDeclLocations:
-  {
-    trace: cxx1.FileXRefMap,
-    source: cxx1.Declaration, # used to identify the source
-    location: codemarkup.types.Location,
-  }
-  { Trace, Decl, Location } where
-    cxx1.FileXRefs { Trace, Targets };
-    { declaration = Decl } = Targets[..];
-    cxx1.DeclarationLocationNameSpan { Decl, Range, Name, _, Span };
-    { file = TargetFile } = Range;
-    { Name, TargetFile, { range = Range }, { just = Span } } = Location;
-
 # Bulk fetch any declaration locations associated with the xref targets
 # Rather than O(n) calls to map over the external target xrefs,
 # we can bulk-fetch all locations in one go, saving a lot of calls
@@ -284,22 +254,6 @@ predicate CxxFileEntityXMapVariableXRefDeclLocations:
     cxx1.DeclarationLocationNameSpan { Decl, Range, Name, _, Span };
     { file = TargetFile } = Range;
     { Name, TargetFile, { range = Range }, { just = Span } } = Location;
-
-# Bulk fetch any definitions associated with the external decls in the trace
-# (deprecated)
-predicate CxxFileEntityTraceVariableXRefDeclToDefs:
-  {
-    trace: cxx1.FileXRefMap,
-    source: cxx1.Declaration, # used to identify the source
-    entity: code.cxx.Entity, # enough stuff to build a xreflocation
-    location: codemarkup.types.Location,
-  }
-  { Trace, Decl, Entity, Location } where
-    cxx1.FileXRefs { Trace, Targets };
-    # decls
-    # todo:  more cases: recursion: indirect xrefs could be decls too
-    { declaration = Decl } = Targets[..];
-    CxxDeclToDefXRefTargetLocation { Decl, Entity, Location };
 
 # Bulk fetch any definitions associated with the external decls in the filexrefs
 predicate CxxFileEntityXMapVariableXRefDeclToDefs:
