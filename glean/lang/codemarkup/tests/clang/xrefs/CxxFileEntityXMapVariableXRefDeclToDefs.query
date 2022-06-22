@@ -1,2 +1,3 @@
 query: codemarkup.cxx.CxxFileEntityXMapVariableXRefDeclToDefs _
+perf: true
 transform: [gensort, []]

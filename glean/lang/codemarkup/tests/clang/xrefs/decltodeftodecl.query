@@ -3,4 +3,5 @@ query: |
     codemarkup.FileEntityLocations { entity = { cxx = { decl = Decl1 } } };
     code.cxx.DeclToDef { Decl1, Defn };
     cxx1.DefToBaseDecl { Defn, Decl2 };
+perf: true
 transform: [gensort, []]

@@ -1,2 +1,3 @@
 query: codemarkup.cxx.CxxFileEntityTraceVariableXRefDeclLocations _
+perf: true
 transform: [gensort, []]
