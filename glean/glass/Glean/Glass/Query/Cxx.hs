@@ -241,7 +241,7 @@ ppXRefs
   -> Glean.IdOf Cxx.Trace
   -> Glean.RepoHaxl u w [(Code.XRefLocation, Code.Entity)]
 ppXRefs mlimit traceId = searchRecursiveWithLimit mlimit $
-  cxxFileEntityTracePPXRefLocations traceId
+  ppEntityTraceXRefLocations traceId
 
 -- and the underlying definitions of any decls that have them
 declToDefXRefs
@@ -480,13 +480,13 @@ cxxFileEntityXMapVariableXRefDeclToDefs xrefId =
       ]
 
 -- C preprocessor #define uses associated with a cxx1.Trace
-cxxFileEntityTracePPXRefLocations
+ppEntityTraceXRefLocations
   :: Glean.IdOf Cxx.Trace
   -> Angle (Code.XRefLocation, Code.Entity)
-cxxFileEntityTracePPXRefLocations traceId =
+ppEntityTraceXRefLocations traceId =
   vars $ \(xref :: Angle Code.XRefLocation) (entity :: Angle Pp.Entity) ->
     tuple (xref, sig (alt @"pp" entity) :: Angle Code.Entity) `where_` [
-      wild .= predicate @Code.PpFileEntityTraceXRefLocations (
+      wild .= predicate @Code.PpEntityTraceXRefLocations (
         rec $
           field @"trace" (asPredicate (factId traceId)) $
           field @"xref" xref $
