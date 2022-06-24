@@ -67,11 +67,13 @@ mergeSchemaTest = TestCase $
           predicate JustNat : { predicate : glean.test.Predicate, nat : nat }
             {P,N} where P = glean.test.Predicate { nat = N }
         }
+
+        schema all.99999: mergetest.1 {}
       |]
 
     -- query the existing DB using the extended schema
     withTestEnv [setRoot root, setSchemaPath newSchemaFile] $ \env -> do
-      r <- try $ angleQuery env repo "mergetest.JustNat.1 _"
+      r <- try $ angleQuery env repo "mergetest.JustNat _"
       print (r :: Either BadQuery UserQueryResults)
       assertBool "merge" $ case r of
         Right UserQueryResults{..} -> length userQueryResults_facts == 4
@@ -118,10 +120,6 @@ schemaUnversioned = TestCase $ do
           return repo
 
     repo1 <- create (Thrift.Repo "schematest-repo" "1") []
-    repo2 <- create (Thrift.Repo "schematest-repo" "2")
-      [("glean.schema_version", "1")]
-    repo3 <- create (Thrift.Repo "schematest-repo" "3")
-      [("glean.schema_version", "3")]
 
     withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
       -- Test that an unversioned query "test.P _" resolves to test.P.2,
@@ -152,25 +150,6 @@ schemaUnversioned = TestCase $ do
       print (r :: Either BadQuery UserQueryResults)
       assertBool "unversioned 3" $ case r of
         Right UserQueryResults{..} -> length userQueryResults_facts == 1
-        _ -> False
-
-    withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
-      -- Test that an unversioned query "test.P _" resolves to test.P.1
-      -- when using repo2, which has the glean.schema_version:1 property
-      -- set in its metadata.
-      r <- try $ angleQuery env repo2 "test.P _"
-      print (r :: Either BadQuery UserQueryResults)
-      assertBool "unversioned 3" $ case r of
-        Right UserQueryResults{..} -> length userQueryResults_facts == 1
-        _ -> False
-
-    withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
-      -- Test that an unversioned query "test.P _" resolves to test.P.2,
-      -- because the all.3 schema doesn't exist so we pick all.2 by default
-      r <- try $ angleQuery env repo3 "test.P _"
-      print (r :: Either BadQuery UserQueryResults)
-      assertBool "unversioned 4" $ case r of
-        Right UserQueryResults{..} -> length userQueryResults_facts == 2
         _ -> False
 
 
