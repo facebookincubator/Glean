@@ -37,10 +37,10 @@ import Glean.Database.Data
 import Glean.Database.Exception
 import Glean.Database.Repo
 import qualified Glean.Database.Stats as Stats
-import Glean.Database.Storage
-import qualified Glean.Database.Storage as Storage
+import Glean.Database.Storage as Storage
 import Glean.Database.Meta (Meta(..))
 import Glean.Database.Schema
+import Glean.Database.Schema.Types
 import Glean.Database.Types
 import Glean.Query.Codegen (Boundaries, flatBoundaries, stackedBoundaries)
 import Glean.Repo.Text
@@ -233,8 +233,10 @@ setupSchema :: Storage s => Env -> Repo -> Database s -> Mode -> IO DbSchema
 setupSchema Env{..} _ handle (Create _ initial) = do
   schema <- Observed.get envSchemaSource
   dbSchema <- case initial of
-    Nothing -> newDbSchema schema readWriteContent
-    Just info ->
+    UseDefaultSchema -> newDbSchema schema LatestSchemaAll readWriteContent
+    UseSpecificSchema schemaId ->
+      newDbSchema schema (SpecificSchemaId schemaId) readWriteContent
+    UseThisSchema info ->
       newMergedDbSchema info schema AllowChanges readWriteContent
   storeSchema handle $ toSchemaInfo dbSchema
   return dbSchema
@@ -402,13 +404,21 @@ asyncOpenDB env@Env{..} db@DB{..} version mode deps on_success on_failure =
 -- | Fetch the glean.schema_version property of a DB, if it has
 -- one. This property is used to resolve queries that don't specify
 -- precise predicate versions.
-getDbSchemaVersion :: Env -> Thrift.Repo -> IO (Maybe Thrift.Version)
+getDbSchemaVersion
+  :: Env
+  -> Thrift.Repo
+  -> IO (Maybe Thrift.Version, Maybe Thrift.SchemaId)
 getDbSchemaVersion env repo = do
   props <- atomically $ Thrift.metaProperties <$>
     Catalog.readMeta (envCatalog env) repo
-  case HashMap.lookup "glean.schema_version" props of
-    Just txt | Right v <- textToInt txt -> return (Just (fromIntegral v))
-    _otherwise -> return Nothing
+  let
+    ver = case HashMap.lookup "glean.schema_version" props of
+      Just txt | Right v <- textToInt txt -> Just (fromIntegral v)
+      _otherwise -> Nothing
+    id = case HashMap.lookup "glean.schema_id" props of
+      Just txt -> Just (Thrift.SchemaId txt)
+      _otherwise -> Nothing
+  return (ver, id)
 
 
 -- TODO: later we will store the slice in the stacked DB, and read it

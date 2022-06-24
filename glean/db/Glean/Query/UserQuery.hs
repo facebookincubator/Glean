@@ -488,7 +488,9 @@ userQueryImpl
       debug = Thrift.userQueryOptions_debug opts
 
     schemaVersion <-
-      schemaVersionForQuery env schema Nothing userQuery_schema_version
+      schemaVersionForQuery env schema config Nothing
+        userQuery_schema_version
+        userQuery_schema_id
 
     (returnType, compileTime, irDiag, cont) <-
       case Thrift.userQueryOptions_continuation opts of
@@ -661,7 +663,9 @@ userQueryImpl
     let schema@DbSchema{..} = odbSchema odb
 
     schemaVersion <-
-      schemaVersionForQuery env schema Nothing userQuery_schema_version
+      schemaVersionForQuery env schema config Nothing
+        userQuery_schema_version
+        userQuery_schema_id
 
     let ref = SourceRef userQuery_predicate userQuery_predicate_version
     details@PredicateDetails{..} <-
@@ -808,23 +812,38 @@ userQueryImpl
 schemaVersionForQuery
   :: Database.Env
   -> DbSchema
+  -> ServerConfig.Config
   -> Maybe Thrift.Repo -- ^ default to the DB version if this is supplied
-  -> Maybe Thrift.Version -- ^ version specified by the client
+  -> Maybe Thrift.Version -- ^ version specified by the client (deprecated)
+  -> Maybe Thrift.SchemaId  -- ^ SchemaId specified by client
   -> IO SchemaSelector
-schemaVersionForQuery env schema repo qversion = do
-  dbSchemaVersion <- case repo of
-    Nothing -> return Nothing
-    Just repo -> getDbSchemaVersion env repo
-  return $ maybe LatestSchemaAll SpecificSchemaAll
-    $ find isAvailable
-    $ catMaybes
-        [ qversion
-        , envSchemaVersion env
-        , dbSchemaVersion
-        ]
+schemaVersionForQuery env schema ServerConfig.Config{..} repo qversion qid = do
+  (dbSchemaVersion, dbSchemaId) <-
+    case repo of
+      Nothing -> return (Nothing, Nothing)
+      Just repo -> getDbSchemaVersion env repo
+  let
+     selectors
+       | config_use_schema_id = map SpecificSchemaId $ catMaybes
+         [ qid
+         , (envSchemaId env)
+         , dbSchemaId
+         ]
+       | otherwise = map SpecificSchemaAll $ catMaybes
+         [ qversion
+         , (envSchemaVersion env)
+         , dbSchemaVersion
+         ]
+  vlog 1 $ "all selectors: " <> show (pretty selectors)
+  let avail = filter isAvailable selectors
+  vlog 1 $ "available selectors: " <> show (pretty avail)
+  return $ fromMaybe LatestSchemaAll $ listToMaybe avail
   where
-    isAvailable version =
+    isAvailable (SpecificSchemaAll version) =
       fromIntegral version `IntMap.member` legacyAllVersions schema
+    isAvailable (SpecificSchemaId id) =
+      id `Map.member` schemaEnvs schema
+    isAvailable _ = True
 
 compileAngleQuery
   :: SchemaSelector

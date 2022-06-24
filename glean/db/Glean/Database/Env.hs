@@ -88,7 +88,7 @@ initEnv
   :: EventBaseDataplane
   -> Config
   -> Logger
-  -> Observed ProcessedSchema
+  -> Observed SchemaIndex
   -> Observed Recipes.Config
   -> Observed ServerConfig.Config
   -> IO Env

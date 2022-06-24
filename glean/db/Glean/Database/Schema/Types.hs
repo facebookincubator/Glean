@@ -35,6 +35,7 @@ import Data.Map (Map)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 import Data.Text (Text)
+import Data.Text.Prettyprint.Doc hiding ((<>))
 
 import Glean.Angle.Types as Schema hiding (Type, FieldDef)
 import qualified Glean.Angle.Types as Schema
@@ -65,9 +66,11 @@ data DbSchema = DbSchema
      -- ^ keyed by predicate requested
 
   , schemaInventory :: Inventory
-  , schemaSource :: SourceSchemas
   , schemaMaxPid :: Pid
   , schemaLatestVersion :: SchemaId
+
+  , schemaSource :: SourceSchemas
+    -- ^ This is for toSchemaInfo
   }
 
 -- | Data required to transform a predicate that was requested in a query into
@@ -110,6 +113,11 @@ data SchemaSelector
   = LatestSchemaAll
   | SpecificSchemaAll Version -- deprecated
   | SpecificSchemaId SchemaId
+
+instance Pretty SchemaSelector where
+  pretty LatestSchemaAll = "latest"
+  pretty (SpecificSchemaAll v) = "schema-version:" <> pretty v
+  pretty (SpecificSchemaId (SchemaId id)) = "schema-id:" <> pretty id
 
 allSchemaVersion :: DbSchema -> SchemaSelector -> Maybe SchemaId
 allSchemaVersion _ (SpecificSchemaId v) = Just v

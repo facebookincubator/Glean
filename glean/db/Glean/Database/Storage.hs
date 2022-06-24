@@ -8,6 +8,7 @@
 
 module Glean.Database.Storage
   ( Mode(..)
+  , CreateSchema(..)
   , Storage(..)
   , DBVersion(..)
   , AxiomOwnership
@@ -27,7 +28,7 @@ import Glean.RTS.Foreign.Lookup (CanLookup)
 import Glean.RTS.Foreign.Ownership
 import Glean.RTS.Types (Fid, Pid)
 import Glean.ServerConfig.Types (DBVersion(..))
-import Glean.Types (PredicateStats, Repo, SchemaInfo)
+import Glean.Types (PredicateStats, Repo, SchemaInfo, SchemaId)
 
 -- | List of binary representation versions we can read
 readableVersions :: [DBVersion]
@@ -50,14 +51,21 @@ canOpenVersion mode version = version `elem` versions
 currentVersion :: DBVersion
 currentVersion = maximum writableVersions
 
+-- Choose which schema goes into a newly created DB
+data CreateSchema
+  = UseDefaultSchema
+  | UseSpecificSchema SchemaId
+  | UseThisSchema SchemaInfo
+  deriving (Show)
+
 -- | Database opening mode
 data Mode
   = ReadOnly
   | ReadWrite
   | Create
       Fid  -- starting fact id
-      (Maybe SchemaInfo)  -- initial schema to merge with the configured one
-  deriving(Show)
+      CreateSchema
+  deriving (Show)
 
 -- | Raw ownership data for axiomatic (non-derived) facts: a mapping
 -- from unit name to ranges of fact IDs.

@@ -15,6 +15,7 @@ import Test.HUnit
 import TestRunner
 
 import Glean.Database.Config
+import Glean.Database.Schema.Types
 import Glean.Init
 import Glean.RTS.Foreign.Inventory (Inventory)
 import qualified Glean.RTS.Foreign.Inventory as Inventory
@@ -27,7 +28,8 @@ serializeTest inventory = TestCase $ assertBool "roundtrip" $
 main :: IO ()
 main = withUnitTest $ do
   schema <- parseSchemaDir schemaSourceDir
-  inventory <- schemaInventory <$> newDbSchema schema readWriteContent
+  inventory <- schemaInventory <$>
+    newDbSchema schema LatestSchemaAll readWriteContent
 
   testRunner $ TestList
     [ TestLabel "serialize" $ serializeTest inventory

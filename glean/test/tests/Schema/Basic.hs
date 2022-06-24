@@ -56,9 +56,9 @@ mergeSchemaTest = TestCase $
 
     -- create an extended schema
     let newSchemaFile = root </> "schema"
-    schema <- parseSchemaDir schemaSourceDir
+    SchemaIndex{..} <- parseSchemaDir schemaSourceDir
     writeFile newSchemaFile $ show $ pretty $
-      procSchemaSource schema
+      procSchemaSource schemaIndexCurrent
     appendFile newSchemaFile
       [s|
         schema mergetest.1 {
@@ -373,7 +373,7 @@ changeSchemaTest = TestCase $ do
           dbConfig = def
             { cfgRoot = Nothing
             , cfgSchemaSource = ThriftSource.configWithDeserializer
-                fakeSchemaKey processSchema
+                fakeSchemaKey (processOneSchema Map.empty)
             , cfgServerConfig = ThriftSource.value def
                 { ServerConfig.config_db_rocksdb_cache_mb = 0 }
             }
@@ -772,14 +772,15 @@ thinSchemaTest = TestCase $
         completeTestDB env repo
         return repo
 
-    -- open the DB with schema_v1, we should still be able to query
-    -- for test.P.1 and get one fact
+    -- open the DB with schema_v1, we should not be able to see
+    -- test.P.1 any more when we query using the default schema
+    -- version.
     withTestEnv [setRoot root, setSchemaPath schema_v1_file] $ \env -> do
        r <- try $ angleQuery env repo0 "test.P.1 _"
        print (r :: Either BadQuery UserQueryResults)
-       assertEqual "thin 1" 1 $ case r of
-         Right UserQueryResults{..} -> length userQueryResults_facts
-         _ -> error "bad query"
+       assertBool "thin 1" $ case r of
+         Left BadQuery{} -> True
+         _ -> False
 
 stackedSchemaTest :: Test
 stackedSchemaTest = TestCase $

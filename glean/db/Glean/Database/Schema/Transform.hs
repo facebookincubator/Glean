@@ -167,4 +167,7 @@ mkValueTransformation from to = go from to
 defaultValue :: Type -> Term a
 defaultValue ty = case ty of
   MaybeTy _ -> Alt 0 (Tuple [])
+  BooleanTy -> Alt 0 (Tuple [])
+  NatTy -> Nat 0
+  StringTy -> String ""
   _ -> error $ "type doesn't have a default value: " <> show ty

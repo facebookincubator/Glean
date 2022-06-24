@@ -10,13 +10,16 @@
 module Glean.Database.Config (
   Config(..), options,
   processSchema,
+  processOneSchema,
+  SchemaIndex(..),
   ProcessedSchema(..),
-  schemaSourceConfig,
+  legacySchemaSourceConfig,
   catSchemaFiles,
   schemaSourceFiles,
   schemaSourceFilesFromDir,
   schemaSourceDir,
   schemaSourceFile,
+  schemaSourceIndexFile,
   schemaSourceParser,
   schemaSourceOption,
   parseSchemaDir
@@ -29,12 +32,14 @@ import qualified Data.ByteString.Char8 as B
 import qualified Data.ByteString.UTF8 as UTF8
 import Data.Default
 import Data.List
-import qualified Data.Set as Set
+import Data.Map (Map)
 import qualified Data.Map as Map
+import qualified Data.Set as Set
 import qualified Data.Text as Text
 import Options.Applicative
 import System.FilePath
 
+import Thrift.Util
 import Util.IO (listDirectoryRecursive)
 
 import Glean.Angle.Types
@@ -53,6 +58,7 @@ import Glean.Types
 import Glean.Util.Observed
 import qualified Glean.Util.Observed as Observed
 import Glean.Util.ShardManager
+import qualified Glean.Internal.Types as Internal
 import Glean.Util.Some
 import Glean.Util.Trace (Listener)
 import Glean.Util.ThriftSource (ThriftSource)
@@ -61,7 +67,7 @@ import qualified Glean.Tailer as Tailer
 
 data Config = Config
   { cfgRoot :: Maybe FilePath
-  , cfgSchemaSource :: ThriftSource ProcessedSchema
+  , cfgSchemaSource :: ThriftSource SchemaIndex
   , cfgSchemaDir :: Maybe FilePath
       -- ^ Records whether we're reading the schema from a directory
       -- of source files or not, because some clients (the shell) want
@@ -131,6 +137,11 @@ defaultShardManagerConfig serverConfig callback = do
     other ->
       error $ "Unsupported sharding policy: " <> show other
 
+data SchemaIndex = SchemaIndex
+  { schemaIndexCurrent :: ProcessedSchema
+  , schemaIndexOlder :: [ProcessedSchema]
+  }
+
 -- | The schema that we've read from the filesystem or the configs. We
 -- need this in three forms:
 --
@@ -148,39 +159,67 @@ data ProcessedSchema = ProcessedSchema
   , procSchemaHashed :: HashedSchema
   }
 
-processSchema :: ByteString -> Either String ProcessedSchema
-processSchema str =
+processOneSchema
+  :: Map SchemaId Version
+  -> ByteString
+  -> Either String SchemaIndex
+processOneSchema versions str =
+  case processSchema versions str of
+    Left str -> Left str
+    Right schema -> Right (SchemaIndex schema [])
+
+processSchema
+  :: Map SchemaId Version
+  -> ByteString
+  -> Either String ProcessedSchema
+processSchema versions str =
   case parseAndResolveSchema str of
     Left str -> Left str
     Right (ss, r) -> Right $
-      ProcessedSchema ss r (computeIds (schemasResolved r) Map.empty)
+      ProcessedSchema ss r (computeIds (schemasResolved r) versions)
 
 -- | Read the schema definition from the ConfigProvider
-schemaSourceConfig :: ThriftSource ProcessedSchema
-schemaSourceConfig =
-  ThriftSource.configWithDeserializer schemaConfigPath
-     processSchema
+legacySchemaSourceConfig :: ThriftSource SchemaIndex
+legacySchemaSourceConfig =
+  ThriftSource.configWithDeserializer legacySchemaConfigPath
+     (processOneSchema Map.empty)
 
 -- | Read the schema files from the source tree
-schemaSourceFiles :: ThriftSource ProcessedSchema
+schemaSourceFiles :: ThriftSource SchemaIndex
 schemaSourceFiles = schemaSourceFilesFromDir schemaSourceDir
 
 -- | Read the schema from a single file
-schemaSourceFile :: FilePath -> ThriftSource ProcessedSchema
+schemaSourceFile :: FilePath -> ThriftSource SchemaIndex
 schemaSourceFile f = ThriftSource.fileWithDeserializer f
-  processSchema
+  (processOneSchema Map.empty)
+
+-- | Read a schema index from a file
+schemaSourceIndexFile :: FilePath -> ThriftSource SchemaIndex
+schemaSourceIndexFile = ThriftSource.once . parseSchemaIndex
 
 -- | Read schema files from the given directory
-schemaSourceFilesFromDir :: FilePath -> ThriftSource ProcessedSchema
+schemaSourceFilesFromDir :: FilePath -> ThriftSource SchemaIndex
 schemaSourceFilesFromDir = ThriftSource.once . parseSchemaDir
 
 -- | Read schema files from a directory
-parseSchemaDir :: FilePath -> IO ProcessedSchema
+parseSchemaDir :: FilePath -> IO SchemaIndex
 parseSchemaDir dir = do
   str <- catSchemaFiles =<< listDirectoryRecursive dir
-  case processSchema str of
+  case processOneSchema Map.empty str of
     Left err -> throwIO $ ErrorCall err
     Right schema -> return schema
+
+parseSchemaIndex :: FilePath -> IO SchemaIndex
+parseSchemaIndex file = do
+  Internal.SchemaIndex{..} <- loadJSON file
+  let proc Internal.SchemaInstance{..} = do
+        let dir = takeDirectory file
+        str <- B.readFile (dir </> Text.unpack schemaInstance_file)
+        either (throwIO . ErrorCall) return $
+          processSchema (Map.mapKeys SchemaId schemaInstance_versions) str
+  current <- proc schemaIndex_current
+  older <- mapM proc schemaIndex_older
+  return (SchemaIndex current older)
 
 -- | Concatenate the contents of all the .angle files, prepending the
 -- contents of VERSION if that file exists, and adding "#FILE" annotations
@@ -203,35 +242,37 @@ schemaSourceDir = "glean/schema/source"
 -- \"config:PATH\", \"dir:PATH\", and \"file:PATH\" sources.
 schemaSourceParser
   :: String
-  -> Either String (Maybe FilePath, ThriftSource ProcessedSchema)
-schemaSourceParser "config" = Right (Nothing, schemaSourceConfig)
+  -> Either String (Maybe FilePath, ThriftSource SchemaIndex)
+schemaSourceParser "config" = Right (Nothing, legacySchemaSourceConfig)
 schemaSourceParser "dir" =
   Right (Just schemaSourceDir, schemaSourceFilesFromDir schemaSourceDir)
-schemaSourceParser s
-  | ("dir", ':':path) <- break (==':') s =
+schemaSourceParser s = case break (==':') s of
+  ("dir", ':':path) ->
     Right (Just path, ThriftSource.once $ parseSchemaDir path)
+  ("index", ':':path) ->
+    Right (Nothing, ThriftSource.once $ parseSchemaIndex path)
   -- default to interpreting the argument as a directory:
-  | ':' `notElem` s =
+  (_, "") ->
     Right (Just s, ThriftSource.once $ parseSchemaDir s)
-  | otherwise =
+  _otherwise -> -- handles config:PATH and file:PATH
     (Nothing,) <$> ThriftSource.parseWithDeserializer s
-      processSchema
+      (processOneSchema Map.empty)
 
 -- | Deprecated --db-schema option; use --schema instead.
 dbSchemaSourceOption
-  :: Parser (Maybe FilePath, ThriftSource ProcessedSchema)
+  :: Parser (Maybe FilePath, ThriftSource SchemaIndex)
 dbSchemaSourceOption = option (eitherReader schemaSourceParser)
   (  long "db-schema"
   <> hidden
   <> metavar "(dir | config | file:PATH | dir:PATH | config:PATH)"
-  <> value (Nothing, schemaSourceConfig))
+  <> value (Nothing, legacySchemaSourceConfig))
 
 schemaSourceOption
-  :: Parser (Maybe FilePath, ThriftSource ProcessedSchema)
+  :: Parser (Maybe FilePath, ThriftSource SchemaIndex)
 schemaSourceOption = option (eitherReader schemaSourceParser)
   (  long "schema"
   <> metavar "(dir | config | file:FILE | dir:DIR | config:PATH | DIR)"
-  <> value (Nothing, schemaSourceConfig))
+  <> value (Nothing, legacySchemaSourceConfig))
 
 options :: Parser Config
 options = do
