@@ -331,7 +331,6 @@ mkDbSchema validate knownPids dbContent
         mkTransformations dbContent byPid (tcEnvPredicates tcEnv)
           refToIdEnv resolved
     , schemaInventory = inventory predicates
-    , schemaResolved = resolved
     , schemaSource = sourceAdded
     , schemaMaxPid = maxPid
     , schemaLatestVersion = latestHash
