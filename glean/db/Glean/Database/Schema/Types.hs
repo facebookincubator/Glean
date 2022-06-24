@@ -14,7 +14,6 @@ module Glean.Database.Schema.Types
   , PredicateTransformation(..)
   , SchemaSelector(..)
   , schemaNameEnv
-  , hashNameEnv
   , addTmpPredicate
   , lookupSourceRef
   , lookupPredicateSourceRef
@@ -28,20 +27,18 @@ module Glean.Database.Schema.Types
   , tempPid
   ) where
 
-import qualified Data.Binary as Binary
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
-import Data.List (sort)
 import Data.Map (Map)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 import Data.Text (Text)
 
-import Glean.Angle.Hash
 import Glean.Angle.Types as Schema hiding (Type, FieldDef)
 import qualified Glean.Angle.Types as Schema
+import Glean.Database.Schema.ComputeIds
 import Glean.Query.Typecheck.Types
 import Glean.RTS.Foreign.Bytecode (Subroutine)
 import Glean.RTS.Foreign.Inventory (Inventory)
@@ -52,18 +49,16 @@ import Glean.Types as Thrift
 import Glean.Schema.Types
 import Glean.Schema.Util
 
-type RefTargetId = RefTarget PredicateId TypeId
-
 -- | The Schema used by a DB
 data DbSchema = DbSchema
   { predicatesById :: HashMap PredicateId PredicateDetails
   , typesById :: HashMap TypeId TypeDetails
 
-  , schemaEnvs :: Map Hash (NameEnv RefTargetId)
-     -- ^ for each schema version, the environment of types/predicates
+  , schemaEnvs :: Map SchemaId (NameEnv RefTargetId)
+     -- ^ for each SchemaId, the environment of types/predicates
 
-  , legacyAllVersions :: IntMap Hash
-     -- ^ Maps "all" schema versions to schema hashes
+  , legacyAllVersions :: IntMap SchemaId
+     -- ^ Maps all.N schema versions to SchemaIds
 
   , predicatesByPid :: IntMap PredicateDetails
   , predicatesTransformations  :: IntMap PredicateTransformation
@@ -72,7 +67,7 @@ data DbSchema = DbSchema
   , schemaInventory :: Inventory
   , schemaSource :: SourceSchemas
   , schemaMaxPid :: Pid
-  , schemaLatestVersion :: Hash
+  , schemaLatestVersion :: SchemaId
   }
 
 -- | Data required to transform a predicate that was requested in a query into
@@ -111,19 +106,13 @@ data PredicateDetails = PredicateDetails
 predicateRef :: PredicateDetails -> PredicateRef
 predicateRef = predicateIdRef . predicateId
 
--- | How to take a NameEnv and compute the schema hash from it. This
--- hash uniquely identifies a particular NameEnv that can be used to
--- resolve a type or predicate name, or in general a query.
-hashNameEnv :: NameEnv (RefTarget PredicateId TypeId) -> Hash
-hashNameEnv env = hashByteString (Binary.encode (sort (HashMap.toList env)))
-
 data SchemaSelector
   = LatestSchemaAll
   | SpecificSchemaAll Version -- deprecated
-  | SpecificSchemaHash Hash
+  | SpecificSchemaId SchemaId
 
-allSchemaVersion :: DbSchema -> SchemaSelector -> Maybe Hash
-allSchemaVersion _ (SpecificSchemaHash v) = Just v
+allSchemaVersion :: DbSchema -> SchemaSelector -> Maybe SchemaId
+allSchemaVersion _ (SpecificSchemaId v) = Just v
 allSchemaVersion dbSchema (SpecificSchemaAll v) =
   IntMap.lookup (fromIntegral v) (legacyAllVersions dbSchema)
 allSchemaVersion dbSchema LatestSchemaAll = Just (schemaLatestVersion dbSchema)

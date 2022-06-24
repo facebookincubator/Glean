@@ -14,6 +14,7 @@ module Glean.Database.Schema.ComputeIds
   , refsToIds
   , HashedSchema(..)
   , emptyHashedSchema
+  , RefTargetId
   ) where
 
 import Control.Monad
@@ -24,13 +25,19 @@ import Data.Binary as Binary
 import Data.Graph
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
+import Data.IntMap (IntMap)
+import qualified Data.IntMap as IntMap
 import Data.List
+import Data.Map (Map)
+import qualified Data.Map as Map
+import qualified Data.Set as Set
 import qualified Data.Text as Text
 
 import Glean.Angle.Hash
 import Glean.Angle.Types as Schema
 import Glean.Schema.Util (showRef)
 import Glean.Schema.Types
+import Glean.Types
 
 -- | The schema with all predicate/type references replaced with
 -- PredicateId/TypeId.
@@ -38,13 +45,19 @@ data HashedSchema = HashedSchema
   { hashedTypes :: HashMap TypeId TypeDef
   , hashedPreds :: HashMap PredicateId PredicateDef
   , schemaRefToIdEnv :: RefToIdEnv
+  , hashedSchemaEnvs :: Map SchemaId (NameEnv RefTargetId)
+  , hashedSchemaAllVersions :: IntMap SchemaId
   }
+
+type RefTargetId = RefTarget PredicateId TypeId
 
 emptyHashedSchema :: HashedSchema
 emptyHashedSchema = HashedSchema
   { hashedTypes = HashMap.empty
   , hashedPreds =  HashMap.empty
   , schemaRefToIdEnv = emptyRefToIdEnv
+  , hashedSchemaEnvs = Map.empty
+  , hashedSchemaAllVersions = IntMap.empty
   }
 
 type Def_ p t = RefTarget p t
@@ -97,8 +110,11 @@ isDefaultDeriving _ = False
 -- | Compute the PredicateId / TypeId for each definition, and substitute for
 -- PredicateRef/TypeRef with PredicateId/TypeId inside all the definitions
 
-computeIds :: [ResolvedSchemaRef] -> HashedSchema
-computeIds schemas = flip evalState emptyRefToIdEnv $ do
+computeIds
+  :: [ResolvedSchemaRef]
+  -> Map SchemaId Version
+  -> HashedSchema
+computeIds schemas versions = flip evalState emptyRefToIdEnv $ do
   let
     preds = attachDerivations schemas
 
@@ -176,11 +192,15 @@ computeIds schemas = flip evalState emptyRefToIdEnv $ do
           f (PredicateDef id key val _) =
             PredicateDef id key val (fmap (refsToIds env) drv)
 
+      (allVersions, schemaEnvs) = makeSchemaEnvs schemas versions env
+
   return HashedSchema {
       hashedTypes = HashMap.fromList
         [ (typeDefRef def, def) | RefType def <- defs],
       hashedPreds = attachDefaultDerivings preds,
-      schemaRefToIdEnv = env
+      schemaRefToIdEnv = env,
+      hashedSchemaEnvs = schemaEnvs,
+      hashedSchemaAllVersions = allVersions
     }
 
   where
@@ -269,3 +289,57 @@ afterwards. The old and the new Ps will get the same hashes, if they
 really only differ in their derivations.
 
 -}
+
+
+makeSchemaEnvs
+  :: [ResolvedSchemaRef]
+  -> Map SchemaId Version
+  -> RefToIdEnv
+  -> (IntMap SchemaId, Map SchemaId (NameEnv RefTargetId))
+makeSchemaEnvs resolved versions refToIdEnv =
+  ( IntMap.fromList (map (second fst) schemaEnvs),
+    Map.fromList (map snd schemaEnvs) )
+  where
+    suppliedSchemaIds = IntMap.fromList
+      [ (fromIntegral ver, id) | (id, ver) <- Map.toList versions ]
+
+    resolvedAlls =
+      [ schema
+      | schema <- resolved
+      , resolvedSchemaName schema == "all" ]
+
+    -- In the environment that we use for resolving names in queries
+    -- and derivations later, we need to accept explicitly versioned
+    -- references to predicates and types even for those predicates
+    -- and types that are not visible in the scope of the "all" schema.
+    versionedNameEnv = HashMap.fromList
+      [ (SourceRef name (Just ver), Set.singleton target)
+      | (name, ver, target) <-
+          [ (predicateRef_name r, predicateRef_version r, RefPred t)
+          | (r, t) <- HashMap.toList (predRefToId refToIdEnv) ] ++
+          [ (typeRef_name r, typeRef_version r, RefType t)
+          | (r, t) <- HashMap.toList (typeRefToId refToIdEnv) ]
+      ]
+
+    schemaEnvs =
+      [ (ver, (schemaId, env))
+      | ResolvedSchema{..} <- resolvedAlls
+      , let env =
+              HashMap.union
+                (mapNameEnv (Just . refsToIds refToIdEnv)
+                  resolvedSchemaUnqualScope) $
+               HashMap.union
+                 (mapNameEnv (Just . refsToIds refToIdEnv)
+                   resolvedSchemaQualScope)
+                 versionedNameEnv
+
+            ver = fromIntegral resolvedSchemaVersion
+            hash = SchemaId $ Text.pack $ show $ hashNameEnv env
+            schemaId = IntMap.findWithDefault hash ver suppliedSchemaIds
+      ]
+
+-- | How to take a NameEnv and compute the schema hash from it. This
+-- hash uniquely identifies a particular NameEnv that can be used to
+-- resolve a type or predicate name, or in general a query.
+hashNameEnv :: NameEnv (RefTarget PredicateId TypeId) -> Hash
+hashNameEnv env = hashByteString (Binary.encode (sort (HashMap.toList env)))

@@ -31,7 +31,6 @@ import Facebook.Process
 import Util.Defer
 import Util.Log
 
-import Glean.Angle.Hash
 import Glean.BuildInfo
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Config
@@ -154,14 +153,14 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
               (schemaLatestVersion odbSchema)
             return $ Thrift.KickOffResponse False
   where
-    addSchemaIdProperty :: Catalog.Catalog -> Repo -> Hash -> IO ()
+    addSchemaIdProperty :: Catalog.Catalog -> Repo -> SchemaId -> IO ()
     addSchemaIdProperty catalog repo hash =
       void $ atomically $ Catalog.modifyMeta catalog repo $ \meta ->
         return meta { metaProperties =
           HashMap.insertWith
             (\_ old -> old)  -- if one was provided already, keep it
             "glean.schema_id"
-            (Text.pack (show hash))
+            (unSchemaId hash)
             (metaProperties meta)
           }
 
