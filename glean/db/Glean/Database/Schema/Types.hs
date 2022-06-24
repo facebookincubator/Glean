@@ -70,7 +70,6 @@ data DbSchema = DbSchema
      -- ^ keyed by predicate requested
 
   , schemaInventory :: Inventory
-  , schemaResolved :: [ResolvedSchemaRef]
   , schemaSource :: SourceSchemas
   , schemaMaxPid :: Pid
   , schemaLatestVersion :: Hash
