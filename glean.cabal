@@ -1768,8 +1768,23 @@ test-suite parser
 test-suite schematest
     import: test
     type: exitcode-stdio-1.0
-    main-is: SchemaTest.hs
-    ghc-options: -main-is SchemaTest
+    main-is: Schema/Basic.hs
+    other-modules: Schema.Lib
+    ghc-options: -main-is Schema.Basic
+    build-depends:
+        glean:stubs,
+        glean:core,
+        glean:db,
+        glean:config,
+        glean:if-glean-hs,
+        glean:util,
+
+test-suite schemaevolves
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: Schema/Evolves.hs
+    other-modules: Schema.Lib
+    ghc-options: -main-is Schema.Evolves
     build-depends:
         glean:stubs,
         glean:core,
