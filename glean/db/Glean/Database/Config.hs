@@ -30,6 +30,7 @@ import qualified Data.ByteString.UTF8 as UTF8
 import Data.Default
 import Data.List
 import qualified Data.Set as Set
+import qualified Data.Map as Map
 import qualified Data.Text as Text
 import Options.Applicative
 import System.FilePath
@@ -152,7 +153,7 @@ processSchema str =
   case parseAndResolveSchema str of
     Left str -> Left str
     Right (ss, r) -> Right $
-      ProcessedSchema ss r (computeIds (schemasResolved r))
+      ProcessedSchema ss r (computeIds (schemasResolved r) Map.empty)
 
 -- | Read the schema definition from the ConfigProvider
 schemaSourceConfig :: ThriftSource ProcessedSchema

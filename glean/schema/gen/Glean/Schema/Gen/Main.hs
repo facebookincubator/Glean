@@ -53,7 +53,6 @@ import Util.OptParse (commandParser)
 
 import Glean.Query.Typecheck (tcQueryDeps)
 import Glean.Query.Codegen (QueryWithInfo(..))
-import Glean.Angle.Hash
 import Glean.Angle.Types
 import Glean.Angle.Parser
 import Glean.Database.Config hiding (options)
@@ -66,6 +65,7 @@ import Glean.Schema.Gen.HackJson ( genSchemaHackJson )
 import Glean.Schema.Gen.Haskell ( genSchemaHS )
 import Glean.Schema.Gen.Utils ( Mode(..) )
 import Glean.Schema.Types
+import Glean.Types (SchemaId)
 
 data WhichVersion
   = AllVersions
@@ -353,12 +353,12 @@ drawGraph GraphOptions{..} deps' roots =
 
 gen
   :: GenOptions
-  -> [(Version, Hash, ResolvedSchemaRef, Maybe FilePath)]
+  -> [(Version, SchemaId, ResolvedSchemaRef, Maybe FilePath)]
   -> IO ()
 gen GenOptions{..} versions =
   mapM_ genFor versions
   where
-  genFor :: (Version, Hash, ResolvedSchemaRef, Maybe FilePath) -> IO ()
+  genFor :: (Version, SchemaId, ResolvedSchemaRef, Maybe FilePath) -> IO ()
   genFor (_, hash, ResolvedSchema{..}, dir) = do
       let
         ts = HashMap.elems resolvedSchemaReExportedTypes

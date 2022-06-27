@@ -30,14 +30,14 @@ import TextShow
 
 import Glean.Schema.Gen.Utils
 import Glean.Angle.Types
-import Glean.Angle.Hash
 import Glean.Schema.Types
 import Glean.Schema.Util
+import Glean.Types (SchemaId(..))
 
 genSchemaThrift
   :: Mode
   -> Maybe String
-  -> Hash
+  -> SchemaId
   -> Version
   -> [ResolvedPredicateDef]
   -> [ResolvedTypeDef]
@@ -210,7 +210,7 @@ genNamespace
   -> Text                               -- "/v1" or ""
   -> NameSpaces
   -> Version
-  -> Hash
+  -> SchemaId
   -> NamePolicy
   -> [NameSpaces]
   -> [ResolvedPredicateDef]
@@ -278,7 +278,7 @@ genNamespace mode slashVn namespaces version
     if namespace /= "builtin" then [] else
     [ "// Schema version"
     , "const i64 version = " <> showt version
-    , "const glean.SchemaId schema_id = " <> showt (show hash)
+    , "const glean.SchemaId schema_id = " <> Text.pack (show (unSchemaId hash))
     ]
 
 

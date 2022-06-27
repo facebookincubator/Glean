@@ -269,44 +269,20 @@ mkDbSchema validate knownPids dbContent
       maxPid = maybe lowestPid (Pid . fromIntegral . fst)
         (IntMap.lookupMax byPid)
 
-      resolvedAlls =
-        [ schema | schema <- resolved, resolvedSchemaName schema == "all" ]
+      schemaEnvMap =
+        Map.unions $
+        map hashedSchemaEnvs
+        [ stored, added ]
 
-      -- In the environment that we use for resolving names in queries
-      -- and derivations later, we need to accept explicitly versioned
-      -- references to predicates and types even for those predicates
-      -- and types that are not visible in the scope of the "all" schema.
-      versionedNameEnv = HashMap.fromList
-        [ (SourceRef name (Just ver), Set.singleton target)
-        | (name, ver, target) <-
-            [ (predicateRef_name r, predicateRef_version r, RefPred t)
-            | (r, t) <- HashMap.toList (predRefToId refToIdEnv) ] ++
-            [ (typeRef_name r, typeRef_version r, RefType t)
-            | (r, t) <- HashMap.toList (typeRefToId refToIdEnv) ]
-        ]
+      legacyAllVersions =
+        IntMap.union
+          (hashedSchemaAllVersions stored)
+          (hashedSchemaAllVersions added)
 
-      schemaEnvs =
-        [ (fromIntegral resolvedSchemaVersion, hashNameEnv env, env)
-        | ResolvedSchema{..} <- resolvedAlls
-        , let env =
-                HashMap.union
-                  (mapNameEnv (Just . refsToIds refToIdEnv)
-                    resolvedSchemaUnqualScope) $
-                 HashMap.union
-                   (mapNameEnv (Just . refsToIds refToIdEnv)
-                     resolvedSchemaQualScope)
-                   versionedNameEnv
-        ]
-
-      legacyAllVersions = IntMap.fromList
-        [ (ver, hash) | (ver, hash, _) <- schemaEnvs ]
-
-      schemaEnvMap = Map.fromList
-        [ (hash, env) | (_, hash, env) <- schemaEnvs ]
-
-  latestHash <- maybe (throwIO $ ErrorCall "no schema version") return $ do
-    ver <- maximumMay (map resolvedSchemaVersion resolvedAlls)
-    IntMap.lookup (fromIntegral ver) legacyAllVersions
+      latestSchemaId =
+        case IntMap.lookupMax legacyAllVersions of
+          Nothing -> error "no \"all\" schema"
+          Just (_, id) -> id
 
   vlog 2 $ "DB schema has " <>
     showt (HashMap.size (hashedTypes stored)) <> " types/" <>
@@ -319,7 +295,7 @@ mkDbSchema validate knownPids dbContent
     showt (HashMap.size (tcEnvPredicates tcEnv)) <> " predicates."
 
   vlog 2 $ "all schemas: " <> Text.intercalate " " (
-    map (showSchemaRef . schemaRef) resolvedAlls)
+    map (Text.pack . show) (Map.keys schemaEnvMap))
 
   return $ DbSchema
     { predicatesById = tcEnvPredicates tcEnv
@@ -333,7 +309,7 @@ mkDbSchema validate knownPids dbContent
     , schemaInventory = inventory predicates
     , schemaSource = sourceAdded
     , schemaMaxPid = maxPid
-    , schemaLatestVersion = latestHash
+    , schemaLatestVersion = latestSchemaId
     }
 
 -- | Check that predicates with the same name/version have the same definitions.
@@ -345,8 +321,8 @@ checkForChanges
   -> IO ()
 checkForChanges AllowChanges _ _ = return ()
 checkForChanges MustBeEqual
-    (HashedSchema typesStored predsStored _)
-    (HashedSchema typesAdded predsAdded _) = do
+    (HashedSchema typesStored predsStored _ _ _)
+    (HashedSchema typesAdded predsAdded _ _ _) = do
   let (_, (errors, _, _)) = runState go ([], HashMap.empty, HashMap.empty)
   unless (null errors) $
     throwIO $ Thrift.Exception $ Text.intercalate "\n\n" errors
@@ -527,8 +503,8 @@ typecheckSchemas
   -> IO TcEnv
 
 typecheckSchemas idToPid dbContent
-    verStored (HashedSchema typesStored predsStored _)
-    verAdded (HashedSchema typesAdded predsAdded _) = do
+    verStored (HashedSchema typesStored predsStored _ _ _)
+    verAdded (HashedSchema typesAdded predsAdded _ _ _) = do
 
   let
     -- NOTE: We store Maybe Type rather than filtering out those typedefs

@@ -31,7 +31,7 @@ import System.IO.Unsafe ( unsafeDupablePerformIO )
 type Hash = GHC.Fingerprint
 
 hash0 :: Hash
-hash0 = hashString ""
+hash0 = GHC.fingerprint0
 
 hashString :: String -> Hash
 hashString = GHC.fingerprintString
