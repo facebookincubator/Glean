@@ -500,17 +500,10 @@ compileQuery bounds (QueryWithInfo query numVars ty) = do
           Ref (MatchVar (Var ty idVar _)) | isWordTy ty -> return (vars ! idVar)
           Ref (MatchFid fid) -> constant (fromIntegral (fromFid fid))
           _ -> error "unsupported result type"
-        local $ \ptr -> local $ \end -> local $ \len -> mdo
-          getOutput resultKeyReg ptr end
-          ptrDiff ptr end len
+        local $ \len -> mdo
           val <- case resultValReg of
             Nothing -> castRegister <$> constant 0
-            Just reg -> do
-              getOutput reg ptr end
-              local $ \tmp -> do
-                ptrDiff ptr end tmp
-                add tmp len
-              return reg
+            Just reg -> return reg
           result idReg resultKeyReg val len
           jumpIf0 len continue
           decrAndJumpIf0 maxResults pause
@@ -1770,4 +1763,3 @@ instance Pretty Generator where
     pretty pid <> "<- (" <> pretty k <> " -> " <> pretty v <> ")"
   pretty (ArrayElementGenerator _ arr) = pretty arr <> "[..]"
   pretty (PrimCall op args) = hsep (pretty op : map pretty args)
-
