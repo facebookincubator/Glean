@@ -488,7 +488,7 @@ userQueryImpl
       debug = Thrift.userQueryOptions_debug opts
 
     schemaVersion <-
-      schemaVersionForQuery env schema repo userQuery_schema_version
+      schemaVersionForQuery env schema Nothing userQuery_schema_version
 
     (returnType, compileTime, irDiag, cont) <-
       case Thrift.userQueryOptions_continuation opts of
@@ -661,7 +661,7 @@ userQueryImpl
     let schema@DbSchema{..} = odbSchema odb
 
     schemaVersion <-
-      schemaVersionForQuery env schema repo userQuery_schema_version
+      schemaVersionForQuery env schema Nothing userQuery_schema_version
 
     let ref = SourceRef userQuery_predicate userQuery_predicate_version
     details@PredicateDetails{..} <-
@@ -808,11 +808,13 @@ userQueryImpl
 schemaVersionForQuery
   :: Database.Env
   -> DbSchema
-  -> Thrift.Repo
+  -> Maybe Thrift.Repo -- ^ default to the DB version if this is supplied
   -> Maybe Thrift.Version -- ^ version specified by the client
   -> IO SchemaSelector
 schemaVersionForQuery env schema repo qversion = do
-  dbSchemaVersion <- getDbSchemaVersion env repo
+  dbSchemaVersion <- case repo of
+    Nothing -> return Nothing
+    Just repo -> getDbSchemaVersion env repo
   return $ maybe LatestSchemaAll SpecificSchemaAll
     $ find isAvailable
     $ catMaybes

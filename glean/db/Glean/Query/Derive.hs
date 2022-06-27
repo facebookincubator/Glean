@@ -180,7 +180,14 @@ getPredicate
   -> SourceRef
   -> IO PredicateDetails
 getPredicate env repo schema ref = do
-  schemaVersion <- UserQuery.schemaVersionForQuery env schema repo Nothing
+  schemaVersion <- UserQuery.schemaVersionForQuery env schema
+    (Just repo) Nothing
+      -- we default to resolving this predicate using the schema
+      -- version stored in the glean.schema_version property of the
+      -- DB. This is important because the client is often just "glean
+      -- derive foo.Predicate" and it doesn't want or need to know
+      -- what schema version to use. Letting the DB decide is the
+      -- right thing.
   case lookupSourceRef ref schemaVersion schema of
     ResolvesTo (RefPred pred)
       | Just details <- lookupPredicateId pred schema -> return details
