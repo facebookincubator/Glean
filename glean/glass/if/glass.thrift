@@ -367,9 +367,11 @@ struct SearchRelatedRequest {
   2: RelationDirection relation;
   3: bool recursive; // Not just directly related entities
   4: optional set<SymbolKind> filter; //return only these symbols of these kinds
+  5: bool detailedResults; // fill out symbol_details in the response
 }
 
-// Consider capping the number of symbols in a single angle query before increasing this number
+// Consider capping the number of symbols in a single angle query before
+// increasing this number
 const i32 RELATED_SYMBOLS_MAX_LIMIT = 100;
 
 struct RelatedSymbols {
@@ -377,8 +379,11 @@ struct RelatedSymbols {
   2: SymbolId child;
 }
 
+// Pairs of edges from "parent" to "child" according to relationship
+// and an optional table of details for each symbol
 struct SearchRelatedResult {
   1: list<RelatedSymbols> edges;
+  2: map<string, SymbolDescription> symbolDetails;
 }
 
 // Glass symbol service
@@ -437,19 +442,20 @@ service GlassService extends fb303.FacebookService {
   ) throws (1: ServerException e);
 
   // Find symbol ids based on local name prefix
-  // (e.g. Glea)
+  // (e.g. Glea).
   SearchByNameResult searchByNamePrefix(
     1: SearchByNameRequest request,
     2: RequestOptions options,
   ) throws (1: ServerException e);
 
   // Find symbol ids based on the prefix of a full symbol id
-  // (e.g. www/php/Gl)
+  // (e.g. www/php/Gl). Experimental
   SearchBySymbolIdResult searchBySymbolId(
     1: SymbolId symbol_prefix,
     2: RequestOptions options,
   ) throws (1: ServerException e);
 
+  // Search for symbols by some relationship (child/parent, inheritence)
   SearchRelatedResult searchRelated(
     1: SymbolId symbol,
     2: RequestOptions options,

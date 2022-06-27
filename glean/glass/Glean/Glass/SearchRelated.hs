@@ -12,15 +12,15 @@
 {-# LANGUAGE DeriveGeneric #-}
 
 module Glean.Glass.SearchRelated
-  ( searchRelatedSymbols
+  ( searchRelatedEntities
   , Recursive(..)
+  , RelatedLocatedEntities(..)
   ) where
 
 import Control.Monad (forM)
 import Control.Monad.Catch (MonadThrow(throwM))
 import Data.Hashable (Hashable(..))
 import Data.HashSet (HashSet)
-import Data.Text (Text)
 import GHC.Generics (Generic)
 import qualified Data.HashSet as HashSet
 
@@ -38,46 +38,56 @@ import qualified Glean.Glass.Search as Search
 import Glean.Glass.Search.Class
 import Glean.Glass.Base (GleanPath (..))
 import qualified Glean.Glass.Query as Query
-import Glean.Glass.Logging (ErrorLogger)
 import Glean.Glass.Path
 import Glean.Glass.SymbolId (entityToAngle, toSymbolId)
 import Glean.Glass.Types
 import Glean.Glass.Utils (fetchData, searchRecursiveWithLimit)
 
+-- | Whether to expand relationships recursively
 data Recursive
   = Recursive
   | NotRecursive
-  deriving (Eq,Show)
+  deriving Eq
 
+-- | What kind of relationship
 data Relation
   = Extends
   | Contains
-  deriving (Eq,Show)
+  deriving Eq
 
+-- | Direction of the relationship arrow to search
 data Direction
   = Parent
   | Child
-  deriving (Eq,Show)
+  deriving Eq
 
+-- | Pairs of edges of related entities
 data RelatedEntities = RelatedEntities
   { parent :: Code.Entity
   , child :: Code.Entity
-  } deriving (Eq,Show,Generic,Hashable)
+  } deriving (Eq,Generic,Hashable)
 
-searchRelatedSymbols
+-- | Pairs of edges of related entities, with all metadata
+data RelatedLocatedEntities = RelatedLocatedEntities
+  { parentRL :: LocatedEntity
+  , childRL :: LocatedEntity
+  } deriving (Eq,Generic,Hashable)
+
+type LocatedEntity = (ResultLocation Code.Entity, SymbolId)
+
+--
+-- Given some search parameters, find entities by relation
+--
+searchRelatedEntities
   :: Int
   -> Recursive
   -> RelationDirection
   -> RelationType
-  -> (RepoName, Language, [Text])
-  -> ReposHaxl u w ([RelatedSymbols], Maybe ErrorLogger)
-searchRelatedSymbols limit recurse dir rel (repo, lang, toks) = do
-  r <- Search.searchEntity lang toks
-  (SearchEntity {..}, err) <- case r of
-    None t -> throwM (ServerException t)
-    One e -> return (e, Nothing)
-    Many e _t -> return (e, Nothing)
-  edges <- withRepo entityRepo $ case (dir, rel) of
+  -> Search.SearchEntity Code.Entity
+  -> RepoName
+  -> ReposHaxl u w [RelatedLocatedEntities]
+searchRelatedEntities limit recurse dir rel SearchEntity{..} repo =
+  withRepo entityRepo $ locateEntities repo =<< case (dir, rel) of
     (RelationDirection_Parent, RelationType_Extends) ->
       searchRelation limit recurse Extends Parent repo [decl] HashSet.empty
     (RelationDirection_Child, RelationType_Extends) ->
@@ -87,33 +97,42 @@ searchRelatedSymbols limit recurse dir rel (repo, lang, toks) = do
     (RelationDirection_Child, RelationType_Contains) ->
       searchRelation limit recurse Contains Child repo [decl] HashSet.empty
     _ ->
-      return []
-  return (edges, err)
+      pure []
 
-toSymbolIds
-  :: RepoName
-  -> RelatedEntities
-  -> RepoHaxl u w RelatedSymbols
-toSymbolIds repo RelatedEntities{..} = do
-  (parentLocation, childLocation) <-
-    case (entityToAngle parent, entityToAngle child) of
-      (Right parent, Right child) -> (,)
-        <$> (fetchData $ locationAngle parent)
-        <*> (fetchData $ locationAngle child)
-      (Left t, _) -> throwM (ServerException t)
-      (_, Left t) -> throwM (ServerException t)
-  relatedSymbols_parent <- symbol repo parent parentLocation
-  relatedSymbols_child <-  symbol repo child childLocation
-  pure $ RelatedSymbols {..}
+-- | Lift entity search results into pairs of entities that we found,
+-- along with their location and symbol id
+locateEntities
+  :: RepoName -> [RelatedEntities] -> RepoHaxl u w [RelatedLocatedEntities]
+locateEntities repo edges = mapM locatePairs edges
   where
-    symbol repo entity location = case location of
-      Just (entity, file, _) -> do
-        path <- GleanPath <$> Glean.keyOf file
-        toSymbolId (fromGleanPath repo path) entity
-      Nothing -> throwM $
-        ServerException $ "Failed to get location for: " <> textShow entity
+    locatePairs RelatedEntities{..} = RelatedLocatedEntities
+      <$> mkLocate parent
+      <*> mkLocate child
 
+    mkLocate entity = do
+      loc <- locate entity
+      sym <- symbol loc
+      return (loc, sym)
 
+    symbol (entity, file, _span) = do
+      path <- GleanPath <$> Glean.keyOf file
+      toSymbolId (fromGleanPath repo path) entity
+
+-- | Could batch this up with the original search
+locate :: Code.Entity -> RepoHaxl u w (ResultLocation Code.Entity)
+locate entity = case entityToAngle entity of
+  Right q -> do
+    mLoc <- fetchData (locationAngle q)
+    case mLoc of
+      Just loc -> pure loc
+      Nothing -> throwM $ ServerException $
+        "Failed to get location for: " <> textShow entity
+  Left t -> throwM (ServerException t)
+
+--
+-- Search driver, expand search until done, returning pairs of edges
+-- of entity relationships.
+--
 searchRelation
   :: Int
   -> Recursive
@@ -122,7 +141,7 @@ searchRelation
   -> RepoName
   -> [Code.Entity]
   -> HashSet RelatedEntities
-  -> RepoHaxl u w [RelatedSymbols]
+  -> RepoHaxl u w [RelatedEntities]
 searchRelation limit recursive relation direction repo toVisit visited = do
   angle <- forM toVisit $ \entity ->
      case entityToAngle entity of
@@ -148,7 +167,7 @@ searchRelation limit recursive relation direction repo toVisit visited = do
   then
     searchRelation recLimit recursive relation direction repo toVisit visited'
   else
-    mapM (toSymbolIds repo) $ HashSet.toList visited'
+   pure $ HashSet.toList visited'
 
 searchChildContains
   :: Int
@@ -221,7 +240,6 @@ searchChildExtendsAngle entity =
     rec $
       field @"parent" entity
     end)
-
 
 locationAngle :: Angle Code.Entity -> Angle (ResultLocation Code.Entity)
 locationAngle entity =

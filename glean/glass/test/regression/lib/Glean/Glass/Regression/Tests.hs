@@ -194,6 +194,7 @@ testSearchRelated sym recurse dir rel (parent, child) get =
     searchRelatedRequest_relation = dir
     searchRelatedRequest_recursive = recurse
     searchRelatedRequest_filter = Nothing
+    searchRelatedRequest_detailedResults = False -- don't compute details
     relatedSymbols_parent = parent
     relatedSymbols_child = child
     arrowTail = if recurse then "-/ /-" else "--"

@@ -267,16 +267,27 @@ instance SortedResponse SearchBySymbolIdResult where
   sorted (SearchBySymbolIdResult syms) =
     SearchBySymbolIdResult (sorted syms)
 
-instance Ord a => SortedResponse [a] where
-  sorted = sort
+instance (SortedResponse a, Ord a) => SortedResponse [a] where
+  sorted = sort . map sorted
 
 instance SortedResponse Range where sorted = id
 instance SortedResponse Location where sorted = id
 instance SortedResponse LocationRange where sorted = id
 instance SortedResponse SearchRelatedResult where
-  sorted (SearchRelatedResult xs) = SearchRelatedResult (sorted xs)
+  sorted (SearchRelatedResult xs ys) = -- to edit the desc hash
+    SearchRelatedResult (sorted xs) (sorted ys)
+instance SortedResponse RelatedSymbols where
+  sorted = id
+instance SortedResponse SymbolId where
+  sorted = id
+instance SortedResponse DefinitionSymbolX where
+  sorted = id
+instance SortedResponse ReferenceRangeSymbolX where
+  sorted = id
 instance SortedResponse SymbolDescription where
   sorted sd = sd { symbolDescription_repo_hash = "testhash" }
+instance SortedResponse (Map.Map Text SymbolDescription) where
+  sorted = Map.map sorted
 
 diff :: FilePath -> FilePath -> IO ()
 diff outGenerated outSpec = do

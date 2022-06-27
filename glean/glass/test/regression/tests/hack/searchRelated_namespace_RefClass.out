@@ -1,0 +1,158 @@
+[
+    "@generated",
+    {
+        "edges": [
+            {
+                "child": "test/php/RefClass/JAZZ",
+                "parent": "test/php/RefClass"
+            },
+            {
+                "child": "test/php/RefClass/bar",
+                "parent": "test/php/RefClass"
+            },
+            {
+                "child": "test/php/RefClass/bazza",
+                "parent": "test/php/RefClass"
+            },
+            {
+                "child": "test/php/RefClass/foo",
+                "parent": "test/php/RefClass"
+            },
+            {
+                "child": "test/php/RefClass/raz",
+                "parent": "test/php/RefClass"
+            }
+        ],
+        "symbolDetails": {
+            "test/php/RefClass": {
+                "annotations": [],
+                "comments": [],
+                "kind": 7,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "RefClass"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/RefClass"
+            },
+            "test/php/RefClass/JAZZ": {
+                "comments": [],
+                "kind": 16,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 17,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "RefClass",
+                    "localName": "JAZZ"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/RefClass/JAZZ"
+            },
+            "test/php/RefClass/bar": {
+                "annotations": [],
+                "comments": [],
+                "kind": 8,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 25,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "RefClass",
+                    "localName": "bar"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/RefClass/bar",
+                "visibility": 20
+            },
+            "test/php/RefClass/bazza": {
+                "annotations": [],
+                "comments": [],
+                "kind": 8,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 21,
+                        "lineEnd": 23
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "RefClass",
+                    "localName": "bazza"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/RefClass/bazza",
+                "visibility": 20
+            },
+            "test/php/RefClass/foo": {
+                "annotations": [],
+                "comments": [],
+                "kind": 8,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 17,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "RefClass",
+                    "localName": "foo"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/RefClass/foo",
+                "visibility": 20
+            },
+            "test/php/RefClass/raz": {
+                "annotations": [],
+                "comments": [],
+                "kind": 9,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 25,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "RefClass",
+                    "localName": "raz"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/RefClass/raz",
+                "visibility": 40
+            }
+        }
+    }
+]

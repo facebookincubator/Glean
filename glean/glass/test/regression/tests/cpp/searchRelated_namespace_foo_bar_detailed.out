@@ -1,0 +1,78 @@
+[
+    "@generated",
+    {
+        "edges": [
+            {
+                "child": "test/cpp/foo/bar/T",
+                "parent": "test/cpp/foo/bar"
+            },
+            {
+                "child": "test/cpp/foo/bar/g",
+                "parent": "test/cpp/foo/bar"
+            }
+        ],
+        "symbolDetails": {
+            "test/cpp/foo/bar": {
+                "comments": [],
+                "kind": 6,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 27,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "foo",
+                    "localName": "bar"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/cpp/foo/bar"
+            },
+            "test/cpp/foo/bar/T": {
+                "comments": [],
+                "kind": 25,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 12,
+                        "lineBegin": 29,
+                        "lineEnd": 29
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "foo::bar",
+                    "localName": "T"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/cpp/foo/bar/T"
+            },
+            "test/cpp/foo/bar/g": {
+                "annotations": [],
+                "comments": [],
+                "kind": 14,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "foo::bar",
+                    "localName": "g"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/cpp/foo/bar/g"
+            }
+        }
+    }
+]

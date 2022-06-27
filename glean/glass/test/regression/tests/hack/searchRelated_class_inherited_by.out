@@ -1,0 +1,80 @@
+[
+    "@generated",
+    {
+        "edges": [
+            {
+                "child": "test/php/RefClass",
+                "parent": "test/php/SourceInterface"
+            },
+            {
+                "child": "test/php/RefClass",
+                "parent": "test/php/SourceTrait"
+            }
+        ],
+        "symbolDetails": {
+            "test/php/RefClass": {
+                "annotations": [],
+                "comments": [],
+                "kind": 7,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "RefClass"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/RefClass"
+            },
+            "test/php/SourceInterface": {
+                "annotations": [],
+                "comments": [],
+                "kind": 13,
+                "location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "SourceInterface"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SourceInterface"
+            },
+            "test/php/SourceTrait": {
+                "annotations": [],
+                "comments": [],
+                "kind": 31,
+                "location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "SourceTrait"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SourceTrait"
+            }
+        }
+    }
+]

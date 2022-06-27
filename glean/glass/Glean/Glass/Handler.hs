@@ -43,6 +43,7 @@ module Glean.Glass.Handler
 import Control.Concurrent.STM ( TVar )
 import Control.Exception ( throwIO, SomeException )
 import Control.Monad ( when, forM )
+import Data.Ord
 import Control.Monad.Catch ( throwM, try )
 import Data.Either.Extra (eitherToMaybe, partitionEithers)
 import Data.Foldable ( forM_ )
@@ -50,13 +51,14 @@ import Data.List.NonEmpty (NonEmpty(..), toList)
 import Data.Maybe ( fromMaybe, catMaybes )
 import Data.Text ( Text )
 import qualified Data.List as List
-import qualified Data.Map as Map
+import qualified Data.Map.Strict as Map
 import qualified Data.Text as Text
 
 import Logger.GleanGlass ( GleanGlassLogger )
 import Logger.GleanGlassErrors ( GleanGlassErrorsLogger )
 import Util.Logger ( loggingAction )
 import Util.Text ( textShow )
+import Util.List ( uniqBy )
 import Util.Control.Exception (catchAll)
 import qualified Logger.GleanGlass as Logger
 import qualified Logger.GleanGlassErrors as ErrorsLogger
@@ -143,6 +145,7 @@ import Glean.Glass.Types
       SearchByNameRequest(..),
       SearchRelatedRequest(..),
       SearchRelatedResult(..),
+      RelatedSymbols(..),
       ServerException(ServerException),
       SymbolDescription(..),
       SymbolId(SymbolId),
@@ -182,7 +185,7 @@ import Glean.Glass.Attributes.SymbolKind
     ( symbolKindFromSymbolKind, symbolKindToSymbolKind )
 import Glean.Glass.Annotations (getAnnotationsForEntity)
 import Glean.Glass.Comments (getCommentsForEntity)
-import Glean.Glass.SearchRelated (searchRelatedSymbols, Recursive(..))
+import qualified Glean.Glass.SearchRelated as Search
 import Glean.Glass.Visibility (getVisibilityForEntity)
 
 
@@ -312,19 +315,29 @@ describeSymbol
   -> SymbolId
   -> RequestOptions
   -> IO SymbolDescription
-describeSymbol env@Glass.Env{..} sym_id _opts =
-  withSymbol "describeSymbol" env sym_id $ \(gleanDBs, (repo, lang, toks)) -> do
+describeSymbol env@Glass.Env{..} symId _opts =
+  withSymbol "describeSymbol" env symId $ \(gleanDBs, (repo, lang, toks)) ->
     backendRunHaxl GleanBackend{..} $ do
       r <- Search.searchEntity lang toks
       (SearchEntity{..}, err) <- case r of
         None t -> throwM (ServerException t)
         One e -> return (e, Nothing)
         Many e _t -> return (e, Nothing)
-      loc <- withRepo entityRepo $
-        rangeSpanToLocationRange repo file rangespan
-      kind <- withRepo entityRepo $ eitherToMaybe <$> findSymbolKind decl
-      desc <- withRepo entityRepo $ describeEntity loc decl sym_id kind
-      return (desc, err)
+      (,err) <$> withRepo entityRepo
+        (mkSymbolDescription repo decl file rangespan symId)
+
+-- Worker to fill out symbol description metadata uniformly
+mkSymbolDescription
+  :: RepoName
+  -> Code.Entity
+  -> Src.File
+  -> Code.RangeSpan
+  -> SymbolId
+  -> Glean.RepoHaxl u w SymbolDescription
+mkSymbolDescription repo entity file rangespan symbolId = do
+  loc <- rangeSpanToLocationRange repo file rangespan
+  kind <- eitherToMaybe <$> findSymbolKind entity
+  describeEntity loc entity symbolId kind
 
 -- | Search for entities by string fragments of names
 searchByName
@@ -473,7 +486,8 @@ fetchSymbolReferenceRanges scsrepo lang toks limit b =
     case er of
       Left err -> return ([], Just err)
       Right (query, searchErr) ->  do
-        ranges <- searchReposWithLimit limit (Query.findReferenceRangeSpan query) $
+        ranges <- searchReposWithLimit limit
+            (Query.findReferenceRangeSpan query) $
           \(targetFile, rspan) ->
             rangeSpanToLocationRange scsrepo targetFile rspan
         return (ranges, fmap logError searchErr)
@@ -1025,30 +1039,64 @@ partialSymbolTokens (SymbolId symid) =
                   (Just _, Nothing) -> Left partialLang
                   _ -> Left partialLang
 
+--
+-- | Relational search. Given a symbol id find symbols related to it.
+-- Relationships could be parent/child or oo inheritance, for example.
+--
 searchRelated
   :: Glass.Env
   -> SymbolId
   -> RequestOptions
   -> SearchRelatedRequest
   -> IO SearchRelatedResult
-searchRelated env@Glass.Env{..} sym opt req = do
-    withSymbol "searchRelated" env sym $ \(gleanDBs, (repo, lang, toks)) -> do
-      backendRunHaxl GleanBackend {..} $ do
-        (edges, err) <-
-          searchRelatedSymbols
-          limit
-          (if searchRelatedRequest_recursive then Recursive else NotRecursive)
-          searchRelatedRequest_relation
-          searchRelatedRequest_relatedBy
-          (repo, lang, toks)
-        let
-          result = SearchRelatedResult
-            { searchRelatedResult_edges = edges
+searchRelated env@Glass.Env{..}
+    sym RequestOptions{..} SearchRelatedRequest{..} =
+  withSymbol "searchRelated" env sym $ \(gleanDBs, (repo, lang, toks)) -> do
+    backendRunHaxl GleanBackend {..} $ do
+
+      r <- Search.searchEntity lang toks
+      (entity, err) <- case r of
+        None t -> throwM (ServerException t)
+        One e -> return (e, Nothing)
+        Many e _t -> return (e, Nothing)
+
+      (entityPairs, descriptions) <- withRepo (entityRepo entity) $ do
+        edgePairs <- withRepo (entityRepo entity) $
+            Search.searchRelatedEntities limit
+              searchRecursively
+              searchRelatedRequest_relation
+              searchRelatedRequest_relatedBy
+              entity repo
+
+        descs <- if searchRelatedRequest_detailedResults
+          then do
+            let uniqSymIds = uniqBy (comparing snd) $ concat
+                  [ [ e1, e2 ]
+                  | Search.RelatedLocatedEntities e1 e2 <- edgePairs ]
+            descs <- mapM (mkDescribe repo) uniqSymIds -- carefully in parallel!
+            pure $ Map.fromAscList descs
+          else pure mempty
+        pure (edgePairs, descs)
+
+      let symbolIdPairs = map (\Search.RelatedLocatedEntities{..} ->
+              RelatedSymbols (snd parentRL) (snd childRL)
+            ) entityPairs
+      let result = SearchRelatedResult
+            { searchRelatedResult_edges = symbolIdPairs
+            , searchRelatedResult_symbolDetails = descriptions
             }
-        pure (result, err)
+      pure (result, err)
   where
-    RequestOptions {..} = opt
-    SearchRelatedRequest {..} = req
+    -- building map of sym id -> descriptions, by first occurence
+    mkDescribe repo e@(_,SymbolId rawSymId) = (rawSymId,) <$> describe repo e
+
+    describe repo ((entity, file, rangespan),symId) =
+      mkSymbolDescription repo entity file rangespan symId
+
+    searchRecursively
+      | searchRelatedRequest_recursive = Search.Recursive
+      | otherwise = Search.NotRecursive
+
     limit = fromIntegral $ case requestOptions_limit of
       Just x | x < rELATED_SYMBOLS_MAX_LIMIT -> x
       _ -> rELATED_SYMBOLS_MAX_LIMIT
