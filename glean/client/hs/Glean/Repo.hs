@@ -60,8 +60,9 @@ getRepos backend pred = do
 
     ok Database{..} =
       (database_status == DatabaseStatus_Complete
-        || usingShards backend &&
-           database_status == DatabaseStatus_Restoring) &&
+        || (usingShards backend &&
+           (database_status == DatabaseStatus_Restoring
+            || database_status == DatabaseStatus_Available))) &&
       pred database_repo &&
       isNothing database_expire_time
   xss <- groupSortOn (repo_name . database_repo) . filter ok <$>
