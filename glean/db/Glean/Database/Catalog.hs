@@ -479,7 +479,9 @@ getLocalDatabases cat = do
   Entries{..} <- getEntries cat
   local <- HashMap.traverseWithKey (local_db Nothing) entriesLiveHere
   elsewhere <- HashMap.traverseWithKey
-    (local_db (Just Thrift.DatabaseStatus_Available))
+    -- elsewhere dbs are tagged with the Restoring state for backwards compat.
+    -- T124581378 tag with Available once all clients have been updated
+    (local_db (Just Thrift.DatabaseStatus_Restoring))
     entriesLiveElsewhere
   return $ mconcat
     [ HashMap.mapWithKey restoring_db entriesRestoring
