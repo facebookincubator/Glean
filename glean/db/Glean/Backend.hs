@@ -39,7 +39,6 @@ import Control.Concurrent.STM (atomically)
 import Control.Exception
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as ByteString
-import Data.Coerce (coerce)
 import Data.Default
 import qualified Data.Map as Map
 import Data.Maybe
@@ -57,11 +56,11 @@ import qualified Glean.Database.Catalog as Catalog
 import qualified Glean.Database.CompletePredicates as Database
 import qualified Glean.Database.Config as Database
 import qualified Glean.Database.Env as Database
-import qualified Glean.Database.Storage as Storage
 import qualified Glean.Database.Create as Database
 import qualified Glean.Database.Delete as Database
 import Glean.Database.Open as Database
 import qualified Glean.Database.List as Database
+import qualified Glean.Database.PredicateStats as Database (predicateStats)
 import qualified Glean.Database.Restore as Database
 import qualified Glean.Database.Types as Database
 import qualified Glean.Database.Work as Database
@@ -70,7 +69,7 @@ import Glean.Impl.ConfigProvider
 import Glean.Logger
 import qualified Glean.Query.UserQuery as UserQuery
 import qualified Glean.Query.Derive as Derive
-import Glean.RTS (Fid(..), Pid(..))
+import Glean.RTS (Fid(..))
 import qualified Glean.RTS.Foreign.Inventory as Inventory
 import qualified Glean.RTS.Foreign.Lookup as Lookup
 import Glean.Database.Schema
@@ -290,21 +289,7 @@ instance Backend Database.Env where
     schema  <- get (Database.envSchemaSource env)
     validateNewSchema str schema
 
-  predicateStats env repo ExcludeBase =
-    withOpenDatabase env repo $ \Database.OpenDB{..} ->
-      Map.fromList . coerce <$> Storage.predicateStats odbHandle
-
-  predicateStats env repo IncludeBase = do
-    statsList <- withOpenDatabaseStack env repo $ \Database.OpenDB{..} ->
-      Storage.predicateStats odbHandle
-    return $ Map.fromListWith combineStats $ coerce $ concat statsList
-    where
-      combineStats x y = Thrift.PredicateStats
-        { predicateStats_count
-          = Thrift.predicateStats_count x + Thrift.predicateStats_count y
-        , predicateStats_size
-          = Thrift.predicateStats_size x + Thrift.predicateStats_size y
-        }
+  predicateStats env repo opts = Database.predicateStats env repo opts
 
   userQueryFacts = UserQuery.userQueryFacts
   userQuery = UserQuery.userQuery
