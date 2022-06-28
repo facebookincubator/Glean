@@ -1750,10 +1750,15 @@ instance Pretty CgStatement where
         hang 2 (sep [sep ("(" : punctuate ";" (map pretty stmts)), ")"])
 
 instance Pretty Generator where
-  pretty (FactGenerator pred kpat vpat _)
-    | isWild vpat || isUnit vpat = pretty pred <+> pretty kpat
-    | otherwise = pretty pred <+> pretty kpat <+> "->" <+> pretty vpat
+  pretty (FactGenerator pref kpat vpat section)
+    | isWild vpat || isUnit vpat = pred <+> pretty kpat
+    | otherwise = pred <+> pretty kpat <+> "->" <+> pretty vpat
     where
+    pred = pretty pref <> prettySection
+    prettySection = case section of
+      SeekOnAllFacts -> ""
+      SeekOnBase -> "<base>"
+      SeekOnStacked -> "<stacked>"
     isUnit (Tuple []) = True
     isUnit _ = False
   pretty (TermGenerator q) = pretty q
