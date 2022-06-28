@@ -171,7 +171,7 @@ runWithShards env myShards sm = do
     errorIfDepsNotPresent = fromMaybe (error "dependencies must be retained")
 
     missingDependencies = any isNothing $ concatMap dependencies keep
-  when missingDependencies $ logInfo "some dbs are missing dependencies"
+  when missingDependencies $ logWarning "some dbs are missing dependencies"
 
   forM_ delete $ \repo -> do
     let
