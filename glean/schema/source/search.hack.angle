@@ -150,5 +150,3 @@ predicate SearchInContext :
       SearchInNamespace {name = N, namespace_ = { just = NS }, decl = D} )
 
 }
-
-schema search.hack.7 evolves search.hack.6
