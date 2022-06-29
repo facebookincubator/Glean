@@ -525,6 +525,7 @@ library db
         Glean.Database.Schema.ComputeIds
         Glean.Database.Schema.Transform
         Glean.Database.Schema.Types
+        Glean.Database.Sharding
         Glean.Database.Stats
         Glean.Database.Storage
         Glean.Database.Storage.Memory

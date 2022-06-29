@@ -29,7 +29,6 @@ import qualified Data.ByteString.Char8 as B
 import qualified Data.ByteString.UTF8 as UTF8
 import Data.Default
 import Data.List
-import qualified Data.Set as Set
 import qualified Data.Map as Map
 import qualified Data.Text as Text
 import Options.Applicative
@@ -41,6 +40,7 @@ import Glean.Angle.Types
 import qualified Glean.Database.Catalog.Local.Files as Catalog.Local.Files
 import qualified Glean.Database.Catalog.Store as Catalog
 import Glean.Database.Schema.ComputeIds
+import Glean.Database.Sharding
 import Glean.Database.Storage
 import qualified Glean.Database.Storage.Memory as Memory
 import qualified Glean.Database.Storage.RocksDB as RocksDB
@@ -50,8 +50,6 @@ import Glean.Schema.Resolve
 import Glean.Schema.Types
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types
-import Glean.Util.Observed
-import qualified Glean.Util.Observed as Observed
 import Glean.Util.ShardManager
 import Glean.Util.Some
 import Glean.Util.Trace (Listener)
@@ -84,8 +82,7 @@ data Config = Config
       -- ^ A 'Listener' which might get notified about various events related
       -- to databases. This is for testing support only.
   , cfgShardManager
-    :: forall a
-    . Observed ServerConfig.Config -> (SomeShardManager -> IO a) -> IO a
+    :: forall a .  ShardManagerConfigParams -> (SomeShardManager -> IO a) -> IO a
   }
 
 instance Show Config where
@@ -111,25 +108,6 @@ instance Default Config where
     , cfgListener = mempty
     , cfgShardManager = defaultShardManagerConfig
     }
-
-defaultShardManagerConfig
-  :: Observed ServerConfig.Config -> (SomeShardManager -> IO b) -> IO b
-defaultShardManagerConfig serverConfig callback = do
-  config <- Observed.get serverConfig
-  case ServerConfig.config_sharding config of
-    ServerConfig.ShardingPolicy_no_shards{} ->
-      callback $ SomeShardManager noSharding
-    ServerConfig.ShardingPolicy_static_assignment{} ->
-      callback $ SomeShardManager $ shardByRepo $ do
-        config <- Observed.get serverConfig
-        case ServerConfig.config_sharding config of
-          ServerConfig.ShardingPolicy_static_assignment assignment ->
-            return $ Just $ Set.toList $
-              ServerConfig.staticShardsPolicy_shards assignment
-          _ ->
-            return Nothing
-    other ->
-      error $ "Unsupported sharding policy: " <> show other
 
 -- | The schema that we've read from the filesystem or the configs. We
 -- need this in three forms:

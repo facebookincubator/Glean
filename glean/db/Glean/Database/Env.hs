@@ -40,6 +40,7 @@ import Glean.Database.Close
 import Glean.Database.Janitor
 import qualified Glean.Database.Stats as Stats
 import Glean.Database.Open
+import Glean.Database.Sharding
 import Glean.Database.Types
 import Glean.Database.Work
 import Glean.Database.Work.Heartbeat
@@ -101,9 +102,10 @@ initEnv evb cfg logger envSchemaSource envRecipeConfig envServerConfig =
       logInfo $ "Storing temporary DBs in " <> tmp
       io tmp
     withRoot (Just dir) io = io dir
+    shardingParams = ShardManagerConfigParams envServerConfig
   in
   withRoot (cfgRoot cfg) $ \dbRoot ->
-  cfgShardManager cfg envServerConfig $ \shardManager -> do
+  cfgShardManager cfg shardingParams $ \shardManager -> do
     envCatalog <- do
       Some store <- cfgCatalogStore cfg dbRoot
       Catalog.open store
