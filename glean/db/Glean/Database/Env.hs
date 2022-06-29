@@ -17,13 +17,16 @@ import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
 import Data.Time
 import System.Clock (TimeSpec(..))
+import System.Process
 import System.Timeout
 import System.IO.Temp
 
 import Logger.IO
 import Data.RateLimiterMap
+import ServiceData.GlobalStats
 import Util.EventBase
 import Util.Log
+import Text.Printf
 
 import qualified Glean.RTS.Foreign.LookupCache as LookupCache
 import Glean.Database.Backup (backuper)
@@ -189,6 +192,18 @@ spawnThreads env = do
 
   doOnUpdate (envSchemaSource env) $
     atomically $ void $ tryPutTMVar (envSchemaUpdateSignal env) ()
+
+  -- Disk usage counters
+  Warden.spawn_ (envWarden env) $ doPeriodically (seconds 600) $ do
+    let getDfOutput (outp::String) = read . (!! 1) . words <$>
+          readCreateProcess
+            (shell $ printf "df --output=%s -B1 '%s'" outp (envRoot env))
+            ""
+
+    available <- getDfOutput "size"
+    used <- getDfOutput "used"
+    void $ setCounter "glean.db.disk.capacity_bytes" available
+    void $ setCounter "glean.db.disk.used_bytes" used
 
 -- Todo: this needs a lot more work.
 -- * We shouldn't just cancel the janitor, we should let it finish the
