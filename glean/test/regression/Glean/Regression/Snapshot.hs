@@ -67,8 +67,9 @@ runTest
   -> TestConfig
   -> IO [FilePath]
 runTest Driver{..} driverOpts root testIn =
-  withTestDatabase (indexerRun driverIndexer driverOpts) testIn $
-    queryMakeOuts testIn
+  withTestBackend testIn $ \backend ->
+    withTestDatabase backend (indexerRun driverIndexer driverOpts) testIn $
+      queryMakeOuts testIn backend
   where
     queryMakeOuts test backend repo = do
       queries <- get_queries root mempty (testRoot test)

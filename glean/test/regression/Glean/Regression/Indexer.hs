@@ -7,26 +7,36 @@
 -}
 
 module Glean.Regression.Indexer
-  ( withTestDatabase
+  ( withTestBackend
+  , withTestDatabase
   ) where
 
 import System.Exit
 import System.FilePath
 
 import Glean
+import Glean.LocalOrRemote
 import Glean.Database.Test
 import Glean.Indexer
 import Glean.Regression.Config
 import Glean.Util.Some
 
+-- | Set up a Backend for test runs
+withTestBackend
+  :: TestConfig
+  -> (Some LocalOrRemote -> IO a)
+  -> IO a
+withTestBackend test action = withTestEnv settings (action . Some)
+  where settings = [ setRoot $ testOutput test </> "db" ]
+
 -- | Run the supplied Indexer to populate a temporary DB
 withTestDatabase
-  :: RunIndexer
+  :: Some LocalOrRemote
+  -> RunIndexer
   -> TestConfig
-  -> (Some Backend -> Repo -> IO a)
+  -> (Repo -> IO a)
   -> IO a
-withTestDatabase indexer test action =
-  withTestEnv settings $ \backend -> do
+withTestDatabase backend indexer test action = do
   let
     repo = testRepo test
     ver = fromIntegral <$> testSchemaVersion test
@@ -37,8 +47,5 @@ withTestDatabase indexer test action =
       indexerGroup = testGroup test
     }
   fillDatabase backend ver repo "" (die "repo already exists") $
-    indexer (Some backend) repo params
-  action (Some backend) repo
-  where
-    settings =
-        [ setRoot $ testOutput test </> "db" ]
+    indexer backend repo params
+  action repo
