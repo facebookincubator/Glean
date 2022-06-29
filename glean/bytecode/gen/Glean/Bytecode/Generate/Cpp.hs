@@ -69,11 +69,15 @@ genHeader path pre ls = genFile path $
   , "}"
   , "}" ]
 
+unusedOps :: [Text]
+unusedOps = ["Unused" <> Text.pack (show n) | n <- [length instructions .. 255]]
+
 -- | Generate the enum with all opcodes.
 genOpEnum :: [Text]
 genOpEnum =
-  "enum class Op : uint64_t {"
+  "enum class Op : uint8_t {"
   : [indent $ insnName insn <> "," | insn <- instructions]
+  ++ [indent $ op <> "," | op <- unusedOps]
   ++ ["};"]
 
 genEvaluator :: [Text]
@@ -150,17 +154,29 @@ cppType _ = "uint64_t"
 --       eval_Name();
 --       break;
 --      ...
+--
+--     case Op::Unused42:
+--     ...
+--     case Op::Unused255:
+--       rts::error("invalid opcode");
 --    }
 -- }
+--
+-- Note that we generate alternatives for each possible value of the opcode byte
+-- rather than using `default` because this results in better code (jump via
+-- table at end of each alternative rather than bounds check + jump via table in
+-- a common loop).
+--
 genEvalSwitch :: [Text]
 genEvalSwitch =
   [ "FOLLY_ALWAYS_INLINE void evalSwitch() {"
   , "  while (true) {"
   , "    switch (static_cast<Op>(*pc++)) {" ]
-  ++ intercalate [""] (map genAlt instructions) ++
-  [ ""
-  , "      default:"
-  , "        rts::error(\"invalid opcode\");"
+  ++ intercalate [""] (map genAlt instructions)
+  ++
+  [ "" ]
+  ++ map genUnusedAlt unusedOps ++
+  [ "        rts::error(\"invalid opcode\");"
   , "    }"
   , "  }"
   , "}" ]
@@ -174,6 +190,9 @@ genEvalSwitch =
       [ "        return;"]
       else
       [ "        break;"]
+
+    genUnusedAlt op =
+      "      case Op::" <> op <> ":"
 
 -- | Generate a token-threaded interpreter (opcode are indices into a table
 -- of labels, dispatch via compute goto). Note dispatch is repeated for each
