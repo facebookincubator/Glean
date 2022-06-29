@@ -6,12 +6,16 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE CPP #-}
 module Glean.Database.Sharding (
   ShardManagerConfigParams (..),
   defaultShardManagerConfig,
 ) where
 
 import qualified Data.Set as Set
+#if FACEBOOK
+import Glean.Impl.ShardManager
+#endif
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Util.Observed (Observed)
 import qualified Glean.Util.Observed as Observed
@@ -43,5 +47,12 @@ defaultShardManagerConfig ShardManagerConfigParams {..} callback = do
                       ServerConfig.staticShardsPolicy_shards assignment
               _ ->
                 return Nothing
+#if FACEBOOK
+    ServerConfig.ShardingPolicy_shard_manager policy -> do
+      let nshards = ServerConfig.shardManagerPolicy_nshards policy
+          serviceName = ServerConfig.shardManagerPolicy_service_name policy
+      withShardManagerClient (fromIntegral nshards) serviceName $
+          \sm -> callback $ SomeShardManager sm
+#endif
     other ->
       error $ "Unsupported sharding policy: " <> show other
