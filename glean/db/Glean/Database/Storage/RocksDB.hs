@@ -12,6 +12,7 @@ module Glean.Database.Storage.RocksDB
   ) where
 
 import qualified Codec.Archive.Tar as Tar
+import Codec.Archive.Tar.Entry (getDirectoryContentsRecursive)
 import Control.Exception
 import Control.Monad
 import qualified Data.ByteString.Lazy as LBS
@@ -32,6 +33,7 @@ import System.FilePath
 import Util.FFI
 import Util.IO (safeRemovePathForcibly)
 
+import Glean.Database.Backup.Backend (Data(Data))
 import Glean.Database.Repo (databasePath)
 import Glean.Database.Storage
 import Glean.FFI
@@ -217,7 +219,8 @@ instance Storage RocksDB where
     withContainer db $ \s_ptr ->
       withCString path $ invoke . glean_rocksdb_container_backup s_ptr
     entries <- Tar.pack scratch ["backup"]
-    process $ Tar.write entries
+    size <- getFileSizeRecursively path
+    process (Tar.write entries) (Data $ fromIntegral size)
     where
       path = scratch </> "backup"
 
@@ -239,6 +242,16 @@ instance Storage RocksDB where
       scratch_db = scratch </> "db"
 
       target = containerPath rocks repo
+
+getFileSizeRecursively :: FilePath -> IO Integer
+getFileSizeRecursively path = do
+  files <- getDirectoryContentsRecursive path
+  sizes <- forM files $ \f -> do
+    itIsAFile <- doesFileExist $ path </> f
+    if itIsAFile
+      then getFileSize $ path </> f
+      else return 0
+  return $! sum sizes
 
 containerPath :: RocksDB -> Repo -> FilePath
 containerPath RocksDB{..} repo = databasePath rocksRoot repo </> "db"

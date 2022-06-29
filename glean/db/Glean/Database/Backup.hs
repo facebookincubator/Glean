@@ -7,6 +7,7 @@
 -}
 
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE NamedFieldPuns #-}
 module Glean.Database.Backup
   ( backuper
   , Event(..)
@@ -17,7 +18,6 @@ import Control.Concurrent.Async
 import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
-import qualified Data.ByteString.Lazy as LBS
 import qualified Data.HashMap.Strict as HashMap
 import Data.HashSet (HashSet)
 import qualified Data.HashSet as HashSet
@@ -192,7 +192,7 @@ doBackup env@Env{..} repo prefix site =
       (\(pid,stats) -> (,stats) . predicateRef <$> lookupPid pid odbSchema)
       <$> Storage.predicateStats odbHandle
     Backend.Data{..} <- withScratchDirectory envRoot repo $ \scratch ->
-      Storage.backup odbHandle scratch $ \bytes -> do
+      Storage.backup odbHandle scratch $ \bytes Data{dataSize} -> do
         say logInfo "uploading"
         policy <- ServerConfig.databaseBackupPolicy_repos
           . ServerConfig.config_backup <$> Observed.get envServerConfig
@@ -205,7 +205,7 @@ doBackup env@Env{..} repo prefix site =
               metaCompleteness = case metaCompleteness meta of
                 Complete DatabaseComplete{..} ->
                   Complete DatabaseComplete
-                    {databaseComplete_bytes = Just (LBS.length bytes)
+                    {databaseComplete_bytes = Just (fromIntegral dataSize)
                     ,..}
                 _ -> metaCompleteness meta
         }

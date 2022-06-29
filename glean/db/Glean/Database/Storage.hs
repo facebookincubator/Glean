@@ -21,6 +21,7 @@ import qualified Data.ByteString.Lazy as Lazy
 import Data.HashMap.Strict (HashMap)
 import qualified Data.Vector.Storable as VS
 
+import Glean.Database.Backup.Backend (Data)
 import Glean.RTS.Foreign.FactSet (FactSet)
 import Glean.RTS.Foreign.Inventory (Inventory)
 import Glean.RTS.Foreign.Lookup (CanLookup)
@@ -131,7 +132,7 @@ class CanLookup (Database s) => Storage s where
   backup
     :: Database s  -- ^ database
     -> FilePath  -- ^ scratch directory
-    -> (Lazy.ByteString -> IO a)
+    -> (Lazy.ByteString -> Data -> IO a)
           -- ^ function which expects the serialised database
     -> IO a
 
