@@ -51,6 +51,7 @@ import qualified Glean.Recipes.Types as Recipes
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Util.Observed as Observed
 import Glean.Util.Periodic
+import Glean.Util.ShardManager (SomeShardManager)
 import Glean.Util.Some
 import Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.Time
@@ -73,39 +74,42 @@ withDatabases evb cfg cfgapi act =
     cfgapi
     (if cfgReadOnly cfg then ThriftSource.value def else cfgRecipeConfig cfg)
     $ \recipe_config ->
-  ThriftSource.withValue cfgapi (cfgServerConfig cfg) $ \server_config ->
-    bracket
-      (initEnv
-        evb
-        cfg
-        logger
-        schema_source
-        recipe_config
-        server_config)
-      closeEnv
-      $ \env -> do
-          resumeWork env
-          spawnThreads env
-          act env
+  ThriftSource.withValue cfgapi (cfgServerConfig cfg) $ \server_config -> do
+    let
+      withRoot Nothing io = withSystemTempDirectory "glean" $ \tmp -> do
+        logInfo $ "Storing temporary DBs in " <> tmp
+        io tmp
+      withRoot (Just dir) io = io dir
+      shardingParams = ShardManagerConfigParams server_config
+    withRoot (cfgRoot cfg) $ \dbRoot ->
+      cfgShardManager cfg shardingParams $ \shardManager ->
+      bracket
+        (initEnv
+          evb
+          dbRoot
+          shardManager
+          cfg
+          logger
+          schema_source
+          recipe_config
+          server_config)
+        closeEnv
+        $ \env -> do
+            resumeWork env
+            spawnThreads env
+            act env
 
 initEnv
   :: EventBaseDataplane
+  -> FilePath
+  -> SomeShardManager
   -> Config
   -> Logger
   -> Observed ProcessedSchema
   -> Observed Recipes.Config
   -> Observed ServerConfig.Config
   -> IO Env
-initEnv evb cfg logger envSchemaSource envRecipeConfig envServerConfig =
-  let
-    withRoot Nothing io = withSystemTempDirectory "glean" $ \tmp -> do
-      logInfo $ "Storing temporary DBs in " <> tmp
-      io tmp
-    withRoot (Just dir) io = io dir
-    shardingParams = ShardManagerConfigParams envServerConfig
-  in
-  withRoot (cfgRoot cfg) $ \dbRoot ->
-  cfgShardManager cfg shardingParams $ \shardManager -> do
+initEnv evb dbRoot shardManager cfg logger envSchemaSource envRecipeConfig envServerConfig = do
     envCatalog <- do
       Some store <- cfgCatalogStore cfg dbRoot
       Catalog.open store
