@@ -847,21 +847,14 @@ const char *glean_invoke_typechecker(
     void **output,
     size_t *output_size) {
   return ffi::wrap([=] {
-    assert(typechecker->value->inputs == 4);
-
-    const std::function<uint64_t(uint64_t,uint64_t)> rename =
-      [](uint64_t id, uint64_t) { return id; };
     binary::Output out;
-
-    const uint64_t args[] = {
-      reinterpret_cast<uint64_t>(&rename),
-      reinterpret_cast<uint64_t>(input),
-      reinterpret_cast<uint64_t>(input) + input_size,
-      reinterpret_cast<uint64_t>(&out)
-    };
-
-    typechecker->value->execute(args);
-
+    uint64_t dummy;
+    Predicate::runTypecheck(
+        *typechecker->value,
+        Renamer{[](auto id, auto) { return id; }},
+        Fact::Clause::fromKey({static_cast<const unsigned char*>(input), input_size}),
+        out,
+        dummy);
     ffi::clone_bytes(out.bytes()).release_to(output, output_size);
   });
 }

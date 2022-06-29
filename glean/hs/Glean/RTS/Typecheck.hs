@@ -114,9 +114,7 @@ typecheck rename input inputend output = tc
 -- binary::Output * - substituted value
 --
 checkType :: Type -> IO (Subroutine CompiledTypecheck)
-checkType ty = generate Optimised  $ \(rename, input, inputend, output) -> do
-  typecheck rename input inputend output ty
-  ret
+checkType ty = checkSignature ty $ RecordTy []
 
 -- | Generate a subroutine which typechecks and substitutes a clause. It has
 -- the following arguments:

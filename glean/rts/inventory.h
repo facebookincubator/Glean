@@ -104,15 +104,7 @@ struct Predicate {
       Fact::Clause clause,
       binary::Output& output,
       uint64_t& key_size) const {
-    const uint64_t args[] = {
-      reinterpret_cast<uint64_t>(&renamer.rename),
-      reinterpret_cast<uint64_t>(clause.data),
-      reinterpret_cast<uint64_t>(clause.data + clause.key_size),
-      reinterpret_cast<uint64_t>(clause.data + clause.size()),
-      reinterpret_cast<uint64_t>(&output),
-      reinterpret_cast<uint64_t>(&key_size)
-    };
-    typechecker->execute(args);
+    runTypecheck(*typechecker, renamer, clause, output, key_size);
   }
 
   void substitute(
@@ -123,6 +115,22 @@ struct Predicate {
     // TODO: We implement substitution via the typechecker for now but it we
     // might want to generate a more efficient subroutine just for substitution.
     typecheck(substituter.renamer, clause, output, key_size);
+  }
+
+  static void runTypecheck(
+      const Subroutine& sub,
+      const Renamer& renamer,
+      Fact::Clause clause,
+      binary::Output& output,
+      uint64_t& key_size) {
+    const uint64_t args[] = {
+      reinterpret_cast<uint64_t>(&renamer.rename),
+      reinterpret_cast<uint64_t>(clause.data),
+      reinterpret_cast<uint64_t>(clause.data + clause.key_size),
+      reinterpret_cast<uint64_t>(clause.data + clause.size()),
+      reinterpret_cast<uint64_t>(&output),
+      reinterpret_cast<uint64_t>(&key_size)};
+    sub.execute(args);
   }
 
   void traverse(
