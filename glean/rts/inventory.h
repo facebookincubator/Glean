@@ -132,7 +132,7 @@ struct Predicate {
   }
 
   static void runTraverse(
-      Subroutine& sub,
+      const Subroutine& sub,
       const Traverser& handler,
       Fact::Clause clause) {
     const uint64_t args[] = {
