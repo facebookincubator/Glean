@@ -33,6 +33,9 @@ module Glean.Database.Catalog
   , resetElsewhere
   , getLocalDatabases
   , getLocalDatabase
+  -- for testing
+  , getEntries
+  , Entries(..)
   ) where
 
 import Control.Concurrent.Async
