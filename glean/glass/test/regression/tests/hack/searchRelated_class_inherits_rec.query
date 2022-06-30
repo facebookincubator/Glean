@@ -1,0 +1,2 @@
+action: searchRelated
+args: {"symbol":"test/php/SourceInterface","request":{"relatedBy":1,"relation":2,"recursive":true,"detailedResults":true}}

@@ -1,0 +1,2 @@
+action: searchRelated
+args: {"symbol":"test/php/RefClass","request":{"relatedBy":2,"relation":2,"recursive":true,"detailedResults":true}}
