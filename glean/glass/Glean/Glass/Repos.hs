@@ -118,7 +118,7 @@ selectReposAndLanguages mRepoName mLang =
       (Nothing, Nothing) -> "Empty index: no repos or languages found"
       (Just r, Nothing) -> "Unknown repository: " <> unRepoName r
       (Nothing, Just l) -> "No repository for " <> toShortCode l
-      (Just r, Just l) -> "Unknown combination: " <> unRepoName r
+      (Just r, Just l) -> "Unknown repo/lang combination: " <> unRepoName r
         <> "(" <> toShortCode l <> ")"
 
 -- | Select universe of glean repo,(db/language) pairs.

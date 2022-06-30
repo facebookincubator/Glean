@@ -1,0 +1,33 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [],
+        "symbols": [
+            "test/php/NS/NamespaceClass",
+            "test/php/NS/NamespaceClass/class_function",
+            "test/php/Position",
+            "test/php/Position/Bottom",
+            "test/php/Position/Center",
+            "test/php/Position/Left",
+            "test/php/Position/Right",
+            "test/php/Position/Top",
+            "test/php/RefClass",
+            "test/php/RefClass/bar",
+            "test/php/RefClass/bazza",
+            "test/php/RefClass/foo",
+            "test/php/RefClass/raz",
+            "test/php/SourceClass",
+            "test/php/SourceClass/bar",
+            "test/php/SourceClass/daz",
+            "test/php/SourceInterface/foo",
+            "test/php/SourceTrait/quux",
+            "test/php/SubClass",
+            "test/php/SuperClass",
+            "test/php/SuperClass/superAdd",
+            "test/php/TestAnnotation",
+            "test/php/TestAnnotation/__construct",
+            "test/php/TestAnnotation/test",
+            "test/php/corge"
+        ]
+    }
+]
