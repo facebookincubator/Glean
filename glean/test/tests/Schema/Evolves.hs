@@ -101,13 +101,33 @@ schemaEvolves = TestList
           Right _ -> True
           Left _ -> False
 
+  , TestLabel "can add defaultable field" $ TestCase $ do
+    withSchema latestAngleVersion
+      [s|
+        schema test.1 {
+          predicate P : { a : nat }
+        }
+        schema test.2 {
+          predicate P : { a : nat, b: { c : string, d : bool } }
+        }
+        schema test.2 evolves test.1
+        schema all.1 : test.1, test.2 {}
+      |]
+      $ \r ->
+      assertBool "succeeds creating schema" $
+        case r of
+          Right _ -> True
+          Left _ -> False
+
   , TestLabel "cannot remove required field" $ TestCase $ do
     withSchema latestAngleVersion
       [s|
         schema test.1 {
-          predicate P : { a : nat, b: string }
+          predicate R : string
+          predicate P : { a : nat, b: R }
         }
         schema test.2 {
+          predicate R : string
           predicate P : { a : nat }
         }
         schema test.2 evolves test.1
@@ -126,6 +146,24 @@ schemaEvolves = TestList
       [s|
         schema test.1 {
           predicate P : { a : nat, b: maybe string }
+        }
+        schema test.2 {
+          predicate P : { a : nat }
+        }
+        schema test.2 evolves test.1
+        schema all.1 : test.1, test.2 {}
+      |]
+      $ \r ->
+      assertBool "succeeds creating schema" $
+        case r of
+          Right _ -> True
+          Left _ -> False
+
+  , TestLabel "can remove defaultable field" $ TestCase $ do
+    withSchema latestAngleVersion
+      [s|
+        schema test.1 {
+          predicate P : { a : nat, b: { c: string, d: bool } }
         }
         schema test.2 {
           predicate P : { a : nat }

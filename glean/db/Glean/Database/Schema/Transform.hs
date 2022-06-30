@@ -165,9 +165,14 @@ mkValueTransformation from to = go from to
         <> show from <> " to " <> show to
 
 defaultValue :: Type -> Term a
-defaultValue ty = case ty of
+defaultValue ty = case derefType ty of
   MaybeTy _ -> Alt 0 (Tuple [])
-  BooleanTy -> Alt 0 (Tuple [])
+  ByteTy -> Byte 0
   NatTy -> Nat 0
+  BooleanTy -> Alt 0 (Tuple [])
   StringTy -> String ""
+  ArrayTy _ -> Array []
+  RecordTy fields -> Tuple (map (defaultValue . fieldDefType) fields)
+  EnumeratedTy{} -> Alt 0 (Tuple [])
+  SumTy (first : _) -> Alt 0 (defaultValue (fieldDefType first))
   _ -> error $ "type doesn't have a default value: " <> show ty

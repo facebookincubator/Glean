@@ -534,6 +534,15 @@ canEvolve types evolvedBy new old = go new old
         required fields = Map.filter (not . hasDefault . fieldDefType) fields
         hasDefault ty = case ty of
           MaybeTy _ -> True
+          NatTy -> True
+          StringTy -> True
+          BooleanTy -> True
+          ByteTy -> True
+          ArrayTy _ -> True
+          RecordTy fields -> all (hasDefault . fieldDefType) fields
+          EnumeratedTy{} -> True
+          SumTy (first : _) -> hasDefault (fieldDefType first)
+          NamedTy ty -> hasDefault (get ty)
           _ -> False
 
         newRequiredFields = Map.keys (required addedFields)
@@ -554,7 +563,7 @@ canEvolve types evolvedBy new old = go new old
               [ Text.unwords [ "required" , plural optName newRequiredFields
                 , "added:" , Text.unwords newRequiredFields ]
               , "For backward and forward compatibility, predicate evolutions"
-                <> " require that all new fields be optional"
+                <> " require that all new fields are non-predicate types"
               ]
 
 
