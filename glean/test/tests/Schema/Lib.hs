@@ -19,6 +19,7 @@ import Data.ByteString (ByteString)
 import Control.Exception
 import Control.Monad
 import Data.Default
+import qualified Data.Map as Map
 import Data.Text (Text, pack)
 import Data.Text.Encoding (encodeUtf8)
 import System.FilePath
@@ -82,8 +83,8 @@ withSchemaAndFacts customSettings schema facts query act =
   -- get PredicateDetails
   dbSchema <- do
     schema <- either error return
-      $ processSchema $ encodeUtf8 $ pack schema
-    newDbSchema schema readWriteContent
+      $ processOneSchema Map.empty $ encodeUtf8 $ pack schema
+    newDbSchema schema LatestSchemaAll readWriteContent
 
   let run q = do
         -- open db for querying

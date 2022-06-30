@@ -19,7 +19,7 @@ import System.Exit (die)
 
 import Util.OptParse
 
-import Glean.Database.Config (schemaSourceOption, ProcessedSchema)
+import Glean.Database.Config (schemaSourceOption, SchemaIndex)
 import Glean.Database.Schema
 import Glean.Database.Schema.Types
 import Glean.Impl.ConfigProvider
@@ -31,7 +31,7 @@ import Glean.Util.ThriftSource (ThriftSource)
 import qualified Glean.Util.ThriftSource as ThriftSource
 
 data Config = Config
-  { cfgSchemaSource :: ThriftSource ProcessedSchema
+  { cfgSchemaSource :: ThriftSource SchemaIndex
   , cfgCommand :: Command
   }
 
@@ -63,7 +63,7 @@ main =
   withConfigProvider cfg $ \(cfgAPI :: ConfigAPI) -> do
 
   schemas <- ThriftSource.load cfgAPI cfgSchemaSource
-  db_schema <- newDbSchema schemas readWriteContent
+  db_schema <- newDbSchema schemas LatestSchemaAll readWriteContent
 
   case cfgCommand of
     PTC args -> predicateTypecheckers db_schema args

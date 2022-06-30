@@ -58,6 +58,7 @@ kickOffDatabase :: Env -> Thrift.KickOff -> IO Thrift.KickOffResponse
 kickOffDatabase env@Env{..} Thrift.KickOff{..}
   | envReadOnly = dbError kickOff_repo "can't create database in read only mode"
   | otherwise = do
+      ServerConfig.Config{..} <- Observed.get envServerConfig
       let
         stackedCreate repo =
           readDatabase env repo $ \odb lookup -> do
@@ -68,9 +69,21 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
                 c -> throwSTM $ InvalidDependency kickOff_repo repo $
                   "database is " <> showCompleteness c
             start <- firstFreeId lookup
-            return $ Storage.Create start (Just $ toSchemaInfo (odbSchema odb))
+            return $ Storage.Create start
+              (Storage.UseThisSchema $ toSchemaInfo (odbSchema odb))
+
+        -- If use_schema_id is enabled in the server config and the
+        -- glean.schema_id property is set, we'll use this to decide
+        -- which schema instance to store in the DB.
+        schemaToUse
+          | not config_use_schema_id = Storage.UseDefaultSchema
+          | otherwise =
+            case HashMap.lookup "glean.schema_id" kickOff_properties of
+              Just id -> Storage.UseSpecificSchema (SchemaId id)
+              Nothing -> Storage.UseDefaultSchema
+
       mode <- case kickOff_dependencies of
-        Nothing -> return $ Storage.Create lowestFid Nothing
+        Nothing -> return $ Storage.Create lowestFid schemaToUse
         Just (Dependencies_stacked repo) -> stackedCreate repo
         Just (Dependencies_pruned update) -> stackedCreate (pruned_base update)
 
@@ -165,7 +178,7 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
           }
 
     schemaProperties = do
-      ProcessedSchema{..} <- Observed.get envSchemaSource
+      ProcessedSchema{..} <- schemaIndexCurrent <$> Observed.get envSchemaSource
       currentVersion <- case schemasHighestVersion procSchemaResolved of
         Just ver -> return ver
         Nothing -> dbError kickOff_repo "missing 'all' schema"

@@ -57,6 +57,7 @@ import Glean.Angle.Types
 import Glean.Angle.Parser
 import Glean.Database.Config hiding (options)
 import Glean.Database.Schema
+import Glean.Database.Schema.Types
 import Glean.RTS.Types (PidRef(..), ExpandedType(..))
 import Glean.Schema.Util (showRef)
 import Glean.Schema.Gen.Thrift
@@ -178,11 +179,12 @@ main = do
           if omitArchive
             then filter (not . ("/archive/" `isInfixOf`)) files
             else files
-    schema <- case processSchema str of
+    schema <- case processSchema Map.empty str of
       Left err -> throwIO $ ErrorCall $ err
       Right schema -> return schema
     -- for typechecking
-    dbschema <- newDbSchema schema readWriteContent
+    dbschema <- newDbSchema (SchemaIndex schema [])
+      LatestSchemaAll readWriteContent
     return (str, schema, dbschema)
 
   reportTime "checking schema roundtrip" $ do

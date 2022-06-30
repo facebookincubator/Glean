@@ -67,10 +67,11 @@ import qualified Glean.BuildInfo as BuildInfo
 import Glean.Angle.Types as SchemaTypes
 import Glean.Backend.Remote (clientInfo, StackedDbOpts(..))
 import Glean.Database.Ownership
-import Glean.Database.Schema.Types (DbSchema(..))
+import Glean.Database.Schema.Types (DbSchema(..), SchemaSelector(..))
 import Glean.Database.Schema (newDbSchema, readWriteContent)
 import Glean.Database.Schema.ComputeIds (emptyHashedSchema)
-import Glean.Database.Config (parseSchemaDir, ProcessedSchema(..))
+import Glean.Database.Config (parseSchemaDir, SchemaIndex(..),
+  ProcessedSchema(..))
 import qualified Glean.Database.Config as DB (Config(..))
 import Glean.Indexer
 import Glean.Indexer.List
@@ -1247,10 +1248,11 @@ setupLocalSchema service = do
         schema <- parseSchemaDir dir
           `catch` \(e :: ErrorCall) -> do
             print e
-            return $ ProcessedSchema
-              (SourceSchemas 0 [] [])
-              (ResolvedSchemas Nothing [])
-              emptyHashedSchema
+            let proc = ProcessedSchema
+                  (SourceSchemas 0 [] [])
+                  (ResolvedSchemas Nothing [])
+                  emptyHashedSchema
+            return (SchemaIndex proc [])
         (schemaTS, update) <- ThriftSource.mutable schema
         let
           updateSchema :: Eval ()
@@ -1260,7 +1262,7 @@ setupLocalSchema service = do
             -- typechecking of the derived predicates. Otherwise we
             -- won't notice type errors until after the schema is
             -- updated below.
-            db <- liftIO $ newDbSchema new readWriteContent
+            db <- liftIO $ newDbSchema new LatestSchemaAll readWriteContent
             liftIO $ update (const new)
             let
               numSchemas = length (srcSchemas (schemaSource db))

@@ -11,8 +11,11 @@ module Glean.Database.Test
   , setRoot
   , setRecipes
   , setSchemaSource
+  , setSchemaIndex
   , setSchemaPath
   , setSchemaVersion
+  , setSchemaId
+  , enableSchemaId
   , setMemoryStorage
   , setDBVersion
   , setCompactOnCompletion
@@ -65,14 +68,28 @@ setRecipes recipes cfg = cfg
         { config_recipes = recipes }
   }
 
-setSchemaSource :: ThriftSource ProcessedSchema -> Setting
+setSchemaSource :: ThriftSource SchemaIndex -> Setting
 setSchemaSource source cfg = cfg{ cfgSchemaSource = source }
 
 setSchemaPath :: FilePath -> Setting
 setSchemaPath = setSchemaSource . schemaSourceFile
 
+setSchemaIndex :: FilePath -> Setting
+setSchemaIndex = setSchemaSource . schemaSourceIndexFile
+
 setSchemaVersion :: Thrift.Version -> Setting
 setSchemaVersion ver cfg = cfg { cfgSchemaVersion = Just ver }
+
+-- | Set the schema that will be used for queries, otherwise defaults
+-- to the highest all.N in the latest schema.
+setSchemaId :: Thrift.SchemaId -> Setting
+setSchemaId id cfg = cfg { cfgSchemaId = Just id }
+
+enableSchemaId :: Setting
+enableSchemaId cfg = cfg {
+  cfgServerConfig = cfgServerConfig cfg <&> \scfg -> scfg
+    { ServerConfig.config_use_schema_id = True }
+  }
 
 setMemoryStorage :: Setting
 setMemoryStorage cfg = cfg{ cfgStorage = \_ _ -> Some <$> Memory.newStorage }

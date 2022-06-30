@@ -1795,6 +1795,20 @@ test-suite schemaevolves
         glean:if-glean-hs,
         glean:util,
 
+test-suite schemamulti
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: Schema/Multi.hs
+    other-modules: Schema.Lib
+    ghc-options: -main-is Schema.Multi
+    build-depends:
+        glean:stubs,
+        glean:core,
+        glean:db,
+        glean:config,
+        glean:if-glean-hs,
+        glean:util,
+
 test-suite inventory
     import: test
     type: exitcode-stdio-1.0

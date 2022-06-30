@@ -45,6 +45,7 @@ import Glean.Database.List
 import Glean.Database.Open (isDatabaseClosed, withOpenDatabase)
 import Glean.Database.Types
 import Glean.Database.Schema
+import Glean.Database.Schema.Types
 import Glean.Impl.ConfigProvider
 import Glean.Init
 import Glean.RTS.Types (lowestFid)
@@ -79,7 +80,7 @@ setupBasicDBs dbdir = do
   now <- getCurrentTime
   let age t = addUTCTime (negate (fromIntegral (timeSpanInSeconds t))) now
   schema <- parseSchemaDir schemaSourceDir
-  schema <- newDbSchema schema readWriteContent
+  schema <- newDbSchema schema LatestSchemaAll readWriteContent
   -- populate a dir with various DBs
   makeFakeDB schema dbdir (Repo "test" "0001") (age (days 0)) complete Nothing
   makeFakeDB schema dbdir (Repo "test" "0002") (age (days 2)) broken Nothing
@@ -124,7 +125,7 @@ makeFakeDB schema root repo dbtime completeness stacked = do
     (Storage.open
       storage
       repo
-      (Storage.Create lowestFid Nothing)
+      (Storage.Create lowestFid Storage.UseDefaultSchema)
       Storage.currentVersion)
     Storage.close
     (\hdl -> storeSchema hdl $ toSchemaInfo schema)
