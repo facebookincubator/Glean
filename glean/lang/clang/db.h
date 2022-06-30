@@ -18,6 +18,7 @@
 #include <folly/gen/Base.h>
 #include <folly/MapUtil.h>
 
+#include "glean/lang/clang/gleandiagnosticbuffer.h"
 #include "glean/lang/clang/schema.h"
 
 namespace facebook {
@@ -51,14 +52,18 @@ public:
     Batch<SCHEMA>& batch;
   };
 
-  ClangDB(const Env& env, clang::CompilerInstance& ci)
-    : locator(env.locator),
-      platform(env.platform),
-      root(env.root),
-      subdir(env.subdir),
-      path_prefix(env.path_prefix),
-      batch(env.batch),
-      compilerInstance(ci) {}
+  ClangDB(
+      const Env& env,
+      clang::CompilerInstance& ci,
+      GleanDiagnosticBuffer* diagnosticBuffer)
+      : locator(env.locator),
+        platform(env.platform),
+        root(env.root),
+        subdir(env.subdir),
+        path_prefix(env.path_prefix),
+        batch(env.batch),
+        compilerInstance(ci),
+        diagnosticBuffer(diagnosticBuffer) {}
   ClangDB(const ClangDB&) = delete;
   ClangDB operator=(const ClangDB&) = delete;
 
@@ -92,14 +97,23 @@ public:
   }
 
   void IndexFailure(const clang::ASTContext& ctx) {
-    const auto* client = ctx.getDiagnostics().getClient();
+    std::string errorMsgs;
+    if (diagnosticBuffer != nullptr) {
+        errorMsgs = fmt::format("{} error(s) occurred while indexing", diagnosticBuffer->getNumErrors());
+        auto it = diagnosticBuffer->err_begin();
+        auto end = diagnosticBuffer->err_end();
+        for ( ; it != end; ++it) {
+          errorMsgs.push_back('\n');
+          errorMsgs.append(it->first.printToString(sourceManager()));
+          errorMsgs.push_back(' ');
+          errorMsgs.append(it->second);
+        }
+    }
+
     batch.fact<Src::IndexFailure>(
         file(ctx.getSourceManager().getMainFileID()),
         Src::IndexFailureReason::CompileError,
-        client
-            ? fmt::format(
-                  "{} error(s) occurred while indexing", client->getNumErrors())
-            : "");
+        errorMsgs);
   }
 
   // Names
@@ -210,6 +224,7 @@ private:
   const folly::Optional<std::string> path_prefix;
   Batch<SCHEMA>& batch;
   clang::CompilerInstance& compilerInstance;
+  const GleanDiagnosticBuffer *diagnosticBuffer;
 
   struct HashFileID {
     size_t operator()(clang::FileID id) const {

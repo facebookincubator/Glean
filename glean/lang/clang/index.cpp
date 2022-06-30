@@ -12,7 +12,9 @@
 #include <string>
 #include <filesystem>
 
+#include "clang/Basic/DiagnosticOptions.h"
 #include <clang/Frontend/CompilerInstance.h>
+#include <clang/Frontend/TextDiagnosticPrinter.h>
 #include <clang/Tooling/CommonOptionsParser.h>
 #include <clang/Tooling/Tooling.h>
 #include <llvm/Support/CommandLine.h>
@@ -40,6 +42,7 @@
 #include "glean/interprocess/cpp/worklist.h"
 #include "glean/lang/clang/action.h"
 #include "glean/lang/clang/ast.h"
+#include "glean/lang/clang/gleandiagnosticbuffer.h"
 #include "glean/lang/clang/preprocessor.h"
 #include "glean/rts/binary.h"
 #include "glean/rts/inventory.h"
@@ -73,6 +76,10 @@ DEFINE_uint32(worker_count, 1, "total number of workers");
 DEFINE_string(counter_file, "", "PATH to stats counter file");
 DEFINE_string(counters, "", "comma-separated list of NAME@N");
 DEFINE_bool(suppress_diagnostics, false, "suppress all Clang diagnostics");
+DEFINE_uint32(
+    max_diagnostics_size,
+    10,
+    "max number of diagnostics to log in IndexFailure predicate");
 DEFINE_bool(fail_on_error, false, "immediately fail on compilation errors");
 DEFINE_bool(index_on_error, false, "index files that have compilation errors");
 DEFINE_string(clang_arguments, "", "arguments to pass to Clang");
@@ -177,7 +184,7 @@ struct Config {
 
   std::unique_ptr<DbSchema<SCHEMA>> schema;
 
-  std::unique_ptr<clang::DiagnosticConsumer> diagnostics;
+  std::unique_ptr<GleanDiagnosticBuffer> diagnostics;
 
   std::vector<SourceFile> sources;
 
@@ -301,16 +308,17 @@ struct Config {
     LOG_CFG(FATAL, *this) << msg;
   }
 
-  static std::unique_ptr<clang::DiagnosticConsumer> diagnosticConsumer() {
+  static std::unique_ptr<GleanDiagnosticBuffer> diagnosticConsumer() {
     if (FLAGS_suppress_diagnostics) {
-      // It's important to use the default DiagnosticConsumer rather
-      // than IgnoringDiagConsumer, because IgnoringDiagConsumer
-      // doesn't even count the errors. ClangTool::run() will always
-      // return true when using IgnoringDiagConsumer, because it looks
-      // at getNumErrors().
-      return std::make_unique<clang::DiagnosticConsumer>();
+      return std::make_unique<GleanDiagnosticBuffer>(
+          FLAGS_max_diagnostics_size);
     } else {
-      return {};
+      // Forward the diagnostics to TextDiagnosticPrinter which prints
+      // the diagnostics to standard error.
+      return std::make_unique<GleanDiagnosticBuffer>(
+          FLAGS_max_diagnostics_size,
+          std::make_unique<clang::TextDiagnosticPrinter>(
+              llvm::errs(), new clang::DiagnosticOptions{}));
     }
   }
 };
@@ -458,7 +466,7 @@ private:
 
   struct ClangCfg {
     ClangDB::Env env;
-    clang::DiagnosticConsumer *diagnostics;
+    GleanDiagnosticBuffer *diagnostics;
   };
 
   // FrontendAction uses the ClangIndexer to plumb PPCallbacks and ASTConsumer
@@ -466,14 +474,20 @@ private:
     using Base = clang::ASTFrontendAction;
     explicit FrontendAction(const ClangCfg *cfg) : config(cfg) {}
 
+    bool PrepareToExecuteAction(clang::CompilerInstance& ci) override {
+      if (config->diagnostics) {
+        ci.getDiagnostics().setClient(config->diagnostics, false);
+      }
+      return clang::ASTFrontendAction::PrepareToExecuteAction(ci);
+    }
+
     bool BeginSourceFileAction(clang::CompilerInstance& ci) override {
       if (config->diagnostics) {
         config->diagnostics->clear();
-        ci.getDiagnostics().setClient(config->diagnostics, false);
       }
-      db = std::make_unique<ClangDB>(config->env, ci);
+      db = std::make_unique<ClangDB>(config->env, ci, config->diagnostics);
       ci.getPreprocessor().addPPCallbacks(
-        facebook::glean::clangx::newPPCallbacks(db.get()));
+          facebook::glean::clangx::newPPCallbacks(db.get()));
       return Base::BeginSourceFileAction(ci);
     }
 
