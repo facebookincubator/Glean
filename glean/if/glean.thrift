@@ -319,6 +319,12 @@ struct DatabaseBroken {
   2: string reason;
 }
 
+struct DatabaseComplete {
+  1: PosixEpochTime time;
+  // Disk space used by the db in bytes
+  2: optional i64 bytes;
+}
+
 struct Database {
   1: Repo repo;
 
@@ -343,8 +349,7 @@ struct Database {
   // "glean."  are reserved for use by Glean itself.
   8: DatabaseProperties properties;
 
-  // If the DB is complete, this is the time when the DB was
-  // marked completed.
+  // DEPRECATED: use 'complete' (13) instead;
   9: optional PosixEpochTime completed;
 
   // If present, this is the time when the source data was read.
@@ -356,6 +361,9 @@ struct Database {
 
   // If the DB is broken, this gives more details
   12: optional DatabaseBroken broken;
+
+  // If the DB is complete, this is the size in bytes
+  13: optional DatabaseComplete complete;
 }
 
 struct PredicateStats {

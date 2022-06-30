@@ -259,8 +259,13 @@ instance (ShellFormat DbVerbosity v)
       ++
       [ "Created:" <+> showWhen (Thrift.database_created_since_epoch db) ]
       ++
-      [ "Completed:" <+> showWhen t
-      | Just t <- [Thrift.database_completed db]
+      [ "Completed:" <+> showWhen databaseComplete_time
+      | Just Thrift.DatabaseComplete{..} <- [Thrift.database_complete db]
+      ]
+      ++
+      [ "Size:" <+> pretty(showSizeBytes (fromIntegral s))
+      | Just Thrift.DatabaseComplete{..} <- [Thrift.database_complete db]
+      , Just s <- [databaseComplete_bytes]
       ]
       ++
       [ "Broken:"
@@ -308,6 +313,11 @@ instance (ShellFormat DbVerbosity v)
             age = ppTimeSpanWithGranularity Hour $
               ctxNow `timeDiff` Time (fromIntegral t)
 
+        showSizeBytes :: Double -> String
+        showSizeBytes b
+          | b > 1e9 = printf "%.2f GB" (b / 1e9)
+          | otherwise = printf "%.2f MB" (b / 1e6)
+
         status = Thrift.database_status db
         repo = Thrift.database_repo db
         verbosity = opts
@@ -315,7 +325,8 @@ instance (ShellFormat DbVerbosity v)
       [ "repo" .= shellFormatJson ctx () repo
       , "status" .= shellFormatJson ctx () status
       , "created" .= jsonTime (Thrift.database_created_since_epoch db)
-      , "completed" .= jsonMaybeTime (Thrift.database_completed db)
+      , "completed" .= jsonMaybeTime
+          (Thrift.databaseComplete_time <$> Thrift.database_complete db)
       , "backup" .= maybe J.Null J.toJSON (Thrift.database_location db)
       , "expires" .= jsonMaybeTime (Thrift.database_expire_time db)
       , "shard" .= J.toJSON (dbShard $ Thrift.database_repo db)
@@ -323,6 +334,8 @@ instance (ShellFormat DbVerbosity v)
       , "properties" .= shellFormatJson ctx () (Thrift.database_properties db)
       , "dependencies" .= maybe J.Null J.toJSON
         (Thrift.database_dependencies db)
+      , "size" .= maybe J.Null J.toJSON
+          (Thrift.databaseComplete_bytes <$> Thrift.database_complete db)
       ] ++
       [ jsonKeyFrom key .= shellFormatJson ctx opts value
       | (key, value) <- extras]

@@ -67,18 +67,12 @@ union DatabaseIncomplete {
   1: glean.Tasks tasks;
 }
 
-struct DatabaseComplete {
-  1: glean.PosixEpochTime time;
-  // Disk space used by the db in bytes
-  2: optional i64 bytes;
-}
-
 struct DatabaseFinalizing {}
 
 // The status of data being written into a DB
 union Completeness {
   1: DatabaseIncomplete incomplete;
-  3: DatabaseComplete complete;
+  3: glean.DatabaseComplete complete;
   4: glean.DatabaseBroken broken;
   5: DatabaseFinalizing finalizing;
 } (hs.prefix = "", hs.nonempty)
