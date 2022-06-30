@@ -1,0 +1,2 @@
+action: searchByName
+args: {"context": {"repo_name": "test", "kinds": []}, "name": "foo", "detailedResults": true, "ignoreCase": false }

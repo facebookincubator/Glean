@@ -8,14 +8,13 @@
 
 module Glean.Glass.Regression.Cpp (main) where
 
-import Derive.Lib (DerivePass(..))
 import qualified Glean.Clang.Test.DerivePass as DerivePass
-
 import Test.HUnit
 
 import Data.Bifunctor
 import Data.Text (Text)
 
+import qualified Glean.Regression.Driver.DeriveForCodemarkup as Code
 import Glean.Glass.Types
 import Glean.Glass.Regression.Tests
 import Glean.Glass.Regression.Snapshot
@@ -23,7 +22,7 @@ import Glean.Glass.Regression.Snapshot
 main :: IO ()
 main = mainGlassSnapshotGeneric testName testPath driver unitTests
   where
-    driver = DerivePass.driver [DeriveTargetUses, DeriveDeclFamilies]
+    driver = DerivePass.driver Code.codemarkupDerivePasses
     testName = "glass-regression-cpp"
     testPath = "glean/glass/test/regression/tests/cpp"
 
