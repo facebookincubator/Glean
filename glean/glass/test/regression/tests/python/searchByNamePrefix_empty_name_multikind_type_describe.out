@@ -1,0 +1,282 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 81,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "all",
+                    "localName": "__all__"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/all.py/all.__all__"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 41,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "all.fn.<locals>",
+                    "localName": "local_var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/all.py/all.fn.%3Clocals%3E.local_var"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 10,
+                        "lineBegin": 7,
+                        "lineEnd": 7
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "all",
+                    "localName": "var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/all.py/all.var"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 45,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "as.fn.<locals>",
+                    "localName": "local_var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/as.py/as.fn.%3Clocals%3E.local_var"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 12,
+                        "lineBegin": 5,
+                        "lineEnd": 5
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "big_lib",
+                    "localName": "big_var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/big_lib/big_lib.big_var"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "main.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 17,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "main.f.<locals>",
+                    "localName": "c"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/main.py/main.f.%3Clocals%3E.c"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 20,
+                        "lineBegin": 22,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "shadow",
+                    "localName": "big_func"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow.big_func"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 16,
+                        "lineBegin": 7,
+                        "lineEnd": 7
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "shadow",
+                    "localName": "local_var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow.local_var"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 22,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "shadow",
+                    "localName": "local_var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow.local_var"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 20,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "shadow",
+                    "localName": "other_var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow.other_var"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 24,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "shadow.shadow_func.<locals>",
+                    "localName": "big_func"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.big_func"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 26,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "shadow.shadow_func.<locals>",
+                    "localName": "local_var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.local_var"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 24,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "shadow.shadow_func.<locals>",
+                    "localName": "other_var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.other_var"
+            }
+        ],
+        "symbols": [
+            "test/py/all.py/all.__all__",
+            "test/py/all.py/all.fn.%3Clocals%3E.local_var",
+            "test/py/all.py/all.var",
+            "test/py/as.py/as.fn.%3Clocals%3E.local_var",
+            "test/py/big_lib/big_lib.big_var",
+            "test/py/main.py/main.f.%3Clocals%3E.c",
+            "test/py/shadow.py/shadow.big_func",
+            "test/py/shadow.py/shadow.local_var",
+            "test/py/shadow.py/shadow.local_var",
+            "test/py/shadow.py/shadow.other_var",
+            "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.big_func",
+            "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.local_var",
+            "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.other_var"
+        ]
+    }
+]

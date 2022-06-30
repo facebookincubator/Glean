@@ -1,0 +1,807 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [
+            {
+                "comments": [],
+                "kind": 5,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "all"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/all.py/all"
+            },
+            {
+                "comments": [],
+                "kind": 7,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 20,
+                        "lineBegin": 15,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "all",
+                    "localName": "LocalClass"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/all.py/all.LocalClass"
+            },
+            {
+                "comments": [],
+                "kind": 8,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 20,
+                        "lineBegin": 16,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "all.LocalClass",
+                    "localName": "meth"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/all.py/all.LocalClass.meth"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 81,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "all",
+                    "localName": "__all__"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/all.py/all.__all__"
+            },
+            {
+                "comments": [],
+                "kind": 14,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 21,
+                        "lineBegin": 10,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "all",
+                    "localName": "fn"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/all.py/all.fn"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 41,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "all.fn.<locals>",
+                    "localName": "local_var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/all.py/all.fn.%3Clocals%3E.local_var"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 10,
+                        "lineBegin": 7,
+                        "lineEnd": 7
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "all",
+                    "localName": "var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/all.py/all.var"
+            },
+            {
+                "comments": [],
+                "kind": 5,
+                "location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "as"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/as.py/as"
+            },
+            {
+                "comments": [],
+                "kind": 14,
+                "location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 21,
+                        "lineBegin": 9,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "as",
+                    "localName": "fn"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/as.py/as.fn"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 45,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "as.fn.<locals>",
+                    "localName": "local_var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/as.py/as.fn.%3Clocals%3E.local_var"
+            },
+            {
+                "comments": [],
+                "kind": 5,
+                "location": {
+                    "filepath": "big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "big_lib"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/big_lib/big_lib"
+            },
+            {
+                "comments": [],
+                "kind": 14,
+                "location": {
+                    "filepath": "big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 19,
+                        "lineBegin": 8,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "big_lib",
+                    "localName": "big_func"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/big_lib/big_lib.big_func"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 12,
+                        "lineBegin": 5,
+                        "lineEnd": 5
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "big_lib",
+                    "localName": "big_var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/big_lib/big_lib.big_var"
+            },
+            {
+                "comments": [],
+                "kind": 5,
+                "location": {
+                    "filepath": "big_lib/relative.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 8
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "big_lib",
+                    "localName": "relative"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/big_lib/big_lib.relative"
+            },
+            {
+                "comments": [],
+                "kind": 5,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "lib"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/lib.py/lib"
+            },
+            {
+                "comments": [],
+                "kind": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 9,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "lib",
+                    "localName": "HelperClass"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/lib.py/lib.HelperClass"
+            },
+            {
+                "comments": [],
+                "kind": 8,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 15,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "another_method"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/lib.py/lib.HelperClass.another_method"
+            },
+            {
+                "comments": [],
+                "kind": 8,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 12,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "method"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/lib.py/lib.HelperClass.method"
+            },
+            {
+                "comments": [],
+                "kind": 10,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 56,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "value"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/lib.py/lib.HelperClass.value"
+            },
+            {
+                "comments": [],
+                "kind": 14,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 25,
+                        "lineBegin": 19,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "lib",
+                    "localName": "helper_func"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/lib.py/lib.helper_func"
+            },
+            {
+                "comments": [],
+                "kind": 5,
+                "location": {
+                    "filepath": "main.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "main"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/main.py/main"
+            },
+            {
+                "comments": [],
+                "kind": 14,
+                "location": {
+                    "filepath": "main.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 9,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "main",
+                    "localName": "f"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/main.py/main.f"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "main.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 17,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "main.f.<locals>",
+                    "localName": "c"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/main.py/main.f.%3Clocals%3E.c"
+            },
+            {
+                "comments": [],
+                "kind": 14,
+                "location": {
+                    "filepath": "main.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 18,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "main",
+                    "localName": "g"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/main.py/main.g"
+            },
+            {
+                "comments": [],
+                "kind": 14,
+                "location": {
+                    "filepath": "main.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 21,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "main.g.<locals>",
+                    "localName": "h"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/main.py/main.g.%3Clocals%3E.h"
+            },
+            {
+                "comments": [],
+                "kind": 5,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "shadow"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow"
+            },
+            {
+                "comments": [],
+                "kind": 7,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 26,
+                        "lineBegin": 10,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "shadow",
+                    "localName": "ShadowClass"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow.ShadowClass"
+            },
+            {
+                "comments": [],
+                "kind": 10,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 24,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "shadow.ShadowClass",
+                    "localName": "big_func"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow.ShadowClass.big_func"
+            },
+            {
+                "comments": [],
+                "kind": 10,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 26,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "shadow.ShadowClass",
+                    "localName": "local_var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow.ShadowClass.local_var"
+            },
+            {
+                "comments": [],
+                "kind": 10,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 24,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "shadow.ShadowClass",
+                    "localName": "other_var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow.ShadowClass.other_var"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 20,
+                        "lineBegin": 22,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "shadow",
+                    "localName": "big_func"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow.big_func"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 16,
+                        "lineBegin": 7,
+                        "lineEnd": 7
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "shadow",
+                    "localName": "local_var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow.local_var"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 22,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "shadow",
+                    "localName": "local_var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow.local_var"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 20,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "shadow",
+                    "localName": "other_var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow.other_var"
+            },
+            {
+                "comments": [],
+                "kind": 14,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 26,
+                        "lineBegin": 16,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "shadow",
+                    "localName": "shadow_func"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow.shadow_func"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 24,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "shadow.shadow_func.<locals>",
+                    "localName": "big_func"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.big_func"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 26,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "shadow.shadow_func.<locals>",
+                    "localName": "local_var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.local_var"
+            },
+            {
+                "comments": [],
+                "kind": 15,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 24,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "shadow.shadow_func.<locals>",
+                    "localName": "other_var"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.other_var"
+            }
+        ],
+        "symbols": [
+            "test/py/all.py/all",
+            "test/py/all.py/all.LocalClass",
+            "test/py/all.py/all.LocalClass.meth",
+            "test/py/all.py/all.__all__",
+            "test/py/all.py/all.fn",
+            "test/py/all.py/all.fn.%3Clocals%3E.local_var",
+            "test/py/all.py/all.var",
+            "test/py/as.py/as",
+            "test/py/as.py/as.fn",
+            "test/py/as.py/as.fn.%3Clocals%3E.local_var",
+            "test/py/big_lib/big_lib",
+            "test/py/big_lib/big_lib.big_func",
+            "test/py/big_lib/big_lib.big_var",
+            "test/py/big_lib/big_lib.relative",
+            "test/py/lib.py/lib",
+            "test/py/lib.py/lib.HelperClass",
+            "test/py/lib.py/lib.HelperClass.another_method",
+            "test/py/lib.py/lib.HelperClass.method",
+            "test/py/lib.py/lib.HelperClass.value",
+            "test/py/lib.py/lib.helper_func",
+            "test/py/main.py/main",
+            "test/py/main.py/main.f",
+            "test/py/main.py/main.f.%3Clocals%3E.c",
+            "test/py/main.py/main.g",
+            "test/py/main.py/main.g.%3Clocals%3E.h",
+            "test/py/shadow.py/shadow",
+            "test/py/shadow.py/shadow.ShadowClass",
+            "test/py/shadow.py/shadow.ShadowClass.big_func",
+            "test/py/shadow.py/shadow.ShadowClass.local_var",
+            "test/py/shadow.py/shadow.ShadowClass.other_var",
+            "test/py/shadow.py/shadow.big_func",
+            "test/py/shadow.py/shadow.local_var",
+            "test/py/shadow.py/shadow.local_var",
+            "test/py/shadow.py/shadow.other_var",
+            "test/py/shadow.py/shadow.shadow_func",
+            "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.big_func",
+            "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.local_var",
+            "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.other_var"
+        ]
+    }
+]

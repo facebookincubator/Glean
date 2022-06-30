@@ -1,0 +1,2 @@
+action: searchByNamePrefix
+args: {"context": {"repo_name": "test", "language": 7, "kinds": [7]}, "name": "S", "detailedResults": true, "ignoreCase": false }

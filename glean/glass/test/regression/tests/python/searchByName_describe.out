@@ -1,0 +1,30 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [
+            {
+                "comments": [],
+                "kind": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 9,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "lib",
+                    "localName": "HelperClass"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/lib.py/lib.HelperClass"
+            }
+        ],
+        "symbols": [
+            "test/py/lib.py/lib.HelperClass"
+        ]
+    }
+]
