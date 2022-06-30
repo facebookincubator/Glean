@@ -100,7 +100,7 @@ import Glean.Glass.Repos
       fromSCSRepo,
       lookupLatestRepos,
       toRepoName,
-      filterRepoLang,
+      selectReposAndLanguages,
       GleanDBAttrName(GleanDBAttrName, gleanAttrDBName) )
 import Glean.Glass.Path
     ( toGleanPath, fromGleanPath )
@@ -970,10 +970,26 @@ searchEntityByString
   -> SearchByNameRequest
   -> RequestOptions
   -> IO SearchByNameResult
-searchEntityByString method query env@Glass.Env{..} req opts = do
-    repoLangs <- filterRepoLang repo lang
-    joinResults <$> Async.mapConcurrently searchEntityByStringRepoLang repoLangs
+searchEntityByString method query env@Glass.Env{..} req opts = case repoLangs of
+    Left err -> throwIO $ ServerException err
+    Right candidates -> joinResults <$>
+      Async.mapConcurrently searchEntityByStringRepoLang candidates
   where
+    -- expand repo/lang choice into set of possible repo/lang pairs
+    repoLangs = selectReposAndLanguages repo lang
+
+    repo = searchContext_repo_name context
+    lang = searchContext_language context
+    limit = fromIntegral <$> requestOptions_limit opts
+    localName = searchByNameRequest_name req
+    context = searchByNameRequest_context req
+    terse = not $ searchByNameRequest_detailedResults req
+    reqKinds = map symbolKindFromSymbolKind $
+      Set.elems $ searchContext_kinds context
+    caes = if searchByNameRequest_ignoreCase req
+            then Query.Insensitive
+            else Query.Sensitive
+
     searchEntityByStringRepoLang (repo, lang) =
       withRepoLanguage method env req repo (Just lang) $ \gleanDBs _mlang -> do
         backendRunHaxl GleanBackend{..} $ do
@@ -1000,19 +1016,10 @@ searchEntityByString method query env@Glass.Env{..} req opts = do
                       toSymbolId (fromGleanPath repo path) entity) results
             else return $ map symbolDescription_sym descriptions
           return (SearchByNameResult symbols mDescriptions, Nothing)
-    localName = searchByNameRequest_name req
-    context = searchByNameRequest_context req
-    reqKinds = map symbolKindFromSymbolKind $
-      Set.elems $ searchContext_kinds context
-    caes = if searchByNameRequest_ignoreCase req
-            then Query.Insensitive
-            else Query.Sensitive
-    repo = searchContext_repo_name context
-    limit = fromIntegral <$> requestOptions_limit opts
-    lang = searchContext_language context
-    terse = not $ searchByNameRequest_detailedResults req
+
     takeLimit :: [a] -> [a]
     takeLimit = maybe id take limit
+
     joinResults res =
       SearchByNameResult
         (takeLimit $ searchByNameResult_symbols =<< res)

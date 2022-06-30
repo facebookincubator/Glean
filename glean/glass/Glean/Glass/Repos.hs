@@ -30,16 +30,15 @@ module Glean.Glass.Repos
   , toRepoName
   , findLanguages
   , findRepos
-  , filterRepoLang
+  , selectReposAndLanguages
   ) where
 
-import Control.Monad (when)
 import qualified Data.Text as Text
 import qualified Data.Set as Set
 import Control.Concurrent.Async ( withAsync )
 import Control.Concurrent.STM
     ( readTVarIO, writeTVar, atomically, newTVarIO, TVar )
-import Control.Exception ( uninterruptibleMask_, throwIO )
+import Control.Exception ( uninterruptibleMask_ )
 import Data.Maybe ( catMaybes )
 import Data.Set ( Set )
 import Data.Text ( Text )
@@ -48,6 +47,7 @@ import Glean.Util.Periodic ( doPeriodically )
 import qualified Data.Map.Strict as Map
 import Glean.Util.Time ( DiffTimePoints )
 import qualified Glean
+import Util.List ( uniq )
 import qualified Glean.Repo as Glean
 
 import Glean.Glass.Base
@@ -58,29 +58,16 @@ import Glean.Glass.Types
       Language(..),
       SymbolId(SymbolId),
       unRepoName,
-      ServerException(ServerException),
     )
-
 import Glean.Glass.RepoMapping  -- site-specific
-
---  all pairs (repoName, Language) which maps to glean db,
---  except for "test" repoName
-repoLangs :: [ (RepoName, Language) ]
-repoLangs =
-  dedup $ concatMap f gleanIndicesList where
-  isTest (RepoName "test", _) = True
-  isTest _ = False
-  dedup = Set.toList . Set.fromList
-  f (repo, dbLangs) = map (\(_db, lang) -> (repo, lang)) dbLangs
-  gleanIndicesList = filter (not . isTest) $ Map.toList gleanIndices
 
 -- return a RepoName if indexed by glean
 toRepoName :: Text -> Maybe RepoName
-toRepoName repo =
-  let repoName = RepoName repo in
-  case Map.lookup repoName gleanIndices of
-       Just _ -> Just repoName
-       Nothing -> Nothing
+toRepoName repo = case Map.lookup repoName gleanIndices of
+    Just _ -> Just repoName
+    Nothing -> Nothing
+  where
+    repoName = RepoName repo
 
 -- | Additional metadata about files and methods in attribute dbs
 firstAttrDB :: GleanDBName -> Maybe GleanDBAttrName
@@ -95,24 +82,60 @@ allGleanRepos = Set.fromList $
   map fst (concat (Map.elems gleanIndices)) ++
   concatMap (map gleanAttrDBName) (Map.elems gleanAttrIndices)
 
-filterRepoLang :: Maybe RepoName -> Maybe Language -> IO [(RepoName, Language)]
-filterRepoLang mRepoName mLang = do
-  let pairs = filter pred repoLangs
-  when (null pairs) err
-  return pairs
+-- | Expand searchByName request parameters into a set of candidate
+-- repo and languages implied by the query.
+--
+-- > 'www / *' selects [(www,hack), (www,flow)]
+-- > '* / *' selects all
+-- > '* / hack' selects www and fbsource
+--
+-- The special case of 'test / _' selects only the test db/lang pairs
+--
+-- Note:
+-- - Selection does not preserve the order of languages in a repo.
+-- - Overlapping dbs (e.g. fbsource and fbsource.arvr.cxx) are de-duped
+--
+selectReposAndLanguages
+  :: Maybe RepoName -> Maybe Language -> Either Text [(RepoName, Language)]
+selectReposAndLanguages mRepoName mLang =
+  case uniq (filter matches candidates) of
+    [] -> Left err
+    pairs -> Right pairs
   where
-    pred (r, l) = case (mRepoName, mLang) of
+    candidates = listGleanIndices isTestOnly
+
+    -- if client requests tests only, search expansion is limited to the test db
+    isTestOnly = mRepoName == Just (RepoName "test")
+
+    matches :: (RepoName, Language) -> Bool
+    matches (r, l) = case (mRepoName, mLang) of
       (Nothing, Nothing) -> True
       (Just rr, Just ll) -> r == rr && l == ll
       (Nothing, Just ll) -> l == ll
       (Just rr, Nothing) -> r == rr
 
-    err = throwIO $ ServerException $ case (mRepoName, mLang) of
-      (Nothing, Nothing) -> error "no repo or language"
+    err = case (mRepoName, mLang) of
+      (Nothing, Nothing) -> "Empty index: no repos or languages found"
       (Just r, Nothing) -> "Unknown repository: " <> unRepoName r
       (Nothing, Just l) -> "No repository for " <> toShortCode l
       (Just r, Just l) -> "Unknown combination: " <> unRepoName r
         <> "(" <> toShortCode l <> ")"
+
+-- | Select universe of glean repo,(db/language) pairs.
+-- Either just the test dbs, or all the non-test dbs.
+listGleanIndices :: Bool -> [(RepoName, Language)]
+listGleanIndices testsOnly
+  | not testsOnly = concatMap flatten $ -- only non-test repos
+      Map.toList (Map.delete testRepo allRepoLangPairs)
+  | otherwise = map (testRepo,) $ -- just the test repos
+      Map.findWithDefault [] testRepo allRepoLangPairs
+  where
+    testRepo = RepoName "test"
+
+    flatten (repo,langs) = map (repo,) langs
+
+    allRepoLangPairs :: Map.Map RepoName [Language]
+    allRepoLangPairs = Map.map (map snd) gleanIndices
 
 -- Do something simple to map SCS repo to Glean repos
 -- Names from configerator/scm/myles/service as a start
