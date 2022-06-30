@@ -1,0 +1,2 @@
+action: searchByName
+args: {"context": {"repo_name": "test", "kinds": []}, "name": "sOURCEcLASS", "detailedResults": false, "ignoreCase": true }
