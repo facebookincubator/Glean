@@ -28,6 +28,10 @@ data Config = Config
   , cfgSchemaVersion :: Maybe Int
     -- ^ version of 'all' schema to use
   , cfgTests :: [String]
+    -- ^ specific directories of tests we want to run (ignoring other
+    --   directories)
+  , cfgOmitTests :: [String]
+    -- ^ specific directories of tests we don't want to run
   }
 
 options :: O.ParserInfo (IO Config)
@@ -51,6 +55,9 @@ optionsWith other = O.info (O.helper <*> ((,) <$> parser <*> other)) O.fullDesc
       cfgTests <- O.many $ O.strOption $
         O.long "only" <> O.metavar "DIR" <>
         O.help "Run tests from DIR only"
+      cfgOmitTests <- O.many $ O.strOption $
+        O.long "omit" <> O.metavar "DIR" <>
+        O.help "Do not run tests from DIR"
       return $ resolve Config{..}
 
     resolve cfg = do

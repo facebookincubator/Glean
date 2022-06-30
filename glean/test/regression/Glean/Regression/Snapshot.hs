@@ -217,9 +217,10 @@ testMain driver = do
 
 testAll :: TestAction -> Config -> Driver opts -> opts -> IO ()
 testAll act cfg driver opts = do
-  tests <- if null $ cfgTests cfg
+  tests' <- if null $ cfgTests cfg
     then discoverTests $ cfgRoot cfg
     else return $ cfgTests cfg
+  let tests = filter (`notElem` cfgOmitTests cfg) tests'
   let groups
         | null fromDriver = [""]
         | otherwise = fromDriver
