@@ -520,6 +520,7 @@ library db
         Glean.Database.Logger
         Glean.Database.Meta
         Glean.Database.Ownership
+        Glean.Database.PredicateStats
         Glean.Database.Repo
         Glean.Database.Schema
         Glean.Database.Schema.ComputeIds
