@@ -1,0 +1,3 @@
+query: codemarkup.SearchRelatedEntities { query = ExtendsParentOfChild }
+perf: true
+transform: [gensort, []]

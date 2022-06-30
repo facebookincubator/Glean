@@ -301,7 +301,7 @@ predicate EntityVisibility : code.Entity -> codemarkup.types.Visibility
 
 
 #
-# Relations
+# Relations todo to code.search.*
 #
 
 predicate ExtendsParentEntity :
@@ -326,7 +326,6 @@ predicate ExtendsParentEntity :
         B[..]=cxx1.RecordBase{base=Parent}; cxx1.RecordDefinition{declaration=Child, bases=B}
       )
     )
-
 
 predicate ExtendsChildEntity :
   {
@@ -360,4 +359,40 @@ predicate ContainsChildEntity :
     (codemarkup.hack.HackContainsChildEntity { P, C }; Parent={hack=P}:code.Entity; Child={hack=C}:code.Entity)|
     (codemarkup.cxx.CxxContainsChildEntity  { P, C }; Parent={cxx=P}:code.Entity; Child={cxx=C}:code.Entity)
 
+#
+# Relational search, extended with entity attributes
+#
+
+# useful newtypes for a bit of client-side type safety in relational queries
+type ParentEntity = {
+  parent: code.Entity,
+  location: codemarkup.types.Location
+}
+type ChildEntity = {
+  child: code.Entity,
+  location: codemarkup.types.Location
+}
+# hide different relation types and directions under a search flag
+type RelationType = enum {
+  ExtendsParentOfChild |
+  ExtendsChildOfParent |
+  ContainsChildOfParent |
+  ContainsParentOfChild | # not yet implemented
+}
+
+# find parent/child semantic relationships
+predicate SearchRelatedEntities:
+  {
+    query: RelationType,
+    parent: ParentEntity,
+    child: ChildEntity
+  }
+  { Query, {parent = P, location = PLoc}, {child = C, location = CLoc} } where
+    ( ExtendsParentOfChild = Query; ExtendsParentEntity { C, P }) | # child key
+    ( ExtendsChildOfParent = Query; ExtendsChildEntity { P, C } ) | # parent key
+    ( ContainsChildOfParent = Query; ContainsChildEntity { P, C }); # parent key
+    codemarkup.EntityLocation {C, CLoc};
+    codemarkup.EntityLocation {P, PLoc};
+
+# end
 }

@@ -1,0 +1,76 @@
+[
+  "@generated",
+  {
+    "key": {
+      "query": 0,
+      "parent": {
+        "parent": {
+          "cxx": {
+            "decl": {
+              "objcContainer": {
+                "key": {
+                  "id": { "interface_": { "key": "Bar" } },
+                  "source": {
+                    "file": { "key": "test.mm" },
+                    "lineBegin": 19,
+                    "columnBegin": 1,
+                    "lineEnd": 23,
+                    "columnEnd": 4
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Bar",
+          "file": { "key": "test.mm" },
+          "location": {
+            "range": {
+              "file": { "key": "test.mm" },
+              "lineBegin": 19,
+              "columnBegin": 1,
+              "lineEnd": 23,
+              "columnEnd": 4
+            }
+          },
+          "span": { "start": 361, "length": 3 }
+        }
+      },
+      "child": {
+        "child": {
+          "cxx": {
+            "decl": {
+              "objcContainer": {
+                "key": {
+                  "id": { "implementation": { "key": "Bar" } },
+                  "source": {
+                    "file": { "key": "test.mm" },
+                    "lineBegin": 25,
+                    "columnBegin": 1,
+                    "lineEnd": 35,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Bar",
+          "file": { "key": "test.mm" },
+          "location": {
+            "range": {
+              "file": { "key": "test.mm" },
+              "lineBegin": 25,
+              "columnBegin": 1,
+              "lineEnd": 35,
+              "columnEnd": 1
+            }
+          },
+          "span": { "start": 407, "length": 3 }
+        }
+      }
+    }
+  }
+]
