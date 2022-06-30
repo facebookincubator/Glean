@@ -1,0 +1,135 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [
+            {
+                "annotations": [
+                    {
+                        "name": "TestAnnotation",
+                        "source": "TestAnnotation(\"Text\")"
+                    }
+                ],
+                "comments": [
+                    {
+                        "filepath": "www/SourceClass.php",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 4,
+                            "lineBegin": 10,
+                            "lineEnd": 12
+                        },
+                        "repository": "test"
+                    }
+                ],
+                "kind": 7,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 13,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "SourceClass"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SourceClass"
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "kind": 13,
+                "location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "SourceInterface"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SourceInterface"
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "kind": 31,
+                "location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "SourceTrait"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SourceTrait"
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "kind": 7,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 38,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "SubClass"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SubClass"
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "kind": 7,
+                "location": {
+                    "filepath": "www/SuperClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "SuperClass"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SuperClass"
+            }
+        ],
+        "symbols": [
+            "test/php/SourceClass",
+            "test/php/SourceInterface",
+            "test/php/SourceTrait",
+            "test/php/SubClass",
+            "test/php/SuperClass"
+        ]
+    }
+]

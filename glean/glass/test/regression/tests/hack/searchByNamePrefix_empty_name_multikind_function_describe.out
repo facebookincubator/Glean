@@ -1,0 +1,30 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [
+            {
+                "comments": [],
+                "kind": 14,
+                "location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 12,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "",
+                    "localName": "corge"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/corge"
+            }
+        ],
+        "symbols": [
+            "test/php/corge"
+        ]
+    }
+]
