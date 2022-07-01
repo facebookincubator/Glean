@@ -317,8 +317,8 @@ mkDbSchema validate knownPids dbContent
     showt (HashMap.size (tcEnvTypes tcEnv)) <> " types/" <>
     showt (HashMap.size (tcEnvPredicates tcEnv)) <> " predicates."
 
-  vlog 2 $ "all schemas: " <> Text.intercalate " " (
-    map (Text.pack . show) (Map.keys schemaEnvMap))
+  forM_ (IntMap.toList legacyAllVersions) $ \(n, id) ->
+    vlog 2 $ "all." <> showt n <> " = " <> unSchemaId id
 
   return $ DbSchema
     { predicatesById = tcEnvPredicates tcEnv
