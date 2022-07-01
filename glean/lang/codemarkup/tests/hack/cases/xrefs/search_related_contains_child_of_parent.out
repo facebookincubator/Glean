@@ -105,7 +105,7 @@
         "location": {
           "name": "JAZZ",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 312, "length": 4 } }
+          "location": { "span": { "start": 302, "length": 20 } }
         }
       }
     }
@@ -355,7 +355,7 @@
         "location": {
           "name": "BAZ",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 342, "length": 3 } }
+          "location": { "span": { "start": 332, "length": 18 } }
         }
       }
     }
@@ -555,7 +555,7 @@
         "location": {
           "name": "BAZ",
           "file": { "key": "www/SuperClass.php" },
-          "location": { "span": { "start": 268, "length": 3 } }
+          "location": { "span": { "start": 258, "length": 20 } }
         }
       }
     }
@@ -761,7 +761,7 @@
         "location": {
           "name": "JAZZ",
           "file": { "key": "www/SourceInterface.php" },
-          "location": { "span": { "start": 286, "length": 4 } }
+          "location": { "span": { "start": 267, "length": 24 } }
         }
       }
     }
