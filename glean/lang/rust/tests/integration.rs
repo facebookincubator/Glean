@@ -14,7 +14,9 @@ use serde_json::Value;
 use std::env;
 use std::env::consts::EXE_EXTENSION;
 use std::fs::File;
-use std::io::{BufRead, BufWriter, Read};
+use std::io::BufRead;
+use std::io::BufWriter;
+use std::io::Read;
 use std::path::PathBuf;
 use std::process::Command;
 

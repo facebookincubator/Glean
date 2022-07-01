@@ -15,7 +15,8 @@ struct Complex<T> {
 }
 
 // unary operators
-use std::ops::{Add, Neg};
+use std::ops::Add;
+use std::ops::Neg;
 
 impl<T> Neg for Complex<T>
 where

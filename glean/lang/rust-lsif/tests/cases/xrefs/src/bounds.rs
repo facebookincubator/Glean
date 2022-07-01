@@ -6,7 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-use std::ops::{Add, Mul};
+use std::ops::Add;
+use std::ops::Mul;
 
 // num-generic dot product
 fn dot<N>(v1: &[N], v2: &[N]) -> N

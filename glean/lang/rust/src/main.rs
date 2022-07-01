@@ -14,24 +14,82 @@
 
 #![warn(missing_docs)]
 
-use crate::json_schema::{Def, DefKind, Impl, ImplKind, Ref, RefId, Root, Span};
-use clap::{App, Arg};
+use crate::json_schema::Def;
+use crate::json_schema::DefKind;
+use crate::json_schema::Impl;
+use crate::json_schema::ImplKind;
+use crate::json_schema::Ref;
+use crate::json_schema::RefId;
+use crate::json_schema::Root;
+use crate::json_schema::Span;
+use clap::App;
+use clap::Arg;
+use fbthrift::serialize;
 use fbthrift::simplejson_protocol::SimpleJsonProtocolSerializer;
-use fbthrift::{serialize, BufMutExt, ProtocolWriter, Serialize, SimpleJsonProtocol, TType};
-use glean_schema_rust::types::{
-    ConstDef, ConstDef_key, Def as GleanDef, DefLocation, DefLocation_key, EnumDef, EnumDef_key,
-    FieldDef, FieldDef_key, FileXRefs, FileXRefs_key, ForeignFunctionDef, ForeignFunctionDef_key,
-    ForeignStaticDef, ForeignStaticDef_key, FunctionDef, FunctionDef_key, Impl as GleanImpl,
-    ImplKind as GleanImplKind, ImplLocation, ImplLocation_key, Impl_key, LocalDef, LocalDef_key,
-    MethodDef, MethodDef_key, ModuleDef, ModuleDef_key, Name, QName, QName_key, StaticDef,
-    StaticDef_key, StructDef, StructDef_key, StructVariantDef, StructVariantDef_key, TraitDef,
-    TraitDef_key, TupleVariantDef, TupleVariantDef_key, Type, TypeDef, TypeDef_key, Type_key,
-    UnionDef, UnionDef_key, XRef, XRef_key,
-};
-use glean_schema_src::types::{ByteSpan, File as SrcFile, FileLines, FileLines_key};
+use fbthrift::BufMutExt;
+use fbthrift::ProtocolWriter;
+use fbthrift::Serialize;
+use fbthrift::SimpleJsonProtocol;
+use fbthrift::TType;
+use glean_schema_rust::types::ConstDef;
+use glean_schema_rust::types::ConstDef_key;
+use glean_schema_rust::types::Def as GleanDef;
+use glean_schema_rust::types::DefLocation;
+use glean_schema_rust::types::DefLocation_key;
+use glean_schema_rust::types::EnumDef;
+use glean_schema_rust::types::EnumDef_key;
+use glean_schema_rust::types::FieldDef;
+use glean_schema_rust::types::FieldDef_key;
+use glean_schema_rust::types::FileXRefs;
+use glean_schema_rust::types::FileXRefs_key;
+use glean_schema_rust::types::ForeignFunctionDef;
+use glean_schema_rust::types::ForeignFunctionDef_key;
+use glean_schema_rust::types::ForeignStaticDef;
+use glean_schema_rust::types::ForeignStaticDef_key;
+use glean_schema_rust::types::FunctionDef;
+use glean_schema_rust::types::FunctionDef_key;
+use glean_schema_rust::types::Impl as GleanImpl;
+use glean_schema_rust::types::ImplKind as GleanImplKind;
+use glean_schema_rust::types::ImplLocation;
+use glean_schema_rust::types::ImplLocation_key;
+use glean_schema_rust::types::Impl_key;
+use glean_schema_rust::types::LocalDef;
+use glean_schema_rust::types::LocalDef_key;
+use glean_schema_rust::types::MethodDef;
+use glean_schema_rust::types::MethodDef_key;
+use glean_schema_rust::types::ModuleDef;
+use glean_schema_rust::types::ModuleDef_key;
+use glean_schema_rust::types::Name;
+use glean_schema_rust::types::QName;
+use glean_schema_rust::types::QName_key;
+use glean_schema_rust::types::StaticDef;
+use glean_schema_rust::types::StaticDef_key;
+use glean_schema_rust::types::StructDef;
+use glean_schema_rust::types::StructDef_key;
+use glean_schema_rust::types::StructVariantDef;
+use glean_schema_rust::types::StructVariantDef_key;
+use glean_schema_rust::types::TraitDef;
+use glean_schema_rust::types::TraitDef_key;
+use glean_schema_rust::types::TupleVariantDef;
+use glean_schema_rust::types::TupleVariantDef_key;
+use glean_schema_rust::types::Type;
+use glean_schema_rust::types::TypeDef;
+use glean_schema_rust::types::TypeDef_key;
+use glean_schema_rust::types::Type_key;
+use glean_schema_rust::types::UnionDef;
+use glean_schema_rust::types::UnionDef_key;
+use glean_schema_rust::types::XRef;
+use glean_schema_rust::types::XRef_key;
+use glean_schema_src::types::ByteSpan;
+use glean_schema_src::types::File as SrcFile;
+use glean_schema_src::types::FileLines;
+use glean_schema_src::types::FileLines_key;
 use std::collections::BTreeMap;
-use std::fs::{self, File};
-use std::io::{self, BufReader, Write};
+use std::fs::File;
+use std::fs::{self};
+use std::io::BufReader;
+use std::io::Write;
+use std::io::{self};
 use std::mem;
 use std::path::Path;
 use std::process;
