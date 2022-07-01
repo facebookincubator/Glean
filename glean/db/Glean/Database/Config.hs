@@ -35,10 +35,12 @@ import Data.Default
 import Data.List
 import Data.Map (Map)
 import qualified Data.Map as Map
+import Data.Text (Text)
 import qualified Data.Text as Text
 import Options.Applicative
 import System.FilePath
 
+import Thrift.Protocol.JSON
 import Thrift.Util
 import Util.IO (listDirectoryRecursive)
 
@@ -58,6 +60,7 @@ import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types
 import Glean.Util.ShardManager
 import qualified Glean.Internal.Types as Internal
+import Glean.Util.ConfigProvider as Config
 import Glean.Util.Some
 import Glean.Util.Trace (Listener)
 import Glean.Util.ThriftSource (ThriftSource)
@@ -180,6 +183,33 @@ schemaSourceIndexFile = ThriftSource.once . parseSchemaIndex
 schemaSourceFilesFromDir :: FilePath -> ThriftSource SchemaIndex
 schemaSourceFilesFromDir = ThriftSource.once . parseSchemaDir
 
+-- | Read a schema index from the ConfigProvider. This will watch for
+-- changes to the index but not any of the instance files, since those
+-- are expected to be immutable.
+schemaSourceIndexConfig :: Text -> ThriftSource SchemaIndex
+schemaSourceIndexConfig key = ThriftSource.genericConfig
+  key
+  deserializeJSON
+  loadInstances
+  Nothing
+  where
+    loadInstances
+      :: ConfigProvider cfg
+      => cfg
+      -> Internal.SchemaIndex
+      -> IO SchemaIndex
+    loadInstances cfg Internal.SchemaIndex{..} = do
+      let proc Internal.SchemaInstance{..} = do
+            let
+              instanceKey = Text.pack $
+                takeDirectory (Text.unpack key) </>
+                Text.unpack schemaInstance_file
+            Config.get cfg instanceKey $
+              processSchema (Map.mapKeys SchemaId schemaInstance_versions)
+      current <- proc schemaIndex_current
+      older <- mapM proc schemaIndex_older
+      return (SchemaIndex current older)
+
 -- | Read schema files from a directory
 parseSchemaDir :: FilePath -> IO SchemaIndex
 parseSchemaDir dir = do
@@ -230,6 +260,8 @@ schemaSourceParser s = case break (==':') s of
     Right (Just path, ThriftSource.once $ parseSchemaDir path)
   ("index", ':':path) ->
     Right (Nothing, ThriftSource.once $ parseSchemaIndex path)
+  ("indexconfig", ':':path) ->
+    Right (Nothing, schemaSourceIndexConfig (Text.pack path))
   -- default to interpreting the argument as a directory:
   (_, "") ->
     Right (Just s, ThriftSource.once $ parseSchemaDir s)
@@ -250,7 +282,7 @@ schemaSourceOption
   :: Parser (Maybe FilePath, ThriftSource SchemaIndex)
 schemaSourceOption = option (eitherReader schemaSourceParser)
   (  long "schema"
-  <> metavar "(dir | config | file:FILE | dir:DIR | config:PATH | DIR)"
+  <> metavar "(dir | config | file:FILE | dir:DIR | config:PATH | index:FILE | indexconfig:PATH | DIR)"
   <> value (Nothing, legacySchemaSourceConfig))
 
 options :: Parser Config
