@@ -30,6 +30,7 @@ import Control.Exception
 import Control.Monad
 import Data.Bifoldable (bifoldMap)
 import qualified Data.ByteString.Char8 as BC
+import Data.Default
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.IntMap.Strict as IntMap
 import Data.Graph
@@ -46,7 +47,10 @@ import qualified Data.Tree as Tree
 import Options.Applicative
 import System.Directory
 import System.FilePath
+import System.IO
+import Text.Printf
 
+import Thrift.Util
 import Util.IO
 import Util.Timing
 import Util.OptParse (commandParser)
@@ -57,7 +61,9 @@ import Glean.Angle.Types
 import Glean.Angle.Parser
 import Glean.Database.Config hiding (options)
 import Glean.Database.Schema
+import Glean.Database.Schema.ComputeIds
 import Glean.Database.Schema.Types
+import qualified Glean.Internal.Types as Internal
 import Glean.RTS.Types (PidRef(..), ExpandedType(..))
 import Glean.Schema.Util (showRef)
 import Glean.Schema.Gen.Thrift
@@ -66,7 +72,7 @@ import Glean.Schema.Gen.HackJson ( genSchemaHackJson )
 import Glean.Schema.Gen.Haskell ( genSchemaHS )
 import Glean.Schema.Gen.Utils ( Mode(..) )
 import Glean.Schema.Types
-import Glean.Types (SchemaId)
+import Glean.Types (SchemaId(..))
 
 data WhichVersion
   = AllVersions
@@ -96,6 +102,7 @@ data GenOptions =  GenOptions
   , hackjson :: Maybe FilePath
   , hs :: Maybe FilePath
   , source :: Maybe FilePath
+  , updateIndex :: Maybe FilePath
   , install_dir :: FilePath
   }
 
@@ -162,6 +169,10 @@ options = do
         long "hs" <> metavar "FILE"
       source <- optional $ strOption $
         long "source" <> metavar "FILE"
+      updateIndex <- optional $ strOption $
+        long "update-index" <> metavar "FILE" <>
+        help ("Add the schema to the index at FILE, making it the new " <>
+          "current schema")
       install_dir <- strOption $
         long "install_dir" <> short 'd' <> metavar "DIR" <> value ""
       return GenOptions{..}
@@ -169,7 +180,7 @@ options = do
 main :: IO ()
 main = do
   Options{..} <- execParser (info (options <**> helper) fullDesc)
-  (src, (ProcessedSchema sourceSchemas resolved _), dbschema) <-
+  (src, schema, dbschema) <-
     reportTime "parse/resolve/typecheck" $ do
     str <- case input of
       Left one -> BC.readFile one
@@ -187,6 +198,7 @@ main = do
       LatestSchemaAll readWriteContent
     return (str, schema, dbschema)
 
+  let ProcessedSchema sourceSchemas resolved _ = schema
   reportTime "checking schema roundtrip" $ do
     let pp = show (pretty sourceSchemas)
     case parseSchema (BC.pack pp) of
@@ -264,6 +276,7 @@ main = do
     Left opts -> graph opts dbschema sourceSchemas [ v | (v,_,_,_) <- versions ]
     Right opts -> do
       forM_ (source opts) $ \f -> BC.writeFile f src
+      forM_ (updateIndex opts) (doUpdateIndex src schema)
       reportTime "gen" $ gen opts versions
 
 graph :: GraphOptions -> DbSchema -> SourceSchemas -> [Version] -> IO ()
@@ -378,3 +391,66 @@ gen GenOptions{..} versions =
       doGen genSchemaHS hs
       doGen (genSchemaThrift Data dir hash) thrift
       doGen (genSchemaThrift Query dir hash) thrift
+
+-- -----------------------------------------------------------------------------
+-- Working with the SchemaIndex
+
+-- | Add a new schema to an existing SchemaIndex.
+doUpdateIndex :: BC.ByteString -> ProcessedSchema -> FilePath -> IO ()
+doUpdateIndex src new@(ProcessedSchema _ _ hashed) indexFile = do
+  hPutStrLn stderr $ "Updating index in " <> indexFile
+
+  -- check that the new schema instance is compatible with the
+  -- existing ones
+  exists <- doesFileExist indexFile
+  when exists $ do
+    current <- parseSchemaIndex indexFile
+    validateNewSchemaInstance $ current {
+      schemaIndexCurrent = new,
+      schemaIndexOlder =
+        schemaIndexCurrent current : schemaIndexOlder current }
+
+  let
+    -- store the new schema in the file "instance/<schemaid>" relative
+    -- to the index file, where <schemaid> is the SchemaId of the
+    -- latest "all" schema
+    file = case IntMap.lookupMax (hashedSchemaAllVersions hashed) of
+      Nothing -> error "no \"all\" schema"
+      Just (_, id) -> "instance/" <> unSchemaId id
+
+    versions = Map.fromList
+      [ (unSchemaId id, fromIntegral ver)
+      | (ver,id) <- IntMap.toList (hashedSchemaAllVersions hashed) ]
+    baseIndex = def {
+        Internal.schemaIndex_current = def {
+          Internal.schemaInstance_versions = versions,
+          Internal.schemaInstance_file = file }
+      }
+
+  -- If this exact schema is present already (perhaps as an older
+  -- instance) then promote it to be the current schema. If the new
+  -- schema is identical to the current one, this will leave
+  -- everything as it was.
+  newIndex <- do
+    exists <- doesFileExist indexFile
+    if exists
+      then do
+        oldIndex <- loadJSON indexFile
+        let
+          existingInstances =
+            filter (((/=) versions) . Internal.schemaInstance_versions) $
+              Internal.schemaIndex_current oldIndex :
+              Internal.schemaIndex_older oldIndex
+        hPutStrLn stderr $ printf "Old index contains %d instance(s)"
+          (1 + length (Internal.schemaIndex_older oldIndex))
+        return baseIndex { Internal.schemaIndex_older = existingInstances }
+      else
+        return baseIndex
+
+  hPutStrLn stderr $ printf "New index contains %d instance(s)"
+    (1 + length (Internal.schemaIndex_older newIndex))
+
+  saveJSON indexFile newIndex
+  let fileToWrite = takeDirectory indexFile </> Text.unpack file
+  createDirectoryIfMissing True (takeDirectory fileToWrite)
+  BC.writeFile fileToWrite src
