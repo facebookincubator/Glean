@@ -22,7 +22,8 @@ module Glean.Database.Config (
   schemaSourceIndexFile,
   schemaSourceParser,
   schemaSourceOption,
-  parseSchemaDir
+  parseSchemaDir,
+  parseSchemaIndex
 ) where
 
 import Control.Exception

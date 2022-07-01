@@ -18,6 +18,7 @@ module Glean.Database.Schema
   , CheckChanges(..)
   , lookupPid
   , validateNewSchema
+  , validateNewSchemaInstance
   , DbContent
   , readOnlyContent
   , readWriteContent
@@ -740,3 +741,19 @@ validateNewSchema newSrc current = do
     current
     MustBeEqual
     readWriteContent
+
+-- | Check that the current schema in the SchemaIndex is compatible
+-- with each of the older schema instances. This is the validity check
+-- when adding a new schema instance.
+validateNewSchemaInstance :: SchemaIndex -> IO ()
+validateNewSchemaInstance schema = do
+  let hashedNew = procSchemaHashed (schemaIndexCurrent schema)
+  forM_ (schemaIndexOlder schema) $ \old -> do
+    let
+      hashedOld = procSchemaHashed old
+      types = HashMap.union (hashedTypes hashedOld) (hashedTypes hashedNew)
+      newDefs = VisiblePredicates (hashedPreds hashedNew) HashMap.empty
+      oldDefs = VisiblePredicates (hashedPreds hashedOld) HashMap.empty
+    case evolveOneSchema types predicateIdRef mempty (newDefs, oldDefs) of
+      Left err -> throwIO $ ErrorCall $ Text.unpack err
+      Right{} -> return ()

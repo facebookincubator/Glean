@@ -137,7 +137,7 @@ schemaEvolves = TestList
       assertBool "throws error stating missing field" $
         case r of
           Left err ->
-            "cannot evolve predicate test.P: missing required field: b"
+            "cannot evolve predicate test.P.2: missing required field: b"
             `isInfixOf` show err
           Right _ -> False
 

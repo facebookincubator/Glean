@@ -11,8 +11,10 @@ module Schema.Multi (main) where
 
 import Control.Exception
 import Control.Monad
+import Data.Either
 import qualified Data.Map as Map
 import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Text as Text
 import System.Directory
 import System.FilePath
 import System.IO.Temp
@@ -22,6 +24,8 @@ import TestRunner
 import Thrift.Util
 import Util.String.Quasi
 
+import Glean.Database.Config
+import Glean.Database.Schema
 import Glean.Database.Test
 import Glean.Init
 import Glean.Types as Thrift
@@ -244,8 +248,134 @@ multiSchemaTest = TestCase $
     testQuery "multi 8c" repo2 schema_index_file_1 (Just "v0")
       "derived.D _" (Just 1)
 
+validateSchemaChanges :: Test
+validateSchemaChanges =
+    let
+      schema_v0 =
+        [s|
+          schema x.1 {
+            predicate P : { a: string }
+            predicate Q : { a: string | b: nat }
+          }
+
+          schema all.1 : x.1 {}
+        |]
+
+      schema_v1 =
+        [s|
+          schema x.1 {
+            predicate P : { a: string, b : { c: nat, d: bool } }
+          }
+
+          schema all.1 : x.1 {}
+        |]
+
+      schema_v2 =
+        [s|
+          schema x.1 {
+            predicate R : string
+            predicate P : { a: string, b : R }
+          }
+
+          schema all.1 : x.1 {}
+        |]
+
+      schema_v3 =
+        [s|
+          schema x.1 {
+            predicate Q : { a: string | b: nat | c: [nat] }
+          }
+
+          schema all.1 : x.1 {}
+        |]
+
+      schema_v4 =
+        [s|
+          schema x.1 {
+            predicate P : { a: string }
+          }
+
+          schema all.1 : x.1 {}
+        |]
+
+      schema_v5 =
+        [s|
+          schema x.1 {
+            type T = string
+            predicate P : { a: T }
+          }
+
+          schema all.1 : x.1 {}
+        |]
+
+      schema_v6 =
+        [s|
+          schema x.1 {
+            predicate P : { a: bool }
+            predicate Q : { a: string | b: nat }
+          }
+
+          schema all.1 : x.1 {}
+        |]
+
+      withIndex root a b f = do
+        saveJSON schema_index_file schema_index
+        f schema_index_file
+        where
+        schema_index_file = root </> "schema_index_" <> a <> b
+        schema_index = Internal.SchemaIndex
+          { schemaIndex_current = Internal.SchemaInstance
+            { schemaInstance_versions = Map.fromList [ ("v1", 1) ]
+            , schemaInstance_file = Text.pack a
+            }
+          , schemaIndex_older = [
+              Internal.SchemaInstance
+                { schemaInstance_versions = Map.fromList [ ("v0", 1) ]
+                , schemaInstance_file = Text.pack b
+                }
+          ]
+          }
+
+      validate
+        :: String
+        -> String
+        -> String
+        -> (Either SomeException () -> Bool)
+        -> Test
+      validate lbl a b p = TestLabel lbl $ TestCase $ do
+        withSystemTempDirectory "glean-dbtest" $ \root -> do
+          let fileA = "schemaA"
+              fileB = "schemaB"
+          writeFile (root </> fileA) a
+          writeFile (root </> fileB) b
+          withIndex root fileA fileB $ \index_file -> do
+            schema <- parseSchemaIndex index_file
+            r <- try $ validateNewSchemaInstance schema
+            print r
+            assertBool "validate" $ p (r :: Either SomeException ())
+
+      validateOK lbl a b = TestList
+        [ validate (lbl <> " (forwards)") a b isRight
+        , validate (lbl <> " (backwards)") b a isRight
+        ]
+      validateFAIL lbl a b = TestList
+        [ validate (lbl <> " (forwards)") a b isLeft
+        , validate (lbl <> " (backwards)") b a isLeft
+        ]
+    in
+    TestList
+      [ validateOK "adding a defaultable field" schema_v0 schema_v1
+      , validateFAIL "adding a non-defaultable field" schema_v0 schema_v2
+      , validateOK "adding an alternative" schema_v0 schema_v3
+      , validateOK "adding a predicate" schema_v0 schema_v4
+      , validateOK "adding a type synonym" schema_v0 schema_v5
+      , validateFAIL "changing the type of a field" schema_v0 schema_v6
+      ]
+
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [
-    TestLabel "multiSchemaTest" multiSchemaTest
+    TestLabel "multiSchemaTest" multiSchemaTest,
+    TestLabel "validateSchemaChanges" validateSchemaChanges
   ]

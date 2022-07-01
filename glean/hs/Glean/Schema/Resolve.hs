@@ -16,6 +16,8 @@ module Glean.Schema.Resolve
   , resolveEvolves
   , runResolve
   , resolveQuery
+  , evolveOneSchema
+  , VisiblePredicates(..)
   ) where
 
 import Control.Applicative
@@ -27,6 +29,7 @@ import Data.ByteString (ByteString)
 import Data.Char
 import Data.Graph
 import Data.Foldable
+import Data.Hashable
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashSet as HashSet
@@ -156,34 +159,72 @@ resolveEvolves resolved = do
     types = HashMap.unions $ reverse $ map resolvedSchemaTypes resolved
 
     checkLawfulEvolves =
-      foldM_ (evolveOneSchema types) mempty
-        [ (new, old)
+      foldM_ (evolveOneSchema types predicateRef_name) mempty
+        [ (VisiblePredicates
+            (resolvedSchemaPredicates new)
+            (resolvedSchemaReExportedPredicates new),
+           VisiblePredicates
+            (resolvedSchemaPredicates old)
+            (resolvedSchemaReExportedPredicates old))
         | new <- resolved
         , oldRef <- Set.toList $ resolvedSchemaEvolves new
         , Just old <- [Map.lookup oldRef resolvedByRef]
         ]
 
 
--- Check for back compatibility and map each predicate to their evolved
--- counterpart in the the evolvedBy map
+data VisiblePredicates p t = VisiblePredicates
+  { visiblePredicates :: HashMap p (PredicateDef_ SrcSpan p t)
+  , visibleReexported :: HashMap p (PredicateDef_ SrcSpan p t)
+  }
+
+-- | Check schemas for compatibility and map each predicate to their
+-- evolved counterpart in the the evolvedBy map.
+--
+-- This is abstracted over the type of predicates and types, because
+-- we use it in two different ways:
+--
+-- 1. To check the validity of "schema A evolves B" declarations.  This
+--    check is performa at schema resolution time, so
+--       p = PredicateRef
+--       t = TypeRef
+--       name = PredicateName
+--
+-- 2. To check compatibility between complete schemas when a new
+--    schema instance is added to the SchemaIndex. We're dealing with
+--    complete hashed schemas in this case, so
+--       p = PredicateId
+--       t = TypeId
+--       name = PredicateRef
+
 evolveOneSchema
-  :: HashMap TypeRef ResolvedTypeDef  -- ^ all type definitions
-  -> HashMap PredicateRef PredicateRef -- ^ all predicate evolutions till now.
-                                       -- value evolves key
-  -> (ResolvedSchemaRef, ResolvedSchemaRef)
-  -> Either Text (HashMap PredicateRef PredicateRef)
-evolveOneSchema types evolvedBy (new, old) = do
+  :: forall p t name.
+     (Eq p, ShowRef p, Hashable p,
+      Eq t, ShowRef t, Hashable t,
+      Eq name, Ord name, Hashable name)
+  => HashMap t (TypeDef_ p t)
+       -- ^ all type definitions
+  -> (p -> name)
+      -- ^ Extract the "name" from a predicate. Predicates with the same
+      -- name in the new/old schema must be compatible.
+  -> HashMap p p
+      -- ^ Existing predicate evolutions (key evolves value)
+  -> (VisiblePredicates p t, VisiblePredicates p t)
+      -- ^ (new, old) schemas
+  -> Either Text (HashMap p p)
+evolveOneSchema types predicateName evolvedBy
+    (VisiblePredicates newPreds newReExp,
+     VisiblePredicates oldPreds oldReExp) = do
   checkBackCompatibility
   return evolvedBy'
   where
     checkBackCompatibility :: Either Text ()
     checkBackCompatibility =
-      forM_ (resolvedSchemaPredicates old) $ \oldDef -> do
+      forM_ oldPreds $ \oldDef -> do
         whenJust (matchNew oldDef) $ \newDef ->
           evolveDef newDef oldDef
 
     matchNew oldDef = HashMap.lookup name newPredsByName
-      where name = predicateRef_name $ predicateDefRef oldDef
+      where name = predicateName $ predicateDefRef oldDef
 
     evolveDef
       (PredicateDef ref key val _)
@@ -194,28 +235,25 @@ evolveOneSchema types evolvedBy (new, old) = do
       in case keyErr <|> valErr of
         Nothing -> return ()
         Just err -> throwError $
-          "cannot evolve predicate " <> predicateRef_name ref <> ": " <> err
+          "cannot evolve predicate " <> showRef ref <> ": " <> err
 
-    canEvolve' :: ResolvedType -> ResolvedType -> Maybe Text
+    canEvolve' :: Type_ p t -> Type_ p t -> Maybe Text
     canEvolve' = canEvolve types evolvedBy'
 
     -- add evolutions from current schema
-    evolvedBy' :: HashMap PredicateRef PredicateRef
-    evolvedBy' = foldr addEvolution evolvedBy oldPreds
+    evolvedBy' :: HashMap p p
+    evolvedBy' = foldr addEvolution evolvedBy oldPredKeys
       where
-        oldPreds = HashMap.keys (exportedPredicates old)
+        oldPredKeys = HashMap.keys (oldPreds <> oldReExp)
         addEvolution oldPred acc =
-          case HashMap.lookup (predicateRef_name oldPred) newPredsByName of
+          case HashMap.lookup (predicateName oldPred) newPredsByName of
             Nothing -> acc
             Just newPred -> HashMap.insert oldPred (predicateDefRef newPred) acc
 
-    newPredsByName :: HashMap Name ResolvedPredicateDef
-    newPredsByName = mapKeys predicateRef_name (exportedPredicates new)
+    newPredsByName :: HashMap name (PredicateDef_ SrcSpan p t)
+    newPredsByName = mapKeys predicateName (newPreds <> newReExp)
 
     mapKeys f = HashMap.fromList . map (first f) . HashMap.toList
-
-    exportedPredicates ResolvedSchema{..} =
-      resolvedSchemaPredicates <> resolvedSchemaReExportedPredicates
 
 type Environment = HashMap Name ResolvedSchemaRef
 
@@ -296,10 +334,12 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
     -- inherited definitions are in scope unqualified and qualified
     --   (but unqualified local names override unqualified inherited names)
     qualInheritedScope :: NameEnv RefResolved
-    qualInheritedScope = unionNameEnvs $ map resolvedSchemaQualScope inherits
+    qualInheritedScope =
+      unionNameEnvs $ map resolvedSchemaQualScope inherits
 
     unqualInheritedScope :: NameEnv RefResolved
-    unqualInheritedScope = unionNameEnvs $ map resolvedSchemaUnqualScope inherits
+    unqualInheritedScope =
+      unionNameEnvs $ map resolvedSchemaUnqualScope inherits
 
     -- imported names are in scope qualified only
     importedScope :: NameEnv RefResolved
@@ -470,16 +510,17 @@ data Opt = Option | FieldOpt
 --      evolved-by
 --
 canEvolve
-  :: HashMap TypeRef ResolvedTypeDef -- ^ type definitions
-  -> HashMap PredicateRef PredicateRef -- ^ current evolutions map
-  -> ResolvedType                    -- ^ updated type
-  -> ResolvedType                    -- ^ old type
+  :: (Eq p, Eq t, ShowRef p, ShowRef t, Hashable p, Hashable t)
+  => HashMap t (TypeDef_ p t) -- ^ type definitions
+  -> HashMap p p -- ^ current evolutions map
+  -> Type_ p t                    -- ^ updated type
+  -> Type_ p t                    -- ^ old type
   -> Maybe Text              -- ^ compatibility error
 canEvolve types evolvedBy new old = go new old
   where
     get ty = case HashMap.lookup ty types of
       Just v -> typeDefType v
-      Nothing -> error $ "unknown type " <> show ty
+      Nothing -> error $ "unknown type " <> Text.unpack (showRef ty)
 
     go (NamedTy new) (NamedTy old)
       | new == old = Nothing
