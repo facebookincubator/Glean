@@ -25,6 +25,7 @@ module Glean.Util.ThriftSource (
   configWithDeserializerDefault,
   fileWithDeserializer,
   parseWithDeserializer,
+  genericConfig,
 
   -- * Reading
   withValue,
@@ -45,42 +46,51 @@ import Thrift.Protocol.JSON (deserializeJSON)
 import Glean.Util.ConfigProvider as Config
 import Glean.Util.Observed as Observed
 
-data ThriftSource a where
-  -- | A value that we obtain from the ConfigProvider. Each value of 'Text' may
-  -- only have a single 'Deserializer' value (part of global mutable state).
-  --
-  -- The @'Deserializer' b@ is globally registered. The @(b -> a)@ is here
-  -- to support @instance Functor ThriftSource@ without affecting the
-  -- global @'Deserializer' b@.
-  Config
-    :: Typeable b
-    => Text                             -- config provider path key
-    -> Deserializer b                   -- usually 'deserializeJSON'
-    -> Maybe b                          -- optional default value
-    -> (b -> a)                         -- for 'Functor' instance
-    -> ThriftSource a
+-- | A source of values that may change over time.
+data ThriftSource a = ThriftSource
+  { thriftSourceWith
+      :: forall cfg b . (ConfigProvider cfg)
+      => cfg
+      -> (Observed a -> IO b)
+      -> IO b
+  , thriftSourceLoad :: forall cfg . (ConfigProvider cfg) => cfg -> IO a
+  , thriftSourceShow :: String
+  }
 
-  -- | A value that is determined once and then never changes
-  Fixed
-    :: IO a
-    -> ThriftSource a
+-- | Load a configuration value from a source. The value isn't cached - use
+-- 'withValue' and 'Observed.get' for that.
+load
+  :: (ConfigProvider cfg, Typeable a)
+  => cfg
+  -> ThriftSource a
+  -> IO a
+load cfg t = thriftSourceLoad t cfg
 
-  -- | A value that may change over time
-  Changes :: Observed a -> ThriftSource a
+-- | Subscribe to a 'ThriftSource' - 'get' will produce the current value.
+--
+-- If actions are added to the 'Observed' via 'doOnUpdate', no further
+-- instances of the actions will be initiated after 'withValue'
+-- returns.
+--
+withValue
+  :: (ConfigProvider cfg, Typeable a)
+  => cfg
+  -> ThriftSource a
+  -> (Observed a -> IO b)
+  -> IO b
+withValue cfg t = thriftSourceWith t cfg
 
 instance Show (ThriftSource a) where
-  show (Config t _ _ _) = unwords [ "ThriftSource Config {"
-    , show t, "}" ]
-  show Fixed{} = "ThriftSource Fixed"
-  show Changes{} = "ThriftSource Changes"
+  show = thriftSourceShow
 
 instance Functor ThriftSource where
-  fmap f (Config t d m g) = Config t d m (f . g)
-  fmap f (Fixed g) = Fixed (fmap f g)
-  fmap f (Changes ob) = Changes (fmap f ob)
+  fmap f ThriftSource{..} = ThriftSource
+    { thriftSourceWith = \cfg g -> thriftSourceWith cfg (\ob -> g (fmap f ob))
+    , thriftSourceLoad = \cfg -> fmap f $ thriftSourceLoad cfg
+    , .. }
 
 instance Default a => Default (ThriftSource a) where
-  def = Fixed $ return def
+  def = value def
 
 newtype ThriftSourceException = ThriftSourceException Text
   deriving(Show)
@@ -113,7 +123,7 @@ configWithDeserializer
   => Text
   -> Deserializer a
   -> ThriftSource a
-configWithDeserializer path d = Config path d Nothing id
+configWithDeserializer path d = genericConfig path d (const return) Nothing
 
 -- | As 'configWithDeserializer' except that 'Data.Default.def' is
 -- used if the config is missing.
@@ -122,13 +132,29 @@ configWithDeserializerDefault
   => Text
   -> Deserializer a
   -> ThriftSource a
-configWithDeserializerDefault path d = Config path d (Just def) id
+configWithDeserializerDefault path d =
+  genericConfig path d (const return) (Just def)
+
+genericConfig
+  :: (Typeable c)
+  => Text
+  -> Deserializer c
+  -> (forall cfg. ConfigProvider cfg => cfg -> c -> IO a)
+  -> Maybe a
+  -> ThriftSource a
+genericConfig key deserializer mkValue maybDefault = ThriftSource
+  { thriftSourceWith = \cfg ->
+      configWithValue cfg key deserializer mkValue maybDefault
+  , thriftSourceLoad = \cfg ->
+      configLoad cfg key deserializer mkValue maybDefault
+  , thriftSourceShow = "ThriftSource Fixed"
+  }
 
 file :: ThriftSerializable a => FilePath -> ThriftSource a
 file path = fileWithDeserializer path deserializeJSON
 
 fileWithDeserializer :: FilePath -> Deserializer a -> ThriftSource a
-fileWithDeserializer path deserializer = Fixed $ do
+fileWithDeserializer path deserializer = once $ do
   b <- BS.readFile path
   case deserializer b of
     Left err -> throwIO $ ThriftSourceException $ Text.pack $
@@ -136,15 +162,26 @@ fileWithDeserializer path deserializer = Fixed $ do
     Right a -> return a
 
 value :: a -> ThriftSource a
-value = Fixed . return
+value = once . return
 
 once :: IO a -> ThriftSource a
-once = Fixed
+once io = ThriftSource
+  { thriftSourceWith = \_ f -> do x <- io; f (fixedValue x)
+  , thriftSourceLoad = \_ -> io
+  , thriftSourceShow = "ThriftSource Fixed"
+  }
+
+changes :: Observed a -> ThriftSource a
+changes ob = ThriftSource
+  { thriftSourceWith = \_ f -> f ob
+  , thriftSourceLoad = \_ -> Observed.get ob
+  , thriftSourceShow = "ThriftSource Changes"
+  }
 
 mutable :: a -> IO (ThriftSource a, (a -> a) -> IO ())
 mutable x = do
   (ob, onUpdate) <- changingValue x
-  return (Changes ob, onUpdate)
+  return (changes ob, onUpdate)
 
 -- | Parser for  \"config:PATH\" and \"file:PATH\" providers
 parse
@@ -173,19 +210,22 @@ parseWithDeserializer s des = case break (==':') s of
 -- instances of the actions will be initiated after 'withValue'
 -- returns.
 --
-withValue
-  :: (ConfigProvider cfg, Typeable a)
+configWithValue
+  :: (ConfigProvider cfg, Typeable c)
   => cfg
-  -> ThriftSource a
+  -> Text
+  -> Deserializer c
+  -> (forall cfg. ConfigProvider cfg => cfg -> c -> IO a)
+  -> Maybe a
   -> (Observed a -> IO b)
   -> IO b
 
-withValue cfgapi (Config path deserialize maybeDefault f) action =
+configWithValue cfgapi path deserialize mkValue maybeDefault action =
   do
     (ob, onUpdate) <- changingValue
       (error "ThriftSource.withValue: internal error")
     let
-      callback new = onUpdate (const new)
+      callback new = do a <- mkValue cfgapi new; onUpdate (const a)
       acquire =
         (Just <$> subscribe cfgapi path callback deserialize)
           `catch` \e -> if
@@ -194,31 +234,22 @@ withValue cfgapi (Config path deserialize maybeDefault f) action =
               return Nothing
             | otherwise -> throwIO e
     let
-    bracket acquire (mapM (cancel cfgapi)) $ const $ action $ fmap f ob
+    bracket acquire (mapM (cancel cfgapi)) $ const $ action ob
 
-
-withValue _ (Changes ob) action = action ob
-
-withValue cfgapi source@Fixed{} action = do
-  x <- load cfgapi source
-  action $ fixedValue x
-
--- | Load a configuration value from a source. The value isn't cached - use
--- 'withValue' and 'Observed.get' for that.
-load
-  :: (ConfigProvider cfg, Typeable a)
+configLoad
+  :: (ConfigProvider cfg, Typeable c)
   => cfg
-  -> ThriftSource a
+  -> Text
+  -> Deserializer c
+  -> (forall cfg. ConfigProvider cfg => cfg -> c -> IO a)
+  -> Maybe a
   -> IO a
-load cfgapi (Config path deserialize maybeDefault f) =
-  fmap f $
-    Config.get cfgapi path deserialize
-      `catch` \e -> if
-        | isConfigFailure cfgapi e, Just val <- maybeDefault ->
-          return val
-        | otherwise -> throwIO e
-load _ (Fixed io) = io
-load _ (Changes ob) = Observed.get ob
+configLoad cfgapi path deserialize mkValue maybeDefault =
+  (do c <- Config.get cfgapi path deserialize; mkValue cfgapi c)
+    `catch` \e -> if
+      | isConfigFailure cfgapi e, Just val <- maybeDefault ->
+        return val
+      | otherwise -> throwIO e
 
 -- | Like 'load', but if the value cannot be retrieved then fall back
 -- to using the default value given by the 'Default' instance.
