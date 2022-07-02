@@ -125,11 +125,11 @@ private:
            })
         .thenValue([batch, this](thrift::SendResponse&& response) {
           switch (response.getType()) {
-            case thrift::SendResponse::handle:
+            case thrift::SendResponse::Type::handle:
               // Server accepted the batch, now wait
               return finish(response.get_handle(), batch).semi();
 
-            case thrift::SendResponse::retry:
+            case thrift::SendResponse::Type::retry:
               // Server asked to retry after a delay
               return retry(
                   response.move_retry(), [batch, this] { return send(batch); });
@@ -153,11 +153,11 @@ private:
            })
         .thenValue([handle, batch, this](thrift::FinishResponse&& response) {
           switch (response.getType()) {
-            case thrift::FinishResponse::subst:
+            case thrift::FinishResponse::Type::subst:
               // We're done
               return folly::makeSemiFuture(response.move_subst());
 
-            case thrift::FinishResponse::retry:
+            case thrift::FinishResponse::Type::retry:
               // Server asked to retry after a delay
               return retry(response.move_retry(), [handle, batch, this] {
                 return finish(handle, batch);
