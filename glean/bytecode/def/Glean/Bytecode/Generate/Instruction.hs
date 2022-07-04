@@ -337,14 +337,14 @@ instructions =
       , Arg "dst" Word Store ]
 
   , Insn "CallFun_2_2" FallThrough
-      [ Arg "fun" (Fun [Word,Word,DataPtr] Word) Load
+      [ Arg "fun" (Fun [Word,Word,WordPtr] Word) Load
       , Arg "src1" Word Load
       , Arg "src2" Word Load
       , Arg "dst1" Word Store
       , Arg "dst2" Word Store ]
 
   , Insn "CallFun_2_5" FallThrough
-      [ Arg "fun" (Fun [Word,Word,DataPtr,DataPtr,DataPtr,DataPtr] Word) Load
+      [ Arg "fun" (Fun [Word,Word,WordPtr,WordPtr,WordPtr,WordPtr] Word) Load
       , Arg "src1" Word Load
       , Arg "src2" Word Load
       , Arg "dst1" Word Store
