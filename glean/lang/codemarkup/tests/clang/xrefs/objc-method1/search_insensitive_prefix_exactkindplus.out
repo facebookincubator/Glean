@@ -1,0 +1,49 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "foobar",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "objcMethod": {
+              "key": {
+                "selector": { "key": [ "fooBar" ] },
+                "container": { "implementation": { "key": "Bar" } },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "isInstance": true,
+                "isOptional": false,
+                "isAccessor": false,
+                "source": {
+                  "file": { "key": "test.mm" },
+                  "lineBegin": 30,
+                  "columnBegin": 1,
+                  "lineEnd": 33,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "fooBar",
+        "file": { "key": "test.mm" },
+        "location": {
+          "range": {
+            "file": { "key": "test.mm" },
+            "lineBegin": 30,
+            "columnBegin": 1,
+            "lineEnd": 33,
+            "columnEnd": 1
+          }
+        },
+        "span": { "start": 431, "length": 1 }
+      },
+      "kind": 7
+    }
+  }
+]

@@ -1,0 +1,20 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "helperclass",
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      },
+      "location": {
+        "name": "lib.HelperClass",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 272, "length": 70 } }
+      },
+      "kind": 6
+    }
+  }
+]

@@ -1,0 +1,49 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "objcMethod": {
+              "key": {
+                "selector": { "key": [ "foo" ] },
+                "container": { "interface_": { "key": "I" } },
+                "signature": {
+                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                },
+                "isInstance": true,
+                "isOptional": false,
+                "isAccessor": false,
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 11,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 11
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.m" },
+        "location": {
+          "range": {
+            "file": { "key": "test.m" },
+            "lineBegin": 11,
+            "columnBegin": 1,
+            "lineEnd": 11,
+            "columnEnd": 11
+          }
+        },
+        "span": { "start": 235, "length": 1 }
+      },
+      "kind": 7
+    }
+  }
+]

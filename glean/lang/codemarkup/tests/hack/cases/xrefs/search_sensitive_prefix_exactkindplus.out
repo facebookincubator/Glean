@@ -1,0 +1,28 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "SourceClass",
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceClass" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "SourceClass",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 263, "length": 212 } }
+      },
+      "kind": 6
+    }
+  }
+]

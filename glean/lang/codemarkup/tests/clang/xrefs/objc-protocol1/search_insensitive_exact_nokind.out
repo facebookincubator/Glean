@@ -1,0 +1,41 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "objcContainer": {
+              "key": {
+                "id": { "protocol": { "key": "Foo" } },
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 13,
+                  "columnBegin": 1,
+                  "lineEnd": 14,
+                  "columnEnd": 4
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "Foo",
+        "file": { "key": "test.m" },
+        "location": {
+          "range": {
+            "file": { "key": "test.m" },
+            "lineBegin": 13,
+            "columnBegin": 1,
+            "lineEnd": 14,
+            "columnEnd": 4
+          }
+        },
+        "span": { "start": 287, "length": 3 }
+      }
+    }
+  }
+]

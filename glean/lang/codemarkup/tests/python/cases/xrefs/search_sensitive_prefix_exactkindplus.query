@@ -1,0 +1,3 @@
+query: codemarkup.search.SearchByNameAndKind { searchcase = Sensitive, name = "HelperCl".., kind = { just = Class_|Method } }
+perf: true
+transform: [gensort, []]

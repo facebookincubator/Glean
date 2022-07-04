@@ -1,0 +1,99 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "foo" } } },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 60,
+                  "columnBegin": 1,
+                  "lineEnd": 79,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 60,
+            "columnBegin": 1,
+            "lineEnd": 79,
+            "columnEnd": 1
+          }
+        },
+        "span": { "start": 777, "length": 3 }
+      },
+      "kind": 13
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "foo" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N2" } } }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 45,
+                  "columnBegin": 1,
+                  "lineEnd": 56,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 45,
+            "columnBegin": 1,
+            "lineEnd": 56,
+            "columnEnd": 1
+          }
+        },
+        "span": { "start": 657, "length": 3 }
+      },
+      "kind": 13
+    }
+  }
+]

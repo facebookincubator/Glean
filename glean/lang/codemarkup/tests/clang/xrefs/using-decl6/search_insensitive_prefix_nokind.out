@@ -1,0 +1,50 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "enum_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Foo" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "isScoped": false,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 10,
+                  "columnBegin": 1,
+                  "lineEnd": 10,
+                  "columnEnd": 12
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "Foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 10,
+            "columnBegin": 1,
+            "lineEnd": 10,
+            "columnEnd": 12
+          }
+        },
+        "span": { "start": 241, "length": 3 }
+      },
+      "kind": 11
+    }
+  }
+]

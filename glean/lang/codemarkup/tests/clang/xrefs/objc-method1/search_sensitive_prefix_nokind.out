@@ -1,0 +1,102 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "foo" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "id<Foo>" },
+                "kind": { "ivar": { "synthesize": false } },
+                "source": {
+                  "file": { "key": "test.mm" },
+                  "lineBegin": 20,
+                  "columnBegin": 3,
+                  "lineEnd": 20,
+                  "columnEnd": 13
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.mm" },
+        "location": {
+          "range": {
+            "file": { "key": "test.mm" },
+            "lineBegin": 20,
+            "columnBegin": 3,
+            "lineEnd": 20,
+            "columnEnd": 13
+          }
+        },
+        "span": { "start": 377, "length": 3 }
+      },
+      "kind": 14
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "foo" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "setFoo" } } },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "id<Foo>" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.mm" },
+                  "lineBegin": 15,
+                  "columnBegin": 13,
+                  "lineEnd": 15,
+                  "columnEnd": 23
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.mm" },
+        "location": {
+          "range": {
+            "file": { "key": "test.mm" },
+            "lineBegin": 15,
+            "columnBegin": 13,
+            "lineEnd": 15,
+            "columnEnd": 23
+          }
+        },
+        "span": { "start": 306, "length": 3 }
+      },
+      "kind": 14
+    }
+  }
+]

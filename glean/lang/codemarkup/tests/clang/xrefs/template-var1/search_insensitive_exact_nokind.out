@@ -1,0 +1,147 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "foo" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "const int" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 2, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 9,
+                  "columnBegin": 22,
+                  "lineEnd": 9,
+                  "columnEnd": 42
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 9,
+            "columnBegin": 22,
+            "lineEnd": 9,
+            "columnEnd": 42
+          }
+        },
+        "span": { "start": 256, "length": 3 }
+      },
+      "kind": 14
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "foo" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "const int" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 2, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 10,
+                  "columnBegin": 1,
+                  "lineEnd": 10,
+                  "columnEnd": 46
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 10,
+            "columnBegin": 1,
+            "lineEnd": 10,
+            "columnEnd": 46
+          }
+        },
+        "span": { "start": 300, "length": 3 }
+      },
+      "kind": 14
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "foo" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "const int" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 2, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 11,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 38
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 11,
+            "columnBegin": 1,
+            "lineEnd": 11,
+            "columnEnd": 38
+          }
+        },
+        "span": { "start": 338, "length": 3 }
+      },
+      "kind": 14
+    }
+  }
+]

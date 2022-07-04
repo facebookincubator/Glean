@@ -1,0 +1,223 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "foo" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "Foo" },
+                            "scope": {
+                              "namespace_": {
+                                "key": {
+                                  "name": { "key": "N2" },
+                                  "parent": {
+                                    "key": { "name": { "key": "N1" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "Foo::Bar" },
+                    "parameters": [
+                      {
+                        "name": { "key": "" },
+                        "type": { "key": "N1::N2::Foo" }
+                      },
+                      {
+                        "name": { "key": "" },
+                        "type": { "key": "N1::N2::Foo::Bar" }
+                      }
+                    ]
+                  }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 40,
+                  "columnBegin": 1,
+                  "lineEnd": 46,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 40,
+            "columnBegin": 1,
+            "lineEnd": 46,
+            "columnEnd": 1
+          }
+        },
+        "span": { "start": 753, "length": 3 }
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "foo" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "Foo" },
+                            "scope": {
+                              "namespace_": {
+                                "key": {
+                                  "name": { "key": "N2" },
+                                  "parent": {
+                                    "key": { "name": { "key": "N1" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "N1::N2::Foo::Bar" },
+                    "parameters": [
+                      {
+                        "name": { "key": "" },
+                        "type": { "key": "N1::N2::Foo" }
+                      },
+                      {
+                        "name": { "key": "" },
+                        "type": { "key": "N1::N2::Foo::Bar" }
+                      }
+                    ]
+                  }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 23,
+                  "columnBegin": 3,
+                  "lineEnd": 23,
+                  "columnEnd": 19
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 23,
+            "columnBegin": 3,
+            "lineEnd": 23,
+            "columnEnd": 19
+          }
+        },
+        "span": { "start": 494, "length": 3 }
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Foo" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "N2" },
+                          "parent": { "key": { "name": { "key": "N1" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "kind": { "struct_": { } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 21,
+                  "columnBegin": 1,
+                  "lineEnd": 25,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "Foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 21,
+            "columnBegin": 1,
+            "lineEnd": 25,
+            "columnEnd": 1
+          }
+        },
+        "span": { "start": 435, "length": 3 }
+      },
+      "kind": 24
+    }
+  }
+]

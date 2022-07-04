@@ -1,0 +1,57 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "foo" } } },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "O1" },
+                          "parent": { "key": { "name": { "key": "N1" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 28,
+                  "columnBegin": 1,
+                  "lineEnd": 28,
+                  "columnEnd": 18
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 28,
+            "columnBegin": 1,
+            "lineEnd": 28,
+            "columnEnd": 18
+          }
+        },
+        "span": { "start": 441, "length": 3 }
+      },
+      "kind": 13
+    }
+  }
+]

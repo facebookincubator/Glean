@@ -1,0 +1,153 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "foo" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "type": { "key": "const int" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 2, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 11,
+                  "columnBegin": 22,
+                  "lineEnd": 11,
+                  "columnEnd": 42
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 11,
+            "columnBegin": 22,
+            "lineEnd": 11,
+            "columnEnd": 42
+          }
+        },
+        "span": { "start": 272, "length": 3 }
+      },
+      "kind": 14
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "foo" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "type": { "key": "const int" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 2, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 12,
+                  "columnBegin": 1,
+                  "lineEnd": 12,
+                  "columnEnd": 46
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 12,
+            "columnBegin": 1,
+            "lineEnd": 12,
+            "columnEnd": 46
+          }
+        },
+        "span": { "start": 316, "length": 3 }
+      },
+      "kind": 14
+    }
+  },
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "foo" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "type": { "key": "const int" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 2, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 13,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 38
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 13,
+            "columnBegin": 1,
+            "lineEnd": 13,
+            "columnEnd": 38
+          }
+        },
+        "span": { "start": 354, "length": 3 }
+      },
+      "kind": 14
+    }
+  }
+]

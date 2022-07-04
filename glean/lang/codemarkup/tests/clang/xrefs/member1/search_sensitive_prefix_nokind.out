@@ -1,0 +1,66 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "foo" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "Foo" },
+                            "scope": { "global_": { } }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 20,
+                  "columnBegin": 3,
+                  "lineEnd": 24,
+                  "columnEnd": 3
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 20,
+            "columnBegin": 3,
+            "lineEnd": 24,
+            "columnEnd": 3
+          }
+        },
+        "span": { "start": 368, "length": 3 }
+      },
+      "kind": 7
+    }
+  }
+]
