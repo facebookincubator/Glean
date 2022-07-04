@@ -51,6 +51,7 @@ indexer = Indexer {
             , "flow.FileDeclaration"
             , "flow.FlowEntityImportUses"
             , "flow.FlowTypeEntityImportUses"
+            , "flow.NameLowerCase"
             ]
         }
     indexerRun externalIndexer ext
