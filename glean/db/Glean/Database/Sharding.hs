@@ -8,10 +8,10 @@
 
 {-# LANGUAGE CPP #-}
 module Glean.Database.Sharding (
-  ShardManagerConfigParams (..),
   defaultShardManagerConfig,
 ) where
 
+import Data.Maybe
 import qualified Data.Set as Set
 #if FACEBOOK
 import Glean.Impl.ShardManager
@@ -21,15 +21,15 @@ import Glean.Util.Observed (Observed)
 import qualified Glean.Util.Observed as Observed
 import Glean.Util.ShardManager
 
-newtype ShardManagerConfigParams = ShardManagerConfigParams
-  { smCfgServerConfig :: Observed ServerConfig.Config
-  }
+type PortNumber = Int
 
 defaultShardManagerConfig ::
-  ShardManagerConfigParams ->
+  -- | Application port
+  Maybe PortNumber ->
+  Observed ServerConfig.Config ->
   (SomeShardManager -> IO b) ->
   IO b
-defaultShardManagerConfig ShardManagerConfigParams {..} callback = do
+defaultShardManagerConfig mbPort smCfgServerConfig callback = do
   config <- Observed.get smCfgServerConfig
   case ServerConfig.config_sharding config of
     ServerConfig.ShardingPolicy_no_shards {} ->
@@ -49,10 +49,13 @@ defaultShardManagerConfig ShardManagerConfigParams {..} callback = do
                 return Nothing
 #if FACEBOOK
     ServerConfig.ShardingPolicy_shard_manager policy -> do
-      let nshards = ServerConfig.shardManagerPolicy_nshards policy
-          serviceName = ServerConfig.shardManagerPolicy_service_name policy
-      withShardManagerClient (fromIntegral nshards) serviceName $
-          \sm -> callback $ SomeShardManager sm
+      let smCliArgs = ShardManagerClientArgs
+            { serviceName = ServerConfig.shardManagerPolicy_service_name policy
+            , applicationPortNumber = fromMaybe 0 mbPort
+            , numberOfShards = fromIntegral $
+                ServerConfig.shardManagerPolicy_nshards policy
+            }
+      withShardManagerClient smCliArgs $ \sm -> callback $ SomeShardManager sm
 #endif
     other ->
       error $ "Unsupported sharding policy: " <> show other

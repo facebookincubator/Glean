@@ -33,6 +33,7 @@ import Util.Log
 import Glean.Backend.Remote hiding (options)
 import qualified Glean.Database.Catalog as Catalog
 import qualified Glean.Database.Catalog.Filter as Catalog
+import Glean.Database.Config (cfgShardManager, defaultShardManagerConfig)
 import Glean.Database.Env
 import Glean.Database.Types
 import qualified Glean.Handler as GleanHandler
@@ -110,9 +111,14 @@ withShardsUpdater evb cfg env action
 
 main :: IO ()
 main =
-  withConfigOptions (O.info options O.fullDesc) $ \(cfg, cfgOpts) ->
+  withConfigOptions (O.info options O.fullDesc) $ \(cfg0, cfgOpts) ->
   withEventBaseDataplane $ \evb ->
   withConfigProvider cfgOpts $ \configAPI ->
+  let dbCfg = (cfgDBConfig cfg0){
+        cfgShardManager = defaultShardManagerConfig (cfgPort cfg)
+      }
+      cfg = cfg0{cfgDBConfig = dbCfg}
+  in
   withDatabases evb (cfgDBConfig cfg) configAPI $ \databases ->
   withShardsUpdater evb cfg databases $ do
 

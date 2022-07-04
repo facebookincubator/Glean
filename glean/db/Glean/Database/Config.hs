@@ -8,7 +8,8 @@
 
 {-# LANGUAGE ApplicativeDo, CPP #-}
 module Glean.Database.Config (
-  Config(..), options,
+  Config(..),
+  options,
   processSchema,
   processOneSchema,
   SchemaIndex(..),
@@ -23,7 +24,8 @@ module Glean.Database.Config (
   schemaSourceParser,
   schemaSourceOption,
   parseSchemaDir,
-  parseSchemaIndex
+  parseSchemaIndex,
+  defaultShardManagerConfig
 ) where
 
 import Control.Exception
@@ -52,15 +54,16 @@ import Glean.Database.Sharding
 import Glean.Database.Storage
 import qualified Glean.Database.Storage.Memory as Memory
 import qualified Glean.Database.Storage.RocksDB as RocksDB
+import qualified Glean.Internal.Types as Internal
 import Glean.DefaultConfigs
 import qualified Glean.Recipes.Types as Recipes
 import Glean.Schema.Resolve
 import Glean.Schema.Types
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types
-import Glean.Util.ShardManager
-import qualified Glean.Internal.Types as Internal
 import Glean.Util.ConfigProvider as Config
+import Glean.Util.Observed (Observed)
+import Glean.Util.ShardManager
 import Glean.Util.Some
 import Glean.Util.Trace (Listener)
 import Glean.Util.ThriftSource (ThriftSource)
@@ -92,7 +95,8 @@ data Config = Config
       -- ^ A 'Listener' which might get notified about various events related
       -- to databases. This is for testing support only.
   , cfgShardManager
-    :: forall a .  ShardManagerConfigParams -> (SomeShardManager -> IO a) -> IO a
+    :: forall a
+     . Observed ServerConfig.Config -> (SomeShardManager -> IO a) -> IO a
   }
 
 instance Show Config where
@@ -116,7 +120,7 @@ instance Default Config where
     , cfgMockWrites = False
     , cfgTailerOpts = def
     , cfgListener = mempty
-    , cfgShardManager = defaultShardManagerConfig
+    , cfgShardManager = defaultShardManagerConfig Nothing
     }
 
 data SchemaIndex = SchemaIndex
