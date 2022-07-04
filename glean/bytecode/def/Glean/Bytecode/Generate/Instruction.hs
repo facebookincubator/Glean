@@ -269,58 +269,58 @@ instructions =
       , Arg "tgt" Offset Imm ]
 
   , Insn "CallFun_0_1" FallThrough
-      [ Arg "fun" (Fun [] Word) Load
+      [ Arg "fun" (Fun [WordPtr]) Load
       , Arg "dst" Word Store ]
 
   , Insn "CallFun_0_2" FallThrough
-      [ Arg "fun" (Fun [WordPtr] Word) Load
+      [ Arg "fun" (Fun [WordPtr, WordPtr]) Load
       , Arg "dst1" Word Store
       , Arg "dst2" Word Store ]
 
   , Insn "CallFun_1_1" FallThrough
-      [ Arg "fun" (Fun [Word] Word) Load
+      [ Arg "fun" (Fun [Word, WordPtr]) Load
       , Arg "src" Word Load
       , Arg "dst" Word Store ]
 
   , Insn "CallFun_1_0" FallThrough
-      [ Arg "fun" (Fun [Word] Void) Load
+      [ Arg "fun" (Fun [Word]) Load
       , Arg "src" Word Load ]
 
     -- Call an std::function which takes two 64-bit arguments and returns
     -- one 64-bit result.
   , Insn "CallFun_2_1" FallThrough
-      [ Arg "fun" (Fun [Word,Word] Word) Load
+      [ Arg "fun" (Fun [Word,Word,WordPtr]) Load
       , Arg "src1" Word Load
       , Arg "src2" Word Load
       , Arg "dst" Word Store ]
 
   , Insn "CallFun_2_0" FallThrough
-      [ Arg "fun" (Fun [Word,Word] Void) Load
+      [ Arg "fun" (Fun [Word,Word]) Load
       , Arg "src1" Word Load
       , Arg "src2" Word Load ]
 
   , Insn "CallFun_3_0" FallThrough
-      [ Arg "fun" (Fun [Word,Word,Word] Void) Load
+      [ Arg "fun" (Fun [Word,Word,Word]) Load
       , Arg "src1" Word Load
       , Arg "src2" Word Load
       , Arg "src3" Word Load ]
 
   , Insn "CallFun_4_0" FallThrough
-      [ Arg "fun" (Fun [Word,Word,Word,Word] Void) Load
+      [ Arg "fun" (Fun [Word,Word,Word,Word]) Load
       , Arg "src1" Word Load
       , Arg "src2" Word Load
       , Arg "src3" Word Load
       , Arg "src4" Word Load ]
 
   , Insn "CallFun_3_1" FallThrough
-      [ Arg "fun" (Fun [Word,Word,Word] Word) Load
+      [ Arg "fun" (Fun [Word,Word,Word,WordPtr]) Load
       , Arg "src1" Word Load
       , Arg "src2" Word Load
       , Arg "src3" Word Load
       , Arg "dst" Word Store ]
 
   , Insn "CallFun_5_0" FallThrough
-      [ Arg "fun" (Fun [Word,Word,Word,Word,Word] Void) Load
+      [ Arg "fun" (Fun [Word,Word,Word,Word,Word]) Load
       , Arg "src1" Word Load
       , Arg "src2" Word Load
       , Arg "src3" Word Load
@@ -328,7 +328,7 @@ instructions =
       , Arg "src5" Word Load ]
 
   , Insn "CallFun_5_1" FallThrough
-      [ Arg "fun" (Fun [Word,Word,Word,Word,Word] Word) Load
+      [ Arg "fun" (Fun [Word,Word,Word,Word,Word,WordPtr]) Load
       , Arg "src1" Word Load
       , Arg "src2" Word Load
       , Arg "src3" Word Load
@@ -337,14 +337,16 @@ instructions =
       , Arg "dst" Word Store ]
 
   , Insn "CallFun_2_2" FallThrough
-      [ Arg "fun" (Fun [Word,Word,WordPtr] Word) Load
+      [ Arg "fun" (Fun [Word,Word,WordPtr,WordPtr]) Load
       , Arg "src1" Word Load
       , Arg "src2" Word Load
       , Arg "dst1" Word Store
       , Arg "dst2" Word Store ]
 
   , Insn "CallFun_2_5" FallThrough
-      [ Arg "fun" (Fun [Word,Word,WordPtr,WordPtr,WordPtr,WordPtr] Word) Load
+      [ Arg "fun"
+          (Fun [Word,Word,WordPtr,WordPtr,WordPtr,WordPtr,WordPtr])
+          Load
       , Arg "src1" Word Load
       , Arg "src2" Word Load
       , Arg "dst1" Word Store
@@ -378,7 +380,7 @@ instructions =
     -- subroutine. The intention is to resume execution later, starting from
     -- 'cont'.
   , Insn "Suspend" UncondReturn
-      [ Arg "fun" (Fun [WordPtr,WordPtr] Void) Load
+      [ Arg "fun" (Fun [WordPtr,WordPtr]) Load
       , Arg "cont" Offset Imm
       ]
 

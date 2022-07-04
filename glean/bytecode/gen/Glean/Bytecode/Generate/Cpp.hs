@@ -136,14 +136,13 @@ genInsnEval Insn{..} =
       | otherwise = s
 
 cppType :: Ty -> Text
-cppType Void = "void"
 cppType DataPtr = "void *"
 cppType Literal = "const std::string *"
 cppType WordPtr = "uint64_t *"
 cppType BinaryOutputPtr = "binary::Output *"
-cppType (Fun arg_tys res_ty) =
-  "std::function<" <> cppType res_ty
-  <> "(" <> Text.intercalate ", " (map cppType arg_tys) <> ")> *"
+cppType (Fun arg_tys) =
+  "std::function<void"
+    <> "(" <> Text.intercalate ", " (map cppType arg_tys) <> ")> *"
 cppType _ = "uint64_t"
 
 -- | Generate a switch-based evaluator.

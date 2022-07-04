@@ -23,8 +23,8 @@ namespace rts {
 struct Renamer {
   template<typename F>
   explicit Renamer(F f)
-    : rename([f = std::move(f)](uint64_t id, uint64_t pid) {
-        return f(Id::fromWord(id), Pid::fromWord(pid)).toWord();
+    : rename([f = std::move(f)](uint64_t id, uint64_t pid, uint64_t *res) {
+        *res = f(Id::fromWord(id), Pid::fromWord(pid)).toWord();
       })
     {
 #if __cplusplus >= 201703L
@@ -35,7 +35,7 @@ struct Renamer {
 
   Renamer(const Renamer&) = delete;
 
-  const std::function<uint64_t(uint64_t, uint64_t)> rename;
+  const std::function<void(uint64_t, uint64_t, uint64_t *)> rename;
 };
 
 struct Substituter {

@@ -26,7 +26,7 @@ import Glean.RTS.Bytecode.Gen.Issue
 data CompiledTypecheck
 
 typecheck
-  :: Register ('Fun '[ 'Word, 'Word ] 'Word)
+  :: Register ('Fun '[ 'Word, 'Word, 'WordPtr ])
   -> Register 'DataPtr
   -> Register 'DataPtr
   -> Register 'BinaryOutputPtr

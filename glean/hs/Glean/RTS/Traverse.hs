@@ -24,7 +24,7 @@ import Glean.RTS.Bytecode.Gen.Issue
 data CompiledTraversal
 
 traversal
-  :: Register ('Fun '[ 'Word, 'Word ] 'Void)
+  :: Register ('Fun '[ 'Word, 'Word ])
   -> Register 'DataPtr
   -> Register 'DataPtr
   -> Type

@@ -127,9 +127,8 @@ genInsnType =
 
 showTy :: Ty -> Text
 showTy ty = case ty of
-  Fun args ret ->
-    "('Fun '[ " <> Text.intercalate "," (map showTy args) <> " ] " <>
-      showTy ret <> ")"
+  Fun args ->
+    "('Fun '[ " <> Text.intercalate "," (map showTy args) <> " ])"
   _ -> "'" <> Text.pack (show ty)
 
 -- | Generates a function that yields the size of an instruction in words.

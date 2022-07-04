@@ -606,20 +606,21 @@ std::unique_ptr<QueryResults> executeQuery (
   // IF YOU ALSO BREAK FORWARD COMPATIBILITY, BUMP lowestSupportedVersion AS
   // WELL
 
-  const std::function<uint64_t(uint64_t, uint64_t, uint64_t)> seek_ =
-      [&](uint64_t type, uint64_t prefix, uint64_t end) {
-        return q.seek(
+  const std::function<void(uint64_t, uint64_t, uint64_t, uint64_t *)> seek_ =
+      [&](uint64_t type, uint64_t prefix, uint64_t end, uint64_t *res) {
+        *res = q.seek(
             Pid::fromWord(type),
             folly::ByteRange(
                 reinterpret_cast<uint8_t *>(prefix),
                 reinterpret_cast<uint8_t *>(end)));
       };
 
-  const std::function<uint64_t(uint64_t, uint64_t, uint64_t, uint64_t, uint64_t)>
+  const std::function<void(uint64_t, uint64_t, uint64_t, uint64_t, uint64_t,
+                           uint64_t *)>
     seekWithinSection_ =
     [&](uint64_t type, uint64_t prefix, uint64_t end,
-        uint64_t from, uint64_t upto) {
-        return q.seekWithinSection(
+        uint64_t from, uint64_t upto, uint64_t *res) {
+        *res = q.seekWithinSection(
             Pid::fromWord(type),
             folly::ByteRange(
                 reinterpret_cast<uint8_t *>(prefix),
@@ -629,47 +630,53 @@ std::unique_ptr<QueryResults> executeQuery (
       };
 
 
-  const std::function<uint64_t()> currentSeek_ = [&]() -> uint64_t {
-    return q.currentSeek();
+  const std::function<void(uint64_t *)> currentSeek_ = [&](uint64_t *res){
+    *res = q.currentSeek();
   };
 
   const std::function<void(uint64_t)> endSeek_ = [&](uint64_t token) {
     q.endSeek(token);
   };
 
-  const std::function<uint64_t(uint64_t, uint64_t, uint64_t *, uint64_t *,
-                               uint64_t *, uint64_t *)>
-      next_ = [&](uint64_t token, uint64_t demand, uint64_t *clause_begin,
-                  uint64_t *key_end, uint64_t *clause_end, uint64_t *id) {
+  const std::function<void(uint64_t, uint64_t, uint64_t *, uint64_t *,
+                               uint64_t *, uint64_t *, uint64_t *)>
+      next_ = [&](uint64_t token, uint64_t demand, uint64_t *ok,
+                  uint64_t *clause_begin, uint64_t *key_end,
+                  uint64_t *clause_end, uint64_t *id) {
         if (q.timeExpired()) {
-          return 2;
+          *ok = 2;
+          return;
         }
         if (q.interrupted()) {
-          return 2;
+          *ok = 2;
+          return;
         }
         auto res = q.next(token, demand != 0 ? FactIterator::KeyValue
                                              : FactIterator::KeyOnly);
         if (!res) {
-          return 0;
+          *ok = 0;
+          return;
         }
         *id = res.id.toWord();
         *clause_begin = reinterpret_cast<uint64_t>(res.clause.bytes().data());
         *key_end = reinterpret_cast<uint64_t>(res.clause.key().end());
         *clause_end = reinterpret_cast<uint64_t>(res.clause.bytes().end());
-        return 1;
+        *ok = 1;
       };
 
-  const std::function<uint64_t(uint64_t, uint64_t *, uint64_t *)>
-      lookupKeyValue_ = [&](uint64_t fid, uint64_t *kout, uint64_t *vout) {
-        return q.lookupKeyValue(
+  const std::function<void(uint64_t, uint64_t, uint64_t, uint64_t *)>
+      lookupKeyValue_ = [&](uint64_t fid, uint64_t kout, uint64_t vout,
+                            uint64_t *res) {
+        *res = q.lookupKeyValue(
             Id::fromWord(fid),
             reinterpret_cast<binary::Output *>(kout),
             reinterpret_cast<binary::Output *>(vout)).toWord();
       };
 
-  const std::function<uint64_t(uint64_t, uint64_t *, uint64_t)>
-      newDerivedFact_ = [&](uint64_t type, uint64_t *key, uint64_t size) {
-        return q.newDerivedFact(
+  const std::function<void(uint64_t, uint64_t, uint64_t, uint64_t *)>
+      newDerivedFact_ = [&](uint64_t type, uint64_t key, uint64_t size,
+                            uint64_t *res) {
+        *res = q.newDerivedFact(
             Pid::fromWord(type),
             reinterpret_cast<binary::Output *>(key),
             size).toWord();
@@ -678,21 +685,24 @@ std::unique_ptr<QueryResults> executeQuery (
   const std::function<void(uint64_t *, uint64_t *)> saveState_ =
       [&](uint64_t *pc, uint64_t *frame) { q.saveState(pc, frame); };
 
-  const std::function<void(uint64_t, binary::Output *, binary::Output *,
+  const std::function<void(uint64_t, uint64_t, uint64_t,
                            uint64_t, uint64_t)>
-      resultWithPid_ = [&](uint64_t id, binary::Output *key,
-                           binary::Output *val, uint64_t pid, uint64_t rec) {
+      resultWithPid_ = [&](uint64_t id, uint64_t key,
+                           uint64_t val, uint64_t pid, uint64_t rec) {
         q.resultWithPid(
             Id::fromWord(id),
-            key,
-            val,
+            reinterpret_cast<binary::Output *>(key),
+            reinterpret_cast<binary::Output *>(val),
             Pid::fromWord(pid),
             rec);
       };
 
-  const std::function<uint64_t(uint64_t, binary::Output *, binary::Output *)>
-      result_ = [&](uint64_t id, binary::Output *key, binary::Output *val) {
-        return q.result(Id::fromWord(id), key, val);
+  const std::function<void(uint64_t, uint64_t, uint64_t, uint64_t *)>
+      result_ = [&](uint64_t id, uint64_t key, uint64_t val, uint64_t *res) {
+        *res = q.result(
+            Id::fromWord(id),
+            reinterpret_cast<binary::Output *>(key),
+            reinterpret_cast<binary::Output *>(val));
       };
 
   std::vector<uint64_t> args;

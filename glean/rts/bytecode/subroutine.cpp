@@ -237,15 +237,15 @@ struct Eval {
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_0_1 a) {
-    *a.dst = (*a.fun)();
+    (*a.fun)(a.dst);
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_0_2 a) {
-    *a.dst1 = (*a.fun)(a.dst2);
+    (*a.fun)(a.dst1, a.dst2);
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_1_1 a) {
-    *a.dst = (*a.fun)(a.src);
+    (*a.fun)(a.src, a.dst);
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_1_0 a) {
@@ -265,19 +265,19 @@ struct Eval {
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_2_1 a) {
-    *a.dst = (*a.fun)(a.src1, a.src2);
+    (*a.fun)(a.src1, a.src2, a.dst);
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_2_2 a) {
-    *a.dst1 = (*a.fun)(a.src1, a.src2, a.dst2);
+    (*a.fun)(a.src1, a.src2, a.dst1, a.dst2);
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_2_5 a) {
-    *a.dst1 = (*a.fun)(a.src1, a.src2, a.dst2, a.dst3, a.dst4, a.dst5);
+    (*a.fun)(a.src1, a.src2, a.dst1, a.dst2, a.dst3, a.dst4, a.dst5);
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_3_1 a) {
-    *a.dst = (*a.fun)(a.src1, a.src2, a.src3);
+    (*a.fun)(a.src1, a.src2, a.src3, a.dst);
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_5_0 a) {
@@ -285,7 +285,7 @@ struct Eval {
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_5_1 a) {
-    *a.dst = (*a.fun)(a.src1, a.src2, a.src3, a.src4, a.src5);
+    (*a.fun)(a.src1, a.src2, a.src3, a.src4, a.src5, a.dst);
   }
 
   FOLLY_ALWAYS_INLINE void execute(Select a) {

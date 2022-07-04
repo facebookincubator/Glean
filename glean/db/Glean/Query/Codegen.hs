@@ -1667,7 +1667,7 @@ data QueryRegs s = QueryRegs
 
     -- | Save the current state, resume at the given label later
   , saveState
-     :: Register ('Fun ['WordPtr,'WordPtr] 'Void)
+     :: Register ('Fun ['WordPtr,'WordPtr])
 
     -- | Maximum number of results to return
   , maxResults :: Register 'Word
