@@ -1,0 +1,74 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema codemarkup.search.1 {
+
+import code.24
+import codemarkup.30
+import codemarkup.types.1
+import search.code.16
+
+#
+# Public API
+#
+
+# Note the Insensitive case implies you did toLower on the argument
+type SearchCase = enum { Sensitive | Insensitive }
+
+#
+# search for entities by identifier name, either case insensitive or not
+#
+predicate SearchByNameAndKind:
+  {
+    searchcase: SearchCase,
+    name: string,
+    entity: code.Entity,
+    location: codemarkup.types.Location,
+    kind: maybe codemarkup.types.SymbolKind,
+  }
+  { SearchCase, Name, Entity, Location, Kind } where
+    ( Sensitive = SearchCase;
+      SearchEntityByName { Name, Entity, Location, Kind }) |
+    ( Insensitive = SearchCase;
+      SearchEntityByLowerCaseName { Name, Entity, Location, Kind })
+
+#
+# Internal helpers
+#
+
+# Basic entity search. From exact name or prefix
+# to entity, and location and kind. May filter on kind if present.
+predicate SearchEntityByName:
+  {
+    name: string,
+    entity: code.Entity,
+    location: codemarkup.types.Location,
+    kind: maybe codemarkup.types.SymbolKind,
+  }
+  { Name, Entity, Location, MKind } where
+    search.code.SearchByName { Name, Entity };
+    EntityLocationAndKind { Entity, Location, MKind };
+
+# And the normalized lowercase form
+predicate SearchEntityByLowerCaseName:
+  {
+    name: string,
+    entity: code.Entity,
+    location: codemarkup.types.Location,
+    kind: maybe codemarkup.types.SymbolKind,
+  }
+  { Name, Entity, Location, MKind } where
+    search.code.SearchByLowerCaseName { Name, Entity };
+    EntityLocationAndKind { Entity, Location, MKind };
+
+predicate EntityLocationAndKind:
+  {
+    entity: code.Entity,
+    location: codemarkup.types.Location,
+    kind: maybe codemarkup.types.SymbolKind
+  }
+  { Entity, Location, MKind } where
+    codemarkup.EntityLocation { Entity, Location };
+    (if codemarkup.EntityKind { Entity, Kind }
+        then { just = Kind } else nothing) = MKind;
+
+}
