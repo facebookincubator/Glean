@@ -362,7 +362,7 @@ struct Database {
   // If the DB is broken, this gives more details
   12: optional DatabaseBroken broken;
 
-  // If the DB is complete, this is the size in bytes
+  // If the DB is complete, this gives more details
   13: optional DatabaseComplete complete;
 }
 
