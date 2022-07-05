@@ -47,8 +47,8 @@
 #include "glean/rts/binary.h"
 #include "glean/rts/inventory.h"
 
-DEFINE_string(service, "", "TIER or HOST:PORT of Glean server");
-DEFINE_string(dump, "", "dump the produce batch to file at PATH");
+DEFINE_string(service, "", "TIER or HOST:PORT of Glean write server. When specified the generated facts will be sent to that server. You MUST specify either --dump or --service, but not both.");
+DEFINE_string(dump, "", "PATH where generated facts will be dumped instead of sending them to the Glean write server. You MUST specify either --dump or --service, but not both.");
 DEFINE_string(work_file, "", "PATH to work file");
 DEFINE_string(task, "", "task id (for logging)");
 DEFINE_string(request, "", "request id (for logging)");
@@ -59,9 +59,9 @@ DEFINE_string(blank_cell_name, "", "buck cell name output as nothing");
 DEFINE_string(cwd_subdir, "", "current working subdirectory under --root");
 DEFINE_string(target_subdir, "", "clang target subdirectory under --root");
 DEFINE_string(path_prefix, "",
-  "Path fragment to prefix files with (e.g. 'fbsource')");
-DEFINE_string(repo_name, "", "repository name (e.g., fbsource)");
-DEFINE_string(repo_hash, "", "repository hash as produced by the VCS");
+  "Path fragment to prefix src.File facts with");
+DEFINE_string(repo_name, "", "Glean database name (formely known as repo). Used in logging. Also when --service is specified, 'repo_name/repo_hash' identifies the glean DB to write to.");
+DEFINE_string(repo_hash, "", "Glean database instance (formely known as hash). Used in logging. Also when --service is specified, 'repo_name/repo_hash' identifies the glean DB to write to.");
 DEFINE_int32(max_comm_errors, 30,
   "maximum number of consecutive communication errors");
 DEFINE_int32(stop_after, 0, "stop after N files");
