@@ -590,9 +590,6 @@ int main(int argc, char **argv) {
 
   Config config(argc, argv);
 
-  std::filesystem::current_path(
-    config.root / std::filesystem::path(config.cwd_subdir.value_or("")));
-
   const auto work_counter = FLAGS_work_file.empty()
     ? worklist::serialCounter(0, config.sources.size())
     : worklist::stealingCounter(
