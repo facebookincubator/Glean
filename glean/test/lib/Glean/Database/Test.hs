@@ -19,6 +19,7 @@ module Glean.Database.Test
   , setMemoryStorage
   , setDBVersion
   , setCompactOnCompletion
+  , setIncrementalDerivation
   , withTestEnv
   , kickOffTestDB
   , waitUntilComplete
@@ -103,6 +104,9 @@ setCompactOnCompletion :: Setting
 setCompactOnCompletion cfg = cfg
   { cfgServerConfig = cfgServerConfig cfg <&> \scfg -> scfg
       { ServerConfig.config_compact_on_completion = True } }
+
+setIncrementalDerivation :: Setting
+setIncrementalDerivation cfg = cfg { cfgIncrementalDerivation = True }
 
 withTestEnv
   :: [Setting]

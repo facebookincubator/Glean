@@ -235,6 +235,7 @@ data Env = forall storage. Storage storage => Env
       -- can be changed for testing where 1s granularity might not be enough
       -- to distinguish databases.
   , envShardManager :: SomeShardManager
+  , envIncrementalDerivation :: Bool
   }
 
 instance Show Env where

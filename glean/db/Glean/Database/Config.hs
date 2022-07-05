@@ -97,6 +97,7 @@ data Config = Config
   , cfgShardManager
     :: forall a
      . Observed ServerConfig.Config -> (SomeShardManager -> IO a) -> IO a
+  , cfgIncrementalDerivation :: Bool
   }
 
 instance Show Config where
@@ -121,6 +122,7 @@ instance Default Config where
     , cfgTailerOpts = def
     , cfgListener = mempty
     , cfgShardManager = defaultShardManagerConfig Nothing
+    , cfgIncrementalDerivation = False
     }
 
 data SchemaIndex = SchemaIndex
@@ -333,6 +335,7 @@ options = do
     { cfgCatalogStore = cfgCatalogStore def
     , cfgListener = mempty
     , cfgShardManager = cfgShardManager def
+    , cfgIncrementalDerivation = False
     , .. }
   where
     recipesConfigThriftSource = option (eitherReader ThriftSource.parse)

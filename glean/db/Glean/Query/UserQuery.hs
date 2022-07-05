@@ -58,9 +58,13 @@ import Util.Log
 import qualified Glean.Angle.Parser as Angle
 import Glean.Angle.Types hiding (Type, FieldDef, SourcePat_(..))
 import qualified Glean.Angle.Types as Angle
+import qualified Glean.Internal.Types as Thrift
 import Glean.Schema.Types (ResolvedType)
+import qualified Glean.Backend.Remote as Backend
+import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Schema.Types
 import Glean.Database.Open
+import qualified Glean.Database.PredicateStats as PredicateStats
 import Glean.Database.Types as Database
 import Glean.Database.Writes
 import Glean.FFI
@@ -69,6 +73,7 @@ import Glean.Query.Transform
 import Glean.Query.Flatten
 import Glean.Query.Opt
 import Glean.Query.Reorder
+import Glean.Query.Incremental (makeIncremental)
 import Glean.RTS as RTS
 import Glean.RTS.Bytecode.Disassemble
 import qualified Glean.RTS.Bytecode.Gen.Version as Bytecode
@@ -136,7 +141,7 @@ genericUserQuery env repo query enc = do
   readDatabaseWithBoundaries env repo $ \odb bounds lookup ->
     maybe id limitAllocsThrow config_query_alloc_limit
       $ performUserQuery enc (odbSchema odb)
-      $ userQueryImpl env odb config bounds lookup repo query
+      $ userQueryImpl env odb config NoExtraSteps bounds lookup repo query
 
 -- | A generic implementation of lookup queries.
 genericUserQueryFacts
@@ -444,8 +449,8 @@ userQueryFactsImpl
      then withoutFacts results
      else results
 
--- | A version of userQuery where we only care about the
--- resulting writes caused by the query.
+-- | A version of userQuery where we only care about the resulting writes
+-- caused by the query. Used for stored predicate derivation.
 userQueryWrites
   :: Database.Env
   -> OpenDB
@@ -456,14 +461,44 @@ userQueryWrites
   -> Thrift.UserQuery
   -> IO (Thrift.UserQueryStats, Maybe Thrift.UserQueryCont, Maybe Thrift.Handle)
 userQueryWrites env odb config bounds lookup repo q = do
+  meta <- atomically $ Catalog.readMeta (envCatalog env) repo
+  mode <-
+    if isStacked meta && envIncrementalDerivation env
+    then IncrementalDerivation <$> sectionsStats
+    else return NoExtraSteps
   Results{..} <- withStats $
-    userQueryImpl env odb config bounds lookup repo q
+    userQueryImpl env odb config mode bounds lookup repo q
   return (resStats, resCont, resWriteHandle)
+  where
+    isStacked meta = isJust (Thrift.metaDependencies meta)
+
+    -- Here the best we can do is say whether a Pid could have facts in a DB.
+    -- Because of ownership slicing it may be that even though
+    -- `Backend.predicateStats` gives a positive number all facts could be
+    -- filtered out.
+    sectionsStats :: IO (SeekSection -> Pid -> Bool)
+    sectionsStats = do
+      stackStats <- stats Backend.IncludeBase
+      topStats <- stats Backend.ExcludeBase
+      let baseStats = stackStats `minus` topStats
+          pidHasFacts seekWhere (Pid pid) = case seekWhere  of
+            SeekOnAllFacts -> hasFacts pid stackStats
+            SeekOnBase -> hasFacts pid baseStats
+            SeekOnStacked -> hasFacts pid topStats
+      return pidHasFacts
+
+    stats opts =
+      fmap Thrift.predicateStats_count
+      <$> PredicateStats.predicateStats env repo opts
+    minus = Map.unionWith (-)
+    hasFacts pid m = maybe False (> 0) $ Map.lookup pid m
+
 
 userQueryImpl
   :: Database.Env
   -> OpenDB
   -> ServerConfig.Config
+  -> CompilationMode
   -> Boundaries
   -> Lookup
   -> Thrift.Repo
@@ -475,6 +510,7 @@ userQueryImpl
   env
   odb
   config
+  mode
   bounds
   lookup
   repo
@@ -508,6 +544,7 @@ userQueryImpl
             compileAngleQuery
               schemaVersion
               schema
+              mode
               userQuery_query
               stored
           let
@@ -656,6 +693,7 @@ userQueryImpl
   env
   odb
   config
+  _
   bounds
   lookup
   repo
@@ -845,14 +883,20 @@ schemaVersionForQuery env schema ServerConfig.Config{..} repo qversion qid = do
       id `Map.member` schemaEnvs schema
     isAvailable _ = True
 
+data CompilationMode
+  = NoExtraSteps
+  | IncrementalDerivation (SeekSection -> Pid -> Bool)
+
 compileAngleQuery
   :: SchemaSelector
     -- ^ Schema version to resolve unversioned predicates
   -> DbSchema
+  -> CompilationMode
+    -- ^ only used in predicate derivations on incremental dbs
   -> ByteString
   -> Bool
   -> IO (CodegenQuery, Transformations)
-compileAngleQuery ver dbSchema source stored = do
+compileAngleQuery ver dbSchema mode source stored = do
   parsed <- checkBadQuery Text.pack $ Angle.parseQuery source
   vlog 2 $ "parsed query: " <> show (pretty parsed)
 
@@ -876,7 +920,12 @@ compileAngleQuery ver dbSchema source stored = do
 
   -- no need to vlog, compileQuery will vlog it later
   reordered <- checkBadQuery id $ runExcept $ reorder dbSchema optimised
-  return (reordered, appliedTrans)
+
+  let final = case mode of
+        NoExtraSteps -> reordered
+        IncrementalDerivation getStats -> makeIncremental getStats reordered
+
+  return (final, appliedTrans)
   where
   checkBadQuery :: (err -> Text) -> Either err a -> IO a
   checkBadQuery txt act = case act of

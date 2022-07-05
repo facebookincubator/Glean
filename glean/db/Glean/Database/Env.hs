@@ -160,6 +160,7 @@ initEnv evb dbRoot shardManager cfg logger envSchemaSource envRecipeConfig envSe
 #endif
             ("mock", Backup.mock)
           ]
+      , envIncrementalDerivation = cfgIncrementalDerivation cfg
       , .. }
 
 spawnThreads :: Env -> IO ()
