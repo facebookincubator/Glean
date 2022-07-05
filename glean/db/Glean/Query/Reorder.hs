@@ -12,15 +12,17 @@ module Glean.Query.Reorder
   ( reorder
   ) where
 
+import Control.Applicative ((<|>))
 import Control.Monad.Except
 import Control.Monad.State
-import Data.Foldable (fold)
+import Data.Foldable (find, fold)
 import Data.Functor.Identity (Identity(..))
 import qualified Data.ByteString as ByteString
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
 import Data.IntSet (IntSet)
 import qualified Data.IntSet as IntSet
+import Data.List (uncons)
 import qualified Data.List.NonEmpty as NonEmpty
 import Data.Maybe
 import Data.Text (Text)
@@ -464,21 +466,17 @@ reorderStmts stmts = iterate stmts
     :: Scope
     -> [FlatStatement]
     -> (FlatStatement,[FlatStatement])
-  choose scope stmts = lift [] stmts
+  choose scope stmts = fromMaybe (error "choose") $
+    find (isResolvedFilter scope . fst) stmts' <|>
+    find (not . isUnresolved scope . fst) stmts' <|>
+    uncons stmts
     where
-    lift _ [] = sink [] stmts
-    lift notPicked (stmt : stmts) =
-      if isResolvedFilter scope stmt
-        then (stmt, reverse notPicked <> stmts)
-        else lift (stmt : notPicked) stmts
+      stmts' = go [] stmts
 
-    sink unresolved [] =
-      case reverse unresolved of
-        one : rest -> (one, rest)
-        [] -> error "sink"
-    sink unresolved (stmt : stmts)
-      | isUnresolved scope stmt = sink (stmt : unresolved) stmts
-      | otherwise = (stmt, reverse unresolved ++ stmts)
+      go :: [a] -> [a] -> [(a,[a])]
+      go _ [] = []
+      go before (x:after) = (x, reverse before <> after) : go (x:before) after
+
 
 -- | True if the statement is O(1) and resolved
 isResolvedFilter :: Scope -> FlatStatement -> Bool
