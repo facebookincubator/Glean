@@ -24,9 +24,11 @@ module Glean.Glass.Query
   , fileLines
 
   -- * Search
-  , searchByLocalName
-  , searchByLocalNamePrefix
+  , searchByName
   , SearchCase(..)
+  , SearchType(..)
+  , SearchFn
+  , toSearchResult
 
   -- * Entity annotations
   , symbolKind
@@ -40,16 +42,15 @@ import Data.Text (Text, toLower)
 
 import qualified Glean
 import Glean.Angle as Angle
+import Glean.Haxl.Repos (RepoHaxl)
 
 import Glean.Glass.Base (GleanPath(..))
 
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
+import qualified Glean.Schema.CodemarkupSearch.Types as CodeSearch
 import qualified Glean.Schema.Codemarkup.Types as Code
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.Src.Types as Src
-import qualified Glean.Schema.SearchCode.Types as Code
-
-import Thrift.CodegenTypesOnly ( allThriftEnumValues )
 
 --
 -- Find the id in this db of a source file. We mostly operate on these ids once
@@ -133,90 +134,94 @@ findReferenceRangeSpan ent =
       )
     ]
 
+--
+-- Finding entities by name search
+--
+
+-- | Which search
 data SearchType = Exact | Prefix
+
+-- | Whether we care about case
 data SearchCase = Sensitive | Insensitive
 
-searchByLocalName
-  :: SearchCase
-  -> [Code.SymbolKind]
-  -> Text
-  -> Angle (Code.Entity, Code.Location, Maybe Code.SymbolKind)
-searchByLocalName = searchByLocalName_ Exact
-
-searchByLocalNamePrefix
-  :: SearchCase
-  -> [Code.SymbolKind]
-  -> Text
-  -> Angle (Code.Entity, Code.Location, Maybe Code.SymbolKind)
-searchByLocalNamePrefix = searchByLocalName_ Prefix
-
-searchByLocalName_
+--
+-- Finding entities by string search. Base layer in Glean
+--
+-- There are four main flavors
+--
+-- > "Glean" , exact and sensitive
+-- > "glean" , exact and case insensitive
+-- > "Gle".. , prefix and sensitive
+-- > "GLE".. , prefix and insensitive (most generic)
+--
+-- Additionally, you can filter on the server side by kind. Empty list of
+-- kinds will return all matching entities, with or without kinds.
+--
+-- In all cases we return a basic triple of (entity, location, maybe kind)
+--
+searchByName
   :: SearchType
   -> SearchCase
-  -> [Code.SymbolKind]
   -> Text
-  -> Angle (Code.Entity, Code.Location, Maybe Code.SymbolKind)
-searchByLocalName_ ty sCase kinds name =
-  vars $ \entity loc mKind kind -> tuple (entity, loc, mKind) `where_`
-    ([ searchPredicate (stringOrPrefix name') entity
-    , wild .= predicate @Code.EntityLocation (
-        rec $
-            field @"entity" entity $
-            field @"location" loc
-        end)
-    , sig @() wild .= (
-      [ not_ [wild .= entityKind entity allKinds]
-      , mKind .= sig @(Maybe Code.SymbolKind) nothing
-      ]
-      `or_` [wild .= entityKind entity kind, mKind .= just kind]
-    )
-    ] ++ kindFilters entity kinds)
-  where
-    searchPredicate name entity = case sCase of
-      Sensitive -> wild .= predicate @Code.SearchByName (
-        -- not sure how to avoid code duplication here
-        rec $
-            field @"name" name $
-            field @"entity" entity
-        end
-        )
-      Insensitive -> wild .= predicate @Code.SearchByLowerCaseName (
-        rec $
-            field @"name" name $
-            field @"entity" entity
-        end
-        )
-    stringOrPrefix = case ty of
-      Exact -> string
-      Prefix -> stringPrefix
+  -> [Code.SymbolKind]
+  -> Angle CodeSearch.SearchByNameAndKind
 
-    name' = case sCase of
+searchByName sType sCase name kinds = codeSearchByNameAndKind nameQ caseQ mKindQ
+  where
+    nameLit = case sCase of
       Sensitive -> name
       Insensitive -> toLower name
 
-    kindFilters :: Angle Code.Entity -> [Code.SymbolKind] -> [AngleStatement]
-    kindFilters _ [] = []
-    kindFilters entity (h:t) = [
-      wild .= entityKind entity (disjunction h t) ]
+    nameQ = case sType of
+      Exact -> string nameLit
+      Prefix -> stringPrefix nameLit
 
-    disjunction :: Code.SymbolKind -> [Code.SymbolKind] -> Angle Code.SymbolKind
-    disjunction kind [] = enum kind
-    disjunction kind (h:t) = enum kind .| disjunction h t
+    caseQ = enum $ case sCase of
+      Sensitive -> CodeSearch.SearchCase_Sensitive
+      Insensitive -> CodeSearch.SearchCase_Insensitive
 
-    entityKind
-      :: Angle Code.Entity
-      -> Angle Code.SymbolKind
-      -> Angle Code.EntityKind
-    entityKind entity kind = predicate @Code.EntityKind (
+    mKindQ = case kinds of
+      [] -> Nothing -- n.b. unconstrained, including entities with no kind
+      ks -> Just $ foldr1 (.|) (map enum ks)
+
+--
+-- Find entities by strings, with an optional kind expression filter
+--
+codeSearchByNameAndKind
+  :: Angle Text
+  -> Angle CodeSearch.SearchCase
+  -> Maybe (Angle Code.SymbolKind)
+  -> Angle CodeSearch.SearchByNameAndKind
+codeSearchByNameAndKind nameQ caseQ mKindQ =
+    predicate @CodeSearch.SearchByNameAndKind (searchKey mKindQ)
+  where
+    searchKey Nothing =
       rec $
-        field @"entity" entity $
-        field @"kind" kind
-      end)
+        field @"name" nameQ $ -- may be prefix
+        field @"searchcase" caseQ
+      end
+    searchKey (Just kindPat) =
+      rec $
+        field @"name" nameQ $
+        field @"searchcase" caseQ $
+        field @"kind" (just kindPat) -- specific kinds only
+      end
 
-    -- HACK: because Angle can't handle wildcards in negation yet (T100361464),
-    -- we enumerate all possible values of Code.SymbolKind. This increases the
-    -- query size considerably.
-    allKinds = let (h:t) = allThriftEnumValues in disjunction h t
+type SearchFn
+  = SearchCase
+  -> Text
+ -> [Code.SymbolKind]
+  -> Angle CodeSearch.SearchByNameAndKind
+
+toSearchResult
+  :: CodeSearch.SearchByNameAndKind
+  -> RepoHaxl u w (Code.Entity, Code.Location, Maybe Code.SymbolKind)
+toSearchResult p = do
+  CodeSearch.SearchByNameAndKind_key{..} <- Glean.keyOf p
+  pure $
+    (searchByNameAndKind_key_entity
+    ,searchByNameAndKind_key_location
+    ,searchByNameAndKind_key_kind)
 
 -- | Given an entity find the kind associated with it
 symbolKind :: Angle Code.Entity -> Angle Code.SymbolKind

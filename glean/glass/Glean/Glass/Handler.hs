@@ -345,7 +345,8 @@ searchByName
   -> SearchByNameRequest
   -> RequestOptions
   -> IO SearchByNameResult
-searchByName = searchEntityByString "searchByName" Query.searchByLocalName
+searchByName =
+  searchEntityByString "searchByName" (Query.searchByName Query.Exact)
 
 -- | Search for entities by string fragments of names
 searchByNamePrefix
@@ -354,7 +355,7 @@ searchByNamePrefix
   -> RequestOptions
   -> IO SearchByNameResult
 searchByNamePrefix =
-  searchEntityByString "searchByNamePrefix" Query.searchByLocalNamePrefix
+  searchEntityByString "searchByNamePrefix" (Query.searchByName Query.Prefix)
 
 -- | Search for entities by symbol id prefix
 searchBySymbolId
@@ -964,8 +965,7 @@ describeEntity
 -- implementation between searchByName and searchByNamePrefix.
 searchEntityByString
   :: Text
-  -> (Query.SearchCase -> [Code.SymbolKind] -> Text
-      -> Angle (Code.Entity, Code.Location, Maybe Code.SymbolKind))
+  -> Query.SearchFn
   -> Glass.Env
   -> SearchByNameRequest
   -> RequestOptions
@@ -981,41 +981,39 @@ searchEntityByString method query env@Glass.Env{..} req opts = case repoLangs of
     repo = searchContext_repo_name context
     lang = searchContext_language context
     limit = fromIntegral <$> requestOptions_limit opts
-    localName = searchByNameRequest_name req
     context = searchByNameRequest_context req
     terse = not $ searchByNameRequest_detailedResults req
-    reqKinds = map symbolKindFromSymbolKind $
-      Set.elems $ searchContext_kinds context
-    caes = if searchByNameRequest_ignoreCase req
-            then Query.Insensitive
-            else Query.Sensitive
+
+    nameLit = searchByNameRequest_name req
+    kindQ = map symbolKindFromSymbolKind $ Set.elems $
+      searchContext_kinds context
+    caseQ = if searchByNameRequest_ignoreCase req
+      then Query.Insensitive else Query.Sensitive
+    searchQ = query caseQ nameLit kindQ
 
     searchEntityByStringRepoLang (repo, lang) =
       withRepoLanguage method env req repo (Just lang) $ \gleanDBs _mlang -> do
         backendRunHaxl GleanBackend{..} $ do
-          resultsAndDescriptions <-
-            searchReposWithLimit limit (query caes reqKinds localName) $
-              \result@(entity, Code.Location{..}, kind) -> do
-                loc <- rangeSpanToLocationRange
-                        repo location_file location_location
-                path <- GleanPath <$> Glean.keyOf location_file
-                symbol <- toSymbolId (fromGleanPath repo path) entity
-                description <- -- describeEntity is non-optional?
-                  describeEntity loc entity symbol
-                    (symbolKindToSymbolKind <$> kind)
-                gleanRepo <- Glean.haxlRepo
-                return ((gleanRepo, result), description)
-          let (results, descriptions) = unzip resultsAndDescriptions
-          let mDescriptions = if terse then [] else descriptions
+          allResults <- searchReposWithLimit limit searchQ $ \r -> do
+            r@(entity, Code.Location{..}, kind) <- Query.toSearchResult r
+            loc <- rangeSpanToLocationRange repo location_file location_location
+            path <- GleanPath <$> Glean.keyOf location_file
+            symbol <- toSymbolId (fromGleanPath repo path) entity
+            description <- if terse then pure Nothing else Just <$>
+              describeEntity loc entity symbol (symbolKindToSymbolKind <$> kind)
+            gleanRepo <- Glean.haxlRepo
+            return ((gleanRepo, r), description)
+          let (results, descriptions) = unzip allResults
+          let mDescriptions = if terse then [] else catMaybes descriptions
           symbols <- if terse
-            then
-              mapM
-                (\(gleanRepo, (entity, Code.Location{..}, _)) ->
-                    withRepo gleanRepo $ do
-                      path <- GleanPath <$> Glean.keyOf location_file
-                      toSymbolId (fromGleanPath repo path) entity) results
-            else return $ map symbolDescription_sym descriptions
+            then mapM (symbolIdOf repo) results
+            else return $ map symbolDescription_sym mDescriptions
           return (SearchByNameResult symbols mDescriptions, Nothing)
+
+    symbolIdOf repo (gleanRepo, (entity, Code.Location{..}, _span)) =
+       withRepo gleanRepo $ do
+          path <- GleanPath <$> Glean.keyOf location_file
+          toSymbolId (fromGleanPath repo path) entity
 
     takeLimit :: [a] -> [a]
     takeLimit = maybe id take limit
