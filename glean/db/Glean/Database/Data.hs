@@ -19,16 +19,16 @@ import Glean.Database.Exception
 import Glean.Database.Storage (Storage, Database)
 import qualified Glean.Database.Storage as Storage
 import Glean.Types (Repo)
-import qualified Glean.Types as Thrift
+import Glean.Internal.Types (StoredSchema)
 
 sCHEMA_KEY :: ByteString
 sCHEMA_KEY = "schema"
 
-storeSchema :: Storage s => Database s -> Thrift.SchemaInfo -> IO ()
+storeSchema :: Storage s => Database s -> StoredSchema -> IO ()
 storeSchema db = Storage.store db sCHEMA_KEY . serializeCompact
 
 retrieveSchema
-    :: Storage s => Repo -> Database s -> IO (Maybe Thrift.SchemaInfo)
+    :: Storage s => Repo -> Database s -> IO (Maybe StoredSchema)
 retrieveSchema repo db = do
   value <- Storage.retrieve db sCHEMA_KEY
   case deserializeCompact <$> value of

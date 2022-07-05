@@ -66,13 +66,15 @@ import qualified Glean.Database.Types as Database
 import qualified Glean.Database.Work as Database
 import qualified Glean.Database.Writes as Database
 import Glean.Impl.ConfigProvider
+import Glean.Internal.Types (StoredSchema(..))
 import Glean.Logger
 import qualified Glean.Query.UserQuery as UserQuery
 import qualified Glean.Query.Derive as Derive
 import Glean.RTS (Fid(..))
 import qualified Glean.RTS.Foreign.Inventory as Inventory
 import qualified Glean.RTS.Foreign.Lookup as Lookup
-import Glean.Database.Schema
+import Glean.Database.Schema hiding (getSchemaInfo)
+import qualified Glean.Database.Schema as Database
 import qualified Glean.Types as Thrift
 import Glean.Util.Observed as Observed
 import Glean.Util.ThriftSource as ThriftSource
@@ -282,8 +284,8 @@ instance Backend Database.Env where
       (,) <$> Lookup.startingId db <*> Lookup.firstFreeId db
     return $ Thrift.FactIdRange (fromFid starting) (fromFid next)
 
-  getSchemaInfo env repo = withOpenDatabase env repo $
-    return . toSchemaInfo . Database.odbSchema
+  getSchemaInfo env repo = withOpenDatabase env repo $ \odb ->
+    Database.getSchemaInfo (Database.odbSchema odb)
 
   validateSchema env (Thrift.ValidateSchema str) = do
     schema  <- get (Database.envSchemaSource env)
@@ -339,8 +341,8 @@ instance Backend Database.Env where
 
 loadDbSchema :: Backend a => a -> Thrift.Repo -> IO DbSchema
 loadDbSchema backend repo = do
-  info <- getSchemaInfo backend repo
-  fromSchemaInfo info readWriteContent
+  Thrift.SchemaInfo schema pids <- getSchemaInfo backend repo
+  fromStoredSchema (StoredSchema schema pids) readWriteContent
 
 serializeInventory
   :: Backend backend

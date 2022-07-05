@@ -962,7 +962,6 @@ service GleanService extends fb303.FacebookService {
   list<Id> getPredicates(1: Repo repo, 2: list<PredicateRef> predicates);
 
   // Get the schema of a database. NOTE: This will replace getPredicates
-  // and getSchema.
   SchemaInfo getSchemaInfo(1: Repo repo);
 
   // Check that a schema is valid, throws an exception if not.  Used

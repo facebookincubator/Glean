@@ -70,7 +70,7 @@ data DbSchema = DbSchema
   , schemaLatestVersion :: SchemaId
 
   , schemaSource :: SourceSchemas
-    -- ^ This is for toSchemaInfo
+    -- ^ This is for toStoredSchema
   }
 
 -- | Data required to transform a predicate that was requested in a query into

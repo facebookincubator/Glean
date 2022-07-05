@@ -41,7 +41,7 @@ import qualified Glean.Database.Storage as Storage
 import Glean.Database.Open
 import Glean.Database.Types
 import Glean.Database.Work
-import Glean.Database.Schema (toSchemaInfo)
+import Glean.Database.Schema (toStoredSchema)
 import Glean.Database.Schema.Types
 import Glean.Internal.Types
 import qualified Glean.Recipes.Types as Recipes
@@ -70,7 +70,7 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
                   "database is " <> showCompleteness c
             start <- firstFreeId lookup
             return $ Storage.Create start
-              (Storage.UseThisSchema $ toSchemaInfo (odbSchema odb))
+              (Storage.UseThisSchema $ toStoredSchema (odbSchema odb))
 
         -- If use_schema_id is enabled in the server config and the
         -- glean.schema_id property is set, we'll use this to decide

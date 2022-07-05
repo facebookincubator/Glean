@@ -238,14 +238,14 @@ setupSchema Env{..} _ handle (Create _ initial) = do
       newDbSchema schema (SpecificSchemaId schemaId) readWriteContent
     UseThisSchema info ->
       newMergedDbSchema info schema AllowChanges readWriteContent
-  storeSchema handle $ toSchemaInfo dbSchema
+  storeSchema handle $ toStoredSchema dbSchema
   return dbSchema
 setupSchema Env{..} repo handle mode = do
   stored <- retrieveSchema repo handle
   case stored of
     Just info
       | ReadOnly <- mode -> mergeSchema
-      | otherwise -> fromSchemaInfo info readWriteContent
+      | otherwise -> fromStoredSchema info readWriteContent
           -- while writing, we don't allow new predicates to be added to
           -- the schema. This is the easiest way to prevent facts being
           -- added to the DB that aren't in the original stored schema.

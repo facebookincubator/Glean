@@ -23,13 +23,14 @@ import Data.HashMap.Strict (HashMap)
 import qualified Data.Vector.Storable as VS
 
 import Glean.Database.Backup.Backend (Data)
+import Glean.Internal.Types (StoredSchema)
 import Glean.RTS.Foreign.FactSet (FactSet)
 import Glean.RTS.Foreign.Inventory (Inventory)
 import Glean.RTS.Foreign.Lookup (CanLookup)
 import Glean.RTS.Foreign.Ownership
 import Glean.RTS.Types (Fid, Pid)
 import Glean.ServerConfig.Types (DBVersion(..))
-import Glean.Types (PredicateStats, Repo, SchemaInfo, SchemaId)
+import Glean.Types (PredicateStats, Repo, SchemaId)
 
 -- | List of binary representation versions we can read
 readableVersions :: [DBVersion]
@@ -56,7 +57,7 @@ currentVersion = maximum writableVersions
 data CreateSchema
   = UseDefaultSchema
   | UseSpecificSchema SchemaId
-  | UseThisSchema SchemaInfo
+  | UseThisSchema StoredSchema
   deriving (Show)
 
 -- | Database opening mode

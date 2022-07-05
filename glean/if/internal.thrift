@@ -60,6 +60,12 @@ struct Inventory {
   1: list<Predicate> predicates;
 }
 
+// The Schema stored in a DB
+struct StoredSchema {
+  1: string (hs.type = "ByteString") schema;
+  2: map<glean.Id, glean.PredicateRef> predicateIds;
+}
+
 // -----------------------------------------------------------------------------
 // DB metadata
 

@@ -128,7 +128,7 @@ makeFakeDB schema root repo dbtime completeness stacked = do
       (Storage.Create lowestFid Storage.UseDefaultSchema)
       Storage.currentVersion)
     Storage.close
-    (\hdl -> storeSchema hdl $ toSchemaInfo schema)
+    (\hdl -> storeSchema hdl $ toStoredSchema schema)
   LB.writeFile (repoPath </> "meta") (encode meta)
 
 

@@ -31,6 +31,7 @@ import Util.IO
 import Util.OptParse
 
 import Glean hiding (options)
+import Glean.Backend (loadDbSchema)
 import qualified Glean.LocalOrRemote as LocalOrRemote
 import Glean.Database.Schema
 import Glean.Datasource.Scribe.Write
@@ -259,8 +260,7 @@ instance Plugin WriteCommand where
             writeFileFormat)
     where
     write repo files max Nothing (Just useLocalCache) fileFormat = do
-      schemaInfo <- Glean.getSchemaInfo backend repo
-      dbSchema <- fromSchemaInfo schemaInfo readWriteContent
+      dbSchema <- loadDbSchema backend repo
       logMessages <- newTQueueIO
       let inventory = schemaInventory dbSchema
       Glean.withSendAndRebaseQueue backend repo inventory useLocalCache $

@@ -12,7 +12,7 @@ module Glean.Database.Schema
   , predicateRef
   , TypeDetails(..)
   , schemaSize, schemaPredicates
-  , fromSchemaInfo, toSchemaInfo
+  , fromStoredSchema, toStoredSchema
   , newDbSchema
   , newMergedDbSchema
   , CheckChanges(..)
@@ -22,6 +22,7 @@ module Glean.Database.Schema
   , DbContent
   , readOnlyContent
   , readWriteContent
+  , getSchemaInfo
   ) where
 
 import Control.Applicative ((<|>))
@@ -57,6 +58,7 @@ import Glean.RTS.Foreign.Inventory as Inventory
 import Glean.Database.Config
 import Glean.Database.Schema.Types
 import Glean.Database.Schema.Transform (mkPredicateTransformation)
+import Glean.Internal.Types as Internal (StoredSchema(..))
 import Glean.RTS.Traverse
 import Glean.RTS.Typecheck
 import Glean.RTS.Types as RTS
@@ -93,22 +95,22 @@ schemaPredicates :: DbSchema -> [PredicateDetails]
 schemaPredicates = HashMap.elems . predicatesById
 
 
-fromSchemaInfo :: Thrift.SchemaInfo -> DbContent -> IO DbSchema
-fromSchemaInfo info@Thrift.SchemaInfo{..} dbContent =
+fromStoredSchema :: StoredSchema -> DbContent -> IO DbSchema
+fromStoredSchema info@StoredSchema{..} dbContent =
   mkDbSchemaFromSource
-    (Just (schemaInfoPids info))
+    (Just (storedSchemaPids info))
     dbContent
-    schemaInfo_schema
+    storedSchema_schema
 
-schemaInfoPids :: Thrift.SchemaInfo -> HashMap PredicateRef Pid
-schemaInfoPids Thrift.SchemaInfo{..} = HashMap.fromList
-  [ (ref, Pid pid) | (pid, ref) <- Map.toList schemaInfo_predicateIds ]
+storedSchemaPids :: StoredSchema -> HashMap PredicateRef Pid
+storedSchemaPids StoredSchema{..} = HashMap.fromList
+  [ (ref, Pid pid) | (pid, ref) <- Map.toList storedSchema_predicateIds ]
 
-toSchemaInfo :: DbSchema -> Thrift.SchemaInfo
-toSchemaInfo DbSchema{..} = Thrift.SchemaInfo
-  { schemaInfo_schema =
+toStoredSchema :: DbSchema -> StoredSchema
+toStoredSchema DbSchema{..} = StoredSchema
+  { storedSchema_schema =
       Text.encodeUtf8 $ renderStrict $ layoutCompact $ pretty schemaSource
-  , schemaInfo_predicateIds = Map.fromList
+  , storedSchema_predicateIds = Map.fromList
       [ (fromPid $ predicatePid p, predicateRef p)
       | p <- HashMap.elems predicatesById ]
   }
@@ -118,25 +120,25 @@ data CheckChanges
   | MustBeEqual
 
 newMergedDbSchema
-  :: Thrift.SchemaInfo  -- ^ schema from a DB
+  :: StoredSchema  -- ^ schema from a DB
   -> SchemaIndex  -- ^ current schema
   -> CheckChanges  -- ^ validate DB schema?
   -> DbContent
   -> IO DbSchema
-newMergedDbSchema info@Thrift.SchemaInfo{..} current validate
+newMergedDbSchema storedSchema@StoredSchema{..} current validate
     dbContent = do
   let
-  fromDB <- case processSchema Map.empty schemaInfo_schema of
+  fromDB <- case processSchema Map.empty storedSchema_schema of
     Left msg -> throwIO $ ErrorCall msg
     Right resolved -> return resolved
 
   -- For the "source", we'll use the current schema source. It doesn't
   -- reflect what's in the DB, but it reflects what you can query for.
-  mkDbSchema validate  (Just (schemaInfoPids info)) dbContent
+  mkDbSchema validate  (Just (storedSchemaPids storedSchema)) dbContent
     fromDB (Just current)
 
 -- | Build a DbSchema from parsed/resolved Schemas. Note that we still need
--- the original source for the schema for 'toSchemaInfo' (otherwise we would
+-- the original source for the schema for 'toStoredSchema' (otherwise we would
 -- need to pretty-print the resolved Schemas back into source.
 newDbSchema
   :: SchemaIndex
@@ -194,7 +196,7 @@ mkDbSchema validate knownPids dbContent
     procStored@(ProcessedSchema source _ stored) index = do
   let
     -- Assign Pids to predicates.
-    --  - predicates in the stored schema get Pids from the SchemaInfo
+    --  - predicates in the stored schema get Pids from the StoredSchema
     --    (unless this is a new DB, in which case we'll assign fresh Pids)
     --  - predicates in the merged schema get new fresh Pids.
 
@@ -737,7 +739,7 @@ validateNewSchema newSrc current = do
 
   curDbSchema <- mkDbSchema AllowChanges Nothing readWriteContent schema Nothing
   void $ newMergedDbSchema
-    (toSchemaInfo curDbSchema)
+    (toStoredSchema curDbSchema)
     current
     MustBeEqual
     readWriteContent
@@ -757,3 +759,7 @@ validateNewSchemaInstance schema = do
     case evolveOneSchema types predicateIdRef mempty (newDefs, oldDefs) of
       Left err -> throwIO $ ErrorCall $ Text.unpack err
       Right{} -> return ()
+
+getSchemaInfo :: DbSchema -> IO SchemaInfo
+getSchemaInfo dbSchema = return (Thrift.SchemaInfo schema pids)
+  where StoredSchema schema pids = toStoredSchema dbSchema
