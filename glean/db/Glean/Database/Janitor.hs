@@ -83,7 +83,7 @@ runWithShards
 runWithShards env myShards sm = do
   loggingAction (runLogCmd "janitor" env) (const mempty) $ do
   logInfo "running database janitor"
-  logInfo $ "Assigned shards: " <> show myShards
+  logInfo $ "Assigned shards: " <> show (toList myShards)
 
   config@ServerConfig.Config{..} <- Observed.get (envServerConfig env)
 
