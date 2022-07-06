@@ -17,6 +17,7 @@ import Data.Foldable as Foldable
 import Data.Hashable
 import qualified Data.HashMap.Strict as HashMap
 import Data.List (sortOn)
+import Data.List.Extra (nubOrdOn)
 import qualified Data.Map as Map
 import Data.Maybe
 import Data.Ord
@@ -134,17 +135,17 @@ runWithShards env myShards sm = do
       transitiveClosureBy itemRepo (catMaybes . dependencies) keepRoots
     dependencies = stacked . metaDependencies . itemMeta
     stacked (Just (Thrift.Dependencies_stacked repo)) =
-      [repo `Map.lookup` repoMap]
+      [repo `Map.lookup` byRepoMap]
     stacked (Just (Thrift.Dependencies_pruned update)) =
-      [pruned_base update `Map.lookup` repoMap]
+      [pruned_base update `Map.lookup` byRepoMap]
     stacked Nothing = []
-    repoMap =
-      Map.fromList $ map (\item -> (itemRepo item, item)) allDBs
 
     keepAnnotatedWithShard =
       [ (item, guard (shard `Set.member` myShards) >> pure shard)
       | item <- keep
-      , let shard = itemToShard item
+      -- We get Nothing when a dependency is missing, which should never happen.
+      -- If it does a 'logWarning' will be emitted by 'checkDependencies' below
+      , Just shard <- [itemToShard item]
       ]
 
     keepInThisNode =
@@ -156,24 +157,40 @@ runWithShards env myShards sm = do
 
     fetch = filter (\(Item{..},_) -> itemLocality == Cloud) keepInThisNode
 
-    itemToShard item = dbToShard sm
-      (BaseOfStack $ last $ itemRepo item : repoStack item)
+    -- itemToShard :: Item -> Maybe shard
+    itemToShard item = do
+      stack <- repoStack item
+      return $ dbToShard sm (BaseOfStack $ last $ itemRepo item : stack)
 
+    repoStack :: Item -> Maybe [Repo]
     repoStack Item{..} = case metaDependencies itemMeta of
-      Just (Dependencies_stacked base) ->
-        base :
-        repoStack (errorIfDepsNotPresent itemRepo $ Map.lookup base byRepoMap)
-      Just (Dependencies_pruned Pruned{..}) ->
-        pruned_base :
-        repoStack (errorIfDepsNotPresent itemRepo $
-                    Map.lookup pruned_base byRepoMap)
-      Nothing -> []
+      Just (Dependencies_stacked base) -> do
+        baseItem <- Map.lookup base byRepoMap
+        rest <- repoStack baseItem
+        return (base : rest)
 
-    errorIfDepsNotPresent itemRepo =
-      fromMaybe (error $ "dependencies must be retained: " <> show itemRepo)
+      Just (Dependencies_pruned Pruned{..}) -> do
+        baseItem <- Map.lookup pruned_base byRepoMap
+        rest <- repoStack baseItem
+        return (pruned_base : rest)
+      Nothing -> return []
 
-    missingDependencies = any isNothing $ concatMap dependencies keep
-  when missingDependencies $ logWarning "some dbs are missing dependencies"
+    checkDependencies dbs msg1 msg2 = do
+      let missingDependencies = nubOrdOn itemRepo
+            [db | db <- dbs, Nothing <- dependencies db]
+      unless (null missingDependencies) $
+        logWarning $
+          msg1 <> ": " <> show missingDependencies <> "\n" <> msg2
+
+  checkDependencies keep
+    "dependencies missing in Catalog"
+    ("This suggests a dependency db has been deleted from the cloud, " <>
+     "or a failure to enumerate the cloud catalog")
+
+  checkDependencies (map fst keepInThisNode)
+    "dependencies not downloaded"
+    ("This probably means a bug in the db->shard mapping, " <>
+     "or a failure to enumerate the cloud catalog")
 
   forM_ delete $ \repo -> do
     let
