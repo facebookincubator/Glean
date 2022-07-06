@@ -25,6 +25,7 @@ import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text.Encoding as Text
 import Data.Time
+import System.Time.Extra (sleep)
 
 import ServiceData.GlobalStats as Stats
 import Util.Control.Exception
@@ -69,7 +70,14 @@ runDatabaseJanitor :: Env -> IO ()
 runDatabaseJanitor env@Env{envShardManager = SomeShardManager sm} = do
   maybeShards <- getAssignedShards sm
   case maybeShards of
-    Just shards -> runWithShards env (Set.fromList shards) sm
+    Just shards
+      | null shards -> do
+        logInfo "waiting for shards"
+        -- it can take SM up to 30s to complete the shard assignment
+        sleep 45 -- seconds
+        runDatabaseJanitor env
+      | otherwise ->
+        runWithShards env (Set.fromList shards) sm
     Nothing -> do
       Just myShards <- getAssignedShards noSharding
       runWithShards env (Set.fromList myShards) noSharding
