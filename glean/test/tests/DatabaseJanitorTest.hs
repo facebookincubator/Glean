@@ -458,7 +458,7 @@ shardingTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
       (sort $ map (repo_hash . database_repo) dbs)
 
     -- update the shard assignment and verify
-    writeIORef myShards []
+    writeIORef myShards ["nil"]
     runDatabaseJanitor env
     waitDel env
     dbs <- listHereDBs env
