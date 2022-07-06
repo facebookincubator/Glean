@@ -162,13 +162,15 @@ runWithShards env myShards sm = do
     repoStack Item{..} = case metaDependencies itemMeta of
       Just (Dependencies_stacked base) ->
         base :
-        repoStack (errorIfDepsNotPresent $ Map.lookup base byRepoMap)
+        repoStack (errorIfDepsNotPresent itemRepo $ Map.lookup base byRepoMap)
       Just (Dependencies_pruned Pruned{..}) ->
         pruned_base :
-        repoStack (errorIfDepsNotPresent $ Map.lookup pruned_base byRepoMap)
+        repoStack (errorIfDepsNotPresent itemRepo $
+                    Map.lookup pruned_base byRepoMap)
       Nothing -> []
 
-    errorIfDepsNotPresent = fromMaybe (error "dependencies must be retained")
+    errorIfDepsNotPresent itemRepo =
+      fromMaybe (error $ "dependencies must be retained: " <> show itemRepo)
 
     missingDependencies = any isNothing $ concatMap dependencies keep
   when missingDependencies $ logWarning "some dbs are missing dependencies"
