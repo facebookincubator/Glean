@@ -7,8 +7,8 @@
 -}
 
 {-# LANGUAGE CPP #-}
-module Glean.Database.Sharding (
-  defaultShardManagerConfig,
+module Glean.Server.Sharding (
+  shardManagerConfig,
 ) where
 
 import Data.Maybe
@@ -23,13 +23,13 @@ import Glean.Util.ShardManager
 
 type PortNumber = Int
 
-defaultShardManagerConfig ::
+shardManagerConfig ::
   -- | Application port
   Maybe PortNumber ->
   Observed ServerConfig.Config ->
   (SomeShardManager -> IO b) ->
   IO b
-defaultShardManagerConfig mbPort smCfgServerConfig callback = do
+shardManagerConfig mbPort smCfgServerConfig callback = do
   config <- Observed.get smCfgServerConfig
   case ServerConfig.config_sharding config of
     ServerConfig.ShardingPolicy_no_shards {} ->

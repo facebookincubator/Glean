@@ -33,7 +33,7 @@ import Util.Log
 import Glean.Backend.Remote hiding (options)
 import qualified Glean.Database.Catalog as Catalog
 import qualified Glean.Database.Catalog.Filter as Catalog
-import Glean.Database.Config (cfgShardManager, defaultShardManagerConfig)
+import Glean.Database.Config (cfgShardManager)
 import Glean.Database.Env
 import Glean.Database.Types
 import qualified Glean.Handler as GleanHandler
@@ -41,6 +41,7 @@ import qualified Glean.Index as Index
 import Glean.Index.GleanIndexingService.Service
 import Glean.Server.Config as Config
 import Glean.Server.PublishShards
+import Glean.Server.Sharding (shardManagerConfig)
 import Glean.Types as Thrift
 import Glean.Util.ConfigProvider
 import Glean.Util.Periodic
@@ -115,7 +116,7 @@ main =
   withEventBaseDataplane $ \evb ->
   withConfigProvider cfgOpts $ \configAPI ->
   let dbCfg = (cfgDBConfig cfg0){
-        cfgShardManager = defaultShardManagerConfig (cfgPort cfg)
+        cfgShardManager = shardManagerConfig (cfgPort cfg)
       }
       cfg = cfg0{cfgDBConfig = dbCfg}
   in

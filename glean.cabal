@@ -526,7 +526,6 @@ library db
         Glean.Database.Schema.ComputeIds
         Glean.Database.Schema.Transform
         Glean.Database.Schema.Types
-        Glean.Database.Sharding
         Glean.Database.Stats
         Glean.Database.Storage
         Glean.Database.Storage.Memory
@@ -940,6 +939,7 @@ executable glean-server
     default-extensions: CPP
     other-modules:
         Glean.Handler
+        Glean.Server.Sharding
         Glean.Server.Config
     extra-libraries: stdc++
     build-depends:

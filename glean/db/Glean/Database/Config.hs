@@ -25,7 +25,6 @@ module Glean.Database.Config (
   schemaSourceOption,
   parseSchemaDir,
   parseSchemaIndex,
-  defaultShardManagerConfig
 ) where
 
 import Control.Exception
@@ -50,7 +49,6 @@ import Glean.Angle.Types
 import qualified Glean.Database.Catalog.Local.Files as Catalog.Local.Files
 import qualified Glean.Database.Catalog.Store as Catalog
 import Glean.Database.Schema.ComputeIds
-import Glean.Database.Sharding
 import Glean.Database.Storage
 import qualified Glean.Database.Storage.Memory as Memory
 import qualified Glean.Database.Storage.RocksDB as RocksDB
@@ -121,7 +119,7 @@ instance Default Config where
     , cfgMockWrites = False
     , cfgTailerOpts = def
     , cfgListener = mempty
-    , cfgShardManager = defaultShardManagerConfig Nothing
+    , cfgShardManager = \_ k -> k $ SomeShardManager noSharding
     , cfgIncrementalDerivation = False
     }
 
