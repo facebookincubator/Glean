@@ -303,10 +303,6 @@ main = do
           ([ Entity_cxx (Entity_decl Declaration_objcMethod{}),
             Entity_cxx (Entity_decl Declaration_objcMethod{}),
             Entity_cxx (Entity_decl Declaration_objcProperty{})],
-            "platform009-clang-12" ) -> True
-          ([ Entity_cxx (Entity_decl Declaration_objcMethod{}),
-            Entity_cxx (Entity_decl Declaration_objcMethod{}),
-            Entity_cxx (Entity_decl Declaration_objcProperty{})],
             "platform010" ) -> True
           _ -> False
 
