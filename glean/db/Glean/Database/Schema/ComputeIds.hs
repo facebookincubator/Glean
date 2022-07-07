@@ -325,9 +325,6 @@ makeSchemaEnvs resolved versions refToIdEnv =
       [ (ver, (schemaId, env))
       | ResolvedSchema{..} <- resolvedAlls
       , let env =
-              HashMap.union
-                (mapNameEnv (Just . refsToIds refToIdEnv)
-                  resolvedSchemaUnqualScope) $
                HashMap.union
                  (mapNameEnv (Just . refsToIds refToIdEnv)
                    resolvedSchemaQualScope)

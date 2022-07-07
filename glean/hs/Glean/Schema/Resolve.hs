@@ -473,9 +473,15 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
     exportedUnqualScope = HashMap.union unqualLocalScope unqualInheritedScope
       -- Note: local names override inherited names
 
-    exportedQualScope = HashMap.union (qualifyNameEnv exportedUnqualScope)
-      qualInheritedScope
-
+    -- Qualified exported names. The "all" schema is special: we don't
+    -- re-export things qualified with "all.", only with the original
+    -- schema name.
+    exportedQualScope
+      | namespace == "all" = qualInheritedScope
+      | otherwise =
+         HashMap.union
+           (qualifyNameEnv exportedUnqualScope)
+           qualInheritedScope -- NB. local overrides inherited
 
   schemaEvolves <- traverse schemaByName evolves
 
