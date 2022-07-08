@@ -78,6 +78,7 @@ SCHEMAS= \
 	codemarkup_pp \
 	codemarkup_python \
 	codemarkup_rust \
+	codemarkup_search \
 	codemarkup_thrift \
 	codemarkup_types \
 	code_pp \

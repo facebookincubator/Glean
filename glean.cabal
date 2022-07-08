@@ -658,6 +658,7 @@ library schema
         Glean.Schema.CodemarkupPp
         Glean.Schema.CodemarkupPython
         Glean.Schema.CodemarkupRust
+        Glean.Schema.CodemarkupSearch
         Glean.Schema.CodemarkupThrift
         Glean.Schema.CodemarkupTypes
         Glean.Schema.CodePp
@@ -707,6 +708,7 @@ library schema
         Glean.Schema.CodemarkupPp.Types
         Glean.Schema.CodemarkupPython.Types
         Glean.Schema.CodemarkupRust.Types
+        Glean.Schema.CodemarkupSearch.Types
         Glean.Schema.CodemarkupThrift.Types
         Glean.Schema.Codemarkup.Types
         Glean.Schema.CodemarkupTypes.Types
@@ -829,6 +831,7 @@ executable gen-schema
         glean:db,
         glean:config,
         glean:if-glean-hs,
+        glean:if-internal-hs,
         aeson-pretty
 
 library bytecode-instruction
@@ -1419,6 +1422,7 @@ library regression-test-lib
         Glean.Regression.Test
     build-depends:
         glean:client-hs,
+        glean:client-hs-local,
         glean:db,
         glean:indexers,
         glean:if-glean-hs,
@@ -1809,6 +1813,7 @@ test-suite schemamulti
         glean:db,
         glean:config,
         glean:if-glean-hs,
+        glean:if-internal-hs,
         glean:util,
 
 test-suite inventory

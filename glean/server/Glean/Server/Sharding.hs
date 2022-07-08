@@ -11,7 +11,9 @@ module Glean.Server.Sharding (
   shardManagerConfig,
 ) where
 
+#if FACEBOOK
 import Data.Maybe
+#endif
 import qualified Data.Set as Set
 #if FACEBOOK
 import Glean.Impl.ShardManager
@@ -29,7 +31,7 @@ shardManagerConfig ::
   Observed ServerConfig.Config ->
   (SomeShardManager -> IO b) ->
   IO b
-shardManagerConfig mbPort smCfgServerConfig callback = do
+shardManagerConfig _mbPort smCfgServerConfig callback = do
   config <- Observed.get smCfgServerConfig
   case ServerConfig.config_sharding config of
     ServerConfig.ShardingPolicy_no_shards {} ->
@@ -51,7 +53,7 @@ shardManagerConfig mbPort smCfgServerConfig callback = do
     ServerConfig.ShardingPolicy_shard_manager policy -> do
       let smCliArgs = ShardManagerClientArgs
             { serviceName = ServerConfig.shardManagerPolicy_service_name policy
-            , applicationPortNumber = fromMaybe 0 mbPort
+            , applicationPortNumber = fromMaybe 0 _mbPort
             , numberOfShards = fromIntegral $
                 ServerConfig.shardManagerPolicy_nshards policy
             }
