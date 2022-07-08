@@ -10,6 +10,7 @@ module Glean.DefaultConfigs (
     defaultClientConfigSource,
     defaultRecipesConfigSource,
     serverConfigPath,
+    legacySchemaConfigPath,
     schemaConfigPath,
   ) where
 
@@ -29,6 +30,10 @@ defaultRecipesConfigSource = configDefault "recipes"
 serverConfigPath :: String
 serverConfigPath = "server"
 
--- | config path to the schema definition
+-- | config path to the (old) schema definition
+legacySchemaConfigPath :: Text
+legacySchemaConfigPath = "schema"
+
+-- | config path to the schema index
 schemaConfigPath :: Text
-schemaConfigPath = "schema"
+schemaConfigPath = "schema-index"
