@@ -1,0 +1,15 @@
+# Copyright (c) Meta, Inc. and its affiliates.
+
+schema search.buck.1 {
+  import code.buck.1
+  import buck.1
+
+  predicate SearchByFQN:
+    {
+      subdir: maybe string,
+      path: string,
+      name: string,
+      entity: code.buck.Entity,
+    } {S, P, N, E} where
+    E = code.buck.Entity { locator = { subdir = S, path = P, name = N }}
+}
