@@ -151,6 +151,7 @@ initEnv evb dbRoot shardManager cfg logger envSchemaSource envRecipeConfig envSe
       , envListener = cfgListener cfg
       , envGetCreationTime = getCurrentTime
       , envSchemaVersion = cfgSchemaVersion cfg
+      , envUpdateSchema = cfgUpdateSchema cfg
       , envSchemaId = cfgSchemaId cfg
       , envShardManager = shardManager
       , envBackupBackends = HashMap.fromList
@@ -191,12 +192,12 @@ spawnThreads env = do
     $ writerThread
     $ envWriteQueues env
 
-  Warden.spawnDaemon (envWarden env) "schema updater" $ do
-    void $ atomically $ takeTMVar (envSchemaUpdateSignal env)
-    schemaUpdated env Nothing
-
-  doOnUpdate (envSchemaSource env) $
-    atomically $ void $ tryPutTMVar (envSchemaUpdateSignal env) ()
+  when (envUpdateSchema env) $ do
+    Warden.spawnDaemon (envWarden env) "schema updater" $ do
+      void $ atomically $ takeTMVar (envSchemaUpdateSignal env)
+      schemaUpdated env Nothing
+    doOnUpdate (envSchemaSource env) $
+      atomically $ void $ tryPutTMVar (envSchemaUpdateSignal env) ()
 
   -- Disk usage counters
   Warden.spawn_ (envWarden env) $ doPeriodically (seconds 600) $ do

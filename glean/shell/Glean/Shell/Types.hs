@@ -25,11 +25,14 @@ module Glean.Shell.Types (
 
 import Control.Concurrent
 import Control.Exception
+import Data.Default
+import Data.Bifunctor
 import Data.Functor (($>))
 import qualified Control.Monad.Catch as C
 import Control.Monad.IO.Class (MonadIO, liftIO)
 import qualified Control.Monad.Trans.State.Strict as State
 import Data.Int
+import qualified Data.Map as Map
 import Data.Text.Prettyprint.Doc as Pretty
 import qualified System.Console.Haskeline as Haskeline
 import System.IO
@@ -41,8 +44,7 @@ import qualified Text.Parsec.Token as P
 import Glean
 import qualified Glean.Types as Thrift
 import Glean.LocalOrRemote (LocalOrRemote)
-import Glean.Schema.Resolve
-import Glean.Schema.Types
+import Glean.Database.Config (ProcessedSchema(..), processSchema)
 import Glean.Util.Some
 
 data Statement pat
@@ -122,8 +124,9 @@ data ShellState = ShellState
   { backend :: Some LocalOrRemote
   , repo :: Maybe Repo
   , mode :: ShellMode
-  , schemas :: ResolvedSchemas
-  , schemaInfo :: Thrift.SchemaInfo
+  , schemas :: Maybe ProcessedSchema
+  , schemaInfo :: Maybe Thrift.SchemaInfo
+  , useSchemaId :: Thrift.SelectSchema
   , limit :: Int64
   , timeout :: Maybe Int64
   , stats :: Stats
@@ -165,15 +168,18 @@ getRepo :: Eval (Maybe Repo)
 getRepo = repo <$> getState
 
 setRepo :: Repo -> Eval ()
-setRepo r =
+setRepo r = do
+  sel <- useSchemaId <$> getState
   withBackend $ \backend -> do
-    schema <- liftIO $ getSchemaInfo backend r
-    resolved <- either (liftIO . throwIO . ErrorCall) (return . snd) $
-      parseAndResolveSchema (Thrift.schemaInfo_schema schema)
+    info@SchemaInfo{..} <- liftIO $
+      getSchemaInfo backend r def { getSchemaInfo_select = sel }
+    let sids = map (first Thrift.SchemaId) (Map.toList schemaInfo_schemaIds)
     Eval $ State.modify $ \s -> s
       { repo = Just r
-      , schemaInfo = schema
-      , schemas = resolved }
+      , schemaInfo = Just info }
+    proc <- either (liftIO . throwIO . ErrorCall) return $
+      processSchema (Map.fromList sids) schemaInfo_schema
+    Eval $ State.modify $ \s -> s { schemas = Just proc }
 
 getMode :: Eval ShellMode
 getMode = mode <$> getState

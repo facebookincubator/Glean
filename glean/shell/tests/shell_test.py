@@ -7,6 +7,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
+
 import re
 import sys
 
@@ -31,7 +32,7 @@ class GleanShellTest(BaseFacebookTestCase):
     process = None
 
     @classmethod
-    def startShell(cls, db, schema=SCHEMA_PATH):
+    def startShell(cls, db, schema=SCHEMA_PATH, config=None):
         cls.tmpdir = pexpect.run("mktemp -d", encoding="utf8").strip()
 
         pexpect.run("mkdir " + cls.tmpdir + "/db")
@@ -49,12 +50,20 @@ class GleanShellTest(BaseFacebookTestCase):
         else:
             schema_args = ["--schema=" + schema]
 
+        if config is None:
+            config_args = []
+        else:
+            with open(cls.tmpdir + "/config", "a") as f:
+                f.write(config)
+            config_args = ["--server-config=file:" + cls.tmpdir + "/config"]
+
         cls.process = pexpect.spawn(
             GLEAN_PATH,
             logfile=sys.stdout,
             encoding="utf8",
             args=["--db-root=" + cls.tmpdir + "/db"]
             + schema_args
+            + config_args
             + ["shell"]
             + db_args,
         )
@@ -112,6 +121,48 @@ class GleanShellReload(GleanShellTest):
         # check that we can query for the new derived predicate
         output = self.shellCommand("example.Foo.2 _", "facts>")
         self.assertIn("Fish", output)
+
+
+class GleanShellSchema(GleanShellTest):
+    @classmethod
+    def setUp(cls):
+        # The :use-schema command relies on use_schema_id being enabled
+        cls.startShell(None, None, '{ "use_schema_id": true }')
+
+    def test(self):
+        pexpect.run(
+            "cp " + EXAMPLE_SCHEMA_PATH + "/example.angle " + self.tmpdir + "/schema"
+        )
+        self.shellCommand(":reload", ">")
+        self.shellCommand(":load " + EXAMPLE_FACTS_PATH, "facts>")
+
+        # Now let's modify the schema, add a column field to example.Class
+        pexpect.run(
+            "sed -i 's/line : nat,$/line : nat, column : nat,/' "
+            + self.tmpdir
+            + "/schema/example.angle"
+        )
+        self.shellCommand(":reload", "facts>")
+
+        # Check that we can query using the new schema, the results should
+        # contain the new field column with the default value 0
+        output = self.shellCommand("example.Class _", "facts>")
+        self.assertIn("column", output)
+
+        # Explicitly requesting the stored schema gives us the old facts again,
+        # without the new field
+        self.shellCommand(":use-schema stored", "facts>")
+        output = self.shellCommand("example.Class _", "facts>")
+        self.assertNotIn("column", output)
+        output = self.shellCommand(":schema example.Class", "facts>")
+        self.assertNotIn("column", output)
+
+        # Explicitly requesting the current schema gives us the new facts again
+        self.shellCommand(":use-schema current", "facts>")
+        output = self.shellCommand("example.Class _", "facts>")
+        self.assertIn("column", output)
+        output = self.shellCommand(":schema example.Class", "facts>")
+        self.assertIn("column", output)
 
 
 class GleanShellNoDB(GleanShellTest):

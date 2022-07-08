@@ -71,6 +71,9 @@ import qualified Glean.Tailer as Tailer
 data Config = Config
   { cfgRoot :: Maybe FilePath
   , cfgSchemaSource :: ThriftSource SchemaIndex
+  , cfgUpdateSchema :: Bool
+      -- ^ When True (the default), the schema for open DBs is updated
+      -- whenever the global schema changes.
   , cfgSchemaDir :: Maybe FilePath
       -- ^ Records whether we're reading the schema from a directory
       -- of source files or not, because some clients (the shell) want
@@ -108,6 +111,7 @@ instance Default Config where
   def = Config
     { cfgRoot = Just "."
     , cfgSchemaSource = ThriftSource.value (error "undefined schema")
+    , cfgUpdateSchema = True
     , cfgSchemaDir = Nothing
     , cfgSchemaVersion = Nothing
     , cfgSchemaId = Nothing
@@ -332,6 +336,7 @@ options = do
   return Config
     { cfgCatalogStore = cfgCatalogStore def
     , cfgListener = mempty
+    , cfgUpdateSchema = True
     , cfgShardManager = cfgShardManager def
     , cfgIncrementalDerivation = False
     , .. }

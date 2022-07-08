@@ -16,6 +16,7 @@ import Control.Concurrent.Async (mapConcurrently_)
 import Control.Exception (Exception, throwIO)
 import Control.Monad (forM_)
 import Data.Array.Unboxed (elems)
+import Data.Default
 import qualified Data.HashMap.Strict as Map
 import qualified Data.Map as AMap
 import qualified Data.Text as Text
@@ -111,6 +112,7 @@ createGleanDB _env@HieDBIndexerEnv {..} fileLinesMap batchOutputs = do
   predicates <-
     Thrift.schemaInfo_predicateIds
       <$> Glean.getSchemaInfo backend newRepo
+            def { Glean.getSchemaInfo_omit_source = True }
   repoStats <- Glean.predicateStats backend newRepo Glean.ExcludeBase
   let readableStats =
         [ printf " - %s: count = %d, size = %d"

@@ -90,7 +90,8 @@ class Backend a where
   queryFact :: a -> Thrift.Repo -> Thrift.Id -> IO (Maybe Thrift.Fact)
   firstFreeId :: a -> Thrift.Repo -> IO Thrift.Id
   factIdRange :: a -> Thrift.Repo -> IO Thrift.FactIdRange
-  getSchemaInfo :: a -> Thrift.Repo -> IO Thrift.SchemaInfo
+  getSchemaInfo :: a -> Thrift.Repo -> Thrift.GetSchemaInfo
+    -> IO Thrift.SchemaInfo
   validateSchema :: a -> Thrift.ValidateSchema -> IO ()
   predicateStats :: a -> Thrift.Repo -> StackedDbOpts
     -> IO (Map Thrift.Id Thrift.PredicateStats)
@@ -295,7 +296,8 @@ instance Backend ThriftBackend where
       _ -> return (Just fact)
   firstFreeId t repo = withShard t repo $ GleanService.firstFreeId repo
   factIdRange t repo = withShard t repo $ GleanService.factIdRange repo
-  getSchemaInfo t repo = withShard t repo $ GleanService.getSchemaInfo repo
+  getSchemaInfo t repo req = withShard t repo $
+    GleanService.getSchemaInfo repo req
   validateSchema t req = withoutShard t $ GleanService.validateSchema req
   predicateStats t repo opts = withShard t repo $
     GleanService.predicateStats repo $
@@ -422,7 +424,8 @@ loadPredicates
   -> [SchemaPredicates]
   -> IO Predicates
 loadPredicates backend repo refs =
-  makePredicates refs <$> getSchemaInfo backend repo
+  makePredicates refs <$>
+    getSchemaInfo backend repo def { Thrift.getSchemaInfo_omit_source = True }
 
 databases :: Backend a => a -> IO [Thrift.Database]
 databases be =

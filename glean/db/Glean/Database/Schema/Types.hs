@@ -69,7 +69,7 @@ data DbSchema = DbSchema
   , schemaMaxPid :: Pid
   , schemaLatestVersion :: SchemaId
 
-  , schemaSource :: SourceSchemas
+  , schemaSource :: (SourceSchemas, IntMap SchemaId)
     -- ^ This is for toStoredSchema
   }
 

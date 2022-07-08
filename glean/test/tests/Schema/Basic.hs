@@ -383,6 +383,7 @@ changeSchemaTest = TestCase $ do
           completeTestDB env repo
 
           info <- getSchemaInfo env repo
+            def { getSchemaInfo_omit_source = True }
           assertBool "changeSchemaTest 1" $
             PredicateRef "test.P" 1 `elem`
               Map.elems (schemaInfo_predicateIds info)
@@ -396,6 +397,7 @@ changeSchemaTest = TestCase $ do
           let
             loop = do
               info <- getSchemaInfo env repo
+                def { getSchemaInfo_omit_source = True }
               when (PredicateRef "test.P" 2 `notElem`
                   Map.elems (schemaInfo_predicateIds info)) $
                 do putStrLn "waiting..."; threadDelay 1000000; loop

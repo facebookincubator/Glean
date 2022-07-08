@@ -19,6 +19,7 @@ import qualified Control.Monad.Catch as C
 import Control.Monad.IO.Class (liftIO, MonadIO)
 import Control.Monad.Trans.Class (lift)
 import qualified Control.Monad.Trans.State.Strict as State
+import Data.Bifunctor
 import qualified Data.ByteString.UTF8 as UTF8
 import Data.Char
 import Data.Default
@@ -26,12 +27,14 @@ import Data.Functor
 import Data.Foldable (asum)
 import qualified Data.HashMap.Strict as HashMap
 import Data.Int
+import qualified Data.IntMap as IntMap
 import Data.IORef
 import Data.List
 import Data.List.Split
 import qualified Data.Map as Map
 import Data.Maybe
 import Data.Ord
+import qualified Data.Set as Set
 import Text.Printf
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
@@ -53,7 +56,6 @@ import System.Posix.Signals
 import System.Exit
 import qualified Text.JSON as JSON
 import Text.Parsec (runParser)
-import TextShow
 
 import Util.JSON.Pretty ()
 import Util.List
@@ -67,9 +69,9 @@ import qualified Glean.BuildInfo as BuildInfo
 import Glean.Angle.Types as SchemaTypes
 import Glean.Backend.Remote (clientInfo, StackedDbOpts(..))
 import Glean.Database.Ownership
-import Glean.Database.Schema.Types (DbSchema(..), SchemaSelector(..))
-import Glean.Database.Schema (newDbSchema, readWriteContent)
-import Glean.Database.Schema.ComputeIds (emptyHashedSchema)
+import Glean.Database.Open
+import Glean.Database.Schema.ComputeIds (
+  emptyHashedSchema, HashedSchema(..), RefTargetId )
 import Glean.Database.Config (parseSchemaDir, SchemaIndex(..),
   ProcessedSchema(..))
 import qualified Glean.Database.Config as DB (Config(..))
@@ -188,8 +190,11 @@ repoString repo = concat
 
 lookupPid :: Pid -> Eval (Maybe PredicateRef)
 lookupPid (Pid pid) = do
-  Thrift.SchemaInfo{..} <- schemaInfo <$> getState
-  return $ Map.lookup pid schemaInfo_predicateIds
+  m <- schemaInfo <$> getState
+  case m of
+    Nothing -> return Nothing
+    Just Thrift.SchemaInfo{..} ->
+      return $ Map.lookup pid schemaInfo_predicateIds
 
 withRepo :: (Thrift.Repo -> Eval a) -> Eval a
 withRepo f = do
@@ -198,39 +203,75 @@ withRepo f = do
     Just repo -> f repo
     Nothing -> liftIO $ throwIO $ ErrorCall "no database selected"
 
+useSchema :: String -> Eval ()
+useSchema str = do
+  state <- getState
+  sel <- case str of
+    "current" -> return (Thrift.SelectSchema_current def)
+    "stored" -> return (Thrift.SelectSchema_stored def)
+    id | Just Thrift.SchemaInfo{..} <- schemaInfo state,
+         Text.pack id `Map.member` schemaInfo_schemaIds ->
+           return (Thrift.SelectSchema_schema_id
+             (Thrift.SchemaId (Text.pack id)))
+       | otherwise -> liftIO $ throwIO $ ErrorCall $ "unknown schema: " <> id
+  Eval $ State.modify $ \s -> s { useSchemaId = sel }
+  -- Fetch the new schema
+  mapM_ setRepo =<< getRepo
+
 getSchemaCmd :: String -> Eval ()
 getSchemaCmd str = do
-  ResolvedSchemas{..} <- schemas <$> getState
+  maybeProc <- schemas <$> getState
+
+  ProcessedSchema{..} <- case maybeProc of
+    Nothing -> liftIO $ throwIO $ ErrorCall
+      "no schema loaded. Use :db to load a DB."
+    Just proc  -> return proc
+
+  nameEnv <- getNameEnv
   let
-    txt = Text.pack (strip str)
+    HashedSchema{..} = procSchemaHashed
 
-    (predicate_matches, typedef_matches)
-      | Text.null txt = (const True, const False)
-      | otherwise =
-          let SourceRef match_name match_maybeVer = parseRef txt
-              ref_matches name ver =
-                name == match_name && maybe True (== ver) match_maybeVer
-          in
-          ( \(PredicateRef name ver) -> ref_matches name ver
-          , \(TypeRef name ver) -> ref_matches name ver )
+    stripIdsPred :: PredicateDef -> ResolvedPredicateDef
+    stripIdsPred (PredicateDef ref key val drv) =
+      PredicateDef (predicateIdRef ref)
+        (bimap predicateIdRef typeIdRef key)
+        (bimap predicateIdRef typeIdRef val)
+        (stripIdsDerivingInfo drv)
 
-    preds =
-      [ pred
-      | (ref, pred) <-
-          concatMap (HashMap.toList . resolvedSchemaPredicates) schemasResolved
-      , predicate_matches ref ]
+    stripIdsDerivingInfo
+      :: DerivingInfo (Query_ PredicateId TypeId)
+      -> ResolvedDeriving
+    stripIdsDerivingInfo NoDeriving = NoDeriving
+    stripIdsDerivingInfo (Derive w q) =
+      Derive w (bimap predicateIdRef typeIdRef q)
 
-    types =
-      [ typedef
-      | (ref, typedef) <-
-          concatMap (HashMap.toList . resolvedSchemaTypes) schemasResolved
-      , typedef_matches ref ]
+    stripIdsType :: TypeDef -> ResolvedTypeDef
+    stripIdsType (TypeDef ref ty) =
+      TypeDef (typeIdRef ref) (bimap predicateIdRef typeIdRef ty)
 
-  output $ if null types && null preds
-    then "*** nothing found"
-    else mconcat
-      $ map (<> line <> line)
-      $ map pretty types ++ map pretty preds
+    found refs = output $ vcat $ punctuate line $ map display refs
+      where
+      display ref = case ref of
+        RefPred p -> case HashMap.lookup p hashedPreds of
+          Nothing -> mempty
+          Just def -> pretty (stripIdsPred def)
+        RefType p -> case HashMap.lookup p hashedTypes of
+          Nothing -> mempty
+          Just def -> pretty (stripIdsType def)
+
+  env <- case nameEnv of
+    Nothing -> liftIO $ throwIO $ ErrorCall "can't find schema"
+    Just env -> return env
+
+  let name = Text.pack (strip str)
+  case resolveRef env (parseRef name) of
+    ResolvesTo one -> found [one]
+    Ambiguous many -> found many
+    OutOfScope ->  -- doesn't match exactly; match it as a prefix
+      found $ Set.toList $ Set.unions $ HashMap.elems $
+        HashMap.filterWithKey prefixMatch env
+      where
+      prefixMatch k _ = name `Text.isPrefixOf` showRef k
 
 displayStatistics :: String -> Eval ()
 displayStatistics arg =
@@ -420,6 +461,8 @@ helptext mode = vcat
       , ("statistics [-s] [<predicate>]",
             "Show statistics for the current database, "
             <> "sorted by decreasing size when using -s")
+      , ("use-schema (current|stored|<schema-id>)",
+            "Select which schema to use")
       , ("quit",
             "Exit the shell")
       ]
@@ -606,6 +649,7 @@ commands =
   , Cmd "reload" Haskeline.noCompletion $ const $ const reloadCmd
   , Cmd "schema" (completeWords availablePredicatesAndTypes) $
       \str _ -> getSchemaCmd str
+  , Cmd "use-schema" completeUseSchema $ \str _ -> useSchema str
   , Cmd "profile" (completeWords (pure ["off","summary","full"])) $
       \str _ -> statsCmd str
   , Cmd "timeout" Haskeline.noCompletion $ \str _ -> timeoutCmd str
@@ -920,6 +964,9 @@ runUserQuery SchemaQuery
           -- before the ThriftBackend has a chance to incude client_info in the
           -- request.  This makes sure client_info will appear in the logs
           , Thrift.userQuery_client_info = Just client_info
+          , Thrift.userQuery_schema_id = do
+              ProcessedSchema{..} <- schemas
+              getSchemaId procSchemaHashed useSchemaId
           }
   output $ vcat $
     [ "*** " <> pretty diag | diag <- userQueryResults_diagnostics ]
@@ -954,12 +1001,10 @@ runUserQuery SchemaQuery
     ]
     ++
     [ vcat $ "Facts searched:" :
-        let
-          pidMap = Thrift.schemaInfo_predicateIds schemaInfo
-        in
         [ pretty (printf "%40s : %d" (show (pretty ref)) count :: String)
         | (pid, count) <- sortOn (Down . snd) $ Map.toList m
-        , Just ref <- [Map.lookup pid pidMap] ]
+        , Just info <- [schemaInfo]
+        , Just ref <- [Map.lookup pid (Thrift.schemaInfo_predicateIds info)] ]
     | stats == FullStats
     , Just stats <- [userQueryResults_stats]
     , Just m <- [Thrift.userQueryStats_facts_searched stats]
@@ -1151,31 +1196,50 @@ completeWords words =
   Haskeline.completeWord Nothing " \t" $ \str ->
     fromVocabulary str <$> words
 
+completeUseSchema :: Haskeline.CompletionFunc Eval
+completeUseSchema =
+  completeWords ((["current", "stored"] <>) <$> availableSchemaIds)
+
 fromVocabulary :: String -> [String] -> [Haskeline.Completion]
 fromVocabulary str words =
   map Haskeline.simpleCompletion $ filter (str `isPrefixOf`) words
 
-availablePredicates :: Eval [String]
-availablePredicates = do
-  ResolvedSchemas{..} <- schemas <$> getState
-  let
-    refs = concatMap (HashMap.keys . resolvedSchemaPredicates) schemasResolved
-    withVer =
-      [ predicateRef_name <> "." <> showt predicateRef_version
-      | PredicateRef{..} <- refs ]
-    noVer = map predicateRef_name refs
-  return $ map Text.unpack $ sort noVer ++ sort withVer
+availableSchemaIds :: Eval [String]
+availableSchemaIds = do
+  m <- schemaInfo <$> getState
+  case m of
+    Nothing -> return []
+    Just Thrift.SchemaInfo{..} ->
+      return (map Text.unpack (Map.keys schemaInfo_schemaIds))
 
-availableTypes :: Eval [String]
-availableTypes = do
-  ResolvedSchemas{..} <- schemas <$> getState
-  let
-    refs = concatMap (HashMap.keys . resolvedSchemaTypes) schemasResolved
-    withVer =
-      [ typeRef_name <> "." <> showt typeRef_version
-      | TypeRef{..} <- refs ]
-    noVer = map typeRef_name refs
-  return $ map Text.unpack $ sort noVer ++ sort withVer
+getSchemaId
+  :: HashedSchema
+  -> Thrift.SelectSchema
+  -> Maybe Thrift.SchemaId
+getSchemaId HashedSchema{..} sel =
+  case sel of
+    Thrift.SelectSchema_schema_id id -> Just id
+    _ -> snd <$> IntMap.lookupMax hashedSchemaAllVersions
+
+getNameEnv :: Eval (Maybe (NameEnv RefTargetId))
+getNameEnv = do
+  ShellState{..} <- getState
+  case schemas of
+    Nothing -> return Nothing
+    Just ProcessedSchema{..} -> return $ do
+      id <- getSchemaId procSchemaHashed useSchemaId
+      Map.lookup id (hashedSchemaEnvs procSchemaHashed)
+
+availablePredicates :: Eval [String]
+availablePredicates = maybe [] preds <$> getNameEnv
+  where
+    isPred RefPred{} = True
+    isPred _ = False
+
+    preds env =
+        [ Text.unpack (showRef ref)
+        | (ref, set) <- HashMap.toList env
+        , any isPred (Set.toList set) ]
 
 indexCompletion :: Haskeline.CompletionFunc Eval
 indexCompletion line@(left,_) =
@@ -1188,7 +1252,10 @@ indexCompletion line@(left,_) =
     _otherwise -> Haskeline.noCompletion line
 
 availablePredicatesAndTypes :: Eval [String]
-availablePredicatesAndTypes = (++) <$> availablePredicates <*> availableTypes
+availablePredicatesAndTypes = do
+  env <- getNameEnv
+  let names env = [ Text.unpack (showRef ref) | ref <- HashMap.keys env ]
+  return $ maybe [] names env
 
 commandSpecificCompletion :: String -> Haskeline.CompletionFunc Eval
 commandSpecificCompletion cmd =
@@ -1257,25 +1324,47 @@ setupLocalSchema service = do
         let
           updateSchema :: Eval ()
           updateSchema = do
-            new <- liftIO $ parseSchemaDir dir
-            -- convert to a DbSchema, because this forces
-            -- typechecking of the derived predicates. Otherwise we
-            -- won't notice type errors until after the schema is
-            -- updated below.
-            db <- liftIO $ newDbSchema new LatestSchemaAll readWriteContent
-            liftIO $ update (const new)
-            let
-              numSchemas = length (srcSchemas (schemaSource db))
-              numPredicates = HashMap.size (predicatesById db)
-            output $ "reloading schema [" <>
-              pretty numSchemas <> " schemas, " <>
-              pretty numPredicates <> " predicates]"
+            be <- backend <$> getState
+            case backendKind be of
+              BackendThrift{} -> return ()
+              BackendEnv env -> do
+                new <- liftIO $ parseSchemaDir dir
+                liftIO $ update (const new)
+                let current = schemaIndexCurrent new
+
+                -- Update all the schemas for open DBs. This would
+                -- normally be done in the background by the schema
+                -- updater thread, but we're doing it manually and
+                -- disabling the auto-update so that we can
+                -- synchronously check for errors and update our local
+                -- view of the schema in the monad.
+                liftIO $ schemaUpdated env Nothing
+
+                state <- getState
+                whenJust (repo state) $ \r -> do
+                  info@Thrift.SchemaInfo{..} <- liftIO $
+                    Glean.getSchemaInfo env r
+                      def { Thrift.getSchemaInfo_select = useSchemaId state }
+
+                  Eval $ State.modify $ \s ->
+                    s { schemaInfo = Just info, schemas = Just current }
+
+                let
+                  numSchemas = length (srcSchemas (procSchemaSource current))
+                  numPredicates = HashMap.size (hashedPreds
+                    (procSchemaHashed current))
+                output $ "reloading schema [" <>
+                  pretty numSchemas <> " schemas, " <>
+                  pretty numPredicates <> " predicates]"
 
           -- When using --schema, we also set --db-schema-override. This
           -- allows the local schema to override whatever was in the DB,
           -- and also allows the local schema to take effect when the
           -- DB is writable.
-          dbConfig' = dbConfig { DB.cfgSchemaSource = schemaTS }
+          dbConfig' = dbConfig {
+            DB.cfgSchemaSource = schemaTS,
+            DB.cfgUpdateSchema = False
+          }
 
         return
           ( Local dbConfig' logging
@@ -1304,8 +1393,9 @@ instance Plugin ShellCommand where
         { backend = Some backend
         , repo = Nothing
         , mode = cfgMode cfg
-        , schemas = ResolvedSchemas Nothing []
+        , schemas = Nothing
         , schemaInfo = def
+        , useSchemaId = Thrift.SelectSchema_current def
         , limit = cfgLimit cfg
         , timeout = Just 10000      -- Sensible default for fresh shell.
         , stats = SummaryStats

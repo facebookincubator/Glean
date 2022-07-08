@@ -109,6 +109,7 @@ runQuery backend repo xforms qfile = do
       perfString <- if queryPerf
         then do
           Thrift.SchemaInfo{..} <- Backend.getSchemaInfo backend repo
+            def { Thrift.getSchemaInfo_omit_source = True }
           return $ Just $ show $ pretty $ JSON.JSObject $ JSON.toJSObject $
             (generatedTag, JSON.JSNull) :
             sortBy (comparing fst)

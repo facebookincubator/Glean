@@ -381,6 +381,7 @@ instance Plugin StatsCommand where
       Glean.predicateStats backend statsRepo
         (if excludeBase then Glean.ExcludeBase else Glean.IncludeBase)
     schemaInfo <- Glean.getSchemaInfo backend statsRepo
+      def { getSchemaInfo_omit_source = True }
     let
       matchRefsArgs = parseRef <$> statsPredicates
       preds = map (Data.Bifunctor.first (lookupPid schemaInfo)) xs

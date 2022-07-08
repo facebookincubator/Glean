@@ -62,6 +62,8 @@ import Glean.Database.Open as Database
 import qualified Glean.Database.List as Database
 import qualified Glean.Database.PredicateStats as Database (predicateStats)
 import qualified Glean.Database.Restore as Database
+import qualified Glean.Database.Schema as Database
+import Glean.Database.Schema hiding (getSchemaInfo)
 import qualified Glean.Database.Types as Database
 import qualified Glean.Database.Work as Database
 import qualified Glean.Database.Writes as Database
@@ -73,8 +75,6 @@ import qualified Glean.Query.Derive as Derive
 import Glean.RTS (Fid(..))
 import qualified Glean.RTS.Foreign.Inventory as Inventory
 import qualified Glean.RTS.Foreign.Lookup as Lookup
-import Glean.Database.Schema hiding (getSchemaInfo)
-import qualified Glean.Database.Schema as Database
 import qualified Glean.Types as Thrift
 import Glean.Util.Observed as Observed
 import Glean.Util.ThriftSource as ThriftSource
@@ -173,9 +173,9 @@ instance Backend LoggingBackend where
   factIdRange (LoggingBackend env) repo =
     loggingAction (runLogRepo "factIdRange" env repo) (const mempty) $
       factIdRange env repo
-  getSchemaInfo (LoggingBackend env) repo =
+  getSchemaInfo (LoggingBackend env) repo req =
     loggingAction (runLogRepo "getSchemaInfo" env repo) (const mempty) $
-      getSchemaInfo env repo
+      getSchemaInfo env repo req
   validateSchema (LoggingBackend env) req =
     loggingAction (runLogCmd "validateSchema" env) (const mempty) $
       validateSchema env req
@@ -284,8 +284,10 @@ instance Backend Database.Env where
       (,) <$> Lookup.startingId db <*> Lookup.firstFreeId db
     return $ Thrift.FactIdRange (fromFid starting) (fromFid next)
 
-  getSchemaInfo env repo = withOpenDatabase env repo $ \odb ->
-    Database.getSchemaInfo (Database.odbSchema odb)
+  getSchemaInfo env repo req =
+    withOpenDatabase env repo $ \odb -> do
+      index <- Observed.get (Database.envSchemaSource env)
+      Database.getSchemaInfo (Database.odbSchema odb) index req
 
   validateSchema env (Thrift.ValidateSchema str) = do
     schema  <- get (Database.envSchemaSource env)
@@ -341,7 +343,8 @@ instance Backend Database.Env where
 
 loadDbSchema :: Backend a => a -> Thrift.Repo -> IO DbSchema
 loadDbSchema backend repo = do
-  Thrift.SchemaInfo schema pids <- getSchemaInfo backend repo
+  Thrift.SchemaInfo schema pids _ <- getSchemaInfo backend repo def
+    { Thrift.getSchemaInfo_select = Thrift.SelectSchema_stored def }
   fromStoredSchema (StoredSchema schema pids) readWriteContent
 
 serializeInventory

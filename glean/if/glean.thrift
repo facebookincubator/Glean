@@ -61,6 +61,8 @@ struct TypeRef {
 // The unit of fact ownership
 typedef string (hs.type = "ByteString") UnitName
 
+struct Empty {}
+
 // -----------------------------------------------------------------------------
 // Schema types
 
@@ -938,8 +940,37 @@ struct WorkFinished {
 }
 
 struct SchemaInfo {
+  // The complete source of the schema
   1: string (hs.type = "ByteString") schema;
+
+  // The mapping from Pid to PredicateRef stored in the DB. This can
+  // be used to interpret Pids returned by other methods, such as
+  // getPredicateStats. Note that the PredicateRefs here correspond
+  // to the stored schema.
   2: map<Id, PredicateRef> predicateIds;
+
+  // The SchemaIds that the server knows about
+  3: map<string, Version> schemaIds;
+}
+
+union SelectSchema {
+  // Return the stored schema
+  1: Empty stored;
+
+  // Return the current schema
+  2: Empty current;
+
+  // Return a specific schema
+  3: SchemaId schema_id;
+}
+
+struct GetSchemaInfo {
+  // Select which schema source to return
+  1: SelectSchema select;
+
+  // Don't return the schema source. It can be large, so set this to
+  // true if you don't need it.
+  2: bool omit_source;
 }
 
 struct FactIdRange {
@@ -962,7 +993,7 @@ service GleanService extends fb303.FacebookService {
   list<Id> getPredicates(1: Repo repo, 2: list<PredicateRef> predicates);
 
   // Get the schema of a database. NOTE: This will replace getPredicates
-  SchemaInfo getSchemaInfo(1: Repo repo);
+  SchemaInfo getSchemaInfo(1: Repo repo, 2: GetSchemaInfo get);
 
   // Check that a schema is valid, throws an exception if not.  Used
   // to verify a schema against the server before making it the

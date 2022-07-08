@@ -11,6 +11,7 @@ module TestDB (
   withTestDB, withWritableTestDB, dbTestCase, dbTestCaseWritable, createTestDB
 ) where
 
+import Data.Default
 import Data.Either
 import Test.HUnit
 
@@ -83,7 +84,7 @@ dbTestCaseWritable = testCases
 writeTestDB :: Env -> Thrift.Repo -> (forall m. NewFact m => m ()) -> IO ()
 writeTestDB env repo facts = do
   backend_schema <- parseAndResolveSchema . Thrift.schemaInfo_schema <$>
-    Backend.getSchemaInfo env repo
+    Backend.getSchemaInfo env repo def
   assertBool "schema1" (isRight backend_schema)
 
   let allPredicates =

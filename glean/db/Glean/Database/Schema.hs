@@ -109,7 +109,7 @@ storedSchemaPids StoredSchema{..} = HashMap.fromList
 toStoredSchema :: DbSchema -> StoredSchema
 toStoredSchema DbSchema{..} = StoredSchema
   { storedSchema_schema =
-      Text.encodeUtf8 $ renderStrict $ layoutCompact $ pretty schemaSource
+      Text.encodeUtf8 $ renderStrict $ layoutCompact $ pretty $ fst schemaSource
   , storedSchema_predicateIds = Map.fromList
       [ (fromPid $ predicatePid p, predicateRef p)
       | p <- HashMap.elems predicatesById ]
@@ -331,7 +331,7 @@ mkDbSchema validate knownPids dbContent
     , predicatesTransformations =
         IntMap.union evolveTransformations autoTransformations
     , schemaInventory = inventory predicates
-    , schemaSource = source
+    , schemaSource = (source, hashedSchemaAllVersions stored)
     , schemaMaxPid = maxPid
     , schemaLatestVersion = latestSchemaId
     }
@@ -760,6 +760,47 @@ validateNewSchemaInstance schema = do
       Left err -> throwIO $ ErrorCall $ Text.unpack err
       Right{} -> return ()
 
-getSchemaInfo :: DbSchema -> IO SchemaInfo
-getSchemaInfo dbSchema = return (Thrift.SchemaInfo schema pids)
-  where StoredSchema schema pids = toStoredSchema dbSchema
+-- | Interrogate the schema associated with a DB
+getSchemaInfo :: DbSchema -> SchemaIndex -> GetSchemaInfo -> IO SchemaInfo
+getSchemaInfo dbSchema SchemaIndex{..} GetSchemaInfo{..} = do
+  let
+    StoredSchema source pids = toStoredSchema dbSchema
+
+    -- Try to find the source for the desired schema. It could be in
+    -- our SchemaIndex, or it could be the schema stored in the DB if
+    -- we're looking at an old DB.
+    findSchemaSource sid =
+      case matches of
+        (one:_) -> return $ Text.encodeUtf8 $ renderStrict $
+          layoutCompact $ pretty one
+        [] -> throwIO $ Exception $
+          "SchemaId not found: " <> unSchemaId sid
+      where
+      matches =
+        [ procSchemaSource proc
+        | proc <- schemaIndexCurrent : schemaIndexOlder
+        , sid `Map.member` hashedSchemaEnvs (procSchemaHashed proc)
+        ] ++
+        [ source
+        | (source, versions) <- [ schemaSource dbSchema ]
+        , sid `elem` IntMap.elems versions
+        ]
+
+    schemaIds = Map.fromList
+      [ (unSchemaId id, fromIntegral ver)
+      | (ver, id) <- IntMap.toList allVersions ]
+      where
+      allVersions
+        | SelectSchema_stored{} <- getSchemaInfo_select =
+          snd (schemaSource dbSchema)
+        | otherwise = legacyAllVersions dbSchema
+
+  source <- if getSchemaInfo_omit_source
+    then return ""
+    else case getSchemaInfo_select of
+      SelectSchema_stored{} -> return source
+      SelectSchema_current{} -> findSchemaSource (schemaLatestVersion dbSchema)
+      SelectSchema_schema_id sid -> findSchemaSource sid
+      _ -> return ""
+
+  return (SchemaInfo source pids schemaIds)
