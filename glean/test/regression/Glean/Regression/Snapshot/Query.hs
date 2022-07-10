@@ -34,8 +34,6 @@ import qualified Glean.Backend as Backend
 import Glean.Regression.Snapshot.Transform
 import qualified Glean.Types as Thrift
 
-import Debug.Trace (trace)
-
 newtype TQ = TQ { fromTQ :: [(Text, Aeson.Value)] }
 
 instance Aeson.FromJSON TQ where

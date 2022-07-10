@@ -1441,13 +1441,16 @@ library regression-test-lib
         split,
         yaml
 
-test-suite clang-test
+test-suite clang-test-regression
     import: fb-haskell, fb-cpp, deps
-    hs-source-dirs: glean/lang/clang/tests
+    hs-source-dirs:
+       glean/lang/clang/tests,
+       glean/lang/clang/tests/github
     type: exitcode-stdio-1.0
-    main-is: Glean/Regression/Driver/Clang.hs
-    other-modules: Glean.Clang.Test
-    ghc-options: -main-is Glean.Regression.Driver.Clang
+    main-is: Glean/Clang/Regression.hs
+    other-modules: Glean.Regression.Driver.Clang
+                   Glean.Clang.Test
+    ghc-options: -main-is Glean.Clang.Regression
     build-depends:
        glean:regression-test-lib,
        glean:indexers,

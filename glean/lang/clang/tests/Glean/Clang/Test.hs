@@ -27,7 +27,7 @@ driverWith :: Bool -> Driver Clang
 driverWith deriveToo =
   driver' {
     driverTransforms = HM.insert "xrefs" (Transform xrefTransform)
-                                 (driverTransforms driver')
+      (driverTransforms driver')
   }
   where
     driver' = driverFromIndexer indexer'
@@ -42,11 +42,8 @@ driverWith deriveToo =
     indexer' = baseIndexer
       { indexerRun = \clang backend repo params ->
           withCompileCommandsFor clang params $ \cdbDir ->
-            indexerRun baseIndexer
-                       (clang { clangCompileDBDir = Just cdbDir })
-                       backend
-                       repo
-                       params
+            indexerRun baseIndexer (clang { clangCompileDBDir = Just cdbDir })
+              backend repo params
       }
 
 driver :: Driver Clang
