@@ -122,6 +122,11 @@ fileFormatOpt = option (eitherReader parseFileFormat)
     parseFileFormat "binary" = Right BinaryFormat
     parseFileFormat s = Left $ "unknown format: " <> s
 
+finishOpt :: Parser Bool
+finishOpt = switch
+  (  long "finish"
+  <> help "also mark the DB as complete")
+
 instance Plugin WriteCommand where
   parseCommand = createCmd <|> writeCmd
     where
@@ -165,10 +170,6 @@ instance Plugin WriteCommand where
           , properties=[], dependencies=Nothing
           , ..
           }
-
-    finishOpt = switch
-      (  long "finish"
-      <> help "also mark the DB as complete")
 
     writeScribeOpts :: Parser (Text, Maybe PickScribeBucket, Bool)
     writeScribeOpts = do
