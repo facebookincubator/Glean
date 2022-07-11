@@ -96,6 +96,19 @@ repoTimeOpt = option readTime
         Nothing ->
           Left "expecting time e.g. 2021-01-01T12:30:00Z"
 
+dbPropertiesOpt :: Parser [(Text, Text)]
+dbPropertiesOpt = many $ option readProperty
+  (  long "property"
+  <> metavar "NAME=VALUE"
+  <> help "Set properties when creating a DB"
+  )
+  where
+    readProperty :: ReadM (Text,Text)
+    readProperty = eitherReader $ \str ->
+      case break (=='=') str of
+        (name, '=':value) -> Right (Text.pack name, Text.pack value)
+        _other -> Left "--property: expecting NAME=VALUE"
+
 instance Plugin WriteCommand where
   parseCommand = createCmd <|> writeCmd
     where
@@ -107,11 +120,7 @@ instance Plugin WriteCommand where
         finish <- finishOpt
         scribe <- optional scribeOptions
         dependencies <- optional (stackedOptions <|> updateOptions)
-        properties <- many $ option readProperty
-          (  long "property"
-          <> metavar "NAME=VALUE"
-          <> help "Set properties when creating a DB"
-          )
+        properties <- dbPropertiesOpt
         writeHandle <- handleOpt
         writeMaxConcurrency <- maxConcurrencyOpt
         useLocalCache <- useLocalCacheOptions
@@ -120,12 +129,6 @@ instance Plugin WriteCommand where
           , writeFileFormat=JsonFormat
           , ..
           }
-
-    readProperty :: ReadM (Text,Text)
-    readProperty = eitherReader $ \str ->
-      case break (=='=') str of
-        (name, '=':value) -> Right (Text.pack name, Text.pack value)
-        _other -> Left "--property: expecting NAME=VALUE"
 
     writeCmd =
       commandParser "write" (progDesc "Write facts to a database") $ do
