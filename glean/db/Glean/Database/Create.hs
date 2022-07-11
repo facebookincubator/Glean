@@ -31,6 +31,7 @@ import Facebook.Process
 import Util.Defer
 import Util.Log
 
+import Glean.Backend.Remote (StackedDbOpts(..))
 import Glean.BuildInfo
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Config
@@ -39,15 +40,18 @@ import Glean.Database.Meta
 import Glean.Database.Repo
 import qualified Glean.Database.Storage as Storage
 import Glean.Database.Open
+import Glean.Database.PredicateStats
 import Glean.Database.Types
 import Glean.Database.Work
-import Glean.Database.Schema (toStoredSchema)
+import Glean.Database.Schema (
+  toStoredSchema, compareSchemaPredicates, renderSchemaSource)
+import Glean.Database.Schema.ComputeIds
 import Glean.Database.Schema.Types
 import Glean.Internal.Types
 import qualified Glean.Recipes.Types as Recipes
 import Glean.RTS.Foreign.Lookup (firstFreeId)
 import Glean.Schema.Types (schemasHighestVersion)
-import Glean.RTS.Types (lowestFid)
+import Glean.RTS.Types (lowestFid, fromPid)
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types hiding (Database)
 import qualified Glean.Types as Thrift
@@ -60,18 +64,6 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
   | otherwise = do
       ServerConfig.Config{..} <- Observed.get envServerConfig
       let
-        stackedCreate repo =
-          readDatabase env repo $ \odb lookup -> do
-            atomically $ do
-              meta <- Catalog.readMeta envCatalog repo
-              case metaCompleteness meta of
-                Complete{} -> return ()
-                c -> throwSTM $ InvalidDependency kickOff_repo repo $
-                  "database is " <> showCompleteness c
-            start <- firstFreeId lookup
-            return $ Storage.Create start
-              (Storage.UseThisSchema $ toStoredSchema (odbSchema odb))
-
         -- If use_schema_id is enabled in the server config and the
         -- glean.schema_id property is set, we'll use this to decide
         -- which schema instance to store in the DB.
@@ -81,6 +73,65 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
             case HashMap.lookup "glean.schema_id" kickOff_properties of
               Just id -> Storage.UseSpecificSchema (SchemaId id)
               Nothing -> Storage.UseDefaultSchema
+
+        stackedCreate repo =
+          readDatabase env repo $ \odb lookup -> do
+            atomically $ do
+              meta <- Catalog.readMeta envCatalog repo
+              case metaCompleteness meta of
+                Complete{} -> return ()
+                c -> throwSTM $ InvalidDependency kickOff_repo repo $
+                  "database is " <> showCompleteness c
+            start <- firstFreeId lookup
+
+            let storedSchema = toStoredSchema (odbSchema odb)
+
+            if not kickOff_update_schema_for_stacked
+              then return $ Storage.Create start
+                (Storage.UseThisSchema storedSchema)
+              else do
+
+            stats <- predicateStats env repo IncludeBase
+
+            -- If update_schema_for_stacked is enabled, then we need
+            -- to check that the specified schema agrees with the
+            -- stored schema in the base DB about the definitions of
+            -- predicates and types. We can do a fast check using the
+            -- hashes, and throw an exception if there are any
+            -- differences.
+            index <- Observed.get envSchemaSource
+            let
+              DbSchema{..} = odbSchema odb
+
+              proc = case schemaToUse of
+                Storage.UseSpecificSchema id
+                  | Just proc <- schemaForSchemaId index id -> proc
+                _otherwise -> schemaIndexCurrent index
+
+              hasFacts pred = case HashMap.lookup pred predicatesById of
+                Just PredicateDetails{..}
+                  | Just stat <- Map.lookup (fromPid predicatePid) stats ->
+                    predicateStats_count stat > 0
+                _otherwise -> False
+
+              HashedSchema{..} = procSchemaHashed proc
+              errors = compareSchemaPredicates
+                (filter hasFacts (HashMap.keys predicatesById))
+                (HashMap.keys hashedPreds)
+
+            chooseSchema <-
+              if null errors then
+                return $ Storage.UseThisSchema
+                  (StoredSchema
+                    (renderSchemaSource (procSchemaSource proc))
+                    (storedSchema_predicateIds storedSchema))
+                    -- Note: we *must* use the Pids from the base DB
+              else
+                throwIO $ Thrift.Exception $
+                  "update_schema_for_stacked specified, but schemas are " <>
+                  "incompatible: " <> Text.intercalate ", " errors
+
+            return $ Storage.Create start chooseSchema
 
       mode <- case kickOff_dependencies of
         Nothing -> return $ Storage.Create lowestFid schemaToUse

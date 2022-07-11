@@ -19,6 +19,7 @@ import Data.List
 import qualified Data.Map as Map
 import Data.Maybe
 import Data.Text (Text)
+import System.Directory
 import System.FilePath
 import System.IO.Temp
 import Data.Text.Prettyprint.Doc hiding ((<>))
@@ -845,6 +846,177 @@ stackedSchemaTest = TestCase $
           _ -> error "bad query"
 
 
+-- | Test that we can extend the schema when creating a stacked DB
+stackedSchemaUpdateTest :: Test
+stackedSchemaUpdateTest = TestCase $
+  withSystemTempDirectory "glean-dbtest" $ \root -> do
+    let
+      schema_v0_file = root </> "schema0"
+      schema_v0 =
+        [s|
+          schema x.1 {
+            predicate P : { a : string }
+          }
+
+          schema y.1 {
+            predicate Q : string
+          }
+
+          schema all.1 : x.1, y.1 {}
+        |]
+    writeFile schema_v0_file schema_v0
+
+    -- v1 adds a derived predicate to v0
+    let
+      schema_v1_file = root </> "schema1"
+      schema_v1 =
+        [s|
+          schema x.1 {
+            predicate P : { a : string }
+          }
+
+          schema y.1 {
+            predicate Q : { a : string }
+
+            predicate R : string
+          }
+
+          schema all.1 : x.1, y.1 {}
+        |]
+    writeFile schema_v1_file schema_v1
+
+    -- v2 is incompatible with v0 (x.P changed)
+    let
+      schema_v2_file = root </> "schema2"
+      schema_v2 =
+        [s|
+          schema x.1 {
+            predicate P : { a : string, b : nat }
+          }
+
+          schema y.1 {
+            predicate Q : { a : string }
+          }
+
+          schema all.1 : x.1, y.1 {}
+        |]
+    writeFile schema_v2_file schema_v2
+
+    -- v3 is incompatible with v0 (y.Q changed),
+    -- but we should still be able to use it because we only have
+    -- facts of x.P and that didn't change.
+    let
+      schema_v3_file = root </> "schema3"
+      schema_v3 =
+        [s|
+          schema x.1 {
+            predicate P : { a : string }
+          }
+
+          schema y.1 {
+            predicate Q : { a : string, b : nat }
+          }
+
+          schema all.1 : x.1, y.1 {}
+        |]
+    writeFile schema_v3_file schema_v3
+
+    let dbRoot = root </> "db"
+    createDirectory dbRoot
+
+    let
+      mkRepo schema hash upd facts =
+        withTestEnv [
+            setRoot dbRoot,
+            setSchemaPath schema ] $ \env -> do
+          let repo = Repo "test" hash
+          kickOffTestDB env repo upd
+          facts env repo
+          completeTestDB env repo
+          return repo
+
+      testQuery name repo schema query result =
+        withTestEnv [
+            setRoot dbRoot,
+            setSchemaPath schema ] $ \env -> do
+          r <- try $ angleQuery env repo query
+          case result of
+            Just n -> case r :: Either BadQuery UserQueryResults of
+              Right UserQueryResults{..} ->
+                assertEqual name n (length userQueryResults_facts)
+              _ -> assertFailure (name <> ": " <> show r)
+            Nothing -> assertBool name $ case r of
+              Left{} -> True
+              _ -> False
+
+    repo0 <- mkRepo schema_v0_file "0" id $ \env repo ->
+        void $ syncWriteJsonBatch env repo
+          [ mkBatch (PredicateRef "x.P" 1)
+              [ [s| { "key" : { "a" : "x" } } |] ]
+          ] Nothing
+
+    -- switch to schema v1, make a stacked DB, we shouldn't be able to
+    -- make a y.R fact
+    let set x = x { Thrift.kickOff_dependencies =
+           Just $ Thrift.Dependencies_stacked repo0 }
+    r <- try $ mkRepo schema_v1_file "1" set $ \env repo ->
+        void $ syncWriteJsonBatch env repo
+          [ mkBatch (PredicateRef "y.R" 1)
+              [ [s| { "key" : { "a" : "x" } } |] ]
+          ] Nothing
+    print r
+    assertBool "stacked schema 0" $
+      case r of
+        Left (e :: Thrift.Exception) -> "not in scope: y.R" `isInfixOf` show e
+        _ -> False
+
+    -- switch to schema v1, make a stacked DB with update_schema_for_stacked
+    let set x = x {
+          Thrift.kickOff_dependencies =
+            Just $ Thrift.Dependencies_stacked repo0,
+          Thrift.kickOff_update_schema_for_stacked = True }
+    repo1 <- mkRepo schema_v1_file "2" set $ \env repo ->
+        void $ syncWriteJsonBatch env repo
+          [ mkBatch (PredicateRef "y.R" 1)
+              [ [s| { "key" : "abc" } |] ]
+          ] Nothing
+
+    testQuery "stacked schema 1" repo1 schema_v1_file "x.P _" (Just 1)
+    testQuery "stacked schema 2" repo1 schema_v1_file "y.Q _" (Just 0)
+    testQuery "stacked schema 3" repo1 schema_v1_file "y.R _" (Just 1)
+
+    -- when the current schema is incompatible with the schema in the
+    -- base DB, creating the stacked DB with update_schema_for_stacked
+    -- should fail.
+    let set x = x {
+          Thrift.kickOff_dependencies =
+            Just $ Thrift.Dependencies_stacked repo0,
+          Thrift.kickOff_update_schema_for_stacked = True }
+    r <- try $ mkRepo schema_v2_file "3" set $ \env repo ->
+        void $ syncWriteJsonBatch env repo
+          [ mkBatch (PredicateRef "y.R" 1)
+              [ [s| { "key" : "abc" } |] ]
+          ] Nothing
+    assertBool "stacked schema 4" $
+      case r of
+        Left (e :: Thrift.Exception) -> "incompatible" `isInfixOf` show e
+        _ -> False
+
+    -- switch to schema v3, make a stacked DB with update_schema_for_stacked
+    let set x = x {
+          Thrift.kickOff_dependencies =
+            Just $ Thrift.Dependencies_stacked repo0,
+          Thrift.kickOff_update_schema_for_stacked = True }
+    repo4 <- mkRepo schema_v3_file "4" set $ \env repo ->
+        void $ syncWriteJsonBatch env repo
+          [ mkBatch (PredicateRef "y.Q" 1)
+              [ [s| { "key" : {} } |] ]
+          ] Nothing
+
+    testQuery "stacked schema 5" repo4 schema_v3_file "x.P _" (Just 1)
+    testQuery "stacked schema 6" repo4 schema_v3_file "y.Q _" (Just 1)
+
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList $
   [ TestLabel "mergeSchemaTest" mergeSchemaTest
@@ -861,4 +1033,5 @@ main = withUnitTest $ testRunner $ TestList $
   , TestLabel "thinSchema" thinSchemaTest
   , TestLabel "schemaUnversioned" schemaUnversioned
   , TestLabel "stackedSchemaTest" stackedSchemaTest
+  , TestLabel "stackedSchemaUpdateTest" stackedSchemaUpdateTest
   ] ++ schemaNegation

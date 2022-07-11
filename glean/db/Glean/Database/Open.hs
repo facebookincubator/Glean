@@ -236,8 +236,7 @@ setupSchema Env{..} _ handle (Create _ initial) = do
     UseDefaultSchema -> newDbSchema schema LatestSchemaAll readWriteContent
     UseSpecificSchema schemaId ->
       newDbSchema schema (SpecificSchemaId schemaId) readWriteContent
-    UseThisSchema info ->
-      newMergedDbSchema info schema AllowChanges readWriteContent
+    UseThisSchema info -> fromStoredSchema info readWriteContent
   storeSchema handle $ toStoredSchema dbSchema
   return dbSchema
 setupSchema Env{..} repo handle mode = do

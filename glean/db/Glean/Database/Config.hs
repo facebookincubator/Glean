@@ -13,6 +13,7 @@ module Glean.Database.Config (
   processSchema,
   processOneSchema,
   SchemaIndex(..),
+  schemaForSchemaId,
   ProcessedSchema(..),
   legacySchemaSourceConfig,
   catSchemaFiles,
@@ -131,6 +132,12 @@ data SchemaIndex = SchemaIndex
   { schemaIndexCurrent :: ProcessedSchema
   , schemaIndexOlder :: [ProcessedSchema]
   }
+
+schemaForSchemaId :: SchemaIndex -> SchemaId -> Maybe ProcessedSchema
+schemaForSchemaId SchemaIndex{..} id = find (containsId id) instances
+  where
+    instances = schemaIndexCurrent : schemaIndexOlder
+    containsId id = Map.member id . hashedSchemaEnvs . procSchemaHashed
 
 -- | The schema that we've read from the filesystem or the configs. We
 -- need this in three forms:

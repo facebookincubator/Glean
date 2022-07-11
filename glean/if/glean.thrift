@@ -838,22 +838,30 @@ union KickOffFill {
 }
 
 struct KickOff {
-  1: Repo repo;
   // What DB to kick off
+  1: Repo repo;
 
-  2: optional KickOffFill fill;
   // How to fill the DB - nothing means that the name of the recipe set
   // is the name of the repo
+  2: optional KickOffFill fill;
 
-  3: DatabaseProperties properties;
   // Arbitrary metadata about this DB. Properties prefixed by
   // "glean."  are reserved for use by Glean itself.
+  3: DatabaseProperties properties;
 
-  4: optional Dependencies dependencies;
   // What this DB depends on.
+  4: optional Dependencies dependencies;
 
+  // The timestamp of the repo hash of this db.
   5: optional PosixEpochTime repo_hash_time;
-// The timestamp of the repo hash of this db.
+
+  // When creating a stacked DB, normally the schema is taken from the
+  // base DB. If update_schema_for_stacked is true, then the schema
+  // for the stacked DB is taken from the current schema or
+  // glean.schema_id if specified. NB. for this to work the specified
+  // schema can only add or remove predicates relative to the base DB
+  // schema; the definitions of existing predicates must be identical.
+  6: bool update_schema_for_stacked = false;
 }
 
 struct KickOffResponse {

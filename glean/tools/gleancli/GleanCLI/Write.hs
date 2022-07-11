@@ -73,6 +73,7 @@ data WriteCommand
       , writeMaxConcurrency :: Int
       , useLocalCache :: Maybe Glean.SendAndRebaseQueueSettings
       , writeFileFormat :: FileFormat
+      , updateSchemaForStacked :: Bool
       }
 
 fileArg :: Parser [FilePath]
@@ -144,6 +145,12 @@ instance Plugin WriteCommand where
         writeMaxConcurrency <- maxConcurrencyOpt
         useLocalCache <- useLocalCacheOptions
         writeFileFormat <- fileFormatOpt
+        updateSchemaForStacked <- switch
+          (  long "update-schema-for-stacked"
+          <> help (
+            "When creating a stacked DB, use the current schema instead " <>
+            "of the schema from the base DB")
+          )
         return Write
           { create=True
           , ..
@@ -169,6 +176,7 @@ instance Plugin WriteCommand where
         return Write
           { create=False, writeRepoTime=Nothing
           , properties=[], dependencies=Nothing
+          , updateSchemaForStacked = False
           , ..
           }
 
@@ -253,6 +261,7 @@ instance Plugin WriteCommand where
                 , kickOff_dependencies = dependencies
                 , kickOff_repo_hash_time =
                     utcTimeToPosixEpochTime <$> writeRepoTime
+                , kickOff_update_schema_for_stacked = updateSchemaForStacked
                 }
             when alreadyExists $ die 3 "DB create failure: already exists"
        )

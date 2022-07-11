@@ -17,12 +17,14 @@ module Glean.Database.Schema
   , newMergedDbSchema
   , CheckChanges(..)
   , lookupPid
+  , compareSchemaPredicates
   , validateNewSchema
   , validateNewSchemaInstance
   , DbContent
   , readOnlyContent
   , readWriteContent
   , getSchemaInfo
+  , renderSchemaSource
   ) where
 
 import Control.Applicative ((<|>))
@@ -44,6 +46,7 @@ import qualified Data.Map as Map
 import Data.Map (Map)
 import Data.Maybe
 import qualified Data.Set as Set
+import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import Data.Text.Prettyprint.Doc
@@ -64,7 +67,7 @@ import Glean.RTS.Typecheck
 import Glean.RTS.Types as RTS
 import Glean.Angle.Types as Schema
 import Glean.Schema.Resolve
-import Glean.Schema.Util (showRef)
+import Glean.Schema.Util (showRef, ShowRef)
 import Glean.Query.Codegen (QueryWithInfo(..))
 import Glean.Query.Typecheck
 import Glean.Types as Thrift
@@ -108,8 +111,7 @@ storedSchemaPids StoredSchema{..} = HashMap.fromList
 
 toStoredSchema :: DbSchema -> StoredSchema
 toStoredSchema DbSchema{..} = StoredSchema
-  { storedSchema_schema =
-      Text.encodeUtf8 $ renderStrict $ layoutCompact $ pretty $ fst schemaSource
+  { storedSchema_schema = renderSchemaSource (fst schemaSource)
   , storedSchema_predicateIds = Map.fromList
       [ (fromPid $ predicatePid p, predicateRef p)
       | p <- HashMap.elems predicatesById ]
@@ -145,17 +147,13 @@ newDbSchema
   -> SchemaSelector
   -> DbContent
   -> IO DbSchema
-newDbSchema SchemaIndex{..} selector dbContent = do
+newDbSchema index selector dbContent = do
   schema <- case selector of
-    SpecificSchemaId id ->
-      case filter (containsId id) instances of
-        [] -> throwIO $ ErrorCall $ "schema " <> show id <> " not found"
-        (one:_) -> return one
-      where
-        instances = schemaIndexCurrent : schemaIndexOlder
-        containsId id = Map.member id . hashedSchemaEnvs . procSchemaHashed
+    SpecificSchemaId id -> case schemaForSchemaId index id of
+      Nothing -> throwIO $ ErrorCall $ "schema " <> show id <> " not found"
+      Just schema -> return schema
     _otherwise ->
-      return schemaIndexCurrent
+      return (schemaIndexCurrent index)
   mkDbSchema AllowChanges Nothing dbContent schema Nothing
 
 inventory :: [PredicateDetails] -> Inventory
@@ -347,28 +345,58 @@ checkForChanges AllowChanges _ _ = return ()
 checkForChanges MustBeEqual
     (HashedSchema typesStored predsStored _ _ _)
     (HashedSchema typesAdded predsAdded _ _ _) = do
-  let (_, (errors, _, _)) = runState go ([], HashMap.empty, HashMap.empty)
+  let errors =
+        compareSchemaTypes
+          (HashMap.keys typesStored)
+          (HashMap.keys typesAdded) <>
+        compareSchemaPredicates
+          (HashMap.keys predsStored)
+          (HashMap.keys predsAdded)
   unless (null errors) $
     throwIO $ Thrift.Exception $ Text.intercalate "\n\n" errors
-  where
-  go = do
-    let types = HashMap.toList typesStored ++ HashMap.toList typesAdded
-    forM_ types $ \(id, _) -> do
-      (errs, pids, tids) <- State.get
-      let (err, tids') = insert "type" (typeIdRef id) id tids
-      State.put (err <> errs, pids, tids')
-    let preds = HashMap.toList predsStored ++ HashMap.toList predsAdded
-    forM_ preds $ \(id, _) -> do
-      (errs, pids, tids) <- State.get
-      let (err, pids') = insert "predicate" (predicateIdRef id) id pids
-      State.put (err <> errs, pids', tids)
 
-  insert thing ref id tids
-    | Just id' <- HashMap.lookup ref tids =
-      if id == id'
-        then ([], tids)
-        else ([thing <> " " <> showRef ref <> " has changed"], tids)
-    | otherwise = ([], HashMap.insert ref id tids)
+-- | Compare schemas for compatibility. That is, if schema A defines a
+-- predicate or type P, then schema B must have an identical
+-- definition of P.
+--
+-- This is used to determine whether we can safely use schema B for a
+-- stacked DB when the base DB is using schema A. It's useful to be
+-- able to do this, because we might want to add a new derived
+-- predicate to B for testing purposes, but it's only safe if we
+-- didn't change any predicates defined by A, because those will be
+-- mapped to the same Pids in the stacked DB.
+--
+compareSchemaPredicates :: [PredicateId] -> [PredicateId] -> [Text]
+compareSchemaPredicates predsA predsB = errors
+  where
+  (errors, _) = flip execState ([], HashMap.empty) $
+    forM_ (predsA ++ predsB) $ \id -> do
+      (errs, pids) <- State.get
+      let (err, pids') = compareInsert "predicate" (predicateIdRef id) id pids
+      State.put (err <> errs, pids')
+
+compareSchemaTypes :: [TypeId] -> [TypeId] -> [Text]
+compareSchemaTypes typesA typesB = errors
+  where
+  (errors, _) = flip execState ([], HashMap.empty) $
+    forM_ (typesA ++ typesB) $ \id -> do
+      (errs, tids) <- State.get
+      let (err, tids') = compareInsert "type" (typeIdRef id) id tids
+      State.put (err <> errs, tids')
+
+compareInsert
+  :: (Hashable a, Eq a, Eq b, ShowRef a)
+  => Text
+  -> a
+  -> b
+  -> HashMap a b
+  -> ([Text], HashMap a b)
+compareInsert thing ref id tids
+  | Just id' <- HashMap.lookup ref tids =
+    if id == id'
+      then ([], tids)
+      else ([thing <> " " <> showRef ref <> " has changed"], tids)
+  | otherwise = ([], HashMap.insert ref id tids)
 
 detailsFor :: IntMap PredicateDetails -> Pid -> PredicateDetails
 detailsFor byId pid =
@@ -771,8 +799,7 @@ getSchemaInfo dbSchema SchemaIndex{..} GetSchemaInfo{..} = do
     -- we're looking at an old DB.
     findSchemaSource sid =
       case matches of
-        (one:_) -> return $ Text.encodeUtf8 $ renderStrict $
-          layoutCompact $ pretty one
+        (one:_) -> return $ renderSchemaSource one
         [] -> throwIO $ Exception $
           "SchemaId not found: " <> unSchemaId sid
       where
@@ -786,9 +813,7 @@ getSchemaInfo dbSchema SchemaIndex{..} GetSchemaInfo{..} = do
         , sid `elem` IntMap.elems versions
         ]
 
-    schemaIds = Map.fromList
-      [ (unSchemaId id, fromIntegral ver)
-      | (ver, id) <- IntMap.toList allVersions ]
+    schemaIds = toStoredVersions allVersions
       where
       allVersions
         | SelectSchema_stored{} <- getSchemaInfo_select =
@@ -804,3 +829,18 @@ getSchemaInfo dbSchema SchemaIndex{..} GetSchemaInfo{..} = do
       _ -> return ""
 
   return (SchemaInfo source pids schemaIds)
+
+-- The version map in the 'StoredSchema', the 'SchemaIndex' and the
+-- 'SchemaInfo' is a @Map Text Version@ whereas the one we use
+-- internally is the inverse of this: @IntMap SchemaId@. These two
+-- functions convert back and forth.
+--
+-- TODO: maybe they should be the same.
+
+toStoredVersions :: IntMap SchemaId -> Map Text Version
+toStoredVersions versions = Map.fromList
+  [ (unSchemaId id, fromIntegral ver) | (ver, id) <- IntMap.toList versions ]
+
+renderSchemaSource :: SourceSchemas -> ByteString
+renderSchemaSource parsed =
+  Text.encodeUtf8 $ renderStrict $ layoutCompact $ pretty parsed
