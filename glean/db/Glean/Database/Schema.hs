@@ -608,11 +608,11 @@ typecheckSchema idToPid dbContent stored angleVersion
     rtsType = mkRtsType lookupType (`HashMap.lookup` idToPid)
 
   let
-    add preds (id,def)
-      | HashMap.member id preds = return preds
-        -- If we have already seen this predicate, no need to
-        -- typecheck it again.
-      | otherwise =
+    -- If we have already seen this predicate, no need to
+    -- typecheck it again.
+    new = HashMap.difference hashedPreds (tcEnvPredicates tcEnv)
+
+    add preds (id,def) =
         case
           ( HashMap.lookup (predicateDefRef def) idToPid
           , rtsType $ predicateDefKeyType def
@@ -634,7 +634,7 @@ typecheckSchema idToPid dbContent stored angleVersion
           return $ HashMap.insert id details preds
         _ -> return preds
 
-  preds <- foldM add (tcEnvPredicates tcEnv) $ HashMap.toList hashedPreds
+  preds <- foldM add (tcEnvPredicates tcEnv) $ HashMap.toList new
 
   let
     types = HashMap.fromList
@@ -648,28 +648,30 @@ typecheckSchema idToPid dbContent stored angleVersion
       , tcEnvTypes = HashMap.union types (tcEnvTypes tcEnv)
       }
 
-    tcDeriving pred _ info =
-      either (throwIO . ErrorCall . Text.unpack) return $ runExcept $
-        typecheckDeriving env angleVersion rtsType pred info
+    -- Typecheck the derivation for predicate 'id' in the HashMap 'preds'
+    tcDeriving preds id = HashMap.alterF (traverse tc) id preds
+      where
+      tc details = do
+        drv <- either (throwIO . ErrorCall . Text.unpack) return $ runExcept $
+          typecheckDeriving env angleVersion rtsType details
+            (predicateDefDeriving (predicateSchema details))
+        let
+          enable = return details { predicateDeriving = drv }
+          disable = return details { predicateDeriving = NoDeriving }
+        if
+          | Derive DeriveIfEmpty _ <- drv ->
+            case dbContent of
+              DbWritable -> disable
+              DbReadOnly stats -> do
+                case HashMap.lookup (predicatePid details) stats of
+                  Nothing -> enable
+                  Just stats
+                    | predicateStats_count stats == 0 -> enable
+                    | otherwise -> disable
+          | otherwise -> enable
 
-  -- typecheck the derivations
-  finalPreds <- forM preds $ \details -> do
-    drv <- tcDeriving details (predicateInStoredSchema details) $
-      predicateDefDeriving (predicateSchema details)
-    let
-      enable = return details { predicateDeriving = drv }
-      disable = return details { predicateDeriving = NoDeriving }
-    if
-      | Derive DeriveIfEmpty _ <- drv ->
-        case dbContent of
-          DbWritable -> disable
-          DbReadOnly stats -> do
-            case HashMap.lookup (predicatePid details) stats of
-              Nothing -> enable
-              Just stats
-                | predicateStats_count stats == 0 -> enable
-                | otherwise -> disable
-      | otherwise -> enable
+  -- typecheck the derivations for newly added predicates
+  finalPreds <- foldM tcDeriving preds (HashMap.keys new)
 
   -- Check the invariant that stored predicates do not refer to derived
   -- predicates. We have to defer this check until last, because
