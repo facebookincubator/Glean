@@ -828,7 +828,7 @@ getSchemaInfo dbSchema SchemaIndex{..} GetSchemaInfo{..} = do
       SelectSchema_stored{} -> return source
       SelectSchema_current{} -> findSchemaSource (schemaLatestVersion dbSchema)
       SelectSchema_schema_id sid -> findSchemaSource sid
-      _ -> return ""
+      _ -> return source
 
   return (SchemaInfo source pids schemaIds)
 
