@@ -137,9 +137,9 @@ instance Plugin WriteCommand where
         writeHandle <- handleOpt
         writeMaxConcurrency <- maxConcurrencyOpt
         useLocalCache <- useLocalCacheOptions
+        writeFileFormat <- fileFormatOpt
         return Write
           { create=True
-          , writeFileFormat=JsonFormat
           , ..
           }
 
