@@ -26,6 +26,12 @@ Also mark the DB as complete
 Create a stacked database on top of `REPO`.
 * `--property NAME=VALUE`<br />
 Set properties when creating a DB
+* `--update-schema-for-stacked`<br />
+When creating a stacked DB, the schema is taken from the base DB. This
+option specifies that the current schema should be used instead. When
+using this option, creation will fail if the current schema has
+a different definition for any predicate in the base DB schema;
+therefore predicates may only be added or removed relative to the base DB.
 * `FILE..`<br />
 File(s) of facts to write into the database (JSON). See [Writing data
 to Glean](./write.md).
