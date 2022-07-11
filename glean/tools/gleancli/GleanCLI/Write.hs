@@ -76,17 +76,28 @@ data WriteCommand
       , writeFileFormat :: FileFormat
       }
 
+
+repoTimeOpt :: Parser UTCTime
+repoTimeOpt = option readTime
+  (  long "repo-hash-time"
+  <> metavar "yyyy-mm-ddThh:mm:ssZ"
+  <> help "Set properties when creating a DB"
+  )
+  where
+    readTime :: ReadM UTCTime
+    readTime = eitherReader $ \str ->
+      case readUTC $ Text.pack str of
+        Just value -> Right value
+        Nothing ->
+          Left "expecting time e.g. 2021-01-01T12:30:00Z"
+
 instance Plugin WriteCommand where
   parseCommand = createCmd <|> writeCmd
     where
     createCmd =
       commandParser "create" (progDesc "Create a new database") $ do
         writeRepo <- repoOpts
-        writeRepoTime <- optional $ option readTime
-          (  long "repo-hash-time"
-          <> metavar "yyyy-mm-ddThh:mm:ssZ"
-          <> help "Set properties when creating a DB"
-          )
+        writeRepoTime <- optional repoTimeOpt
         writeFiles <- fileArgs
         finish <- finishOpt
         scribe <- optional scribeOptions
@@ -110,13 +121,6 @@ instance Plugin WriteCommand where
       case break (=='=') str of
         (name, '=':value) -> Right (Text.pack name, Text.pack value)
         _other -> Left "--property: expecting NAME=VALUE"
-
-    readTime :: ReadM UTCTime
-    readTime = eitherReader $ \str ->
-      case readUTC $ Text.pack str of
-        Just value -> Right value
-        Nothing ->
-          Left "expecting time e.g. 2021-01-01T12:30:00Z"
 
     writeCmd =
       commandParser "write" (progDesc "Write facts to a database") $ do
@@ -314,4 +318,3 @@ instance Plugin WriteCommand where
 
     resultToFailure Right{} = Nothing
     resultToFailure (Left err) = Just (show err)
-
