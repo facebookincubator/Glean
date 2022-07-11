@@ -77,8 +77,9 @@ data WriteCommand
 
 fileArg :: Parser [FilePath]
 fileArg = many $ strArgument
-  (  metavar "FILE"
-  <> help "File of facts (JSON)"
+  (  metavar "FILE..."
+  <> help ("Files of facts. "
+  <> "You can specify the format of the file through --file-format option")
   )
 
 repoTimeOpt :: Parser UTCTime
@@ -114,7 +115,7 @@ fileFormatOpt = option (eitherReader parseFileFormat)
   <> value JsonFormat
   <> showDefault
   <> metavar "(json|binary)"
-  <> help "Format of the input files"
+  <> help "Format of the files with facts"
   )
   where
     parseFileFormat :: String -> Either String FileFormat
