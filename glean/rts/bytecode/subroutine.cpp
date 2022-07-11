@@ -22,6 +22,7 @@ struct Eval {
   const std::string *literals;
   const uint64_t *code;
   const uint64_t *pc;
+  Subroutine::Activation *activation;
   uint64_t *frame;
 
 #include "glean/rts/bytecode/gen/evaluate.h"
@@ -306,12 +307,15 @@ struct Eval {
     LOG(INFO) << *a.msg << ": " << folly::to<std::string>(a.reg);
   }
 
-  FOLLY_ALWAYS_INLINE void execute(Suspend a) {
+  FOLLY_ALWAYS_INLINE Subroutine::Status execute(Suspend a) {
     pc += std::ptrdiff_t(a.cont);
-    (*a.fun)(const_cast<uint64_t*>(pc), frame);
+    activation->entry = pc - activation->sub->code.data();
+    return Subroutine::Status::Suspended;
   }
 
-  FOLLY_ALWAYS_INLINE void execute(Ret) {}
+  FOLLY_ALWAYS_INLINE Subroutine::Status execute(Ret) {
+    return Subroutine::Status::Finished;
+  }
 
   FOLLY_ALWAYS_INLINE void execute(LoadWord a) {
     *a.dst = *a.src;
@@ -326,8 +330,13 @@ struct Eval {
 
 #define USE_SWITCH 1
 
-void Subroutine::Activation::execute() {
-  Eval{sub->literals.data(), sub->code.data(), sub->code.data() + entry, frame}.
+Subroutine::Status Subroutine::Activation::execute() {
+  return Eval{
+    sub->literals.data(),
+    sub->code.data(),
+    sub->code.data() + entry,
+    this,
+    frame}.
 #if USE_SWITCH
     evalSwitch();
 #else

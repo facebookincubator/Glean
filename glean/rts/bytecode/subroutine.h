@@ -60,6 +60,11 @@ struct Subroutine {
     return inputs + locals;
   }
 
+  enum class Status {
+    Finished,
+    Suspended
+  };
+
   /// A subroutine activation record which can be 'execute'd after supplying
   /// arguments. The activation requires a pointer to a preallocated frame but
   /// doesn't own it. This is mostly because we want to be able to avoid having
@@ -88,7 +93,9 @@ struct Subroutine {
       return frame;
     }
 
-    void execute();
+    /// Execute the activation and return its status. If it's 'Suspended', the
+    /// activation can be resumed by calling 'execute' again.
+    Status execute();
   };
 
   /// Create an activation record for the subroutine.
@@ -116,7 +123,8 @@ struct Subroutine {
     uint64_t frame[frameSize()];
     auto activation = activate(frame);
     std::copy(args.begin(), args.end(), activation.args());
-    activation.execute();
+    const auto status = activation.execute();
+    assert(status == Status::Finished);
   }
 
   bool operator==(const Subroutine& other) const;

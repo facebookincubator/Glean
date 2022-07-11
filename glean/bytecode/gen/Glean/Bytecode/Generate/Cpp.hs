@@ -95,12 +95,16 @@ genInsnEval Insn{..} =
   ++ map indent (concatMap declare insnArgs) ++
   [ "};"
   , ""
-  , "FOLLY_ALWAYS_INLINE void eval_" <> insnName <> "() {"
+  , "FOLLY_ALWAYS_INLINE " <> retType <> " eval_" <> insnName <> "() {"
   , "  " <> insnName <> " args;" ]
   ++ map indent (concatMap decode insnArgs) ++
-  [ "  execute(args);"
+  [ "  return execute(args);"
   , "}" ]
   where
+    retType
+      | UncondReturn <- insnControl = "Subroutine::Status"
+      | otherwise = "void"
+
     declare (Arg name Offsets Imm) =
       [ "uint64_t " <> name <> "_size;"
       , "const uint64_t *" <> name <> ";" ]
@@ -168,7 +172,7 @@ cppType _ = "uint64_t"
 --
 genEvalSwitch :: [Text]
 genEvalSwitch =
-  [ "FOLLY_ALWAYS_INLINE void evalSwitch() {"
+  [ "FOLLY_ALWAYS_INLINE Subroutine::Status evalSwitch() {"
   , "  while (true) {"
   , "    switch (static_cast<Op>(*pc++)) {" ]
   ++ intercalate [""] (map genAlt instructions)
@@ -181,14 +185,15 @@ genEvalSwitch =
   , "}" ]
   where
     genAlt insn =
-      [ "      case Op::" <> insnName insn <> ":"
-      , "        eval_" <> insnName insn <> "();" ]
-      ++
-      if insnControl insn == UncondReturn
-      then
-      [ "        return;"]
-      else
-      [ "        break;"]
+      let call = "eval_" <> insnName insn <> "();"
+      in
+      "      case Op::" <> insnName insn <> ":"
+      : case insnControl insn of
+          UncondReturn ->
+           [ "        return " <> call ]
+          _ ->
+           [ "        " <> call
+           , "        break;"]
 
     genUnusedAlt op =
       "      case Op::" <> op <> ":"
@@ -207,24 +212,27 @@ genEvalSwitch =
 --
 genEvalIndirect :: [Text]
 genEvalIndirect =
-  [ "FOLLY_ALWAYS_INLINE void evalIndirect() {"
+  [ "FOLLY_ALWAYS_INLINE Subroutine::Status evalIndirect() {"
   , "  static const void * const labels[] = {" ]
   ++
   [ "    &&label_" <> insnName insn <> "," | insn <- instructions ]
   ++
   [ "  };"
+  , ""
+  , dispatch
   , "" ]
-  ++
-  dispatch
-  ++
-  [ "" ]
   ++ intercalate [""] (map genAlt instructions) ++
   ["}"]
   where
-    dispatch = [ "  goto *labels[*pc++];"]
+    dispatch = "  goto *labels[*pc++];"
 
     genAlt insn =
-      [ "label_" <> insnName insn <> ":"
-      , "  eval_" <> insnName insn <> "();" ]
-      ++
-      if insnControl insn == UncondReturn then [ "  return;"] else dispatch
+      let call = "eval_" <> insnName insn <> "();"
+      in
+      "label_" <> insnName insn <> ":"
+      : case insnControl insn of
+          UncondReturn ->
+           [ "        return " <> call ]
+          _ ->
+           [ "        " <> call
+           , dispatch ]

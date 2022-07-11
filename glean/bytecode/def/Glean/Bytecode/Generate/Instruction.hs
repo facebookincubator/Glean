@@ -373,14 +373,10 @@ instructions =
       [ Arg "msg" Literal Imm
       , Arg "reg" Word Load ]
 
-    -- Adjust PC to point to 'cont', invoke an external function that will be
-    -- passed
-    --    (uint64_t* pc, uint64_t* frame)
-    -- i.e. the current state of the evaluator and then return from the
-    -- subroutine. The intention is to resume execution later, starting from
-    -- 'cont'.
+    -- Adjust PC to point to 'cont' and suspend execution. The first argument
+    -- is a temporary, unused left-over for backwards compatibility.
   , Insn "Suspend" UncondReturn
-      [ Arg "fun" (Fun [WordPtr,WordPtr]) Load
+      [ Arg "unused" Word Load
       , Arg "cont" Offset Imm
       ]
 

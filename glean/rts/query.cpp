@@ -682,9 +682,6 @@ std::unique_ptr<QueryResults> executeQuery (
             size).toWord();
       };
 
-  const std::function<void(uint64_t *, uint64_t *)> saveState_ =
-      [&](uint64_t *pc, uint64_t *frame) { q.saveState(pc, frame); };
-
   const std::function<void(uint64_t, uint64_t, uint64_t,
                            uint64_t, uint64_t)>
       resultWithPid_ = [&](uint64_t id, uint64_t key,
@@ -725,14 +722,18 @@ std::unique_ptr<QueryResults> executeQuery (
   *args++ = reinterpret_cast<uint64_t>(&result_);
   *args++ = reinterpret_cast<uint64_t>(&resultWithPid_);
   *args++ = reinterpret_cast<uint64_t>(&newDerivedFact_);
-  *args++ = reinterpret_cast<uint64_t>(&saveState_);
+  *args++ = 0; // unused
   *args++ = reinterpret_cast<uint64_t>(max_results);
   *args++ = reinterpret_cast<uint64_t>(max_bytes);
   for (auto i = 0; i < sub.outputs; i++) {
     *args++ = reinterpret_cast<uint64_t>(&q.outputs[i]);
   }
 
-  activation.execute();
+  const auto status = activation.execute();
+
+  if (status == Subroutine::Status::Suspended) {
+    q.saveState(sub.code.data() + activation.entry, frame);
+  }
 
   return q.finish();
 }
