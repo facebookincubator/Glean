@@ -378,6 +378,22 @@ std::vector<T> copy_as(const std::vector<U>& xs) {
 }
 }
 
+thrift::internal::SubroutineState Subroutine::Activation::toThrift()
+    const {
+  thrift::internal::SubroutineState state;
+  state.code() = std::string(
+    reinterpret_cast<const char *>(sub->code.data()),
+    sub->code.size() * sizeof(uint64_t));
+  state.entry() = entry;
+  state.literals() = sub->literals;
+  state.locals() = std::vector<int64_t>(
+    frame + sub->inputs,
+    frame + sub->inputs + sub->locals);
+  state.inputs() = sub->inputs;
+  return state;
+}
+
+
 std::shared_ptr<Subroutine>
 Subroutine::fromThrift(const thrift::internal::Subroutine &ser) {
   return std::make_shared<Subroutine>(Subroutine{

@@ -96,6 +96,8 @@ struct Subroutine {
     /// Execute the activation and return its status. If it's 'Suspended', the
     /// activation can be resumed by calling 'execute' again.
     Status execute();
+
+    thrift::internal::SubroutineState toThrift() const;
   };
 
   /// Create an activation record for the subroutine.

@@ -88,11 +88,6 @@ struct QueryExecutor {
   Id newDerivedFact(Pid type, binary::Output* clause, size_t keySize);
 
   //
-  // Save the current state of the execution in queryCont
-  //
-  void saveState(uint64_t* pc, uint64_t* frame);
-
-  //
   // Record a nested fact that we visited during traversal, see
   // resultWithPid()
   //
@@ -129,9 +124,16 @@ struct QueryExecutor {
   }
 
   //
+  // Produce a query continuation
+  //
+  thrift::internal::QueryCont queryCont(
+    thrift::internal::SubroutineState subState) const;
+
+  //
   // Done; collect and return the final results
   //
-  std::unique_ptr<QueryResults> finish();
+  std::unique_ptr<QueryResults> finish(
+    folly::Optional<thrift::internal::SubroutineState> subState);
 
   // ------------------------------------------------------------
   // Below here: query state
@@ -183,8 +185,6 @@ struct QueryExecutor {
   std::vector<HsString> nested_result_keys;
   std::vector<HsString> nested_result_values;
   std::vector<Id> nested_result_pending;
-
-  folly::Optional<thrift::internal::QueryCont> queryCont;
 
   // query stats
   folly::F14FastMap<uint64_t, uint64_t> stats;
@@ -325,8 +325,10 @@ Id QueryExecutor::newDerivedFact(
 };
 
 
-void QueryExecutor::saveState(uint64_t *pc, uint64_t *frame) {
+  thrift::internal::QueryCont QueryExecutor::queryCont(
+      thrift::internal::SubroutineState subState) const {
   thrift::internal::QueryCont cont;
+
   std::vector<thrift::internal::KeyIterator> contIters;
 
   for (auto &iter : iters) {
@@ -349,23 +351,12 @@ void QueryExecutor::saveState(uint64_t *pc, uint64_t *frame) {
     contOutputs.emplace_back(output.string());
   }
   cont.outputs() = std::move(contOutputs);
-
-  thrift::internal::SubroutineState subState;
-  subState.code() =
-      std::string(reinterpret_cast<const char *>(sub.code.data()),
-                  sub.code.size() * sizeof(uint64_t));
-  subState.entry() = pc - sub.code.data();
-  subState.literals() = sub.literals;
-  std::vector<int64_t> locals(sub.locals);
-  std::copy(frame + sub.inputs, frame + sub.inputs + sub.locals, locals.data());
-  subState.locals() = std::move(locals);
-  subState.inputs() = sub.inputs;
   cont.sub() = std::move(subState);
   cont.pid() = pid.toWord();
   if (traverse) {
     cont.traverse() = Subroutine::toThrift(*traverse);
   }
-  queryCont = std::move(cont);
+  return cont;
 };
 
 
@@ -437,7 +428,8 @@ size_t QueryExecutor::resultWithPid(
 };
 
 
-std::unique_ptr<QueryResults> QueryExecutor::finish() {
+std::unique_ptr<QueryResults> QueryExecutor::finish(
+    folly::Optional<thrift::internal::SubroutineState> subState) {
   auto res = std::make_unique<QueryResults>();
   res->fact_ids = std::move(result_ids);
   res->fact_pids = std::move(result_pids);
@@ -448,11 +440,11 @@ std::unique_ptr<QueryResults> QueryExecutor::finish() {
   res->nested_fact_keys = std::move(nested_result_keys);
   res->nested_fact_values = std::move(nested_result_values);
 
-  if (queryCont) {
+  if (subState.hasValue()) {
     std::string out;
     using namespace apache::thrift;
     Serializer<BinaryProtocolReader, BinaryProtocolWriter>::serialize(
-        *queryCont, &out);
+        queryCont(std::move(subState.value())), &out);
     res->continuation = std::move(out);
   };
 
@@ -730,12 +722,12 @@ std::unique_ptr<QueryResults> executeQuery (
   }
 
   const auto status = activation.execute();
-
+  folly::Optional<thrift::internal::SubroutineState> subState;
   if (status == Subroutine::Status::Suspended) {
-    q.saveState(sub.code.data() + activation.entry, frame);
+    subState = activation.toThrift();
   }
 
-  return q.finish();
+  return q.finish(std::move(subState));
 }
 
 
