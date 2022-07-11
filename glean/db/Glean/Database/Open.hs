@@ -29,6 +29,7 @@ import Data.Maybe
 import qualified Data.Text as Text
 
 import Util.Log
+import Util.Logger
 import Util.Text
 
 import qualified Glean.Database.Catalog as Catalog
@@ -42,6 +43,7 @@ import Glean.Database.Meta (Meta(..))
 import Glean.Database.Schema
 import Glean.Database.Schema.Types
 import Glean.Database.Types
+import Glean.Logger
 import Glean.Query.Codegen (Boundaries, flatBoundaries, stackedBoundaries)
 import Glean.Repo.Text
 import qualified Glean.RTS.Foreign.Lookup as Lookup
@@ -362,6 +364,7 @@ asyncOpenDB
 asyncOpenDB env@Env{..} db@DB{..} version mode deps on_success on_failure =
   -- Be paranoid about 'spawnMask' itself throwing.
   handling_failures $ Warden.spawnMask envWarden $ \restore ->
+  loggingAction (runLogRepo "open" env dbRepo) (const mempty) $
   bracket_ (atomically $ acquireDB db) (atomically $ releaseDB env db) $
   handling_failures $ do
     logInfo $ inRepo dbRepo "opening"
