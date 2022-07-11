@@ -123,14 +123,13 @@ struct Predicate {
       Fact::Clause clause,
       binary::Output& output,
       uint64_t& key_size) {
-    const uint64_t args[] = {
+    sub.execute({
       reinterpret_cast<uint64_t>(&renamer.rename),
       reinterpret_cast<uint64_t>(clause.data),
       reinterpret_cast<uint64_t>(clause.data + clause.key_size),
       reinterpret_cast<uint64_t>(clause.data + clause.size()),
       reinterpret_cast<uint64_t>(&output),
-      reinterpret_cast<uint64_t>(&key_size)};
-    sub.execute(args);
+      reinterpret_cast<uint64_t>(&key_size)});
   }
 
   void traverse(
@@ -143,13 +142,11 @@ struct Predicate {
       const Subroutine& sub,
       const Traverser& handler,
       Fact::Clause clause) {
-    const uint64_t args[] = {
+    sub.execute({
       reinterpret_cast<uint64_t>(&handler.traverse),
       reinterpret_cast<uint64_t>(clause.data),
       reinterpret_cast<uint64_t>(clause.data + clause.key_size),
-      reinterpret_cast<uint64_t>(clause.data + clause.size()),
-    };
-    sub.execute(args);
+      reinterpret_cast<uint64_t>(clause.data + clause.size())});
   }
 };
 

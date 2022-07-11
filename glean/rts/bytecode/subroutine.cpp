@@ -326,21 +326,8 @@ struct Eval {
 
 #define USE_SWITCH 1
 
-void Subroutine::execute(const uint64_t *args) const {
-  uint64_t frame[inputs + locals];
-  std::copy(args, args + inputs, frame);
-  assert(constants.size() <= locals);
-  std::copy(constants.begin(), constants.end(), frame + inputs);
-  Eval{literals.data(), code.data(), code.data(), frame}.
-#if USE_SWITCH
-    evalSwitch();
-#else
-    evalIndirect();
-#endif
-}
-
-void Subroutine::restart(uint64_t *regs, uint64_t offset) const {
-  Eval{literals.data(), code.data(), code.data() + offset, regs}.
+void Subroutine::Activation::execute() {
+  Eval{sub->literals.data(), sub->code.data(), sub->code.data() + entry, frame}.
 #if USE_SWITCH
     evalSwitch();
 #else

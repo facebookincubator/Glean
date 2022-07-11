@@ -55,15 +55,69 @@ struct Subroutine {
           constants(constants0),
           literals(literals0){}
 
-  /// Execute the subroutine with the given arguments. The number of arguments
-  /// is given by 'inputs'. The arguments are copied to their registers before
-  /// execution.
-  void execute(const uint64_t *args) const;
+  /// Size of the subroutine's frame in words
+  size_t frameSize() const {
+    return inputs + locals;
+  }
 
-  /// Restart a subroutine with the given set of regs (must be an
-  /// array of size inputs + locals) and initializing pc to the given
-  /// offset into the code array.
-  void restart(uint64_t *regs, uint64_t offset) const;
+  /// A subroutine activation record which can be 'execute'd after supplying
+  /// arguments. The activation requires a pointer to a preallocated frame but
+  /// doesn't own it. This is mostly because we want to be able to avoid having
+  /// to 'malloc' the frame for each execution.
+  struct Activation final {
+    const Subroutine *sub;
+    uint64_t *frame;
+    uint64_t entry;
+
+    /// Initialise the activation. Both `sub` and `frame` have to remain alive
+    /// throughout the execution of activation.
+    template<typename Iter>
+    Activation(
+        const Subroutine *sub,
+        uint64_t* frame,
+        uint64_t entry,
+        Iter locals_begin,
+        Iter locals_end) : sub(sub), frame(frame), entry(entry) {
+      std::copy(locals_begin, locals_end, frame + sub->inputs);
+    }
+
+    using arg_insert_iterator = uint64_t *;
+
+    /// Get an inserter for supplying args to the subroutine
+    arg_insert_iterator args() {
+      return frame;
+    }
+
+    void execute();
+  };
+
+  /// Create an activation record for the subroutine.
+  ///
+  /// @param frame Preallocated (but not initialised) frame of at least
+  /// 'frameSize' words.
+  Activation activate(uint64_t *frame) const {
+    return Activation(this, frame, 0, constants.begin(), constants.end());
+  }
+
+  /// Restore an activation record for the subroutine.
+  ///
+  /// @param frame Preallocated (but not initialised) frame of at least
+  /// 'frameSize' words.
+  /// @param entry Offset into the subroutine's code.
+  /// @param locals_begin Start of local registers to restore.
+  /// @param locals_end End of local registers to restore.
+  template<typename Iter>
+  Activation restart(uint64_t *frame, uint64_t entry, Iter locals_begin, Iter locals_end) const {
+    return Activation(this, frame, entry, locals_begin, locals_end);
+  }
+
+  /// Execute the subroutine with the given arguments.
+  void execute(std::initializer_list<uint64_t> args) const {
+    uint64_t frame[frameSize()];
+    auto activation = activate(frame);
+    std::copy(args.begin(), args.end(), activation.args());
+    activation.execute();
+  }
 
   bool operator==(const Subroutine& other) const;
   bool operator!=(const Subroutine& other) const {

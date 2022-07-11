@@ -705,39 +705,34 @@ std::unique_ptr<QueryResults> executeQuery (
             reinterpret_cast<binary::Output *>(val));
       };
 
-  std::vector<uint64_t> args;
+  uint64_t frame[sub.frameSize()];
 
-  if (restart) {
-    args.reserve(sub.inputs + sub.locals);
-  } else {
-    args.reserve(sub.inputs);
-  }
-
-  args.push_back(reinterpret_cast<uint64_t>(&seek_));
-  args.push_back(reinterpret_cast<uint64_t>(&seekWithinSection_));
-  args.push_back(reinterpret_cast<uint64_t>(&currentSeek_));
-  args.push_back(reinterpret_cast<uint64_t>(&endSeek_));
-  args.push_back(reinterpret_cast<uint64_t>(&next_));
-  args.push_back(reinterpret_cast<uint64_t>(&lookupKeyValue_));
-  args.push_back(reinterpret_cast<uint64_t>(&result_));
-  args.push_back(reinterpret_cast<uint64_t>(&resultWithPid_));
-  args.push_back(reinterpret_cast<uint64_t>(&newDerivedFact_));
-  args.push_back(reinterpret_cast<uint64_t>(&saveState_));
-  args.push_back(reinterpret_cast<uint64_t>(max_results));
-  args.push_back(reinterpret_cast<uint64_t>(max_bytes));
-  for (auto i = 0; i < sub.outputs; i++) {
-    args.push_back(reinterpret_cast<uint64_t>(&q.outputs[i]));
-  }
-
-  if (restart) {
-    std::copy(
+  auto activation = restart
+    ? sub.restart(
+        frame,
+        *restart->sub()->entry(),
         restart->sub()->locals()->begin(),
-        restart->sub()->locals()->end(),
-        std::back_inserter(args));
-    sub.restart(args.data(), *restart->sub()->entry());
-  } else {
-    sub.execute(args.data());
+        restart->sub()->locals()->end())
+    : sub.activate(frame);
+
+  auto args = activation.args();
+  *args++ = reinterpret_cast<uint64_t>(&seek_);
+  *args++ = reinterpret_cast<uint64_t>(&seekWithinSection_);
+  *args++ = reinterpret_cast<uint64_t>(&currentSeek_);
+  *args++ = reinterpret_cast<uint64_t>(&endSeek_);
+  *args++ = reinterpret_cast<uint64_t>(&next_);
+  *args++ = reinterpret_cast<uint64_t>(&lookupKeyValue_);
+  *args++ = reinterpret_cast<uint64_t>(&result_);
+  *args++ = reinterpret_cast<uint64_t>(&resultWithPid_);
+  *args++ = reinterpret_cast<uint64_t>(&newDerivedFact_);
+  *args++ = reinterpret_cast<uint64_t>(&saveState_);
+  *args++ = reinterpret_cast<uint64_t>(max_results);
+  *args++ = reinterpret_cast<uint64_t>(max_bytes);
+  for (auto i = 0; i < sub.outputs; i++) {
+    *args++ = reinterpret_cast<uint64_t>(&q.outputs[i]);
   }
+
+  activation.execute();
 
   return q.finish();
 }
