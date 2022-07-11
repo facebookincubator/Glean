@@ -17,7 +17,6 @@ import qualified Data.ByteString.Char8 as B8
 import Data.Default
 import Data.Proxy
 import qualified Data.HashMap.Strict as HashMap
-import Data.Maybe
 import Data.List.Split (splitOn)
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -55,10 +54,10 @@ data FileFormat
   = JsonFormat
   | BinaryFormat
 
-parseFileFormat :: String -> Either String FileFormat
-parseFileFormat "json" = Right JsonFormat
-parseFileFormat "binary" = Right BinaryFormat
-parseFileFormat s = Left $ "unknown format: " <> s
+instance Show FileFormat where
+  show ff = case ff of
+    JsonFormat -> "json"
+    BinaryFormat -> "binary"
 
 data WriteCommand
   = Write
@@ -109,6 +108,20 @@ dbPropertiesOpt = many $ option readProperty
         (name, '=':value) -> Right (Text.pack name, Text.pack value)
         _other -> Left "--property: expecting NAME=VALUE"
 
+fileFormatOpt :: Parser FileFormat
+fileFormatOpt = option (eitherReader parseFileFormat)
+  (  long "file-format"
+  <> value JsonFormat
+  <> showDefault
+  <> metavar "(json|binary)"
+  <> help "Format of the input files"
+  )
+  where
+    parseFileFormat :: String -> Either String FileFormat
+    parseFileFormat "json" = Right JsonFormat
+    parseFileFormat "binary" = Right BinaryFormat
+    parseFileFormat s = Left $ "unknown format: " <> s
+
 instance Plugin WriteCommand where
   parseCommand = createCmd <|> writeCmd
     where
@@ -146,16 +159,10 @@ instance Plugin WriteCommand where
         writeHandle <- handleOpt
         writeMaxConcurrency <- maxConcurrencyOpt
         useLocalCache <- useLocalCacheOptions
-        writeFileFormat <-
-              optional $ option (eitherReader parseFileFormat)
-                ( long "file-format"
-                <> metavar "(json|binary)"
-                <> help "Format of the input files"
-                )
+        writeFileFormat <- fileFormatOpt
         return Write
           { create=False, writeRepoTime=Nothing
           , properties=[], dependencies=Nothing
-          , writeFileFormat = fromMaybe JsonFormat writeFileFormat
           , ..
           }
 
