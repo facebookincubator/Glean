@@ -54,7 +54,7 @@ expireDatabase delay env@Env{..} repo = do
             logInfo $ inRepo repo $ "database is doomed " ++
               " ("  ++ showNominalDiffTime (dbAge now meta) ++ " old)"
             logInfo $ inRepo repo $ "expiring in " <> show delay <> "s"
-          lift $ Catalog.writeExpiring envCatalog repo $ delay `addUTCTime` now
+          lift $ Catalog.setExpiring envCatalog repo $ delay `addUTCTime` now
           return False
         _ -> return True
   when expired $ void $ asyncDeleteDatabase env repo

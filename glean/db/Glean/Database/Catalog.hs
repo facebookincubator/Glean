@@ -26,7 +26,8 @@ module Glean.Database.Catalog
   , writeMeta
   , modifyMeta
   , readExpiring
-  , writeExpiring
+  , setExpiring
+  , unsetExpiring
   , startRestoring
   , finishRestoring
   , abortRestoring
@@ -404,10 +405,16 @@ readExpiring cat repo = do
   entry <- getEntry cat repo
   readTVar $ entryExpiring entry
 
-writeExpiring :: Catalog -> Repo -> UTCTime -> STM ()
-writeExpiring cat repo time = do
+setExpiring :: Catalog -> Repo -> UTCTime -> STM ()
+setExpiring cat repo time = do
   entry <- getEntry cat repo
   writeTVar (entryExpiring entry) $ Just time
+
+-- | Unset the expiring bit, to no longer mark the 'Repo' as expiring
+unsetExpiring :: Catalog -> Repo -> STM ()
+unsetExpiring cat repo = do
+  entry <- getEntry cat repo
+  writeTVar (entryExpiring entry) Nothing
 
 -- | Schedule a database for download/restore
 startRestoring :: Catalog -> Repo -> Meta -> STM ()

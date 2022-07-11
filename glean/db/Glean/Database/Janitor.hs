@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE NamedFieldPuns #-}
 module Glean.Database.Janitor
   ( runDatabaseJanitor
   ) where
@@ -25,7 +26,6 @@ import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text.Encoding as Text
 import Data.Time
-import System.Time.Extra (sleep)
 
 import ServiceData.GlobalStats as Stats
 import Util.Control.Exception
@@ -70,13 +70,7 @@ runDatabaseJanitor :: Env -> IO ()
 runDatabaseJanitor env@Env{envShardManager = SomeShardManager sm} = do
   maybeShards <- getAssignedShards sm
   case maybeShards of
-    Just shards
-      | null shards -> do
-        logInfo "waiting for shards"
-        -- it can take SM up to 30s to complete the shard assignment
-        sleep 45 -- seconds
-        runDatabaseJanitor env
-      | otherwise ->
+    Just shards ->
         runWithShards env (Set.fromList shards) sm
     Nothing -> do
       Just myShards <- getAssignedShards noSharding
@@ -199,6 +193,10 @@ runWithShards env myShards sm = do
     "dependencies not downloaded"
     ("This probably means a bug in the db->shard mapping, " <>
      "or a failure to enumerate the cloud catalog")
+
+  forM_ keepInThisNode $ \(Item{itemRepo, itemLocality}, _) ->
+    when (itemLocality == Local) $
+      atomically $ Catalog.unsetExpiring (envCatalog env) itemRepo
 
   forM_ delete $ \repo -> do
     let

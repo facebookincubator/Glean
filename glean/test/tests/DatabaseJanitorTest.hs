@@ -75,6 +75,9 @@ complete, broken :: UTCTime -> Completeness
 complete = Complete . (`DatabaseComplete` Nothing) . utcTimeToPosixEpochTime
 broken _ = Broken (DatabaseBroken "index" "TESTING")
 
+repo0001 :: Repo
+repo0001 = Repo "test" "0001"
+
 setupBasicDBs :: FilePath -> IO ()
 setupBasicDBs dbdir = do
   now <- getCurrentTime
@@ -82,7 +85,7 @@ setupBasicDBs dbdir = do
   schema <- parseSchemaDir schemaSourceDir
   schema <- newDbSchema schema LatestSchemaAll readWriteContent
   -- populate a dir with various DBs
-  makeFakeDB schema dbdir (Repo "test" "0001") (age (days 0)) complete Nothing
+  makeFakeDB schema dbdir repo0001 (age (days 0)) complete Nothing
   makeFakeDB schema dbdir (Repo "test" "0002") (age (days 2)) broken Nothing
   makeFakeDB schema dbdir (Repo "test" "0003") (age (days 3)) complete $
     Just (Repo "test" "0004")
@@ -535,6 +538,34 @@ elsewhereTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
       [ "0001", "0002", "0003", "0004", "0005", "0006"]
       (sort $ map (repo_hash . database_repo) dbs)
 
+
+shardUnexpireTest :: Test
+shardUnexpireTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
+  myShards <- newIORef ["nil"] -- initial incomplete shard assignment
+  let cfg = (dbConfig dbdir (serverConfig backupdir)
+        { config_retention = def
+          { databaseRetentionPolicy_default_retention = def
+            {retention_expire_delay = Just 30}
+          }
+        })
+        {cfgShardManager = \_ k -> k $ SomeShardManager $
+          shardByRepoHash (Just <$> readIORef myShards)}
+  withDatabases evb cfg cfgAPI $ \env -> do
+    runDatabaseJanitor env
+    dbs <- listDBs env
+
+    expiring <- atomically $
+      mapM (Catalog.readExpiring (envCatalog env) . database_repo) dbs
+    assertBool "All expiring" (all isJust expiring)
+
+    -- update the shard assignment and verify
+    writeIORef myShards [repo_hash repo0001]
+    runDatabaseJanitor env
+
+    expiring <- atomically $ Catalog.readExpiring (envCatalog env) repo0001
+    assertBool "0001 not expiring now" (isNothing expiring)
+
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "deleteOldDBs" deleteOldDBsTest
@@ -548,5 +579,6 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "shardingStacks" shardingStacksTest
   , TestLabel "shardingFallback" shardingFallbackTest
   , TestLabel "shardingByRepoName" shardingByRepoNameTest
+  , TestLabel "shardingExpiring" shardUnexpireTest
   , TestLabel "availableElsewhere" elsewhereTest
   ]
