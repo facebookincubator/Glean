@@ -16,7 +16,6 @@ module GleanCLI.Common
   , repoNameOpt
   , repoHashOpt
   , handleOpt
-  , fileArgs
   ) where
 
 import Data.Text (Text)
@@ -89,10 +88,4 @@ handleOpt = textOption
   (  long "handle"
   <> metavar "HANDLE"
   <> value (buildRule <> "@" <> buildRevision)
-  )
-
-fileArgs :: Parser [FilePath]
-fileArgs = many $ strArgument
-  (  metavar "FILE"
-  <> help "File of facts (JSON)"
   )

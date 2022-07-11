@@ -76,6 +76,11 @@ data WriteCommand
       , writeFileFormat :: FileFormat
       }
 
+fileArg :: Parser [FilePath]
+fileArg = many $ strArgument
+  (  metavar "FILE"
+  <> help "File of facts (JSON)"
+  )
 
 repoTimeOpt :: Parser UTCTime
 repoTimeOpt = option readTime
@@ -98,7 +103,7 @@ instance Plugin WriteCommand where
       commandParser "create" (progDesc "Create a new database") $ do
         writeRepo <- repoOpts
         writeRepoTime <- optional repoTimeOpt
-        writeFiles <- fileArgs
+        writeFiles <- fileArg
         finish <- finishOpt
         scribe <- optional scribeOptions
         dependencies <- optional (stackedOptions <|> updateOptions)
@@ -133,7 +138,7 @@ instance Plugin WriteCommand where
                     { writeFromScribe_category = cat
                     , writeFromScribe_bucket = bucket }
                 , scribeCompress = compress }))
-        writeFiles <- fileArgs
+        writeFiles <- fileArg
         finish <- finishOpt
         writeHandle <- handleOpt
         writeMaxConcurrency <- maxConcurrencyOpt
