@@ -123,5 +123,3 @@ predicate EntityUses :
       U = cxx1.TargetUses { target = { enumerator = En } }
     )
 }
-
-schema search.cxx.5 evolves search.cxx.4
