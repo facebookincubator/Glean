@@ -146,11 +146,6 @@ instance Plugin WriteCommand where
         writeHandle <- handleOpt
         writeMaxConcurrency <- maxConcurrencyOpt
         useLocalCache <- useLocalCacheOptions
-        writeInventory :: Maybe String <- optional $ strOption
-          (  long "inventory"
-          <> metavar "PATH"
-          <> help "Deprecated - use file-format instead"
-          )
         writeFileFormat <-
               optional $ option (eitherReader parseFileFormat)
                 ( long "file-format"
@@ -160,9 +155,7 @@ instance Plugin WriteCommand where
         return Write
           { create=False, writeRepoTime=Nothing
           , properties=[], dependencies=Nothing
-          , writeFileFormat = fromMaybe
-            (if isJust writeInventory then BinaryFormat else JsonFormat)
-            writeFileFormat
+          , writeFileFormat = fromMaybe JsonFormat writeFileFormat
           , ..
           }
 
