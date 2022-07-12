@@ -1,10 +1,54 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema codemarkup.pp.3 {
+schema codemarkup.pp.1 {
+import code.20
+import codemarkup.types.1
+import cxx1.4
+import pp1.1
+
+#
+# Finding entities' locations
+#
+
+predicate PPEntityLocation:
+  {
+    entity: code.Entity,
+    location: codemarkup.types.Location,
+  }
+  { Entity, { Name, File, { range = Range }, nothing } } where
+    { pp = { define = Define } } = Entity;
+    cxx1.PPDefineLocation { Define, Name, File, Range};
+
+#
+# Language-specific symbol info
+#
+
+predicate PpEntityKind:
+  {
+    entity: code.Entity,
+    kind: codemarkup.types.SymbolKind,
+  }
+  { { pp = Decl }, Kind } where
+    ({ define = _ } = Decl; Macro = Kind ) |
+    ({ undef = _ } = Decl; Macro = Kind ) |
+    ({ include_ = _ } = Decl; File = Kind )
+
+# For backward compatibility:
+predicate PpEntityInfo:
+  {
+    entity: code.Entity,
+    info: codemarkup.types.SymbolInfo,
+  }
+  { E, { kind = K, isAbstract = false } } where
+  PpEntityKind { E, K }
+
+}
+
+schema codemarkup.pp.2 {
 import src.1
 import code.pp.1
 import codemarkup.types.1
-import cxx1.5
+import cxx1.4
 import pp1.1
 
 #
@@ -16,20 +60,10 @@ predicate PPEntityLocation:
     entity: code.pp.Entity,
     location: codemarkup.types.Location,
   }
-  { Entity, Location } where
-    # the pp Entity might be a #define, find by name
-    ( { define = Define } = Entity;
-      { pp1.Macro Name, Range } = Define;
-      { file = File } = Range;
-      { Name, File, { range = Range }, nothing } = Location) |
-    # or it could be a #include, but, subtly, only if mentioned in pp.Include
-    ( { include_ = File } = Entity;
-      !(!pp1.Include { file = File }); # perf-sensitive existence check
-      src.File Name = File;
-      { Name, File, { span = {0,0} }, nothing } = Location;
-    );
+  { Entity, { Name, File, { range = Range }, nothing } } where
+    { define = Define } = Entity;
+    cxx1.PPDefineLocation { Define, Name, File, Range};
 
-# (deprecated, use PpResolveTraceLocation)
 predicate PpFileEntityTraceLocations:
   {
     file: src.File,
@@ -50,8 +84,6 @@ predicate PpResolveLocation:
     Trace = cxx1.Trace { file = File };
     PpResolveTraceLocation { Trace, { Str, File, Range, Span }, Entity };
 
-# Keyed by trace, find all locations and entities tied to that (file) trace
-# just #defines definitions at the moment
 predicate PpResolveTraceLocation:
   {
     trace : cxx1.Trace,
@@ -67,7 +99,6 @@ predicate PpResolveTraceLocation:
     { define = Define } = Entity;
 
 # C preprocessor uses of #defines as xrefs
-# (deprecated)
 predicate PpFileEntityXRefLocations:
   {
     file: src.File,
@@ -80,7 +111,6 @@ predicate PpFileEntityXRefLocations:
 
 # C preprocessor uses of #defines and #includes.
 # N.B. uses are keyed by traces, not xmaps, for PP
-# (deprecated)
 predicate PpFileEntityTraceXRefLocations:
   {
     file: src.File,
@@ -90,22 +120,8 @@ predicate PpFileEntityTraceXRefLocations:
   }
   { File, Trace, XRef, Entity } where
     cxx1.FilePPTraceXRefs { File, Trace, SrcRange, Entity };
-    PPEntityLocation { Entity, Location };
-    { Location, { range = SrcRange } } = XRef;
-
-# C preprocessor uses of #defines and #includes.
-# N.B. uses are keyed by traces, not xmaps, for PP
-predicate PpEntityTraceXRefLocations:
-  {
-    trace: cxx1.Trace,
-    xref: codemarkup.types.XRefLocation,
-    entity: code.pp.Entity,
-  }
-  { Trace, XRef, Entity } where
-    { file = File } = Trace;
-    cxx1.FilePPTraceXRefs { File, Trace, SrcRange, Entity };
-    PPEntityLocation { Entity, Location };
-    { Location, { range = SrcRange } } = XRef;
+    cxx1.PPEntityLocation { Entity, Name, TargetFile, TargetRange };
+    { { Name, TargetFile, { range = TargetRange }, nothing }, { range = SrcRange } } = XRef;
 
 #
 # Language-specific symbol info
@@ -131,5 +147,3 @@ predicate PpEntityInfo:
   PpEntityKind { E, K }
 
 }
-
-schema codemarkup.pp.3 evolves codemarkup.pp.2

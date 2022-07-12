@@ -1,0 +1,71 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema codemarkup.buck.1 {
+import src.1
+import buck.3
+import code.20
+import codemarkup.types.1
+
+#
+# Resolving locations to entities
+#
+
+predicate BuckResolveLocation:
+  {
+    location: codemarkup.types.Location,
+    entity: code.Entity,
+  }
+  { { Name, File, { span = Span }, nothing }, Entity } where
+    buck.FileTarget { File, Locator };
+    buck.TargetLocation { Locator, File, Span };
+    Locator = buck.Locator { name = Name };
+    Entity = code.Entity { buck = { locator = Locator } };
+
+#
+# Finding entities' locations
+#
+
+predicate BuckEntityLocation:
+  {
+    entity: code.Entity,
+    location: codemarkup.types.Location,
+  }
+ { { buck = { locator = L } }, { Name, File, { span = Span }, nothing } }
+  where buck.TargetLocation { L, File, Span };
+  { name = Name } = L;
+
+#
+# Finding references in a file
+#
+
+predicate BuckFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.Entity,
+  }
+  { File, { LocatorLocation, { span = SrcSpan } }, Entity } where
+    buck.FileXRefs { File, XRefs };
+    { XRefLocator, SrcSpans } = XRefs[..];
+    SrcSpan = SrcSpans[..];
+    { locator = Locator } = XRefLocator;
+    { name = Name } = Locator;
+    buck.TargetLocation { Locator, TargetFile, LocatorSpan };
+    { Name, TargetFile, { span = LocatorSpan }, nothing } = LocatorLocation;
+    Entity = code.Entity { buck = { locator = Locator } };
+
+#
+# Language entity uses
+#
+
+predicate BuckEntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  { { buck = { locator = Locator } }, File, Span } where
+    buck.TargetUses { Locator, File, Spans };
+    Span = Spans[..];
+
+}

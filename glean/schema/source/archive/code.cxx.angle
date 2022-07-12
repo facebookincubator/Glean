@@ -1,7 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema code.cxx.4 {
-import cxx1.5
+schema code.cxx.3 {
+import cxx1.4
 
 type Entity =
   {
@@ -88,5 +88,3 @@ type Annotations =
   }
 
 } # end schema
-
-schema code.cxx.4 evolves code.cxx.3

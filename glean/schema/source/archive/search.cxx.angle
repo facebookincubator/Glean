@@ -1,8 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema search.cxx.5 {
-import cxx1.5
-import code.cxx.4
+schema search.cxx.1 {
+import cxx1.4
 
 # Declarations with no scope
 predicate GlobalDeclarationWithName :
@@ -29,6 +28,11 @@ predicate GlobalDeclarationWithName :
         }
     ) |
     (cxx1.Declaration { objcProperty = { name = N }})
+}
+
+schema search.cxx.4 : search.cxx.1 {
+import cxx1.4
+import code.cxx.3
 
 predicate DeclIsDefn : { decl : cxx1.Declaration, defn : code.cxx.Definition }
   { Decl, Defn }
@@ -85,18 +89,6 @@ predicate SearchByNameAndScope :
       Entity = code.cxx.Entity { enumerator = E };
     )
 
-predicate SearchByScope :
-  {
-    scope : cxx1.Scope,
-    entity : code.cxx.Entity,
-  }
-  {Scope, Entity} where
-    (
-        {namespace_= QName } = Scope;
-        NS = cxx1.NamespaceDeclaration { name = QName };
-        Entity = code.cxx.Entity { decl = { namespace_ = NS } };
-    )
-
 predicate SearchBySelector :
   {
     selector : cxx1.ObjcSelector,
@@ -123,5 +115,3 @@ predicate EntityUses :
       U = cxx1.TargetUses { target = { enumerator = En } }
     )
 }
-
-schema search.cxx.5 evolves search.cxx.4

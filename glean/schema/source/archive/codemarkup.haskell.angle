@@ -1,0 +1,79 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema codemarkup.haskell.1 {
+
+import src.1
+import code.20
+import codemarkup.types.1
+import hs.2
+
+#
+# Resolving locations to entities
+#
+
+# Resolve sigma/Haskell locations
+predicate HaskellResolveLocation:
+  {
+    location: codemarkup.types.Location,
+    entity: code.Entity,
+  }
+  { { Name, File, { span = Span }, nothing }, Entity } where
+    hs.FileDefinition { File, Defn };
+    hs.DefinitionLocation { Defn, Name, { File , Span }};
+    Entity = code.Entity { hs = Defn };
+
+#
+# Finding entities' locations
+#
+
+predicate HaskellEntityLocation:
+  {
+    entity: code.Entity,
+    location: codemarkup.types.Location,
+  }
+  { { hs = D }, { Name, File, { span = Span }, nothing } } where
+    hs.DefinitionLocation { D, Name, { File, Span } };
+
+#
+# Finding references in a file
+#
+
+# XRefs in sigma/Haskell
+predicate HaskellFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.Entity,
+  }
+  { File, { Location, { span = SrcSpan } }, Entity } where
+    # Get all XRefs in file
+    hs.FileXRefMap { file = File, refs = XRefs };
+    # Map over each XRef
+    hs.XReference { target = { definition = hs.DefinitionName TargetName }, spans = SrcSpans } = XRefs[..];
+
+    SrcSpan = SrcSpans[..];
+
+    Def = hs.Definition
+      {
+        name = hs.DefinitionName TargetName,
+        source = {TargetFile, TargetSpan}
+      };
+    Location = codemarkup.types.Location { TargetName, TargetFile, { span = TargetSpan }, nothing };
+
+    Entity = code.Entity { hs = { definition = Def }};
+
+#
+# Language entity uses
+#
+
+predicate HaskellEntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  { { hs = { definition = Def } }, File, SrcSpan } where
+    hs.TargetUses {target = Def, file = File, uses = Spans};
+    SrcSpan = Spans[..];
+
+}

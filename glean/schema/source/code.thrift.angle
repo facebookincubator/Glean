@@ -18,3 +18,5 @@ type Annotations =
     annotations : [thrift.StructuredAnnotation] |
   }
 }
+
+schema code.thrift.4 evolves code.thrift.3

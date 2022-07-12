@@ -1,5 +1,67 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
+schema codemarkup.lsif.1 {
+import src.1
+import code.20
+import codemarkup.types.1
+import lsif.1
+
+#
+# Resolving locations to entities
+#
+
+predicate LsifResolveLocation:
+  {
+    location: codemarkup.types.Location,
+    entity: code.Entity,
+  }
+  { { Name, File, { range = Range }, nothing }, { lsif = Entity } } where
+    lsif.ResolveLocation { { Name, File, Range }, Entity };
+
+#
+# Finding entities' locations
+#
+
+predicate LsifEntityLocation:
+  {
+    entity: code.Entity,
+    location: codemarkup.types.Location,
+  }
+  { { lsif = Entity }, { Name, File, { range = Range }, nothing } } where
+    lsif.EntityLocation { Entity, { Name, File, Range } };
+
+#
+# Finding references in a file
+#
+
+predicate LsifFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.Entity,
+  }
+  { File, XRefLocation, { lsif = Entity } } where
+    lsif.FileEntityXRefLocation { File, SrcRange, TargetLocation, Entity };
+    { Name, TargetFile, TargetRange } = TargetLocation;
+    { { Name, TargetFile, { range = TargetRange }, nothing },
+      { range = SrcRange }} = XRefLocation;
+
+#
+# Language entity uses
+#
+
+predicate LsifEntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    range: src.Range, # n.b src.Range
+  }
+  { { lsif = E }, File, Range } where
+  lsif.EntityUses { E, File, Range }
+
+}
+# Copyright (c) Facebook, Inc. and its affiliates.
+
 schema codemarkup.lsif.2 {
 import src.1
 import code.lsif.1

@@ -171,7 +171,7 @@ jsonQueryErrorCases = dbTestCase $ \env repo -> do
   -- with "any":false are refutable if there are missing alts.
   r <- try $ userQuery env repo def
     { userQuery_predicate = "cxx1.FileXRefs"
-    , userQuery_predicate_version = Just 5
+    , userQuery_predicate_version = Just 2
     , userQuery_query =
        "{ \"key\": " <>
            "{ \"xmap\": { \"id\": 42 }" <>

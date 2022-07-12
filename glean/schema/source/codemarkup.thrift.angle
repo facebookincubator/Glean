@@ -67,3 +67,5 @@ predicate ThriftFileEntityXRefLocations:
   { Name, TargetFile, { range = TargetRange }, nothing } = TargetLocation;
 
 }
+
+schema codemarkup.thrift.4 evolves codemarkup.thrift.3
