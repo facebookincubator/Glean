@@ -22,6 +22,7 @@ import qualified Glean.Schema.Python.Types as Py
 import qualified Glean.Schema.Lsif.Types as Lsif
 
 import qualified Glean.Schema.CodeCxx.Types as Cxx
+import qualified Glean.Schema.CodeBuck.Types as Buck
 import qualified Glean.Schema.CodeFlow.Types as Flow
 import qualified Glean.Schema.CodeHs.Types as Hs
 
@@ -81,6 +82,13 @@ instance ToAngle Erlang.Declaration where
   toAngle d = case d of
     Erlang.Declaration_func x -> alt @"func" (mkKey x)
     Erlang.Declaration_EMPTY -> error "unknown Declaration"
+
+-- Buck
+
+instance ToAngle Buck.Entity where
+  toAngle e = case e of
+    Buck.Entity_locator x -> alt @"locator" (mkKey x)
+    Buck.Entity_EMPTY -> error "unknown entity"
 
 -- Flow
 
