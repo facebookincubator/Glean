@@ -20,6 +20,7 @@ import Data.List
 import Data.Maybe
 import qualified Options.Applicative as O
 import System.Exit (die)
+import System.Time.Extra (showDuration, Seconds, sleep)
 
 import Facebook.Fb303
 import Facebook.Service
@@ -66,7 +67,7 @@ databasesUpdatedCallback evb shardKey currentShards dbs = swallow $ do
 
 -- The 'dbUpdateNotifierThread' will sit in a loop waiting for changes
 -- to the local databases (using STM retry to detect changes).  When
--- changes are detected, it waits 10s so that multiple changes are
+-- changes are detected, it waits 1s so that multiple changes are
 -- processed in a single batch, and then invokes the callback.
 --
 -- The doPeriodically on the outside is just a fallback in case something
@@ -82,8 +83,9 @@ dbUpdateNotifierThread Env{..} callback = doPeriodically (seconds 30) $ do
     atomically $ do
       dbs <- list
       when (dbs == prev) retry
-    vlog 1 "DB update detected, waiting 10s"
-    threadDelay 10000000  -- wait 10s so we can batch updates
+    let delay = 1 :: Seconds
+    vlog 1 $ "DB update detected, waiting " <> showDuration delay
+    sleep delay -- wait 1s so we can batch updates
     current <- updated
     go current
 
