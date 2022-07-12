@@ -612,7 +612,7 @@ typecheckSchema idToPid dbContent stored angleVersion
     -- typecheck it again.
     new = HashMap.difference hashedPreds (tcEnvPredicates tcEnv)
 
-    add preds (id,def) =
+    mkPredicateDetails (id,def) =
         case
           ( HashMap.lookup (predicateDefRef def) idToPid
           , rtsType $ predicateDefKeyType def
@@ -620,7 +620,7 @@ typecheckSchema idToPid dbContent stored angleVersion
         (Just pid, Just keyType, Just valueType) -> do
           typecheck <- checkSignature keyType valueType
           traversal <- genTraversal keyType valueType
-          let details = PredicateDetails
+          return $ Just PredicateDetails
                 { predicatePid = pid
                 , predicateId = id
                 , predicateSchema = def
@@ -631,52 +631,52 @@ typecheckSchema idToPid dbContent stored angleVersion
                 , predicateDeriving = NoDeriving
                 , predicateInStoredSchema = stored
                 }
-          return $ HashMap.insert id details preds
-        _ -> return preds
+        _ -> return Nothing
 
-  preds <- foldM add (tcEnvPredicates tcEnv) $ HashMap.toList new
+  newDetails <- catMaybes <$> mapM mkPredicateDetails (HashMap.toList new)
 
   let
     types = HashMap.fromList
-        [ (id, TypeDetails id ty)
-        | (id, Just ty) <- HashMap.toList typedefs ]
+      [ (id, TypeDetails id ty)
+      | (id, Just ty) <- HashMap.toList typedefs ]
+
+    insertPred details m = HashMap.insert (predicateId details) details m
 
     -- Build the environment in which we typecheck predicates from
     -- this schema.
     env = TcEnv
-      { tcEnvPredicates = preds
+      { tcEnvPredicates = foldr insertPred (tcEnvPredicates tcEnv) newDetails
       , tcEnvTypes = HashMap.union types (tcEnvTypes tcEnv)
       }
 
-    -- Typecheck the derivation for predicate 'id' in the HashMap 'preds'
-    tcDeriving preds id = HashMap.alterF (traverse tc) id preds
-      where
-      tc details = do
-        drv <- either (throwIO . ErrorCall . Text.unpack) return $ runExcept $
-          typecheckDeriving env angleVersion rtsType details
-            (predicateDefDeriving (predicateSchema details))
-        let
-          enable = return details { predicateDeriving = drv }
-          disable = return details { predicateDeriving = NoDeriving }
-        if
-          | Derive DeriveIfEmpty _ <- drv ->
-            case dbContent of
-              DbWritable -> disable
-              DbReadOnly stats -> do
-                case HashMap.lookup (predicatePid details) stats of
-                  Nothing -> enable
-                  Just stats
-                    | predicateStats_count stats == 0 -> enable
-                    | otherwise -> disable
-          | otherwise -> enable
+    -- Typecheck the derivation for a predicate
+    tcDeriving details = do
+      drv <- either (throwIO . ErrorCall . Text.unpack) return $ runExcept $
+        typecheckDeriving env angleVersion rtsType details
+          (predicateDefDeriving (predicateSchema details))
+      let
+        enable = return details { predicateDeriving = drv }
+        disable = return details { predicateDeriving = NoDeriving }
+      if
+        | Derive DeriveIfEmpty _ <- drv ->
+          case dbContent of
+            DbWritable -> disable
+            DbReadOnly stats -> do
+              case HashMap.lookup (predicatePid details) stats of
+                Nothing -> enable
+                Just stats
+                  | predicateStats_count stats == 0 -> enable
+                  | otherwise -> disable
+        | otherwise -> enable
 
   -- typecheck the derivations for newly added predicates
-  finalPreds <- foldM tcDeriving preds (HashMap.keys new)
+  finalDetails <- mapM tcDeriving newDetails
+  let finalPreds = foldr insertPred (tcEnvPredicates tcEnv) finalDetails
 
   -- Check the invariant that stored predicates do not refer to derived
   -- predicates. We have to defer this check until last, because
   -- derivations may have been attached to existing predicates now.
-  forM_ finalPreds $ \PredicateDetails{..} -> do
+  forM_ finalDetails $ \PredicateDetails{..} -> do
     let
       check = do
         checkStoredType finalPreds types predicateId predicateKeyType
@@ -754,10 +754,10 @@ checkStoredType preds types def ty = go ty
          "stored predicate " <> pretty def <>
          " refers to non-stored derived predicate " <> pretty ref
       _ -> return ()
-    Nothing -> error "checkStoredType"
+    Nothing -> error $ "checkStoredType: " <> Text.unpack (showRef ref)
   go (NamedTy (ExpandedType ref _)) = case HashMap.lookup ref types of
     Just TypeDetails{..} -> go typeType
-    Nothing -> error "checkStoredType"
+    Nothing -> error $ "checkStoredType: " <> Text.unpack (showRef ref)
   go _ = return ()
 
 

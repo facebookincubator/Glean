@@ -733,6 +733,11 @@ thinSchemaTest = TestCase $
         [s|
           schema test.1 {
             predicate P : { a : string, b : nat }
+
+            # tickle a bug in which we used the wrong type environment
+            # when checking predicates in the stored schema
+            type T = string
+            predicate Q : T stored "abc"
           }
 
           schema x.1 {

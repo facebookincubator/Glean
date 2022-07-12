@@ -58,6 +58,10 @@ multiSchemaTest = TestCase $
             import x.1
             predicate D : { a : string }
               { a = A } where x.P { a = A }
+
+            type T = string
+            predicate S : T
+              stored X where x.P { a = X }
           }
 
           schema all.1 : x.1, y.1, z.1, derived.1 {}
@@ -83,6 +87,11 @@ multiSchemaTest = TestCase $
             predicate D : { a : string }
               { a = A } where x.P { a = A, b = 3 }
               # now matches on the new field
+
+            # check that we can change the definition of a stored predicate,
+            # deleting a type synonym and using a different definition.
+            predicate S : string
+              stored X where x.P { a = X }
           }
 
           schema all.1 : x.1, y.1, derived.1 {}
