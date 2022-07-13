@@ -6,7 +6,13 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-module DatabaseJanitorTest (main) where
+module DatabaseJanitorTest
+  ( main
+  , dbConfig
+  , serverConfig
+  , makeFakeDB
+  , withTest
+  ) where
 
 import Control.Concurrent.STM
 import Control.Exception

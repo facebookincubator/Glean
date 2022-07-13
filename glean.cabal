@@ -942,7 +942,6 @@ executable glean-server
     default-extensions: CPP
     other-modules:
         Glean.Handler
-        Glean.Server.Sharding
         Glean.Server.Config
     extra-libraries: stdc++
     build-depends:
@@ -1753,6 +1752,24 @@ test-suite shard
         glean:stubs,
         glean:core,
         glean:if-glean-hs,
+
+test-suite publish-shards
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: PublishShardsTest.hs
+    hs-source-dirs: glean/server
+    ghc-options: -main-is PublishShardsTest
+    other-sources:
+        DatabaseJanitorTest.hs
+    build-depends:
+        glean:stubs,
+        glean:core,
+        glean:db,
+        glean:if-glean-hs,
+        glean:if-internal-hs,
+        glean:schema,
+        glean:config,
+        glean:util
 
 test-suite dbproperties
     import: test
