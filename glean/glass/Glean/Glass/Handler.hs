@@ -58,7 +58,7 @@ import Logger.GleanGlass ( GleanGlassLogger )
 import Logger.GleanGlassErrors ( GleanGlassErrorsLogger )
 import Util.Logger ( loggingAction )
 import Util.Text ( textShow )
-import Util.List ( uniqBy )
+import Util.List ( uniq, uniqBy )
 import Util.Control.Exception (catchAll)
 import qualified Logger.GleanGlass as Logger
 import qualified Logger.GleanGlassErrors as ErrorsLogger
@@ -973,7 +973,8 @@ searchEntityByString
 searchEntityByString method query env@Glass.Env{..} req opts = case repoLangs of
     Left err -> throwIO $ ServerException err
     Right candidates -> joinResults <$>
-      Async.mapConcurrently searchEntityByStringRepoLang candidates
+      Async.mapConcurrently searchEntityByStringRepo
+        (uniq (map fst candidates))
   where
     -- expand repo/lang choice into set of possible repo/lang pairs
     repoLangs = selectReposAndLanguages repo lang
@@ -991,8 +992,15 @@ searchEntityByString method query env@Glass.Env{..} req opts = case repoLangs of
       then Query.Insensitive else Query.Sensitive
     searchQ = query caseQ nameLit kindQ
 
-    searchEntityByStringRepoLang (repo, lang) =
-      withRepoLanguage method env req repo (Just lang) $ \gleanDBs _mlang -> do
+    -- The search query is language-independent, so while we're
+    -- narrowing the set of repos to search based on the language, the
+    -- query might still return results from multiple languages.
+    --
+    -- TODO: if there's a language filter in the request, we need to
+    -- filter the results here.
+
+    searchEntityByStringRepo repo =
+      withRepoLanguage method env req repo Nothing $ \gleanDBs _mlang -> do
         backendRunHaxl GleanBackend{..} $ do
           allResults <- searchReposWithLimit limit searchQ $ \r -> do
             r@(entity, Code.Location{..}, kind) <- Query.toSearchResult r
