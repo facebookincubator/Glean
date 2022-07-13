@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE TypeApplications #-}
 module LifecycleTest (main) where
 
 import Control.Concurrent.Async
@@ -195,7 +196,7 @@ deleteOpen = TestCase $ withTEnv $ \TEnv{..} -> do
   atomically $ do
     ex <- Catalog.exists (envCatalog tEnv) [Local] repo1
     when ex retry
-  assertThrows "" (UnknownDatabase repo1) $
+  assertThrowsType "" (Proxy @ UnknownDatabase) $
     withOpenDatabase tEnv repo1 $ \_ -> return ()
 
 deleteWhileUsing :: Test
@@ -237,7 +238,7 @@ useWhileDeleting = TestCase $ withTEnv $ \TEnv{..} -> do
   prepare (storeDelete tStore) [ doBefore $ do putMVar v1 () ; takeMVar v2 ]
   concurrently_ (deleteDatabase tEnv repo1) $ do
     takeMVar v1
-    assertThrows "" (UnknownDatabase repo1) $
+    assertThrowsType "" (Proxy @ UnknownDatabase) $
       withOpenDatabase tEnv repo1 $ \_ -> return ()
     putMVar v2 ()
 

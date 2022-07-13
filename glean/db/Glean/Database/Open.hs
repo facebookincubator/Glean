@@ -28,6 +28,7 @@ import Data.IORef
 import Data.Maybe
 import qualified Data.Text as Text
 
+import qualified Util.Control.Exception.CallStack as CallStack
 import Util.Log
 import Util.Logger
 import Util.Text
@@ -204,10 +205,10 @@ withActiveDatabase env@Env{..} repo = bracket
       Just db -> return db
       Nothing -> do
         exists <- Catalog.exists envCatalog [Local] repo
-        when (not exists) $ throwSTM $ Thrift.UnknownDatabase repo
+        when (not exists) $ CallStack.throwSTM $ Thrift.UnknownDatabase repo
         deleting <- HashMap.member repo <$> readTVar envDeleting
         -- TODO: different error?
-        when deleting $ throwSTM $ Thrift.UnknownDatabase repo
+        when deleting $ CallStack.throwSTM $ Thrift.UnknownDatabase repo
         db <- newDB repo
         modifyTVar' envActive $ HashMap.insert repo db
         return db

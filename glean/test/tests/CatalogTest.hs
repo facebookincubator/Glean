@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE TypeApplications #-}
 module CatalogTest (main) where
 
 import Control.Concurrent.MVar
@@ -17,6 +18,7 @@ import qualified Data.HashMap.Strict as HashMap
 import Data.HashSet (HashSet)
 import qualified Data.HashSet as HashSet
 import Data.List
+import Data.Proxy
 import qualified Data.Text as Text
 import GHC.Stack (HasCallStack)
 import Test.HUnit
@@ -239,7 +241,7 @@ deleteExisting :: HasCallStack => Catalog -> Repo -> IO ()
 deleteExisting cat repo = Catalog.delete cat repo
 
 deleteUnknown :: HasCallStack => Catalog -> Repo -> IO ()
-deleteUnknown cat repo = assertThrows "" (UnknownDatabase repo)
+deleteUnknown cat repo = assertThrowsType "" (Proxy @ UnknownDatabase)
   $ Catalog.delete cat repo
 
 main :: IO ()

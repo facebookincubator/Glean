@@ -284,6 +284,7 @@ exception Retry {
 
 exception UnknownDatabase {
   1: Repo repo;
+  2: string callStack;
 }
 
 exception InvalidDependency {

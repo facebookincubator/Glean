@@ -23,6 +23,7 @@ import Data.Time
 import ServiceData.GlobalStats as Stats
 import ServiceData.Types as Stats
 import Util.Control.Exception
+import qualified Util.Control.Exception.CallStack as CallStack
 import Util.Defer
 import Util.IO (safeRemovePathForcibly)
 import Util.Log
@@ -128,7 +129,7 @@ asyncDeleteDatabase env@Env{..} repo = bracket
 
         Nothing -> do
           putTMVar todo Nothing
-          return $ throwIO $ UnknownDatabase repo
+          return $ CallStack.throwIO $ UnknownDatabase repo
 
 deleteDatabase :: Env -> Repo -> IO ()
 deleteDatabase env repo = asyncDeleteDatabase env repo >>= Async.wait

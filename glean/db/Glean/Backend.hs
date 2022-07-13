@@ -48,6 +48,7 @@ import qualified Options.Applicative as O
 
 import Logger.GleanServer (GleanServerLogger)
 import qualified Logger.GleanServer as Logger
+import qualified Util.Control.Exception.CallStack as CallStack
 import Util.EventBase (EventBaseDataplane)
 import Util.Logger
 
@@ -301,7 +302,8 @@ instance Backend Database.Env where
   deriveStored = Derive.deriveStored
 
   listDatabases = Database.listDatabases
-  getDatabase env repo = maybe (throwIO $ Thrift.UnknownDatabase repo) return
+  getDatabase env repo =
+    maybe (CallStack.throwIO $ Thrift.UnknownDatabase repo) return
     =<< atomically (Catalog.getLocalDatabase (Database.envCatalog env) repo)
 
   kickOffDatabase = Database.kickOffDatabase

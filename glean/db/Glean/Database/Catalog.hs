@@ -50,9 +50,11 @@ import qualified Data.HashSet as HashSet
 import Data.Maybe
 import Data.Time
 import Data.Typeable
+import GHC.Stack (HasCallStack)
 import System.IO (fixIO)
 
 import Util.Control.Exception (tryBracket)
+import qualified Util.Control.Exception.CallStack as CallStack
 import Util.Log
 
 import Glean.Database.Catalog.Filter
@@ -251,12 +253,12 @@ getEntries cat = do
 lookupEntry :: Catalog -> Repo -> STM (Maybe Entry)
 lookupEntry cat repo = HashMap.lookup repo . entriesLiveHere <$> getEntries cat
 
-getEntry :: Catalog -> Repo -> STM Entry
+getEntry :: HasCallStack => Catalog -> Repo -> STM Entry
 getEntry cat repo = do
   r <- lookupEntry cat repo
   case r of
     Just entry -> return entry
-    Nothing -> throwSTM $ Thrift.UnknownDatabase repo
+    Nothing -> CallStack.throwSTM $ Thrift.UnknownDatabase repo
 
 -- | Open a 'Catalog'
 open :: Store local => local -> IO Catalog

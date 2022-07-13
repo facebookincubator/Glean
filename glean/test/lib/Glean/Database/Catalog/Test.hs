@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE TypeApplications #-}
 module Glean.Database.Catalog.Test
   ( MockStore(..)
   , memStore
@@ -21,6 +22,7 @@ import Data.IORef
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.List ((\\))
+import Data.Proxy
 import qualified Data.Text as Text
 import Test.HUnit
 
@@ -93,9 +95,9 @@ checkConsistency cat = do
 
     not_live repo = do
       assert $ not <$> Catalog.exists cat [Local] repo
-      assertThrows "" (UnknownDatabase repo)
+      assertThrowsType "" (Proxy @ UnknownDatabase)
         $ atomically $ Catalog.readMeta cat repo
-      assertThrows "" (UnknownDatabase repo)
+      assertThrowsType "" (Proxy @ UnknownDatabase)
         $ atomically $ Catalog.writeMeta cat repo def
-      assertThrows "" (UnknownDatabase repo)
+      assertThrowsType "" (Proxy @ UnknownDatabase)
         $ atomically $ Catalog.modifyMeta cat repo return
