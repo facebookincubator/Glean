@@ -1262,5 +1262,3 @@ predicate PPEntityLocation :
     Range = { File, 1, 1, 1, 1 } )
 
 }
-
-schema cxx1.5 evolves cxx1.4
