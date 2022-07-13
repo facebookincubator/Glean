@@ -679,6 +679,7 @@ library schema
         Glean.Schema.Pp1
         Glean.Schema.Python
         Glean.Schema.Rust
+        Glean.Schema.SearchBuck
         Glean.Schema.SearchCode
         Glean.Schema.SearchCxx
         Glean.Schema.SearchErlang
@@ -730,6 +731,7 @@ library schema
         Glean.Schema.Pp1.Types
         Glean.Schema.Python.Types
         Glean.Schema.Rust.Types
+        Glean.Schema.SearchBuck.Types
         Glean.Schema.SearchCode.Types
         Glean.Schema.SearchCxx.Types
         Glean.Schema.SearchErlang.Types
@@ -780,6 +782,7 @@ library schema-query
         Glean.Schema.Query.Pp1.Types
         Glean.Schema.Query.Python.Types
         Glean.Schema.Query.Rust.Types
+        Glean.Schema.Query.SearchBuck.Types
         Glean.Schema.Query.SearchCxx.Types
         Glean.Schema.Query.SearchHack.Types
         Glean.Schema.Query.SearchPp.Types
@@ -1225,6 +1228,7 @@ library glass-lib
         Glean.Glass.RepoMapping
         Glean.Glass.Repos
         Glean.Glass.Search
+        Glean.Glass.Search.Buck
         Glean.Glass.Search.Class
         Glean.Glass.Search.Cxx
         Glean.Glass.Search.Erlang

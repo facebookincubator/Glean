@@ -235,6 +235,8 @@ entityToAngle e = case e of
     alt @"hs" (toAngle x)
   Code.Entity_erlang (Erlang.Entity_decl x) -> Right $
     alt @"erlang" (alt @"decl" (toAngle x))
+  Code.Entity_buck x -> Right $
+    alt @"buck" (toAngle x)
   -- lsif languages, enumerate all lang constructors
   Code.Entity_lsif se -> alt @"lsif" <$> case se of
       Lsif.Entity_erlang x -> Right $ alt @"erlang" (toAngle x)

@@ -103,6 +103,7 @@ SCHEMAS= \
 	search_code \
 	search_cxx \
 	search_erlang \
+	search_buck \
 	search_hack \
 	search_hs \
 	search_pp \
