@@ -8,7 +8,10 @@
 
 {-# LANGUAGE CPP #-}
 module Glean.Server.Sharding (
-  shardManagerConfig, withShardsUpdater
+  shardManagerConfig,
+  withShardsUpdater,
+  -- for testing
+  dbUpdateNotifierThread,
   ) where
 
 import Control.Concurrent ( modifyMVar_, newMVar, MVar )
