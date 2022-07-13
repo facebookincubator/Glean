@@ -64,6 +64,7 @@ struct Inventory {
 struct StoredSchema {
   1: string (hs.type = "ByteString") schema;
   2: map<glean.Id, glean.PredicateRef> predicateIds;
+  3: map<string, glean.Version> versions;
 }
 
 // -----------------------------------------------------------------------------

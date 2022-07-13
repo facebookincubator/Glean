@@ -44,7 +44,7 @@ import Glean.Database.PredicateStats
 import Glean.Database.Types
 import Glean.Database.Work
 import Glean.Database.Schema (
-  toStoredSchema, compareSchemaPredicates, renderSchemaSource)
+  toStoredSchema, compareSchemaPredicates, renderSchemaSource, toStoredVersions)
 import Glean.Database.Schema.ComputeIds
 import Glean.Database.Schema.Types
 import Glean.Internal.Types
@@ -124,8 +124,9 @@ kickOffDatabase env@Env{..} Thrift.KickOff{..}
                 return $ Storage.UseThisSchema
                   (StoredSchema
                     (renderSchemaSource (procSchemaSource proc))
-                    (storedSchema_predicateIds storedSchema))
+                    (storedSchema_predicateIds storedSchema)
                     -- Note: we *must* use the Pids from the base DB
+                    (toStoredVersions hashedSchemaAllVersions))
               else
                 throwIO $ Thrift.Exception $
                   "update_schema_for_stacked specified, but schemas are " <>

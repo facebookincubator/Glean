@@ -343,9 +343,9 @@ instance Backend Database.Env where
 
 loadDbSchema :: Backend a => a -> Thrift.Repo -> IO DbSchema
 loadDbSchema backend repo = do
-  Thrift.SchemaInfo schema pids _ <- getSchemaInfo backend repo def
+  Thrift.SchemaInfo schema pids versions <- getSchemaInfo backend repo def
     { Thrift.getSchemaInfo_select = Thrift.SelectSchema_stored def }
-  fromStoredSchema (StoredSchema schema pids) readWriteContent
+  fromStoredSchema (StoredSchema schema pids versions) readWriteContent
 
 serializeInventory
   :: Backend backend

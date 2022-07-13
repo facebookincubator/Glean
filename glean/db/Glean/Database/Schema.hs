@@ -25,6 +25,7 @@ module Glean.Database.Schema
   , readWriteContent
   , getSchemaInfo
   , renderSchemaSource
+  , toStoredVersions
   ) where
 
 import Control.Applicative ((<|>))
@@ -115,6 +116,7 @@ toStoredSchema DbSchema{..} = StoredSchema
   , storedSchema_predicateIds = Map.fromList
       [ (fromPid $ predicatePid p, predicateRef p)
       | p <- HashMap.elems predicatesById ]
+  , storedSchema_versions = toStoredVersions (snd schemaSource)
   }
 
 data CheckChanges
@@ -123,21 +125,44 @@ data CheckChanges
 
 newMergedDbSchema
   :: StoredSchema  -- ^ schema from a DB
-  -> SchemaIndex  -- ^ current schema
+  -> SchemaIndex  -- ^ current schema index
   -> CheckChanges  -- ^ validate DB schema?
   -> DbContent
   -> IO DbSchema
-newMergedDbSchema storedSchema@StoredSchema{..} current validate
-    dbContent = do
+newMergedDbSchema storedSchema@StoredSchema{..} index validate dbContent = do
   let
-  fromDB <- case processSchema Map.empty storedSchema_schema of
-    Left msg -> throwIO $ ErrorCall msg
-    Right resolved -> return resolved
+    -- If we have an identical schema in the index, then we can use
+    -- the cached ProcessedSchema. This saves a lot of time
+    -- re-processing the schema from the DB when we open it, and
+    -- should be a common case.
+    --
+    -- Schema equality is by comparing the SchemaIds. This is safe
+    -- since the only way a schema can be used is through a SchemaId,
+    -- and the SchemaId captures the content of all the definitions
+    -- that can be referenced by a query (those visible in the NameEnv).
+    identicalSchemas =
+      [ proc
+      | proc <- schemaIndexCurrent index : schemaIndexOlder index
+      , fromStoredVersions storedSchema_versions ==
+          hashedSchemaAllVersions (procSchemaHashed proc)
+      ]
+
+    processStoredSchema =
+      case processSchema Map.empty storedSchema_schema of
+        Left msg -> throwIO $ ErrorCall msg
+        Right resolved -> return resolved
+
+  fromDB <-
+    if Map.null storedSchema_versions
+      then processStoredSchema
+      else case identicalSchemas of
+        (one : _) -> return one
+        [] -> processStoredSchema
 
   -- For the "source", we'll use the current schema source. It doesn't
   -- reflect what's in the DB, but it reflects what you can query for.
   mkDbSchema validate  (Just (storedSchemaPids storedSchema)) dbContent
-    fromDB (Just current)
+    fromDB (Just index)
 
 -- | Build a DbSchema from parsed/resolved Schemas. Note that we still need
 -- the original source for the schema for 'toStoredSchema' (otherwise we would
@@ -794,7 +819,7 @@ validateNewSchemaInstance schema = do
 getSchemaInfo :: DbSchema -> SchemaIndex -> GetSchemaInfo -> IO SchemaInfo
 getSchemaInfo dbSchema SchemaIndex{..} GetSchemaInfo{..} = do
   let
-    StoredSchema source pids = toStoredSchema dbSchema
+    StoredSchema source pids storedVersions = toStoredSchema dbSchema
 
     -- Try to find the source for the desired schema. It could be in
     -- our SchemaIndex, or it could be the schema stored in the DB if
@@ -815,12 +840,9 @@ getSchemaInfo dbSchema SchemaIndex{..} GetSchemaInfo{..} = do
         , sid `elem` IntMap.elems versions
         ]
 
-    schemaIds = toStoredVersions allVersions
-      where
-      allVersions
-        | SelectSchema_stored{} <- getSchemaInfo_select =
-          snd (schemaSource dbSchema)
-        | otherwise = legacyAllVersions dbSchema
+    schemaIds
+      | SelectSchema_stored{} <- getSchemaInfo_select = storedVersions
+      | otherwise = toStoredVersions (legacyAllVersions dbSchema)
 
   source <- if getSchemaInfo_omit_source
     then return ""
@@ -842,6 +864,10 @@ getSchemaInfo dbSchema SchemaIndex{..} GetSchemaInfo{..} = do
 toStoredVersions :: IntMap SchemaId -> Map Text Version
 toStoredVersions versions = Map.fromList
   [ (unSchemaId id, fromIntegral ver) | (ver, id) <- IntMap.toList versions ]
+
+fromStoredVersions :: Map Text Version -> IntMap SchemaId
+fromStoredVersions versions = IntMap.fromList
+  [ (fromIntegral ver, SchemaId id) | (id, ver) <- Map.toList versions ]
 
 renderSchemaSource :: SourceSchemas -> ByteString
 renderSchemaSource parsed =
