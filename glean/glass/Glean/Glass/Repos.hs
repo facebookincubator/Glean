@@ -144,7 +144,7 @@ listGleanIndices testsOnly
 fromSCSRepo :: RepoName -> Maybe Language -> [GleanDBName]
 fromSCSRepo r hint
   | Just rs <- Map.lookup r gleanIndices
-  = map fst $ case hint of
+  = uniq $ map fst $ case hint of
       Nothing -> rs
       Just h -> filter ((== h) . snd) rs
   | otherwise = []
