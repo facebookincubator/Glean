@@ -11,7 +11,6 @@ module Glean.Clang.Regression (main) where
 import System.Environment
 
 import qualified Glean.Regression.Driver.Clang as Clang
-import Glean.Regression.Snapshot
 
 main :: IO ()
 main = getArgs >>= \args ->

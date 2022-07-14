@@ -5,8 +5,7 @@
   This source code is licensed under the BSD-style license found in the
   LICENSE file in the root directory of this source tree.
 -}
-
-module Glean.Clang.Test (driver, driverWith) where
+module Glean.Clang.Test (driver, driverWith, Options) where
 
 import qualified Data.Aeson as Aeson
 import Data.List
@@ -23,6 +22,8 @@ import Glean.Util.CxxXRef
 import Debug.Trace (trace)
 
 import qualified Data.HashMap.Strict as HM
+
+type Options = Clang
 
 driverWith :: Bool -> Driver Clang
 driverWith deriveToo =

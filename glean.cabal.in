@@ -1428,6 +1428,30 @@ library regression-test-lib
         split,
         yaml
 
+library clang-derive-lib
+    import: fb-haskell, fb-cpp, deps, exe
+    hs-source-dirs: glean/lang/clang
+    build-depends:
+        ghc-compact,
+        glean:client-hs,
+        glean:client-hs-local,
+        glean:core,
+        glean:db,
+        glean:lib,
+        glean:schema,
+        glean:util,
+        vector-algorithms
+    exposed-modules:
+        Derive.Common
+        Derive.CxxDeclarationSources
+        Derive.CxxDeclarationTargets
+        Derive.CxxSame
+        Derive.CxxTargetUses
+        Derive.Env
+        Derive.Generic
+        Derive.Lib
+        Derive.Types
+
 test-suite clang-test-regression
     import: fb-haskell, fb-cpp, deps
     hs-source-dirs:
@@ -1444,6 +1468,122 @@ test-suite clang-test-regression
        glean:lib
     if !flag(clang-tests)
         buildable: False
+
+test-suite clang-test-derivebyname
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs:
+       glean/lang/clang/tests,
+       glean/lang/clang/tests/github
+    type: exitcode-stdio-1.0
+    main-is: Glean/Clang/DeriveByName.hs
+    other-modules: Glean.Clang.Test.DerivePass
+                   Glean.Clang.Test
+                   Glean.Regression.Driver.DeriveDeclByName
+    ghc-options: -main-is Glean.Clang.DeriveByName
+    build-depends:
+       glean:regression-test-lib,
+       glean:clang-derive-lib,
+       glean:indexers,
+       glean:lib
+    if !flag(clang-tests)
+        buildable: False
+
+test-suite clang-test-derivefamilies
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs:
+       glean/lang/clang/tests,
+       glean/lang/clang/tests/github
+    type: exitcode-stdio-1.0
+    main-is: Glean/Clang/DeriveFamilies.hs
+    other-modules: Glean.Clang.Test.DerivePass
+                   Glean.Clang.Test
+                   Glean.Regression.Driver.DeriveDeclFamilies
+    ghc-options: -main-is Glean.Clang.DeriveFamilies
+    build-depends:
+       glean:regression-test-lib,
+       glean:clang-derive-lib,
+       glean:indexers,
+       glean:lib
+    if !flag(clang-tests)
+        buildable: False
+
+test-suite clang-test-deriveattributes
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs:
+       glean/lang/clang/tests,
+       glean/lang/clang/tests/github
+    type: exitcode-stdio-1.0
+    main-is: Glean/Clang/DeriveAttrs.hs
+    other-modules: Glean.Clang.Test.DerivePass
+                   Glean.Clang.Test
+                   Glean.Regression.Driver.DeriveFunctionDeclAttribute
+    ghc-options: -main-is Glean.Clang.DeriveAttrs
+    build-depends:
+       glean:regression-test-lib,
+       glean:clang-derive-lib,
+       glean:indexers,
+       glean:lib
+    if !flag(clang-tests)
+        buildable: False
+
+test-suite clang-test-derivefuncalls
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs:
+       glean/lang/clang/tests,
+       glean/lang/clang/tests/github
+    type: exitcode-stdio-1.0
+    main-is: Glean/Clang/DeriveFunCalls.hs
+    other-modules: Glean.Clang.Test.DerivePass
+                   Glean.Clang.Test
+                   Glean.Regression.Driver.DeriveFunctionCalls
+    ghc-options: -main-is Glean.Clang.DeriveFunCalls
+    build-depends:
+       glean:regression-test-lib,
+       glean:clang-derive-lib,
+       glean:indexers,
+       glean:lib
+    if !flag(clang-tests)
+        buildable: False
+
+test-suite clang-test-deriveobjcinherit
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs:
+       glean/lang/clang/tests,
+       glean/lang/clang/tests/github
+    type: exitcode-stdio-1.0
+    main-is: Glean/Clang/DeriveObjCInheritance.hs
+    other-modules: Glean.Clang.Test.DerivePass
+                   Glean.Clang.Test
+                   Glean.Regression.Driver.DeriveObjcInheritance
+    ghc-options: -main-is Glean.Clang.DeriveObjCInheritance
+    build-depends:
+       glean:regression-test-lib,
+       glean:clang-derive-lib,
+       glean:indexers,
+       glean:lib
+    if !flag(clang-tests)
+        buildable: False
+
+
+-- left on the side for now, we need a Glean.DocBlock.Test module
+-- test-suite clang-test-docblock
+--     import: fb-haskell, fb-cpp, deps
+--     hs-source-dirs:
+--        glean/lang/clang/tests,
+--        glean/lang/clang/tests/github
+--     type: exitcode-stdio-1.0
+--     main-is: Glean/Clang/DocBlock.hs
+--     other-modules: Glean.Clang.Test.DerivePass
+--                    Glean.Clang.Test
+--                    Glean.Regression.Driver.DocBlock
+--     ghc-options: -main-is Glean.Clang.DocBlock
+--     build-depends:
+--        glean:regression-test-lib,
+--        glean:clang-derive-lib,
+--        glean:indexers,
+--        glean:lib
+--     if !flag(clang-tests)
+--         buildable: False
 
 test-suite hack-derive-test
     import: fb-haskell, fb-cpp, deps
