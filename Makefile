@@ -130,10 +130,7 @@ gen-schema ::
 	$(CABAL) run glean:gen-schema -- \
 		--dir glean/schema/source \
 		--thrift glean/schema \
-		--hs glean/schema
-	$(CABAL) run glean:gen-schema -- \
-		--dir glean/schema/source \
-		--thrift glean/schema \
+		--hs glean/schema \
 		--cpp glean/lang/clang/schema.h
 
 THRIFT_GLEAN= \
