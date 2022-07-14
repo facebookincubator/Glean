@@ -55,6 +55,8 @@ import qualified Glean.Database.Storage.Memory as Memory
 import qualified Glean.Database.Storage.RocksDB as RocksDB
 import qualified Glean.Internal.Types as Internal
 import Glean.DefaultConfigs
+import Glean.Logger.Database
+import Glean.Logger.Server
 import qualified Glean.Recipes.Types as Recipes
 import Glean.Schema.Resolve
 import Glean.Schema.Types
@@ -100,6 +102,10 @@ data Config = Config
     :: forall a
      . Observed ServerConfig.Config -> (SomeShardManager -> IO a) -> IO a
   , cfgIncrementalDerivation :: Bool
+  , cfgServerLogger :: Some GleanServerLogger
+    -- ^ Logger for server requests and other events
+  , cfgDatabaseLogger :: Some GleanDatabaseLogger
+    -- ^ Logger for recording stats of databases produced
   }
 
 instance Show Config where
@@ -126,6 +132,8 @@ instance Default Config where
     , cfgListener = mempty
     , cfgShardManager = \_ k -> k $ SomeShardManager noSharding
     , cfgIncrementalDerivation = False
+    , cfgServerLogger = Some NullGleanServerLogger
+    , cfgDatabaseLogger = Some NullGleanDatabaseLogger
     }
 
 data SchemaIndex = SchemaIndex
@@ -346,6 +354,8 @@ options = do
     , cfgUpdateSchema = True
     , cfgShardManager = cfgShardManager def
     , cfgIncrementalDerivation = False
+    , cfgServerLogger = cfgServerLogger def
+    , cfgDatabaseLogger = cfgDatabaseLogger def
     , .. }
   where
     recipesConfigThriftSource = option (eitherReader ThriftSource.parse)

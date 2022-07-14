@@ -179,8 +179,6 @@ library logger
     hs-source-dirs: glean/github
     exposed-modules:
         Logger.IO
-        Logger.GleanDatabaseStats
-        Logger.GleanServer
         Logger.GleanGlass
         Logger.GleanGlassErrors
     build-depends:
@@ -539,6 +537,8 @@ library db
         Glean.Database.Work.Queue
         Glean.Database.Writes
         Glean.Database.Write.Batch
+        Glean.Logger.Database
+        Glean.Logger.Server
         Glean.Write.JSON
         Glean.Query.BindOrder
         Glean.Query.Codegen
@@ -574,7 +574,6 @@ library db
         glean:if-glean-hs,
         glean:if-internal-hs,
         glean:rts,
-        glean:logger,
         glean:stubs,
         glean:tailer,
         glean:rocksdb,

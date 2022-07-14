@@ -24,7 +24,13 @@ import Thrift.Server.Types
 import Util.EventBase
 import Util.Log
 
-import Glean.Database.Config (cfgShardManager)
+#if FACEBOOK
+import Logger.IO
+import Glean.Facebook.Logger.Server
+import Glean.Facebook.Logger.Database
+#endif
+
+import Glean.Database.Config (Config(..))
 import Glean.Database.Env
 import Glean.Database.Types
 import qualified Glean.Handler as GleanHandler
@@ -33,14 +39,22 @@ import Glean.Index.GleanIndexingService.Service
 import Glean.Server.Config as Config
 import Glean.Server.Sharding (shardManagerConfig, withShardsUpdater)
 import Glean.Util.ConfigProvider
+import Glean.Util.Some
 
 main :: IO ()
 main =
   withConfigOptions (O.info options O.fullDesc) $ \(cfg0, cfgOpts) ->
   withEventBaseDataplane $ \evb ->
   withConfigProvider cfgOpts $ \configAPI ->
+#if FACEBOOK
+  withLogger configAPI $ \logger ->
+#endif
   let dbCfg = (cfgDBConfig cfg0){
         cfgShardManager = shardManagerConfig (cfgPort cfg)
+#if FACEBOOK
+        , cfgServerLogger = Some (GleanServerFacebookLogger logger)
+        , cfgDatabaseLogger = Some (GleanDatabaseFacebookLogger logger)
+#endif
       }
       cfg = cfg0{cfgDBConfig = dbCfg}
   in

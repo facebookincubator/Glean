@@ -21,7 +21,6 @@ import System.Process
 import System.Timeout
 import System.IO.Temp
 
-import Logger.IO
 import Data.RateLimiterMap
 import ServiceData.GlobalStats
 import Util.EventBase
@@ -67,7 +66,6 @@ withDatabases
   -> (Env -> IO a)
   -> IO a
 withDatabases evb cfg cfgapi act =
-  withLogger cfgapi $ \logger ->
   ThriftSource.withValue cfgapi (cfgSchemaSource cfg) $ \schema_source ->
   ThriftSource.withValue
     cfgapi
@@ -87,7 +85,6 @@ withDatabases evb cfg cfgapi act =
           dbRoot
           shardManager
           cfg
-          logger
           schema_source
           recipe_config
           server_config)
@@ -102,12 +99,12 @@ initEnv
   -> FilePath
   -> SomeShardManager
   -> Config
-  -> Logger
   -> Observed SchemaIndex
   -> Observed Recipes.Config
   -> Observed ServerConfig.Config
   -> IO Env
-initEnv evb dbRoot shardManager cfg logger envSchemaSource envRecipeConfig envServerConfig = do
+initEnv evb dbRoot shardManager cfg
+  envSchemaSource envRecipeConfig envServerConfig = do
     envCatalog <- do
       Some store <- cfgCatalogStore cfg dbRoot
       Catalog.open store
@@ -143,7 +140,8 @@ initEnv evb dbRoot shardManager cfg logger envSchemaSource envRecipeConfig envSe
 
     return Env
       { envEventBase = evb
-      , envLogger = logger
+      , envServerLogger = cfgServerLogger cfg
+      , envDatabaseLogger = cfgDatabaseLogger cfg
       , envRoot = dbRoot
       , envReadOnly = cfgReadOnly cfg
       , envMockWrites = cfgMockWrites cfg

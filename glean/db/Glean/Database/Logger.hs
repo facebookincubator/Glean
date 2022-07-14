@@ -13,8 +13,9 @@ module Glean.Database.Logger (
 
 import qualified Glean.Database.Types as Database
 import qualified Glean.Types as Thrift
-import qualified Logger.GleanDatabaseStats as Logger
+import Glean.Logger.Database as Logger
 import Glean.Types
+import Glean.Util.Some
 
 
 logDBStatistics
@@ -26,30 +27,31 @@ logDBStatistics
   -> IO ()
 logDBStatistics env Thrift.Repo{..} preds size = do
   let preamble = mconcat
-        [ Logger.setRepoName repo_name
-        , Logger.setRepoHash repo_hash
+        [ Logger.SetRepoName repo_name
+        , Logger.SetRepoHash repo_hash
         ]
 
   -- We shoehorn a summary row into the format for query rows
   let summary  = mconcat
-        [ Logger.setPredicateCount $ length preds -- # queries
-        , Logger.setPredicateSize size            -- # bytes uploaded
-        , Logger.setUploadDestination "<TBD>"     -- TODO: not sure how to
+        [ Logger.SetPredicateCount $ length preds -- # queries
+        , Logger.SetPredicateSize size            -- # bytes uploaded
+        , Logger.SetUploadDestination "<TBD>"     -- TODO: not sure how to
                                                   -- determine this yet
         ]
 
   let queries  =
         [ mconcat
-          [ Logger.setPredicateName predicateRef_name
-          , Logger.setPredicateVersion 0
+          [ Logger.SetPredicateName predicateRef_name
+          , Logger.SetPredicateVersion 0
           -- TODO: add predicate hash
-          , Logger.setPredicateCount $ fromIntegral predicateStats_count
-          , Logger.setPredicateSize $ fromIntegral predicateStats_size
+          , Logger.SetPredicateCount $ fromIntegral predicateStats_count
+          , Logger.SetPredicateSize $ fromIntegral predicateStats_size
           ]
         | (PredicateRef{..}, Thrift.PredicateStats{..}) <- preds
         ]
 
-  let logStats log = Logger.runLog (Database.envLogger env) $ preamble <> log
+  let logStats log = case Database.envDatabaseLogger env of
+        Some logger -> Logger.runLog logger $ preamble <> log
 
   -- We want a new row in the log table for the summary, and a new row
   -- for each query
