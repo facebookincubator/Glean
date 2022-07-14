@@ -291,8 +291,9 @@ instance Backend Database.Env where
       Database.getSchemaInfo (Database.odbSchema odb) index req
 
   validateSchema env (Thrift.ValidateSchema str) = do
-    schema  <- get (Database.envSchemaSource env)
-    validateNewSchema str schema
+    schema <- Observed.get (Database.envSchemaSource env)
+    conf <- Observed.get (Database.envServerConfig env)
+    validateNewSchema conf str schema
 
   predicateStats env repo opts = Database.predicateStats env repo opts
 

@@ -69,6 +69,7 @@ import Glean.RTS.Types as RTS
 import Glean.Angle.Types as Schema
 import Glean.Schema.Resolve
 import Glean.Schema.Util (showRef, ShowRef)
+import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Query.Codegen (QueryWithInfo(..))
 import Glean.Query.Typecheck
 import Glean.Types as Thrift
@@ -786,17 +787,27 @@ checkStoredType preds types def ty = go ty
   go _ = return ()
 
 
-validateNewSchema :: ByteString -> SchemaIndex -> IO ()
-validateNewSchema newSrc current = do
+-- | Check that a new schema can be processed and merged with the
+-- current schema index. This is used to ensure that a running server
+-- will not choke on a new schema before we deploy it.
+validateNewSchema :: ServerConfig.Config -> ByteString -> SchemaIndex -> IO ()
+validateNewSchema ServerConfig.Config{..} newSrc current = do
   schema <- case processSchema Map.empty newSrc of
     Left msg -> throwIO $ Thrift.Exception $ Text.pack msg
     Right resolved -> return resolved
+  let
+    -- If use_schema_id is on then we can accept schema changes,
+    -- otherwise the new schema must exactly match the old schema
+    -- except for added/removed predicates.
+    checkChanges
+      | config_use_schema_id = AllowChanges
+      | otherwise = MustBeEqual
 
   curDbSchema <- mkDbSchema AllowChanges Nothing readWriteContent schema Nothing
   void $ newMergedDbSchema
     (toStoredSchema curDbSchema)
     current
-    MustBeEqual
+    checkChanges
     readWriteContent
 
 -- | Check that the current schema in the SchemaIndex is compatible
