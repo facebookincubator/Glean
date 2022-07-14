@@ -46,8 +46,6 @@ import Data.Text (Text)
 import qualified Data.Text.Encoding as Text
 import qualified Options.Applicative as O
 
-import Logger.GleanServer (GleanServerLogger)
-import qualified Logger.GleanServer as Logger
 import qualified Util.Control.Exception.CallStack as CallStack
 import Util.EventBase (EventBaseDataplane)
 import Util.Logger
@@ -59,6 +57,7 @@ import qualified Glean.Database.Config as Database
 import qualified Glean.Database.Env as Database
 import qualified Glean.Database.Create as Database
 import qualified Glean.Database.Delete as Database
+import Glean.Logger.Server as Logger
 import Glean.Database.Open as Database
 import qualified Glean.Database.List as Database
 import qualified Glean.Database.PredicateStats as Database (predicateStats)
@@ -367,12 +366,12 @@ runLogQueryFacts
   -> Database.Env
   -> Thrift.Repo
   -> Thrift.UserQueryFacts
-  -> GleanServerLogger -> IO ()
+  -> GleanServerLog -> IO ()
 runLogQueryFacts cmd env repo Thrift.UserQueryFacts{..} log =
   runLogRepo cmd env repo $ log
     <> maybe mempty logQueryOptions userQueryFacts_options
     <> maybe mempty logQueryClientInfo userQueryFacts_client_info
-    <> maybe mempty (Logger.setSchemaId . Thrift.unSchemaId)
+    <> maybe mempty (Logger.SetSchemaId . Thrift.unSchemaId)
         userQueryFacts_schema_id
 
 runLogQuery
@@ -380,51 +379,51 @@ runLogQuery
   -> Database.Env
   -> Thrift.Repo
   -> Thrift.UserQuery
-  -> GleanServerLogger
+  -> GleanServerLog
   -> IO ()
 runLogQuery cmd env repo Thrift.UserQuery{..} log = do
   runLogRepo cmd env repo $ mconcat
     [ log
-    , Logger.setQuery (Text.decodeUtf8 userQuery_query)
-    , Logger.setPredicate userQuery_predicate
-    , maybe mempty (Logger.setPredicateVersion . fromIntegral)
+    , Logger.SetQuery (Text.decodeUtf8 userQuery_query)
+    , Logger.SetPredicate userQuery_predicate
+    , maybe mempty (Logger.SetPredicateVersion . fromIntegral)
         userQuery_predicate_version
-    , maybe mempty (Logger.setSchemaVersion . fromIntegral)
+    , maybe mempty (Logger.SetSchemaVersion . fromIntegral)
         userQuery_schema_version
-    , maybe mempty (Logger.setSchemaId . Thrift.unSchemaId)
+    , maybe mempty (Logger.SetSchemaId . Thrift.unSchemaId)
         userQuery_schema_id
     , maybe mempty logQueryOptions userQuery_options
     , maybe mempty logQueryClientInfo userQuery_client_info
     ]
 
-logQueryOptions :: Thrift.UserQueryOptions -> GleanServerLogger
+logQueryOptions :: Thrift.UserQueryOptions -> GleanServerLog
 logQueryOptions Thrift.UserQueryOptions{..} = mconcat
-  [ Logger.setNoBase64Binary userQueryOptions_no_base64_binary
-  , Logger.setExpandResults userQueryOptions_expand_results
-  , Logger.setRecursive userQueryOptions_recursive
-  , maybe mempty (Logger.setMaxResults . fromIntegral)
+  [ Logger.SetNoBase64Binary userQueryOptions_no_base64_binary
+  , Logger.SetExpandResults userQueryOptions_expand_results
+  , Logger.SetRecursive userQueryOptions_recursive
+  , maybe mempty (Logger.SetMaxResults . fromIntegral)
       userQueryOptions_max_results
-  , Logger.setSyntax $ case userQueryOptions_syntax of
+  , Logger.SetSyntax $ case userQueryOptions_syntax of
       Thrift.QuerySyntax_JSON -> "JSON"
       Thrift.QuerySyntax_ANGLE -> "Angle"
   , maybe mempty
-      ( Logger.setRequestContinuationSize
+      ( Logger.SetRequestContinuationSize
       . ByteString.length
       . Thrift.userQueryCont_continuation
       )
       userQueryOptions_continuation
   ]
 
-logQueryClientInfo :: Thrift.UserQueryClientInfo -> GleanServerLogger
+logQueryClientInfo :: Thrift.UserQueryClientInfo -> GleanServerLog
 logQueryClientInfo Thrift.UserQueryClientInfo{..} = mconcat
-  [ maybe mempty Logger.setClientUnixname userQueryClientInfo_unixname
-  , Logger.setClientApplication userQueryClientInfo_application
-  , Logger.setClientName userQueryClientInfo_name
+  [ maybe mempty Logger.SetClientUnixname userQueryClientInfo_unixname
+  , Logger.SetClientApplication userQueryClientInfo_application
+  , Logger.SetClientName userQueryClientInfo_name
   ]
 
-logQueryResults :: Thrift.UserQueryResults -> GleanServerLogger
+logQueryResults :: Thrift.UserQueryResults -> GleanServerLog
 logQueryResults Thrift.UserQueryResults{..} = mconcat
-  [ Logger.setResults $ case userQueryResults_results of
+  [ Logger.SetResults $ case userQueryResults_results of
       Thrift.UserQueryEncodedResults_bin bin ->
         Map.size (Thrift.userQueryResultsBin_facts bin)
       Thrift.UserQueryEncodedResults_json json ->
@@ -433,26 +432,26 @@ logQueryResults Thrift.UserQueryResults{..} = mconcat
         length (Thrift.userQueryResultsCompact_facts compact)
       _ ->
         length userQueryResults_facts
-  , Logger.setTruncated (isJust userQueryResults_continuation)
+  , Logger.SetTruncated (isJust userQueryResults_continuation)
   , maybe mempty logQueryStats userQueryResults_stats
-  , maybe mempty Logger.setType userQueryResults_type
+  , maybe mempty Logger.SetType userQueryResults_type
   , maybe mempty
-      ( Logger.setResponseContinuationSize
+      ( Logger.SetResponseContinuationSize
       . ByteString.length
       . Thrift.userQueryCont_continuation
       )
       userQueryResults_continuation
   ]
 
-logQueryStats :: Thrift.UserQueryStats -> GleanServerLogger
+logQueryStats :: Thrift.UserQueryStats -> GleanServerLog
 logQueryStats Thrift.UserQueryStats{..} = mconcat
-  [ Logger.setResults (fromIntegral userQueryStats_result_count)
-  , Logger.setFacts (fromIntegral userQueryStats_num_facts)
-  , maybe mempty (Logger.setBytecodeSize . fromIntegral)
+  [ Logger.SetResults (fromIntegral userQueryStats_result_count)
+  , Logger.SetFacts (fromIntegral userQueryStats_num_facts)
+  , maybe mempty (Logger.SetBytecodeSize . fromIntegral)
       userQueryStats_bytecode_size
-  , maybe mempty (Logger.setCompileTimeUs . fromIntegral . (`quot` 1000))
+  , maybe mempty (Logger.SetCompileTimeUs . fromIntegral . (`quot` 1000))
       userQueryStats_compile_time_ns
-  , maybe mempty (Logger.setExecuteTimeUs . fromIntegral . (`quot` 1000))
+  , maybe mempty (Logger.SetExecuteTimeUs . fromIntegral . (`quot` 1000))
       userQueryStats_execute_time_ns
   ]
 
@@ -461,13 +460,13 @@ runLogDerivePredicate
   -> Database.Env
   -> Thrift.Repo
   -> Thrift.DerivePredicateQuery
-  -> GleanServerLogger
+  -> GleanServerLog
   -> IO ()
 runLogDerivePredicate cmd env repo Thrift.DerivePredicateQuery {..} log =
   runLogRepo cmd env repo $ mconcat
     [ log
-    , Logger.setPredicate derivePredicateQuery_predicate
-    , maybe mempty (Logger.setPredicateVersion . fromIntegral)
+    , Logger.SetPredicate derivePredicateQuery_predicate
+    , maybe mempty (Logger.SetPredicateVersion . fromIntegral)
         derivePredicateQuery_predicate_version
     , maybe mempty logQueryClientInfo derivePredicateQuery_client_info
     ]
@@ -482,8 +481,8 @@ runLogDerivationResult
 runLogDerivationResult env log repo Thrift.DerivePredicateQuery{..} res = do
   log res
   runLogRepo "deriveStored(completed)" env repo $ mconcat
-    [ Logger.setPredicate derivePredicateQuery_predicate
-    , maybe mempty (Logger.setPredicateVersion . fromIntegral)
+    [ Logger.SetPredicate derivePredicateQuery_predicate
+    , maybe mempty (Logger.SetPredicateVersion . fromIntegral)
         derivePredicateQuery_predicate_version
     , maybe mempty logQueryClientInfo derivePredicateQuery_client_info
     , case res of

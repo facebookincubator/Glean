@@ -25,7 +25,6 @@ import Data.Text (Text)
 import Data.Time
 import System.Clock
 
-import Logger.IO
 import Data.RateLimiterMap
 import Util.EventBase (EventBaseDataplane)
 
@@ -39,6 +38,8 @@ import Glean.Database.Stats (Stats)
 import Glean.Database.Storage (Database, Storage)
 import Glean.Database.Work.Heartbeat (Heartbeats)
 import Glean.Database.Work.Queue (WorkQueue)
+import Glean.Logger.Server (GleanServerLogger)
+import Glean.Logger.Database (GleanDatabaseLogger)
 import Glean.RTS.Foreign.LookupCache (LookupCache)
 import qualified Glean.RTS.Foreign.LookupCache as LookupCache
 import Glean.RTS.Foreign.Ownership (Ownership, Slice)
@@ -52,6 +53,7 @@ import Glean.Util.Metric (Point)
 import Glean.Util.Mutex
 import Glean.Util.Observed
 import Glean.Util.ShardManager
+import Glean.Util.Some
 import Glean.Util.Time
 import Glean.Util.Trace (Listener)
 import Glean.Util.Warden
@@ -195,7 +197,8 @@ instance NFData Derivation where
 
 data Env = forall storage. Storage storage => Env
   { envEventBase :: EventBaseDataplane
-  , envLogger :: Logger
+  , envServerLogger :: Some GleanServerLogger
+  , envDatabaseLogger :: Some GleanDatabaseLogger
   , envLoggerRateLimit :: RateLimiterMap Text
   , envRoot :: FilePath
   , envCatalog :: Catalog
