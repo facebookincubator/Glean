@@ -19,7 +19,6 @@ namespace java.swift com.facebook.glean
 namespace php glean
 namespace py glean.glean
 namespace py3 glean
-namespace rust glean
 
 // -----------------------------------------------------------------------------
 // Basic types
