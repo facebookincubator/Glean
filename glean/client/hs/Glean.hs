@@ -203,6 +203,9 @@ module Glean
 import Glean.Backend.Remote hiding (dbShard, completePredicates)
 import Glean.Angle.Lexer
 
+import Glean.Impl.ConfigProvider ()
+  -- re-export instance ConfigProvider ConfigAPI, so that clients
+  -- don't have to import this.
 import Glean.Haxl
 import Glean.Query.Thrift
 import Glean.Repo

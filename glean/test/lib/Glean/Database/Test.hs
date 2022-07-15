@@ -45,7 +45,6 @@ import Glean.Database.Env
 import qualified Glean.Database.Storage.Memory as Memory
 import Glean.Database.Write.Batch
 import Glean.Database.Types
-import Glean.Impl.ConfigProvider ()
 import qualified Glean.Internal.Types as Thrift
 import Glean.Recipes.Types (Recipes)
 import qualified Glean.Recipes.Types as Recipes
@@ -114,7 +113,8 @@ withTestEnv
   -> IO a
 withTestEnv settings action =
   withEventBaseDataplane $ \evb ->
-  withConfigProvider defaultConfigOptions $ \cfgAPI -> do
+  withConfigProvider defaultConfigOptions $
+      \(cfgAPI :: NullConfigProvider) -> do
     let
       dbConfig = foldl' (\acc f -> f acc)
         def

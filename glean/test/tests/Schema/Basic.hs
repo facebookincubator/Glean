@@ -35,6 +35,7 @@ import Glean.Backend
 import Glean.Database.Config
 import Glean.Database.Env
 import Glean.Database.Test
+import Glean.Impl.ConfigProvider ()
 import Glean.Impl.TestConfigProvider
 import Glean.Init
 import qualified Glean.ServerConfig.Types as ServerConfig

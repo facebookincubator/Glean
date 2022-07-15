@@ -33,7 +33,6 @@ import Glean.Database.Janitor
 import Glean.Database.Meta
 import Glean.Database.Types
 import Glean.Database.Work (finalizeWait)
-import Glean.Impl.ConfigProvider
 import Glean.Init
 import Glean.ServerConfig.Types as ServerTypes
 import Glean.Types as Thrift
@@ -41,7 +40,9 @@ import Glean.Util.ConfigProvider
 import Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.Trace
 
-withTest :: (EventBaseDataplane -> ConfigAPI -> FilePath -> IO ()) -> IO ()
+withTest
+  :: (EventBaseDataplane -> NullConfigProvider -> FilePath -> IO ())
+  -> IO ()
 withTest action =
   withEventBaseDataplane $ \evb ->
   withConfigProvider defaultConfigOptions $ \cfgAPI ->
@@ -80,7 +81,7 @@ withTestEnv
   -> (ServerTypes.Config -> ServerTypes.Config)
   -> (TestEnv -> IO ())
   -> EventBaseDataplane
-  -> ConfigAPI
+  -> NullConfigProvider
   -> FilePath
   -> IO ()
 withTestEnv dbs init_server_cfg action evb cfgAPI backupdir = do

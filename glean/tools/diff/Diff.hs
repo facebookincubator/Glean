@@ -26,6 +26,7 @@ import Glean.Database.Types
 import Glean.FFI (with)
 import Glean.RTS.Foreign.Inventory (Inventory)
 import Glean.RTS.Foreign.Lookup
+import Glean.Impl.ConfigProvider (ConfigAPI)
 import Glean.Util.ConfigProvider
 
 data Config = Config
@@ -53,7 +54,7 @@ main :: IO ()
 main =
   withConfigOptions options $ \(Config{..}, cfgOpts) ->
   withEventBaseDataplane $ \evb ->
-  withConfigProvider cfgOpts $ \cfgAPI ->
+  withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) ->
   Database.withDatabases evb cfgDB cfgAPI $ \env ->
   readDatabase env cfgOriginal $ \_original_schema original ->
   readDatabase env cfgNew $ \odb new ->

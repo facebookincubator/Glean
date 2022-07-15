@@ -14,6 +14,10 @@ module Glean.Util.ConfigProvider
   , ConfigPath
   , TestConfigProvider(..)
   , withConfigOptions
+
+  -- * The empty config provider that always fails
+  , NullConfigProvider
+  , NullConfigProviderOptions
   ) where
 
 import Control.Exception
@@ -81,3 +85,25 @@ withConfigOptions parserInfo fn =
       infoParser = (,) <$> infoParser parserInfo <*> configOptions
     }
     fn
+
+-- -----------------------------------------------------------------------------
+-- The empty config provider that always fails.
+--
+-- We use this for unit tests to ensure that we're not accidentally
+-- pulling in configs from the environment.
+
+data NullConfigProvider = NullConfigProvider
+data NullConfigProviderOptions = NullConfigProviderOptions
+data NullConfigSubscription a
+
+type instance ConfigOptions NullConfigProvider = NullConfigProviderOptions
+
+instance ConfigProvider NullConfigProvider where
+  configOptions = pure NullConfigProviderOptions
+  defaultConfigOptions = NullConfigProviderOptions
+  withConfigProvider _ f = f NullConfigProvider
+  type Subscription NullConfigProvider = NullConfigSubscription
+  subscribe _ _ _ _ = throwIO $ ErrorCall "NullConfigProvider: subscribe"
+  cancel _ _ = return ()
+  get _ _ _ = throwIO $ ErrorCall "NullConfigProvider: get"
+  isConfigFailure _ _ = True

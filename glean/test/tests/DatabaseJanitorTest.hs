@@ -52,7 +52,6 @@ import Glean.Database.Open (isDatabaseClosed, withOpenDatabase)
 import Glean.Database.Types
 import Glean.Database.Schema
 import Glean.Database.Schema.Types
-import Glean.Impl.ConfigProvider
 import Glean.Init
 import Glean.RTS.Types (lowestFid)
 import Glean.ServerConfig.Types as ServerTypes
@@ -67,7 +66,8 @@ import Glean.Database.Catalog (Entries(entriesRestoring))
 
 withTest
   :: (FilePath -> IO ())
-  -> (EventBaseDataplane -> ConfigAPI -> FilePath -> FilePath -> IO ())
+  -> (EventBaseDataplane -> NullConfigProvider -> FilePath -> FilePath
+       -> IO ())
   -> IO ()
 withTest setup action =
   withEventBaseDataplane $ \evb ->
@@ -102,7 +102,8 @@ setupBasicDBs dbdir = do
   makeFakeDB schema dbdir (Repo "test2" "0006") (age (days 6)) complete Nothing
 
 withFakeDBs
-  :: (EventBaseDataplane -> ConfigAPI -> FilePath -> FilePath -> IO ())
+  :: (EventBaseDataplane -> NullConfigProvider -> FilePath -> FilePath
+       -> IO ())
   -> IO ()
 withFakeDBs action = withTest setupBasicDBs action
 

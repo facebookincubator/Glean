@@ -44,9 +44,9 @@ import Glean.Database.Work
 import Glean.Database.Work.Heartbeat
 import Glean.Database.Work.Queue (newWorkQueue)
 import Glean.Database.Writes
-import Glean.Impl.ConfigProvider
 import qualified Glean.Recipes.Types as Recipes
 import qualified Glean.ServerConfig.Types as ServerConfig
+import Glean.Util.ConfigProvider
 import Glean.Util.Observed as Observed
 import Glean.Util.Periodic
 import Glean.Util.ShardManager (SomeShardManager)
@@ -57,12 +57,10 @@ import qualified Glean.Util.Warden as Warden
 
 -- | Initialize an Env for working with Glean databases
 withDatabases
-  :: EventBaseDataplane
+  :: ConfigProvider conf
+  => EventBaseDataplane
   -> Config
-  -> ConfigAPI
-     -- Ideally this would be overloaded on ConfigProvider instead, but
-     -- withLogger depends on this and it's non-trivial to abstract the
-     -- Logger APIs.
+  -> conf
   -> (Env -> IO a)
   -> IO a
 withDatabases evb cfg cfgapi act =

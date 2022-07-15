@@ -67,7 +67,6 @@ import Glean.Database.Schema hiding (getSchemaInfo)
 import qualified Glean.Database.Types as Database
 import qualified Glean.Database.Work as Database
 import qualified Glean.Database.Writes as Database
-import Glean.Impl.ConfigProvider
 import Glean.Internal.Types (StoredSchema(..))
 import Glean.Logger
 import qualified Glean.Query.UserQuery as UserQuery
@@ -76,6 +75,7 @@ import Glean.RTS (Fid(..))
 import qualified Glean.RTS.Foreign.Inventory as Inventory
 import qualified Glean.RTS.Foreign.Lookup as Lookup
 import qualified Glean.Types as Thrift
+import Glean.Util.ConfigProvider
 import Glean.Util.Observed as Observed
 import Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.Some
@@ -98,8 +98,9 @@ data Service
 -- that it provides a 'LocalOrRemote', which is a 'Backend' that
 -- additionally supports 'backendKind').
 withBackendWithDefaultOptions
-  :: EventBaseDataplane
-  -> ConfigAPI
+  :: ConfigProvider conf
+  => EventBaseDataplane
+  -> conf
   -> Service
   -> Maybe Thrift.SchemaId
   -> (forall b. LocalOrRemote b => b -> IO a)
@@ -112,8 +113,9 @@ withBackendWithDefaultOptions evb cfgapi service schema =
 -- provides a 'LocalOrRemote', which is a 'Backend' that additionally
 -- supports 'backendKind').
 withBackend
-  :: EventBaseDataplane
-  -> ConfigAPI
+  :: ConfigProvider conf
+  => EventBaseDataplane
+  -> conf
   -> Service
   -> Maybe Thrift.SchemaId
   -> Settings

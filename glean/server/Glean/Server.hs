@@ -34,6 +34,7 @@ import Glean.Database.Config (Config(..))
 import Glean.Database.Env
 import Glean.Database.Types
 import qualified Glean.Handler as GleanHandler
+import Glean.Impl.ConfigProvider (ConfigAPI)
 import qualified Glean.Index as Index
 import Glean.Index.GleanIndexingService.Service
 import Glean.Server.Config as Config
@@ -45,7 +46,7 @@ main :: IO ()
 main =
   withConfigOptions (O.info options O.fullDesc) $ \(cfg0, cfgOpts) ->
   withEventBaseDataplane $ \evb ->
-  withConfigProvider cfgOpts $ \configAPI ->
+  withConfigProvider cfgOpts $ \(configAPI :: ConfigAPI) ->
 #if FACEBOOK
   withLogger configAPI $ \logger ->
 #endif
