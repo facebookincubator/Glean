@@ -45,6 +45,7 @@ import GleanCLI.Types
 import Data.Time.Clock (UTCTime)
 import Glean.Database.Meta (utcTimeToPosixEpochTime)
 import Data.Int (Int32)
+import Data.ByteString (ByteString)
 
 data ScribeOptions = ScribeOptions
   { writeFromScribe :: WriteFromScribe
@@ -213,15 +214,18 @@ incrementalOpt = option (maybeReader Glean.parseRepo)
   <> help "Create an incremental database"
   )
 
-includeOpt :: Parser [Char]
-includeOpt = strOption
+splitUnits :: [Char] -> [ByteString]
+splitUnits = map B8.pack . splitOn ","
+
+includeOpt :: Parser [ByteString]
+includeOpt = splitUnits <$> option auto
   (  long "include"
   <> metavar "unit,unit,.."
   <> help "Include these units"
   )
 
-excludeOpt :: Parser [Char]
-excludeOpt = strOption
+excludeOpt :: Parser [ByteString]
+excludeOpt =  splitUnits <$> option auto
   (  long "exclude"
   <> metavar "unit,unit,.."
   <> help "Exclude these units"
@@ -286,9 +290,8 @@ instance Plugin WriteCommand where
     updateOptions = do
       repo <- incrementalOpt
       let
-        splitUnits = map B8.pack . splitOn ","
-        include = (,False) . splitUnits <$> includeOpt
-        exclude = (,True) . splitUnits <$> excludeOpt
+        include = (,False) <$> includeOpt
+        exclude = (,True) <$> excludeOpt
       ~(units, exclude) <- include <|> exclude
       return $ Thrift.Dependencies_pruned $
         Thrift.Pruned repo units exclude
