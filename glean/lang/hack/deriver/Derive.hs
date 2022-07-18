@@ -18,18 +18,28 @@ import Glean.Init ( withOptions )
 import qualified Glean
 import Glean.Util.ConfigProvider
 import Glean.Impl.ConfigProvider
+import Glean.Schema.Builtin.Types (schema_id)
 
 import Derive.Types
 import Derive.All
+
+import Data.Aeson as J
+import Data.Aeson.Encode.Pretty as J
+import qualified Data.ByteString.Lazy.Char8 as BS
 
 withNumCapabilities :: Maybe Int -> IO a -> IO a
 withNumCapabilities Nothing act = act
 withNumCapabilities (Just n) act = setNumCapabilities n >> act
 
 main :: IO ()
-main = withOptions options $ \(cfg, service) ->
-  withNumCapabilities (cfgNumCapabilities cfg) $
-  withEventBaseDataplane $ \evb ->
-  withConfigProvider defaultConfigOptions $ \cfgAPI ->
-  Glean.withRemoteBackend evb (cfgAPI::ConfigAPI) service Nothing $ \be ->
-  Derive.All.derive be cfg
+main = withOptions options $ \cmd ->
+  case cmd of
+    SchemaId ->
+      putStrLn $ BS.unpack $ J.encodePretty $
+        J.object ["schema_id" J..= J.toJSON schema_id]
+    Derive (cfg, service) ->
+      withNumCapabilities (cfgNumCapabilities cfg) $
+      withEventBaseDataplane $ \evb ->
+      withConfigProvider defaultConfigOptions $ \cfgAPI ->
+      Glean.withRemoteBackend evb (cfgAPI::ConfigAPI) service Nothing $ \be ->
+      Derive.All.derive be cfg

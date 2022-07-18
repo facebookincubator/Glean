@@ -12,6 +12,7 @@ module Derive.Types
   ( Config(..)
   , options
   , defaultConfig
+  , Command(..)
   ) where
 
 import Data.Default
@@ -55,12 +56,20 @@ defaultChunksPerCapability = 5
 defaultMaxQueueSize :: Int
 defaultMaxQueueSize = 500
 
+data Command
+    = Derive (Config, Glean.ThriftSource Glean.ClientConfig)
+    | SchemaId
+
 -- | Command-line argument parser for "Derive" to get 'Config'
-options :: O.ParserInfo (Config, Glean.ThriftSource Glean.ClientConfig)
-options = O.info (O.helper <*> parser) O.fullDesc
+options :: O.ParserInfo Command
+options = O.info (O.helper <*> (parserDerive O.<|> parserSchemaId)) O.fullDesc
   where
-    parser :: O.Parser (Config, Glean.ThriftSource Glean.ClientConfig)
-    parser = (,) <$> config <*> Glean.options
+    parserSchemaId :: O.Parser Command
+    parserSchemaId =
+        O.flag' SchemaId (O.long "schema-id" <> O.help "display schema-id")
+
+    parserDerive :: O.Parser Command
+    parserDerive = Derive <$> ((,) <$> config <*> Glean.options)
 
     config  :: O.Parser Config
     config = do
