@@ -37,7 +37,8 @@ import Glean ( Repo(..) )
 
 import Glean.Glass.Types
 import qualified Data.Text as Text
-import Data.List.NonEmpty (NonEmpty(..))
+import Data.List.NonEmpty ( NonEmpty(..), toList )
+import qualified Data.List.NonEmpty as NE
 
 instance ActionLog GleanGlassLogger where
   successLog = Logger.setSuccess True
@@ -143,9 +144,18 @@ instance LogRepo (a,Glean.Repo) where
 instance {-# OVERLAPPABLE #-} LogRepo a => LogRepo (a,b) where
   logRepo (repo,_) = logRepo repo
 
-instance LogRepo a => LogRepo (NonEmpty a) where
-  -- TODO: Support logging multiple repos
-  logRepo (x :| _) = logRepo x
+-- For queries that search multiple repos, better log the set of dbs we touch
+instance LogRepo (NonEmpty (a, Glean.Repo)) where
+  logRepo = logRepo . NE.map snd
+
+instance LogRepo (NonEmpty Glean.Repo) where
+  logRepo (repo :| []) = logRepo repo
+  logRepo rs@(_ :| _) =
+    Logger.setRepoName (commas repo_name rs) <>
+    Logger.setRepoHash (commas (Text.take 12 . repo_hash) rs)
+
+commas :: (Glean.Repo -> Text) -> NonEmpty Glean.Repo -> Text
+commas f = Text.intercalate "," . map f . toList
 
 --
 -- | Intern error logging
@@ -192,9 +202,14 @@ instance LogError ErrorTy where
 instance LogError Glean.Repo where
   logError = logRepoSG Errors.setRepoName Errors.setRepoHash
 
-instance LogError a => LogError (NonEmpty a) where
-  -- TODO: Support logging multiple dbs
-  logError ( x :| _ ) = logError x
+instance LogError (NonEmpty (a, Glean.Repo)) where
+  logError = logError . NE.map snd
+
+instance LogError (NonEmpty Glean.Repo) where
+  logError (repo :| []) = logError repo
+  logError rs =
+    Errors.setRepoName (commas repo_name rs) <>
+    Errors.setRepoHash (commas (Text.take 12 . repo_hash) rs)
 
 -- sometimes we return more than just the repo result
 instance LogError (a,Glean.Repo) where
