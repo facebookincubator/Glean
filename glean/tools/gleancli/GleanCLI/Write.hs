@@ -130,6 +130,13 @@ finishOpt = switch
   (  long "finish"
   <> help "also mark the DB as complete")
 
+stackedOpt :: Parser Repo
+stackedOpt = option (maybeReader Glean.parseRepo)
+  (  long "stacked"
+  <> metavar "REPO"
+  <> help "Create a stacked database"
+  )
+
 scribeCategoryOpt :: Parser Text
 scribeCategoryOpt = textOption
   (  long "scribe-category"
@@ -146,15 +153,8 @@ scribeBucketOpt = option auto
   <> metavar "BUCKET"
   )
 
-stackedOpt :: Parser Repo
-stackedOpt = option (maybeReader Glean.parseRepo)
-  (  long "stacked"
-  <> metavar "REPO"
-  <> help "Create a stacked database"
-  )
-
-writeScribeOpts :: Parser (Text, Maybe PickScribeBucket, Bool)
-writeScribeOpts = do
+writeScribeOptions :: Parser (Text, Maybe PickScribeBucket, Bool)
+writeScribeOptions = do
   cat <- scribeCategoryOpt
   bucket <- optional (PickScribeBucket_bucket <$> scribeBucketOpt)
   compress <- scribeCompressOpt
@@ -162,30 +162,49 @@ writeScribeOpts = do
 
 scribeOptions :: Parser ScribeOptions
 scribeOptions = do
-  ~(cat, bucket, compress) <- writeScribeOpts
+  ~(cat, bucket, compress) <- writeScribeOptions
   let
-    startTime = Just . ScribeStart_start_time <$>
-      textOption (long "start-time" <> metavar "TIME")
-    checkpoint = Just . ScribeStart_checkpoint <$>
-      textOption (long "checkpoint" <> metavar "STRING")
+    startTime = Just . ScribeStart_start_time <$> scribeStartTimeOpt
+    checkpoint = Just . ScribeStart_checkpoint <$> scribeCheckPointOpt
+
   start <- startTime <|> checkpoint <|> pure Nothing
-  opts <- SendJsonBatchOptions <$> switch (long "no-base64-binary")
+  opts <- SendJsonBatchOptions <$> scribeNoBase64BinaryOpt
   return ScribeOptions
     { writeFromScribe = WriteFromScribe "" cat start (Just opts) bucket
     , scribeCompress = compress
     }
 
+scribeNoBase64BinaryOpt :: Parser Bool
+scribeNoBase64BinaryOpt = switch
+  (  long "no-base64-binary"
+  )
+
+scribeCheckPointOpt :: Parser Text
+scribeCheckPointOpt = textOption
+  (  long "checkpoint"
+  <> metavar "STRING"
+  )
+
+scribeStartTimeOpt :: Parser Text
+scribeStartTimeOpt = textOption
+  (  long "start-time"
+  <> metavar "TIME"
+  )
+
 useLocalCacheOptions :: Parser (Maybe Glean.SendAndRebaseQueueSettings)
 useLocalCacheOptions = do
-    useLocalCacheFlag <- switch
-      (  long "use-local-cache"
-      <> help "use a cache to rebase facts locally"
-      )
+    useLocalCacheFlag <- useLocalSwitchOpt
     sendAndRebaseQueue <- Glean.sendAndRebaseQueueOptions
     return $ if useLocalCacheFlag then
         Just sendAndRebaseQueue
     else
       Nothing
+
+useLocalSwitchOpt :: Parser Bool
+useLocalSwitchOpt = switch
+  (  long "use-local-cache"
+  <> help "use a cache to rebase facts locally"
+  )
 
 incrementalOpt :: Parser Repo
 incrementalOpt = option (maybeReader Glean.parseRepo)
@@ -243,7 +262,7 @@ instance Plugin WriteCommand where
         ~(writeRepo, scribe) <-
            (,Nothing) <$> repoOpts <|>
            (do
-              ~(cat, bucket, compress) <- writeScribeOpts
+              ~(cat, bucket, compress) <- writeScribeOptions
               return (def, Just ScribeOptions
                 { writeFromScribe = def
                     { writeFromScribe_category = cat
