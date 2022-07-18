@@ -44,6 +44,7 @@ import qualified Data.Map as Map
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text.Encoding as Text
+import qualified Data.Text.Encoding.Error as Text
 import qualified Options.Applicative as O
 
 import qualified Util.Control.Exception.CallStack as CallStack
@@ -386,7 +387,8 @@ runLogQuery
 runLogQuery cmd env repo Thrift.UserQuery{..} log = do
   runLogRepo cmd env repo $ mconcat
     [ log
-    , Logger.SetQuery (Text.decodeUtf8 userQuery_query)
+    , Logger.SetQuery
+        (Text.decodeUtf8With Text.lenientDecode userQuery_query)
     , Logger.SetPredicate userQuery_predicate
     , maybe mempty (Logger.SetPredicateVersion . fromIntegral)
         userQuery_predicate_version
