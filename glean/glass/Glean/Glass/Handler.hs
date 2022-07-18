@@ -936,9 +936,9 @@ describeEntity
   -> Maybe SymbolKind
   -> Glean.RepoHaxl u w SymbolDescription
 describeEntity
-    LocationRange{..} decl symbolDescription_sym symbolDescription_kind = do
+    LocationRange{..} ent symbolDescription_sym symbolDescription_kind = do
   repo <- Glean.haxlRepo
-  qname <- toQualifiedName decl
+  qname <- toQualifiedName ent
   symbolDescription_name <- case qname of
     Right a -> return a
     Left err -> throwM $ ServerException err
@@ -947,12 +947,12 @@ describeEntity
                    , symbolPath_repository = locationRange_repository
                    , symbolPath_filepath = locationRange_filepath
                    }
-  annotations <- getAnnotationsForEntity decl
+  annotations <- getAnnotationsForEntity ent
   symbolDescription_annotations <- case annotations of
     Right anns -> return anns
     Left err -> throwM $ ServerException err
-  comments <- getCommentsForEntity locationRange_repository decl
-  visibility <- getVisibilityForEntity decl
+  comments <- getCommentsForEntity locationRange_repository ent
+  visibility <- getVisibilityForEntity ent
   symbolDescription_visibility <- case visibility of
     Right vis -> return vis
     Left err -> throwM $ ServerException err
@@ -960,6 +960,7 @@ describeEntity
     Right comments -> return comments
     Left err -> throwM $ ServerException err
   let symbolDescription_repo_hash = Glean.repo_hash repo
+      symbolDescription_language = entityLanguage ent
   return SymbolDescription{..}
 
 -- | Returns entities based on a string needle and an Angle query. Shared

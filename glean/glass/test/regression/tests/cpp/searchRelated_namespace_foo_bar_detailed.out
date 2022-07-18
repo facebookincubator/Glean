@@ -15,6 +15,7 @@
             "test/cpp/foo/bar": {
                 "comments": [],
                 "kind": 6,
+                "language": 1,
                 "location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -35,6 +36,7 @@
             "test/cpp/foo/bar/T": {
                 "comments": [],
                 "kind": 25,
+                "language": 1,
                 "location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -56,6 +58,7 @@
                 "annotations": [],
                 "comments": [],
                 "kind": 14,
+                "language": 1,
                 "location": {
                     "filepath": "test.cpp",
                     "range": {

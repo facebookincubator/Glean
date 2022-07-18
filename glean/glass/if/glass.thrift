@@ -264,6 +264,7 @@ struct SymbolDescription {
   6: list<LocationRange> comments;
   7: optional Visibility visibility;
   8: string repo_hash;
+  9: Language language;
 }
 
 struct SearchContext {
