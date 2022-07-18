@@ -81,15 +81,15 @@ data WriteCommand
 fileArg :: Parser [FilePath]
 fileArg = many $ strArgument
   (  metavar "FILE..."
-  <> help ("Files of facts. "
-  <> "You can specify the format of the file through --file-format option")
+  <> help ("File(s) of facts to add to the DB. "
+  <> "You can specify the format of the file with --file-format")
   )
 
 repoTimeOpt :: Parser UTCTime
 repoTimeOpt = option readTime
   (  long "repo-hash-time"
   <> metavar "yyyy-mm-ddThh:mm:ssZ"
-  <> help "Set properties when creating a DB"
+  <> help "Timestamp of the source data to be indexed."
   )
   where
     readTime :: ReadM UTCTime
@@ -97,13 +97,13 @@ repoTimeOpt = option readTime
       case readUTC $ Text.pack str of
         Just value -> Right value
         Nothing ->
-          Left "expecting time e.g. 2021-01-01T12:30:00Z"
+          Left "expecting UTC time e.g. 2021-01-01T12:30:00Z"
 
 dbPropertiesOpt :: Parser [(Text, Text)]
 dbPropertiesOpt = many $ option readProperty
   (  long "property"
   <> metavar "NAME=VALUE"
-  <> help "Set properties when creating a DB"
+  <> help "Set DB's properties when creating a DB."
   )
   where
     readProperty :: ReadM (Text,Text)
@@ -118,40 +118,49 @@ fileFormatOpt = option (eitherReader parseFileFormat)
   <> value JsonFormat
   <> showDefault
   <> metavar "(json|binary)"
-  <> help "Format of the files with facts"
+  <> help "Format of the files with facts (see FILE for more details)"
   )
   where
     parseFileFormat :: String -> Either String FileFormat
     parseFileFormat "json" = Right JsonFormat
     parseFileFormat "binary" = Right BinaryFormat
     parseFileFormat s = Left $ "unknown format: " <> s
+      <> ", supported values: (json|binary)"
 
 finishOpt :: Parser Bool
 finishOpt = switch
   (  long "finish"
-  <> help "also mark the DB as complete")
+  <> help ("Mark the DB as complete. When a DB is complete, "
+  <> "it is not possible to add any more facts to it.")
+  )
 
 stackedOpt :: Parser Repo
 stackedOpt = option (maybeReader Glean.parseRepo)
   (  long "stacked"
   <> metavar "REPO"
-  <> help "Create a stacked database"
+  <> help ("Created DB will be stacked on top of this REPO DB. "
+  <> "For more details about its schema, see --update-schema-for-stacked.")
   )
 
 scribeCategoryOpt :: Parser Text
 scribeCategoryOpt = textOption
   (  long "scribe-category"
   <> metavar "NAME"
+  <> help "SCRIBE: Listen/write to this scribe category for facts."
   )
 
 scribeCompressOpt :: Parser Bool
 scribeCompressOpt = switch
-  (long "compress")
+  (  long "compress"
+  <> help "SCRIBE: The scribe category carries compressed data."
+  )
 
 scribeBucketOpt :: Parser Int32
 scribeBucketOpt = option auto
   (  long "scribe-bucket"
   <> metavar "BUCKET"
+  <> help ("SCRIBE: If your scribe category has buckets, you have to "
+  <> "specify the scribe bucket as well.")
   )
 
 writeScribeOptions :: Parser (Text, Maybe PickScribeBucket, Bool)
@@ -169,27 +178,35 @@ scribeOptions = do
     checkpoint = Just . ScribeStart_checkpoint <$> scribeCheckPointOpt
 
   start <- startTime <|> checkpoint <|> pure Nothing
-  opts <- SendJsonBatchOptions <$> scribeNoBase64BinaryOpt
+  opts <- SendJsonBatchOptions <$> noBase64BinaryOpt
   return ScribeOptions
     { writeFromScribe = WriteFromScribe "" cat start (Just opts) bucket
     , scribeCompress = compress
     }
 
-scribeNoBase64BinaryOpt :: Parser Bool
-scribeNoBase64BinaryOpt = switch
+-- TODO: respect this flag when for any JSON files
+-- It just happend, that this flag is respected only with 'glean create scribe'.
+noBase64BinaryOpt :: Parser Bool
+noBase64BinaryOpt = switch
   (  long "no-base64-binary"
+  <> help ("Set this if the Thrift 'binary' type is not base64-encoded "
+  <> "in JSON. You may need this if the JSON was created by the Python "
+  <> "Thrift encoder.")
   )
 
 scribeCheckPointOpt :: Parser Text
 scribeCheckPointOpt = textOption
   (  long "checkpoint"
   <> metavar "STRING"
+  <> help "SCRIBE: Start reading scribe data from the given checkpoint."
   )
 
 scribeStartTimeOpt :: Parser Text
 scribeStartTimeOpt = textOption
   (  long "start-time"
   <> metavar "TIME"
+  <> help ("SCRIBE: Start reading data from the given timestamp. "
+  <> "Accepts any format that `date -d` can understand.")
   )
 
 useLocalCacheOptions :: Parser (Maybe Glean.SendAndRebaseQueueSettings)
@@ -204,14 +221,15 @@ useLocalCacheOptions = do
 useLocalSwitchOpt :: Parser Bool
 useLocalSwitchOpt = switch
   (  long "use-local-cache"
-  <> help "use a cache to rebase facts locally"
+  <> help ("Use a local cache to avoid resending duplicate facts. May improve "
+  <> "write performance.")
   )
 
 incrementalOpt :: Parser Repo
 incrementalOpt = option (maybeReader Glean.parseRepo)
   (  long "incremental"
   <> metavar "REPO"
-  <> help "Create an incremental database"
+  <> help "Create an incremental DB on top of this REPO DB."
   )
 
 splitUnits :: [Char] -> [ByteString]
@@ -221,14 +239,14 @@ includeOpt :: Parser [ByteString]
 includeOpt = splitUnits <$> option auto
   (  long "include"
   <> metavar "unit,unit,.."
-  <> help "Include these units"
+  <> help "For incremental DBs only. Include these units."
   )
 
 excludeOpt :: Parser [ByteString]
 excludeOpt =  splitUnits <$> option auto
   (  long "exclude"
   <> metavar "unit,unit,.."
-  <> help "Exclude these units"
+  <> help "For incremental DBs only. Exclude these units."
   )
 
 updateSchemaForStackedOpt :: Parser Bool
@@ -236,14 +254,17 @@ updateSchemaForStackedOpt = switch
   (  long "update-schema-for-stacked"
   <> help (
     "When creating a stacked DB, use the current schema instead " <>
-    "of the schema from the base DB")
+    "of the schema from the base DB.")
   )
 
 instance Plugin WriteCommand where
   parseCommand = createCmd <|> writeCmd
     where
     createCmd =
-      commandParser "create" (progDesc "Create a new database") $ do
+      commandParser "create" (progDesc (
+          "Create a new standalone|stacked|incremental DB. "
+          <> "Please carefully read help above to understand how various "
+          <> "options are related to each other.")) $ do
         writeRepo <- repoOpts
         writeRepoTime <- optional repoTimeOpt
         writeFiles <- fileArg
@@ -262,7 +283,10 @@ instance Plugin WriteCommand where
           }
 
     writeCmd =
-      commandParser "write" (progDesc "Write facts to a database") $ do
+      commandParser "write" (progDesc (
+          "Write facts to an existing DB. "
+          <> "Please carefully read help above to understand how various "
+          <> "options are related to each other.")) $ do
         ~(writeRepo, scribe) <-
            (,Nothing) <$> repoOpts <|>
            (do
