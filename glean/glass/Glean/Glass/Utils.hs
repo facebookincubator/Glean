@@ -7,6 +7,7 @@
 -}
 
 {-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE ApplicativeDo #-}
 
 module Glean.Glass.Utils
   (
@@ -72,7 +73,7 @@ searchReposWithLimit
 searchReposWithLimit limit angle act = do
   results <- Glean.queryAllRepos $ do
     res <- searchWithLimit limit angle
-    mapM act res
+    mapM act res -- we would like this to be concurrent
   return $ maybe id take limit results
 
 -- | Run a non-recursive predicate only query with optional limit

@@ -76,6 +76,7 @@ import qualified Glean.Util.Range as Range
 import Glean.Util.ThriftService ( ThriftServiceOptions(..), runThrift )
 
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
+import qualified Glean.Schema.CodemarkupSearch.Types as CodeSearch
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.Src.Types as Src
 
@@ -972,9 +973,8 @@ searchEntityByString
   -> IO SearchByNameResult
 searchEntityByString method query env@Glass.Env{..} req opts = case repoLangs of
     Left err -> throwIO $ ServerException err
-    Right candidates -> joinResults <$>
-      Async.mapConcurrently searchEntityByStringRepo
-        (uniq (map fst candidates))
+    Right candidates -> joinResults <$> Async.mapConcurrently
+      searchEntityByStringInRepo (uniq (map fst candidates))
   where
     -- expand repo/lang choice into set of possible repo/lang pairs
     repoLangs = selectReposAndLanguages repo lang
@@ -993,35 +993,40 @@ searchEntityByString method query env@Glass.Env{..} req opts = case repoLangs of
     searchQ = query caseQ nameLit kindQ
 
     -- The search query is language-independent, so while we're
-    -- narrowing the set of repos to search based on the language, the
+    -- narrowing the set of Glean dbs to search based on the language, the
     -- query might still return results from multiple languages.
     --
     -- TODO: if there's a language filter in the request, we need to
     -- filter the results here.
-
-    searchEntityByStringRepo repo =
+    --
+    -- This searches in one logical SCM repo. E.g. "fbsource" ,which might
+    -- correspond to a set of many Glean dbs/indexes.
+    --
+    -- e.g. search in "www" implies searching in www.flow and www.hack
+    --
+    searchEntityByStringInRepo :: RepoName -> IO SearchByNameResult
+    searchEntityByStringInRepo repo =
       withRepoLanguage method env req repo Nothing $ \gleanDBs _mlang -> do
         backendRunHaxl GleanBackend{..} $ do
-          allResults <- searchReposWithLimit limit searchQ $ \r -> do
-            r@(entity, Code.Location{..}, kind) <- Query.toSearchResult r
-            loc <- rangeSpanToLocationRange repo location_file location_location
-            path <- GleanPath <$> Glean.keyOf location_file
-            symbol <- toSymbolId (fromGleanPath repo path) entity
-            description <- if terse then pure Nothing else Just <$>
-              describeEntity loc entity symbol (symbolKindToSymbolKind <$> kind)
-            gleanRepo <- Glean.haxlRepo
-            return ((gleanRepo, r), description)
+          allResults <- searchReposWithLimit limit searchQ (processResult repo)
           let (results, descriptions) = unzip allResults
-          let mDescriptions = if terse then [] else catMaybes descriptions
-          symbols <- if terse
-            then mapM (symbolIdOf repo) results
-            else return $ map symbolDescription_sym mDescriptions
+              symbols = map sSymId results
+              mDescriptions = if terse then [] else catMaybes descriptions
           return (SearchByNameResult symbols mDescriptions, Nothing)
 
-    symbolIdOf repo (gleanRepo, (entity, Code.Location{..}, _span)) =
-       withRepo gleanRepo $ do
-          path <- GleanPath <$> Glean.keyOf location_file
-          toSymbolId (fromGleanPath repo path) entity
+    processResult
+      :: RepoName
+      -> CodeSearch.SearchByNameAndKind
+      -> RepoHaxl u w (GlassSearchResult, Maybe SymbolDescription)
+    processResult repo result = do
+      (sEntity, Code.Location{..}, kind) <- Query.toSearchResult result
+      sLocation <- rangeSpanToLocationRange repo location_file location_location
+      path <- GleanPath <$> Glean.keyOf location_file
+      sSymId <- toSymbolId (fromGleanPath repo path) sEntity -- one per symbol
+      let sKind = symbolKindToSymbolKind <$> kind
+      (GlassSearchResult{..},) <$> if terse
+        then pure Nothing
+        else Just <$> describeEntity sLocation sEntity sSymId sKind
 
     takeLimit :: [a] -> [a]
     takeLimit = maybe id take limit
@@ -1030,6 +1035,15 @@ searchEntityByString method query env@Glass.Env{..} req opts = case repoLangs of
       SearchByNameResult
         (takeLimit $ searchByNameResult_symbols =<< res)
         (takeLimit $ searchByNameResult_symbolDetails =<< res)
+
+-- Non-optional components of a search result. We always need kinds, locations,
+-- symbol ids, entities and repos. Only the full description is optional
+data GlassSearchResult =
+  GlassSearchResult {
+    sSymId :: !SymbolId,
+    sLocation :: !LocationRange,
+    sKind :: !(Maybe SymbolKind)
+  }
 
 partialSymbolTokens
   :: SymbolId
