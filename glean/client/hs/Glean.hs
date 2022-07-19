@@ -59,6 +59,7 @@ module Glean
   , WorkCancelled(..)
   , WorkFinished(..)
   , GetSchemaInfo(..)
+  , SchemaId(..)
   , SchemaInfo(..)
   , UnknownDatabase(..)
   , Outcome(..)
