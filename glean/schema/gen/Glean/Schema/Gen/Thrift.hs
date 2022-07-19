@@ -267,7 +267,6 @@ genNamespace mode slashVn namespaces version
     , "namespace py3 " <> py3Namespace mode
     , "namespace java.swift " <> javaBaseModule mode <> "."
       <> underscored namespaces
-    , "namespace rust " <> rustBaseModule mode <> "_" <> underscored namespaces
     , ""
     , "hs_include \"glean/schema" <> slashVn
       <> "/thrift/" <> (case mode of Data -> ""; Query -> "query/")
