@@ -338,7 +338,8 @@ mkSymbolDescription
 mkSymbolDescription repo entity file rangespan symbolId = do
   loc <- rangeSpanToLocationRange repo file rangespan
   kind <- eitherToMaybe <$> findSymbolKind entity
-  describeEntity loc entity symbolId kind
+  let lang = entityLanguage entity
+  describeEntity entity $ EntityBasicDetails symbolId  loc kind lang
 
 -- | Search for entities by string fragments of names
 searchByName
@@ -930,38 +931,34 @@ runErrorLog env cmd err = ErrorsLogger.runLog (Glass.logger env) $
 
 -- | Return a description for an Entity.
 describeEntity
-  :: LocationRange
-  -> Code.Entity
-  -> SymbolId
-  -> Maybe SymbolKind
+  :: Code.Entity
+  -> EntityBasicDetails
   -> Glean.RepoHaxl u w SymbolDescription
-describeEntity
-    LocationRange{..} ent symbolDescription_sym symbolDescription_kind = do
+describeEntity ent EntityBasicDetails{..} = do
   repo <- Glean.haxlRepo
-  qname <- toQualifiedName ent
-  symbolDescription_name <- case qname of
-    Right a -> return a
-    Left err -> throwM $ ServerException err
-  let symbolDescription_location =
-        SymbolPath { symbolPath_range = locationRange_range
-                   , symbolPath_repository = locationRange_repository
-                   , symbolPath_filepath = locationRange_filepath
-                   }
-  annotations <- getAnnotationsForEntity ent
-  symbolDescription_annotations <- case annotations of
-    Right anns -> return anns
-    Left err -> throwM $ ServerException err
-  comments <- getCommentsForEntity locationRange_repository ent
-  visibility <- getVisibilityForEntity ent
-  symbolDescription_visibility <- case visibility of
-    Right vis -> return vis
-    Left err -> throwM $ ServerException err
-  symbolDescription_comments <- case comments of
-    Right comments -> return comments
-    Left err -> throwM $ ServerException err
+  let symbolDescription_location = SymbolPath {
+        symbolPath_range = locationRange_range,
+        symbolPath_repository = locationRange_repository,
+        symbolPath_filepath = locationRange_filepath
+      }
   let symbolDescription_repo_hash = Glean.repo_hash repo
       symbolDescription_language = entityLanguage ent
+
+  symbolDescription_name <- eThrow =<< toQualifiedName ent
+  symbolDescription_annotations <- eThrow =<< getAnnotationsForEntity ent
+  symbolDescription_comments <- eThrow =<<
+    getCommentsForEntity locationRange_repository ent
+  symbolDescription_visibility <- eThrow =<< getVisibilityForEntity ent
+
   return SymbolDescription{..}
+
+  where
+    LocationRange{..} = sLocation
+    symbolDescription_sym = sSymId
+    symbolDescription_kind = sKind
+
+    eThrow (Right x) = pure x
+    eThrow (Left err) = throwM $ ServerException err
 
 -- | Returns entities based on a string needle and an Angle query. Shared
 -- implementation between searchByName and searchByNamePrefix.
@@ -1018,16 +1015,17 @@ searchEntityByString method query env@Glass.Env{..} req opts = case repoLangs of
     processResult
       :: RepoName
       -> CodeSearch.SearchByNameAndKind
-      -> RepoHaxl u w (GlassSearchResult, Maybe SymbolDescription)
+      -> RepoHaxl u w (EntityBasicDetails, Maybe SymbolDescription)
     processResult repo result = do
       (sEntity, Code.Location{..}, kind) <- Query.toSearchResult result
       sLocation <- rangeSpanToLocationRange repo location_file location_location
       path <- GleanPath <$> Glean.keyOf location_file
       sSymId <- toSymbolId (fromGleanPath repo path) sEntity -- one per symbol
       let sKind = symbolKindToSymbolKind <$> kind
-      (GlassSearchResult{..},) <$> if terse
-        then pure Nothing
-        else Just <$> describeEntity sLocation sEntity sSymId sKind
+          sLanguage = entityLanguage sEntity
+          basics = EntityBasicDetails{..}
+      (basics,) <$>
+        if terse then pure Nothing else Just <$> describeEntity sEntity basics
 
     takeLimit :: [a] -> [a]
     takeLimit = maybe id take limit
@@ -1039,11 +1037,12 @@ searchEntityByString method query env@Glass.Env{..} req opts = case repoLangs of
 
 -- Non-optional components of a search result. We always need kinds, locations,
 -- symbol ids, entities and repos. Only the full description is optional
-data GlassSearchResult =
-  GlassSearchResult {
+data EntityBasicDetails =
+  EntityBasicDetails {
     sSymId :: !SymbolId,
     sLocation :: !LocationRange,
-    sKind :: !(Maybe SymbolKind)
+    sKind :: !(Maybe SymbolKind),
+    sLanguage :: !Language
   }
 
 partialSymbolTokens
