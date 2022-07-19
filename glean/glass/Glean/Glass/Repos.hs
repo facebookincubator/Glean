@@ -30,7 +30,7 @@ module Glean.Glass.Repos
   , toRepoName
   , findLanguages
   , findRepos
-  , selectReposAndLanguages
+  , selectRepos
   ) where
 
 import qualified Data.Text as Text
@@ -95,12 +95,16 @@ allGleanRepos = Set.fromList $
 -- - Selection does not preserve the order of languages in a repo.
 -- - Overlapping dbs (e.g. fbsource and fbsource.arvr.cxx) are de-duped
 --
-selectReposAndLanguages
-  :: Maybe RepoName -> Maybe Language -> Either Text [(RepoName, Language)]
-selectReposAndLanguages mRepoName mLang =
+-- Note this will over-approximate the Glean dbs to use, as something like
+--
+-- (fbsource, cpp) will evaluate to all dbs associated with "fbsource"
+--
+selectRepos
+  :: Maybe RepoName -> Maybe Language -> Either Text (Set RepoName)
+selectRepos mRepoName mLang =
   case uniq (filter matches candidates) of
     [] -> Left err
-    pairs -> Right pairs
+    pairs -> Right $ Set.fromList (map fst pairs)
   where
     candidates = listGleanIndices isTestOnly
 

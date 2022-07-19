@@ -482,6 +482,64 @@
                     "lineEnd": 37
                 },
                 "sym": "test/cpp/h/t"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 10,
+                    "lineBegin": 43,
+                    "lineEnd": 43
+                },
+                "sym": "test/pp/test.cpp/A"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 10,
+                    "lineBegin": 44,
+                    "lineEnd": 44
+                },
+                "sym": "test/pp/test.cpp/B"
             }
         ],
         "references": [

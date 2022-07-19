@@ -16,6 +16,8 @@ module Glean.Glass.Utils
   , fetchDataRecursive
   , searchWithLimit
   , searchReposWithLimit
+  , searchReposAndFilterWithLimit
+
   , searchPredicateWithLimit
   , searchRecursiveWithLimit
 
@@ -33,6 +35,7 @@ import Glean.Angle as Angle ( query, Angle )
 import Glean.Typed.Binary ( Type )
 import Glean.Typed.Predicate ( Predicate )
 import Data.Typeable ( Typeable )
+import Data.Maybe
 
 import Data.Text as Text ( Text, pack, unpack )
 import System.FilePath ( splitDirectories, joinPath )
@@ -74,6 +77,19 @@ searchReposWithLimit limit angle act = do
   results <- Glean.queryAllRepos $ do
     res <- searchWithLimit limit angle
     mapM act res -- we would like this to be concurrent
+  return $ maybe id take limit results
+
+-- | Search and filter over set of repos. Limit applies to filtered results
+searchReposAndFilterWithLimit
+  :: QueryType q
+  => Maybe Int
+  -> Angle q
+  -> (q -> RepoHaxl u w (Maybe a))
+  -> ReposHaxl u w [a]
+searchReposAndFilterWithLimit limit angle act = do
+  results <- Glean.queryAllRepos $ do
+    res <- searchWithLimit limit angle
+    catMaybes <$> mapM act res -- we would like this to be concurrent
   return $ maybe id take limit results
 
 -- | Run a non-recursive predicate only query with optional limit

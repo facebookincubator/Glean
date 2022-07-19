@@ -1,0 +1,2 @@
+action: searchByName
+args: {"context": {"repo_name": "test", "language": 3, "kinds": []}, "name": "HelperClass", "detailedResults": false, "ignoreCase": false }

@@ -2,7 +2,7 @@
     "@generated",
     {
         "revision": "testhash",
-        "size": 27,
+        "size": 29,
         "symbols": {
             "11": [
                 {
@@ -984,6 +984,50 @@
                         "lineBegin": 30,
                         "lineEnd": 30
                     }
+                }
+            ],
+            "43": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 8
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 43,
+                        "lineEnd": 43
+                    },
+                    "sym": "test/pp/test.cpp/A"
+                }
+            ],
+            "44": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 8
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 44,
+                        "lineEnd": 44
+                    },
+                    "sym": "test/pp/test.cpp/B"
                 }
             ],
             "9": [

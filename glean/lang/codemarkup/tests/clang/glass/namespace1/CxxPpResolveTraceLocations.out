@@ -3,6 +3,72 @@
   {
     "key": {
       "tuplefield0": {
+        "name": "A",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 43,
+            "columnBegin": 9,
+            "lineEnd": 43,
+            "columnEnd": 9
+          }
+        }
+      },
+      "tuplefield1": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "A" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 43,
+                "columnBegin": 9,
+                "lineEnd": 43,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "B",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 44,
+            "columnBegin": 9,
+            "lineEnd": 44,
+            "columnEnd": 9
+          }
+        }
+      },
+      "tuplefield1": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "B" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 44,
+                "columnBegin": 9,
+                "lineEnd": 44,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
         "name": "S",
         "file": { "key": "test.cpp" },
         "location": {

@@ -4,6 +4,74 @@
     "key": {
       "file": { "key": "test.cpp" },
       "location": {
+        "name": "A",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 43,
+            "columnBegin": 9,
+            "lineEnd": 43,
+            "columnEnd": 9
+          }
+        }
+      },
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "A" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 43,
+                "columnBegin": 9,
+                "lineEnd": 43,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "B",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 44,
+            "columnBegin": 9,
+            "lineEnd": 44,
+            "columnEnd": 9
+          }
+        }
+      },
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "B" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 44,
+                "columnBegin": 9,
+                "lineEnd": 44,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
         "name": "S",
         "file": { "key": "test.cpp" },
         "location": {

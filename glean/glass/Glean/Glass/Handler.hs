@@ -58,7 +58,7 @@ import Logger.GleanGlass ( GleanGlassLogger )
 import Logger.GleanGlassErrors ( GleanGlassErrorsLogger )
 import Util.Logger ( loggingAction )
 import Util.Text ( textShow )
-import Util.List ( uniq, uniqBy )
+import Util.List ( uniqBy )
 import Util.Control.Exception (catchAll)
 import qualified Logger.GleanGlass as Logger
 import qualified Logger.GleanGlassErrors as ErrorsLogger
@@ -101,7 +101,7 @@ import Glean.Glass.Repos
       fromSCSRepo,
       lookupLatestRepos,
       toRepoName,
-      selectReposAndLanguages,
+      selectRepos,
       GleanDBAttrName(GleanDBAttrName, gleanAttrDBName) )
 import Glean.Glass.Path
     ( toGleanPath, fromGleanPath )
@@ -180,7 +180,6 @@ import Glean.Glass.Search as Search
       SearchEntity(SearchEntity, rangespan, file, decl, entityRepo),
       SearchResult(Many, None, One), prefixSearchEntity )
 import Glean.Glass.Utils
-    ( searchRecursiveWithLimit, QueryType, searchReposWithLimit )
 import qualified Data.Set as Set
 import Glean.Glass.Attributes.SymbolKind
     ( symbolKindFromSymbolKind, symbolKindToSymbolKind )
@@ -972,13 +971,13 @@ searchEntityByString
 searchEntityByString method query env@Glass.Env{..} req opts = case repoLangs of
     Left err -> throwIO $ ServerException err
     Right candidates -> joinResults <$> Async.mapConcurrently
-      searchEntityByStringInRepo (uniq (map fst candidates))
+      searchEntityByStringInRepo (Set.toList candidates)
   where
-    -- expand repo/lang choice into set of possible repo/lang pairs
-    repoLangs = selectReposAndLanguages repo lang
+    -- expand repo/lang choice into set of possible repos
+    repoLangs = selectRepos repo mLang
 
     repo = searchContext_repo_name context
-    lang = searchContext_language context
+    mLang = searchContext_language context -- optional language filter
     limit = fromIntegral <$> requestOptions_limit opts
     context = searchByNameRequest_context req
     terse = not $ searchByNameRequest_detailedResults req
@@ -1004,9 +1003,10 @@ searchEntityByString method query env@Glass.Env{..} req opts = case repoLangs of
     --
     searchEntityByStringInRepo :: RepoName -> IO SearchByNameResult
     searchEntityByStringInRepo repo =
-      withRepoLanguage method env req repo Nothing $ \gleanDBs _mlang -> do
+      withRepoLanguage method env req repo Nothing $ \gleanDBs _mlang ->
         backendRunHaxl GleanBackend{..} $ do
-          allResults <- searchReposWithLimit limit searchQ (processResult repo)
+          allResults <- searchReposAndFilterWithLimit limit searchQ
+            (processResult repo)
           let (results, descriptions) = unzip allResults
               symbols = map sSymId results
               mDescriptions = if terse then [] else catMaybes descriptions
@@ -1015,17 +1015,25 @@ searchEntityByString method query env@Glass.Env{..} req opts = case repoLangs of
     processResult
       :: RepoName
       -> CodeSearch.SearchByNameAndKind
-      -> RepoHaxl u w (EntityBasicDetails, Maybe SymbolDescription)
+      -> RepoHaxl u w (Maybe (EntityBasicDetails, Maybe SymbolDescription))
     processResult repo result = do
       (sEntity, Code.Location{..}, kind) <- Query.toSearchResult result
-      sLocation <- rangeSpanToLocationRange repo location_file location_location
-      path <- GleanPath <$> Glean.keyOf location_file
-      sSymId <- toSymbolId (fromGleanPath repo path) sEntity -- one per symbol
-      let sKind = symbolKindToSymbolKind <$> kind
-          sLanguage = entityLanguage sEntity
-          basics = EntityBasicDetails{..}
-      (basics,) <$>
-        if terse then pure Nothing else Just <$> describeEntity sEntity basics
+      let sLanguage = entityLanguage sEntity
+      ifMatchesLanguage sLanguage $ do
+        sLocation <- rangeSpanToLocationRange repo location_file
+          location_location
+        path <- GleanPath <$> Glean.keyOf location_file
+        sSymId <- toSymbolId (fromGleanPath repo path) sEntity -- one per symbol
+        let sKind = symbolKindToSymbolKind <$> kind
+            basics = EntityBasicDetails{..}
+        (basics,) <$>
+          if terse then pure Nothing else Just <$> describeEntity sEntity basics
+      where
+        -- conditionally process the symbol if the user requested a language
+        ifMatchesLanguage thisEntityLang act = case mLang of
+          Just userReqLang
+            | thisEntityLang /= userReqLang -> pure Nothing
+          _ -> Just <$> act
 
     takeLimit :: [a] -> [a]
     takeLimit = maybe id take limit

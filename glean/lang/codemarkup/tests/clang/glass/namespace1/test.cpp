@@ -39,3 +39,7 @@ void h() {
   foo::foo();
   foo::bar::g();
 }
+
+#define A "one"
+#define B "two"
+
