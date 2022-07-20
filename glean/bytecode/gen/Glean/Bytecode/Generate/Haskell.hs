@@ -50,8 +50,7 @@ main = do
   createDirectoryIfMissing True dir
   genModule dir "Instruction"
     [ "DeriveFunctor", "DeriveFoldable", "DeriveTraversable" ]
-    [ "Op(..)"
-    , "Insn(..)"
+    [ "Insn(..)"
     , "insnSize"
     , "insnWords"
     , "insnControl"
@@ -61,7 +60,6 @@ main = do
       , "import Text.Show (showListWith)"
       , "import qualified Glean.Bytecode.Decode as D"
       , "import Glean.Bytecode.Types" ]
-    , genOpEnum
     , genInsnType
     , genInsnSize
     , genInsnWords
@@ -100,13 +98,6 @@ genModule path name exts es ls =
   [ "  ) where"
   , "" ]
   ++ ls
-
-genOpEnum :: [Text]
-genOpEnum =
-  [ "data Op" ]
-  ++ list "  = " "  | " ["Op_" <> insnName insn | insn <- instructions]
-  ++
-  [ "  deriving(Eq,Ord,Enum,Bounded,Show)" ]
 
 -- | Generate the Insn type. We parametrise over the types of registers and
 -- labels.
@@ -157,9 +148,8 @@ genInsnWords =
       <> Text.unwords (insnName insn : map argName (insnArgs insn))
       <> ") = concat ["
       <> Text.intercalate ", "
-          ("[fromIntegral (fromEnum Op_" <> insnName insn <> ")]"
-          : map argWords (insnArgs insn))
-      <> "]" | insn <- instructions ]
+          ("[" <> Text.pack (show op) <> "]" : map argWords (insnArgs insn))
+      <> "]" | (op, insn) <- zip [0 :: Int ..] instructions ]
     where
       argWords (Arg name Offset Imm) = "[fromLabel " <> name <> "]"
       argWords (Arg name Offsets Imm) =
