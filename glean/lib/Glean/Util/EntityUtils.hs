@@ -115,6 +115,7 @@ trimCodeEntity = \case
         Hack.Declaration_function_ y -> trim y
         Hack.Declaration_globalConst y -> trim y
         Hack.Declaration_namespace_ y -> trim y
+        Hack.Declaration_module y -> trim y
         Hack.Declaration_method y -> trim y
         Hack.Declaration_property_ y -> trim y
         Hack.Declaration_typeConst y -> trim y

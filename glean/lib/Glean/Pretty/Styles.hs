@@ -118,6 +118,8 @@ name_function_magic :: Style
 name_function_magic = "fm"
 name_label :: Style
 name_label = "nl"
+name_module :: Style
+name_module = "nm"
 name_namespace :: Style
 name_namespace = "nn"
 name_tag :: Style

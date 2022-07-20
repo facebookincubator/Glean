@@ -34,6 +34,7 @@ instance Symbol Hack.Declaration where
     Hack.Declaration_globalConst x -> toSymbolPredicate x
     Hack.Declaration_namespace_ x -> toSymbolPredicate x
     Hack.Declaration_typedef_ x -> toSymbolPredicate x
+    Hack.Declaration_module x -> toSymbolPredicate x
     Hack.Declaration_EMPTY -> return []
 
 instance Symbol Hack.TypeConstDeclaration_key where
@@ -47,6 +48,9 @@ instance Symbol Hack.ClassConstDeclaration_key where
 
 instance Symbol Hack.MethodDeclaration_key where
   toSymbol (Hack.MethodDeclaration_key name container) = container <:> name
+
+instance Symbol Hack.ModuleDeclaration_key where
+  toSymbol (Hack.ModuleDeclaration_key name) = toSymbol name
 
 instance Symbol Hack.EnumDeclaration_key where
   toSymbol (Hack.EnumDeclaration_key qn) = toSymbol qn
@@ -118,6 +122,7 @@ instance ToQName Hack.Declaration where
     Hack.Declaration_function_ x -> Glean.keyOf x >>= toQName
     Hack.Declaration_globalConst x -> Glean.keyOf x >>= toQName
     Hack.Declaration_method x -> Glean.keyOf x >>= toQName
+    Hack.Declaration_module x -> Glean.keyOf x >>= toQName
     Hack.Declaration_namespace_ x -> Glean.keyOf x >>= toQName
     Hack.Declaration_property_ x -> Glean.keyOf x >>= toQName
     Hack.Declaration_typeConst x -> Glean.keyOf x >>= toQName
@@ -126,6 +131,10 @@ instance ToQName Hack.Declaration where
 
 instance ToQName Hack.ClassConstDeclaration_key where
   toQName (Hack.ClassConstDeclaration_key name con) = pairToQName name con
+
+instance ToQName Hack.ModuleDeclaration_key where
+  toQName (Hack.ModuleDeclaration_key name) =
+      Right . (, Name "") . Name . intercalate "/" <$> toSymbol name
 
 instance ToQName Hack.ContainerDeclaration where
   toQName (Hack.ContainerDeclaration_class_ x) = Glean.keyOf x >>= toQName

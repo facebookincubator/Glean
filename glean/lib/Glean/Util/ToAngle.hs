@@ -115,6 +115,7 @@ instance ToAngle Hack.Declaration where
     Hack.Declaration_function_ x -> alt @"function_" (mkKey x)
     Hack.Declaration_globalConst x -> alt @"globalConst" (mkKey x)
     Hack.Declaration_method x -> alt @"method" (mkKey x)
+    Hack.Declaration_module x -> alt @"module" (mkKey x)
     Hack.Declaration_namespace_ x -> alt @"namespace_" (mkKey x)
     Hack.Declaration_property_ x -> alt @"property_" (mkKey x)
     Hack.Declaration_typeConst x -> alt @"typeConst" (mkKey x)

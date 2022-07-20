@@ -101,10 +101,13 @@ data Decl
   | Property Name
   | TypeConst Name
   | Typedef QualName
+  | Module Name
 
 prettyDecl :: Decl -> Text
 prettyDecl (ClassConst name) =
   "const" <+> ppName name
+prettyDecl (Module name) =
+  "module" <+> ppName name
 prettyDecl (Enum name) =
   "enum" <+> ppQualName name
 prettyDecl (Trait name) =
@@ -215,6 +218,10 @@ decl (Hack.Declaration_function_ fun@Hack.FunctionDeclaration{..}) = do
   let sign = Hack.functionDefinition_key_signature def
   pure $ Function (modifiersForFunction def) (QualName name)
     (toSignature sign)
+decl (Hack.Declaration_module Hack.ModuleDeclaration{..}) = do
+  Hack.ModuleDeclaration_key{..} <- liftMaybe moduleDeclaration_key
+  name <- liftMaybe $ Hack.name_key moduleDeclaration_key_name
+  pure $ Module $ Name name
 decl (Hack.Declaration_globalConst Hack.GlobalConstDeclaration{..}) = do
   Hack.GlobalConstDeclaration_key{..} <- liftMaybe globalConstDeclaration_key
   name <- liftMaybe $ qName globalConstDeclaration_key_name

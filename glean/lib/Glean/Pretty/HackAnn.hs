@@ -32,6 +32,7 @@ import Glean.Pretty.Style (Style)
 data HackNaming
   = IsNamespace Hack.NamespaceQName
   | InNamespace Style Hack.QName
+  | IsModule Style Hack.Name
   | InQName Style Hack.Name Style Hack.QName
 
 -- | Helper to extract the name
@@ -50,6 +51,8 @@ hackNaming = \case
       name_class (Hack.enumDeclaration_key_name edk))
   Hack.Declaration_function_ x -> InNamespace name_function
     . Hack.functionDeclaration_key_name <$> getFactKey x
+  Hack.Declaration_module x -> IsModule name_module
+    . Hack.moduleDeclaration_key_name <$> getFactKey x
   Hack.Declaration_globalConst x -> InNamespace name_constant
     . Hack.globalConstDeclaration_key_name <$> getFactKey x
   Hack.Declaration_namespace_ x -> do
@@ -133,6 +136,7 @@ prettyShortDeclaration d = case hackNaming d of
   Just (IsNamespace nqn) -> fromMaybe mempty $ do
     Hack.NamespaceQName_key{..} <- getFactKey nqn
     pure $ prettyName name_namespace namespaceQName_key_name
+  Just (IsModule s n) -> prettyName s n
   Just (InNamespace s1 qn) -> prettyShortQName s1 qn
   Just (InQName s1 n _s2 _qn) -> prettyName s1 n
   Nothing -> mempty
@@ -141,6 +145,7 @@ prettyShortDeclaration d = case hackNaming d of
 prettyScopedDeclaration :: Hack.Declaration -> Doc (Ann r)
 prettyScopedDeclaration d = case hackNaming d of
   Just (IsNamespace nqn) -> prettyScopedNamespaceQName nqn
+  Just (IsModule s n) -> prettyName s n
   Just (InNamespace s1 qn) -> prettyScopedQName s1 qn
   Just (InQName s1 n s2 qn) -> prettyScopedInQName s1 n s2 qn
   Nothing -> mempty

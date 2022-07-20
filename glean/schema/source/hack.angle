@@ -124,7 +124,8 @@ type Constraint =
 predicate UserAttribute :
   {
     name : Name,
-    parameters : [string]
+    parameters : [string],
+    qname : maybe QName,
   }
 
 # Hack type parameter
@@ -139,6 +140,10 @@ type TypeParameter =
 
 # Hack namespace
 predicate NamespaceDeclaration : { name : NamespaceQName }
+
+# Declaration/Definition of a Hack module
+# generated from "new module" constructs)
+predicate ModuleDeclaration : { name : Name }
 
 # Declaration of a Hack class
 predicate ClassDeclaration : { name : QName }
@@ -218,6 +223,7 @@ type Declaration =
     property_ : PropertyDeclaration |
     typeConst : TypeConstDeclaration |
     typedef_ : TypedefDeclaration |
+    module : ModuleDeclaration |
   }
 
 # The location of a declaration, spanning the name declared only
@@ -235,6 +241,8 @@ predicate DeclarationLocation :
 # most constructs, but these are excluded from the span location for container
 # properties, eg: the span of class property `protected string $foo = "bar";`
 # starts at `$foo` rather than `protected`.
+#
+# For modules, the span is the whole "new module Foo {}" expression
 predicate DeclarationSpan :
   {
     declaration : Declaration,
@@ -257,6 +265,15 @@ predicate DeclarationComment :
     span : src.ByteSpan,
   }
 
+type ModuleMembership = { declaration: ModuleDeclaration, internal: bool}
+
+# Infos related to a hack module
+predicate ModuleDefinition :
+  {
+    declaration : ModuleDeclaration,
+    attributes : [UserAttribute],
+  }
+
 # Definition of a Hack class
 predicate ClassDefinition :
   {
@@ -269,6 +286,7 @@ predicate ClassDefinition :
     uses : [TraitDeclaration],
     attributes : [UserAttribute],
     typeParams : [TypeParameter],
+    module_ : maybe ModuleMembership,
   }
 
 # Definition of a Hack interface
@@ -280,6 +298,7 @@ predicate InterfaceDefinition :
     attributes : [UserAttribute],
     typeParams : [TypeParameter],
     requireExtends : [ClassDeclaration],
+    module_ : maybe ModuleMembership,
   }
 
 # Definition of a Hack trait
@@ -293,6 +312,7 @@ predicate TraitDefinition :
     typeParams : [TypeParameter],
     requireExtends : [ClassDeclaration],
     requireImplements : [InterfaceDeclaration],
+    module_ : maybe ModuleMembership,
   }
 
 # Definition of a Hack enum
@@ -307,6 +327,7 @@ predicate EnumDefinition :
     # uses for normal enums, and extends for enum classes
     includes : [EnumDeclaration],
     isEnumClass : bool,
+    module_ : maybe ModuleMembership,
   }
 
 # Definition of a Hack typedef/alias
@@ -316,6 +337,7 @@ predicate TypedefDefinition :
     isTransparent : bool,
     attributes : [UserAttribute],
     typeParams : [TypeParameter],
+    module_ : maybe ModuleMembership,
   }
 
 # Definition of a Hack method (member function)
@@ -380,6 +402,7 @@ predicate FunctionDefinition :
     isAsync : bool,
     attributes : [UserAttribute],
     typeParams : [TypeParameter],
+    module_ : maybe ModuleMembership,
   }
 
 # Types of definitions in Hack
@@ -396,6 +419,7 @@ type Definition =
     property_ : PropertyDefinition |
     typeConst : TypeConstDefinition |
     typedef_ : TypedefDefinition |
+    module : ModuleDefinition |
   }
 
 # Occurrences are symbols referenced where the class definition could not
@@ -424,7 +448,7 @@ predicate StringLiteral : string
 type XRefTarget =
   {
     declaration : Declaration |
-    # occurrence : Occurrence | # needs version bump
+    occurrence : Occurrence |
   }
 
 # References to target code
@@ -527,6 +551,7 @@ predicate AttributeToDefinition :
   { AS[..], { method = { attributes = AS }}} |
   { AS[..], { property_ = { attributes = AS }}} |
   { AS[..], { typeConst = { attributes = AS }}} |
+  { AS[..], { module = { attributes = AS }}} |
   { AS[..], { typedef_ = { attributes = AS }}}
 
 predicate AttributeHasParameter :
@@ -536,7 +561,7 @@ predicate AttributeHasParameter :
     attribute : UserAttribute,
   }
   stored
-  { N, PS[..], UserAttribute { N, PS }}
+  { N, PS[..], UserAttribute { N, PS, _ }}
 
 # Declarations within a namespace
 predicate NamespaceMember :
@@ -572,6 +597,7 @@ predicate DeclarationName : Declaration -> Name
       (N where { method = X } = D; { name = N } = X) |
       (N where { property_ = X } = D; { name = N } = X) |
       (N where { typeConst = X } = D; { name = N } = X) |
+      (N where { module = X } = D; { name = N } = X) |
       (N where { typedef_ = X } = D; { name = { name = N }} = X)
 
 predicate ContainerDeclarationQName : ContainerDeclaration -> QName
