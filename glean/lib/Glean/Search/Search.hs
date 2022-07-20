@@ -21,9 +21,6 @@ module Glean.Search.Search
   , findHackDecls
   , findHsDecls
   , findJavaDecls
-
-  -- * Symbol Id
-  , module Glean.Search.EntityQuery
   ) where
 
 import Control.Monad
@@ -60,7 +57,6 @@ import Glean.Schema.Query.Src.Types as Query.Src
 import Glean.Schema.Query.SearchCxx.Types as Query.Cxx
 import Glean.Schema.Src.Types as Src
 import Glean.Search.Types as Search
-import Glean.Search.EntityQuery
 import Glean.Util.Range as Range
 import Glean.Util.SchemaRepos
 import Glean.Util.Some (Some)
