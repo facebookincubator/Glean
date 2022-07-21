@@ -203,6 +203,10 @@ runWithShards env myShards sm = do
       ServerConfig.Retention{..} =
         repoRetention config_retention $ Thrift.repo_name repo
     expireDatabase (fromIntegral <$> retention_expire_delay) env repo
+      `catch` \UnknownDatabase{} ->
+        -- DBs are deleted asynchronously and this code is not transactional,
+        -- so it's possible that the DB is not in the Catalog at this point
+        return ()
 
   restores <- fmap catMaybes $ forM fetch $ \(Item{..}, _) ->
     ifRestoreRepo env Nothing itemRepo $ do

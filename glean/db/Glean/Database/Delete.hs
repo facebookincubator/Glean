@@ -40,7 +40,8 @@ import Glean.Util.Time
 import qualified Glean.Util.Warden as Warden
 
 
--- | Schedule DBs for deletion or expiration
+-- | Schedule DBs for deletion or expiration.
+--   Throws 'UnknownDatabase' exceptions
 expireDatabase :: Maybe NominalDiffTime -> Env -> Repo -> IO ()
 expireDatabase delay env@Env{..} repo = do
   now <- getCurrentTime
