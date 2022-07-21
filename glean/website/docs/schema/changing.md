@@ -4,77 +4,112 @@ title: How do I change a schema?
 sidebar_label: Changing a schema
 ---
 
-:::important
+Glean supports modifying the schema directly, while providing
+backwards compatibility between existing clients and data across the
+schema change.
 
-Predicates are never modified. We can only make new versions of a
-predicate, or delete an old version of a predicate when we no longer
-need to read or write data using it.
+### Basic rules
 
-:::
+To preserve compatibility between clients and data, the schema can
+only be changed in **compatible** ways. This means:
 
-A schema is a contract between indexer, client and server about
-the shape of facts. Schemas are used during the compilation of some clients to
-generate code to build queries and decode facts. Because it is not possible to
-update all running application clients and issue new databases in one atomic
-operation, if we change the shape of a predicate type clients will suddenly
-begin to create type-incorrect queries and become unable to decode facts.
+* Adding or removing a field from a record, if the field has a **defaultable** type (see [Default values](#default-values))
+* Adding or removing an alternative from a sum type
+* Adding or removing a predicate or type declaration
 
-Because of that you can only add new predicates or new versions of predicates, and
-delete old ones. This is to ensure compatibilty between different
-versions of clients and databases: adding new predicates to the schema
-doesn't break existing clients or indexers.
+An example of an *incompatible* change would be changing the type of a
+field, for example from `nat` to `bool`.
 
-To be specific, *modifying* a predicate means changing its type in any way. To modify a predicate you need to:
+Of course it's fine to make arbitrary changes to a schema that you're
+working on; the compatibility rules only come into effect when you
+have existing databases and want to preserve compability with clients
+during the schema change.
 
-* Add a new version of the predicate, creating a new schema version at the same time if necessary.
-  * This may entail adding new versions of other predicates too, because predicates that depended on the old version of the predicate must now be copied so that they can point to the new predicate you created.
-* Update and recompile clients and indexers as necessary to use your new version. Most of the time we don't use explicit versions in client code, so usually updating a client is just a recompile after the schema update.
+### Compatibility
 
-Changing the schema can present a tricky migration problem: there are indexers generating the data, clients reading the data, and existing databases that can contain either the old schema or the new schema. Glean provides features to make smooth migrations possible, see [Derived Predicates for Schema Migration](../derived.md#derived-predicates-for-schema-migration) and [Schema migrations with backward compatible changes](#schema-migrations-with-backward-compatible-changes)
+When the schema is changed, Glean supports any combination of old or
+new clients (that is, clients built against the old or new version of
+the schema) with old or new data.
 
-:::note
+* If the client requests a field that doesn't exist in the data, the field will be filled with its default value.
+* If a query matches on an alternative that doesn't exist in the schema, the match will fail.
+* If the data contains an alternative that doesn't exist in the client's schema, then the client will receive an `unknown` value (this is represented as an `EMPTY` constructor in the Thrift-generated datatypes).
 
-if you're just changing the derivation of a derived predicate, there's no need to create a new predicate version. The new derivation will take effect, for both old and new databases, as soon as the schema change is deployed.
+### Default values
 
-:::
+A **defaultable** type is any type that is not a predicate. So for
+example, if `P` is a predicate type, then we could add a field `f :
+maybe P` but not a field `f : P`. The reason for this restriction is
+that Glean must be able to substitute a default value for the
+field when a client is using the new schema but the data is using the
+old schema, and there cannot be a default value for a predicate.
 
-### Adding new predicates
+Default values for missing fields are determined according to the
+following table:
 
-If you're just adding new predicates or types, then you don't need to create a new schema version.
+| Type | Default value |
+|-------|-------|
+| <code>nat</code> | <code>0</code> |
+| <code>byte</code> | <code>0</code> |
+| <code>string</code> |  <code>""</code> |
+| <code>[T]</code> | <code>[]</code> |
+| <code>{ field₁ : T₁, ..., fieldₙ : Tₙ }</code> | <code>{ field₁ = default(T₁), ..., fieldₙ = default(Tₙ) }</code> |
+| <code>{ field₁ : T₁ &#124; ... &#124; fieldₙ : Tₙ }</code> | <code>{ field₁ = default(T₁) }</code> |
+| <code>bool</code> | <code>false</code> |
+| <code>maybe T</code> | <code>nothing</code> |
+| <code>enum { name₁ &#124; ... &#124; nameₙ }</code> | <code>name₁</code> |
 
-### Deleting predicates
 
-In most cases it's safe to delete predicates from the schema, provided you have no existing client code using them.
+### What if my schema changes are incompatible?
 
-## Schema migrations with backward compatible changes
+You can add new predicates representing the new data. Then you have
+the option of
 
-One of the challenges of migrations is that once you start producing databases with a new schema, clients which specify predicate versions in their queries will stop receiving results until they are updated to request the latest available version. If the client is updated first we have a similar problem; it will not receive results until databases with the latest schema are produced.
+1. Writing both the old and the new data to the database
+2. Producing two databases, one with the old data and one with the new data. The databases can be distinguished by different names or different properties.
 
-To allow old clients which specify predicate versions to still receive results when schemas are updated Glean supports **schema evolution**, a feature where facts of a new schema can be automatically transformed into facts of an older schema to be returned to old clients.
+With approach (1), you can migrate clients incrementally and then eventually
+stop producing the old data. But the downside of this approach is that
+the database may contain a lot more data than necessary; writing may
+take a lot longer, and so on.
 
-To use schema evolutions, all changes made in the new schema must be backward compatible. The following are the supported backward compatible changes:
+With approach (2), you first have to ensure clients select the old
+database. Then as you migrate clients, change them to use the new data
+and select the new database at the same time.
 
-- Add a field to a predicate/type
-- Change field order in a predicate/type
-- Change alternative order in a sum type or enum
-- Add a predicate
-- Add alternatives to unions and enums
-- Remove a predicate
+### How does it work?
 
-Changes that are not backward compatible are not supported, such as:
-- Remove a field
-- Change the type of a field
-- Remove an alternative
+A particular instance of the schema is identified by a
+`SchemaId`. This is a hash value computed from the full contents of
+the schema. The `SchemaId` of the current schema is available through
+the `schema_id` value exported by the `builtin` schema (the
+`Glean.Schema.Builtin.Types` module in Haskell).
 
-:::note
+The server keeps track of multiple instances of the schema in a
+**schema index**. Each instance of the schema is identified by its
+`SchemaId`. Each database also contains the schema that it was written
+with. The schema index is manipulated using the `gen-schema` tool in
+the Glean repository; to use a particular index we can use `--schema
+indexfile:FILE` or `--schema indexconfig:CONFIG`.
 
-When making a new schema version you may also have to update the
-special `all` schema to ensure a smooth migration for clients that are
-using unversioned queries. See [The special "all" schema](../all).
+A client sends its `SchemaId` to the server in the `schema_id` field
+of the query. For Haskell clients this is done automatically: the
+client passes its `SchemaId` when initialising the Glean client
+library, and this `SchemaId` is passed on to the server for every
+query.
 
-:::
+The server knows which schema the client is using, so it can translate
+the data in the database into the client's schema automatically.
+
+When a database is created, the schema used by the database is chosen
+by the `glean.schema_id` property set by the client creating the
+database. Again for Haskell clients this happens automatically.
 
 ### Evolving schemas
+
+Glean also allows backwards-compatibility between co-existing schemas,
+which can be useful if you want to perform schema changes in a more
+explicit way, or to rename schemas.
 
 The feature is enabled using a top-level directive
 
