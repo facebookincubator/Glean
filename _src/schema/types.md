@@ -8,13 +8,13 @@ sidebar_label: Built-in Types
 
 | Type | Meaning |
 |-------|-------|
-| nat | 64-bit natural numbers |
-| byte | 8-bit natural numbers |
-| string |  UTF-8 encoded strings |
-| [T] | lists of elements of type T |
-| { field₁ : T₁, ..., fieldₙ : Tₙ } | a record with zero or more named fields |
+| <code>nat</code> | 64-bit natural numbers |
+| <code>byte</code> | 8-bit natural numbers |
+| <code>string</code> |  UTF-8 encoded strings |
+| <code>[T]</code> | lists of elements of type T |
+| <code>{ field₁ : T₁, ..., fieldₙ : Tₙ }</code> | a record with zero or more named fields |
 | <code>{ field₁ : T₁ &#124; ... &#124; fieldₙ : Tₙ }</code> | a sum (union) type with one or more named alternatives |
-| P | a reference to a fact of predicate P |
-| bool | the boolean type with values **true** or **false** |
-| maybe T | an optional value of type T |
-| enum { name₁ &#124; ... &#124; nameₙ } | exactly one of the symbols name₁..nameₙ |
+| <code>P</code> | a reference to a fact of predicate P |
+| <code>bool</code> | the boolean type with values **true** or **false** |
+| <code>maybe T</code> | an optional value of type T |
+| <code>enum { name₁ &#124; ... &#124; nameₙ }</code> | exactly one of the symbols name₁..nameₙ |

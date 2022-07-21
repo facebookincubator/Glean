@@ -16,7 +16,13 @@ schema java.1 {
 }
 ```
 
-**What does the .1 suffix mean?** This is the *version* of the schema. You can later create `java.2` which adds and revises types and predicates in `java.1` without breaking existing clients that are using `java.1`.
+:::note
+
+**What does the .1 suffix mean?** This is the *version* of the
+  schema. Versions are a somewhat legacy feature and you should
+  normally leave everything at version 1.
+
+:::
 
 The name of the schema will be also used as the *namespace* for the
 generated Thrift types. You'll notice that each schema gets a separate
@@ -134,7 +140,7 @@ type Loc = {
 
 :::note
 
-Types cannot be recursive or mutually recursive. If you want a
+`type` declarations cannot be recursive or mutually recursive. If you want a
 recursive type, the cycle must go through at least one predicate. For
 more details, see [Recursion](recursion.md).
 
@@ -162,6 +168,14 @@ each schema exports a single version of a predicate or type, so the
 unversioned name is unambiguous.
 
 ### Inheritance and revising schemas
+
+:::warning
+
+Schema inheritance is a legacy feature and may be removed in the
+future. The process for safely changing schemas is described in
+[Changing the Schema](changing.md).
+
+:::
 
 ```
 schema example.2 : example.1 {
