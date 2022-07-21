@@ -27,6 +27,7 @@ import qualified Data.HashMap.Strict as HashMap
 import Data.IORef
 import Data.Maybe
 import qualified Data.Text as Text
+import GHC.Stack (HasCallStack)
 
 import qualified Util.Control.Exception.CallStack as CallStack
 import Util.Log
@@ -61,7 +62,7 @@ import qualified Glean.Util.Observed as Observed
 import Glean.Util.Time
 import qualified Glean.Util.Warden as Warden
 
-withOpenDatabase :: Env -> Repo -> (OpenDB -> IO a) -> IO a
+withOpenDatabase :: HasCallStack => Env -> Repo -> (OpenDB -> IO a) -> IO a
 withOpenDatabase env@Env{..} repo action =
   withActiveDatabase env repo $ \db@DB{..} -> do
     odb <- mask $ \restore -> do
@@ -197,7 +198,7 @@ releaseDB env DB{..} = do
           _ -> modifyTVar' (envActive env) $ HashMap.delete dbRepo
       _ -> return ()
 
-withActiveDatabase :: Env -> Repo -> (DB -> IO a) -> IO a
+withActiveDatabase :: HasCallStack => Env -> Repo -> (DB -> IO a) -> IO a
 withActiveDatabase env@Env{..} repo = bracket
   (atomically $ do
     r <- lookupActiveDatabase env repo

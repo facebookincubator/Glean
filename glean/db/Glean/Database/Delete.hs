@@ -19,6 +19,7 @@ import Control.Exception hiding(handle)
 import Control.Monad.Extra
 import qualified Data.HashMap.Strict as HashMap
 import Data.Time
+import GHC.Stack (HasCallStack)
 
 import ServiceData.GlobalStats as Stats
 import ServiceData.Types as Stats
@@ -42,7 +43,7 @@ import qualified Glean.Util.Warden as Warden
 
 -- | Schedule DBs for deletion or expiration.
 --   Throws 'UnknownDatabase' exceptions
-expireDatabase :: Maybe NominalDiffTime -> Env -> Repo -> IO ()
+expireDatabase :: HasCallStack => Maybe NominalDiffTime -> Env -> Repo -> IO ()
 expireDatabase delay env@Env{..} repo = do
   now <- getCurrentTime
   expired <- immediately $ do
@@ -98,7 +99,7 @@ removeDatabase env@Env{..} repo todo = uninterruptibleMask_ $
 
 -- | Schedule a DB for deletion and return the 'Async' which can be used to
 -- obtain the result.
-asyncDeleteDatabase :: Env -> Repo -> IO (Async ())
+asyncDeleteDatabase :: HasCallStack => Env -> Repo -> IO (Async ())
 asyncDeleteDatabase env@Env{..} repo = bracket
   newEmptyTMVarIO
   (\todo -> atomically $ tryPutTMVar todo Nothing) $ \todo -> do
@@ -131,5 +132,5 @@ asyncDeleteDatabase env@Env{..} repo = bracket
                 Nothing -> return $ CallStack.throwIO $ UnknownDatabase repo
                 Just remover -> return $ return remover
 
-deleteDatabase :: Env -> Repo -> IO ()
+deleteDatabase :: HasCallStack => Env -> Repo -> IO ()
 deleteDatabase env repo = asyncDeleteDatabase env repo >>= Async.wait
