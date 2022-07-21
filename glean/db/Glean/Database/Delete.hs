@@ -104,11 +104,15 @@ asyncDeleteDatabase env@Env{..} repo = bracket
     remover <- Warden.spawnMask envWarden $ const $ removeDatabase env repo todo
     join $ atomically $ do
       active <- HashMap.lookup repo <$> readTVar envActive
-      r <- case active of
+      let deleteDB db = do
+            modifyTVar' envDeleting $ HashMap.insert repo remover
+            putTMVar todo $ Just db
+            return $ return remover
+      case active of
         Just db -> do
           modifyTVar' envActive $ HashMap.delete repo
           writeTVar (dbTailers db) mempty  -- this causes the tailers to stop
-          return $ Just db
+          deleteDB db
         Nothing -> do
           deleting <- HashMap.lookup repo <$> readTVar envDeleting
           exists <- Catalog.exists envCatalog [Local] repo
@@ -119,17 +123,12 @@ asyncDeleteDatabase env@Env{..} repo = bracket
                   <$> newTVar Closed
                   <*> newTVar 0
                   <*> newTVar mempty
-                return $ Just db
-            _ -> return Nothing
-      case r of
-        Just db -> do
-          modifyTVar' envDeleting $ HashMap.insert repo remover
-          putTMVar todo $ Just db
-          return $ return remover
-
-        Nothing -> do
-          putTMVar todo Nothing
-          return $ CallStack.throwIO $ UnknownDatabase repo
+                deleteDB db
+            other -> do
+              putTMVar todo Nothing
+              case other of
+                Nothing -> return $ CallStack.throwIO $ UnknownDatabase repo
+                Just remover -> return $ return remover
 
 deleteDatabase :: Env -> Repo -> IO ()
 deleteDatabase env repo = asyncDeleteDatabase env repo >>= Async.wait
