@@ -11,7 +11,6 @@
 module Glean.Query.Transform
   ( transformQuery
   , transformType
-  , undoTypeTransformation
   , transformationsFor
   , transformResultsBack
   , Transformations
@@ -360,22 +359,6 @@ pidRef details = PidRef (predicatePid details) (predicateId details)
 -- ========================
 -- Transform back
 -- ========================
-
--- | Revert a transformation. Goes from predicate available in the db to
--- predicate requested in the query
-undoTypeTransformation :: Transformations -> Type -> Type
-undoTypeTransformation (Transformations transformations) ty =
-  undoTransformation ty
-  where
-    undoTransformation ty = bimap overPidRef overExpandedType ty
-
-    overPidRef pref =
-      case IntMap.lookup (fromIntegral $ fromPid $ pid pref) transformations of
-        Nothing -> pref
-        Just PredicateTransformation{..} -> pidRef tRequested
-
-    overExpandedType (ExpandedType tref ty) =
-      ExpandedType tref (undoTransformation ty)
 
 -- | Transform facts back into the type the query originally asked for.
 transformResultsBack :: Transformations -> QueryResults -> QueryResults
