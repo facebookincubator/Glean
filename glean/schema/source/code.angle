@@ -30,6 +30,57 @@ type Entity =
     lsif : code.lsif.Entity |
   }
 
+# language enum values for exactly the set of entity tags (including LSIF)
+#
+# n.b. flow => javascript, javascript is the user-facing language
+#
+type Language =
+  enum {
+    Cpp | PreProcessor | Java | Haskell | Python | Hack | JavaScript | Rust |
+    Thrift | Buck | Erlang | FSharp | Go | Kotlin | OCaml | Scala | Swift |
+    TypeScript
+  }
+
+# entity tag to language id
+predicate EntityLanguage:
+  {
+    entity: Entity,
+    language: Language
+  }
+  { Entity, Language } where
+    ( { cxx = _ } = Entity; Cpp = Language ) |
+    ( { pp = _ } = Entity; PreProcessor = Language ) |
+    ( { java = _ } = Entity; Java = Language ) |
+    ( { hs = _ } = Entity; Haskell = Language ) |
+    ( { python = _ } = Entity; Python = Language ) |
+    ( { hack = _ } = Entity; Hack = Language ) |
+    ( { flow = _ } = Entity; JavaScript = Language ) |
+    ( { rust = _ } = Entity; Rust = Language ) |
+    ( { thrift = _ } = Entity; Thrift = Language ) |
+    ( { buck = _ } = Entity; Buck = Language ) |
+    ( { erlang = _ } = Entity; Erlang = Language ) |
+    ( { lsif = LSIF }  = Entity; EntityLanguageLSIF { LSIF, Language } );
+
+# (private) helper for the LSIF subset
+predicate EntityLanguageLSIF:
+  {
+    entity: code.lsif.Entity,
+    language: Language
+  }
+  { LSIF, Language } where
+    ( { erlang = _ } = LSIF; Erlang = Language ) |
+    ( { fsharp = _ } = LSIF; FSharp = Language ) |
+    ( { go = _ } = LSIF; Go = Language ) |
+    ( { haskell = _ } = LSIF; Haskell = Language ) |
+    ( { java = _ } = LSIF; Java = Language ) |
+    ( { kotlin = _ } = LSIF; Kotlin = Language ) |
+    ( { ocaml = _ } = LSIF; OCaml = Language ) |
+    ( { python = _ } = LSIF; Python = Language ) |
+    ( { rust = _ } = LSIF; Rust = Language ) |
+    ( { scala = _ } = LSIF; Scala = Language ) |
+    ( { swift = _ } = LSIF; Swift = Language ) |
+    ( { typescript = _ } = LSIF; TypeScript = Language );
+
 type Annotations =
   {
     cxx : code.cxx.Annotations |

@@ -16,6 +16,29 @@ type SearchCase = enum { Sensitive | Insensitive }
 
 #
 # search for entities by identifier name, either case insensitive or not
+# with optional symbol kind and language filter constraints
+#
+predicate SearchByName:
+  {
+    searchcase: SearchCase,
+    name: string,
+    entity: code.Entity,
+    location: codemarkup.types.Location,
+    kind: maybe codemarkup.types.SymbolKind,
+    language: code.Language # optional language filter, could be wild
+  }
+  { SearchCase, Name, Entity, Location, Kind, Language } where
+    (Sensitive = SearchCase;
+      search.code.SearchByNameAndLanguage { Name, Language, Entity }) |
+    (Insensitive = SearchCase;
+      search.code.SearchByLowerCaseNameAndLanguage { Name, Language, Entity });
+    EntityLocationAndKind { Entity, Location, Kind };
+
+# -------------------------------------
+#
+# search for entities by identifier name, either case insensitive or not
+#
+# (deprecated)
 #
 predicate SearchByNameAndKind:
   {
@@ -37,6 +60,8 @@ predicate SearchByNameAndKind:
 
 # Basic entity search. From exact name or prefix
 # to entity, and location and kind. May filter on kind if present.
+#
+# (deprecated)
 predicate SearchEntityByName:
   {
     name: string,
@@ -49,6 +74,8 @@ predicate SearchEntityByName:
     EntityLocationAndKind { Entity, Location, MKind };
 
 # And the normalized lowercase form
+#
+# (deprecated)
 predicate SearchEntityByLowerCaseName:
   {
     name: string,
@@ -60,6 +87,7 @@ predicate SearchEntityByLowerCaseName:
     search.code.SearchByLowerCaseName { Name, Entity };
     EntityLocationAndKind { Entity, Location, MKind };
 
+# Symbol kind of entity, where kind is optional.
 predicate EntityLocationAndKind:
   {
     entity: code.Entity,
@@ -69,6 +97,6 @@ predicate EntityLocationAndKind:
   { Entity, Location, MKind } where
     codemarkup.EntityLocation { Entity, Location };
     (if codemarkup.EntityKind { Entity, Kind }
-        then { just = Kind } else nothing) = MKind;
+      then { just = Kind } else nothing) = MKind;
 
 }

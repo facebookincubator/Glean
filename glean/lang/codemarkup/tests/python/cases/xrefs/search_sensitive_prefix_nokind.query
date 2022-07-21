@@ -1,3 +1,3 @@
-query: codemarkup.search.SearchByNameAndKind { searchcase = Sensitive, name = "HelperCl".. }
+query: codemarkup.search.SearchByName { searchcase = Sensitive, name = "HelperCl".. }
 perf: true
 transform: [gensort, []]

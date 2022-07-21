@@ -24,7 +24,41 @@ import thrift.7
 # public API
 #
 
+# global symbol search with language constraint
+predicate SearchByNameAndLanguage:
+  {
+    name: string,
+    language: code.Language,
+    entity: code.Entity,
+  }
+  { Name, Language, Entity } where
+    ( Hack = Language; HackSearchByName { Name, Entity } ) |
+    ( Python = Language; PythonSearchByName { Name, Entity } ) |
+    ( JavaScript = Language; FlowSearchByName { Name, Entity } ) |
+    ( Cpp = Language; CxxSearchByName { Name, Entity } ) |
+    ( Haskell = Language; HsSearchByName { Name, Entity } ) |
+    ( Erlang = Language; ErlangSearchByName { Name, Entity } );
+    code.EntityLanguage { Entity, Language }; # double check the entity lang
+
+# global symbol search normalized to lower case
+predicate SearchByLowerCaseNameAndLanguage:
+  {
+    name: string,
+    language: code.Language,
+    entity: code.Entity,
+  }
+  { Name, Language, Entity } where
+    ( Hack = Language; HackSearchByLowerCaseName { Name, Entity } ) |
+    ( Python = Language; PythonSearchByLowerCaseName { Name, Entity } ) |
+    ( JavaScript = Language; FlowSearchByLowerCaseName { Name, Entity } ) |
+    ( Cpp = Language; CxxSearchByLowerCaseName { Name, Entity } ) |
+    ( Haskell = Language; HsSearchByLowerCaseName { Name, Entity } ) |
+    ( Erlang = Language; ErlangSearchByLowerCaseName { Name, Entity } );
+    code.EntityLanguage { Entity, Language }; # double check the entity lang
+
+
 # global entity search by identifier name (or prefix)
+# (deprecated)
 predicate SearchByName:
   {
     name: string,
@@ -41,6 +75,7 @@ predicate SearchByName:
 
 # same as SearchByName but assumes `name` is lowercase. Useful for
 # case-insensitive search
+# (deprecated)
 predicate SearchByLowerCaseName:
   {
     name: string,

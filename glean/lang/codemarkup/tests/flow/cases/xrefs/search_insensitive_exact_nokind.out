@@ -27,7 +27,8 @@
         "name": "foo",
         "file": { "key": "test/es_exports.js.flow" },
         "location": { "span": { "start": 235, "length": 3 } }
-      }
+      },
+      "language": 6
     }
   },
   {
@@ -57,7 +58,8 @@
         "name": "foo",
         "file": { "key": "test/imports.js" },
         "location": { "span": { "start": 287, "length": 3 } }
-      }
+      },
+      "language": 6
     }
   }
 ]
