@@ -1,0 +1,196 @@
+[
+    "@generated",
+    {
+        "definitions": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 19,
+                    "lineEnd": 24
+                },
+                "sym": "test/buck/buck_project/./bar"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 11,
+                    "lineEnd": 17
+                },
+                "sym": "test/buck/buck_project/./foo"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 3,
+                    "lineEnd": 9
+                },
+                "sym": "test/buck/buck_project/./foobar"
+            }
+        ],
+        "references": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 15,
+                    "lineBegin": 6,
+                    "lineEnd": 6
+                },
+                "sym": "test/buck/buck_project/./bar",
+                "target": {
+                    "filepath": "buck_project/TEST_TARGETS",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 19,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 15,
+                    "lineBegin": 15,
+                    "lineEnd": 15
+                },
+                "sym": "test/buck/buck_project/./bar",
+                "target": {
+                    "filepath": "buck_project/TEST_TARGETS",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 19,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 15,
+                    "lineBegin": 7,
+                    "lineEnd": 7
+                },
+                "sym": "test/buck/buck_project/./foo",
+                "target": {
+                    "filepath": "buck_project/TEST_TARGETS",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 11,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 30,
+                    "lineBegin": 14,
+                    "lineEnd": 14
+                },
+                "sym": "test/buck/buck_project/a/foo",
+                "target": {
+                    "filepath": "buck_project/a/TEST_TARGETS",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 11,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 30,
+                    "lineBegin": 22,
+                    "lineEnd": 22
+                },
+                "sym": "test/buck/buck_project/b/bar",
+                "target": {
+                    "filepath": "buck_project/b/TEST_TARGETS",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 11,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
+        "revision": "testhash"
+    }
+]

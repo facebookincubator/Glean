@@ -1,0 +1,2 @@
+action: documentSymbolListX
+args: {"include_refs":true,"filepath":"buck_project/TEST_TARGETS","repository":"test"}
