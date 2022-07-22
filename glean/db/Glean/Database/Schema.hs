@@ -13,6 +13,7 @@ module Glean.Database.Schema
   , TypeDetails(..)
   , schemaSize, schemaPredicates
   , fromStoredSchema, toStoredSchema
+  , toSchemaInfo
   , newDbSchema
   , newMergedDbSchema
   , CheckChanges(..)
@@ -114,10 +115,27 @@ storedSchemaPids StoredSchema{..} = HashMap.fromList
 toStoredSchema :: DbSchema -> StoredSchema
 toStoredSchema DbSchema{..} = StoredSchema
   { storedSchema_schema = renderSchemaSource (fst schemaSource)
-  , storedSchema_predicateIds = Map.fromList
+  , storedSchema_predicateIds = Map.fromList $
       [ (fromPid $ predicatePid p, predicateRef p)
-      | p <- HashMap.elems predicatesById ]
+      | p <- HashMap.elems predicatesById
+      , predicateInStoredSchema p
+      ]
+      -- Note: only the stored predicates. There can be multiple
+      -- predicates with the same PredicateRef (different Pid and
+      -- PredicateId), but only one of them is from the stored schema
+      -- and corresponds to the Pids of facts stored in the DB.
   , storedSchema_versions = toStoredVersions (snd schemaSource)
+  }
+
+-- Similar to toStoredSchema, but includes non-stored predicates too
+toSchemaInfo :: DbSchema -> SchemaInfo
+toSchemaInfo DbSchema{..} = SchemaInfo
+  { schemaInfo_schema = renderSchemaSource (fst schemaSource)
+  , schemaInfo_predicateIds = Map.fromList $
+      [ (fromPid $ predicatePid p, predicateRef p)
+      | p <- HashMap.elems predicatesById
+      ]
+  , schemaInfo_schemaIds = toStoredVersions (snd schemaSource)
   }
 
 data CheckChanges
@@ -226,11 +244,14 @@ mkDbSchema validate knownPids dbContent
 
     storedPids = case knownPids of
       Nothing -> zip (HashMap.keys (hashedPreds stored)) [lowestPid..]
-      Just pidMap ->
-        [ (id, HashMap.lookupDefault (Pid Thrift.iNVALID_ID) ref pidMap)
-        | (id, _) <- HashMap.toList (hashedPreds stored)
-        , let ref = predicateIdRef id
-        ]
+      Just pidMap -> assign first (HashMap.keys (hashedPreds stored))
+        where
+        first = maybe lowestPid succ $ maximumMay (HashMap.elems pidMap)
+        assign _next [] = []
+        assign next (id : ids) =
+          case HashMap.lookup (predicateIdRef id) pidMap of
+            Nothing -> (id, next) : assign (succ next) ids
+            Just pid -> (id, pid) : assign next ids
 
     nextPid = maybe lowestPid succ $ maximumMay (map snd storedPids)
 
@@ -830,7 +851,7 @@ validateNewSchemaInstance schema = do
 getSchemaInfo :: DbSchema -> SchemaIndex -> GetSchemaInfo -> IO SchemaInfo
 getSchemaInfo dbSchema SchemaIndex{..} GetSchemaInfo{..} = do
   let
-    StoredSchema source pids storedVersions = toStoredSchema dbSchema
+    SchemaInfo source pids storedVersions = toSchemaInfo dbSchema
 
     -- Try to find the source for the desired schema. It could be in
     -- our SchemaIndex, or it could be the schema stored in the DB if
