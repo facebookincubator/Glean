@@ -22,7 +22,7 @@ import Glean.Glass.Utils
 
 -- | Type of glean dbs
 newtype GleanDBName = GleanDBName { unGleanDBName :: Text }
-  deriving (Eq, Ord)
+  deriving (Eq, Ord, Show)
 
 instance IsString GleanDBName where fromString = GleanDBName . fromString
 

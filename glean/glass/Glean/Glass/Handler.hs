@@ -42,17 +42,17 @@ module Glean.Glass.Handler
 
 import Control.Concurrent.STM ( TVar )
 import Control.Exception ( throwIO, SomeException )
-import Control.Monad ( when, forM )
+import Control.Monad ( forM )
 import Data.Ord
 import Control.Monad.Catch ( throwM, try )
 import Data.Either.Extra (eitherToMaybe, partitionEithers)
 import Data.Foldable ( forM_ )
-import Data.List.NonEmpty (NonEmpty(..), toList)
+import Data.List.NonEmpty (NonEmpty(..), toList, nonEmpty)
 import Data.Maybe
 import Data.Text ( Text )
-import qualified Data.List as List
 import qualified Data.Map.Strict as Map
 import qualified Data.Text as Text
+import qualified Control.Concurrent.Async as Async
 
 import Logger.GleanGlass ( GleanGlassLogger )
 import Logger.GleanGlassErrors ( GleanGlassErrorsLogger )
@@ -80,8 +80,6 @@ import qualified Glean.Schema.CodemarkupSearch.Types as CodeSearch
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.Src.Types as Src
 
-import qualified Control.Concurrent.Async as Async
-
 import qualified Glean.Glass.Attributes as Attributes
 import Glean.Glass.Base
     ( GleanPath(..), SymbolRepoPath(..) )
@@ -101,7 +99,7 @@ import Glean.Glass.Repos
       fromSCSRepo,
       lookupLatestRepos,
       toRepoName,
-      selectRepos,
+      selectGleanDBs,
       GleanDBAttrName(GleanDBAttrName, gleanAttrDBName) )
 import Glean.Glass.Path
     ( toGleanPath, fromGleanPath )
@@ -810,20 +808,25 @@ getGleanRepos
   -> RepoName
   -> Maybe Language
   -> IO (NonEmpty (GleanDBName,Glean.Repo))
-getGleanRepos repos scsrepo mlanguage = do
+getGleanRepos latestGleanDBs scsrepo mlanguage = do
   let gleanDBNames = fromSCSRepo scsrepo mlanguage
-
-  when (List.null gleanDBNames) $
-    throwIO $ ServerException $ "No repository found for: " <>
+  case gleanDBNames of
+    [] ->  throwIO $ ServerException $ "No repository found for: " <>
       unRepoName scsrepo <>
         maybe "" (\x -> " (" <> toShortCode x <> ")") mlanguage
+    (x:xs) -> getSpecificGleanDBs latestGleanDBs (x :| xs)
 
-  dbs <- lookupLatestRepos repos gleanDBNames
+-- | If you already know the set of dbs you need, just get them.
+getSpecificGleanDBs
+  :: TVar Glean.LatestRepos
+  -> NonEmpty GleanDBName
+  -> IO (NonEmpty (GleanDBName,Glean.Repo))
+getSpecificGleanDBs latestGleanDBs gleanDBNames = do
+  dbs <- lookupLatestRepos latestGleanDBs $ toList gleanDBNames
   case dbs of
     [] -> throwIO $ ServerException $ "No Glean dbs found for: " <>
-            Text.intercalate ", " (map unGleanDBName gleanDBNames)
-
-    db:dbs -> return $ db :| dbs
+            Text.intercalate ", " (map unGleanDBName $ toList gleanDBNames)
+    db:dbs -> return (db :| dbs)
 
 -- | Get glean db for an attribute type
 getLatestAttrDB
@@ -871,6 +874,20 @@ withLogDB cmd env req fetch mlanguage run =
     (res,merr) <- run db mlanguage
     let err = fmap (<> logError db) merr
     return (res, log <> logRepo db, err)
+
+withGleanDBs
+  :: (LogError a, LogRequest a, LogResult b)
+  => Text
+  -> Glass.Env
+  -> a
+  -> NonEmpty GleanDBName
+  -> (NonEmpty (GleanDBName,Glean.Repo) -> IO (b, Maybe ErrorLogger))
+  -> IO b
+withGleanDBs method env@Glass.Env{..} req dbNames fn = do
+  withLogDB method env req
+    (getSpecificGleanDBs latestGleanRepos dbNames)
+    Nothing
+    (\dbs _mlang -> fn dbs)
 
 -- | Run an action that provides a repo and maybe a language, log it
 withRepoLanguage
@@ -970,13 +987,14 @@ searchEntityByString
   -> SearchByNameRequest
   -> RequestOptions
   -> IO SearchByNameResult
-searchEntityByString method query env@Glass.Env{..} req opts = case repoLangs of
+searchEntityByString method query env@Glass.Env{..} req opts =
+  case candidateDBs of
     Left err -> throwIO $ ServerException err
-    Right candidates -> joinResults <$> Async.mapConcurrently
-      searchEntityByStringInRepo (Set.toList candidates)
+    Right rs -> joinResults <$>
+      Async.mapConcurrently searchEntityByStringIn (Map.toList rs)
   where
-    -- expand repo/lang choice into set of possible repos
-    repoLangs = selectRepos repo mLang
+    -- expand repo/lang choice into set of possible Glean dbs to query
+    candidateDBs = selectGleanDBs repo (maybe Set.empty Set.singleton mLang)
 
     repo = searchContext_repo_name context
     mLang = searchContext_language context -- optional language filter
@@ -994,46 +1012,32 @@ searchEntityByString method query env@Glass.Env{..} req opts = case repoLangs of
       Just l -> maybeToList (languageToCodeLang l)
     searchQ = query caseQ nameLit kindQ langQ
 
-    -- The search query is language-independent, so while we're
-    -- narrowing the set of Glean dbs to search based on the language, the
-    -- query might still return results from multiple languages.
-    --
-    -- TODO: if there's a language filter in the request, we need to
-    -- filter the results here.
-    --
-    -- This searches in one logical SCM repo. E.g. "fbsource" ,which might
-    -- correspond to a set of many Glean dbs/indexes.
-    --
-    -- e.g. search in "www" implies searching in www.flow and www.hack
-    --
-    searchEntityByStringInRepo :: RepoName -> IO SearchByNameResult
-    searchEntityByStringInRepo repo =
-      withRepoLanguage method env req repo Nothing $ \gleanDBs _mlang ->
+    -- run the same query across one more more glean dbs
+    searchEntityByStringIn
+      :: (RepoName, Set.Set GleanDBName) -> IO SearchByNameResult
+    searchEntityByStringIn (repo,dbs) = case nonEmpty (Set.toList dbs) of
+      Nothing -> pure $ SearchByNameResult [] []
+      Just names -> withGleanDBs method env req names $ \gleanDBs ->
         backendRunHaxl GleanBackend{..} $ do
-          allResults <- searchReposWithLimit limit searchQ
-            (processResult repo)
+          allResults <- searchReposWithLimit limit searchQ (processResult repo)
           let (results, descriptions) = unzip allResults
               symbols = map sSymId results
               mDescriptions = if terse then [] else catMaybes descriptions
           return (SearchByNameResult symbols mDescriptions, Nothing)
 
-    processResult
-      :: RepoName
-      -> CodeSearch.SearchByName
+    -- n.b. we need the RepoName (i.e. "fbsource" to construct symbol ids)
+    processResult :: RepoName -> CodeSearch.SearchByName
       -> RepoHaxl u w (EntityBasicDetails, Maybe SymbolDescription)
     processResult repo result = do
       (sEntity, Code.Location{..}, kind) <- Query.toSearchResult result
       sLocation <- rangeSpanToLocationRange repo location_file location_location
       path <- GleanPath <$> Glean.keyOf location_file
-      sSymId <- toSymbolId (fromGleanPath repo path) sEntity -- one per symbol
+      sSymId <- toSymbolId (fromGleanPath repo path) sEntity
       let sKind = symbolKindToSymbolKind <$> kind
           sLanguage = entityLanguage sEntity
           basics = EntityBasicDetails{..}
       (basics,) <$>
         if terse then pure Nothing else Just <$> describeEntity sEntity basics
-
-    takeLimit :: [a] -> [a]
-    takeLimit = maybe id take limit
 
     -- this takes first N results. We could try other strategies (such as
     -- selecting evenly by language, first n in alpha order by sym or file, ..
@@ -1041,6 +1045,9 @@ searchEntityByString method query env@Glass.Env{..} req opts = case repoLangs of
       SearchByNameResult
         (takeLimit $ searchByNameResult_symbols =<< res)
         (takeLimit $ searchByNameResult_symbolDetails =<< res)
+      where
+        takeLimit :: [a] -> [a]
+        takeLimit = maybe id take limit
 
 -- Non-optional components of a search result. We always need kinds, locations,
 -- symbol ids, entities and repos. Only the full description is optional
