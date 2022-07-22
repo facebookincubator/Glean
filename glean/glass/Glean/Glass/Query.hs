@@ -39,6 +39,7 @@ module Glean.Glass.Query
   ) where
 
 import Data.Text (Text, toLower)
+import Data.Maybe
 
 import qualified Glean
 import Glean.Angle as Angle
@@ -157,6 +158,8 @@ data SearchCase = Sensitive | Insensitive
 -- Additionally, you can filter on the server side by kind. Empty list of
 -- kinds will return all matching entities, with or without kinds.
 --
+-- You can also filter on the server by language id.
+--
 -- In all cases we return a basic triple of (entity, location, maybe kind)
 --
 searchByName
@@ -164,9 +167,11 @@ searchByName
   -> SearchCase
   -> Text
   -> [Code.SymbolKind]
-  -> Angle CodeSearch.SearchByNameAndKind
+  -> [Code.Language]
+  -> Angle CodeSearch.SearchByName
 
-searchByName sType sCase name kinds = codeSearchByNameAndKind nameQ caseQ mKindQ
+searchByName sType sCase name kinds langs =
+    codeSearchByName nameQ caseQ mKindQ mLangQ
   where
     nameLit = case sCase of
       Sensitive -> name
@@ -184,44 +189,47 @@ searchByName sType sCase name kinds = codeSearchByNameAndKind nameQ caseQ mKindQ
       [] -> Nothing -- n.b. unconstrained, including entities with no kind
       ks -> Just $ foldr1 (.|) (map enum ks)
 
+    mLangQ = case langs of
+      [] -> Nothing -- n.b. unconstrained
+      ls -> Just $ foldr1 (.|) (map enum ls) -- restrict to specific langs
+
 --
 -- Find entities by strings, with an optional kind expression filter
 --
-codeSearchByNameAndKind
+codeSearchByName
   :: Angle Text
   -> Angle CodeSearch.SearchCase
   -> Maybe (Angle Code.SymbolKind)
-  -> Angle CodeSearch.SearchByNameAndKind
-codeSearchByNameAndKind nameQ caseQ mKindQ =
-    predicate @CodeSearch.SearchByNameAndKind (searchKey mKindQ)
+  -> Maybe (Angle Code.Language)
+  -> Angle CodeSearch.SearchByName
+codeSearchByName nameQ caseQ mKindQ mLangQ =
+  predicate @CodeSearch.SearchByName $
+    rec $
+      field @"name" nameQ $ -- may be prefix
+      field @"searchcase" caseQ $
+      field @"kind" kindPat $ -- specific kinds only
+      field @"language" languagePat -- optional language filters
+    end
   where
-    searchKey Nothing =
-      rec $
-        field @"name" nameQ $ -- may be prefix
-        field @"searchcase" caseQ
-      end
-    searchKey (Just kindPat) =
-      rec $
-        field @"name" nameQ $
-        field @"searchcase" caseQ $
-        field @"kind" (just kindPat) -- specific kinds only
-      end
+    kindPat = maybe wild just mKindQ
+    languagePat = fromMaybe wild mLangQ
 
 type SearchFn
   = SearchCase
   -> Text
- -> [Code.SymbolKind]
-  -> Angle CodeSearch.SearchByNameAndKind
+  -> [Code.SymbolKind]
+  -> [Code.Language]
+  -> Angle CodeSearch.SearchByName
 
 toSearchResult
-  :: CodeSearch.SearchByNameAndKind
+  :: CodeSearch.SearchByName
   -> RepoHaxl u w (Code.Entity, Code.Location, Maybe Code.SymbolKind)
 toSearchResult p = do
-  CodeSearch.SearchByNameAndKind_key{..} <- Glean.keyOf p
-  pure $
-    (searchByNameAndKind_key_entity
-    ,searchByNameAndKind_key_location
-    ,searchByNameAndKind_key_kind)
+  CodeSearch.SearchByName_key{..} <- Glean.keyOf p
+  pure
+    (searchByName_key_entity
+    ,searchByName_key_location
+    ,searchByName_key_kind)
 
 -- | Given an entity find the kind associated with it
 symbolKind :: Angle Code.Entity -> Angle Code.SymbolKind

@@ -22,6 +22,7 @@ module Glean.Glass.SymbolId
   , entityLanguage
   , entityDefinitionType
   , entityKind
+  , languageToCodeLang
 
   -- * Lookups and language names
   , toShortCode
@@ -183,6 +184,26 @@ entityLanguage e = case e of
   -- Code.Entity_lsif Lsif.Entity_java{} -> Language_Java
   Code.Entity_lsif _ -> Language__UNKNOWN 0
   Code.Entity_EMPTY -> Language__UNKNOWN 0
+
+-- | Map the user-visible glass.thrift Language enum to the internal Glean
+-- language id. This can be used for optional filtering in search.
+languageToCodeLang :: Language -> Maybe Code.Language
+languageToCodeLang l = case l of
+  Language_Cpp -> Just Code.Language_Cpp
+  Language_JavaScript -> Just Code.Language_JavaScript
+  Language_Hack -> Just Code.Language_Hack
+  Language_Haskell -> Just Code.Language_Haskell
+  Language_Java -> Just Code.Language_Java
+  Language_ObjectiveC -> Just Code.Language_Cpp -- we don't distinguish these
+  Language_Python -> Just Code.Language_Python
+  Language_PreProcessor -> Just Code.Language_PreProcessor
+  Language_Thrift -> Just Code.Language_Thrift
+  Language_Rust -> Just Code.Language_Rust
+  Language_Buck -> Just Code.Language_Buck
+  Language_Erlang -> Just Code.Language_Erlang
+  Language_TypeScript -> Just Code.Language_TypeScript
+  Language_Go -> Just Code.Language_Go
+  Language__UNKNOWN{} -> Nothing
 
 -- | An encoded Entity.
 --

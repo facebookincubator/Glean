@@ -48,7 +48,7 @@ import Control.Monad.Catch ( throwM, try )
 import Data.Either.Extra (eitherToMaybe, partitionEithers)
 import Data.Foldable ( forM_ )
 import Data.List.NonEmpty (NonEmpty(..), toList)
-import Data.Maybe ( fromMaybe, catMaybes )
+import Data.Maybe
 import Data.Text ( Text )
 import qualified Data.List as List
 import qualified Data.Map.Strict as Map
@@ -123,7 +123,9 @@ import Glean.Glass.SymbolId
       entityDefinitionType,
       entityLanguage,
       entityKind,
-      fromShortCode )
+      fromShortCode,
+      languageToCodeLang
+    )
 import Glean.Glass.SymbolId.Class
     ( ToSymbolParent(toSymbolParent) )
 import Glean.Glass.SymbolSig
@@ -987,7 +989,10 @@ searchEntityByString method query env@Glass.Env{..} req opts = case repoLangs of
       searchContext_kinds context
     caseQ = if searchByNameRequest_ignoreCase req
       then Query.Insensitive else Query.Sensitive
-    searchQ = query caseQ nameLit kindQ
+    langQ = case mLang of
+      Nothing -> []
+      Just l -> maybeToList (languageToCodeLang l)
+    searchQ = query caseQ nameLit kindQ langQ
 
     -- The search query is language-independent, so while we're
     -- narrowing the set of Glean dbs to search based on the language, the
@@ -1005,7 +1010,7 @@ searchEntityByString method query env@Glass.Env{..} req opts = case repoLangs of
     searchEntityByStringInRepo repo =
       withRepoLanguage method env req repo Nothing $ \gleanDBs _mlang ->
         backendRunHaxl GleanBackend{..} $ do
-          allResults <- searchReposAndFilterWithLimit limit searchQ
+          allResults <- searchReposWithLimit limit searchQ
             (processResult repo)
           let (results, descriptions) = unzip allResults
               symbols = map sSymId results
@@ -1014,30 +1019,24 @@ searchEntityByString method query env@Glass.Env{..} req opts = case repoLangs of
 
     processResult
       :: RepoName
-      -> CodeSearch.SearchByNameAndKind
-      -> RepoHaxl u w (Maybe (EntityBasicDetails, Maybe SymbolDescription))
+      -> CodeSearch.SearchByName
+      -> RepoHaxl u w (EntityBasicDetails, Maybe SymbolDescription)
     processResult repo result = do
       (sEntity, Code.Location{..}, kind) <- Query.toSearchResult result
-      let sLanguage = entityLanguage sEntity
-      ifMatchesLanguage sLanguage $ do
-        sLocation <- rangeSpanToLocationRange repo location_file
-          location_location
-        path <- GleanPath <$> Glean.keyOf location_file
-        sSymId <- toSymbolId (fromGleanPath repo path) sEntity -- one per symbol
-        let sKind = symbolKindToSymbolKind <$> kind
-            basics = EntityBasicDetails{..}
-        (basics,) <$>
-          if terse then pure Nothing else Just <$> describeEntity sEntity basics
-      where
-        -- conditionally process the symbol if the user requested a language
-        ifMatchesLanguage thisEntityLang act = case mLang of
-          Just userReqLang
-            | thisEntityLang /= userReqLang -> pure Nothing
-          _ -> Just <$> act
+      sLocation <- rangeSpanToLocationRange repo location_file location_location
+      path <- GleanPath <$> Glean.keyOf location_file
+      sSymId <- toSymbolId (fromGleanPath repo path) sEntity -- one per symbol
+      let sKind = symbolKindToSymbolKind <$> kind
+          sLanguage = entityLanguage sEntity
+          basics = EntityBasicDetails{..}
+      (basics,) <$>
+        if terse then pure Nothing else Just <$> describeEntity sEntity basics
 
     takeLimit :: [a] -> [a]
     takeLimit = maybe id take limit
 
+    -- this takes first N results. We could try other strategies (such as
+    -- selecting evenly by language, first n in alpha order by sym or file, ..
     joinResults res =
       SearchByNameResult
         (takeLimit $ searchByNameResult_symbols =<< res)
