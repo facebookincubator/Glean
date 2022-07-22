@@ -236,14 +236,14 @@ splitUnits :: [Char] -> [ByteString]
 splitUnits = map B8.pack . splitOn ","
 
 includeOpt :: Parser [ByteString]
-includeOpt = splitUnits <$> option auto
+includeOpt = splitUnits <$> strOption
   (  long "include"
   <> metavar "unit,unit,.."
   <> help "For incremental DBs only. Include these units."
   )
 
 excludeOpt :: Parser [ByteString]
-excludeOpt =  splitUnits <$> option auto
+excludeOpt =  splitUnits <$> strOption
   (  long "exclude"
   <> metavar "unit,unit,.."
   <> help "For incremental DBs only. Exclude these units."
