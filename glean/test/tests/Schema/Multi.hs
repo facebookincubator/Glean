@@ -257,6 +257,14 @@ multiSchemaTest = TestCase $
     testQuery "multi 8c" repo2 schema_index_file_1 (Just "v0")
       "derived.D _" (Just 1)
 
+    -- create a stacked DB on top of v0
+    let set kickOff = kickOff {
+          kickOff_dependencies = Just (Dependencies_stacked repo0) }
+    repo3 <- mkRepo schema_index_file_1 "3" set $ \env repo -> do
+      void $ syncWriteJsonBatch env repo v0_facts Nothing
+
+    testQuery "multi 9a" repo3 schema_index_file_1 Nothing "x.P _" (Just 1)
+
 validateSchemaChanges :: Test
 validateSchemaChanges =
     let

@@ -87,8 +87,8 @@ data DbContent
   = DbWritable
   | DbReadOnly (HashMap Pid PredicateStats)
 
-readOnlyContent :: [(Pid, PredicateStats)] -> DbContent
-readOnlyContent = DbReadOnly . HashMap.fromList
+readOnlyContent :: HashMap Pid PredicateStats -> DbContent
+readOnlyContent = DbReadOnly
 
 readWriteContent :: DbContent
 readWriteContent = DbWritable

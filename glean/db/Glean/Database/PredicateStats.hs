@@ -32,12 +32,6 @@ predicateStats env repo opts = case opts of
       Map.fromList . coerce <$> Storage.predicateStats odbHandle
 
   IncludeBase -> do
-    let combineStats x y = PredicateStats
-          { predicateStats_count
-            = predicateStats_count x + predicateStats_count y
-          , predicateStats_size
-            = predicateStats_size x + predicateStats_size y
-          }
     statsList <- withOpenDatabaseStack env repo $ \OpenDB{..} ->
       Storage.predicateStats odbHandle
-    return $ Map.fromListWith combineStats $ coerce $ concat statsList
+    return $ Map.fromListWith (<>) $ coerce $ concat statsList

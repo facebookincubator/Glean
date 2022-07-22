@@ -29,3 +29,11 @@ instance Prelude.Enum Byte where
     pred = Byte . Prelude.pred . unByte
     toEnum = Byte . Prelude.toEnum
     fromEnum = Prelude.fromEnum . unByte
+
+instance Prelude.Semigroup PredicateStats where
+  x <> y = PredicateStats
+    { predicateStats_count
+      = predicateStats_count x Prelude.+ predicateStats_count y
+    , predicateStats_size
+      = predicateStats_size x Prelude.+ predicateStats_size y
+    }

@@ -23,6 +23,7 @@ import Control.Concurrent.STM
 import Control.Exception hiding(try)
 import Control.Monad.Catch (try)
 import Control.Monad.Extra
+import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.IORef
 import Data.Maybe
@@ -53,10 +54,12 @@ import Glean.RTS.Foreign.Lookup (Lookup)
 import qualified Glean.RTS.Foreign.LookupCache as LookupCache
 import qualified Glean.RTS.Foreign.Ownership as Ownership
 import qualified Glean.RTS.Foreign.Stacked as Stacked
+import Glean.RTS.Types (Pid(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types (Repo)
 import qualified Glean.Internal.Types as Thrift
 import qualified Glean.Types as Thrift
+import Glean.Types (PredicateStats(..))
 import Glean.Util.Mutex
 import qualified Glean.Util.Observed as Observed
 import Glean.Util.Time
@@ -101,17 +104,23 @@ withOpenDatabase env@Env{..} repo action =
 
 -- | Runs the action on each DB in the stack, in top-to-bottom order
 withOpenDatabaseStack :: Env -> Repo -> (OpenDB -> IO a) -> IO [a]
-withOpenDatabaseStack env@Env{..} repo action = go repo [] where
-  go repo results = do
+withOpenDatabaseStack env@Env{..} repo action = do
+  parents <- repoParents env repo
+  mapM (\repo -> withOpenDatabase env repo action) (repo : parents)
+
+repoParents :: Env -> Repo -> IO [Repo]
+repoParents Env{..} repo = go repo
+  where
+  go repo = do
     deps <- atomically $ metaDependencies <$> Catalog.readMeta envCatalog repo
-    results' <- withOpenDatabase env repo $ fmap (: results) . action
     case deps of
-      Nothing -> return $ reverse results'
+      Nothing -> return []
       Just (Thrift.Dependencies_pruned pruned)
         | Thrift.Pruned{Thrift.pruned_base=baseRepo} <- pruned ->
-            go baseRepo results'
+            (baseRepo :) <$> go baseRepo
       Just (Thrift.Dependencies_stacked baseRepo) ->
-        go baseRepo results'
+        (baseRepo :) <$> go baseRepo
+
 
 withOpenDBLookup
   :: Env
@@ -243,7 +252,7 @@ setupSchema Env{..} _ handle (Create _ initial) = do
     UseThisSchema info -> fromStoredSchema info readWriteContent
   storeSchema handle $ toStoredSchema dbSchema
   return dbSchema
-setupSchema Env{..} repo handle mode = do
+setupSchema env@Env{..} repo handle mode = do
   stored <- retrieveSchema repo handle
   case stored of
     Just info
@@ -255,12 +264,21 @@ setupSchema Env{..} repo handle mode = do
           -- It might be possible to do something safe here, e.g. only
           -- merge non-stored derived predicates. (TODO)
       where
+      stackStats :: IO (HashMap Pid PredicateStats)
+      stackStats = do
+        parents <- repoParents env repo
+        statss <- forM parents $ \repo ->
+          withOpenDatabase env repo $ \OpenDB{..} ->
+            Storage.predicateStats odbHandle
+        stats <- Storage.predicateStats handle
+        return $ HashMap.fromListWith (<>) $ concat (stats : statss)
+
       mergeSchema = do
         -- merge the schema in the DB with the current schema, so
         -- that we can query for derived predicates that weren't
         -- stored in the DB when it was created.
         schema <- Observed.get envSchemaSource
-        stats <- Storage.predicateStats handle
+        stats <- stackStats
         newMergedDbSchema info schema AllowChanges (readOnlyContent stats)
     Nothing ->
       dbError repo "DB has no stored schema"
