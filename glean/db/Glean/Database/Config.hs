@@ -101,7 +101,6 @@ data Config = Config
   , cfgShardManager
     :: forall a
      . Observed ServerConfig.Config -> (SomeShardManager -> IO a) -> IO a
-  , cfgIncrementalDerivation :: Bool
   , cfgServerLogger :: Some GleanServerLogger
     -- ^ Logger for server requests and other events
   , cfgDatabaseLogger :: Some GleanDatabaseLogger
@@ -131,7 +130,6 @@ instance Default Config where
     , cfgTailerOpts = def
     , cfgListener = mempty
     , cfgShardManager = \_ k -> k $ SomeShardManager noSharding
-    , cfgIncrementalDerivation = False
     , cfgServerLogger = Some NullGleanServerLogger
     , cfgDatabaseLogger = Some NullGleanDatabaseLogger
     }
@@ -353,7 +351,6 @@ options = do
     , cfgListener = mempty
     , cfgUpdateSchema = True
     , cfgShardManager = cfgShardManager def
-    , cfgIncrementalDerivation = False
     , cfgServerLogger = cfgServerLogger def
     , cfgDatabaseLogger = cfgDatabaseLogger def
     , .. }

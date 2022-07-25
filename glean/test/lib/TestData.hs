@@ -167,13 +167,13 @@ mkTestFacts first second = do
       { Glean.Test.keyValue_value_vnat = toNat 5
       , Glean.Test.keyValue_value_vstring = "foo" })
 
-  first $ makeFact_ @Glean.Test.StringPair $ Glean.Test.StringPair_key "a" "b"
+  second $ makeFact_ @Glean.Test.StringPair $ Glean.Test.StringPair_key "a" "b"
   second $ makeFact_ @Glean.Test.StringPair $ Glean.Test.StringPair_key "b" "a"
   second $ makeFact_ @Glean.Test.StringPair $ Glean.Test.StringPair_key "c" "d"
-  first $ makeFact_ @Glean.Test.StringPair $ Glean.Test.StringPair_key "e" "e"
+  second $ makeFact_ @Glean.Test.StringPair $ Glean.Test.StringPair_key "e" "e"
   second $
     makeFact_ @Glean.Test.StringPair $ Glean.Test.StringPair_key "xx" "xx"
-  first $ makeFact_ @Glean.Test.StringPair $ Glean.Test.StringPair_key "xy" "xz"
+  second $ makeFact_ @Glean.Test.StringPair $ Glean.Test.StringPair_key "xy" "xz"
 
   a <- makeFact @Glean.Test.Node (Glean.Test.Node_key "a")
   b <- makeFact @Glean.Test.Node (Glean.Test.Node_key "b")

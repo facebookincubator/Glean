@@ -463,7 +463,7 @@ userQueryWrites
 userQueryWrites env odb config bounds lookup repo q = do
   meta <- atomically $ Catalog.readMeta (envCatalog env) repo
   mode <-
-    if isStacked meta && envIncrementalDerivation env
+    if isStacked meta
     then IncrementalDerivation <$> sectionsStats
     else return NoExtraSteps
   Results{..} <- withStats $

@@ -355,7 +355,6 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
       let settings =
             [ setRoot root
             , setSchemaPath file
-            , setIncrementalDerivation
             ]
       withTestEnv settings $ \env -> do
         let base = Repo "base" "0"
