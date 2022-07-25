@@ -13,13 +13,13 @@ import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
 import qualified Data.ByteString as B
-import qualified Data.ByteString.Char8 as B8
 import Data.Default
 import Data.Proxy
 import qualified Data.HashMap.Strict as HashMap
-import Data.List.Split (splitOn)
 import Data.Text (Text)
 import qualified Data.Text as Text
+import qualified Data.Text.IO as Text
+import qualified Data.Text.Encoding as Encode
 import Options.Applicative
 
 import Control.Concurrent.Stream (stream)
@@ -68,7 +68,7 @@ data WriteCommand
       , writeHandle :: Text
       , writeFiles :: [FilePath]
       , create :: Bool
-      , dependencies :: Maybe Thrift.Dependencies
+      , dependencies :: Maybe (IO Thrift.Dependencies)
       , scribe :: Maybe ScribeOptions
       , finish :: Bool
       , properties :: [(Text,Text)]
@@ -213,10 +213,7 @@ useLocalCacheOptions :: Parser (Maybe Glean.SendAndRebaseQueueSettings)
 useLocalCacheOptions = do
     useLocalCacheFlag <- useLocalSwitchOpt
     sendAndRebaseQueue <- Glean.sendAndRebaseQueueOptions
-    return $ if useLocalCacheFlag then
-        Just sendAndRebaseQueue
-    else
-      Nothing
+    return $ if useLocalCacheFlag then Just sendAndRebaseQueue else Nothing
 
 useLocalSwitchOpt :: Parser Bool
 useLocalSwitchOpt = switch
@@ -232,22 +229,47 @@ incrementalOpt = option (maybeReader Glean.parseRepo)
   <> help "Create an incremental DB on top of this REPO DB."
   )
 
-splitUnits :: [Char] -> [ByteString]
-splitUnits = map B8.pack . splitOn ","
+splitUnits :: Text -> [ByteString]
+splitUnits = map Encode.encodeUtf8 . Text.splitOn ","
 
-includeOpt :: Parser [ByteString]
-includeOpt = splitUnits <$> strOption
+extractLines :: FilePath -> IO [ByteString]
+extractLines file = map Encode.encodeUtf8 . Text.lines <$> Text.readFile file
+
+includeOptString :: Parser (IO [ByteString])
+includeOptString = return . splitUnits <$> strOption
   (  long "include"
   <> metavar "unit,unit,.."
   <> help "For incremental DBs only. Include these units."
   )
 
-excludeOpt :: Parser [ByteString]
-excludeOpt =  splitUnits <$> strOption
+includeOptFile :: Parser (IO [ByteString])
+includeOptFile = extractLines <$> strOption
+  (  long "include-file"
+  <> metavar "FILE"
+  <> help ("For incremental DBs only. Include units in FILE "
+  <> "(one per line).")
+  )
+
+includeOpt :: Parser (IO [ByteString])
+includeOpt = includeOptFile <|> includeOptString
+
+excludeOptString :: Parser (IO [ByteString])
+excludeOptString =  return . splitUnits <$> strOption
   (  long "exclude"
   <> metavar "unit,unit,.."
   <> help "For incremental DBs only. Exclude these units."
   )
+
+excludeOptFile :: Parser (IO [ByteString])
+excludeOptFile =  extractLines <$> strOption
+  (  long "exclude-file"
+  <> metavar "FILE"
+  <> help ("For incremental DBs only. Exclude units in FILE "
+  <> "(one per line).")
+  )
+
+excludeOpt :: Parser (IO [ByteString])
+excludeOpt = excludeOptFile <|> excludeOptString
 
 updateSchemaForStackedOpt :: Parser Bool
 updateSchemaForStackedOpt = switch
@@ -309,21 +331,27 @@ instance Plugin WriteCommand where
           , ..
           }
 
-    stackedOptions = Thrift.Dependencies_stacked <$> stackedOpt
+    stackedOptions :: Parser (IO Dependencies)
+    stackedOptions = return . Thrift.Dependencies_stacked <$> stackedOpt
 
+    updateOptions :: Parser (IO Dependencies)
     updateOptions = do
       repo <- incrementalOpt
       let
         include = (,False) <$> includeOpt
         exclude = (,True) <$> excludeOpt
       ~(units, exclude) <- include <|> exclude
-      return $ Thrift.Dependencies_pruned $
-        Thrift.Pruned repo units exclude
+      return $ fmap (prune repo exclude) units
+      where
+        prune :: Repo -> Bool -> [ByteString] -> Dependencies
+        prune repo exclude units = Thrift.Dependencies_pruned $
+          Thrift.Pruned repo units exclude
 
   runCommand _ _ backend Write{..} =
     tryBracket
        (when create $ do
             putStrLn $ "Creating DB using handle " ++ Text.unpack writeHandle
+            deps <- maybe (return Nothing) (fmap Just) dependencies
             Thrift.KickOffResponse alreadyExists <-
               Glean.kickOffDatabase backend def
                 { kickOff_repo = writeRepo
@@ -333,7 +361,7 @@ instance Plugin WriteCommand where
                       (writeFromScribe scribe)
                         { writeFromScribe_writeHandle = writeHandle }
                 , kickOff_properties = HashMap.fromList properties
-                , kickOff_dependencies = dependencies
+                , kickOff_dependencies = deps
                 , kickOff_repo_hash_time =
                     utcTimeToPosixEpochTime <$> writeRepoTime
                 , kickOff_update_schema_for_stacked = updateSchemaForStacked
