@@ -1,0 +1,2 @@
+action: searchSymbol
+args: {"name": "", "repo_name": "test", "language": [1], "kinds": [1,4,14,20,26], "options": {"detailedResults": true, "exactMatch": false, "ignoreCase": false, "namespaceSearch": false } }
