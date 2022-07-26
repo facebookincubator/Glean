@@ -1,0 +1,1097 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 14,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "cjs_exports",
+                    "localName": "plus"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/cjs_exports/plus"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 16,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "cjs_exports",
+                    "localName": "x"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/cjs_exports/x"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 15,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "es_exports",
+                    "localName": "C"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/es_exports/C"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 15,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "es_exports",
+                    "localName": "C"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/es_exports/C"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 24,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "es_exports",
+                    "localName": "bar"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/es_exports/bar"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "es_exports",
+                    "localName": "baz"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/es_exports/baz"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "es_exports",
+                    "localName": "baz"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/es_exports/baz"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 13,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "es_exports",
+                    "localName": "bor"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/es_exports/bor"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "es_exports",
+                    "localName": "d"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/es_exports/d"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 8,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "es_exports",
+                    "localName": "foo"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/es_exports/foo"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 16,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "es_exports",
+                    "localName": "num"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/es_exports/num"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 15,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "es_exports",
+                    "localName": "x"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/es_exports/x"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 22,
+                        "lineBegin": 29,
+                        "lineEnd": 29
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "imports",
+                    "localName": "C"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/C"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 31,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "imports",
+                    "localName": "D"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/D"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 9,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "imports",
+                    "localName": "a"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/a"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 12,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "imports",
+                    "localName": "b"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/b"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 17,
+                        "columnEnd": 20,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "imports",
+                    "localName": "bar"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/bar"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 22,
+                        "columnEnd": 25,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "imports",
+                    "localName": "baz"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/baz"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 15,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "imports",
+                    "localName": "c"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/c"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "imports",
+                    "localName": "caz"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/caz"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "imports",
+                    "localName": "caz"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/caz"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 9,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "imports",
+                    "localName": "d"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/d"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "imports",
+                    "localName": "e"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/e"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 10,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "imports",
+                    "localName": "fn"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/fn"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 12,
+                        "columnEnd": 15,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "imports",
+                    "localName": "foo"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/foo"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 17,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "imports",
+                    "localName": "num"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/num"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 16,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "imports",
+                    "localName": "qux"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/qux"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 32,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "imports",
+                    "localName": "s"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/s"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 18,
+                        "lineBegin": 29,
+                        "lineEnd": 29
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "imports",
+                    "localName": "str"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/str"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "imports",
+                    "localName": "x"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/x"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "imports",
+                    "localName": "y"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/y"
+            },
+            {
+                "comments": [],
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "imports",
+                    "localName": "z"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/z"
+            }
+        ],
+        "symbols": [
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 14,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/cjs_exports/plus"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 16,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/cjs_exports/x"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 15,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/es_exports/C"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 15,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/es_exports/C"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 24,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/es_exports/bar"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/es_exports/baz"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/es_exports/baz"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 13,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/es_exports/bor"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/es_exports/d"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 8,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/es_exports/foo"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 16,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/es_exports/num"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 15,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/es_exports/x"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 22,
+                        "lineBegin": 29,
+                        "lineEnd": 29
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/imports/C"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 31,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/imports/D"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 9,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/imports/a"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 12,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/imports/b"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 17,
+                        "columnEnd": 20,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/imports/bar"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 22,
+                        "columnEnd": 25,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/imports/baz"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 15,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/imports/c"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/imports/caz"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/imports/caz"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 9,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/imports/d"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/imports/e"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 10,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/imports/fn"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 12,
+                        "columnEnd": 15,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/imports/foo"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 17,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/imports/num"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 16,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/imports/qux"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 32,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/imports/s"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 18,
+                        "lineBegin": 29,
+                        "lineEnd": 29
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/imports/str"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/imports/x"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/imports/y"
+            },
+            {
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/js/imports/z"
+            }
+        ]
+    }
+]

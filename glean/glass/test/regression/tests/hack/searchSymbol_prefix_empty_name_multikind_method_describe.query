@@ -1,2 +1,2 @@
-action: searchByNamePrefix
-args: {"context": {"repo_name": "test", "language": 3, "kinds": [8]}, "name": "", "detailedResults": true, "ignoreCase": false }
+action: searchSymbol
+args: {"name": "", "repo_name": "test", "language": [3], "kinds": [8], "options": {"detailedResults": true, "exactMatch": false, "ignoreCase": false, "namespaceSearch": false } }
