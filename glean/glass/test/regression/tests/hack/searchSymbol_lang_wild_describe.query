@@ -1,0 +1,2 @@
+action: searchSymbol
+args: {"name": "SourceClass", "repo_name": "test", "language": [], "kinds": [], "options": {"detailedResults": true, "exactMatch": true, "ignoreCase": false, "namespaceSearch": false } }

@@ -1,0 +1,225 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [
+            {
+                "annotations": [],
+                "comments": [],
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Namespace.php",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 13,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "NS/NamespaceClass",
+                    "localName": "class_function"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/NS/NamespaceClass/class_function",
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 25,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "RefClass",
+                    "localName": "bar"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/RefClass/bar",
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 21,
+                        "lineEnd": 23
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "RefClass",
+                    "localName": "bazza"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/RefClass/bazza",
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 17,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "RefClass",
+                    "localName": "foo"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/RefClass/foo",
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 22,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "SourceClass",
+                    "localName": "bar"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SourceClass/bar",
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 37,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "SourceInterface",
+                    "localName": "foo"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SourceInterface/foo",
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 11,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "SourceTrait",
+                    "localName": "quux"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SourceTrait/quux",
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SuperClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 14,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "SuperClass",
+                    "localName": "superAdd"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SuperClass/superAdd",
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 55,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "TestAnnotation",
+                    "localName": "__construct"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/TestAnnotation/__construct",
+                "visibility": 20
+            }
+        ],
+        "symbols": [
+            "test/php/NS/NamespaceClass/class_function",
+            "test/php/RefClass/bar",
+            "test/php/RefClass/bazza",
+            "test/php/RefClass/foo",
+            "test/php/SourceClass/bar",
+            "test/php/SourceInterface/foo",
+            "test/php/SourceTrait/quux",
+            "test/php/SuperClass/superAdd",
+            "test/php/TestAnnotation/__construct"
+        ]
+    }
+]

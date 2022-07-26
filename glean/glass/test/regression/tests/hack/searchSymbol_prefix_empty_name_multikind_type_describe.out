@@ -1,0 +1,46 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [
+            {
+                "annotations": [],
+                "comments": [],
+                "kind": 2,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 22,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "SourceClass",
+                    "localName": "T"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/SourceClass/T"
+            }
+        ],
+        "symbols": [
+            {
+                "kind": 2,
+                "language": 3,
+                "location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 22,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/php/SourceClass/T"
+            }
+        ]
+    }
+]
