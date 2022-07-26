@@ -1,0 +1,45 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [
+            {
+                "comments": [],
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 9,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "lib",
+                    "localName": "HelperClass"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/lib.py/lib.HelperClass"
+            }
+        ],
+        "symbols": [
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 9,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/py/lib.py/lib.HelperClass"
+            }
+        ]
+    }
+]

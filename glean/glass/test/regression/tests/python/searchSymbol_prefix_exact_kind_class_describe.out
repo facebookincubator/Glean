@@ -1,0 +1,117 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [
+            {
+                "comments": [],
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 20,
+                        "lineBegin": 16,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "all.LocalClass",
+                    "localName": "meth"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/all.py/all.LocalClass.meth"
+            },
+            {
+                "comments": [],
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 15,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "another_method"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/lib.py/lib.HelperClass.another_method"
+            },
+            {
+                "comments": [],
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 12,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "lib.HelperClass",
+                    "localName": "method"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/lib.py/lib.HelperClass.method"
+            }
+        ],
+        "symbols": [
+            {
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 20,
+                        "lineBegin": 16,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/py/all.py/all.LocalClass.meth"
+            },
+            {
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 15,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/py/lib.py/lib.HelperClass.another_method"
+            },
+            {
+                "kind": 8,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 12,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/py/lib.py/lib.HelperClass.method"
+            }
+        ]
+    }
+]

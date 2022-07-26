@@ -1,0 +1,117 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [
+            {
+                "comments": [],
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 20,
+                        "lineBegin": 15,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "all",
+                    "localName": "LocalClass"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/all.py/all.LocalClass"
+            },
+            {
+                "comments": [],
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 9,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "lib",
+                    "localName": "HelperClass"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/lib.py/lib.HelperClass"
+            },
+            {
+                "comments": [],
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 26,
+                        "lineBegin": 10,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "shadow",
+                    "localName": "ShadowClass"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/py/shadow.py/shadow.ShadowClass"
+            }
+        ],
+        "symbols": [
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 20,
+                        "lineBegin": 15,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/py/all.py/all.LocalClass"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 9,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/py/lib.py/lib.HelperClass"
+            },
+            {
+                "kind": 7,
+                "language": 7,
+                "location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 26,
+                        "lineBegin": 10,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "symbol": "test/py/shadow.py/shadow.ShadowClass"
+            }
+        ]
+    }
+]
