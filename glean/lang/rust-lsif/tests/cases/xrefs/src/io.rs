@@ -35,10 +35,10 @@ pub fn main() {
     }
 }
 
+use std::io;
 use std::io::ErrorKind;
 use std::io::Read;
 use std::io::Write;
-use std::io::{self};
 
 const DEFAULT_BUF_SIZE: usize = 8 * 1024;
 
