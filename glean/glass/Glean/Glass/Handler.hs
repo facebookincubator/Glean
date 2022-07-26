@@ -147,6 +147,7 @@ import Glean.Glass.Types
       SearchByNameRequest(..),
       SearchRelatedRequest(..),
       SearchRelatedResult(..),
+      SearchContext(..),
       SymbolSearchRequest(..),
       SymbolSearchResult(..),
       SymbolResult(..),
@@ -420,8 +421,25 @@ searchByName
   -> SearchByNameRequest
   -> RequestOptions
   -> IO SearchByNameResult
-searchByName =
-  searchEntityByString "searchByName" (Query.searchByName Query.Exact)
+searchByName env SearchByNameRequest{..} opt = do
+    SymbolSearchResult{..} <- searchSymbol env SymbolSearchRequest{..} opt
+    let searchByNameResult_symbols = map symbolResult_symbol
+          symbolSearchResult_symbols
+        searchByNameResult_symbolDetails = symbolSearchResult_symbolDetails
+    pure $ SearchByNameResult{..}
+  where
+    SearchContext{..} = searchByNameRequest_context
+    symbolSearchRequest_name = searchByNameRequest_name
+    symbolSearchRequest_repo_name = searchContext_repo_name
+    symbolSearchRequest_language = Set.fromList
+      (maybeToList searchContext_language)
+    symbolSearchRequest_kinds = searchContext_kinds
+    symbolSearchOptions_detailedResults = searchByNameRequest_detailedResults
+    symbolSearchOptions_exactMatch = True
+    symbolSearchOptions_ignoreCase = searchByNameRequest_ignoreCase
+    symbolSearchOptions_namespaceSearch = False
+    symbolSearchOptions_sortResults = False
+    symbolSearchRequest_options = SymbolSearchOptions{..}
 
 -- | Search for entities by string fragments of names
 -- (deprecated)
@@ -430,8 +448,25 @@ searchByNamePrefix
   -> SearchByNameRequest
   -> RequestOptions
   -> IO SearchByNameResult
-searchByNamePrefix =
-  searchEntityByString "searchByNamePrefix" (Query.searchByName Query.Prefix)
+searchByNamePrefix env SearchByNameRequest{..} opt = do
+    SymbolSearchResult{..} <- searchSymbol env SymbolSearchRequest{..} opt
+    let searchByNameResult_symbols = map symbolResult_symbol
+          symbolSearchResult_symbols
+        searchByNameResult_symbolDetails = symbolSearchResult_symbolDetails
+    pure $ SearchByNameResult{..}
+  where
+    SearchContext{..} = searchByNameRequest_context
+    symbolSearchRequest_name = searchByNameRequest_name
+    symbolSearchRequest_repo_name = searchContext_repo_name
+    symbolSearchRequest_language = Set.fromList
+      (maybeToList searchContext_language)
+    symbolSearchRequest_kinds = searchContext_kinds
+    symbolSearchOptions_detailedResults = searchByNameRequest_detailedResults
+    symbolSearchOptions_exactMatch = False -- just this
+    symbolSearchOptions_ignoreCase = searchByNameRequest_ignoreCase
+    symbolSearchOptions_namespaceSearch = False
+    symbolSearchOptions_sortResults = False
+    symbolSearchRequest_options = SymbolSearchOptions{..}
 
 -- | Search for entities by symbol id prefix
 -- (deprecated)
@@ -1050,79 +1085,6 @@ describeEntity ent SymbolResult{..} = do
 
     eThrow (Right x) = pure x
     eThrow (Left err) = throwM $ ServerException err
-
--- | Returns entities based on a string needle and an Angle query. Shared
--- implementation between searchByName and searchByNamePrefix.
-searchEntityByString
-  :: Text
-  -> Query.SearchFn
-  -> Glass.Env
-  -> SearchByNameRequest
-  -> RequestOptions
-  -> IO SearchByNameResult
-searchEntityByString method query env@Glass.Env{..} req opts =
-  case candidateDBs of
-    Left err -> throwIO $ ServerException err
-    Right rs -> joinResults <$>
-      Async.mapConcurrently searchEntityByStringIn (Map.toList rs)
-  where
-    -- expand repo/lang choice into set of possible Glean dbs to query
-    candidateDBs = selectGleanDBs repo (maybe Set.empty Set.singleton mLang)
-
-    repo = searchContext_repo_name context
-    mLang = searchContext_language context -- optional language filter
-    limit = fromIntegral <$> requestOptions_limit opts
-    context = searchByNameRequest_context req
-    terse = not $ searchByNameRequest_detailedResults req
-
-    nameLit = searchByNameRequest_name req
-    kindQ = map symbolKindFromSymbolKind $ Set.elems $
-      searchContext_kinds context
-    caseQ = if searchByNameRequest_ignoreCase req
-      then Query.Insensitive else Query.Sensitive
-    langQ = case mLang of
-      Nothing -> []
-      Just l -> maybeToList (languageToCodeLang l)
-    searchQ = query caseQ nameLit kindQ langQ
-
-    -- run the same query across one more more glean dbs
-    searchEntityByStringIn
-      :: (RepoName, Set.Set GleanDBName) -> IO SearchByNameResult
-    searchEntityByStringIn (repo,dbs) = case nonEmpty (Set.toList dbs) of
-      Nothing -> pure $ SearchByNameResult [] []
-      Just names -> withGleanDBs method env req names $ \gleanDBs ->
-        backendRunHaxl GleanBackend{..} $ do
-          allResults <- searchReposWithLimit limit searchQ (processResult repo)
-          let (results, descriptions) = unzip allResults
-              symbols = map symbolResult_symbol results
-              mDescriptions = if terse then [] else catMaybes descriptions
-          return (SearchByNameResult symbols mDescriptions, Nothing)
-
-    -- n.b. we need the RepoName (i.e. "fbsource" to construct symbol ids)
-    processResult :: RepoName -> CodeSearch.SearchByName
-      -> RepoHaxl u w (SymbolResult, Maybe SymbolDescription)
-    processResult repo result = do
-      Query.SymbolSearchData{..} <- Query.toSearchResult result
-      let Code.Location{..} = srLocation
-      symbolResult_location <- rangeSpanToLocationRange
-        repo location_file location_location
-      path <- GleanPath <$> Glean.keyOf location_file
-      symbolResult_symbol <- toSymbolId (fromGleanPath repo path) srEntity
-      let symbolResult_kind = symbolKindToSymbolKind <$> srKind
-          symbolResult_language = entityLanguage srEntity
-          basics = SymbolResult{..}
-      (basics,) <$>
-        if terse then pure Nothing else Just <$> describeEntity srEntity basics
-
-    -- this takes first N results. We could try other strategies (such as
-    -- selecting evenly by language, first n in alpha order by sym or file, ..
-    joinResults res =
-      SearchByNameResult
-        (takeLimit $ searchByNameResult_symbols =<< res)
-        (takeLimit $ searchByNameResult_symbolDetails =<< res)
-      where
-        takeLimit :: [a] -> [a]
-        takeLimit = maybe id take limit
 
 partialSymbolTokens
   :: SymbolId
