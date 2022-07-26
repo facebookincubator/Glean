@@ -29,6 +29,7 @@ module Glean.Glass.Query
   , SearchType(..)
   , SearchFn
   , toSearchResult
+  , SymbolSearchData(..)
 
   -- * Entity annotations
   , symbolKind
@@ -221,15 +222,23 @@ type SearchFn
   -> [Code.Language]
   -> Angle CodeSearch.SearchByName
 
-toSearchResult
-  :: CodeSearch.SearchByName
-  -> RepoHaxl u w (Code.Entity, Code.Location, Maybe Code.SymbolKind)
+-- | Glean-specific types from symbol search
+-- note could return the language id but its also cheap to recompute from entity
+data SymbolSearchData = SymbolSearchData
+  { srEntity :: !Code.Entity
+  , srLocation :: !Code.Location
+  , srKind :: !(Maybe Code.SymbolKind)
+  }
+
+-- | We need most of the result of the predicate, so rather than a
+-- data query we just unmarshall here and call the predicate directly
+toSearchResult :: CodeSearch.SearchByName -> RepoHaxl u w SymbolSearchData
 toSearchResult p = do
   CodeSearch.SearchByName_key{..} <- Glean.keyOf p
-  pure
-    (searchByName_key_entity
-    ,searchByName_key_location
-    ,searchByName_key_kind)
+  pure $ SymbolSearchData
+    searchByName_key_entity
+    searchByName_key_location
+    searchByName_key_kind
 
 -- | Given an entity find the kind associated with it
 symbolKind :: Angle Code.Entity -> Angle Code.SymbolKind

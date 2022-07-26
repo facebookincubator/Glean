@@ -186,7 +186,7 @@ struct SymbolX {
 // that it will uniquely map to an entity in the underlying database, without
 // requiring search.
 //
-// (dons: how is this different to LocationRange?)
+// (deprecated)
 //
 struct SymbolPath {
   // The repository it is defined in
@@ -337,6 +337,39 @@ enum DefinitionKind {
   hack.attributes = "\GraphQLEnum('GlassDefinitionKind'), \SelfDescriptive, \Oncalls('code_indexing')",
 )
 
+// What kind of search to conduct
+struct SymbolSearchOptions {
+  1: bool detailedResults; // fill out detailed metadata for symbol results
+  2: bool exactMatch = false; // whole work exact match, or prefix match
+  3: bool ignoreCase = false;
+  4: bool namespaceSearch = false; // treat query as namespace-delimited search
+  5: bool sortResults = false; // attempt to select results evenly across langs
+}
+
+// Search for symbols by string
+struct SymbolSearchRequest {
+  1: string name;
+  2: optional RepoName repo_name; // optional scm repo ("fbsource", "www")
+  3: set<Language> language; // optional set of language filters
+  4: set<SymbolKind> kinds; // optional set of symbol kind filters
+  5: SymbolSearchOptions options; // flavor of search
+}
+
+// Core symbol result data. All search results have these
+struct SymbolResult {
+  1: SymbolId symbol;
+  2: LocationRange location;
+  3: Language language;
+  4: optional SymbolKind kind;
+}
+
+// String search, either core symbol data or with full metadata per symbol
+struct SymbolSearchResult {
+  1: list<SymbolResult> symbols;
+  2: list<SymbolDescription> symbolDetails;
+}
+
+// deprecated
 struct SearchByNameRequest {
   1: SearchContext context;
   2: string name;
@@ -344,6 +377,7 @@ struct SearchByNameRequest {
   4: bool ignoreCase = false;
 }
 
+// deprecated
 struct SearchByNameResult {
   1: list<SymbolId> symbols;
   2: list<SymbolDescription> symbolDetails;
@@ -435,8 +469,15 @@ service GlassService extends fb303.FacebookService {
     2: RequestOptions options,
   ) throws (1: ServerException e);
 
+  // Generic symbol search by string query
+  SymbolSearchResult searchSymbol(
+    1: SymbolSearchRequest request,
+    3: RequestOptions options,
+  ) throws (1: ServerException e);
+
   // Find symbol ids based on exact local name
   // (e.g. Glean)
+  // (deprecated)
   SearchByNameResult searchByName(
     1: SearchByNameRequest request,
     3: RequestOptions options,
@@ -444,13 +485,15 @@ service GlassService extends fb303.FacebookService {
 
   // Find symbol ids based on local name prefix
   // (e.g. Glea).
+  // (deprecated)
   SearchByNameResult searchByNamePrefix(
     1: SearchByNameRequest request,
     2: RequestOptions options,
   ) throws (1: ServerException e);
 
   // Find symbol ids based on the prefix of a full symbol id
-  // (e.g. www/php/Gl). Experimental
+  // (e.g. www/php/Gl).
+  // (deprecated)
   SearchBySymbolIdResult searchBySymbolId(
     1: SymbolId symbol_prefix,
     2: RequestOptions options,

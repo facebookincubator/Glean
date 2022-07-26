@@ -27,14 +27,15 @@ module Glean.Glass.Handler
   , resolveSymbolRange
   , describeSymbol
 
-  -- * searching
-  -- ** by identifier
-  , searchByName
-  , searchByNamePrefix
-  -- ** by symbolid fragments
-  , searchBySymbolId
+  -- * searching by string
+  , searchSymbol
   -- ** by relationship
   , searchRelated
+
+  -- * deprecated
+  , searchByName
+  , searchByNamePrefix
+  , searchBySymbolId
 
   -- * indexing requests
   , index
@@ -146,6 +147,10 @@ import Glean.Glass.Types
       SearchByNameRequest(..),
       SearchRelatedRequest(..),
       SearchRelatedResult(..),
+      SymbolSearchRequest(..),
+      SymbolSearchResult(..),
+      SymbolResult(..),
+      SymbolSearchOptions(..),
       RelatedSymbols(..),
       ServerException(ServerException),
       SymbolDescription(..),
@@ -160,7 +165,7 @@ import Glean.Glass.Types
       Path,
       RepoName(..),
       RequestOptions(..),
-      DocumentSymbolsRequest(..), SymbolKind,
+      DocumentSymbolsRequest(..),
       rELATED_SYMBOLS_MAX_LIMIT )
 import Glean.Index.Types
   ( IndexRequest,
@@ -172,6 +177,7 @@ import Glean.Impl.ThriftService ( ThriftService )
 import qualified Glean.Glass.Env as Glass
 
 import qualified Glean.Glass.Query as Query
+import Glean.Glass.Query ( SearchCase(..), SearchType(..) )
 import qualified Glean.Glass.Query.Cxx as Cxx
 
 import Glean.Glass.SymbolMap ( toSymbolIndex )
@@ -187,7 +193,6 @@ import Glean.Glass.Annotations (getAnnotationsForEntity)
 import Glean.Glass.Comments (getCommentsForEntity)
 import qualified Glean.Glass.SearchRelated as Search
 import Glean.Glass.Visibility (getVisibilityForEntity)
-
 
 -- | Runner for methods that are keyed by a file path
 -- TODO : do the plumbing via a class rather than function composition
@@ -335,12 +340,81 @@ mkSymbolDescription
   -> SymbolId
   -> Glean.RepoHaxl u w SymbolDescription
 mkSymbolDescription repo entity file rangespan symbolId = do
-  loc <- rangeSpanToLocationRange repo file rangespan
+  range <- rangeSpanToLocationRange repo file rangespan
   kind <- eitherToMaybe <$> findSymbolKind entity
   let lang = entityLanguage entity
-  describeEntity entity $ EntityBasicDetails symbolId  loc kind lang
+  describeEntity entity $ SymbolResult symbolId range lang kind
+
+-- | Search for entities by string name with kind and language filters
+searchSymbol
+  :: Glass.Env
+  -> SymbolSearchRequest
+  -> RequestOptions
+  -> IO SymbolSearchResult
+searchSymbol env@Glass.Env{..} req@SymbolSearchRequest{..} RequestOptions{..} =
+  case selectGleanDBs scmRepo languageSet of
+    Left err -> throwIO $ ServerException err
+    Right rs -> joinSearchResults mlimit <$> Async.mapConcurrently
+      (uncurry searchSymbolInDBs) (Map.toList rs)
+  where
+    method = "searchSymbol"
+    scmRepo = symbolSearchRequest_repo_name
+    languageSet = symbolSearchRequest_language
+    searchStr = symbolSearchRequest_name -- todo unprocessed search string
+    langs = mapMaybe languageToCodeLang (Set.elems languageSet)
+    kinds = map symbolKindFromSymbolKind (Set.elems symbolSearchRequest_kinds)
+    SymbolSearchOptions{..} = symbolSearchRequest_options
+    caseOpt = if symbolSearchOptions_ignoreCase then Insensitive else Sensitive
+    typeOpt = if symbolSearchOptions_exactMatch then Exact else Prefix
+    terse = not symbolSearchOptions_detailedResults
+    mlimit = fromIntegral <$> requestOptions_limit
+
+    searchQ = Query.searchByName typeOpt caseOpt searchStr kinds langs
+
+    -- run the same query across more than one glean db
+    searchSymbolInDBs repo dbs = case nonEmpty (Set.toList dbs) of
+      Nothing -> pure $ SymbolSearchResult [] []
+      Just names -> withGleanDBs method env req names $ \gleanDBs ->
+        backendRunHaxl GleanBackend{..} $ do
+          allResults <- searchReposWithLimit mlimit searchQ
+            (processSymbolResult terse repo)
+          let (symbols, descriptions) = unzip allResults
+              mDescriptions = if terse then [] else catMaybes descriptions
+          return (SymbolSearchResult symbols mDescriptions, Nothing)
+
+-- n.b. we need the RepoName (i.e. "fbsource" to construct symbol ids)
+processSymbolResult
+  :: Bool
+  -> RepoName
+  -> CodeSearch.SearchByName
+  -> RepoHaxl u w (SymbolResult, Maybe SymbolDescription)
+processSymbolResult terse repo result = do
+  Query.SymbolSearchData{..} <- Query.toSearchResult result
+  let Code.Location{..} = srLocation
+  symbolResult_location <- rangeSpanToLocationRange
+    repo location_file location_location
+  path <- GleanPath <$> Glean.keyOf location_file
+  symbolResult_symbol <- toSymbolId (fromGleanPath repo path) srEntity
+  let symbolResult_kind = symbolKindToSymbolKind <$> srKind
+      symbolResult_language = entityLanguage srEntity
+      basics = SymbolResult{..} -- just sym id, kind, lang, location
+  (basics,) <$>
+    if terse then pure Nothing else Just <$> describeEntity srEntity basics
+
+-- this takes first N results. We could try other strategies (such as
+-- selecting evenly by language, first n in alpha order by sym or file, ..
+--
+joinSearchResults :: Maybe Int -> [SymbolSearchResult] -> SymbolSearchResult
+joinSearchResults limit res =
+  SymbolSearchResult
+    (takeLimit $ symbolSearchResult_symbols =<< res)
+    (takeLimit $ symbolSearchResult_symbolDetails =<< res)
+  where
+    takeLimit :: [a] -> [a]
+    takeLimit = maybe id take limit
 
 -- | Search for entities by string fragments of names
+-- (deprecated)
 searchByName
   :: Glass.Env
   -> SearchByNameRequest
@@ -350,6 +424,7 @@ searchByName =
   searchEntityByString "searchByName" (Query.searchByName Query.Exact)
 
 -- | Search for entities by string fragments of names
+-- (deprecated)
 searchByNamePrefix
   :: Glass.Env
   -> SearchByNameRequest
@@ -359,6 +434,7 @@ searchByNamePrefix =
   searchEntityByString "searchByNamePrefix" (Query.searchByName Query.Prefix)
 
 -- | Search for entities by symbol id prefix
+-- (deprecated)
 searchBySymbolId
   :: Glass.Env
   -> SymbolId
@@ -950,30 +1026,27 @@ runErrorLog env cmd err = ErrorsLogger.runLog (Glass.logger env) $
 -- | Return a description for an Entity.
 describeEntity
   :: Code.Entity
-  -> EntityBasicDetails
+  -> SymbolResult
   -> Glean.RepoHaxl u w SymbolDescription
-describeEntity ent EntityBasicDetails{..} = do
-  repo <- Glean.haxlRepo
-  let symbolDescription_location = SymbolPath {
-        symbolPath_range = locationRange_range,
-        symbolPath_repository = locationRange_repository,
-        symbolPath_filepath = locationRange_filepath
-      }
-  let symbolDescription_repo_hash = Glean.repo_hash repo
-      symbolDescription_language = entityLanguage ent
-
+describeEntity ent SymbolResult{..} = do
+  symbolDescription_repo_hash <- Glean.repo_hash <$> Glean.haxlRepo
   symbolDescription_name <- eThrow =<< toQualifiedName ent
   symbolDescription_annotations <- eThrow =<< getAnnotationsForEntity ent
   symbolDescription_comments <- eThrow =<<
     getCommentsForEntity locationRange_repository ent
   symbolDescription_visibility <- eThrow =<< getVisibilityForEntity ent
-
-  return SymbolDescription{..}
-
+  pure SymbolDescription{..}
   where
-    LocationRange{..} = sLocation
-    symbolDescription_sym = sSymId
-    symbolDescription_kind = sKind
+    symbolDescription_sym = symbolResult_symbol
+    symbolDescription_kind = symbolResult_kind
+    symbolDescription_language = symbolResult_language
+
+    LocationRange{..} = symbolResult_location
+    symbolDescription_location = SymbolPath {
+      symbolPath_range = locationRange_range,
+      symbolPath_repository = locationRange_repository,
+      symbolPath_filepath = locationRange_filepath
+    }
 
     eThrow (Right x) = pure x
     eThrow (Left err) = throwM $ ServerException err
@@ -1021,23 +1094,25 @@ searchEntityByString method query env@Glass.Env{..} req opts =
         backendRunHaxl GleanBackend{..} $ do
           allResults <- searchReposWithLimit limit searchQ (processResult repo)
           let (results, descriptions) = unzip allResults
-              symbols = map sSymId results
+              symbols = map symbolResult_symbol results
               mDescriptions = if terse then [] else catMaybes descriptions
           return (SearchByNameResult symbols mDescriptions, Nothing)
 
     -- n.b. we need the RepoName (i.e. "fbsource" to construct symbol ids)
     processResult :: RepoName -> CodeSearch.SearchByName
-      -> RepoHaxl u w (EntityBasicDetails, Maybe SymbolDescription)
+      -> RepoHaxl u w (SymbolResult, Maybe SymbolDescription)
     processResult repo result = do
-      (sEntity, Code.Location{..}, kind) <- Query.toSearchResult result
-      sLocation <- rangeSpanToLocationRange repo location_file location_location
+      Query.SymbolSearchData{..} <- Query.toSearchResult result
+      let Code.Location{..} = srLocation
+      symbolResult_location <- rangeSpanToLocationRange
+        repo location_file location_location
       path <- GleanPath <$> Glean.keyOf location_file
-      sSymId <- toSymbolId (fromGleanPath repo path) sEntity
-      let sKind = symbolKindToSymbolKind <$> kind
-          sLanguage = entityLanguage sEntity
-          basics = EntityBasicDetails{..}
+      symbolResult_symbol <- toSymbolId (fromGleanPath repo path) srEntity
+      let symbolResult_kind = symbolKindToSymbolKind <$> srKind
+          symbolResult_language = entityLanguage srEntity
+          basics = SymbolResult{..}
       (basics,) <$>
-        if terse then pure Nothing else Just <$> describeEntity sEntity basics
+        if terse then pure Nothing else Just <$> describeEntity srEntity basics
 
     -- this takes first N results. We could try other strategies (such as
     -- selecting evenly by language, first n in alpha order by sym or file, ..
@@ -1048,16 +1123,6 @@ searchEntityByString method query env@Glass.Env{..} req opts =
       where
         takeLimit :: [a] -> [a]
         takeLimit = maybe id take limit
-
--- Non-optional components of a search result. We always need kinds, locations,
--- symbol ids, entities and repos. Only the full description is optional
-data EntityBasicDetails =
-  EntityBasicDetails {
-    sSymId :: !SymbolId,
-    sLocation :: !LocationRange,
-    sKind :: !(Maybe SymbolKind),
-    sLanguage :: !Language
-  }
 
 partialSymbolTokens
   :: SymbolId

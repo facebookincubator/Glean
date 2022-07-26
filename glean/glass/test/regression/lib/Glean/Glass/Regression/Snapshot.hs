@@ -169,6 +169,8 @@ evalQuery glassEnv qFile Query{..} oFile = case action of
     (Glass.resolveSymbolRange glassEnv)
   "describeSymbol" -> withSymbolId oFile args
     (Glass.describeSymbol glassEnv)
+  "searchSymbol" ->  withObjectArgs qFile oFile args
+    (Glass.searchSymbol glassEnv)
   "searchByName" ->  withObjectArgs qFile oFile args
     (Glass.searchByName glassEnv)
   "searchByNamePrefix" ->  withObjectArgs qFile oFile args
@@ -263,6 +265,10 @@ instance SortedResponse SearchByNameResult where
   sorted (SearchByNameResult syms deets) =
     SearchByNameResult (sorted syms) (sorted deets)
 
+instance SortedResponse SymbolSearchResult where
+  sorted (SymbolSearchResult syms deets) =
+    SymbolSearchResult (sorted syms) (sorted deets)
+
 instance SortedResponse SearchBySymbolIdResult where
   sorted (SearchBySymbolIdResult syms) =
     SearchBySymbolIdResult (sorted syms)
@@ -288,6 +294,8 @@ instance SortedResponse SymbolDescription where
   sorted sd = sd { symbolDescription_repo_hash = "testhash" }
 instance SortedResponse (Map.Map Text SymbolDescription) where
   sorted = Map.map sorted
+instance SortedResponse SymbolResult where
+  sorted = id
 
 diff :: FilePath -> FilePath -> IO ()
 diff outGenerated outSpec = do

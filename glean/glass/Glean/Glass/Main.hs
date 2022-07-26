@@ -128,10 +128,16 @@ glassHandler env cmd = case cmd of
   DescribeSymbol r opts -> Handler.describeSymbol env r opts
 
   -- Search for symbols
+  -- by string
+  SearchSymbol r opts -> Handler.searchSymbol env r opts
+
+  -- by relationship
+  SearchRelated r opts req -> Handler.searchRelated env r opts req
+
+  -- deprecated
   SearchByName r opts -> Handler.searchByName env r opts
   SearchByNamePrefix r opts -> Handler.searchByNamePrefix env r opts
   SearchBySymbolId r opts -> Handler.searchBySymbolId env r opts
-  SearchRelated r opts req -> Handler.searchRelated env r opts req
 
   -- Create an incremental database
   Index r -> Handler.index env r

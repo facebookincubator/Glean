@@ -67,6 +67,9 @@ instance LogRequest Location where
 instance LogRequest SearchByNameRequest where
   logRequest = logSearchByNameRequestSG Logger.setSymbol Logger.setRepo
 
+instance LogRequest SymbolSearchRequest where
+  logRequest = logSymbolSearchRequestSG Logger.setSymbol Logger.setRepo
+
 class LogResult a where
   logResult :: (a, GleanGlassLogger) -> GleanGlassLogger
 
@@ -118,6 +121,10 @@ instance LogResult [SymbolId] where
 instance LogResult SearchByNameResult where
   logResult (SearchByNameResult{..}, log) =
     log <> Logger.setItemCount (length searchByNameResult_symbols)
+
+instance LogResult SymbolSearchResult where
+  logResult (SymbolSearchResult{..}, log) =
+    log <> Logger.setItemCount (length symbolSearchResult_symbols)
 
 instance LogResult SearchBySymbolIdResult where
   logResult (SearchBySymbolIdResult symids, log) = logResult (symids, log)
@@ -236,6 +243,9 @@ instance LogError Location where
 instance LogError SearchByNameRequest where
   logError = logSearchByNameRequestSG Errors.setSymbol Errors.setRepo
 
+instance LogError SymbolSearchRequest where
+  logError = logSymbolSearchRequestSG Errors.setSymbol Errors.setRepo
+
 --
 -- Lift log accessors generically over Glass types
 --
@@ -273,3 +283,12 @@ logSearchByNameRequestSG logQuery logRepo SearchByNameRequest{..} =
     Just r -> logRepo r <> logQuery searchByNameRequest_name
   where
     repo = unRepoName <$> searchContext_repo_name searchByNameRequest_context
+
+logSymbolSearchRequestSG :: Semigroup a => (Text -> a) -> (Text -> a)
+  -> SymbolSearchRequest -> a
+logSymbolSearchRequestSG logQuery logRepo SymbolSearchRequest{..} =
+  case repo of
+    Nothing -> logQuery symbolSearchRequest_name
+    Just r -> logRepo r <> logQuery symbolSearchRequest_name
+  where
+    repo = unRepoName <$> symbolSearchRequest_repo_name
