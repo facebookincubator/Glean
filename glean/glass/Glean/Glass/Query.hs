@@ -30,6 +30,7 @@ module Glean.Glass.Query
   , SearchFn
   , toSearchResult
   , SymbolSearchData(..)
+  , RepoSearchResult(..)
 
   -- * Entity annotations
   , symbolKind
@@ -47,6 +48,7 @@ import Glean.Angle as Angle
 import Glean.Haxl.Repos (RepoHaxl)
 
 import Glean.Glass.Base (GleanPath(..))
+import Glean.Glass.Types (SymbolResult(..), SymbolDescription(..))
 
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.CodemarkupSearch.Types as CodeSearch
@@ -239,6 +241,12 @@ toSearchResult p = do
     searchByName_key_entity
     searchByName_key_location
     searchByName_key_kind
+
+-- | Type of processed search results from a single scm repo
+newtype RepoSearchResult =
+  RepoSearchResult {
+    unRepoSearchResult :: [(SymbolResult,Maybe SymbolDescription)]
+  }
 
 -- | Given an entity find the kind associated with it
 symbolKind :: Angle Code.Entity -> Angle Code.SymbolKind

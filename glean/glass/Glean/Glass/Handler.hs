@@ -355,7 +355,7 @@ searchSymbol
 searchSymbol env@Glass.Env{..} req@SymbolSearchRequest{..} RequestOptions{..} =
   case selectGleanDBs scmRepo languageSet of
     Left err -> throwIO $ ServerException err
-    Right rs -> joinSearchResults mlimit <$> Async.mapConcurrently
+    Right rs -> joinSearchResults mlimit terse <$> Async.mapConcurrently
       (uncurry searchSymbolInDBs) (Map.toList rs)
   where
     method = "searchSymbol"
@@ -374,14 +374,11 @@ searchSymbol env@Glass.Env{..} req@SymbolSearchRequest{..} RequestOptions{..} =
 
     -- run the same query across more than one glean db
     searchSymbolInDBs repo dbs = case nonEmpty (Set.toList dbs) of
-      Nothing -> pure $ SymbolSearchResult [] []
-      Just names -> withGleanDBs method env req names $ \gleanDBs ->
-        backendRunHaxl GleanBackend{..} $ do
-          allResults <- searchReposWithLimit mlimit searchQ
-            (processSymbolResult terse repo)
-          let (symbols, descriptions) = unzip allResults
-              mDescriptions = if terse then [] else catMaybes descriptions
-          return (SymbolSearchResult symbols mDescriptions, Nothing)
+      Nothing -> pure (Query.RepoSearchResult [])
+      Just names -> withGleanDBs method env req names $ \gleanDBs -> do
+        res <- backendRunHaxl GleanBackend{..} $
+          searchReposWithLimit mlimit searchQ (processSymbolResult terse repo)
+        pure (Query.RepoSearchResult res, Nothing)
 
 -- n.b. we need the RepoName (i.e. "fbsource" to construct symbol ids)
 processSymbolResult
@@ -405,14 +402,16 @@ processSymbolResult terse repo result = do
 -- this takes first N results. We could try other strategies (such as
 -- selecting evenly by language, first n in alpha order by sym or file, ..
 --
-joinSearchResults :: Maybe Int -> [SymbolSearchResult] -> SymbolSearchResult
-joinSearchResults limit res =
-  SymbolSearchResult
-    (takeLimit $ symbolSearchResult_symbols =<< res)
-    (takeLimit $ symbolSearchResult_symbolDetails =<< res)
+joinSearchResults
+  :: Maybe Int
+  -> Bool
+  -> [Query.RepoSearchResult]
+  -> SymbolSearchResult
+joinSearchResults mlimit terse xs =
+    SymbolSearchResult syms $ if terse then [] else catMaybes descs
   where
-    takeLimit :: [a] -> [a]
-    takeLimit = maybe id take limit
+    (syms, descs) = unzip (takeLimit (concatMap Query.unRepoSearchResult xs))
+    takeLimit = maybe id take mlimit
 
 -- | Search for entities by string fragments of names
 -- (deprecated)
