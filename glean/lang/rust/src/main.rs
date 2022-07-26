@@ -24,6 +24,8 @@ use crate::json_schema::Root;
 use crate::json_schema::Span;
 use clap::App;
 use clap::Arg;
+use eyre::eyre;
+use eyre::WrapErr;
 use fbthrift::serialize;
 use fbthrift::simplejson_protocol::SimpleJsonProtocolSerializer;
 use fbthrift::BufMutExt;
@@ -96,7 +98,7 @@ use std::process;
 
 mod json_schema;
 
-fn main() {
+fn main() -> eyre::Result<()> {
     let matches = App::new("glean-rust")
         .version("0.1")
         .author("Patrick Walton <pcwalton@fb.com>")
@@ -116,29 +118,34 @@ fn main() {
                 .required(false),
         )
         .get_matches();
-    let input_paths = matches.values_of_os("INPUT-JSON").unwrap();
+    let input_paths = matches
+        .values_of_os("INPUT-JSON")
+        .ok_or(eyre!("while reading input-json arg"))?;
     let path_prefix = matches
         .value_of_os("PATH-PREFIX")
         .map(|s| s.to_str())
         .flatten();
+    writeln!(io::stderr(), "Indexing {} files", input_paths.len())?;
     let mut glean_writer = GleanWriter::new();
     for input in input_paths.into_iter().map(Path::new) {
-        let file =
-            File::open(input).unwrap_or_else(|err| die(&format!("Failed to open file: {}", err)));
+        let file = File::open(input).wrap_err("while reading input-json arg")?;
         let reader = BufReader::new(file);
-        let root: Root = serde_json::from_reader(reader)
-            .unwrap_or_else(|err| die(&format!("Failed to parse JSON: {}", err)));
+        let root: Root = serde_json::from_reader(reader).wrap_err("failed to parse JSON")?;
 
         let (fullpath, path) = find_path(&root, path_prefix);
         let filelines = get_line_endings(&path);
-        glean_writer.add_predicates_for_file(&root, &fullpath, filelines);
+        glean_writer.add_predicates_for_file(&root, &fullpath, filelines)?;
     }
 
-    let output = serialize!(SimpleJsonProtocol, |w| Serialize::write(
+    let output: &[u8] = &serialize!(SimpleJsonProtocol, |w| Serialize::write(
         &glean_writer.predicates,
         w
     ));
-    io::stdout().write_all(&output).unwrap();
+    io::stdout()
+        .write_all(output)
+        .wrap_err("while writing output")?;
+    writeln!(io::stderr(), "Wrote {} bytes to stdout", output.len());
+    Ok(())
 }
 
 // Find the source file associated with the analysis results.
@@ -191,11 +198,6 @@ fn get_filelines_fields(contents: String) -> FileLinesFields {
         ends_in_newline,
         has_unicode_or_tabs,
     }
-}
-
-fn die(msg: &str) -> ! {
-    eprintln!("{}", msg);
-    process::exit(1)
 }
 
 type Id = i64;
@@ -327,32 +329,42 @@ impl GleanWriter {
         }
     }
 
-    fn add_predicates_for_file(&mut self, root: &Root, path: &str, filelines: FileLinesFields) {
-        let file_id = self.add_predicate_for_file(&path);
-        self.add_predicate_for_filelines(file_id, filelines);
+    fn add_predicates_for_file(
+        &mut self,
+        root: &Root,
+        path: &str,
+        filelines: FileLinesFields,
+    ) -> eyre::Result<()> {
+        let file_id = self.add_predicate_for_file(path)?;
+        self.add_predicate_for_filelines(file_id, filelines)?;
         for def in &root.defs {
-            self.add_predicates_for_def(&def, file_id);
+            self.add_predicates_for_def(def, file_id)?;
         }
         for implementation in &root.impls {
-            self.add_predicates_for_impl(implementation, file_id);
+            self.add_predicates_for_impl(implementation, file_id)?;
         }
         for reference in &root.refs {
-            self.add_ref_to_xref(reference);
+            self.add_ref_to_xref(reference)?;
         }
         self.add_xref_predicates(&path);
+        Ok(())
     }
 
-    fn add_predicate_for_file(&mut self, path: &str) -> i64 {
+    fn add_predicate_for_file(&mut self, path: &str) -> eyre::Result<i64> {
         let file_id = self.next_id();
         self.predicates.files.push(SrcFile {
             id: file_id,
             key: Some(path.to_owned()),
             ..Default::default()
         });
-        file_id
+        Ok(file_id)
     }
 
-    fn add_predicate_for_filelines(&mut self, file_id: i64, filelines: FileLinesFields) -> i64 {
+    fn add_predicate_for_filelines(
+        &mut self,
+        file_id: i64,
+        filelines: FileLinesFields,
+    ) -> eyre::Result<i64> {
         let filelines_id = self.next_id();
 
         self.predicates.file_lines.push(FileLines {
@@ -370,67 +382,73 @@ impl GleanWriter {
             })),
             ..Default::default()
         });
-        filelines_id
+        Ok(filelines_id)
     }
 
-    fn add_predicates_for_def(&mut self, def: &Def, file_id: i64) {
+    fn add_predicates_for_def(&mut self, def: &Def, file_id: i64) -> eyre::Result<()> {
         match def.kind {
             DefKind::Const => {
-                self.add_predicates_for_const_def(&def, file_id);
+                self.add_predicates_for_const_def(def, file_id)?;
             }
             DefKind::Enum => {
-                self.add_predicates_for_enum_def(&def, file_id);
+                self.add_predicates_for_enum_def(def, file_id)?;
             }
             DefKind::Field => {
-                self.add_predicates_for_field_def(&def, file_id);
+                self.add_predicates_for_field_def(def, file_id)?;
             }
             DefKind::ForeignFunction => {
-                self.add_predicates_for_foreign_function_def(&def, file_id);
+                self.add_predicates_for_foreign_function_def(def, file_id)?;
             }
             DefKind::ForeignStatic => {
-                self.add_predicates_for_foreign_static_def(&def, file_id);
+                self.add_predicates_for_foreign_static_def(def, file_id)?;
             }
             DefKind::Function => {
-                self.add_predicates_for_function_def(&def, file_id);
+                self.add_predicates_for_function_def(def, file_id)?;
             }
             DefKind::Local => {
-                self.add_predicates_for_local_def(&def, file_id);
+                self.add_predicates_for_local_def(def, file_id)?;
             }
             DefKind::Method => {
-                self.add_predicates_for_method_def(&def, file_id);
+                self.add_predicates_for_method_def(def, file_id)?;
             }
             DefKind::Mod => {
-                self.add_predicates_for_module_def(&def, file_id);
+                self.add_predicates_for_module_def(def, file_id)?;
             }
             DefKind::Static => {
-                self.add_predicates_for_static_def(&def, file_id);
+                self.add_predicates_for_static_def(def, file_id)?;
             }
             DefKind::Struct => {
-                self.add_predicates_for_struct_def(&def, file_id);
+                self.add_predicates_for_struct_def(def, file_id)?;
             }
             DefKind::StructVariant => {
-                self.add_predicates_for_struct_variant_def(&def, file_id);
+                self.add_predicates_for_struct_variant_def(def, file_id)?;
             }
             DefKind::Trait => {
-                self.add_predicates_for_trait_def(&def, file_id);
+                self.add_predicates_for_trait_def(def, file_id)?;
             }
             DefKind::TupleVariant => {
-                self.add_predicates_for_tuple_variant_def(&def, file_id);
+                self.add_predicates_for_tuple_variant_def(def, file_id)?;
             }
             DefKind::Type => {
-                self.add_predicates_for_type_def(&def, file_id);
+                self.add_predicates_for_type_def(def, file_id)?;
             }
             DefKind::Union => {
-                self.add_predicates_for_union_def(&def, file_id);
+                self.add_predicates_for_union_def(def, file_id)?;
             }
-        }
+        };
+        Ok(())
     }
 
-    fn add_ref_to_xref(&mut self, reference: &Ref) {
+    fn add_ref_to_xref(&mut self, reference: &Ref) -> eyre::Result<()> {
         if let Some(xref) = self.xrefs.get_mut(&reference.ref_id) {
             let byte_span = span_to_byte_span(&reference.span);
-            xref.key.as_mut().unwrap().ranges.push(byte_span)
+            xref.key
+                .as_mut()
+                .ok_or(eyre!("error while adding ref"))?
+                .ranges
+                .push(byte_span)
         }
+        Ok(())
     }
 
     // As a side effect, this removes all XRefs.
@@ -464,13 +482,13 @@ impl GleanWriter {
         id
     }
 
-    fn string_to_qname(&mut self, string: &str) -> Option<QName> {
+    fn string_to_qname(&mut self, string: &str) -> eyre::Result<Option<QName>> {
         let mut parent = None;
         for piece in QualNameParser::new(string) {
             let child = QName {
                 id: self.next_id(),
                 key: Some(Box::new(QName_key {
-                    local_name: self.string_to_name(piece),
+                    local_name: self.string_to_name(piece?),
                     parent,
                     ..Default::default()
                 })),
@@ -478,7 +496,7 @@ impl GleanWriter {
             };
             parent = Some(child);
         }
-        parent
+        Ok(parent)
     }
 
     fn string_to_name(&mut self, string: &str) -> Name {
@@ -500,14 +518,14 @@ impl GleanWriter {
         }
     }
 
-    fn add_predicates_for_const_def(&mut self, def: &Def, file_id: i64) {
+    fn add_predicates_for_const_def(&mut self, def: &Def, file_id: i64) -> eyre::Result<()> {
         let def_predicate = ConstDef {
             id: self.next_id(),
             key: Some(Box::new(ConstDef_key {
                 r#type: self.string_to_type(&def.value),
                 name: self
-                    .string_to_qname(&def.qualname)
-                    .expect("Const didn't have a name!"),
+                    .string_to_qname(&def.qualname)?
+                    .ok_or(eyre!("Const didn't have a name!"))?,
                 ..Default::default()
             })),
             ..Default::default()
@@ -523,16 +541,17 @@ impl GleanWriter {
         self.predicates.def_locations.push(def_location);
         self.predicates.xrefs.push(def_xref.clone());
         self.xrefs.insert(def.id.clone(), def_xref);
+        Ok(())
     }
 
-    fn add_predicates_for_enum_def(&mut self, def: &Def, file_id: i64) {
+    fn add_predicates_for_enum_def(&mut self, def: &Def, file_id: i64) -> eyre::Result<()> {
         let def_predicate = EnumDef {
             id: self.next_id(),
             key: Some(Box::new(EnumDef_key {
                 r#type: self.string_to_type(&def.value),
                 name: self
-                    .string_to_qname(&def.qualname)
-                    .expect("Enum didn't have a name!"),
+                    .string_to_qname(&def.qualname)?
+                    .ok_or(eyre!("Enum didn't have a name!"))?,
                 ..Default::default()
             })),
             ..Default::default()
@@ -548,16 +567,17 @@ impl GleanWriter {
         self.predicates.def_locations.push(def_location);
         self.predicates.xrefs.push(def_xref.clone());
         self.xrefs.insert(def.id.clone(), def_xref);
+        Ok(())
     }
 
-    fn add_predicates_for_field_def(&mut self, def: &Def, file_id: i64) {
+    fn add_predicates_for_field_def(&mut self, def: &Def, file_id: i64) -> eyre::Result<()> {
         let def_predicate = FieldDef {
             id: self.next_id(),
             key: Some(Box::new(FieldDef_key {
                 r#type: self.string_to_type(&def.value),
                 name: self
-                    .string_to_qname(&def.qualname)
-                    .expect("Field didn't have a name!"),
+                    .string_to_qname(&def.qualname)?
+                    .ok_or(eyre!("Field didn't have a name!"))?,
                 ..Default::default()
             })),
             ..Default::default()
@@ -573,16 +593,21 @@ impl GleanWriter {
         self.predicates.def_locations.push(def_location);
         self.predicates.xrefs.push(def_xref.clone());
         self.xrefs.insert(def.id.clone(), def_xref);
+        Ok(())
     }
 
-    fn add_predicates_for_foreign_function_def(&mut self, def: &Def, file_id: i64) {
+    fn add_predicates_for_foreign_function_def(
+        &mut self,
+        def: &Def,
+        file_id: i64,
+    ) -> eyre::Result<()> {
         let def_predicate = ForeignFunctionDef {
             id: self.next_id(),
             key: Some(Box::new(ForeignFunctionDef_key {
                 r#type: self.string_to_type(&def.value),
                 name: self
-                    .string_to_qname(&def.qualname)
-                    .expect("Foreign function didn't have a name!"),
+                    .string_to_qname(&def.qualname)?
+                    .ok_or(eyre!("Foreign function didn't have a name!"))?,
                 ..Default::default()
             })),
             ..Default::default()
@@ -598,16 +623,21 @@ impl GleanWriter {
         self.predicates.def_locations.push(def_location);
         self.predicates.xrefs.push(def_xref.clone());
         self.xrefs.insert(def.id.clone(), def_xref);
+        Ok(())
     }
 
-    fn add_predicates_for_foreign_static_def(&mut self, def: &Def, file_id: i64) {
+    fn add_predicates_for_foreign_static_def(
+        &mut self,
+        def: &Def,
+        file_id: i64,
+    ) -> eyre::Result<()> {
         let def_predicate = ForeignStaticDef {
             id: self.next_id(),
             key: Some(Box::new(ForeignStaticDef_key {
                 r#type: self.string_to_type(&def.value),
                 name: self
-                    .string_to_qname(&def.qualname)
-                    .expect("Foreign static didn't have a name!"),
+                    .string_to_qname(&def.qualname)?
+                    .ok_or(eyre!("Foreign static didn't have a name!"))?,
                 ..Default::default()
             })),
             ..Default::default()
@@ -623,16 +653,17 @@ impl GleanWriter {
         self.predicates.def_locations.push(def_location);
         self.predicates.xrefs.push(def_xref.clone());
         self.xrefs.insert(def.id.clone(), def_xref);
+        Ok(())
     }
 
-    fn add_predicates_for_function_def(&mut self, def: &Def, file_id: i64) {
+    fn add_predicates_for_function_def(&mut self, def: &Def, file_id: i64) -> eyre::Result<()> {
         let def_predicate = FunctionDef {
             id: self.next_id(),
             key: Some(Box::new(FunctionDef_key {
                 r#type: self.string_to_type(&def.value),
                 name: self
-                    .string_to_qname(&def.qualname)
-                    .expect("Function didn't have a name!"),
+                    .string_to_qname(&def.qualname)?
+                    .ok_or(eyre!("Function didn't have a name!"))?,
                 ..Default::default()
             })),
             ..Default::default()
@@ -648,16 +679,17 @@ impl GleanWriter {
         self.predicates.def_locations.push(def_location);
         self.predicates.xrefs.push(def_xref.clone());
         self.xrefs.insert(def.id.clone(), def_xref);
+        Ok(())
     }
 
-    fn add_predicates_for_local_def(&mut self, def: &Def, file_id: i64) {
+    fn add_predicates_for_local_def(&mut self, def: &Def, file_id: i64) -> eyre::Result<()> {
         let def_predicate = LocalDef {
             id: self.next_id(),
             key: Some(Box::new(LocalDef_key {
                 r#type: self.string_to_type(&def.value),
                 name: self
-                    .string_to_qname(&def.qualname)
-                    .expect("Local variable didn't have a name!"),
+                    .string_to_qname(&def.qualname)?
+                    .ok_or(eyre!("Local variable didn't have a name!"))?,
                 ..Default::default()
             })),
             ..Default::default()
@@ -673,16 +705,17 @@ impl GleanWriter {
         self.predicates.def_locations.push(def_location);
         self.predicates.xrefs.push(def_xref.clone());
         self.xrefs.insert(def.id.clone(), def_xref);
+        Ok(())
     }
 
-    fn add_predicates_for_method_def(&mut self, def: &Def, file_id: i64) {
+    fn add_predicates_for_method_def(&mut self, def: &Def, file_id: i64) -> eyre::Result<()> {
         let def_predicate = MethodDef {
             id: self.next_id(),
             key: Some(Box::new(MethodDef_key {
                 r#type: self.string_to_type(&def.value),
                 name: self
-                    .string_to_qname(&def.qualname)
-                    .expect("Method didn't have a name!"),
+                    .string_to_qname(&def.qualname)?
+                    .ok_or(eyre!("Method didn't have a name!"))?,
                 ..Default::default()
             })),
             ..Default::default()
@@ -698,14 +731,15 @@ impl GleanWriter {
         self.predicates.def_locations.push(def_location);
         self.predicates.xrefs.push(def_xref.clone());
         self.xrefs.insert(def.id.clone(), def_xref);
+        Ok(())
     }
 
-    fn add_predicates_for_module_def(&mut self, def: &Def, file_id: i64) {
-        let name = match self.string_to_qname(&def.qualname) {
+    fn add_predicates_for_module_def(&mut self, def: &Def, file_id: i64) -> eyre::Result<()> {
+        let name = match self.string_to_qname(&def.qualname)? {
             Some(name) => name,
             None => {
                 // This can happen for the top-level module. Just discard it.
-                return;
+                return Ok(());
             }
         };
 
@@ -728,16 +762,17 @@ impl GleanWriter {
         self.predicates.def_locations.push(def_location);
         self.predicates.xrefs.push(def_xref.clone());
         self.xrefs.insert(def.id.clone(), def_xref);
+        Ok(())
     }
 
-    fn add_predicates_for_static_def(&mut self, def: &Def, file_id: i64) {
+    fn add_predicates_for_static_def(&mut self, def: &Def, file_id: i64) -> eyre::Result<()> {
         let def_predicate = StaticDef {
             id: self.next_id(),
             key: Some(Box::new(StaticDef_key {
                 r#type: self.string_to_type(&def.value),
                 name: self
-                    .string_to_qname(&def.qualname)
-                    .expect("Static didn't have a name!"),
+                    .string_to_qname(&def.qualname)?
+                    .ok_or(eyre!("Static didn't have a name!"))?,
                 ..Default::default()
             })),
             ..Default::default()
@@ -753,15 +788,16 @@ impl GleanWriter {
         self.predicates.def_locations.push(def_location);
         self.predicates.xrefs.push(def_xref.clone());
         self.xrefs.insert(def.id.clone(), def_xref);
+        Ok(())
     }
 
-    fn add_predicates_for_struct_def(&mut self, def: &Def, file_id: i64) {
+    fn add_predicates_for_struct_def(&mut self, def: &Def, file_id: i64) -> eyre::Result<()> {
         let def_predicate = StructDef {
             id: self.next_id(),
             key: Some(Box::new(StructDef_key {
                 name: self
-                    .string_to_qname(&def.qualname)
-                    .expect("Struct didn't have a name!"),
+                    .string_to_qname(&def.qualname)?
+                    .ok_or(eyre!("Struct didn't have a name!"))?,
                 ..Default::default()
             })),
             ..Default::default()
@@ -777,15 +813,20 @@ impl GleanWriter {
         self.predicates.def_locations.push(def_location);
         self.predicates.xrefs.push(def_xref.clone());
         self.xrefs.insert(def.id.clone(), def_xref);
+        Ok(())
     }
 
-    fn add_predicates_for_struct_variant_def(&mut self, def: &Def, file_id: i64) {
+    fn add_predicates_for_struct_variant_def(
+        &mut self,
+        def: &Def,
+        file_id: i64,
+    ) -> eyre::Result<()> {
         let def_predicate = StructVariantDef {
             id: self.next_id(),
             key: Some(Box::new(StructVariantDef_key {
                 name: self
-                    .string_to_qname(&def.qualname)
-                    .expect("Struct-like enum variant didn't have a name!"),
+                    .string_to_qname(&def.qualname)?
+                    .ok_or(eyre!("Struct-like enum variant didn't have a name!"))?,
                 ..Default::default()
             })),
             ..Default::default()
@@ -801,15 +842,16 @@ impl GleanWriter {
         self.predicates.def_locations.push(def_location);
         self.predicates.xrefs.push(def_xref.clone());
         self.xrefs.insert(def.id.clone(), def_xref);
+        Ok(())
     }
 
-    fn add_predicates_for_trait_def(&mut self, def: &Def, file_id: i64) {
+    fn add_predicates_for_trait_def(&mut self, def: &Def, file_id: i64) -> eyre::Result<()> {
         let def_predicate = TraitDef {
             id: self.next_id(),
             key: Some(Box::new(TraitDef_key {
                 name: self
-                    .string_to_qname(&def.qualname)
-                    .expect("Trait didn't have a name!"),
+                    .string_to_qname(&def.qualname)?
+                    .ok_or(eyre!("Trait didn't have a name!"))?,
                 ..Default::default()
             })),
             ..Default::default()
@@ -825,15 +867,20 @@ impl GleanWriter {
         self.predicates.def_locations.push(def_location);
         self.predicates.xrefs.push(def_xref.clone());
         self.xrefs.insert(def.id.clone(), def_xref);
+        Ok(())
     }
 
-    fn add_predicates_for_tuple_variant_def(&mut self, def: &Def, file_id: i64) {
+    fn add_predicates_for_tuple_variant_def(
+        &mut self,
+        def: &Def,
+        file_id: i64,
+    ) -> eyre::Result<()> {
         let def_predicate = TupleVariantDef {
             id: self.next_id(),
             key: Some(Box::new(TupleVariantDef_key {
                 name: self
-                    .string_to_qname(&def.qualname)
-                    .expect("Tuple-like enum variant didn't have a name!"),
+                    .string_to_qname(&def.qualname)?
+                    .ok_or(eyre!("Tuple-like enum variant didn't have a name!"))?,
                 ..Default::default()
             })),
             ..Default::default()
@@ -849,16 +896,17 @@ impl GleanWriter {
         self.predicates.def_locations.push(def_location);
         self.predicates.xrefs.push(def_xref.clone());
         self.xrefs.insert(def.id.clone(), def_xref);
+        Ok(())
     }
 
-    fn add_predicates_for_type_def(&mut self, def: &Def, file_id: i64) {
+    fn add_predicates_for_type_def(&mut self, def: &Def, file_id: i64) -> eyre::Result<()> {
         let def_predicate = TypeDef {
             id: self.next_id(),
             key: Some(Box::new(TypeDef_key {
                 r#type: self.string_to_type(&def.value),
                 name: self
-                    .string_to_qname(&def.qualname)
-                    .expect("Type definition didn't have a name!"),
+                    .string_to_qname(&def.qualname)?
+                    .ok_or(eyre!("Type definition didn't have a name!"))?,
                 ..Default::default()
             })),
             ..Default::default()
@@ -874,15 +922,16 @@ impl GleanWriter {
         self.predicates.def_locations.push(def_location);
         self.predicates.xrefs.push(def_xref.clone());
         self.xrefs.insert(def.id.clone(), def_xref);
+        Ok(())
     }
 
-    fn add_predicates_for_union_def(&mut self, def: &Def, file_id: i64) {
+    fn add_predicates_for_union_def(&mut self, def: &Def, file_id: i64) -> eyre::Result<()> {
         let def_predicate = UnionDef {
             id: self.next_id(),
             key: Some(Box::new(UnionDef_key {
                 name: self
-                    .string_to_qname(&def.qualname)
-                    .expect("Union definition didn't have a name!"),
+                    .string_to_qname(&def.qualname)?
+                    .ok_or(eyre!("Union definition didn't have a name!"))?,
                 ..Default::default()
             })),
             ..Default::default()
@@ -898,9 +947,10 @@ impl GleanWriter {
         self.predicates.def_locations.push(def_location);
         self.predicates.xrefs.push(def_xref.clone());
         self.xrefs.insert(def.id.clone(), def_xref);
+        Ok(())
     }
 
-    fn add_predicates_for_impl(&mut self, implementation: &Impl, file_id: i64) {
+    fn add_predicates_for_impl(&mut self, implementation: &Impl, file_id: i64) -> eyre::Result<()> {
         let impl_predicate = GleanImpl {
             id: self.next_id(),
             key: Some(Box::new(Impl_key {
@@ -920,6 +970,7 @@ impl GleanWriter {
         let impl_location = self.predicate_for_impl_location(implementation, glean_impl, file_id);
         self.predicates.impls.push(impl_predicate);
         self.predicates.impl_locations.push(impl_location);
+        Ok(())
     }
 
     fn predicate_for_def_location(
@@ -1004,9 +1055,9 @@ impl<'a> QualNameParser<'a> {
 }
 
 impl<'a> Iterator for QualNameParser<'a> {
-    type Item = &'a str;
+    type Item = eyre::Result<&'a str>;
 
-    fn next(&mut self) -> Option<&'a str> {
+    fn next(&mut self) -> Option<eyre::Result<&'a str>> {
         if self.input.is_empty() {
             return None;
         }
@@ -1022,7 +1073,16 @@ impl<'a> Iterator for QualNameParser<'a> {
         // Skip ignorable.
         let next_start_index;
         if self.input.starts_with(" as ") {
-            next_start_index = self.input.find(">::").expect("Found `as` with no `>`") + 3;
+            next_start_index = match self
+                .input
+                .find(">::")
+                .ok_or_else(|| eyre!("could not find >::"))
+                .wrap_err_with(|| eyre!("while parsing {}", self.input))
+                .wrap_err("Found `as` with no `>`")
+            {
+                Ok(index) => index + 3,
+                Err(err) => return Some(Err(err)),
+            }
         } else if self.input.starts_with('$') {
             next_start_index = self.input.len();
         } else {
@@ -1032,6 +1092,6 @@ impl<'a> Iterator for QualNameParser<'a> {
                 .unwrap_or_else(|| self.input.len());
         }
         self.input = &self.input[next_start_index..];
-        Some(result)
+        Some(Ok(result))
     }
 }
