@@ -13,8 +13,6 @@ struct A {
     nick: Vec<String>,
 }
 
-use std::ops::Drop;
-
 impl Drop for A {
     // run before dropping the associated memory
     fn drop(&mut self) {
