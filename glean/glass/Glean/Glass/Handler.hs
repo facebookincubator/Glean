@@ -44,16 +44,17 @@ module Glean.Glass.Handler
 import Control.Concurrent.STM ( TVar )
 import Control.Exception ( throwIO, SomeException )
 import Control.Monad ( forM )
-import Data.Ord
 import Control.Monad.Catch ( throwM, try )
 import Data.Either.Extra (eitherToMaybe, partitionEithers)
 import Data.Foldable ( forM_ )
 import Data.List.NonEmpty (NonEmpty(..), toList, nonEmpty)
 import Data.Maybe
+import Data.Ord
 import Data.Text ( Text )
+import qualified Control.Concurrent.Async as Async
+import qualified Data.List.Extra as List ( groupSortOn )
 import qualified Data.Map.Strict as Map
 import qualified Data.Text as Text
-import qualified Control.Concurrent.Async as Async
 
 import Logger.GleanGlass ( GleanGlassLogger )
 import Logger.GleanGlassErrors ( GleanGlassErrorsLogger )
@@ -155,7 +156,7 @@ import Glean.Glass.Types
       RelatedSymbols(..),
       ServerException(ServerException),
       SymbolDescription(..),
-      SymbolId(SymbolId),
+      SymbolId(..),
       Range,
       Location(..),
       LocationRange(..),
@@ -355,7 +356,7 @@ searchSymbol
 searchSymbol env@Glass.Env{..} req@SymbolSearchRequest{..} RequestOptions{..} =
   case selectGleanDBs scmRepo languageSet of
     Left err -> throwIO $ ServerException err
-    Right rs -> joinSearchResults mlimit terse <$> Async.mapConcurrently
+    Right rs -> joinSearchResults mlimit terse sorted <$> Async.mapConcurrently
       (uncurry searchSymbolInDBs) (Map.toList rs)
   where
     method = "searchSymbol"
@@ -368,6 +369,7 @@ searchSymbol env@Glass.Env{..} req@SymbolSearchRequest{..} RequestOptions{..} =
     caseOpt = if symbolSearchOptions_ignoreCase then Insensitive else Sensitive
     typeOpt = if symbolSearchOptions_exactMatch then Exact else Prefix
     terse = not symbolSearchOptions_detailedResults
+    sorted = symbolSearchOptions_sortResults
     mlimit = fromIntegral <$> requestOptions_limit
 
     searchQ = Query.searchByName typeOpt caseOpt searchStr kinds langs
@@ -377,7 +379,9 @@ searchSymbol env@Glass.Env{..} req@SymbolSearchRequest{..} RequestOptions{..} =
       Nothing -> pure (Query.RepoSearchResult [])
       Just names -> withGleanDBs method env req names $ \gleanDBs -> do
         res <- backendRunHaxl GleanBackend{..} $
-          searchReposWithLimit mlimit searchQ (processSymbolResult terse repo)
+          Glean.queryAllRepos $ do
+            res <- searchWithLimit mlimit searchQ --  each db gets to set mlimit
+            mapM (processSymbolResult terse repo) res
         pure (Query.RepoSearchResult res, Nothing)
 
 -- n.b. we need the RepoName (i.e. "fbsource" to construct symbol ids)
@@ -405,13 +409,20 @@ processSymbolResult terse repo result = do
 joinSearchResults
   :: Maybe Int
   -> Bool
+  -> Bool
   -> [Query.RepoSearchResult]
   -> SymbolSearchResult
-joinSearchResults mlimit terse xs =
-    SymbolSearchResult syms $ if terse then [] else catMaybes descs
+joinSearchResults mlimit terse sorted xs = SymbolSearchResult syms $
+    if terse then [] else catMaybes descs
   where
-    (syms, descs) = unzip (takeLimit (concatMap Query.unRepoSearchResult xs))
-    takeLimit = maybe id take mlimit
+    (syms,descs) = unzip $ case (mlimit, sorted) of
+      (Just n, False) -> take n flattened
+      (Nothing, _) -> flattened
+      (Just n, True) -> takeFairN n
+        $ concatMap (List.groupSortOn (symbolResult_language . fst) .
+            Query.unRepoSearchResult) xs
+
+    flattened = concatMap Query.unRepoSearchResult xs
 
 -- | Search for entities by string fragments of names
 -- (deprecated)

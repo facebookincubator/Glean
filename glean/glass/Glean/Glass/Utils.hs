@@ -24,19 +24,23 @@ module Glean.Glass.Utils
   , pathFragments
   , joinFragments
 
+  -- List utils
+  , takeFairN
+
   -- Types
   , QueryType
   ) where
 
-import Glean
-    ( recursive, limit, search, search_, getFirstResult )
+import Data.Text as Text ( Text, pack, unpack )
+import System.FilePath ( splitDirectories, joinPath )
+import qualified Data.List as List
+
+import Glean ( recursive, limit, search, search_, getFirstResult )
 import Glean.Angle as Angle ( query, Angle )
 import Glean.Typed.Binary ( Type )
 import Glean.Typed.Predicate ( Predicate )
 import Data.Typeable ( Typeable )
 
-import Data.Text as Text ( Text, pack, unpack )
-import System.FilePath ( splitDirectories, joinPath )
 import qualified Glean.Haxl.Repos as Glean
 import Glean.Haxl.Repos (RepoHaxl, ReposHaxl)
 
@@ -99,3 +103,13 @@ pathFragments = map Text.pack . splitDirectories . Text.unpack
 
 joinFragments :: [Text] -> Text
 joinFragments = Text.pack . joinPath . map Text.unpack
+
+-- | Take elements in row,column ordering, so that we select
+-- evenly up to N from the set of input lists
+--
+-- > takeFairN 3 [[1,2],[3],[4,5]] == [1,3,4]
+--
+takeFairN :: Int -> [[a]] -> [a]
+takeFairN _ [] = []
+takeFairN n [vs] = take n vs
+takeFairN n xs = take n (concat (List.transpose xs))
