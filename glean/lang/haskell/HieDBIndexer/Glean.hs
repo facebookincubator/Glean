@@ -81,7 +81,14 @@ createGleanDB _env@HieDBIndexerEnv {..} fileLinesMap batchOutputs = do
 
         let mkPredRef predName =
               SourceRef {sourceRefName = predName, sourceRefVersion = Nothing}
-            predsToDerive = ["hs.FileDefinition", "hs.TargetUses"]
+            predsToDerive = [
+              "hs.FileDefinition",
+              "hs.TargetUses",
+              "hs.ModuleNameLowerCase",
+              "hs.FunctionNameLowerCase",
+              "hs.DefinitionNameLowerCase",
+              "hs.ClassNameLowerCase"
+              ]
 
         -- Derive the predicates needed by Glass
         mapConcurrently_
