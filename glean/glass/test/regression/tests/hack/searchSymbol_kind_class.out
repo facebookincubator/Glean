@@ -16,6 +16,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "NamespaceClass",
                 "symbol": "test/php/NS/NamespaceClass"
             },
             {
@@ -31,6 +32,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "RefClass",
                 "symbol": "test/php/RefClass"
             },
             {
@@ -46,6 +48,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "SourceClass",
                 "symbol": "test/php/SourceClass"
             },
             {
@@ -61,6 +64,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "SubClass",
                 "symbol": "test/php/SubClass"
             },
             {
@@ -76,6 +80,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "SuperClass",
                 "symbol": "test/php/SuperClass"
             },
             {
@@ -91,6 +96,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "TestAnnotation",
                 "symbol": "test/php/TestAnnotation"
             }
         ]

@@ -262,13 +262,14 @@ symbolKind ent = var $ \kind -> kind `where_`
 -- Takes free file and rangespan variables to bind
 entityLocation
   :: Angle Code.Entity
-  -> (Angle Src.File -> Angle Code.RangeSpan -> AngleStatement)
-entityLocation entity file rangespan =
+  -> (Angle Src.File -> Angle Code.RangeSpan -> Angle Text -> AngleStatement)
+entityLocation entity file rangespan name =
   wild .= predicate @Code.EntityLocation (
     rec $
       field @"entity" entity $
       field @"location" (
         rec $
+          field @"name" name $
           field @"file" (asPredicate file) $
           field @"location" rangespan
         end)

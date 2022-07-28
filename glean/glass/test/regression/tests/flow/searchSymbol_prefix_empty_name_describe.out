@@ -656,6 +656,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "plus",
                 "symbol": "test/js/cjs_exports/plus"
             },
             {
@@ -670,6 +671,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "x",
                 "symbol": "test/js/cjs_exports/x"
             },
             {
@@ -684,6 +686,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "C",
                 "symbol": "test/js/es_exports/C"
             },
             {
@@ -698,6 +701,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "C",
                 "symbol": "test/js/es_exports/C"
             },
             {
@@ -712,6 +716,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "bar",
                 "symbol": "test/js/es_exports/bar"
             },
             {
@@ -726,6 +731,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "baz",
                 "symbol": "test/js/es_exports/baz"
             },
             {
@@ -740,6 +746,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "baz",
                 "symbol": "test/js/es_exports/baz"
             },
             {
@@ -754,6 +761,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "bor",
                 "symbol": "test/js/es_exports/bor"
             },
             {
@@ -768,6 +776,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "d",
                 "symbol": "test/js/es_exports/d"
             },
             {
@@ -782,6 +791,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "foo",
                 "symbol": "test/js/es_exports/foo"
             },
             {
@@ -796,6 +806,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "num",
                 "symbol": "test/js/es_exports/num"
             },
             {
@@ -810,6 +821,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "x",
                 "symbol": "test/js/es_exports/x"
             },
             {
@@ -824,6 +836,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "C",
                 "symbol": "test/js/imports/C"
             },
             {
@@ -838,6 +851,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "D",
                 "symbol": "test/js/imports/D"
             },
             {
@@ -852,6 +866,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "a",
                 "symbol": "test/js/imports/a"
             },
             {
@@ -866,6 +881,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "b",
                 "symbol": "test/js/imports/b"
             },
             {
@@ -880,6 +896,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "bar",
                 "symbol": "test/js/imports/bar"
             },
             {
@@ -894,6 +911,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "baz",
                 "symbol": "test/js/imports/baz"
             },
             {
@@ -908,6 +926,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "c",
                 "symbol": "test/js/imports/c"
             },
             {
@@ -922,6 +941,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "caz",
                 "symbol": "test/js/imports/caz"
             },
             {
@@ -936,6 +956,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "caz",
                 "symbol": "test/js/imports/caz"
             },
             {
@@ -950,6 +971,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "d",
                 "symbol": "test/js/imports/d"
             },
             {
@@ -964,6 +986,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "e",
                 "symbol": "test/js/imports/e"
             },
             {
@@ -978,6 +1001,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "fn",
                 "symbol": "test/js/imports/fn"
             },
             {
@@ -992,6 +1016,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "foo",
                 "symbol": "test/js/imports/foo"
             },
             {
@@ -1006,6 +1031,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "num",
                 "symbol": "test/js/imports/num"
             },
             {
@@ -1020,6 +1046,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "qux",
                 "symbol": "test/js/imports/qux"
             },
             {
@@ -1034,6 +1061,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "s",
                 "symbol": "test/js/imports/s"
             },
             {
@@ -1048,6 +1076,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "str",
                 "symbol": "test/js/imports/str"
             },
             {
@@ -1062,6 +1091,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "x",
                 "symbol": "test/js/imports/x"
             },
             {
@@ -1076,6 +1106,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "y",
                 "symbol": "test/js/imports/y"
             },
             {
@@ -1090,6 +1121,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "z",
                 "symbol": "test/js/imports/z"
             }
         ]

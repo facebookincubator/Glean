@@ -68,22 +68,22 @@ instance Search Lsif.Entity where
 searchByMoniker :: Text -> Angle (ResultLocation Lsif.Entity)
 searchByMoniker ident =
   vars $ \(ent :: Angle Lsif.Entity) (file :: Angle Src.File)
-      (rangespan :: Angle Code.RangeSpan) ->
-    tuple (ent,file,rangespan) `where_` [
+      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (ent,file,rangespan,lname) `where_` [
       wild .= predicate @LSIF.SearchByMoniker (
         rec $
           field @"ident" (string ident) $
           field @"entity" (cast ent)
         end),
-      entityLocation (alt @"lsif" ent) file rangespan
+      entityLocation (alt @"lsif" ent) file rangespan lname
     ]
 
 searchNonLocalByLocation
   :: Text -> Text -> Angle (ResultLocation Lsif.Entity)
 searchNonLocalByLocation path name =
   vars $ \(ent :: Angle Lsif.Entity) (file :: Angle Src.File)
-      (rangespan :: Angle Code.RangeSpan) ->
-    tuple (ent,file,rangespan) `where_` [
+      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (ent,file,rangespan,lname) `where_` [
       file .= predicate @Src.File (string path),
       wild .= predicate @LSIF.SearchNonLocalByLocation (
         rec $
@@ -91,7 +91,7 @@ searchNonLocalByLocation path name =
           field @"name" (string name) $
           field @"entity" (cast ent)
         end),
-      entityLocation (alt @"lsif" ent) file rangespan
+      entityLocation (alt @"lsif" ent) file rangespan lname
     ]
 
 searchByExactLocation
@@ -99,8 +99,8 @@ searchByExactLocation
   -> Angle (ResultLocation Lsif.Entity)
 searchByExactLocation path lb cb le ce =
   vars $ \(ent :: Angle Lsif.Entity) (file :: Angle Src.File)
-      (rangespan :: Angle Code.RangeSpan) ->
-    tuple (ent,file,rangespan) `where_` [
+      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (ent,file,rangespan,lname) `where_` [
       file .= predicate @Src.File (string path),
       wild .= predicate @LSIF.SearchByExactLocation (
         rec $
@@ -114,7 +114,7 @@ searchByExactLocation path lb cb le ce =
             end) $
           field @"entity" (cast ent)
         end),
-      entityLocation (alt @"lsif" ent) file rangespan
+      entityLocation (alt @"lsif" ent) file rangespan lname
     ]
 
 searchByExactLocationAndName
@@ -122,8 +122,8 @@ searchByExactLocationAndName
   -> Angle (ResultLocation Lsif.Entity)
 searchByExactLocationAndName path name lb cb le ce =
   vars $ \(ent :: Angle Lsif.Entity) (file :: Angle Src.File)
-      (rangespan :: Angle Code.RangeSpan) ->
-    tuple (ent,file,rangespan) `where_` [
+      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (ent,file,rangespan,lname) `where_` [
       file .= predicate @Src.File (string path),
       wild .= predicate @LSIF.SearchByExactLocationAndName (
         rec $
@@ -138,7 +138,7 @@ searchByExactLocationAndName path name lb cb le ce =
             end) $
           field @"entity" (cast ent)
         end),
-      entityLocation (alt @"lsif" ent) file rangespan
+      entityLocation (alt @"lsif" ent) file rangespan lname
     ]
 
 -- we are coercing (silently) lsif.Entity to code.lsif.Entity

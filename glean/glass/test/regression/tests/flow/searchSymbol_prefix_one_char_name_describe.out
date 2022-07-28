@@ -76,6 +76,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "foo",
                 "symbol": "test/js/es_exports/foo"
             },
             {
@@ -90,6 +91,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "fn",
                 "symbol": "test/js/imports/fn"
             },
             {
@@ -104,6 +106,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "foo",
                 "symbol": "test/js/imports/foo"
             }
         ]

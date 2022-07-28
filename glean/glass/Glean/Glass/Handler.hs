@@ -185,7 +185,7 @@ import qualified Glean.Glass.Query.Cxx as Cxx
 import Glean.Glass.SymbolMap ( toSymbolIndex )
 import Glean.Glass.Search as Search
     ( searchEntity,
-      SearchEntity(SearchEntity, rangespan, file, decl, entityRepo),
+      SearchEntity(SearchEntity, rangespan, file, decl, name, entityRepo),
       SearchResult(Many, None, One), prefixSearchEntity )
 import Glean.Glass.Utils
 import qualified Data.Set as Set
@@ -331,7 +331,7 @@ describeSymbol env@Glass.Env{..} symId _opts =
         One e -> return (e, Nothing)
         Many e _t -> return (e, Nothing)
       (,err) <$> withRepo entityRepo
-        (mkSymbolDescription repo decl file rangespan symId)
+        (mkSymbolDescription repo decl file rangespan symId name)
 
 -- Worker to fill out symbol description metadata uniformly
 mkSymbolDescription
@@ -340,12 +340,13 @@ mkSymbolDescription
   -> Src.File
   -> Code.RangeSpan
   -> SymbolId
+  -> Text
   -> Glean.RepoHaxl u w SymbolDescription
-mkSymbolDescription repo entity file rangespan symbolId = do
+mkSymbolDescription repo entity file rangespan symbolId name = do
   range <- rangeSpanToLocationRange repo file rangespan
   kind <- eitherToMaybe <$> findSymbolKind entity
   let lang = entityLanguage entity
-  describeEntity entity $ SymbolResult symbolId range lang kind
+  describeEntity entity $ SymbolResult symbolId range lang kind name
 
 -- | Search for entities by string name with kind and language filters
 searchSymbol
@@ -399,6 +400,7 @@ processSymbolResult terse repo result = do
   symbolResult_symbol <- toSymbolId (fromGleanPath repo path) srEntity
   let symbolResult_kind = symbolKindToSymbolKind <$> srKind
       symbolResult_language = entityLanguage srEntity
+      symbolResult_name = location_name
       basics = SymbolResult{..} -- just sym id, kind, lang, location
   (basics,) <$>
     if terse then pure Nothing else Just <$> describeEntity srEntity basics
@@ -508,7 +510,7 @@ searchBySymbolId env@Glass.Env{..} symbolPrefix opts = do
           backendRunHaxl GleanBackend{..} $ do
             symids <-  queryAllRepos $ do
               entities <- prefixSearchEntity lang limit tokens
-              forM (take limit entities) $ \(entity, file, _) -> do
+              forM (take limit entities) $ \(entity, file, _, _) -> do
                 path <- GleanPath <$> Glean.keyOf file
                 toSymbolId (fromGleanPath repo path) entity
             return (take limit symids, Nothing)
@@ -1168,8 +1170,8 @@ searchRelated env@Glass.Env{..}
     -- building map of sym id -> descriptions, by first occurence
     mkDescribe repo e@(_,SymbolId rawSymId) = (rawSymId,) <$> describe repo e
 
-    describe repo ((entity, file, rangespan),symId) =
-      mkSymbolDescription repo entity file rangespan symId
+    describe repo ((entity, file, rangespan, name),symId) =
+      mkSymbolDescription repo entity file rangespan symId name
 
     searchRecursively
       | searchRelatedRequest_recursive = Search.Recursive

@@ -51,7 +51,7 @@ instance Search Hack.Declaration where
 instance PrefixSearch Hack.Entity where
   prefixSearch lim toks =
     fmap (mapFst Hack.Entity_decl) <$> prefixSearch lim toks
-    where mapFst f (x, y, z) = (f x, y, z)
+    where mapFst f (x, y, z, a) = (f x, y, z, a)
 
 instance PrefixSearch Hack.Declaration where
   prefixSearch lim [] = prefixSearch lim [""]
@@ -83,23 +83,23 @@ searchInNamespace_
   :: Bool -> [Text] -> Text -> Angle (ResultLocation Hack.Declaration)
 searchInNamespace_ isPrefix ns name =
   vars $ \(decl :: Angle Hack.Declaration) (file :: Angle Src.File)
-      (rangespan :: Angle Code.RangeSpan) ->
-    tuple (decl,file,rangespan) `where_` [
+      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (decl,file,rangespan, lname) `where_` [
       wild .= predicate @Hack.SearchInNamespace (
         rec $
           field @"name" (stringOrPrefix isPrefix name) $
           field @"namespace_" (namespaceQName ns) $
           field @"decl" decl
         end),
-      entityLocation (alt @"hack" (alt @"decl" decl)) file rangespan
+      entityLocation (alt @"hack" (alt @"decl" decl)) file rangespan lname
     ]
 
 searchInContainerOrEnum_
   :: Bool -> [Text] -> Text -> Text -> Angle (ResultLocation Hack.Declaration)
 searchInContainerOrEnum_ isPrefix ns context name =
   vars $ \(decl :: Angle Hack.Declaration) (file :: Angle Src.File)
-      (rangespan :: Angle Code.RangeSpan) ->
-    tuple (decl, file, rangespan) `where_` [
+      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (decl, file, rangespan, lname) `where_` [
       wild .= predicate @Hack.SearchInContainerOrEnum (
         rec $
           field @"name" (stringOrPrefix isPrefix name) $
@@ -107,7 +107,7 @@ searchInContainerOrEnum_ isPrefix ns context name =
           field @"contextNamespace" (namespaceQName ns) $
           field @"decl" decl
         end),
-      entityLocation (alt @"hack" (alt @"decl" decl)) file rangespan
+      entityLocation (alt @"hack" (alt @"decl" decl)) file rangespan lname
     ]
 
 namespaceQName :: [Text] -> Angle (Maybe Hack.NamespaceQName_key)

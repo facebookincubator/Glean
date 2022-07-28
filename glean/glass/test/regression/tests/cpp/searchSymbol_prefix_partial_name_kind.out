@@ -16,6 +16,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "foo",
                 "symbol": "test/cpp/foo/foo"
             },
             {
@@ -31,6 +32,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "foo",
                 "symbol": "test/cpp/foo/foo"
             }
         ]

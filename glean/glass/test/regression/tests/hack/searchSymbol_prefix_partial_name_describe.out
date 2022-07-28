@@ -99,6 +99,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "SourceClass",
                 "symbol": "test/php/SourceClass"
             },
             {
@@ -114,6 +115,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "SourceInterface",
                 "symbol": "test/php/SourceInterface"
             },
             {
@@ -129,6 +131,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "SourceTrait",
                 "symbol": "test/php/SourceTrait"
             }
         ]

@@ -16,6 +16,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "SourceClass",
                 "symbol": "test/php/SourceClass"
             },
             {
@@ -31,6 +32,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "SubClass",
                 "symbol": "test/php/SubClass"
             },
             {
@@ -46,6 +48,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "SuperClass",
                 "symbol": "test/php/SuperClass"
             }
         ]

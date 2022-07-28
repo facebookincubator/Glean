@@ -16,6 +16,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "Position",
                 "symbol": "test/php/Position"
             },
             {
@@ -31,6 +32,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "Bottom",
                 "symbol": "test/php/Position/Bottom"
             },
             {
@@ -46,6 +48,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "Center",
                 "symbol": "test/php/Position/Center"
             },
             {
@@ -61,6 +64,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "Left",
                 "symbol": "test/php/Position/Left"
             },
             {
@@ -76,6 +80,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "Right",
                 "symbol": "test/php/Position/Right"
             },
             {
@@ -91,6 +96,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "Top",
                 "symbol": "test/php/Position/Top"
             }
         ]

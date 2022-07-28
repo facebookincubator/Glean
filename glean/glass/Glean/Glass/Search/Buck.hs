@@ -36,8 +36,8 @@ instance Search Buck.Entity where
 searchByFQN :: Maybe Text -> Text -> Text -> Angle (ResultLocation Buck.Entity)
 searchByFQN mSubdir path name =
   vars $ \(ent :: Angle Buck.Entity) (file :: Angle Src.File)
-    (rangespan :: Angle Code.RangeSpan) ->
-  tuple (ent, file, rangespan) `where_` [
+    (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+  tuple (ent, file, rangespan, lname) `where_` [
     wild .= predicate @Buck.SearchByFQN (
       rec $
         field @"subdir" subDirQ $
@@ -45,7 +45,7 @@ searchByFQN mSubdir path name =
         field @"name" (string name) $
         field @"entity" ent
       end),
-      entityLocation (alt @"buck" ent) file rangespan
+      entityLocation (alt @"buck" ent) file rangespan lname
   ]
   where
     subDirQ = case mSubdir of

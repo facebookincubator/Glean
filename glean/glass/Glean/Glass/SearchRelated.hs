@@ -87,7 +87,7 @@ toSymbolIds repo edges = mapM locatePairs edges
       <*> mkLocate childEntity childLocation
     mkLocate entity Code.Location{..} = do
       symId <- symbol entity location_file
-      return ((entity,location_file,location_location), symId)
+      return ((entity,location_file,location_location,location_name), symId)
     symbol entity file = do
       path <- GleanPath <$> Glean.keyOf file
       toSymbolId (fromGleanPath repo path) entity

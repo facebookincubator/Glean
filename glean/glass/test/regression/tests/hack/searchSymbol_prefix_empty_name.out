@@ -16,6 +16,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "NS",
                 "symbol": "test/php/NS"
             },
             {
@@ -31,6 +32,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "NamespaceClass",
                 "symbol": "test/php/NS/NamespaceClass"
             },
             {
@@ -46,6 +48,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "class_function",
                 "symbol": "test/php/NS/NamespaceClass/class_function"
             },
             {
@@ -61,6 +64,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "Position",
                 "symbol": "test/php/Position"
             },
             {
@@ -76,6 +80,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "Bottom",
                 "symbol": "test/php/Position/Bottom"
             },
             {
@@ -91,6 +96,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "Center",
                 "symbol": "test/php/Position/Center"
             },
             {
@@ -106,6 +112,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "Left",
                 "symbol": "test/php/Position/Left"
             },
             {
@@ -121,6 +128,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "Right",
                 "symbol": "test/php/Position/Right"
             },
             {
@@ -136,6 +144,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "Top",
                 "symbol": "test/php/Position/Top"
             },
             {
@@ -151,6 +160,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "RefClass",
                 "symbol": "test/php/RefClass"
             },
             {
@@ -166,6 +176,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "JAZZ",
                 "symbol": "test/php/RefClass/JAZZ"
             },
             {
@@ -181,6 +192,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "bar",
                 "symbol": "test/php/RefClass/bar"
             },
             {
@@ -196,6 +208,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "bazza",
                 "symbol": "test/php/RefClass/bazza"
             },
             {
@@ -211,6 +224,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "foo",
                 "symbol": "test/php/RefClass/foo"
             },
             {
@@ -226,6 +240,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "raz",
                 "symbol": "test/php/RefClass/raz"
             },
             {
@@ -241,6 +256,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "SourceClass",
                 "symbol": "test/php/SourceClass"
             },
             {
@@ -256,6 +272,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "BAZ",
                 "symbol": "test/php/SourceClass/BAZ"
             },
             {
@@ -271,6 +288,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "T",
                 "symbol": "test/php/SourceClass/T"
             },
             {
@@ -286,6 +304,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "bar",
                 "symbol": "test/php/SourceClass/bar"
             },
             {
@@ -301,6 +320,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "daz",
                 "symbol": "test/php/SourceClass/daz"
             },
             {
@@ -316,6 +336,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "SourceInterface",
                 "symbol": "test/php/SourceInterface"
             },
             {
@@ -331,6 +352,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "JAZZ",
                 "symbol": "test/php/SourceInterface/JAZZ"
             },
             {
@@ -346,6 +368,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "foo",
                 "symbol": "test/php/SourceInterface/foo"
             },
             {
@@ -361,6 +384,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "SourceTrait",
                 "symbol": "test/php/SourceTrait"
             },
             {
@@ -376,6 +400,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "quux",
                 "symbol": "test/php/SourceTrait/quux"
             },
             {
@@ -391,6 +416,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "SubClass",
                 "symbol": "test/php/SubClass"
             },
             {
@@ -406,6 +432,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "SuperClass",
                 "symbol": "test/php/SuperClass"
             },
             {
@@ -421,6 +448,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "BAZ",
                 "symbol": "test/php/SuperClass/BAZ"
             },
             {
@@ -436,6 +464,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "superAdd",
                 "symbol": "test/php/SuperClass/superAdd"
             },
             {
@@ -451,6 +480,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "TestAnnotation",
                 "symbol": "test/php/TestAnnotation"
             },
             {
@@ -466,6 +496,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "__construct",
                 "symbol": "test/php/TestAnnotation/__construct"
             },
             {
@@ -481,6 +512,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "test",
                 "symbol": "test/php/TestAnnotation/test"
             },
             {
@@ -496,6 +528,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "WALDO",
                 "symbol": "test/php/WALDO"
             },
             {
@@ -511,6 +544,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "corge",
                 "symbol": "test/php/corge"
             }
         ]

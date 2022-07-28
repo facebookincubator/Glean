@@ -16,6 +16,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "lib.HelperClass",
                 "symbol": "test/py/lib.py/lib.HelperClass"
             },
             {
@@ -31,6 +32,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "lib.helper_func",
                 "symbol": "test/py/lib.py/lib.helper_func"
             },
             {
@@ -46,6 +48,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "main.g.<locals>.h",
                 "symbol": "test/py/main.py/main.g.%3Clocals%3E.h"
             }
         ]

@@ -16,6 +16,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "all.fn",
                 "symbol": "test/py/all.py/all.fn"
             },
             {
@@ -31,6 +32,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "as.fn",
                 "symbol": "test/py/as.py/as.fn"
             },
             {
@@ -46,6 +48,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "big_lib.big_func",
                 "symbol": "test/py/big_lib/big_lib.big_func"
             },
             {
@@ -61,6 +64,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "lib.helper_func",
                 "symbol": "test/py/lib.py/lib.helper_func"
             },
             {
@@ -76,6 +80,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "main.f",
                 "symbol": "test/py/main.py/main.f"
             },
             {
@@ -91,6 +96,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "main.g",
                 "symbol": "test/py/main.py/main.g"
             },
             {
@@ -106,6 +112,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "main.g.<locals>.h",
                 "symbol": "test/py/main.py/main.g.%3Clocals%3E.h"
             },
             {
@@ -121,6 +128,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "shadow.shadow_func",
                 "symbol": "test/py/shadow.py/shadow.shadow_func"
             }
         ]

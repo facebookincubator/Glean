@@ -222,6 +222,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "S",
                 "symbol": "test/cpp/foo/S"
             },
             {
@@ -237,6 +238,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "T",
                 "symbol": "test/cpp/foo/bar/T"
             },
             {
@@ -252,6 +254,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "g",
                 "symbol": "test/cpp/foo/bar/g"
             },
             {
@@ -267,6 +270,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "f",
                 "symbol": "test/cpp/foo/f"
             },
             {
@@ -282,6 +286,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "foo",
                 "symbol": "test/cpp/foo/foo"
             },
             {
@@ -297,6 +302,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "foo",
                 "symbol": "test/cpp/foo/foo"
             },
             {
@@ -312,6 +318,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "h",
                 "symbol": "test/cpp/h"
             },
             {
@@ -327,6 +334,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "s",
                 "symbol": "test/cpp/h/s"
             },
             {
@@ -342,6 +350,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "t",
                 "symbol": "test/cpp/h/t"
             }
         ]

@@ -41,7 +41,7 @@ instance Search Py.Declaration where
 instance PrefixSearch Py.Entity where
   prefixSearch lim params =
     fmap (mapFst Py.Entity_decl) <$> prefixSearch lim params
-    where mapFst f (x, y, z) = (f x, y, z)
+    where mapFst f (x, y, z, a) = (f x, y, z, a)
 
 instance PrefixSearch Py.Declaration where
   prefixSearch lim [loc] = searchWithLimit (Just lim) $
@@ -64,14 +64,15 @@ searchByFQName
   :: Bool -> Text -> Maybe Text
   -> Angle (ResultLocation Py.Declaration)
 searchByFQName isPrefix fqname mloc =
-  vars $ \decl (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan) ->
-    tuple (decl, file, rangespan) `where_` ([
+  vars $ \decl (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
+      (lname :: Angle Text) ->
+    tuple (decl, file, rangespan, lname) `where_` ([
         wild .= predicate @Py.DeclarationWithName (
           rec $
               field @"name" (stringOrPrefix fqname) $
               field @"declaration" decl
           end),
-        entityLocation (alt @"python" (alt @"decl" decl)) file rangespan
+        entityLocation (alt @"python" (alt @"decl" decl)) file rangespan lname
       ] <> location file)
   where
     location :: Angle Src.File -> [AngleStatement]

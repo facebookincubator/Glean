@@ -47,15 +47,15 @@ instance Search Flow.Entity where
 searchByModule :: Text -> Text -> Angle (ResultLocation Flow.SomeDeclaration)
 searchByModule module_ name =
   vars $ \(decl :: Angle Flow.SomeDeclaration) (file :: Angle Src.File)
-      (rangespan :: Angle Code.RangeSpan) ->
-    tuple (decl,file,rangespan) `where_` [
+      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (decl,file,rangespan,lname) `where_` [
       wild .= predicate @Flow.SearchByModule (
         rec $
           field @"string_" (string module_) $
           field @"name" (string name) $
           field @"decl" decl
         end),
-      entityLocation (alt @"flow" (alt @"decl" decl)) file rangespan
+      entityLocation (alt @"flow" (alt @"decl" decl)) file rangespan lname
     ]
 
 -- With the repo-anchored filepath and an identifier, find the decl
@@ -63,8 +63,8 @@ searchByFileModule
   :: Text -> Text -> Angle (ResultLocation Flow.SomeDeclaration)
 searchByFileModule path name =
   vars $ \(decl :: Angle Flow.SomeDeclaration) (file :: Angle Src.File)
-      (rangespan :: Angle Code.RangeSpan) ->
-    tuple (decl,file,rangespan) `where_` [
+      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (decl,file,rangespan,lname) `where_` [
       file .= predicate @Src.File (string path),
       wild .= predicate @Flow.SearchByFileModule (
         rec $
@@ -72,7 +72,7 @@ searchByFileModule path name =
           field @"name" (string name) $
           field @"decl" decl
         end),
-      entityLocation (alt @"flow" (alt @"decl" decl)) file rangespan
+      entityLocation (alt @"flow" (alt @"decl" decl)) file rangespan lname
     ]
 
 -- With the Haste name, find the type decl from a .js.flow file
@@ -80,13 +80,13 @@ searchTypeByModuleExport
   :: Text -> Text -> Angle (ResultLocation Flow.SomeDeclaration)
 searchTypeByModuleExport module_ name =
   vars $ \(decl :: Angle Flow.SomeDeclaration) (file :: Angle Src.File)
-      (rangespan :: Angle Code.RangeSpan) ->
-    tuple (decl,file,rangespan) `where_` [
+      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (decl,file,rangespan,lname) `where_` [
       wild .= predicate @Flow.SearchTypeByModuleExport (
         rec $
           field @"string_" (string module_) $
           field @"name" (string name) $
           field @"decl" decl
         end),
-      entityLocation (alt @"flow" (alt @"decl" decl)) file rangespan
+      entityLocation (alt @"flow" (alt @"decl" decl)) file rangespan lname
     ]

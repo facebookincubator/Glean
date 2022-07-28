@@ -46,14 +46,14 @@ searchByScope
   :: [Text] -> Angle (ResultLocation Cxx.Entity)
 searchByScope ns =
   vars $ \(entity :: Angle Cxx.Entity) (file :: Angle Src.File)
-      (rangespan :: Angle Code.RangeSpan) ->
-    tuple (entity, file, rangespan) `where_` [
+      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (entity, file, rangespan, lname) `where_` [
       wild .= predicate @Cxx.SearchByScope (
         rec $
           field @"scope" (scopeQuery ns) $
           field @"entity" entity
         end),
-      entityLocation (alt @"cxx" entity) file rangespan
+      entityLocation (alt @"cxx" entity) file rangespan lname
     ]
   where
     scopeQuery ns = scope (reverse ns)
@@ -62,15 +62,15 @@ searchByNameAndScope
   :: Bool -> [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
 searchByNameAndScope isPrefix ns name =
   vars $ \(entity :: Angle Cxx.Entity) (file :: Angle Src.File)
-      (rangespan :: Angle Code.RangeSpan) ->
-    tuple (entity, file, rangespan) `where_` [
+      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (entity, file, rangespan, lname) `where_` [
       wild .= predicate @Cxx.SearchByNameAndScope (
         rec $
           field @"name" (stringOrPrefix name) $
           field @"scope" (scopeQuery ns) $
           field @"entity" entity
         end),
-      entityLocation (alt @"cxx" entity) file rangespan
+      entityLocation (alt @"cxx" entity) file rangespan lname
     ]
   where
     stringOrPrefix = if isPrefix then stringPrefix else string

@@ -94,6 +94,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "f",
                 "symbol": "test/cpp/foo/f"
             },
             {
@@ -109,6 +110,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "foo",
                 "symbol": "test/cpp/foo/foo"
             },
             {
@@ -124,6 +126,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "foo",
                 "symbol": "test/cpp/foo/foo"
             }
         ]

@@ -224,6 +224,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "class_function",
                 "symbol": "test/php/NS/NamespaceClass/class_function"
             },
             {
@@ -239,6 +240,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "bar",
                 "symbol": "test/php/RefClass/bar"
             },
             {
@@ -254,6 +256,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "bazza",
                 "symbol": "test/php/RefClass/bazza"
             },
             {
@@ -269,6 +272,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "foo",
                 "symbol": "test/php/RefClass/foo"
             },
             {
@@ -284,6 +288,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "bar",
                 "symbol": "test/php/SourceClass/bar"
             },
             {
@@ -299,6 +304,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "foo",
                 "symbol": "test/php/SourceInterface/foo"
             },
             {
@@ -314,6 +320,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "quux",
                 "symbol": "test/php/SourceTrait/quux"
             },
             {
@@ -329,6 +336,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "superAdd",
                 "symbol": "test/php/SuperClass/superAdd"
             },
             {
@@ -344,6 +352,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "__construct",
                 "symbol": "test/php/TestAnnotation/__construct"
             }
         ]

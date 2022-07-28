@@ -44,14 +44,15 @@ data SearchResult t
 
 data SearchEntity t =
   SearchEntity {
-    entityRepo :: Glean.Repo,
-    decl :: t,
-    file :: Src.File,
-    rangespan :: Code.RangeSpan
+    entityRepo :: !Glean.Repo,
+    decl :: !t,
+    file :: !Src.File,
+    rangespan :: !Code.RangeSpan,
+    name :: !Text
   }
 
 -- Synonym for SearchEntity, used in Angle data queries
-type ResultLocation t = (t, Src.File, Code.RangeSpan)
+type ResultLocation t = (t, Src.File, Code.RangeSpan, Text)
 
 resultToDecl :: [(d, a, b)] -> [d]
 resultToDecl = map (\(x, _, _) -> x)
@@ -75,8 +76,8 @@ runSearch toks query = do
   let toksText = intercalate "/" toks
   return $ case results of
     [] -> None $ "runSearch: No results found for " <> toksText
-    [(entityRepo, (decl, file, rangespan))] -> One SearchEntity{..}
-    ((entityRepo, (decl, file, rangespan)):_) -> Many SearchEntity{..}
+    [(entityRepo, (decl, file, rangespan, name))] -> One SearchEntity{..}
+    ((entityRepo, (decl, file, rangespan, name)):_) -> Many SearchEntity{..}
           ("runSearch: " <> textShow (length results) <>
             " results found for " <> toksText)
 

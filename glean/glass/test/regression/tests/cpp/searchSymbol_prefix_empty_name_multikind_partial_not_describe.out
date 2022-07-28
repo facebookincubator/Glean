@@ -138,6 +138,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "g",
                 "symbol": "test/cpp/foo/bar/g"
             },
             {
@@ -153,6 +154,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "f",
                 "symbol": "test/cpp/foo/f"
             },
             {
@@ -168,6 +170,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "foo",
                 "symbol": "test/cpp/foo/foo"
             },
             {
@@ -183,6 +186,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "foo",
                 "symbol": "test/cpp/foo/foo"
             },
             {
@@ -198,6 +202,7 @@
                     },
                     "repository": "test"
                 },
+                "name": "h",
                 "symbol": "test/cpp/h"
             }
         ]

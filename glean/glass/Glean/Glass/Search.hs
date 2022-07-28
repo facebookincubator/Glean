@@ -69,4 +69,4 @@ prefixSearchEntity lang lim toks = case lang of
     fmap (mapFst Code.Entity_python) <$> Search.prefixSearch lim toks
   lang -> throwM $ ServerException $
     "prefixSearchEntity: language not supported: " <> toShortCode lang
-  where mapFst f (x, y, z) = (f x, y, z)
+  where mapFst f (x, y, z, a) = (f x, y, z, a)

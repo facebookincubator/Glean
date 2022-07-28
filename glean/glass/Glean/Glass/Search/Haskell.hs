@@ -35,12 +35,12 @@ instance Search Haskell.Entity where
 searchByName :: Text -> Angle (ResultLocation Haskell.Entity)
 searchByName sym =
   vars $ \(ent :: Angle Haskell.Entity) (file :: Angle Src.File)
-    (rangespan :: Angle Code.RangeSpan) ->
-  tuple (ent, file, rangespan) `where_` [
+    (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+  tuple (ent, file, rangespan, lname) `where_` [
     wild .= predicate @Haskell.SearchByName (
       rec $
         field @"name" (string sym) $
         field @"entity" ent
       end),
-    entityLocation (alt @"hs" ent) file rangespan
+    entityLocation (alt @"hs" ent) file rangespan lname
   ]
