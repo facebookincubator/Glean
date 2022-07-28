@@ -21,7 +21,7 @@ jobs:
       - name: Install additional tools
         run: |
           apt-get update
-          apt-get install -y libxxhash-dev wget unzip
+          apt-get install -y libxxhash-dev wget unzip libgmock-dev
 
       - name: Make utf8 default locale
         run: |

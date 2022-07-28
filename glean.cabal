@@ -888,7 +888,6 @@ library lib
         Glean.Pretty.Shared
         Glean.Pretty.Style
         Glean.Pretty.Styles
-        Glean.Search.EntityQuery
         Glean.Search.Graph
         Glean.Search.Search
         Glean.Derive
