@@ -37,7 +37,8 @@ predicate SearchByNameAndLanguage:
     ( JavaScript = Language; FlowSearchByName { Name, Entity } ) |
     ( Cpp = Language; CxxSearchByName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByName { Name, Entity } ) |
-    ( Erlang = Language; ErlangSearchByName { Name, Entity } );
+    ( Erlang = Language; ErlangSearchByName { Name, Entity } ) |
+    ( Rust = Language; RustSearchByName { Name, Entity } );
     code.EntityLanguage { Entity, Language }; # double check the entity lang
 
 # global symbol search normalized to lower case
@@ -53,7 +54,8 @@ predicate SearchByLowerCaseNameAndLanguage:
     ( JavaScript = Language; FlowSearchByLowerCaseName { Name, Entity } ) |
     ( Cpp = Language; CxxSearchByLowerCaseName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByLowerCaseName { Name, Entity } ) |
-    ( Erlang = Language; ErlangSearchByLowerCaseName { Name, Entity } );
+    ( Erlang = Language; ErlangSearchByLowerCaseName { Name, Entity } ) |
+    ( Rust = Language; RustSearchByLowerCaseName { Name, Entity } );
     code.EntityLanguage { Entity, Language }; # double check the entity lang
 
 
@@ -71,7 +73,8 @@ predicate SearchByName:
   CxxSearchByName { Name, Entity } |
   HsSearchByName { Name, Entity } |
   ErlangSearchByName { Name, Entity } |
-  LsifSearchByName { Name, Entity }
+  LsifSearchByName { Name, Entity } |
+  RustSearchByName { Name, Entity }
 
 # same as SearchByName but assumes `name` is lowercase. Useful for
 # case-insensitive search
@@ -88,7 +91,8 @@ predicate SearchByLowerCaseName:
   CxxSearchByLowerCaseName { Name, Entity } |
   HsSearchByLowerCaseName { Name, Entity } |
   ErlangSearchByLowerCaseName { Name, Entity } |
-  LsifSearchByLowerCaseName { Name, Entity }
+  LsifSearchByLowerCaseName { Name, Entity } |
+  RustSearchByLowerCaseName { Name, Entity };
 
 #
 # Language-specific identifier search
@@ -225,5 +229,23 @@ predicate LsifSearchByLowerCaseName:
   { Name, { lsif = Entity } } where
   lsif.NameLowerCase { Name, NameCase };
   lsif.SearchByName { NameCase, Entity }
+
+predicate RustSearchByName:
+  {
+    name: string,
+    entity: code.Entity
+  }
+  { NameStr, { rust = { definition = Entity } } } where
+    Name = rust.Name NameStr;
+    rust.SearchByName { Name, Entity }
+
+predicate RustSearchByLowerCaseName:
+  {
+    name: string,
+    entity: code.Entity
+  }
+  { Name, { rust = { definition = Entity } } } where
+    rust.NameLowerCase { Name, NameCase };
+    rust.SearchByName { NameCase, Entity }
 
 }

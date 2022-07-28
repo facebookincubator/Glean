@@ -250,4 +250,12 @@ predicate DefinitionUses:
     FileXRefs { File, XRefs };
     { Def, Spans } = XRefs[..];
 
+predicate SearchByName:
+  {
+    name: Name,
+    def_: Def
+  } stored
+  { Name, Def } where
+    rust.DefinitionName { Def, Name }
+
 }
