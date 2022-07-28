@@ -278,8 +278,7 @@ getPredicateDetails :: DbSchema -> PredicateId -> PredicateDetails
 getPredicateDetails schema pred =
   case lookupPredicateId pred schema of
     Just details -> details
-    Nothing -> error $
-      "unknown predicate: " <> Text.unpack (showRef pred)
+    Nothing -> throw Thrift.UnknownPredicate
 
 -- | exhaust a query (until there is no more continuation)
 runDerivation
