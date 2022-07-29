@@ -56,7 +56,7 @@ expireDatabase delay env@Env{..} repo = do
           later $ do
             logInfo $ inRepo repo $ "database is doomed " ++
               " ("  ++ showNominalDiffTime (dbAge now meta) ++ " old)"
-            logInfo $ inRepo repo $ "expiring in " <> show delay <> "s"
+            logInfo $ inRepo repo $ "expiring in " <> show delay
           lift $ Catalog.setExpiring envCatalog repo $ delay `addUTCTime` now
           return False
         _ -> return True
@@ -77,7 +77,8 @@ removeDatabase env@Env{..} repo todo = uninterruptibleMask_ $
   -- DB but before we start deleting which just doesn't seem worth it.
   do
     r <- atomically $ readTMVar todo
-    forM_ r $ \DB{..} -> do
+    let cleanUp = atomically (modifyTVar' envDeleting $ HashMap.delete repo)
+    forM_ r $ \DB{..} -> flip finally cleanUp $ do
       logInfo $ inRepo repo "deleting"
       addStatValueType "glean.db.deleted" 1 Stats.Sum
       atomically $ do
@@ -95,7 +96,6 @@ removeDatabase env@Env{..} repo todo = uninterruptibleMask_ $
           HashMap.filterWithKey (\(repo',_) _ -> repo' /= repo)
         safeRemovePathForcibly $ databasePath envRoot repo
       logInfo $ inRepo repo "deleted"
-  `finally` atomically (modifyTVar' envDeleting $ HashMap.delete repo)
 
 -- | Schedule a DB for deletion and return the 'Async' which can be used to
 -- obtain the result.
