@@ -959,7 +959,8 @@ mkQueryRuntimeOptions Thrift.UserQueryOptions{..} ServerConfig.Config{..} =
     , queryMaxTimeMs = userQueryOptions_max_time_ms
         <|> config_default_max_time_ms -- from ServerConfig
     , queryWantStats = userQueryOptions_collect_facts_searched
-    , queryDepth = if userQueryOptions_recursive
+    , queryDepth = if userQueryOptions_recursive &&
+        not userQueryOptions_omit_results
         then ExpandRecursive else ResultsOnly
     }
 

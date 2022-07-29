@@ -259,3 +259,7 @@ Setting `:expand off` disables recursive expansion
   [>] :expand what (re)
   glean: syntax: :expand [off|on]
   [1]
+
+Automatically disable recursive expansion when omit_results is true
+  $ "$GLEAN" --service "::1:$PORT" query --repo "$DB" --recursive --omit-results --stats - "example.Parent _"
+  {"num_facts":3,.* (re)
