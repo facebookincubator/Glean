@@ -94,23 +94,19 @@ runWithShards env myShards sm = do
     !ServerConfig.DatabaseRestorePolicy{} = config_restore
     !ServerConfig.DatabaseClosePolicy{..} = config_close
 
-  mostRecent <- newestDbs env
-
-  -- Make sure the most recent DB for each repo name is open
-  forM_ mostRecent $ \repo ->
-    whenM (atomically $ isDatabaseClosed env repo)
-      $ void
-      $ tryAll
-      $ logExceptions (inRepo repo)
-      $ withOpenDatabase env repo (\_ -> return ())
-
-  closeIdleDatabases env
-     (seconds $ fromIntegral databaseClosePolicy_close_after) mostRecent
-
   backups <- fetchBackups env
 
   localAndRestoring <- atomically $
     Catalog.list (envCatalog env) [Local,Restoring] everythingF
+
+  mostRecent <- fmap (Set.fromList . map itemRepo) $ atomically $
+    Catalog.list (envCatalog env) [Local] $ groupF repoNameV $ do
+      sortF createdV Descending
+      limitF 1
+
+  closeIdleDatabases env
+     (seconds $ fromIntegral databaseClosePolicy_close_after)
+     (toList mostRecent)
 
   t <- getCurrentTime
 
@@ -226,6 +222,17 @@ runWithShards env myShards sm = do
     let prefix = "glean.db." <> Text.encodeUtf8 repoNm
     let repoKeep =
           filter (\item -> repoNm == Thrift.repo_name (itemRepo item)) keep
+
+    -- Open the most recent local DB for each repo in order to avoid lag spikes
+    let newestLocalDb = itemRepo(head dbs)
+    when (newestLocalDb `elem` mostRecent) $
+      whenM (atomically $ isDatabaseClosed env newestLocalDb)
+        $ void
+        $ tryAll
+        $ logExceptions (inRepo newestLocalDb)
+        $ withOpenDatabase env newestLocalDb (\_ -> return ())
+
+    -- upsert counters
     void $ setCounter (prefix <> ".all") $ length repoKeep
     void $ setCounter (prefix <> ".available") $ length $ filter
       (\Item{..} ->
@@ -338,14 +345,6 @@ fetchBackups env = do
 byRepoName :: [Item] -> [(Text, [Item])]
 byRepoName dbs = HashMap.toList $ HashMap.fromListWith (++)
   [ (Thrift.repo_name $ itemRepo item, [item]) | item <- dbs ]
-
--- Most recent available DB for each repo name
-newestDbs :: Env -> IO [Repo]
-newestDbs env = fmap (map itemRepo) $ atomically $
-  Catalog.list (envCatalog env) [Local] $
-    groupF repoNameV $ do
-      sortF createdV Descending
-      limitF 1
 
 repoRetention
   :: ServerConfig.DatabaseRetentionPolicy -> Text -> ServerConfig.Retention
