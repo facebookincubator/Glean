@@ -84,10 +84,10 @@ createGleanDB _env@HieDBIndexerEnv {..} fileLinesMap batchOutputs = do
             predsToDerive = [
               "hs.FileDefinition",
               "hs.TargetUses",
-              "hs.ModuleNameLowerCase",
-              "hs.FunctionNameLowerCase",
-              "hs.DefinitionNameLowerCase",
-              "hs.ClassNameLowerCase"
+              "hs.DefinitionNameLowerCase"
+          --    "hs.ModuleNameLowerCase",
+          --    "hs.FunctionNameLowerCase",
+          --    "hs.ClassNameLowerCase"
               ]
 
         -- Derive the predicates needed by Glass
