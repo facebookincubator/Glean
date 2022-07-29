@@ -8,9 +8,12 @@ schema search.hs.9 {
     {
       name: string,
       entity: code.hs.Entity,
-    } { Name, E } where
-    E =
-      code.hs.Entity { definition = {name = hs.DefinitionName Name }} |
-      code.hs.Entity {function_ = {name = hs.FunctionName Name}} |
-      code.hs.Entity {class_ = {name = hs.ClassName Name}};
+    } { Name, Entity } where
+      (Defn = hs.Definition { name = hs.DefinitionName Name };
+       { definition = Defn } = Entity ) |
+      (Defn = hs.FunctionDefinition { name = hs.FunctionName Name };
+       { function_ = Defn } = Entity ) |
+      (Defn = hs.Class { name = hs.ClassName Name };
+       { class_ = Defn } = Entity );
+
 }
