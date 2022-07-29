@@ -110,12 +110,13 @@ selectGleanDBs
   :: Maybe RepoName
   -> Set Language
   -> Either Text (Map.Map RepoName (Set GleanDBName))
-selectGleanDBs mRepoName langs =
+selectGleanDBs mRepoName langs0 =
   case map flatten (filter matches candidates) of
     [] -> Left err
     dbs -> Right $ Map.fromListWith Set.union dbs
   where
     candidates = listGleanIndices isTestOnly
+    langs = Set.map normalizeLanguages langs0
 
     flatten (repo,(dbname,_)) = (repo, Set.singleton dbname)
 
@@ -136,6 +137,12 @@ selectGleanDBs mRepoName langs =
         intercalate "," (map toShortCode ll)
       (Just r, ll) -> "Unknown repo/lang combination: " <> unRepoName r
         <> "(" <> intercalate "," (map toShortCode ll) <> ")"
+
+-- | We don't distinguish between flavors of distinct related languages
+-- notably, objective-c and objective C++ are treated like cpp by clang
+normalizeLanguages :: Language -> Language
+normalizeLanguages Language_ObjectiveC = Language_Cpp
+normalizeLanguages l = l
 
 -- | Select universe of glean repo,(db/language) pairs.
 -- Either just the test dbs, or all the non-test dbs.
