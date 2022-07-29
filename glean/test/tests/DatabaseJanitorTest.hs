@@ -30,6 +30,7 @@ import Data.Time.Clock
 import System.Directory
 import System.FilePath
 import System.IO.Temp
+import System.Time.Extra (sleep)
 import System.Timeout
 import Test.HUnit
 
@@ -572,6 +573,39 @@ shardUnexpireTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
     expiring <- atomically $ Catalog.readExpiring (envCatalog env) repo0001
     assertBool "0001 not expiring now" (isNothing expiring)
 
+expireTest :: Test
+expireTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
+  let emptyShardAssignment = shardByRepoHash $ pure $ Just ["nil"]
+  let cfg = (dbConfig dbdir (serverConfig backupdir)
+        { config_retention = def
+          { databaseRetentionPolicy_default_retention = def
+            {retention_expire_delay = Just 1}
+          }
+        , config_janitor_period = Nothing
+        })
+        {cfgShardManager = \_ k -> k $ SomeShardManager emptyShardAssignment}
+  withDatabases evb cfg cfgAPI $ \env -> do
+    runDatabaseJanitor env
+    dbs <- listDBs env
+
+    expiring <- atomically $
+      mapM (Catalog.readExpiring (envCatalog env) . database_repo) dbs
+    assertBool "All expiring" (all isJust expiring)
+
+    -- run the Janitor before the expire delay to exercise all code paths
+    runDatabaseJanitor env
+    sleep 1
+    -- run the Janitor twice after the expire delay to exercise all code paths
+    runDatabaseJanitor env
+    runDatabaseJanitor env
+    -- check that the DBs were really deleted
+    res <- timeout 10000000 -- 10s
+                   (waitDel env)
+    waitingDeletion <- readTVarIO (envDeleting env)
+    assertBool ("timeout: " <> show (HashMap.keys waitingDeletion)) (isJust res)
+    assertEqual "envDeleting" [] (HashMap.keys waitingDeletion)
+    localDBs <- listHereDBs env
+    assertEqual "All deleted" [] (map database_repo localDBs)
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
@@ -582,6 +616,7 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "backupRestore" backupRestoreTest
   , TestLabel "openNewestDB" openNewestTest
   , TestLabel "closeIdleDBs" closeIdleDBsTest
+  , TestLabel "expireDelay" expireTest
   , TestLabel "sharding" shardingTest
   , TestLabel "shardingStacks" shardingStacksTest
   , TestLabel "shardingFallback" shardingFallbackTest
