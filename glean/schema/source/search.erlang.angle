@@ -8,8 +8,9 @@ schema search.erlang.4 {
     {
       name: string,
       entity: code.erlang.Entity,
-    } { Name, E } where
-    E = code.erlang.Entity { decl = {func = { fqn = { name = Name } } } }
+    } { Name, Entity } where
+    erlang.SearchByName { Name, Decl };
+    Entity = code.erlang.Entity { decl = Decl };
 
   predicate SearchByFQN:
     {
