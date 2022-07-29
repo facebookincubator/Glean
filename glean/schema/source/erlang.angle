@@ -116,4 +116,13 @@ predicate NameLowerCase :
    erlang.FunctionDeclaration { fqn = { name = N }};
    N = Str
 
+# identifier to decl index for fast search, makes the name a prefix
+predicate SearchByName:
+  {
+    name : string, # local identifier
+    func : Declaration
+  } stored
+  { Name, { func = Decl } } where
+    Decl = erlang.FunctionDeclaration { fqn = { name = Name } };
+
 }
