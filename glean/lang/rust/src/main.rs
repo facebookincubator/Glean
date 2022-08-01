@@ -1080,7 +1080,7 @@ impl<'a> Iterator for QualNameParser<'a> {
                 .wrap_err("Found `as` with no `>`")
             {
                 Ok(index) => index + 3,
-                Err(err) => return Some(Err(err)),
+                Err(_err) => return None, // parsing non-qnames, don't die
             }
         } else if self.input.starts_with('$') {
             next_start_index = self.input.len();
