@@ -94,7 +94,6 @@ use std::io::BufReader;
 use std::io::Write;
 use std::mem;
 use std::path::Path;
-use std::process;
 
 mod json_schema;
 
@@ -144,7 +143,7 @@ fn main() -> eyre::Result<()> {
     io::stdout()
         .write_all(output)
         .wrap_err("while writing output")?;
-    writeln!(io::stderr(), "Wrote {} bytes to stdout", output.len());
+    writeln!(io::stderr(), "Wrote {} bytes to stdout", output.len())?;
     Ok(())
 }
 
