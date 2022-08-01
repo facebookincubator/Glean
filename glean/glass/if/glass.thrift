@@ -408,7 +408,7 @@ struct SearchRelatedRequest {
 
 // Consider capping the number of symbols in a single angle query before
 // increasing this number
-const i32 RELATED_SYMBOLS_MAX_LIMIT = 100;
+const i32 RELATED_SYMBOLS_MAX_LIMIT = 1000;
 
 struct RelatedSymbols {
   1: SymbolId parent;
