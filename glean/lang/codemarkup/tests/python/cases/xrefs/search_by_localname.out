@@ -1,0 +1,247 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": { "key": "Helper" },
+      "decl": {
+        "imp": {
+          "key": {
+            "from_name": { "key": "lib.HelperClass" },
+            "as_name": { "key": "all.Helper" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "Helper" },
+      "decl": {
+        "imp": {
+          "key": {
+            "from_name": { "key": "lib.HelperClass" },
+            "as_name": { "key": "main.Helper" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "HelperClass" },
+      "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "LocalClass" },
+      "decl": { "cls": { "key": { "name": { "key": "all.LocalClass" } } } }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "OtherHelper" },
+      "decl": {
+        "imp": {
+          "key": {
+            "from_name": { "key": "lib.HelperClass" },
+            "as_name": { "key": "main.OtherHelper" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "__all__" },
+      "decl": { "variable": { "key": { "name": { "key": "all.__all__" } } } }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "all" },
+      "decl": { "module": { "key": { "name": { "key": "all" } } } }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "big_func" },
+      "decl": { "func": { "key": { "name": { "key": "big_lib.big_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "big_func" },
+      "decl": {
+        "imp": {
+          "key": {
+            "from_name": { "key": "big_lib.big_func" },
+            "as_name": { "key": "all.big_func" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "big_func" },
+      "decl": {
+        "imp": {
+          "key": {
+            "from_name": { "key": "big_lib.big_func" },
+            "as_name": { "key": "big_lib.relative.big_func" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "big_func" },
+      "decl": {
+        "imp": {
+          "key": {
+            "from_name": { "key": "big_lib.big_func" },
+            "as_name": { "key": "main.big_func" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "big_lib" },
+      "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "big_var" },
+      "decl": {
+        "imp": {
+          "key": {
+            "from_name": { "key": "big_lib.big_var" },
+            "as_name": { "key": "all.big_var" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "big_var" },
+      "decl": {
+        "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "c" },
+      "decl": {
+        "variable": { "key": { "name": { "key": "main.f.<locals>.c" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "f" },
+      "decl": { "func": { "key": { "name": { "key": "main.f" } } } }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "fn" },
+      "decl": { "func": { "key": { "name": { "key": "all.fn" } } } }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "func" },
+      "decl": {
+        "imp": {
+          "key": {
+            "from_name": { "key": "big_lib.big_func" },
+            "as_name": { "key": "lib.func" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "func" },
+      "decl": {
+        "imp": {
+          "key": {
+            "from_name": { "key": "lib.func" },
+            "as_name": { "key": "main.func" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "g" },
+      "decl": { "func": { "key": { "name": { "key": "main.g" } } } }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "h" },
+      "decl": { "func": { "key": { "name": { "key": "main.g.<locals>.h" } } } }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "helper_func" },
+      "decl": { "func": { "key": { "name": { "key": "lib.helper_func" } } } }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "helper_func" },
+      "decl": {
+        "imp": {
+          "key": {
+            "from_name": { "key": "lib.helper_func" },
+            "as_name": { "key": "main.helper_func" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "lib" },
+      "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "main" },
+      "decl": { "module": { "key": { "name": { "key": "main" } } } }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "method" },
+      "decl": {
+        "func": { "key": { "name": { "key": "lib.HelperClass.method" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "relative" },
+      "decl": { "module": { "key": { "name": { "key": "big_lib.relative" } } } }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "var" },
+      "decl": { "variable": { "key": { "name": { "key": "all.var" } } } }
+    }
+  }
+]
