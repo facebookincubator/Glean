@@ -92,8 +92,8 @@ setupBasicDBs dbdir = do
   schema <- parseSchemaDir schemaSourceDir
   schema <- newDbSchema schema LatestSchemaAll readWriteContent
   -- populate a dir with various DBs
-  makeFakeDB schema dbdir repo0001 (age (days 0)) complete Nothing
   makeFakeDB schema dbdir (Repo "test" "0002") (age (days 2)) broken Nothing
+  makeFakeDB schema dbdir repo0001 (age (days 0)) complete Nothing
   makeFakeDB schema dbdir (Repo "test" "0003") (age (days 3)) complete $
     Just (Repo "test" "0004")
   makeFakeDB schema dbdir (Repo "test" "0004") (age (days 4)) complete $

@@ -97,7 +97,9 @@ runWithShards env myShards sm = do
   backups <- fetchBackups env
 
   localAndRestoring <- atomically $
-    Catalog.list (envCatalog env) [Local,Restoring] everythingF
+    Catalog.list (envCatalog env) [Local,Restoring] $ do
+      sortF createdV Ascending
+      everythingF
 
   mostRecent <- fmap (Set.fromList . map itemRepo) $ atomically $
     Catalog.list (envCatalog env) [Local] $ groupF repoNameV $ do
@@ -224,13 +226,16 @@ runWithShards env myShards sm = do
           filter (\item -> repoNm == Thrift.repo_name (itemRepo item)) keep
 
     -- Open the most recent local DB for each repo in order to avoid lag spikes
-    let newestLocalDb = itemRepo(head dbs)
-    when (newestLocalDb `elem` mostRecent) $
-      whenM (atomically $ isDatabaseClosed env newestLocalDb)
+    -- Assumes that dbs are ordered by age!
+    let newestLocalDb = head dbs
+    putStrLn $ "newestLocalDb: " <> show newestLocalDb
+    when (itemRepo newestLocalDb `elem` mostRecent
+        && itemLocality newestLocalDb == Local) $
+      whenM (atomically $ isDatabaseClosed env $ itemRepo newestLocalDb)
         $ void
         $ tryAll
-        $ logExceptions (inRepo newestLocalDb)
-        $ withOpenDatabase env newestLocalDb (\_ -> return ())
+        $ logExceptions (inRepo $ itemRepo newestLocalDb)
+        $ withOpenDatabase env (itemRepo newestLocalDb) (\_ -> return ())
 
     -- upsert counters
     void $ setCounter (prefix <> ".all") $ length repoKeep
