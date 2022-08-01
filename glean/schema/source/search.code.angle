@@ -120,18 +120,28 @@ predicate PythonSearchByName:
     name: string,
     entity: code.Entity,
   }
-  { Name, { python = { decl = D }}} where
-  python.DeclarationWithLocalName { local_name = python.Name Name, declaration = D };
-  python.NonImportDeclaration D;
+  { NameStr, Entity } where
+    Name = python.Name NameStr;
+    PythonSearchByNameFact { Name, Entity }
 
 predicate PythonSearchByLowerCaseName:
   {
     name: string,
     entity: code.Entity,
   }
-  { Name, Entity } where
-  python.NameLowerCase { Name, python.Name NameCase };
-  PythonSearchByName { NameCase, Entity };
+  { NameStr, Entity } where
+    python.NameLowerCase { NameStr, Name };
+    PythonSearchByNameFact { Name, Entity }
+
+# helper to avoid repeatedly doing string search
+predicate PythonSearchByNameFact:
+  {
+    name: python.Name,
+    entity: code.Entity,
+  }
+  { Name, { python = { decl = Decl }}} where
+    python.DeclarationWithLocalName { Name, Decl };
+    python.NonImportDeclaration Decl;
 
 predicate FlowSearchByName:
   {
