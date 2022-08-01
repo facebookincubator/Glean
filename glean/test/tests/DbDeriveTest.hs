@@ -359,6 +359,18 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
         -- after the query is resumed it will still not pick-up the
         -- lexicographically greater facts of the base db.
         assertEqual "incremental" 3 (userQueryStats_result_count stats)
+  , TestLabel "empty derivation" $ TestCase $
+    derivationStats def
+      [s|schema all.1 {
+        predicate Node : string
+        predicate Node2 : string stored A where Node A
+      }|]
+      [ mkBatch (PredicateRef "all.Node" 1) [] ]
+      [ mkBatch (PredicateRef "all.Node" 1) [] ]
+      (PredicateRef "all.Node2" 1)
+      $ \stats -> do
+        -- should not throw an error
+        assertEqual "incremental" 0 (userQueryStats_result_count stats)
     ]
   where
     mkBatch ref facts =

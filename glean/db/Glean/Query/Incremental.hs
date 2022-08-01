@@ -39,6 +39,9 @@ data Incremental a = Incremental
   }
   deriving (Functor)
 
+falseStmt  :: CgStatement
+falseStmt = CgDisjunction []
+
 -- | See Note [Incremental derivation - Implementation]
 expandGenerators
   :: (SeekSection -> Pid -> Bool)
@@ -46,7 +49,7 @@ expandGenerators
   -> [CgStatement]
 expandGenerators hasFacts stmts =
   case seekingStacked $ expandSequence stmts of
-    Nothing -> error "unexpected derivation without FactGenerators"
+    Nothing -> [falseStmt]
     Just xs -> xs
   where
   expandSequence :: [CgStatement] -> Incremental [CgStatement]
