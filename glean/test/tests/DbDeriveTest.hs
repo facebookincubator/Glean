@@ -206,7 +206,7 @@ testDeriveStoredLogging = dbTestCaseWritable $ \env repo -> do
 deriveIncrementalTest :: Test
 deriveIncrementalTest = TestLabel "incremental" $ TestList
   [ TestLabel "statement" $ TestCase $
-    derivationStats
+    derivationStats def
       [s|schema all.1 {
         predicate Node : nat
         predicate IsNode : nat stored X where Node X
@@ -225,7 +225,7 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
       $ \stats -> do
         assertEqual "incremental" 1 (userQueryStats_result_count stats)
   , TestLabel "sequence" $ TestCase $
-    derivationStats
+    derivationStats def
       [s|schema all.1 {
         predicate Node : nat
         predicate NodeXNode : { a: Node, b: Node } stored
@@ -248,7 +248,7 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
         -- (new x old) + (old x new) + (new x new)
         assertEqual "incremental" 7 (userQueryStats_result_count stats)
   , TestLabel "disjunction" $ TestCase $
-    derivationStats
+    derivationStats def
       [s|schema all.1 {
         predicate Node1 : nat
         predicate Node2 : nat
@@ -278,7 +278,7 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
         -- (new x old) + (old x new)
         assertEqual "incremental" 6 (userQueryStats_result_count stats)
   , TestLabel "disjunction followed by sequence" $ TestCase $
-    derivationStats
+    derivationStats def
       [s|schema all.1 {
         predicate Node1 : nat
         predicate Node2 : nat
@@ -308,7 +308,7 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
         -- (new x old)
         assertEqual "incremental" 3 (userQueryStats_result_count stats)
   , TestLabel "disjunction of expression and FactGenerator" $ TestCase $
-    derivationStats
+    derivationStats def
       [s|schema all.1 {
         predicate Node : nat
         predicate Node2 : { a: nat, b: nat } stored
@@ -332,6 +332,33 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
         -- Node<base> + the array element generator.
         assertEqual "incremental" 12 -- 1*5 + 1*3 + 3*1 + 1*1
           (userQueryStats_result_count stats)
+
+  , TestLabel "continuations" $ TestCase $
+    derivationStats
+      def { derivePredicateOptions_max_results_per_query = Just 1 }
+      [s|schema all.1 {
+        predicate Node : string
+        predicate Node2 : string stored A where Node A
+      }|]
+      [ mkBatch (PredicateRef "all.Node" 1)
+          [ [s|{"key": "D"}|]
+          , [s|{"key": "E"}|]
+          , [s|{"key": "F"}|]
+          , [s|{"key": "G"}|]
+          ]
+      ]
+      [ mkBatch (PredicateRef "all.Node" 1)
+          [ [s|{"key": "A"}|]
+          , [s|{"key": "B"}|]
+          , [s|{"key": "C"}|]
+          ]
+      ]
+      (PredicateRef "all.Node2" 1)
+      $ \stats -> do
+        -- the fact iterators should be serialised correctly such that
+        -- after the query is resumed it will still not pick-up the
+        -- lexicographically greater facts of the base db.
+        assertEqual "incremental" 3 (userQueryStats_result_count stats)
     ]
   where
     mkBatch ref facts =
@@ -344,13 +371,14 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
     -- compare the stats of an incremental derivation with that of a
     -- non-incremental one.
     derivationStats
-      :: String
+      :: Thrift.DerivePredicateOptions
+      -> String
       -> [JsonFactBatch]
       -> [JsonFactBatch]
       -> PredicateRef
       -> (UserQueryStats -> IO a)
       -> IO a
-    derivationStats schema baseFacts topFacts pref action =
+    derivationStats opts schema baseFacts topFacts pref action =
       withSchemaFile latestAngleVersion schema $ \root file -> do
       let settings =
             [ setRoot root
@@ -361,13 +389,13 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
         kickOffTestDB env base id
         void $ syncWriteJsonBatch env base baseFacts Nothing
         void $ completePredicates env base
-        _ <- deriveStored' env base pref
+        _ <- deriveStored' env base opts pref
         completeTestDB env base
 
         stacked <- stackedDB env base (Repo "base-stacked" "0")
         void $ syncWriteJsonBatch env stacked topFacts Nothing
 
-        stats <- deriveStored' env stacked pref
+        stats <- deriveStored' env stacked opts pref
         action stats
 
     stackedDB :: Env -> Repo -> Repo -> IO Repo
@@ -377,11 +405,16 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
       return top
 
     -- get derivation stats
-    deriveStored' :: Env -> Repo -> PredicateRef -> IO UserQueryStats
-    deriveStored' env repo pref = loop
+    deriveStored'
+      :: Env
+      -> Repo
+      -> Thrift.DerivePredicateOptions
+      -> PredicateRef
+      -> IO UserQueryStats
+    deriveStored' env repo opts pref = loop
       where
         loop = do
-          let query = derivePredicateQuery pref Nothing
+          let query = derivePredicateQuery opts pref Nothing
           res <- Glean.deriveStored env (const mempty) repo query
           case res of
             DerivationStatus_complete complete ->
@@ -433,17 +466,19 @@ deriveStored log env repo proxy par = do
     pred = getName proxy
     loop = do
       res <- Glean.deriveStored env log repo
-        $ derivePredicateQuery pred par
+        $ derivePredicateQuery def pred par
       case res of
         DerivationStatus_ongoing _ -> threadDelay (ceiling @Double 1e6) >> loop
         DerivationStatus_complete _ -> return ()
 
 derivePredicateQuery
-  :: PredicateRef
+  :: Thrift.DerivePredicateOptions
+  -> PredicateRef
   -> Maybe Thrift.ParallelDerivation
   -> Thrift.DerivePredicateQuery
-derivePredicateQuery (PredicateRef name version) par = def
+derivePredicateQuery opts (PredicateRef name version) par = def
   { derivePredicateQuery_predicate = name
   , derivePredicateQuery_predicate_version = Just version
   , derivePredicateQuery_parallel = par
+  , derivePredicateQuery_options = Just opts
   }

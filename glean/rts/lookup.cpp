@@ -60,6 +60,25 @@ struct MergeIterator final : public FactIterator {
     }
   }
 
+  std::optional<Id> lower_bound() override {
+    auto l = left ? left->lower_bound() : std::nullopt;
+    auto r = right ? right->lower_bound() : std::nullopt;
+    if (!l) {
+      return r;
+    }
+    return r ? std::min(*l, *r) : l;
+
+  }
+
+  std::optional<Id> upper_bound() override {
+    auto l = left ? left->upper_bound() : std::nullopt;
+    auto r = right ? right->upper_bound() : std::nullopt;
+    if (!l) {
+      return r;
+    }
+    return r ? std::max(*l, *r) : l;
+  }
+
   static Fact::Ref tryGet(std::unique_ptr<FactIterator>& iter, Demand demand) {
     Fact::Ref ref;
     if (iter) {
@@ -138,6 +157,9 @@ std::unique_ptr<FactIterator> Section::seek(
       return r;
     }
 
+    std::optional<Id> lower_bound() override { return low_boundary_; }
+    std::optional<Id> upper_bound() override { return high_boundary_; }
+
     bool isWithinBounds(Id id) {
       return low_boundary_ <= id && id < high_boundary_;
     }
@@ -191,6 +213,8 @@ struct AppendIterator final : FactIterator {
     return r;
   }
 
+  std::optional<Id> lower_bound() override { return std::nullopt; }
+  std::optional<Id> upper_bound() override { return std::nullopt; }
   std::unique_ptr<FactIterator> current;
   std::unique_ptr<FactIterator> other;
   bool checked;
@@ -234,6 +258,8 @@ struct FilterIterator final : FactIterator {
     return r;
   }
 
+  std::optional<Id> lower_bound() override { return base_->lower_bound(); }
+  std::optional<Id> upper_bound() override { return base_->upper_bound(); }
   std::unique_ptr<FactIterator> base_;
   std::function<bool(Id id)> visible_;
 };
@@ -248,7 +274,6 @@ std::unique_ptr<FactIterator> FactIterator::filter(
         std::move(base),
         std::move(visible));
 }
-
 
 std::unique_ptr<Lookup> snapshot(Lookup *b, Id upto) {
   return std::make_unique<Section>(Section(b, Id::invalid(), upto));

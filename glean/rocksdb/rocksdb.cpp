@@ -784,6 +784,9 @@ struct DatabaseImpl final : Database {
       }
     }
 
+    std::optional<Id> lower_bound() override { return std::nullopt; }
+    std::optional<Id> upper_bound() override { return std::nullopt; }
+
     const std::vector<unsigned char> upper_bound_;
     const rocksdb::Slice upper_bound_slice_;
     const Pid type_;
@@ -819,11 +822,6 @@ struct DatabaseImpl final : Database {
       Id from,
       Id upto) override {
 
-    if (from <= startingId() && firstFreeId() <= upto) {
-      // seek in the entirety of the Lookup
-      return seek(type, start, prefix_size);
-    }
-
     if (upto <= startingId() || firstFreeId() <= from) {
       return std::make_unique<EmptyIterator>();
     }
@@ -858,6 +856,9 @@ struct DatabaseImpl final : Database {
           id_ = Direction::advance(id_))
       {}
     }
+
+    std::optional<Id> lower_bound() override { return std::nullopt; }
+    std::optional<Id> upper_bound() override { return std::nullopt; }
 
     Id id_;
     Id stop_;
@@ -914,6 +915,10 @@ struct DatabaseImpl final : Database {
                   iter_->value())
         : Fact::Ref::invalid();
     }
+
+    std::optional<Id> lower_bound() override { return std::nullopt; }
+    std::optional<Id> upper_bound() override { return std::nullopt; }
+
     const std::vector<char> bound_;
     const rocksdb::Slice bound_slice_;
     rocksdb::ReadOptions options_;

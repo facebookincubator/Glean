@@ -338,6 +338,12 @@ Id QueryExecutor::newDerivedFact(
       i.key() = binary::mkString(fact.key());
       i.prefix_size() = static_cast<int64_t>(iter.prefix_size);
       i.first() = iter.first;
+      if (iter.iter->lower_bound().has_value()) {
+        i.from() = iter.iter->lower_bound().value().toThrift();
+      }
+      if (iter.iter->upper_bound().has_value()) {
+        i.to() = iter.iter->upper_bound().value().toThrift();
+      }
     } else {
       // A finished iterator - we have no key to serialize
       i.type() = Pid::invalid().toWord();
@@ -563,7 +569,15 @@ std::unique_ptr<QueryResults> executeQuery (
       Id id;
       if (const auto type = Pid::fromThrift(*savedIter.type())) {
         auto key = binary::byteRange(*savedIter.key());
-        iter = facts.seek(type, key, savedIter.get_prefix_size());
+        size_t prefixSize = savedIter.get_prefix_size();
+        if (savedIter.from().has_value() && savedIter.to().has_value()) {
+          auto from = savedIter.from().value();
+          auto to = savedIter.to().value();
+          iter = facts.seekWithinSection(type, key, prefixSize,
+              Id::fromThrift(from), Id::fromThrift(to));
+        } else {
+          iter = facts.seek(type, key, prefixSize);
+        }
         auto res = iter->get(FactIterator::KeyOnly);
         if (!res || res.key() != key) {
           error("restart iter didn't find a key");

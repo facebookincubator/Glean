@@ -35,6 +35,10 @@ struct FactIterator {
 
   virtual ~FactIterator() {}
 
+  // Get the bounds of the iterator, if they exist
+  virtual std::optional<Id> lower_bound() = 0;
+  virtual std::optional<Id> upper_bound() = 0;
+
   static std::unique_ptr<FactIterator> merge(
     std::unique_ptr<FactIterator> left,
     std::unique_ptr<FactIterator> right,
@@ -63,6 +67,9 @@ struct FactIterator {
 struct EmptyIterator final : FactIterator {
   void next() override {}
   Fact::Ref get(Demand) override { return Fact::Ref::invalid(); }
+  std::optional<Id> lower_bound() override { return std::nullopt; }
+  std::optional<Id> upper_bound() override { return std::nullopt; }
+
 };
 
 /**

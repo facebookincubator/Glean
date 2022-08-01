@@ -17,6 +17,10 @@ struct KeyIterator {
   2: string key;
   3: i64 prefix_size;
   4: bool first;
+  // lower bound for result facts
+  5: optional glean.Id from;
+  // higher bound for result facts
+  6: optional glean.Id to;
 }
 
 struct SubroutineState {

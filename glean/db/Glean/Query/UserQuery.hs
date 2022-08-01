@@ -921,9 +921,11 @@ compileAngleQuery ver dbSchema mode source stored = do
   -- no need to vlog, compileQuery will vlog it later
   reordered <- checkBadQuery id $ runExcept $ reorder dbSchema optimised
 
-  let final = case mode of
-        NoExtraSteps -> reordered
-        IncrementalDerivation getStats -> makeIncremental getStats reordered
+  final <- case mode of
+    NoExtraSteps -> return reordered
+    IncrementalDerivation getStats -> do
+      vlog 2 "made incremental"
+      return $ makeIncremental getStats reordered
 
   return (final, qiReturnType typechecked, appliedTrans)
   where

@@ -65,6 +65,9 @@ std::unique_ptr<FactIterator> FactSet::enumerate(Id from, Id upto) {
     Fact::Ref get(Demand) override {
       return pos != end ? pos->ref() : Fact::Ref::invalid();
     }
+
+    std::optional<Id> lower_bound() override { return std::nullopt; }
+    std::optional<Id> upper_bound() override { return std::nullopt; }
   };
 
   return std::make_unique<Iterator>(
@@ -95,6 +98,9 @@ std::unique_ptr<FactIterator> FactSet::enumerateBack(Id from, Id downto) {
         return Fact::Ref::invalid();
       }
     }
+
+    std::optional<Id> lower_bound() override { return std::nullopt; }
+    std::optional<Id> upper_bound() override { return std::nullopt; }
   };
 
   return std::make_unique<BackIterator>(
@@ -120,6 +126,9 @@ std::unique_ptr<FactIterator> FactSet::seek(
     Fact::Ref get(Demand) override {
       return current != end ? current->second->ref() : Fact::Ref::invalid();
     }
+
+    std::optional<Id> lower_bound() override { return std::nullopt; }
+    std::optional<Id> upper_bound() override { return std::nullopt; }
 
     Index::map_t::const_iterator current;
     const Index::map_t::const_iterator end;
