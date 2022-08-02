@@ -88,6 +88,8 @@ instance ToAngle Erlang.Declaration where
 instance ToAngle Buck.Entity where
   toAngle e = case e of
     Buck.Entity_locator x -> alt @"locator" (mkKey x)
+    Buck.Entity_file x -> alt @"file" (mkKey x)
+    Buck.Entity_definition x -> alt @"definition" (mkKey x)
     Buck.Entity_EMPTY -> error "unknown entity"
 
 -- Flow

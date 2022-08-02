@@ -16,10 +16,21 @@ predicate BuckResolveLocation:
     entity: code.buck.Entity,
   }
   { { Name, File, { span = Span }, nothing }, Entity } where
-    buck.FileTarget { File, Locator };
-    buck.TargetLocation { Locator, File, Span };
-    Locator = buck.Locator { name = Name };
-    Entity = { locator = Locator } : code.buck.Entity;
+    BuckFileEntity { File, BuckEntity }; (
+      BuckEntity = { locator = Locator} : buck.XRefDestination;
+      buck.TargetLocation { Locator, File, Span };
+      Locator = buck.Locator { name = Name };
+      Entity = { locator = Locator } : code.buck.Entity;
+    ) | (
+      BuckEntity = { definition = Definition} : buck.XRefDestination ;
+      buck.DefinitionLocation { Definition, File, Span };
+      Definition = buck.Definition { name = Name };
+      Entity = { definition = Definition } : code.buck.Entity;
+    ) | (
+      { File, Span } : buck.SourceFileLocation ;
+      src.File Name = File;
+      Entity = { file = File } : code.buck.Entity;
+    )
 
 #
 # Finding entities' locations
@@ -30,9 +41,19 @@ predicate BuckEntityLocation:
     entity: code.buck.Entity,
     location: codemarkup.types.Location,
   }
- { { locator = L }, { Name, File, { span = Span }, nothing } }
-  where buck.TargetLocation { L, File, Span };
-  { name = Name } = L;
+  { Entity, { Name, File, { span = Span }, nothing } } where
+    ( buck.TargetLocation { L, File, Span };
+      { name = Name } = L;
+      { locator = L } = Entity
+    ) | (
+      buck.DefinitionLocation { D, File, Span };
+      { name = Name } = D;
+      { definition = D } = Entity
+    ) | (
+      buck.SourceFileLocation { File, Span };
+      src.File Name = File;
+      { file = File } = Entity
+    )
 
 #
 # Finding references in a file
@@ -44,16 +65,28 @@ predicate BuckFileEntityXRefLocations:
     xref: codemarkup.types.XRefLocation,
     entity: code.buck.Entity,
   }
-  { File, { LocatorLocation, { span = SrcSpan } }, Entity } where
-    buck.FileXRefs { File, XRefs };
-    { XRefLocator, SrcSpans } = XRefs[..];
-    SrcSpan = SrcSpans[..];
-    { locator = Locator } = XRefLocator;
-    { name = Name } = Locator;
-    buck.TargetLocation { Locator, TargetFile, LocatorSpan };
-    { Name, TargetFile, { span = LocatorSpan }, nothing } = LocatorLocation;
-    Entity = { locator = Locator } : code.buck.Entity;
-
+  { File, { Location, { span = SrcSpan } }, Entity } where
+      buck.FileXRefs { File, XRefs };
+      { XRefDestination, SrcSpans } = XRefs[..];
+      SrcSpan = SrcSpans[..];
+      ( { locator = Locator } = XRefDestination;
+        { name = Name } = Locator;
+        buck.TargetLocation { Locator, TargetFile, LocatorSpan };
+        { Name, TargetFile, { span = LocatorSpan }, nothing } = Location;
+        Entity = { locator = Locator } : code.buck.Entity;
+      ) | (
+        { definition = Definition } = XRefDestination;
+        { name = Name } = Definition ;
+        buck.DefinitionLocation { Definition, DefinitionFile, DefinitionSpan };
+        { Name, DefinitionFile, { span = DefinitionSpan }, nothing } = Location;
+        Entity = { definition = Definition } : code.buck.Entity;
+      ) | (
+        { file = SrcFile } = XRefDestination;
+        SrcFile = src.File Name;
+        buck.SourceFileLocation { SrcFile, Span };
+        { Name, SrcFile, { span = Span}, nothing } = Location;
+        Entity = { file = SrcFile } : code.buck.Entity;
+      )
 #
 # Language entity uses
 #
@@ -64,8 +97,37 @@ predicate BuckEntityUses:
     file: src.File,
     span: src.ByteSpan,
   }
-  { { locator = Locator }, File, Span } where
-    buck.TargetUses { Locator, File, Spans };
+  { Destination, File, Span } where
+    BuckDestinationUses { Destination, File, Spans };
     Span = Spans[..];
+
+
+# The following predicates are temporary, needed until
+# indexer start generating buck.DestinationUses and buck.FileEntity
+
+predicate BuckDestinationUses:
+  {
+    destination: buck.XRefDestination,
+    file: src.File,
+    spans: [src.ByteSpan],
+  }
+  { Dest, File, Spans } where
+    buck.DestinationUses { Dest, File, Spans} |
+    ( !buck.DestinationUses { Dest, File, Spans };
+      buck.TargetUses { Locator, File, Spans };
+      Dest = { locator = Locator } : buck.XRefDestination
+    )
+
+predicate BuckFileEntity:
+  {
+      file : src.File,
+      entity : buck.XRefDestination,
+  }
+  { File, Entity } where
+    buck.FileEntity { File, Entity } |
+    ( !buck.FileEntity { File, Entity };
+      buck.FileTarget { File, Locator };
+      Entity = { locator = Locator } : buck.XRefDestination
+    )
 
 }

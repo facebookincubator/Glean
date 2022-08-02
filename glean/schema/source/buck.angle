@@ -367,6 +367,18 @@ predicate TargetSourcesBaseModule:
 # The span goes from `c` to `)`
 #
 
+predicate Definition : {
+  module : src.File,
+  name : string,
+}
+
+predicate DefinitionLocation:
+{
+  definition : Definition,
+  file: src.File,  # redundant with Definition.module
+  span: src.ByteSpan,
+}
+
 predicate TargetLocation:
 {
   locator : Locator,
@@ -374,17 +386,37 @@ predicate TargetLocation:
   span: src.ByteSpan,
 }
 
+predicate SourceFileLocation:
+{
+  file: src.File,
+  span: src.ByteSpan,
+}
+
 # Locators of targets defined in a file
+# Deprecated: replaced by more general FileEntity
 predicate FileTarget:
 {
     file : src.File,
     locator : Locator,
 }
 
-# Entities which can be referenced elsewhere, currently
-# these are the buck targets (identified by their locator).
+predicate FileEntity:
+{
+    file : src.File,
+    entity : XRefDestination,
+}
+
+predicate FileDefinition:
+{
+    file : src.File,
+    definition : Definition,
+}
+
+# Entities which can be referenced elsewhere
 type XRefDestination = {
   locator : Locator |
+  file : src.File |
+  definition : Definition |
 }
 
 type XRef =
@@ -401,6 +433,7 @@ predicate FileXRefs:
   }
 
 # Uses of a Buck target (inverse of xrefs)
+# deprecated, replaced by DestinationUses
 predicate TargetUses:
   {
     locator: Locator,
@@ -410,5 +443,15 @@ predicate TargetUses:
   { Locator, File, Spans } where
     FileXRefs { File, XRefs };
     { { locator = Locator }, Spans } = XRefs[..];
+
+predicate DestinationUses:
+  {
+    destination: XRefDestination,
+    file: src.File,
+    spans: [src.ByteSpan],
+  } stored
+  { Destination, File, Spans } where
+    FileXRefs { File, XRefs };
+    { Destination, Spans } = XRefs[..];
 
 } # end schema buck.3

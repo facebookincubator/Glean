@@ -2,9 +2,12 @@
 
 schema code.buck.1 {
 import buck.3
+import src.1
 
 type Entity =
   {
     locator : buck.Locator |
+    file : src.File |
+    definition : buck.Definition |
   }
 }
