@@ -96,7 +96,7 @@ runWithShards env myShards sm = do
 
   backups <- fetchBackups env
 
-  localAndRestoring <- atomically $
+  localAndRestoringByAge <- atomically $
     Catalog.list (envCatalog env) [Local,Restoring] $ do
       sortF createdV Ascending
       everythingF
@@ -118,17 +118,17 @@ runWithShards env myShards sm = do
   flip finally done $ do
 
   let
-    allDBs :: [Item]
-    allDBs =
-      localAndRestoring ++
+    allDBsByAge :: [Item]
+    allDBsByAge =
+      localAndRestoringByAge ++
         [ Item repo Cloud meta ItemMissing -- DBs we could restore
         | (repo, meta) <- backups
-        , repo `notElem` map itemRepo localAndRestoring  ]
+        , repo `notElem` map itemRepo localAndRestoringByAge  ]
 
-    byRepo = byRepoName allDBs
-    byRepoMap = Map.fromList $ [(itemRepo item, item) | item <- allDBs]
+    byRepoAndAge = byRepoName allDBsByAge
+    byRepoMap = Map.fromList $ [(itemRepo item, item) | item <- allDBsByAge]
 
-    keepRoots = concatMap (dbKeepRoots config t) byRepo
+    keepRoots = concatMap (dbKeepRoots config t) byRepoAndAge
 
     -- Ensure we keep dependencies for stacked dbs
     keep =
@@ -152,7 +152,7 @@ runWithShards env myShards sm = do
       mapMaybe (\(item, shard) -> (item,) <$> shard) keepAnnotatedWithShard
 
     delete =
-      [ repo | Item repo Local _ _ <- allDBs
+      [ repo | Item repo Local _ _ <- allDBsByAge
       , repo `notElem` map (itemRepo . fst) keepInThisNode ]
 
     fetch = filter (\(Item{..},_) -> itemLocality == Cloud) keepInThisNode
@@ -220,15 +220,13 @@ runWithShards env myShards sm = do
       -- Nothing means the db is not in any of the shards assigned to this node
     | (item, Nothing) <- keepAnnotatedWithShard]
 
-  forM_ byRepo $ \(repoNm, dbs) -> do
+  forM_ byRepoAndAge $ \(repoNm, dbsByAge) -> do
     let prefix = "glean.db." <> Text.encodeUtf8 repoNm
     let repoKeep =
           filter (\item -> repoNm == Thrift.repo_name (itemRepo item)) keep
 
     -- Open the most recent local DB for each repo in order to avoid lag spikes
-    -- Assumes that dbs are ordered by age!
-    let newestLocalDb = head dbs
-    putStrLn $ "newestLocalDb: " <> show newestLocalDb
+    let newestLocalDb = head dbsByAge
     when (itemRepo newestLocalDb `elem` mostRecent
         && itemLocality newestLocalDb == Local) $
       whenM (atomically $ isDatabaseClosed env $ itemRepo newestLocalDb)
@@ -246,20 +244,20 @@ runWithShards env myShards sm = do
       repoKeep
     void $ setCounter (prefix <> ".restoring") $
       length restores +
-      length (filter (\Item{..} -> itemLocality == Restoring) dbs)
+      length (filter (\Item{..} -> itemLocality == Restoring) dbsByAge)
     void $ setCounter (prefix <> ".indexing") $ length $ filter
       (\Item{..} ->
         itemLocality == Local
         && completenessStatus itemMeta == Thrift.DatabaseStatus_Incomplete)
-      dbs
+      dbsByAge
     void $ setCounter (prefix <> ".backups") $ length $ filter
       (\Item{..} -> itemLocality == Cloud)
-      dbs
+      dbsByAge
     let pt = fromUTCTime t
         dbAges =
           [ timeSpanInSeconds $ pt `timeDiff`
               Time (fromIntegral (unPosixEpochTime (metaCreated itemMeta)))
-            | Item{itemLocality=Local, ..} <- dbs ]
+            | Item{itemLocality=Local, ..} <- dbsByAge ]
     unless (null dbAges) $ void $
       setCounter (prefix <> ".age") $ minimum dbAges
 
