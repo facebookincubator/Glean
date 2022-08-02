@@ -121,8 +121,8 @@ predicate PythonSearchByName:
     entity: code.Entity,
   }
   { NameStr, Entity } where
-    Name = python.Name NameStr;
-    PythonSearchByNameFact { Name, Entity }
+    LocalName = python.LocalName NameStr;
+    PythonSearchByLocalNameFact { LocalName, Entity }
 
 predicate PythonSearchByLowerCaseName:
   {
@@ -130,10 +130,21 @@ predicate PythonSearchByLowerCaseName:
     entity: code.Entity,
   }
   { NameStr, Entity } where
-    python.NameLowerCase { NameStr, Name };
-    PythonSearchByNameFact { Name, Entity }
+    python.LocalNameLowerCase { NameStr, LocalName };
+    PythonSearchByLocalNameFact { LocalName, Entity }
 
 # helper to avoid repeatedly doing string search
+predicate PythonSearchByLocalNameFact:
+  {
+    name: python.LocalName,
+    entity: code.Entity,
+  }
+  { LocalName, { python = { decl = Decl }}} where
+    python.SearchByLocalName { LocalName, Decl };
+    python.NonImportDeclaration Decl;
+
+# helper to avoid repeatedly doing string search
+# (deprecated)
 predicate PythonSearchByNameFact:
   {
     name: python.Name,
