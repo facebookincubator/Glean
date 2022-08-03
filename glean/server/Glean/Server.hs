@@ -40,7 +40,6 @@ import Glean.Index.GleanIndexingService.Service
 import Glean.Server.Config as Config
 import Glean.Server.Sharding (shardManagerConfig, withShardsUpdater)
 import Glean.Util.ConfigProvider
-import Glean.Util.Some
 
 main :: IO ()
 main =

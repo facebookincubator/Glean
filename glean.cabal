@@ -944,6 +944,7 @@ executable glean-server
     other-modules:
         Glean.Handler
         Glean.Server.Config
+        Glean.Server.Sharding
     extra-libraries: stdc++
     build-depends:
         glean:client-hs,
