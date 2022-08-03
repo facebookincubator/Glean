@@ -92,9 +92,22 @@ predicate CxxEntityLocation:
     entity: code.cxx.Entity,
     location: codemarkup.types.Location,
   }
-  { { decl = D }, { Name, File, { range = Range }, { just = Span } } } where
-    cxx1.DeclarationLocationNameSpan { D, Range, Name, _, Span };
-    { file = File } = Range;
+  { Entity , { Name, File, { range = Range }, MSpan } } where
+    ( { decl = Decl } = Entity;
+      cxx1.DeclarationLocationNameSpan { Decl, Range, Name, _, Span };
+      { file = File } = Range;
+      { just = Span } = MSpan;
+    ) | (
+      { defn = Defn } = Entity;
+      cxx1.DefToBaseDecl { Defn, Decl };
+      cxx1.DeclarationLocationNameSpan { Decl, Range, Name, _, Span };
+      { file = File } = Range;
+      { just = Span } = MSpan;
+    ) | (
+      { enumerator = { name = cxx1.Name Name, source = Range } } = Entity;
+      { file = File } = Range;
+      nothing = MSpan; # we only have the range for enumerators
+    );
 
 # Finding references in a file
 

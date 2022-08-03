@@ -1,0 +1,375 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "objcContainer": {
+            "key": {
+              "id": { "interface_": { "key": "J" } },
+              "source": {
+                "file": { "key": "test.m" },
+                "lineBegin": 9,
+                "columnBegin": 1,
+                "lineEnd": 11,
+                "columnEnd": 4
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "J",
+        "file": { "key": "test.m" },
+        "location": {
+          "range": {
+            "file": { "key": "test.m" },
+            "lineBegin": 9,
+            "columnBegin": 1,
+            "lineEnd": 11,
+            "columnEnd": 4
+          }
+        },
+        "span": { "start": 232, "length": 1 }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "objcMethod": {
+            "key": {
+              "selector": { "key": [ "checkSelector" ] },
+              "container": { "interface_": { "key": "J" } },
+              "signature": {
+                "key": {
+                  "returns": { "key": "void" },
+                  "parameters": [
+                    { "name": { "key": "selector" }, "type": { "key": "SEL" } }
+                  ]
+                }
+              },
+              "isInstance": true,
+              "isOptional": false,
+              "isAccessor": false,
+              "source": {
+                "file": { "key": "test.m" },
+                "lineBegin": 10,
+                "columnBegin": 1,
+                "lineEnd": 10,
+                "columnEnd": 36
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "checkSelector",
+        "file": { "key": "test.m" },
+        "location": {
+          "range": {
+            "file": { "key": "test.m" },
+            "lineBegin": 10,
+            "columnBegin": 1,
+            "lineEnd": 10,
+            "columnEnd": 36
+          }
+        },
+        "span": { "start": 234, "length": 1 }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "f" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "call" } } },
+                        "scope": { "global_": { } }
+                      }
+                    }
+                  }
+                }
+              },
+              "type": { "key": "SEL" },
+              "kind": { "local": { "kind": 0, "attribute": 0 } },
+              "source": {
+                "file": { "key": "test.m" },
+                "lineBegin": 21,
+                "columnBegin": 3,
+                "lineEnd": 21,
+                "columnEnd": 24
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "f",
+        "file": { "key": "test.m" },
+        "location": {
+          "range": {
+            "file": { "key": "test.m" },
+            "lineBegin": 21,
+            "columnBegin": 3,
+            "lineEnd": 21,
+            "columnEnd": 24
+          }
+        },
+        "span": { "start": 372, "length": 1 }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "s" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "call" } } },
+                        "scope": { "global_": { } }
+                      }
+                    }
+                  }
+                }
+              },
+              "type": { "key": "J *" },
+              "kind": { "local": { "kind": 2, "attribute": 0 } },
+              "source": {
+                "file": { "key": "test.m" },
+                "lineBegin": 18,
+                "columnBegin": 11,
+                "lineEnd": 18,
+                "columnEnd": 14
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "s",
+        "file": { "key": "test.m" },
+        "location": {
+          "range": {
+            "file": { "key": "test.m" },
+            "lineBegin": 18,
+            "columnBegin": 11,
+            "lineEnd": 18,
+            "columnEnd": 14
+          }
+        },
+        "span": { "start": 328, "length": 1 }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "selector" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "type": { "key": "SEL" },
+              "kind": { "local": { "kind": 2, "attribute": 0 } },
+              "source": {
+                "file": { "key": "test.m" },
+                "lineBegin": 10,
+                "columnBegin": 24,
+                "lineEnd": 10,
+                "columnEnd": 35
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "selector",
+        "file": { "key": "test.m" },
+        "location": {
+          "range": {
+            "file": { "key": "test.m" },
+            "lineBegin": 10,
+            "columnBegin": 24,
+            "lineEnd": 10,
+            "columnEnd": 35
+          }
+        },
+        "span": { "start": 261, "length": 8 }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "selector" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "bar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    }
+                  }
+                }
+              },
+              "type": { "key": "SEL" },
+              "kind": { "local": { "kind": 2, "attribute": 0 } },
+              "source": {
+                "file": { "key": "test.m" },
+                "lineBegin": 13,
+                "columnBegin": 10,
+                "lineEnd": 13,
+                "columnEnd": 21
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "selector",
+        "file": { "key": "test.m" },
+        "location": {
+          "range": {
+            "file": { "key": "test.m" },
+            "lineBegin": 13,
+            "columnBegin": 10,
+            "lineEnd": 13,
+            "columnEnd": 21
+          }
+        },
+        "span": { "start": 290, "length": 8 }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "defn": {
+          "function_": {
+            "key": {
+              "declaration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "bar" } } },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "signature": {
+                    "key": {
+                      "returns": { "key": "void" },
+                      "parameters": [
+                        {
+                          "name": { "key": "selector" },
+                          "type": { "key": "SEL" }
+                        }
+                      ]
+                    }
+                  },
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 13,
+                    "columnBegin": 1,
+                    "lineEnd": 16,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "isInline": false
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "bar",
+        "file": { "key": "test.m" },
+        "location": {
+          "range": {
+            "file": { "key": "test.m" },
+            "lineBegin": 13,
+            "columnBegin": 1,
+            "lineEnd": 16,
+            "columnEnd": 1
+          }
+        },
+        "span": { "start": 282, "length": 3 }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "defn": {
+          "function_": {
+            "key": {
+              "declaration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "call" } } },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "signature": {
+                    "key": {
+                      "returns": { "key": "void" },
+                      "parameters": [
+                        { "name": { "key": "s" }, "type": { "key": "J *" } }
+                      ]
+                    }
+                  },
+                  "source": {
+                    "file": { "key": "test.m" },
+                    "lineBegin": 18,
+                    "columnBegin": 1,
+                    "lineEnd": 23,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "isInline": false
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "call",
+        "file": { "key": "test.m" },
+        "location": {
+          "range": {
+            "file": { "key": "test.m" },
+            "lineBegin": 18,
+            "columnBegin": 1,
+            "lineEnd": 23,
+            "columnEnd": 1
+          }
+        },
+        "span": { "start": 320, "length": 4 }
+      }
+    }
+  }
+]
