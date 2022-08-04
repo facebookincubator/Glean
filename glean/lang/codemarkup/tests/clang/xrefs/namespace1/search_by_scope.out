@@ -1,0 +1,58 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "S",
+      "scope": [ "foo" ],
+      "entity": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "S" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "foo" } } }
+                        }
+                      }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 11,
+                      "columnBegin": 1,
+                      "lineEnd": 11,
+                      "columnEnd": 11
+                    }
+                  }
+                },
+                "bases": [ ],
+                "members": { "key": [ ] }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "S",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 11,
+            "columnBegin": 1,
+            "lineEnd": 11,
+            "columnEnd": 11
+          }
+        },
+        "span": { "start": 245, "length": 1 }
+      },
+      "kind": 24,
+      "language": 0
+    }
+  }
+]

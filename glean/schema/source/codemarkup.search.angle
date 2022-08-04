@@ -34,6 +34,26 @@ predicate SearchByName:
       search.code.SearchByLowerCaseNameAndLanguage { Name, Language, Entity });
     EntityLocationAndKind { Entity, Location, Kind };
 
+#
+# search by name and scope, with language and kind filters.
+#
+predicate SearchByScope:
+  {
+    searchcase: SearchCase,
+    name: string,
+    scope: [string],
+    entity: code.Entity,
+    location: codemarkup.types.Location,
+    kind: maybe codemarkup.types.SymbolKind,
+    language: code.Language
+  }
+  { SearchCase, Name, Scope, Entity, Location, Kind, Language } where
+    (Sensitive = SearchCase;
+      search.code.SearchByScope { Name, Scope, Language, Entity }) |
+    (Insensitive = SearchCase;
+      search.code.SearchByLowerCaseScope { Name, Scope, Language, Entity });
+    EntityLocationAndKind { Entity, Location, Kind };
+
 # -------------------------------------
 #
 # search for entities by identifier name, either case insensitive or not
