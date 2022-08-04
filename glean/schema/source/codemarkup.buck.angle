@@ -16,7 +16,7 @@ predicate BuckResolveLocation:
     entity: code.buck.Entity,
   }
   { { Name, File, { span = Span }, nothing }, Entity } where
-    BuckFileEntity { File, BuckEntity }; (
+    buck.FileEntity { File, BuckEntity }; (
       BuckEntity = { locator = Locator} : buck.XRefDestination;
       buck.TargetLocation { Locator, File, Span };
       Locator = buck.Locator { name = Name };
@@ -98,36 +98,7 @@ predicate BuckEntityUses:
     span: src.ByteSpan,
   }
   { Destination, File, Span } where
-    BuckDestinationUses { Destination, File, Spans };
+    buck.DestinationUses { Destination, File, Spans };
     Span = Spans[..];
-
-
-# The following predicates are temporary, needed until
-# indexer start generating buck.DestinationUses and buck.FileEntity
-
-predicate BuckDestinationUses:
-  {
-    destination: buck.XRefDestination,
-    file: src.File,
-    spans: [src.ByteSpan],
-  }
-  { Dest, File, Spans } where
-    buck.DestinationUses { Dest, File, Spans} |
-    ( !buck.DestinationUses { Dest, File, Spans };
-      buck.TargetUses { Locator, File, Spans };
-      Dest = { locator = Locator } : buck.XRefDestination
-    )
-
-predicate BuckFileEntity:
-  {
-      file : src.File,
-      entity : buck.XRefDestination,
-  }
-  { File, Entity } where
-    buck.FileEntity { File, Entity } |
-    ( !buck.FileEntity { File, Entity };
-      buck.FileTarget { File, Locator };
-      Entity = { locator = Locator } : buck.XRefDestination
-    )
 
 }
