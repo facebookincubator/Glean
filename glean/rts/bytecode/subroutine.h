@@ -60,11 +60,6 @@ struct Subroutine {
     return inputs + locals;
   }
 
-  enum class Status {
-    Finished,
-    Suspended
-  };
-
   /// A subroutine activation record which can be 'execute'd after supplying
   /// arguments. The activation requires a pointer to a preallocated frame but
   /// doesn't own it. This is mostly because we want to be able to avoid having
@@ -72,7 +67,9 @@ struct Subroutine {
   struct Activation final {
     const Subroutine *sub;
     uint64_t *frame;
-    uint64_t entry;
+
+    // null if the activation has finished executing
+    const uint64_t * FOLLY_NULLABLE pc;
 
     /// Initialise the activation. Both `sub` and `frame` have to remain alive
     /// throughout the execution of activation.
@@ -82,7 +79,7 @@ struct Subroutine {
         uint64_t* frame,
         uint64_t entry,
         Iter locals_begin,
-        Iter locals_end) : sub(sub), frame(frame), entry(entry) {
+        Iter locals_end) : sub(sub), frame(frame), pc(sub->code.data() + entry) {
       std::copy(locals_begin, locals_end, frame + sub->inputs);
     }
 
@@ -93,9 +90,14 @@ struct Subroutine {
       return frame;
     }
 
-    /// Execute the activation and return its status. If it's 'Suspended', the
-    /// activation can be resumed by calling 'execute' again.
-    Status execute();
+    /// Execute the activation. If 'suspended' is true after the call, execution
+    /// can be resumed by another call to 'execute'.
+    void execute();
+
+    /// Check if the subroutine has been suspended.
+    bool suspended() const {
+      return pc != nullptr;
+    }
 
     thrift::internal::SubroutineState toThrift() const;
   };
@@ -125,8 +127,8 @@ struct Subroutine {
     uint64_t frame[frameSize()];
     auto activation = activate(frame);
     std::copy(args.begin(), args.end(), activation.args());
-    const auto status = activation.execute();
-    assert(status == Status::Finished);
+    activation.execute();
+    assert(!activation.suspended());
   }
 
   bool operator==(const Subroutine& other) const;

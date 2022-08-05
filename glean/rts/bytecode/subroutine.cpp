@@ -22,7 +22,6 @@ struct Eval {
   const std::string *literals;
   const uint64_t *code;
   const uint64_t *pc;
-  Subroutine::Activation *activation;
   uint64_t *frame;
 
 #include "glean/rts/bytecode/gen/evaluate.h"
@@ -307,14 +306,12 @@ struct Eval {
     LOG(INFO) << *a.msg << ": " << folly::to<std::string>(a.reg);
   }
 
-  FOLLY_ALWAYS_INLINE Subroutine::Status execute(Suspend a) {
-    pc += std::ptrdiff_t(a.cont);
-    activation->entry = pc - activation->sub->code.data();
-    return Subroutine::Status::Suspended;
+  FOLLY_ALWAYS_INLINE const uint64_t *execute(Suspend a) {
+    return pc + std::ptrdiff_t(a.cont);
   }
 
-  FOLLY_ALWAYS_INLINE Subroutine::Status execute(Ret) {
-    return Subroutine::Status::Finished;
+  FOLLY_ALWAYS_INLINE const uint64_t * FOLLY_NULLABLE execute(Ret) {
+    return nullptr;
   }
 
   FOLLY_ALWAYS_INLINE void execute(LoadWord a) {
@@ -330,12 +327,11 @@ struct Eval {
 
 #define USE_SWITCH 1
 
-Subroutine::Status Subroutine::Activation::execute() {
-  return Eval{
+void Subroutine::Activation::execute() {
+  pc = Eval{
     sub->literals.data(),
     sub->code.data(),
-    sub->code.data() + entry,
-    this,
+    pc,
     frame}.
 #if USE_SWITCH
     evalSwitch();
@@ -384,7 +380,7 @@ thrift::internal::SubroutineState Subroutine::Activation::toThrift()
   state.code() = std::string(
     reinterpret_cast<const char *>(sub->code.data()),
     sub->code.size() * sizeof(uint64_t));
-  state.entry() = entry;
+  state.entry() = pc - sub->code.data();
   state.literals() = sub->literals;
   state.locals() = std::vector<int64_t>(
     frame + sub->inputs,

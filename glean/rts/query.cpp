@@ -735,9 +735,9 @@ std::unique_ptr<QueryResults> executeQuery (
     *args++ = reinterpret_cast<uint64_t>(&q.outputs[i]);
   }
 
-  const auto status = activation.execute();
+  activation.execute();
   folly::Optional<thrift::internal::SubroutineState> subState;
-  if (status == Subroutine::Status::Suspended) {
+  if (activation.suspended()) {
     subState = activation.toThrift();
   }
 

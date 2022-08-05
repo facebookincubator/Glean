@@ -102,7 +102,7 @@ genInsnEval Insn{..} =
   , "}" ]
   where
     retType
-      | UncondReturn <- insnControl = "Subroutine::Status"
+      | UncondReturn <- insnControl = "const uint64_t * FOLLY_NULLABLE "
       | otherwise = "void"
 
     declare (Arg name Offsets Imm) =
@@ -172,7 +172,7 @@ cppType _ = "uint64_t"
 --
 genEvalSwitch :: [Text]
 genEvalSwitch =
-  [ "FOLLY_ALWAYS_INLINE Subroutine::Status evalSwitch() {"
+  [ "FOLLY_ALWAYS_INLINE const uint64_t * FOLLY_NULLABLE evalSwitch() {"
   , "  while (true) {"
   , "    switch (static_cast<Op>(*pc++)) {" ]
   ++ intercalate [""] (map genAlt instructions)
@@ -212,7 +212,7 @@ genEvalSwitch =
 --
 genEvalIndirect :: [Text]
 genEvalIndirect =
-  [ "FOLLY_ALWAYS_INLINE Subroutine::Status evalIndirect() {"
+  [ "FOLLY_ALWAYS_INLINE const uint64_t * FOLLY_NULLABLE evalIndirect() {"
   , "  static const void * const labels[] = {" ]
   ++
   [ "    &&label_" <> insnName insn <> "," | insn <- instructions ]
