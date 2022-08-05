@@ -63,7 +63,6 @@ import Glean.RTS.Builder
 import Glean.RTS.Bytecode.Code
 import Glean.RTS.Bytecode.Disassemble
 import Glean.RTS.Bytecode.Gen.Issue
-import Glean.RTS.Bytecode.Gen.Instruction (Insn(..))
 import Glean.RTS.Foreign.Bytecode
 import Glean.RTS.Foreign.Lookup (Lookup, startingId, firstFreeId)
 import Glean.RTS.Foreign.Query
@@ -1038,12 +1037,8 @@ compileFactGenerator bounds (QueryRegs{..} :: QueryRegs s)
     withPrefix chunks fun =
       case chunks of
         -- Just a fixed ByteString: use it directly
-        (QueryPrefix bs : rest) | emptyPrefix rest -> do
-          lit_i <- literal bs
-          fun
-            (\ptr end -> issue $ LoadLiteral lit_i ptr end)
-            rest
-            Nothing
+        (QueryPrefix bs : rest) | emptyPrefix rest ->
+          fun (loadLiteral bs) rest Nothing
         -- A variable: use it directly
         (QueryVar (Var ty v _) : rest)
           | emptyPrefix rest, not (isWordTy ty) ->
