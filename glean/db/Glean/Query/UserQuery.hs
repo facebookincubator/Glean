@@ -194,6 +194,8 @@ data Results stats fact = Results
     -- | Query compile time, for logging, in seconds
   , resCompileTime :: Maybe Double
 
+  , resCodegenTime :: Maybe Double
+
     -- | Query execution time after compilation, for logging, in nanoseconds
   , resExecutionTime :: Maybe Word64
   }
@@ -442,6 +444,7 @@ userQueryFactsImpl
         , resType = Nothing  -- could be facts of different predicates
         , resBytecodeSize = Nothing
         , resCompileTime = Nothing
+        , resCodegenTime = Nothing
         , resExecutionTime = Nothing
         }
 
@@ -613,7 +616,8 @@ userQueryImpl
     ( qResults@QueryResults{..}
       , appliedTrans
       , queryDiag
-      , bytecodeSize) <-
+      , bytecodeSize
+      , codegenTime) <-
       case cont of
         Right ucont -> do
           let binaryCont = Thrift.userQueryCont_continuation ucont
@@ -627,7 +631,7 @@ userQueryImpl
               (Just predicatePid)
               limits
               binaryCont
-          return (results, appliedTrans, [], B.length binaryCont)
+          return (results, appliedTrans, [], B.length binaryCont, 0)
 
         Left (query, appliedTrans) -> do
           let
@@ -637,15 +641,15 @@ userQueryImpl
               | Thrift.queryDebugOptions_bytecode debug ]
 
           bracket
-            (compileQuery bounds query)
-            (release . compiledQuerySub)
-            $ \sub -> do
+            (timeIt $ compileQuery bounds query)
+            (\(_, _, sub) -> release $ compiledQuerySub sub)
+            $ \(codegenTime, _, sub) -> do
               results <- transformResultsBack appliedTrans <$>
                 executeCompiled schemaInventory defineOwners stack sub limits
               diags <-
                 evaluate $ force (bytecodeDiag sub) -- don't keep sub alive
               sz <- evaluate $ Bytecode.size (compiledQuerySub sub)
-              return (results, appliedTrans, diags, sz)
+              return (results, appliedTrans, diags, sz, codegenTime)
 
     -- If we're storing derived facts, queue them for writing and
     -- return the handle.
@@ -681,6 +685,7 @@ userQueryImpl
           , resType = Just ppType
           , resBytecodeSize = Just bytecodeSize
           , resCompileTime = Just compileTime
+          , resCodegenTime = Just codegenTime
           , resExecutionTime = Just queryResultsElapsedNs
           }
 
@@ -746,6 +751,7 @@ userQueryImpl
           , resFactsSearched = queryResultsStats
           , resType = Just pred
           , resCompileTime = Nothing
+          , resCodegenTime = Nothing
           , resBytecodeSize = Nothing
           , resExecutionTime = Just queryResultsElapsedNs
           }
@@ -1057,6 +1063,8 @@ withStats io = do
             fromIntegral <$> resBytecodeSize res
         , Thrift.userQueryStats_compile_time_ns =
             fmap (round . (* 1000000000)) (resCompileTime res )
+        , Thrift.userQueryStats_codegen_time_ns =
+            fmap (round . (* 1000000000)) (resCodegenTime res )
         , Thrift.userQueryStats_execute_time_ns =
             fromIntegral <$> resExecutionTime res
         }

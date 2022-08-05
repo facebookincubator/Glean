@@ -27,7 +27,6 @@ import qualified Glean.Schema.CodeCxx.Types as Code.Cxx
 import qualified Glean.Schema.Codemarkup.Types as Codemarkup
 import Glean.Types
 
-
 data Cfg = Cfg
   { cfgIters :: Int
   , cfgStop :: Double
@@ -38,8 +37,9 @@ main = withEmptyTestDB [] $ \env repo -> do
   withOpenDatabase env repo $ void . return
   forM_ (zip [1..] queries) $ \(i,q) -> do
     xs <- measure (query env repo q) Cfg{cfgIters = 10, cfgStop = 1}
-    let s = show (i :: Int)
-    putStrLn $ s ++ replicate (6 - length s) ' ' ++ display xs
+    let (compile, codegen) = V.unzip xs
+    putStrLn $ line i "compile" compile
+    putStrLn $ line i "codegen" codegen
   where
     getq (Query q) = q
 
@@ -63,24 +63,33 @@ main = withEmptyTestDB [] $ \env repo -> do
           |]
       ]
 
-    measure :: IO Double -> Cfg -> IO (V.Vector Double)
+    measure :: IO (Double,Double) -> Cfg -> IO (V.Vector (Double,Double))
     measure action = V.unfoldrM $ \Cfg{..} ->
       if cfgStop <= 0 && cfgIters <= 0
         then return Nothing
         else do
           performMinorGC
-          x <- action
-          return $ Just (x, Cfg
+          (compile, codegen) <- action
+          return $ Just ((compile, codegen), Cfg
             { cfgIters = max 0 $ cfgIters - 1
-            , cfgStop = if x >= cfgStop then 0 else cfgStop - x
+            , cfgStop = if compile >= cfgStop then 0 else cfgStop - compile
             })
 
     query env repo q = do
       UserQueryResults
         { userQueryResults_stats = Just UserQueryStats
-            { userQueryStats_compile_time_ns = Just n }
+            { userQueryStats_compile_time_ns = Just compile
+            , userQueryStats_codegen_time_ns = Just codegen }
         } <- userQuery env repo q
-      return $ fromIntegral n / 1000000000
+      return (fromNS compile, fromNS codegen)
+      where
+        fromNS n = fromIntegral n / 1000000000
+
+    line :: Int -> String -> V.Vector Double -> String
+    line i h xs =
+      s ++ replicate (6 - length s) ' ' ++ h ++ " " ++ display xs
+      where
+        s = show i
 
     display :: V.Vector Double -> String
     display xs = unwords

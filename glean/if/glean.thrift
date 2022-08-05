@@ -696,7 +696,9 @@ struct UserQueryStats {
   8: optional i64 execute_time_ns;
   // time to execute the compiled query
   9: i64 result_count;
-// the number of top-level facts in the result. Not counting nested facts.
+  // the number of top-level facts in the result. Not counting nested facts.
+  10: optional i64 codegen_time_ns;
+// time to generate bytecode for the query
 }
 
 # Results in Glean's internal binary representation
