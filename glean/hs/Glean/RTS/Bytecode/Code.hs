@@ -81,8 +81,8 @@ data CodeS = CodeS
     -- | Cached `length csConstants`
   , csConstantsSize :: !Word64
 
-    -- | Map known constants to their offsets
-  , csConstantMap :: IntMap Word64
+    -- | Map known constants to their registers
+  , csConstantMap :: IntMap (Register 'Word)
 
     -- | All literals in the subroutine.
   , csLiterals :: HashMap ByteString Word64
@@ -114,16 +114,16 @@ newtype Code a = Code { runCode :: S.State CodeS a }
 constant :: Word64 -> Code (Register 'Word)
 constant w = Code $ do
   s@CodeS{..} <- S.get
-  Register Constant <$> case IntMap.lookup (fromIntegral w) csConstantMap of
-    Just i -> return i
+  case IntMap.lookup (fromIntegral w) csConstantMap of
+    Just r -> return r
     Nothing -> do
+      let r = Register Constant csConstantsSize
       S.put s
         { csConstants = w : csConstants
         , csConstantsSize = csConstantsSize + 1
-        , csConstantMap =
-            IntMap.insert (fromIntegral w) csConstantsSize csConstantMap
+        , csConstantMap = IntMap.insert (fromIntegral w) r csConstantMap
         }
-      return csConstantsSize
+      return r
 
 -- | Generate a chunk of code with a reserved fresh register. The register can
 -- be reused afterwards.
