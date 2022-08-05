@@ -57,32 +57,28 @@ predicate CxxResolveDeclarationToEntity:
     entity: code.cxx.Entity,
   }
   { Decl, Entity } where
-    (
+    if (
       { function_ = FunctionDecl } = Decl;
-      FunctionDefn = cxx1.FunctionDefinition { declaration = FunctionDecl };
-      { defn = { function_ = FunctionDefn } } = Entity;
-    ) |
-    (
+      FunctionDefn = cxx1.FunctionDefinition { declaration = FunctionDecl }
+    ) then (
+      { defn = { function_ = FunctionDefn } } = Entity
+    ) else if (
       { record_ = RecordDecl } = Decl;
-      RecordDefn = cxx1.RecordDefinition { declaration = RecordDecl };
-      { defn = { record_ = RecordDefn } } = Entity;
-    ) |
-    (
+      RecordDefn = cxx1.RecordDefinition { declaration = RecordDecl }
+    ) then (
+      { defn = { record_ = RecordDefn } } = Entity
+    ) else if (
       { enum_ = EnumDecl } = Decl;
-      EnumDefn = cxx1.EnumDefinition { declaration = EnumDecl };
-      { defn = { enum_ = EnumDefn } } = Entity;
-    ) |
-    (
+      EnumDefn = cxx1.EnumDefinition { declaration = EnumDecl }
+    ) then (
+      { defn = { enum_ = EnumDefn } } = Entity
+    ) else if (
       { namespace_ = NamespaceDecl } = Decl;
-      NamespaceDefn = cxx1.NamespaceDefinition { declaration = NamespaceDecl };
-      { defn = { namespace_ = NamespaceDefn } } = Entity;
-    ) |
-    (
-      !({ function_ = FunctionDecl } = Decl; cxx1.FunctionDefinition { declaration = FunctionDecl });
-      !({ record_ = RecordDecl } = Decl; cxx1.RecordDefinition { declaration = RecordDecl });
-      !({ enum_ = EnumDecl } = Decl; cxx1.EnumDefinition { declaration = EnumDecl });
-      !({ namespace_ = NamespaceDecl } = Decl; cxx1.NamespaceDefinition { declaration = NamespaceDecl });
-      { decl = Decl } = Entity;
+      NamespaceDefn = cxx1.NamespaceDefinition { declaration = NamespaceDecl }
+    ) then (
+      { defn = { namespace_ = NamespaceDefn } } = Entity
+    ) else (
+      { decl = Decl } = Entity
     )
 
 # Finding entities' locations
