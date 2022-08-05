@@ -71,7 +71,7 @@ main = do
     [ "import Data.ByteString (ByteString)"
     , "import Data.Word (Word64)"
     , "import Glean.RTS.Bytecode.Gen.Instruction (Insn(..))"
-    , "import Glean.RTS.Bytecode.MonadInsn"
+    , "import Glean.RTS.Bytecode.Code"
     , "import Glean.Bytecode.Types"
     , "" ]
     ++ genIssue
@@ -165,8 +165,9 @@ varName name
 genIssue :: [Text]
 genIssue = intercalate [""]
   [ [ varName insnName
-        <> " :: MonadInsn m => "
-        <> Text.unwords (intersperse "->" $ map genArgType insnArgs ++ ["m ()"])
+        <> " :: "
+        <> Text.unwords
+            (intersperse "->" $ map genArgType insnArgs ++ ["Code ()"])
     , Text.unwords (varName insnName : map argName insnArgs) <> " = do"
     ] ++ map ("  " <>)
       (mapMaybe literal insnArgs ++
@@ -174,10 +175,10 @@ genIssue = intercalate [""]
     | Insn{..} <- instructions ]
   where
     genArgType (Arg _ Literal Imm) = "ByteString"
-    genArgType (Arg _ Offset Imm) = "Lbl m"
-    genArgType (Arg _ Offsets Imm) = "[Lbl m]"
+    genArgType (Arg _ Offset Imm) = "Label"
+    genArgType (Arg _ Offsets Imm) = "[Label]"
     genArgType (Arg _ _ Imm) = "Word64"
-    genArgType (Arg _ ty _) = "Reg m " <> showTy ty
+    genArgType (Arg _ ty _) = "Register " <> showTy ty
 
     genArgRef (Arg name Literal Imm) = name <> "_i"
     genArgRef (Arg name _ _) = name

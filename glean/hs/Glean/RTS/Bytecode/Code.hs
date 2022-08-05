@@ -7,12 +7,14 @@
 -}
 
 module Glean.RTS.Bytecode.Code
-  ( MonadInsn(..)
-  , Code
+  ( Code
   , Register
   , Registers
   , Label
   , Optimised(..)
+  , literal
+  , label
+  , issue
   , constant
   , local
   , locals
@@ -52,8 +54,6 @@ import Data.Word (Word64)
 
 import Glean.Bytecode.Types
 import Glean.RTS.Bytecode.Gen.Instruction
-import Glean.RTS.Bytecode.Gen.Issue
-import Glean.RTS.Bytecode.MonadInsn
 import Glean.RTS.Foreign.Bytecode (Subroutine, subroutine)
 
 type Instruction = Insn Register Label
@@ -429,10 +429,10 @@ castRegister = coerce
 
 -- | loadReg is fixed to Word, so make a polymorphic version
 move :: Register a -> Register a -> Code ()
-move src dst = loadReg (castRegister src) (castRegister dst)
+move src dst = issue $ LoadReg (castRegister src) (castRegister dst)
 
 advancePtr :: Register 'DataPtr -> Register 'Word -> Code ()
-advancePtr ptr off = add off (castRegister ptr)
+advancePtr ptr off = issue $ Add off (castRegister ptr)
 
 newBlock :: Code Label
 newBlock = Code $ do
@@ -451,33 +451,35 @@ newBlock = Code $ do
         || insnControl insn == UncondReturn = insns
       | otherwise = Jump label : insns
 
-instance MonadInsn Code where
-  type Lbl Code = Label
-  type Reg Code = Register
+-- | Add a literal to the literal table and yield its index
+literal :: ByteString -> Code Word64
+literal lit = Code $ do
+  m <- S.gets csLiterals
+  case HashMap.lookup lit m of
+    Just n -> return n
+    Nothing -> do
+      n <- S.gets csLiteralsSize
+      S.modify' $ \s@CodeS{..} -> s
+        { csLiterals = HashMap.insert lit n csLiterals
+        , csLiteralsSize = csLiteralsSize + 1 }
+      return n
 
-  label = do
-    CodeS
-      { csLabel = label
-      , csInsns = insns } <- Code S.get
-    if null insns
-      then return label
-      else newBlock
+-- | Yield a label for the current position in the code
+label :: Code Label
+label = do
+  CodeS
+    { csLabel = label
+    , csInsns = insns } <- Code S.get
+  if null insns
+    then return label
+    else newBlock
 
-  issue insn = do
-    Code $ S.modify' $ \s@CodeS{..} -> s { csInsns = insn : csInsns }
-    case insnControl insn of
-      CondJump -> void newBlock
-      UncondJump -> void newBlock
-      UncondReturn -> void newBlock
-      _ -> return ()
-
-  literal lit = Code $ do
-    m <- S.gets csLiterals
-    case HashMap.lookup lit m of
-      Just n -> return n
-      Nothing -> do
-        n <- S.gets csLiteralsSize
-        S.modify' $ \s@CodeS{..} -> s
-          { csLiterals = HashMap.insert lit n csLiterals
-          , csLiteralsSize = csLiteralsSize + 1 }
-        return n
+-- | Issue an instruction
+issue :: Insn Register Label -> Code ()
+issue insn = do
+  Code $ S.modify' $ \s@CodeS{..} -> s { csInsns = insn : csInsns }
+  case insnControl insn of
+    CondJump -> void newBlock
+    UncondJump -> void newBlock
+    UncondReturn -> void newBlock
+    _ -> return ()
