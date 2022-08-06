@@ -8,9 +8,6 @@
 
 // rust-glean/tests/integration.rs
 
-use assert_cmd::Command as AssertCommand;
-use once_cell::sync::OnceCell;
-use serde_json::Value;
 use std::env;
 use std::env::consts::EXE_EXTENSION;
 use std::fs::File;
@@ -19,6 +16,10 @@ use std::io::BufWriter;
 use std::io::Read;
 use std::path::PathBuf;
 use std::process::Command;
+
+use assert_cmd::Command as AssertCommand;
+use once_cell::sync::OnceCell;
+use serde_json::Value;
 
 fn should_update_test_expectations() -> bool {
     static VARIABLE: OnceCell<bool> = OnceCell::new();

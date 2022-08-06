@@ -14,14 +14,15 @@
 
 #![warn(missing_docs)]
 
-use crate::json_schema::Def;
-use crate::json_schema::DefKind;
-use crate::json_schema::Impl;
-use crate::json_schema::ImplKind;
-use crate::json_schema::Ref;
-use crate::json_schema::RefId;
-use crate::json_schema::Root;
-use crate::json_schema::Span;
+use std::collections::BTreeMap;
+use std::fs;
+use std::fs::File;
+use std::io;
+use std::io::BufReader;
+use std::io::Write;
+use std::mem;
+use std::path::Path;
+
 use clap::App;
 use clap::Arg;
 use eyre::eyre;
@@ -86,14 +87,15 @@ use glean_schema_src::types::ByteSpan;
 use glean_schema_src::types::File as SrcFile;
 use glean_schema_src::types::FileLines;
 use glean_schema_src::types::FileLines_key;
-use std::collections::BTreeMap;
-use std::fs;
-use std::fs::File;
-use std::io;
-use std::io::BufReader;
-use std::io::Write;
-use std::mem;
-use std::path::Path;
+
+use crate::json_schema::Def;
+use crate::json_schema::DefKind;
+use crate::json_schema::Impl;
+use crate::json_schema::ImplKind;
+use crate::json_schema::Ref;
+use crate::json_schema::RefId;
+use crate::json_schema::Root;
+use crate::json_schema::Span;
 
 mod json_schema;
 

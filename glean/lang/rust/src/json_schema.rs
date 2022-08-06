@@ -8,8 +8,9 @@
 
 // rust-glean/src/json_schema.rs
 
-use serde::Deserialize;
 use std::path::PathBuf;
+
+use serde::Deserialize;
 
 #[derive(Clone, Debug, Deserialize)]
 pub struct Root {
