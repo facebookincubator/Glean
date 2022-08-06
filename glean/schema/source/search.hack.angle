@@ -48,15 +48,16 @@ predicate SearchInNamespace :
     decl : hack.Declaration
   }
   { N, NS, Decl } where
-  Decl =
-    hack.Declaration { container = { class_ = { name = { name = N, namespace_ = NS }}}} |
-    hack.Declaration { container = { interface_ = { name = { name = N, namespace_ = NS }}}} |
-    hack.Declaration { container = { trait = { name = { name = N, namespace_ = NS }}}} |
-    hack.Declaration { container = { enum_ = { name = { name = N, namespace_ = NS }}}} |
-    hack.Declaration { function_ = { name = { name = N, namespace_ = NS }}} |
-    hack.Declaration { globalConst = { name = { name = N, namespace_ = NS }}} |
-    hack.Declaration { namespace_ = { name = { name = N, parent = NS }}} |
-    hack.Declaration { typedef_ = { name = { name = N, namespace_ = NS }}}
+  Decl = (
+    QN = hack.QName { name = N, namespace_ = NS };
+    hack.Declaration { container = { class_ = { name = QN }}} |
+    hack.Declaration { container = { interface_ = { name = QN }}} |
+    hack.Declaration { container = { trait = { name = QN }}} |
+    hack.Declaration { container = { enum_ = { name = QN }}} |
+    hack.Declaration { function_ = { name = QN }} |
+    hack.Declaration { globalConst = { name = QN }} |
+    hack.Declaration { typedef_ = { name = QN }}
+  ) | hack.Declaration { namespace_ = { name = { name = N, parent = NS }}}
 
 # Find classConst, method, property_, and typeConst in any parent container
 # (class, interface, or trait)
@@ -71,15 +72,16 @@ predicate SearchInContainer :
   }
   { N, ParentName, ParentNamespace, D } where
   ParentQName = hack.QName {name = ParentName, namespace_ = ParentNamespace};
-  ParentContainer =
-    hack.ContainerDeclaration { class_ = { name = ParentQName}} |
-    hack.ContainerDeclaration { interface_ = { name = ParentQName}} |
-    hack.ContainerDeclaration { trait = { name = ParentQName}};
-  D =
-    hack.Declaration { classConst = { name = N, container = ParentContainer }} |
-    hack.Declaration { method = { name = N, container = ParentContainer }} |
-    hack.Declaration { property_ = { name = N, container = ParentContainer }} |
-    hack.Declaration { typeConst = { name = N, container = ParentContainer }};
+  hack.ClassDefinition { declaration = { name = ParentQName }, members = Mems} |
+  hack.InterfaceDefinition { declaration = { name = ParentQName }, members = Mems} |
+  hack.TraitDefinition { declaration = { name = ParentQName }, members = Mems};
+  D = Mems[..];
+  D = (
+    { classConst = { name = N }} |
+    { method = {name = N}} |
+    { property_ = { name = N }} |
+    {typeConst = {name = N}}
+  ) : hack.Declaration;
 
 # Find an Enumerator in a Enum
 #
@@ -116,12 +118,13 @@ predicate SearchInContainerOrEnum :
     decl : hack.Declaration
   }
   { N, ParentName, ParentNamespace, Decl } where
-  Decl =
-    (D where
-      SearchInContainer { name = N, containerName = ParentName, containerNamespace = ParentNamespace, decl = D }) |
-    (E where
-      SearchInEnum {name = N, enumName = ParentName, enumNamespace = ParentNamespace, decl = E})
-
+  Decl = (
+   hack.QName { name = ParentName, namespace_ = ParentNamespace};
+   (D where
+     SearchInContainer { name = N, containerName = ParentName, containerNamespace = ParentNamespace, decl = D }) |
+   (E where
+     SearchInEnum {name = N, enumName = ParentName, enumNamespace = ParentNamespace, decl = E})
+   )
 
 # SearchInContext can be used to search for symbols with a non-empty context.
 #
