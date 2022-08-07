@@ -417,7 +417,6 @@ library core
         Glean.RTS.Builder
         Glean.RTS.Bytecode.Code
         Glean.RTS.Bytecode.Disassemble
-        Glean.RTS.Bytecode.MonadInsn
         Glean.RTS.Constants
         Glean.RTS.Foreign.Bytecode
         Glean.RTS.Foreign.Define
