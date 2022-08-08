@@ -892,8 +892,11 @@ tcQueryDeps q = Set.fromList $ map getRef (overQuery q)
     getRef (PidRef _ ref) = ref
 
     overQuery :: TcQuery -> [PidRef]
-    overQuery (TcQuery ty _ _ stmts) =
-      overType ty <> foldMap overStatement stmts
+    overQuery (TcQuery ty key mval stmts) =
+      overType ty
+        <> overPat key
+        <> maybe [] overPat mval
+        <> foldMap overStatement stmts
 
     overType :: Type -> [PidRef]
     overType ty = bifoldMap pure (\(ExpandedType _ ty) -> overType ty) ty
