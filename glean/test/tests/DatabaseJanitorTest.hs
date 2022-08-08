@@ -176,14 +176,6 @@ listDBs env = filter hereDBs <$> listAllDBs env
   where
     hereDBs Database{..} = database_status /= DatabaseStatus_Available
 
--- T124581378 replace with listDBs once DatabaseStatus_Available is used properly
-listHereDBs :: Env -> IO [Database]
-listHereDBs env = do
-  waitRestoring env
-  filter hereDBs <$> listAllDBs env
-  where
-    hereDBs Database{..} = database_status /= DatabaseStatus_Restoring
-
 listAllDBs :: Env -> IO [Database]
 listAllDBs env = listDatabasesResult_databases <$> listDatabases env def
 
@@ -463,7 +455,7 @@ shardingTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   withDatabases evb cfg cfgAPI $ \env -> do
     runDatabaseJanitor env
     waitDel env
-    dbs <- listHereDBs env
+    dbs <- listDBs env
     assertEqual "initial shard assignment"
       ["0001"]
       (sort $ map (repo_hash . database_repo) dbs)
@@ -472,7 +464,7 @@ shardingTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
     writeIORef myShards ["nil"]
     runDatabaseJanitor env
     waitDel env
-    dbs <- listHereDBs env
+    dbs <- listDBs env
     assertEqual "shard assignment: removed 0003"
       []
       (sort $ map (repo_hash . database_repo) dbs)
@@ -486,7 +478,7 @@ shardingStacksTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   withDatabases evb cfg cfgAPI $ \env -> do
     runDatabaseJanitor env
     waitDel env
-    dbs <- listHereDBs env
+    dbs <- listDBs env
     assertEqual "all dbs in the stack belong to the shard"
       ["0003", "0004", "0005", "0006"]
       (sort $ map (repo_hash . database_repo) dbs)
@@ -499,7 +491,7 @@ shardingFallbackTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> d
   withDatabases evb cfg cfgAPI $ \env -> do
     runDatabaseJanitor env
     waitDel env
-    dbs <- listHereDBs env
+    dbs <- listDBs env
     assertEqual "falls back to no sharding"
       ["0001", "0002", "0003", "0004", "0005", "0006"]
       (sort $ map (repo_hash . database_repo) dbs)
@@ -513,7 +505,7 @@ shardingByRepoNameTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir ->
     runDatabaseJanitor env
     waitDel env
     waitRestoring env
-    dbs <- listHereDBs env
+    dbs <- listDBs env
     assertEqual "only test2 dbs belong to the shard"
       ["0003", "0004", "0005", "0006"]
       (sort $ map (repo_hash . database_repo) dbs)
@@ -533,7 +525,7 @@ elsewhereTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
         {cfgShardManager = \_ k -> k $ SomeShardManager $ shardByRepoHash myShards}
   withDatabases evb cfg cfgAPI $ \env -> do
 
-    dbs <- listHereDBs env
+    dbs <- listDBs env
     assertEqual "before"
       [ "0001", "0002", "0003", "0004", "0005", "0006"]
       (sort (map (repo_hash . database_repo) dbs))
@@ -604,7 +596,7 @@ expireTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
     waitingDeletion <- readTVarIO (envDeleting env)
     assertBool ("timeout: " <> show (HashMap.keys waitingDeletion)) (isJust res)
     assertEqual "envDeleting" [] (HashMap.keys waitingDeletion)
-    localDBs <- listHereDBs env
+    localDBs <- listDBs env
     assertEqual "All deleted" [] (map database_repo localDBs)
 
 main :: IO ()
