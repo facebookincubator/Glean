@@ -82,6 +82,8 @@ mergeSchemaTest = TestCase $
         _ -> False
 
 
+-- This test is superseded by the tests in Schema/Multi.hs, we should retire
+-- it when support for use_schema_id = false is removed.
 schemaUnversioned :: Test
 schemaUnversioned = TestCase $ do
   let
@@ -133,7 +135,7 @@ schemaUnversioned = TestCase $ do
         Right UserQueryResults{..} -> length userQueryResults_facts == 2
         _ -> False
 
-    withTestEnv [setRoot root, setSchemaPath file] $ \env -> do
+    withTestEnv [setRoot root, setSchemaPath file, disableSchemaId] $ \env -> do
       -- Test that an unversioned query "test.P _" resolves to test.P.1,
       -- if we set the schema_version field in the query to 1.
       r <- try $ userQuery env repo1 $
@@ -143,8 +145,11 @@ schemaUnversioned = TestCase $ do
         Right UserQueryResults{..} -> length userQueryResults_facts == 1
         _ -> False
 
-    withTestEnv [setRoot root, setSchemaPath file, setSchemaVersion 1] $
-      \env -> do
+    withTestEnv [
+        setRoot root,
+        setSchemaPath file,
+        setSchemaVersion 1,
+        disableSchemaId ] $ \env -> do
       -- Test that an unversioned query "test.P _" now resolves to
       -- test.P.1, because we're now asking for all.1 explicitly, and
       -- all.1 inherits from test.1
@@ -250,7 +255,13 @@ schemaValidation = TestCase $
         schema all.1 : test.2 {}
       |]
 
-    withTestEnv [setRoot root, setSchemaPath schema1] $ \env -> do
+    withTestEnv [
+        setRoot root,
+        setSchemaPath schema1,
+        disableSchemaId ] $ \env -> do
+          -- disableSchemaId because schema validation isn't performed
+          -- when use_schema_id is on. We can retire this test when we
+          -- retire the schema validation code.
       s <- B.readFile schema1
       validateSchema env (ValidateSchema s)
 
