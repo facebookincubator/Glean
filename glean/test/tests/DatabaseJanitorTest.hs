@@ -450,7 +450,7 @@ shardingTest :: Test
 shardingTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   myShards <- newIORef ["0001"] -- initial shard assignment
   let cfg = (dbConfig dbdir (serverConfig backupdir))
-        {cfgShardManager = \_ k -> k $ SomeShardManager $
+        {cfgShardManager = \_ _ k -> k $ SomeShardManager $
           shardByRepoHash (Just <$> readIORef myShards)}
   withDatabases evb cfg cfgAPI $ \env -> do
     runDatabaseJanitor env
@@ -473,7 +473,7 @@ shardingStacksTest :: Test
 shardingStacksTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   myShards <- newIORef ["0006"] -- initial shard assignment
   let cfg = (dbConfig dbdir (serverConfig backupdir))
-        {cfgShardManager = \_ k -> k $ SomeShardManager $
+        {cfgShardManager = \_ _ k -> k $ SomeShardManager $
           shardByRepoHash (Just <$> readIORef myShards)}
   withDatabases evb cfg cfgAPI $ \env -> do
     runDatabaseJanitor env
@@ -486,7 +486,7 @@ shardingStacksTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
 shardingFallbackTest :: Test
 shardingFallbackTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   let cfg = (dbConfig dbdir (serverConfig backupdir))
-        {cfgShardManager = \_ k ->
+        {cfgShardManager = \_ _ k ->
           k $ SomeShardManager $ shardByRepoHash (pure Nothing)}
   withDatabases evb cfg cfgAPI $ \env -> do
     runDatabaseJanitor env
@@ -499,7 +499,7 @@ shardingFallbackTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> d
 shardingByRepoNameTest :: Test
 shardingByRepoNameTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   let cfg = (dbConfig dbdir (serverConfig backupdir))
-        {cfgShardManager = \_ k -> k $ SomeShardManager $
+        {cfgShardManager = \_ _ k -> k $ SomeShardManager $
           shardByRepo (pure $ Just ["test2"])}
   withDatabases evb cfg cfgAPI $ \env -> do
     runDatabaseJanitor env
@@ -522,7 +522,7 @@ elsewhereTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
             , retention_retain_at_least = Just 10 }
           }
         })
-        {cfgShardManager = \_ k -> k $ SomeShardManager $ shardByRepoHash myShards}
+        {cfgShardManager = \_ _ k -> k $ SomeShardManager $ shardByRepoHash myShards}
   withDatabases evb cfg cfgAPI $ \env -> do
 
     dbs <- listDBs env
@@ -548,7 +548,7 @@ shardUnexpireTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
             {retention_expire_delay = Just 30}
           }
         })
-        {cfgShardManager = \_ k -> k $ SomeShardManager $
+        {cfgShardManager = \_ _ k -> k $ SomeShardManager $
           shardByRepoHash (Just <$> readIORef myShards)}
   withDatabases evb cfg cfgAPI $ \env -> do
     runDatabaseJanitor env
@@ -575,7 +575,7 @@ expireTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
           }
         , config_janitor_period = Nothing
         })
-        {cfgShardManager = \_ k -> k $ SomeShardManager emptyShardAssignment}
+        {cfgShardManager = \_ _ k -> k $ SomeShardManager emptyShardAssignment}
   withDatabases evb cfg cfgAPI $ \env -> do
     runDatabaseJanitor env
     dbs <- listDBs env

@@ -75,38 +75,39 @@ withDatabases evb cfg cfgapi act =
         logInfo $ "Storing temporary DBs in " <> tmp
         io tmp
       withRoot (Just dir) io = io dir
-    withRoot (cfgRoot cfg) $ \dbRoot ->
-      cfgShardManager cfg server_config $ \shardManager ->
-      bracket
-        (initEnv
-          evb
-          dbRoot
-          shardManager
-          cfg
-          schema_source
-          recipe_config
-          server_config)
-        closeEnv
-        $ \env -> do
-            resumeWork env
-            spawnThreads env
-            act env
+    withRoot (cfgRoot cfg) $ \dbRoot -> do
+      envCatalog <- do
+        Some store <- cfgCatalogStore cfg dbRoot
+        Catalog.open store
+      cfgShardManager cfg envCatalog server_config $ \shardManager ->
+        bracket
+          (initEnv
+            evb
+            dbRoot
+            envCatalog
+            shardManager
+            cfg
+            schema_source
+            recipe_config
+            server_config)
+          closeEnv
+          $ \env -> do
+              resumeWork env
+              spawnThreads env
+              act env
 
 initEnv
   :: EventBaseDataplane
   -> FilePath
+  -> Catalog.Catalog
   -> SomeShardManager
   -> Config
   -> Observed SchemaIndex
   -> Observed Recipes.Config
   -> Observed ServerConfig.Config
   -> IO Env
-initEnv evb dbRoot shardManager cfg
+initEnv evb dbRoot envCatalog shardManager cfg
   envSchemaSource envRecipeConfig envServerConfig = do
-    envCatalog <- do
-      Some store <- cfgCatalogStore cfg dbRoot
-      Catalog.open store
-
     server_cfg@ServerConfig.Config{..} <- Observed.get envServerConfig
 
     Some envStorage <- cfgStorage cfg dbRoot server_cfg

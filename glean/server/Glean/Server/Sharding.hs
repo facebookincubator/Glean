@@ -27,7 +27,7 @@ import Data.Maybe
 import qualified Data.Set as Set
 import Glean.Backend.Remote (DbShard, dbShard)
 import qualified Glean.Database.Catalog as Catalog
-import qualified Glean.Database.Catalog.Filter as Catalog
+import Glean.Database.Catalog.Filter as Catalog
 import Glean.Database.Types ( Env(..) )
 #if FACEBOOK
 import Glean.Impl.ShardManager
@@ -52,10 +52,11 @@ type PortNumber = Int
 shardManagerConfig ::
   -- | Application port
   Maybe PortNumber ->
+  Catalog.Catalog ->
   Observed ServerConfig.Config ->
   (SomeShardManager -> IO b) ->
   IO b
-shardManagerConfig _mbPort smCfgServerConfig callback = do
+shardManagerConfig _mbPort catalog smCfgServerConfig callback = do
   config <- Observed.get smCfgServerConfig
   case ServerConfig.config_sharding config of
     ServerConfig.ShardingPolicy_no_shards {} ->
@@ -84,6 +85,26 @@ shardManagerConfig _mbPort smCfgServerConfig callback = do
               ServerConfig.shardManagerPolicy_default_domain_id policy
             }
       withShardManager smCliArgs $ \sm -> callback $ SomeShardManager sm
+    ServerConfig.ShardingPolicy_shard_manager_most_recent policy -> do
+      let ServerConfig.ShardManagerMostRecentPolicy{
+            ServerConfig.shardManagerMostRecentPolicy_shard_manager_policy =
+              ServerConfig.ShardManagerPolicy{..},
+            .. } = policy
+          smCliArgs = ShardManagerClientArgs
+            { serviceName = shardManagerPolicy_service_name
+            , applicationPortNumber = fromMaybe 0 _mbPort
+            , numberOfShards = fromIntegral shardManagerPolicy_nshards
+            , defaultDomainName = shardManagerPolicy_default_domain_id
+            }
+          getMostRecent = fmap (Set.fromList . map itemRepo) $ atomically $
+            Catalog.list catalog [Local] $ groupF repoNameV $ do
+              sortF createdV Descending
+              limitF 1
+
+      withShardManagerForMostRecent
+        smCliArgs
+        shardManagerMostRecentPolicy_most_recent_domain_id
+        getMostRecent $ \sm -> callback $ SomeShardManager sm
 #endif
     other ->
       error $ "Unsupported sharding policy: " <> show other

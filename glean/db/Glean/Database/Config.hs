@@ -47,6 +47,7 @@ import Thrift.Util
 import Util.IO (listDirectoryRecursive)
 
 import Glean.Angle.Types
+import Glean.Database.Catalog (Catalog)
 import qualified Glean.Database.Catalog.Local.Files as Catalog.Local.Files
 import qualified Glean.Database.Catalog.Store as Catalog
 import Glean.Database.Schema.ComputeIds
@@ -100,7 +101,10 @@ data Config = Config
       -- to databases. This is for testing support only.
   , cfgShardManager
     :: forall a
-     . Observed ServerConfig.Config -> (SomeShardManager -> IO a) -> IO a
+     . Catalog
+     -> Observed ServerConfig.Config
+     -> (SomeShardManager -> IO a)
+     -> IO a
   , cfgServerLogger :: Some GleanServerLogger
     -- ^ Logger for server requests and other events
   , cfgDatabaseLogger :: Some GleanDatabaseLogger
@@ -129,7 +133,7 @@ instance Default Config where
     , cfgMockWrites = False
     , cfgTailerOpts = def
     , cfgListener = mempty
-    , cfgShardManager = \_ k -> k $ SomeShardManager noSharding
+    , cfgShardManager = \_ _ k -> k $ SomeShardManager noSharding
     , cfgServerLogger = Some NullGleanServerLogger
     , cfgDatabaseLogger = Some NullGleanDatabaseLogger
     }
