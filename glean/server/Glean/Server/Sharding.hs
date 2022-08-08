@@ -81,7 +81,7 @@ shardManagerConfig _mbPort smCfgServerConfig callback = do
             , numberOfShards = fromIntegral $
                 ServerConfig.shardManagerPolicy_nshards policy
             }
-      withShardManagerClient smCliArgs $ \sm -> callback $ SomeShardManager sm
+      withShardManager smCliArgs $ \sm -> callback $ SomeShardManager sm
 #endif
     other ->
       error $ "Unsupported sharding policy: " <> show other

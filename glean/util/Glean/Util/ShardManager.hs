@@ -28,10 +28,11 @@ data ShardManager shard = ShardManager
     -- | Returns the list of shards for the current server.
     --   Nothing means fall back to no sharding.
     getAssignedShards :: IO (Maybe [shard])
-    -- | Mapping from DB stacks to shard identifiers.
+    -- | Computes a mapping from DB stacks to shard identifiers.
     --   Takes as input the base of the stack.
     --   For non stacked dbs, this is just the db itself.
-  , dbToShard :: BaseOfStack -> shard   -- See note [DB to Shard]
+    --   See note [DB to Shard]
+  , computeShardMapping :: IO (BaseOfStack -> Glean.Repo -> shard)
   , countersForShardSizes :: Map shard Int64 -> [(Text, Int)]
   }
 
@@ -42,7 +43,7 @@ data NoSharding = NoSharding
 noSharding :: ShardManager NoSharding
 noSharding = ShardManager
   (pure (Just [NoSharding]))
-  (const NoSharding)
+  (pure $ const $ const NoSharding)
   (const mempty)
 
 -- | An existential wrapper around a 'ShardManager'
@@ -71,6 +72,6 @@ shardByRepo :: IO (Maybe [Text]) -> ShardManager Text
 shardByRepo getAssignedShards =
   ShardManager {
     getAssignedShards = getAssignedShards,
-    dbToShard = \(BaseOfStack db) -> Glean.repo_name db,
+    computeShardMapping = pure $ \(BaseOfStack db) _ -> Glean.repo_name db,
     countersForShardSizes = const []
   }

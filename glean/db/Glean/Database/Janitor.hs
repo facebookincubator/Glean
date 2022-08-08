@@ -52,7 +52,7 @@ import Glean.Types hiding (Database)
 import qualified Glean.Types as Thrift
 import Glean.Util.Observed as Observed
 import Glean.Util.ShardManager
-    ( ShardManager(getAssignedShards, dbToShard),
+    ( ShardManager(getAssignedShards, computeShardMapping),
       SomeShardManager(SomeShardManager), BaseOfStack (BaseOfStack),
       countersForShardSizes, noSharding )
 import Glean.Util.Time
@@ -112,6 +112,8 @@ runWithShards env myShards sm = do
 
   t <- getCurrentTime
 
+  dbToShard <- computeShardMapping sm
+
   -- on completion, record the time we last ran the janitor. This is
   -- used by the server to know when to advertise the server as alive.
   let done = atomically $ writeTVar (envDatabaseJanitor env) (Just t)
@@ -160,7 +162,8 @@ runWithShards env myShards sm = do
     -- itemToShard :: Item -> Maybe shard
     itemToShard item = do
       stack <- repoStack item
-      return $ dbToShard sm (BaseOfStack $ last $ itemRepo item : stack)
+      return $
+        dbToShard (BaseOfStack $ last $ itemRepo item : stack) (itemRepo item)
 
     repoStack :: Item -> Maybe [Repo]
     repoStack Item{..} = case metaDependencies itemMeta of

@@ -443,7 +443,7 @@ closeIdleDBsTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
 shardByRepoHash :: IO (Maybe [Text.Text]) -> ShardManager Text.Text
 shardByRepoHash refShardAssignment = ShardManager
   refShardAssignment
-  (\(BaseOfStack Repo{..}) -> repo_hash)
+  (pure (\(BaseOfStack Repo{..}) _ -> repo_hash))
   (pure [])
 
 shardingTest :: Test
