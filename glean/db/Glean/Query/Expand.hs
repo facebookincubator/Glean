@@ -11,6 +11,7 @@ module Glean.Query.Expand
   ) where
 
 import Control.Monad.State
+import Data.Bifunctor (first)
 
 import Glean.Query.Codegen
 import Glean.Query.Flatten.Types
@@ -30,8 +31,8 @@ expandDerivedPredicateCall PredicateDetails{..} key val QueryWithInfo{..} = do
     instantiateWithFreshVariables qiQuery qiNumVars
 
   let
-    key' = fmap (mapExt (\_ -> error "MatchExt")) key
-    val' = fmap (mapExt (\_ -> error "MatchExt")) val
+    key' = fmap (first (\_ -> error "MatchExt")) key
+    val' = fmap (first (\_ -> error "MatchExt")) val
 
   -- we have
   --    pred P -> Q
