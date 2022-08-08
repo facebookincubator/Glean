@@ -1,0 +1,25 @@
+[
+    "@generated",
+    [
+        {
+            "filepath": "buck_project/TEST_TARGETS",
+            "range": {
+                "columnBegin": 9,
+                "columnEnd": 30,
+                "lineBegin": 24,
+                "lineEnd": 24
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "buck_project/b/TEST_TARGETS",
+            "range": {
+                "columnBegin": 9,
+                "columnEnd": 15,
+                "lineBegin": 7,
+                "lineEnd": 7
+            },
+            "repository": "test"
+        }
+    ]
+]
