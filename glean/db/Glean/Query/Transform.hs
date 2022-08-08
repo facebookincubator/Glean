@@ -55,8 +55,10 @@ toTransformations :: DbSchema -> Map Int64 Int64 -> Transformations
 toTransformations schema mappings = Transformations $ IntMap.fromList
   [ (fromIntegral available, transformation)
   | (available, requested) <- Map.toList mappings
-  , Just transformation <- [lookupTransformation (Pid requested) schema]
+  , Just transformation <- [lookupTransformation (Pid requested) tmap]
   ]
+  where tmap = predicatesTransformations schema
+
 
 fromTransformations :: Transformations -> Map Int64 Int64
 fromTransformations (Transformations e) = Map.fromList
@@ -70,18 +72,18 @@ fromTransformations (Transformations e) = Map.fromList
 -- ========================
 
 -- Transform types requested in the query into types available in the database.
-transformQuery :: DbSchema -> TcQuery -> TcQuery
-transformQuery schema q@(TcQuery ty _ _ _) = transformTcQuery ty Nothing q
+transformQuery :: IntMap PredicateTransformation -> TcQuery -> TcQuery
+transformQuery tmap q@(TcQuery ty _ _ _) = transformTcQuery ty Nothing q
   where
     transformTcQuery from mto (TcQuery _ key mval stmts) =
-      let to = fromMaybe (transformType schema from) mto in
+      let to = fromMaybe (transformType tmap from) mto in
       TcQuery to
         (transform from to key)
         (transformInnerPat <$> mval)
         (fmap transformStmt stmts)
 
     transformStmt (TcStatement from lhs rhs) =
-      let to = transformType schema from in
+      let to = transformType tmap from in
       TcStatement to
         (transform from to lhs) -- could this use transformInnerPat instead?
         (transform from to rhs)
@@ -92,23 +94,23 @@ transformQuery schema q@(TcQuery ty _ _ _) = transformTcQuery ty Nothing q
       where
         overTyped :: Typed TcTerm -> Typed TcTerm
         overTyped (Typed from term) =
-          let to = transformType schema from in
+          let to = transformType tmap from in
           Typed to (transformTcTerm from to term)
 
         overVar :: Var -> Var
         overVar (Var from vid name) =
-          let to = transformType schema from in
+          let to = transformType tmap from in
           Var to vid name
 
     transformTcTerm :: Type -> Type -> TcTerm -> TcTerm
     transformTcTerm from to0 term =
-      let to = transformType schema to0 in
+      let to = transformType tmap to0 in
       case term of
         TcOr left right -> TcOr
           (transform from to left)
           (transform from to right)
         TcIf (Typed fromc cond) then_ else_ ->
-          let toc = transformType schema fromc in
+          let toc = transformType tmap fromc in
           TcIf
             (Typed toc (transform fromc toc cond))
             (transform from to then_)
@@ -122,7 +124,7 @@ transformQuery schema q@(TcQuery ty _ _ _) = transformTcQuery ty Nothing q
 
     transformTcFactGen :: PidRef -> TcPat -> TcPat -> TcTerm
     transformTcFactGen pref key val =
-      case lookupTransformation (pid pref) schema of
+      case lookupTransformation (pid pref) tmap of
         Just evolution -> do
           TcFactGen (pidRef $ tAvailable evolution)
             (transformKey evolution key)
@@ -145,11 +147,11 @@ transformQuery schema q@(TcQuery ty _ _ _) = transformTcQuery ty Nothing q
       pat
 
     overTyped from to0 (Typed _ pat) =
-      let to = transformType schema to0 in
+      let to = transformType tmap to0 in
       Typed to (transformTcTerm from to pat)
 
     overVar _ to0 (Var _ vid name) =
-      let to = transformType schema to0 in
+      let to = transformType tmap to0 in
       Var to vid name
 
     transform :: Type -> Type -> TcPat -> TcPat
@@ -266,6 +268,8 @@ transformationsFor schema ty =
   else Left $ "multiple versions of evolved predicates: "
       <> Text.unlines (map showRepeated repeated)
   where
+    tmap = predicatesTransformations schema
+
     detailsFor pid = case lookupPid pid schema of
       Nothing -> error $ "unknown predicate " <> show pid
       Just details -> details
@@ -285,7 +289,7 @@ transformationsFor schema ty =
       Map.fromListWith (<>)
         [ (to, Set.singleton from)
         | from <- withDeps
-        , let to = case lookupTransformation from schema of
+        , let to = case lookupTransformation from tmap of
                 Nothing -> from
                 Just e -> predicatePid (tAvailable e)
         ]
@@ -296,7 +300,7 @@ transformationsFor schema ty =
     transformations :: Transformations
     transformations = Transformations $ IntMap.fromList
       [ (to, evolution)
-      | evolution <- mapMaybe (`lookupTransformation` schema) withDeps
+      | evolution <- mapMaybe (`lookupTransformation` tmap) withDeps
       , let to = intPid $ predicatePid $ tAvailable evolution
       ]
 
@@ -330,22 +334,25 @@ transitiveDeps = transitive . predicateDeps
           | otherwise = go xs $ go (next x) $ Set.insert x visited
 
 -- | Transform predicates inside the type but keep its structure.
-transformType :: DbSchema -> Type -> Type
-transformType schema ty = transform ty
+transformType :: IntMap PredicateTransformation -> Type -> Type
+transformType tmap ty = transform ty
   where
     transform ty = bimap overPidRef overExpandedType ty
 
     overPidRef pref =
-      case lookupTransformation (pid pref) schema of
+      case lookupTransformation (pid pref) tmap of
         Nothing -> pref
         Just PredicateTransformation{..} -> pidRef tAvailable
 
     overExpandedType (ExpandedType tref ty) =
       ExpandedType tref (transform ty)
 
-lookupTransformation :: Pid -> DbSchema -> Maybe PredicateTransformation
-lookupTransformation pid DbSchema{..} =
-  IntMap.lookup (fromIntegral $ fromPid pid) predicatesTransformations
+lookupTransformation
+  :: Pid
+  -> IntMap PredicateTransformation
+  -> Maybe PredicateTransformation
+lookupTransformation pid tmap =
+  IntMap.lookup (fromIntegral $ fromPid pid) tmap
 
 intPid :: Pid -> Int
 intPid = fromIntegral . fromPid

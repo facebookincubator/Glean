@@ -42,7 +42,9 @@ flatten
   -> TypecheckedQuery
   -> Except Text (FlattenedQuery, Transformations)
 flatten dbSchema _ver deriveStored typechecked = do
-  let returnTy = derefType $ transformType dbSchema $ qiReturnType typechecked
+  let returnTy = derefType
+        $ transformType (predicatesTransformations dbSchema)
+        $ qiReturnType typechecked
       deriveStoredPred =
         case returnTy of
           Angle.PredicateTy (PidRef _ pref) | deriveStored -> Just pref
@@ -66,7 +68,7 @@ flatten dbSchema _ver deriveStored typechecked = do
 transform :: TcQuery -> F TcQuery
 transform query = do
   dbSchema <- gets flDbSchema
-  return $ transformQuery dbSchema query
+  return $ transformQuery (predicatesTransformations dbSchema) query
 
 transformTypeCheckedQuery :: TypecheckedQuery -> F TypecheckedQuery
 transformTypeCheckedQuery (QueryWithInfo q vars _) = do
