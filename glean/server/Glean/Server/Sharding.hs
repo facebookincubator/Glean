@@ -80,6 +80,8 @@ shardManagerConfig _mbPort smCfgServerConfig callback = do
             , applicationPortNumber = fromMaybe 0 _mbPort
             , numberOfShards = fromIntegral $
                 ServerConfig.shardManagerPolicy_nshards policy
+            , defaultDomainName =
+              ServerConfig.shardManagerPolicy_default_domain_id policy
             }
       withShardManager smCliArgs $ \sm -> callback $ SomeShardManager sm
 #endif
