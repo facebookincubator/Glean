@@ -378,7 +378,7 @@ exists cat locs repo = do
   return $ any exists_in locs
 
 -- | Read the metadata of a database
-readMeta :: Catalog -> Repo -> STM Meta
+readMeta :: HasCallStack => Catalog -> Repo -> STM Meta
 readMeta cat repo = do
   entry <- getEntry cat repo
   readTVar (entryMeta entry)
