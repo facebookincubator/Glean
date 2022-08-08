@@ -470,27 +470,25 @@ captureKey dbSchema (FlatQuery pat Nothing stmts) ty
       -> Var
       -> Maybe Var
       -> FlatStatement
-      -> F (NonEmpty FlatStatement, Maybe (Pat, Pat))
-    captureStmt idVar keyVar maybeValVar
-      (FlatStatement ty
-        lhs@(Ref (MatchBind (Var _ v' _)))
-        (FactGenerator pid kpat vpat range))
-      | idVar == v' = do
+      -> (NonEmpty FlatStatement, Maybe (Pat, Pat))
+    captureStmt fidVar keyVar maybeValVar
+      (FlatStatement ty lhs (FactGenerator pid kpat vpat range))
+      | Ref (MatchBind (Var _ v' _)) <- lhs
+      , fidVar == v' =
         let kpat' = Ref (MatchAnd (Ref (MatchBind keyVar)) kpat)
             vpat' = case maybeValVar of
               Nothing -> vpat
               Just valVar -> Ref (MatchAnd (Ref (MatchBind valVar)) vpat)
-        return
-          ( singletonGroup
-              (FlatStatement ty lhs (FactGenerator pid kpat' vpat' range))
-          , Just
-            ( Ref (MatchVar keyVar)
-            , maybe (Tuple []) (Ref . MatchVar) maybeValVar ))
-    captureStmt idVar keyVar@(Var keyTy _ _) maybeValVar
-      (FlatStatement ty
-        lhs@(Ref (MatchBind (Var _ v' _)))
-        (DerivedFactGenerator pid kexpr vexpr))
-      | idVar == v' = do
+            stmt' = FlatStatement ty lhs (FactGenerator pid kpat' vpat' range)
+            keyExpr = Ref (MatchVar keyVar)
+            valExpr = maybe (Tuple []) (Ref . MatchVar) maybeValVar
+        in
+        (singletonGroup stmt' , Just (keyExpr, valExpr))
+
+    captureStmt fidVar keyVar@(Var keyTy _ _) maybeValVar
+      (FlatStatement ty lhs (DerivedFactGenerator pid kexpr vexpr))
+      | Ref (MatchBind (Var _ v' _)) <- lhs
+      , fidVar == v' =
         let
           -- optimise away a redundant copy when the key/value is
           -- already a variable.
@@ -514,13 +512,16 @@ captureKey dbSchema (FlatQuery pat Nothing stmts) ty
                         (Ref (MatchBind valVar))
                         (TermGenerator vexpr)
                   )
-        return
-          ( maybe id NonEmpty.cons bindKey $
-            maybe id NonEmpty.cons bindVal $
-              singletonGroup $
-                FlatStatement ty lhs (DerivedFactGenerator pid keyExpr valExpr)
-          , Just (keyExpr, valExpr))
-    captureStmt _ _ _ other = return (singletonGroup other, Nothing)
+        in
+        ( NonEmpty.fromList $ catMaybes
+            [ bindKey
+            , bindVal
+            , Just $ FlatStatement ty lhs
+                (DerivedFactGenerator pid keyExpr valExpr)
+            ]
+        , Just (keyExpr, valExpr))
+    captureStmt _ _ _ other =
+        (singletonGroup other, Nothing)
 
   PredicateDetails{..} <- case lookupPid pid dbSchema of
     Nothing -> throwError "internal: captureKey"
@@ -529,17 +530,21 @@ captureKey dbSchema (FlatQuery pat Nothing stmts) ty
   maybeValVar <- if predicateValueType `eqType` unit
     then return Nothing
     else Just <$> fresh predicateValueType
-  (stmts', captured) <-
-    case pat of
-      Ref (MatchVar (Var _ v _)) -> do
-        (stmtss, captured) <- unzip . map NonEmpty.unzip <$>
-          mapM (mapM (captureStmt v keyVar maybeValVar)) stmts
-        -- stmtss :: [NonEmpty (NonEmpty FlatStatement)]
-        let conc ((x :| xs) :| ys) =
-              x :| (xs ++ concatMap NonEmpty.toList ys)
-        return (map conc stmtss, captured)
-      _other -> return (stmts, [])
   let
+    (stmts', captured) =
+      case pat of
+        Ref (MatchVar (Var _ v _)) ->
+          let k :: [NonEmpty (NonEmpty FlatStatement, Maybe (Pat, Pat))]
+              k = fmap (fmap (captureStmt v keyVar maybeValVar)) stmts
+              (stmtss, captured) = unzip $ map NonEmpty.unzip k
+
+              conc :: NonEmpty (NonEmpty FlatStatement)
+                   -> NonEmpty FlatStatement
+              conc ((x :| xs) :| ys) = x :| (xs ++ concatMap NonEmpty.toList ys)
+          in
+          (map conc stmtss, captured)
+        _other -> (stmts, [])
+
     returnTy = tupleSchema [ty, predicateKeyType, predicateValueType]
 
   case catMaybes (concatMap NonEmpty.toList captured) of
