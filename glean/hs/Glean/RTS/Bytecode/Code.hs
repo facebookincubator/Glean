@@ -424,20 +424,12 @@ layout CFG{..} = runST $ do
           labels <- VP.unsafeFreeze layoutLabels
           return (reverse $ concat $ insns : layoutInsns, labels)
 
--- | Code labels
-newtype Label = Label { fromLabel :: Int }
-  deriving(Eq,Ord,Enum,Num,Show)
-
 -- | Frame segment which a register belongs to
 data Segment = Input | Constant | Local
   deriving(Eq,Ord,Enum,Bounded,Show)
 
--- | Registers
---
 -- A register has a 'Segment' and an index within the segment, packed into
 -- a word.
-newtype Register (t :: Ty) = Register Word64
-  deriving (Eq, Ord, Enum, Show)
 
 -- | Create a register with the given 'Segment' and index
 register :: Segment -> Word64 -> Register a

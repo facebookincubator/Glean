@@ -11,7 +11,6 @@ where
 
 import qualified Data.Foldable as F
 import Data.Functor
-import Data.Int (Int64)
 import qualified Data.IntMap as IntMap
 import qualified Data.IntSet as IntSet
 import Data.List (foldl', mapAccumL)
@@ -21,6 +20,7 @@ import qualified Data.Text as Text
 import qualified Data.Vector.Storable as V
 
 import Glean.Bytecode.Decode as D
+import Glean.Bytecode.Types
 import Glean.RTS.Bytecode.Gen.Instruction
 import Glean.RTS.Foreign.Bytecode
 
@@ -44,7 +44,7 @@ disassemble name sub =
   where
     SubroutineCode{..} = inspect sub
 
-    instructions :: [Insn D.Reg D.Offset]
+    instructions :: [Insn Register Label]
     (instructions, rest) = D.decodeAll $ V.toList subInsns
 
     labels = snd
@@ -59,17 +59,16 @@ disassemble name sub =
             in
             ( n
             , F.foldr
-                (\o -> IntSet.insert $ fromIntegral $ n + D.fromOffset o)
+                (\o -> IntSet.insert $ fromIntegral n + fromLabel o)
                 ts
                 insn ))
           (0, IntSet.empty)
           instructions
 
-    show_label o (D.Offset k) =
-      fromMaybe (show (fromIntegral k :: Int64))
-      $ IntMap.lookup (fromIntegral (o+k)) labels
+    show_label o (Label k) =
+      fromMaybe (show k) $ IntMap.lookup (fromIntegral o + k) labels
 
-    show_reg (D.Reg n) = '%' : show n
+    show_reg (Register n) = '%' : show n
 
     code :: [Text]
     code = concat

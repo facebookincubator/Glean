@@ -7,9 +7,7 @@
 -}
 
 module Glean.Bytecode.Decode
-  ( Offset(..)
-  , Reg(..)
-  , Decode
+  ( Decode
   , Decodable(..)
   , runDecode
   , decodeAll
@@ -21,10 +19,7 @@ import Control.Monad.State.Strict (State, runState, state)
 import Control.Monad.Trans.Maybe (MaybeT(..))
 import Data.Word (Word64)
 
-import Glean.Bytecode.Types (Ty)
-
-newtype Offset = Offset { fromOffset :: Word64 }
-newtype Reg (t :: Ty) = Reg { fromReg :: Word64 }
+import Glean.Bytecode.Types
 
 -- | A decoder which can be applied to a stream of words via 'runDecode'.
 type Decode = MaybeT (State [Word64])
@@ -44,16 +39,16 @@ instance Decodable Word64 where
     y : ys -> (Just y, ys)
     _ -> (Nothing, xs)
 
-instance Decodable Offset where
-  decode = Offset <$> decode
+instance Decodable Label where
+  decode = Label . fromIntegral <$> (decode :: Decode Word64)
 
-instance Decodable [Offset] where
+instance Decodable [Label] where
   decode = do
     n <- decode
     replicateM (fromIntegral (n :: Word64)) decode
 
-instance Decodable (Reg t) where
-  decode = Reg <$> decode
+instance Decodable (Register t) where
+  decode = Register <$> decode
 
 -- | Decode as many elements as possible and return the decoded elements and
 -- the rest of the words, starting with the first that can't be decoded.

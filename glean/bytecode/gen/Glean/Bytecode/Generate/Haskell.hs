@@ -193,7 +193,7 @@ genIssue = intercalate [""]
 
 genDecodable :: [Text]
 genDecodable =
-  [ "instance D.Decodable (Insn D.Reg D.Offset) where"
+  [ "instance D.Decodable (Insn Register Label) where"
   , "  decode = do"
   , "    op <- D.decode"
   , "    case (op :: Word64) of" ]

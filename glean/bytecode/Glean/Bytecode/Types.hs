@@ -8,7 +8,11 @@
 
 module Glean.Bytecode.Types
   ( Ty(..)
+  , Register(..)
+  , Label(..)
   ) where
+
+import Data.Word (Word64)
 
 -- | Instruction argument types
 data Ty
@@ -21,3 +25,11 @@ data Ty
   | BinaryOutputPtr -- ^ pointer to binary::Output (temporary, will be removed)
   | Fun [Ty] -- ^ pointer to std::function (temporary, will be removed)
   deriving(Eq, Show)
+
+-- | Typed registers
+newtype Register (ty :: Ty) = Register { fromRegister :: Word64 }
+  deriving(Eq,Ord,Enum,Show)
+
+-- | Labels
+newtype Label = Label { fromLabel :: Int }
+  deriving(Eq,Ord,Enum,Show)
