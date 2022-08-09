@@ -56,6 +56,7 @@ import Glean.Haxl.Repos (RepoHaxl)
 
 import Glean.Glass.Base (GleanPath(..))
 import Glean.Glass.Types (SymbolResult(..), SymbolDescription(..))
+import Glean.Glass.Utils (splitOnAny)
 
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.CodemarkupSearch.Types as CodeSearch
@@ -266,20 +267,20 @@ data ScopeQuery
 -- | If it looks like we can parse this as a qualified name, then do that
 -- We want to avoid any "" or wild cards appearing until perf is ok.
 toScopeTokens :: Text -> Maybe ScopeQuery
-toScopeTokens name = go $ map (`Text.splitOn` name) delimiters
+toScopeTokens str = go (splitOnAny delimiters str)
   where
-    -- we probably should have a class of per-language parsers for qnames
-    delimiters = ["::", "\\"]
+    -- these are applied in order
+    delimiters = ["::", "\\", "."]
 
     -- first match with 2 or more scope fragments
-    go :: [[Text]] -> Maybe ScopeQuery
+    go :: [Text] -> Maybe ScopeQuery
     go [] = Nothing
-    go (toks@(_:_:_):_) = case (dropWhile Text.null (init toks), last toks) of
+    go [_] = Nothing -- i.e. this isn't a scope query
+    go toks@(_:_:_) = case (dropWhile Text.null (init toks), last toks) of
       ([],"") -> Nothing -- i.e. "::"
       ([],name) -> Just (NameOnly name) -- i.e. ::b
       (s:ss, "") -> Just (ScopeOnly (s :| ss)) -- i.e. a:: or ::a::
       (s:ss, name) -> Just (ScopeAndName (s :| ss) name) -- a::b::c or ::a::b
-    go (_:rest) = go rest
 
 --
 -- Find entities by strings, with an optional kind expression filter

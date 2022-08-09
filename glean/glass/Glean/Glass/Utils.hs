@@ -26,12 +26,14 @@ module Glean.Glass.Utils
 
   -- List utils
   , takeFairN
+  , splitOnAny
 
   -- Types
   , QueryType
   ) where
 
-import Data.Text as Text ( Text, pack, unpack )
+import Data.Text ( Text )
+import qualified Data.Text as Text
 import System.FilePath ( splitDirectories, joinPath )
 import qualified Data.List as List
 
@@ -113,3 +115,10 @@ takeFairN :: Int -> [[a]] -> [a]
 takeFairN _ [] = []
 takeFairN n [vs] = take n vs
 takeFairN n xs = take n (concat (List.transpose xs))
+
+--
+-- Splitv string on substring, with left to right precedence of patterns
+--
+splitOnAny :: [Text] -> Text -> [Text]
+splitOnAny pats src =
+  List.foldl' (\acc p -> concatMap (Text.splitOn p) acc) [src] pats
