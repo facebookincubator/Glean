@@ -68,7 +68,7 @@ flatten dbSchema _ver deriveStored typechecked = do
 transform :: TcQuery -> F TcQuery
 transform query = do
   dbSchema <- gets flDbSchema
-  return $ transformQuery (predicatesTransformations dbSchema) query
+  return $ transformQuery (predicatesById dbSchema) (predicatesTransformations dbSchema) query
 
 flattenQuery :: TcQuery -> F FlatQuery
 flattenQuery query = do

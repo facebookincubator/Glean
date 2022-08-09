@@ -33,15 +33,14 @@ mkPredicateTransformation
 mkPredicateTransformation detailsFor fromPid toPid
   | fromPid == toPid = Nothing
   | otherwise = Just PredicateTransformation
-    { tRequested = from
-    , tAvailable = to
+    { tRequested = pidRef from
+    , tAvailable = pidRef to
     , tTransformFactBack = fromMaybe id $
         mkFactTransformation to from
     }
   where
       to = detailsFor toPid
       from = detailsFor fromPid
-
 
 mkFactTransformation
   :: PredicateDetails

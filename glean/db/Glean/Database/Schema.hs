@@ -415,7 +415,7 @@ transformDerivations (DbReadOnly stats) transformations pmap =
       -> HashMap PredicateId PredicateDetails
     transform = fmap (overDerivationQuery transformQ)
 
-    transformQ q = transformTypecheckedQuery transformations q
+    transformQ q = transformTypecheckedQuery pmap transformations q
 
     overDerivationQuery f details = details { predicateDeriving = d }
       where

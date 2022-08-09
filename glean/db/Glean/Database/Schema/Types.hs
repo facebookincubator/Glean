@@ -25,6 +25,7 @@ module Glean.Database.Schema.Types
   , mkRtsType
   , tempPredicateId
   , tempPid
+  , pidRef
   ) where
 
 import Data.HashMap.Strict (HashMap)
@@ -77,9 +78,9 @@ data DbSchema = DbSchema
 -- one that we have available in the database, and then to transform the facts
 -- found back into the requested predicate.
 data PredicateTransformation = PredicateTransformation
-  { tRequested :: PredicateDetails
+  { tRequested :: PidRef
     -- ^ the predicate that was queried for
-  , tAvailable :: PredicateDetails
+  , tAvailable :: PidRef
     -- ^ the predicate we have in the database
   , tTransformFactBack :: Thrift.Fact -> Thrift.Fact
     -- ^ available -> requested
@@ -175,6 +176,9 @@ lookupTypeId ref  = HashMap.lookup ref . typesById
 
 tempPid :: DbSchema -> Pid
 tempPid = succ . schemaMaxPid
+
+pidRef :: PredicateDetails -> PidRef
+pidRef details = PidRef (predicatePid details) (predicateId details)
 
 -- | Convert Schema types to RTS types using a DbSchema
 dbSchemaRtsType :: DbSchema -> Schema.Type -> Maybe Type

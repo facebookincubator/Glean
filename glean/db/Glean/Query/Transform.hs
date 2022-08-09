@@ -25,6 +25,8 @@ import qualified Control.Monad.State as State
 import Data.Bifunctor
 import Data.Bitraversable (bitraverse)
 import Data.Bifoldable
+import qualified Data.HashMap.Strict as HashMap
+import Data.HashMap.Strict (HashMap)
 import Data.List.Extra (nubOrd, elemIndex)
 import qualified Data.Map.Strict as Map
 import Data.Map.Strict (Map)
@@ -37,9 +39,10 @@ import qualified Data.Text as Text
 import Data.Vector (Vector)
 import qualified Data.Set as Set
 import Data.Set (Set)
+import Data.Text.Prettyprint.Doc (pretty)
 
 import qualified Glean.Angle.Types as Type
-import Glean.Angle.Types (Type_(..), FieldDef_(..))
+import Glean.Angle.Types (PredicateId, Type_(..), FieldDef_(..))
 import Glean.Schema.Util (showRef, lowerEnum, lowerMaybe, lowerBool)
 import Glean.Query.Codegen
 import Glean.Query.Typecheck.Types
@@ -69,20 +72,22 @@ fromTransformations (Transformations e) = Map.fromList
   [ (fromIntegral available, toPid tRequested)
   | (available, PredicateTransformation{..}) <- IntMap.toList e
   ]
-  where toPid = fromIntegral . fromPid . predicatePid
+  where
+    toPid (PidRef pid _) = fromIntegral $ fromPid pid
 
 -- ========================
 -- Transform TypecheckedQuery
 -- ========================
 
 transformTypecheckedQuery
-  :: IntMap PredicateTransformation
+  :: HashMap PredicateId PredicateDetails
+  -> IntMap PredicateTransformation
   -> TypecheckedQuery
   -> TypecheckedQuery
-transformTypecheckedQuery tmap (QueryWithInfo query v ty) =
+transformTypecheckedQuery pmap tmap (QueryWithInfo query v ty) =
   if True
-     then QueryWithInfo (transformQuery tmap query) v ty
-     else renumberVars ty $ transformQuery tmap query
+     then QueryWithInfo (transformQuery pmap tmap query) v ty
+     else renumberVars ty $ transformQuery pmap tmap query
 
 type R a = State S a
 
@@ -139,9 +144,17 @@ renumberVars ty q =
         (Var ty new n, S next' mappings')
 
 -- Transform types requested in the query into types available in the database.
-transformQuery :: IntMap PredicateTransformation -> TcQuery -> TcQuery
-transformQuery tmap q@(TcQuery ty _ _ _) = transformTcQuery ty Nothing q
+transformQuery
+  :: HashMap PredicateId PredicateDetails
+  -> IntMap PredicateTransformation
+  -> TcQuery
+  -> TcQuery
+transformQuery pmap tmap q@(TcQuery ty _ _ _) = transformTcQuery ty Nothing q
   where
+    getDetails (PidRef _ predId) =
+      fromMaybe (error err) $ HashMap.lookup predId pmap
+      where err = "transformQuery: unknown predicate: " <> show (pretty predId)
+
     transformTcQuery from mto (TcQuery _ key mval stmts) =
       let to = fromMaybe (transformType tmap from) mto in
       TcQuery to
@@ -193,7 +206,7 @@ transformQuery tmap q@(TcQuery ty _ _ _) = transformTcQuery ty Nothing q
     transformTcFactGen pref key val =
       case lookupTransformation (pid pref) tmap of
         Just evolution -> do
-          TcFactGen (pidRef $ tAvailable evolution)
+          TcFactGen (tAvailable evolution)
             (transformKey evolution key)
             (transformValue evolution val)
         Nothing ->
@@ -203,14 +216,14 @@ transformQuery tmap q@(TcQuery ty _ _ _) = transformTcQuery ty Nothing q
 
     transformKey :: PredicateTransformation -> TcPat -> TcPat
     transformKey PredicateTransformation{..} pat = transform
-      (predicateKeyType tRequested)
-      (predicateKeyType tAvailable)
+      (predicateKeyType $ getDetails tRequested)
+      (predicateKeyType $ getDetails tAvailable)
       pat
 
     transformValue  :: PredicateTransformation -> TcPat -> TcPat
     transformValue PredicateTransformation{..} pat = transform
-      (predicateValueType tRequested)
-      (predicateValueType tAvailable)
+      (predicateValueType $ getDetails tRequested)
+      (predicateValueType $ getDetails tAvailable)
       pat
 
     overTyped from to0 (Typed _ pat) =
@@ -358,7 +371,7 @@ transformationsFor schema ty =
         | from <- withDeps
         , let to = case lookupTransformation from tmap of
                 Nothing -> from
-                Just e -> predicatePid (tAvailable e)
+                Just e -> toPid $ tAvailable e
         ]
 
     repeated :: [(Pid, Set Pid)]
@@ -368,7 +381,7 @@ transformationsFor schema ty =
     transformations = Transformations $ IntMap.fromList
       [ (to, evolution)
       | evolution <- mapMaybe (`lookupTransformation` tmap) withDeps
-      , let to = intPid $ predicatePid $ tAvailable evolution
+      , let to = intPid $ toPid  $ tAvailable evolution
       ]
 
     showRepeated :: (Pid, Set Pid) -> Text
@@ -376,6 +389,9 @@ transformationsFor schema ty =
       showPid to <> " evolves "
       <> Text.intercalate " and " (showPid <$> Set.toList froms)
       where showPid = showRef . predicateRef . detailsFor
+
+toPid :: PidRef -> Pid
+toPid (PidRef pid _) = pid
 
 transitiveDeps :: (Pid -> PredicateDetails) -> Pid -> [Pid]
 transitiveDeps = transitive . predicateDeps
@@ -409,7 +425,7 @@ transformType tmap ty = transform ty
     overPidRef pref =
       case lookupTransformation (pid pref) tmap of
         Nothing -> pref
-        Just PredicateTransformation{..} -> pidRef tAvailable
+        Just PredicateTransformation{..} -> tAvailable
 
     overExpandedType (ExpandedType tref ty) =
       ExpandedType tref (transform ty)
@@ -426,9 +442,6 @@ intPid = fromIntegral . fromPid
 
 pid :: PidRef -> Pid
 pid (PidRef x _) = x
-
-pidRef :: PredicateDetails -> PidRef
-pidRef details = PidRef (predicatePid details) (predicateId details)
 
 -- ========================
 -- Transform back
