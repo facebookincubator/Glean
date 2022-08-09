@@ -83,8 +83,7 @@ traversal callback input inputend ty = go False (repType ty)
 -- NOTE: The subroutine assumes that the clause is type correct.
 genTraversal :: Type -> Type -> IO (Subroutine CompiledTraversal)
 genTraversal key_ty val_ty =
-  generate Optimised $
-    \(handler, (clause_begin, key_end, clause_end)) -> do
+  generate Optimised $ \handler clause_begin key_end clause_end -> do
     traversal handler clause_begin key_end key_ty
     traversal handler key_end clause_end val_ty
     ret

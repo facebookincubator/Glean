@@ -476,12 +476,12 @@ compileQuery bounds (QueryWithInfo query numVars ty) = do
   sub <- generateQueryCode $ \ regs@QueryRegs{..} -> do
 
     let outputVars = IntSet.toList $ findOutputs query
-    outputs (length outputVars) $ \outputRegs -> do
+    output $ Many (length outputVars) $ \outputRegs -> do
     let
       outputRegAssocs :: [(Int, Register 'BinaryOutputPtr)]
       outputRegAssocs = zip outputVars outputRegs
 
-    locals (numVars - length outputVars) $ \localRegs -> do
+    local $ Many (numVars - length outputVars) $ \localRegs -> do
     let
       localRegAssocs :: [(Int, Register 'Word)]
       localRegAssocs = zip (filter (`notElem` outputVars) [0..]) localRegs
@@ -491,8 +491,7 @@ compileQuery bounds (QueryWithInfo query numVars ty) = do
                  // (localRegAssocs ++ coerce outputRegAssocs)
 
     -- resultKeyReg/resultValueReg is where we build up result values
-    output $ \resultKeyOutput ->
-      output $ \resultValueOutput ->
+    output $ \resultKeyOutput resultValueOutput ->
       compileStatements bounds regs stmts vars $ mdo
         -- If the result term is a variable, avoid unnecessarily
         -- copying it into resultOutput and just use it directly.
@@ -655,8 +654,7 @@ cmpOutputPat
   -> Label                              -- ^ jump here on match failure
   -> Code ()
 cmpOutputPat vars reg pat fail =
-  local $ \ptr ->
-  local $ \begin -> do
+  local $ \ptr begin -> do
     getOutput reg begin ptr
     matchPat vars begin ptr fail pat
 
@@ -703,8 +701,7 @@ compileStatements
       compile [] = andThen
 
       compile (CgConditional cond then_ else_: rest) =
-        local $ \failed ->
-        local $ \innerRet -> mdo
+        local $ \failed innerRet -> mdo
           let
             compileBranch stmts =
               compileStatements bounds regs stmts vars $ mdo
@@ -788,7 +785,8 @@ compileStatements
         where
         outReg
           | Just{} <- maybeWordFilter = local
-          | otherwise = \f -> output (f . castRegister)
+          | otherwise = \f -> output $ \r ->
+              f $ castRegister (r :: Register 'BinaryOutputPtr)
 
         maybeWordFilter = cmpWordPat vars pat
 
@@ -915,20 +913,20 @@ compileStatements
             inner
       compileGen (PrimCall PrimOpToLower [arg]) (Just reg) inner =
         withTerm vars arg $ \str -> do
-          local $ \ptr -> local $ \end -> do
+          local $ \ptr end -> do
             getOutput str ptr end
             resetOutput (castRegister reg)
             outputStringToLower ptr end (castRegister reg)
           inner
       compileGen (PrimCall PrimOpLength [arg]) (Just reg) inner =
         withTerm vars arg $ \array -> do
-          local $ \ptr -> local $ \end -> do
+          local $ \ptr end -> do
             getOutput array ptr end
             inputNat ptr end reg
           inner
       compileGen (PrimCall PrimOpRelToAbsByteSpans [arg]) (Just reg) inner =
         withTerm vars arg $ \array -> do
-          local $ \ptr -> local $ \end -> do
+          local $ \ptr end -> do
             getOutput array ptr end
             resetOutput (castRegister reg)
             outputRelToAbsByteSpans ptr end (castRegister reg)
@@ -938,9 +936,8 @@ compileStatements
       compileGen (ArrayElementGenerator _ _) Nothing inner = inner
       compileGen (ArrayElementGenerator eltTy term) (Just reg) inner =
         withTerm vars term $ \array -> do
-          local $ \len -> do
-          local $ \off -> mdo
-            local $ \ptr -> local $ \end -> do
+          local $ \len off -> mdo
+            local $ \ptr end -> do
               getOutput array ptr end
               ptrDiff ptr end len
               local $ \start -> do
@@ -958,11 +955,11 @@ compileStatements
             -- iteration of the loop, so we must getOutput again.
             -- We're maintaining the current offset into the array
             -- value in the 'off' register.
-            local $ \ptr -> local $ \end -> do
+            local $ \ptr end -> do
               getOutput array ptr end
               ptrDiff ptr end len
               advancePtr ptr off
-              local $ \start -> local $ \size -> do
+              local $ \start size -> do
                 -- really want to just matchPat here
                 move ptr start
                 if isWordTy eltTy then do
@@ -1034,7 +1031,7 @@ compileFactGenerator
 compileFactGenerator bounds (QueryRegs{..} :: QueryRegs s)
     vars pid kpat vpat section maybeReg inner =
 
-  local $ \seekTok -> local $ \prefix_size -> do
+  local $ \seekTok prefix_size -> do
 
   let
     noCapture _ _ = return ()
@@ -1110,7 +1107,7 @@ compileFactGenerator bounds (QueryRegs{..} :: QueryRegs s)
             seekWithinSection typ ptr end pfrom pto tok
 
   typ <- constant (fromIntegral (fromPid pid))
-  local $ \ptr -> local $ \ptrend -> do
+  local $ \ptr ptrend -> do
     loadPrefix ptr ptrend
     when hasPrefix $ ptrDiff ptr ptrend prefix_size
     seek' typ ptr ptrend seekTok
@@ -1118,10 +1115,9 @@ compileFactGenerator bounds (QueryRegs{..} :: QueryRegs s)
   -- for each fact...
   loop <- label
 
-  local $ \clause -> local $ \keyend -> local $ \clauseend ->
-    local $ \saveclause -> mdo
+  local $ \clause keyend clauseend saveclause -> mdo
       let need_value = not $ all isWild vchunks
-      local $ \ignore -> local $ \ok -> do
+      local $ \ignore ok -> do
         next
           seekTok
           need_value
@@ -1324,7 +1320,7 @@ buildPrefix
 buildPrefix out vars chunks = go chunks
   where
   go (QueryPrefix bs : rest) = do
-    local $ \ptr -> local $ \end -> do
+    local $ \ptr end -> do
       loadLiteral bs ptr end
       outputBytes ptr end out
     go rest
@@ -1333,7 +1329,7 @@ buildPrefix out vars chunks = go chunks
     go rest
   -- every other type is currently represented as a binary::Output
   go (QueryVar (Var _other v _) : rest) = do
-    local $ \ptr -> local $ \end -> do
+    local $ \ptr end -> do
       getOutput (castRegister (vars ! v)) ptr end
       outputBytes ptr end out
     go rest
@@ -1430,8 +1426,7 @@ buildTerm output vars term = go term
     Byte b -> outputByteImm (fromIntegral b) output
     Nat n -> outputNatImm n output
     String s ->
-      local $ \ptr ->
-      local $ \end -> do
+      local $ \ptr end -> do
         -- NOTE: We assume that the string has been validated during parsing.
         loadLiteral (mangleString s) ptr end
         outputBytes ptr end output
@@ -1442,7 +1437,7 @@ buildTerm output vars term = go term
     Alt n term -> do outputNatImm n output; go term
     Ref (MatchFid f) -> outputNatImm (fromIntegral (fromFid f)) output
     Ref (MatchPrefix str rest) -> do
-      local $ \ptr -> local $ \end -> do
+      local $ \ptr end -> do
         let
           mangled = fromValue (String str)
           withoutTerminator =
@@ -1453,8 +1448,7 @@ buildTerm output vars term = go term
     Ref (MatchVar (Var ty var _))
       | isWordTy ty -> outputNat (vars ! var) output
       | otherwise ->
-        local $ \ptr ->
-        local $ \end -> do
+        local $ \ptr end -> do
           getOutput (castRegister (vars ! var)) ptr end
           outputBytes ptr end output
     other -> error $ "buildTerm: " <> show other
@@ -1503,7 +1497,7 @@ matchPat vars input inputend fail chunks = do
       -- the empty tuple could be represented by a null pointer, so it's
       -- not safe to do inputShiftBytes anyway.
     | otherwise =
-      local $ \ptr -> local $ \end -> local $ \ok -> do
+      local $ \ptr end ok -> do
         getOutput (castRegister (vars ! var)) ptr end
         inputShiftBytes input inputend ptr end ok
         jumpIf0 ok fail
@@ -1538,8 +1532,7 @@ matchPat vars input inputend fail chunks = do
       outputBytes start input outReg
       return ()
   match isLast (QueryArrayPrefix npatterns ty patterns) = do
-    local $ \size -> do
-    local $ \patternsLen -> do
+    local $ \size patternsLen -> do
       loadConst npatterns patternsLen
       inputNat input inputend size
       jumpIfLt size patternsLen fail
@@ -1576,13 +1569,7 @@ compileQueryFacts facts = do
       | FactQuery{..} <- facts ]
     finishBuilder builder
   sub <- generateQueryCode $ \ QueryRegs{..} ->
-    output $ \kout ->
-    output $ \vout ->
-    local $ \fid ->
-    local $ \pid ->
-    local $ \rec_ ->
-    local $ \ptr ->
-    local $ \end -> do
+    output $ \kout vout -> local $ \fid pid rec_ ptr end -> do
       loadLiteral input ptr end
       local $ inputNat ptr end -- ignore the size
       loop <- label
@@ -1690,10 +1677,10 @@ generateQueryCode
   :: (forall s . QueryRegs s -> Code ())
   -> IO (Subroutine CompiledQuery)
 generateQueryCode f = generate Optimised $
-  \ ((seek_, seekWithinSection_, currentSeek_, endSeek_, next_),
-    (lookupKey_, result_, resultWithPid_, newDerivedFact_),
-    saveState,
-    maxResults, maxBytes) ->
+  \ seek_ seekWithinSection_ currentSeek_ endSeek_ next_
+    lookupKey_ result_ resultWithPid_ newDerivedFact_
+    saveState
+    maxResults maxBytes ->
   let
     seek typ ptr end tok =
       callFun_3_1 seek_ typ (castRegister ptr) (castRegister end) tok

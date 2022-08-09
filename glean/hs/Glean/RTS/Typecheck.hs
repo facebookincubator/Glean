@@ -129,10 +129,7 @@ checkType ty = checkSignature ty $ RecordTy []
 checkSignature :: Type -> Type -> IO (Subroutine CompiledTypecheck)
 checkSignature key_ty val_ty =
   generate Optimised $
-    \( rename
-     , (clause_begin, key_end, clause_end)
-     , out
-     , out_key_size ) -> mdo
+    \rename clause_begin key_end clause_end out out_key_size -> mdo
     typecheck rename clause_begin key_end out key_ty
     check "key" clause_begin key_end
     local $ \size -> do

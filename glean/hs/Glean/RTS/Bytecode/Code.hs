@@ -9,8 +9,10 @@
 module Glean.RTS.Bytecode.Code
   ( Code
   , Register
-  , Registers
   , Label
+  , CodeGen
+  , OutputSupply
+  , Many(..)
   , Optimised(..)
   , literal
   , label
@@ -19,9 +21,7 @@ module Glean.RTS.Bytecode.Code
   , issueUncondJump
   , constant
   , local
-  , locals
   , output
-  , outputs
   , generate
   , castRegister
   , move
@@ -38,7 +38,6 @@ import qualified Control.Monad.Trans.State.Strict as S
 import Data.Bifunctor (first)
 import Data.Bits
 import Data.ByteString (ByteString)
-import Data.Coerce
 import Data.Functor
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
@@ -57,6 +56,7 @@ import Data.Word (Word64)
 
 import Glean.Bytecode.Types
 import Glean.RTS.Bytecode.Gen.Instruction
+import Glean.RTS.Bytecode.Supply
 import Glean.RTS.Foreign.Bytecode (Subroutine, subroutine)
 
 -- | A basic block
@@ -108,6 +108,31 @@ data CodeS = CodeS
 newtype Code a = Code { runCode :: S.State CodeS a }
   deriving(Functor, Applicative, Monad, MonadFix)
 
+-- | Things that generate code of the form
+-- > Register t1 -> ... -> Register tn -> Code a
+--
+class CodeGen s cg where
+  genCode :: cg -> S.State s (Code (CodeResult cg))
+
+instance CodeGen s (Code a) where
+  genCode = pure
+
+instance (Supply a s, CodeGen s cg) => CodeGen s (a -> cg) where
+  genCode f = S.state supply >>= genCode . f
+
+-- | Allocate `n` registers where `n` isn't statically known.
+-- Example:
+--
+-- local $ Many n $ \regs -> ...
+data Many a cg = Many Int ([a] -> cg)
+
+instance (Supply a s, CodeGen s cg) => CodeGen s (Many a cg) where
+  genCode (Many n f) = replicateM n (S.state supply) >>= genCode . f
+
+type family CodeResult cg
+type instance CodeResult (Code a) = a
+type instance CodeResult (a -> cg) = CodeResult cg
+type instance CodeResult (Many a cg) = CodeResult cg
 
 -- | Load a constant value into a register. This will happen at the start of
 -- the subroutine, effectively giving us a poor man's version of constant
@@ -126,47 +151,45 @@ constant w = Code $ do
         }
       return csNextConstant
 
--- | Generate a chunk of code with a reserved fresh register. The register can
+-- | Generate a chunk of code with reserved fresh registers. The registers can
 -- be reused afterwards.
-local :: (Register t -> Code a) -> Code a
-local f = do
-  CodeS{..} <- Code S.get
-  Code $ S.modify' $ \s -> s
-    { csNextLocal = succ csNextLocal
-    , csMaxLocal = max csMaxLocal (succ csNextLocal) }
-  x <- f $ castRegister csNextLocal
-  Code $ S.modify' $ \s -> s { csNextLocal = csNextLocal }
-  return x
+local :: CodeGen RegSupply cg => cg -> Code (CodeResult cg)
+local = runLocal
+  regSupply
+  csNextLocal
+  (\r s -> s { csNextLocal = r })
+  (\r s -> s { csMaxLocal = max (csMaxLocal s) r })
 
-locals :: Int -> ([Register t] -> Code a) -> Code a
-locals 0 f = f []
-locals n f = do
-  CodeS{..} <- Code S.get
-  let !next = offsetRegister csNextLocal n
-  Code $ S.modify' $ \s -> s
-    { csNextLocal = next
-    , csMaxLocal = max csMaxLocal next }
-  x <- f $ coerce [csNextLocal .. pred next]
-  Code $ S.modify' $ \s -> s { csNextLocal = csNextLocal }
-  return x
+-- | Supply of @Register 'BinaryOutputPtr@ (cf. 'output').
+newtype OutputSupply = OutputSupply RegSupply
+  deriving (Supply (Register 'BinaryOutputPtr))
 
--- | Declare a register of type @Register 'BinaryOutputPtr@.  The register
--- is one of the inputs to the subroutine. Use 'resetOutput' to reset the
--- byte array stored in this register to empty.
-outputs :: Int -> ([Register 'BinaryOutputPtr] -> Code a) -> Code a
-outputs 0 f = f []
-outputs n f = do
-  CodeS{..} <- Code S.get
-  let !next = offsetRegister csNextOutput n
-  Code $ S.modify' $ \s -> s
-    { csNextOutput = next
-    , csMaxOutputs = max csMaxOutputs next }
-  x <- f [csNextOutput .. pred next]
-  Code $ S.modify' $ \s -> s { csNextOutput = csNextOutput }
-  return x
+-- | Declare registers of type @Register 'BinaryOutputPtr@.  The registers
+-- are inputs to the subroutine. Use 'resetOutput' to reset the byte array
+-- stored in these registers to empty.
+output :: CodeGen OutputSupply cg => cg -> Code (CodeResult cg)
+output = runLocal
+  (OutputSupply . regSupply)
+  csNextOutput
+  (\r s -> s { csNextOutput = r })
+  (\r s -> s { csMaxOutputs = max (csMaxOutputs s) r })
 
-output :: (Register 'BinaryOutputPtr -> Code a) -> Code a
-output f = outputs 1 (f . head)
+runLocal
+  :: (Supply r s, CodeGen s cg)
+  => (r -> s)
+  -> (CodeS -> r)
+  -> (r -> CodeS -> CodeS)
+  -> (r -> CodeS -> CodeS)
+  -> cg
+  -> Code (CodeResult cg)
+runLocal make get set setmax cg = do
+  r <- Code $ S.gets get
+  let (gen, sup) = S.runState (genCode cg) $ make r
+      !next = peekSupply sup
+  Code $ S.modify' $ setmax next . set next
+  x <- gen
+  Code $ S.modify' $ set r
+  return x
 
 -- | Poor man's function calls
 --
@@ -201,69 +224,24 @@ calledFrom frames inner = do
     , csNextOutput = csNextOutput }
   return x
 
--- | Tuples of registers
-class Registers a where
-  registers :: Register 'Word -> (a, Register 'Word)
-
-instance Registers () where
-  registers r = ((), r)
-
-instance Registers (Register t) where
-  registers r = (castRegister r, succ r)
-
-instance (Registers a, Registers b) => Registers (a,b) where
-  registers i0 =
-    let (a, i1) = registers i0
-        (b, i2) = registers i1
-    in
-    ((a,b), i2)
-
-instance (Registers a, Registers b, Registers c) => Registers (a,b,c) where
-  registers i0 =
-    let (a, i1) = registers i0
-        (b, i2) = registers i1
-        (c, i3) = registers i2
-    in
-    ((a,b,c), i3)
-
-instance
-    (Registers a, Registers b, Registers c, Registers d)
-    => Registers (a,b,c,d) where
-  registers i0 =
-    let (a, i1) = registers i0
-        (b, i2) = registers i1
-        (c, i3) = registers i2
-        (d, i4) = registers i3
-    in
-    ((a,b,c,d), i4)
-
-instance
-    (Registers a, Registers b, Registers c, Registers d, Registers e)
-    => Registers (a,b,c,d,e) where
-  registers i0 =
-    let (a, i1) = registers i0
-        (b, i2) = registers i1
-        (c, i3) = registers i2
-        (d, i4) = registers i3
-        (e, i5) = registers i4
-    in
-    ((a,b,c,d,e), i5)
-
 data Optimised = Optimised | Unoptimised
   deriving(Eq,Ord,Enum,Bounded,Show)
 
 -- | Generate a 'Subroutine', allocating input registers as necessary.
 -- Example:
 --
--- generate $ \(reg1,reg2) -> do
+-- generate $ \reg1 reg2 -> do
 --   add reg1 reg2 reg1
 --   ret
 --
 generate
-  :: Registers input => Optimised -> (input -> Code ()) -> IO (Subroutine t)
-generate opt gen
-  | (input, nextInput) <- registers (register Input 0) =
-  case S.runState (runCode $ gen input) CodeS
+  :: (CodeGen RegSupply cg, CodeResult cg ~ ())
+  => Optimised -> cg -> IO (Subroutine t)
+generate opt cg =
+  let (gen, sup) = S.runState (genCode cg) $ regSupply $ register Input 0
+      !nextInput = peekSupply sup
+  in
+  case S.runState (runCode gen) CodeS
         { csLabel = Label 0
         , csInsns = []
         , csBlocks = []
@@ -440,13 +418,6 @@ registerSegment (Register i) = toEnum $ fromIntegral (i `shiftR` 62)
 -- | Get the index of the register within its segment
 registerIndex :: Register a -> Word64
 registerIndex (Register i) = i .&. 0x3FFFFFFFFFFFFFFF
-
--- | Produce a register with its index offset by `n` from the original one
-offsetRegister :: Register a -> Int -> Register a
-offsetRegister (Register i) n = Register (i + fromIntegral n)
-
-castRegister :: Register a -> Register b
-castRegister = coerce
 
 -- | loadReg is fixed to Word, so make a polymorphic version
 move :: Register a -> Register a -> Code ()

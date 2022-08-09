@@ -10,8 +10,10 @@ module Glean.Bytecode.Types
   ( Ty(..)
   , Register(..)
   , Label(..)
+  , castRegister
   ) where
 
+import Data.Coerce (coerce)
 import Data.Word (Word64)
 
 -- | Instruction argument types
@@ -29,6 +31,9 @@ data Ty
 -- | Typed registers
 newtype Register (ty :: Ty) = Register { fromRegister :: Word64 }
   deriving(Eq,Ord,Enum,Show)
+
+castRegister :: Register a -> Register b
+castRegister = coerce
 
 -- | Labels
 newtype Label = Label { fromLabel :: Int }
