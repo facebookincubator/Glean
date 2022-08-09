@@ -73,6 +73,8 @@ import Glean.Schema.Util (showRef, ShowRef)
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Query.Codegen (QueryWithInfo(..))
 import Glean.Query.Typecheck
+
+import Glean.Query.Transform (transformTypecheckedQuery)
 import Glean.Types as Thrift
 import Glean.Schema.Types
 import Glean.Database.Schema.ComputeIds
@@ -311,9 +313,9 @@ mkDbSchema validate knownPids dbContent
   let
       predicates = HashMap.elems (tcEnvPredicates tcEnv)
 
-      byPid = IntMap.fromList
-        [ (fromIntegral (fromPid predicatePid), deets)
-        | deets@PredicateDetails{..} <- predicates ]
+      intPid = fromIntegral . fromPid . predicatePid
+
+      byPid = IntMap.fromList [ (intPid deets, deets) | deets <- predicates ]
 
       maxPid = maybe lowestPid (Pid . fromIntegral . fst)
         (IntMap.lookupMax byPid)
@@ -367,19 +369,39 @@ mkDbSchema validate knownPids dbContent
   forM_ (IntMap.toList legacyAllVersions) $ \(n, id) ->
     vlog 2 $ "all." <> showt n <> " = " <> unSchemaId id
 
+  let transformations = IntMap.union evolveTransformations autoTransformations
+      transformed =
+        transformDerivations dbContent transformations (tcEnvPredicates tcEnv)
+
   return $ DbSchema
-    { predicatesById = tcEnvPredicates tcEnv
+    { predicatesById = transformed
     , typesById = tcEnvTypes tcEnv
     , schemaEnvs = schemaEnvMap
     , legacyAllVersions = legacyAllVersions
-    , predicatesByPid = byPid
-    , predicatesTransformations =
-        IntMap.union evolveTransformations autoTransformations
+    , predicatesByPid =
+        IntMap.fromList [ (intPid p, p) | p <- HashMap.elems transformed ]
+    , predicatesTransformations = transformations
     , schemaInventory = inventory predicates
     , schemaSource = (source, hashedSchemaAllVersions stored)
     , schemaMaxPid = maxPid
     , schemaLatestVersion = latestSchemaId
     }
+
+transformDerivations
+  :: DbContent
+  -> IntMap PredicateTransformation
+  -> HashMap PredicateId PredicateDetails
+  -> HashMap PredicateId PredicateDetails
+transformDerivations DbWritable _ pmap = pmap
+transformDerivations (DbReadOnly _) transformations pmap =
+  overDerivationQuery transform <$> pmap
+  where
+    transform q = transformTypecheckedQuery transformations q
+    overDerivationQuery f details = details { predicateDeriving = d }
+      where
+        d = case predicateDeriving details of
+          NoDeriving -> NoDeriving
+          Derive when q -> Derive when (f q)
 
 -- | Check that predicates with the same name/version have the same definitions.
 -- This is done by comparing Ids, which are hashes of the representation.

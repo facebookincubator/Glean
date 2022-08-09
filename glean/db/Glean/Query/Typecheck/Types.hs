@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE DeriveTraversable #-}
 module Glean.Query.Typecheck.Types
   ( TypecheckedQuery
   , TcQuery(..)
@@ -42,7 +43,7 @@ instance Pretty TcStatement where
   pretty (TcStatement _ lhs rhs) = prettyStatement lhs rhs
 
 data Typed x = Typed Type x
-  deriving Show
+  deriving (Show, Functor, Traversable, Foldable)
 
 instance Pretty x => Pretty (Typed x) where
   pretty (Typed _ x) = pretty x

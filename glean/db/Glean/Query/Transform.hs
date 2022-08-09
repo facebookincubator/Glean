@@ -11,6 +11,7 @@
 module Glean.Query.Transform
   ( transformQuery
   , transformType
+  , transformTypecheckedQuery
   , transformationsFor
   , transformResultsBack
   , Transformations
@@ -18,7 +19,10 @@ module Glean.Query.Transform
   , toTransformations
   ) where
 
+import Control.Monad.State (State, runState)
+import qualified Control.Monad.State as State
 import Data.Bifunctor
+import Data.Bitraversable (bitraverse)
 import Data.Bifoldable
 import Data.List.Extra (nubOrd, elemIndex)
 import qualified Data.Map.Strict as Map
@@ -38,7 +42,6 @@ import Glean.Angle.Types (Type_(..), FieldDef_(..))
 import Glean.Schema.Util (showRef, lowerEnum, lowerMaybe, lowerBool)
 import Glean.Query.Codegen
 import Glean.Query.Typecheck.Types
-import Glean.Database.Schema
 import Glean.Database.Schema.Transform (defaultValue)
 import Glean.Database.Schema.Types
 import Glean.RTS.Term (Term(..))
@@ -70,6 +73,69 @@ fromTransformations (Transformations e) = Map.fromList
 -- ========================
 -- Transform TypecheckedQuery
 -- ========================
+
+transformTypecheckedQuery
+  :: IntMap PredicateTransformation
+  -> TypecheckedQuery
+  -> TypecheckedQuery
+transformTypecheckedQuery tmap (QueryWithInfo query v ty) =
+  if True
+     then QueryWithInfo (transformQuery tmap query) v ty
+     else renumberVars ty $ transformQuery tmap query
+
+type R a = State S a
+
+data S = S
+  { nextVar :: Int
+  , mappings :: IntMap Int
+  }
+
+-- | After removing branches from the query we must now update
+-- variable names to ensure we use the smallest numbers possible.
+renumberVars :: Type -> TcQuery -> TypecheckedQuery
+renumberVars ty q =
+  let (newQuery, S varCount _) = runState (renameQuery q) (S 0 mempty)
+  in
+  QueryWithInfo newQuery varCount ty
+  where
+  renameQuery :: TcQuery -> R TcQuery
+  renameQuery (TcQuery ty key mval stmts) =
+    TcQuery ty
+      <$> renamePat key
+      <*> traverse renamePat mval
+      <*> traverse renameStmt stmts
+
+  renameStmt :: TcStatement -> R TcStatement
+  renameStmt (TcStatement ty lhs rhs) =
+    TcStatement ty <$> renamePat lhs <*> renamePat rhs
+
+  renamePat :: TcPat -> R TcPat
+  renamePat = traverse (bitraverse renameTyped renameVar)
+
+  renameTyped :: Typed TcTerm -> R (Typed TcTerm)
+  renameTyped (Typed ty term) = Typed ty <$> renameTcTerm term
+
+  renameTcTerm :: TcTerm -> R TcTerm
+  renameTcTerm = \case
+    TcOr a b -> TcOr <$> renamePat a <*> renamePat b
+    TcFactGen ref k v -> TcFactGen ref <$> renamePat k <*> renamePat v
+    TcElementsOfArray x -> TcElementsOfArray <$> renamePat x
+    TcQueryGen q -> TcQueryGen <$> renameQuery q
+    TcNegation xs -> TcNegation <$> traverse renameStmt xs
+    TcPrimCall op xs -> TcPrimCall op <$> traverse renamePat xs
+    TcIf cond then_ else_ ->
+      TcIf <$> traverse renamePat cond <*> renamePat then_ <*> renamePat else_
+
+  renameVar :: Var -> R Var
+  renameVar (Var ty old n) = State.state $ \s ->
+    case IntMap.lookup old (mappings s) of
+      Just new -> (Var ty new n, s)
+      Nothing ->
+        let new = nextVar s
+            mappings' = IntMap.insert old new (mappings s)
+            next' = new + 1
+        in
+        (Var ty new n, S next' mappings')
 
 -- Transform types requested in the query into types available in the database.
 transformQuery :: IntMap PredicateTransformation -> TcQuery -> TcQuery

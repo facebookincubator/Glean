@@ -70,11 +70,6 @@ transform query = do
   dbSchema <- gets flDbSchema
   return $ transformQuery (predicatesTransformations dbSchema) query
 
-transformTypeCheckedQuery :: TypecheckedQuery -> F TypecheckedQuery
-transformTypeCheckedQuery (QueryWithInfo q vars _) = do
-  q'@(TcQuery ty _ _ _) <- transform q
-  return $ QueryWithInfo q' vars ty
-
 flattenQuery :: TcQuery -> F FlatQuery
 flattenQuery query = do
   (stmts', head', maybeVal) <- flattenQuery' query
@@ -237,9 +232,7 @@ flattenFactGen pidRef@(PidRef pid _) kpat vpat = do
                return (mempty, FactGenerator pidRef kpat vpat SeekOnAllFacts)
           | otherwise -> do
             calling predicateId $ do
-              qtransformed <- transformTypeCheckedQuery query
-              query' <-
-                expandDerivedPredicateCall details kpat vpat qtransformed
+              query' <- expandDerivedPredicateCall details kpat vpat query
               (stmts, key, maybeVal) <- flattenQuery' query'
               let val = fromMaybe (Tuple []) maybeVal
               return (stmts, DerivedFactGenerator pidRef key val)
