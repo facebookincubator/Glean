@@ -34,7 +34,7 @@ import Control.Exception (assert)
 import Control.Monad
 import Control.Monad.Fix (MonadFix(..))
 import Control.Monad.ST (ST, runST)
-import qualified Control.Monad.Trans.State.Lazy as S
+import qualified Control.Monad.Trans.State.Strict as S
 import Data.Bifunctor (first)
 import Data.Bits
 import Data.ByteString (ByteString)
