@@ -128,8 +128,8 @@ struct Predicate {
       reinterpret_cast<uint64_t>(clause.data),
       reinterpret_cast<uint64_t>(clause.data + clause.key_size),
       reinterpret_cast<uint64_t>(clause.data + clause.size()),
-      reinterpret_cast<uint64_t>(&output),
-      reinterpret_cast<uint64_t>(&key_size)});
+      reinterpret_cast<uint64_t>(&key_size),
+      reinterpret_cast<uint64_t>(&output)});
   }
 
   void traverse(
