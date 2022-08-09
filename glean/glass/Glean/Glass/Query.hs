@@ -32,6 +32,10 @@ module Glean.Glass.Query
   , SymbolSearchData(..)
   , RepoSearchResult(..)
 
+  -- ** scoped search
+  , toScopeTokens
+  , ScopeQuery(..)
+
   -- * Entity annotations
   , symbolKind
 
@@ -41,6 +45,7 @@ module Glean.Glass.Query
   ) where
 
 import Data.Text (Text, toLower)
+import qualified Data.Text as Text
 import Data.Maybe
 
 import qualified Glean
@@ -230,6 +235,31 @@ toCaseQuery :: SearchCase -> Angle CodeSearch.SearchCase
 toCaseQuery sCase = enum $ case sCase of
   Sensitive -> CodeSearch.SearchCase_Sensitive
   Insensitive -> CodeSearch.SearchCase_Insensitive
+
+-- | Variants of the scope query syntax
+data ScopeQuery
+  = ScopeAndName ![Text] !Text -- ::a::b::ident
+  | ScopeOnly ![Text] -- ::a::b:: or a::
+  | NameOnly !Text -- ::a
+  | NotAScopeQuery -- not recognized as a scope query
+  deriving (Eq, Show)
+
+-- | If it looks like we can parse this as a qualified name, then do that
+toScopeTokens :: Text -> ScopeQuery
+toScopeTokens name = go $ map (`Text.splitOn` name) delimiters
+  where
+    -- we probably should have a class of per-language parsers for qnames
+    delimiters = ["::", "\\"]
+
+    -- first match with 2 or more scope fragments
+    go :: [[Text]] -> ScopeQuery
+    go [] = NotAScopeQuery
+    go (toks@(_:_:_):_) = case (init toks, last toks) of
+      ([""],"") -> NotAScopeQuery -- i.e. "::"
+      ([""],name) -> NameOnly name -- i.e. ::foo
+      (scope, "") -> ScopeOnly (dropWhile Text.null scope) -- foo:: or ::foo::
+      (scope, name) -> ScopeAndName scope name -- i.e. foo::bar
+    go (_:rest) = go rest
 
 --
 -- Find entities by strings, with an optional kind expression filter
