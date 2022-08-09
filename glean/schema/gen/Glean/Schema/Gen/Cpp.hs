@@ -55,7 +55,7 @@ provided (_,ident) = Map.lookup ident known
 leading :: Text
 leading = Text.unlines
   ["#pragma once"
-  ,"// @" <> "generated"
+  ,"// \x40generated"
   ,"// Glean.Schema.Gen.Cpp definitions for fbcode/glean/lang/clang/schema.h"
   ,"// by //glean/hs:predicates using --cpp"
   ,""

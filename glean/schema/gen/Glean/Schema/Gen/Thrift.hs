@@ -70,7 +70,7 @@ genTargets
   -> Text
 genTargets mode slashVn version info =
   Text.unlines
-     ([ "# @" <> "generated"
+     ([ "# \x40generated"
      , "# to regenerate: ./glean/schema/sync"
      , "load(\"@fbcode_macros//build_defs:custom_rule.bzl\", \"custom_rule\")"
      , "" ] ++
@@ -252,7 +252,7 @@ genNamespace mode slashVn namespaces version
     , "//"
     , "//   ./glean/schema/sync"
     , "//"
-    , "// @" <> "generated"
+    , "// \x40generated"
     , "// @" <> "nolint"
     , ""
     , "include \"glean/if/glean.thrift\"" ] ++

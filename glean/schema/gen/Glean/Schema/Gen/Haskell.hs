@@ -69,7 +69,7 @@ genTargets
   -> Text
 genTargets info =
   Text.unlines $
-     [ "# @" <> "generated"
+     [ "# \x40generated"
      , "# to regenerate: ./glean/schema/sync"
      , "load(\"@fbcode_macros//build_defs:haskell_library.bzl\", " <>
        "\"haskell_library\")"
