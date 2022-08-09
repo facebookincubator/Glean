@@ -36,6 +36,7 @@ import Control.Monad.Fix (MonadFix(..))
 import Control.Monad.ST (ST, runST)
 import qualified Control.Monad.Trans.State.Lazy as S
 import Data.Bifunctor (first)
+import Data.Bits
 import Data.ByteString (ByteString)
 import Data.Coerce
 import Data.Functor
@@ -81,7 +82,7 @@ data CodeS = CodeS
   , csConstants :: [Word64]
 
     -- | Cached `length csConstants`
-  , csConstantsSize :: !Word64
+  , csNextConstant :: !(Register 'Word)
 
     -- | Map known constants to their registers
   , csConstantMap :: IntMap (Register 'Word)
@@ -93,16 +94,16 @@ data CodeS = CodeS
   , csLiteralsSize :: !Word64
 
     -- | Currently used number of local registers
-  , csLocals :: {-# UNPACK #-} !Word64
+  , csNextLocal :: {-# UNPACK #-} !(Register 'Word)
 
     -- | Maximum number of local registers used so far
-  , csMaxLocal :: {-# UNPACK #-} !Word64
+  , csMaxLocal :: {-# UNPACK #-} !(Register 'Word)
 
     -- | Currently used number of binary::Output registers
-  , csOutputs :: {-# UNPACK #-} !Word64
+  , csNextOutput :: {-# UNPACK #-} !(Register 'BinaryOutputPtr)
 
     -- | Maximum number of binary::Output registers
-  , csMaxOutputs :: {-# UNPACK #-} !Word64
+  , csMaxOutputs :: {-# UNPACK #-} !(Register 'BinaryOutputPtr)
   }
 
 -- | Code gen monad
@@ -119,13 +120,13 @@ constant w = Code $ do
   case IntMap.lookup (fromIntegral w) csConstantMap of
     Just r -> return r
     Nothing -> do
-      let r = Register Constant csConstantsSize
       S.put s
         { csConstants = w : csConstants
-        , csConstantsSize = csConstantsSize + 1
-        , csConstantMap = IntMap.insert (fromIntegral w) r csConstantMap
+        , csNextConstant = succ csNextConstant
+        , csConstantMap =
+            IntMap.insert (fromIntegral w) csNextConstant csConstantMap
         }
-      return r
+      return csNextConstant
 
 -- | Generate a chunk of code with a reserved fresh register. The register can
 -- be reused afterwards.
@@ -133,21 +134,22 @@ local :: (Register t -> Code a) -> Code a
 local f = do
   CodeS{..} <- Code S.get
   Code $ S.modify' $ \s -> s
-    { csLocals = csLocals + 1
-    , csMaxLocal = max csMaxLocal (csLocals + 1) }
-  x <- f $ Register Local csLocals
-  Code $ S.modify' $ \s -> s { csLocals = csLocals }
+    { csNextLocal = succ csNextLocal
+    , csMaxLocal = max csMaxLocal (succ csNextLocal) }
+  x <- f $ castRegister csNextLocal
+  Code $ S.modify' $ \s -> s { csNextLocal = csNextLocal }
   return x
 
 locals :: Int -> ([Register t] -> Code a) -> Code a
 locals 0 f = f []
 locals n f = do
   CodeS{..} <- Code S.get
+  let !next = offsetRegister csNextLocal n
   Code $ S.modify' $ \s -> s
-    { csLocals = csLocals + fromIntegral n
-    , csMaxLocal = max csMaxLocal (csLocals + fromIntegral n) }
-  x <- f $ map (Register Local) [csLocals .. csLocals + fromIntegral n - 1]
-  Code $ S.modify' $ \s -> s { csLocals = csLocals }
+    { csNextLocal = next
+    , csMaxLocal = max csMaxLocal next }
+  x <- f $ coerce [csNextLocal .. pred next]
+  Code $ S.modify' $ \s -> s { csNextLocal = csNextLocal }
   return x
 
 -- | Declare a register of type @Register 'BinaryOutputPtr@.  The register
@@ -157,11 +159,12 @@ outputs :: Int -> ([Register 'BinaryOutputPtr] -> Code a) -> Code a
 outputs 0 f = f []
 outputs n f = do
   CodeS{..} <- Code S.get
+  let !next = offsetRegister csNextOutput n
   Code $ S.modify' $ \s -> s
-    { csOutputs = csOutputs + fromIntegral n
-    , csMaxOutputs = max csMaxOutputs (csOutputs + fromIntegral n) }
-  x <- f $ map (Register Input) [csOutputs .. csOutputs + fromIntegral n - 1]
-  Code $ S.modify' $ \s -> s { csOutputs = csOutputs }
+    { csNextOutput = next
+    , csMaxOutputs = max csMaxOutputs next }
+  x <- f [csNextOutput .. pred next]
+  Code $ S.modify' $ \s -> s { csNextOutput = csNextOutput }
   return x
 
 output :: (Register 'BinaryOutputPtr -> Code a) -> Code a
@@ -178,68 +181,73 @@ output f = outputs 1 (f . head)
 --   'calledCode' uses the high-water mark of the call sites as the
 --   base for its local registers.
 --
-data CallSite = CallSite { callSiteLocals :: Word64, callSiteOutputs :: Word64 }
+data CallSite = CallSite
+  { callSiteNextLocal :: Register 'Word
+  , callSiteNextOutput :: Register 'BinaryOutputPtr
+  }
 
 callSite :: Code CallSite
 callSite = do
   CodeS{..} <- Code S.get
-  return (CallSite csLocals csOutputs)
+  return (CallSite csNextLocal csNextOutput)
 
 calledFrom :: [CallSite] -> Code a -> Code a
 calledFrom frames inner = do
   CodeS{..} <- Code S.get
   Code $ S.modify' $ \s -> s
-    { csLocals = maximum (map callSiteLocals frames)
-    , csOutputs = maximum (map callSiteOutputs frames) }
+    { csNextLocal = maximum (map callSiteNextLocal frames)
+    , csNextOutput = maximum (map callSiteNextOutput frames) }
   x <- inner
-  Code $ S.modify' $ \s -> s { csLocals = csLocals, csOutputs = csOutputs }
+  Code $ S.modify' $ \s -> s
+    { csNextLocal = csNextLocal
+    , csNextOutput = csNextOutput }
   return x
 
 -- | Tuples of registers
 class Registers a where
-  registers :: Segment -> Word64 -> (a, Word64)
+  registers :: Register 'Word -> (a, Register 'Word)
 
 instance Registers () where
-  registers _ i = ((), i)
+  registers r = ((), r)
 
 instance Registers (Register t) where
-  registers s i = (Register s i, i+1)
+  registers r = (castRegister r, succ r)
 
 instance (Registers a, Registers b) => Registers (a,b) where
-  registers s i0 =
-    let (a, i1) = registers s i0
-        (b, i2) = registers s i1
+  registers i0 =
+    let (a, i1) = registers i0
+        (b, i2) = registers i1
     in
     ((a,b), i2)
 
 instance (Registers a, Registers b, Registers c) => Registers (a,b,c) where
-  registers s i0 =
-    let (a, i1) = registers s i0
-        (b, i2) = registers s i1
-        (c, i3) = registers s i2
+  registers i0 =
+    let (a, i1) = registers i0
+        (b, i2) = registers i1
+        (c, i3) = registers i2
     in
     ((a,b,c), i3)
 
 instance
     (Registers a, Registers b, Registers c, Registers d)
     => Registers (a,b,c,d) where
-  registers s i0 =
-    let (a, i1) = registers s i0
-        (b, i2) = registers s i1
-        (c, i3) = registers s i2
-        (d, i4) = registers s i3
+  registers i0 =
+    let (a, i1) = registers i0
+        (b, i2) = registers i1
+        (c, i3) = registers i2
+        (d, i4) = registers i3
     in
     ((a,b,c,d), i4)
 
 instance
     (Registers a, Registers b, Registers c, Registers d, Registers e)
     => Registers (a,b,c,d,e) where
-  registers s i0 =
-    let (a, i1) = registers s i0
-        (b, i2) = registers s i1
-        (c, i3) = registers s i2
-        (d, i4) = registers s i3
-        (e, i5) = registers s i4
+  registers i0 =
+    let (a, i1) = registers i0
+        (b, i2) = registers i1
+        (c, i3) = registers i2
+        (d, i4) = registers i3
+        (e, i5) = registers i4
     in
     ((a,b,c,d,e), i5)
 
@@ -256,33 +264,36 @@ data Optimised = Optimised | Unoptimised
 generate
   :: Registers input => Optimised -> (input -> Code ()) -> IO (Subroutine t)
 generate opt gen
-  | (input, inputSize) <- registers Input 0 =
+  | (input, nextInput) <- registers (register Input 0) =
   case S.runState (runCode $ gen input) CodeS
         { csLabel = Label 0
         , csInsns = []
         , csBlocks = []
         , csConstants = []
         , csConstantMap = IntMap.empty
-        , csConstantsSize = 0
+        , csNextConstant = register Constant 0
         , csLiterals = HashMap.empty
         , csLiteralsSize = 0
-        , csLocals = 0
-        , csMaxLocal = 0
-        , csOutputs = inputSize
-        , csMaxOutputs = inputSize } of
+        , csNextLocal = register Local 0
+        , csMaxLocal = register Local 0
+        , csNextOutput = castRegister nextInput
+        , csMaxOutputs = castRegister nextInput } of
     ((), CodeS{..}) -> do
       -- sanity check
       when (not $ null csInsns) $ fail "unterminated basic block"
       let -- output registers go after input registers
-          finalInputSize = csMaxOutputs
+          finalInputSize = registerIndex csMaxOutputs
+          constantsSize = registerIndex csNextConstant
 
           get_label pc label = (offsets VP.! fromLabel label) - pc
 
           get_reg :: forall ty . Register ty -> Word64
-          get_reg (Register Input n) = assert (n < finalInputSize) n
-          get_reg (Register Constant n) = assert (n < csConstantsSize)
-            (n + finalInputSize)
-          get_reg (Register Local n) = n + finalInputSize + csConstantsSize
+          get_reg r = case registerSegment r of
+            Input -> assert (n < finalInputSize) n
+            Constant -> assert (n < constantsSize) (n + finalInputSize)
+            Local -> n + finalInputSize + constantsSize
+            where
+              !n = registerIndex r
 
           optimise = case opt of
             Optimised -> shortcut
@@ -303,8 +314,8 @@ generate opt gen
       subroutine
         (VS.fromListN (length code) code)
         finalInputSize
-        (csMaxOutputs - inputSize)
-        (csMaxLocal + csConstantsSize)
+        (finalInputSize - registerIndex nextInput)
+        (registerIndex csMaxLocal + constantsSize)
         (reverse csConstants)
         (map fst $ sortBy (comparing snd) $ HashMap.toList csLiterals)
 
@@ -422,9 +433,27 @@ data Segment = Input | Constant | Local
   deriving(Eq,Ord,Enum,Bounded,Show)
 
 -- | Registers
-data Register (t :: Ty)
-  = Register !Segment {-# UNPACK #-} !Word64
-  deriving Show
+--
+-- A register has a 'Segment' and an index within the segment, packed into
+-- a word.
+newtype Register (t :: Ty) = Register Word64
+  deriving (Eq, Ord, Enum, Show)
+
+-- | Create a register with the given 'Segment' and index
+register :: Segment -> Word64 -> Register a
+register s i = Register $ (fromIntegral (fromEnum s) `shiftL` 62) .|. i
+
+-- | Get the 'Segment' of the register
+registerSegment :: Register a  -> Segment
+registerSegment (Register i) = toEnum $ fromIntegral (i `shiftR` 62)
+
+-- | Get the index of the register within its segment
+registerIndex :: Register a -> Word64
+registerIndex (Register i) = i .&. 0x3FFFFFFFFFFFFFFF
+
+-- | Produce a register with its index offset by `n` from the original one
+offsetRegister :: Register a -> Int -> Register a
+offsetRegister (Register i) n = Register (i + fromIntegral n)
 
 castRegister :: Register a -> Register b
 castRegister = coerce
