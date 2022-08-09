@@ -708,38 +708,39 @@ std::unique_ptr<QueryResults> executeQuery (
             reinterpret_cast<binary::Output *>(val));
       };
 
-  uint64_t frame[sub.frameSize()];
-
-  auto activation = restart
-    ? sub.restart(
-        frame,
+  folly::Optional<thrift::internal::SubroutineState> subState;
+  Subroutine::Activation::with(sub, [&](Subroutine::Activation& activation) {
+    if (restart) {
+      activation.restart(
         *restart->sub()->entry(),
         restart->sub()->locals()->begin(),
-        restart->sub()->locals()->end())
-    : sub.activate(frame);
+        restart->sub()->locals()->end());
+    } else {
+      activation.start();
+    }
 
-  auto args = activation.args();
-  *args++ = reinterpret_cast<uint64_t>(&seek_);
-  *args++ = reinterpret_cast<uint64_t>(&seekWithinSection_);
-  *args++ = reinterpret_cast<uint64_t>(&currentSeek_);
-  *args++ = reinterpret_cast<uint64_t>(&endSeek_);
-  *args++ = reinterpret_cast<uint64_t>(&next_);
-  *args++ = reinterpret_cast<uint64_t>(&lookupKeyValue_);
-  *args++ = reinterpret_cast<uint64_t>(&result_);
-  *args++ = reinterpret_cast<uint64_t>(&resultWithPid_);
-  *args++ = reinterpret_cast<uint64_t>(&newDerivedFact_);
-  *args++ = 0; // unused
-  *args++ = reinterpret_cast<uint64_t>(max_results);
-  *args++ = reinterpret_cast<uint64_t>(max_bytes);
-  for (auto i = 0; i < sub.outputs; i++) {
-    *args++ = reinterpret_cast<uint64_t>(&q.outputs[i]);
-  }
+    auto args = activation.args();
+    *args++ = reinterpret_cast<uint64_t>(&seek_);
+    *args++ = reinterpret_cast<uint64_t>(&seekWithinSection_);
+    *args++ = reinterpret_cast<uint64_t>(&currentSeek_);
+    *args++ = reinterpret_cast<uint64_t>(&endSeek_);
+    *args++ = reinterpret_cast<uint64_t>(&next_);
+    *args++ = reinterpret_cast<uint64_t>(&lookupKeyValue_);
+    *args++ = reinterpret_cast<uint64_t>(&result_);
+    *args++ = reinterpret_cast<uint64_t>(&resultWithPid_);
+    *args++ = reinterpret_cast<uint64_t>(&newDerivedFact_);
+    *args++ = 0; // unused
+    *args++ = reinterpret_cast<uint64_t>(max_results);
+    *args++ = reinterpret_cast<uint64_t>(max_bytes);
+    for (auto i = 0; i < sub.outputs; i++) {
+      *args++ = reinterpret_cast<uint64_t>(&q.outputs[i]);
+    }
 
-  activation.execute();
-  folly::Optional<thrift::internal::SubroutineState> subState;
-  if (activation.suspended()) {
-    subState = activation.toThrift();
-  }
+    activation.execute();
+    if (activation.suspended()) {
+      subState = activation.toThrift();
+    }
+  });
 
   return q.finish(std::move(subState));
 }

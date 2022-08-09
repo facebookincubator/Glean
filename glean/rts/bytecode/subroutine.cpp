@@ -329,10 +329,10 @@ struct Eval {
 
 void Subroutine::Activation::execute() {
   pc = Eval{
-    sub->literals.data(),
-    sub->code.data(),
+    sub.literals.data(),
+    sub.code.data(),
     pc,
-    frame}.
+    frame()}.
 #if USE_SWITCH
     evalSwitch();
 #else
@@ -378,14 +378,14 @@ thrift::internal::SubroutineState Subroutine::Activation::toThrift()
     const {
   thrift::internal::SubroutineState state;
   state.code() = std::string(
-    reinterpret_cast<const char *>(sub->code.data()),
-    sub->code.size() * sizeof(uint64_t));
-  state.entry() = pc - sub->code.data();
-  state.literals() = sub->literals;
+    reinterpret_cast<const char *>(sub.code.data()),
+    sub.code.size() * sizeof(uint64_t));
+  state.entry() = pc - sub.code.data();
+  state.literals() = sub.literals;
   state.locals() = std::vector<int64_t>(
-    frame + sub->inputs,
-    frame + sub->inputs + sub->locals);
-  state.inputs() = sub->inputs;
+    frame() + sub.inputs,
+    frame() + sub.inputs + sub.locals);
+  state.inputs() = sub.inputs;
   return state;
 }
 

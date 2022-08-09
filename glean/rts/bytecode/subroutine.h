@@ -64,30 +64,45 @@ struct Subroutine {
   /// arguments. The activation requires a pointer to a preallocated frame but
   /// doesn't own it. This is mostly because we want to be able to avoid having
   /// to 'malloc' the frame for each execution.
-  struct Activation final {
-    const Subroutine *sub;
-    uint64_t *frame;
+  class Activation final {
+   public:
+    Activation(const Activation&) = delete;
+    Activation(Activation&&) = delete;
+    Activation& operator=(const Activation&) = delete;
+    Activation& operator=(Activation&&) = delete;
 
-    // null if the activation has finished executing
-    const uint64_t * FOLLY_NULLABLE pc;
+    /// Allocate an activation on the stack and pass it to the supplied function
+    /// which needs to 'start' or 'restart' it, initialise its 'args' and then
+    /// 'execute' it. Note that the Subroutine must remain alive throughout the
+    /// lifetime of the activation.
+    template<typename F> static auto with(const Subroutine& sub, F&& f) {
+      alignas(Activation) unsigned char buf[byteSize(sub)];
+      struct Guard {
+        Activation *ptr;
+        ~Guard() { ptr->~Activation(); }
+      };
+      Guard guard{new(buf) Activation(sub)};
+      return std::forward<F>(f)(*guard.ptr);
+    }
 
-    /// Initialise the activation. Both `sub` and `frame` have to remain alive
-    /// throughout the execution of activation.
+    /// Set up the activation to start executing the subroutine.
+    void start() {
+      restart(0, sub.constants.begin(), sub.constants.end());
+    }
+
+    /// Set up the activation to restart execution from a previously suspended
+    /// state.
     template<typename Iter>
-    Activation(
-        const Subroutine *sub,
-        uint64_t* frame,
-        uint64_t entry,
-        Iter locals_begin,
-        Iter locals_end) : sub(sub), frame(frame), pc(sub->code.data() + entry) {
-      std::copy(locals_begin, locals_end, frame + sub->inputs);
+    void restart(uint64_t entry, Iter locals_begin, Iter locals_end) {
+      pc = sub.code.data() + entry;
+      std::copy(locals_begin, locals_end, frame() + sub.inputs);
     }
 
     using arg_insert_iterator = uint64_t *;
 
     /// Get an inserter for supplying args to the subroutine
     arg_insert_iterator args() {
-      return frame;
+      return frame();
     }
 
     /// Execute the activation. If 'suspended' is true after the call, execution
@@ -100,35 +115,37 @@ struct Subroutine {
     }
 
     thrift::internal::SubroutineState toThrift() const;
+
+   private:
+    explicit Activation(const Subroutine &sub) : sub(sub) {}
+
+    /// We place the frame right after the Activation object.
+    static size_t byteSize(const Subroutine& sub) {
+      return sizeof(Activation) + sub.frameSize() * sizeof(uint64_t);
+    }
+
+    uint64_t *frame() {
+      return reinterpret_cast<uint64_t *>(this+1);
+    }
+
+    const uint64_t *frame() const {
+      return reinterpret_cast<const uint64_t *>(this+1);
+    }
+
+    const Subroutine &sub;
+
+    // null if the activation has finished executing
+    const uint64_t * FOLLY_NULLABLE pc;
   };
-
-  /// Create an activation record for the subroutine.
-  ///
-  /// @param frame Preallocated (but not initialised) frame of at least
-  /// 'frameSize' words.
-  Activation activate(uint64_t *frame) const {
-    return Activation(this, frame, 0, constants.begin(), constants.end());
-  }
-
-  /// Restore an activation record for the subroutine.
-  ///
-  /// @param frame Preallocated (but not initialised) frame of at least
-  /// 'frameSize' words.
-  /// @param entry Offset into the subroutine's code.
-  /// @param locals_begin Start of local registers to restore.
-  /// @param locals_end End of local registers to restore.
-  template<typename Iter>
-  Activation restart(uint64_t *frame, uint64_t entry, Iter locals_begin, Iter locals_end) const {
-    return Activation(this, frame, entry, locals_begin, locals_end);
-  }
 
   /// Execute the subroutine with the given arguments.
   void execute(std::initializer_list<uint64_t> args) const {
-    uint64_t frame[frameSize()];
-    auto activation = activate(frame);
-    std::copy(args.begin(), args.end(), activation.args());
-    activation.execute();
-    assert(!activation.suspended());
+    Activation::with(*this, [&](Activation& activation) {
+      activation.start();
+      std::copy(args.begin(), args.end(), activation.args());
+      activation.execute();
+      assert(!activation.suspended());
+    });
   }
 
   bool operator==(const Subroutine& other) const;
