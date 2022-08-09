@@ -68,7 +68,8 @@ predicate SearchByScope:
     entity: code.Entity,
   }
   { Name, Scope, Language, Entity } where
-    ( Cpp = Language; CxxSearchByScope { Name, Scope, Entity } );
+    ( Cpp = Language; CxxSearchByScope { Name, Scope, Entity } ) |
+    ( Hack = Language; HackSearchByScope { Name, Scope, Entity } );
     code.EntityLanguage { Entity, Language };
 
 # lower case by scope (experimental!)
@@ -80,7 +81,8 @@ predicate SearchByLowerCaseScope:
     entity: code.Entity,
   }
   { Name, Scope, Language, Entity } where
-    ( Cpp = Language; CxxSearchByLowerCaseScope { Name, Scope, Entity } );
+    ( Cpp = Language; CxxSearchByLowerCaseScope { Name, Scope, Entity } ) |
+    ( Hack = Language; HackSearchByLowerCaseScope { Name, Scope, Entity } );
     code.EntityLanguage { Entity, Language };
 
 # global entity search by identifier name (or prefix)
@@ -138,6 +140,39 @@ predicate HackSearchByLowerCaseName:
   { Name, Entity } where
   hack.NameLowerCase { Name, hack.Name NameCase };
   HackSearchByName { NameCase, Entity };
+
+predicate HackSearchByScope:
+  {
+    name: string,
+    scope: [string],
+    entity: code.Entity,
+  }
+  { NameStr, Query, Entity } where
+    Name = hack.Name NameStr;
+    HackSearchByScopeWithName { Name, Query, Entity }
+
+predicate HackSearchByLowerCaseScope:
+  {
+    name: string,
+    scope: [string],
+    entity: code.Entity,
+  }
+  { NameStr, Query, Entity} where
+    hack.NameLowerCase { NameStr, Name };
+    HackSearchByScopeWithName { Name, Query, Entity }
+
+# private helper to share name facts between the calsl
+predicate HackSearchByScopeWithName:
+  {
+    name: hack.Name,
+    scope: [string],
+    entity: code.Entity,
+  }
+  { Name, Query, { hack = { decl = Decl }}} where
+    search.hack.QueryToScope { Query, ScopeName, ScopeNamespace };
+    if (nothing = ScopeNamespace) # don't try to match empty names
+      then search.hack.SearchInContext { Name, ScopeName, _ , Decl }
+      else search.hack.SearchInContext { Name, ScopeName, ScopeNamespace, Decl };
 
 predicate PythonSearchByName:
   {

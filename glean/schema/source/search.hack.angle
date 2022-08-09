@@ -152,4 +152,104 @@ predicate SearchInContext :
       NS = hack.NamespaceQName { name = ParentName, parent = ParentNamespace };
       SearchInNamespace {name = N, namespace_ = { just = NS }, decl = D} )
 
+#
+# Generating qnames and namespace qnames. We don't have recursion but we'd
+# like to compile the namespace tokens into a recursive QName type so we unroll
+#
+# We use the naming "Scope" to be consistent with the cxx implementation
+#
+# We specifically only search in non-empty namespaces, relying on
+# SearchByName for the global namespace search or wild cards. So
+# these won't match global constants or un-namespaced symbols.
+#
+predicate QueryToScope:
+  {
+    query : [string],
+    scopeName : hack.Name,
+    scopeNamespace : maybe hack.NamespaceQName
+  }
+  { Query, Name, QName } where
+    # zero tuple, can't do much with it. We don't have empty scopes
+    ( [] = Query; never = Name; QName = nothing : maybe hack.NamespaceQName ) |
+    # one tuple
+    ( [A] = Query;
+      Name = hack.Name A; nothing = QName ) | #
+    # two tuple
+    ( [B,A] = Query;
+      Name = hack.Name A;
+      BName = hack.Name B;
+      { just = { name = BName } } = QName ) | # parent wild
+    # three tuple
+    ( [C,B,A] = Query;
+      Name = hack.Name A;
+      BName = hack.Name B;
+      CName = hack.Name C;
+      { just = { name = BName,
+        parent = { just = { name = CName }} } }  = QName ) |
+    # four tuple
+    ( [D,C,B,A] = Query;
+      Name = hack.Name A;
+      BName = hack.Name B;
+      CName = hack.Name C;
+      DName = hack.Name D;
+      { just = { name = BName,
+        parent = { just = { name = CName,
+        parent = { just = { name = DName }} }} } }  = QName ) |
+    # five tuple, are there any? yes there are many
+    ( [E,D,C,B,A] = Query;
+      Name = hack.Name A;
+      BName = hack.Name B;
+      CName = hack.Name C;
+      DName = hack.Name D;
+      EName = hack.Name E;
+      { just = { name = BName,
+        parent = { just = { name = CName,
+        parent = { just = { name = DName,
+        parent = { just = { name = EName }} }} }} } }  = QName ) |
+    # six tuple
+    ( [F,E,D,C,B,A] = Query;
+      Name = hack.Name A;
+      BName = hack.Name B;
+      CName = hack.Name C;
+      DName = hack.Name D;
+      EName = hack.Name E;
+      FName = hack.Name F;
+      { just = { name = BName,
+        parent = { just = { name = CName,
+        parent = { just = { name = DName,
+        parent = { just = { name = EName,
+        parent = { just = { name = FName }} }} }} }} } }  = QName ) |
+    # seven tuple
+    ( [G,F,E,D,C,B,A] = Query;
+      Name = hack.Name A;
+      BName = hack.Name B;
+      CName = hack.Name C;
+      DName = hack.Name D;
+      EName = hack.Name E;
+      FName = hack.Name F;
+      GName = hack.Name G;
+      { just = { name = BName,
+        parent = { just = { name = CName,
+        parent = { just = { name = DName,
+        parent = { just = { name = EName,
+        parent = { just = { name = FName,
+        parent = { just = { name = GName }} }} }} }} }} } }  = QName ) |
+    # eight tuple
+    ( [H,G,F,E,D,C,B,A] = Query;
+      Name = hack.Name A;
+      BName = hack.Name B;
+      CName = hack.Name C;
+      DName = hack.Name D;
+      EName = hack.Name E;
+      FName = hack.Name F;
+      GName = hack.Name G;
+      HName = hack.Name H;
+      { just = { name = BName,
+        parent = { just = { name = CName,
+        parent = { just = { name = DName,
+        parent = { just = { name = EName,
+        parent = { just = { name = FName,
+        parent = { just = { name = GName,
+        parent = { just = { name = HName }} }} }} }} }} }} } }  = QName )
+
 }
