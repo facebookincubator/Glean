@@ -20,7 +20,6 @@ module Glean.Database.Meta
   , metaFromProps
   , utcTimeToPosixEpochTime
   , posixEpochTimeToUTCTime
-  , posixEpochTimeToTime
   ) where
 
 import qualified Data.ByteString.Char8 as B
@@ -126,7 +125,4 @@ utcTimeToPosixEpochTime :: UTCTime -> PosixEpochTime
 utcTimeToPosixEpochTime = PosixEpochTime . round . utcTimeToPOSIXSeconds
 
 posixEpochTimeToUTCTime :: PosixEpochTime -> UTCTime
-posixEpochTimeToUTCTime = toUTCTime . posixEpochTimeToTime
-
-posixEpochTimeToTime :: PosixEpochTime -> Time
-posixEpochTimeToTime = Time . fromIntegral . unPosixEpochTime
+posixEpochTimeToUTCTime = toUTCTime . Time . fromIntegral . unPosixEpochTime

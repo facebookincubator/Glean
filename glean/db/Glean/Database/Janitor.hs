@@ -229,16 +229,14 @@ runWithShards env myShards sm = do
           filter (\item -> repoNm == Thrift.repo_name (itemRepo item)) keep
 
     -- Open the most recent local DB for each repo in order to avoid lag spikes
-    let newestDb = head dbsByAge
-        isMostRecentDbAndLocal =
-          itemRepo newestDb `elem` mostRecent
-          && itemLocality newestDb == Local
-    when isMostRecentDbAndLocal $
-      whenM (atomically $ isDatabaseClosed env $ itemRepo newestDb)
+    let newestLocalDb = head dbsByAge
+    when (itemRepo newestLocalDb `elem` mostRecent
+        && itemLocality newestLocalDb == Local) $
+      whenM (atomically $ isDatabaseClosed env $ itemRepo newestLocalDb)
         $ void
         $ tryAll
-        $ logExceptions (inRepo $ itemRepo newestDb)
-        $ withOpenDatabase env (itemRepo newestDb) (\_ -> return ())
+        $ logExceptions (inRepo $ itemRepo newestLocalDb)
+        $ withOpenDatabase env (itemRepo newestLocalDb) (\_ -> return ())
 
     -- upsert counters
     void $ setCounter (prefix <> ".all") $ length repoKeep
@@ -258,10 +256,13 @@ runWithShards env myShards sm = do
     void $ setCounter (prefix <> ".backups") $ length $ filter
       (\Item{..} -> itemLocality == Cloud)
       dbsByAge
-    when isMostRecentDbAndLocal $ void $ do
-      let dbCreated = posixEpochTimeToTime(metaCreated $ itemMeta newestDb)
-          dbAge = timeSpanInSeconds $ fromUTCTime t `timeDiff` dbCreated
-      setCounter (prefix <> ".age") dbAge
+    let pt = fromUTCTime t
+        dbAges =
+          [ timeSpanInSeconds $ pt `timeDiff`
+              Time (fromIntegral (unPosixEpochTime (metaCreated itemMeta)))
+            | Item{itemLocality=Local, ..} <- dbsByAge ]
+    unless (null dbAges) $ void $
+      setCounter (prefix <> ".age") $ minimum dbAges
 
   -- Report shard stats for dynamic sharding assignment
   mapM_ (\(n,v) -> setCounter (Text.encodeUtf8 n) v) $
