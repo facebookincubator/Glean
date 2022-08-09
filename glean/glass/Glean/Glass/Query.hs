@@ -174,38 +174,68 @@ searchByName
   -> Angle CodeSearch.SearchByName
 
 searchByName sType sCase name kinds langs =
-    codeSearchByName nameQ caseQ mKindQ mLangQ
+  codeSearchByName $ toSearchQ sType sCase name Nothing kinds langs
+
+_searchByScope
+  :: SearchType
+  -> SearchCase
+  -> Text
+  -> [Text]
+  -> [Code.SymbolKind]
+  -> [Code.Language]
+  -> Angle CodeSearch.SearchByScope
+
+_searchByScope sType sCase name scope  kinds langs =
+  codeSearchByScope $ toSearchQ sType sCase name (Just scope) kinds langs
+
+data SearchQ = SearchQ {
+    nameQ :: Angle Text,
+    caseQ  :: Angle CodeSearch.SearchCase,
+    scopeQ :: Maybe (Angle [Text]),
+    mKindQ :: Maybe (Angle Code.SymbolKind),
+    mLangQ :: Maybe (Angle Code.Language)
+  }
+
+toSearchQ
+   :: SearchType
+   -> SearchCase
+   -> Text
+   -> Maybe [Text]
+   -> [Code.SymbolKind]
+   -> [Code.Language]
+   -> SearchQ
+toSearchQ sType sCase name scope kinds langs = SearchQ{..}
+  where
+    nameQ = toNameQuery sType sCase name
+    scopeQ = array . map string <$> scope
+    caseQ = toCaseQuery sCase
+    mKindQ = toEnumSet kinds
+    mLangQ = toEnumSet langs
+
+toNameQuery :: SearchType -> SearchCase -> Text -> Angle Text
+toNameQuery sType sCase name = case sType of
+    Exact -> string nameLit
+    Prefix -> stringPrefix nameLit
   where
     nameLit = case sCase of
       Sensitive -> name
       Insensitive -> toLower name
 
-    nameQ = case sType of
-      Exact -> string nameLit
-      Prefix -> stringPrefix nameLit
+toEnumSet :: AngleEnum a => [a] -> Maybe (Angle (AngleEnumTy a))
+toEnumSet langs = case langs of
+  [] -> Nothing -- n.b. unconstrained
+  ls -> Just $ foldr1 (.|) (map enum ls) -- restrict to specific langs
 
-    caseQ = enum $ case sCase of
-      Sensitive -> CodeSearch.SearchCase_Sensitive
-      Insensitive -> CodeSearch.SearchCase_Insensitive
-
-    mKindQ = case kinds of
-      [] -> Nothing -- n.b. unconstrained, including entities with no kind
-      ks -> Just $ foldr1 (.|) (map enum ks)
-
-    mLangQ = case langs of
-      [] -> Nothing -- n.b. unconstrained
-      ls -> Just $ foldr1 (.|) (map enum ls) -- restrict to specific langs
+toCaseQuery :: SearchCase -> Angle CodeSearch.SearchCase
+toCaseQuery sCase = enum $ case sCase of
+  Sensitive -> CodeSearch.SearchCase_Sensitive
+  Insensitive -> CodeSearch.SearchCase_Insensitive
 
 --
 -- Find entities by strings, with an optional kind expression filter
 --
-codeSearchByName
-  :: Angle Text
-  -> Angle CodeSearch.SearchCase
-  -> Maybe (Angle Code.SymbolKind)
-  -> Maybe (Angle Code.Language)
-  -> Angle CodeSearch.SearchByName
-codeSearchByName nameQ caseQ mKindQ mLangQ =
+codeSearchByName :: SearchQ -> Angle CodeSearch.SearchByName
+codeSearchByName SearchQ{..} =
   predicate @CodeSearch.SearchByName $
     rec $
       field @"name" nameQ $ -- may be prefix
@@ -214,6 +244,24 @@ codeSearchByName nameQ caseQ mKindQ mLangQ =
       field @"language" languagePat -- optional language filters
     end
   where
+    kindPat = maybe wild just mKindQ
+    languagePat = fromMaybe wild mLangQ
+
+--
+-- Find entities by name in tokenized namespace
+--
+codeSearchByScope :: SearchQ -> Angle CodeSearch.SearchByScope
+codeSearchByScope SearchQ{..} =
+  predicate @CodeSearch.SearchByScope $
+    rec $
+      field @"name" nameQ $
+      field @"scope" scopePat $
+      field @"searchcase" caseQ $
+      field @"kind" kindPat $ -- specific kinds only
+      field @"language" languagePat -- optional language filters
+    end
+  where
+    scopePat = fromMaybe (array []) scopeQ
     kindPat = maybe wild just mKindQ
     languagePat = fromMaybe wild mLangQ
 
@@ -234,13 +282,24 @@ data SymbolSearchData = SymbolSearchData
 
 -- | We need most of the result of the predicate, so rather than a
 -- data query we just unmarshall here and call the predicate directly
-toSearchResult :: CodeSearch.SearchByName -> RepoHaxl u w SymbolSearchData
-toSearchResult p = do
-  CodeSearch.SearchByName_key{..} <- Glean.keyOf p
-  pure $ SymbolSearchData
-    searchByName_key_entity
-    searchByName_key_location
-    searchByName_key_kind
+class ToSearchResult a where
+  toSearchResult :: a -> RepoHaxl u w SymbolSearchData
+
+instance ToSearchResult CodeSearch.SearchByName where
+  toSearchResult p = do
+    CodeSearch.SearchByName_key{..} <- Glean.keyOf p
+    pure $ SymbolSearchData
+      searchByName_key_entity
+      searchByName_key_location
+      searchByName_key_kind
+
+instance ToSearchResult CodeSearch.SearchByScope where
+  toSearchResult p = do
+    CodeSearch.SearchByScope_key{..} <- Glean.keyOf p
+    pure $ SymbolSearchData
+      searchByScope_key_entity
+      searchByScope_key_location
+      searchByScope_key_kind
 
 -- | Type of processed search results from a single scm repo
 newtype RepoSearchResult =
