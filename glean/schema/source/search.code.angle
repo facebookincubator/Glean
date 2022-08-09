@@ -230,7 +230,10 @@ predicate CxxSearchByScope:
     Name = cxx1.Name NameStr;
     search.cxx.SearchByNameAndScope { Name, Scope, Ent };
     if ({ decl = Decl } = Ent) # just definitions , not decls
-      then ( code.cxx.DeclToDef { Decl, Defn }; { defn = Defn } = DefnE )
+    # I think we can avoid searching through decl families since we're
+    # searching all matches anyway
+    #  then ( code.cxx.DeclToDef { Decl, Defn }; { defn = Defn } = DefnE )
+      then ( search.cxx.DeclIsDefn { Decl, Defn }; { defn = Defn } = DefnE )
       else ( Ent = DefnE );
 
 predicate CxxSearchByLowerCaseScope:
