@@ -126,6 +126,9 @@ predicate EntityUses :
 #
 # Generating scope values for queries
 #
+# We could play games with holes in the namespace query, or anonymous
+# segments
+#
 
 # Compile search query tuples into scope facts
 predicate QueryToScope :
@@ -136,11 +139,78 @@ predicate QueryToScope :
   { Query, Scope } where
     # global wild
     ( [] = Query;
-      { global_ = _ } ) |
+     { global_ = _ } ) |
     # namespace scope
     ( QueryToNSQName { Query, NSQName };
-      { namespace_ = NSQName } ) = Scope;
-    # todo: records
+      { namespace_ = NSQName } ) |
+    ( QueryToQName { Query, QName };
+      { recordWithAccess = { record = QName,
+          access = Public | Protected | Private } } # avoid wild card bind error
+    ) = Scope;
+
+#
+# we don't have recursion, so have to flatten tuples manually.
+# Manual codegen below...
+#
+
+# compile to generic scoped qname
+predicate QueryToQName:
+  {
+    query : [string],
+    scope : cxx1.QName
+  }
+  { Query, QName } where
+    # zero tuple
+    ( [] = Query;
+      cxx1.QName { name = "", scope = { global_ = {} } } ) |
+    # one tuple
+    ( [A] = Query;
+      AName = cxx1.Name A;
+      { name = AName } ) |
+    # two tuple. we branch back to scope cases
+    ( [B,A] = Query;
+      AName = cxx1.Name A;
+      BName = cxx1.Name B;
+      { name = AName, scope =
+        { namespace_ = { name = { just = BName } } } |
+        { recordWithAccess = { record = { name = BName } } }
+      } ) |
+    # three tuple
+    ( [C,B,A] = Query;
+      AName = cxx1.Name A;
+      BName = cxx1.Name B;
+      CName = cxx1.Name C;
+      { name = AName, scope =
+        { namespace_ = { name = { just = BName },
+          parent = { just = { name = { just = CName } } } } } |
+        { recordWithAccess = { record = { name = BName,
+          scope = { namespace_ = { name = { just = CName } } } |
+                  { recordWithAccess = { record = { name = CName } } }
+        } } }
+      } ) |
+    # four tuple sigh. e.g. 4 records deep , or two records in two namespaces
+    ( [D,C,B,A] = Query;
+      AName = cxx1.Name A;
+      BName = cxx1.Name B;
+      CName = cxx1.Name C;
+      DName = cxx1.Name D;
+      { name = AName, scope =
+        { namespace_ = { name = { just = BName },
+          parent = { just = { name = { just = CName },
+            parent = { just = { name = { just = DName } }  }
+           } } } } |
+        { recordWithAccess = { record = { name = BName,
+          scope = { namespace_ = { name = { just = CName },
+            parent = { just = { name = { just = DName } } }
+           } } |
+          { recordWithAccess = { record = { name = CName,
+          scope = { namespace_ = { name = { just = DName } } } |
+            { recordWithAccess = { record = { name = DName } } }
+           } } }
+        } } }
+      }
+
+    ) = QName;
 
 # compile to namespace qname
 predicate QueryToNSQName:
@@ -150,25 +220,14 @@ predicate QueryToNSQName:
   }
   { Query, NSQName } where
     # zero tuple
-    ( [] = Query;
-      { nothing, nothing } ) |
+    ( [] = Query; { nothing, nothing } ) |
     # one tuple
-    ( [A] = Query;
-      { name = { just = cxx1.Name A }} ) | # parent wild
-
-    # should I not be able to write?
-    # recursive reference to predicate
-    # search.cxx.QueryToNSQName.5 .. in
-    # ( [B,A] = Query;
-    #   { just = cxx1.Name A } = AName;
-    #   QueryToNSQName { [B], Parent };
-    #   { name = AName, parent = { just = Parent } } ) |
-
-    # two tuple (can we write this recursively? ...)
+    ( [A] = Query; { name = { just = cxx1.Name A }} ) | # n.b. parent wild
+    # two tuple
     ( [B,A] = Query;
       { just = cxx1.Name A } = AName;
-      { just = { name = { just = cxx1.Name B } } } = BName;
-      { name = AName, parent = BName } ) |
+      { just = cxx1.Name B } = BName;
+      { name = AName, parent = { just = { name = BName } } } ) |
     # three tuple
     ( [C,B,A] = Query;
       { just = cxx1.Name A } = AName;
