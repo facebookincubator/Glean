@@ -14,7 +14,9 @@ module Glean.RTS.Bytecode.Code
   , Optimised(..)
   , literal
   , label
-  , issue
+  , issueFallThrough
+  , issueCondJump
+  , issueUncondJump
   , constant
   , local
   , locals
@@ -429,27 +431,24 @@ castRegister = coerce
 
 -- | loadReg is fixed to Word, so make a polymorphic version
 move :: Register a -> Register a -> Code ()
-move src dst = issue $ LoadReg (castRegister src) (castRegister dst)
+move src dst = issueFallThrough $ LoadReg (castRegister src) (castRegister dst)
 
 advancePtr :: Register 'DataPtr -> Register 'Word -> Code ()
-advancePtr ptr off = issue $ Add off (castRegister ptr)
+advancePtr ptr off = issueFallThrough $ Add off (castRegister ptr)
 
-newBlock :: Code Label
-newBlock = Code $ do
+-- | Start a new basic block. The previous block will be terminated by the
+-- supplied unconditional jump instruction or, if none is provided, by a jump
+-- to the new block.
+newBlock :: Maybe Instruction -> Code ()
+newBlock terminator = Code $ do
   s@CodeS{..} <- S.get
   let !label = succ csLabel
+      insn = fromMaybe (Jump label) terminator
   S.put $! s
     { csLabel = label
     , csInsns = []
-    , csBlocks = Block (jump_to label csInsns) : csBlocks
+    , csBlocks = Block (insn : csInsns) : csBlocks
     }
-  return label
-  where
-    jump_to label insns
-      | insn : _ <- insns
-      , insnControl insn == UncondJump
-        || insnControl insn == UncondReturn = insns
-      | otherwise = Jump label : insns
 
 -- | Add a literal to the literal table and yield its index
 literal :: ByteString -> Code Word64
@@ -467,19 +466,23 @@ literal lit = Code $ do
 -- | Yield a label for the current position in the code
 label :: Code Label
 label = do
-  CodeS
-    { csLabel = label
-    , csInsns = insns } <- Code S.get
-  if null insns
-    then return label
-    else newBlock
+  insns <- Code $ S.gets csInsns
+  when (not $ null insns) $ newBlock Nothing
+  Code $ S.gets csLabel
 
--- | Issue an instruction
-issue :: Insn Register Label -> Code ()
-issue insn = do
-  Code $ S.modify' $ \s@CodeS{..} -> s { csInsns = insn : csInsns }
-  case insnControl insn of
-    CondJump -> void newBlock
-    UncondJump -> void newBlock
-    UncondReturn -> void newBlock
-    _ -> return ()
+issue :: Instruction -> Code ()
+issue insn = Code $ S.modify' $ \s@CodeS{..} -> s { csInsns = insn : csInsns }
+
+-- | Issue an instruction which doesn't modify the program counter
+issueFallThrough :: Instruction -> Code ()
+issueFallThrough = issue
+
+-- | Issue an instruction which might modify the program counter
+issueCondJump :: Instruction -> Code ()
+issueCondJump insn = do
+  issue insn
+  newBlock Nothing
+
+-- | Issue an instruction which always modifies the program counter
+issueUncondJump :: Instruction -> Code ()
+issueUncondJump = newBlock . Just

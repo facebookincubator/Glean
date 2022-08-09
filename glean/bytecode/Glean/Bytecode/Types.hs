@@ -8,7 +8,6 @@
 
 module Glean.Bytecode.Types
   ( Ty(..)
-  , Control(..)
   ) where
 
 -- | Instruction argument types
@@ -22,10 +21,3 @@ data Ty
   | BinaryOutputPtr -- ^ pointer to binary::Output (temporary, will be removed)
   | Fun [Ty] -- ^ pointer to std::function (temporary, will be removed)
   deriving(Eq, Show)
-
-data Control
-  = FallThrough
-  | CondJump
-  | UncondJump
-  | UncondReturn
-  deriving(Eq, Ord, Enum, Bounded, Read, Show)

@@ -53,7 +53,6 @@ main = do
     [ "Insn(..)"
     , "insnSize"
     , "insnWords"
-    , "insnControl"
     , "insnShow" ] $
     intercalate [""]
     [ [ "import Data.Word (Word64)"
@@ -63,7 +62,6 @@ main = do
     , genInsnType
     , genInsnSize
     , genInsnWords
-    , genInsnControl
     , genDecodable
     , genInsnShow ]
 
@@ -171,7 +169,8 @@ genIssue = intercalate [""]
     , Text.unwords (varName insnName : map argName insnArgs) <> " = do"
     ] ++ map ("  " <>)
       (mapMaybe literal insnArgs ++
-      [ "issue $ " <> Text.unwords (insnName : map genArgRef insnArgs) ])
+      [ issue insnControl
+          <> " $ " <> Text.unwords (insnName : map genArgRef insnArgs) ])
     | Insn{..} <- instructions ]
   where
     genArgType (Arg _ Literal Imm) = "ByteString"
@@ -187,11 +186,10 @@ genIssue = intercalate [""]
       name <> "_i <- literal " <> name
     literal _ = Nothing
 
-genInsnControl :: [Text]
-genInsnControl =
- "insnControl :: Insn reg label -> Control" :
-  [ "insnControl " <> insnName <> "{} = " <> Text.pack (show insnControl)
-    | Insn{..} <- instructions ]
+    issue UncondJump = "issueUncondJump"
+    issue UncondReturn = "issueUncondJump"
+    issue CondJump = "issueCondJump"
+    issue FallThrough = "issueFallThrough"
 
 genDecodable :: [Text]
 genDecodable =

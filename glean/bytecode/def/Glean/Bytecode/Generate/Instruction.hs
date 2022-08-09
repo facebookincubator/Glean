@@ -8,7 +8,9 @@
 
 module Glean.Bytecode.Generate.Instruction
   ( Insn(..)
-  , Arg(..), Usage(..)
+  , Control(..)
+  , Arg(..)
+  , Usage(..)
   , instructions
   , version
   , lowestSupportedVersion
@@ -31,6 +33,14 @@ data Insn = Insn
   , insnControl :: Control
   , insnArgs :: [Arg]
   }
+
+-- | How the instruction affects control flow
+data Control
+  = FallThrough
+  | CondJump
+  | UncondJump
+  | UncondReturn
+  deriving(Eq, Ord, Enum, Bounded, Read, Show)
 
 -- | Instruction argument.
 data Arg = Arg
