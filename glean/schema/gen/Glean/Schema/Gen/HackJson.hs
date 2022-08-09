@@ -143,7 +143,7 @@ genSchemaHackJson _version preddefs typedefs = HashMap.toList files
           }
     generatedMessage =
       "\0064generated" <>
-        " - To regenerated this file run fbcode//glean/schema/gen/sync-www"
+        " - To regenerate this file run fbcode//glean/schema/gen/sync-www"
 
 genTypeOfDef
   :: Context
