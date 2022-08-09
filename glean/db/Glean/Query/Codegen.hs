@@ -34,6 +34,7 @@ import Control.Monad.Extra (whenJust)
 import Control.Monad.State
 import Data.Bifunctor
 import Data.Bifoldable
+import Data.Bitraversable
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as ByteString
 import Data.Coerce
@@ -271,6 +272,21 @@ instance Bifoldable Match where
     MatchPrefix _ term -> foldMap (bifoldMap f g) term
     MatchArrayPrefix _ty pre ->
       (foldMap.foldMap) (bifoldMap f g) pre
+
+instance Bitraversable Match where
+  bitraverse f g = \case
+    MatchWild x -> pure $ MatchWild x
+    MatchNever x -> pure $ MatchNever x
+    MatchFid x -> pure $ MatchFid x
+    MatchExt ext -> MatchExt <$> f ext
+    MatchVar var -> MatchVar <$> g var
+    MatchBind var -> MatchBind <$> g var
+    MatchAnd a b -> MatchAnd
+      <$> traverse (bitraverse f g) a
+      <*> traverse (bitraverse f g) b
+    MatchPrefix b term -> MatchPrefix b <$> traverse (bitraverse f g) term
+    MatchArrayPrefix ty prefix ->
+      MatchArrayPrefix ty <$> traverse (traverse (bitraverse f g)) prefix
 
 matchVar :: Match ext var -> Maybe var
 matchVar (MatchVar v) = Just v
