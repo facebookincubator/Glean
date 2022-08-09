@@ -59,12 +59,10 @@ import Glean.Bytecode.Types
 import Glean.RTS.Bytecode.Gen.Instruction
 import Glean.RTS.Foreign.Bytecode (Subroutine, subroutine)
 
-type Instruction = Insn Register Label
-
 -- | A basic block
 newtype Block = Block
   { -- | Instructions (reversed)
-    blockInsns :: [Instruction]
+    blockInsns :: [Insn]
   }
 
 data CodeS = CodeS
@@ -72,7 +70,7 @@ data CodeS = CodeS
     csLabel :: {-# UNPACK #-} !Label
 
     -- | Instructions in current block (reversed)
-  , csInsns :: [Instruction]
+  , csInsns :: [Insn]
 
     -- | Blocks produced so far (reversed)
   , csBlocks :: [Block]
@@ -339,7 +337,7 @@ shortcut cfg@CFG{..}
   | otherwise = CFG
       { cfgBlocks = V.imap
           (\i Block{..} ->
-                Block { blockInsns = fmap relabel <$> inline i blockInsns })
+              Block { blockInsns = mapLabels relabel <$> inline i blockInsns })
           cfgBlocks
       , cfgEntry = relabel cfgEntry
       }
@@ -368,8 +366,8 @@ data Layout s = Layout
     -- | Label offsets
   , layoutLabels :: !(VPM.STVector s Word64)
 
-    -- | Instruction stream (all reversed)
-  , layoutInsns :: [[Instruction]]
+    -- | Insn stream (all reversed)
+  , layoutInsns :: [[Insn]]
 
     -- | Blocks not yet emitted
   , layoutTodo :: !IntSet
@@ -386,7 +384,7 @@ data Layout s = Layout
 -- * Otherwise, continue with the unemitted block with lowest label number.
 --
 -- There is obviously ample room for improvement here.
-layout :: CFG -> ([Instruction], VP.Vector Word64)
+layout :: CFG -> ([Insn], VP.Vector Word64)
 layout CFG{..} = runST $ do
   mlabels <- VPM.new $ V.length cfgBlocks
   emit cfgEntry Layout
@@ -398,7 +396,7 @@ layout CFG{..} = runST $ do
         $ IntSet.fromDistinctAscList [0 .. V.length cfgBlocks - 1]
     }
   where
-    emit :: Label -> Layout s -> ST s ([Instruction], VP.Vector Word64)
+    emit :: Label -> Layout s -> ST s ([Insn], VP.Vector Word64)
     emit !label Layout{..} = do
       VPM.write layoutLabels (fromLabel label) layoutOffset
 
@@ -460,7 +458,7 @@ advancePtr ptr off = issueFallThrough $ Add off (castRegister ptr)
 -- | Start a new basic block. The previous block will be terminated by the
 -- supplied unconditional jump instruction or, if none is provided, by a jump
 -- to the new block.
-newBlock :: Maybe Instruction -> Code ()
+newBlock :: Maybe Insn -> Code ()
 newBlock terminator = Code $ do
   s@CodeS{..} <- S.get
   let !label = succ csLabel
@@ -491,19 +489,19 @@ label = do
   when (not $ null insns) $ newBlock Nothing
   Code $ S.gets csLabel
 
-issue :: Instruction -> Code ()
+issue :: Insn -> Code ()
 issue insn = Code $ S.modify' $ \s@CodeS{..} -> s { csInsns = insn : csInsns }
 
 -- | Issue an instruction which doesn't modify the program counter
-issueFallThrough :: Instruction -> Code ()
+issueFallThrough :: Insn -> Code ()
 issueFallThrough = issue
 
 -- | Issue an instruction which might modify the program counter
-issueCondJump :: Instruction -> Code ()
+issueCondJump :: Insn -> Code ()
 issueCondJump insn = do
   issue insn
   newBlock Nothing
 
 -- | Issue an instruction which always modifies the program counter
-issueUncondJump :: Instruction -> Code ()
+issueUncondJump :: Insn -> Code ()
 issueUncondJump = newBlock . Just

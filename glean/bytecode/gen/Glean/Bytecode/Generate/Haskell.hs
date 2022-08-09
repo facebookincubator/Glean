@@ -49,8 +49,10 @@ main = do
     _ -> die "invalid arguments"
   createDirectoryIfMissing True dir
   genModule dir "Instruction"
-    [ "DeriveFunctor", "DeriveFoldable", "DeriveTraversable" ]
+    []
     [ "Insn(..)"
+    , "mapLabels"
+    , "insnLabels"
     , "insnSize"
     , "insnWords"
     , "insnShow" ] $
@@ -60,6 +62,8 @@ main = do
       , "import qualified Glean.Bytecode.Decode as D"
       , "import Glean.Bytecode.Types" ]
     , genInsnType
+    , genMapLabels
+    , genInsnLabels
     , genInsnSize
     , genInsnWords
     , genDecodable
@@ -100,19 +104,14 @@ genModule path name exts es ls =
 -- | Generate the Insn type. We parametrise over the types of registers and
 -- labels.
 genInsnType :: [Text]
-genInsnType =
-  [ "data Insn reg label" ]
-  ++ list "  = " "  | " (map genInsn instructions)
-  ++ [ "  deriving(Functor, Foldable, Traversable)" ]
---  ++
---  [ " deriving(Show)" ]
+genInsnType = "data Insn" : list "  = " "  | " (map genInsn instructions)
   where
     genInsn Insn{..} = Text.unwords $ insnName : map genArg insnArgs
 
-    genArg (Arg _ Offset Imm) = "label"
-    genArg (Arg _ Offsets Imm) = "[label]"
+    genArg (Arg _ Offset Imm) = "{-# UNPACK #-} !Label"
+    genArg (Arg _ Offsets Imm) = "[Label]"
     genArg (Arg _ _ Imm) = "{-# UNPACK #-} !Word64"
-    genArg (Arg _ ty _)  = "(reg " <> showTy ty <> ")"
+    genArg (Arg _ ty _)  = "{-# UNPACK #-} !(Register " <> showTy ty <> ")"
 
 showTy :: Ty -> Text
 showTy ty = case ty of
@@ -120,10 +119,44 @@ showTy ty = case ty of
     "('Fun '[ " <> Text.intercalate "," (map showTy args) <> " ])"
   _ -> "'" <> Text.pack (show ty)
 
+genMapLabels :: [Text]
+genMapLabels =
+  "mapLabels :: (Label -> Label) -> Insn -> Insn" :
+  [ "mapLabels f ("
+      <> Text.unwords (insnName insn : map argName (insnArgs insn))
+      <> ") = "
+      <> Text.unwords (insnName insn : exprs)
+    | insn <- instructions
+    , let exprs = map mkMap (insnArgs insn)
+    , any (\(expr,arg) -> expr /= argName arg) $ zip exprs $ insnArgs insn ]
+  ++
+  [ "mapLabels _ insn = insn"]
+  where
+    mkMap (Arg name Offset Imm) = "(f " <> name <> ")"
+    mkMap (Arg name Offsets Imm) = "(map f " <> name <> ")"
+    mkMap (Arg name _ _) = name
+
+genInsnLabels :: [Text]
+genInsnLabels =
+  "insnLabels :: Insn -> [Label]" :
+  [ "insnLabels ("
+      <> Text.unwords (insnName insn : map argName (insnArgs insn))
+      <> ") = "
+      <> Text.intercalate " ++ " exprs
+    | insn <- instructions
+    , let exprs = mapMaybe mkList (insnArgs insn)
+    , not $ null exprs ]
+  ++
+  [ "insnLabels _ = []"]
+  where
+    mkList (Arg name Offset Imm) = Just $ "[" <> name <> "]"
+    mkList (Arg name Offsets Imm) = Just name
+    mkList Arg{} = Nothing
+
 -- | Generates a function that yields the size of an instruction in words.
 genInsnSize :: [Text]
 genInsnSize =
-  "insnSize :: Insn reg label -> Word64" :
+  "insnSize :: Insn -> Word64" :
   [ "insnSize ("
       <> Text.unwords (insnName insn : map mkArg (insnArgs insn))
       <> ") = 1"
@@ -140,7 +173,7 @@ genInsnSize =
 genInsnWords :: [Text]
 genInsnWords =
    [ "insnWords"
-   , "  :: (forall ty. reg ty -> Word64) -> (label -> Word64) -> Insn reg label -> [Word64]" ]
+   , "  :: (forall ty. Register ty -> Word64) -> (Label -> Word64) -> Insn -> [Word64]" ]
    ++
    [ "insnWords fromReg fromLabel ("
       <> Text.unwords (insnName insn : map argName (insnArgs insn))
@@ -193,7 +226,7 @@ genIssue = intercalate [""]
 
 genDecodable :: [Text]
 genDecodable =
-  [ "instance D.Decodable (Insn Register Label) where"
+  [ "instance D.Decodable Insn where"
   , "  decode = do"
   , "    op <- D.decode"
   , "    case (op :: Word64) of" ]
@@ -209,9 +242,9 @@ genDecodable =
 genInsnShow :: [Text]
 genInsnShow =
   [ "insnShow"
-  , "  :: (label -> String)"
-  , "  -> (forall t. reg t -> String)"
-  , "  -> Insn reg label"
+  , "  :: (Label -> String)"
+  , "  -> (forall t. Register t -> String)"
+  , "  -> Insn"
   , "  -> String" ]
   ++
   [ "insnShow showLabel showReg ("

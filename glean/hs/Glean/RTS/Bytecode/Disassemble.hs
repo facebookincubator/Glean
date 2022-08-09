@@ -9,7 +9,6 @@
 module Glean.RTS.Bytecode.Disassemble
 where
 
-import qualified Data.Foldable as F
 import Data.Functor
 import qualified Data.IntMap as IntMap
 import qualified Data.IntSet as IntSet
@@ -44,7 +43,7 @@ disassemble name sub =
   where
     SubroutineCode{..} = inspect sub
 
-    instructions :: [Insn Register Label]
+    instructions :: [Insn]
     (instructions, rest) = D.decodeAll $ V.toList subInsns
 
     labels = snd
@@ -58,10 +57,10 @@ disassemble name sub =
             let !n = m + insnSize insn
             in
             ( n
-            , F.foldr
+            , foldr
                 (\o -> IntSet.insert $ fromIntegral n + fromLabel o)
                 ts
-                insn ))
+                $ insnLabels insn ))
           (0, IntSet.empty)
           instructions
 
