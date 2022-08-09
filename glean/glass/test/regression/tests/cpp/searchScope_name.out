@@ -1,0 +1,24 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [],
+        "symbols": [
+            {
+                "kind": 25,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 12,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": "S",
+                "symbol": "test/cpp/foo/S"
+            }
+        ]
+    }
+]

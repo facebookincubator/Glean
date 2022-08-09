@@ -78,7 +78,6 @@ import qualified Glean.Util.Range as Range
 import Glean.Util.ThriftService ( ThriftServiceOptions(..), runThrift )
 
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
-import qualified Glean.Schema.CodemarkupSearch.Types as CodeSearch
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.Src.Types as Src
 
@@ -375,21 +374,37 @@ searchSymbol env@Glass.Env{..} req@SymbolSearchRequest{..} RequestOptions{..} =
 
     searchQ = Query.searchByName typeOpt caseOpt searchStr kinds langs
 
+    mScopeQ
+      | symbolSearchOptions_namespaceSearch
+      , Just scopeQ <- Query.toScopeTokens searchStr
+      = Just $ Query.searchByScope typeOpt caseOpt scopeQ kinds langs
+      | otherwise = Nothing
+
     -- run the same query across more than one glean db
     searchSymbolInDBs repo dbs = case nonEmpty (Set.toList dbs) of
       Nothing -> pure (Query.RepoSearchResult [])
       Just names -> withGleanDBs method env req names $ \gleanDBs -> do
         res <- backendRunHaxl GleanBackend{..} $
           Glean.queryAllRepos $ do
-            res <- searchWithLimit mlimit searchQ --  each db gets to set mlimit
-            mapM (processSymbolResult terse repo) res
+            -- per db limits. always do name search
+            names <- searchWithLimit mlimit searchQ
+            scopes <- case mScopeQ of
+              Nothing -> pure $ Left []
+              Just (Left nameQ) -> Left <$> searchWithLimit mlimit nameQ
+              Just (Right scopeQ) -> Right <$> searchWithLimit mlimit scopeQ
+            as <- mapM (processSymbolResult terse repo) names
+            bs <- case scopes of
+              Left ns -> mapM (processSymbolResult terse repo) ns
+              Right ss -> mapM (processSymbolResult terse repo) ss
+            return (bs ++ as) -- prefer scope results if present
         pure (Query.RepoSearchResult res, Nothing)
 
 -- n.b. we need the RepoName (i.e. "fbsource" to construct symbol ids)
 processSymbolResult
-  :: Bool
+  :: Query.ToSearchResult a
+  => Bool
   -> RepoName
-  -> CodeSearch.SearchByName
+  -> a
   -> RepoHaxl u w (SymbolResult, Maybe SymbolDescription)
 processSymbolResult terse repo result = do
   Query.SymbolSearchData{..} <- Query.toSearchResult result

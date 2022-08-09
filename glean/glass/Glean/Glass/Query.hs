@@ -28,11 +28,12 @@ module Glean.Glass.Query
   , SearchCase(..)
   , SearchType(..)
   , SearchFn
-  , toSearchResult
   , SymbolSearchData(..)
+  , ToSearchResult(..)
   , RepoSearchResult(..)
 
   -- ** scoped search
+  , searchByScope
   , toScopeTokens
   , ScopeQuery(..)
 
@@ -47,6 +48,7 @@ module Glean.Glass.Query
 import Data.Text (Text, toLower)
 import qualified Data.Text as Text
 import Data.Maybe
+import Data.List.NonEmpty (NonEmpty(..), toList)
 
 import qualified Glean
 import Glean.Angle as Angle
@@ -154,7 +156,7 @@ data SearchType = Exact | Prefix
 data SearchCase = Sensitive | Insensitive
 
 --
--- Finding entities by string search. Base layer in Glean
+-- | Finding entities by string search. Base layer in Glean
 --
 -- There are four main flavors
 --
@@ -179,19 +181,36 @@ searchByName
   -> Angle CodeSearch.SearchByName
 
 searchByName sType sCase name kinds langs =
-  codeSearchByName $ toSearchQ sType sCase name Nothing kinds langs
+  codeSearchByName $ toSearchQ sType sCase (Just name) Nothing kinds langs
 
-_searchByScope
+--
+-- | Search for symbols in namespaces
+--
+-- > folly::Optional
+-- > ::Optional
+-- > folly::
+-- > HH\map
+-- > ::folly::
+-- > facebook::folly::Optional
+--
+searchByScope
   :: SearchType
   -> SearchCase
-  -> Text
-  -> [Text]
+  -> ScopeQuery
   -> [Code.SymbolKind]
   -> [Code.Language]
-  -> Angle CodeSearch.SearchByScope
+  -> Either (Angle CodeSearch.SearchByScope) (Angle CodeSearch.SearchByName)
 
-_searchByScope sType sCase name scope  kinds langs =
-  codeSearchByScope $ toSearchQ sType sCase name (Just scope) kinds langs
+searchByScope sType sCase scopeQ kinds langs = case scopeQ of
+  ScopeAndName scope name ->
+    Left $ codeSearchByScope $ query (Just scope) (Just name)
+  ScopeOnly scope -> -- scope-only wild cards are a bit experimental. disable
+   --  Left $ codeSearchByScope $ query (Just scope) Nothing
+    Right $ codeSearchByName $ query Nothing (Just (last $ toList scope))
+  NameOnly name -> -- after tokenziation we can do a name-only search
+    Right $ codeSearchByName $ query Nothing (Just name)
+  where
+    query scopes names = toSearchQ sType sCase names scopes kinds langs
 
 data SearchQ = SearchQ {
     nameQ :: Angle Text,
@@ -204,21 +223,22 @@ data SearchQ = SearchQ {
 toSearchQ
    :: SearchType
    -> SearchCase
-   -> Text
-   -> Maybe [Text]
+   -> Maybe Text
+   -> Maybe (NonEmpty Text)
    -> [Code.SymbolKind]
    -> [Code.Language]
    -> SearchQ
 toSearchQ sType sCase name scope kinds langs = SearchQ{..}
   where
     nameQ = toNameQuery sType sCase name
-    scopeQ = array . map string <$> scope
+    scopeQ = array . map string . toList <$> scope
     caseQ = toCaseQuery sCase
     mKindQ = toEnumSet kinds
     mLangQ = toEnumSet langs
 
-toNameQuery :: SearchType -> SearchCase -> Text -> Angle Text
-toNameQuery sType sCase name = case sType of
+toNameQuery :: SearchType -> SearchCase -> Maybe Text -> Angle Text
+toNameQuery _ _ Nothing = wild
+toNameQuery sType sCase (Just name)= case sType of
     Exact -> string nameLit
     Prefix -> stringPrefix nameLit
   where
@@ -238,27 +258,27 @@ toCaseQuery sCase = enum $ case sCase of
 
 -- | Variants of the scope query syntax
 data ScopeQuery
-  = ScopeAndName ![Text] !Text -- ::a::b::ident
-  | ScopeOnly ![Text] -- ::a::b:: or a::
+  = ScopeAndName (NonEmpty Text) !Text -- ::a::b::ident
+  | ScopeOnly (NonEmpty Text) -- ::a::b:: or a::
   | NameOnly !Text -- ::a
-  | NotAScopeQuery -- not recognized as a scope query
   deriving (Eq, Show)
 
 -- | If it looks like we can parse this as a qualified name, then do that
-toScopeTokens :: Text -> ScopeQuery
+-- We want to avoid any "" or wild cards appearing until perf is ok.
+toScopeTokens :: Text -> Maybe ScopeQuery
 toScopeTokens name = go $ map (`Text.splitOn` name) delimiters
   where
     -- we probably should have a class of per-language parsers for qnames
     delimiters = ["::", "\\"]
 
     -- first match with 2 or more scope fragments
-    go :: [[Text]] -> ScopeQuery
-    go [] = NotAScopeQuery
-    go (toks@(_:_:_):_) = case (init toks, last toks) of
-      ([""],"") -> NotAScopeQuery -- i.e. "::"
-      ([""],name) -> NameOnly name -- i.e. ::foo
-      (scope, "") -> ScopeOnly (dropWhile Text.null scope) -- foo:: or ::foo::
-      (scope, name) -> ScopeAndName scope name -- i.e. foo::bar
+    go :: [[Text]] -> Maybe ScopeQuery
+    go [] = Nothing
+    go (toks@(_:_:_):_) = case (dropWhile Text.null (init toks), last toks) of
+      ([],"") -> Nothing -- i.e. "::"
+      ([],name) -> Just (NameOnly name) -- i.e. ::b
+      (s:ss, "") -> Just (ScopeOnly (s :| ss)) -- i.e. a:: or ::a::
+      (s:ss, name) -> Just (ScopeAndName (s :| ss) name) -- a::b::c or ::a::b
     go (_:rest) = go rest
 
 --
