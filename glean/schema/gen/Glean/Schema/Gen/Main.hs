@@ -6,15 +6,15 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{- | Generate thrift/Haskell/C++ headers from a Glean schema
+{- | Generate thrift/Haskell/C++/Python headers from a Glean schema
 
 This script is run automatically via Buck custom_rule()s, see
 glean/schema/TARGETS.
 
 buck run @mode/opt //glean/schema/gen:gen-schema -- --help
 
-Usage: gen-schema ([--cpp ARG] | [--thrift ARG] | [--hs ARG]) (-i|--input FILE)
-                  [-d|--install_dir DIR]
+Usage: gen-schema ([--cpp ARG] | [--thrift ARG] | [--hs ARG] | [--py ARG])
+                  (-i|--input FILE) [-d|--install_dir DIR]
 
 Available options:
   -i,--input FILE          materialized JSON input file
@@ -70,6 +70,7 @@ import Glean.Schema.Gen.Thrift
 import Glean.Schema.Gen.Cpp ( genSchemaCpp )
 import Glean.Schema.Gen.HackJson ( genSchemaHackJson )
 import Glean.Schema.Gen.Haskell ( genSchemaHS )
+import Glean.Schema.Gen.Python ( genSchemaPy )
 import Glean.Schema.Gen.Utils ( Mode(..) )
 import Glean.Schema.Types
 import Glean.Types (SchemaId(..))
@@ -101,6 +102,7 @@ data GenOptions =  GenOptions
   , cpp :: Maybe FilePath
   , hackjson :: Maybe FilePath
   , hs :: Maybe FilePath
+  , py :: Maybe FilePath
   , source :: Maybe FilePath
   , updateIndex :: Maybe FilePath
   , install_dir :: FilePath
@@ -167,6 +169,8 @@ options = do
         long "hackjson" <> metavar "FILE"
       hs <- optional $ strOption $
         long "hs" <> metavar "FILE"
+      py <- optional $ strOption $
+        long "py" <> metavar "FILE"
       source <- optional $ strOption $
         long "source" <> metavar "FILE"
       updateIndex <- optional $ strOption $
@@ -389,6 +393,7 @@ gen GenOptions{..} versions =
       doGen genSchemaCpp cpp
       doGen genSchemaHackJson hackjson
       doGen genSchemaHS hs
+      doGen genSchemaPy py
       doGen (genSchemaThrift Data dir hash) thrift
       doGen (genSchemaThrift Query dir hash) thrift
 
