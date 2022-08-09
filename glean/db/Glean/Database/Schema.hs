@@ -576,12 +576,10 @@ transformedPredicates stats byRef refToId resolved =
       ]
 
     isDerivedPred :: PidRef -> Bool
-    isDerivedPred (PidRef pid ref) = case predicateDeriving details of
-      NoDeriving -> False
-      Derive when _ -> case when of
-        DeriveOnDemand -> True
-        DerivedAndStored -> False
-        DeriveIfEmpty -> not $ predicateHasFactsInDb pid
+    isDerivedPred (PidRef _ ref) =
+      case predicateDeriving details of
+        NoDeriving -> False
+        Derive _ _ -> True
       where
         details = case HashMap.lookup ref byRef of
           Nothing -> error $ "unknown predicate " <> show ref
