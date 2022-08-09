@@ -78,6 +78,7 @@ import Glean.Query.Transform (transformTypecheckedQuery)
 import Glean.Types as Thrift
 import Glean.Schema.Types
 import Glean.Database.Schema.ComputeIds
+import Glean.Query.Prune (pruneDerivations)
 
 -- | Used to decide whether to activate 'derive default' definitions and
 -- 'evolves' directives.
@@ -387,16 +388,35 @@ mkDbSchema validate knownPids dbContent
     , schemaLatestVersion = latestSchemaId
     }
 
+-- | Optimise derivation queries for fetching facts given the particular db's
+-- content.
 transformDerivations
   :: DbContent
   -> IntMap PredicateTransformation
   -> HashMap PredicateId PredicateDetails
   -> HashMap PredicateId PredicateDetails
 transformDerivations DbWritable _ pmap = pmap
-transformDerivations (DbReadOnly _) transformations pmap =
-  overDerivationQuery transform <$> pmap
+  -- don't change derivations while db is still writable
+transformDerivations (DbReadOnly stats) transformations pmap =
+  prune $ transform pmap
   where
-    transform q = transformTypecheckedQuery transformations q
+    prune
+      :: HashMap PredicateId PredicateDetails
+      -> HashMap PredicateId PredicateDetails
+    prune = pruneDerivations hasFacts
+
+    hasFacts predId = fromMaybe False $ do
+      details <- HashMap.lookup predId pmap
+      pstats <- HashMap.lookup (predicatePid details) stats
+      return $ predicateStats_count pstats > 0
+
+    transform
+      :: HashMap PredicateId PredicateDetails
+      -> HashMap PredicateId PredicateDetails
+    transform = fmap (overDerivationQuery transformQ)
+
+    transformQ q = transformTypecheckedQuery transformations q
+
     overDerivationQuery f details = details { predicateDeriving = d }
       where
         d = case predicateDeriving details of

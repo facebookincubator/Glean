@@ -546,6 +546,7 @@ library db
         Glean.Query.Flatten
         Glean.Query.Flatten.Types
         Glean.Query.Opt
+        Glean.Query.Prune
         Glean.Query.Reorder
         Glean.Query.Typecheck
         Glean.Query.Typecheck.Types

@@ -34,6 +34,8 @@ data Cfg = Cfg
 
 main :: IO ()
 main = withEmptyTestDB [] $ \env repo -> do
+  -- NB.Puning and evolutions do not take place because the
+  -- tests are run on a writable db.
   withOpenDatabase env repo $ void . return
   forM_ (zip [1..] queries) $ \(i,q) -> do
     xs <- measure (query env repo q) Cfg{cfgIters = 10, cfgStop = 1}

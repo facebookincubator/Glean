@@ -17,6 +17,7 @@ module Glean.Query.Transform
   , Transformations
   , fromTransformations
   , toTransformations
+  , renumberVars
   ) where
 
 import Control.Monad.State (State, runState)

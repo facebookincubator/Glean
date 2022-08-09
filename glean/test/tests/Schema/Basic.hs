@@ -598,11 +598,6 @@ deriveDefault = TestCase $
            assertBool "backcompat 2" $ case r of
              Right UserQueryResults{..} -> length userQueryResults_facts == 1
              _ -> False
-
-      deleteDB repo =
-        withTestEnv [setRoot root, setSchemaPath schema_v0_file] $ \env ->
-           void $ deleteDatabase env repo
-
     let
       mkP version env repo =
         void $ syncWriteJsonBatch env repo
@@ -626,16 +621,6 @@ deriveDefault = TestCase $
     -- create a DB with a fact of P.2
     repo1 <- mkRepo "2" (mkP 2)
     checkQuery repo1 []
-
-    -- create a DB with no facts
-    repo2 <- mkRepo "3" (\_ _ -> return ())
-    withTestEnv [setRoot root, setSchemaPath schema_v0_file] $ \env -> do
-       r <- try $ angleQuery env repo2 "test.P.1 _"
-       print (r :: Either BadQuery UserQueryResults)
-       assertBool "backcompat 3" $ case r of
-         Left e@BadQuery{} -> "recursive" `isInfixOf` show e
-         _ -> False
-    deleteDB repo2
 
 schemaNegation :: [Test]
 schemaNegation =

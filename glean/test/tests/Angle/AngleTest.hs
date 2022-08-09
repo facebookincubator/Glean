@@ -452,8 +452,8 @@ angleTest modify = dbTestCase $ \env repo -> do
   assertEqual "angle - array of fact ids" (length names) (length r)
 
   -- Literal fact ID with the wrong type
-  r <- try $ runQuery_ env repo $ modify $ angle @Cxx.Type $
-      "$cxx1.Type " <> factId (head names)
+  r <- try $ runQuery_ env repo $ modify $ angle @Cxx.FunctionName $
+      "$cxx1.FunctionName " <> factId (head names)
   print r
   assertBool "angle - fact id with wrong type" $
     case r of
