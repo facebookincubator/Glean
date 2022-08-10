@@ -6,7 +6,7 @@
       "location": {
         "name": "BAZ",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 332, "length": 18 } }
+        "location": { "span": { "start": 322, "length": 18 } }
       },
       "entity": {
         "hack": {
@@ -34,7 +34,7 @@
       "location": {
         "name": "SourceClass",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 263, "length": 212 } }
+        "location": { "span": { "start": 253, "length": 212 } }
       },
       "entity": {
         "hack": {
@@ -57,7 +57,7 @@
       "location": {
         "name": "SubClass",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 477, "length": 37 } }
+        "location": { "span": { "start": 467, "length": 37 } }
       },
       "entity": {
         "hack": {
@@ -78,7 +78,7 @@
       "location": {
         "name": "T",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 354, "length": 19 } }
+        "location": { "span": { "start": 344, "length": 19 } }
       },
       "entity": {
         "hack": {
@@ -106,7 +106,7 @@
       "location": {
         "name": "TestAnnotation",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 516, "length": 108 } }
+        "location": { "span": { "start": 506, "length": 108 } }
       },
       "entity": {
         "hack": {
@@ -129,7 +129,7 @@
       "location": {
         "name": "__construct",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 570, "length": 52 } }
+        "location": { "span": { "start": 560, "length": 52 } }
       },
       "entity": {
         "hack": {
@@ -157,7 +157,7 @@
       "location": {
         "name": "bar",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 402, "length": 71 } }
+        "location": { "span": { "start": 392, "length": 71 } }
       },
       "entity": {
         "hack": {
@@ -185,7 +185,7 @@
       "location": {
         "name": "daz",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 388, "length": 9 } }
+        "location": { "span": { "start": 378, "length": 9 } }
       },
       "entity": {
         "hack": {
@@ -213,7 +213,7 @@
       "location": {
         "name": "test",
         "file": { "key": "www/SourceClass.php" },
-        "location": { "span": { "start": 613, "length": 5 } }
+        "location": { "span": { "start": 603, "length": 5 } }
       },
       "entity": {
         "hack": {

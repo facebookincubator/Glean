@@ -25,7 +25,7 @@
         "location": {
           "name": "NamespaceClass",
           "file": { "key": "www/Namespace.php" },
-          "location": { "span": { "start": 251, "length": 76 } }
+          "location": { "span": { "start": 241, "length": 76 } }
         }
       },
       "child": {
@@ -55,7 +55,7 @@
         "location": {
           "name": "class_function",
           "file": { "key": "www/Namespace.php" },
-          "location": { "span": { "start": 278, "length": 47 } }
+          "location": { "span": { "start": 268, "length": 47 } }
         }
       }
     }
@@ -80,7 +80,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 236, "length": 643 } }
+          "location": { "span": { "start": 226, "length": 643 } }
         }
       },
       "child": {
@@ -105,7 +105,7 @@
         "location": {
           "name": "JAZZ",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 302, "length": 20 } }
+          "location": { "span": { "start": 292, "length": 20 } }
         }
       }
     }
@@ -130,7 +130,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 236, "length": 643 } }
+          "location": { "span": { "start": 226, "length": 643 } }
         }
       },
       "child": {
@@ -155,7 +155,7 @@
         "location": {
           "name": "bar",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 487, "length": 390 } }
+          "location": { "span": { "start": 477, "length": 390 } }
         }
       }
     }
@@ -180,7 +180,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 236, "length": 643 } }
+          "location": { "span": { "start": 226, "length": 643 } }
         }
       },
       "child": {
@@ -205,7 +205,7 @@
         "location": {
           "name": "bazza",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 424, "length": 59 } }
+          "location": { "span": { "start": 414, "length": 59 } }
         }
       }
     }
@@ -230,7 +230,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 236, "length": 643 } }
+          "location": { "span": { "start": 226, "length": 643 } }
         }
       },
       "child": {
@@ -255,7 +255,7 @@
         "location": {
           "name": "foo",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 353, "length": 67 } }
+          "location": { "span": { "start": 343, "length": 67 } }
         }
       }
     }
@@ -280,7 +280,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 236, "length": 643 } }
+          "location": { "span": { "start": 226, "length": 643 } }
         }
       },
       "child": {
@@ -305,7 +305,7 @@
         "location": {
           "name": "raz",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 338, "length": 10 } }
+          "location": { "span": { "start": 328, "length": 10 } }
         }
       }
     }
@@ -330,7 +330,7 @@
         "location": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 263, "length": 212 } }
+          "location": { "span": { "start": 253, "length": 212 } }
         }
       },
       "child": {
@@ -355,7 +355,7 @@
         "location": {
           "name": "BAZ",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 332, "length": 18 } }
+          "location": { "span": { "start": 322, "length": 18 } }
         }
       }
     }
@@ -380,7 +380,7 @@
         "location": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 263, "length": 212 } }
+          "location": { "span": { "start": 253, "length": 212 } }
         }
       },
       "child": {
@@ -405,7 +405,7 @@
         "location": {
           "name": "bar",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 402, "length": 71 } }
+          "location": { "span": { "start": 392, "length": 71 } }
         }
       }
     }
@@ -430,7 +430,7 @@
         "location": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 263, "length": 212 } }
+          "location": { "span": { "start": 253, "length": 212 } }
         }
       },
       "child": {
@@ -455,7 +455,7 @@
         "location": {
           "name": "daz",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 388, "length": 9 } }
+          "location": { "span": { "start": 378, "length": 9 } }
         }
       }
     }
@@ -480,7 +480,7 @@
         "location": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 263, "length": 212 } }
+          "location": { "span": { "start": 253, "length": 212 } }
         }
       },
       "child": {
@@ -505,7 +505,7 @@
         "location": {
           "name": "T",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 354, "length": 19 } }
+          "location": { "span": { "start": 344, "length": 19 } }
         }
       }
     }
@@ -530,7 +530,7 @@
         "location": {
           "name": "SuperClass",
           "file": { "key": "www/SuperClass.php" },
-          "location": { "span": { "start": 236, "length": 124 } }
+          "location": { "span": { "start": 226, "length": 124 } }
         }
       },
       "child": {
@@ -555,7 +555,7 @@
         "location": {
           "name": "BAZ",
           "file": { "key": "www/SuperClass.php" },
-          "location": { "span": { "start": 258, "length": 20 } }
+          "location": { "span": { "start": 248, "length": 20 } }
         }
       }
     }
@@ -580,7 +580,7 @@
         "location": {
           "name": "SuperClass",
           "file": { "key": "www/SuperClass.php" },
-          "location": { "span": { "start": 236, "length": 124 } }
+          "location": { "span": { "start": 226, "length": 124 } }
         }
       },
       "child": {
@@ -605,7 +605,7 @@
         "location": {
           "name": "superAdd",
           "file": { "key": "www/SuperClass.php" },
-          "location": { "span": { "start": 282, "length": 76 } }
+          "location": { "span": { "start": 272, "length": 76 } }
         }
       }
     }
@@ -630,7 +630,7 @@
         "location": {
           "name": "TestAnnotation",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 516, "length": 108 } }
+          "location": { "span": { "start": 506, "length": 108 } }
         }
       },
       "child": {
@@ -657,7 +657,7 @@
         "location": {
           "name": "__construct",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 570, "length": 52 } }
+          "location": { "span": { "start": 560, "length": 52 } }
         }
       }
     }
@@ -682,7 +682,7 @@
         "location": {
           "name": "TestAnnotation",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 516, "length": 108 } }
+          "location": { "span": { "start": 506, "length": 108 } }
         }
       },
       "child": {
@@ -709,7 +709,7 @@
         "location": {
           "name": "test",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 613, "length": 5 } }
+          "location": { "span": { "start": 603, "length": 5 } }
         }
       }
     }
@@ -734,7 +734,7 @@
         "location": {
           "name": "SourceInterface",
           "file": { "key": "www/SourceInterface.php" },
-          "location": { "span": { "start": 236, "length": 96 } }
+          "location": { "span": { "start": 226, "length": 96 } }
         }
       },
       "child": {
@@ -761,7 +761,7 @@
         "location": {
           "name": "JAZZ",
           "file": { "key": "www/SourceInterface.php" },
-          "location": { "span": { "start": 267, "length": 24 } }
+          "location": { "span": { "start": 257, "length": 24 } }
         }
       }
     }
@@ -786,7 +786,7 @@
         "location": {
           "name": "SourceInterface",
           "file": { "key": "www/SourceInterface.php" },
-          "location": { "span": { "start": 236, "length": 96 } }
+          "location": { "span": { "start": 226, "length": 96 } }
         }
       },
       "child": {
@@ -813,7 +813,7 @@
         "location": {
           "name": "foo",
           "file": { "key": "www/SourceInterface.php" },
-          "location": { "span": { "start": 295, "length": 34 } }
+          "location": { "span": { "start": 285, "length": 34 } }
         }
       }
     }
@@ -838,7 +838,7 @@
         "location": {
           "name": "SourceTrait",
           "file": { "key": "www/SourceTrait.php" },
-          "location": { "span": { "start": 236, "length": 82 } }
+          "location": { "span": { "start": 226, "length": 82 } }
         }
       },
       "child": {
@@ -863,7 +863,7 @@
         "location": {
           "name": "quux",
           "file": { "key": "www/SourceTrait.php" },
-          "location": { "span": { "start": 258, "length": 58 } }
+          "location": { "span": { "start": 248, "length": 58 } }
         }
       }
     }
@@ -884,7 +884,7 @@
         "location": {
           "name": "NS",
           "file": { "key": "www/Namespace.php" },
-          "location": { "span": { "start": 246, "length": 2 } }
+          "location": { "span": { "start": 236, "length": 2 } }
         }
       },
       "child": {
@@ -909,7 +909,7 @@
         "location": {
           "name": "NamespaceClass",
           "file": { "key": "www/Namespace.php" },
-          "location": { "span": { "start": 251, "length": 76 } }
+          "location": { "span": { "start": 241, "length": 76 } }
         }
       }
     }

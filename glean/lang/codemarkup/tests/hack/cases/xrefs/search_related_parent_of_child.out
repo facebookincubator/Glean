@@ -20,7 +20,7 @@
         "location": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 263, "length": 212 } }
+          "location": { "span": { "start": 253, "length": 212 } }
         }
       },
       "child": {
@@ -40,7 +40,7 @@
         "location": {
           "name": "SubClass",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 477, "length": 37 } }
+          "location": { "span": { "start": 467, "length": 37 } }
         }
       }
     }
@@ -65,7 +65,7 @@
         "location": {
           "name": "SuperClass",
           "file": { "key": "www/SuperClass.php" },
-          "location": { "span": { "start": 236, "length": 124 } }
+          "location": { "span": { "start": 226, "length": 124 } }
         }
       },
       "child": {
@@ -85,7 +85,7 @@
         "location": {
           "name": "SourceClass",
           "file": { "key": "www/SourceClass.php" },
-          "location": { "span": { "start": 263, "length": 212 } }
+          "location": { "span": { "start": 253, "length": 212 } }
         }
       }
     }
@@ -110,7 +110,7 @@
         "location": {
           "name": "SourceInterface",
           "file": { "key": "www/SourceInterface.php" },
-          "location": { "span": { "start": 236, "length": 96 } }
+          "location": { "span": { "start": 226, "length": 96 } }
         }
       },
       "child": {
@@ -130,7 +130,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 236, "length": 643 } }
+          "location": { "span": { "start": 226, "length": 643 } }
         }
       }
     }
@@ -155,7 +155,7 @@
         "location": {
           "name": "SourceTrait",
           "file": { "key": "www/SourceTrait.php" },
-          "location": { "span": { "start": 236, "length": 82 } }
+          "location": { "span": { "start": 226, "length": 82 } }
         }
       },
       "child": {
@@ -175,7 +175,7 @@
         "location": {
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
-          "location": { "span": { "start": 236, "length": 643 } }
+          "location": { "span": { "start": 226, "length": 643 } }
         }
       }
     }
