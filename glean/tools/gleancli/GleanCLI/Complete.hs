@@ -33,7 +33,11 @@ instance Plugin CompleteCommand where
       (progDesc "Notify server that some predicates are complete.") $ do
       completeRepo <- repoOpts
       completePredicates <-
-        many $ parseRef <$> strArgument (metavar "PREDICATE")
+        many $ parseRef <$> strArgument
+        (  metavar "PREDICATE"
+        <> help ("If predicate is specified, then all non-derived predicates "
+        <> "will be marked as complete")
+        )
       return Complete{..}
 
   runCommand _ _ backend Complete{..} = do
