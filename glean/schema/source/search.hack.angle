@@ -118,15 +118,17 @@ predicate SearchInContainerOrEnum :
     decl : hack.Declaration
   }
   { N, ParentName, ParentNamespace, Decl } where
-  Decl = (
-   hack.QName { name = ParentName, namespace_ = ParentNamespace};
-   (D where
-     SearchInContainer { name = N, containerName = ParentName, containerNamespace = ParentNamespace, decl = D }) |
-   (E where
-     SearchInEnum {name = N, enumName = ParentName, enumNamespace = ParentNamespace, decl = E})
-   )
+    Decl = (
+      hack.QName { name = ParentName, namespace_ = ParentNamespace};
+      ( SearchInContainer { N, ParentName, ParentNamespace, D }; D) |
+      ( SearchInEnum { N, ParentName, ParentNamespace, D}; D)
+    )
 
 # SearchInContext can be used to search for symbols with a non-empty context.
+#
+# - in container Vec\sort or GleanGlass::genGleanGlassClient
+# - in enum (e.g. SRLocality::REGION)
+# - in namespace (e.g. Vec\sort , or Dict\fb\append)
 #
 # SearchInContext can find classConst, method, property_, and typeConst in
 # ContainerDeclaration, find enumerator in EnumDeclaration,
@@ -145,12 +147,12 @@ predicate SearchInContext :
     decl : hack.Declaration
   }
   { N, ParentName, ParentNamespace, Decl } where
-  Decl =
-    (D where
-      SearchInContainerOrEnum { name = N, contextName = ParentName, contextNamespace = ParentNamespace, decl = D }) |
-    (D where
-      NS = hack.NamespaceQName { name = ParentName, parent = ParentNamespace };
-      SearchInNamespace {name = N, namespace_ = { just = NS }, decl = D} )
+    Decl =
+      # container or enum via parent QName
+      (SearchInContainerOrEnum { N, ParentName, ParentNamespace, D }; D)
+    | # member of namespace
+      (NS = hack.NamespaceQName { ParentName, ParentNamespace };
+      SearchInNamespace { N, { just = NS }, D}; D )
 
 #
 # Generating qnames and namespace qnames. We don't have recursion but we'd
