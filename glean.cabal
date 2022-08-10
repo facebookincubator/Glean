@@ -944,6 +944,7 @@ executable glean-server
     other-modules:
         Glean.Handler
         Glean.Server.Config
+        Glean.Server.Sharding
     extra-libraries: stdc++
     build-depends:
         glean:client-hs,
@@ -1761,8 +1762,8 @@ test-suite publish-shards
     main-is: PublishShardsTest.hs
     hs-source-dirs: glean/server
     ghc-options: -main-is PublishShardsTest
-    other-sources:
-        DatabaseJanitorTest.hs
+    other-modules:
+        DatabaseJanitorTest
     build-depends:
         glean:stubs,
         glean:core,

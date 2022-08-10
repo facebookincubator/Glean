@@ -56,7 +56,7 @@ shardManagerConfig ::
   Observed ServerConfig.Config ->
   (SomeShardManager -> IO b) ->
   IO b
-shardManagerConfig _mbPort catalog smCfgServerConfig callback = do
+shardManagerConfig _mbPort _catalog smCfgServerConfig callback = do
   config <- Observed.get smCfgServerConfig
   case ServerConfig.config_sharding config of
     ServerConfig.ShardingPolicy_no_shards {} ->
