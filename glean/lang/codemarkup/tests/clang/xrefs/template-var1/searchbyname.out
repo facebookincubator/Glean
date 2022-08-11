@@ -5,7 +5,7 @@
       "name": "foo",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "variable": {
               "key": {
                 "name": {
@@ -37,7 +37,7 @@
       "name": "foo",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "variable": {
               "key": {
                 "name": {
@@ -69,7 +69,7 @@
       "name": "foo",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "variable": {
               "key": {
                 "name": {
@@ -101,25 +101,30 @@
       "name": "h",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "function_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": { "name": { "key": "h" } } },
-                    "scope": { "global_": { } }
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "h" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 14,
+                      "columnBegin": 1,
+                      "lineEnd": 19,
+                      "columnEnd": 1
+                    }
                   }
                 },
-                "signature": {
-                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 14,
-                  "columnBegin": 1,
-                  "lineEnd": 19,
-                  "columnEnd": 1
-                }
+                "isInline": false
               }
             }
           }

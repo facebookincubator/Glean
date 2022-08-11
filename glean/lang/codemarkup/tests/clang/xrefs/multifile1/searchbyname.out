@@ -5,25 +5,31 @@
       "name": "T",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "T" },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "A" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "T" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "A" } } }
+                        }
+                      }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 12,
+                      "columnBegin": 1,
+                      "lineEnd": 12,
+                      "columnEnd": 11
                     }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 12,
-                  "columnBegin": 1,
-                  "lineEnd": 12,
-                  "columnEnd": 11
-                }
+                "bases": [ ],
+                "members": { "key": [ ] }
               }
             }
           }
@@ -36,25 +42,31 @@
       "name": "T",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "T" },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "B" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "T" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "B" } } }
+                        }
+                      }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 21,
+                      "columnBegin": 1,
+                      "lineEnd": 21,
+                      "columnEnd": 11
                     }
                   }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
-                  "columnBegin": 1,
-                  "lineEnd": 21,
-                  "columnEnd": 11
-                }
+                "bases": [ ],
+                "members": { "key": [ ] }
               }
             }
           }
@@ -67,27 +79,32 @@
       "name": "f",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "function_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": { "name": { "key": "f" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "A" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "f" } } },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "A" } } }
+                        }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 11,
+                      "columnBegin": 1,
+                      "lineEnd": 11,
+                      "columnEnd": 11
                     }
                   }
                 },
-                "signature": {
-                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 1,
-                  "lineEnd": 11,
-                  "columnEnd": 11
-                }
+                "isInline": false
               }
             }
           }
@@ -100,27 +117,32 @@
       "name": "f",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "function_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": { "name": { "key": "f" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "B" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "f" } } },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "B" } } }
+                        }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 20,
+                      "columnBegin": 1,
+                      "lineEnd": 20,
+                      "columnEnd": 11
                     }
                   }
                 },
-                "signature": {
-                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 20,
-                  "columnBegin": 1,
-                  "lineEnd": 20,
-                  "columnEnd": 11
-                }
+                "isInline": false
               }
             }
           }
@@ -133,27 +155,32 @@
       "name": "g",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "function_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": { "name": { "key": "g" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "A" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "g" } } },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "A" } } }
+                        }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "a.h" },
+                      "lineBegin": 9,
+                      "columnBegin": 1,
+                      "lineEnd": 12,
+                      "columnEnd": 1
                     }
                   }
                 },
-                "signature": {
-                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                },
-                "source": {
-                  "file": { "key": "a.h" },
-                  "lineBegin": 9,
-                  "columnBegin": 1,
-                  "lineEnd": 12,
-                  "columnEnd": 1
-                }
+                "isInline": false
               }
             }
           }
@@ -166,105 +193,32 @@
       "name": "g",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "function_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": { "name": { "key": "g" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "B" } } }
-                    }
-                  }
-                },
-                "signature": {
-                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                },
-                "source": {
-                  "file": { "key": "a.h" },
-                  "lineBegin": 9,
-                  "columnBegin": 1,
-                  "lineEnd": 12,
-                  "columnEnd": 1
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": "x",
-      "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "x" },
-                    "scope": {
-                      "local": {
-                        "key": {
-                          "name": { "key": { "name": { "key": "g" } } },
-                          "scope": {
-                            "namespace_": { "key": { "name": { "key": "A" } } }
-                          }
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "g" } } },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "B" } } }
                         }
                       }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "a.h" },
+                      "lineBegin": 9,
+                      "columnBegin": 1,
+                      "lineEnd": 12,
+                      "columnEnd": 1
                     }
                   }
                 },
-                "type": { "key": "A::T" },
-                "kind": { "local": { "kind": 0, "attribute": 0 } },
-                "source": {
-                  "file": { "key": "a.h" },
-                  "lineBegin": 10,
-                  "columnBegin": 3,
-                  "lineEnd": 10,
-                  "columnEnd": 5
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": "x",
-      "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "x" },
-                    "scope": {
-                      "local": {
-                        "key": {
-                          "name": { "key": { "name": { "key": "g" } } },
-                          "scope": {
-                            "namespace_": { "key": { "name": { "key": "B" } } }
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "type": { "key": "B::T" },
-                "kind": { "local": { "kind": 0, "attribute": 0 } },
-                "source": {
-                  "file": { "key": "a.h" },
-                  "lineBegin": 10,
-                  "columnBegin": 3,
-                  "lineEnd": 10,
-                  "columnEnd": 5
-                }
+                "isInline": false
               }
             }
           }

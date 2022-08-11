@@ -6,7 +6,7 @@
       "name": "foo",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "variable": {
               "key": {
                 "name": {
@@ -57,7 +57,7 @@
       "name": "foo",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "variable": {
               "key": {
                 "name": {
@@ -108,7 +108,7 @@
       "name": "foo",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "variable": {
               "key": {
                 "name": {

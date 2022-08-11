@@ -2,113 +2,32 @@
   "@generated",
   {
     "key": {
-      "name": "F1",
-      "entity": {
-        "cxx": {
-          "decl": {
-            "typeAlias": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "F1" },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "type": { "key": "T" },
-                "kind": 1,
-                "source": {
-                  "file": { "key": "main.cpp" },
-                  "lineBegin": 12,
-                  "columnBegin": 22,
-                  "lineEnd": 12,
-                  "columnEnd": 33
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": "F2",
-      "entity": {
-        "cxx": {
-          "decl": {
-            "typeAlias": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "F2" },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "type": { "key": "int" },
-                "kind": 1,
-                "source": {
-                  "file": { "key": "main.cpp" },
-                  "lineBegin": 13,
-                  "columnBegin": 22,
-                  "lineEnd": 13,
-                  "columnEnd": 35
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": "F3",
-      "entity": {
-        "cxx": {
-          "decl": {
-            "typeAlias": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "F3" },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "type": { "key": "S<T>" },
-                "kind": 1,
-                "source": {
-                  "file": { "key": "main.cpp" },
-                  "lineBegin": 14,
-                  "columnBegin": 22,
-                  "lineEnd": 14,
-                  "columnEnd": 36
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
       "name": "S",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "record_": {
               "key": {
-                "name": {
-                  "key": { "name": { "key": "S" }, "scope": { "global_": { } } }
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "S" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "main.cpp" },
+                      "lineBegin": 10,
+                      "columnBegin": 1,
+                      "lineEnd": 10,
+                      "columnEnd": 11
+                    }
+                  }
                 },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "main.cpp" },
-                  "lineBegin": 10,
-                  "columnBegin": 1,
-                  "lineEnd": 10,
-                  "columnEnd": 11
-                }
+                "bases": [ ],
+                "members": { "key": [ ] }
               }
             }
           }
@@ -121,7 +40,7 @@
       "name": "x",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "variable": {
               "key": {
                 "name": {
@@ -150,7 +69,7 @@
       "name": "y",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "variable": {
               "key": {
                 "name": {
@@ -179,7 +98,7 @@
       "name": "z",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "variable": {
               "key": {
                 "name": {

@@ -6,17 +6,23 @@
       "name": "foo",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "objcContainer": {
               "key": {
-                "id": { "protocol": { "key": "Foo" } },
-                "source": {
-                  "file": { "key": "test.m" },
-                  "lineBegin": 13,
-                  "columnBegin": 1,
-                  "lineEnd": 14,
-                  "columnEnd": 4
-                }
+                "declaration": {
+                  "key": {
+                    "id": { "protocol": { "key": "Foo" } },
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 13,
+                      "columnBegin": 1,
+                      "lineEnd": 14,
+                      "columnEnd": 4
+                    }
+                  }
+                },
+                "protocols": [ ],
+                "members": { "key": [ ] }
               }
             }
           }

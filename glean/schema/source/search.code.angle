@@ -235,23 +235,24 @@ predicate CxxSearchByName:
     name: string,
     entity: code.Entity,
   }
-  { Name, { cxx = E }} where
-  search.cxx.SearchByNameAndScope { name = cxx1.Name Name, entity = E }
+  { NameStr, Entity } where
+    Name = cxx1.Name NameStr;
+    CxxSearchByNameAndScopeFact { name = Name, entity = Entity };
 
 predicate CxxSearchByLowerCaseName:
   {
     name: string,
     entity: code.Entity,
   }
-  { Name, Entity } where
-  cxx1.DeclByName { name_lowercase = Name, ident = Id };
+  { NameStr, Entity } where
+  cxx1.DeclByName { name_lowercase = NameStr, ident = Id };
   (
-    { name = cxx1.Name NameCase } = Id;
-    CxxSearchByName { NameCase, Entity };
+    { name = Name } = Id;
+    CxxSearchByNameAndScopeFact { name = Name, entity = Entity };
   ) | (
     { selector = Sel } = Id;
-    { cxx = E } = Entity;
-    search.cxx.SearchBySelector { Sel, E };
+    search.cxx.SearchBySelector { Sel, Ent };
+    { cxx = Ent } = Entity;
   )
 
 predicate CxxSearchByScope:
@@ -260,16 +261,10 @@ predicate CxxSearchByScope:
     scope: [string],
     entity: code.Entity,
   }
-  { NameStr, Query, { cxx = DefnE }} where
+  { NameStr, Query, Entity } where
     search.cxx.QueryToScope { Query, Scope };
     Name = cxx1.Name NameStr;
-    search.cxx.SearchByNameAndScope { Name, Scope, Ent };
-    if ({ decl = Decl } = Ent) # just definitions , not decls
-    # I think we can avoid searching through decl families since we're
-    # searching all matches anyway
-    #  then ( code.cxx.DeclToDef { Decl, Defn }; { defn = Defn } = DefnE )
-      then ( search.cxx.DeclIsDefn { Decl, Defn }; { defn = Defn } = DefnE )
-      else ( Ent = DefnE );
+    CxxSearchByNameAndScopeFact { Name, Scope, Entity }
 
 predicate CxxSearchByLowerCaseScope:
   {
@@ -278,9 +273,23 @@ predicate CxxSearchByLowerCaseScope:
     entity: code.Entity,
   }
   { NameStr, Query, Entity } where
-    cxx1.DeclByName { name_lowercase = NameStr, ident = Id };
-    { name = cxx1.Name Name } = Id;
-    CxxSearchByScope { Name, Query, Entity };
+    cxx1.DeclByName { name_lowercase = NameStr, ident = { name = Name } };
+    search.cxx.QueryToScope { Query, Scope };
+    CxxSearchByNameAndScopeFact { Name, Scope, Entity };
+
+predicate CxxSearchByNameAndScopeFact:
+  {
+    name: cxx1.Name,
+    scope : cxx1.Scope,
+    entity : code.Entity
+  }
+  { Name, Scope, { cxx = DefnE }} where
+    search.cxx.SearchByNameAndScope { Name, Scope, Ent };
+    # I think we can avoid searching through decl families since we're
+    # searching all matches anyway
+    if ({ decl = Decl } = Ent) # just definitions , not decls
+      then ( search.cxx.DeclIsDefn { Decl, Defn }; { defn = Defn } = DefnE )
+      else ( Ent = DefnE );
 
 predicate HsSearchByName:
   {

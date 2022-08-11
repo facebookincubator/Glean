@@ -3,7 +3,6 @@
     {
         "symbolDetails": [
             {
-                "annotations": [],
                 "comments": [],
                 "kind": 14,
                 "language": 1,
@@ -23,32 +22,9 @@
                 },
                 "repo_hash": "testhash",
                 "sym": "test/cpp/foo/foo"
-            },
-            {
-                "annotations": [],
-                "comments": [],
-                "kind": 14,
-                "language": 1,
-                "location": {
-                    "filepath": "test.cpp",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 11,
-                        "lineBegin": 25,
-                        "lineEnd": 25
-                    },
-                    "repository": "test"
-                },
-                "name": {
-                    "container": "foo",
-                    "localName": "foo"
-                },
-                "repo_hash": "testhash",
-                "sym": "test/cpp/foo/foo"
             }
         ],
         "symbols": [
-            "test/cpp/foo/foo",
             "test/cpp/foo/foo"
         ]
     }

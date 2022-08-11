@@ -45,62 +45,6 @@
                 "sym": "test/cpp/foo/bar/T"
             },
             {
-                "annotations": [],
-                "comments": [],
-                "kind": 14,
-                "language": 1,
-                "location": {
-                    "filepath": "test.cpp",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 9,
-                        "lineBegin": 30,
-                        "lineEnd": 30
-                    },
-                    "repository": "test"
-                },
-                "name": {
-                    "container": "foo::bar",
-                    "localName": "g"
-                },
-                "repo_hash": "testhash",
-                "sym": "test/cpp/foo/bar/g"
-            },
-            {
-                "annotations": [],
-                "comments": [
-                    {
-                        "filepath": "test.cpp",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 4,
-                            "lineBegin": 13,
-                            "lineEnd": 15
-                        },
-                        "repository": "test"
-                    }
-                ],
-                "kind": 14,
-                "language": 1,
-                "location": {
-                    "filepath": "test.cpp",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 9,
-                        "lineBegin": 16,
-                        "lineEnd": 16
-                    },
-                    "repository": "test"
-                },
-                "name": {
-                    "container": "foo",
-                    "localName": "f"
-                },
-                "repo_hash": "testhash",
-                "sym": "test/cpp/foo/f"
-            },
-            {
-                "annotations": [],
                 "comments": [],
                 "kind": 14,
                 "language": 1,
@@ -122,29 +66,6 @@
                 "sym": "test/cpp/foo/foo"
             },
             {
-                "annotations": [],
-                "comments": [],
-                "kind": 14,
-                "language": 1,
-                "location": {
-                    "filepath": "test.cpp",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 11,
-                        "lineBegin": 25,
-                        "lineEnd": 25
-                    },
-                    "repository": "test"
-                },
-                "name": {
-                    "container": "foo",
-                    "localName": "foo"
-                },
-                "repo_hash": "testhash",
-                "sym": "test/cpp/foo/foo"
-            },
-            {
-                "annotations": [],
                 "comments": [],
                 "kind": 14,
                 "language": 1,
@@ -169,9 +90,6 @@
         "symbols": [
             "test/cpp/foo/S",
             "test/cpp/foo/bar/T",
-            "test/cpp/foo/bar/g",
-            "test/cpp/foo/f",
-            "test/cpp/foo/foo",
             "test/cpp/foo/foo",
             "test/cpp/h"
         ]

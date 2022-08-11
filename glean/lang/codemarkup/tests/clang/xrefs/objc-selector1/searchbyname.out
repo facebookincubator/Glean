@@ -5,46 +5,54 @@
       "name": "J",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "objcContainer": {
               "key": {
-                "id": { "interface_": { "key": "J" } },
-                "source": {
-                  "file": { "key": "test.m" },
-                  "lineBegin": 9,
-                  "columnBegin": 1,
-                  "lineEnd": 11,
-                  "columnEnd": 4
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": "SEL",
-      "entity": {
-        "cxx": {
-          "decl": {
-            "typeAlias": {
-              "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": "SEL" },
-                    "scope": { "global_": { } }
+                    "id": { "interface_": { "key": "J" } },
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 9,
+                      "columnBegin": 1,
+                      "lineEnd": 11,
+                      "columnEnd": 4
+                    }
                   }
                 },
-                "type": { "key": "SEL *" },
-                "kind": 0,
-                "source": {
-                  "file": { "key": "<builtin>" },
-                  "lineBegin": 1,
-                  "columnBegin": 1,
-                  "lineEnd": 1,
-                  "columnEnd": 1
+                "protocols": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "objcMethod": {
+                        "key": {
+                          "selector": { "key": [ "checkSelector" ] },
+                          "container": { "interface_": { "key": "J" } },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "selector" },
+                                  "type": { "key": "SEL" }
+                                }
+                              ]
+                            }
+                          },
+                          "isInstance": true,
+                          "isOptional": false,
+                          "isAccessor": false,
+                          "source": {
+                            "file": { "key": "test.m" },
+                            "lineBegin": 10,
+                            "columnBegin": 1,
+                            "lineEnd": 10,
+                            "columnEnd": 36
+                          }
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -58,33 +66,38 @@
       "name": "bar",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "function_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": { "name": { "key": "bar" } } },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "void" },
-                    "parameters": [
-                      {
-                        "name": { "key": "selector" },
-                        "type": { "key": "SEL" }
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "bar" } } },
+                        "scope": { "global_": { } }
                       }
-                    ]
+                    },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "void" },
+                        "parameters": [
+                          {
+                            "name": { "key": "selector" },
+                            "type": { "key": "SEL" }
+                          }
+                        ]
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 13,
+                      "columnBegin": 1,
+                      "lineEnd": 16,
+                      "columnEnd": 1
+                    }
                   }
                 },
-                "source": {
-                  "file": { "key": "test.m" },
-                  "lineBegin": 13,
-                  "columnBegin": 1,
-                  "lineEnd": 16,
-                  "columnEnd": 1
-                }
+                "isInline": false
               }
             }
           }
@@ -97,171 +110,35 @@
       "name": "call",
       "entity": {
         "cxx": {
-          "decl": {
+          "defn": {
             "function_": {
               "key": {
-                "name": {
+                "declaration": {
                   "key": {
-                    "name": { "key": { "name": { "key": "call" } } },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "void" },
-                    "parameters": [
-                      { "name": { "key": "s" }, "type": { "key": "J *" } }
-                    ]
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.m" },
-                  "lineBegin": 18,
-                  "columnBegin": 1,
-                  "lineEnd": 23,
-                  "columnEnd": 1
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": "f",
-      "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "f" },
-                    "scope": {
-                      "local": {
-                        "key": {
-                          "name": { "key": { "name": { "key": "call" } } },
-                          "scope": { "global_": { } }
-                        }
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "call" } } },
+                        "scope": { "global_": { } }
                       }
+                    },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "void" },
+                        "parameters": [
+                          { "name": { "key": "s" }, "type": { "key": "J *" } }
+                        ]
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 18,
+                      "columnBegin": 1,
+                      "lineEnd": 23,
+                      "columnEnd": 1
                     }
                   }
                 },
-                "type": { "key": "SEL" },
-                "kind": { "local": { "kind": 0, "attribute": 0 } },
-                "source": {
-                  "file": { "key": "test.m" },
-                  "lineBegin": 21,
-                  "columnBegin": 3,
-                  "lineEnd": 21,
-                  "columnEnd": 24
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": "s",
-      "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "s" },
-                    "scope": {
-                      "local": {
-                        "key": {
-                          "name": { "key": { "name": { "key": "call" } } },
-                          "scope": { "global_": { } }
-                        }
-                      }
-                    }
-                  }
-                },
-                "type": { "key": "J *" },
-                "kind": { "local": { "kind": 2, "attribute": 0 } },
-                "source": {
-                  "file": { "key": "test.m" },
-                  "lineBegin": 18,
-                  "columnBegin": 11,
-                  "lineEnd": 18,
-                  "columnEnd": 14
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": "selector",
-      "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "selector" },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "type": { "key": "SEL" },
-                "kind": { "local": { "kind": 2, "attribute": 0 } },
-                "source": {
-                  "file": { "key": "test.m" },
-                  "lineBegin": 10,
-                  "columnBegin": 24,
-                  "lineEnd": 10,
-                  "columnEnd": 35
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": "selector",
-      "entity": {
-        "cxx": {
-          "decl": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "selector" },
-                    "scope": {
-                      "local": {
-                        "key": {
-                          "name": { "key": { "name": { "key": "bar" } } },
-                          "scope": { "global_": { } }
-                        }
-                      }
-                    }
-                  }
-                },
-                "type": { "key": "SEL" },
-                "kind": { "local": { "kind": 2, "attribute": 0 } },
-                "source": {
-                  "file": { "key": "test.m" },
-                  "lineBegin": 13,
-                  "columnBegin": 10,
-                  "lineEnd": 13,
-                  "columnEnd": 21
-                }
+                "isInline": false
               }
             }
           }
