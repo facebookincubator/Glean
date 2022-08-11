@@ -12,12 +12,14 @@
 module Glean.Glass.Query.Cxx
   (
     documentSymbolsForCxx,
+    fileIncludeLocationsForCxx,
   ) where
 
 import Data.Maybe ( catMaybes )
 import Data.Map.Strict ( Map )
 import qualified Data.Map as Map
 import Data.Text (Text)
+import Util.List ( uniq )
 
 import qualified Glean
 import Glean.Angle
@@ -479,7 +481,7 @@ cxxFileEntityXMapVariableXRefDeclToDefs xrefId =
         end)
       ]
 
--- C preprocessor #define uses associated with a cxx1.Trace
+-- C preprocessor #define and #include uses associated with a cxx1.Trace
 ppEntityTraceXRefLocations
   :: Glean.IdOf Cxx.Trace
   -> Angle (Code.XRefLocation, Code.Entity)
@@ -495,6 +497,87 @@ ppEntityTraceXRefLocations traceId =
       ]
 
 --
+-- | Breadth first, find at most @n@ #include src.file targets for #include
+-- xrefs in this file. Recursively visiting each #include file to gather more
+--
+fileIncludeLocationsForCxx
+  :: Int
+  -> Maybe Int
+  -> Src.File
+  -> Glean.RepoHaxl u w (Map Src.File [(Src.File, Src.Range)])
+fileIncludeLocationsForCxx depth mlimit file = go depth Map.empty [file]
+  where
+    go 0 acc _ = pure acc
+    go _ acc [] = pure acc -- no more #includes to process
+    go n !acc files = do
+      res <- mapM fetch files -- ensure haxl can do this concurrently
+      let seen = Map.fromList res `Map.union` acc
+          candidates = uniq (map fst (concatMap snd res))
+          new = filter (`Map.notMember` seen) candidates
+      go (n-1) seen new
+
+    fetch f = do -- named for haxl magic concurrency
+      rs <- fileIncludeLocations mlimit (Glean.getId f)
+      return (f,rs)
+
+fileIncludeLocations
+  :: Maybe Int
+  -> Glean.IdOf Src.File
+  -> Glean.RepoHaxl u w [(Src.File, Src.Range)]
+fileIncludeLocations mlimit fileId = do
+  traces <- getPPTraces traceMaxLimit fileId
+  let mquery = case traces of
+        [] -> Nothing -- no pp trace events for this file
+        [fact] -> Just (asPredicate (factId fact))
+        facts -> Just $ foldr1 (.|) (map (asPredicate . factId) facts)
+  case mquery of
+    Nothing -> return []
+    Just traceQ -> do
+      searchRecursiveWithLimit mlimit (ppXRefFileLocations traceQ)
+  where
+    -- arbitrary number of fact traces to be reasonable. More than 1. But
+    -- don't overwhelm things. c.f PPTrace { file = folly/Optional.h }
+    -- also the query gets quite large
+    traceMaxLimit = 10
+
+--
+-- #include resolution acceleration. We can quickly return target filepaths
+-- for all or most #includes in a file.
+--
+-- N.B. we want more than 1, but not all, as some are large (>50k facts)
+--
+getPPTraces
+  :: Int
+  -> Glean.IdOf Src.File
+  -> Glean.RepoHaxl u w [Glean.IdOf Cxx.PPTrace]
+getPPTraces n fileId = fmap (Glean.getId . fst) <$>
+  searchWithLimit (Just n) (factIdQuery (ppFileTrace fileId))
+
+--
+-- find the PPTrace facts when we only care about C pre-processor events
+--
+ppFileTrace :: Glean.IdOf Src.File -> Angle Cxx.PPTrace
+ppFileTrace fileId =
+  predicate @Cxx.PPTrace (
+    rec $
+      field @"file" (asPredicate (factId fileId))
+    end
+  )
+
+-- | Given a PPTrace expression, find C preprocessor #include filepath targets
+ppXRefFileLocations :: Angle Cxx.PPTrace_key -> Angle (Src.File, Src.Range)
+ppXRefFileLocations ppTraceQ =
+  vars $ \(filepath :: Angle Src.File) (range :: Angle Src.Range) ->
+    tuple (filepath, range) `where_` [
+      wild .= predicate @Code.PpIncludeXRefLocations (
+        rec $
+          field @"trace" ppTraceQ $
+          field @"range" range $
+          field @"target" (asPredicate filepath)
+        end)
+      ]
+
+--
 -- "On the economy of bandwidth through content elision
 --     in the Glean database system"
 --
@@ -505,6 +588,8 @@ fetchFactIdOnly
   :: (Glean.Predicate p, QueryType p)
   => Angle p -> Glean.RepoHaxl u w (Maybe (Glean.IdOf p))
 fetchFactIdOnly p = fmap (Glean.getId . fst) <$> fetchData (factIdQuery p)
-  where
-    factIdQuery p = var $ \r ->
-      tuple (r, sig unit) `where_` [ r .= p ]
+
+-- | Used to avoid recursive expansion when we just need a fact id
+factIdQuery :: Angle t -> Angle (t, ())
+factIdQuery p = var $ \r ->
+  tuple (r, sig unit) `where_` [ r .= p ]

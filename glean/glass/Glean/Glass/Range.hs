@@ -15,6 +15,7 @@ module Glean.Glass.Range
   -- ** lower level
   , memoRangeSpanToRange
   , rangeSpanToRange
+  , inclusiveRangeToExclusiveRange
 
   -- * locations, these have paths and repo names
   , resolveLocationToRange
@@ -148,6 +149,17 @@ getFile path = do
     Nothing -> Left $ NoSrcFileFact $ "No src.File fact for " <> gleanPath path
     Just srcFile -> Right srcFile
 
+-- | Glean's Src.Range is inclusive of start/end. Glass is exclusive
+-- of end
+inclusiveRangeToExclusiveRange :: Src.Range -> Glass.Range
+inclusiveRangeToExclusiveRange Src.Range{..} =
+  Glass.Range {
+    range_lineBegin = Glean.unNat range_lineBegin,
+    range_columnBegin = Glean.unNat range_columnBegin,
+    range_lineEnd = Glean.unNat range_lineEnd,
+    range_columnEnd = Glean.unNat range_columnEnd + 1 -- n.b. exclusive end
+  }
+
 --
 -- Internal stuff
 --
@@ -181,17 +193,6 @@ fileByteSpanToExclusiveRange (Just lineoffs) bytespan =
     range_columnEnd = fromIntegral $ range_columnEnd + 1
   }
 
-
--- | (internal) Glean's Src.Range is inclusive of start/end. Glass is exclusive
--- of end
-inclusiveRangeToExclusiveRange :: Src.Range -> Glass.Range
-inclusiveRangeToExclusiveRange Src.Range{..} =
-  Glass.Range {
-    range_lineBegin = Glean.unNat range_lineBegin,
-    range_columnBegin = Glean.unNat range_columnBegin,
-    range_lineEnd = Glean.unNat range_lineEnd,
-    range_columnEnd = Glean.unNat range_columnEnd + 1 -- n.b. exclusive end
-  }
 
 -- | (internal) Convert a src.Range from glean to a src.ByteSpan
 inclusiveRangeToFileByteSpan

@@ -141,3 +141,6 @@ glassHandler env cmd = case cmd of
 
   -- Create an incremental database
   Index r -> Handler.index env r
+
+  -- C++/LSP specific
+  FileIncludeLocations r opts -> Handler.fileIncludeLocations env r opts

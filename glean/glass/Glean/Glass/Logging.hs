@@ -29,6 +29,7 @@ import Logger.GleanGlassErrors ( GleanGlassErrorsLogger )
 import Util.Logger ( ActionLog(..) )
 import qualified Logger.GleanGlass as Logger
 import qualified Logger.GleanGlassErrors as Errors
+import qualified Data.Map.Strict as Map
 
 import Data.Text ( Text )
 import Util.Text ( textShow )
@@ -70,6 +71,11 @@ instance LogRequest SearchByNameRequest where
 
 instance LogRequest SymbolSearchRequest where
   logRequest = logSymbolSearchRequestSG Logger.setSymbol Logger.setRepo
+
+instance LogRequest FileIncludeLocationRequest where
+  logRequest FileIncludeLocationRequest{..} =
+    Logger.setFilepath (unPath fileIncludeLocationRequest_filepath) <>
+      Logger.setRepo (unRepoName fileIncludeLocationRequest_repository)
 
 class LogResult a where
   logResult :: (a, GleanGlassLogger) -> GleanGlassLogger
@@ -140,6 +146,13 @@ instance LogResult SearchRelatedResult where
 
 instance LogResult [RelatedSymbols] where
   logResult (edges, log) = log <> Logger.setItemCount (length edges)
+
+instance LogResult FileIncludeLocationResults where
+  logResult (FileIncludeLocationResults{..}, log) =
+    log <> Logger.setItemCount (
+      Map.foldl' (\n v -> n + length v) 0
+        (unXRefFileMap fileIncludeLocationResults_xrefs)
+    )
 
 class LogRepo a where
   logRepo :: a -> GleanGlassLogger
@@ -250,6 +263,11 @@ instance LogError SearchByNameRequest where
 
 instance LogError SymbolSearchRequest where
   logError = logSymbolSearchRequestSG Errors.setSymbol Errors.setRepo
+
+instance LogError FileIncludeLocationRequest where
+  logError FileIncludeLocationRequest{..} =
+    Errors.setFilepath (unPath fileIncludeLocationRequest_filepath) <>
+      Errors.setRepo (unRepoName fileIncludeLocationRequest_repository)
 
 --
 -- Lift log accessors generically over Glass types

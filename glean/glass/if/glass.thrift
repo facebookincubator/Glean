@@ -422,6 +422,31 @@ struct SearchRelatedResult {
   2: map<string, SymbolDescription> symbolDetails;
 }
 
+# request xref locations (currently just #includes for C++ only)
+struct FileIncludeLocationRequest {
+  // SCS repo name (e.g. "fbsource")
+  1: RepoName repository;
+  // UTF-8 path to file in repo relative to source control repo root
+  2: Path filepath;
+  // depth to resolve xrefs recursively
+  3: i32 depth = 2;
+}
+
+# simplified ReferenceRangeSymbolX when we just need to know the file of the
+# xref and the origin span. Useful for caching/pre-fetching file contents
+struct FileXRefTarget {
+  1: Path target; // target file only
+  2: Range range; // local line:col of use
+}
+
+# map of source file, to local spans and their target files only
+typedef map<Path, list<FileXRefTarget>> XRefFileMap (hs.newtype)
+
+struct FileIncludeLocationResults {
+  1: XRefFileMap xrefs;
+  2: Revision revision; // actual revision used for results
+}
+
 // Glass symbol service
 service GlassService extends fb303.FacebookService {
   // Return a list of symbols in the given file, with attributes
@@ -512,4 +537,12 @@ service GlassService extends fb303.FacebookService {
   index.IndexResponse index(1: index.IndexRequest request) throws (
     1: ServerException e,
   );
+
+  // Special purpose queries
+
+  // Resolve #include file paths to depth N
+  FileIncludeLocationResults fileIncludeLocations(
+    1: FileIncludeLocationRequest request,
+    2: RequestOptions options,
+  ) throws (1: ServerException e);
 }

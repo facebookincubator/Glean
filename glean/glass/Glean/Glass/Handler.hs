@@ -39,6 +39,10 @@ module Glean.Glass.Handler
 
   -- * indexing requests
   , index
+
+  -- * C++ specific methods
+  , fileIncludeLocations
+
   ) where
 
 import Control.Concurrent.STM ( TVar )
@@ -106,6 +110,7 @@ import Glean.Glass.Path
     ( toGleanPath, fromGleanPath )
 import Glean.Glass.Range
     ( FileInfo(..),
+      inclusiveRangeToExclusiveRange,
       getFile,
       getFileAndLines,
       rangeSpanToLocation,
@@ -140,6 +145,8 @@ import Glean.Glass.Types
       Name(Name),
       AttributeList(AttributeList),
       Attributes,
+      FileIncludeLocationRequest(..),
+      FileIncludeLocationResults(..),
       DefinitionSymbolX(DefinitionSymbolX),
       ReferenceRangeSymbolX(ReferenceRangeSymbolX),
       SearchBySymbolIdResult(SearchBySymbolIdResult),
@@ -167,6 +174,8 @@ import Glean.Glass.Types
       RepoName(..),
       RequestOptions(..),
       DocumentSymbolsRequest(..),
+      XRefFileMap(..),
+      FileXRefTarget(..),
       rELATED_SYMBOLS_MAX_LIMIT )
 import Glean.Index.Types
   ( IndexRequest,
@@ -331,6 +340,51 @@ describeSymbol env@Glass.Env{..} symId _opts =
         Many e _t -> return (e, Nothing)
       (,err) <$> withRepo entityRepo
         (mkSymbolDescription repo decl file rangespan symId name)
+
+fileIncludeLocations
+  :: Glass.Env
+  -> FileIncludeLocationRequest
+  -> RequestOptions
+  -> IO FileIncludeLocationResults
+fileIncludeLocations env@Glass.Env{..} req opts =
+  withRepoFile "fileIncludeLocations" env req repo rootfile $ \gleanDBs _ ->
+    backendRunHaxl GleanBackend{..} $ do
+      result <- firstOrErrors $ queryEachRepo $ do
+        rev <- getRepoHash <$> Glean.haxlRepo
+        efile <- getFile (toGleanPath (SymbolRepoPath repo rootfile))
+        case efile of
+          Left err -> return (Left err)
+          Right file -> do
+            includes <- Cxx.fileIncludeLocationsForCxx depth mlimit file
+            Right <$> processFileIncludes repo rev includes
+      case result of
+        Left err -> throwM $ ServerException $ errorText err
+        Right efile -> return (efile, Nothing)
+  where
+    repo = fileIncludeLocationRequest_repository req
+    rootfile = fileIncludeLocationRequest_filepath req
+    depth_ = fileIncludeLocationRequest_depth req
+    depth | depth_ <= 0 = 1
+          | otherwise = fromIntegral depth_
+    mlimit = fromIntegral <$> requestOptions_limit opts
+
+-- | Scrub all glean types for export to the client
+processFileIncludes
+  :: RepoName
+  -> Revision
+  -> Map.Map Src.File [(Src.File , Src.Range)]
+  -> Glean.RepoHaxl u w FileIncludeLocationResults
+processFileIncludes repo rev xmap = do
+  forExport <- forM (Map.toList xmap) $ \(file, xrefs) -> do
+    key <- GleanPath <$> Glean.keyOf file
+    refs <- forM xrefs $ \(targetFile, srcRange) -> do
+      targetPath <- GleanPath <$> Glean.keyOf targetFile
+      let range = inclusiveRangeToExclusiveRange srcRange
+      pure (FileXRefTarget (symbolPath $ fromGleanPath repo targetPath) range)
+    return (symbolPath (fromGleanPath repo key), refs)
+  return $ FileIncludeLocationResults
+    (XRefFileMap (Map.fromList forExport))
+    rev
 
 -- Worker to fill out symbol description metadata uniformly
 mkSymbolDescription
@@ -712,12 +766,13 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit includeRefs b mlang =
       let (refs, defs) = Attributes.extendAttributes
             (Attributes.fromSymbolId Attributes.SymbolKindAttr)
               kindMap refs1 defs1
-      let repohash = Glean.repo_hash fileRepo
-
-      -- TODO (T122759515): Get repo revision from db properties
-      let revision = Revision $ Text.take 40 repohash
+      let revision = getRepoHash fileRepo
 
       return (DocumentSymbols {..}, merr)
+
+-- TODO (T122759515): Get repo revision from db properties
+getRepoHash :: Glean.Repo -> Revision
+getRepoHash repo = Revision (Text.take 40 (Glean.repo_hash repo))
 
 -- | Wrapper for tracking symbol/entity pairs through processing
 data DocumentSymbols = DocumentSymbols
