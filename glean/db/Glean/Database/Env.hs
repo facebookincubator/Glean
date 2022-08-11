@@ -206,6 +206,8 @@ spawnThreads env = do
     used <- getDfOutput "used"
     void $ setCounter "glean.db.disk.capacity_bytes" available
     void $ setCounter "glean.db.disk.used_bytes" used
+    void $
+      setCounter "glean.db.disk.used_percentage" (100 * used `div` available)
 
 -- Todo: this needs a lot more work.
 -- * We shouldn't just cancel the janitor, we should let it finish the
