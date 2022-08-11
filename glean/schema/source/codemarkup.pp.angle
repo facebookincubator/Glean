@@ -130,4 +130,19 @@ predicate PpEntityInfo:
   { E, { kind = K, isAbstract = false } } where
   PpEntityKind { E, K }
 
+#
+# Use a cxx1.Trace to resolve #include xref target files efficiently
+# We use this as a global cache of #includes to their target for clangd
+#
+predicate PpIncludeXRefLocations:
+  {
+    trace : cxx1.PPTrace, # source file traces to consider
+    range : src.Range, # at this source line/col span
+    target : src.File, # has a #include to this file
+  }
+  { Trace, Range, Target } where
+    { events = Events } = Trace;
+    { include_ = { include_ = Include } } = Events[..];
+    { file = Target, source = Range } = Include;
+
 }
