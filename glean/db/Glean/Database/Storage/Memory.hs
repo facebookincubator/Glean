@@ -66,7 +66,7 @@ instance Storage Memory where
   -- FIXME: This is a terrible hack to ensure we don't remove everything when
   -- thinning the schema
   predicateStats _ =
-    return $ take 1000 [(pid, PredicateStats 1 1) | pid <- [lowestPid ..]]
+    return $ take 10000 [(pid, PredicateStats 1 1) | pid <- [lowestPid ..]]
 
   store db key value =
     atomically $ modifyTVar' (dbData db) $ HashMap.insert key value
