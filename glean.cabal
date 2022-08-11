@@ -417,6 +417,7 @@ library core
         Glean.RTS.Builder
         Glean.RTS.Bytecode.Code
         Glean.RTS.Bytecode.Disassemble
+        Glean.RTS.Bytecode.Supply
         Glean.RTS.Constants
         Glean.RTS.Foreign.Bytecode
         Glean.RTS.Foreign.Define
@@ -827,6 +828,7 @@ executable gen-schema
         Glean.Schema.Gen.Utils,
         Glean.Schema.Gen.Cpp,
         Glean.Schema.Gen.Haskell,
+        Glean.Schema.Gen.Python,
         Glean.Schema.Gen.Thrift
     build-depends:
         glean:core,
