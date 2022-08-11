@@ -357,7 +357,8 @@ predicate ContainsChildEntity :
   }
   { Parent, Child } where
     (codemarkup.hack.HackContainsChildEntity { P, C }; Parent={hack=P}:code.Entity; Child={hack=C}:code.Entity)|
-    (codemarkup.cxx.CxxContainsChildEntity  { P, C }; Parent={cxx=P}:code.Entity; Child={cxx=C}:code.Entity)
+    (codemarkup.cxx.CxxContainsChildEntity  { P, C }; Parent={cxx=P}:code.Entity; Child={cxx=C}:code.Entity)|
+    (codemarkup.python.PythonContainsChildEntity  { P, C }; Parent={python=P}:code.Entity; Child={python=C}:code.Entity)
 
 #
 # Relational search, extended with entity attributes

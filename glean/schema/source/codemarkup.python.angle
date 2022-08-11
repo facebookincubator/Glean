@@ -145,4 +145,21 @@ predicate PythonEntityInfo:
   { E, { kind = K, isAbstract = false }} where
     PythonEntityKind { entity = E, kind = K }
 
+#
+# Relations
+#
+
+predicate PythonContainsChildEntity :
+  {
+    parent: code.python.Entity,
+    child: code.python.Entity
+  }
+  { { decl = Container }, { decl = Member } } where
+    ( python.ContainingTopLevelDeclaration
+      {
+        declaration = Member,
+        container = Container
+      }
+    )
+
 }
