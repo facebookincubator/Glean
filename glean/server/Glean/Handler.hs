@@ -13,9 +13,6 @@ module Glean.Handler
   , handler
   ) where
 
-import qualified Data.HashMap.Strict as HashMap
-import Data.Default
-import qualified Data.Map as Map
 import Data.Maybe
 
 import Facebook.Fb303
@@ -35,14 +32,6 @@ handler :: State -> GleanServiceCommand a -> IO a
 handler State{..} req =
   let backend = Backend.LoggingBackend stEnv in -- log (most) requests
   case req of
-    -- DEPRECATED
-    Service.GetPredicates repo refs -> do
-      info <- Backend.getSchemaInfo backend repo
-        def { getSchemaInfo_omit_source = True }
-      let by_ref = HashMap.fromList
-            [(ref,id) | (id,ref) <- Map.toList $ schemaInfo_predicateIds info]
-      return [HashMap.lookupDefault 0 ref by_ref | ref <- refs]
-
     Service.GetSchemaInfo repo req ->
       Backend.getSchemaInfo backend repo req
 

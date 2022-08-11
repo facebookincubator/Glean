@@ -999,10 +999,7 @@ struct PredicateStatsOpts {
 struct CompletePredicatesResponse {}
 
 service GleanService extends fb303.FacebookService {
-  // DEPRECATED
-  list<Id> getPredicates(1: Repo repo, 2: list<PredicateRef> predicates);
-
-  // Get the schema of a database. NOTE: This will replace getPredicates
+  // Get the schema of a database.
   SchemaInfo getSchemaInfo(1: Repo repo, 2: GetSchemaInfo get);
 
   // Check that a schema is valid, throws an exception if not.  Used
