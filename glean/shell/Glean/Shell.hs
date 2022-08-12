@@ -1342,7 +1342,7 @@ setupLocalSchema service = do
 
                 state <- getState
                 whenJust (repo state) $ \r -> do
-                  info@Thrift.SchemaInfo{..} <- liftIO $
+                  info <- liftIO $
                     Glean.getSchemaInfo env r
                       def { Thrift.getSchemaInfo_select = useSchemaId state }
 
