@@ -15,6 +15,7 @@ module Glean.Glass.Utils
     fetchData
   , fetchDataRecursive
   , searchWithLimit
+  , searchWithTimeLimit
   , searchReposWithLimit
 
   , searchPredicateWithLimit
@@ -37,7 +38,7 @@ import qualified Data.Text as Text
 import System.FilePath ( splitDirectories, joinPath )
 import qualified Data.List as List
 
-import Glean ( recursive, limit, search, search_, getFirstResult )
+import Glean ( recursive, limit, limitTime, search, search_, getFirstResult )
 import Glean.Angle as Angle ( query, Angle )
 import Glean.Typed.Binary ( Type )
 import Glean.Typed.Predicate ( Predicate )
@@ -69,6 +70,15 @@ searchWithLimit Nothing =
   search_ . Angle.query
 searchWithLimit (Just n) =
   fmap fst <$> search . limit n . Angle.query
+
+-- | Like searchWithLimit but enforce a time bound on the query too.
+-- Time budget in milliseconds
+searchWithTimeLimit
+  :: QueryType q => Maybe Int -> Int -> Angle q -> RepoHaxl u w [q]
+searchWithTimeLimit Nothing time =
+  search_ . limitTime time . Angle.query
+searchWithTimeLimit (Just n) time =
+  fmap fst <$> search . limitTime time . limit n . Angle.query
 
 -- | Run a non-recursive data query with optional limit over multiple repos
 searchReposWithLimit
