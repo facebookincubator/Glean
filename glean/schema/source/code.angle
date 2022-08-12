@@ -90,5 +90,3 @@ type Annotations =
     thrift : code.thrift.Annotations |
   }
 }
-
-schema code.24 evolves code.23

@@ -461,5 +461,3 @@ predicate SearchByName:
     lsif.TagDefinition { Language, DM, Entity };
 
 }
-
-schema lsif.2 evolves lsif.1

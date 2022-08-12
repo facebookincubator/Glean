@@ -449,5 +449,3 @@ predicate CxxContainsChildEntity :
     )
 
 }
-
-schema codemarkup.cxx.4 evolves codemarkup.cxx.3
