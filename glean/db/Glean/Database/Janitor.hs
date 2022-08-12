@@ -9,6 +9,8 @@
 {-# LANGUAGE NamedFieldPuns #-}
 module Glean.Database.Janitor
   ( runDatabaseJanitor
+  , runDatabaseJanitorPureish
+  , JanitorSideEffect(..)
   ) where
 
 import Control.Concurrent.STM

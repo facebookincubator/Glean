@@ -19,6 +19,7 @@ import Control.Exception
 import Control.Monad
 import Data.Aeson
 import qualified Data.ByteString.Lazy as LB
+import qualified Data.ByteString.Lazy.Char8 as LBS
 import Data.Default
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashSet as HashSet
@@ -27,6 +28,7 @@ import Data.List
 import Data.Maybe
 import qualified Data.Text as Text
 import Data.Time.Clock
+import GHC.Stack (HasCallStack)
 import System.Directory
 import System.FilePath
 import System.IO.Temp
@@ -63,19 +65,25 @@ import Glean.Util.ShardManager
 import Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.Time (seconds)
 import Glean.Database.Catalog (Entries(entriesRestoring))
+import qualified Data.ByteString.Char8 as BS
+import qualified Data.Map as Map
+import Glean.Database.Backup.Backend
+import Glean.Database.Backup.Mock
 
 
 withTest
   :: (FilePath -> IO ())
+  -> (FilePath -> IO ())
   -> (EventBaseDataplane -> NullConfigProvider -> FilePath -> FilePath
        -> IO ())
   -> IO ()
-withTest setup action =
+withTest setup setupBackup action =
   withEventBaseDataplane $ \evb ->
   withConfigProvider defaultConfigOptions $ \cfgAPI ->
   withSystemTempDirectory "glean-dbtest" $ \dbdir -> do
   withSystemTempDirectory "glean-dbtest-backup" $ \backupdir -> do
     setup dbdir
+    setupBackup backupdir
     action evb cfgAPI dbdir backupdir
 
 complete, broken :: UTCTime -> Completeness
@@ -102,11 +110,18 @@ setupBasicDBs dbdir = do
     Just (Repo "test2" "0006")
   makeFakeDB schema dbdir (Repo "test2" "0006") (age (days 6)) complete Nothing
 
+setupBasicCloudDBs :: FilePath -> IO ()
+setupBasicCloudDBs backupDir = do
+  now <- getCurrentTime
+  let age t = addUTCTime (negate (fromIntegral (timeSpanInSeconds t))) now
+  makeFakeCloudDB backupDir (Repo "test" "0008") (age(days 8)) complete Nothing
+  makeFakeCloudDB backupDir (Repo "test2" "0009") (age(days 0)) complete Nothing
+
 withFakeDBs
   :: (EventBaseDataplane -> NullConfigProvider -> FilePath -> FilePath
        -> IO ())
   -> IO ()
-withFakeDBs action = withTest setupBasicDBs action
+withFakeDBs action = withTest setupBasicDBs (const $ pure ()) action
 
 makeFakeDB
   :: DbSchema
@@ -142,6 +157,30 @@ makeFakeDB schema root repo dbtime completeness stacked = do
     (\hdl -> storeSchema hdl $ toStoredSchema schema)
   LB.writeFile (repoPath </> "meta") (encode meta)
 
+makeFakeCloudDB
+  :: FilePath
+  -> Repo
+  -> UTCTime
+  -> (UTCTime -> Completeness)
+  -> Maybe Repo
+  -> IO ()
+makeFakeCloudDB backupDir repo dbtime completeness stacked =
+  void $ backup (mockSite backupDir) repo props Nothing mempty
+  where
+    props = Map.fromList [
+      ("meta"::String, LBS.unpack $ encode $ Meta
+        { metaVersion = Storage.currentVersion
+        , metaCreated = utcTimeToPosixEpochTime dbtime
+        , metaRepoHashTime = Nothing
+        , metaCompleteness = completeness dbtime
+        , metaBackup = Nothing
+        , metaProperties = HashMap.empty
+        , metaDependencies = Thrift.Dependencies_stacked <$> stacked
+        , metaCompletePredicates = mempty
+        , metaAxiomComplete = False
+        }
+      )
+      ]
 
 dbConfig :: FilePath -> ServerTypes.Config -> Glean.Database.Config.Config
 dbConfig dbdir serverConfig = def
@@ -599,6 +638,47 @@ expireTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
     localDBs <- listDBs env
     assertEqual "All deleted" [] (map database_repo localDBs)
 
+ageCountersTestEx
+  :: HasCallStack => SomeShardManager -> ([BS.ByteString] -> IO ()) -> Test
+ageCountersTestEx shardManager k = TestCase $
+  withTest setupBasicDBs setupBasicCloudDBs $ \evb cfgAPI dbdir backupdir -> do
+    let cfg = (dbConfig dbdir (serverConfig backupdir)
+          { config_restore = def {
+              databaseRestorePolicy_enabled = True
+            }, config_retention = def
+          }) {cfgShardManager = \_ _ k -> k shardManager}
+    withDatabases evb cfg cfgAPI $ \env -> do
+      runDatabaseJanitor env
+      waitDel env
+      sideEffects <- runDatabaseJanitorPureish env
+      let countersToPublish =
+            [ c
+            | PublishCounter c _ <- sideEffects
+            , ".age" `BS.isSuffixOf` c
+            ]
+      k $ sort countersToPublish
+
+ageCountersCompleteTest :: Test
+ageCountersCompleteTest = ageCountersTestEx
+  (SomeShardManager $ shardByRepoHash (pure $ Just ["0001"]))
+  $ assertEqual
+    "Should publish age counters for all newest DBs restored locally"
+    ["glean.db.test.age"]
+
+ageCountersOnlyLocalTest :: Test
+ageCountersOnlyLocalTest = ageCountersTestEx
+  (SomeShardManager $ shardByRepoHash (pure $ Just ["0006"]))
+  $ assertEqual
+      "Should not publish age for locally newest DBs not globally newest"
+    []
+
+ageCountersOnlyNewestTest :: Test
+ageCountersOnlyNewestTest = ageCountersTestEx
+  (SomeShardManager $ shardByRepoHash (pure $ Just []))
+  $ assertEqual
+      "Should not publish age for newest DBs not restored locally"
+      []
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "deleteOldDBs" deleteOldDBsTest
@@ -615,4 +695,7 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "shardingByRepoName" shardingByRepoNameTest
   , TestLabel "shardingExpiring" shardUnexpireTest
   , TestLabel "availableElsewhere" elsewhereTest
+  , TestLabel "ageCountersForAllNewestDBs" ageCountersCompleteTest
+  , TestLabel "ageCountersForOnlyNewestDBs" ageCountersOnlyNewestTest
+  , TestLabel "ageCountersForOnlyLocalDBs" ageCountersOnlyLocalTest
   ]

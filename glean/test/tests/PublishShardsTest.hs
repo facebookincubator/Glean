@@ -45,7 +45,7 @@ runTest :: (IO [Repo] -> IO ()) -> IO ()
 runTest test = do
   published <- newTVarIO mempty
   let callback = atomically . writeTVar published
-  withTest setupFakeDBs $ \evb cfgAPI dbdir backupdir ->
+  withTest setupFakeDBs setupCloudDBs $ \evb cfgAPI dbdir backupdir ->
     withDatabases evb (dbConfig dbdir $ serverConfig backupdir) cfgAPI $ \env ->
       withAsync (dbUpdateNotifierThread env 0.0000001 callback) $ \_ ->
         test $
@@ -54,6 +54,9 @@ runTest test = do
             if null repos
               then retry
               else return $ toList repos
+
+setupCloudDBs :: FilePath -> IO ()
+setupCloudDBs _ = return ()
 
 setupFakeDBs :: FilePath -> IO ()
 setupFakeDBs dbdir = do
