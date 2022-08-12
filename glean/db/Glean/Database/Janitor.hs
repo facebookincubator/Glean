@@ -281,13 +281,10 @@ runWithShards env myShards sm = do
       publishCounter (prefix <> ".backups") $ length $ filter
         (\Item{..} -> itemLocality == Cloud)
         dbsByAge
-      let pt = fromUTCTime t
-          dbAges =
-            [ timeSpanInSeconds $ pt `timeDiff`
-                Time (fromIntegral (unPosixEpochTime (metaCreated itemMeta)))
-              | Item{itemLocality=Local, ..} <- dbsByAge ]
-      unless (null dbAges) $ void $
-        publishCounter (prefix <> ".age") $ minimum dbAges
+      when isMostRecentDbAndLocal $ void $ do
+        let dbCreated = posixEpochTimeToTime (metaCreated $ itemMeta newestDb)
+            dbAge = timeSpanInSeconds $ fromUTCTime t `timeDiff` dbCreated
+        publishCounter (prefix <> ".age") dbAge
 
     -- Report shard stats for dynamic sharding assignment
     mapM_ (\(n,v) -> publishCounter (Text.encodeUtf8 n) v) $
