@@ -20,6 +20,7 @@ $ ./example --service localhost:25052 some/File.h 11007
 
 module Example where
 
+import Data.HashMap.Strict (toList)
 import qualified Data.Set as Set
 import Data.String
 import Options.Applicative
@@ -29,6 +30,7 @@ import Util.EventBase
 import qualified Glean
 import Glean.Angle as Angle
 import Glean.Impl.ConfigProvider
+import Glean.Repo (getSCMrevisions)
 import Glean.Schema.Builtin.Types (schema_id)
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import Glean.Util.ConfigProvider
@@ -61,6 +63,8 @@ main = do
           $ \backend -> do
             repo <- Glean.getLatestRepo backend "fbsource"
             doQuery backend cfg repo
+            scmRevisions <- getSCMrevisions backend repo
+            putStrLn $ "SCM revisions: " <> show (toList scmRevisions)
 
 doQuery :: Glean.Backend b => b -> Config -> Glean.Repo -> IO ()
 doQuery backend Config{..} repo = do

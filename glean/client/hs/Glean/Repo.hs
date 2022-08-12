@@ -12,6 +12,7 @@ module Glean.Repo
   , getLatestRepos
   , getRepo
   , getRepos
+  , getSCMrevisions
   , LatestRepos(..)
   , NoDatabase(..)
     -- * Database util
@@ -22,10 +23,13 @@ import Control.Exception
 import Data.Function
 import Data.List
 import Data.List.Extra (groupSortOn)
+import Data.HashMap.Strict (HashMap)
+import qualified Data.HashMap.Strict as HashMap
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Maybe
 import Data.Text (Text)
+import qualified Data.Text as T
 
 import Util.Log
 
@@ -135,3 +139,22 @@ checkRestorableAvailable backend (Database{..}:dbs)
 
 dbShard :: Database -> Text
 dbShard = Backend.dbShard . database_repo
+
+-- | Returns a mapping (SCM name -> SCM revision)
+--   of the SCM repositories indexed by the DB.
+--   Assumes that the DB includes SCM properties in the conventional format.
+getSCMrevisions :: Backend be => be -> Repo -> IO (HashMap Text Text)
+getSCMrevisions backend repo = do
+  GetDatabaseResult{getDatabaseResult_database = db} <- getDatabase backend repo
+
+  let properties = HashMap.toList (database_properties db)
+  putStrLn $ unlines $ map show properties
+
+  return $ HashMap.fromList
+      [ (scm_name, prop_value)
+      | (prop_name, prop_value) <- properties
+      , Just scm_name <- [T.stripPrefix "glean.scm." prop_name]
+      -- Want to filter out values that are not SCM names,
+      -- but lack an exhaustive list of valid SCM names.
+      , scm_name `notElem` ["repo", "revision"]
+      ]
