@@ -248,14 +248,19 @@ runWithShards env myShards sm = do
             filter (\item -> repoNm == Thrift.repo_name (itemRepo item)) keep
 
     -- Open the most recent local DB for each repo in order to avoid lag spikes
-      let newestLocalDb = head dbsByAge
-      liftIO $ when (itemRepo newestLocalDb `elem` mostRecent
-          && itemLocality newestLocalDb == Local) $
-        whenM (atomically $ isDatabaseClosed env $ itemRepo newestLocalDb)
+      let newestDb = head dbsByAge
+          isDeletingNewestDb = liftIO $
+            HashMap.member (itemRepo newestDb) <$> readTVarIO (envDeleting env)
+      let isMostRecentDbAndLocal =
+            itemRepo newestDb `elem` mostRecent
+            && itemLocality newestDb == Local
+      liftIO $ when isMostRecentDbAndLocal $
+        whenM (atomically $ isDatabaseClosed env $ itemRepo newestDb) $
+        unlessM isDeletingNewestDb
           $ void
           $ tryAll
-          $ logExceptions (inRepo $ itemRepo newestLocalDb)
-          $ withOpenDatabase env (itemRepo newestLocalDb) (\_ -> return ())
+          $ logExceptions (inRepo $ itemRepo newestDb)
+          $ withOpenDatabase env (itemRepo newestDb) (\_ -> return ())
       -- upsert counters
       publishCounter (prefix <> ".all") $ length repoKeep
       publishCounter (prefix <> ".available") $ length $ filter
