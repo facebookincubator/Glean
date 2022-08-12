@@ -119,15 +119,6 @@ runWithShards env myShards sm = do
   localAndRestoring <- atomically $
     Catalog.list (envCatalog env) [Local,Restoring] everythingF
 
-  mostRecent <- fmap (Set.fromList . map itemRepo) $ atomically $
-    Catalog.list (envCatalog env) [Local] $ groupF repoNameV $ do
-      sortF createdV Descending
-      limitF 1
-
-  closeIdleDatabases env
-     (seconds $ fromIntegral databaseClosePolicy_close_after)
-     (toList mostRecent)
-
   t <- getCurrentTime
 
   dbToShard <- computeShardMapping sm
@@ -240,6 +231,14 @@ runWithShards env myShards sm = do
     [ item
       -- Nothing means the db is not in any of the shards assigned to this node
     | (item, Nothing) <- keepAnnotatedWithShard]
+
+  -- ORDERING: 'listMostRecent' reuses the data published by 'resetElsewhere'
+  mostRecent <- Set.fromList . map itemRepo <$>
+    Catalog.listMostRecent (envCatalog env)
+
+  closeIdleDatabases env
+     (seconds $ fromIntegral databaseClosePolicy_close_after)
+     (toList mostRecent)
 
   execWriterT $ do
     forM_ byRepoAndAge $ \(repoNm, dbsByAge) -> do

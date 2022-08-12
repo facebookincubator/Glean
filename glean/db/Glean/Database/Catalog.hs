@@ -21,6 +21,7 @@ module Glean.Database.Catalog
   , create
   , delete
   , list
+  , listMostRecent
   , exists
   , readMeta
   , writeMeta
@@ -354,19 +355,25 @@ list cat locs f = do
   Entries{..} <- getEntries cat
   fmap (runFilter f . concat) $ forM locs $ \loc -> do
     xs <- case loc of
-      Local ->
-        mapM statusAndMeta entriesLiveHere
-        where
-          statusAndMeta :: Entry -> STM (ItemStatus, Meta)
-          statusAndMeta Entry{..} = do
-            status <- readTVar entryStatus
-            meta <- readTVar entryMeta
-            return (status, meta)
+      Local -> mapM statusAndMeta entriesLiveHere
       Restoring -> return $ fmap (ItemRestoring,) entriesRestoring
-      Cloud -> return mempty
+      Cloud -> mapM statusAndMeta entriesLiveElsewhere
     return $
       [ Item repo loc meta status
       | (repo, (status, meta)) <- HashMap.toList xs]
+  where
+    statusAndMeta :: Entry -> STM (ItemStatus, Meta)
+    statusAndMeta Entry{..} = do
+      status <- readTVar entryStatus
+      meta <- readTVar entryMeta
+      return (status, meta)
+
+-- | List the most recent instances of all DBs in the Catalog
+listMostRecent :: Catalog -> IO [Item]
+listMostRecent catalog =  atomically $
+  list catalog [Local, Restoring, Cloud] $ groupF repoNameV $ do
+    sortF createdV Descending
+    limitF 1
 
 -- | Check if a database exists in the catalog
 exists :: Catalog -> [Locality] -> Repo -> STM Bool

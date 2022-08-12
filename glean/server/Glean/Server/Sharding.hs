@@ -96,10 +96,8 @@ shardManagerConfig _mbPort catalog smCfgServerConfig callback = do
             , numberOfShards = fromIntegral shardManagerPolicy_nshards
             , defaultDomainName = shardManagerPolicy_default_domain_id
             }
-          getMostRecent = fmap (Set.fromList . map itemRepo) $ atomically $
-            Catalog.list catalog [Local] $ groupF repoNameV $ do
-              sortF createdV Descending
-              limitF 1
+          getMostRecent =
+            Set.fromList . map itemRepo <$> Catalog.listMostRecent catalog
 
       withShardManagerForMostRecent
         smCliArgs
