@@ -116,10 +116,8 @@ runWithShards env myShards sm = do
 
   backups <- fetchBackups env
 
-  localAndRestoringByAge <- atomically $
-    Catalog.list (envCatalog env) [Local,Restoring] $ do
-      sortF createdV Ascending
-      everythingF
+  localAndRestoring <- atomically $
+    Catalog.list (envCatalog env) [Local,Restoring] everythingF
 
   mostRecent <- fmap (Set.fromList . map itemRepo) $ atomically $
     Catalog.list (envCatalog env) [Local] $ groupF repoNameV $ do
@@ -141,11 +139,11 @@ runWithShards env myShards sm = do
 
   let
     allDBsByAge :: [Item]
-    allDBsByAge =
-      localAndRestoringByAge ++
+    allDBsByAge = sortOn (metaCreated . itemMeta) $
+      localAndRestoring ++
         [ Item repo Cloud meta ItemMissing -- DBs we could restore
         | (repo, meta) <- backups
-        , repo `notElem` map itemRepo localAndRestoringByAge  ]
+        , repo `notElem` map itemRepo localAndRestoring  ]
 
     byRepoAndAge = byRepoName allDBsByAge
     byRepoMap = Map.fromList $ [(itemRepo item, item) | item <- allDBsByAge]
