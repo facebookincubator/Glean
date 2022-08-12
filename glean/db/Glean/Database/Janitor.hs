@@ -14,6 +14,9 @@ module Glean.Database.Janitor
 import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad.Extra
+import Control.Monad.IO.Class (liftIO)
+import Control.Monad.Trans.Writer.CPS
+import Data.ByteString (ByteString)
 import Data.Foldable as Foldable
 import Data.Hashable
 import qualified Data.HashMap.Strict as HashMap
@@ -65,9 +68,24 @@ The database janitor has the following functions:
   - delete dbs we don't need any longer.
   - publish counters of local db states.
 -}
-
 runDatabaseJanitor :: Env -> IO ()
-runDatabaseJanitor env@Env{envShardManager = SomeShardManager sm} = do
+runDatabaseJanitor env = do
+  runDatabaseJanitorPureish env >>= executeJanitorSideEffects
+
+executeJanitorSideEffects :: Foldable t => t JanitorSideEffect -> IO ()
+executeJanitorSideEffects = mapM_ $ \case
+    PublishCounter n v -> setCounter n v
+
+data JanitorSideEffect
+  = PublishCounter !ByteString !Int
+  deriving (Eq, Show)
+
+publishCounter :: ByteString -> Int -> WriterT [JanitorSideEffect] IO ()
+publishCounter name value = tell [PublishCounter name value]
+
+-- WIP making the Janitor more testable by returning the list of side effects
+runDatabaseJanitorPureish :: Env -> IO [JanitorSideEffect]
+runDatabaseJanitorPureish env@Env{envShardManager = SomeShardManager sm} = do
   maybeShards <- getAssignedShards sm
   case maybeShards of
     Just shards ->
@@ -81,7 +99,7 @@ runWithShards
   => Env
   -> Set.Set shard
   -> ShardManager shard
-  -> IO ()
+  -> IO [JanitorSideEffect]
 runWithShards env myShards sm = do
   loggingAction (runLogCmd "janitor" env) (const mempty) $ do
   logInfo "running database janitor"
@@ -223,59 +241,59 @@ runWithShards env myShards sm = do
       -- Nothing means the db is not in any of the shards assigned to this node
     | (item, Nothing) <- keepAnnotatedWithShard]
 
-  forM_ byRepoAndAge $ \(repoNm, dbsByAge) -> do
-    let prefix = "glean.db." <> Text.encodeUtf8 repoNm
-    let repoKeep =
-          filter (\item -> repoNm == Thrift.repo_name (itemRepo item)) keep
+  execWriterT $ do
+    forM_ byRepoAndAge $ \(repoNm, dbsByAge) -> do
+      let prefix = "glean.db." <> Text.encodeUtf8 repoNm
+      let repoKeep =
+            filter (\item -> repoNm == Thrift.repo_name (itemRepo item)) keep
 
     -- Open the most recent local DB for each repo in order to avoid lag spikes
-    let newestLocalDb = head dbsByAge
-    when (itemRepo newestLocalDb `elem` mostRecent
-        && itemLocality newestLocalDb == Local) $
-      whenM (atomically $ isDatabaseClosed env $ itemRepo newestLocalDb)
-        $ void
-        $ tryAll
-        $ logExceptions (inRepo $ itemRepo newestLocalDb)
-        $ withOpenDatabase env (itemRepo newestLocalDb) (\_ -> return ())
+      let newestLocalDb = head dbsByAge
+      liftIO $ when (itemRepo newestLocalDb `elem` mostRecent
+          && itemLocality newestLocalDb == Local) $
+        whenM (atomically $ isDatabaseClosed env $ itemRepo newestLocalDb)
+          $ void
+          $ tryAll
+          $ logExceptions (inRepo $ itemRepo newestLocalDb)
+          $ withOpenDatabase env (itemRepo newestLocalDb) (\_ -> return ())
+      -- upsert counters
+      publishCounter (prefix <> ".all") $ length repoKeep
+      publishCounter (prefix <> ".available") $ length $ filter
+        (\Item{..} ->
+          itemLocality == Local
+          && completenessStatus itemMeta == Thrift.DatabaseStatus_Complete)
+        repoKeep
+      publishCounter (prefix <> ".restoring") $
+        length restores +
+        length (filter (\Item{..} -> itemLocality == Restoring) dbsByAge)
+      publishCounter (prefix <> ".indexing") $ length $ filter
+        (\Item{..} ->
+          itemLocality == Local
+          && completenessStatus itemMeta == Thrift.DatabaseStatus_Incomplete)
+        dbsByAge
+      publishCounter (prefix <> ".backups") $ length $ filter
+        (\Item{..} -> itemLocality == Cloud)
+        dbsByAge
+      let pt = fromUTCTime t
+          dbAges =
+            [ timeSpanInSeconds $ pt `timeDiff`
+                Time (fromIntegral (unPosixEpochTime (metaCreated itemMeta)))
+              | Item{itemLocality=Local, ..} <- dbsByAge ]
+      unless (null dbAges) $ void $
+        publishCounter (prefix <> ".age") $ minimum dbAges
 
-    -- upsert counters
-    void $ setCounter (prefix <> ".all") $ length repoKeep
-    void $ setCounter (prefix <> ".available") $ length $ filter
-      (\Item{..} ->
-        itemLocality == Local
-        && completenessStatus itemMeta == Thrift.DatabaseStatus_Complete)
-      repoKeep
-    void $ setCounter (prefix <> ".restoring") $
-      length restores +
-      length (filter (\Item{..} -> itemLocality == Restoring) dbsByAge)
-    void $ setCounter (prefix <> ".indexing") $ length $ filter
-      (\Item{..} ->
-        itemLocality == Local
-        && completenessStatus itemMeta == Thrift.DatabaseStatus_Incomplete)
-      dbsByAge
-    void $ setCounter (prefix <> ".backups") $ length $ filter
-      (\Item{..} -> itemLocality == Cloud)
-      dbsByAge
-    let pt = fromUTCTime t
-        dbAges =
-          [ timeSpanInSeconds $ pt `timeDiff`
-              Time (fromIntegral (unPosixEpochTime (metaCreated itemMeta)))
-            | Item{itemLocality=Local, ..} <- dbsByAge ]
-    unless (null dbAges) $ void $
-      setCounter (prefix <> ".age") $ minimum dbAges
-
-  -- Report shard stats for dynamic sharding assignment
-  mapM_ (\(n,v) -> setCounter (Text.encodeUtf8 n) v) $
-    countersForShardSizes sm $
-    Map.fromListWith (+) $
-    [ (shard, bytes)
-    | (item, shard) <- keepInThisNode
-    , Complete DatabaseComplete{databaseComplete_bytes = Just bytes} <-
-        [metaCompleteness (itemMeta item)]
-    ] ++
-    [ (shard, 0)
-    | shard <- toList myShards
-    , shard `notElem` Set.fromList (map snd keepInThisNode)]
+    -- Report shard stats for dynamic sharding assignment
+    mapM_ (\(n,v) -> publishCounter (Text.encodeUtf8 n) v) $
+      countersForShardSizes sm $
+      Map.fromListWith (+) $
+      [ (shard, bytes)
+      | (item, shard) <- keepInThisNode
+      , Complete DatabaseComplete{databaseComplete_bytes = Just bytes} <-
+          [metaCompleteness (itemMeta item)]
+      ] ++
+      [ (shard, 0)
+      | shard <- toList myShards
+      , shard `notElem` Set.fromList (map snd keepInThisNode)]
 
 -- The target set of DBs we want usable on the disk. This is a set of
 -- DBs that satisfies the policy.
