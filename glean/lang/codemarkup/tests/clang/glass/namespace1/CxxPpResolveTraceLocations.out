@@ -8,9 +8,9 @@
         "location": {
           "range": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 43,
+            "lineBegin": 45,
             "columnBegin": 9,
-            "lineEnd": 43,
+            "lineEnd": 45,
             "columnEnd": 9
           }
         }
@@ -22,9 +22,9 @@
               "macro": { "key": "A" },
               "source": {
                 "file": { "key": "test.cpp" },
-                "lineBegin": 43,
+                "lineBegin": 45,
                 "columnBegin": 9,
-                "lineEnd": 43,
+                "lineEnd": 45,
                 "columnEnd": 9
               }
             }
@@ -41,9 +41,9 @@
         "location": {
           "range": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 44,
+            "lineBegin": 46,
             "columnBegin": 9,
-            "lineEnd": 44,
+            "lineEnd": 46,
             "columnEnd": 9
           }
         }
@@ -55,9 +55,108 @@
               "macro": { "key": "B" },
               "source": {
                 "file": { "key": "test.cpp" },
-                "lineBegin": 44,
+                "lineBegin": 46,
                 "columnBegin": 9,
-                "lineEnd": 44,
+                "lineEnd": 46,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "C",
+        "file": { "key": "test.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test.h" },
+            "lineBegin": 9,
+            "columnBegin": 9,
+            "lineEnd": 9,
+            "columnEnd": 9
+          }
+        }
+      },
+      "tuplefield1": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "C" },
+              "source": {
+                "file": { "key": "test.h" },
+                "lineBegin": 9,
+                "columnBegin": 9,
+                "lineEnd": 9,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "D",
+        "file": { "key": "test2.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test2.h" },
+            "lineBegin": 9,
+            "columnBegin": 9,
+            "lineEnd": 9,
+            "columnEnd": 9
+          }
+        }
+      },
+      "tuplefield1": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "D" },
+              "source": {
+                "file": { "key": "test2.h" },
+                "lineBegin": 9,
+                "columnBegin": 9,
+                "lineEnd": 9,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "D",
+        "file": { "key": "test3.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test3.h" },
+            "lineBegin": 9,
+            "columnBegin": 9,
+            "lineEnd": 9,
+            "columnEnd": 9
+          }
+        }
+      },
+      "tuplefield1": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "D" },
+              "source": {
+                "file": { "key": "test3.h" },
+                "lineBegin": 9,
+                "columnBegin": 9,
+                "lineEnd": 9,
                 "columnEnd": 9
               }
             }

@@ -507,8 +507,8 @@
                 "range": {
                     "columnBegin": 9,
                     "columnEnd": 10,
-                    "lineBegin": 43,
-                    "lineEnd": 43
+                    "lineBegin": 45,
+                    "lineEnd": 45
                 },
                 "sym": "test/pp/test.cpp/A"
             },
@@ -536,8 +536,8 @@
                 "range": {
                     "columnBegin": 9,
                     "columnEnd": 10,
-                    "lineBegin": 44,
-                    "lineEnd": 44
+                    "lineBegin": 46,
+                    "lineEnd": 46
                 },
                 "sym": "test/pp/test.cpp/B"
             }
@@ -1411,6 +1411,45 @@
                     "columnEnd": 9,
                     "lineBegin": 25,
                     "lineEnd": 25
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 4
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 18,
+                    "lineBegin": 43,
+                    "lineEnd": 43
+                },
+                "sym": "test/pp/test.h",
+                "target": {
+                    "filepath": "test.h",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
                 }
             }
         ],

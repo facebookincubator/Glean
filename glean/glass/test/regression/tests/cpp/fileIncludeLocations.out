@@ -1,0 +1,39 @@
+[
+    "@generated",
+    {
+        "revision": "testhash",
+        "xrefs": {
+            "\"test.cpp\"": [
+                {
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 18,
+                        "lineBegin": 43,
+                        "lineEnd": 43
+                    },
+                    "target": "test.h"
+                }
+            ],
+            "\"test.h\"": [
+                {
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 19,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "target": "test2.h"
+                },
+                {
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 19,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "target": "test3.h"
+                }
+            ]
+        }
+    }
+]

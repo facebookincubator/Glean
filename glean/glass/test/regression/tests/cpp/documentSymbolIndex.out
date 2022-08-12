@@ -2,7 +2,7 @@
     "@generated",
     {
         "revision": "testhash",
-        "size": 29,
+        "size": 30,
         "symbols": {
             "11": [
                 {
@@ -993,22 +993,32 @@
                             "aInteger": 1
                         },
                         "symbolKind": {
-                            "aInteger": 30
+                            "aInteger": 4
                         },
                         "symbolLanguage": {
                             "aInteger": 8
                         }
                     },
                     "range": {
-                        "columnBegin": 9,
-                        "columnEnd": 10,
+                        "columnBegin": 1,
+                        "columnEnd": 18,
                         "lineBegin": 43,
                         "lineEnd": 43
                     },
-                    "sym": "test/pp/test.cpp/A"
+                    "sym": "test/pp/test.h",
+                    "target": {
+                        "filepath": "test.h",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 1,
+                            "lineBegin": 1,
+                            "lineEnd": 1
+                        },
+                        "repository": "test"
+                    }
                 }
             ],
-            "44": [
+            "45": [
                 {
                     "attributes": {
                         "symbolDefinitionType": {
@@ -1024,8 +1034,30 @@
                     "range": {
                         "columnBegin": 9,
                         "columnEnd": 10,
-                        "lineBegin": 44,
-                        "lineEnd": 44
+                        "lineBegin": 45,
+                        "lineEnd": 45
+                    },
+                    "sym": "test/pp/test.cpp/A"
+                }
+            ],
+            "46": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 8
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 10,
+                        "lineBegin": 46,
+                        "lineEnd": 46
                     },
                     "sym": "test/pp/test.cpp/B"
                 }

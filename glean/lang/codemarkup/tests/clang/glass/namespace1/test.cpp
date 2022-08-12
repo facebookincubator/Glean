@@ -40,6 +40,8 @@ void h() {
   foo::bar::g();
 }
 
+#include "test.h"
+
 #define A "one"
 #define B "two"
 

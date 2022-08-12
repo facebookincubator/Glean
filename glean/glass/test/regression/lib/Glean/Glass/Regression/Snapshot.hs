@@ -179,6 +179,8 @@ evalQuery glassEnv qFile Query{..} oFile = case action of
     (Glass.searchBySymbolId glassEnv)
   "searchRelated" -> withObjectAndSymbolId qFile oFile args
     (Glass.searchRelated glassEnv)
+  "fileIncludeLocations" -> withObjectArgs qFile oFile args
+    (Glass.fileIncludeLocations glassEnv)
 
   _ -> error $ "Invalid action: " <> show action
 
@@ -296,6 +298,10 @@ instance SortedResponse (Map.Map Text SymbolDescription) where
   sorted = Map.map sorted
 instance SortedResponse SymbolResult where
   sorted = id
+instance SortedResponse FileIncludeLocationResults where
+  sorted (FileIncludeLocationResults (XRefFileMap refs) _rev) =
+    FileIncludeLocationResults (XRefFileMap (Map.map sort refs))
+      (Revision "testhash")
 
 diff :: FilePath -> FilePath -> IO ()
 diff outGenerated outSpec = do
