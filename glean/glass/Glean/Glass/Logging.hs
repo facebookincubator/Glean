@@ -29,7 +29,6 @@ import Logger.GleanGlassErrors ( GleanGlassErrorsLogger )
 import Util.Logger ( ActionLog(..) )
 import qualified Logger.GleanGlass as Logger
 import qualified Logger.GleanGlassErrors as Errors
-import qualified Data.Map.Strict as Map
 
 import Data.Text ( Text )
 import Util.Text ( textShow )
@@ -84,6 +83,13 @@ instance LogResult DocumentSymbolListXResult where
   logResult (DocumentSymbolListXResult{..}, log) =
     log <> Logger.setItemCount (length documentSymbolListXResult_references +
       length documentSymbolListXResult_definitions)
+
+instance LogResult FileIncludeLocationResults where
+  logResult (FileIncludeLocationResults{..}, log) =
+    log <> Logger.setItemCount (sum
+       (map (length . fileIncludeXRef_includes)
+          (unXRefFileList fileIncludeLocationResults_references)
+       ))
 
 instance LogResult DocumentSymbolIndex where
   logResult (DocumentSymbolIndex{..}, log) =
@@ -146,13 +152,6 @@ instance LogResult SearchRelatedResult where
 
 instance LogResult [RelatedSymbols] where
   logResult (edges, log) = log <> Logger.setItemCount (length edges)
-
-instance LogResult FileIncludeLocationResults where
-  logResult (FileIncludeLocationResults{..}, log) =
-    log <> Logger.setItemCount (
-      Map.foldl' (\n v -> n + length v) 0
-        (unXRefFileMap fileIncludeLocationResults_xrefs)
-    )
 
 class LogRepo a where
   logRepo :: a -> GleanGlassLogger

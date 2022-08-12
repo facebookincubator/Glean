@@ -299,9 +299,13 @@ instance SortedResponse (Map.Map Text SymbolDescription) where
 instance SortedResponse SymbolResult where
   sorted = id
 instance SortedResponse FileIncludeLocationResults where
-  sorted (FileIncludeLocationResults (XRefFileMap refs) _rev) =
-    FileIncludeLocationResults (XRefFileMap (Map.map sort refs))
-      (Revision "testhash")
+  sorted (FileIncludeLocationResults _rev (XRefFileList refs)) =
+    FileIncludeLocationResults
+     (Revision "testhash")
+     (XRefFileList (sort (map sorted refs)))
+instance SortedResponse FileIncludeXRef where
+  sorted (FileIncludeXRef path incs) =
+    FileIncludeXRef path (sort incs)
 
 diff :: FilePath -> FilePath -> IO ()
 diff outGenerated outSpec = do

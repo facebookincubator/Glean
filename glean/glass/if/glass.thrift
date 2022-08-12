@@ -436,15 +436,21 @@ struct FileIncludeLocationRequest {
 # xref and the origin span. Useful for caching/pre-fetching file contents
 struct FileXRefTarget {
   1: Path target; // target file only
-  2: Range range; // local line:col of use
+  2: Range range (hs.strict); // local line:col of use
+}
+
+# list of struct rather than map to help out GraphQL
+struct FileIncludeXRef {
+  1: Path source;
+  2: list<FileXRefTarget> includes;
 }
 
 # map of source file, to local spans and their target files only
-typedef map<Path, list<FileXRefTarget>> XRefFileMap (hs.newtype)
+typedef list<FileIncludeXRef> XRefFileList (hs.newtype)
 
 struct FileIncludeLocationResults {
-  1: XRefFileMap xrefs;
   2: Revision revision; // actual revision used for results
+  3: XRefFileList references;
 }
 
 // Glass symbol service

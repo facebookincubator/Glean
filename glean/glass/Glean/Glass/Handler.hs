@@ -174,8 +174,9 @@ import Glean.Glass.Types
       RepoName(..),
       RequestOptions(..),
       DocumentSymbolsRequest(..),
-      XRefFileMap(..),
       FileXRefTarget(..),
+      FileIncludeXRef(..),
+      XRefFileList(..),
       rELATED_SYMBOLS_MAX_LIMIT )
 import Glean.Index.Types
   ( IndexRequest,
@@ -369,6 +370,7 @@ fileIncludeLocations env@Glass.Env{..} req opts =
     mlimit = fromIntegral <$> requestOptions_limit opts
 
 -- | Scrub all glean types for export to the client
+-- And flatten to lists for GraphQL.
 processFileIncludes
   :: RepoName
   -> Revision
@@ -381,10 +383,14 @@ processFileIncludes repo rev xmap = do
       targetPath <- GleanPath <$> Glean.keyOf targetFile
       let range = inclusiveRangeToExclusiveRange srcRange
       pure (FileXRefTarget (symbolPath $ fromGleanPath repo targetPath) range)
-    return (symbolPath (fromGleanPath repo key), refs)
-  return $ FileIncludeLocationResults
-    (XRefFileMap (Map.fromList forExport))
-    rev
+    pure FileIncludeXRef {
+      fileIncludeXRef_source = symbolPath (fromGleanPath repo key),
+      fileIncludeXRef_includes = refs
+    }
+  pure FileIncludeLocationResults {
+    fileIncludeLocationResults_references = XRefFileList forExport,
+    fileIncludeLocationResults_revision = rev
+  }
 
 -- Worker to fill out symbol description metadata uniformly
 mkSymbolDescription

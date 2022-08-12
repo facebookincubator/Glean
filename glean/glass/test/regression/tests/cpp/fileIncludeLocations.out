@@ -1,39 +1,45 @@
 [
     "@generated",
     {
-        "revision": "testhash",
-        "xrefs": {
-            "\"test.cpp\"": [
-                {
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 18,
-                        "lineBegin": 43,
-                        "lineEnd": 43
+        "references": [
+            {
+                "includes": [
+                    {
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 18,
+                            "lineBegin": 43,
+                            "lineEnd": 43
+                        },
+                        "target": "test.h"
+                    }
+                ],
+                "source": "test.cpp"
+            },
+            {
+                "includes": [
+                    {
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 19,
+                            "lineBegin": 10,
+                            "lineEnd": 10
+                        },
+                        "target": "test2.h"
                     },
-                    "target": "test.h"
-                }
-            ],
-            "\"test.h\"": [
-                {
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 19,
-                        "lineBegin": 10,
-                        "lineEnd": 10
-                    },
-                    "target": "test2.h"
-                },
-                {
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 19,
-                        "lineBegin": 11,
-                        "lineEnd": 11
-                    },
-                    "target": "test3.h"
-                }
-            ]
-        }
+                    {
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 19,
+                            "lineBegin": 11,
+                            "lineEnd": 11
+                        },
+                        "target": "test3.h"
+                    }
+                ],
+                "source": "test.h"
+            }
+        ],
+        "revision": "testhash"
     }
 ]
