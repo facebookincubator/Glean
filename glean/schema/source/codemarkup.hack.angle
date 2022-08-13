@@ -6,22 +6,6 @@ import code.hack.4
 import hack.6
 import codemarkup.types.1
 
-# hack.DeclarationSpan doesn't currently cover ClassConstDeclarations,
-# so we fall back to hack.DeclaraitonLocation. This workaround can go
-# away when that bug is fixed (T114671647)
-predicate HackDeclarationSpan:
-  {
-    declaration: hack.Declaration,
-    file: src.File,
-    span: src.ByteSpan
-  }
-  { Decl, File, Span } where
-    hack.DeclarationSpan { declaration = Decl, file = File, span = Span } |
-    (
-      !hack.DeclarationSpan { declaration = Decl };
-      hack.DeclarationLocation {declaration = Decl, file = File, span = Span }
-    );
-
 predicate HackResolveLocation:
   {
     location: codemarkup.types.Location,
@@ -31,7 +15,7 @@ predicate HackResolveLocation:
     hack.FileDeclarations { file = File, declarations = Ds };
     Decl = Ds[..];
     hack.DeclarationName Decl -> (hack.Name Name);
-    HackDeclarationSpan { declaration = Decl, file = File, span = Span };
+    hack.DeclarationSpan { declaration = Decl, file = File, span = Span };
 
 # Finding entities' locations
 
@@ -41,7 +25,7 @@ predicate HackEntityLocation:
     location: codemarkup.types.Location,
   }
   { { decl = D }, { Name, File, { span = Span }, nothing } } where
-    HackDeclarationSpan { declaration = D, file = File, span = Span };
+    hack.DeclarationSpan { declaration = D, file = File, span = Span };
     hack.DeclarationName D -> (hack.Name Name);
 
 # Finding references in a file
