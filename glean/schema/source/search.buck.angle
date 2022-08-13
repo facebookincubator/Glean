@@ -3,6 +3,7 @@
 schema search.buck.1 {
   import code.buck.1
   import buck.1
+  import src.1
 
   predicate SearchByFQN:
     {
@@ -12,4 +13,20 @@ schema search.buck.1 {
       entity: code.buck.Entity,
     } {S, P, N, E} where
     E = code.buck.Entity { locator = { subdir = S, path = P, name = N }}
+
+  predicate SearchFile:
+    {
+      file: src.File,
+      entity: code.buck.Entity,
+    } {F, E} where
+    E = code.buck.Entity { file = F }
+
+  predicate SearchDefinition:
+    {
+      module: src.File,
+      name: string,
+      entity: code.buck.Entity,
+    } {M, N, E} where
+    E = code.buck.Entity { definition = { module = M, name = N} }
+
 }

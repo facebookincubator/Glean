@@ -1,0 +1,2 @@
+action: documentSymbolIndex
+args: {"include_refs":true,"filepath":"buck_project/my_defs.bzl","repository":"test"}

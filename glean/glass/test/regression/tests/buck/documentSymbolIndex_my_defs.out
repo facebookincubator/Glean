@@ -1,0 +1,57 @@
+[
+    "@generated",
+    {
+        "revision": "testhash",
+        "size": 3,
+        "symbols": {
+            "3": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 17,
+                        "lineBegin": 3,
+                        "lineEnd": 4
+                    },
+                    "sym": "test/buck/d/buck_project/my_defs.bzl/f"
+                }
+            ],
+            "6": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 16,
+                        "lineBegin": 6,
+                        "lineEnd": 7
+                    },
+                    "sym": "test/buck/d/buck_project/my_defs.bzl/g"
+                }
+            ],
+            "9": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 6,
+                        "lineBegin": 9,
+                        "lineEnd": 12
+                    },
+                    "sym": "test/buck/d/buck_project/my_defs.bzl/some_library"
+                }
+            ]
+        }
+    }
+]

@@ -2,7 +2,7 @@
     "@generated",
     {
         "revision": "testhash",
-        "size": 10,
+        "size": 12,
         "symbols": {
             "12": [
                 {
@@ -17,7 +17,7 @@
                         "lineBegin": 12,
                         "lineEnd": 18
                     },
-                    "sym": "test/buck/buck_project/./foo"
+                    "sym": "test/buck/t/buck_project/PATH/./foo"
                 }
             ],
             "15": [
@@ -33,7 +33,7 @@
                         "lineBegin": 15,
                         "lineEnd": 15
                     },
-                    "sym": "test/buck/buck_project/a/foo",
+                    "sym": "test/buck/t/buck_project/PATH/a/foo",
                     "target": {
                         "filepath": "buck_project/a/TEST_TARGETS",
                         "range": {
@@ -59,7 +59,7 @@
                         "lineBegin": 16,
                         "lineEnd": 16
                     },
-                    "sym": "test/buck/buck_project/./bar",
+                    "sym": "test/buck/t/buck_project/PATH/./bar",
                     "target": {
                         "filepath": "buck_project/TEST_TARGETS",
                         "range": {
@@ -67,6 +67,56 @@
                             "columnEnd": 2,
                             "lineBegin": 20,
                             "lineEnd": 26
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "2": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 22,
+                        "columnEnd": 25,
+                        "lineBegin": 2,
+                        "lineEnd": 2
+                    },
+                    "sym": "test/buck/d/buck_project/my_defs.bzl/f",
+                    "target": {
+                        "filepath": "buck_project/my_defs.bzl",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 17,
+                            "lineBegin": 3,
+                            "lineEnd": 4
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 27,
+                        "columnEnd": 30,
+                        "lineBegin": 2,
+                        "lineEnd": 2
+                    },
+                    "sym": "test/buck/d/buck_project/my_defs.bzl/g",
+                    "target": {
+                        "filepath": "buck_project/my_defs.bzl",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 16,
+                            "lineBegin": 6,
+                            "lineEnd": 7
                         },
                         "repository": "test"
                     }
@@ -85,7 +135,7 @@
                         "lineBegin": 20,
                         "lineEnd": 26
                     },
-                    "sym": "test/buck/buck_project/./bar"
+                    "sym": "test/buck/t/buck_project/PATH/./bar"
                 }
             ],
             "22": [
@@ -101,7 +151,7 @@
                         "lineBegin": 22,
                         "lineEnd": 22
                     },
-                    "sym": "test/buck/buck_project/toto.c",
+                    "sym": "test/buck/f/buck_project/toto.c",
                     "target": {
                         "filepath": "buck_project/toto.c",
                         "range": {
@@ -125,7 +175,7 @@
                         "lineBegin": 22,
                         "lineEnd": 22
                     },
-                    "sym": "test/buck/buck_project/tutu.c",
+                    "sym": "test/buck/f/buck_project/tutu.c",
                     "target": {
                         "filepath": "buck_project/tutu.c",
                         "range": {
@@ -151,7 +201,7 @@
                         "lineBegin": 24,
                         "lineEnd": 24
                     },
-                    "sym": "test/buck/buck_project/b/bar",
+                    "sym": "test/buck/t/buck_project/PATH/b/bar",
                     "target": {
                         "filepath": "buck_project/b/TEST_TARGETS",
                         "range": {
@@ -177,7 +227,7 @@
                         "lineBegin": 4,
                         "lineEnd": 10
                     },
-                    "sym": "test/buck/buck_project/./foobar"
+                    "sym": "test/buck/t/buck_project/PATH/./foobar"
                 }
             ],
             "7": [
@@ -193,7 +243,7 @@
                         "lineBegin": 7,
                         "lineEnd": 7
                     },
-                    "sym": "test/buck/buck_project/./bar",
+                    "sym": "test/buck/t/buck_project/PATH/./bar",
                     "target": {
                         "filepath": "buck_project/TEST_TARGETS",
                         "range": {
@@ -219,7 +269,7 @@
                         "lineBegin": 8,
                         "lineEnd": 8
                     },
-                    "sym": "test/buck/buck_project/./foo",
+                    "sym": "test/buck/t/buck_project/PATH/./foo",
                     "target": {
                         "filepath": "buck_project/TEST_TARGETS",
                         "range": {

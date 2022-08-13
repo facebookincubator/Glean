@@ -14,6 +14,7 @@ module Glean.Glass.Search.Buck
   ) where
 
 import Data.Text ( Text )
+import Data.List.Split ( splitOn )
 
 import Glean.Angle as Angle
 
@@ -26,12 +27,37 @@ import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.SearchBuck.Types as Buck
 import qualified Glean.Schema.Src.Types as Src
 
+import Glean.Glass.Utils as Utils
+
+
+parse :: [Text] -> Maybe (Maybe Text, Text, Text)
+parse locator = do
+  let name : rest = reverse locator
+  let [subdir, path] = splitOn ["PATH"] (reverse rest)
+  let mSubdir = case subdir of
+          [] -> Nothing
+          _ -> Just $ Utils.joinFragments subdir
+  return (mSubdir, Utils.joinFragments path, name)
+
+
 instance Search Buck.Entity where
-  symbolSearch toks@[path, name] = do
-    runSearch toks $ searchByFQN Nothing path name
-  symbolSearch toks@[subdir, path, name] = do
-    runSearch toks $ searchByFQN (Just subdir) path name
-  symbolSearch _ = return $ None "Buck.symbolSearch: invalid symbol"
+  symbolSearch toks = case toks of
+    ("t" : locator) -> do
+      case parse locator of
+        Just (subdir, path, name) ->
+          runSearch toks $ searchByFQN subdir path name
+        Nothing -> invalid_symbol
+    ("f" : path) -> do
+      runSearch toks $ searchFile (Utils.joinFragments path)
+    ("d" : module_name) -> do
+      case reverse module_name of
+        name : rev_module -> runSearch toks $ searchDefinition
+          (Utils.joinFragments $ reverse rev_module) name
+        _ -> invalid_symbol
+    _ -> invalid_symbol
+    where
+      invalid_symbol = return $ None "Buck.symbolSearch: invalid symbol"
+
 
 searchByFQN :: Maybe Text -> Text -> Text -> Angle (ResultLocation Buck.Entity)
 searchByFQN mSubdir path name =
@@ -51,3 +77,30 @@ searchByFQN mSubdir path name =
     subDirQ = case mSubdir of
       Just str -> just (string str)
       Nothing -> nothing
+
+searchFile :: Text -> Angle (ResultLocation Buck.Entity)
+searchFile path =
+  vars $ \(ent :: Angle Buck.Entity) (file :: Angle Src.File)
+    (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+  tuple (ent, file, rangespan, lname) `where_` [
+    wild .= predicate @Buck.SearchFile (
+      rec $
+        field @"file" (string path) $
+        field @"entity" ent
+      end),
+      entityLocation (alt @"buck" ent) file rangespan lname
+  ]
+
+searchDefinition :: Text -> Text -> Angle (ResultLocation Buck.Entity)
+searchDefinition module_ name =
+  vars $ \(ent :: Angle Buck.Entity) (file :: Angle Src.File)
+    (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+  tuple (ent, file, rangespan, lname) `where_` [
+    wild .= predicate @Buck.SearchDefinition (
+      rec $
+        field @"module" (string module_) $
+        field @"name" (string name) $
+        field @"entity" ent
+      end),
+      entityLocation (alt @"buck" ent) file rangespan lname
+  ]
