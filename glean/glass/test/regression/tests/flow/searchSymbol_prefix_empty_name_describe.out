@@ -68,26 +68,6 @@
                 "location": {
                     "filepath": "test/es_exports.js.flow",
                     "range": {
-                        "columnBegin": 14,
-                        "columnEnd": 15,
-                        "lineBegin": 27,
-                        "lineEnd": 27
-                    },
-                    "repository": "test"
-                },
-                "name": {
-                    "container": "es_exports",
-                    "localName": "C"
-                },
-                "repo_hash": "testhash",
-                "sym": "test/js/es_exports/C"
-            },
-            {
-                "comments": [],
-                "language": 2,
-                "location": {
-                    "filepath": "test/es_exports.js.flow",
-                    "range": {
                         "columnBegin": 21,
                         "columnEnd": 24,
                         "lineBegin": 21,
@@ -101,26 +81,6 @@
                 },
                 "repo_hash": "testhash",
                 "sym": "test/js/es_exports/bar"
-            },
-            {
-                "comments": [],
-                "language": 2,
-                "location": {
-                    "filepath": "test/es_exports.js.flow",
-                    "range": {
-                        "columnBegin": 7,
-                        "columnEnd": 10,
-                        "lineBegin": 17,
-                        "lineEnd": 17
-                    },
-                    "repository": "test"
-                },
-                "name": {
-                    "container": "es_exports",
-                    "localName": "baz"
-                },
-                "repo_hash": "testhash",
-                "sym": "test/js/es_exports/baz"
             },
             {
                 "comments": [],
@@ -381,26 +341,6 @@
                 },
                 "repo_hash": "testhash",
                 "sym": "test/js/imports/c"
-            },
-            {
-                "comments": [],
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 7,
-                        "columnEnd": 10,
-                        "lineBegin": 27,
-                        "lineEnd": 27
-                    },
-                    "repository": "test"
-                },
-                "name": {
-                    "container": "imports",
-                    "localName": "caz"
-                },
-                "repo_hash": "testhash",
-                "sym": "test/js/imports/caz"
             },
             {
                 "comments": [],
@@ -694,21 +634,6 @@
                 "location": {
                     "filepath": "test/es_exports.js.flow",
                     "range": {
-                        "columnBegin": 14,
-                        "columnEnd": 15,
-                        "lineBegin": 27,
-                        "lineEnd": 27
-                    },
-                    "repository": "test"
-                },
-                "name": "C",
-                "symbol": "test/js/es_exports/C"
-            },
-            {
-                "language": 2,
-                "location": {
-                    "filepath": "test/es_exports.js.flow",
-                    "range": {
                         "columnBegin": 21,
                         "columnEnd": 24,
                         "lineBegin": 21,
@@ -718,21 +643,6 @@
                 },
                 "name": "bar",
                 "symbol": "test/js/es_exports/bar"
-            },
-            {
-                "language": 2,
-                "location": {
-                    "filepath": "test/es_exports.js.flow",
-                    "range": {
-                        "columnBegin": 7,
-                        "columnEnd": 10,
-                        "lineBegin": 17,
-                        "lineEnd": 17
-                    },
-                    "repository": "test"
-                },
-                "name": "baz",
-                "symbol": "test/js/es_exports/baz"
             },
             {
                 "language": 2,
@@ -928,21 +838,6 @@
                 },
                 "name": "c",
                 "symbol": "test/js/imports/c"
-            },
-            {
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 7,
-                        "columnEnd": 10,
-                        "lineBegin": 27,
-                        "lineEnd": 27
-                    },
-                    "repository": "test"
-                },
-                "name": "caz",
-                "symbol": "test/js/imports/caz"
             },
             {
                 "language": 2,

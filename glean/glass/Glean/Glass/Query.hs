@@ -24,24 +24,33 @@ module Glean.Glass.Query
   , fileLines
 
   -- * Search
-  , searchByName
-  , SearchCase(..)
-  , SearchType(..)
   , SearchFn
   , SymbolSearchData(..)
   , ToSearchResult(..)
   , RepoSearchResult(..)
 
+  -- * Search
+  -- ** Search flags
+  , SearchCase(..)
+  , SearchType(..)
+  , SearchQuery(..)
+  , SearchScope(..)
+  , AngleSearch(..)
+  , CostTag(..)
+  -- ** Search query builder
+  , buildSearchQuery
+
   -- ** scoped search
-  , searchByScope
-  , toScopeTokens
-  , ScopeQuery(..)
 
   -- * Entity annotations
   , symbolKind
 
   -- * Query helpers
   , entityLocation
+
+  -- * for tests
+  , toScopeTokens
+  , ScopeQuery(..)
 
   ) where
 
@@ -57,7 +66,7 @@ import Glean.Haxl.Repos (RepoHaxl)
 
 import Glean.Glass.Base (GleanPath(..))
 import Glean.Glass.Types (SymbolResult(..), SymbolDescription(..))
-import Glean.Glass.Utils (splitOnAny)
+import Glean.Glass.Utils (splitOnAny, QueryType )
 
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.CodemarkupSearch.Types as CodeSearch
@@ -161,12 +170,13 @@ data SearchCase = Sensitive | Insensitive
 data SearchScope = NoScope | Scope
 
 -- | Abstract over search predicates
-data AngleSearch = forall p . ToSearchResult p => Search (CostTag (Angle p))
+data AngleSearch = forall p . ( QueryType p, ToSearchResult p) =>
+  Search (CostTag (Angle p))
 
 -- | Tag whether its a cheap or expensive query, which modifies the time limit
 data CostTag a = Fast a | Slow a
 
--- | Named arguments to the search query builder
+-- | Named arguments to the search query builder. These come from the client
 data SearchQuery = SearchQuery {
   sType :: SearchType,
   sCase :: SearchCase,
@@ -178,8 +188,8 @@ data SearchQuery = SearchQuery {
 
 --
 -- | Given user preferences for search type, kind and language, and the query
--- string, choose a list of queries to run in order. results will be combined
--- in the order of specified.
+-- string, choose a list of queries to run in order. results will be combined in
+-- the order of specified.
 --
 -- We combine a few search policies here.
 --
@@ -190,52 +200,10 @@ data SearchQuery = SearchQuery {
 -- - searches with namespace tokens that parse as names (e.g. ::foo) get
 -- re-routed to a name search
 --
-_buildSearchQuery :: SearchQuery -> [AngleSearch]
-
-_buildSearchQuery query@SearchQuery{..} = case sScope of
-  -- always treat as string literal search
-  NoScope -> case sType of
-    Exact -> -- exact, name literal
-      [ Search (Fast (nameQ Exact sString)) ]
-    Prefix -> -- prefix, name literal. ensure "Vec" exact match wins
-      [ Search (Fast (nameQ Exact sString))
-      , Search (Slow (nameQ Prefix sString))
-      ]
-  -- requested scope search, interpret the string
-  Scope -> case toScopeTokens sString of
-    Nothing -> -- it doesn't parse as a scope query so do a name-only search
-      _buildSearchQuery query { sScope = NoScope }
-
-    Just isScopeQ -> case isScopeQ of -- it does parse, interpret it
-      ScopeAndName scope nameStr -> case sType of -- its a classic qname
-        Exact ->
-          [ Search (Fast (scopeQ Exact (Just scope) (Just nameStr)))
-          , Search (Fast (nameQ Exact nameStr))
-          ]
-        Prefix -> -- prefix qname can be slow, so do exact first
-          [ Search (Fast (scopeQ Exact (Just scope) (Just nameStr)))
-          , Search (Slow (scopeQ Prefix (Just scope) (Just nameStr)))
-          , Search (Slow (nameQ Prefix nameStr))
-          ]
-      -- we don't have good scope-only wild card search so just do a name search
-      -- could actually a name search then searchRelated to be fancy
-      ScopeOnly scope -> _buildSearchQuery
-        query { sScope = NoScope, sString = NonEmpty.last scope }
-      -- just treat as name search after stripping namespace tokens
-      NameOnly name -> _buildSearchQuery
-        query { sScope = NoScope, sString = name }
-  where
-    nameQ ty name = codeSearchByName $
-      compileSearchQ ty sCase (Just name) Nothing sKinds sLangs
-    scopeQ ty scopes names = codeSearchByScope $
-      compileSearchQ ty sCase names scopes sKinds sLangs
-
---
--- | Finding entities by string search. Base layer in Glean
+-- Finding entities by string search. Base layer in Glean
 --
 -- There are four main flavors
 --
-
 -- > "Glean" , exact and sensitive
 -- > "glean" , exact and case insensitive
 -- > "Gle".. , prefix and sensitive
@@ -248,19 +216,7 @@ _buildSearchQuery query@SearchQuery{..} = case sScope of
 --
 -- In all cases we return a basic triple of (entity, location, maybe kind)
 --
-searchByName
-  :: SearchType
-  -> SearchCase
-  -> Text
-  -> [Code.SymbolKind]
-  -> [Code.Language]
-  -> Angle CodeSearch.SearchByName
-
-searchByName sType sCase name kinds langs =
-  codeSearchByName $ compileSearchQ sType sCase (Just name) Nothing kinds langs
-
---
--- | Search for symbols in namespaces
+-- Search for symbols in namespaces
 --
 -- > folly::Optional
 -- > ::Optional
@@ -269,25 +225,112 @@ searchByName sType sCase name kinds langs =
 -- > ::folly::
 -- > facebook::folly::Optional
 --
-searchByScope
-  :: SearchType
-  -> SearchCase
-  -> ScopeQuery
-  -> [Code.SymbolKind]
-  -> [Code.Language]
-  -> Either (Angle CodeSearch.SearchByScope) (Angle CodeSearch.SearchByName)
+-- We go to some effort to rank query results so that "C" or "Vec" apear
+-- early (i.e. namesspaces), and in qnames, exact matches win.
+--
+buildSearchQuery :: SearchQuery -> [AngleSearch]
+buildSearchQuery query = map (compileQuery (sKinds query) (sLangs query))
+  (toRankedSearchQuery query)
 
-searchByScope sType sCase scopeQ kinds langs = case scopeQ of
-  ScopeAndName scope name ->
-    Left $ codeSearchByScope $ query (Just scope) (Just name)
-  ScopeOnly scope -> -- scope-only wild cards are a bit experimental. disable
-   --  Left $ codeSearchByScope $ query (Just scope) Nothing
-    Right $ codeSearchByName $ query Nothing (Just (NonEmpty.last scope))
-  NameOnly name -> -- after tokenziation we can do a name-only search
-    Right $ codeSearchByName $ query Nothing (Just name)
+compileQuery
+  :: [Code.SymbolKind] -> [Code.Language] -> SearchExpr -> AngleSearch
+compileQuery sKinds sLangs e = case e of
+    NamespaceLiteral sCase name -> slow $ -- the namespace filter can be slow
+      nameQ Exact sCase name [Code.SymbolKind_Namespace]
+    Literal sCase name -> fast $
+      nameQ Exact sCase name sKinds
+    Prefixly sCase name -> slow $
+      nameQ Prefix sCase name sKinds
+    Scoped sCase scope name -> slow $ -- this is only fast if repo/lang matches
+      scopeQ Exact sCase scope name
+    ScopedPrefixly sCase scope name -> slow $
+      scopeQ Prefix sCase scope name
   where
-    query scopes names = compileSearchQ sType sCase names scopes kinds langs
+    fast = Search . Fast
+    slow = Search . Slow
 
+    -- two main search predicates: by name or by name and scope
+    nameQ sTy sCa name kinds = codeSearchByName $
+      compileSearchQ sTy sCa (Just name) Nothing kinds sLangs
+    scopeQ sTy sCa scopes name = codeSearchByScope $
+      compileSearchQ sTy sCa (Just name) (Just scopes) sKinds sLangs
+
+--
+-- The major search styles, in policy "accuracy" order
+--
+data SearchExpr
+  -- literal name searches
+  = NamespaceLiteral SearchCase Text -- exactly "Vec" or "vec" of kind:namespace
+  | Literal SearchCase Text  -- exactly "Vec" or "C" (or "vec" or "VEC" or "Vec"
+  | Prefixly SearchCase Text   -- "vec".. or "Vec".. etc any case
+  -- scope searches
+  | Scoped SearchCase (NonEmpty Text) Text -- "Vec\sort"
+  | ScopedPrefixly SearchCase (NonEmpty Text) Text   -- "Vec\so"..
+
+-- we do namespace (or class?) first if no kind filter, or kinds include
+searchNamespace :: Text -> [Code.SymbolKind] -> SearchCase -> [SearchExpr]
+searchNamespace sName sKinds sCase
+  | null sKinds || Code.SymbolKind_Namespace `elem` sKinds
+  = [NamespaceLiteral sCase sName]
+  | otherwise
+  = []
+
+-- for literal searches, case-sensitive matches beat insensitive matches
+searchLiteral :: Text -> SearchCase -> [SearchExpr]
+searchLiteral sName sCase = case sCase of
+  Sensitive -> [Literal Sensitive sName]
+  Insensitive -> [Literal Sensitive sName, Literal Insensitive sName]
+
+-- Prefix search requested (default in codehub)
+searchPrefix :: Text -> SearchType -> SearchCase -> [SearchExpr]
+searchPrefix sName sType sCase = case sType of
+  Prefix -> [Prefixly sCase sName]
+  Exact -> []
+
+-- Scope search, exact or if prefix, then exact first
+searchScope
+  :: NonEmpty Text -> Text -> SearchType -> SearchCase -> [SearchExpr]
+searchScope scope name sType sCase = case sType of
+  Exact -> [ Scoped sCase scope name ]
+  Prefix -> [ Scoped sCase scope name, ScopedPrefixly sCase scope name ]
+
+-- | Ranked symbol search types.
+-- Refine the query flags to ranking policy.
+--
+-- 0. exact namespace (e.g. "Vec" or "C" or "vec" or "c")
+-- 1. maybe scope match (e.g. "Vec\sort" or "folly::optional")
+-- 2. exact string match (e.g. "Optional")
+-- 4. prefix match (e.g. "option..")
+--
+toRankedSearchQuery :: SearchQuery -> [SearchExpr]
+toRankedSearchQuery query@SearchQuery{..} = case sScope of
+  -- not a scope search. i.e. glass cli default
+  -- we will try to match the local name of the identifier
+  NoScope -> searchNamespace sString sKinds sCase
+     <> searchLiteral sString sCase
+     <> searchPrefix sString sType sCase
+  -- scope search. glass search -s  , and default on codehub
+  Scope -> case toScopeTokens sString of
+    Nothing -> toRankedSearchQuery (query { sScope = NoScope })
+    Just scopeQ -> searchScopes scopeQ query
+
+searchScopes :: ScopeQuery -> SearchQuery -> [SearchExpr]
+searchScopes scopeQ SearchQuery{..} = case scopeQ of
+  -- parses as valid qname. we could also try searching for the fragments as
+  -- literals but unclear if that's useful. could search for scope symbols too
+  ScopeAndName scope name ->
+       searchScope scope name sType sCase
+    <> searchLiteral sString sCase
+  -- could be a container as well
+  ScopeOnly scope ->
+       searchNamespace (NonEmpty.last scope) sKinds sCase
+    <> searchLiteral (NonEmpty.last scope) sCase
+    <> searchLiteral sString sCase
+    <> searchPrefix sString sType sCase
+
+  NameOnly name -> searchLiteral name sCase <> searchPrefix name sType sCase
+
+-- | Search params compiled to Angle expressions
 data SearchQ = SearchQ {
     nameQ :: Angle Text,
     caseQ  :: Angle CodeSearch.SearchCase,
@@ -361,6 +404,10 @@ toScopeTokens str = go (splitOnAny delimiters str)
       (s:ss, name) -> Just (ScopeAndName (s :| ss) name) -- a::b::c or ::a::b
 
 --
+-- Actual Glean queries for search
+--
+
+--
 -- Find entities by strings, with an optional kind expression filter
 --
 codeSearchByName :: SearchQ -> Angle CodeSearch.SearchByName
@@ -394,6 +441,10 @@ codeSearchByScope SearchQ{..} =
     kindPat = maybe wild just mKindQ
     languagePat = fromMaybe wild mLangQ
 
+--
+-- A class for converting the different search predicates to a standard format
+--
+
 type SearchFn
   = SearchCase
   -> Text
@@ -412,6 +463,7 @@ data SymbolSearchData = SymbolSearchData
 -- | We need most of the result of the predicate, so rather than a
 -- data query we just unmarshall here and call the predicate directly
 class ToSearchResult a where
+  -- normalize predicate to search result type
   toSearchResult :: a -> RepoHaxl u w SymbolSearchData
 
 instance ToSearchResult CodeSearch.SearchByName where
