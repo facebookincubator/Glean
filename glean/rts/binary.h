@@ -273,35 +273,49 @@ struct Input {
  */
 struct Output {
 
-  Output() noexcept {}
+  Output() noexcept {
+    markEmpty();
+  }
   Output(Output&& other) noexcept {
-    state = other.state;
-    other.state = {};
+    std::memcpy(this, &other, sizeof(Output));
+    other.markEmpty();
   }
 
   Output& operator=(Output&& other) noexcept {
-    std::free(state.data);
-    state = other.state;
-    other.state = {};
+    if (this != &other) {
+      dealloc();
+      std::memcpy(this, &other, sizeof(Output));
+      other.markEmpty();
+    }
     return *this;
   }
 
   ~Output() noexcept {
-    std::free(state.data);
+    dealloc();
   }
 
   Output(const Output&) = delete;
   void operator=(const Output&) = delete;
 
   size_t size() const noexcept {
-    return state.len;
+    return (isSmall() ? large.size & 0xFF : large.size) >> TAG_BITS;
   }
 
   const unsigned char* data() const noexcept {
-    return state.data;
+    return isSmall() ? small+1 : large.data;
   }
 
-  // Write a packed unsigned number
+  /// Return a pointer to the underlying memory. This is guaranteed to never
+  /// be null, not even for empty buffers.
+  unsigned char* data() noexcept {
+    return isSmall() ? small+1 : large.data;
+  }
+
+  size_t capacity() const noexcept {
+    return isSmall() ? SMALL_CAP : large.cap;
+  }
+
+  /// Write a packed unsigned number
   template <typename T>
   void packed(T x) {
     auto p = alloc(folly::kMaxVarintLength64);
@@ -357,40 +371,98 @@ struct Output {
     return to<std::string>();
   }
 
-  hs::ffi::malloced_array<uint8_t> moveBytes() noexcept {
-    auto arr = hs::ffi::malloced_array<uint8_t>(folly::SysBufferUniquePtr(state.data, {}), state.len);
-    state = {};
-    return arr;
-  }
+  /// Transfer ownership of the underlying memory to a malloced_array.
+  hs::ffi::malloced_array<uint8_t> moveBytes();
 
   /// Transfer ownership of the underlying memory to a folly::fbstring.
   folly::fbstring moveToFbString();
 
  private:
-  /// Simple implementation of a growable buffer. We need to be able to get
-  /// ownership of the underlying memory which only folly::fbstring and
-  /// folly::IOBuf seem to provide but both seem to be significantly slower
-  /// (the latter more so than the former).
+  static_assert(folly::kIsLittleEndian,
+    "support for big endian in binary::Output not implemented");
+
+  /// Number of tag bits in the respresentation
+  static constexpr size_t TAG_BITS = 1;
+
+  /// Bit which distinguishes small buffers from large ones
+  static constexpr size_t LARGE_BIT = 1;
+
+  // An implementation of a growable buffer which avoids dynamic allocation
+  // for small (< SMALL_CAP) data sizes.
+  //
+  // A large buffer is made up of 3 words: size of stored data, capacity and a
+  // pointer to the heap-allocated data. The `size` field stores the size
+  // shifted left by TAG_BITS and the LARGE_BIT is always set.
+  //
+  // A small buffer reuses the 3 words to store the actual data. The first byte
+  // stores the length of the data (0 ... SMALL_CAP-1), again shifted left by
+  // TAG_BITS, with LARGE_BIT always *unset*.
+  //
+  // Since the first byte in `small` (with LARGE_BIT unset) occupies the same
+  // space as the lowest byte in `size` (with LARGE_BIT set) we can distinguish
+  // between the two representations by testing that bit. Quite importantly,
+  // a zero-initialised buffer is a valid, empty small buffer.
+
+  /// State of a large buffer
+  struct Large {
+    size_t size;
+    size_t cap;
+    unsigned char *data;
+  };
+
+  /// Maximum capacity of a small buffer
+  static constexpr size_t SMALL_CAP = sizeof(Large) - 1;
+
+  /// The actual representation
+  union {
+    Large large;
+    unsigned char small[SMALL_CAP+1];
+  };
+
+  /// Is this a small buffer
+  bool isSmall() const noexcept {
+    return (small[0] & LARGE_BIT) == 0;
+  }
+
+  /// Turn this into an empty buffer (without deallocating memory)
+  void markEmpty() noexcept {
+    small[0] = 0;
+  }
 
   /// Return a pointer to enough space for n bytes. This reserves memory but
   /// doesn't increase the size - this can be done via 'use' afterwards.
   unsigned char *alloc(size_t n) {
-    if (n > state.cap - state.len) {
+    if (n > capacity() - size()) {
       realloc(n);
+      assert(!isSmall());
+      // Clang doesn't assume the asserted condition so tell it directly - this
+      // results in slightly better code.
+      folly::assume((small[0] & LARGE_BIT) != 0);
     }
-    return state.data + state.len;
+    return data() + size();
   }
 
+  /// Grow the buffer by at least `n` bytes. This changes capacity but not size.
   void realloc(size_t n);
+
+  /// Deallocate memory held by the buffer
+  void dealloc() noexcept {
+    if (!isSmall()) {
+      std::free(large.data);
+    }
+  }
 
   /// Increase the size of the buffer. This doesn't reserve memory so the
   /// new size must be <= capacity.
-  void use(size_t n) {
-    assert(state.len + n <= state.cap);
-    state.len += n;
+  void use(size_t n) noexcept {
+    assert(size() + n <= capacity());
+    // This is always correct, we don't have to distinguish between small and
+    // large buffers here.
+    large.size += (n << TAG_BITS);
   }
 
-  /// Increase the buffer size by n and return a pointer to the new memory.
+  /// Grow the buffer size by at least n bytes, increase its size accordingly
+  /// and return a pointer to the new memory.
   unsigned char *grab(size_t n) {
     const auto p = alloc(n);
     use(n);
@@ -399,15 +471,9 @@ struct Output {
 
   /// Create a container
   template<typename C> C to() const {
-    return C(state.data, state.data + state.len);
+    return C(data(), data() + size());
   }
 
-  struct State {
-    unsigned char *data = nullptr;
-    size_t cap = 0;
-    size_t len = 0;
-  };
-  State state;
 };
 
 } // namespace binary
