@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "glean/rts/binary.h"
 #include "glean/rts/bytecode/gen/instruction.h"
 #include "glean/if/gen-cpp2/internal_types.h"
 
@@ -95,6 +96,10 @@ struct Subroutine {
     template<typename Iter>
     void restart(uint64_t entry, Iter locals_begin, Iter locals_end) {
       pc = sub.code.data() + entry;
+      auto reg = frame() + sub.inputs - sub.outputs;
+      for (auto& out : outputs()) {
+        *reg++ = reinterpret_cast<uint64_t>(&out);
+      }
       std::copy(locals_begin, locals_end, frame() + sub.inputs);
     }
 
@@ -105,9 +110,26 @@ struct Subroutine {
       return frame();
     }
 
+    using Outputs = folly::Range<binary::Output *>;
+
+    Outputs outputs() {
+      return {reinterpret_cast<binary::Output*>(this+1), sub.outputs};
+    }
+
+    binary::Output& output(size_t i) {
+      return outputs()[i];
+    }
+
     /// Execute the activation. If 'suspended' is true after the call, execution
     /// can be resumed by another call to 'execute'.
     void execute();
+
+    void run(std::initializer_list<uint64_t> arguments) {
+      start();
+      std::copy(arguments.begin(), arguments.end(), args());
+      execute();
+      assert(!suspended());
+    }
 
     /// Check if the subroutine has been suspended.
     bool suspended() const {
@@ -118,19 +140,32 @@ struct Subroutine {
 
    private:
     explicit Activation(const Subroutine &sub, void *context)
-      : sub(sub), context(context) {}
+        : sub(sub), context(context) {
+      for (auto& output : outputs()) {
+        new(&output) binary::Output;
+      }
+    }
 
-    /// We place the frame right after the Activation object.
+    ~Activation() noexcept {
+      for (auto& output : outputs()) {
+        output.binary::Output::~Output();
+      }
+    }
+
+    /// We place the outputs and then the frame right after the Activation
+    /// object.
     static size_t byteSize(const Subroutine& sub) {
-      return sizeof(Activation) + sub.frameSize() * sizeof(uint64_t);
+      return sizeof(Activation)
+        + sub.outputs * sizeof(binary::Output)
+        + sub.frameSize() * sizeof(uint64_t);
     }
 
     uint64_t *frame() {
-      return reinterpret_cast<uint64_t *>(this+1);
+      return reinterpret_cast<uint64_t *>(outputs().end());
     }
 
     const uint64_t *frame() const {
-      return reinterpret_cast<const uint64_t *>(this+1);
+      return const_cast<Activation*>(this)->frame();
     }
 
     const Subroutine &sub;
@@ -139,16 +174,6 @@ struct Subroutine {
     // null if the activation has finished executing
     const uint64_t * FOLLY_NULLABLE pc;
   };
-
-  /// Execute the subroutine with the given arguments.
-  void execute(void *context, std::initializer_list<uint64_t> args) const {
-    Activation::with(*this, context, [&](Activation& activation) {
-      activation.start();
-      std::copy(args.begin(), args.end(), activation.args());
-      activation.execute();
-      assert(!activation.suspended());
-    });
-  }
 
   bool operator==(const Subroutine& other) const;
   bool operator!=(const Subroutine& other) const {

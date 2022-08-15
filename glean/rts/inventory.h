@@ -88,13 +88,18 @@ struct Predicate {
       Fact::Clause clause,
       binary::Output& output,
       uint64_t& key_size) {
-    sub.execute(rename.contextptr(), {
-      *rename.handlers_begin(),
-      reinterpret_cast<uint64_t>(clause.data),
-      reinterpret_cast<uint64_t>(clause.data + clause.key_size),
-      reinterpret_cast<uint64_t>(clause.data + clause.size()),
-      reinterpret_cast<uint64_t>(&key_size),
-      reinterpret_cast<uint64_t>(&output)});
+    Subroutine::Activation::with(
+      sub,
+      rename.contextptr(),
+      [&](auto& activation) {
+        activation.run({
+          *rename.handlers_begin(),
+          reinterpret_cast<uint64_t>(clause.data),
+          reinterpret_cast<uint64_t>(clause.data + clause.key_size),
+          reinterpret_cast<uint64_t>(clause.data + clause.size()),
+          reinterpret_cast<uint64_t>(&key_size)});
+        output = std::move(activation.output(0));
+    });
   }
 
   template<typename Context>
@@ -109,11 +114,16 @@ struct Predicate {
       const Subroutine& sub,
       const Descend<Context>& descend,
       Fact::Clause clause) {
-    sub.execute(descend.contextptr(), {
-      *descend.handlers_begin(),
-      reinterpret_cast<uint64_t>(clause.data),
-      reinterpret_cast<uint64_t>(clause.data + clause.key_size),
-      reinterpret_cast<uint64_t>(clause.data + clause.size())});
+    Subroutine::Activation::with(
+      sub,
+      descend.contextptr(),
+      [&](auto& activation) {
+        activation.run({
+          *descend.handlers_begin(),
+          reinterpret_cast<uint64_t>(clause.data),
+          reinterpret_cast<uint64_t>(clause.data + clause.key_size),
+          reinterpret_cast<uint64_t>(clause.data + clause.size())});
+    });
   }
 };
 

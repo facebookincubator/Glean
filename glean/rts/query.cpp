@@ -157,13 +157,14 @@ struct QueryExecutor {
   // Produce a query continuation
   //
   thrift::internal::QueryCont queryCont(
-    thrift::internal::SubroutineState subState) const;
+    thrift::internal::SubroutineState subState,
+    Subroutine::Activation::Outputs outputs) const;
 
   //
   // Done; collect and return the final results
   //
   std::unique_ptr<QueryResults> finish(
-    folly::Optional<thrift::internal::SubroutineState> subState);
+    folly::Optional<thrift::internal::QueryCont> cont);
 
   // ------------------------------------------------------------
   // Below here: query state
@@ -219,9 +220,6 @@ struct QueryExecutor {
   // query stats
   folly::F14FastMap<uint64_t, uint64_t> stats;
   bool wantStats;
-
-  // output registers
-  std::vector<binary::Output> outputs;
 
   // iterators
   struct Iter {
@@ -392,8 +390,9 @@ Id QueryExecutor::newDerivedFact(
 };
 
 
-  thrift::internal::QueryCont QueryExecutor::queryCont(
-      thrift::internal::SubroutineState subState) const {
+thrift::internal::QueryCont QueryExecutor::queryCont(
+    thrift::internal::SubroutineState subState,
+    Subroutine::Activation::Outputs outputs) const {
   thrift::internal::QueryCont cont;
 
   std::vector<thrift::internal::KeyIterator> contIters;
@@ -420,6 +419,7 @@ Id QueryExecutor::newDerivedFact(
   cont.iters() = std::move(contIters);
 
   std::vector<std::string> contOutputs;
+  contOutputs.reserve(outputs.size());
   for (auto &output : outputs) {
     contOutputs.emplace_back(output.string());
   }
@@ -510,7 +510,7 @@ size_t QueryExecutor::recordResult(
 
 
 std::unique_ptr<QueryResults> QueryExecutor::finish(
-    folly::Optional<thrift::internal::SubroutineState> subState) {
+    folly::Optional<thrift::internal::QueryCont> cont) {
   auto res = std::make_unique<QueryResults>();
   res->fact_ids = std::move(result_ids);
   res->fact_pids = std::move(result_pids);
@@ -521,11 +521,11 @@ std::unique_ptr<QueryResults> QueryExecutor::finish(
   res->nested_fact_keys = std::move(nested_result_keys);
   res->nested_fact_values = std::move(nested_result_values);
 
-  if (subState.hasValue()) {
+  if (cont.hasValue()) {
     std::string out;
     using namespace apache::thrift;
     Serializer<BinaryProtocolReader, BinaryProtocolWriter>::serialize(
-        queryCont(std::move(subState.value())), &out);
+      cont.value(), &out);
     res->continuation = std::move(out);
   };
 
@@ -635,8 +635,6 @@ std::unique_ptr<QueryResults> executeQuery (
     q.check_timeout = UINT64_MAX;
   }
 
-  q.outputs.resize(sub.outputs);
-
   // Set up all the iterators as before if we're restarting
   if (restart) {
     for (auto& savedIter : *restart->iters()) {
@@ -671,13 +669,6 @@ std::unique_ptr<QueryResults> executeQuery (
     }
   }
 
-  if (restart) {
-    for (auto i = 0; i < sub.outputs; i++) {
-      q.outputs[i] =
-        binary::Output(restart->outputs()[i], binary::Output::RefMem());
-    }
-  }
-
   auto max_results = maxResults ? *maxResults : UINT64_MAX;
   auto max_bytes = maxBytes ? *maxBytes : UINT64_MAX;
 
@@ -698,13 +689,18 @@ std::unique_ptr<QueryResults> executeQuery (
     &QueryExecutor::resultWithPid,
     &QueryExecutor::newDerivedFact>(q);
 
-  folly::Optional<thrift::internal::SubroutineState> subState;
+  folly::Optional<thrift::internal::QueryCont> cont;
   Subroutine::Activation::with(sub, context_.contextptr(), [&](Subroutine::Activation& activation) {
     if (restart) {
       activation.restart(
         *restart->sub()->entry(),
         restart->sub()->locals()->begin(),
         restart->sub()->locals()->end());
+      auto buf = restart->outputs()->begin();
+      for (auto& out : activation.outputs()) {
+        out = binary::Output(*buf, binary::Output::RefMem());
+        ++buf;
+      }
     } else {
       activation.start();
     }
@@ -714,17 +710,14 @@ std::unique_ptr<QueryResults> executeQuery (
     *args++ = 0; // unused
     *args++ = reinterpret_cast<uint64_t>(max_results);
     *args++ = reinterpret_cast<uint64_t>(max_bytes);
-    for (auto i = 0; i < sub.outputs; i++) {
-      *args++ = reinterpret_cast<uint64_t>(&q.outputs[i]);
-    }
 
     activation.execute();
     if (activation.suspended()) {
-      subState = activation.toThrift();
+      cont = q.queryCont(activation.toThrift(), activation.outputs());
     }
   });
 
-  return q.finish(std::move(subState));
+  return q.finish(std::move(cont));
 }
 
 
