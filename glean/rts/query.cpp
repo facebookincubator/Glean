@@ -110,8 +110,6 @@ struct QueryExecutor {
   // resultWithPid()
   //
   void nestedFact(Id id, Pid pid);
-  Predicate::Descend nestedFact_ = syscall(*this, &QueryExecutor::nestedFact);
-  // Traverser nestedFact_{[this](Id id, Pid pid) { nestedFact(id,pid); }};
 
   //
   // Record a query result and return the total number of bytes produced.
@@ -475,20 +473,28 @@ size_t QueryExecutor::recordResult(
       }
       auto clause = Fact::Clause::from(bin.bytes(), key_size);
       if (traverse) {
-        Predicate::runTraverse(*traverse, nestedFact_, clause);
+        Predicate::runTraverse(
+          *traverse,
+          syscalls<&QueryExecutor::nestedFact>(*this),
+          clause);
+      ;
       } else {
         auto predicate = inventory.lookupPredicate(pid);
         if (!predicate) {
           error("unknown pid: {}", pid.toWord());
         }
-        predicate->traverse(nestedFact_, clause);
+        predicate->traverse(
+          syscalls<&QueryExecutor::nestedFact>(*this),
+          clause);
       }
     }
     while (nested_result_pending.size() > 0) {
       auto id = nested_result_pending[nested_result_pending.size() - 1];
       nested_result_pending.pop_back();
       facts.factById(id, [&](Pid pid_, auto clause) {
-        inventory.lookupPredicate(pid_)->traverse(nestedFact_, clause);
+        inventory.lookupPredicate(pid_)->traverse(
+          syscalls<&QueryExecutor::nestedFact>(*this),
+          clause);
         nested_result_ids.emplace_back(id.toWord());
         nested_result_pids.emplace_back(pid_.toWord());
         auto key = binary::mkString(clause.key());
@@ -681,18 +687,19 @@ std::unique_ptr<QueryResults> executeQuery (
   // IF YOU ALSO BREAK FORWARD COMPATIBILITY, BUMP lowestSupportedVersion AS
   // WELL
 
-  const auto seek_ = syscall(q, &QueryExecutor::seek);
-  const auto seekWithinSection_ = syscall(q, &QueryExecutor::seekWithinSection);
-  const auto currentSeek_ = syscall(q, &QueryExecutor::currentSeek);
-  const auto endSeek_ = syscall(q, &QueryExecutor::endSeek);
-  const auto next_ = syscall(q, &QueryExecutor::next);
-  const auto lookupKeyValue_ = syscall(q, &QueryExecutor::lookupKeyValue);
-  const auto newDerivedFact_ = syscall(q, &QueryExecutor::newDerivedFact);
-  const auto resultWithPid_ = syscall(q, &QueryExecutor::resultWithPid);
-  const auto result_ = syscall(q, &QueryExecutor::result);
+  const auto context_ = syscalls<
+    &QueryExecutor::seek,
+    &QueryExecutor::seekWithinSection,
+    &QueryExecutor::currentSeek,
+    &QueryExecutor::endSeek,
+    &QueryExecutor::next,
+    &QueryExecutor::lookupKeyValue,
+    &QueryExecutor::result,
+    &QueryExecutor::resultWithPid,
+    &QueryExecutor::newDerivedFact>(q);
 
   folly::Optional<thrift::internal::SubroutineState> subState;
-  Subroutine::Activation::with(sub, [&](Subroutine::Activation& activation) {
+  Subroutine::Activation::with(sub, context_.contextptr(), [&](Subroutine::Activation& activation) {
     if (restart) {
       activation.restart(
         *restart->sub()->entry(),
@@ -703,15 +710,7 @@ std::unique_ptr<QueryResults> executeQuery (
     }
 
     auto args = activation.args();
-    *args++ = seek_.toWord();
-    *args++ = seekWithinSection_.toWord();
-    *args++ = currentSeek_.toWord();
-    *args++ = endSeek_.toWord();
-    *args++ = next_.toWord();
-    *args++ = lookupKeyValue_.toWord();
-    *args++ = result_.toWord();
-    *args++ = resultWithPid_.toWord();
-    *args++ = newDerivedFact_.toWord();
+    args = std::copy(context_.handlers_begin(), context_.handlers_end(), args);
     *args++ = 0; // unused
     *args++ = reinterpret_cast<uint64_t>(max_results);
     *args++ = reinterpret_cast<uint64_t>(max_bytes);

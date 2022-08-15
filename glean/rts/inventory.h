@@ -33,8 +33,10 @@ struct Predicate {
   std::string name;
   int32_t version;
 
-  using Rename = SysCall<Id, Pid, Reg<Id>>;
-  using Descend = SysCall<Id, Pid>;
+  template<typename Context>
+  using Rename = SysCalls<Context, SysCall<Id, Pid, Reg<Id>>>;
+  template<typename Context>
+  using Descend = SysCalls<Context, SysCall<Id, Pid>>;
 
   /// Typechecker for clauses. It should take the following arguments:
   ///
@@ -59,16 +61,18 @@ struct Predicate {
     return !(*this == other);
   }
 
+  template<typename Context>
   void typecheck(
-      const Rename& rename,
+      const Rename<Context>& rename,
       Fact::Clause clause,
       binary::Output& output,
       uint64_t& key_size) const {
     runTypecheck(*typechecker, rename, clause, output, key_size);
   }
 
+  template<typename Context>
   void substitute(
-      const Rename& rename,
+      const Rename<Context>& rename,
       Fact::Clause clause,
       binary::Output& output,
       uint64_t& key_size) const {
@@ -77,14 +81,15 @@ struct Predicate {
     typecheck(rename, clause, output, key_size);
   }
 
+  template<typename Context>
   static void runTypecheck(
       const Subroutine& sub,
-      const Rename& rename,
+      const Rename<Context>& rename,
       Fact::Clause clause,
       binary::Output& output,
       uint64_t& key_size) {
-    sub.execute({
-      rename.toWord(),
+    sub.execute(rename.contextptr(), {
+      *rename.handlers_begin(),
       reinterpret_cast<uint64_t>(clause.data),
       reinterpret_cast<uint64_t>(clause.data + clause.key_size),
       reinterpret_cast<uint64_t>(clause.data + clause.size()),
@@ -92,18 +97,20 @@ struct Predicate {
       reinterpret_cast<uint64_t>(&output)});
   }
 
+  template<typename Context>
   void traverse(
-      const Descend& descend,
+      const Descend<Context>& descend,
       Fact::Clause clause) const {
     runTraverse(*traverser, descend, clause);
   }
 
+  template<typename Context>
   static void runTraverse(
       const Subroutine& sub,
-      const Descend& descend,
+      const Descend<Context>& descend,
       Fact::Clause clause) {
-    sub.execute({
-      descend.toWord(),
+    sub.execute(descend.contextptr(), {
+      *descend.handlers_begin(),
       reinterpret_cast<uint64_t>(clause.data),
       reinterpret_cast<uint64_t>(clause.data + clause.key_size),
       reinterpret_cast<uint64_t>(clause.data + clause.size())});

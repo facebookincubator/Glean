@@ -244,9 +244,10 @@ FactSet::serializeReorder(folly::Range<const uint64_t *> order) const {
 
 namespace {
 
+template<typename Context>
 std::pair<binary::Output, size_t> substituteFact(
     const Inventory& inventory,
-    const SysCall<Id, Pid, Reg<Id>>& substitute,
+    const Predicate::Rename<Context>& substitute,
     const Fact &fact) {
   auto predicate = inventory.lookupPredicate(fact.type());
   CHECK_NOTNULL(predicate);

@@ -75,8 +75,6 @@ void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
     return id;
   });
 
-  auto check = syscall(expect_type);
-
   std::atomic<size_t> count = 0;
 
   size_t last_percent = 0;
@@ -117,7 +115,11 @@ void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
         binary::Output out;
         uint64_t key_size;
 
-        predicate->typecheck(check, fact.clause, out, key_size);
+        predicate->typecheck(
+          syscall(expect_type),
+          fact.clause,
+          out,
+          key_size);
 
         if (fact.clause.bytes() != out.bytes()) {
           fail("invalid fact");

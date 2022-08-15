@@ -75,13 +75,13 @@ struct Subroutine {
     /// which needs to 'start' or 'restart' it, initialise its 'args' and then
     /// 'execute' it. Note that the Subroutine must remain alive throughout the
     /// lifetime of the activation.
-    template<typename F> static auto with(const Subroutine& sub, F&& f) {
+    template<typename F> static auto with(const Subroutine& sub, void *context, F&& f) {
       alignas(Activation) unsigned char buf[byteSize(sub)];
       struct Guard {
         Activation *ptr;
         ~Guard() { ptr->~Activation(); }
       };
-      Guard guard{new(buf) Activation(sub)};
+      Guard guard{new(buf) Activation(sub, context)};
       return std::forward<F>(f)(*guard.ptr);
     }
 
@@ -117,7 +117,8 @@ struct Subroutine {
     thrift::internal::SubroutineState toThrift() const;
 
    private:
-    explicit Activation(const Subroutine &sub) : sub(sub) {}
+    explicit Activation(const Subroutine &sub, void *context)
+      : sub(sub), context(context) {}
 
     /// We place the frame right after the Activation object.
     static size_t byteSize(const Subroutine& sub) {
@@ -133,14 +134,15 @@ struct Subroutine {
     }
 
     const Subroutine &sub;
+    void *context;
 
     // null if the activation has finished executing
     const uint64_t * FOLLY_NULLABLE pc;
   };
 
   /// Execute the subroutine with the given arguments.
-  void execute(std::initializer_list<uint64_t> args) const {
-    Activation::with(*this, [&](Activation& activation) {
+  void execute(void *context, std::initializer_list<uint64_t> args) const {
+    Activation::with(*this, context, [&](Activation& activation) {
       activation.start();
       std::copy(args.begin(), args.end(), activation.args());
       activation.execute();

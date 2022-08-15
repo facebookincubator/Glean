@@ -151,7 +151,7 @@ cppType DataPtr = "void *"
 cppType Literal = "const std::string *"
 cppType WordPtr = "uint64_t *"
 cppType BinaryOutputPtr = "binary::Output *"
-cppType (Fun _) = "SysFun *"
+cppType (Fun _) = "SysFun"
 cppType _ = "uint64_t"
 
 -- | Generate a switch-based evaluator.
