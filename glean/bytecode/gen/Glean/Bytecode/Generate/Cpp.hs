@@ -190,13 +190,8 @@ genEvalSwitch =
   , "}" ]
   where
     genAlt insn =
-      let call = "eval_" <> insnName insn <> "();"
-      in
       "      case Op::" <> insnName insn <> ":"
-      : if Return `elem` insnEffects insn
-          then [ "        return " <> call ]
-          else [ "        " <> call
-               , "        break;"]
+      : makeCall insn "        break;"
 
     genUnusedAlt op =
       "      case Op::" <> op <> ":"
@@ -230,10 +225,15 @@ genEvalIndirect =
     dispatch = "  goto *labels[*pc++];"
 
     genAlt insn =
-      let call = "eval_" <> insnName insn <> "();"
-      in
       "label_" <> insnName insn <> ":"
-      : if Return `elem` insnEffects insn
-          then [ "        return " <> call ]
-          else [ "        " <> call
-               , dispatch ]
+      : makeCall insn dispatch
+
+makeCall :: Insn -> Text -> [Text]
+makeCall insn cont
+  | Return `elem` insnEffects insn =
+      [ "        return " <> call ]
+  | otherwise =
+      [ "        " <> call
+      , cont ]
+  where
+    call = "eval_" <> insnName insn <> "();"
