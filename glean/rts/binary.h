@@ -273,34 +273,48 @@ struct Input {
  */
 struct Output {
 
-  Output() {}
-  Output(Output&&) = default;
-  Output& operator=(Output&&) = default;
+  Output() noexcept {}
+  Output(Output&& other) noexcept {
+    state = other.state;
+    other.state = {};
+  }
+
+  Output& operator=(Output&& other) noexcept {
+    std::free(state.data);
+    state = other.state;
+    other.state = {};
+    return *this;
+  }
+
+  ~Output() noexcept {
+    std::free(state.data);
+  }
+
   Output(const Output&) = delete;
   void operator=(const Output&) = delete;
 
-  size_t size() const {
-    return buf.size();
+  size_t size() const noexcept {
+    return state.len;
   }
 
-  const unsigned char* data() const {
-    return buf.data();
+  const unsigned char* data() const noexcept {
+    return state.data;
   }
 
   // Write a packed unsigned number
   template <typename T>
   void packed(T x) {
-    auto p = buf.buffer(folly::kMaxVarintLength64);
+    auto p = alloc(folly::kMaxVarintLength64);
     auto n = folly::encodeVarint(
       static_cast<uint64_t>(detail::word_traits<T>::toWord(x)), p);
-    buf.use(n);
+    use(n);
   }
 
   /// Write an encoded nat
   inline void nat(uint64_t x) {
-    auto p = buf.buffer(rts::MAX_NAT_SIZE);
+    auto p = alloc(rts::MAX_NAT_SIZE);
     auto n = rts::storeNat(p, x);
-    buf.use(n);
+    use(n);
   }
 
   // Write a fixed width number
@@ -316,13 +330,13 @@ struct Output {
 
   void bytes(const void* data, size_t size) {
     if (size > 0) {
-      auto b = buf.grab(size);
+      auto b = grab(size);
       std::memcpy(b, data, size);
     }
   }
 
   void expect(size_t n) {
-    (void)buf.buffer(n);
+    (void)alloc(n);
   }
 
   /// Store the mangled representation of a UTF-8 string. The validity of the
@@ -331,97 +345,69 @@ struct Output {
     rts::mangleString(r, *this);
   }
 
-  folly::ByteRange bytes() & {
-    return buf.to<folly::ByteRange>();
+  folly::ByteRange bytes() & noexcept {
+    return to<folly::ByteRange>();
   }
 
   folly::fbstring fbstring() const {
-    return buf.to<folly::fbstring>();
+    return to<folly::fbstring>();
   }
 
   std::string string() const {
-    return buf.to<std::string>();
+    return to<std::string>();
   }
 
-  hs::ffi::malloced_array<uint8_t> moveBytes() {
-    return buf.moveBytes();
+  hs::ffi::malloced_array<uint8_t> moveBytes() noexcept {
+    auto arr = hs::ffi::malloced_array<uint8_t>(folly::SysBufferUniquePtr(state.data, {}), state.len);
+    state = {};
+    return arr;
   }
 
-  folly::fbstring moveToFbString() {
-    return buf.moveToFbString();
-  }
+  /// Transfer ownership of the underlying memory to a folly::fbstring.
+  folly::fbstring moveToFbString();
 
  private:
   /// Simple implementation of a growable buffer. We need to be able to get
   /// ownership of the underlying memory which only folly::fbstring and
   /// folly::IOBuf seem to provide but both seem to be significantly slower
   /// (the latter more so than the former).
-  class Buf {
-   public:
-    Buf() {
-      len = 0;
+
+  /// Return a pointer to enough space for n bytes. This reserves memory but
+  /// doesn't increase the size - this can be done via 'use' afterwards.
+  unsigned char *alloc(size_t n) {
+    if (n > state.cap - state.len) {
+      realloc(n);
     }
-    Buf(Buf&&) = default;
-    Buf& operator=(Buf&&) = default;
-    Buf(const Buf&) = delete;
-    Buf& operator=(const Buf&) = delete;
+    return state.data + state.len;
+  }
 
-    size_t size() const {
-      return len;
-    }
+  void realloc(size_t n);
 
-    size_t capacity() const {
-      return buf.size();
-    }
+  /// Increase the size of the buffer. This doesn't reserve memory so the
+  /// new size must be <= capacity.
+  void use(size_t n) {
+    assert(state.len + n <= state.cap);
+    state.len += n;
+  }
 
-    const unsigned char* data() const {
-      return buf.get();
-    }
+  /// Increase the buffer size by n and return a pointer to the new memory.
+  unsigned char *grab(size_t n) {
+    const auto p = alloc(n);
+    use(n);
+    return p;
+  }
 
-    /// Return a point to enough space for n bytes. This reserves memory but
-    /// doesn't increase the size - this can be done via 'use' afterwards.
-    unsigned char* buffer(size_t n) {
-      if (n > capacity() - size()) {
-        realloc(n);
-      }
-      return buf.get() + size();
-    }
+  /// Create a container
+  template<typename C> C to() const {
+    return C(state.data, state.data + state.len);
+  }
 
-    /// Increase the size of the buffer. This doesn't reserve memory so the
-    /// new size must be <= capacity.
-    void use(size_t n) {
-      assert(capacity() - size() >= n);
-      len += n;
-    }
-
-    /// Increase the buffer size by n and return a pointer to the new memory.
-    unsigned char* grab(size_t n) {
-      auto p = buffer(n);
-      use(n);
-      return p;
-    }
-
-    hs::ffi::malloced_array<uint8_t> moveBytes() {
-      buf.prune(len);
-      return std::move(buf);
-    }
-
-    /// Transfer ownership of the underlying memory to a folly::fbstring.
-    folly::fbstring moveToFbString();
-
-    /// Create a container
-    template<typename C> C to() const {
-      return C(buf.get(), buf.get() + size());
-    }
-
-   private:
-    void realloc(size_t n);
-
-    hs::ffi::malloced_array<uint8_t> buf;
-    size_t len;
+  struct State {
+    unsigned char *data = nullptr;
+    size_t cap = 0;
+    size_t len = 0;
   };
-
-  Buf buf;
+  State state;
 };
 
 } // namespace binary

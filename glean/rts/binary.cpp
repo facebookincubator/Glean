@@ -25,30 +25,26 @@ std::vector<unsigned char> lexicographicallyNext(folly::ByteRange range) {
   return bytes;
 }
 
-void Output::Buf::realloc(size_t n) {
+void Output::realloc(size_t n) {
   // Just grow by 2, but start with at least 64 - we typically have very small
   // or very large buffers.
   const auto wanted =
-    std::max(capacity() + std::max(capacity(), n), size_t(64));
+    std::max(state.cap + std::max(state.cap, n), size_t(64));
   const auto new_cap = folly::goodMallocSize(wanted);
-  auto new_buf = hs::ffi::malloc_array<unsigned char>(new_cap);
-  if (len > 0) {
-    std::memcpy(new_buf.get(), buf.get(), len);
-  }
-  buf = std::move(new_buf);
+  state.data = static_cast<unsigned char *>(std::realloc(state.data, new_cap));
+  state.cap = new_cap;
 }
 
-folly::fbstring Output::Buf::moveToFbString() {
+folly::fbstring Output::moveToFbString() {
   // fbstring requires the data to be NUL-terminated. The terminator isn't
   // included in the size.
-  *buffer(1) = 0;
-  const auto cap = capacity();
-  const auto size = len;
-  len = 0; // so that the Output remains valid after buf.release()
+  *alloc(1) = 0;
+  State s;
+  std::swap(state,s);
   return folly::fbstring(
-   reinterpret_cast<char *>(buf.release()),
-   size,
-   cap,
+   reinterpret_cast<char *>(s.data),
+   s.len,
+   s.cap,
    folly::AcquireMallocatedString());
 }
 
