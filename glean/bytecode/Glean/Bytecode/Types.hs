@@ -22,11 +22,9 @@ data Ty
   | WordPtr -- ^ pointer to 64 bit word
   | Literal -- ^ index into the (string) literal table
   | Offset -- ^ jump offset (relative to start of next instruction)
-  | Offsets -- ^ array of jump offsets (length + array in the insn stream)
   | DataPtr -- ^ a void pointer
   | BinaryOutputPtr -- ^ pointer to binary::Output (temporary, will be removed)
   | Fun [Ty] -- ^ pointer to syscall (temporary, will be removed)
-  | Regs [Ty] -- ^ list of registers (array without length in the insn stream)
   deriving(Eq, Show)
 
 -- | Typed registers

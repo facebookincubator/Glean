@@ -10,6 +10,7 @@ module Glean.Bytecode.Generate.Instruction
   ( Insn(..)
   , Effect(..)
   , Arg(..)
+  , ArgTy(..)
   , Usage(..)
   , instructions
   , version
@@ -43,16 +44,21 @@ data Effect
 -- | Instruction argument.
 data Arg = Arg
   { argName :: Text
-  , argTy :: Ty
-  , argUsage :: Usage
+  , argTy :: ArgTy
   }
 
--- | How an argument is provided/used
+-- | Argument type
+data ArgTy
+  = Imm Ty -- ^ immediate value in instruction stream
+  | Reg Ty Usage -- ^ register argument
+  | Offsets -- ^ array of jump offsets (length + array in the insn stream)
+  | Regs [Ty] -- ^ list of registers (array without length in the insn stream)
+
+-- | How an register is used
 data Usage
-  = Imm -- ^ immediate value in the instruction stream
-  | Load -- ^ register, read-only
-  | Store -- ^ register, write-only
-  | Update -- ^ register, read and write
+  = Load -- ^ read-only
+  | Store -- ^ write-only
+  | Update -- ^ read and write
   deriving(Eq)
 
 -- | Current bytecode version
@@ -75,286 +81,285 @@ instructions =
   [
     -- Decode a Nat from memory into a register.
     Insn "InputNat" []
-      [ Arg "begin" DataPtr Update
-      , Arg "end" DataPtr Load
-      , Arg "dst" Word Store ]
+      [ Arg "begin" $ Reg DataPtr Update
+      , Arg "end" $ Reg DataPtr Load
+      , Arg "dst" $ Reg Word Store ]
 
     -- Advance begin by size bytes, and bounds-check against end
   , Insn "InputBytes" []
-      [ Arg "begin" DataPtr Update
-      , Arg "end" DataPtr Load
-      , Arg "size" Word Load ]
+      [ Arg "begin" $ Reg DataPtr Update
+      , Arg "end" $ Reg DataPtr Load
+      , Arg "size" $ Reg Word Load ]
 
     -- Validate and skip over an encoded UTF8 string
   , Insn "InputSkipUntrustedString" []
-      [ Arg "begin" DataPtr Update
-      , Arg "end" DataPtr Load ]
+      [ Arg "begin" $ Reg DataPtr Update
+      , Arg "end" $ Reg DataPtr Load ]
 
     -- Check that the input starts with the given literal, and then skip past it
   , Insn "InputShiftLit" []
-      [ Arg "begin" DataPtr Update
-      , Arg "end" DataPtr Load
-      , Arg "lit" Literal Imm
-      , Arg "match" Word Store ]
+      [ Arg "begin" $ Reg DataPtr Update
+      , Arg "end" $ Reg DataPtr Load
+      , Arg "lit" $ Imm Literal
+      , Arg "match" $ Reg Word Store ]
 
     -- Check that the input starts with the given byte sequence, and
     -- then skip past it
   , Insn "InputShiftBytes" []
-      [ Arg "begin" DataPtr Update
-      , Arg "end" DataPtr Load
-      , Arg "ptr" DataPtr Load
-      , Arg "ptrend" DataPtr Load
-      , Arg "match" Word Store ]
+      [ Arg "begin" $ Reg DataPtr Update
+      , Arg "end" $ Reg DataPtr Load
+      , Arg "ptr" $ Reg DataPtr Load
+      , Arg "ptrend" $ Reg DataPtr Load
+      , Arg "match" $ Reg Word Store ]
 
     -- Decode a Nat from memory
   , Insn "InputSkipNat" []
-      [ Arg "begin" DataPtr Update
-      , Arg "end" DataPtr Load ]
+      [ Arg "begin" $ Reg DataPtr Update
+      , Arg "end" $ Reg DataPtr Load ]
 
     -- Skip over an encoded UTF8 string in a binary::Input. The string must be
     -- valid (this is not checked).
   , Insn "InputSkipTrustedString" []
-      [ Arg "begin" DataPtr Update
-      , Arg "end" DataPtr Load ]
+      [ Arg "begin" $ Reg DataPtr Update
+      , Arg "end" $ Reg DataPtr Load ]
 
     -- Reset a binary::Output
   , Insn "ResetOutput" []
-      [ Arg "output" BinaryOutputPtr Load ]
+      [ Arg "output" $ Reg BinaryOutputPtr Load ]
 
     -- Encode a Nat in a register and store it in a binary::Output.
   , Insn "OutputNat" []
-      [ Arg "src" Word Load
-      , Arg "output" BinaryOutputPtr Load ]
+      [ Arg "src" $ Reg Word Load
+      , Arg "output" $ Reg BinaryOutputPtr Load ]
 
     -- Encode an immediate Nat and store it in a binary::Output.
   , Insn "OutputNatImm" []
-      [ Arg "src" Word Imm
-      , Arg "output" BinaryOutputPtr Load ]
+      [ Arg "src" $ Imm Word
+      , Arg "output" $ Reg BinaryOutputPtr Load ]
 
     -- Encode a byte in a binary::Output
   , Insn "OutputByteImm" []
-      [ Arg "src" Word Imm
-      , Arg "output" BinaryOutputPtr Load ]
+      [ Arg "src" $ Imm Word
+      , Arg "output" $ Reg BinaryOutputPtr Load ]
 
     -- Write a sequence of bytes to a binary::Output.
   , Insn "OutputBytes" []
-      [ Arg "ptr" DataPtr Load
-      , Arg "end" DataPtr Load
-      , Arg "output" BinaryOutputPtr Load ]
+      [ Arg "ptr" $ Reg DataPtr Load
+      , Arg "end" $ Reg DataPtr Load
+      , Arg "output" $ Reg BinaryOutputPtr Load ]
 
     -- String toLower
   , Insn "OutputStringToLower" []
-      [ Arg "begin" DataPtr Load
-      , Arg "end" DataPtr Load
-      , Arg "dst" BinaryOutputPtr Load ]
+      [ Arg "begin" $ Reg DataPtr Load
+      , Arg "end" $ Reg DataPtr Load
+      , Arg "dst" $ Reg BinaryOutputPtr Load ]
 
     -- converts [RelByteSpan] to [ByteSpan]
   , Insn "OutputRelToAbsByteSpans" []
-      [ Arg "begin" DataPtr Load
-      , Arg "end" DataPtr Load
-      , Arg "dst" BinaryOutputPtr Load ]
+      [ Arg "begin" $ Reg DataPtr Load
+      , Arg "end" $ Reg DataPtr Load
+      , Arg "dst" $ Reg BinaryOutputPtr Load ]
 
     -- Get the contents of a binary::Output as a pointer and
     -- length. Note that these are only valid until the next operation
     -- on the binary::Output
   , Insn "GetOutput" []
-      [ Arg "output" BinaryOutputPtr Load
-      , Arg "ptr" DataPtr Store
-      , Arg "end" DataPtr Store ]
+      [ Arg "output" $ Reg BinaryOutputPtr Load
+      , Arg "ptr" $ Reg DataPtr Store
+      , Arg "end" $ Reg DataPtr Store ]
 
     -- Get the number of bytes in the output
   , Insn "GetOutputSize" []
-      [ Arg "output" BinaryOutputPtr Load
-      , Arg "dst" Word Store ]
+      [ Arg "output" $ Reg BinaryOutputPtr Load
+      , Arg "dst" $ Reg Word Store ]
 
     -- Write a constant into a register.
   , Insn "LoadConst" []
-      [ Arg "imm" Word Imm
-      , Arg "dst" Word Store ]
+      [ Arg "imm" $ Imm Word
+      , Arg "dst" $ Reg Word Store ]
 
     -- Load the address and size of a literal
   , Insn "LoadLiteral" []
-      [ Arg "lit" Literal Imm
-      , Arg "ptr" DataPtr Store
-      , Arg "end" DataPtr Store ]
+      [ Arg "lit" $ Imm Literal
+      , Arg "ptr" $ Reg DataPtr Store
+      , Arg "end" $ Reg DataPtr Store ]
 
     -- Copy a register into another one.
   , Insn "LoadReg" []
-      [ Arg "src" Word Load
-      , Arg "dst" Word Store ]
+      [ Arg "src" $ Reg Word Load
+      , Arg "dst" $ Reg Word Store ]
 
     -- Subtract a constant from a register.
   , Insn "SubConst" []
-      [ Arg "imm" Word Imm
-      , Arg "dst" Word Update ]
+      [ Arg "imm" $ Imm Word
+      , Arg "dst" $ Reg Word Update ]
 
     -- Subtract a register from a register.
   , Insn "Sub" []
-      [ Arg "src" Word Load
-      , Arg "dst" Word Update ]
+      [ Arg "src" $ Reg Word Load
+      , Arg "dst" $ Reg Word Update ]
 
     -- Add a constant to a register.
   , Insn "AddConst" []
-      [ Arg "imm" Word Imm
-      , Arg "dst" Word Update ]
+      [ Arg "imm" $ Imm Word
+      , Arg "dst" $ Reg Word Update ]
 
     -- Add a register to another register
   , Insn "Add" []
-      [ Arg "src" Word Load
-      , Arg "dst" Word Update ]
+      [ Arg "src" $ Reg Word Load
+      , Arg "dst" $ Reg Word Update ]
 
     -- Subtract pointers
   , Insn "PtrDiff" []
-      [ Arg "src1" DataPtr Load
-      , Arg "src2" DataPtr Load
-      , Arg "dst" Word Store ]
+      [ Arg "src1" $ Reg DataPtr Load
+      , Arg "src2" $ Reg DataPtr Load
+      , Arg "dst" $ Reg Word Store ]
 
   , Insn "LoadLabel" []
-      [ Arg "lbl" Offset Imm
-      , Arg "dst" Offset Store ]
+      [ Arg "lbl" $ Imm Offset
+      , Arg "dst" $ Reg Offset Store ]
 
     -- Unconditional jump.
   , Insn "Jump" [EndBlock]
-      [ Arg "tgt" Offset Imm ]
+      [ Arg "tgt" $ Imm Offset ]
 
   , Insn "JumpReg" [EndBlock]
-      [ Arg "tgt" Offset Load ]
+      [ Arg "tgt" $ Reg Offset Load ]
 
     -- Jump if a register is 0.
   , Insn "JumpIf0" []
-      [ Arg "reg" Word Load
-      , Arg "tgt" Offset Imm ]
+      [ Arg "reg" $ Reg Word Load
+      , Arg "tgt" $ Imm Offset ]
 
     -- Jump if a register is not 0.
   , Insn "JumpIfNot0" []
-      [ Arg "reg" Word Load
-      , Arg "tgt" Offset Imm ]
+      [ Arg "reg" $ Reg Word Load
+      , Arg "tgt" $ Imm Offset ]
 
     -- Jump if two registers are equal.
   , Insn "JumpIfEq" []
-      [ Arg "reg1" Word Load
-      , Arg "reg2" Word Load
-      , Arg "tgt" Offset Imm ]
+      [ Arg "reg1" $ Reg Word Load
+      , Arg "reg2" $ Reg Word Load
+      , Arg "tgt" $ Imm Offset ]
 
     -- Jump if two registers are not equal.
   , Insn "JumpIfNe" []
-      [ Arg "reg1" Word Load
-      , Arg "reg2" Word Load
-      , Arg "tgt" Offset Imm ]
+      [ Arg "reg1" $ Reg Word Load
+      , Arg "reg2" $ Reg Word Load
+      , Arg "tgt" $ Imm Offset ]
 
     -- Jump if a > b.
   , Insn "JumpIfGt" []
-      [ Arg "reg1" Word Load
-      , Arg "reg2" Word Load
-      , Arg "tgt" Offset Imm ]
+      [ Arg "reg1" $ Reg Word Load
+      , Arg "reg2" $ Reg Word Load
+      , Arg "tgt" $ Imm Offset ]
 
     -- Jump if a >= b.
   , Insn "JumpIfGe" []
-      [ Arg "reg1" Word Load
-      , Arg "reg2" Word Load
-      , Arg "tgt" Offset Imm ]
+      [ Arg "reg1" $ Reg Word Load
+      , Arg "reg2" $ Reg Word Load
+      , Arg "tgt" $ Imm Offset ]
 
     -- Jump if a < b.
   , Insn "JumpIfLt" []
-      [ Arg "reg1" Word Load
-      , Arg "reg2" Word Load
-      , Arg "tgt" Offset Imm ]
+      [ Arg "reg1" $ Reg Word Load
+      , Arg "reg2" $ Reg Word Load
+      , Arg "tgt" $ Imm Offset ]
 
     -- Jump if a <= b.
   , Insn "JumpIfLe" []
-      [ Arg "reg1" Word Load
-      , Arg "reg2" Word Load
-      , Arg "tgt" Offset Imm ]
+      [ Arg "reg1" $ Reg Word Load
+      , Arg "reg2" $ Reg Word Load
+      , Arg "tgt" $ Imm Offset ]
 
     -- Decrement the value in a register and jump if it isn't 0.
   , Insn "DecrAndJumpIfNot0" []
-      [ Arg "reg" Word Update
-      , Arg "tgt" Offset Imm ]
+      [ Arg "reg" $ Reg Word Update
+      , Arg "tgt" $ Imm Offset ]
 
     -- Decrement the value in a register and jump if it is 0.
   , Insn "DecrAndJumpIf0" []
-      [ Arg "reg" Word Update
-      , Arg "tgt" Offset Imm ]
+      [ Arg "reg" $ Reg Word Update
+      , Arg "tgt" $ Imm Offset ]
 
   , Insn "CallFun_0_1" []
-      [ Arg "fun" (Fun [WordPtr]) Load
-      , Arg "args" (Regs [Word]) Update ]
+      [ Arg "fun" $ Reg (Fun [WordPtr]) Load
+      , Arg "args" $ Regs [Word] ]
 
   , Insn "CallFun_0_2" []
-      [ Arg "fun" (Fun [WordPtr, WordPtr]) Load
-      , Arg "args" (Regs [Word,Word]) Update ]
+      [ Arg "fun" $ Reg (Fun [WordPtr, WordPtr]) Load
+      , Arg "args" $ Regs [Word,Word] ]
 
   , Insn "CallFun_1_1" []
-      [ Arg "fun" (Fun [Word, WordPtr]) Load
-      , Arg "args" (Regs [Word,Word]) Update ]
+      [ Arg "fun" $ Reg (Fun [Word, WordPtr]) Load
+      , Arg "args" $ Regs [Word,Word] ]
 
   , Insn "CallFun_1_0" []
-      [ Arg "fun" (Fun [Word]) Load
-      , Arg "args" (Regs [Word]) Update ]
+      [ Arg "fun" $ Reg (Fun [Word]) Load
+      , Arg "args" $ Regs [Word] ]
 
     -- Call an std::function which takes two 64-bit arguments and returns
     -- one 64-bit result.
   , Insn "CallFun_2_1" []
-      [ Arg "fun" (Fun [Word,Word,WordPtr]) Load
-      , Arg "args" (Regs [Word,Word,Word]) Update ]
+      [ Arg "fun" $ Reg (Fun [Word,Word,WordPtr]) Load
+      , Arg "args" $ Regs [Word,Word,Word] ]
 
   , Insn "CallFun_2_0" []
-      [ Arg "fun" (Fun [Word,Word]) Load
-      , Arg "args" (Regs [Word,Word]) Update ]
+      [ Arg "fun" $ Reg (Fun [Word,Word]) Load
+      , Arg "args" $ Regs [Word,Word] ]
 
   , Insn "CallFun_3_0" []
-      [ Arg "fun" (Fun [Word,Word,Word]) Load
-      , Arg "args" (Regs [Word,Word,Word]) Update ]
+      [ Arg "fun" $ Reg (Fun [Word,Word,Word]) Load
+      , Arg "args" $ Regs [Word,Word,Word] ]
 
   , Insn "CallFun_4_0" []
-      [ Arg "fun" (Fun [Word,Word,Word,Word]) Load
-      , Arg "args" (Regs [Word,Word,Word,Word]) Update ]
+      [ Arg "fun" $ Reg (Fun [Word,Word,Word,Word]) Load
+      , Arg "args" $ Regs [Word,Word,Word,Word] ]
 
   , Insn "CallFun_3_1" []
-      [ Arg "fun" (Fun [Word,Word,Word,WordPtr]) Load
-      , Arg "args" (Regs [Word,Word,Word,Word]) Update ]
+      [ Arg "fun" $ Reg (Fun [Word,Word,Word,WordPtr]) Load
+      , Arg "args" $ Regs [Word,Word,Word,Word] ]
 
   , Insn "CallFun_5_0" []
-      [ Arg "fun" (Fun [Word,Word,Word,Word,Word]) Load
-      , Arg "args" (Regs [Word,Word,Word,Word,Word]) Update ]
+      [ Arg "fun" $ Reg (Fun [Word,Word,Word,Word,Word]) Load
+      , Arg "args" $ Regs [Word,Word,Word,Word,Word] ]
 
   , Insn "CallFun_5_1" []
-      [ Arg "fun" (Fun [Word,Word,Word,Word,Word,WordPtr]) Load
-      , Arg "args" (Regs [Word,Word,Word,Word,Word,Word]) Update ]
+      [ Arg "fun" $ Reg (Fun [Word,Word,Word,Word,Word,WordPtr]) Load
+      , Arg "args" $ Regs [Word,Word,Word,Word,Word,Word] ]
 
   , Insn "CallFun_2_2" []
-      [ Arg "fun" (Fun [Word,Word,WordPtr,WordPtr]) Load
-      , Arg "args" (Regs [Word,Word,Word,Word]) Update ]
+      [ Arg "fun" $ Reg (Fun [Word,Word,WordPtr,WordPtr]) Load
+      , Arg "args" $ Regs [Word,Word,Word,Word] ]
 
   , Insn "CallFun_2_5" []
       [ Arg "fun"
-          (Fun [Word,Word,WordPtr,WordPtr,WordPtr,WordPtr,WordPtr])
-          Load
-      , Arg "args" (Regs [Word,Word,Word,Word,Word,Word,Word]) Update ]
+          $ Reg (Fun [Word,Word,WordPtr,WordPtr,WordPtr,WordPtr,WordPtr]) Load
+      , Arg "args" $ Regs [Word,Word,Word,Word,Word,Word,Word] ]
 
     -- Indexed jump - the register contains an index into the array of
     -- offsets. Does nothing if the index is out of range.
   , Insn "Select" []
-      [ Arg "sel" Word Load
-      , Arg "tgts" Offsets Imm ]
+      [ Arg "sel" $ Reg Word Load
+      , Arg "tgts" Offsets ]
 
     -- Raise an exception.
   , Insn "Raise" [EndBlock]
-      [ Arg "msg" Literal Imm ]
+      [ Arg "msg" $ Imm Literal ]
 
     -- For debugging
   , Insn "Trace" []
-      [ Arg "msg" Literal Imm ]
+      [ Arg "msg" $ Imm Literal ]
 
   , Insn "TraceReg" []
-      [ Arg "msg" Literal Imm
-      , Arg "reg" Word Load ]
+      [ Arg "msg" $ Imm Literal
+      , Arg "reg" $ Reg Word Load ]
 
     -- Adjust PC to point to 'cont' and suspend execution. The first argument
     -- is a temporary, unused left-over for backwards compatibility.
   , Insn "Suspend" [EndBlock, Return]
-      [ Arg "unused" Word Load
-      , Arg "cont" Offset Imm
+      [ Arg "unused" $ Reg Word Load
+      , Arg "cont" $ Imm Offset
       ]
 
     -- Return from a subroutine.
@@ -362,13 +367,13 @@ instructions =
 
     -- Load a word from a memory location pointed to by a register
   , Insn "LoadWord" []
-      [ Arg "src" WordPtr Load
-      , Arg "dst" Word Store
+      [ Arg "src" $ Reg WordPtr Load
+      , Arg "dst" $ Reg Word Store
       ]
 
     -- Store a word into a memory location pointed to by a register
   , Insn "StoreWord" []
-      [ Arg "src" Word Load
-      , Arg "dst" WordPtr Load
+      [ Arg "src" $ Reg Word Load
+      , Arg "dst" $ Reg WordPtr Load
       ]
   ]
