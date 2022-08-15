@@ -5,15 +5,6 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
-class CodemarkupHackHackDeclarationSpan(GleanSchemaPredicate):
-  @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.hack.HackDeclarationSpan.2 { { } }"
-
-  @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackDeclarationSpan":
-    raise Exception("this function can only be called from @angle_query")
-
 class CodemarkupHackHackEntityInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:

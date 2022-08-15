@@ -5,6 +5,24 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
+class SearchBuckSearchDefinition(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"search.buck.SearchDefinition.1 { { } }"
+
+  @staticmethod
+  def angle_query(*, name: Tuple[()]) -> "SearchBuckSearchDefinition":
+    raise Exception("this function can only be called from @angle_query")
+
+class SearchBuckSearchFile(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"search.buck.SearchFile.1 { { } }"
+
+  @staticmethod
+  def angle_query(*, name: Tuple[()]) -> "SearchBuckSearchFile":
+    raise Exception("this function can only be called from @angle_query")
+
 class SearchBuckSearchByFQN(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
