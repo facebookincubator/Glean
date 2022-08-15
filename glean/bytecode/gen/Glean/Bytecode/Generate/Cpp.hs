@@ -102,7 +102,7 @@ genInsnEval Insn{..} =
   , "}" ]
   where
     retType
-      | UncondReturn <- insnControl = "const uint64_t * FOLLY_NULLABLE "
+      | Return `elem` insnEffects = "const uint64_t * FOLLY_NULLABLE "
       | otherwise = "void"
 
     declare (Arg name Offsets Imm) =
@@ -193,12 +193,10 @@ genEvalSwitch =
       let call = "eval_" <> insnName insn <> "();"
       in
       "      case Op::" <> insnName insn <> ":"
-      : case insnControl insn of
-          UncondReturn ->
-           [ "        return " <> call ]
-          _ ->
-           [ "        " <> call
-           , "        break;"]
+      : if Return `elem` insnEffects insn
+          then [ "        return " <> call ]
+          else [ "        " <> call
+               , "        break;"]
 
     genUnusedAlt op =
       "      case Op::" <> op <> ":"
@@ -235,9 +233,7 @@ genEvalIndirect =
       let call = "eval_" <> insnName insn <> "();"
       in
       "label_" <> insnName insn <> ":"
-      : case insnControl insn of
-          UncondReturn ->
-           [ "        return " <> call ]
-          _ ->
-           [ "        " <> call
-           , dispatch ]
+      : if Return `elem` insnEffects insn
+          then [ "        return " <> call ]
+          else [ "        " <> call
+               , dispatch ]

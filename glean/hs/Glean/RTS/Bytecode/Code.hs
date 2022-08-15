@@ -16,9 +16,8 @@ module Glean.RTS.Bytecode.Code
   , Optimised(..)
   , literal
   , label
-  , issueFallThrough
-  , issueCondJump
-  , issueUncondJump
+  , issue
+  , issueEndBlock
   , constant
   , local
   , output
@@ -421,10 +420,10 @@ registerIndex (Register i) = i .&. 0x3FFFFFFFFFFFFFFF
 
 -- | loadReg is fixed to Word, so make a polymorphic version
 move :: Register a -> Register a -> Code ()
-move src dst = issueFallThrough $ LoadReg (castRegister src) (castRegister dst)
+move src dst = issue $ LoadReg (castRegister src) (castRegister dst)
 
 advancePtr :: Register 'DataPtr -> Register 'Word -> Code ()
-advancePtr ptr off = issueFallThrough $ Add off (castRegister ptr)
+advancePtr ptr off = issue $ Add off (castRegister ptr)
 
 -- | Start a new basic block. The previous block will be terminated by the
 -- supplied unconditional jump instruction or, if none is provided, by a jump
@@ -460,19 +459,10 @@ label = do
   when (not $ null insns) $ newBlock Nothing
   Code $ S.gets csLabel
 
+-- | Issue an instruction which doesn't modify the program counter
 issue :: Insn -> Code ()
 issue insn = Code $ S.modify' $ \s@CodeS{..} -> s { csInsns = insn : csInsns }
 
--- | Issue an instruction which doesn't modify the program counter
-issueFallThrough :: Insn -> Code ()
-issueFallThrough = issue
-
--- | Issue an instruction which might modify the program counter
-issueCondJump :: Insn -> Code ()
-issueCondJump insn = do
-  issue insn
-  newBlock Nothing
-
 -- | Issue an instruction which always modifies the program counter
-issueUncondJump :: Insn -> Code ()
-issueUncondJump = newBlock . Just
+issueEndBlock :: Insn -> Code ()
+issueEndBlock = newBlock . Just
