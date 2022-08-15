@@ -246,13 +246,13 @@ namespace {
 
 std::pair<binary::Output, size_t> substituteFact(
     const Inventory& inventory,
-    const Substituter& substituter,
+    const SysCall<Id, Pid, Reg<Id>>& substitute,
     const Fact &fact) {
   auto predicate = inventory.lookupPredicate(fact.type());
   CHECK_NOTNULL(predicate);
   binary::Output clause;
   uint64_t key_size;
-  predicate->substitute(substituter, fact.clause(), clause, key_size);
+  predicate->substitute(substitute, fact.clause(), clause, key_size);
   return {std::move(clause), key_size};
 }
 
@@ -263,12 +263,15 @@ FactSet FactSet::rebase(
     const Substitution& subst,
     Store& global) const {
   const auto new_start = subst.firstFreeId();
-  Substituter substituter(&subst, distance(subst.finish(), new_start));
+  const auto offset = distance(subst.finish(), new_start);
+  const auto substitute = syscall([&subst, offset](Id id, Pid) {
+    return id < subst.finish() ? subst.subst(id) : id + offset;
+  });
 
   const auto split = lower_bound(subst.finish());
 
   for (auto& fact : folly::range(begin(), split)) {
-    auto r = substituteFact(inventory, substituter, fact);
+    auto r = substituteFact(inventory, substitute, fact);
     global.insert({
       subst.subst(fact.id()),
       fact.type(),
@@ -279,7 +282,7 @@ FactSet FactSet::rebase(
   FactSet local(new_start);
   auto expected = new_start;
   for (auto& fact : folly::range(split, end())) {
-    auto r = substituteFact(inventory, substituter, fact);
+    auto r = substituteFact(inventory, substitute, fact);
     const auto id =
       local.define(fact.type(), Fact::Clause::from(r.first.bytes(), r.second));
     CHECK(id == expected);

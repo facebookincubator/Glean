@@ -8,6 +8,7 @@
 
 #include "glean/rts/binary.h"
 #include "glean/rts/bytecode/subroutine.h"
+#include "glean/rts/bytecode/syscall.h"
 #include "glean/rts/id.h"
 #include "glean/rts/string.h"
 #include "glean/rts/prim.h"
@@ -237,55 +238,55 @@ struct Eval {
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_0_1 a) {
-    (*a.fun)(a.dst);
+    (*a.fun)(frame, a.args, a.args_arity);
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_0_2 a) {
-    (*a.fun)(a.dst1, a.dst2);
+    (*a.fun)(frame, a.args, a.args_arity);
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_1_1 a) {
-    (*a.fun)(a.src, a.dst);
+    (*a.fun)(frame, a.args, a.args_arity);
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_1_0 a) {
-    (*a.fun)(a.src);
+    (*a.fun)(frame, a.args, a.args_arity);
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_2_0 a) {
-    (*a.fun)(a.src1, a.src2);
+    (*a.fun)(frame, a.args, a.args_arity);
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_3_0 a) {
-    (*a.fun)(a.src1, a.src2, a.src3);
+    (*a.fun)(frame, a.args, a.args_arity);
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_4_0 a) {
-    (*a.fun)(a.src1, a.src2, a.src3, a.src4);
+    (*a.fun)(frame, a.args, a.args_arity);
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_2_1 a) {
-    (*a.fun)(a.src1, a.src2, a.dst);
+    (*a.fun)(frame, a.args, a.args_arity);
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_2_2 a) {
-    (*a.fun)(a.src1, a.src2, a.dst1, a.dst2);
+    (*a.fun)(frame, a.args, a.args_arity);
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_2_5 a) {
-    (*a.fun)(a.src1, a.src2, a.dst1, a.dst2, a.dst3, a.dst4, a.dst5);
+    (*a.fun)(frame, a.args, a.args_arity);
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_3_1 a) {
-    (*a.fun)(a.src1, a.src2, a.src3, a.dst);
+    (*a.fun)(frame, a.args, a.args_arity);
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_5_0 a) {
-    (*a.fun)(a.src1, a.src2, a.src3, a.src4, a.src5);
+    (*a.fun)(frame, a.args, a.args_arity);
   }
 
   FOLLY_ALWAYS_INLINE void execute(CallFun_5_1 a) {
-    (*a.fun)(a.src1, a.src2, a.src3, a.src4, a.src5, a.dst);
+    (*a.fun)(frame, a.args, a.args_arity);
   }
 
   FOLLY_ALWAYS_INLINE void execute(Select a) {

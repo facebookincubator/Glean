@@ -280,90 +280,59 @@ instructions =
 
   , Insn "CallFun_0_1" FallThrough
       [ Arg "fun" (Fun [WordPtr]) Load
-      , Arg "dst" Word Store ]
+      , Arg "args" (Regs [Word]) Update ]
 
   , Insn "CallFun_0_2" FallThrough
       [ Arg "fun" (Fun [WordPtr, WordPtr]) Load
-      , Arg "dst1" Word Store
-      , Arg "dst2" Word Store ]
+      , Arg "args" (Regs [Word,Word]) Update ]
 
   , Insn "CallFun_1_1" FallThrough
       [ Arg "fun" (Fun [Word, WordPtr]) Load
-      , Arg "src" Word Load
-      , Arg "dst" Word Store ]
+      , Arg "args" (Regs [Word,Word]) Update ]
 
   , Insn "CallFun_1_0" FallThrough
       [ Arg "fun" (Fun [Word]) Load
-      , Arg "src" Word Load ]
+      , Arg "args" (Regs [Word]) Update ]
 
     -- Call an std::function which takes two 64-bit arguments and returns
     -- one 64-bit result.
   , Insn "CallFun_2_1" FallThrough
       [ Arg "fun" (Fun [Word,Word,WordPtr]) Load
-      , Arg "src1" Word Load
-      , Arg "src2" Word Load
-      , Arg "dst" Word Store ]
+      , Arg "args" (Regs [Word,Word,Word]) Update ]
 
   , Insn "CallFun_2_0" FallThrough
       [ Arg "fun" (Fun [Word,Word]) Load
-      , Arg "src1" Word Load
-      , Arg "src2" Word Load ]
+      , Arg "args" (Regs [Word,Word]) Update ]
 
   , Insn "CallFun_3_0" FallThrough
       [ Arg "fun" (Fun [Word,Word,Word]) Load
-      , Arg "src1" Word Load
-      , Arg "src2" Word Load
-      , Arg "src3" Word Load ]
+      , Arg "args" (Regs [Word,Word,Word]) Update ]
 
   , Insn "CallFun_4_0" FallThrough
       [ Arg "fun" (Fun [Word,Word,Word,Word]) Load
-      , Arg "src1" Word Load
-      , Arg "src2" Word Load
-      , Arg "src3" Word Load
-      , Arg "src4" Word Load ]
+      , Arg "args" (Regs [Word,Word,Word,Word]) Update ]
 
   , Insn "CallFun_3_1" FallThrough
       [ Arg "fun" (Fun [Word,Word,Word,WordPtr]) Load
-      , Arg "src1" Word Load
-      , Arg "src2" Word Load
-      , Arg "src3" Word Load
-      , Arg "dst" Word Store ]
+      , Arg "args" (Regs [Word,Word,Word,Word]) Update ]
 
   , Insn "CallFun_5_0" FallThrough
       [ Arg "fun" (Fun [Word,Word,Word,Word,Word]) Load
-      , Arg "src1" Word Load
-      , Arg "src2" Word Load
-      , Arg "src3" Word Load
-      , Arg "src4" Word Load
-      , Arg "src5" Word Load ]
+      , Arg "args" (Regs [Word,Word,Word,Word,Word]) Update ]
 
   , Insn "CallFun_5_1" FallThrough
       [ Arg "fun" (Fun [Word,Word,Word,Word,Word,WordPtr]) Load
-      , Arg "src1" Word Load
-      , Arg "src2" Word Load
-      , Arg "src3" Word Load
-      , Arg "src4" Word Load
-      , Arg "src5" Word Load
-      , Arg "dst" Word Store ]
+      , Arg "args" (Regs [Word,Word,Word,Word,Word,Word]) Update ]
 
   , Insn "CallFun_2_2" FallThrough
       [ Arg "fun" (Fun [Word,Word,WordPtr,WordPtr]) Load
-      , Arg "src1" Word Load
-      , Arg "src2" Word Load
-      , Arg "dst1" Word Store
-      , Arg "dst2" Word Store ]
+      , Arg "args" (Regs [Word,Word,Word,Word]) Update ]
 
   , Insn "CallFun_2_5" FallThrough
       [ Arg "fun"
           (Fun [Word,Word,WordPtr,WordPtr,WordPtr,WordPtr,WordPtr])
           Load
-      , Arg "src1" Word Load
-      , Arg "src2" Word Load
-      , Arg "dst1" Word Store
-      , Arg "dst2" Word Store
-      , Arg "dst3" Word Store
-      , Arg "dst4" Word Store
-      , Arg "dst5" Word Store ]
+      , Arg "args" (Regs [Word,Word,Word,Word,Word,Word,Word]) Update ]
 
     -- Indexed jump - the register contains an index into the array of
     -- offsets. Does nothing if the index is out of range.

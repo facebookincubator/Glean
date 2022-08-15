@@ -851,7 +851,7 @@ const char *glean_invoke_typechecker(
     uint64_t dummy;
     Predicate::runTypecheck(
         *typechecker->value,
-        Renamer{[](auto id, auto) { return id; }},
+        syscall([](Id id, Pid) { return id; }),
         Fact::Clause::fromKey({static_cast<const unsigned char*>(input), input_size}),
         out,
         dummy);

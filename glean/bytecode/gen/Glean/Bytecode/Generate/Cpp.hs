@@ -108,6 +108,10 @@ genInsnEval Insn{..} =
     declare (Arg name Offsets Imm) =
       [ "uint64_t " <> name <> "_size;"
       , "const uint64_t *" <> name <> ";" ]
+    declare (Arg name (Regs tys) _) =
+      [ "static constexpr uint64_t " <> name <> "_arity = "
+          <> Text.pack (show (length tys) <> ";")
+      , "const uint64_t *" <> name <> ";" ]
     declare (Arg name ty Imm) =
       [ cppType ty <> " " <> name <> ";" ]
     declare (Arg name ty Load) =
@@ -122,6 +126,9 @@ genInsnEval Insn{..} =
       [ "args." <> name <> "_size = *pc++;"
       , "args." <> name <> " = pc;"
       , "pc += args." <> name <> "_size;" ]
+    decode (Arg name (Regs _) _) =
+      [ "args." <> name <> " = pc;"
+      , "pc += args." <> name <> "_arity;" ]
     decode (Arg name ty Imm) =
       [ "args." <> name <> " = " <> cppCast ty "*pc++" <> ";" ]
     decode (Arg name ty Load) =
@@ -144,9 +151,7 @@ cppType DataPtr = "void *"
 cppType Literal = "const std::string *"
 cppType WordPtr = "uint64_t *"
 cppType BinaryOutputPtr = "binary::Output *"
-cppType (Fun arg_tys) =
-  "std::function<void"
-    <> "(" <> Text.intercalate ", " (map cppType arg_tys) <> ")> *"
+cppType (Fun _) = "SysFun *"
 cppType _ = "uint64_t"
 
 -- | Generate a switch-based evaluator.

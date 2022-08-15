@@ -55,7 +55,7 @@ void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
   Fail fail;
 
   // thread-safe type cache check
-  auto expect_type([&](Id id, Pid type) {
+  const auto expect_type([&](Id id, Pid type) {
     if (id < starting_id || id >= end_id) {
       fail("id {} out of range, expecting id of type {}", id, type);
     }
@@ -75,7 +75,7 @@ void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
     return id;
   });
 
-  Renamer checker(expect_type);
+  auto check = syscall(expect_type);
 
   std::atomic<size_t> count = 0;
 
@@ -117,7 +117,7 @@ void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
         binary::Output out;
         uint64_t key_size;
 
-        predicate->typecheck(checker, fact.clause, out, key_size);
+        predicate->typecheck(check, fact.clause, out, key_size);
 
         if (fact.clause.bytes() != out.bytes()) {
           fail("invalid fact");

@@ -188,7 +188,7 @@ FOLLY_NOINLINE void completeOwnership(std::vector<Uset *> &facts, Usets& usets,
   Stats stats{usets};
 
   std::vector<Id> refs;
-  Traverser tracker([&](Id id, Pid) {
+  const auto tracker = syscall([&refs](Id id, Pid) {
     refs.push_back(id);
   });
 
