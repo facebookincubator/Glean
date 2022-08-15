@@ -30,14 +30,21 @@ struct T {};
 void g();
 
 }
+
+int fooFn(int fooI) {
+  return fooI;
 }
 
-void h() {
+}
+
+void h(int i) {
+  h(i);
   foo::S s;
   foo::bar::T t;
   foo::f();
   foo::foo();
   foo::bar::g();
+  i++;
 }
 
 #include "test.h"

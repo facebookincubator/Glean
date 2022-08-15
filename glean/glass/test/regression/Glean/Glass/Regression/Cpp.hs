@@ -41,7 +41,7 @@ testCppFindReferences get = TestLabel "findReferences" $ TestList [
   "test/cpp/foo/bar/T" --> [("test.cpp", 1)],
   "test/cpp/foo/f" --> [("test.cpp", 1)],
   "test/cpp/foo/bar/g" --> [("test.cpp", 1)],
-  "test/cpp/h" --> []
+  "test/cpp/h" --> [("test.cpp", 1)]
   ]
   where
     (-->) :: Text -> [(Text,Int)] -> Test
@@ -82,9 +82,8 @@ testCppDescribeSymbolComments get = TestLabel "describeSymbolComments" $
         get
 
 testCppSearchRelated :: Getter -> Test
-testCppSearchRelated get = TestLabel "searchRelated" $ TestList $ concat [
+testCppSearchRelated get = TestLabel "searchRelated" $ TestList $
   "test/cpp/foo" `contains` "test/cpp/foo/S"
-  ]
   where
     contains :: Text -> Text -> [Test]
     contains = contains' False

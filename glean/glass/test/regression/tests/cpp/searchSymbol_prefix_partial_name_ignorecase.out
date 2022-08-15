@@ -18,6 +18,22 @@
                 },
                 "name": "foo",
                 "symbol": "test/cpp/foo/foo"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 34,
+                        "lineEnd": 36
+                    },
+                    "repository": "test"
+                },
+                "name": "fooFn",
+                "symbol": "test/cpp/foo/fooFn"
             }
         ]
     }

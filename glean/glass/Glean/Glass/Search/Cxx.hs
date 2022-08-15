@@ -33,14 +33,14 @@ instance Search Cxx.Entity where
   symbolSearch t@[name] = do
     runSearch t $
       searchByScope t .|
-      searchByNameAndScope False [] name
+      searchByNameAndScope [] name
   symbolSearch t@(_:_) = do
     runSearch t $
       searchByScope t .|
-      searchByNameAndScope False (init t) (last t)
+      searchByNameAndScope (init t) (last t)
 
 --
--- Entity search for C++
+-- Entity search for C++. These should decode precisely
 --
 searchByScope
   :: [Text] -> Angle (ResultLocation Cxx.Entity)
@@ -59,36 +59,39 @@ searchByScope ns =
     scopeQuery ns = scope (reverse ns)
 
 searchByNameAndScope
-  :: Bool -> [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
-searchByNameAndScope isPrefix ns name =
+  :: [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
+searchByNameAndScope ns name =
   vars $ \(entity :: Angle Cxx.Entity) (file :: Angle Src.File)
       (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
     tuple (entity, file, rangespan, lname) `where_` [
       wild .= predicate @Cxx.SearchByNameAndScope (
         rec $
-          field @"name" (stringOrPrefix name) $
+          field @"name" (string name) $
           field @"scope" (scopeQuery ns) $
           field @"entity" entity
         end),
       entityLocation (alt @"cxx" entity) file rangespan lname
     ]
   where
-    stringOrPrefix = if isPrefix then stringPrefix else string
     scopeQuery ns = scope (reverse ns)
 
--- | Varieties of namespaces and scopes
+--
+-- Scope queries. There's lots of flavors.
+--
 scope :: [Text] -> Angle Cxx.Scope
-scope ns = case ns of
-  [] -> alt @"global_" wild
-  n:ns' ->
-    alt @"namespace_" (namespaceQName ns)
-    .|
-    alt @"recordWithAccess" (rec $
-        field @"record" (rec $
-          field @"name" (string n) $
-          field @"scope" (scope ns')
-        end)
+scope [] = alt @"global_" wild
+scope ns@(n:ns') =
+  alt @"namespace_" (namespaceQName ns)
+  .|
+  alt @"recordWithAccess" (rec $
+      field @"record" (rec $
+        field @"name" (string n) $
+        field @"scope" (scope ns')
       end)
+    end)
+  .|
+  alt @"local" (functionQName n ns')
+
   where
     namespaceQName [] =
       rec $
@@ -102,4 +105,10 @@ scope ns = case ns of
           (if null ns
             then nothing
             else just (namespaceQName ns))
-        end
+      end
+
+    functionQName n ns =
+      rec $
+        field @"name" (alt @"name" (string n)) $
+        field @"scope" (scope ns)
+      end

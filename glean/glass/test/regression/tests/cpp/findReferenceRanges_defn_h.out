@@ -1,4 +1,15 @@
 [
     "@generated",
-    []
+    [
+        {
+            "filepath": "test.cpp",
+            "range": {
+                "columnBegin": 3,
+                "columnEnd": 4,
+                "lineBegin": 41,
+                "lineEnd": 41
+            },
+            "repository": "test"
+        }
+    ]
 ]
