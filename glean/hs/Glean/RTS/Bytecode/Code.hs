@@ -22,11 +22,13 @@ module Glean.RTS.Bytecode.Code
   , local
   , output
   , generate
+  , SysCallable
   , castRegister
   , move
   , advancePtr
   , callSite
   , calledFrom
+  , mkSysCall
   ) where
 
 import Control.Exception (assert)
@@ -466,3 +468,15 @@ issue insn = Code $ S.modify' $ \s@CodeS{..} -> s { csInsns = insn : csInsns }
 -- | Issue an instruction which always modifies the program counter
 issueEndBlock :: Insn -> Code ()
 issueEndBlock = newBlock . Just
+
+class SysCallable a where
+  buildCall :: ([Register 'Word] -> Insn) -> a
+
+instance SysCallable (Code ()) where
+  buildCall f = issue $ f []
+
+instance SysCallable a => SysCallable (Register ty -> a) where
+  buildCall f reg = buildCall $ \regs -> f $ castRegister reg : regs
+
+mkSysCall :: SysCallable a => Int -> a
+mkSysCall n = buildCall (SysCall $ fromIntegral n)

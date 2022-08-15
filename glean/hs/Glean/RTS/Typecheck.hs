@@ -25,14 +25,16 @@ import Glean.RTS.Bytecode.Gen.Issue
 -- | Type tag for Subroutine
 data CompiledTypecheck
 
+rename :: Register 'Word -> Register 'Word -> Register 'Word -> Code ()
+rename = mkSysCall 0
+
 typecheck
-  :: Register ('Fun '[ 'Word, 'Word, 'WordPtr ])
-  -> Register 'DataPtr
+  :: Register 'DataPtr
   -> Register 'DataPtr
   -> Register 'BinaryOutputPtr
   -> Type
   -> Code ()
-typecheck rename input inputend output = tc
+typecheck input inputend output = tc
   where
     tc ByteTy = do
       size <- constant 1
@@ -80,7 +82,7 @@ typecheck rename input inputend output = tc
     tc (PredicateTy (PidRef (Pid pid) _)) = local $ \ide -> do
       t <- constant $ fromIntegral pid
       inputNat input inputend ide
-      callFun_2_1 rename ide t ide
+      rename ide t ide
       outputNat ide output
     tc (NamedTy (ExpandedType _ ty)) = tc ty
     tc (MaybeTy ty) = mdo
@@ -129,13 +131,13 @@ checkType ty = checkSignature ty $ RecordTy []
 checkSignature :: Type -> Type -> IO (Subroutine CompiledTypecheck)
 checkSignature key_ty val_ty =
   generate Optimised $
-    \rename clause_begin key_end clause_end out_key_size -> output $ \out -> mdo
-    typecheck rename clause_begin key_end out key_ty
+    \clause_begin key_end clause_end out_key_size -> output $ \out -> mdo
+    typecheck clause_begin key_end out key_ty
     check "key" clause_begin key_end
     local $ \size -> do
       getOutputSize out size
       storeWord size out_key_size
-    typecheck rename clause_begin clause_end out val_ty
+    typecheck clause_begin clause_end out val_ty
     check "value" clause_begin clause_end
     ret
   where
