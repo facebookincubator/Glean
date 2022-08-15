@@ -26,26 +26,51 @@ std::vector<unsigned char> lexicographicallyNext(folly::ByteRange range) {
 }
 
 void Output::realloc(size_t n) {
-  // Just grow by 2, but start with at least 64 - we typically have very small
-  // or very large buffers.
-  const auto wanted =
-    std::max(state.cap + std::max(state.cap, n), size_t(64));
-  const auto new_cap = folly::goodMallocSize(wanted);
-  state.data = static_cast<unsigned char *>(std::realloc(state.data, new_cap));
-  state.cap = new_cap;
+  // Just grow by 2x - the first dynamic allocation will be at least 2*SMALL_CAP
+  const size_t k = capacity() + std::max(capacity(), n);
+  const auto wanted = folly::goodMallocSize(k);
+  if (isSmall()) {
+    const auto p = static_cast<unsigned char *>(folly::checkedMalloc(wanted));
+    std::memcpy(p, data(), size());
+    large.data = p;
+    large.size = (size() << TAG_BITS) | LARGE_BIT;
+  } else {
+    large.data = static_cast<unsigned char *>(
+      folly::checkedRealloc(large.data, wanted));
+  }
+  large.cap = wanted;
+}
+
+hs::ffi::malloced_array<uint8_t> Output::moveBytes() {
+  folly::SysBufferUniquePtr p;
+  size_t len = size();
+  if (isSmall()) {
+    p = folly::allocate_sys_buffer(len);
+    std::memcpy(p.get(), data(), len);
+  } else {
+    p = folly::SysBufferUniquePtr(large.data, {});
+  }
+  markEmpty();
+  return hs::ffi::malloced_array<uint8_t>(std::move(p), len);
 }
 
 folly::fbstring Output::moveToFbString() {
-  // fbstring requires the data to be NUL-terminated. The terminator isn't
-  // included in the size.
-  *alloc(1) = 0;
-  State s;
-  std::swap(state,s);
-  return folly::fbstring(
-   reinterpret_cast<char *>(s.data),
-   s.len,
-   s.cap,
-   folly::AcquireMallocatedString());
+  if (isSmall()) {
+    return folly::fbstring(data(), data() + size());
+  } else {
+    // fbstring requires the data to be NUL-terminated. The terminator isn't
+    // included in the size.
+    *alloc(1) = 0;
+    const auto d = data();
+    const auto s = size();
+    const auto c = large.cap;
+    markEmpty();
+    return folly::fbstring(
+      reinterpret_cast<char *>(d),
+      s,
+      c,
+      folly::AcquireMallocatedString());
+  }
 }
 
 }
