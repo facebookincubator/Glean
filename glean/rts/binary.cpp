@@ -29,35 +29,33 @@ void Output::realloc(size_t n) {
   // Just grow by 2x - the first dynamic allocation will be at least 2*SMALL_CAP
   const size_t k = capacity() + std::max(capacity(), n);
   const auto wanted = folly::goodMallocSize(k);
-  if (isSmall()) {
+  if (isMalloced()) {
+    large.data = static_cast<unsigned char *>(
+      folly::checkedRealloc(large.data, wanted));
+  } else {
     const auto p = static_cast<unsigned char *>(folly::checkedMalloc(wanted));
     std::memcpy(p, data(), size());
     large.data = p;
-    large.size = (size() << TAG_BITS) | LARGE_BIT;
-  } else {
-    large.data = static_cast<unsigned char *>(
-      folly::checkedRealloc(large.data, wanted));
+    large.size = (size() << TAG_BITS) | LARGE_BIT | MALLOC_BIT;
   }
   large.cap = wanted;
 }
 
 hs::ffi::malloced_array<uint8_t> Output::moveBytes() {
   folly::SysBufferUniquePtr p;
-  size_t len = size();
-  if (isSmall()) {
+  const auto len = size();
+  if (isMalloced()) {
+    p = folly::SysBufferUniquePtr(large.data, {});
+  } else {
     p = folly::allocate_sys_buffer(len);
     std::memcpy(p.get(), data(), len);
-  } else {
-    p = folly::SysBufferUniquePtr(large.data, {});
   }
   markEmpty();
   return hs::ffi::malloced_array<uint8_t>(std::move(p), len);
 }
 
 folly::fbstring Output::moveToFbString() {
-  if (isSmall()) {
-    return folly::fbstring(data(), data() + size());
-  } else {
+  if (isMalloced()) {
     // fbstring requires the data to be NUL-terminated. The terminator isn't
     // included in the size.
     *alloc(1) = 0;
@@ -70,6 +68,8 @@ folly::fbstring Output::moveToFbString() {
       s,
       c,
       folly::AcquireMallocatedString());
+  } else {
+    return folly::fbstring(data(), data() + size());
   }
 }
 

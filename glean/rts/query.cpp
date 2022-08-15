@@ -673,8 +673,8 @@ std::unique_ptr<QueryResults> executeQuery (
 
   if (restart) {
     for (auto i = 0; i < sub.outputs; i++) {
-      q.outputs[i].bytes(
-          restart->outputs()[i].data(), restart->outputs()[i].size());
+      q.outputs[i] =
+        binary::Output(restart->outputs()[i], binary::Output::RefMem());
     }
   }
 

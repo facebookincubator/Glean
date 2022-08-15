@@ -272,14 +272,38 @@ struct Input {
  *
  */
 struct Output {
-
   Output() noexcept {
     markEmpty();
   }
+
   Output(Output&& other) noexcept {
     std::memcpy(this, &other, sizeof(Output));
     other.markEmpty();
   }
+
+  /// Indicates that the buffer should reference an existing memory block rather
+  /// than allocate its own. The buffer will still allocate when it needs to
+  /// grow.
+  struct RefMem {};
+
+  /// Create a buffer that references an existing memory block
+  Output(void *data, size_t size, RefMem) {
+    assert(data != nullptr || size == 0);
+
+    if (size == 0) {
+      markEmpty();
+    } else if (size <= SMALL_CAP) {
+      small[0] = static_cast<unsigned char>(size) << TAG_BITS;
+      std::memcpy(small+1, data, size);
+    } else {
+      large.data = static_cast<unsigned char *>(data);
+      large.size = (size << TAG_BITS) | LARGE_BIT;
+      large.cap = size;
+    }
+  }
+
+  /// Create a buffer that references the memory of a string
+  Output(std::string& s, RefMem) : Output(s.data(), s.size(), RefMem()) {}
 
   Output& operator=(Output&& other) noexcept {
     if (this != &other) {
@@ -382,10 +406,13 @@ struct Output {
     "support for big endian in binary::Output not implemented");
 
   /// Number of tag bits in the respresentation
-  static constexpr size_t TAG_BITS = 1;
+  static constexpr size_t TAG_BITS = 2;
 
   /// Bit which distinguishes small buffers from large ones
   static constexpr size_t LARGE_BIT = 1;
+
+  // Bit which indicates whether we have malloced memory ourselves
+  static constexpr size_t MALLOC_BIT = 2;
 
   // An implementation of a growable buffer which avoids dynamic allocation
   // for small (< SMALL_CAP) data sizes.
@@ -424,6 +451,10 @@ struct Output {
     return (small[0] & LARGE_BIT) == 0;
   }
 
+  bool isMalloced() const noexcept {
+    return (small[0] & MALLOC_BIT) != 0;
+  }
+
   /// Turn this into an empty buffer (without deallocating memory)
   void markEmpty() noexcept {
     small[0] = 0;
@@ -447,7 +478,7 @@ struct Output {
 
   /// Deallocate memory held by the buffer
   void dealloc() noexcept {
-    if (!isSmall()) {
+    if (isMalloced()) {
       std::free(large.data);
     }
   }
