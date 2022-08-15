@@ -16,6 +16,7 @@
 #include "glean/if/gen-cpp2/glean_types.h"
 #include "glean/if/gen-cpp2/glean_constants.h"
 #include "glean/if/gen-cpp2/internal_types.h"
+#include "glean/rts/bytecode/syscall.h"
 #include "glean/rts/query.h"
 
 
@@ -48,9 +49,17 @@ struct QueryExecutor {
   // key prefix. Returns a token that can be passed to next() to
   // fetch the next fact.
   //
-  IterToken seek(Pid type, folly::ByteRange key);
+  IterToken seek(
+    Pid type,
+    const unsigned char *key_begin,
+    const unsigned char *key_end);
 
-  IterToken seekWithinSection(Pid type, folly::ByteRange key, Id from, Id upto);
+  IterToken seekWithinSection(
+    Pid type,
+    const unsigned char *key_begin,
+    const unsigned char *key_end,
+    Id from,
+    Id upto);
 
   //
   // Returns the current seek token, so that the state can be reset in
@@ -68,7 +77,16 @@ struct QueryExecutor {
   // Get the next fact in a traversal initiated by seek().  Returns 0
   // if there are no more facts.
   //
-  Fact::Ref next(IterToken token, FactIterator::Demand demand);
+  // Fact::Ref next(IterToken token, FactIterator::Demand demand);
+
+  void next(
+    uint64_t token,
+    uint64_t demand,
+    Reg<uint64_t> ok,
+    Reg<const unsigned char *> clause_begin,
+    Reg<const unsigned char *> key_end,
+    Reg<const unsigned char *> clause_end,
+    Reg<Id> id);
 
   //
   // Look up a fact with id fid, and copy its key into kout and value
@@ -92,17 +110,31 @@ struct QueryExecutor {
   // resultWithPid()
   //
   void nestedFact(Id id, Pid pid);
-  Traverser nestedFact_{[this](Id id, Pid pid) { nestedFact(id,pid); }};
+  Predicate::Descend nestedFact_ = syscall(*this, &QueryExecutor::nestedFact);
+  // Traverser nestedFact_{[this](Id id, Pid pid) { nestedFact(id,pid); }};
 
   //
-  // Record a qeury result.
+  // Record a query result and return the total number of bytes produced.
   //
-  size_t resultWithPid(
+  size_t recordResult(
       Id id,
       binary::Output *key,
       binary::Output *val,
       Pid pid,
       bool rec);
+
+  //
+  // Wrapper around recordResult() which ignores the return value.
+  //
+  void resultWithPid(
+      Id id,
+      binary::Output *key,
+      binary::Output *val,
+      Pid pid,
+      bool rec) {
+    recordResult(id, key, val, pid, rec);
+  }
+
 
   //
   // wrapper around resultWithPid() used by ordinary queries where we
@@ -116,7 +148,7 @@ struct QueryExecutor {
   size_t result(Id id, binary::Output* key, binary::Output* val) {
     auto added = results_added.insert(id.toWord());
     if (added.second) {
-      return resultWithPid(id, key, val, pid, 0);
+      return recordResult(id, key, val, pid, 0);
     } else {
       DVLOG(5) << "result skipped dup (" << id.toWord() << ")";
       return 0;
@@ -208,7 +240,11 @@ struct QueryExecutor {
 };
 
 
-uint64_t QueryExecutor::seek(Pid type, folly::ByteRange key) {
+uint64_t QueryExecutor::seek(
+    Pid type,
+    const unsigned char *key_begin,
+    const unsigned char *key_end) {
+  const folly::ByteRange key(key_begin, key_end);
   auto token = iters.size();
   DVLOG(5) << "seek(" << type.toWord() << ") = " << token;
   iters.emplace_back(Iter{facts.seek(type, key, key.size()),
@@ -217,7 +253,12 @@ uint64_t QueryExecutor::seek(Pid type, folly::ByteRange key) {
 };
 
 uint64_t QueryExecutor::seekWithinSection(
-    Pid type, folly::ByteRange key, Id from, Id upto) {
+    Pid type,
+    const unsigned char *key_begin,
+    const unsigned char *key_end,
+    Id from,
+    Id upto) {
+  const folly::ByteRange key(key_begin, key_end);
   auto token = iters.size();
   DVLOG(5) << "seekWithinSection(" << type.toWord() << ") = " << token;
   iters.emplace_back(Iter{
@@ -243,14 +284,31 @@ void QueryExecutor::endSeek(uint64_t token) {
 };
 
 
-Fact::Ref QueryExecutor::next(uint64_t token, FactIterator::Demand demand) {
+void QueryExecutor::next(
+    uint64_t token,
+    uint64_t demand,
+    Reg<uint64_t> ok,
+    Reg<const unsigned char *> clause_begin,
+    Reg<const unsigned char *> key_end,
+    Reg<const unsigned char *> clause_end,
+    Reg<Id> id) {
+  if (timeExpired()) {
+    ok.set(2);
+    return;
+  }
+  if (interrupted()) {
+    ok.set(2);
+    return;
+  }
+
   assert(token == iters.size()-1);
   if (iters[token].first) {
     iters[token].first = false;
   } else {
     iters[token].iter->next();
   }
-  auto res = iters[token].iter->get(demand);
+  auto res = iters[token].iter->get(demand != 0 ? FactIterator::KeyValue
+                                                : FactIterator::KeyOnly);
   if (res) {
     iters[token].id = res.id;
     if (wantStats) {
@@ -258,7 +316,18 @@ Fact::Ref QueryExecutor::next(uint64_t token, FactIterator::Demand demand) {
     }
   }
   DVLOG(5) << "next(" << token << ") = " << (res ? res.id.toWord() : 0);
-  return res;
+
+
+  if (!res) {
+    ok.set(0);
+    return;
+  }
+
+  id.set(res.id);
+  clause_begin.set(res.clause.bytes().data());
+  key_end.set(res.clause.key().end());
+  clause_end.set(res.clause.bytes().end());
+  ok.set(1);
 };
 
 
@@ -379,7 +448,7 @@ void QueryExecutor::nestedFact(Id id, Pid pid) {
 };
 
 
-size_t QueryExecutor::resultWithPid(
+size_t QueryExecutor::recordResult(
     Id id,
     binary::Output *key,
     binary::Output *val,
@@ -612,101 +681,15 @@ std::unique_ptr<QueryResults> executeQuery (
   // IF YOU ALSO BREAK FORWARD COMPATIBILITY, BUMP lowestSupportedVersion AS
   // WELL
 
-  const std::function<void(uint64_t, uint64_t, uint64_t, uint64_t *)> seek_ =
-      [&](uint64_t type, uint64_t prefix, uint64_t end, uint64_t *res) {
-        *res = q.seek(
-            Pid::fromWord(type),
-            folly::ByteRange(
-                reinterpret_cast<uint8_t *>(prefix),
-                reinterpret_cast<uint8_t *>(end)));
-      };
-
-  const std::function<void(uint64_t, uint64_t, uint64_t, uint64_t, uint64_t,
-                           uint64_t *)>
-    seekWithinSection_ =
-    [&](uint64_t type, uint64_t prefix, uint64_t end,
-        uint64_t from, uint64_t upto, uint64_t *res) {
-        *res = q.seekWithinSection(
-            Pid::fromWord(type),
-            folly::ByteRange(
-                reinterpret_cast<uint8_t *>(prefix),
-                reinterpret_cast<uint8_t *>(end)),
-            Id::fromWord(from),
-            Id::fromWord(upto));
-      };
-
-
-  const std::function<void(uint64_t *)> currentSeek_ = [&](uint64_t *res){
-    *res = q.currentSeek();
-  };
-
-  const std::function<void(uint64_t)> endSeek_ = [&](uint64_t token) {
-    q.endSeek(token);
-  };
-
-  const std::function<void(uint64_t, uint64_t, uint64_t *, uint64_t *,
-                               uint64_t *, uint64_t *, uint64_t *)>
-      next_ = [&](uint64_t token, uint64_t demand, uint64_t *ok,
-                  uint64_t *clause_begin, uint64_t *key_end,
-                  uint64_t *clause_end, uint64_t *id) {
-        if (q.timeExpired()) {
-          *ok = 2;
-          return;
-        }
-        if (q.interrupted()) {
-          *ok = 2;
-          return;
-        }
-        auto res = q.next(token, demand != 0 ? FactIterator::KeyValue
-                                             : FactIterator::KeyOnly);
-        if (!res) {
-          *ok = 0;
-          return;
-        }
-        *id = res.id.toWord();
-        *clause_begin = reinterpret_cast<uint64_t>(res.clause.bytes().data());
-        *key_end = reinterpret_cast<uint64_t>(res.clause.key().end());
-        *clause_end = reinterpret_cast<uint64_t>(res.clause.bytes().end());
-        *ok = 1;
-      };
-
-  const std::function<void(uint64_t, uint64_t, uint64_t, uint64_t *)>
-      lookupKeyValue_ = [&](uint64_t fid, uint64_t kout, uint64_t vout,
-                            uint64_t *res) {
-        *res = q.lookupKeyValue(
-            Id::fromWord(fid),
-            reinterpret_cast<binary::Output *>(kout),
-            reinterpret_cast<binary::Output *>(vout)).toWord();
-      };
-
-  const std::function<void(uint64_t, uint64_t, uint64_t, uint64_t *)>
-      newDerivedFact_ = [&](uint64_t type, uint64_t key, uint64_t size,
-                            uint64_t *res) {
-        *res = q.newDerivedFact(
-            Pid::fromWord(type),
-            reinterpret_cast<binary::Output *>(key),
-            size).toWord();
-      };
-
-  const std::function<void(uint64_t, uint64_t, uint64_t,
-                           uint64_t, uint64_t)>
-      resultWithPid_ = [&](uint64_t id, uint64_t key,
-                           uint64_t val, uint64_t pid, uint64_t rec) {
-        q.resultWithPid(
-            Id::fromWord(id),
-            reinterpret_cast<binary::Output *>(key),
-            reinterpret_cast<binary::Output *>(val),
-            Pid::fromWord(pid),
-            rec);
-      };
-
-  const std::function<void(uint64_t, uint64_t, uint64_t, uint64_t *)>
-      result_ = [&](uint64_t id, uint64_t key, uint64_t val, uint64_t *res) {
-        *res = q.result(
-            Id::fromWord(id),
-            reinterpret_cast<binary::Output *>(key),
-            reinterpret_cast<binary::Output *>(val));
-      };
+  const auto seek_ = syscall(q, &QueryExecutor::seek);
+  const auto seekWithinSection_ = syscall(q, &QueryExecutor::seekWithinSection);
+  const auto currentSeek_ = syscall(q, &QueryExecutor::currentSeek);
+  const auto endSeek_ = syscall(q, &QueryExecutor::endSeek);
+  const auto next_ = syscall(q, &QueryExecutor::next);
+  const auto lookupKeyValue_ = syscall(q, &QueryExecutor::lookupKeyValue);
+  const auto newDerivedFact_ = syscall(q, &QueryExecutor::newDerivedFact);
+  const auto resultWithPid_ = syscall(q, &QueryExecutor::resultWithPid);
+  const auto result_ = syscall(q, &QueryExecutor::result);
 
   folly::Optional<thrift::internal::SubroutineState> subState;
   Subroutine::Activation::with(sub, [&](Subroutine::Activation& activation) {
@@ -720,15 +703,15 @@ std::unique_ptr<QueryResults> executeQuery (
     }
 
     auto args = activation.args();
-    *args++ = reinterpret_cast<uint64_t>(&seek_);
-    *args++ = reinterpret_cast<uint64_t>(&seekWithinSection_);
-    *args++ = reinterpret_cast<uint64_t>(&currentSeek_);
-    *args++ = reinterpret_cast<uint64_t>(&endSeek_);
-    *args++ = reinterpret_cast<uint64_t>(&next_);
-    *args++ = reinterpret_cast<uint64_t>(&lookupKeyValue_);
-    *args++ = reinterpret_cast<uint64_t>(&result_);
-    *args++ = reinterpret_cast<uint64_t>(&resultWithPid_);
-    *args++ = reinterpret_cast<uint64_t>(&newDerivedFact_);
+    *args++ = seek_.toWord();
+    *args++ = seekWithinSection_.toWord();
+    *args++ = currentSeek_.toWord();
+    *args++ = endSeek_.toWord();
+    *args++ = next_.toWord();
+    *args++ = lookupKeyValue_.toWord();
+    *args++ = result_.toWord();
+    *args++ = resultWithPid_.toWord();
+    *args++ = newDerivedFact_.toWord();
     *args++ = 0; // unused
     *args++ = reinterpret_cast<uint64_t>(max_results);
     *args++ = reinterpret_cast<uint64_t>(max_bytes);

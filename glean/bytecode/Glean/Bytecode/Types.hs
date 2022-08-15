@@ -25,7 +25,8 @@ data Ty
   | Offsets -- ^ array of jump offsets (length + array in the insn stream)
   | DataPtr -- ^ a void pointer
   | BinaryOutputPtr -- ^ pointer to binary::Output (temporary, will be removed)
-  | Fun [Ty] -- ^ pointer to std::function (temporary, will be removed)
+  | Fun [Ty] -- ^ pointer to syscall (temporary, will be removed)
+  | Regs [Ty] -- ^ list of registers (array without length in the insn stream)
   deriving(Eq, Show)
 
 -- | Typed registers

@@ -35,7 +35,7 @@ Substitution defineUntrustedBatch(
   binary::Input input(batch);
 
   Id max_ref;
-  Renamer renamer([&](Id id, Pid type) {
+  const auto rename = syscall([&](Id id, Pid type) {
     const auto real_id = subst.subst(folly::get_default(idmap, id, id));
     auto real_type = def.typeById(real_id);
     if (real_type == type) {
@@ -74,7 +74,7 @@ Substitution defineUntrustedBatch(
 
       binary::Output out;
       uint64_t key_size;
-      predicate->typecheck(renamer, clause, out, key_size);
+      predicate->typecheck(rename, clause, out, key_size);
       const auto id =
         def.define(ty, Fact::Clause::from(out.bytes(), key_size), max_ref);
 

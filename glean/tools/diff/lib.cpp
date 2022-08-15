@@ -35,7 +35,9 @@ const char *glean_diff(Inventory *inventory, Lookup *first, Lookup *second) {
   const auto second_starting = second->startingId();
   const auto second_size = distance(second_starting, second->firstFreeId());
   Substitution subst(second_starting, second_size);
-  Substituter substituter(&subst);
+  const auto substitute = syscall([&subst](Id id, Pid) {
+    return subst.subst(id);
+  });
 
   size_t kept = 0;
   size_t added = 0;
@@ -47,7 +49,7 @@ const char *glean_diff(Inventory *inventory, Lookup *first, Lookup *second) {
     CHECK(pred != nullptr);
     binary::Output out;
     uint64_t key_size;
-    pred->substitute(substituter, ref.clause, out, key_size);
+    pred->substitute(substitute, ref.clause, out, key_size);
 
     auto id = ext.define(ref.type, Fact::Clause::from(out.bytes(), key_size));
 

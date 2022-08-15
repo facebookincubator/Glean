@@ -13,56 +13,13 @@
 #include "glean/rts/lookup.h"
 #include "glean/rts/substitution.h"
 #include "glean/rts/bytecode/subroutine.h"
+#include "glean/rts/bytecode/syscall.h"
 
 #include <vector>
 
 namespace facebook {
 namespace glean {
 namespace rts {
-
-struct Renamer {
-  template<typename F>
-  explicit Renamer(F f)
-    : rename([f = std::move(f)](uint64_t id, uint64_t pid, uint64_t *res) {
-        *res = f(Id::fromWord(id), Pid::fromWord(pid)).toWord();
-      })
-    {
-#if __cplusplus >= 201703L
-      static_assert(
-        std::is_same_v<std::invoke_result_t<F, Id, Pid>, Id>);
-#endif
-    }
-
-  Renamer(const Renamer&) = delete;
-
-  const std::function<void(uint64_t, uint64_t, uint64_t *)> rename;
-};
-
-struct Substituter {
-  explicit Substituter(const Substitution* subst)
-    : renamer([subst](Id id, Pid) { return subst->subst(id); })
-    {}
-  explicit Substituter(const Substitution *subst, size_t offset)
-    : renamer(
-        [subst,offset](Id id, Pid)
-          { return id < subst->finish() ? subst->subst(id) : id + offset; })
-    {}
-
-  Renamer renamer;
-};
-
-struct Traverser {
-  template<typename F>
-  explicit Traverser(F f)
-    : traverse([f = std::move(f)](uint64_t id, uint64_t pid) {
-        f(Id::fromWord(id), Pid::fromWord(pid));
-      })
-    {}
-
-  Traverser(const Traverser&) = delete;
-
-  const std::function<void(uint64_t, uint64_t)> traverse;
-};
 
 // NOTE: Any changes here should also be propagated to the internal.thrift
 // types and serialize and deserialize should be updated accordingly.
@@ -75,6 +32,9 @@ struct Predicate {
   Pid id;
   std::string name;
   int32_t version;
+
+  using Rename = SysCall<Id, Pid, Reg<Id>>;
+  using Descend = SysCall<Id, Pid>;
 
   /// Typechecker for clauses. It should take the following arguments:
   ///
@@ -100,31 +60,31 @@ struct Predicate {
   }
 
   void typecheck(
-      const Renamer& renamer,
+      const Rename& rename,
       Fact::Clause clause,
       binary::Output& output,
       uint64_t& key_size) const {
-    runTypecheck(*typechecker, renamer, clause, output, key_size);
+    runTypecheck(*typechecker, rename, clause, output, key_size);
   }
 
   void substitute(
-      const Substituter& substituter,
+      const Rename& rename,
       Fact::Clause clause,
       binary::Output& output,
       uint64_t& key_size) const {
     // TODO: We implement substitution via the typechecker for now but it we
     // might want to generate a more efficient subroutine just for substitution.
-    typecheck(substituter.renamer, clause, output, key_size);
+    typecheck(rename, clause, output, key_size);
   }
 
   static void runTypecheck(
       const Subroutine& sub,
-      const Renamer& renamer,
+      const Rename& rename,
       Fact::Clause clause,
       binary::Output& output,
       uint64_t& key_size) {
     sub.execute({
-      reinterpret_cast<uint64_t>(&renamer.rename),
+      rename.toWord(),
       reinterpret_cast<uint64_t>(clause.data),
       reinterpret_cast<uint64_t>(clause.data + clause.key_size),
       reinterpret_cast<uint64_t>(clause.data + clause.size()),
@@ -133,17 +93,17 @@ struct Predicate {
   }
 
   void traverse(
-      const Traverser& handler,
+      const Descend& descend,
       Fact::Clause clause) const {
-    runTraverse(*traverser, handler, clause);
+    runTraverse(*traverser, descend, clause);
   }
 
   static void runTraverse(
       const Subroutine& sub,
-      const Traverser& handler,
+      const Descend& descend,
       Fact::Clause clause) {
     sub.execute({
-      reinterpret_cast<uint64_t>(&handler.traverse),
+      descend.toWord(),
       reinterpret_cast<uint64_t>(clause.data),
       reinterpret_cast<uint64_t>(clause.data + clause.key_size),
       reinterpret_cast<uint64_t>(clause.data + clause.size())});
