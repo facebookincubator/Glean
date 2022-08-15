@@ -5,40 +5,40 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
-class GSCodemarkupRustRustEntityLocation(GleanSchemaPredicate):
+class CodemarkupRustRustEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.rust.RustEntityLocation.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupRustRustEntityLocation":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupRustRustEntityLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupRustRustResolveLocation(GleanSchemaPredicate):
+class CodemarkupRustRustResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.rust.RustResolveLocation.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupRustRustResolveLocation":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupRustRustResolveLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupRustRustFileEntityXRefLocations(GleanSchemaPredicate):
+class CodemarkupRustRustFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.rust.RustFileEntityXRefLocations.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupRustRustFileEntityXRefLocations":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupRustRustFileEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupRustRustEntityUses(GleanSchemaPredicate):
+class CodemarkupRustRustEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.rust.RustEntityUses.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupRustRustEntityUses":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupRustRustEntityUses":
     raise Exception("this function can only be called from @angle_query")
 
 

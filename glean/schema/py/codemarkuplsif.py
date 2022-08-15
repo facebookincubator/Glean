@@ -5,58 +5,58 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
-class GSCodemarkupLsifLsifEntityLocation(GleanSchemaPredicate):
+class CodemarkupLsifLsifEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.lsif.LsifEntityLocation.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupLsifLsifEntityLocation":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupLsifLsifEntityLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupLsifLsifResolveLocation(GleanSchemaPredicate):
+class CodemarkupLsifLsifResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.lsif.LsifResolveLocation.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupLsifLsifResolveLocation":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupLsifLsifResolveLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupLsifLsifEntityUses(GleanSchemaPredicate):
+class CodemarkupLsifLsifEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.lsif.LsifEntityUses.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupLsifLsifEntityUses":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupLsifLsifEntityUses":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupLsifLsifFileEntityXRefLocations(GleanSchemaPredicate):
+class CodemarkupLsifLsifFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.lsif.LsifFileEntityXRefLocations.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupLsifLsifFileEntityXRefLocations":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupLsifLsifFileEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupLsifEntityInfo(GleanSchemaPredicate):
+class CodemarkupLsifEntityInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.lsif.EntityInfo.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupLsifEntityInfo":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupLsifEntityInfo":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupLsifLsifKindToKind(GleanSchemaPredicate):
+class CodemarkupLsifLsifKindToKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.lsif.LsifKindToKind.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupLsifLsifKindToKind":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupLsifLsifKindToKind":
     raise Exception("this function can only be called from @angle_query")
 
 

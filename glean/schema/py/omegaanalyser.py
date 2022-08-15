@@ -5,130 +5,130 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
-class GSOmegaanalyserMethod(GleanSchemaPredicate):
+class OmegaanalyserMethod(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"omegaanalyser.Method.4 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSOmegaanalyserMethod":
+  def angle_query(*, name: str) -> "OmegaanalyserMethod":
     raise Exception("this function can only be called from @angle_query")
 
-class GSOmegaanalyserPolicyOncall(GleanSchemaPredicate):
+class OmegaanalyserPolicyOncall(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"omegaanalyser.PolicyOncall.4 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSOmegaanalyserPolicyOncall":
+  def angle_query(*, name: Tuple[()]) -> "OmegaanalyserPolicyOncall":
     raise Exception("this function can only be called from @angle_query")
 
-class GSOmegaanalyserOmegaEndpoint(GleanSchemaPredicate):
+class OmegaanalyserOmegaEndpoint(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"omegaanalyser.OmegaEndpoint.4 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSOmegaanalyserOmegaEndpoint":
+  def angle_query(*, name: str) -> "OmegaanalyserOmegaEndpoint":
     raise Exception("this function can only be called from @angle_query")
 
-class GSOmegaanalyserDependencyPath(GleanSchemaPredicate):
+class OmegaanalyserDependencyPath(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"omegaanalyser.DependencyPath.4 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSOmegaanalyserDependencyPath":
+  def angle_query(*, name: Tuple[()]) -> "OmegaanalyserDependencyPath":
     raise Exception("this function can only be called from @angle_query")
 
-class GSOmegaanalyserClass_(GleanSchemaPredicate):
+class OmegaanalyserClass_(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"omegaanalyser.Class_.4 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSOmegaanalyserClass_":
+  def angle_query(*, name: str) -> "OmegaanalyserClass_":
     raise Exception("this function can only be called from @angle_query")
 
-class GSOmegaanalyserClassStaticMethodReferences(GleanSchemaPredicate):
+class OmegaanalyserClassStaticMethodReferences(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"omegaanalyser.ClassStaticMethodReferences.4 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSOmegaanalyserClassStaticMethodReferences":
+  def angle_query(*, name: Tuple[()]) -> "OmegaanalyserClassStaticMethodReferences":
     raise Exception("this function can only be called from @angle_query")
 
-class GSOmegaanalyserOmegaPolicy(GleanSchemaPredicate):
+class OmegaanalyserOmegaPolicy(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"omegaanalyser.OmegaPolicy.4 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSOmegaanalyserOmegaPolicy":
+  def angle_query(*, name: str) -> "OmegaanalyserOmegaPolicy":
     raise Exception("this function can only be called from @angle_query")
 
-class GSOmegaanalyserEndpointOncall(GleanSchemaPredicate):
+class OmegaanalyserEndpointOncall(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"omegaanalyser.EndpointOncall.4 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSOmegaanalyserEndpointOncall":
+  def angle_query(*, name: Tuple[()]) -> "OmegaanalyserEndpointOncall":
     raise Exception("this function can only be called from @angle_query")
 
-class GSOmegaanalyserTargetNodeLocations(GleanSchemaPredicate):
+class OmegaanalyserTargetNodeLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"omegaanalyser.TargetNodeLocations.4 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSOmegaanalyserTargetNodeLocations":
+  def angle_query(*, name: Tuple[()]) -> "OmegaanalyserTargetNodeLocations":
     raise Exception("this function can only be called from @angle_query")
 
-class GSOmegaanalyserDependencyList(GleanSchemaPredicate):
+class OmegaanalyserDependencyList(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"omegaanalyser.DependencyList.4 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSOmegaanalyserDependencyList":
+  def angle_query(*, name: Tuple[()]) -> "OmegaanalyserDependencyList":
     raise Exception("this function can only be called from @angle_query")
 
-class GSOmegaanalyserFunction_(GleanSchemaPredicate):
+class OmegaanalyserFunction_(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"omegaanalyser.Function_.4 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSOmegaanalyserFunction_":
+  def angle_query(*, name: str) -> "OmegaanalyserFunction_":
     raise Exception("this function can only be called from @angle_query")
 
-class GSOmegaanalyserOncallName(GleanSchemaPredicate):
+class OmegaanalyserOncallName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"omegaanalyser.OncallName.4 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSOmegaanalyserOncallName":
+  def angle_query(*, name: str) -> "OmegaanalyserOncallName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSOmegaanalyserConfig(GleanSchemaPredicate):
+class OmegaanalyserConfig(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"omegaanalyser.Config.4 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSOmegaanalyserConfig":
+  def angle_query(*, name: str) -> "OmegaanalyserConfig":
     raise Exception("this function can only be called from @angle_query")
 
-class GSOmegaanalyserDependencyPathByCoreNode(GleanSchemaPredicate):
+class OmegaanalyserDependencyPathByCoreNode(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"omegaanalyser.DependencyPathByCoreNode.4 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSOmegaanalyserDependencyPathByCoreNode":
+  def angle_query(*, name: Tuple[()]) -> "OmegaanalyserDependencyPathByCoreNode":
     raise Exception("this function can only be called from @angle_query")
 
 

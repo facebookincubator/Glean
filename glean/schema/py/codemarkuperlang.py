@@ -5,58 +5,58 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
-class GSCodemarkupErlangErlangEntityInfo(GleanSchemaPredicate):
+class CodemarkupErlangErlangEntityInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.erlang.ErlangEntityInfo.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupErlangErlangEntityInfo":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupErlangErlangEntityInfo":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupErlangErlangEntityLocation(GleanSchemaPredicate):
+class CodemarkupErlangErlangEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.erlang.ErlangEntityLocation.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupErlangErlangEntityLocation":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupErlangErlangEntityLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupErlangErlangResolveLocation(GleanSchemaPredicate):
+class CodemarkupErlangErlangResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.erlang.ErlangResolveLocation.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupErlangErlangResolveLocation":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupErlangErlangResolveLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupErlangErlangFileEntityXRefLocations(GleanSchemaPredicate):
+class CodemarkupErlangErlangFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.erlang.ErlangFileEntityXRefLocations.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupErlangErlangFileEntityXRefLocations":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupErlangErlangFileEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupErlangErlangEntityUses(GleanSchemaPredicate):
+class CodemarkupErlangErlangEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.erlang.ErlangEntityUses.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupErlangErlangEntityUses":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupErlangErlangEntityUses":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupErlangErlangEntityKind(GleanSchemaPredicate):
+class CodemarkupErlangErlangEntityKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.erlang.ErlangEntityKind.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupErlangErlangEntityKind":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupErlangErlangEntityKind":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -5,40 +5,40 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
-class GSDynObserverIdentifier(GleanSchemaPredicate):
+class DynObserverIdentifier(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"dyn.ObserverIdentifier.6 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSDynObserverIdentifier":
+  def angle_query(*, name: str) -> "DynObserverIdentifier":
     raise Exception("this function can only be called from @angle_query")
 
-class GSDynEntityDynamicReference(GleanSchemaPredicate):
+class DynEntityDynamicReference(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"dyn.EntityDynamicReference.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSDynEntityDynamicReference":
+  def angle_query(*, name: Tuple[()]) -> "DynEntityDynamicReference":
     raise Exception("this function can only be called from @angle_query")
 
-class GSDynEntityUsage(GleanSchemaPredicate):
+class DynEntityUsage(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"dyn.EntityUsage.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSDynEntityUsage":
+  def angle_query(*, name: Tuple[()]) -> "DynEntityUsage":
     raise Exception("this function can only be called from @angle_query")
 
-class GSDynEnvironment(GleanSchemaPredicate):
+class DynEnvironment(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"dyn.Environment.6 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSDynEnvironment":
+  def angle_query(*, name: str) -> "DynEnvironment":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -5,22 +5,22 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
-class GSCodeEntityLanguageLSIF(GleanSchemaPredicate):
+class CodeEntityLanguageLSIF(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"code.EntityLanguageLSIF.24 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodeEntityLanguageLSIF":
+  def angle_query(*, name: Tuple[()]) -> "CodeEntityLanguageLSIF":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodeEntityLanguage(GleanSchemaPredicate):
+class CodeEntityLanguage(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"code.EntityLanguage.24 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodeEntityLanguage":
+  def angle_query(*, name: Tuple[()]) -> "CodeEntityLanguage":
     raise Exception("this function can only be called from @angle_query")
 
 

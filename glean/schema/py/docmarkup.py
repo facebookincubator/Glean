@@ -5,58 +5,58 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
-class GSDocmarkupDocAttr(GleanSchemaPredicate):
+class DocmarkupDocAttr(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"docmarkup.DocAttr.14 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSDocmarkupDocAttr":
+  def angle_query(*, name: Tuple[()]) -> "DocmarkupDocAttr":
     raise Exception("this function can only be called from @angle_query")
 
-class GSDocmarkupEntityComments(GleanSchemaPredicate):
+class DocmarkupEntityComments(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"docmarkup.EntityComments.14 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSDocmarkupEntityComments":
+  def angle_query(*, name: Tuple[()]) -> "DocmarkupEntityComments":
     raise Exception("this function can only be called from @angle_query")
 
-class GSDocmarkupEntityDocAttr(GleanSchemaPredicate):
+class DocmarkupEntityDocAttr(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"docmarkup.EntityDocAttr.14 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSDocmarkupEntityDocAttr":
+  def angle_query(*, name: str) -> "DocmarkupEntityDocAttr":
     raise Exception("this function can only be called from @angle_query")
 
-class GSDocmarkupEntityByDocAttrKey(GleanSchemaPredicate):
+class DocmarkupEntityByDocAttrKey(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"docmarkup.EntityByDocAttrKey.14 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSDocmarkupEntityByDocAttrKey":
+  def angle_query(*, name: Tuple[()]) -> "DocmarkupEntityByDocAttrKey":
     raise Exception("this function can only be called from @angle_query")
 
-class GSDocmarkupEntityAnnotations(GleanSchemaPredicate):
+class DocmarkupEntityAnnotations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"docmarkup.EntityAnnotations.14 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSDocmarkupEntityAnnotations":
+  def angle_query(*, name: Tuple[()]) -> "DocmarkupEntityAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
-class GSDocmarkupDocAttrKey(GleanSchemaPredicate):
+class DocmarkupDocAttrKey(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"docmarkup.DocAttrKey.14 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSDocmarkupDocAttrKey":
+  def angle_query(*, name: str) -> "DocmarkupDocAttrKey":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -5,265 +5,274 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
-class GSSearchCodeSearchByLowerCaseScope(GleanSchemaPredicate):
+class SearchCodeCxxSearchByNameAndScopeFact(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"search.code.CxxSearchByNameAndScopeFact.16 { { } }"
+
+  @staticmethod
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeCxxSearchByNameAndScopeFact":
+    raise Exception("this function can only be called from @angle_query")
+
+class SearchCodeSearchByLowerCaseScope(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.SearchByLowerCaseScope.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeSearchByLowerCaseScope":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeSearchByLowerCaseScope":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodePythonSearchByLowerCaseName(GleanSchemaPredicate):
+class SearchCodePythonSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.PythonSearchByLowerCaseName.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodePythonSearchByLowerCaseName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodePythonSearchByLowerCaseName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeErlangSearchByName(GleanSchemaPredicate):
+class SearchCodeErlangSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.ErlangSearchByName.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeErlangSearchByName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeErlangSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeHsSearchByName(GleanSchemaPredicate):
+class SearchCodeHsSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.HsSearchByName.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeHsSearchByName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeHsSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeHackSearchByLowerCaseScope(GleanSchemaPredicate):
+class SearchCodeHackSearchByLowerCaseScope(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.HackSearchByLowerCaseScope.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeHackSearchByLowerCaseScope":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeHackSearchByLowerCaseScope":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeCxxSearchByName(GleanSchemaPredicate):
+class SearchCodeCxxSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.CxxSearchByName.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeCxxSearchByName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeCxxSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeSearchByName(GleanSchemaPredicate):
+class SearchCodeSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.SearchByName.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeSearchByName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeHackSearchByName(GleanSchemaPredicate):
+class SearchCodeHackSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.HackSearchByName.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeHackSearchByName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeHackSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeHackSearchByScopeWithName(GleanSchemaPredicate):
+class SearchCodeHackSearchByScopeWithName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.HackSearchByScopeWithName.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeHackSearchByScopeWithName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeHackSearchByScopeWithName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeCxxSearchByLowerCaseScope(GleanSchemaPredicate):
+class SearchCodeCxxSearchByLowerCaseScope(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.CxxSearchByLowerCaseScope.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeCxxSearchByLowerCaseScope":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeCxxSearchByLowerCaseScope":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodePythonSearchByLocalNameFact(GleanSchemaPredicate):
+class SearchCodePythonSearchByLocalNameFact(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.PythonSearchByLocalNameFact.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodePythonSearchByLocalNameFact":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodePythonSearchByLocalNameFact":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeHackSearchByLowerCaseName(GleanSchemaPredicate):
+class SearchCodeHackSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.HackSearchByLowerCaseName.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeHackSearchByLowerCaseName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeHackSearchByLowerCaseName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeLsifSearchByLowerCaseName(GleanSchemaPredicate):
+class SearchCodeLsifSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.LsifSearchByLowerCaseName.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeLsifSearchByLowerCaseName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeLsifSearchByLowerCaseName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeRustSearchByLowerCaseName(GleanSchemaPredicate):
+class SearchCodeRustSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.RustSearchByLowerCaseName.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeRustSearchByLowerCaseName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeRustSearchByLowerCaseName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeCxxSearchByLowerCaseName(GleanSchemaPredicate):
+class SearchCodeCxxSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.CxxSearchByLowerCaseName.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeCxxSearchByLowerCaseName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeCxxSearchByLowerCaseName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodePythonSearchByNameFact(GleanSchemaPredicate):
+class SearchCodePythonSearchByNameFact(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.PythonSearchByNameFact.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodePythonSearchByNameFact":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodePythonSearchByNameFact":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeHsSearchByLowerCaseName(GleanSchemaPredicate):
+class SearchCodeHsSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.HsSearchByLowerCaseName.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeHsSearchByLowerCaseName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeHsSearchByLowerCaseName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeErlangSearchByLowerCaseName(GleanSchemaPredicate):
+class SearchCodeErlangSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.ErlangSearchByLowerCaseName.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeErlangSearchByLowerCaseName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeErlangSearchByLowerCaseName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeSearchByScope(GleanSchemaPredicate):
+class SearchCodeSearchByScope(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.SearchByScope.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeSearchByScope":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeSearchByScope":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeFlowSearchByLowerCaseName(GleanSchemaPredicate):
+class SearchCodeFlowSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.FlowSearchByLowerCaseName.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeFlowSearchByLowerCaseName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeFlowSearchByLowerCaseName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeFlowSearchByName(GleanSchemaPredicate):
+class SearchCodeFlowSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.FlowSearchByName.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeFlowSearchByName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeFlowSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeRustSearchByName(GleanSchemaPredicate):
+class SearchCodeRustSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.RustSearchByName.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeRustSearchByName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeRustSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeLsifSearchByName(GleanSchemaPredicate):
+class SearchCodeLsifSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.LsifSearchByName.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeLsifSearchByName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeLsifSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeSearchByNameAndLanguage(GleanSchemaPredicate):
+class SearchCodeSearchByNameAndLanguage(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.SearchByNameAndLanguage.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeSearchByNameAndLanguage":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeSearchByNameAndLanguage":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeCxxSearchByScope(GleanSchemaPredicate):
+class SearchCodeCxxSearchByScope(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.CxxSearchByScope.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeCxxSearchByScope":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeCxxSearchByScope":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeSearchByLowerCaseNameAndLanguage(GleanSchemaPredicate):
+class SearchCodeSearchByLowerCaseNameAndLanguage(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.SearchByLowerCaseNameAndLanguage.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeSearchByLowerCaseNameAndLanguage":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeSearchByLowerCaseNameAndLanguage":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeSearchByLowerCaseName(GleanSchemaPredicate):
+class SearchCodeSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.SearchByLowerCaseName.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeSearchByLowerCaseName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeSearchByLowerCaseName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodeHackSearchByScope(GleanSchemaPredicate):
+class SearchCodeHackSearchByScope(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.HackSearchByScope.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodeHackSearchByScope":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodeHackSearchByScope":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCodePythonSearchByName(GleanSchemaPredicate):
+class SearchCodePythonSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.code.PythonSearchByName.16 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCodePythonSearchByName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCodePythonSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
 

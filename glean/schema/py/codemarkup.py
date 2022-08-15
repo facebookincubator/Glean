@@ -5,175 +5,175 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
-class GSCodemarkupFileEntityKinds(GleanSchemaPredicate):
+class CodemarkupFileEntityKinds(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.FileEntityKinds.30 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupFileEntityKinds":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupFileEntityKinds":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupFileEntityXRefKinds(GleanSchemaPredicate):
+class CodemarkupFileEntityXRefKinds(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.FileEntityXRefKinds.30 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupFileEntityXRefKinds":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupFileEntityXRefKinds":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupEntityAnnotations(GleanSchemaPredicate):
+class CodemarkupEntityAnnotations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.EntityAnnotations.30 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSCodemarkupEntityAnnotations":
+  def angle_query(*, name: str) -> "CodemarkupEntityAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupSearchRelatedEntities(GleanSchemaPredicate):
+class CodemarkupSearchRelatedEntities(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.SearchRelatedEntities.30 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupSearchRelatedEntities":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupSearchRelatedEntities":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupEntityVisibility(GleanSchemaPredicate):
+class CodemarkupEntityVisibility(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.EntityVisibility.30 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSCodemarkupEntityVisibility":
+  def angle_query(*, name: str) -> "CodemarkupEntityVisibility":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupFileEntityInfos(GleanSchemaPredicate):
+class CodemarkupFileEntityInfos(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.FileEntityInfos.30 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupFileEntityInfos":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupFileEntityInfos":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupFileEntityXRefInfos(GleanSchemaPredicate):
+class CodemarkupFileEntityXRefInfos(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.FileEntityXRefInfos.30 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupFileEntityXRefInfos":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupFileEntityXRefInfos":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupEntityLocation(GleanSchemaPredicate):
+class CodemarkupEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.EntityLocation.30 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupEntityLocation":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupEntityLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupExtendsChildEntity(GleanSchemaPredicate):
+class CodemarkupExtendsChildEntity(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.ExtendsChildEntity.30 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupExtendsChildEntity":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupExtendsChildEntity":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupEntityInfo(GleanSchemaPredicate):
+class CodemarkupEntityInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.EntityInfo.30 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupEntityInfo":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupEntityInfo":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupExtendsParentEntity(GleanSchemaPredicate):
+class CodemarkupExtendsParentEntity(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.ExtendsParentEntity.30 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupExtendsParentEntity":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupExtendsParentEntity":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupContainsChildEntity(GleanSchemaPredicate):
+class CodemarkupContainsChildEntity(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.ContainsChildEntity.30 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupContainsChildEntity":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupContainsChildEntity":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupFileEntityXRefLocations(GleanSchemaPredicate):
+class CodemarkupFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.FileEntityXRefLocations.30 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupFileEntityXRefLocations":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupFileEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupFileEntityXRefSpans(GleanSchemaPredicate):
+class CodemarkupFileEntityXRefSpans(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.FileEntityXRefSpans.30 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupFileEntityXRefSpans":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupFileEntityXRefSpans":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupEntityUses(GleanSchemaPredicate):
+class CodemarkupEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.EntityUses.30 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupEntityUses":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupEntityUses":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupFileEntityLocations(GleanSchemaPredicate):
+class CodemarkupFileEntityLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.FileEntityLocations.30 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupFileEntityLocations":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupFileEntityLocations":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupEntityReferences(GleanSchemaPredicate):
+class CodemarkupEntityReferences(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.EntityReferences.30 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupEntityReferences":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupEntityReferences":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupEntityKind(GleanSchemaPredicate):
+class CodemarkupEntityKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.EntityKind.30 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupEntityKind":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupEntityKind":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupResolveLocation(GleanSchemaPredicate):
+class CodemarkupResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.ResolveLocation.30 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupResolveLocation":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupResolveLocation":
     raise Exception("this function can only be called from @angle_query")
 
 

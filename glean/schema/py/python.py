@@ -5,454 +5,454 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
-class GSPythonNameLowerCase(GleanSchemaPredicate):
+class PythonNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.NameLowerCase.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonNameLowerCase":
+  def angle_query(*, name: Tuple[()]) -> "PythonNameLowerCase":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonLocalName(GleanSchemaPredicate):
+class PythonLocalName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.LocalName.3 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPythonLocalName":
+  def angle_query(*, name: str) -> "PythonLocalName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonIsTopLevelDefinition(GleanSchemaPredicate):
+class PythonIsTopLevelDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.IsTopLevelDefinition.3 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPythonIsTopLevelDefinition":
+  def angle_query(*, name: str) -> "PythonIsTopLevelDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonClassDefinition(GleanSchemaPredicate):
+class PythonClassDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.ClassDefinition.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonClassDefinition":
+  def angle_query(*, name: Tuple[()]) -> "PythonClassDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonNonImportDeclaration(GleanSchemaPredicate):
+class PythonNonImportDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.NonImportDeclaration.2 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPythonNonImportDeclaration":
+  def angle_query(*, name: str) -> "PythonNonImportDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonDeclarationReference(GleanSchemaPredicate):
+class PythonDeclarationReference(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.DeclarationReference.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonDeclarationReference":
+  def angle_query(*, name: Tuple[()]) -> "PythonDeclarationReference":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonDefinitionsByFile(GleanSchemaPredicate):
+class PythonDefinitionsByFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.DefinitionsByFile.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonDefinitionsByFile":
+  def angle_query(*, name: Tuple[()]) -> "PythonDefinitionsByFile":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonModule(GleanSchemaPredicate):
+class PythonModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.Module.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonModule":
+  def angle_query(*, name: Tuple[()]) -> "PythonModule":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonDefinitionLocation(GleanSchemaPredicate):
+class PythonDefinitionLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.DefinitionLocation.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonDefinitionLocation":
+  def angle_query(*, name: Tuple[()]) -> "PythonDefinitionLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonClassBySName(GleanSchemaPredicate):
+class PythonClassBySName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.ClassBySName.2 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPythonClassBySName":
+  def angle_query(*, name: str) -> "PythonClassBySName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonDeclarationUses(GleanSchemaPredicate):
+class PythonDeclarationUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.DeclarationUses.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonDeclarationUses":
+  def angle_query(*, name: Tuple[()]) -> "PythonDeclarationUses":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonImportStatement(GleanSchemaPredicate):
+class PythonImportStatement(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.ImportStatement.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonImportStatement":
+  def angle_query(*, name: Tuple[()]) -> "PythonImportStatement":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonModuleDefinition(GleanSchemaPredicate):
+class PythonModuleDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.ModuleDefinition.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonModuleDefinition":
+  def angle_query(*, name: Tuple[()]) -> "PythonModuleDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonDeclarationBySName(GleanSchemaPredicate):
+class PythonDeclarationBySName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.DeclarationBySName.2 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPythonDeclarationBySName":
+  def angle_query(*, name: str) -> "PythonDeclarationBySName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonDeclarationWithSName(GleanSchemaPredicate):
+class PythonDeclarationWithSName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.DeclarationWithSName.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonDeclarationWithSName":
+  def angle_query(*, name: Tuple[()]) -> "PythonDeclarationWithSName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonModuleBySName(GleanSchemaPredicate):
+class PythonModuleBySName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.ModuleBySName.2 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPythonModuleBySName":
+  def angle_query(*, name: str) -> "PythonModuleBySName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonImportStarStatement(GleanSchemaPredicate):
+class PythonImportStarStatement(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.ImportStarStatement.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonImportStarStatement":
+  def angle_query(*, name: Tuple[()]) -> "PythonImportStarStatement":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonDeclarationLocation(GleanSchemaPredicate):
+class PythonDeclarationLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.DeclarationLocation.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonDeclarationLocation":
+  def angle_query(*, name: Tuple[()]) -> "PythonDeclarationLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonClassDeclaration(GleanSchemaPredicate):
+class PythonClassDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.ClassDeclaration.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonClassDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "PythonClassDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonDeclarationToName(GleanSchemaPredicate):
+class PythonDeclarationToName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.DeclarationToName.2 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPythonDeclarationToName":
+  def angle_query(*, name: str) -> "PythonDeclarationToName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonDeclarationDefinition(GleanSchemaPredicate):
+class PythonDeclarationDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.DeclarationDefinition.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonDeclarationDefinition":
+  def angle_query(*, name: Tuple[()]) -> "PythonDeclarationDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonDeclarationByName(GleanSchemaPredicate):
+class PythonDeclarationByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.DeclarationByName.2 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPythonDeclarationByName":
+  def angle_query(*, name: str) -> "PythonDeclarationByName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonName(GleanSchemaPredicate):
+class PythonName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.Name.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPythonName":
+  def angle_query(*, name: str) -> "PythonName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonImportStatementByName(GleanSchemaPredicate):
+class PythonImportStatementByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.ImportStatementByName.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonImportStatementByName":
+  def angle_query(*, name: Tuple[()]) -> "PythonImportStatementByName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonDocstringContent(GleanSchemaPredicate):
+class PythonDocstringContent(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.DocstringContent.2 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPythonDocstringContent":
+  def angle_query(*, name: str) -> "PythonDocstringContent":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonVariableDefinition(GleanSchemaPredicate):
+class PythonVariableDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.VariableDefinition.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonVariableDefinition":
+  def angle_query(*, name: Tuple[()]) -> "PythonVariableDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonType(GleanSchemaPredicate):
+class PythonType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.Type.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPythonType":
+  def angle_query(*, name: str) -> "PythonType":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonDirectXRefsByFile(GleanSchemaPredicate):
+class PythonDirectXRefsByFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.DirectXRefsByFile.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonDirectXRefsByFile":
+  def angle_query(*, name: Tuple[()]) -> "PythonDirectXRefsByFile":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonVariableBySName(GleanSchemaPredicate):
+class PythonVariableBySName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.VariableBySName.2 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPythonVariableBySName":
+  def angle_query(*, name: str) -> "PythonVariableBySName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonDeclarationWithLocalName(GleanSchemaPredicate):
+class PythonDeclarationWithLocalName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.DeclarationWithLocalName.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonDeclarationWithLocalName":
+  def angle_query(*, name: Tuple[()]) -> "PythonDeclarationWithLocalName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonFileDirectXRefs(GleanSchemaPredicate):
+class PythonFileDirectXRefs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.FileDirectXRefs.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonFileDirectXRefs":
+  def angle_query(*, name: Tuple[()]) -> "PythonFileDirectXRefs":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonFunctionDeclaration(GleanSchemaPredicate):
+class PythonFunctionDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.FunctionDeclaration.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonFunctionDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "PythonFunctionDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonSNameToName(GleanSchemaPredicate):
+class PythonSNameToName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.SNameToName.2 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPythonSNameToName":
+  def angle_query(*, name: str) -> "PythonSNameToName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonNameToSName(GleanSchemaPredicate):
+class PythonNameToSName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.NameToSName.2 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPythonNameToSName":
+  def angle_query(*, name: str) -> "PythonNameToSName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonImportStatementByAsName(GleanSchemaPredicate):
+class PythonImportStatementByAsName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.ImportStatementByAsName.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonImportStatementByAsName":
+  def angle_query(*, name: Tuple[()]) -> "PythonImportStatementByAsName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonFunctionDefinition(GleanSchemaPredicate):
+class PythonFunctionDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.FunctionDefinition.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonFunctionDefinition":
+  def angle_query(*, name: Tuple[()]) -> "PythonFunctionDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonImportStarsByFile(GleanSchemaPredicate):
+class PythonImportStarsByFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.ImportStarsByFile.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonImportStarsByFile":
+  def angle_query(*, name: Tuple[()]) -> "PythonImportStarsByFile":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonIsTopLevelDeclaration(GleanSchemaPredicate):
+class PythonIsTopLevelDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.IsTopLevelDeclaration.3 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPythonIsTopLevelDeclaration":
+  def angle_query(*, name: str) -> "PythonIsTopLevelDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonSearchByLocalName(GleanSchemaPredicate):
+class PythonSearchByLocalName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.SearchByLocalName.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonSearchByLocalName":
+  def angle_query(*, name: Tuple[()]) -> "PythonSearchByLocalName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonDeclarationsByFile(GleanSchemaPredicate):
+class PythonDeclarationsByFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.DeclarationsByFile.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonDeclarationsByFile":
+  def angle_query(*, name: Tuple[()]) -> "PythonDeclarationsByFile":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonXRefsViaNameByFile(GleanSchemaPredicate):
+class PythonXRefsViaNameByFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.XRefsViaNameByFile.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonXRefsViaNameByFile":
+  def angle_query(*, name: Tuple[()]) -> "PythonXRefsViaNameByFile":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonDeclarationWithName(GleanSchemaPredicate):
+class PythonDeclarationWithName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.DeclarationWithName.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonDeclarationWithName":
+  def angle_query(*, name: Tuple[()]) -> "PythonDeclarationWithName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonVariableDeclaration(GleanSchemaPredicate):
+class PythonVariableDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.VariableDeclaration.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonVariableDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "PythonVariableDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonFunctionBySName(GleanSchemaPredicate):
+class PythonFunctionBySName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.FunctionBySName.2 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPythonFunctionBySName":
+  def angle_query(*, name: str) -> "PythonFunctionBySName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonImportStarLocation(GleanSchemaPredicate):
+class PythonImportStarLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.ImportStarLocation.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonImportStarLocation":
+  def angle_query(*, name: Tuple[()]) -> "PythonImportStarLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonImportStatementByAsSName(GleanSchemaPredicate):
+class PythonImportStatementByAsSName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.ImportStatementByAsSName.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonImportStatementByAsSName":
+  def angle_query(*, name: Tuple[()]) -> "PythonImportStatementByAsSName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonDefinitionDeclaration(GleanSchemaPredicate):
+class PythonDefinitionDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.DefinitionDeclaration.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonDefinitionDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "PythonDefinitionDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonContainingTopLevelDeclaration(GleanSchemaPredicate):
+class PythonContainingTopLevelDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.ContainingTopLevelDeclaration.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonContainingTopLevelDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "PythonContainingTopLevelDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonSName(GleanSchemaPredicate):
+class PythonSName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.SName.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonSName":
+  def angle_query(*, name: Tuple[()]) -> "PythonSName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPythonLocalNameLowerCase(GleanSchemaPredicate):
+class PythonLocalNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"python.LocalNameLowerCase.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPythonLocalNameLowerCase":
+  def angle_query(*, name: Tuple[()]) -> "PythonLocalNameLowerCase":
     raise Exception("this function can only be called from @angle_query")
 
 

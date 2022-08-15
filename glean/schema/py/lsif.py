@@ -5,337 +5,337 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
-class GSLsifRange(GleanSchemaPredicate):
+class LsifRange(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.Range.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifRange":
+  def angle_query(*, name: Tuple[()]) -> "LsifRange":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifMonikerSymbolKind(GleanSchemaPredicate):
+class LsifMonikerSymbolKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.MonikerSymbolKind.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifMonikerSymbolKind":
+  def angle_query(*, name: Tuple[()]) -> "LsifMonikerSymbolKind":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifName(GleanSchemaPredicate):
+class LsifName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.Name.2 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSLsifName":
+  def angle_query(*, name: str) -> "LsifName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifDocument(GleanSchemaPredicate):
+class LsifDocument(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.Document.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifDocument":
+  def angle_query(*, name: Tuple[()]) -> "LsifDocument":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifToSrcRange(GleanSchemaPredicate):
+class LsifToSrcRange(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.ToSrcRange.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifToSrcRange":
+  def angle_query(*, name: Tuple[()]) -> "LsifToSrcRange":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifPackageInformation(GleanSchemaPredicate):
+class LsifPackageInformation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.PackageInformation.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifPackageInformation":
+  def angle_query(*, name: Tuple[()]) -> "LsifPackageInformation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifDefinition(GleanSchemaPredicate):
+class LsifDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.Definition.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifDefinition":
+  def angle_query(*, name: Tuple[()]) -> "LsifDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifProject(GleanSchemaPredicate):
+class LsifProject(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.Project.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifProject":
+  def angle_query(*, name: Tuple[()]) -> "LsifProject":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifDefinitionKind(GleanSchemaPredicate):
+class LsifDefinitionKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.DefinitionKind.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifDefinitionKind":
+  def angle_query(*, name: Tuple[()]) -> "LsifDefinitionKind":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifSearchByMoniker(GleanSchemaPredicate):
+class LsifSearchByMoniker(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.SearchByMoniker.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifSearchByMoniker":
+  def angle_query(*, name: Tuple[()]) -> "LsifSearchByMoniker":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifDefinitionMoniker(GleanSchemaPredicate):
+class LsifDefinitionMoniker(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.DefinitionMoniker.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifDefinitionMoniker":
+  def angle_query(*, name: Tuple[()]) -> "LsifDefinitionMoniker":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifMonikerScheme(GleanSchemaPredicate):
+class LsifMonikerScheme(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.MonikerScheme.2 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSLsifMonikerScheme":
+  def angle_query(*, name: str) -> "LsifMonikerScheme":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifMonikerId(GleanSchemaPredicate):
+class LsifMonikerId(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.MonikerId.2 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSLsifMonikerId":
+  def angle_query(*, name: str) -> "LsifMonikerId":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifHoverText(GleanSchemaPredicate):
+class LsifHoverText(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.HoverText.2 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSLsifHoverText":
+  def angle_query(*, name: str) -> "LsifHoverText":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifReference(GleanSchemaPredicate):
+class LsifReference(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.Reference.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifReference":
+  def angle_query(*, name: Tuple[()]) -> "LsifReference":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifSearchByExactLocation(GleanSchemaPredicate):
+class LsifSearchByExactLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.SearchByExactLocation.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifSearchByExactLocation":
+  def angle_query(*, name: Tuple[()]) -> "LsifSearchByExactLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifSearchNonLocalByLocation(GleanSchemaPredicate):
+class LsifSearchNonLocalByLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.SearchNonLocalByLocation.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifSearchNonLocalByLocation":
+  def angle_query(*, name: Tuple[()]) -> "LsifSearchNonLocalByLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifNameDefinition(GleanSchemaPredicate):
+class LsifNameDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.NameDefinition.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifNameDefinition":
+  def angle_query(*, name: Tuple[()]) -> "LsifNameDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifProjectDocument(GleanSchemaPredicate):
+class LsifProjectDocument(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.ProjectDocument.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifProjectDocument":
+  def angle_query(*, name: Tuple[()]) -> "LsifProjectDocument":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifSearchByName(GleanSchemaPredicate):
+class LsifSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.SearchByName.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifSearchByName":
+  def angle_query(*, name: Tuple[()]) -> "LsifSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifResolveLocation(GleanSchemaPredicate):
+class LsifResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.ResolveLocation.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifResolveLocation":
+  def angle_query(*, name: Tuple[()]) -> "LsifResolveLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifFileEntityXRefLocation(GleanSchemaPredicate):
+class LsifFileEntityXRefLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.FileEntityXRefLocation.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifFileEntityXRefLocation":
+  def angle_query(*, name: Tuple[()]) -> "LsifFileEntityXRefLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifDefinitionLocation(GleanSchemaPredicate):
+class LsifDefinitionLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.DefinitionLocation.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifDefinitionLocation":
+  def angle_query(*, name: Tuple[()]) -> "LsifDefinitionLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifNameLowerCase(GleanSchemaPredicate):
+class LsifNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.NameLowerCase.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifNameLowerCase":
+  def angle_query(*, name: Tuple[()]) -> "LsifNameLowerCase":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifDeclaration(GleanSchemaPredicate):
+class LsifDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.Declaration.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "LsifDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifTagDefinition(GleanSchemaPredicate):
+class LsifTagDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.TagDefinition.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifTagDefinition":
+  def angle_query(*, name: Tuple[()]) -> "LsifTagDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifHoverContent(GleanSchemaPredicate):
+class LsifHoverContent(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.HoverContent.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifHoverContent":
+  def angle_query(*, name: Tuple[()]) -> "LsifHoverContent":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifSearchByExactLocationAndName(GleanSchemaPredicate):
+class LsifSearchByExactLocationAndName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.SearchByExactLocationAndName.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifSearchByExactLocationAndName":
+  def angle_query(*, name: Tuple[()]) -> "LsifSearchByExactLocationAndName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifDefinitionUse(GleanSchemaPredicate):
+class LsifDefinitionUse(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.DefinitionUse.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifDefinitionUse":
+  def angle_query(*, name: Tuple[()]) -> "LsifDefinitionUse":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifEntityDefinition(GleanSchemaPredicate):
+class LsifEntityDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.EntityDefinition.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifEntityDefinition":
+  def angle_query(*, name: Tuple[()]) -> "LsifEntityDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifEntityLocation(GleanSchemaPredicate):
+class LsifEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.EntityLocation.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifEntityLocation":
+  def angle_query(*, name: Tuple[()]) -> "LsifEntityLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifMetadata(GleanSchemaPredicate):
+class LsifMetadata(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.Metadata.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifMetadata":
+  def angle_query(*, name: Tuple[()]) -> "LsifMetadata":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifMonikerDefinition(GleanSchemaPredicate):
+class LsifMonikerDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.MonikerDefinition.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifMonikerDefinition":
+  def angle_query(*, name: Tuple[()]) -> "LsifMonikerDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifEntityUses(GleanSchemaPredicate):
+class LsifEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.EntityUses.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifEntityUses":
+  def angle_query(*, name: Tuple[()]) -> "LsifEntityUses":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifEntityKind(GleanSchemaPredicate):
+class LsifEntityKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.EntityKind.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifEntityKind":
+  def angle_query(*, name: Tuple[()]) -> "LsifEntityKind":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifDefinitionHover(GleanSchemaPredicate):
+class LsifDefinitionHover(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.DefinitionHover.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifDefinitionHover":
+  def angle_query(*, name: Tuple[()]) -> "LsifDefinitionHover":
     raise Exception("this function can only be called from @angle_query")
 
-class GSLsifMoniker(GleanSchemaPredicate):
+class LsifMoniker(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"lsif.Moniker.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSLsifMoniker":
+  def angle_query(*, name: Tuple[()]) -> "LsifMoniker":
     raise Exception("this function can only be called from @angle_query")
 
 

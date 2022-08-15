@@ -5,85 +5,85 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
-class GSSearchCxxSearchBySelector(GleanSchemaPredicate):
+class SearchCxxSearchBySelector(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.cxx.SearchBySelector.5 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCxxSearchBySelector":
+  def angle_query(*, name: Tuple[()]) -> "SearchCxxSearchBySelector":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCxxSearchByScope(GleanSchemaPredicate):
+class SearchCxxSearchByScope(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.cxx.SearchByScope.5 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCxxSearchByScope":
+  def angle_query(*, name: Tuple[()]) -> "SearchCxxSearchByScope":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCxxQueryToQName(GleanSchemaPredicate):
+class SearchCxxQueryToQName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.cxx.QueryToQName.5 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCxxQueryToQName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCxxQueryToQName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCxxGlobalDeclarationWithName(GleanSchemaPredicate):
+class SearchCxxGlobalDeclarationWithName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.cxx.GlobalDeclarationWithName.5 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCxxGlobalDeclarationWithName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCxxGlobalDeclarationWithName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCxxDeclIsDefn(GleanSchemaPredicate):
+class SearchCxxDeclIsDefn(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.cxx.DeclIsDefn.5 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCxxDeclIsDefn":
+  def angle_query(*, name: Tuple[()]) -> "SearchCxxDeclIsDefn":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCxxQueryToScope(GleanSchemaPredicate):
+class SearchCxxQueryToScope(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.cxx.QueryToScope.5 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCxxQueryToScope":
+  def angle_query(*, name: Tuple[()]) -> "SearchCxxQueryToScope":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCxxSearchByNameAndScope(GleanSchemaPredicate):
+class SearchCxxSearchByNameAndScope(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.cxx.SearchByNameAndScope.5 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCxxSearchByNameAndScope":
+  def angle_query(*, name: Tuple[()]) -> "SearchCxxSearchByNameAndScope":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCxxEntityUses(GleanSchemaPredicate):
+class SearchCxxEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.cxx.EntityUses.5 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCxxEntityUses":
+  def angle_query(*, name: Tuple[()]) -> "SearchCxxEntityUses":
     raise Exception("this function can only be called from @angle_query")
 
-class GSSearchCxxQueryToNSQName(GleanSchemaPredicate):
+class SearchCxxQueryToNSQName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"search.cxx.QueryToNSQName.5 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSSearchCxxQueryToNSQName":
+  def angle_query(*, name: Tuple[()]) -> "SearchCxxQueryToNSQName":
     raise Exception("this function can only be called from @angle_query")
 
 

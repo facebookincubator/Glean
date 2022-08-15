@@ -5,292 +5,292 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
-class GSHaxlanalyserThriftResponse(GleanSchemaPredicate):
+class HaxlanalyserThriftResponse(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.ThriftResponse.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserThriftResponse":
+  def angle_query(*, name: str) -> "HaxlanalyserThriftResponse":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserTallyConfig(GleanSchemaPredicate):
+class HaxlanalyserTallyConfig(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.TallyConfig.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHaxlanalyserTallyConfig":
+  def angle_query(*, name: Tuple[()]) -> "HaxlanalyserTallyConfig":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserPolicyName(GleanSchemaPredicate):
+class HaxlanalyserPolicyName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.PolicyName.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserPolicyName":
+  def angle_query(*, name: str) -> "HaxlanalyserPolicyName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserRestrictionResponse(GleanSchemaPredicate):
+class HaxlanalyserRestrictionResponse(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.RestrictionResponse.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: int) -> "GSHaxlanalyserRestrictionResponse":
+  def angle_query(*, name: int) -> "HaxlanalyserRestrictionResponse":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserContext(GleanSchemaPredicate):
+class HaxlanalyserContext(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.Context.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHaxlanalyserContext":
+  def angle_query(*, name: Tuple[()]) -> "HaxlanalyserContext":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserEndpointName(GleanSchemaPredicate):
+class HaxlanalyserEndpointName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.EndpointName.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserEndpointName":
+  def angle_query(*, name: str) -> "HaxlanalyserEndpointName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserJankyJSONResponse(GleanSchemaPredicate):
+class HaxlanalyserJankyJSONResponse(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.JankyJSONResponse.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserJankyJSONResponse":
+  def angle_query(*, name: str) -> "HaxlanalyserJankyJSONResponse":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserClassifierRead(GleanSchemaPredicate):
+class HaxlanalyserClassifierRead(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.ClassifierRead.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserClassifierRead":
+  def angle_query(*, name: str) -> "HaxlanalyserClassifierRead":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserScubaResponse(GleanSchemaPredicate):
+class HaxlanalyserScubaResponse(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.ScubaResponse.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserScubaResponse":
+  def angle_query(*, name: str) -> "HaxlanalyserScubaResponse":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserFeatureSetFeature(GleanSchemaPredicate):
+class HaxlanalyserFeatureSetFeature(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.FeatureSetFeature.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserFeatureSetFeature":
+  def angle_query(*, name: str) -> "HaxlanalyserFeatureSetFeature":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserSitevarFetch(GleanSchemaPredicate):
+class HaxlanalyserSitevarFetch(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.SitevarFetch.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserSitevarFetch":
+  def angle_query(*, name: str) -> "HaxlanalyserSitevarFetch":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserCall(GleanSchemaPredicate):
+class HaxlanalyserCall(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.Call.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHaxlanalyserCall":
+  def angle_query(*, name: Tuple[()]) -> "HaxlanalyserCall":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserACDCProperty(GleanSchemaPredicate):
+class HaxlanalyserACDCProperty(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.ACDCProperty.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHaxlanalyserACDCProperty":
+  def angle_query(*, name: Tuple[()]) -> "HaxlanalyserACDCProperty":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserEdge(GleanSchemaPredicate):
+class HaxlanalyserEdge(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.Edge.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHaxlanalyserEdge":
+  def angle_query(*, name: Tuple[()]) -> "HaxlanalyserEdge":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserEndpoint(GleanSchemaPredicate):
+class HaxlanalyserEndpoint(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.Endpoint.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHaxlanalyserEndpoint":
+  def angle_query(*, name: Tuple[()]) -> "HaxlanalyserEndpoint":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserTallyFetch(GleanSchemaPredicate):
+class HaxlanalyserTallyFetch(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.TallyFetch.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserTallyFetch":
+  def angle_query(*, name: str) -> "HaxlanalyserTallyFetch":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserPolicy(GleanSchemaPredicate):
+class HaxlanalyserPolicy(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.Policy.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHaxlanalyserPolicy":
+  def angle_query(*, name: Tuple[()]) -> "HaxlanalyserPolicy":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserContextName(GleanSchemaPredicate):
+class HaxlanalyserContextName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.ContextName.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserContextName":
+  def angle_query(*, name: str) -> "HaxlanalyserContextName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserTestFile(GleanSchemaPredicate):
+class HaxlanalyserTestFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.TestFile.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserTestFile":
+  def angle_query(*, name: str) -> "HaxlanalyserTestFile":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserThriftFetch(GleanSchemaPredicate):
+class HaxlanalyserThriftFetch(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.ThriftFetch.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserThriftFetch":
+  def angle_query(*, name: str) -> "HaxlanalyserThriftFetch":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserInputKey(GleanSchemaPredicate):
+class HaxlanalyserInputKey(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.InputKey.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserInputKey":
+  def angle_query(*, name: str) -> "HaxlanalyserInputKey":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserPiranhaResponse(GleanSchemaPredicate):
+class HaxlanalyserPiranhaResponse(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.PiranhaResponse.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: int) -> "GSHaxlanalyserPiranhaResponse":
+  def angle_query(*, name: int) -> "HaxlanalyserPiranhaResponse":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserACDCPropertyAccess(GleanSchemaPredicate):
+class HaxlanalyserACDCPropertyAccess(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.ACDCPropertyAccess.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserACDCPropertyAccess":
+  def angle_query(*, name: str) -> "HaxlanalyserACDCPropertyAccess":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserTallyResponse(GleanSchemaPredicate):
+class HaxlanalyserTallyResponse(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.TallyResponse.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserTallyResponse":
+  def angle_query(*, name: str) -> "HaxlanalyserTallyResponse":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserScribeResponse(GleanSchemaPredicate):
+class HaxlanalyserScribeResponse(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.ScribeResponse.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserScribeResponse":
+  def angle_query(*, name: str) -> "HaxlanalyserScribeResponse":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserInputFetch(GleanSchemaPredicate):
+class HaxlanalyserInputFetch(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.InputFetch.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHaxlanalyserInputFetch":
+  def angle_query(*, name: Tuple[()]) -> "HaxlanalyserInputFetch":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserClassifierFetch(GleanSchemaPredicate):
+class HaxlanalyserClassifierFetch(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.ClassifierFetch.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserClassifierFetch":
+  def angle_query(*, name: str) -> "HaxlanalyserClassifierFetch":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserLogFeatureResponse(GleanSchemaPredicate):
+class HaxlanalyserLogFeatureResponse(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.LogFeatureResponse.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserLogFeatureResponse":
+  def angle_query(*, name: str) -> "HaxlanalyserLogFeatureResponse":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserLaserDataset(GleanSchemaPredicate):
+class HaxlanalyserLaserDataset(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.LaserDataset.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserLaserDataset":
+  def angle_query(*, name: str) -> "HaxlanalyserLaserDataset":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserTallyName(GleanSchemaPredicate):
+class HaxlanalyserTallyName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.TallyName.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserTallyName":
+  def angle_query(*, name: str) -> "HaxlanalyserTallyName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserConfigeratorFetch(GleanSchemaPredicate):
+class HaxlanalyserConfigeratorFetch(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.ConfigeratorFetch.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserConfigeratorFetch":
+  def angle_query(*, name: str) -> "HaxlanalyserConfigeratorFetch":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHaxlanalyserHiveResponse(GleanSchemaPredicate):
+class HaxlanalyserHiveResponse(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.HiveResponse.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserHiveResponse":
+  def angle_query(*, name: str) -> "HaxlanalyserHiveResponse":
     raise Exception("this function can only be called from @angle_query")
 
 

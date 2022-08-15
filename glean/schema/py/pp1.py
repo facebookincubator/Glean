@@ -5,49 +5,49 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
-class GSPp1Define(GleanSchemaPredicate):
+class Pp1Define(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"pp1.Define.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPp1Define":
+  def angle_query(*, name: Tuple[()]) -> "Pp1Define":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPp1Undef(GleanSchemaPredicate):
+class Pp1Undef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"pp1.Undef.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPp1Undef":
+  def angle_query(*, name: Tuple[()]) -> "Pp1Undef":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPp1Use(GleanSchemaPredicate):
+class Pp1Use(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"pp1.Use.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPp1Use":
+  def angle_query(*, name: Tuple[()]) -> "Pp1Use":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPp1Include(GleanSchemaPredicate):
+class Pp1Include(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"pp1.Include.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSPp1Include":
+  def angle_query(*, name: Tuple[()]) -> "Pp1Include":
     raise Exception("this function can only be called from @angle_query")
 
-class GSPp1Macro(GleanSchemaPredicate):
+class Pp1Macro(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"pp1.Macro.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPp1Macro":
+  def angle_query(*, name: str) -> "Pp1Macro":
     raise Exception("this function can only be called from @angle_query")
 
 

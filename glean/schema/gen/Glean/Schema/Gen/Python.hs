@@ -64,7 +64,7 @@ genAllPredicates
   -> Text
 genAllPredicates _ preds = Text.unlines $
   [ Text.unlines
-    [ "class GS" <> class_name <> "(GleanSchemaPredicate):"
+    [ "class " <> class_name <> "(GleanSchemaPredicate):"
       , "  " <> "@staticmethod"
       , "  " <> "def build_angle(key: Union[" <> pythonKeyValues <>
         "]) -> str:"
@@ -72,7 +72,7 @@ genAllPredicates _ preds = Text.unlines $
       showt (predicateRef_version ref) <> " { " <> angleFor kTy <> " }\""
       , ""
       , "  " <> "@staticmethod"
-      , "  " <> "def angle_query(*, name: " <> kTy <> ") -> \"GS" <>
+      , "  " <> "def angle_query(*, name: " <> kTy <> ") -> \"" <>
         class_name <> "\":"
       , "    " <> "raise Exception" <>
         "(\"this function can only be called from @angle_query\")"

@@ -5,400 +5,400 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
-class GSBuckTargetHash(GleanSchemaPredicate):
+class BuckTargetHash(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.TargetHash.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckTargetHash":
+  def angle_query(*, name: Tuple[()]) -> "BuckTargetHash":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckTargetSourcesBaseModule(GleanSchemaPredicate):
+class BuckTargetSourcesBaseModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.TargetSourcesBaseModule.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckTargetSourcesBaseModule":
+  def angle_query(*, name: Tuple[()]) -> "BuckTargetSourcesBaseModule":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckLocatorReverseDeps(GleanSchemaPredicate):
+class BuckLocatorReverseDeps(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.LocatorReverseDeps.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckLocatorReverseDeps":
+  def angle_query(*, name: Tuple[()]) -> "BuckLocatorReverseDeps":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckType(GleanSchemaPredicate):
+class BuckType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.Type.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSBuckType":
+  def angle_query(*, name: str) -> "BuckType":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckTargetDependencies(GleanSchemaPredicate):
+class BuckTargetDependencies(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.TargetDependencies.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckTargetDependencies":
+  def angle_query(*, name: Tuple[()]) -> "BuckTargetDependencies":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckLocator(GleanSchemaPredicate):
+class BuckLocator(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.Locator.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckLocator":
+  def angle_query(*, name: Tuple[()]) -> "BuckLocator":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckTargetSources(GleanSchemaPredicate):
+class BuckTargetSources(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.TargetSources.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckTargetSources":
+  def angle_query(*, name: Tuple[()]) -> "BuckTargetSources":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckPlatform(GleanSchemaPredicate):
+class BuckPlatform(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.Platform.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSBuckPlatform":
+  def angle_query(*, name: str) -> "BuckPlatform":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckTargetAttribute(GleanSchemaPredicate):
+class BuckTargetAttribute(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.TargetAttribute.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckTargetAttribute":
+  def angle_query(*, name: Tuple[()]) -> "BuckTargetAttribute":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckFileEntity(GleanSchemaPredicate):
+class BuckFileEntity(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.FileEntity.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckFileEntity":
+  def angle_query(*, name: Tuple[()]) -> "BuckFileEntity":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckOutTarget(GleanSchemaPredicate):
+class BuckOutTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.OutTarget.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckOutTarget":
+  def angle_query(*, name: Tuple[()]) -> "BuckOutTarget":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckLabel(GleanSchemaPredicate):
+class BuckLabel(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.Label.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSBuckLabel":
+  def angle_query(*, name: str) -> "BuckLabel":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckTargetOuts(GleanSchemaPredicate):
+class BuckTargetOuts(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.TargetOuts.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckTargetOuts":
+  def angle_query(*, name: Tuple[()]) -> "BuckTargetOuts":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckOutsTarget(GleanSchemaPredicate):
+class BuckOutsTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.OutsTarget.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckOutsTarget":
+  def angle_query(*, name: Tuple[()]) -> "BuckOutsTarget":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckLocatorWithLabel(GleanSchemaPredicate):
+class BuckLocatorWithLabel(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.LocatorWithLabel.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckLocatorWithLabel":
+  def angle_query(*, name: Tuple[()]) -> "BuckLocatorWithLabel":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckTargetSources(GleanSchemaPredicate):
+class BuckTargetSources(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.TargetSources.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckTargetSources":
+  def angle_query(*, name: Tuple[()]) -> "BuckTargetSources":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckAttributeValue(GleanSchemaPredicate):
+class BuckAttributeValue(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.AttributeValue.3 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSBuckAttributeValue":
+  def angle_query(*, name: str) -> "BuckAttributeValue":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckLabels(GleanSchemaPredicate):
+class BuckLabels(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.Labels.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSBuckLabels":
+  def angle_query(*, name: str) -> "BuckLabels":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckSourceFileLocation(GleanSchemaPredicate):
+class BuckSourceFileLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.SourceFileLocation.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckSourceFileLocation":
+  def angle_query(*, name: Tuple[()]) -> "BuckSourceFileLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckOutputLabel(GleanSchemaPredicate):
+class BuckOutputLabel(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.OutputLabel.3 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSBuckOutputLabel":
+  def angle_query(*, name: str) -> "BuckOutputLabel":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckTargetUses(GleanSchemaPredicate):
+class BuckTargetUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.TargetUses.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckTargetUses":
+  def angle_query(*, name: Tuple[()]) -> "BuckTargetUses":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckOwner(GleanSchemaPredicate):
+class BuckOwner(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.Owner.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckOwner":
+  def angle_query(*, name: Tuple[()]) -> "BuckOwner":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckTarget(GleanSchemaPredicate):
+class BuckTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.Target.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckTarget":
+  def angle_query(*, name: Tuple[()]) -> "BuckTarget":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckDefinitionLocation(GleanSchemaPredicate):
+class BuckDefinitionLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.DefinitionLocation.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckDefinitionLocation":
+  def angle_query(*, name: Tuple[()]) -> "BuckDefinitionLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckTargetIndexer(GleanSchemaPredicate):
+class BuckTargetIndexer(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.TargetIndexer.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckTargetIndexer":
+  def angle_query(*, name: Tuple[()]) -> "BuckTargetIndexer":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckFileDefinition(GleanSchemaPredicate):
+class BuckFileDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.FileDefinition.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckFileDefinition":
+  def angle_query(*, name: Tuple[()]) -> "BuckFileDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckTarget(GleanSchemaPredicate):
+class BuckTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.Target.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckTarget":
+  def angle_query(*, name: Tuple[()]) -> "BuckTarget":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckAttributeName(GleanSchemaPredicate):
+class BuckAttributeName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.AttributeName.3 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSBuckAttributeName":
+  def angle_query(*, name: str) -> "BuckAttributeName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckOwner(GleanSchemaPredicate):
+class BuckOwner(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.Owner.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckOwner":
+  def angle_query(*, name: Tuple[()]) -> "BuckOwner":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckRuleKey(GleanSchemaPredicate):
+class BuckRuleKey(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.RuleKey.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckRuleKey":
+  def angle_query(*, name: Tuple[()]) -> "BuckRuleKey":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckTargetLinkWhole(GleanSchemaPredicate):
+class BuckTargetLinkWhole(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.TargetLinkWhole.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSBuckTargetLinkWhole":
+  def angle_query(*, name: str) -> "BuckTargetLinkWhole":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckDefinition(GleanSchemaPredicate):
+class BuckDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.Definition.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckDefinition":
+  def angle_query(*, name: Tuple[()]) -> "BuckDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckTargetOut(GleanSchemaPredicate):
+class BuckTargetOut(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.TargetOut.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckTargetOut":
+  def angle_query(*, name: Tuple[()]) -> "BuckTargetOut":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckFileXRefs(GleanSchemaPredicate):
+class BuckFileXRefs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.FileXRefs.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckFileXRefs":
+  def angle_query(*, name: Tuple[()]) -> "BuckFileXRefs":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckTargetLocation(GleanSchemaPredicate):
+class BuckTargetLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.TargetLocation.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckTargetLocation":
+  def angle_query(*, name: Tuple[()]) -> "BuckTargetLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckDestinationUses(GleanSchemaPredicate):
+class BuckDestinationUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.DestinationUses.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckDestinationUses":
+  def angle_query(*, name: Tuple[()]) -> "BuckDestinationUses":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckTranslationUnit(GleanSchemaPredicate):
+class BuckTranslationUnit(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.TranslationUnit.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckTranslationUnit":
+  def angle_query(*, name: Tuple[()]) -> "BuckTranslationUnit":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckFile(GleanSchemaPredicate):
+class BuckFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.File.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSBuckFile":
+  def angle_query(*, name: str) -> "BuckFile":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckFileTarget(GleanSchemaPredicate):
+class BuckFileTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.FileTarget.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckFileTarget":
+  def angle_query(*, name: Tuple[()]) -> "BuckFileTarget":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckTranslationUnit(GleanSchemaPredicate):
+class BuckTranslationUnit(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.TranslationUnit.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckTranslationUnit":
+  def angle_query(*, name: Tuple[()]) -> "BuckTranslationUnit":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckTargetIndexerName(GleanSchemaPredicate):
+class BuckTargetIndexerName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.TargetIndexerName.3 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSBuckTargetIndexerName":
+  def angle_query(*, name: str) -> "BuckTargetIndexerName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckFileResolved(GleanSchemaPredicate):
+class BuckFileResolved(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.FileResolved.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckFileResolved":
+  def angle_query(*, name: Tuple[()]) -> "BuckFileResolved":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckConsumer(GleanSchemaPredicate):
+class BuckConsumer(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.Consumer.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSBuckConsumer":
+  def angle_query(*, name: Tuple[()]) -> "BuckConsumer":
     raise Exception("this function can only be called from @angle_query")
 
-class GSBuckFile(GleanSchemaPredicate):
+class BuckFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"buck.File.3 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSBuckFile":
+  def angle_query(*, name: str) -> "BuckFile":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -5,409 +5,409 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
-class GSFlowFlowTypeEntityImportUses(GleanSchemaPredicate):
+class FlowFlowTypeEntityImportUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.FlowTypeEntityImportUses.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowFlowTypeEntityImportUses":
+  def angle_query(*, name: Tuple[()]) -> "FlowFlowTypeEntityImportUses":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowTypeExport(GleanSchemaPredicate):
+class FlowTypeExport(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.TypeExport.3 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSFlowTypeExport":
+  def angle_query(*, name: str) -> "FlowTypeExport":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowImportDeclaration(GleanSchemaPredicate):
+class FlowImportDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.ImportDeclaration.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowImportDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "FlowImportDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowDeclarationLocation(GleanSchemaPredicate):
+class FlowDeclarationLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.DeclarationLocation.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowDeclarationLocation":
+  def angle_query(*, name: Tuple[()]) -> "FlowDeclarationLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowDeclarationInfo(GleanSchemaPredicate):
+class FlowDeclarationInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.DeclarationInfo.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowDeclarationInfo":
+  def angle_query(*, name: Tuple[()]) -> "FlowDeclarationInfo":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowFileDeclaration(GleanSchemaPredicate):
+class FlowFileDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.FileDeclaration.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowFileDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "FlowFileDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowModuleTypeExport(GleanSchemaPredicate):
+class FlowModuleTypeExport(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.ModuleTypeExport.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowModuleTypeExport":
+  def angle_query(*, name: Tuple[()]) -> "FlowModuleTypeExport":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowLocalDeclarationReference(GleanSchemaPredicate):
+class FlowLocalDeclarationReference(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.LocalDeclarationReference.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowLocalDeclarationReference":
+  def angle_query(*, name: Tuple[()]) -> "FlowLocalDeclarationReference":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowFlowTypeImportXRef(GleanSchemaPredicate):
+class FlowFlowTypeImportXRef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.FlowTypeImportXRef.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowFlowTypeImportXRef":
+  def angle_query(*, name: Tuple[()]) -> "FlowFlowTypeImportXRef":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowName(GleanSchemaPredicate):
+class FlowName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.Name.3 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSFlowName":
+  def angle_query(*, name: str) -> "FlowName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowSearchByModule(GleanSchemaPredicate):
+class FlowSearchByModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.SearchByModule.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowSearchByModule":
+  def angle_query(*, name: Tuple[()]) -> "FlowSearchByModule":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowRange(GleanSchemaPredicate):
+class FlowRange(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.Range.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowRange":
+  def angle_query(*, name: Tuple[()]) -> "FlowRange":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowDeclaration(GleanSchemaPredicate):
+class FlowDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.Declaration.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "FlowDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowDeclarationUses(GleanSchemaPredicate):
+class FlowDeclarationUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.DeclarationUses.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowDeclarationUses":
+  def angle_query(*, name: Tuple[()]) -> "FlowDeclarationUses":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowSourceOfTypeExport(GleanSchemaPredicate):
+class FlowSourceOfTypeExport(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.SourceOfTypeExport.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowSourceOfTypeExport":
+  def angle_query(*, name: Tuple[()]) -> "FlowSourceOfTypeExport":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowFlowCompatibleExport(GleanSchemaPredicate):
+class FlowFlowCompatibleExport(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.FlowCompatibleExport.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowFlowCompatibleExport":
+  def angle_query(*, name: Tuple[()]) -> "FlowFlowCompatibleExport":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowFlowEntityUsesAll(GleanSchemaPredicate):
+class FlowFlowEntityUsesAll(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.FlowEntityUsesAll.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowFlowEntityUsesAll":
+  def angle_query(*, name: Tuple[()]) -> "FlowFlowEntityUsesAll":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowNameLowerCase(GleanSchemaPredicate):
+class FlowNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.NameLowerCase.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowNameLowerCase":
+  def angle_query(*, name: Tuple[()]) -> "FlowNameLowerCase":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowSearchByFileModule(GleanSchemaPredicate):
+class FlowSearchByFileModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.SearchByFileModule.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowSearchByFileModule":
+  def angle_query(*, name: Tuple[()]) -> "FlowSearchByFileModule":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowModule(GleanSchemaPredicate):
+class FlowModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.Module.3 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSFlowModule":
+  def angle_query(*, name: str) -> "FlowModule":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowFlowSameModule(GleanSchemaPredicate):
+class FlowFlowSameModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.FlowSameModule.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowFlowSameModule":
+  def angle_query(*, name: Tuple[()]) -> "FlowFlowSameModule":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowFlowModuleNamespaceXRef(GleanSchemaPredicate):
+class FlowFlowModuleNamespaceXRef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.FlowModuleNamespaceXRef.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowFlowModuleNamespaceXRef":
+  def angle_query(*, name: Tuple[()]) -> "FlowFlowModuleNamespaceXRef":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowDocumentation(GleanSchemaPredicate):
+class FlowDocumentation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.Documentation.3 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSFlowDocumentation":
+  def angle_query(*, name: str) -> "FlowDocumentation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowSearchByName(GleanSchemaPredicate):
+class FlowSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.SearchByName.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowSearchByName":
+  def angle_query(*, name: Tuple[()]) -> "FlowSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowStringToFileModule(GleanSchemaPredicate):
+class FlowStringToFileModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.StringToFileModule.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowStringToFileModule":
+  def angle_query(*, name: Tuple[()]) -> "FlowStringToFileModule":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowFlowExportLocation(GleanSchemaPredicate):
+class FlowFlowExportLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.FlowExportLocation.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowFlowExportLocation":
+  def angle_query(*, name: Tuple[()]) -> "FlowFlowExportLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowFlowXRefDeclInfo(GleanSchemaPredicate):
+class FlowFlowXRefDeclInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.FlowXRefDeclInfo.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowFlowXRefDeclInfo":
+  def angle_query(*, name: Tuple[()]) -> "FlowFlowXRefDeclInfo":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowSearchTypeByModuleExport(GleanSchemaPredicate):
+class FlowSearchTypeByModuleExport(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.SearchTypeByModuleExport.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowSearchTypeByModuleExport":
+  def angle_query(*, name: Tuple[()]) -> "FlowSearchTypeByModuleExport":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowFlowEntityImportUses(GleanSchemaPredicate):
+class FlowFlowEntityImportUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.FlowEntityImportUses.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowFlowEntityImportUses":
+  def angle_query(*, name: Tuple[()]) -> "FlowFlowEntityImportUses":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowExport(GleanSchemaPredicate):
+class FlowExport(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.Export.3 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSFlowExport":
+  def angle_query(*, name: str) -> "FlowExport":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowTypeImportDeclaration(GleanSchemaPredicate):
+class FlowTypeImportDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.TypeImportDeclaration.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowTypeImportDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "FlowTypeImportDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowFlowImportXRef(GleanSchemaPredicate):
+class FlowFlowImportXRef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.FlowImportXRef.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowFlowImportXRef":
+  def angle_query(*, name: Tuple[()]) -> "FlowFlowImportXRef":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowModuleExport(GleanSchemaPredicate):
+class FlowModuleExport(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.ModuleExport.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowModuleExport":
+  def angle_query(*, name: Tuple[()]) -> "FlowModuleExport":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowMemberDeclarationInfo(GleanSchemaPredicate):
+class FlowMemberDeclarationInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.MemberDeclarationInfo.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowMemberDeclarationInfo":
+  def angle_query(*, name: Tuple[()]) -> "FlowMemberDeclarationInfo":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowTypeDeclarationInfo(GleanSchemaPredicate):
+class FlowTypeDeclarationInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.TypeDeclarationInfo.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowTypeDeclarationInfo":
+  def angle_query(*, name: Tuple[()]) -> "FlowTypeDeclarationInfo":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowFileXRef(GleanSchemaPredicate):
+class FlowFileXRef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.FileXRef.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowFileXRef":
+  def angle_query(*, name: Tuple[()]) -> "FlowFileXRef":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowSourceOfExport(GleanSchemaPredicate):
+class FlowSourceOfExport(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.SourceOfExport.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowSourceOfExport":
+  def angle_query(*, name: Tuple[()]) -> "FlowSourceOfExport":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowMemberDeclaration(GleanSchemaPredicate):
+class FlowMemberDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.MemberDeclaration.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowMemberDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "FlowMemberDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowType(GleanSchemaPredicate):
+class FlowType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.Type.3 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSFlowType":
+  def angle_query(*, name: str) -> "FlowType":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowFileOfStringModule(GleanSchemaPredicate):
+class FlowFileOfStringModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.FileOfStringModule.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowFileOfStringModule":
+  def angle_query(*, name: Tuple[()]) -> "FlowFileOfStringModule":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowTypeDeclaration(GleanSchemaPredicate):
+class FlowTypeDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.TypeDeclaration.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowTypeDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "FlowTypeDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowDeclarationNameSpan(GleanSchemaPredicate):
+class FlowDeclarationNameSpan(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.DeclarationNameSpan.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowDeclarationNameSpan":
+  def angle_query(*, name: Tuple[()]) -> "FlowDeclarationNameSpan":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowMemberDeclarationReference(GleanSchemaPredicate):
+class FlowMemberDeclarationReference(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.MemberDeclarationReference.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowMemberDeclarationReference":
+  def angle_query(*, name: Tuple[()]) -> "FlowMemberDeclarationReference":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowFlowTypeExportLocation(GleanSchemaPredicate):
+class FlowFlowTypeExportLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.FlowTypeExportLocation.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowFlowTypeExportLocation":
+  def angle_query(*, name: Tuple[()]) -> "FlowFlowTypeExportLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSFlowTypeDeclarationReference(GleanSchemaPredicate):
+class FlowTypeDeclarationReference(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"flow.TypeDeclarationReference.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSFlowTypeDeclarationReference":
+  def angle_query(*, name: Tuple[()]) -> "FlowTypeDeclarationReference":
     raise Exception("this function can only be called from @angle_query")
 
 

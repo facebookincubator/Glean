@@ -5,229 +5,229 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
-class GSTestinfraCoveredFile(GleanSchemaPredicate):
+class TestinfraCoveredFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.CoveredFile.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSTestinfraCoveredFile":
+  def angle_query(*, name: Tuple[()]) -> "TestinfraCoveredFile":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraAssemblyByTag(GleanSchemaPredicate):
+class TestinfraAssemblyByTag(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.AssemblyByTag.4 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSTestinfraAssemblyByTag":
+  def angle_query(*, name: Tuple[()]) -> "TestinfraAssemblyByTag":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraTestId(GleanSchemaPredicate):
+class TestinfraTestId(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.TestId.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: int) -> "GSTestinfraTestId":
+  def angle_query(*, name: int) -> "TestinfraTestId":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraMeasuredFileOnly(GleanSchemaPredicate):
+class TestinfraMeasuredFileOnly(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.MeasuredFileOnly.4 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSTestinfraMeasuredFileOnly":
+  def angle_query(*, name: Tuple[()]) -> "TestinfraMeasuredFileOnly":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraCoveredOrLoadedFileTestIds(GleanSchemaPredicate):
+class TestinfraCoveredOrLoadedFileTestIds(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.CoveredOrLoadedFileTestIds.5 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSTestinfraCoveredOrLoadedFileTestIds":
+  def angle_query(*, name: Tuple[()]) -> "TestinfraCoveredOrLoadedFileTestIds":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraCoveredFileByPushBlockingAssembly(GleanSchemaPredicate):
+class TestinfraCoveredFileByPushBlockingAssembly(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.CoveredFileByPushBlockingAssembly.4 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSTestinfraCoveredFileByPushBlockingAssembly":
+  def angle_query(*, name: Tuple[()]) -> "TestinfraCoveredFileByPushBlockingAssembly":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraCoveredFileTestIds(GleanSchemaPredicate):
+class TestinfraCoveredFileTestIds(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.CoveredFileTestIds.5 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSTestinfraCoveredFileTestIds":
+  def angle_query(*, name: Tuple[()]) -> "TestinfraCoveredFileTestIds":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraDatabaseMetadataField(GleanSchemaPredicate):
+class TestinfraDatabaseMetadataField(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.DatabaseMetadataField.4 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSTestinfraDatabaseMetadataField":
+  def angle_query(*, name: str) -> "TestinfraDatabaseMetadataField":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraCoveredAssembly(GleanSchemaPredicate):
+class TestinfraCoveredAssembly(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.CoveredAssembly.4 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSTestinfraCoveredAssembly":
+  def angle_query(*, name: Tuple[()]) -> "TestinfraCoveredAssembly":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraCoveredFileTestIds(GleanSchemaPredicate):
+class TestinfraCoveredFileTestIds(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.CoveredFileTestIds.4 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSTestinfraCoveredFileTestIds":
+  def angle_query(*, name: Tuple[()]) -> "TestinfraCoveredFileTestIds":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraTaggedAssembly(GleanSchemaPredicate):
+class TestinfraTaggedAssembly(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.TaggedAssembly.4 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSTestinfraTaggedAssembly":
+  def angle_query(*, name: Tuple[()]) -> "TestinfraTaggedAssembly":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraFileMetadata(GleanSchemaPredicate):
+class TestinfraFileMetadata(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.FileMetadata.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSTestinfraFileMetadata":
+  def angle_query(*, name: Tuple[()]) -> "TestinfraFileMetadata":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraDatabaseMetadata(GleanSchemaPredicate):
+class TestinfraDatabaseMetadata(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.DatabaseMetadata.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSTestinfraDatabaseMetadata":
+  def angle_query(*, name: Tuple[()]) -> "TestinfraDatabaseMetadata":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraCoveredFolder(GleanSchemaPredicate):
+class TestinfraCoveredFolder(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.CoveredFolder.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSTestinfraCoveredFolder":
+  def angle_query(*, name: Tuple[()]) -> "TestinfraCoveredFolder":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraCoveredFileByTagAndAssembly(GleanSchemaPredicate):
+class TestinfraCoveredFileByTagAndAssembly(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.CoveredFileByTagAndAssembly.4 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSTestinfraCoveredFileByTagAndAssembly":
+  def angle_query(*, name: Tuple[()]) -> "TestinfraCoveredFileByTagAndAssembly":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraFbId(GleanSchemaPredicate):
+class TestinfraFbId(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.FbId.4 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: int) -> "GSTestinfraFbId":
+  def angle_query(*, name: int) -> "TestinfraFbId":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraCoveredFileOnly(GleanSchemaPredicate):
+class TestinfraCoveredFileOnly(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.CoveredFileOnly.3 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSTestinfraCoveredFileOnly":
+  def angle_query(*, name: Tuple[()]) -> "TestinfraCoveredFileOnly":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraAssemblies(GleanSchemaPredicate):
+class TestinfraAssemblies(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.Assemblies.4 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSTestinfraAssemblies":
+  def angle_query(*, name: str) -> "TestinfraAssemblies":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraFileMetadata(GleanSchemaPredicate):
+class TestinfraFileMetadata(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.FileMetadata.4 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSTestinfraFileMetadata":
+  def angle_query(*, name: Tuple[()]) -> "TestinfraFileMetadata":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraFolder(GleanSchemaPredicate):
+class TestinfraFolder(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.Folder.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSTestinfraFolder":
+  def angle_query(*, name: str) -> "TestinfraFolder":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraAssemblyId(GleanSchemaPredicate):
+class TestinfraAssemblyId(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.AssemblyId.4 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSTestinfraAssemblyId":
+  def angle_query(*, name: str) -> "TestinfraAssemblyId":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraMeasuredFile(GleanSchemaPredicate):
+class TestinfraMeasuredFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.MeasuredFile.4 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSTestinfraMeasuredFile":
+  def angle_query(*, name: Tuple[()]) -> "TestinfraMeasuredFile":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraContainsPushBlockingAssembly(GleanSchemaPredicate):
+class TestinfraContainsPushBlockingAssembly(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.ContainsPushBlockingAssembly.4 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSTestinfraContainsPushBlockingAssembly":
+  def angle_query(*, name: Tuple[()]) -> "TestinfraContainsPushBlockingAssembly":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraTag(GleanSchemaPredicate):
+class TestinfraTag(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.Tag.4 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSTestinfraTag":
+  def angle_query(*, name: str) -> "TestinfraTag":
     raise Exception("this function can only be called from @angle_query")
 
-class GSTestinfraCoveredFileAssemblies(GleanSchemaPredicate):
+class TestinfraCoveredFileAssemblies(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"testinfra.CoveredFileAssemblies.4 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSTestinfraCoveredFileAssemblies":
+  def angle_query(*, name: Tuple[()]) -> "TestinfraCoveredFileAssemblies":
     raise Exception("this function can only be called from @angle_query")
 
 

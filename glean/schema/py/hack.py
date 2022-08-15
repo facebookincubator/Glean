@@ -5,544 +5,544 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
-class GSHackMethodDefinition(GleanSchemaPredicate):
+class HackMethodDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.MethodDefinition.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackMethodDefinition":
+  def angle_query(*, name: Tuple[()]) -> "HackMethodDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackSymbolNamespace(GleanSchemaPredicate):
+class HackSymbolNamespace(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.symbolNamespace.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackSymbolNamespace":
+  def angle_query(*, name: Tuple[()]) -> "HackSymbolNamespace":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackTraitDeclaration(GleanSchemaPredicate):
+class HackTraitDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.TraitDeclaration.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackTraitDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "HackTraitDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackFunctionDeclaration(GleanSchemaPredicate):
+class HackFunctionDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.FunctionDeclaration.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackFunctionDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "HackFunctionDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackTypedefDefinition(GleanSchemaPredicate):
+class HackTypedefDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.TypedefDefinition.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackTypedefDefinition":
+  def angle_query(*, name: Tuple[()]) -> "HackTypedefDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackAttributeToDefinition(GleanSchemaPredicate):
+class HackAttributeToDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.AttributeToDefinition.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackAttributeToDefinition":
+  def angle_query(*, name: Tuple[()]) -> "HackAttributeToDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackNamespaceMember(GleanSchemaPredicate):
+class HackNamespaceMember(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.NamespaceMember.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackNamespaceMember":
+  def angle_query(*, name: Tuple[()]) -> "HackNamespaceMember":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackGlobalConstDefinition(GleanSchemaPredicate):
+class HackGlobalConstDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.GlobalConstDefinition.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackGlobalConstDefinition":
+  def angle_query(*, name: Tuple[()]) -> "HackGlobalConstDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackContainerParent(GleanSchemaPredicate):
+class HackContainerParent(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.ContainerParent.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackContainerParent":
+  def angle_query(*, name: Tuple[()]) -> "HackContainerParent":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackInterfaceDefinition(GleanSchemaPredicate):
+class HackInterfaceDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.InterfaceDefinition.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackInterfaceDefinition":
+  def angle_query(*, name: Tuple[()]) -> "HackInterfaceDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackContext_(GleanSchemaPredicate):
+class HackContext_(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.Context_.6 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHackContext_":
+  def angle_query(*, name: str) -> "HackContext_":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackContainerDeclarationQName(GleanSchemaPredicate):
+class HackContainerDeclarationQName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.ContainerDeclarationQName.6 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHackContainerDeclarationQName":
+  def angle_query(*, name: str) -> "HackContainerDeclarationQName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackTargetUses(GleanSchemaPredicate):
+class HackTargetUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.TargetUses.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackTargetUses":
+  def angle_query(*, name: Tuple[()]) -> "HackTargetUses":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackTargetUsesAbs(GleanSchemaPredicate):
+class HackTargetUsesAbs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.TargetUsesAbs.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackTargetUsesAbs":
+  def angle_query(*, name: Tuple[()]) -> "HackTargetUsesAbs":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackMethodOverridden(GleanSchemaPredicate):
+class HackMethodOverridden(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.MethodOverridden.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackMethodOverridden":
+  def angle_query(*, name: Tuple[()]) -> "HackMethodOverridden":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackClassDeclaration(GleanSchemaPredicate):
+class HackClassDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.ClassDeclaration.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackClassDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "HackClassDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackQName(GleanSchemaPredicate):
+class HackQName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.QName.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackQName":
+  def angle_query(*, name: Tuple[()]) -> "HackQName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackFilename(GleanSchemaPredicate):
+class HackFilename(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.filename.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackFilename":
+  def angle_query(*, name: Tuple[()]) -> "HackFilename":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackKind(GleanSchemaPredicate):
+class HackKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.kind.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackKind":
+  def angle_query(*, name: Tuple[()]) -> "HackKind":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackTypedefDeclaration(GleanSchemaPredicate):
+class HackTypedefDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.TypedefDeclaration.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackTypedefDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "HackTypedefDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackModuleDefinition(GleanSchemaPredicate):
+class HackModuleDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.ModuleDefinition.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackModuleDefinition":
+  def angle_query(*, name: Tuple[()]) -> "HackModuleDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackAttributeHasParameter(GleanSchemaPredicate):
+class HackAttributeHasParameter(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.AttributeHasParameter.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackAttributeHasParameter":
+  def angle_query(*, name: Tuple[()]) -> "HackAttributeHasParameter":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackName(GleanSchemaPredicate):
+class HackName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.Name.6 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHackName":
+  def angle_query(*, name: str) -> "HackName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackMethodDeclaration(GleanSchemaPredicate):
+class HackMethodDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.MethodDeclaration.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackMethodDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "HackMethodDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackFileXRefs(GleanSchemaPredicate):
+class HackFileXRefs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.FileXRefs.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackFileXRefs":
+  def angle_query(*, name: Tuple[()]) -> "HackFileXRefs":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackEnumerator(GleanSchemaPredicate):
+class HackEnumerator(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.Enumerator.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackEnumerator":
+  def angle_query(*, name: Tuple[()]) -> "HackEnumerator":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackIdentifier(GleanSchemaPredicate):
+class HackIdentifier(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.identifier.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackIdentifier":
+  def angle_query(*, name: Tuple[()]) -> "HackIdentifier":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackDeclarationSpan(GleanSchemaPredicate):
+class HackDeclarationSpan(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.DeclarationSpan.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackDeclarationSpan":
+  def angle_query(*, name: Tuple[()]) -> "HackDeclarationSpan":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackSignature(GleanSchemaPredicate):
+class HackSignature(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.Signature.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackSignature":
+  def angle_query(*, name: Tuple[()]) -> "HackSignature":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackContainerChild(GleanSchemaPredicate):
+class HackContainerChild(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.ContainerChild.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackContainerChild":
+  def angle_query(*, name: Tuple[()]) -> "HackContainerChild":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackNamespaceQName(GleanSchemaPredicate):
+class HackNamespaceQName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.NamespaceQName.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackNamespaceQName":
+  def angle_query(*, name: Tuple[()]) -> "HackNamespaceQName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackInterfaceDeclaration(GleanSchemaPredicate):
+class HackInterfaceDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.InterfaceDeclaration.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackInterfaceDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "HackInterfaceDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackDeclarationSource(GleanSchemaPredicate):
+class HackDeclarationSource(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.DeclarationSource.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackDeclarationSource":
+  def angle_query(*, name: Tuple[()]) -> "HackDeclarationSource":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackUserAttribute(GleanSchemaPredicate):
+class HackUserAttribute(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.UserAttribute.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackUserAttribute":
+  def angle_query(*, name: Tuple[()]) -> "HackUserAttribute":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackModuleDeclaration(GleanSchemaPredicate):
+class HackModuleDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.ModuleDeclaration.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackModuleDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "HackModuleDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackPropertyDefinition(GleanSchemaPredicate):
+class HackPropertyDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.PropertyDefinition.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackPropertyDefinition":
+  def angle_query(*, name: Tuple[()]) -> "HackPropertyDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackClassConstDeclaration(GleanSchemaPredicate):
+class HackClassConstDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.ClassConstDeclaration.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackClassConstDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "HackClassConstDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackEnumDeclaration(GleanSchemaPredicate):
+class HackEnumDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.EnumDeclaration.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackEnumDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "HackEnumDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackDeclarationComment(GleanSchemaPredicate):
+class HackDeclarationComment(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.DeclarationComment.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackDeclarationComment":
+  def angle_query(*, name: Tuple[()]) -> "HackDeclarationComment":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackNamespaceDeclaration(GleanSchemaPredicate):
+class HackNamespaceDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.NamespaceDeclaration.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackNamespaceDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "HackNamespaceDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackClassDefinition(GleanSchemaPredicate):
+class HackClassDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.ClassDefinition.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackClassDefinition":
+  def angle_query(*, name: Tuple[()]) -> "HackClassDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackMethodOccurrence(GleanSchemaPredicate):
+class HackMethodOccurrence(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.MethodOccurrence.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackMethodOccurrence":
+  def angle_query(*, name: Tuple[()]) -> "HackMethodOccurrence":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackMethodOverrides(GleanSchemaPredicate):
+class HackMethodOverrides(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.MethodOverrides.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackMethodOverrides":
+  def angle_query(*, name: Tuple[()]) -> "HackMethodOverrides":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackType(GleanSchemaPredicate):
+class HackType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.Type.6 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHackType":
+  def angle_query(*, name: str) -> "HackType":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackNameLowerCase(GleanSchemaPredicate):
+class HackNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.NameLowerCase.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackNameLowerCase":
+  def angle_query(*, name: Tuple[()]) -> "HackNameLowerCase":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackTypeConstDefinition(GleanSchemaPredicate):
+class HackTypeConstDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.TypeConstDefinition.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackTypeConstDefinition":
+  def angle_query(*, name: Tuple[()]) -> "HackTypeConstDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackDeclarationTarget(GleanSchemaPredicate):
+class HackDeclarationTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.DeclarationTarget.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackDeclarationTarget":
+  def angle_query(*, name: Tuple[()]) -> "HackDeclarationTarget":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackSymbol(GleanSchemaPredicate):
+class HackSymbol(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.symbol.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackSymbol":
+  def angle_query(*, name: Tuple[()]) -> "HackSymbol":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackEnumDefinition(GleanSchemaPredicate):
+class HackEnumDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.EnumDefinition.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackEnumDefinition":
+  def angle_query(*, name: Tuple[()]) -> "HackEnumDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackClassConstDefinition(GleanSchemaPredicate):
+class HackClassConstDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.ClassConstDefinition.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackClassConstDefinition":
+  def angle_query(*, name: Tuple[()]) -> "HackClassConstDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackStringLiteral(GleanSchemaPredicate):
+class HackStringLiteral(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.StringLiteral.6 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHackStringLiteral":
+  def angle_query(*, name: str) -> "HackStringLiteral":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackGlobalConstDeclaration(GleanSchemaPredicate):
+class HackGlobalConstDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.GlobalConstDeclaration.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackGlobalConstDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "HackGlobalConstDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackFunctionDefinition(GleanSchemaPredicate):
+class HackFunctionDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.FunctionDefinition.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackFunctionDefinition":
+  def angle_query(*, name: Tuple[()]) -> "HackFunctionDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackTraitDefinition(GleanSchemaPredicate):
+class HackTraitDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.TraitDefinition.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackTraitDefinition":
+  def angle_query(*, name: Tuple[()]) -> "HackTraitDefinition":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackDeclarationName(GleanSchemaPredicate):
+class HackDeclarationName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.DeclarationName.6 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHackDeclarationName":
+  def angle_query(*, name: str) -> "HackDeclarationName":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackPropertyDeclaration(GleanSchemaPredicate):
+class HackPropertyDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.PropertyDeclaration.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackPropertyDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "HackPropertyDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackFileCall(GleanSchemaPredicate):
+class HackFileCall(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.FileCall.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackFileCall":
+  def angle_query(*, name: Tuple[()]) -> "HackFileCall":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackFileDeclarations(GleanSchemaPredicate):
+class HackFileDeclarations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.FileDeclarations.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackFileDeclarations":
+  def angle_query(*, name: Tuple[()]) -> "HackFileDeclarations":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackTypeConstDeclaration(GleanSchemaPredicate):
+class HackTypeConstDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.TypeConstDeclaration.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackTypeConstDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "HackTypeConstDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
-class GSHackDeclarationLocation(GleanSchemaPredicate):
+class HackDeclarationLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"hack.DeclarationLocation.6 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSHackDeclarationLocation":
+  def angle_query(*, name: Tuple[()]) -> "HackDeclarationLocation":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -5,40 +5,40 @@ import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
-class GSCodemarkupBuckBuckEntityLocation(GleanSchemaPredicate):
+class CodemarkupBuckBuckEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.buck.BuckEntityLocation.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupBuckBuckEntityLocation":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupBuckBuckEntityLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupBuckBuckResolveLocation(GleanSchemaPredicate):
+class CodemarkupBuckBuckResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.buck.BuckResolveLocation.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupBuckBuckResolveLocation":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupBuckBuckResolveLocation":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupBuckBuckFileEntityXRefLocations(GleanSchemaPredicate):
+class CodemarkupBuckBuckFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.buck.BuckFileEntityXRefLocations.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupBuckBuckFileEntityXRefLocations":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupBuckBuckFileEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
-class GSCodemarkupBuckBuckEntityUses(GleanSchemaPredicate):
+class CodemarkupBuckBuckEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"codemarkup.buck.BuckEntityUses.2 { { } }"
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GSCodemarkupBuckBuckEntityUses":
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupBuckBuckEntityUses":
     raise Exception("this function can only be called from @angle_query")
 
 
