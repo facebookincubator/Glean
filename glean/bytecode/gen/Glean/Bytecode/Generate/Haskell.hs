@@ -223,7 +223,7 @@ genIssue = intercalate [""]
     , insnPattern varName insn <> " = do"
     ] ++ map ("  " <>)
       (mapMaybe literal insnArgs ++
-      [ issue insnControl
+      [ issue insnEffects
           <> " $ " <> Text.unwords (insnName : concatMap genArgRef insnArgs) ])
     | insn@Insn{..} <- instructions ]
   where
@@ -244,10 +244,9 @@ genIssue = intercalate [""]
       name <> "_i <- literal " <> name
     literal _ = Nothing
 
-    issue UncondJump = "issueUncondJump"
-    issue UncondReturn = "issueUncondJump"
-    issue CondJump = "issueCondJump"
-    issue FallThrough = "issueFallThrough"
+    issue effects
+      | EndBlock `elem` effects = "issueEndBlock"
+      | otherwise = "issue"
 
 genDecodable :: [Text]
 genDecodable =
