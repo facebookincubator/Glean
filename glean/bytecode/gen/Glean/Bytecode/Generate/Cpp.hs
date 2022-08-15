@@ -105,36 +105,37 @@ genInsnEval Insn{..} =
       | Return `elem` insnEffects = "const uint64_t * FOLLY_NULLABLE "
       | otherwise = "void"
 
-    declare (Arg name Offsets Imm) =
+
+    declare (Arg name (Imm ty)) =
+      [ cppType ty <> " " <> name <> ";" ]
+    declare (Arg name (Reg ty Load)) =
+      [ cppType ty <> " " <> name <> ";" ]
+    -- just make a pointer to the register for Store and Update for now
+    declare (Arg name (Reg ty _)) =
+      [ cppType ty <> "* " <> name <> ";" ]
+    declare (Arg name Offsets) =
       [ "uint64_t " <> name <> "_size;"
       , "const uint64_t *" <> name <> ";" ]
-    declare (Arg name (Regs tys) _) =
+    declare (Arg name (Regs tys))  =
       [ "static constexpr uint64_t " <> name <> "_arity = "
           <> Text.pack (show (length tys) <> ";")
       , "const uint64_t *" <> name <> ";" ]
-    declare (Arg name ty Imm) =
-      [ cppType ty <> " " <> name <> ";" ]
-    declare (Arg name ty Load) =
-      [ cppType ty <> " " <> name <> ";" ]
-    -- just make a pointer to the register for Store and Update for now
-    declare (Arg name ty _) =
-      [ cppType ty <> "* " <> name <> ";" ]
 
-    decode (Arg name Literal Imm) =
+    decode (Arg name (Imm Literal)) =
       [ "args." <> name <> " = &literals[*pc++];" ]
-    decode (Arg name Offsets Imm) =
+    decode (Arg name (Imm ty)) =
+      [ "args." <> name <> " = " <> cppCast ty "*pc++" <> ";" ]
+    decode (Arg name (Reg ty Load)) =
+      [ "args." <> name <> " = " <> cppCast ty "frame[*pc++]" <> ";" ]
+    decode (Arg name (Reg ty _)) =
+      [ "args." <> name <> " = " <> cppCastPtr ty "&frame[*pc++]" <> ";" ]
+    decode (Arg name Offsets) =
       [ "args." <> name <> "_size = *pc++;"
       , "args." <> name <> " = pc;"
       , "pc += args." <> name <> "_size;" ]
-    decode (Arg name (Regs _) _) =
+    decode (Arg name (Regs _)) =
       [ "args." <> name <> " = pc;"
       , "pc += args." <> name <> "_arity;" ]
-    decode (Arg name ty Imm) =
-      [ "args." <> name <> " = " <> cppCast ty "*pc++" <> ";" ]
-    decode (Arg name ty Load) =
-      [ "args." <> name <> " = " <> cppCast ty "frame[*pc++]" <> ";" ]
-    decode (Arg name ty _) =
-      [ "args." <> name <> " = " <> cppCastPtr ty "&frame[*pc++]" <> ";" ]
 
     cppCast ty s
       | cppType ty /= "uint64_t" =
