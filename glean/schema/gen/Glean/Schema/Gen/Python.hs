@@ -33,11 +33,11 @@ genSchemaPy _version preddefs typedefs =
   Text.unlines
   [ "# \x40generated"
   , "# To regenerate this file run fbcode//glean/schema/gen/sync"
-  , "from typing import Union"
+  , "from typing import Tuple, Union"
   , ""
   , "class GleanSchemaPredicate:"
   , "  " <> "@staticmethod"
-  , "  " <> "def build_angle(key: Union[str, int]) -> str:"
+  , "  " <> "def build_angle(key: Union[" <> pythonKeyValues <>"]) -> str:"
   , "    " <> "raise Exception" <>
     "(\"this function can only be called from @angle_query\")"
   , ""
@@ -66,17 +66,21 @@ genAllPredicates _ preds = Text.unlines $
   [ Text.unlines
     [ "class GS" <> class_name <> "(GleanSchemaPredicate):"
       , "  " <> "@staticmethod"
-      , "  " <> "def build_angle(key: Union[str, int]) -> str:"
+      , "  " <> "def build_angle(key: Union[" <> pythonKeyValues <>
+        "]) -> str:"
       , "    " <> "return f\"" <> predicateRef_name ref <> "." <>
-        showt (predicateRef_version ref) <> " { json.dumps(key) }\""
+      showt (predicateRef_version ref) <> " { " <> angleFor kTy <> " }\""
       , ""
       , "  " <> "@staticmethod"
-      , "  " <> "def angle_query(*, name: str) -> \"GS" <> class_name <> "\":"
+      , "  " <> "def angle_query(*, name: " <> kTy <> ") -> \"GS" <>
+        class_name <> "\":"
       , "    " <> "raise Exception" <>
         "(\"this function can only be called from @angle_query\")"
     ]
     | pred <- preds
     , let ref = predicateDefRef pred
+          key = predicateDefKeyType pred
+          kTy = valueTy key
           class_name = pythonClassName $ predicateRef_name ref
   ]
 
@@ -84,7 +88,7 @@ header :: Text
 header = Text.unlines
   [ "# \x40generated"
   , "# To regenerate this file run fbcode//glean/schema/gen/sync"
-  , "from typing import Union"
+  , "from typing import Tuple, Union"
   , "import json"
   , "from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate"
   ]
@@ -123,3 +127,21 @@ genTargets info =
     , ")"
     , ""
     ]
+
+-- | Generate a value type
+valueTy :: ResolvedType -> Text
+valueTy t = case t of
+  NatTy{} -> Text.pack "int"
+  BooleanTy{} -> Text.pack "bool"
+  StringTy{} -> Text.pack "str"
+  RecordTy{} -> Text.pack "Tuple[()]"
+  -- TODO other types
+  _ -> Text.pack "str"
+
+pythonKeyValues :: Text
+pythonKeyValues = Text.pack "int, bool, str, Tuple[()]"
+
+angleFor :: Text -> Text
+angleFor keyType = case Text.unpack keyType of
+ "Tuple[()]" -> Text.pack "{ }"
+ _ -> Text.pack "json.dumps(key)"

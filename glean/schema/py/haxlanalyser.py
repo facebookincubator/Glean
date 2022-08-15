@@ -1,13 +1,13 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Union
+from typing import Tuple, Union
 import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
 class GSHaxlanalyserThriftResponse(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.ThriftResponse.1 { json.dumps(key) }"
 
   @staticmethod
@@ -16,16 +16,16 @@ class GSHaxlanalyserThriftResponse(GleanSchemaPredicate):
 
 class GSHaxlanalyserTallyConfig(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"haxlanalyser.TallyConfig.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"haxlanalyser.TallyConfig.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserTallyConfig":
+  def angle_query(*, name: Tuple[()]) -> "GSHaxlanalyserTallyConfig":
     raise Exception("this function can only be called from @angle_query")
 
 class GSHaxlanalyserPolicyName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.PolicyName.1 { json.dumps(key) }"
 
   @staticmethod
@@ -34,25 +34,25 @@ class GSHaxlanalyserPolicyName(GleanSchemaPredicate):
 
 class GSHaxlanalyserRestrictionResponse(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.RestrictionResponse.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserRestrictionResponse":
+  def angle_query(*, name: int) -> "GSHaxlanalyserRestrictionResponse":
     raise Exception("this function can only be called from @angle_query")
 
 class GSHaxlanalyserContext(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"haxlanalyser.Context.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"haxlanalyser.Context.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserContext":
+  def angle_query(*, name: Tuple[()]) -> "GSHaxlanalyserContext":
     raise Exception("this function can only be called from @angle_query")
 
 class GSHaxlanalyserEndpointName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.EndpointName.1 { json.dumps(key) }"
 
   @staticmethod
@@ -61,7 +61,7 @@ class GSHaxlanalyserEndpointName(GleanSchemaPredicate):
 
 class GSHaxlanalyserJankyJSONResponse(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.JankyJSONResponse.1 { json.dumps(key) }"
 
   @staticmethod
@@ -70,7 +70,7 @@ class GSHaxlanalyserJankyJSONResponse(GleanSchemaPredicate):
 
 class GSHaxlanalyserClassifierRead(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.ClassifierRead.1 { json.dumps(key) }"
 
   @staticmethod
@@ -79,7 +79,7 @@ class GSHaxlanalyserClassifierRead(GleanSchemaPredicate):
 
 class GSHaxlanalyserScubaResponse(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.ScubaResponse.1 { json.dumps(key) }"
 
   @staticmethod
@@ -88,7 +88,7 @@ class GSHaxlanalyserScubaResponse(GleanSchemaPredicate):
 
 class GSHaxlanalyserFeatureSetFeature(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.FeatureSetFeature.1 { json.dumps(key) }"
 
   @staticmethod
@@ -97,7 +97,7 @@ class GSHaxlanalyserFeatureSetFeature(GleanSchemaPredicate):
 
 class GSHaxlanalyserSitevarFetch(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.SitevarFetch.1 { json.dumps(key) }"
 
   @staticmethod
@@ -106,43 +106,43 @@ class GSHaxlanalyserSitevarFetch(GleanSchemaPredicate):
 
 class GSHaxlanalyserCall(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"haxlanalyser.Call.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"haxlanalyser.Call.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserCall":
+  def angle_query(*, name: Tuple[()]) -> "GSHaxlanalyserCall":
     raise Exception("this function can only be called from @angle_query")
 
 class GSHaxlanalyserACDCProperty(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"haxlanalyser.ACDCProperty.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"haxlanalyser.ACDCProperty.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserACDCProperty":
+  def angle_query(*, name: Tuple[()]) -> "GSHaxlanalyserACDCProperty":
     raise Exception("this function can only be called from @angle_query")
 
 class GSHaxlanalyserEdge(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"haxlanalyser.Edge.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"haxlanalyser.Edge.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserEdge":
+  def angle_query(*, name: Tuple[()]) -> "GSHaxlanalyserEdge":
     raise Exception("this function can only be called from @angle_query")
 
 class GSHaxlanalyserEndpoint(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"haxlanalyser.Endpoint.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"haxlanalyser.Endpoint.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserEndpoint":
+  def angle_query(*, name: Tuple[()]) -> "GSHaxlanalyserEndpoint":
     raise Exception("this function can only be called from @angle_query")
 
 class GSHaxlanalyserTallyFetch(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.TallyFetch.1 { json.dumps(key) }"
 
   @staticmethod
@@ -151,16 +151,16 @@ class GSHaxlanalyserTallyFetch(GleanSchemaPredicate):
 
 class GSHaxlanalyserPolicy(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"haxlanalyser.Policy.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"haxlanalyser.Policy.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserPolicy":
+  def angle_query(*, name: Tuple[()]) -> "GSHaxlanalyserPolicy":
     raise Exception("this function can only be called from @angle_query")
 
 class GSHaxlanalyserContextName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.ContextName.1 { json.dumps(key) }"
 
   @staticmethod
@@ -169,7 +169,7 @@ class GSHaxlanalyserContextName(GleanSchemaPredicate):
 
 class GSHaxlanalyserTestFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.TestFile.1 { json.dumps(key) }"
 
   @staticmethod
@@ -178,7 +178,7 @@ class GSHaxlanalyserTestFile(GleanSchemaPredicate):
 
 class GSHaxlanalyserThriftFetch(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.ThriftFetch.1 { json.dumps(key) }"
 
   @staticmethod
@@ -187,7 +187,7 @@ class GSHaxlanalyserThriftFetch(GleanSchemaPredicate):
 
 class GSHaxlanalyserInputKey(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.InputKey.1 { json.dumps(key) }"
 
   @staticmethod
@@ -196,16 +196,16 @@ class GSHaxlanalyserInputKey(GleanSchemaPredicate):
 
 class GSHaxlanalyserPiranhaResponse(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.PiranhaResponse.1 { json.dumps(key) }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserPiranhaResponse":
+  def angle_query(*, name: int) -> "GSHaxlanalyserPiranhaResponse":
     raise Exception("this function can only be called from @angle_query")
 
 class GSHaxlanalyserACDCPropertyAccess(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.ACDCPropertyAccess.1 { json.dumps(key) }"
 
   @staticmethod
@@ -214,7 +214,7 @@ class GSHaxlanalyserACDCPropertyAccess(GleanSchemaPredicate):
 
 class GSHaxlanalyserTallyResponse(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.TallyResponse.1 { json.dumps(key) }"
 
   @staticmethod
@@ -223,7 +223,7 @@ class GSHaxlanalyserTallyResponse(GleanSchemaPredicate):
 
 class GSHaxlanalyserScribeResponse(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.ScribeResponse.1 { json.dumps(key) }"
 
   @staticmethod
@@ -232,16 +232,16 @@ class GSHaxlanalyserScribeResponse(GleanSchemaPredicate):
 
 class GSHaxlanalyserInputFetch(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"haxlanalyser.InputFetch.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"haxlanalyser.InputFetch.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSHaxlanalyserInputFetch":
+  def angle_query(*, name: Tuple[()]) -> "GSHaxlanalyserInputFetch":
     raise Exception("this function can only be called from @angle_query")
 
 class GSHaxlanalyserClassifierFetch(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.ClassifierFetch.1 { json.dumps(key) }"
 
   @staticmethod
@@ -250,7 +250,7 @@ class GSHaxlanalyserClassifierFetch(GleanSchemaPredicate):
 
 class GSHaxlanalyserLogFeatureResponse(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.LogFeatureResponse.1 { json.dumps(key) }"
 
   @staticmethod
@@ -259,7 +259,7 @@ class GSHaxlanalyserLogFeatureResponse(GleanSchemaPredicate):
 
 class GSHaxlanalyserLaserDataset(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.LaserDataset.1 { json.dumps(key) }"
 
   @staticmethod
@@ -268,7 +268,7 @@ class GSHaxlanalyserLaserDataset(GleanSchemaPredicate):
 
 class GSHaxlanalyserTallyName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.TallyName.1 { json.dumps(key) }"
 
   @staticmethod
@@ -277,7 +277,7 @@ class GSHaxlanalyserTallyName(GleanSchemaPredicate):
 
 class GSHaxlanalyserConfigeratorFetch(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.ConfigeratorFetch.1 { json.dumps(key) }"
 
   @staticmethod
@@ -286,7 +286,7 @@ class GSHaxlanalyserConfigeratorFetch(GleanSchemaPredicate):
 
 class GSHaxlanalyserHiveResponse(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"haxlanalyser.HiveResponse.1 { json.dumps(key) }"
 
   @staticmethod

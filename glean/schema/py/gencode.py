@@ -1,13 +1,13 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Union
+from typing import Tuple, Union
 import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
 class GSGencodeGenCodeSignature(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"gencode.GenCodeSignature.1 { json.dumps(key) }"
 
   @staticmethod
@@ -16,16 +16,16 @@ class GSGencodeGenCodeSignature(GleanSchemaPredicate):
 
 class GSGencodeGenCodeBySource(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"gencode.GenCodeBySource.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"gencode.GenCodeBySource.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSGencodeGenCodeBySource":
+  def angle_query(*, name: Tuple[()]) -> "GSGencodeGenCodeBySource":
     raise Exception("this function can only be called from @angle_query")
 
 class GSGencodeGenCodeCommand(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"gencode.GenCodeCommand.1 { json.dumps(key) }"
 
   @staticmethod
@@ -34,7 +34,7 @@ class GSGencodeGenCodeCommand(GleanSchemaPredicate):
 
 class GSGencodeGenCodeClass(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"gencode.GenCodeClass.1 { json.dumps(key) }"
 
   @staticmethod
@@ -43,11 +43,11 @@ class GSGencodeGenCodeClass(GleanSchemaPredicate):
 
 class GSGencodeGenCode(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"gencode.GenCode.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"gencode.GenCode.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSGencodeGenCode":
+  def angle_query(*, name: Tuple[()]) -> "GSGencodeGenCode":
     raise Exception("this function can only be called from @angle_query")
 
 

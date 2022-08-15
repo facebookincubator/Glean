@@ -1,40 +1,40 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Union
+from typing import Tuple, Union
 import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
 class GSErlangDeclarationReference(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"erlang.DeclarationReference.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"erlang.DeclarationReference.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSErlangDeclarationReference":
+  def angle_query(*, name: Tuple[()]) -> "GSErlangDeclarationReference":
     raise Exception("this function can only be called from @angle_query")
 
 class GSErlangDeclarationWithFqn(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"erlang.DeclarationWithFqn.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"erlang.DeclarationWithFqn.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSErlangDeclarationWithFqn":
+  def angle_query(*, name: Tuple[()]) -> "GSErlangDeclarationWithFqn":
     raise Exception("this function can only be called from @angle_query")
 
 class GSErlangFunctionDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"erlang.FunctionDeclaration.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"erlang.FunctionDeclaration.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSErlangFunctionDeclaration":
+  def angle_query(*, name: Tuple[()]) -> "GSErlangFunctionDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 class GSErlangDeclarationToFqn(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"erlang.DeclarationToFqn.1 { json.dumps(key) }"
 
   @staticmethod
@@ -43,56 +43,56 @@ class GSErlangDeclarationToFqn(GleanSchemaPredicate):
 
 class GSErlangSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"erlang.SearchByName.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"erlang.SearchByName.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSErlangSearchByName":
+  def angle_query(*, name: Tuple[()]) -> "GSErlangSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
 class GSErlangDeclarationsByFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"erlang.DeclarationsByFile.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"erlang.DeclarationsByFile.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSErlangDeclarationsByFile":
+  def angle_query(*, name: Tuple[()]) -> "GSErlangDeclarationsByFile":
     raise Exception("this function can only be called from @angle_query")
 
 class GSErlangDeclarationLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"erlang.DeclarationLocation.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"erlang.DeclarationLocation.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSErlangDeclarationLocation":
+  def angle_query(*, name: Tuple[()]) -> "GSErlangDeclarationLocation":
     raise Exception("this function can only be called from @angle_query")
 
 class GSErlangNameLowerCase(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"erlang.NameLowerCase.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"erlang.NameLowerCase.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSErlangNameLowerCase":
+  def angle_query(*, name: Tuple[()]) -> "GSErlangNameLowerCase":
     raise Exception("this function can only be called from @angle_query")
 
 class GSErlangXRefsViaFqnByFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"erlang.XRefsViaFqnByFile.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"erlang.XRefsViaFqnByFile.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSErlangXRefsViaFqnByFile":
+  def angle_query(*, name: Tuple[()]) -> "GSErlangXRefsViaFqnByFile":
     raise Exception("this function can only be called from @angle_query")
 
 class GSErlangDeclarationUses(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"erlang.DeclarationUses.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"erlang.DeclarationUses.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSErlangDeclarationUses":
+  def angle_query(*, name: Tuple[()]) -> "GSErlangDeclarationUses":
     raise Exception("this function can only be called from @angle_query")
 
 

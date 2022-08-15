@@ -1,49 +1,49 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Union
+from typing import Tuple, Union
 import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
 class GSPp1Define(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"pp1.Define.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"pp1.Define.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPp1Define":
+  def angle_query(*, name: Tuple[()]) -> "GSPp1Define":
     raise Exception("this function can only be called from @angle_query")
 
 class GSPp1Undef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"pp1.Undef.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"pp1.Undef.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPp1Undef":
+  def angle_query(*, name: Tuple[()]) -> "GSPp1Undef":
     raise Exception("this function can only be called from @angle_query")
 
 class GSPp1Use(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"pp1.Use.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"pp1.Use.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPp1Use":
+  def angle_query(*, name: Tuple[()]) -> "GSPp1Use":
     raise Exception("this function can only be called from @angle_query")
 
 class GSPp1Include(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
-    return f"pp1.Include.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"pp1.Include.1 { { } }"
 
   @staticmethod
-  def angle_query(*, name: str) -> "GSPp1Include":
+  def angle_query(*, name: Tuple[()]) -> "GSPp1Include":
     raise Exception("this function can only be called from @angle_query")
 
 class GSPp1Macro(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"pp1.Macro.1 { json.dumps(key) }"
 
   @staticmethod

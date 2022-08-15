@@ -1,13 +1,13 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Union
+from typing import Tuple, Union
 import json
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
 
 
 class GSSysBlob(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[str, int]) -> str:
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
     return f"sys.Blob.1 { json.dumps(key) }"
 
   @staticmethod
