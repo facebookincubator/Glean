@@ -104,14 +104,19 @@ genModule path name exts es ls =
 -- | Generate the Insn type. We parametrise over the types of registers and
 -- labels.
 genInsnType :: [Text]
-genInsnType = "data Insn" : list "  = " "  | " (map genInsn instructions)
+genInsnType = "data Insn where" : map genInsn instructions
   where
     genInsn Insn{..} =
-      Text.unwords $ insnName : concatMap (genArgTy . argTy) insnArgs
+      "  "
+        <> insnName
+        <> " :: "
+        <> Text.concat
+            [ty <> " -> " | arg <- insnArgs, ty <- genArgTy $ argTy arg]
+        <> "Insn"
 
     genArgTy (Imm Offset) = ["{-# UNPACK #-} !Label"]
     genArgTy Imm{} = ["{-# UNPACK #-} !Word64"]
-    genArgTy (Reg ty _) = ["{-# UNPACK #-} !(Register " <> showTy ty <> ")"]
+    genArgTy (Reg var ty _) = ["{-# UNPACK #-} !(" <> showRegTy var ty <> ")"]
     genArgTy Offsets = ["[Label]"]
     genArgTy (Regs tys) = ["(Register " <> showTy ty <> ")" | ty <- tys]
 
@@ -120,6 +125,9 @@ showTy ty = case ty of
   Fun args ->
     "('Fun '[ " <> Text.intercalate "," (map showTy args) <> " ])"
   _ -> "'" <> Text.pack (show ty)
+
+showRegTy :: Maybe Text -> Ty -> Text
+showRegTy var ty = "Register " <> fromMaybe (showTy ty) var
 
 genMapLabels :: [Text]
 genMapLabels =
@@ -215,6 +223,7 @@ genIssue :: [Text]
 genIssue = intercalate [""]
   [ [ varName insnName
         <> " :: "
+        <> context insnContext
         <> Text.unwords
             (intersperse "->"
               $ concatMap (genArgType . argTy) insnArgs ++ ["Code ()"])
@@ -225,14 +234,16 @@ genIssue = intercalate [""]
           <> " $ " <> Text.unwords (insnName : concatMap genArgRef insnArgs) ])
     | insn@Insn{..} <- instructions ]
   where
+    context [] = ""
+    context [c] = c <> " => "
+    context cs = "(" <> Text.intercalate ", " cs <> ") => "
+
     genArgType (Imm Literal) = ["ByteString"]
     genArgType (Imm Offset) = ["Label"]
     genArgType Imm{} = ["Word64"]
-    genArgType (Reg ty _) = [genReg ty]
+    genArgType (Reg var ty _) = [showRegTy var ty]
     genArgType Offsets = ["[Label]"]
-    genArgType (Regs tys) = map genReg tys
-
-    genReg ty = "Register " <> showTy ty
+    genArgType (Regs tys) = ["Register " <> showTy ty | ty <- tys]
 
     genArgRef (Arg name (Imm Literal)) = [name <> "_i"]
     genArgRef (Arg name (Regs tys)) = regNames name tys

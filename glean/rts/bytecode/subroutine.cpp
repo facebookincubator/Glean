@@ -138,7 +138,7 @@ struct Eval {
         const_cast<char *>(a.lit->data() + a.lit->size()));
   }
 
-  FOLLY_ALWAYS_INLINE void execute(LoadReg a) {
+  FOLLY_ALWAYS_INLINE void execute(Move a) {
     *a.dst = a.src;
   }
 

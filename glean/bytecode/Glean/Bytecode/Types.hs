@@ -8,6 +8,8 @@
 
 module Glean.Bytecode.Types
   ( Ty(..)
+  , Comparable
+  , Addable
   , Register(..)
   , Label(..)
   , castRegister
@@ -26,6 +28,16 @@ data Ty
   | BinaryOutputPtr -- ^ pointer to binary::Output (temporary, will be removed)
   | Fun [Ty] -- ^ pointer to syscall (temporary, will be removed)
   deriving(Eq, Show)
+
+-- | Types which can be compared
+class Comparable (t :: Ty)
+instance Comparable 'Word
+instance Comparable 'DataPtr
+
+-- | Types which can be added
+class Addable (t :: Ty) (u :: Ty)
+instance Addable 'Word 'Word
+instance Addable 'DataPtr 'Word
 
 -- | Typed registers
 newtype Register (ty :: Ty) = Register { fromRegister :: Word64 }

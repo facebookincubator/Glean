@@ -108,10 +108,10 @@ genInsnEval Insn{..} =
 
     declare (Arg name (Imm ty)) =
       [ cppType ty <> " " <> name <> ";" ]
-    declare (Arg name (Reg ty Load)) =
+    declare (Arg name (Reg _ ty Load)) =
       [ cppType ty <> " " <> name <> ";" ]
     -- just make a pointer to the register for Store and Update for now
-    declare (Arg name (Reg ty _)) =
+    declare (Arg name (Reg _ ty _)) =
       [ cppType ty <> "* " <> name <> ";" ]
     declare (Arg name Offsets) =
       [ "uint64_t " <> name <> "_size;"
@@ -125,9 +125,9 @@ genInsnEval Insn{..} =
       [ "args." <> name <> " = &literals[*pc++];" ]
     decode (Arg name (Imm ty)) =
       [ "args." <> name <> " = " <> cppCast ty "*pc++" <> ";" ]
-    decode (Arg name (Reg ty Load)) =
+    decode (Arg name (Reg _ ty Load)) =
       [ "args." <> name <> " = " <> cppCast ty "frame[*pc++]" <> ";" ]
-    decode (Arg name (Reg ty _)) =
+    decode (Arg name (Reg _ ty _)) =
       [ "args." <> name <> " = " <> cppCastPtr ty "&frame[*pc++]" <> ";" ]
     decode (Arg name Offsets) =
       [ "args." <> name <> "_size = *pc++;"
