@@ -1480,8 +1480,9 @@ matchPat vars input inputend fail chunks = do
   mapM_isLast' (dropWhile isWild) match chunks
   where
   match _isLast (QueryPrefix bs) = do
-    local $ \ok -> do
-      inputShiftLit input inputend bs ok
+    local $ \ptr end ok -> do
+      loadLiteral bs ptr end
+      inputShiftBytes input inputend ptr end ok
       jumpIf0 ok fail -- chunk didn't match
   match _ (QueryWild ty) =
     skipTrusted input inputend ty

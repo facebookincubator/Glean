@@ -49,13 +49,6 @@ struct Eval {
         const_cast<unsigned char*>(input.data()));
   }
 
-  FOLLY_ALWAYS_INLINE void execute(InputShiftLit a) {
-    binary::Input input { *a.begin, a.end };
-    *a.match = input.shift(binary::byteRange(*a.lit));
-    *a.begin = reinterpret_cast<void *>(
-        const_cast<unsigned char*>(input.data()));
-  }
-
   FOLLY_ALWAYS_INLINE void execute(InputShiftBytes a) {
     binary::Input input { *a.begin, a.end };
     *a.match = input.shift(

@@ -107,13 +107,6 @@ instructions =
       [ Arg "begin" $ reg DataPtr Update
       , Arg "end" $ reg DataPtr Load ]
 
-    -- Check that the input starts with the given literal, and then skip past it
-  , Insn "InputShiftLit" [] []
-      [ Arg "begin" $ reg DataPtr Update
-      , Arg "end" $ reg DataPtr Load
-      , Arg "lit" $ Imm Literal
-      , Arg "match" $ reg Word Store ]
-
     -- Check that the input starts with the given byte sequence, and
     -- then skip past it
   , Insn "InputShiftBytes" [] []
