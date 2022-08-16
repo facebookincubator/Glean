@@ -112,9 +112,8 @@ instructions =
   , Insn "InputShiftBytes" [] []
       [ Arg "begin" $ reg DataPtr Update
       , Arg "end" $ reg DataPtr Load
-      , Arg "ptr" $ reg DataPtr Load
-      , Arg "ptrend" $ reg DataPtr Load
-      , Arg "match" $ reg Word Store ]
+      , Arg "ptr" $ reg DataPtr Update
+      , Arg "ptrend" $ reg DataPtr Load ]
 
     -- Decode a Nat from memory
   , Insn "InputSkipNat" [] []

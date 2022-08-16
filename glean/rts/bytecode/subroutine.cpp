@@ -51,11 +51,14 @@ struct Eval {
 
   FOLLY_ALWAYS_INLINE void execute(InputShiftBytes a) {
     binary::Input input { *a.begin, a.end };
-    *a.match = input.shift(
-        folly::ByteRange(reinterpret_cast<const unsigned char*>(a.ptr),
+    const auto match = input.shift(
+        folly::ByteRange(reinterpret_cast<const unsigned char*>(*a.ptr),
                          reinterpret_cast<const unsigned char*>(a.ptrend)));
     *a.begin = reinterpret_cast<void *>(
         const_cast<unsigned char*>(input.data()));
+    if (!match) {
+      *a.ptr = nullptr;
+    }
   }
 
   FOLLY_ALWAYS_INLINE void execute(InputSkipNat a) {

@@ -1480,10 +1480,10 @@ matchPat vars input inputend fail chunks = do
   mapM_isLast' (dropWhile isWild) match chunks
   where
   match _isLast (QueryPrefix bs) = do
-    local $ \ptr end ok -> do
+    local $ \ptr end -> do
       loadLiteral bs ptr end
-      inputShiftBytes input inputend ptr end ok
-      jumpIf0 ok fail -- chunk didn't match
+      inputShiftBytes input inputend ptr end
+      jumpIf0 (castRegister ptr) fail -- chunk didn't match
   match _ (QueryWild ty) =
     skipTrusted input inputend ty
   match _ QueryNever =
@@ -1497,10 +1497,10 @@ matchPat vars input inputend fail chunks = do
       -- the empty tuple could be represented by a null pointer, so it's
       -- not safe to do inputShiftBytes anyway.
     | otherwise =
-      local $ \ptr end ok -> do
+      local $ \ptr end -> do
         getOutput (castRegister (vars ! var)) ptr end
-        inputShiftBytes input inputend ptr end ok
-        jumpIf0 ok fail
+        inputShiftBytes input inputend ptr end
+        jumpIf0 (castRegister ptr) fail
   match isLast (QueryAnd a b) = do
     local $ \start -> do
       move input start
