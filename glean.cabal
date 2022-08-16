@@ -1269,6 +1269,7 @@ library glass-lib
         glean:util,
         thrift-server,
         uri-encode,
+        split,
 
 executable glass-server
     import: fb-haskell, fb-cpp, deps, exe
