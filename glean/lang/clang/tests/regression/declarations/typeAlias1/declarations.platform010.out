@@ -138,7 +138,7 @@
             "name": {
               "key": { "name": { "key": "V" }, "scope": { "global_": { } } }
             },
-            "type": { "key": "S<S<T> >" },
+            "type": { "key": "S<S<T>>" },
             "kind": 1,
             "source": {
               "file": { "key": "test.cpp" },

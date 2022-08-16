@@ -11,3 +11,8 @@ using U = T;
 
 T x;
 U y;
+
+template <typename T>
+struct S {};
+
+using V = S<S<T>>;
