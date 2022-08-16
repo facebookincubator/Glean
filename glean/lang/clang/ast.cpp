@@ -2612,6 +2612,10 @@ struct ASTConsumer : public clang::ASTConsumer {
       // a class template is forward declared with a different type name.
       // `template <typename V> class Optional;` makes the _injected-class-name_
       policy.PrintInjectedClassNameWithArguments = false;
+      // This adjusted policy makes types such as `vector<unique_ptr<int>>` to
+      // be printed as `vector<unique_ptr<int> >` for consistency with LLVM 9.
+      // We should remove this once platform009 is fully gone.
+      policy.SplitTemplateClosers = true;
 #endif
       return policy;
     }());
