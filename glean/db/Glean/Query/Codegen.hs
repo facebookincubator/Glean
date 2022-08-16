@@ -529,7 +529,7 @@ compileQuery bounds (QueryWithInfo query numVars ty) = do
           sub len maxBytes
           jump continue
           pause <- label
-          suspend saveState continue -- see Note [pausing/resuming queries]
+          suspend continue -- see Note [pausing/resuming queries]
           continue <- label
           return ()
     ret
@@ -1131,7 +1131,7 @@ compileFactGenerator bounds (QueryRegs{..} :: QueryRegs s)
           [ end  -- 0 -> no match
           , continue  -- 1 -> match
           ]
-      suspend saveState loop -- 2 -> timeout / interrupted
+      suspend loop -- 2 -> timeout / interrupted
       continue <- label
       return ()
 
@@ -1673,11 +1673,8 @@ newDerivedFact = mkSysCall 8
 
 data QueryRegs s = QueryRegs
   {
-    -- | Unused, temporarily kept for backwards compatibility
-    saveState :: Register 'Word
-
     -- | Maximum number of results to return
-  , maxResults :: Register 'Word
+    maxResults :: Register 'Word
 
     -- | Maximum number of bytes to return
   , maxBytes :: Register 'Word
@@ -1686,7 +1683,7 @@ data QueryRegs s = QueryRegs
 generateQueryCode
   :: (forall s . QueryRegs s -> Code ())
   -> IO (Subroutine CompiledQuery)
-generateQueryCode f = generate Optimised $ \saveState maxResults maxBytes ->
+generateQueryCode f = generate Optimised $ \maxResults maxBytes ->
   f QueryRegs{..}
 
 -- -----------------------------------------------------------------------------

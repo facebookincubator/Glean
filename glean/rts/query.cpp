@@ -706,7 +706,6 @@ std::unique_ptr<QueryResults> executeQuery (
     }
 
     auto args = activation.args();
-    *args++ = 0; // unused
     *args++ = reinterpret_cast<uint64_t>(max_results);
     *args++ = reinterpret_cast<uint64_t>(max_bytes);
 
