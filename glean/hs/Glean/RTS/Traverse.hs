@@ -23,13 +23,15 @@ import Glean.RTS.Bytecode.Gen.Issue
 -- | Type tag for Subroutine
 data CompiledTraversal
 
+visit :: Register 'Word -> Register 'Word -> Code ()
+visit = mkSysCall 0
+
 traversal
-  :: Register ('Fun '[ 'Word, 'Word ])
-  -> Register 'DataPtr
+  :: Register 'DataPtr
   -> Register 'DataPtr
   -> Type
   -> Code ()
-traversal callback input inputend ty = go False (repType ty)
+traversal input inputend ty = go False (repType ty)
   where
     -- if refs is True, we *must* leave the input pointer pointing
     -- after the value, because we're going to traverse more data.
@@ -74,7 +76,7 @@ traversal callback input inputend ty = go False (repType ty)
     go _ (PredicateRep (Pid pid)) = local $ \ide -> do
       inputNat input inputend ide
       pidr <- constant (fromIntegral pid)
-      callFun_2_0 callback ide pidr
+      visit ide pidr
 
 -- | Generate a subroutine which traverses a clause (fact key + value)
 -- and invokes the supplied callback function for each fact ID
@@ -83,9 +85,9 @@ traversal callback input inputend ty = go False (repType ty)
 -- NOTE: The subroutine assumes that the clause is type correct.
 genTraversal :: Type -> Type -> IO (Subroutine CompiledTraversal)
 genTraversal key_ty val_ty =
-  generate Optimised $ \handler clause_begin key_end clause_end -> do
-    traversal handler clause_begin key_end key_ty
-    traversal handler key_end clause_end val_ty
+  generate Optimised $ \clause_begin key_end clause_end -> do
+    traversal clause_begin key_end key_ty
+    traversal key_end clause_end val_ty
     ret
 
 hasRefs :: Rep a -> Bool

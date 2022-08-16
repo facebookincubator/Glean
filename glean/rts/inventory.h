@@ -90,10 +90,9 @@ struct Predicate {
       uint64_t& key_size) {
     Subroutine::Activation::with(
       sub,
-      rename.contextptr(),
+      rename.handlers(),
       [&](auto& activation) {
         activation.run({
-          *rename.handlers_begin(),
           reinterpret_cast<uint64_t>(clause.data),
           reinterpret_cast<uint64_t>(clause.data + clause.key_size),
           reinterpret_cast<uint64_t>(clause.data + clause.size()),
@@ -116,10 +115,9 @@ struct Predicate {
       Fact::Clause clause) {
     Subroutine::Activation::with(
       sub,
-      descend.contextptr(),
+      descend.handlers(),
       [&](auto& activation) {
         activation.run({
-          *descend.handlers_begin(),
           reinterpret_cast<uint64_t>(clause.data),
           reinterpret_cast<uint64_t>(clause.data + clause.key_size),
           reinterpret_cast<uint64_t>(clause.data + clause.size())});

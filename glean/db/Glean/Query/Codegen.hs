@@ -1593,81 +1593,88 @@ compileQueryFacts facts = do
 -- IF YOU ALSO BREAK FORWARD COMPATIBILITY, BUMP latestSupportedVersion AS WELL
 --
 
+-- | Start a new traversal of facts beginning with a given prefix
+seek
+  :: Register 'Word -- predicate id
+  -> Register 'DataPtr -- prefix
+  -> Register 'DataPtr -- prefix end
+  -> Register 'Word -- (output) token
+  -> Code ()
+seek = mkSysCall 0
+
+seekWithinSection
+  :: Register 'Word -- predicate id
+  -> Register 'DataPtr -- prefix
+  -> Register 'DataPtr -- prefix end
+  -> Register 'Word -- section start
+  -> Register 'Word -- section end
+  -> Register 'Word -- (output) token
+  -> Code ()
+seekWithinSection = mkSysCall 1
+
+-- | Fetch the current seek token
+currentSeek :: Register 'Word -> Code ()
+currentSeek = mkSysCall 2
+
+-- | Release the state associated with an iterator token
+endSeek :: Register 'Word -> Code ()
+endSeek = mkSysCall 3
+
+-- | Grab the next fact in a traversal
+next
+  :: Register 'Word     -- token
+  -> Bool               -- do we need the value?
+  -> Register 'Word     -- result
+  -> Register 'DataPtr  -- clause begin
+  -> Register 'DataPtr  -- key end
+  -> Register 'DataPtr  -- clause end
+  -> Register 'Word     -- id
+  -> Code ()
+next tok need_value ok clause keyend clauseend id = do
+  demand <- constant $ if need_value then 1 else 0
+  mkSysCall 4 tok demand ok clause keyend clauseend id
+
+-- | Fact lookup
+lookupKeyValue
+  :: Register 'Word
+  -> Register 'BinaryOutputPtr
+  -> Register 'BinaryOutputPtr
+  -> Register 'Word
+  -> Code ()
+lookupKeyValue = mkSysCall 5
+
+-- | Record a result
+result
+  :: Register 'Word
+  -> Register 'BinaryOutputPtr
+  -> Register 'BinaryOutputPtr
+  -> Register 'Word
+  -> Code ()
+result = mkSysCall 6
+
+-- | Record a result, with a given pid and optional recursive expansion
+resultWithPid
+  :: Register 'Word
+  -> Register 'BinaryOutputPtr
+  -> Register 'BinaryOutputPtr
+  -> Register 'Word
+  -> Register 'Word
+  -> Code ()
+resultWithPid = mkSysCall 7
+
+-- | Record a new derived fact
+newDerivedFact
+  :: Register 'Word
+  -> Register 'BinaryOutputPtr
+  -> Register 'Word
+  -> Register 'Word
+  -> Code ()
+newDerivedFact = mkSysCall 8
+
 data QueryRegs s = QueryRegs
   {
-    -- | Start a new traversal of facts beginning with a given prefix
-    seek
-     :: Register 'Word -- predicate id
-     -> Register 'DataPtr -- prefix
-     -> Register 'DataPtr -- prefix end
-     -> Register 'Word -- (output) token
-     -> Code ()
-
-  , seekWithinSection
-     :: Register 'Word -- predicate id
-     -> Register 'DataPtr -- prefix
-     -> Register 'DataPtr -- prefix end
-     -> Register 'Word -- section start
-     -> Register 'Word -- section end
-     -> Register 'Word -- (output) token
-     -> Code ()
-
-    -- | Fetch the current seek token
-  , currentSeek
-     :: Register 'Word
-     -> Code ()
-
-    -- | Release the state associated with an iterator token
-  , endSeek
-     :: Register 'Word
-     -> Code ()
-
-    -- | Grab the next fact in a traversal
-  , next
-     :: Register 'Word     -- token
-     -> Bool               -- do we need the value?
-     -> Register 'Word     -- result
-     -> Register 'DataPtr  -- clause begin
-     -> Register 'DataPtr  -- key end
-     -> Register 'DataPtr  -- clause end
-     -> Register 'Word     -- id
-     -> Code ()
-
-    -- | Fact lookup
-  , lookupKeyValue
-     :: Register 'Word
-     -> Register 'BinaryOutputPtr
-     -> Register 'BinaryOutputPtr
-     -> Register 'Word
-     -> Code ()
-
-    -- | Record a result
-  , result
-     :: Register 'Word
-     -> Register 'BinaryOutputPtr
-     -> Register 'BinaryOutputPtr
-     -> Register 'Word
-     -> Code ()
-
-    -- | Record a result, with a given pid and optional recursive expansion
-  , resultWithPid
-     :: Register 'Word
-     -> Register 'BinaryOutputPtr
-     -> Register 'BinaryOutputPtr
-     -> Register 'Word
-     -> Register 'Word
-     -> Code ()
-
-    -- | Record a new derived fact
-  , newDerivedFact
-     :: Register 'Word
-     -> Register 'BinaryOutputPtr
-     -> Register 'Word
-     -> Register 'Word
-     -> Code ()
-
     -- | Unused, temporarily kept for backwards compatibility
-  , saveState :: Register 'Word
+    saveState :: Register 'Word
 
     -- | Maximum number of results to return
   , maxResults :: Register 'Word
@@ -1679,53 +1686,8 @@ data QueryRegs s = QueryRegs
 generateQueryCode
   :: (forall s . QueryRegs s -> Code ())
   -> IO (Subroutine CompiledQuery)
-generateQueryCode f = generate Optimised $
-  \ seek_ seekWithinSection_ currentSeek_ endSeek_ next_
-    lookupKey_ result_ resultWithPid_ newDerivedFact_
-    saveState
-    maxResults maxBytes ->
-  let
-    seek typ ptr end tok =
-      callFun_3_1 seek_ typ (castRegister ptr) (castRegister end) tok
-
-    seekWithinSection typ ptr end pfrom pto tok =
-      callFun_5_1 seekWithinSection_
-        typ
-        (castRegister ptr)
-        (castRegister end)
-        (castRegister pfrom)
-        (castRegister pto)
-        tok
-
-    currentSeek tok = callFun_0_1 currentSeek_ tok
-
-    endSeek tok = callFun_1_0 endSeek_ tok
-
-    next tok need_value ok clause keyend clauseend id = do
-      demand <- constant $ if need_value then 1 else 0
-      callFun_2_5 next_
-        tok
-        demand
-        ok
-        (castRegister clause)
-        (castRegister keyend)
-        (castRegister clauseend)
-        id
-
-    lookupKeyValue id kout vout pid =
-      callFun_3_1 lookupKey_ id (castRegister kout) (castRegister vout) pid
-
-    result id key val new =
-      callFun_3_1 result_ id (castRegister key) (castRegister val) new
-
-    resultWithPid id key val pid recexp =
-      callFun_5_0 resultWithPid_ id (castRegister key) (castRegister val)
-        pid recexp
-
-    newDerivedFact ty key val id =
-      callFun_3_1 newDerivedFact_ ty (castRegister key) (castRegister val) id
-  in
-    f QueryRegs{..}
+generateQueryCode f = generate Optimised $ \saveState maxResults maxBytes ->
+  f QueryRegs{..}
 
 -- -----------------------------------------------------------------------------
 -- Pretty-printing

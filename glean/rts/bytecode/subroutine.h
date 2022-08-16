@@ -13,6 +13,7 @@
 
 #include "glean/rts/binary.h"
 #include "glean/rts/bytecode/gen/instruction.h"
+#include "glean/rts/bytecode/syscall.h"
 #include "glean/if/gen-cpp2/internal_types.h"
 
 namespace facebook {
@@ -76,13 +77,13 @@ struct Subroutine {
     /// which needs to 'start' or 'restart' it, initialise its 'args' and then
     /// 'execute' it. Note that the Subroutine must remain alive throughout the
     /// lifetime of the activation.
-    template<typename F> static auto with(const Subroutine& sub, void *context, F&& f) {
+    template<typename F> static auto with(const Subroutine& sub, SysHandlers syscalls, F&& f) {
       alignas(Activation) unsigned char buf[byteSize(sub)];
       struct Guard {
         Activation *ptr;
         ~Guard() { ptr->~Activation(); }
       };
-      Guard guard{new(buf) Activation(sub, context)};
+      Guard guard{new(buf) Activation(sub, syscalls)};
       return std::forward<F>(f)(*guard.ptr);
     }
 
@@ -139,8 +140,8 @@ struct Subroutine {
     thrift::internal::SubroutineState toThrift() const;
 
    private:
-    explicit Activation(const Subroutine &sub, void *context)
-        : sub(sub), context(context) {
+    explicit Activation(const Subroutine &sub, SysHandlers syscalls)
+      : sub(sub), syscalls(syscalls) {
       for (auto& output : outputs()) {
         new(&output) binary::Output;
       }
@@ -169,7 +170,7 @@ struct Subroutine {
     }
 
     const Subroutine &sub;
-    void *context;
+    SysHandlers syscalls;
 
     // null if the activation has finished executing
     const uint64_t * FOLLY_NULLABLE pc;

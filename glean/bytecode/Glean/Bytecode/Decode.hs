@@ -50,6 +50,12 @@ instance Decodable [Label] where
 instance Decodable (Register t) where
   decode = Register <$> decode
 
+instance Decodable [Register t] where
+  decode = do
+    n <- decode
+    replicateM (fromIntegral (n :: Word64)) decode
+
+
 -- | Decode as many elements as possible and return the decoded elements and
 -- the rest of the words, starting with the first that can't be decoded.
 decodeAll :: Decodable a => [Word64] -> ([a], [Word64])

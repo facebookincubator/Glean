@@ -690,7 +690,7 @@ std::unique_ptr<QueryResults> executeQuery (
     &QueryExecutor::newDerivedFact>(q);
 
   folly::Optional<thrift::internal::QueryCont> cont;
-  Subroutine::Activation::with(sub, context_.contextptr(), [&](Subroutine::Activation& activation) {
+  Subroutine::Activation::with(sub, context_.handlers(), [&](Subroutine::Activation& activation) {
     if (restart) {
       activation.restart(
         *restart->sub()->entry(),
@@ -706,7 +706,6 @@ std::unique_ptr<QueryResults> executeQuery (
     }
 
     auto args = activation.args();
-    args = std::copy(context_.handlers_begin(), context_.handlers_end(), args);
     *args++ = 0; // unused
     *args++ = reinterpret_cast<uint64_t>(max_results);
     *args++ = reinterpret_cast<uint64_t>(max_bytes);

@@ -171,30 +171,45 @@ struct SysHandler<C,F> : SysHandlerMethod<C, F, R, Args...> {};
 template<typename C, typename D, typename R, typename... Args, R (D::*F)(Args...) const>
 struct SysHandler<C,F> : SysHandlerMethod<C, F, R, Args...> {};
 
-/// A collection of system call handlers
-template<typename Context, typename... Handlers>
-class SysCalls {
+/// An untyped collection of system call handlers which doesn't own its
+/// context.
+class SysHandlers {
 public:
-  SysCalls(Context&& context, const uint64_t *handlers)
-    : context(std::forward<Context>(context)),
-      handlers(handlers)
-    {}
+  SysHandlers(void *context, const SysFun *handlers)
+    : context_(context), handlers_(handlers) {}
 
-  void *contextptr() const {
-    return const_cast<void *>(static_cast<const void *>(&context));
-  }
-
-  const uint64_t *handlers_begin() const {
-    return handlers;
-  }
-
-  const uint64_t *handlers_end() const {
-    return handlers + sizeof...(Handlers);
+  void handle(int n, uint64_t *frame, const uint64_t *regs, uint64_t nregs) const {
+    assert(n < 32);
+    return handlers_[n](context_, frame, regs, nregs);
   }
 
 private:
-  Context context;
-  const uint64_t *handlers;
+  void *context_;
+  const SysFun *handlers_;
+};
+
+/// A typed collection of system call handlers which does (if `Context` is a
+/// value type) or does not (if `Context` is a reference type) own its
+/// context.
+template<typename Context, typename... Handlers>
+class SysCalls {
+public:
+  SysCalls(Context&& context, const SysFun *handlers)
+    : context_(std::forward<Context>(context)),
+      handlers_(handlers)
+    {}
+
+  /// Return the untyped handlers. The context must be alive when any of the
+  /// handlers is called.
+  SysHandlers handlers() const {
+    return SysHandlers(
+      const_cast<void *>(static_cast<const void *>(&context_)),
+      handlers_);
+  }
+
+private:
+  Context context_;
+  const SysFun *handlers_;
 };
 
 /// Construct a 'SysCall' from an object and a method. The object can be passed
@@ -205,8 +220,8 @@ template<auto... Calls, typename Context>
 SysCalls<Context, typename SysHandler<Context,Calls>::syscall_t...>
 syscalls(Context&& context) {
   // Note that this is static so we don't reconstruct it on each call.
-  static const uint64_t handlers[sizeof...(Calls)] = {
-    reinterpret_cast<uint64_t>(&SysHandler<Context,Calls>::call)...
+  static const SysFun handlers[32] = {
+    &SysHandler<Context,Calls>::call...
   };
   return SysCalls<Context, typename SysHandler<Context,Calls>::syscall_t...>(
     std::forward<Context>(context),

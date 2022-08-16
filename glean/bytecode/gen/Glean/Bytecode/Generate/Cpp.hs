@@ -105,7 +105,6 @@ genInsnEval Insn{..} =
       | Return `elem` insnEffects = "const uint64_t * FOLLY_NULLABLE "
       | otherwise = "void"
 
-
     declare (Arg name (Imm ty)) =
       [ cppType ty <> " " <> name <> ";" ]
     declare (Arg name (Reg _ ty Load)) =
@@ -116,9 +115,8 @@ genInsnEval Insn{..} =
     declare (Arg name Offsets) =
       [ "uint64_t " <> name <> "_size;"
       , "const uint64_t *" <> name <> ";" ]
-    declare (Arg name (Regs tys))  =
-      [ "static constexpr uint64_t " <> name <> "_arity = "
-          <> Text.pack (show (length tys) <> ";")
+    declare (Arg name Regs) =
+      [ "uint64_t " <> name <> "_size;"
       , "const uint64_t *" <> name <> ";" ]
 
     decode (Arg name (Imm Literal)) =
@@ -133,9 +131,10 @@ genInsnEval Insn{..} =
       [ "args." <> name <> "_size = *pc++;"
       , "args." <> name <> " = pc;"
       , "pc += args." <> name <> "_size;" ]
-    decode (Arg name (Regs _)) =
-      [ "args." <> name <> " = pc;"
-      , "pc += args." <> name <> "_arity;" ]
+    decode (Arg name Regs) =
+      [ "args." <> name <> "_size = *pc++;"
+      , "args." <> name <> " = pc;"
+      , "pc += args." <> name <> "_size;" ]
 
     cppCast ty s
       | cppType ty /= "uint64_t" =
@@ -152,7 +151,6 @@ cppType DataPtr = "void *"
 cppType Literal = "const std::string *"
 cppType WordPtr = "uint64_t *"
 cppType BinaryOutputPtr = "binary::Output *"
-cppType (Fun _) = "SysFun"
 cppType _ = "uint64_t"
 
 -- | Generate a switch-based evaluator.

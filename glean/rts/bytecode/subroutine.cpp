@@ -23,7 +23,7 @@ struct Eval {
   const std::string *literals;
   const uint64_t *code;
   const uint64_t *pc;
-  void *context;
+  SysHandlers syscalls;
   uint64_t *frame;
 
 #include "glean/rts/bytecode/gen/evaluate.h"
@@ -238,58 +238,6 @@ struct Eval {
     }
   }
 
-  FOLLY_ALWAYS_INLINE void execute(CallFun_0_1 a) {
-    (*a.fun)(context, frame, a.args, a.args_arity);
-  }
-
-  FOLLY_ALWAYS_INLINE void execute(CallFun_0_2 a) {
-    (*a.fun)(context, frame, a.args, a.args_arity);
-  }
-
-  FOLLY_ALWAYS_INLINE void execute(CallFun_1_1 a) {
-    (*a.fun)(context, frame, a.args, a.args_arity);
-  }
-
-  FOLLY_ALWAYS_INLINE void execute(CallFun_1_0 a) {
-    (*a.fun)(context, frame, a.args, a.args_arity);
-  }
-
-  FOLLY_ALWAYS_INLINE void execute(CallFun_2_0 a) {
-    (*a.fun)(context, frame, a.args, a.args_arity);
-  }
-
-  FOLLY_ALWAYS_INLINE void execute(CallFun_3_0 a) {
-    (*a.fun)(context, frame, a.args, a.args_arity);
-  }
-
-  FOLLY_ALWAYS_INLINE void execute(CallFun_4_0 a) {
-    (*a.fun)(context, frame, a.args, a.args_arity);
-  }
-
-  FOLLY_ALWAYS_INLINE void execute(CallFun_2_1 a) {
-    (*a.fun)(context, frame, a.args, a.args_arity);
-  }
-
-  FOLLY_ALWAYS_INLINE void execute(CallFun_2_2 a) {
-    (*a.fun)(context, frame, a.args, a.args_arity);
-  }
-
-  FOLLY_ALWAYS_INLINE void execute(CallFun_2_5 a) {
-    (*a.fun)(context, frame, a.args, a.args_arity);
-  }
-
-  FOLLY_ALWAYS_INLINE void execute(CallFun_3_1 a) {
-    (*a.fun)(context, frame, a.args, a.args_arity);
-  }
-
-  FOLLY_ALWAYS_INLINE void execute(CallFun_5_0 a) {
-    (*a.fun)(context, frame, a.args, a.args_arity);
-  }
-
-  FOLLY_ALWAYS_INLINE void execute(CallFun_5_1 a) {
-    (*a.fun)(context, frame, a.args, a.args_arity);
-  }
-
   FOLLY_ALWAYS_INLINE void execute(Select a) {
     if (a.sel < a.tgts_size) {
       pc += std::ptrdiff_t(a.tgts[a.sel]);
@@ -323,6 +271,10 @@ struct Eval {
   FOLLY_ALWAYS_INLINE void execute(StoreWord a) {
     *a.dst = a.src;
   }
+
+  FOLLY_ALWAYS_INLINE void execute(SysCall a) { \
+    syscalls.handle(a.num, frame, a.args, a.args_size); \
+  }
 };
 
 }
@@ -334,7 +286,7 @@ void Subroutine::Activation::execute() {
     sub.literals.data(),
     sub.code.data(),
     pc,
-    context,
+    syscalls,
     frame()}.
 #if USE_SWITCH
     evalSwitch();
