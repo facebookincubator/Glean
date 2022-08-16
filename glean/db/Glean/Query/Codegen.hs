@@ -642,7 +642,7 @@ cmpWordPat vars pat = case pat of
       (Nothing, Just f) -> Just f
       (Just f, Just g) -> Just $ \reg fail -> f reg fail >> g reg fail
   Ref (MatchBind (Var ty v _)) | isWordTy ty -> Just $ \reg _ ->
-    loadReg reg (vars ! v)
+    move reg (vars ! v)
   _otherwise -> Nothing
 
 -- | Compare a value in an output register with a pattern. If the
@@ -675,7 +675,7 @@ compileTermGen term vars maybeReg andThen = do
         Ref (MatchFid f) ->
           loadConst (fromIntegral (fromFid f)) (castRegister resultOutput)
         Ref (MatchVar (Var ty v _)) | isWordTy ty ->
-          loadReg (vars ! v) (castRegister resultOutput)
+          move (vars ! v) (castRegister resultOutput)
         _other -> do
           resetOutput resultOutput
           buildTerm resultOutput vars term
@@ -908,8 +908,8 @@ compileStatements
       compileGen (PrimCall PrimOpAddNat [p, q]) (Just reg) inner =
         withNatTerm vars p $ \a ->
           withNatTerm vars q $ \b -> do
-            loadReg (castRegister a) (castRegister reg)
-            add (castRegister b) (castRegister reg)
+            move a reg
+            add b reg
             inner
       compileGen (PrimCall PrimOpToLower [arg]) (Just reg) inner =
         withTerm vars arg $ \str -> do
@@ -958,7 +958,7 @@ compileStatements
             local $ \ptr end -> do
               getOutput array ptr end
               ptrDiff ptr end len
-              advancePtr ptr off
+              add off ptr
               local $ \start size -> do
                 -- really want to just matchPat here
                 move ptr start
@@ -1138,7 +1138,7 @@ compileFactGenerator bounds (QueryRegs{..} :: QueryRegs s)
       when (isJust captureKey) $ move clause saveclause
 
       -- skip the prefix
-      when hasPrefix $ add prefix_size $ castRegister clause
+      when hasPrefix $ add prefix_size clause
 
       -- check that the rest of the key matches the pattern
       matchPat vars clause keyend loop remaining
@@ -1580,7 +1580,7 @@ compileQueryFacts facts = do
       inputNat ptr end rec_
       lookupKeyValue fid kout vout pid
       resultWithPid fid kout vout pid rec_
-      jumpIfLt (castRegister ptr) (castRegister end) loop
+      jumpIfLt ptr end loop
       ret
   return (CompiledQuery sub Nothing Nothing)
 
