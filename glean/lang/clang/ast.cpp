@@ -2604,6 +2604,15 @@ struct ASTConsumer : public clang::ASTConsumer {
       // results, saves a little bit of space, and the location info is
       // generally available in the corresponding source range anyway.
       policy.AnonymousTagLocations = false;
+#if LLVM_VERSION_MAJOR >= 11
+      // This adjusted policy makes _injected-class-name_ be printed without
+      // the template arguments. For example, for `Optional(const Optional&);`
+      // The parameter type will be printed as `Optional`, rather than
+      // `Optional<Value>`. It's also to achieve consistency in situations where
+      // a class template is forward declared with a different type name.
+      // `template <typename V> class Optional;` makes the _injected-class-name_
+      policy.PrintInjectedClassNameWithArguments = false;
+#endif
       return policy;
     }());
     ASTVisitor visitor(db, ctx);
