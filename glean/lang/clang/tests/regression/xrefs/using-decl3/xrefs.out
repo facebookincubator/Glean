@@ -716,7 +716,7 @@
                       }
                     }
                   },
-                  "type": { "key": "double" },
+                  "type": { "key": "T" },
                   "kind": 1,
                   "source": {
                     "file": { "key": "test.cpp" },
@@ -1406,7 +1406,7 @@
                       }
                     }
                   },
-                  "type": { "key": "double" },
+                  "type": { "key": "T" },
                   "kind": 1,
                   "source": {
                     "file": { "key": "test.cpp" },
@@ -2229,7 +2229,7 @@
                       }
                     }
                   },
-                  "type": { "key": "double" },
+                  "type": { "key": "T" },
                   "kind": 1,
                   "source": {
                     "file": { "key": "test.cpp" },

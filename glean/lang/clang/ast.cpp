@@ -371,37 +371,44 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   };
 
   // Memoization of a function which can fail to produce a result
-  template<typename Key, typename Value>
+  template<typename Key, typename Value, typename Proj = folly::Identity>
   struct MemoOptional {
     using key_type = Key;
     using value_type = Value;
 
-    explicit MemoOptional(const std::string& t, ASTVisitor& v)
-      : visitor(v), tag(t) {}
+    explicit MemoOptional(const std::string& t, ASTVisitor& v, Proj p = {})
+        : visitor(v), proj(p), tag(t) {}
 
     template<typename K>
-    folly::Optional<Value> operator()(K key) {
-      if (auto r = folly::get_optional(items, key)) {
-        auto s = r.value();
-        if (s) {
-          return s.value();
+    auto operator()(K key) {
+      auto projected = proj(key);
+      auto real_key = projected ? projected : key;
+      struct Result : Value {
+        decltype(real_key) key;
+      };
+      std::optional<Result> result;
+      if (auto r = folly::get_optional(items, real_key)) {
+        if (auto s = r.value()) {
+          result = Result{s.value(), real_key};
         } else {
           LOG(FATAL) << "MemoOptional (" << tag << "): infinite loop";
         }
       } else {
-        items.insert({key, folly::none});
-        auto v = Value::compute(visitor, key);
+        items.insert({real_key, folly::none});
+        auto v = Value::compute(visitor, real_key);
         if (v) {
-          items[key] = v;
+          items[real_key] = v;
+          result = Result{v.value(), real_key};
         } else {
-          items.erase(key);
+          items.erase(real_key);
         }
-        return v;
       }
+      return result;
     }
 
     folly::F14FastMap<Key, folly::Optional<Value>> items;
     ASTVisitor& visitor;
+    Proj proj;
     const std::string tag;
   };
 
@@ -510,15 +517,15 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         return GlobalScope{};
       } else if (auto x = clang::dyn_cast<clang::NamespaceDecl>(ctx)) {
         if (auto r = namespaces(x)) {
-          return NamespaceScope{x, r->qname};
+          return NamespaceScope{r->key, r->qname};
         }
       } else if (auto x = clang::dyn_cast<clang::CXXRecordDecl>(ctx)) {
         if (auto r = classDecls(x)) {
-          return ClassScope{x, r->qname};
+          return ClassScope{r->key, r->qname};
         }
       } else if (auto x = clang::dyn_cast<clang::FunctionDecl>(ctx)) {
         if (auto r = funDecls(x)) {
-          return LocalScope{x, r->qname};
+          return LocalScope{r->key, r->qname};
         }
       }
       ctx = ctx->getParent();
@@ -705,6 +712,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   template<typename Memo, typename Decl>
   void visitDeclaration(Memo& memo, const Decl *decl) {
     if (auto cdecl = memo(decl)) {
+      decl = cdecl->key;
       if (DeclTraits::isDefinition(decl)) {
         cdecl->define(*this, decl);
       }
@@ -880,6 +888,19 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
       visitor.db.fact<Cxx::EnumDefinition>(decl, enumerators);
     }
+
+    struct GetTemplatableDecl {
+      const clang::EnumDecl* FOLLY_NULLABLE
+      operator()(const clang::EnumDecl* decl) const {
+        return decl->getTemplateInstantiationPattern();
+      }
+    };
+
+    static const clang::EnumDecl* FOLLY_NULLABLE
+    getSpecializedDecl(const clang::EnumDecl*) {
+      // There isn't a specialized decl since enumerations can't be templates.
+      return nullptr;
+    }
   };
 
   struct EnumeratorDecl {
@@ -906,6 +927,72 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   /****************
    * Type aliases *
    ****************/
+
+  // The `TypeAliasTracker` keeps track of type aliases within classes.
+  // The main purpose is to keep track of situations like this:
+  //
+  // ```
+  // template <typename T>
+  // struct S { using X = T; };
+  //
+  // S<int>::X x;
+  // ```
+  //
+  // In this scenario, `S<int>::X` is a type alias where the corresponding
+  // type is `int`. While this is correct, in the indexer we want to keep
+  // track of the "base template". For other entities that can appear in
+  // class templates, the `getTemplateInstantiationPattern` would retrieve
+  // the `S<T>::X` entity. Type aliases for some reason are lacking this
+  // functionality. As such, we implement it ourselves here to be able to
+  // retrieve `S<T>::X` from a `S<int>::X`.
+  class TypeAliasTracker {
+   public:
+    // We simply keep track of every type alias in every class decl for
+    // now, since type aliases within non-template class declarations
+    // within class templates are still instantiable. For example:
+    //
+    // ```
+    // template <typename T>
+    // struct S {
+    //   struct A {
+    //     using X = T;
+    //   };
+    // };
+    // ```
+    //
+    // This function is also called from `VisitTypedefNameDecl`, which means
+    // we won't be in a `CXXRecordDecl` representing a template instantiation.
+    void addTypeAlias(const clang::TypedefNameDecl* decl) {
+      if (auto rd =
+              clang::dyn_cast<clang::CXXRecordDecl>(decl->getDeclContext())) {
+        if (clang::isTemplateInstantiation(rd->getTemplateSpecializationKind())) {
+          LOG(ERROR) << "TypeAliasTracker::addTypeAlias was called with a"
+                     << "type alias within a class template instantiation.";
+        }
+        typeAliasDecls.insert({{rd, decl->getIdentifier()}, decl});
+      }
+    }
+
+    // Given an instantiated type alias, returns the corresponding templated
+    // type alias and `nullptr` otherwise. The semantics of this function
+    // mimics `getTemplateInstantiationPattern` that exist for other entities.
+    const clang::TypedefNameDecl* FOLLY_NULLABLE
+    findTypeAlias(const clang::TypedefNameDecl* decl) const {
+      if (auto rd =
+              clang::dyn_cast<clang::CXXRecordDecl>(decl->getDeclContext())) {
+        if (auto tpl = rd->getTemplateInstantiationPattern()) {
+          return typeAliasDecls.at({tpl, decl->getIdentifier()});
+        }
+      }
+      return nullptr;
+    }
+
+   private:
+    folly::F14FastMap<
+        std::pair<const clang::CXXRecordDecl*, const clang::IdentifierInfo*>,
+        const clang::TypedefNameDecl*>
+        typeAliasDecls;
+  };
 
   struct TypeAliasDecl : Declare<TypeAliasDecl> {
     Fact<Cxx::TypeAliasDeclaration> decl;
@@ -943,9 +1030,44 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     }
 
     void define(ASTVisitor&, const clang::TypedefNameDecl *) const {}
+
+    struct GetTemplatableDecl {
+      TypeAliasTracker& typeAliasTracker;
+
+      const clang::TypedefNameDecl* FOLLY_NULLABLE
+      operator()(const clang::TypedefNameDecl* decl) const {
+        if (auto td = typeAliasTracker.findTypeAlias(decl)) {
+          return td;
+        }
+        if (auto ta = clang::dyn_cast<clang::TypeAliasDecl>(decl)) {
+          // If this is the pattern of a type alias template, find where it was
+          // instantiated from.
+          if (auto ct = ta->getDescribedAliasTemplate()) {
+            // If we hit a point where the user provided a specialization of this
+            // template, we're done looking.
+            while (auto next = ct->getInstantiatedFromMemberTemplate()) {
+              ct = next;
+            }
+            if (auto cd = ct->getTemplatedDecl(); cd && cd != ta) {
+              return cd;
+            }
+          }
+        }
+        return nullptr;
+      }
+    };
+
+    static const clang::TypedefNameDecl* FOLLY_NULLABLE
+    getSpecializedDecl(const clang::TypedefNameDecl*) {
+      // There isn't a specialized decl since type aliases can't be specialized.
+      return nullptr;
+    }
   };
 
   bool VisitTypedefNameDecl(const clang::TypedefNameDecl *decl) {
+    // We rely on the fact that the visitor will encounter `S<T>::X` before
+    // `S<int>::X` regardless of whether we traverse pre- or post- order.
+    typeAliasTracker.addTypeAlias(decl);
     visitDeclaration(typeAliasDecls, decl);
     return true;
   }
@@ -1058,23 +1180,39 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         visitor.db.fact<Cxx::Declarations>(members));
     }
 
-    static const clang::CXXRecordDecl * FOLLY_NULLABLE getInstantiatedMember(
-        const clang::CXXRecordDecl *decl) {
-      return decl->getInstantiatedFromMemberClass();
-    }
+    struct GetTemplatableDecl {
+      const clang::CXXRecordDecl* FOLLY_NULLABLE
+      operator()(const clang::CXXRecordDecl* decl) const {
+        if (auto cd = decl->getTemplateInstantiationPattern()) {
+          return cd;
+        }
+        // If this is the pattern of a class template, find where it was
+        // instantiated from.
+        if (auto ct = decl->getDescribedClassTemplate()) {
+          // If we hit a point where the user provided a specialization of this
+          // template, we're done looking.
+          while (!ct->isMemberSpecialization()) {
+            auto next = ct->getInstantiatedFromMemberTemplate();
+            if (!next) {
+              break;
+            }
+            ct = next;
+          }
+          if (auto cd = ct->getTemplatedDecl(); cd && cd != decl) {
+            auto def = cd->getDefinition();
+            return def ? def : cd;
+          }
+        }
+        return nullptr;
+      }
+    };
 
     static const clang::CXXRecordDecl * FOLLY_NULLABLE getSpecializedDecl(
         const clang::CXXRecordDecl *decl) {
       if (auto spec =
-            clang::dyn_cast<clang::ClassTemplatePartialSpecializationDecl>(
-              decl)) {
-        auto tpl = spec->getSpecializedTemplateOrPartial();
-        if (auto tdecl = tpl.dyn_cast<clang::ClassTemplateDecl*>()) {
-          return tdecl->getTemplatedDecl();
-        } else if (auto tspec =
-            tpl.dyn_cast<clang::ClassTemplatePartialSpecializationDecl*>()) {
-          return tspec;
-        }
+              clang::dyn_cast<clang::ClassTemplateSpecializationDecl>(decl)) {
+        auto tpl = spec->getSpecializedTemplate();
+        return tpl ? tpl->getTemplatedDecl() : nullptr;
       }
       return nullptr;
     }
@@ -1137,9 +1275,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         Cxx::Scope scope,
         Src::Range range) {
       // TODO: should we ignore deleted functions or have some info about them?
-      if (decl->isDeleted()
-        || decl->getTemplateSpecializationKind()
-            == clang::TSK_ImplicitInstantiation) {
+      if (decl->isDeleted()) {
         return folly::none;
       }
 
@@ -1199,18 +1335,37 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       }
     }
 
-    static const clang::FunctionDecl * FOLLY_NULLABLE getInstantiatedMember(
-        const clang::FunctionDecl *decl) {
-      return decl->getInstantiatedFromMemberFunction();
-    }
+    struct GetTemplatableDecl {
+      const clang::FunctionDecl* FOLLY_NULLABLE
+      operator()(const clang::FunctionDecl* decl) const {
+        if (auto fd = decl->getTemplateInstantiationPattern()) {
+          return fd;
+        }
+        // If this is the pattern of a function template, find where it was
+        // instantiated from.
+        if (auto ft = decl->getDescribedFunctionTemplate()) {
+          // If we hit a point where the user provided a specialization of this
+          // template, we're done looking.
+          while (!ft->isMemberSpecialization()) {
+            auto next = ft->getInstantiatedFromMemberTemplate();
+            if (!next) {
+              break;
+            }
+            ft = next;
+          }
+          if (auto fd = ft->getTemplatedDecl(); fd && fd != decl) {
+            auto def = fd->getDefinition();
+            return def ? def : fd;
+          }
+        }
+        return nullptr;
+      }
+    };
 
     static const clang::FunctionDecl * FOLLY_NULLABLE getSpecializedDecl(
         const clang::FunctionDecl *decl) {
-      if (auto spec = decl->getTemplateSpecializationInfo()) {
-        return spec->getTemplate()->getTemplatedDecl();
-      } else {
-        return nullptr;
-      }
+      auto tpl = decl->getPrimaryTemplate();
+      return tpl ? tpl->getTemplatedDecl() : nullptr;
     }
   };
 
@@ -1375,22 +1530,27 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     void define(ASTVisitor&, const clang::VarDecl *) const {}
     void define(ASTVisitor&, const clang::FieldDecl *) const {}
 
-    static const clang::VarDecl * FOLLY_NULLABLE getInstantiatedMember(
-        const clang::VarDecl *decl) {
-      return decl->getInstantiatedFromStaticDataMember();
-    }
+    struct GetTemplatableDecl {
+      const clang::VarDecl* FOLLY_NULLABLE
+      operator()(const clang::VarDecl* decl) const {
+        // The logic for `VarDecl` is a bit simpler here due to LLVM handling
+        // the cases we handle manually for `CXXRecordDecl` and `FunctionDecl`.
+        // https://github.com/llvm/llvm-project/blob/a3a2239aaaf6860eaee591c70a016b7c5984edde/clang/lib/AST/Decl.cpp#L2608-L2619
+        return decl->getTemplateInstantiationPattern();
+      }
+
+      const clang::FieldDecl* FOLLY_NULLABLE
+      operator()(const clang::FieldDecl*) const {
+        return nullptr;
+      }
+    };
 
     static const clang::VarDecl * FOLLY_NULLABLE getSpecializedDecl(
         const clang::VarDecl *decl) {
       if (auto spec =
-          clang::dyn_cast<clang::VarTemplateSpecializationDecl>(decl)) {
-        auto tpl = spec->getSpecializedTemplateOrPartial();
-        if (auto tdecl = tpl.dyn_cast<clang::VarTemplateDecl*>()) {
-          return tdecl->getTemplatedDecl();
-        } else if (auto tspec =
-            tpl.dyn_cast<clang::VarTemplatePartialSpecializationDecl*>()) {
-          return tspec;
-        }
+              clang::dyn_cast<clang::VarTemplateSpecializationDecl>(decl)) {
+        auto tpl = spec->getSpecializedTemplate();
+        return tpl ? tpl->getTemplatedDecl() : nullptr;
       }
       return nullptr;
     }
@@ -1475,7 +1635,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     }
 
     template<typename Decl, typename... Decls, typename ClangDecl>
-    static folly::Optional<ObjcContainerDecl> findIn(
+    static std::optional<ObjcContainerDecl> findIn(
         ASTVisitor& visitor,
         const ClangDecl *decl) {
       if (auto p = clang::dyn_cast<Decl>(decl)) {
@@ -1486,14 +1646,14 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     }
 
     template<typename ClangDecl>
-    static folly::Optional<ObjcContainerDecl> findIn(
+    static std::optional<ObjcContainerDecl> findIn(
         ASTVisitor&,
         const ClangDecl *) {
-      return folly::none;
+      return std::nullopt;
     }
 
     template<typename ClangDecl>
-    static folly::Optional<ObjcContainerDecl> find(
+    static std::optional<ObjcContainerDecl> find(
         ASTVisitor& visitor,
         const ClangDecl * FOLLY_NULLABLE decl) {
       if (decl) {
@@ -1504,12 +1664,12 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
                 clang::ObjCImplementationDecl,
                 clang::ObjCCategoryImplDecl>(visitor, decl);
         } else {
-          return folly::none;
+          return std::nullopt;
         }
     }
 
     template<typename Decl>
-    static folly::Optional<Cxx::ObjcCategoryId> categoryId(
+    static std::optional<Cxx::ObjcCategoryId> categoryId(
         ASTVisitor& visitor,
         const Decl *decl) {
       if (auto iface = decl->getClassInterface()) {
@@ -1518,7 +1678,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
           visitor.db.name(decl->getName())
         };
       } else {
-        return folly::none;
+        return std::nullopt;
       }
     }
 
@@ -1863,8 +2023,10 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     template<typename Memo, typename Decl>
     static XRef toDecl(Memo& memo, const Decl *decl) {
-      XRef xref{decl, decl};
-      if (auto b = memo(decl)) {
+      auto b = memo(decl);
+      auto d = b ? b->key : decl;
+      XRef xref{d, d, folly::none};
+      if (b) {
         xref.target = Cxx::XRefTarget::declaration(b->declaration());
       }
       return xref;
@@ -1875,24 +2037,23 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       if (!target) {
         if (auto b = memo(d)) {
           target = Cxx::XRefTarget::declaration(b->declaration());
-          decl = d;
+          decl = b->key;
         }
       }
     }
 
     template<typename Memo, typename Decl>
     static XRef toTemplatableDecl(Memo& memo, const Decl *decl) {
-      XRef xref = toDecl(memo, decl);
-      if (auto mem = Memo::value_type::getInstantiatedMember(decl)) {
-        decl = mem;
-        xref.suggest(memo, decl);
-      } else {
-        while (auto tpl = Memo::value_type::getSpecializedDecl(decl)) {
-          decl = tpl;
-          xref.suggest(memo, decl);
-        }
+      auto b = memo(decl);
+      auto d = b ? b->key : decl;
+      XRef xref{d, d, folly::none};
+      if (b) {
+        xref.target = Cxx::XRefTarget::declaration(b->declaration());
       }
-      xref.primary = decl;
+      if (auto tpl = Memo::value_type::getSpecializedDecl(d)) {
+        xref.primary = tpl;
+        xref.suggest(memo, tpl);
+      }
       return xref;
     }
 
@@ -1935,7 +2096,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       if (auto record = clang::dyn_cast<clang::CXXRecordDecl>(decl)) {
         xref = XRef::toTemplatableDecl(classDecls, record);
       } else if (auto enm = clang::dyn_cast<clang::EnumDecl>(decl)) {
-        xref = XRef::toDecl(enumDecls, enm);
+        xref = XRef::toTemplatableDecl(enumDecls, enm);
       } else {
         xref = XRef::unknown(decl);
       }
@@ -1948,7 +2109,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     if (auto decl = tloc.getTypedefNameDecl()) {
       xrefTarget(
         tloc.getSourceRange(),
-        XRef::toDecl(typeAliasDecls, decl));
+        XRef::toTemplatableDecl(typeAliasDecls, decl));
     }
     return true;
   }
@@ -1958,9 +2119,10 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       XRef xref;
       if (auto cls = clang::dyn_cast<clang::ClassTemplateDecl>(decl)) {
         xref = XRef::toTemplatableDecl(classDecls, cls->getTemplatedDecl());
-      } else if (auto alias = clang::dyn_cast<clang::TypeAliasTemplateDecl>(
-          decl)) {
-        xref = XRef::toDecl(typeAliasDecls, alias->getTemplatedDecl());
+      } else if (
+          auto alias = clang::dyn_cast<clang::TypeAliasTemplateDecl>(decl)) {
+        xref =
+            XRef::toTemplatableDecl(typeAliasDecls, alias->getTemplatedDecl());
       } else {
         // We don't want to xref template template parameters and I assume we
         // can't get functions or variables here.
@@ -2343,7 +2505,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     , classDecls("classDecls", *this)
     , enumDecls("enumDecls", *this)
     , enumeratorDecls("enumeratorDecls", *this)
-    , typeAliasDecls("typeAliasDecls", *this)
+    , typeAliasDecls("typeAliasDecls", *this, {typeAliasTracker})
     , funDecls("funDecls", *this)
     , varDecls("varDecls", *this)
     , objcContainerDecls("objcContainerDecls", *this)
@@ -2355,6 +2517,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   clang::ASTContext &astContext;
 
   UsingTracker usingTracker;
+  TypeAliasTracker typeAliasTracker;
 
   Memo<const clang::DeclContext *,
        Scope,
@@ -2368,12 +2531,14 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
   MemoOptional<
       const clang::CXXRecordDecl *,
-      ClassDecl>
+      ClassDecl,
+      ClassDecl::GetTemplatableDecl>
     classDecls;
 
   MemoOptional<
       const clang::EnumDecl *,
-      EnumDecl>
+      EnumDecl,
+      EnumDecl::GetTemplatableDecl>
     enumDecls;
 
   MemoOptional<
@@ -2382,18 +2547,21 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     enumeratorDecls;
 
   MemoOptional<
-      const clang::TypedefNameDecl *,
-      TypeAliasDecl>
+      const clang::TypedefNameDecl*,
+      TypeAliasDecl,
+      TypeAliasDecl::GetTemplatableDecl>
     typeAliasDecls;
 
   MemoOptional<
       const clang::FunctionDecl *,
-      FunDecl>
+      FunDecl,
+      FunDecl::GetTemplatableDecl>
     funDecls;
 
   MemoOptional<
       const clang::DeclaratorDecl *,
-      VarDecl>
+      VarDecl,
+      VarDecl::GetTemplatableDecl>
     varDecls;
 
   MemoOptional<

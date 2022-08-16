@@ -108,18 +108,14 @@
                   },
                   "type": { "key": "int" },
                   "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
+                    "global_": { "kind": 2, "attribute": 0, "definition": true }
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 12,
-                    "columnBegin": 3,
-                    "lineEnd": 12,
-                    "columnEnd": 16
+                    "lineBegin": 32,
+                    "columnBegin": 1,
+                    "lineEnd": 32,
+                    "columnEnd": 34
                   }
                 }
               }
@@ -151,20 +147,16 @@
                       }
                     }
                   },
-                  "type": { "key": "double" },
+                  "type": { "key": "T" },
                   "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
+                    "global_": { "kind": 2, "attribute": 0, "definition": true }
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 13,
-                    "columnBegin": 3,
-                    "lineEnd": 13,
-                    "columnEnd": 14
+                    "lineBegin": 33,
+                    "columnBegin": 1,
+                    "lineEnd": 33,
+                    "columnEnd": 32
                   }
                 }
               }
@@ -193,26 +185,25 @@
                       }
                     }
                   },
-                  "type": { "key": "X<double, void>" },
+                  "type": { "key": "X<T, U>" },
                   "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
+                    "global_": { "kind": 2, "attribute": 0, "definition": true }
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 14,
-                    "columnBegin": 24,
-                    "lineEnd": 14,
-                    "columnEnd": 40
+                    "lineBegin": 34,
+                    "columnBegin": 1,
+                    "lineEnd": 34,
+                    "columnEnd": 58
                   }
                 }
               }
             }
           },
-          "ranges": [ { "offset": 903, "length": 3 } ]
+          "ranges": [
+            { "offset": 903, "length": 3 },
+            { "offset": 107, "length": 3 }
+          ]
         },
         {
           "target": {
@@ -235,13 +226,9 @@
                       }
                     }
                   },
-                  "type": { "key": "X<double, int *>" },
+                  "type": { "key": "X<T, U *>" },
                   "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
+                    "global_": { "kind": 2, "attribute": 0, "definition": true }
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
@@ -254,49 +241,12 @@
               }
             }
           },
-          "ranges": [ { "offset": 927, "length": 3 } ]
-        },
-        {
-          "target": {
-            "declaration": {
-              "variable": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "baz" },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "A" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  },
-                  "type": { "key": "X<double, char *>" },
-                  "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
-                  },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 28,
-                    "columnBegin": 1,
-                    "lineEnd": 30,
-                    "columnEnd": 17
-                  }
-                }
-              }
-            }
-          },
-          "ranges": [ { "offset": 951, "length": 3 } ]
+          "ranges": [
+            { "offset": 927, "length": 3 },
+            { "offset": 24, "length": 3 },
+            { "offset": 82, "length": 3 },
+            { "offset": 23, "length": 3 }
+          ]
         },
         {
           "target": {
@@ -339,132 +289,6 @@
             }
           },
           "ranges": [ { "offset": 993, "length": 3 } ]
-        },
-        {
-          "target": {
-            "declaration": {
-              "variable": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "baz" },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "A" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  },
-                  "type": { "key": "X<char *, void>" },
-                  "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
-                  },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 14,
-                    "columnBegin": 24,
-                    "lineEnd": 14,
-                    "columnEnd": 40
-                  }
-                }
-              }
-            }
-          },
-          "ranges": [ { "offset": 1010, "length": 3 } ]
-        },
-        {
-          "target": {
-            "declaration": {
-              "variable": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "baz" },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "A" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  },
-                  "type": { "key": "X<char *, int *>" },
-                  "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
-                  },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 28,
-                    "columnBegin": 1,
-                    "lineEnd": 30,
-                    "columnEnd": 17
-                  }
-                }
-              }
-            }
-          },
-          "ranges": [ { "offset": 1033, "length": 3 } ]
-        },
-        {
-          "target": {
-            "declaration": {
-              "variable": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "baz" },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "A" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  },
-                  "type": { "key": "X<char *, char *>" },
-                  "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
-                  },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 28,
-                    "columnBegin": 1,
-                    "lineEnd": 30,
-                    "columnEnd": 17
-                  }
-                }
-              }
-            }
-          },
-          "ranges": [ { "offset": 1056, "length": 3 } ]
         },
         {
           "target": {
@@ -563,110 +387,26 @@
                       }
                     }
                   },
-                  "type": { "key": "X<int, void>" },
+                  "type": { "key": "X<int, U>" },
                   "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
+                    "global_": { "kind": 2, "attribute": 0, "definition": true }
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 20,
-                    "columnBegin": 24,
-                    "lineEnd": 20,
-                    "columnEnd": 42
+                    "lineBegin": 41,
+                    "columnBegin": 22,
+                    "lineEnd": 41,
+                    "columnEnd": 41
                   }
                 }
               }
             }
           },
-          "ranges": [ { "offset": 1109, "length": 3 } ]
-        },
-        {
-          "target": {
-            "declaration": {
-              "variable": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "baz" },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "A" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  },
-                  "type": { "key": "X<int, int *>" },
-                  "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
-                  },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 20,
-                    "columnBegin": 24,
-                    "lineEnd": 20,
-                    "columnEnd": 42
-                  }
-                }
-              }
-            }
-          },
-          "ranges": [ { "offset": 1130, "length": 3 } ]
-        },
-        {
-          "target": {
-            "declaration": {
-              "variable": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "baz" },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "A" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  },
-                  "type": { "key": "X<int, char *>" },
-                  "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
-                  },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 20,
-                    "columnBegin": 24,
-                    "lineEnd": 20,
-                    "columnEnd": 42
-                  }
-                }
-              }
-            }
-          },
-          "ranges": [ { "offset": 1151, "length": 3 } ]
+          "ranges": [
+            { "offset": 1109, "length": 3 },
+            { "offset": 21, "length": 3 },
+            { "offset": 21, "length": 3 }
+          ]
         }
       ],
       "variable": [ ]

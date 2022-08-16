@@ -675,7 +675,7 @@
                   "key": {
                     "returns": { "key": "void" },
                     "parameters": [
-                      { "name": { "key": "x" }, "type": { "key": "Baz" } }
+                      { "name": { "key": "x" }, "type": { "key": "T" } }
                     ]
                   }
                 },

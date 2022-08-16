@@ -129,43 +129,6 @@
                   "key": {
                     "returns": { "key": "void" },
                     "parameters": [
-                      { "name": { "key": "x" }, "type": { "key": "Baz" } }
-                    ]
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 18,
-                  "columnBegin": 22,
-                  "lineEnd": 22,
-                  "columnEnd": 1
-                }
-              }
-            }
-          }
-        }
-      },
-      "kind": 13
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "foo" } } },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "void" },
-                    "parameters": [
                       { "name": { "key": "x" }, "type": { "key": "Foo *" } }
                     ]
                   }

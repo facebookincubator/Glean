@@ -510,7 +510,7 @@
                   "key": {
                     "returns": { "key": "void" },
                     "parameters": [
-                      { "name": { "key": "" }, "type": { "key": "double" } },
+                      { "name": { "key": "" }, "type": { "key": "T" } },
                       { "name": { "key": "" }, "type": { "key": "U" } }
                     ]
                   }
@@ -580,7 +580,7 @@
                   "key": {
                     "returns": { "key": "void" },
                     "parameters": [
-                      { "name": { "key": "" }, "type": { "key": "double" } },
+                      { "name": { "key": "" }, "type": { "key": "T" } },
                       { "name": { "key": "" }, "type": { "key": "U" } }
                     ]
                   }
@@ -650,7 +650,7 @@
                   "key": {
                     "returns": { "key": "void" },
                     "parameters": [
-                      { "name": { "key": "" }, "type": { "key": "bool" } },
+                      { "name": { "key": "" }, "type": { "key": "T" } },
                       { "name": { "key": "" }, "type": { "key": "U" } }
                     ]
                   }

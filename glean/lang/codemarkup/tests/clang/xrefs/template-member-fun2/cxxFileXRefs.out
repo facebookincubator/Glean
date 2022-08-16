@@ -198,10 +198,7 @@
                         "key": {
                           "returns": { "key": "void" },
                           "parameters": [
-                            {
-                              "name": { "key": "" },
-                              "type": { "key": "double" }
-                            },
+                            { "name": { "key": "" }, "type": { "key": "T" } },
                             { "name": { "key": "" }, "type": { "key": "U" } }
                           ]
                         }
@@ -225,7 +222,8 @@
               },
               "ranges": [
                 { "offset": 601, "length": 3 },
-                { "offset": 15, "length": 3 }
+                { "offset": 15, "length": 3 },
+                { "offset": 100, "length": 3 }
               ]
             },
             {
@@ -495,58 +493,6 @@
                 }
               },
               "ranges": [ { "offset": 690, "length": 3 } ]
-            },
-            {
-              "target": {
-                "declaration": {
-                  "function_": {
-                    "key": {
-                      "name": {
-                        "key": {
-                          "name": { "key": { "name": { "key": "baz" } } },
-                          "scope": {
-                            "recordWithAccess": {
-                              "record": {
-                                "key": {
-                                  "name": { "key": "A" },
-                                  "scope": { "global_": { } }
-                                }
-                              },
-                              "access": 0
-                            }
-                          }
-                        }
-                      },
-                      "signature": {
-                        "key": {
-                          "returns": { "key": "void" },
-                          "parameters": [
-                            {
-                              "name": { "key": "" },
-                              "type": { "key": "bool" }
-                            },
-                            { "name": { "key": "" }, "type": { "key": "U" } }
-                          ]
-                        }
-                      },
-                      "method": {
-                        "isVirtual": false,
-                        "isConst": false,
-                        "isVolatile": false,
-                        "refQualifier": 0
-                      },
-                      "source": {
-                        "file": { "key": "test.cpp" },
-                        "lineBegin": 12,
-                        "columnBegin": 24,
-                        "lineEnd": 12,
-                        "columnEnd": 36
-                      }
-                    }
-                  }
-                }
-              },
-              "ranges": [ { "offset": 716, "length": 3 } ]
             },
             {
               "target": {

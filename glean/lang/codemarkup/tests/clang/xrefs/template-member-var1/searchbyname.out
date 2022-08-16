@@ -234,20 +234,20 @@
                               }
                             }
                           },
-                          "type": { "key": "X<int, void>" },
+                          "type": { "key": "X<int, U>" },
                           "kind": {
                             "global_": {
                               "kind": 2,
                               "attribute": 0,
-                              "definition": false
+                              "definition": true
                             }
                           },
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 20,
-                            "columnBegin": 24,
-                            "lineEnd": 20,
-                            "columnEnd": 42
+                            "lineBegin": 41,
+                            "columnBegin": 22,
+                            "lineEnd": 41,
+                            "columnEnd": 41
                           }
                         }
                       }
@@ -271,20 +271,20 @@
                               }
                             }
                           },
-                          "type": { "key": "X<int, int *>" },
+                          "type": { "key": "X<int, U>" },
                           "kind": {
                             "global_": {
                               "kind": 2,
                               "attribute": 0,
-                              "definition": false
+                              "definition": true
                             }
                           },
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 20,
-                            "columnBegin": 24,
-                            "lineEnd": 20,
-                            "columnEnd": 42
+                            "lineBegin": 41,
+                            "columnBegin": 22,
+                            "lineEnd": 41,
+                            "columnEnd": 41
                           }
                         }
                       }
@@ -308,20 +308,20 @@
                               }
                             }
                           },
-                          "type": { "key": "X<int, char *>" },
+                          "type": { "key": "X<int, U>" },
                           "kind": {
                             "global_": {
                               "kind": 2,
                               "attribute": 0,
-                              "definition": false
+                              "definition": true
                             }
                           },
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 20,
-                            "columnBegin": 24,
-                            "lineEnd": 20,
-                            "columnEnd": 42
+                            "lineBegin": 41,
+                            "columnBegin": 22,
+                            "lineEnd": 41,
+                            "columnEnd": 41
                           }
                         }
                       }
@@ -402,48 +402,6 @@
                   "file": { "key": "test.cpp" },
                   "lineBegin": 33,
                   "columnBegin": 1,
-                  "lineEnd": 33,
-                  "columnEnd": 32
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": "bar",
-      "entity": {
-        "cxx": {
-          "defn": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "bar" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
-                    }
-                  }
-                },
-                "type": { "key": "double" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": true }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 33,
-                  "columnBegin": 22,
                   "lineEnd": 33,
                   "columnEnd": 32
                 }
@@ -646,48 +604,6 @@
                     }
                   }
                 },
-                "type": { "key": "X<char *, void>" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": true }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 34,
-                  "columnBegin": 43,
-                  "lineEnd": 34,
-                  "columnEnd": 58
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": "baz",
-      "entity": {
-        "cxx": {
-          "defn": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "baz" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
-                    }
-                  }
-                },
                 "type": { "key": "X<double, U *>" },
                 "kind": {
                   "global_": { "kind": 2, "attribute": 0, "definition": true }
@@ -730,175 +646,7 @@
                     }
                   }
                 },
-                "type": { "key": "X<double, void>" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": true }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 34,
-                  "columnBegin": 43,
-                  "lineEnd": 34,
-                  "columnEnd": 58
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": "baz",
-      "entity": {
-        "cxx": {
-          "defn": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "baz" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
-                    }
-                  }
-                },
                 "type": { "key": "X<int, U>" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": true }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 41,
-                  "columnBegin": 22,
-                  "lineEnd": 41,
-                  "columnEnd": 41
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": "baz",
-      "entity": {
-        "cxx": {
-          "defn": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "baz" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
-                    }
-                  }
-                },
-                "type": { "key": "X<int, char *>" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": true }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 41,
-                  "columnBegin": 22,
-                  "lineEnd": 41,
-                  "columnEnd": 41
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": "baz",
-      "entity": {
-        "cxx": {
-          "defn": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "baz" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
-                    }
-                  }
-                },
-                "type": { "key": "X<int, int *>" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": true }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 41,
-                  "columnBegin": 22,
-                  "lineEnd": 41,
-                  "columnEnd": 41
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": "baz",
-      "entity": {
-        "cxx": {
-          "defn": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "baz" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
-                    }
-                  }
-                },
-                "type": { "key": "X<int, void>" },
                 "kind": {
                   "global_": { "kind": 2, "attribute": 0, "definition": true }
                 },
@@ -984,48 +732,6 @@
                   "file": { "key": "test.cpp" },
                   "lineBegin": 32,
                   "columnBegin": 1,
-                  "lineEnd": 32,
-                  "columnEnd": 34
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": "foo",
-      "entity": {
-        "cxx": {
-          "defn": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "foo" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "A" },
-                            "scope": { "global_": { } }
-                          }
-                        },
-                        "access": 0
-                      }
-                    }
-                  }
-                },
-                "type": { "key": "int" },
-                "kind": {
-                  "global_": { "kind": 2, "attribute": 0, "definition": true }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 32,
-                  "columnBegin": 22,
                   "lineEnd": 32,
                   "columnEnd": 34
                 }

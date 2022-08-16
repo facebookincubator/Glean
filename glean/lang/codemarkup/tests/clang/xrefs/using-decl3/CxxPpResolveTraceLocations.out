@@ -573,63 +573,6 @@
   {
     "key": {
       "tuplefield0": {
-        "name": "Type",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 22,
-            "columnBegin": 12,
-            "lineEnd": 22,
-            "columnEnd": 25
-          }
-        },
-        "span": { "start": 410, "length": 4 }
-      },
-      "tuplefield1": {
-        "cxx": {
-          "decl": {
-            "typeAlias": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "Type" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "W" },
-                            "scope": {
-                              "namespace_": {
-                                "key": { "name": { "key": "N1" } }
-                              }
-                            }
-                          }
-                        },
-                        "access": 0
-                      }
-                    }
-                  }
-                },
-                "type": { "key": "double" },
-                "kind": 1,
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 22,
-                  "columnBegin": 12,
-                  "lineEnd": 22,
-                  "columnEnd": 25
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "tuplefield0": {
         "name": "U",
         "file": { "key": "test.cpp" },
         "location": {
@@ -766,50 +709,6 @@
                   "columnBegin": 1,
                   "lineEnd": 19,
                   "columnEnd": 14
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "tuplefield0": {
-        "name": "W",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 21,
-            "columnBegin": 1,
-            "lineEnd": 22,
-            "columnEnd": 44
-          }
-        },
-        "span": { "start": 400, "length": 1 }
-      },
-      "tuplefield1": {
-        "cxx": {
-          "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "W" },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
-                  "columnBegin": 1,
-                  "lineEnd": 22,
-                  "columnEnd": 44
                 }
               }
             }

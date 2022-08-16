@@ -98,38 +98,6 @@
       "entity": {
         "cxx": {
           "decl": {
-            "record_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "W" },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "kind": { "struct_": { } },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
-                  "columnBegin": 1,
-                  "lineEnd": 22,
-                  "columnEnd": 44
-                }
-              }
-            }
-          }
-        }
-      },
-      "info": { "kind": 24, "isAbstract": false }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "entity": {
-        "cxx": {
-          "decl": {
             "typeAlias": {
               "key": {
                 "name": {
@@ -153,51 +121,6 @@
                   }
                 },
                 "type": { "key": "T" },
-                "kind": 1,
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 22,
-                  "columnBegin": 12,
-                  "lineEnd": 22,
-                  "columnEnd": 25
-                }
-              }
-            }
-          }
-        }
-      },
-      "info": { "kind": 6, "isAbstract": false }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.cpp" },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "typeAlias": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "Type" },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "W" },
-                            "scope": {
-                              "namespace_": {
-                                "key": { "name": { "key": "N1" } }
-                              }
-                            }
-                          }
-                        },
-                        "access": 0
-                      }
-                    }
-                  }
-                },
-                "type": { "key": "double" },
                 "kind": 1,
                 "source": {
                   "file": { "key": "test.cpp" },

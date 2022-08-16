@@ -11,40 +11,6 @@
             "kind": { "struct_": { } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 9,
-              "columnBegin": 1,
-              "lineEnd": 15,
-              "columnEnd": 1
-            }
-          }
-        }
-      },
-      {
-        "record_": {
-          "key": {
-            "name": {
-              "key": { "name": { "key": "Foo" }, "scope": { "global_": { } } }
-            },
-            "kind": { "struct_": { } },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 9,
-              "columnBegin": 1,
-              "lineEnd": 15,
-              "columnEnd": 1
-            }
-          }
-        }
-      },
-      {
-        "record_": {
-          "key": {
-            "name": {
-              "key": { "name": { "key": "Foo" }, "scope": { "global_": { } } }
-            },
-            "kind": { "struct_": { } },
-            "source": {
-              "file": { "key": "test.cpp" },
               "lineBegin": 10,
               "columnBegin": 1,
               "lineEnd": 15,
@@ -85,67 +51,6 @@
         }
       },
       {
-        "typeAlias": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": "T1" },
-                "scope": {
-                  "recordWithAccess": {
-                    "record": {
-                      "key": {
-                        "name": { "key": "Foo" },
-                        "scope": { "global_": { } }
-                      }
-                    },
-                    "access": 0
-                  }
-                }
-              }
-            },
-            "type": { "key": "int" },
-            "kind": 1,
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 11,
-              "columnBegin": 3,
-              "lineEnd": 11,
-              "columnEnd": 14
-            }
-          }
-        }
-      },
-      {
-        "record_": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": "Bar" },
-                "scope": {
-                  "recordWithAccess": {
-                    "record": {
-                      "key": {
-                        "name": { "key": "Foo" },
-                        "scope": { "global_": { } }
-                      }
-                    },
-                    "access": 0
-                  }
-                }
-              }
-            },
-            "kind": { "struct_": { } },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 12,
-              "columnBegin": 3,
-              "lineEnd": 14,
-              "columnEnd": 3
-            }
-          }
-        }
-      },
-      {
         "record_": {
           "key": {
             "name": {
@@ -217,64 +122,6 @@
         }
       },
       {
-        "typeAlias": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": "T2" },
-                "scope": {
-                  "recordWithAccess": {
-                    "record": {
-                      "key": {
-                        "name": { "key": "Bar" },
-                        "scope": {
-                          "recordWithAccess": {
-                            "record": {
-                              "key": {
-                                "name": { "key": "Foo" },
-                                "scope": { "global_": { } }
-                              }
-                            },
-                            "access": 0
-                          }
-                        }
-                      }
-                    },
-                    "access": 0
-                  }
-                }
-              }
-            },
-            "type": { "key": "short" },
-            "kind": 1,
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 13,
-              "columnBegin": 5,
-              "lineEnd": 13,
-              "columnEnd": 16
-            }
-          }
-        }
-      },
-      {
-        "record_": {
-          "key": {
-            "name": {
-              "key": { "name": { "key": "Foo" }, "scope": { "global_": { } } }
-            },
-            "kind": { "struct_": { } },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 17,
-              "columnBegin": 1,
-              "lineEnd": 23,
-              "columnEnd": 1
-            }
-          }
-        }
-      },
-      {
         "record_": {
           "key": {
             "name": {
@@ -318,67 +165,6 @@
               "columnBegin": 3,
               "lineEnd": 19,
               "columnEnd": 14
-            }
-          }
-        }
-      },
-      {
-        "typeAlias": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": "T3" },
-                "scope": {
-                  "recordWithAccess": {
-                    "record": {
-                      "key": {
-                        "name": { "key": "Foo" },
-                        "scope": { "global_": { } }
-                      }
-                    },
-                    "access": 0
-                  }
-                }
-              }
-            },
-            "type": { "key": "short" },
-            "kind": 1,
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 19,
-              "columnBegin": 3,
-              "lineEnd": 19,
-              "columnEnd": 14
-            }
-          }
-        }
-      },
-      {
-        "record_": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": "Bar" },
-                "scope": {
-                  "recordWithAccess": {
-                    "record": {
-                      "key": {
-                        "name": { "key": "Foo" },
-                        "scope": { "global_": { } }
-                      }
-                    },
-                    "access": 0
-                  }
-                }
-              }
-            },
-            "kind": { "struct_": { } },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 20,
-              "columnBegin": 3,
-              "lineEnd": 22,
-              "columnEnd": 3
             }
           }
         }
@@ -443,47 +229,6 @@
               }
             },
             "type": { "key": "T" },
-            "kind": 1,
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 21,
-              "columnBegin": 5,
-              "lineEnd": 21,
-              "columnEnd": 16
-            }
-          }
-        }
-      },
-      {
-        "typeAlias": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": "T4" },
-                "scope": {
-                  "recordWithAccess": {
-                    "record": {
-                      "key": {
-                        "name": { "key": "Bar" },
-                        "scope": {
-                          "recordWithAccess": {
-                            "record": {
-                              "key": {
-                                "name": { "key": "Foo" },
-                                "scope": { "global_": { } }
-                              }
-                            },
-                            "access": 0
-                          }
-                        }
-                      }
-                    },
-                    "access": 0
-                  }
-                }
-              }
-            },
-            "type": { "key": "short" },
             "kind": 1,
             "source": {
               "file": { "key": "test.cpp" },

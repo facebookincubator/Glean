@@ -190,10 +190,7 @@
                           "key": {
                             "returns": { "key": "void" },
                             "parameters": [
-                              {
-                                "name": { "key": "" },
-                                "type": { "key": "bool" }
-                              }
+                              { "name": { "key": "" }, "type": { "key": "T" } }
                             ]
                           }
                         },
@@ -404,10 +401,7 @@
                           "key": {
                             "returns": { "key": "void" },
                             "parameters": [
-                              {
-                                "name": { "key": "" },
-                                "type": { "key": "bool" }
-                              }
+                              { "name": { "key": "" }, "type": { "key": "T" } }
                             ]
                           }
                         },

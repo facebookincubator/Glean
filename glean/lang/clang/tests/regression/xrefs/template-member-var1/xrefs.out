@@ -403,18 +403,14 @@
                   },
                   "type": { "key": "int" },
                   "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
+                    "global_": { "kind": 2, "attribute": 0, "definition": true }
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 12,
-                    "columnBegin": 3,
-                    "lineEnd": 12,
-                    "columnEnd": 16
+                    "lineBegin": 32,
+                    "columnBegin": 1,
+                    "lineEnd": 32,
+                    "columnEnd": 34
                   }
                 }
               }
@@ -468,20 +464,16 @@
                       }
                     }
                   },
-                  "type": { "key": "double" },
+                  "type": { "key": "T" },
                   "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
+                    "global_": { "kind": 2, "attribute": 0, "definition": true }
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 13,
-                    "columnBegin": 3,
-                    "lineEnd": 13,
-                    "columnEnd": 14
+                    "lineBegin": 33,
+                    "columnBegin": 1,
+                    "lineEnd": 33,
+                    "columnEnd": 32
                   }
                 }
               }
@@ -535,20 +527,16 @@
                       }
                     }
                   },
-                  "type": { "key": "X<double, void>" },
+                  "type": { "key": "X<T, U>" },
                   "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
+                    "global_": { "kind": 2, "attribute": 0, "definition": true }
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 14,
-                    "columnBegin": 24,
-                    "lineEnd": 14,
-                    "columnEnd": 40
+                    "lineBegin": 34,
+                    "columnBegin": 1,
+                    "lineEnd": 34,
+                    "columnEnd": 58
                   }
                 }
               }
@@ -602,13 +590,9 @@
                       }
                     }
                   },
-                  "type": { "key": "X<double, int *>" },
+                  "type": { "key": "X<T, U *>" },
                   "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
+                    "global_": { "kind": 2, "attribute": 0, "definition": true }
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
@@ -669,13 +653,9 @@
                       }
                     }
                   },
-                  "type": { "key": "X<double, char *>" },
+                  "type": { "key": "X<T, U *>" },
                   "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
+                    "global_": { "kind": 2, "attribute": 0, "definition": true }
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
@@ -738,18 +718,14 @@
                   },
                   "type": { "key": "int" },
                   "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
+                    "global_": { "kind": 2, "attribute": 0, "definition": true }
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 12,
-                    "columnBegin": 3,
-                    "lineEnd": 12,
-                    "columnEnd": 16
+                    "lineBegin": 32,
+                    "columnBegin": 1,
+                    "lineEnd": 32,
+                    "columnEnd": 34
                   }
                 }
               }
@@ -870,20 +846,16 @@
                       }
                     }
                   },
-                  "type": { "key": "X<char *, void>" },
+                  "type": { "key": "X<T, U>" },
                   "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
+                    "global_": { "kind": 2, "attribute": 0, "definition": true }
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 14,
-                    "columnBegin": 24,
-                    "lineEnd": 14,
-                    "columnEnd": 40
+                    "lineBegin": 34,
+                    "columnBegin": 1,
+                    "lineEnd": 34,
+                    "columnEnd": 58
                   }
                 }
               }
@@ -937,13 +909,9 @@
                       }
                     }
                   },
-                  "type": { "key": "X<char *, int *>" },
+                  "type": { "key": "X<T, U *>" },
                   "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
+                    "global_": { "kind": 2, "attribute": 0, "definition": true }
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
@@ -1004,13 +972,9 @@
                       }
                     }
                   },
-                  "type": { "key": "X<char *, char *>" },
+                  "type": { "key": "X<T, U *>" },
                   "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
+                    "global_": { "kind": 2, "attribute": 0, "definition": true }
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
@@ -1197,20 +1161,16 @@
                       }
                     }
                   },
-                  "type": { "key": "X<int, void>" },
+                  "type": { "key": "X<int, U>" },
                   "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
+                    "global_": { "kind": 2, "attribute": 0, "definition": true }
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 20,
-                    "columnBegin": 24,
-                    "lineEnd": 20,
-                    "columnEnd": 42
+                    "lineBegin": 41,
+                    "columnBegin": 22,
+                    "lineEnd": 41,
+                    "columnEnd": 41
                   }
                 }
               }
@@ -1264,20 +1224,16 @@
                       }
                     }
                   },
-                  "type": { "key": "X<int, int *>" },
+                  "type": { "key": "X<int, U>" },
                   "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
+                    "global_": { "kind": 2, "attribute": 0, "definition": true }
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 20,
-                    "columnBegin": 24,
-                    "lineEnd": 20,
-                    "columnEnd": 42
+                    "lineBegin": 41,
+                    "columnBegin": 22,
+                    "lineEnd": 41,
+                    "columnEnd": 41
                   }
                 }
               }
@@ -1331,20 +1287,16 @@
                       }
                     }
                   },
-                  "type": { "key": "X<int, char *>" },
+                  "type": { "key": "X<int, U>" },
                   "kind": {
-                    "global_": {
-                      "kind": 2,
-                      "attribute": 0,
-                      "definition": false
-                    }
+                    "global_": { "kind": 2, "attribute": 0, "definition": true }
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 20,
-                    "columnBegin": 24,
-                    "lineEnd": 20,
-                    "columnEnd": 42
+                    "lineBegin": 41,
+                    "columnBegin": 22,
+                    "lineEnd": 41,
+                    "columnEnd": 41
                   }
                 }
               }

@@ -591,55 +591,6 @@
       },
       "tuplefield1": {
         "cxx": {
-          "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "foo" } } },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "void" },
-                    "parameters": [
-                      { "name": { "key": "x" }, "type": { "key": "Baz" } }
-                    ]
-                  }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 18,
-                  "columnBegin": 22,
-                  "lineEnd": 22,
-                  "columnEnd": 1
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "tuplefield0": {
-        "name": "foo",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 18,
-            "columnBegin": 22,
-            "lineEnd": 22,
-            "columnEnd": 1
-          }
-        },
-        "span": { "start": 399, "length": 3 }
-      },
-      "tuplefield1": {
-        "cxx": {
           "defn": {
             "function_": {
               "key": {

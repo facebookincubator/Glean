@@ -393,7 +393,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -503,41 +504,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -1012,7 +978,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -1122,41 +1089,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -1631,7 +1563,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -1741,41 +1674,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -2250,7 +2148,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -2360,41 +2259,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -2869,7 +2733,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -2979,41 +2844,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -3488,7 +3318,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -3598,41 +3429,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -4107,7 +3903,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -4217,41 +4014,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -4726,7 +4488,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -4836,41 +4599,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -5355,7 +5083,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -5465,41 +5194,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -5984,7 +5678,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -6094,41 +5789,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -6613,7 +6273,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -6723,41 +6384,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -7242,7 +6868,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -7352,41 +6979,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -7871,7 +7463,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -7981,41 +7574,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -8500,7 +8058,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -8614,41 +8173,6 @@
                 {
                   "target": {
                     "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
                       "variable": {
                         "key": {
                           "name": {
@@ -8719,7 +8243,7 @@
                 "key": {
                   "returns": { "key": "void" },
                   "parameters": [
-                    { "name": { "key": "x" }, "type": { "key": "Baz" } }
+                    { "name": { "key": "x" }, "type": { "key": "T" } }
                   ]
                 }
               },
@@ -9129,7 +8653,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -9239,41 +8764,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -9758,7 +9248,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -9868,41 +9359,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -10382,7 +9838,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -10492,41 +9949,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -11006,7 +10428,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -11116,41 +10539,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -11646,7 +11034,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -11756,41 +11145,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -12276,7 +11630,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -12386,41 +11741,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -12906,7 +12226,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -13016,41 +12337,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -13536,7 +12822,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -13646,41 +12933,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -14166,7 +13418,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -14276,41 +13529,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -14796,7 +14014,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -14906,41 +14125,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -15426,7 +14610,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -15536,41 +14721,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
@@ -16056,7 +15206,8 @@
                   },
                   "ranges": [
                     { "offset": 590, "length": 3 },
-                    { "offset": 10, "length": 3 }
+                    { "offset": 10, "length": 3 },
+                    { "offset": 21, "length": 3 }
                   ]
                 },
                 {
@@ -16166,41 +15317,6 @@
                     }
                   },
                   "ranges": [ { "offset": 610, "length": 3 } ]
-                },
-                {
-                  "target": {
-                    "declaration": {
-                      "function_": {
-                        "key": {
-                          "name": {
-                            "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "signature": {
-                            "key": {
-                              "returns": { "key": "void" },
-                              "parameters": [
-                                {
-                                  "name": { "key": "x" },
-                                  "type": { "key": "Baz" }
-                                }
-                              ]
-                            }
-                          },
-                          "source": {
-                            "file": { "key": "test.cpp" },
-                            "lineBegin": 18,
-                            "columnBegin": 22,
-                            "lineEnd": 22,
-                            "columnEnd": 1
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "ranges": [ { "offset": 621, "length": 3 } ]
                 },
                 {
                   "target": {
