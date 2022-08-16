@@ -1,0 +1,686 @@
+[
+  "@generated",
+  {
+    "key": {
+      "decl": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "Bar" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "Foo" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "kind": { "struct_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 12,
+              "columnBegin": 3,
+              "lineEnd": 14,
+              "columnEnd": 3
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 12,
+        "columnBegin": 3,
+        "lineEnd": 14,
+        "columnEnd": 3
+      },
+      "name": "Bar"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "Bar" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "Foo" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "kind": { "struct_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 20,
+              "columnBegin": 3,
+              "lineEnd": 22,
+              "columnEnd": 3
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 20,
+        "columnBegin": 3,
+        "lineEnd": 22,
+        "columnEnd": 3
+      },
+      "name": "Bar"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "Foo" }, "scope": { "global_": { } } }
+            },
+            "kind": { "struct_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 1,
+              "lineEnd": 15,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 9,
+        "columnBegin": 1,
+        "lineEnd": 15,
+        "columnEnd": 1
+      },
+      "name": "Foo"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "Foo" }, "scope": { "global_": { } } }
+            },
+            "kind": { "struct_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 10,
+              "columnBegin": 1,
+              "lineEnd": 15,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 10,
+        "columnBegin": 1,
+        "lineEnd": 15,
+        "columnEnd": 1
+      },
+      "name": "Foo"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "Foo" }, "scope": { "global_": { } } }
+            },
+            "kind": { "struct_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 17,
+              "columnBegin": 1,
+              "lineEnd": 23,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 17,
+        "columnBegin": 1,
+        "lineEnd": 23,
+        "columnEnd": 1
+      },
+      "name": "Foo"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "T1" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "Foo" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "T" },
+            "kind": 1,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 11,
+              "columnBegin": 3,
+              "lineEnd": 11,
+              "columnEnd": 14
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 11,
+        "columnBegin": 3,
+        "lineEnd": 11,
+        "columnEnd": 14
+      },
+      "name": "T1"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "T1" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "Foo" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "int" },
+            "kind": 1,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 11,
+              "columnBegin": 3,
+              "lineEnd": 11,
+              "columnEnd": 14
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 11,
+        "columnBegin": 3,
+        "lineEnd": 11,
+        "columnEnd": 14
+      },
+      "name": "T1"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "T2" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "Bar" },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "Foo" },
+                                "scope": { "global_": { } }
+                              }
+                            },
+                            "access": 0
+                          }
+                        }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "T" },
+            "kind": 1,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 13,
+              "columnBegin": 5,
+              "lineEnd": 13,
+              "columnEnd": 16
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 13,
+        "columnBegin": 5,
+        "lineEnd": 13,
+        "columnEnd": 16
+      },
+      "name": "T2"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "T2" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "Bar" },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "Foo" },
+                                "scope": { "global_": { } }
+                              }
+                            },
+                            "access": 0
+                          }
+                        }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "short" },
+            "kind": 1,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 13,
+              "columnBegin": 5,
+              "lineEnd": 13,
+              "columnEnd": 16
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 13,
+        "columnBegin": 5,
+        "lineEnd": 13,
+        "columnEnd": 16
+      },
+      "name": "T2"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "T3" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "Foo" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "T" },
+            "kind": 1,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 19,
+              "columnBegin": 3,
+              "lineEnd": 19,
+              "columnEnd": 14
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 19,
+        "columnBegin": 3,
+        "lineEnd": 19,
+        "columnEnd": 14
+      },
+      "name": "T3"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "T3" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "Foo" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "short" },
+            "kind": 1,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 19,
+              "columnBegin": 3,
+              "lineEnd": 19,
+              "columnEnd": 14
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 19,
+        "columnBegin": 3,
+        "lineEnd": 19,
+        "columnEnd": 14
+      },
+      "name": "T3"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "T4" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "Bar" },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "Foo" },
+                                "scope": { "global_": { } }
+                              }
+                            },
+                            "access": 0
+                          }
+                        }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "T" },
+            "kind": 1,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 21,
+              "columnBegin": 5,
+              "lineEnd": 21,
+              "columnEnd": 16
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 21,
+        "columnBegin": 5,
+        "lineEnd": 21,
+        "columnEnd": 16
+      },
+      "name": "T4"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "typeAlias": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "T4" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "Bar" },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "Foo" },
+                                "scope": { "global_": { } }
+                              }
+                            },
+                            "access": 0
+                          }
+                        }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "type": { "key": "short" },
+            "kind": 1,
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 21,
+              "columnBegin": 5,
+              "lineEnd": 21,
+              "columnEnd": 16
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 21,
+        "columnBegin": 5,
+        "lineEnd": 21,
+        "columnEnd": 16
+      },
+      "name": "T4"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "t1" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "Foo<int>::T1" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 25,
+              "columnBegin": 1,
+              "lineEnd": 25,
+              "columnEnd": 15
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 25,
+        "columnBegin": 1,
+        "lineEnd": 25,
+        "columnEnd": 15
+      },
+      "name": "t1"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "t2" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "Foo<short>::Bar::T2" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 26,
+              "columnBegin": 1,
+              "lineEnd": 26,
+              "columnEnd": 22
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 26,
+        "columnBegin": 1,
+        "lineEnd": 26,
+        "columnEnd": 22
+      },
+      "name": "t2"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "t3" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "Foo<Foo<short> >::T3" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 27,
+              "columnBegin": 1,
+              "lineEnd": 27,
+              "columnEnd": 22
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 27,
+        "columnBegin": 1,
+        "lineEnd": 27,
+        "columnEnd": 22
+      },
+      "name": "t3"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "t4" }, "scope": { "global_": { } } }
+            },
+            "type": { "key": "Foo<Foo<short> >::Bar::T4" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 28,
+              "columnBegin": 1,
+              "lineEnd": 28,
+              "columnEnd": 27
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 28,
+        "columnBegin": 1,
+        "lineEnd": 28,
+        "columnEnd": 27
+      },
+      "name": "t4"
+    }
+  }
+]
