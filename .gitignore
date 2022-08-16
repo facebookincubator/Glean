@@ -10,4 +10,7 @@ glean/schema/hs
 glean/schema/thrift
 glean/schema/v[0-9]*
 glean/lang/java-lsif/tests/cases/xrefs/target
+hsthrift
 dump.lsif
+.vscode
+glean.code-workspace
