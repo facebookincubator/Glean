@@ -104,7 +104,7 @@ withOpenDatabase env@Env{..} repo action =
 
 -- | Runs the action on each DB in the stack, in top-to-bottom order
 withOpenDatabaseStack :: Env -> Repo -> (OpenDB -> IO a) -> IO [a]
-withOpenDatabaseStack env@Env{..} repo action = do
+withOpenDatabaseStack env repo action = do
   parents <- repoParents env repo
   mapM (\repo -> withOpenDatabase env repo action) (repo : parents)
 
