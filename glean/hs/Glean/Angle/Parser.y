@@ -5,6 +5,8 @@ module Glean.Angle.Parser
   ( parseQuery
   , parseQueryWithVersion
   , parseSchema
+  , stripAngleVersion
+  , parseSchemaWithVersion
   , parseType
   ) where
 
@@ -345,26 +347,37 @@ parseQuery bs = runAlex (LB.fromStrict bs) $ query
 parseType :: ByteString -> Either String Schema.SourceType
 parseType bs = runAlex (LB.fromStrict bs) $ fmap lval type_
 
-parseQueryWithVersion :: AngleVersion -> ByteString -> Either String SourceQuery
+parseQueryWithVersion
+  :: AngleVersion
+  -> ByteString
+  -> Either String SourceQuery
 parseQueryWithVersion ver bs =
   runAlex (LB.fromStrict bs) (setVersion ver >> query)
 
 parseSchema :: ByteString -> Either String Schema.SourceSchemas
-parseSchema bs
+parseSchema bs = parseSchemaWithVersion rest ver
+  where (ver, rest) = stripAngleVersion bs
+
+stripAngleVersion :: ByteString -> (AngleVersion, ByteString)
+stripAngleVersion bs
   | Just bs1 <- B.stripPrefix "version: " bs
-  , Just (ver, bs2) <- B.readInt bs1 = parseWith bs2 ver
-  | otherwise = parseWith bs latestAngleVersion
+  , Just (ver, bs2) <- B.readInt bs1 = (ver, bs2)
+  | otherwise = (latestAngleVersion, bs)
   -- if the header is omitted, assume we are using the latest version
-  where
-  parseWith bs ver =
-    runAlex (LB.fromStrict bs) $ do
-      setVersion ver
-      (srcEvolves, srcSchemas) <- partitionEithers <$> schema
-      return Schema.SourceSchemas
-        { srcAngleVersion = ver
-        , srcSchemas = reverse srcSchemas
-        , srcEvolves = reverse srcEvolves
-        }
+
+parseSchemaWithVersion
+  :: ByteString
+  -> AngleVersion
+  -> Either String Schema.SourceSchemas
+parseSchemaWithVersion bs ver =
+  runAlex (LB.fromStrict bs) $ do
+    setVersion ver
+    (srcEvolves, srcSchemas) <- partitionEithers <$> schema
+    return Schema.SourceSchemas
+      { srcAngleVersion = ver
+      , srcSchemas = reverse srcSchemas
+      , srcEvolves = reverse srcEvolves
+      }
 
 type P a = Alex a
 

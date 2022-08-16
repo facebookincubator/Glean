@@ -21,7 +21,6 @@ import Control.Monad
 import Control.Monad.State as State
 import Data.Bifunctor
 import Data.Bifoldable
-import Data.Binary as Binary
 import Data.Graph
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
@@ -158,7 +157,7 @@ computeIds schemas versions = flip evalState emptyRefToIdEnv $ do
         -- Compute a hash for each def
         let hashes = map fingerprintDef defs1
         -- Next make a hash of the whole cycle.
-        let cycleHash = hashByteString (Binary.encode hashes)
+        let cycleHash = hashBinary hashes
         -- Note that it's possible to have two predicates with the
         -- same name (different versions) in the cycle, and we
         -- definitely want them to end up with different hashes
@@ -166,7 +165,7 @@ computeIds schemas versions = flip evalState emptyRefToIdEnv $ do
         -- each declaration in the cycle is the hash of the
         -- declaration plus the hash of the whole cycle.
         let hashes2 =
-              [ (def, hashByteString (Binary.encode (hash1, cycleHash)))
+              [ (def, hashBinary (hash1, cycleHash))
               | (def, hash1) <- zip sorted hashes ]
         State.modify (extends hashes2)
         -- now resolve the defs again with the correct Ids
@@ -266,10 +265,10 @@ resolveQuery env (SourceQuery head stmts) =
 -- representation.
 fingerprintDef :: Def -> Hash
 fingerprintDef (RefType (TypeDef id ty)) =
-  hashByteString (Binary.encode (showRef ref, ty))
+  hashBinary (showRef ref, ty)
   where ref = typeIdRef id
 fingerprintDef (RefPred (PredicateDef id key val drv)) =
-  hashByteString (Binary.encode (showRef ref, key, val, fmap rmLocQuery drv))
+  hashBinary (showRef ref, key, val, fmap rmLocQuery drv)
   where ref = predicateIdRef id
 
 {- Note [overriding default deriving]
@@ -339,4 +338,5 @@ makeSchemaEnvs resolved versions refToIdEnv =
 -- hash uniquely identifies a particular NameEnv that can be used to
 -- resolve a type or predicate name, or in general a query.
 hashNameEnv :: NameEnv (RefTarget PredicateId TypeId) -> Hash
-hashNameEnv env = hashByteString (Binary.encode (sort (HashMap.toList env)))
+hashNameEnv env =
+  hashBinary (sort (HashMap.toList env))

@@ -195,8 +195,15 @@ main = do
             then filter (not . ("/archive/" `isInfixOf`)) files
             else files
     schema <- case processSchema Map.empty str of
-      Left err -> throwIO $ ErrorCall $ err
+      Left err -> throwIO $ ErrorCall err
       Right schema -> return schema
+
+    -- Just check that parseSchemaCached works, because the server
+    -- will be using it.
+    case processSchemaCached Map.empty HashMap.empty str of
+      Left err -> throwIO $ ErrorCall $ err
+      Right{} -> return ()
+
     -- for typechecking
     dbschema <- newDbSchema (SchemaIndex schema [])
       LatestSchemaAll readWriteContent

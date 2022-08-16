@@ -11,6 +11,7 @@ module Glean.Database.Config (
   Config(..),
   options,
   processSchema,
+  processSchemaCached,
   processOneSchema,
   SchemaIndex(..),
   schemaForSchemaId,
@@ -30,10 +31,12 @@ module Glean.Database.Config (
 
 import Control.Exception
 import Control.Monad
+import Control.Monad.State as State
 import Data.ByteString (ByteString)
 import qualified Data.ByteString.Char8 as B
 import qualified Data.ByteString.UTF8 as UTF8
 import Data.Default
+import qualified Data.HashMap.Strict as HashMap
 import Data.List
 import Data.Map (Map)
 import qualified Data.Map as Map
@@ -185,6 +188,20 @@ processSchema versions str =
     Right (ss, r) -> Right $
       ProcessedSchema ss r (computeIds (schemasResolved r) versions)
 
+processSchemaCached
+  :: Map SchemaId Version
+  -> SchemaParserCache
+  -> ByteString
+  -> Either String (SchemaParserCache, ProcessedSchema)
+processSchemaCached versions cache str =
+  case parseAndResolveSchemaCached cache str of
+    Left str -> Left str
+    Right (ss, r, newcache) ->
+      Right (
+        newcache,
+        ProcessedSchema ss r (computeIds (schemasResolved r) versions)
+      )
+
 -- | Read the schema definition from the ConfigProvider
 legacySchemaSourceConfig :: ThriftSource SchemaIndex
 legacySchemaSourceConfig =
@@ -226,14 +243,22 @@ schemaSourceIndexConfig key = ThriftSource.genericConfig
     loadInstances cfg Internal.SchemaIndex{..} = do
       let proc Internal.SchemaInstance{..} = do
             let
+              versions = Map.mapKeys SchemaId schemaInstance_versions
               instanceKey = Text.pack $
                 takeDirectory (Text.unpack key) </>
                 Text.unpack schemaInstance_file
-            Config.get cfg instanceKey $
-              processSchema (Map.mapKeys SchemaId schemaInstance_versions)
-      current <- proc schemaIndex_current
-      older <- mapM proc schemaIndex_older
-      return (SchemaIndex current older)
+            str <- lift $ Config.get cfg instanceKey Right
+            cache <- State.get
+            case processSchemaCached versions cache str of
+              Left err -> lift $ throwIO $ Exception $
+                "error in schema: " <> Text.pack err
+              Right (newcache, result) -> do
+                State.put newcache
+                return result
+      flip evalStateT HashMap.empty $ do
+        current <- proc schemaIndex_current
+        older <- mapM proc schemaIndex_older
+        return (SchemaIndex current (reverse older))
 
 -- | Read schema files from a directory
 parseSchemaDir :: FilePath -> IO SchemaIndex

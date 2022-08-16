@@ -9,10 +9,10 @@
 {-# LANGUAGE DeriveGeneric #-}
 
 module Glean.Schema.Resolve
-  ( resolveSchema
-  , parseAndResolveSchema
+  ( parseAndResolveSchema
+  , parseAndResolveSchemaCached
+  , SchemaParserCache
   , resolveType
-  , lookupResultToExcept
   , resolveEvolves
   , runResolve
   , resolveQuery
@@ -26,6 +26,7 @@ import Control.Monad.Except
 import Control.Monad.Extra (whenJust)
 import Data.Bifunctor
 import Data.ByteString (ByteString)
+import qualified Data.ByteString as ByteString
 import Data.Char
 import Data.Graph
 import Data.Foldable
@@ -44,13 +45,21 @@ import qualified Data.Text as Text
 import Data.Text.Prettyprint.Doc hiding (group)
 import TextShow
 
+import Glean.Angle.Hash
 import Glean.Angle.Parser
 import Glean.Angle.Types
 import Glean.Schema.Types
 import Glean.Schema.Util
 
+type SchemaParserCache = HashMap Hash SourceSchemas
+
+-- ---------------------------------------------------------------------------
+-- High-level schema parsing / resolution APIs
+
+--
 -- | Useful packaging of 'parseSchema' and 'resolveSchema'. Note that
 -- parsing and resolution of a schema is a pure function.
+--
 parseAndResolveSchema
   :: ByteString
   -> Either String (SourceSchemas, ResolvedSchemas)
@@ -60,6 +69,65 @@ parseAndResolveSchema str =
     Right ss -> case resolveSchema ss of
       Left txt -> Left (Text.unpack txt)
       Right r -> Right (ss, r)
+
+--
+-- | Like parseAndResolveSchema but uses a cache to avoid repeatedly
+-- parsing the same schema fragments.
+--
+-- We split the input string at "schema" declarations and hash the
+-- content of each one to use as the cache key. There are a couple of
+-- caveats here:
+--
+--  * we lose the benefit of the FILE annotations that tell us the
+--    original source file name for error messages. Therefore don't
+--    use this parsing method when you want error messages; use
+--    the uncached parseAndResolveSchema instead.
+--
+--  * "schema" should appear in column 0. But if it doesn't, the worst
+--    that can happen is we miss out on some caching. Since "schema" is
+--    a keyword, it can't appear inside a schema or anything silly like
+--    that.
+--
+parseAndResolveSchemaCached
+  :: SchemaParserCache
+  -> ByteString
+  -> Either String (SourceSchemas, ResolvedSchemas, SchemaParserCache)
+parseAndResolveSchemaCached cache str = do
+  let
+    (ver, rest) = stripAngleVersion str
+
+    cutSchemas b =
+      (h <> "\n") : -- put the "\n" back on the end
+        if ByteString.null t
+          then []
+          else cutSchemas (ByteString.drop 1 t) -- drop the "\n"
+      where (h,t) = ByteString.breakSubstring "\nschema" b
+
+    schemaFragments =
+      [ (hashByteString frag, frag)
+      | frag <- cutSchemas rest ]
+
+  parsed <- forM schemaFragments $ \(key, str) ->
+    case HashMap.lookup key cache of
+      Nothing -> case parseSchema str of
+        Left err -> Left err
+        Right ss -> return (key, ss)
+      Just cached -> return (key, cached)
+
+  let
+    merged = SourceSchemas
+      { srcAngleVersion = ver
+      , srcSchemas = schemas
+      , srcEvolves = evolves }
+      where
+        schemas = concatMap (srcSchemas . snd) parsed
+        evolves = concatMap (srcEvolves . snd) parsed
+
+    newCache = HashMap.union cache (HashMap.fromList parsed)
+
+  case resolveSchema merged of
+    Left txt -> Left (Text.unpack txt)
+    Right r -> Right (merged, r, newCache)
 
 --
 -- | Turn 'SourceSchemas' into a 'ResolvedSchemas' by resolving all the
