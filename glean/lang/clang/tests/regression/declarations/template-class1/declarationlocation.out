@@ -1,0 +1,325 @@
+[
+  "@generated",
+  {
+    "key": {
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "constructor": { } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "S" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": {
+                "returns": { "key": "void" },
+                "parameters": [
+                  { "name": { "key": "" }, "type": { "key": "S<T> &&" } }
+                ]
+              }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 15,
+              "columnBegin": 3,
+              "lineEnd": 15,
+              "columnEnd": 11
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 15,
+        "columnBegin": 3,
+        "lineEnd": 15,
+        "columnEnd": 11
+      },
+      "name": "constructor"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "constructor": { } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "S" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": {
+                "returns": { "key": "void" },
+                "parameters": [
+                  { "name": { "key": "" }, "type": { "key": "const S<T> &" } }
+                ]
+              }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 14,
+              "columnBegin": 3,
+              "lineEnd": 14,
+              "columnEnd": 16
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 14,
+        "columnBegin": 3,
+        "lineEnd": 14,
+        "columnEnd": 16
+      },
+      "name": "constructor"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": {
+                  "key": {
+                    "conversionOperator": { "key": "type-parameter-0-0" }
+                  }
+                },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "S" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "U" }, "parameters": [ ] }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": true,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 17,
+              "columnBegin": 3,
+              "lineEnd": 19,
+              "columnEnd": 3
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 17,
+        "columnBegin": 3,
+        "lineEnd": 19,
+        "columnEnd": 3
+      },
+      "name": "type-parameter-0-0"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "S" }, "scope": { "global_": { } } }
+            },
+            "kind": { "struct_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 10,
+              "columnBegin": 1,
+              "lineEnd": 10,
+              "columnEnd": 8
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 10,
+        "columnBegin": 1,
+        "lineEnd": 10,
+        "columnEnd": 8
+      },
+      "name": "S"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": { "name": { "key": "S" }, "scope": { "global_": { } } }
+            },
+            "kind": { "struct_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 13,
+              "columnBegin": 1,
+              "lineEnd": 20,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 13,
+        "columnBegin": 1,
+        "lineEnd": 20,
+        "columnEnd": 1
+      },
+      "name": "S"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": { "key": { "constructor": { } } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "S<T> &&" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 15,
+              "columnBegin": 5,
+              "lineEnd": 15,
+              "columnEnd": 7
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 15,
+        "columnBegin": 5,
+        "lineEnd": 15,
+        "columnEnd": 7
+      },
+      "name": ""
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": { "key": { "constructor": { } } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "const S<T> &" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 14,
+              "columnBegin": 5,
+              "lineEnd": 14,
+              "columnEnd": 12
+            }
+          }
+        }
+      },
+      "source": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 14,
+        "columnBegin": 5,
+        "lineEnd": 14,
+        "columnEnd": 12
+      },
+      "name": ""
+    }
+  }
+]
