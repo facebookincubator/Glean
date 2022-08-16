@@ -117,11 +117,7 @@
           "key": {
             "name": {
               "key": {
-                "name": {
-                  "key": {
-                    "conversionOperator": { "key": "type-parameter-0-0" }
-                  }
-                },
+                "name": { "key": { "conversionOperator": { "key": "U" } } },
                 "scope": {
                   "recordWithAccess": {
                     "record": {
@@ -161,7 +157,7 @@
         "lineEnd": 19,
         "columnEnd": 3
       },
-      "name": "type-parameter-0-0"
+      "name": "U"
     }
   },
   {

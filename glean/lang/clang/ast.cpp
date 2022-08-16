@@ -450,9 +450,11 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         return db.fact<Cxx::FunctionName>(
           alt<4>(std::make_tuple()));
 
-      case clang::DeclarationName::CXXConversionFunctionName:
+      case clang::DeclarationName::CXXConversionFunctionName: {
+        auto cd = clang::dyn_cast<clang::CXXConversionDecl>(decl);
         return db.fact<Cxx::FunctionName>(
-          alt<5>(type(name.getCXXNameType())));
+          alt<5>(type(cd ? cd->getConversionType() : name.getCXXNameType())));
+      }
 
       case clang::DeclarationName::CXXDeductionGuideName:
         return folly::none;
