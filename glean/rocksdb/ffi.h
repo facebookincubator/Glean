@@ -81,6 +81,7 @@ const char *glean_rocksdb_container_backup(
 const char *glean_rocksdb_container_open(
   const char *path,
   int mode,
+  bool cache_index_and_filter_blocks,
   SharedCache *cache,
   Container **container
 );

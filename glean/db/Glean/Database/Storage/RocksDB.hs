@@ -65,6 +65,7 @@ withCache Nothing f = f nullPtr
 data RocksDB = RocksDB
   { rocksRoot :: FilePath
   , rocksCache :: Maybe Cache
+  , rocksCacheIndexAndFilterBlocks :: Bool
   }
 
 newStorage :: FilePath -> ServerConfig.Config -> IO RocksDB
@@ -76,6 +77,8 @@ newStorage root ServerConfig.Config{..} = do
   return RocksDB
     { rocksRoot = root
     , rocksCache = cache
+    , rocksCacheIndexAndFilterBlocks =
+        config_db_rocksdb_cache_index_and_filter_blocks
     }
 
 newtype Container = Container (Ptr Container)
@@ -99,7 +102,11 @@ instance Storage RocksDB where
         return (2, start)
     withCString path $ \cpath ->
       withCache (rocksCache rocks) $ \cache_ptr ->
-      using (invoke $ glean_rocksdb_container_open cpath cmode cache_ptr)
+      using (invoke $
+          glean_rocksdb_container_open cpath
+            cmode
+            (fromIntegral (fromEnum (rocksCacheIndexAndFilterBlocks rocks)))
+            cache_ptr)
         $ \container -> do
       fp <- mask_ $ do
         p <- invoke $
@@ -274,6 +281,7 @@ foreign import ccall unsafe "&glean_rocksdb_free_cache"
 foreign import ccall safe glean_rocksdb_container_open
   :: CString
   -> CInt
+  -> CBool
   -> Ptr Cache
   -> Ptr Container
   -> IO CString

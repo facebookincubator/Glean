@@ -72,6 +72,7 @@ enum class Mode {
 std::unique_ptr<Container> open(
   const std::string& path,
   Mode mode,
+  bool cache_index_and_filter_blocks,
   folly::Optional<std::shared_ptr<Cache>> cache);
 
 /// A rocksdb-based fact database

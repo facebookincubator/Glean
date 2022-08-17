@@ -92,22 +92,26 @@ const char *glean_rocksdb_container_backup(
 }
 
 
-const char *glean_rocksdb_container_open(
-    const char *path,
+const char* glean_rocksdb_container_open(
+    const char* path,
     int mode,
-    SharedCache *cache,
-    Container **container) {
+    bool cache_index_and_filter_blocks,
+    SharedCache* cache,
+    Container** container) {
   return ffi::wrap([=] {
     folly::Optional<std::shared_ptr<rocks::Cache>> cache_ptr;
     if (cache) {
       cache_ptr = cache->value;
     }
-    *container =
-      rocks::open(path, static_cast<rocks::Mode>(mode), std::move(cache_ptr))
-        .release();
+    *container = rocks::open(
+                     path,
+                     static_cast<rocks::Mode>(mode),
+                     cache_index_and_filter_blocks,
+                     std::move(cache_ptr))
+                     .release();
   });
 }
-void glean_rocksdb_container_free(Container *container) {
+void glean_rocksdb_container_free(Container* container) {
   ffi::free_(container);
 }
 
