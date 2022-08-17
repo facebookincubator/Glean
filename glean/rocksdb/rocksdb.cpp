@@ -466,7 +466,12 @@ struct DatabaseImpl final : Database {
     stats_.set(loadStats());
     ownership_unit_counters = loadOwnershipUnitCounters();
     ownership_derived_counters = loadOwnershipDerivedCounters();
-    usets_ = loadOwnershipSets();
+
+    // We only need usets_ for writable DBs, and it takes time and
+    // memory to load them so omit this for ReadOnly DBs.
+    if (container_.mode != Mode::ReadOnly) {
+      usets_ = loadOwnershipSets();
+    }
   }
 
   DatabaseImpl(const DatabaseImpl&) = delete;
@@ -1297,11 +1302,15 @@ struct StoredOwnership : Ownership {
   }
 
   UsetId lookupSet(Uset* uset) override {
-    auto existing = db_->usets_->lookup(uset);
-    if (existing) {
-      return existing->id;
+    if (!db_->usets_) {
+      rts::error("rocksdb: lookupSet on read-only DB");
     } else {
-      return INVALID_USET;
+      auto existing = db_->usets_->lookup(uset);
+      if (existing) {
+        return existing->id;
+      } else {
+        return INVALID_USET;
+      }
     }
   }
 
