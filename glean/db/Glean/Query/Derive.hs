@@ -397,6 +397,7 @@ runDerivation env repo ref pred Thrift.DerivePredicateQuery{..} = do
       , userQueryOptions_max_time_ms = maxTime
       , userQueryOptions_omit_results = True
       , userQueryOptions_continuation = Nothing
+      , userQueryOptions_collect_facts_searched = collect
       }
 
     maxBytes = derivePredicateQuery_options
@@ -405,6 +406,9 @@ runDerivation env repo ref pred Thrift.DerivePredicateQuery{..} = do
       >>= derivePredicateOptions_max_results_per_query
     maxTime = derivePredicateQuery_options
       >>= derivePredicateOptions_max_time_ms_per_query
+    collect = maybe False
+      derivePredicateOptions_collect_facts_searched
+      derivePredicateQuery_options
 
     retry :: Double -> IO a -> IO a
     retry secs action = do
@@ -433,8 +437,12 @@ runDerivation env repo ref pred Thrift.DerivePredicateQuery{..} = do
             addMaybe userQueryStats_compile_time_ns
         , userQueryStats_num_facts = add userQueryStats_num_facts
         , userQueryStats_allocated_bytes = add userQueryStats_allocated_bytes
-        , userQueryStats_facts_searched = userQueryStats_facts_searched a
-            <> userQueryStats_facts_searched b
+        , userQueryStats_facts_searched =
+          let sa = userQueryStats_facts_searched a
+              sb = userQueryStats_facts_searched b
+              union = Map.unionWith (+) <$> sa <*> sb
+          in
+          union <|> sa <|> sb
         , userQueryStats_execute_time_ns =
             addMaybe userQueryStats_execute_time_ns
         , userQueryStats_result_count = add userQueryStats_result_count

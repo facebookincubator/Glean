@@ -613,7 +613,9 @@ struct DerivePredicateOptions {
   2: optional i64 max_bytes_per_query;
   // maximum number of bytes to be batched for writing
   3: optional i64 max_time_ms_per_query;
-// maximum amount of time executing each batch
+  // maximum amount of time executing each batch
+  4: bool collect_facts_searched = false;
+// populate the facts_searched field of query stats
 }
 
 exception NotAStoredPredicate {}

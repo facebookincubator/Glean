@@ -12,6 +12,7 @@ module DbDeriveTest (main) where
 
 import Control.Exception
 import Data.Default
+import qualified Data.Map.Strict as Map
 import Test.HUnit
 import Util.String.Quasi
 import Data.Proxy
@@ -223,7 +224,9 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
       ]
       (PredicateRef "all.IsNode" 1)
       $ \stats -> do
-        assertEqual "incremental" 1 (userQueryStats_result_count stats)
+        assertEqual "results" 1 (userQueryStats_result_count stats)
+        assertEqual "facts searched" 1 $ maybe 0 (sum . Map.elems)
+          (userQueryStats_facts_searched stats)
   , TestLabel "sequence" $ TestCase $
     derivationStats def
       [s|schema all.1 {
@@ -246,7 +249,9 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
       (PredicateRef "all.NodeXNode" 1)
       $ \stats -> do
         -- (new x old) + (old x new) + (new x new)
-        assertEqual "incremental" 7 (userQueryStats_result_count stats)
+        assertEqual "results" 7 (userQueryStats_result_count stats)
+        assertEqual "facts searched" 11 $ maybe 0 (sum . Map.elems)
+          (userQueryStats_facts_searched stats)
   , TestLabel "disjunction" $ TestCase $
     derivationStats def
       [s|schema all.1 {
@@ -276,7 +281,9 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
       (PredicateRef "all.NodeCombinations" 1)
       $ \stats -> do
         -- (new x old) + (old x new)
-        assertEqual "incremental" 6 (userQueryStats_result_count stats)
+        assertEqual "results" 6 (userQueryStats_result_count stats)
+        assertEqual "facts searched" 8 $ maybe 0 (sum . Map.elems)
+          (userQueryStats_facts_searched stats)
   , TestLabel "disjunction followed by sequence" $ TestCase $
     derivationStats def
       [s|schema all.1 {
@@ -306,7 +313,9 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
       (PredicateRef "all.Node1and2XNode2" 1)
       $ \stats -> do
         -- (new x old)
-        assertEqual "incremental" 3 (userQueryStats_result_count stats)
+        assertEqual "results" 3 (userQueryStats_result_count stats)
+        assertEqual "facts searched" 4 $ maybe 0 (sum . Map.elems)
+          (userQueryStats_facts_searched stats)
   , TestLabel "disjunction of expression and FactGenerator" $ TestCase $
     derivationStats def
       [s|schema all.1 {
@@ -330,8 +339,10 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
       $ \stats -> do
         -- crucially we don't want to have the 3*5 case of matching
         -- Node<base> + the array element generator.
-        assertEqual "incremental" 12 -- 1*5 + 1*3 + 3*1 + 1*1
+        assertEqual "results" 12 -- 1*5 + 1*3 + 3*1 + 1*1
           (userQueryStats_result_count stats)
+        assertEqual "facts searched" 11 $ maybe 0 (sum . Map.elems)
+          (userQueryStats_facts_searched stats)
 
   , TestLabel "continuations" $ TestCase $
     derivationStats
@@ -371,6 +382,80 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
       $ \stats -> do
         -- should not throw an error
         assertEqual "incremental" 0 (userQueryStats_result_count stats)
+
+  , TestLabel "optimise - sequence of prefix seeks" $ TestCase $
+    derivationStats def
+      [s|schema all.1 {
+        predicate P : { a: nat, b: nat }
+        predicate Q : { a: nat, b: nat }
+        predicate R : { a: nat, b: nat } stored
+          { A, B } where
+            P { K, A };
+            Q { K, B };
+      }|]
+      [ mkBatch (PredicateRef "all.P" 1)
+          [ [s|{"key": { "a": 1, "b": 1}}|]
+          , [s|{"key": { "a": 2, "b": 2}}|]
+          , [s|{"key": { "a": 3, "b": 3}}|]
+          , [s|{"key": { "a": 4, "b": 4}}|]
+          ]
+      , mkBatch (PredicateRef "all.Q" 1)
+          [ [s|{"key": { "a": 1, "b": 1}}|]
+          , [s|{"key": { "a": 2, "b": 2}}|]
+          , [s|{"key": { "a": 3, "b": 3}}|]
+          ]
+      ]
+      [ mkBatch (PredicateRef "all.Q" 1)
+          [ [s|{"key": { "a": 4, "b": 4}}|]
+          ]
+      ]
+      (PredicateRef "all.R" 1)
+      $ \stats -> do
+        assertEqual "results" 1 (userQueryStats_result_count stats)
+        assertEqual "facts searched" 5 $ maybe 0 (sum . Map.elems)
+          (userQueryStats_facts_searched stats)
+
+  , TestLabel "optimise - disjunction with prefix seeks" $ TestCase $
+    derivationStats def
+      [s|schema all.1 {
+        predicate P : { a: nat, b: nat }
+        predicate Q : { a: nat, b: nat }
+        predicate R : { a: nat, b: nat }
+        predicate S : { a: nat, b: nat } stored
+          { A, B } where
+            P { K, A };
+            (Q { K, B } | R { K, B });
+      }|]
+      [ mkBatch (PredicateRef "all.P" 1)
+          [ [s|{"key": { "a": 1, "b": 1}}|]
+          , [s|{"key": { "a": 2, "b": 2}}|]
+          , [s|{"key": { "a": 3, "b": 3}}|]
+          , [s|{"key": { "a": 4, "b": 4}}|]
+          ]
+      , mkBatch (PredicateRef "all.Q" 1)
+          [ [s|{"key": { "a": 1, "b": 1}}|]
+          ]
+      , mkBatch (PredicateRef "all.R" 1)
+          [ [s|{"key": { "a": 2, "b": 2}}|]
+          ]
+      ]
+      [ mkBatch (PredicateRef "all.Q" 1)
+          [ [s|{"key": { "a": 3, "b": 3}}|]
+          ]
+      , mkBatch (PredicateRef "all.R" 1)
+          [ [s|{"key": { "a": 4, "b": 4}}|]
+          , [s|{"key": { "a": 5, "b": 5}}|]
+          , [s|{"key": { "a": 6, "b": 6}}|]
+          , [s|{"key": { "a": 7, "b": 7}}|]
+          , [s|{"key": { "a": 8, "b": 8}}|]
+          , [s|{"key": { "a": 9, "b": 9}}|]
+          ]
+      ]
+      (PredicateRef "all.S" 1)
+      $ \stats -> do
+        assertEqual "results" 2 (userQueryStats_result_count stats)
+        assertEqual "facts searched" 6 $ maybe 0 (sum . Map.elems)
+          (userQueryStats_facts_searched stats)
     ]
   where
     mkBatch ref facts =
@@ -380,8 +465,6 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
         , jsonFactBatch_unit = Nothing
         }
 
-    -- compare the stats of an incremental derivation with that of a
-    -- non-incremental one.
     derivationStats
       :: Thrift.DerivePredicateOptions
       -> String
@@ -396,18 +479,21 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
             [ setRoot root
             , setSchemaPath file
             ]
+
+          opts' = opts { derivePredicateOptions_collect_facts_searched = True }
+
       withTestEnv settings $ \env -> do
         let base = Repo "base" "0"
         kickOffTestDB env base id
         void $ syncWriteJsonBatch env base baseFacts Nothing
         void $ completePredicates env base
-        _ <- deriveStored' env base opts pref
+        _ <- deriveStored' env base opts' pref
         completeTestDB env base
 
         stacked <- stackedDB env base (Repo "base-stacked" "0")
         void $ syncWriteJsonBatch env stacked topFacts Nothing
 
-        stats <- deriveStored' env stacked opts pref
+        stats <- deriveStored' env stacked opts' pref
         action stats
 
     stackedDB :: Env -> Repo -> Repo -> IO Repo
