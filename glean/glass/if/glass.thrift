@@ -265,6 +265,7 @@ struct SymbolDescription {
   7: optional Visibility visibility;
   8: string repo_hash;
   9: Language language;
+  10: optional string signature;
 }
 
 struct SearchContext {

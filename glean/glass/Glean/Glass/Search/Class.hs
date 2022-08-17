@@ -26,11 +26,12 @@ import qualified Glean
 import Glean.Typed.Binary (Type)
 
 import Glean.Angle ( Angle )
-import qualified Glean.Angle as Angle
 import Glean.Haxl.Repos as Glean
 
 import qualified Glean.Schema.Src.Types as Src
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
+
+import Glean.Glass.Utils ( searchRecursiveWithLimit )
 
 -- Search-based inverse of Symbol.toSymbol :: a -> [Text]
 class Search t where
@@ -64,6 +65,13 @@ instance Functor SearchResult where
   fmap f (Many e t) = Many (e { decl = f (decl e) }) t
 
 -- | In Haxl, run a search that returns results for an object and its location
+--
+-- symbol ids are "mostly" unique. This code checks explicitly if the
+-- symbol id search generated 0, 1 or >1 result. We always return the first
+-- match.
+--
+-- There are some scenarios where we might want to return all matches.
+--
 runSearch :: (Typeable t, Show t, Glean.Typed.Binary.Type t)
   => [Text]
   -> Angle (ResultLocation t)
@@ -71,12 +79,13 @@ runSearch :: (Typeable t, Show t, Glean.Typed.Binary.Type t)
 runSearch toks query = do
   results <- Glean.queryAllRepos $ do
     repo <- Glean.haxlRepo
-    results <- Glean.search_ $ Angle.query query
+    results <- searchRecursiveWithLimit (Just 2) query -- limit enforced
     return $ map (repo,) results
   let toksText = intercalate "/" toks
   return $ case results of
     [] -> None $ "runSearch: No results found for " <> toksText
     [(entityRepo, (decl, file, rangespan, name))] -> One SearchEntity{..}
+    -- discard >= 2
     ((entityRepo, (decl, file, rangespan, name)):_) -> Many SearchEntity{..}
           ("runSearch: " <> textShow (length results) <>
             " results found for " <> toksText)

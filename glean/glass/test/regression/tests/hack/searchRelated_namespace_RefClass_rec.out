@@ -44,6 +44,7 @@
                     "localName": "RefClass"
                 },
                 "repo_hash": "testhash",
+                "signature": "class RefClass",
                 "sym": "test/php/RefClass"
             },
             "test/php/RefClass/JAZZ": {
@@ -65,6 +66,7 @@
                     "localName": "JAZZ"
                 },
                 "repo_hash": "testhash",
+                "signature": "const JAZZ",
                 "sym": "test/php/RefClass/JAZZ"
             },
             "test/php/RefClass/bar": {
@@ -87,6 +89,7 @@
                     "localName": "bar"
                 },
                 "repo_hash": "testhash",
+                "signature": "public RefClass::bar (SourceClass::T $param): int",
                 "sym": "test/php/RefClass/bar",
                 "visibility": 20
             },
@@ -110,6 +113,7 @@
                     "localName": "bazza"
                 },
                 "repo_hash": "testhash",
+                "signature": "public RefClass::bazza (): int",
                 "sym": "test/php/RefClass/bazza",
                 "visibility": 20
             },
@@ -133,6 +137,7 @@
                     "localName": "foo"
                 },
                 "repo_hash": "testhash",
+                "signature": "public static RefClass::foo (): int",
                 "sym": "test/php/RefClass/foo",
                 "visibility": 20
             },
@@ -156,6 +161,7 @@
                     "localName": "raz"
                 },
                 "repo_hash": "testhash",
+                "signature": "raz",
                 "sym": "test/php/RefClass/raz",
                 "visibility": 40
             }

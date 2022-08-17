@@ -19,6 +19,7 @@
             "localName": "T"
         },
         "repo_hash": "testhash",
+        "signature": "struct foo::bar::T",
         "sym": "test/cpp/foo/bar/T"
     }
 ]

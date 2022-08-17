@@ -31,6 +31,7 @@
                     "localName": "bar"
                 },
                 "repo_hash": "testhash",
+                "signature": "namespace foo::bar",
                 "sym": "test/cpp/foo/bar"
             },
             "test/cpp/foo/bar/T": {
@@ -52,6 +53,7 @@
                     "localName": "T"
                 },
                 "repo_hash": "testhash",
+                "signature": "struct foo::bar::T",
                 "sym": "test/cpp/foo/bar/T"
             },
             "test/cpp/foo/bar/g": {
@@ -74,6 +76,7 @@
                     "localName": "g"
                 },
                 "repo_hash": "testhash",
+                "signature": "void foo::bar::g()",
                 "sym": "test/cpp/foo/bar/g"
             }
         }

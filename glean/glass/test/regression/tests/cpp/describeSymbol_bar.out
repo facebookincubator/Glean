@@ -19,6 +19,7 @@
             "localName": "bar"
         },
         "repo_hash": "testhash",
+        "signature": "namespace foo::bar",
         "sym": "test/cpp/foo/bar"
     }
 ]

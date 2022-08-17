@@ -1162,6 +1162,7 @@ describeEntity ent SymbolResult{..} = do
   symbolDescription_comments <- eThrow =<<
     getCommentsForEntity locationRange_repository ent
   symbolDescription_visibility <- eThrow =<< getVisibilityForEntity ent
+  symbolDescription_signature <- toSymbolSignature ent
   pure SymbolDescription{..}
   where
     symbolDescription_sym = symbolResult_symbol

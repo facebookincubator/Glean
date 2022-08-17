@@ -28,6 +28,7 @@
                     "localName": "RefClass"
                 },
                 "repo_hash": "testhash",
+                "signature": "class RefClass",
                 "sym": "test/php/RefClass"
             },
             "test/php/SourceInterface": {
@@ -50,6 +51,7 @@
                     "localName": "SourceInterface"
                 },
                 "repo_hash": "testhash",
+                "signature": "interface SourceInterface",
                 "sym": "test/php/SourceInterface"
             }
         }
