@@ -1,5 +1,5 @@
 query: |
   codemarkup.FileEntityLocations { entity = { cxx = E } };
-  codemarkup.cxx.CxxEntityLocation { entity = E };
+  codemarkup.EntityToAnnotations { entity = { cxx = E } };
 perf: true
 transform: [gensort, []]

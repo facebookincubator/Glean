@@ -1,0 +1,481 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "NamespaceClass" },
+                      "namespace_": { "key": { "name": { "key": "NS" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceClass" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": {
+        "hack": {
+          "attributes": [
+            {
+              "key": {
+                "name": { "key": "TestAnnotation" },
+                "parameters": [ "Text" ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "SubClass" } } } }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SuperClass" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "TestAnnotation" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "enum_": {
+                "key": { "name": { "key": { "name": { "key": "Position" } } } }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceInterface" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "trait": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceTrait" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "__construct" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "TestAnnotation" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "bar" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "bar" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "bazza" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "class_function" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "NamespaceClass" },
+                          "namespace_": { "key": { "name": { "key": "NS" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "foo" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "foo" },
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "SourceInterface" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "quux" },
+                "container": {
+                  "trait": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceTrait" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "superAdd" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SuperClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "daz" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "raz" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "test" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "TestAnnotation" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "typeConst": {
+              "key": {
+                "name": { "key": "T" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  }
+]

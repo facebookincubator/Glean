@@ -1,0 +1,5 @@
+query: |
+  hack.DeclarationLocation { declaration = D};
+  codemarkup.EntityToAnnotations { entity = {hack = {decl = D}}}
+perf: true
+transform: [gensort, []]
