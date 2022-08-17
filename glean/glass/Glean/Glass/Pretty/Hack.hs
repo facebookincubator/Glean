@@ -324,7 +324,7 @@ qName Hack.QName{..} = do
 
 namespaceQName :: Maybe Hack.NamespaceQName -> Maybe [Text]
 namespaceQName Nothing = Nothing
-namespaceQName (Just name) = reverse <$> namespaceQNameInner (Just name) []
+namespaceQName (Just name) = namespaceQNameInner (Just name) []
   where
     namespaceQNameInner
       :: Maybe Hack.NamespaceQName -> [Text] -> Maybe [Text]
