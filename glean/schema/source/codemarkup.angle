@@ -290,6 +290,17 @@ predicate EntityAnnotations : code.Entity -> code.Annotations
     ( codemarkup.hack.HackAnnotation{ Ent, Anns };
      { hack = Ent } = E; { hack = Anns } = A );
 
+predicate EntityToAnnotations :
+  {
+    entity: code.Entity,
+    annotations : code.Annotations,
+  }
+  { E, A } where
+    ( codemarkup.cxx.CxxAnnotation { Ent, Anns };
+      { cxx = Ent } = E; { cxx = Anns } = A ) |
+    ( codemarkup.hack.HackAnnotation{ Ent, Anns };
+     { hack = Ent } = E; { hack = Anns } = A );
+
 #
 # Visibility
 #
