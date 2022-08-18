@@ -174,25 +174,6 @@ const char *admin_names[] = {
   "STARTING_ID"
 };
 
-#ifndef FACEBOOK
-namespace {
-rocksdb::Status openRocksDB(
-    const rocksdb::Options& options,
-    const std::string& name,
-    rocksdb::DB** dbptr,
-    const std::vector<rocksdb::ColumnFamilyDescriptor>& column_families,
-    std::vector<rocksdb::ColumnFamilyHandle*>* handles,
-    bool read_only) {
-  if (read_only) {
-    return rocksdb::DB::OpenForReadOnly(
-        options, name, column_families, handles, dbptr);
-  } else {
-    return rocksdb::DB::Open(options, name, column_families, handles, dbptr);
-  }
-}
-} // namespace
-#endif
-
 struct ContainerImpl final : Container {
   Mode mode;
   rocksdb::Options options;
@@ -237,6 +218,10 @@ struct ContainerImpl final : Container {
         rocksdb::NewBlockBasedTableFactory(table_options));
     }
 
+#ifdef FACEBOOK
+    localOptions(options);
+#endif
+
     // options.IncreaseParallelism();
     // options.compression = rocksdb::CompressionType::kNoCompression;
     // writeOptions.sync = false;
@@ -269,13 +254,13 @@ struct ContainerImpl final : Container {
 
     std::vector<rocksdb::ColumnFamilyHandle*> hs;
     rocksdb::DB *db_ptr;
-    check(openRocksDB(
-                options,
-                path,
-                &db_ptr,
-                existing,
-                &hs,
-                mode == Mode::ReadOnly));
+    check(rocksdb::DB::Open(
+      options,
+      path,
+      existing,
+      &hs,
+      &db_ptr
+    ));
     if (!db_ptr) {
       rts::error("got nullptr from rocksdb");
     } else {
