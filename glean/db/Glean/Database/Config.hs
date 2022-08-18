@@ -208,6 +208,10 @@ legacySchemaSourceConfig =
   ThriftSource.configWithDeserializer legacySchemaConfigPath
      (processOneSchema Map.empty)
 
+-- | Read the default schema index from the ConfigProvider
+defaultSchemaSourceIndexConfig :: ThriftSource SchemaIndex
+defaultSchemaSourceIndexConfig = schemaSourceIndexConfig schemaConfigPath
+
 -- | Read the schema files from the source tree
 schemaSourceFiles :: ThriftSource SchemaIndex
 schemaSourceFiles = schemaSourceFilesFromDir schemaSourceDir
@@ -303,6 +307,8 @@ schemaSourceParser
   :: String
   -> Either String (Maybe FilePath, ThriftSource SchemaIndex)
 schemaSourceParser "config" = Right (Nothing, legacySchemaSourceConfig)
+schemaSourceParser "indexconfig" =
+  Right (Nothing, defaultSchemaSourceIndexConfig)
 schemaSourceParser "dir" =
   Right (Just schemaSourceDir, schemaSourceFilesFromDir schemaSourceDir)
 schemaSourceParser s = case break (==':') s of
@@ -319,21 +325,12 @@ schemaSourceParser s = case break (==':') s of
     (Nothing,) <$> ThriftSource.parseWithDeserializer s
       (processOneSchema Map.empty)
 
--- | Deprecated --db-schema option; use --schema instead.
-dbSchemaSourceOption
-  :: Parser (Maybe FilePath, ThriftSource SchemaIndex)
-dbSchemaSourceOption = option (eitherReader schemaSourceParser)
-  (  long "db-schema"
-  <> hidden
-  <> metavar "(dir | config | file:PATH | dir:PATH | config:PATH)"
-  <> value (Nothing, legacySchemaSourceConfig))
-
 schemaSourceOption
   :: Parser (Maybe FilePath, ThriftSource SchemaIndex)
 schemaSourceOption = option (eitherReader schemaSourceParser)
   (  long "schema"
-  <> metavar "(dir | config | file:FILE | dir:DIR | config:PATH | index:FILE | indexconfig:PATH | DIR)"
-  <> value (Nothing, legacySchemaSourceConfig))
+  <> metavar "(dir | config | indexconfig | file:FILE | dir:DIR | config:PATH | index:FILE | indexconfig:PATH | DIR)"
+  <> value (Nothing, defaultSchemaSourceIndexConfig))
 
 options :: Parser Config
 options = do
@@ -346,8 +343,7 @@ options = do
       long "db-tmp" <>
       help "Store databases in a temporary directory")
   cfgRoot <- dbRoot <|> dbTmp
-  ~(cfgSchemaDir, cfgSchemaSource) <-
-    schemaSourceOption <|> dbSchemaSourceOption
+  ~(cfgSchemaDir, cfgSchemaSource) <- schemaSourceOption
   _ignored_for_backwards_compat <- switch (long "db-schema-override")
   cfgSchemaVersion <- optional $ option auto
     ( long "schema-version"
