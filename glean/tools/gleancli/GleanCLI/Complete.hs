@@ -35,8 +35,8 @@ instance Plugin CompleteCommand where
       completePredicates <-
         many $ parseRef <$> strArgument
         (  metavar "PREDICATE"
-        <> help ("If predicate is specified, then all non-derived predicates "
-        <> "will be marked as complete")
+        <> help ("If predicate is not specified, then all non-derived "
+        <> "predicates will be marked as complete")
         )
       return Complete{..}
 
