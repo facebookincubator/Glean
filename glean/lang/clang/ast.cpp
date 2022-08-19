@@ -1260,7 +1260,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         Cxx::Scope scope,
         Src::Range range) {
       // TODO: should we ignore deleted functions or have some info about them?
-      if (decl->isDeleted()) {
+      if (decl->isDeleted() || decl->getBuiltinID()) {
         return folly::none;
       }
 
@@ -2268,6 +2268,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     if (decl) {
       auto xref = XRef::unknown(decl);
       if (auto fun = clang::dyn_cast<clang::FunctionDecl>(decl)) {
+        if (fun->getBuiltinID()) return;
         xref = XRef::toTemplatableDecl(funDecls, fun);
       } else if (auto var = clang::dyn_cast<clang::VarDecl>(decl)) {
         xref = XRef::toTemplatableDecl(varDecls, var);
