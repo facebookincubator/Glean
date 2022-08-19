@@ -203,6 +203,390 @@
               }
             }
           }
+        },
+        {
+          "range": { "begin": 420, "end": 422 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x1" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "type": { "key": "S<Bar>" },
+                  "kind": {
+                    "global_": { "kind": 0, "attribute": 0, "definition": true }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 25,
+                    "columnBegin": 1,
+                    "lineEnd": 25,
+                    "columnEnd": 9
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 423, "end": 424 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "Foo" },
+                  "kind": { "field": { "mutable_": false } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 15,
+                    "columnBegin": 3,
+                    "lineEnd": 15,
+                    "columnEnd": 7
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 436, "end": 438 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x1" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "type": { "key": "S<Bar>" },
+                  "kind": {
+                    "global_": { "kind": 0, "attribute": 0, "definition": true }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 25,
+                    "columnBegin": 1,
+                    "lineEnd": 25,
+                    "columnEnd": 9
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 439, "end": 440 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "y" },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "Bar" },
+                  "kind": { "field": { "mutable_": false } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 16,
+                    "columnBegin": 3,
+                    "lineEnd": 16,
+                    "columnEnd": 5
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 452, "end": 454 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x2" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "type": { "key": "S<Baz>" },
+                  "kind": {
+                    "global_": { "kind": 0, "attribute": 0, "definition": true }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 26,
+                    "columnBegin": 1,
+                    "lineEnd": 26,
+                    "columnEnd": 9
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 455, "end": 456 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "Foo" },
+                  "kind": { "field": { "mutable_": false } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 15,
+                    "columnBegin": 3,
+                    "lineEnd": 15,
+                    "columnEnd": 7
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 468, "end": 470 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x2" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "type": { "key": "S<Baz>" },
+                  "kind": {
+                    "global_": { "kind": 0, "attribute": 0, "definition": true }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 26,
+                    "columnBegin": 1,
+                    "lineEnd": 26,
+                    "columnEnd": 9
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 471, "end": 472 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "y" },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "Baz" },
+                  "kind": { "field": { "mutable_": false } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 16,
+                    "columnBegin": 3,
+                    "lineEnd": 16,
+                    "columnEnd": 5
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 484, "end": 486 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x3" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "type": { "key": "S<Bar *>" },
+                  "kind": {
+                    "global_": { "kind": 0, "attribute": 0, "definition": true }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 27,
+                    "columnBegin": 1,
+                    "lineEnd": 27,
+                    "columnEnd": 10
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 487, "end": 488 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "Foo" },
+                  "kind": { "field": { "mutable_": false } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 21,
+                    "columnBegin": 3,
+                    "lineEnd": 21,
+                    "columnEnd": 7
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 500, "end": 502 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x3" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "type": { "key": "S<Bar *>" },
+                  "kind": {
+                    "global_": { "kind": 0, "attribute": 0, "definition": true }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 27,
+                    "columnBegin": 1,
+                    "lineEnd": 27,
+                    "columnEnd": 10
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 503, "end": 504 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "y" },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "S" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "Bar *" },
+                  "kind": { "field": { "mutable_": false } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 22,
+                    "columnBegin": 3,
+                    "lineEnd": 22,
+                    "columnEnd": 6
+                  }
+                }
+              }
+            }
+          }
         }
       ]
     }

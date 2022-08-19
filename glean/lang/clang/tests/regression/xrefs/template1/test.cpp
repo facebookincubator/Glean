@@ -25,3 +25,10 @@ struct S<T*> {
 S<Bar> x1;
 S<Baz> x2;
 S<Bar*> x3;
+
+auto f1 = x1.x;
+auto t1 = x1.y;
+auto f2 = x2.x;
+auto t2 = x2.y;
+auto f3 = x3.x;
+auto t3 = x3.y;
