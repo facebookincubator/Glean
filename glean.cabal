@@ -1788,14 +1788,16 @@ test-suite publish-shards
     ghc-options: -main-is PublishShardsTest
     other-modules:
         DatabaseJanitorTest
+        Glean.Server.Config
+        Glean.Server.Sharding
     build-depends:
-        glean:stubs,
+        glean:config,
         glean:core,
         glean:db,
         glean:if-glean-hs,
         glean:if-internal-hs,
         glean:schema,
-        glean:config,
+        glean:stubs,
         glean:util
 
 test-suite dbproperties
