@@ -1,4 +1,3 @@
-query: |
-  P where P = codemarkup.pp.PPEntityLocation { location = { file = F } }; F != src.File "<builtin>"
+query: codemarkup.pp.PPEntityLocation _
 perf: true
 transform: [gensort, []]

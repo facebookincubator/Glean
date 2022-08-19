@@ -216,6 +216,10 @@ public:
     return compilerInstance.getSourceManager();
   }
 
+  clang::Preprocessor& preprocessor() const {
+    return compilerInstance.getPreprocessor();
+  }
+
 private:
   Fact<Buck::Locator> locator;
   folly::Optional<Fact<Buck::Platform>> platform;

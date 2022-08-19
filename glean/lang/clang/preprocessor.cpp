@@ -87,7 +87,14 @@ struct PPCallbacks final : public clang::PPCallbacks {
   void MacroDefined(
       const clang::Token& name,
       const clang::MacroDirective *) override {
-    auto src = db.srcRange(name.getLocation());
+    auto loc = name.getLocation();
+    // Skip predefined macros such as `__cplusplus`.
+    // Built-in macros such as `__LINE__` aren't defined.
+    if (db.sourceManager().getFileID(loc) ==
+        db.preprocessor().getPredefinesFileID()) {
+      return;
+    }
+    auto src = db.srcRange(loc);
     auto def = db.fact<Pp::Define>(macro(name), src.range);
     db.ppevent(Cxx::PPEvent::define(def), src);
   }
@@ -123,9 +130,25 @@ struct PPCallbacks final : public clang::PPCallbacks {
     // locations.
     folly::Optional<Src::Loc> defloc;
     if (auto info = def.getMacroInfo()) {
-      defloc = folly::get_optional(macros, info);
-      if (!defloc.has_value()) {
-        defloc = db.srcLoc(info->getDefinitionLoc());
+      if (info->isBuiltinMacro()) { // e.g. __LINE__
+        return;
+      }
+      if (auto entry = folly::get_optional(macros, info)) {
+        const auto& loc = *entry;
+        // If an entry exists but is none, it means it's a predefined macro.
+        if (!loc.has_value()) {
+          return;
+        }
+        defloc = loc.value();
+      } else {
+        auto loc = info->getDefinitionLoc();
+        if (db.sourceManager().getFileID(loc) ==
+            db.preprocessor().getPredefinesFileID()) { // e.g. __cplusplus
+          // Cache predefined macro.
+          macros.insert({info, folly::none});
+          return;
+        }
+        defloc = db.srcLoc(loc);
         macros.insert({info, defloc.value()});
       }
     }
@@ -259,7 +282,7 @@ struct PPCallbacks final : public clang::PPCallbacks {
   folly::Optional<ClangDB::SourceRange> expansion;
 
   // Cached locations of macro definitions (see macroUsed).
-  folly::F14FastMap<clang::MacroInfo *, Src::Loc> macros;
+  folly::F14FastMap<const clang::MacroInfo *, folly::Optional<Src::Loc>> macros;
 };
 
 }
