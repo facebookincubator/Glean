@@ -32,12 +32,12 @@ instance Search Hack.Entity where
   symbolSearch toks = fmap Hack.Entity_decl <$> symbolSearch toks
 
 instance Search Hack.Declaration where
-  symbolSearch t@[name] = runSearch t $ searchInNamespace [] name
+  symbolSearch t@[name] = searchSymbolId t $ searchInNamespace [] name
   symbolSearch t@(_:_) = do -- 2 or more path elements
     let (name:rest@(context:ns)) = reverse t
 
-    a <- runSearch t $ searchInNamespace rest name
-    b <- runSearch t $ searchInContainerOrEnum ns context name
+    a <- searchSymbolId t $ searchInNamespace rest name
+    b <- searchSymbolId t $ searchInContainerOrEnum ns context name
 
     return $ case (a,b) of
       (x@One{}, _) -> x

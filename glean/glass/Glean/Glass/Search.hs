@@ -37,6 +37,19 @@ import Glean.Glass.Types (ServerException(ServerException))
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Haxl.Repos as Glean
 
+--
+-- entity search: decodes a symbol id to a code.Entity fact
+-- Note: this is different to e.g. approximate string search, as we
+-- should _always_ be able to decode valid symbol ids back to their (unique*)
+-- entity.
+--
+-- There are cases where symbol ids are not unique:
+-- - weird code
+-- - hack namespaces
+-- - bugs/approximations in our encoder
+--
+-- We log the duplicates to glass_errors
+--
 searchEntity
   :: Language
   -> [Text]

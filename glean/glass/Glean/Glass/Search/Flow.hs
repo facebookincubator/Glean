@@ -30,9 +30,9 @@ instance Search Flow.Entity where
   symbolSearch [] = return $ None "Flow.symbolSearch: empty"
 
   symbolSearch toks@[module_, name] = do
-    a <- runSearch toks $ searchByModule module_ name
+    a <- searchSymbolId toks $ searchByModule module_ name
     decl <- case a of
-      None{} -> runSearch toks $ searchTypeByModuleExport module_ name
+      None{} -> searchSymbolId toks $ searchTypeByModuleExport module_ name
       _ -> return a
     return $ Flow.Entity_decl <$> decl
 
@@ -40,7 +40,7 @@ instance Search Flow.Entity where
   symbolSearch toks = do
     let name = last toks
         path = joinFragments (init toks)
-    a <- runSearch toks $ searchByFileModule path name
+    a <- searchSymbolId toks $ searchByFileModule path name
     return $ Flow.Entity_decl <$> a
 
 -- With the Haste short module name and an identifier, find the decl

@@ -31,11 +31,11 @@ instance Search Cxx.Entity where
   symbolSearch [] =
     return $ None "Cxx.symbolSearch: empty path"
   symbolSearch t@[name] = do
-    runSearch t $
+    searchSymbolId t $
       searchByScope t .|
       searchByNameAndScope [] name
   symbolSearch t@(_:_) = do
-    runSearch t $
+    searchSymbolId t $
       searchByScope t .|
       searchByNameAndScope (init t) (last t)
 

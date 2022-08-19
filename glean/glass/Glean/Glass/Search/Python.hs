@@ -31,9 +31,9 @@ instance Search Py.Entity where
   symbolSearch params = fmap Py.Entity_decl <$> symbolSearch params
 
 instance Search Py.Declaration where
-  symbolSearch t@[fqname] = runSearch t $
+  symbolSearch t@[fqname] = searchSymbolId t $
     findByFQName fqname Nothing
-  symbolSearch t@[loc, fqname] = runSearch t $
+  symbolSearch t@[loc, fqname] = searchSymbolId t $
     findByFQName fqname (Just loc)
   symbolSearch _ = return $
     None "Python.symbolSearch: invalid query"

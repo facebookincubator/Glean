@@ -29,7 +29,7 @@ import qualified Glean.Schema.Src.Types as Src
 instance Search Haskell.Entity where
   symbolSearch [] = return $ None "Haskell.symbolSearch: empty"
   symbolSearch toks = do
-    runSearch toks $ searchByName $ Text.intercalate "." toks
+    searchSymbolId toks $ searchByName $ Text.intercalate "." toks
 
 -- code.hs:searchByName
 searchByName :: Text -> Angle (ResultLocation Haskell.Entity)

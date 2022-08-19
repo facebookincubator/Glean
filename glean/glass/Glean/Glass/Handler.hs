@@ -194,9 +194,6 @@ import qualified Glean.Glass.Query.Cxx as Cxx
 
 import Glean.Glass.SymbolMap ( toSymbolIndex )
 import Glean.Glass.Search as Search
-    ( searchEntity,
-      SearchEntity(SearchEntity, rangespan, file, decl, name, entityRepo),
-      SearchResult(Many, None, One), prefixSearchEntity )
 import Glean.Glass.Utils
 import qualified Data.Set as Set
 import Data.Set ( Set )
@@ -340,7 +337,7 @@ describeSymbol env@Glass.Env{..} symId _opts =
       (SearchEntity{..}, err) <- case r of
         None t -> throwM (ServerException t)
         One e -> return (e, Nothing)
-        Many e _t -> return (e, Nothing)
+        Many { initial = e } -> return (e, Nothing)
       (,err) <$> withRepo entityRepo
         (mkSymbolDescription repo decl file rangespan symId name)
 
@@ -629,7 +626,7 @@ withEntity f scsrepo lang toks = do
   (SearchEntity{..}, err) <- case r of
     None t -> throwM (ServerException t)
     One e -> return (e, Nothing)
-    Many e t -> return (e, Just (EntitySearchFail t))
+    Many { initial = e, message = t } -> return (e, Just (EntitySearchFail t))
   (, fmap logError err) <$> withRepo entityRepo (f scsrepo file rangespan)
 
 -- | Symbol search: try to resolve the symbol back to an Entity.
@@ -709,7 +706,7 @@ symbolToAngleEntity lang toks = do
   (SearchEntity{..}, searchErr) <- case r of
     None t -> throwM (ServerException t) -- return [] ?
     One e -> return (e, Nothing)
-    Many e t -> return (e, Just (EntitySearchFail t))
+    Many { initial = e, message = t } -> return (e, Just (EntitySearchFail t))
   return $ case entityToAngle decl of
       Left err -> Left (logError (EntityNotSupported err))
       Right query -> Right (query, searchErr)
@@ -1219,7 +1216,7 @@ searchRelated env@Glass.Env{..}
       (entity, err) <- case r of
         None t -> throwM (ServerException t)
         One e -> return (e, Nothing)
-        Many e _t -> return (e, Nothing)
+        Many { initial = e } -> return (e, Nothing)
 
       (entityPairs, descriptions) <- withRepo (entityRepo entity) $ do
         edgePairs <- withRepo (entityRepo entity) $

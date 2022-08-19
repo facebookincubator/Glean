@@ -19,7 +19,6 @@ import Data.Text ( Text, unpack )
 import Glean.Angle as Angle
 
 import Glean.Glass.Search.Class
-    ( runSearch, ResultLocation, Search(..), SearchResult(None) )
 import Glean.Glass.Query ( entityLocation )
 
 import qualified Glean.Schema.CodeErlang.Types as Erlang
@@ -33,7 +32,7 @@ instance Search Erlang.Entity where
   symbolSearch toks
     | [module_, name, arity] <- toks
     , Just arityNum <- readMaybe $ unpack arity = do
-        runSearch toks $ searchByFQN module_ name arityNum
+        searchSymbolId toks $ searchByFQN module_ name arityNum
     | otherwise = return $ None "Erlang.symbolSearch: invalid query"
 
 searchByFQN :: Text -> Text -> Word64 -> Angle (ResultLocation Erlang.Entity)

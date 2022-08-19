@@ -33,7 +33,7 @@ instance Search Lsif.Entity where
 
   -- case 2: purely a moniker
   symbolSearch toks@("lsif":rest) =
-    runSearch toks $ searchByMoniker (joinFragments rest)
+    searchSymbolId toks $ searchByMoniker (joinFragments rest)
 
   -- case 1a) <local> with no identifier
   symbolSearch toks
@@ -42,7 +42,7 @@ instance Search Lsif.Entity where
     , Right cb <- textToInt cbT
     , Right le <- textToInt leT
     , Right ce <- textToInt ceT
-    = runSearch toks $ searchByExactLocation
+    = searchSymbolId toks $ searchByExactLocation
         (joinFragments (reverse revpath)) lb cb le ce
 
   -- case 1b) <local> with identifier
@@ -52,12 +52,12 @@ instance Search Lsif.Entity where
     , Right cb <- textToInt cbT
     , Right le <- textToInt leT
     , Right ce <- textToInt ceT
-    = runSearch toks $ searchByExactLocationAndName
+    = searchSymbolId toks $ searchByExactLocationAndName
         (joinFragments (reverse revpath)) name lb cb le ce
 
   -- case 3: only path and name
     | name:revpath <- rtoks
-    = runSearch toks $ searchNonLocalByLocation
+    = searchSymbolId toks $ searchNonLocalByLocation
         (joinFragments (reverse revpath)) name
     where
       rtoks = reverse toks

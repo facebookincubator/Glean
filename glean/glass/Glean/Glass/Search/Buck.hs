@@ -19,7 +19,7 @@ import Data.List.Split ( splitOn )
 import Glean.Angle as Angle
 
 import Glean.Glass.Search.Class
-    ( runSearch, ResultLocation, Search(..), SearchResult(None) )
+    ( searchSymbolId, ResultLocation, Search(..), SearchResult(None) )
 import Glean.Glass.Query ( entityLocation )
 
 import qualified Glean.Schema.CodeBuck.Types as Buck
@@ -45,13 +45,13 @@ instance Search Buck.Entity where
     ("t" : locator) -> do
       case parse locator of
         Just (subdir, path, name) ->
-          runSearch toks $ searchByFQN subdir path name
+          searchSymbolId toks $ searchByFQN subdir path name
         Nothing -> invalid_symbol
     ("f" : path) -> do
-      runSearch toks $ searchFile (Utils.joinFragments path)
+      searchSymbolId toks $ searchFile (Utils.joinFragments path)
     ("d" : module_name) -> do
       case reverse module_name of
-        name : rev_module -> runSearch toks $ searchDefinition
+        name : rev_module -> searchSymbolId toks $ searchDefinition
           (Utils.joinFragments $ reverse rev_module) name
         _ -> invalid_symbol
     _ -> invalid_symbol

@@ -13,7 +13,7 @@ module Glean.Glass.Search.Class
   , SearchEntity(..)
   , PrefixSearch(..)
   , ResultLocation
-  , runSearch
+  , searchSymbolId
   , resultToDecl
   ) where
 
@@ -34,14 +34,30 @@ import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import Glean.Glass.Utils ( searchRecursiveWithLimit )
 
 -- Search-based inverse of Symbol.toSymbol :: a -> [Text]
+-- Decodes a symbol id to a code.Entity fact
+--
+-- Note: this is different to e.g. approximate string search, as we
+-- should _always_ be able to decode valid symbol ids back to their (unique*)
+-- entity.
+--
+-- There are cases where symbol ids are not unique:
+-- - weird code
+-- - hack namespaces
+-- - bugs/approximations in our encoder
+--
+-- We log the duplicates to glass_errors
+--
 class Search t where
   symbolSearch :: [Text] -> ReposHaxl u w (SearchResult t)
 
 -- | We have zero, one or multiple matches for entities
 data SearchResult t
-  = None Text
-  | One (SearchEntity t)
-  | Many (SearchEntity t) Text
+  = None !Text -- no result found
+  | One (SearchEntity t) -- preicsely one entity, yay.
+  | Many -- oh dear, several
+     { initial :: SearchEntity t
+     , rest :: [SearchEntity t]
+     , message :: !Text }
 
 data SearchEntity t =
   SearchEntity {
@@ -62,9 +78,12 @@ resultToDecl = map (\(x, _, _) -> x)
 instance Functor SearchResult where
   fmap _ (None t) = None t
   fmap f (One e) = One (e { decl = f (decl e) })
-  fmap f (Many e t) = Many (e { decl = f (decl e) }) t
+  fmap f m@Many { initial = e, rest = es } =
+    m { initial = e { decl = f (decl e)}
+      , rest = map (\e -> e { decl = f (decl e) }) es }
 
--- | In Haxl, run a search that returns results for an object and its location
+-- | Find matching code.Entity values by repo and language for the
+-- symbol id tokens.
 --
 -- symbol ids are "mostly" unique. This code checks explicitly if the
 -- symbol id search generated 0, 1 or >1 result. We always return the first
@@ -72,11 +91,11 @@ instance Functor SearchResult where
 --
 -- There are some scenarios where we might want to return all matches.
 --
-runSearch :: (Typeable t, Show t, Glean.Typed.Binary.Type t)
+searchSymbolId :: (Typeable t, Show t, Glean.Typed.Binary.Type t)
   => [Text]
   -> Angle (ResultLocation t)
   -> ReposHaxl u w (SearchResult t)
-runSearch toks query = do
+searchSymbolId toks query = do
   results <- Glean.queryAllRepos $ do
     repo <- Glean.haxlRepo
     results <- searchRecursiveWithLimit (Just 2) query -- limit enforced
@@ -85,10 +104,14 @@ runSearch toks query = do
   return $ case results of
     [] -> None $ "runSearch: No results found for " <> toksText
     [(entityRepo, (decl, file, rangespan, name))] -> One SearchEntity{..}
-    -- discard >= 2
-    ((entityRepo, (decl, file, rangespan, name)):_) -> Many SearchEntity{..}
-          ("runSearch: " <> textShow (length results) <>
-            " results found for " <> toksText)
+    (firstResult:moreResults) ->
+      Many { initial = uncurry mkSearchEntity firstResult
+           , rest = map (uncurry mkSearchEntity) moreResults
+           , message = "runSearch: " <> textShow (length results) <>
+            " results found for " <> toksText
+      }
+  where
+    mkSearchEntity entityRepo (decl, file, rangespan, name) = SearchEntity{..}
 
 -- | Search for entities based on the prefix of their symbol ids
 class PrefixSearch t where
