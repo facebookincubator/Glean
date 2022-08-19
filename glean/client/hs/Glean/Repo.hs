@@ -123,13 +123,18 @@ getLatestRepo backend name = do
 checkRestorableAvailable :: Backend be => be -> [Database] -> IO (Maybe Repo)
 checkRestorableAvailable _ [] = return Nothing
 checkRestorableAvailable backend (Database{..}:dbs)
-  | database_status /= DatabaseStatus_Restoring =
+  | database_status `notElem`
+    [DatabaseStatus_Restoring, DatabaseStatus_Available] =
     return (Just database_repo)
   | not (usingShards backend) =
     checkRestorableAvailable backend dbs
   | otherwise = do
+    let status = case database_status of
+          DatabaseStatus_Restoring -> "restoring"
+          DatabaseStatus_Available -> "available elsewhere"
+          _ -> error "unreachable"
     vlog 1 $ "Repo " <> showRepo database_repo <>
-      " is restoring, checking for shard availability..."
+      " is " <> status <> ", checking for shard availability..."
     avail <- hasDatabase backend database_repo
     vlog 1 $ "Repo " <> showRepo database_repo <>
        ": " <> (if avail then "some" else "no") <> " hosts have it"
