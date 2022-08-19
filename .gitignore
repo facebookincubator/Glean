@@ -1,5 +1,6 @@
 *~
 *.save[0-9]*
+.build
 dist-newstyle
 gen-hs2
 gen-cpp2
