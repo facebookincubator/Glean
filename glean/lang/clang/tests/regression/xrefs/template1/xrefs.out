@@ -318,7 +318,7 @@
                       }
                     }
                   },
-                  "type": { "key": "Bar" },
+                  "type": { "key": "T" },
                   "kind": { "field": { "mutable_": false } },
                   "source": {
                     "file": { "key": "test.cpp" },
@@ -446,7 +446,7 @@
                       }
                     }
                   },
-                  "type": { "key": "Baz" },
+                  "type": { "key": "T" },
                   "kind": { "field": { "mutable_": false } },
                   "source": {
                     "file": { "key": "test.cpp" },
@@ -574,7 +574,7 @@
                       }
                     }
                   },
-                  "type": { "key": "Bar *" },
+                  "type": { "key": "T *" },
                   "kind": { "field": { "mutable_": false } },
                   "source": {
                     "file": { "key": "test.cpp" },

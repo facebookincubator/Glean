@@ -639,6 +639,60 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       return decl;    // TODO: is this right?
     }
 
+    // Given an instantiated declaration, returns the corresponding templated
+    // declaration and `nullptr` otherwise. The semantics of this function
+    // mimics `getTemplateInstantiationPattern` that exist for other entities.
+    //
+    // This provides the functionality for entities such as `TypedefDecl` and
+    // `FieldDecl`. These are entities that can be non-templates within a class
+    // template and therefore are still instantiated.
+    //
+    // For example:
+    //
+    // ```
+    // template <typename T>
+    // struct S {
+    //   using X = T;
+    //   T t;
+    // };
+    //
+    // S<int>::X x;  // type alias ref
+    // S<int> s;
+    // some_fn(s.t); // field decl ref
+    // ```
+    //
+    // In this scenario, `S<int>::X` is a type alias where the corresponding
+    // type is `int`. While this is correct, in the indexer we want to keep
+    // track of the "base template", i.e., `S<T>::X`.
+    static const clang::TypedefNameDecl* FOLLY_NULLABLE
+    getTemplateInstantiationPattern(const clang::TypedefNameDecl* decl) {
+      return getTemplateInstantiationPatternImpl(decl);
+    }
+
+    static const clang::FieldDecl* FOLLY_NULLABLE
+    getTemplateInstantiationPattern(const clang::FieldDecl* decl) {
+      return decl->getDeclName()
+          ? getTemplateInstantiationPatternImpl(decl)
+          : decl->getASTContext().getInstantiatedFromUnnamedFieldDecl(
+                const_cast<clang::FieldDecl*>(decl));
+    }
+
+   private:
+    template <typename T>
+    static const T* FOLLY_NULLABLE
+    getTemplateInstantiationPatternImpl(const T* decl) {
+      if (auto rd =
+              clang::dyn_cast<clang::CXXRecordDecl>(decl->getDeclContext())) {
+        if (auto tpl = rd->getTemplateInstantiationPattern()) {
+          if (auto result = tpl->lookup(decl->getDeclName()); !result.empty()) {
+            return clang::dyn_cast<T>(result.front());
+          }
+        }
+      }
+      return nullptr;
+    }
+
+   public:
     template<typename T>
     static constexpr bool canHaveComments(const T *) {
       return true;
@@ -930,72 +984,6 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
    * Type aliases *
    ****************/
 
-  // The `TypeAliasTracker` keeps track of type aliases within classes.
-  // The main purpose is to keep track of situations like this:
-  //
-  // ```
-  // template <typename T>
-  // struct S { using X = T; };
-  //
-  // S<int>::X x;
-  // ```
-  //
-  // In this scenario, `S<int>::X` is a type alias where the corresponding
-  // type is `int`. While this is correct, in the indexer we want to keep
-  // track of the "base template". For other entities that can appear in
-  // class templates, the `getTemplateInstantiationPattern` would retrieve
-  // the `S<T>::X` entity. Type aliases for some reason are lacking this
-  // functionality. As such, we implement it ourselves here to be able to
-  // retrieve `S<T>::X` from a `S<int>::X`.
-  class TypeAliasTracker {
-   public:
-    // We simply keep track of every type alias in every class decl for
-    // now, since type aliases within non-template class declarations
-    // within class templates are still instantiable. For example:
-    //
-    // ```
-    // template <typename T>
-    // struct S {
-    //   struct A {
-    //     using X = T;
-    //   };
-    // };
-    // ```
-    //
-    // This function is also called from `VisitTypedefNameDecl`, which means
-    // we won't be in a `CXXRecordDecl` representing a template instantiation.
-    void addTypeAlias(const clang::TypedefNameDecl* decl) {
-      if (auto rd =
-              clang::dyn_cast<clang::CXXRecordDecl>(decl->getDeclContext())) {
-        if (clang::isTemplateInstantiation(rd->getTemplateSpecializationKind())) {
-          LOG(ERROR) << "TypeAliasTracker::addTypeAlias was called with a"
-                     << "type alias within a class template instantiation.";
-        }
-        typeAliasDecls.insert({{rd, decl->getIdentifier()}, decl});
-      }
-    }
-
-    // Given an instantiated type alias, returns the corresponding templated
-    // type alias and `nullptr` otherwise. The semantics of this function
-    // mimics `getTemplateInstantiationPattern` that exist for other entities.
-    const clang::TypedefNameDecl* FOLLY_NULLABLE
-    findTypeAlias(const clang::TypedefNameDecl* decl) const {
-      if (auto rd =
-              clang::dyn_cast<clang::CXXRecordDecl>(decl->getDeclContext())) {
-        if (auto tpl = rd->getTemplateInstantiationPattern()) {
-          return typeAliasDecls.at({tpl, decl->getIdentifier()});
-        }
-      }
-      return nullptr;
-    }
-
-   private:
-    folly::F14FastMap<
-        std::pair<const clang::CXXRecordDecl*, const clang::IdentifierInfo*>,
-        const clang::TypedefNameDecl*>
-        typeAliasDecls;
-  };
-
   struct TypeAliasDecl : Declare<TypeAliasDecl> {
     Fact<Cxx::TypeAliasDeclaration> decl;
 
@@ -1034,11 +1022,9 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     void define(ASTVisitor&, const clang::TypedefNameDecl *) const {}
 
     struct GetTemplatableDecl {
-      TypeAliasTracker& typeAliasTracker;
-
       const clang::TypedefNameDecl* FOLLY_NULLABLE
       operator()(const clang::TypedefNameDecl* decl) const {
-        if (auto td = typeAliasTracker.findTypeAlias(decl)) {
+        if (auto td = DeclTraits::getTemplateInstantiationPattern(decl)) {
           return td;
         }
         if (auto ta = clang::dyn_cast<clang::TypeAliasDecl>(decl)) {
@@ -1067,9 +1053,6 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   };
 
   bool VisitTypedefNameDecl(const clang::TypedefNameDecl *decl) {
-    // We rely on the fact that the visitor will encounter `S<T>::X` before
-    // `S<int>::X` regardless of whether we traverse pre- or post- order.
-    typeAliasTracker.addTypeAlias(decl);
     visitDeclaration(typeAliasDecls, decl);
     return true;
   }
@@ -1542,8 +1525,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       }
 
       const clang::FieldDecl* FOLLY_NULLABLE
-      operator()(const clang::FieldDecl*) const {
-        return nullptr;
+      operator()(const clang::FieldDecl* decl) const {
+        return DeclTraits::getTemplateInstantiationPattern(decl);
       }
     };
 
@@ -2507,7 +2490,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     , classDecls("classDecls", *this)
     , enumDecls("enumDecls", *this)
     , enumeratorDecls("enumeratorDecls", *this)
-    , typeAliasDecls("typeAliasDecls", *this, {typeAliasTracker})
+    , typeAliasDecls("typeAliasDecls", *this)
     , funDecls("funDecls", *this)
     , varDecls("varDecls", *this)
     , objcContainerDecls("objcContainerDecls", *this)
@@ -2519,7 +2502,6 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   clang::ASTContext &astContext;
 
   UsingTracker usingTracker;
-  TypeAliasTracker typeAliasTracker;
 
   Memo<const clang::DeclContext *,
        Scope,
