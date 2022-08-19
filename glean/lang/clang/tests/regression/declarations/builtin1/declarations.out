@@ -36,8 +36,34 @@
               "file": { "key": "test.cpp" },
               "lineBegin": 11,
               "columnBegin": 1,
-              "lineEnd": 13,
+              "lineEnd": 14,
               "columnEnd": 1
+            }
+          }
+        }
+      },
+      {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "__builtin_is_constant_evaluated" }
+                  }
+                },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "bool" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 13,
+              "columnBegin": 9,
+              "lineEnd": 13,
+              "columnEnd": 39
             }
           }
         }

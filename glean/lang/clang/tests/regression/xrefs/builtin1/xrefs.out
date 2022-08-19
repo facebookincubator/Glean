@@ -55,6 +55,37 @@
               }
             }
           }
+        },
+        {
+          "range": { "begin": 276, "end": 307 },
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "__builtin_is_constant_evaluated" }
+                        }
+                      },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "bool" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 13,
+                    "columnBegin": 9,
+                    "lineEnd": 13,
+                    "columnEnd": 39
+                  }
+                }
+              }
+            }
+          }
         }
       ]
     }

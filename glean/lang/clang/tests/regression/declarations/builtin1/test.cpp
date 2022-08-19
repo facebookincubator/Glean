@@ -10,4 +10,5 @@ using I = __int128_t;
 
 void f() {
     ::new I;
+    if (__builtin_is_constant_evaluated()) {}
 }
