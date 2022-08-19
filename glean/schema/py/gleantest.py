@@ -1,14 +1,63 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Union
+from typing import Tuple, Type, Union, TypeVar
 import json
+from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+
+
+from glean.schema.gleantest.types import (
+    TestBar,
+    TestRevStringPairs,
+    TestStoredRevStringPair,
+    TestRef,
+    TestKeyValue,
+    TestIsThree,
+    TestEdgeWrapper,
+    TestRefRef,
+    TestNothingTest,
+    TestFooToFoo,
+    TestExpr,
+    TestRevRevStringPair,
+    TestEdge,
+    TestSameString,
+    TestStoredRevStringPairWithA,
+    TestLeftOr,
+    TestRevStringPair,
+    TestDerivedKeyValue,
+    TestViaStringPair,
+    TestQux,
+    TestStoredDualStringPair,
+    TestIsGlean,
+    TestDerivedKeyValue2,
+    TestRevStringPairRec,
+    TestTree,
+    TestPredicate,
+    TestLeftOr2,
+    TestNode,
+    TestTreeToTree,
+    TestStringPair,
+    TestName,
+    TestSkipRevEdge,
+    TestStoredRevStringPairWithRev,
+    TestMatchOneAlt,
+    TestRevEdge,
+    TestStoredRevStringPairSum,
+    TestEmptyStoredStringPair,
+    TestUnbound,
+    TestPredicate,
+    TestDualStringPair,
+    TestUnbound2,
+    TestStringPairBox,
+    TestReflStringPair,
+    TestFoo,
+)
 
 
 class GleanTestBar(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.Bar.5 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.Bar.5 { json.dumps(key) }", TestBar
 
   @staticmethod
   def angle_query(*, name: str) -> "GleanTestBar":
@@ -16,8 +65,8 @@ class GleanTestBar(GleanSchemaPredicate):
 
 class GleanTestRevStringPairs(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.RevStringPairs.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.RevStringPairs.1 { { } }", TestRevStringPairs
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestRevStringPairs":
@@ -25,8 +74,8 @@ class GleanTestRevStringPairs(GleanSchemaPredicate):
 
 class GleanTestStoredRevStringPair(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.StoredRevStringPair.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.StoredRevStringPair.1 { { } }", TestStoredRevStringPair
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestStoredRevStringPair":
@@ -34,8 +83,8 @@ class GleanTestStoredRevStringPair(GleanSchemaPredicate):
 
 class GleanTestRef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.Ref.5 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.Ref.5 { json.dumps(key) }", TestRef
 
   @staticmethod
   def angle_query(*, name: str) -> "GleanTestRef":
@@ -43,8 +92,8 @@ class GleanTestRef(GleanSchemaPredicate):
 
 class GleanTestKeyValue(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.KeyValue.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.KeyValue.1 { { } }", TestKeyValue
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestKeyValue":
@@ -52,8 +101,8 @@ class GleanTestKeyValue(GleanSchemaPredicate):
 
 class GleanTestIsThree(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.IsThree.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.IsThree.1 { json.dumps(key) }", TestIsThree
 
   @staticmethod
   def angle_query(*, name: int) -> "GleanTestIsThree":
@@ -61,8 +110,8 @@ class GleanTestIsThree(GleanSchemaPredicate):
 
 class GleanTestEdgeWrapper(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.EdgeWrapper.5 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.EdgeWrapper.5 { { } }", TestEdgeWrapper
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestEdgeWrapper":
@@ -70,8 +119,8 @@ class GleanTestEdgeWrapper(GleanSchemaPredicate):
 
 class GleanTestRefRef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.RefRef.5 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.RefRef.5 { json.dumps(key) }", TestRefRef
 
   @staticmethod
   def angle_query(*, name: str) -> "GleanTestRefRef":
@@ -79,8 +128,8 @@ class GleanTestRefRef(GleanSchemaPredicate):
 
 class GleanTestNothingTest(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.nothingTest.5 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.nothingTest.5 { { } }", TestNothingTest
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestNothingTest":
@@ -88,8 +137,8 @@ class GleanTestNothingTest(GleanSchemaPredicate):
 
 class GleanTestFooToFoo(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.FooToFoo.5 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.FooToFoo.5 { json.dumps(key) }", TestFooToFoo
 
   @staticmethod
   def angle_query(*, name: str) -> "GleanTestFooToFoo":
@@ -97,8 +146,8 @@ class GleanTestFooToFoo(GleanSchemaPredicate):
 
 class GleanTestExpr(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.Expr.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.Expr.1 { json.dumps(key) }", TestExpr
 
   @staticmethod
   def angle_query(*, name: str) -> "GleanTestExpr":
@@ -106,8 +155,8 @@ class GleanTestExpr(GleanSchemaPredicate):
 
 class GleanTestRevRevStringPair(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.RevRevStringPair.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.RevRevStringPair.1 { { } }", TestRevRevStringPair
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestRevRevStringPair":
@@ -115,8 +164,8 @@ class GleanTestRevRevStringPair(GleanSchemaPredicate):
 
 class GleanTestEdge(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.Edge.5 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.Edge.5 { { } }", TestEdge
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestEdge":
@@ -124,8 +173,8 @@ class GleanTestEdge(GleanSchemaPredicate):
 
 class GleanTestSameString(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.SameString.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.SameString.1 { { } }", TestSameString
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestSameString":
@@ -133,8 +182,8 @@ class GleanTestSameString(GleanSchemaPredicate):
 
 class GleanTestStoredRevStringPairWithA(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.StoredRevStringPairWithA.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.StoredRevStringPairWithA.1 { { } }", TestStoredRevStringPairWithA
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestStoredRevStringPairWithA":
@@ -142,8 +191,8 @@ class GleanTestStoredRevStringPairWithA(GleanSchemaPredicate):
 
 class GleanTestLeftOr(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.LeftOr.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.LeftOr.1 { { } }", TestLeftOr
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestLeftOr":
@@ -151,8 +200,8 @@ class GleanTestLeftOr(GleanSchemaPredicate):
 
 class GleanTestRevStringPair(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.RevStringPair.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.RevStringPair.1 { { } }", TestRevStringPair
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestRevStringPair":
@@ -160,8 +209,8 @@ class GleanTestRevStringPair(GleanSchemaPredicate):
 
 class GleanTestDerivedKeyValue(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.DerivedKeyValue.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.DerivedKeyValue.1 { { } }", TestDerivedKeyValue
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestDerivedKeyValue":
@@ -169,8 +218,8 @@ class GleanTestDerivedKeyValue(GleanSchemaPredicate):
 
 class GleanTestViaStringPair(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.ViaStringPair.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.ViaStringPair.1 { { } }", TestViaStringPair
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestViaStringPair":
@@ -178,8 +227,8 @@ class GleanTestViaStringPair(GleanSchemaPredicate):
 
 class GleanTestQux(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.Qux.5 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.Qux.5 { json.dumps(key) }", TestQux
 
   @staticmethod
   def angle_query(*, name: str) -> "GleanTestQux":
@@ -187,8 +236,8 @@ class GleanTestQux(GleanSchemaPredicate):
 
 class GleanTestStoredDualStringPair(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.StoredDualStringPair.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.StoredDualStringPair.1 { { } }", TestStoredDualStringPair
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestStoredDualStringPair":
@@ -196,8 +245,8 @@ class GleanTestStoredDualStringPair(GleanSchemaPredicate):
 
 class GleanTestIsGlean(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.IsGlean.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.IsGlean.1 { json.dumps(key) }", TestIsGlean
 
   @staticmethod
   def angle_query(*, name: str) -> "GleanTestIsGlean":
@@ -205,8 +254,8 @@ class GleanTestIsGlean(GleanSchemaPredicate):
 
 class GleanTestDerivedKeyValue2(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.DerivedKeyValue2.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.DerivedKeyValue2.1 { { } }", TestDerivedKeyValue2
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestDerivedKeyValue2":
@@ -214,8 +263,8 @@ class GleanTestDerivedKeyValue2(GleanSchemaPredicate):
 
 class GleanTestRevStringPairRec(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.RevStringPairRec.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.RevStringPairRec.1 { { } }", TestRevStringPairRec
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestRevStringPairRec":
@@ -223,8 +272,8 @@ class GleanTestRevStringPairRec(GleanSchemaPredicate):
 
 class GleanTestTree(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.Tree.5 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.Tree.5 { { } }", TestTree
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestTree":
@@ -232,8 +281,8 @@ class GleanTestTree(GleanSchemaPredicate):
 
 class GleanTestPredicate(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.Predicate.5 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.Predicate.5 { json.dumps(key) }", TestPredicate
 
   @staticmethod
   def angle_query(*, name: str) -> "GleanTestPredicate":
@@ -241,8 +290,8 @@ class GleanTestPredicate(GleanSchemaPredicate):
 
 class GleanTestLeftOr2(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.LeftOr2.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.LeftOr2.1 { { } }", TestLeftOr2
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestLeftOr2":
@@ -250,8 +299,8 @@ class GleanTestLeftOr2(GleanSchemaPredicate):
 
 class GleanTestNode(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.Node.5 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.Node.5 { { } }", TestNode
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestNode":
@@ -259,8 +308,8 @@ class GleanTestNode(GleanSchemaPredicate):
 
 class GleanTestTreeToTree(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.TreeToTree.5 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.TreeToTree.5 { json.dumps(key) }", TestTreeToTree
 
   @staticmethod
   def angle_query(*, name: str) -> "GleanTestTreeToTree":
@@ -268,8 +317,8 @@ class GleanTestTreeToTree(GleanSchemaPredicate):
 
 class GleanTestStringPair(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.StringPair.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.StringPair.1 { { } }", TestStringPair
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestStringPair":
@@ -277,8 +326,8 @@ class GleanTestStringPair(GleanSchemaPredicate):
 
 class GleanTestName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.Name.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.Name.1 { json.dumps(key) }", TestName
 
   @staticmethod
   def angle_query(*, name: str) -> "GleanTestName":
@@ -286,8 +335,8 @@ class GleanTestName(GleanSchemaPredicate):
 
 class GleanTestSkipRevEdge(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.SkipRevEdge.5 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.SkipRevEdge.5 { { } }", TestSkipRevEdge
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestSkipRevEdge":
@@ -295,8 +344,8 @@ class GleanTestSkipRevEdge(GleanSchemaPredicate):
 
 class GleanTestStoredRevStringPairWithRev(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.StoredRevStringPairWithRev.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.StoredRevStringPairWithRev.1 { { } }", TestStoredRevStringPairWithRev
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestStoredRevStringPairWithRev":
@@ -304,8 +353,8 @@ class GleanTestStoredRevStringPairWithRev(GleanSchemaPredicate):
 
 class GleanTestMatchOneAlt(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.MatchOneAlt.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.MatchOneAlt.1 { { } }", TestMatchOneAlt
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestMatchOneAlt":
@@ -313,8 +362,8 @@ class GleanTestMatchOneAlt(GleanSchemaPredicate):
 
 class GleanTestRevEdge(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.RevEdge.5 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.RevEdge.5 { { } }", TestRevEdge
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestRevEdge":
@@ -322,8 +371,8 @@ class GleanTestRevEdge(GleanSchemaPredicate):
 
 class GleanTestStoredRevStringPairSum(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.StoredRevStringPairSum.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.StoredRevStringPairSum.1 { { } }", TestStoredRevStringPairSum
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestStoredRevStringPairSum":
@@ -331,8 +380,8 @@ class GleanTestStoredRevStringPairSum(GleanSchemaPredicate):
 
 class GleanTestEmptyStoredStringPair(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.EmptyStoredStringPair.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.EmptyStoredStringPair.1 { { } }", TestEmptyStoredStringPair
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestEmptyStoredStringPair":
@@ -340,8 +389,8 @@ class GleanTestEmptyStoredStringPair(GleanSchemaPredicate):
 
 class GleanTestUnbound(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.Unbound.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.Unbound.1 { { } }", TestUnbound
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestUnbound":
@@ -349,8 +398,8 @@ class GleanTestUnbound(GleanSchemaPredicate):
 
 class GleanTestPredicate(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.Predicate.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.Predicate.1 { json.dumps(key) }", TestPredicate
 
   @staticmethod
   def angle_query(*, name: str) -> "GleanTestPredicate":
@@ -358,8 +407,8 @@ class GleanTestPredicate(GleanSchemaPredicate):
 
 class GleanTestDualStringPair(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.DualStringPair.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.DualStringPair.1 { { } }", TestDualStringPair
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestDualStringPair":
@@ -367,8 +416,8 @@ class GleanTestDualStringPair(GleanSchemaPredicate):
 
 class GleanTestUnbound2(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.Unbound2.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.Unbound2.1 { { } }", TestUnbound2
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestUnbound2":
@@ -376,8 +425,8 @@ class GleanTestUnbound2(GleanSchemaPredicate):
 
 class GleanTestStringPairBox(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.StringPairBox.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.StringPairBox.1 { { } }", TestStringPairBox
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "GleanTestStringPairBox":
@@ -385,8 +434,8 @@ class GleanTestStringPairBox(GleanSchemaPredicate):
 
 class GleanTestReflStringPair(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.ReflStringPair.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.ReflStringPair.1 { json.dumps(key) }", TestReflStringPair
 
   @staticmethod
   def angle_query(*, name: str) -> "GleanTestReflStringPair":
@@ -394,8 +443,8 @@ class GleanTestReflStringPair(GleanSchemaPredicate):
 
 class GleanTestFoo(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"glean.test.Foo.5 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"glean.test.Foo.5 { json.dumps(key) }", TestFoo
 
   @staticmethod
   def angle_query(*, name: str) -> "GleanTestFoo":

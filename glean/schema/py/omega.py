@@ -1,14 +1,36 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Union
+from typing import Tuple, Type, Union, TypeVar
 import json
+from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+
+
+from glean.schema.omega.types import (
+    DependencyList,
+    Enum_,
+    OmegaAction,
+    OmegaPolicy,
+    OmegaBlock,
+    Oncall,
+    Config,
+    OmegaEndpoint,
+    DependencyPathByEntity,
+    Function_,
+    TargetNodeLocations,
+    Name,
+    Method,
+    OmegaEntityMetadata,
+    Class_,
+    OmegaExecutionNode,
+    DependencyPath,
+)
 
 
 class OmegaDependencyList(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omega.DependencyList.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omega.DependencyList.1 { { } }", DependencyList
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaDependencyList":
@@ -16,8 +38,8 @@ class OmegaDependencyList(GleanSchemaPredicate):
 
 class OmegaEnum_(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omega.Enum_.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omega.Enum_.1 { { } }", Enum_
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaEnum_":
@@ -25,8 +47,8 @@ class OmegaEnum_(GleanSchemaPredicate):
 
 class OmegaOmegaAction(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omega.OmegaAction.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omega.OmegaAction.1 { { } }", OmegaAction
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaOmegaAction":
@@ -34,8 +56,8 @@ class OmegaOmegaAction(GleanSchemaPredicate):
 
 class OmegaOmegaPolicy(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omega.OmegaPolicy.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omega.OmegaPolicy.1 { { } }", OmegaPolicy
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaOmegaPolicy":
@@ -43,8 +65,8 @@ class OmegaOmegaPolicy(GleanSchemaPredicate):
 
 class OmegaOmegaBlock(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omega.OmegaBlock.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omega.OmegaBlock.1 { { } }", OmegaBlock
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaOmegaBlock":
@@ -52,8 +74,8 @@ class OmegaOmegaBlock(GleanSchemaPredicate):
 
 class OmegaOncall(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omega.Oncall.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omega.Oncall.1 { { } }", Oncall
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaOncall":
@@ -61,8 +83,8 @@ class OmegaOncall(GleanSchemaPredicate):
 
 class OmegaConfig(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omega.Config.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omega.Config.1 { { } }", Config
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaConfig":
@@ -70,8 +92,8 @@ class OmegaConfig(GleanSchemaPredicate):
 
 class OmegaOmegaEndpoint(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omega.OmegaEndpoint.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omega.OmegaEndpoint.1 { { } }", OmegaEndpoint
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaOmegaEndpoint":
@@ -79,8 +101,8 @@ class OmegaOmegaEndpoint(GleanSchemaPredicate):
 
 class OmegaDependencyPathByEntity(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omega.DependencyPathByEntity.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omega.DependencyPathByEntity.1 { { } }", DependencyPathByEntity
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaDependencyPathByEntity":
@@ -88,8 +110,8 @@ class OmegaDependencyPathByEntity(GleanSchemaPredicate):
 
 class OmegaFunction_(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omega.Function_.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omega.Function_.1 { { } }", Function_
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaFunction_":
@@ -97,8 +119,8 @@ class OmegaFunction_(GleanSchemaPredicate):
 
 class OmegaTargetNodeLocations(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omega.TargetNodeLocations.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omega.TargetNodeLocations.1 { { } }", TargetNodeLocations
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaTargetNodeLocations":
@@ -106,8 +128,8 @@ class OmegaTargetNodeLocations(GleanSchemaPredicate):
 
 class OmegaName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omega.Name.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omega.Name.1 { json.dumps(key) }", Name
 
   @staticmethod
   def angle_query(*, name: str) -> "OmegaName":
@@ -115,8 +137,8 @@ class OmegaName(GleanSchemaPredicate):
 
 class OmegaMethod(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omega.Method.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omega.Method.1 { { } }", Method
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaMethod":
@@ -124,8 +146,8 @@ class OmegaMethod(GleanSchemaPredicate):
 
 class OmegaOmegaEntityMetadata(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omega.OmegaEntityMetadata.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omega.OmegaEntityMetadata.1 { { } }", OmegaEntityMetadata
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaOmegaEntityMetadata":
@@ -133,8 +155,8 @@ class OmegaOmegaEntityMetadata(GleanSchemaPredicate):
 
 class OmegaClass_(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omega.Class_.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omega.Class_.1 { { } }", Class_
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaClass_":
@@ -142,8 +164,8 @@ class OmegaClass_(GleanSchemaPredicate):
 
 class OmegaOmegaExecutionNode(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omega.OmegaExecutionNode.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omega.OmegaExecutionNode.1 { { } }", OmegaExecutionNode
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaOmegaExecutionNode":
@@ -151,8 +173,8 @@ class OmegaOmegaExecutionNode(GleanSchemaPredicate):
 
 class OmegaDependencyPath(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omega.DependencyPath.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omega.DependencyPath.1 { { } }", DependencyPath
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaDependencyPath":

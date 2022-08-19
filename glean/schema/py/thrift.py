@@ -1,14 +1,88 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Union
+from typing import Tuple, Type, Union, TypeVar
 import json
+from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+
+
+from glean.schema.thrift.types import (
+    ToPython,
+    FunctionSpecification,
+    ExceptionType,
+    TypeDefType,
+    FromCpp2,
+    FromHack,
+    FileDeclaration,
+    PythonField,
+    FileError,
+    PythonModule,
+    ConstantType,
+    FunctionName,
+    TypeSpecification,
+    NamespaceName,
+    ExceptionVal,
+    HackRecord,
+    PythonMethod,
+    PythonName,
+    Namespace,
+    ServiceName,
+    IncludeStatement,
+    TargetX,
+    PythonClassContains,
+    PythonFileModule,
+    TypeDefException,
+    EnumValue,
+    ServiceDefinition,
+    NamespaceValue,
+    CompileTarget,
+    PythonModuleFile,
+    FileTarget,
+    EnumValueDef,
+    HackRecordContains,
+    PythonValue,
+    StructType,
+    ServiceChild,
+    Includes,
+    QualName,
+    OutputTarget,
+    PythonFunction,
+    StructuredAnnotation,
+    File,
+    HackMethod,
+    Constant,
+    HackName,
+    NamedDecl,
+    PythonModuleContains,
+    HackMap,
+    IncludeSpecial,
+    FileXRefs,
+    Mangle,
+    StructVal,
+    IncludeSplice,
+    Lang,
+    Literal,
+    Identifier,
+    UnionType,
+    DeclarationNameSpan,
+    FromPython,
+    PythonClass,
+    ToCpp2,
+    ToHack,
+    EnumerationType,
+    FileOutput,
+    ServiceParent,
+    MangleLang,
+    ExceptionName,
+    EnumVal,
+    UnionVal,
+)
 
 
 class ThriftToPython(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.ToPython.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.ToPython.7 { { } }", ToPython
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftToPython":
@@ -16,8 +90,8 @@ class ThriftToPython(GleanSchemaPredicate):
 
 class ThriftFunctionSpecification(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.FunctionSpecification.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.FunctionSpecification.7 { { } }", FunctionSpecification
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftFunctionSpecification":
@@ -25,8 +99,8 @@ class ThriftFunctionSpecification(GleanSchemaPredicate):
 
 class ThriftExceptionType(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.ExceptionType.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.ExceptionType.7 { { } }", ExceptionType
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftExceptionType":
@@ -34,8 +108,8 @@ class ThriftExceptionType(GleanSchemaPredicate):
 
 class ThriftTypeDefType(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.TypeDefType.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.TypeDefType.7 { { } }", TypeDefType
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftTypeDefType":
@@ -43,8 +117,8 @@ class ThriftTypeDefType(GleanSchemaPredicate):
 
 class ThriftFromCpp2(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.FromCpp2.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.FromCpp2.7 { { } }", FromCpp2
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftFromCpp2":
@@ -52,8 +126,8 @@ class ThriftFromCpp2(GleanSchemaPredicate):
 
 class ThriftFromHack(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.FromHack.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.FromHack.7 { { } }", FromHack
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftFromHack":
@@ -61,8 +135,8 @@ class ThriftFromHack(GleanSchemaPredicate):
 
 class ThriftFileDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.FileDeclaration.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.FileDeclaration.7 { { } }", FileDeclaration
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftFileDeclaration":
@@ -70,8 +144,8 @@ class ThriftFileDeclaration(GleanSchemaPredicate):
 
 class ThriftPythonField(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.PythonField.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.PythonField.7 { { } }", PythonField
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftPythonField":
@@ -79,8 +153,8 @@ class ThriftPythonField(GleanSchemaPredicate):
 
 class ThriftFileError(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.FileError.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.FileError.7 { { } }", FileError
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftFileError":
@@ -88,8 +162,8 @@ class ThriftFileError(GleanSchemaPredicate):
 
 class ThriftPythonModule(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.PythonModule.7 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.PythonModule.7 { json.dumps(key) }", PythonModule
 
   @staticmethod
   def angle_query(*, name: str) -> "ThriftPythonModule":
@@ -97,8 +171,8 @@ class ThriftPythonModule(GleanSchemaPredicate):
 
 class ThriftConstantType(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.ConstantType.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.ConstantType.7 { { } }", ConstantType
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftConstantType":
@@ -106,8 +180,8 @@ class ThriftConstantType(GleanSchemaPredicate):
 
 class ThriftFunctionName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.FunctionName.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.FunctionName.7 { { } }", FunctionName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftFunctionName":
@@ -115,8 +189,8 @@ class ThriftFunctionName(GleanSchemaPredicate):
 
 class ThriftTypeSpecification(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.TypeSpecification.7 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.TypeSpecification.7 { json.dumps(key) }", TypeSpecification
 
   @staticmethod
   def angle_query(*, name: str) -> "ThriftTypeSpecification":
@@ -124,8 +198,8 @@ class ThriftTypeSpecification(GleanSchemaPredicate):
 
 class ThriftNamespaceName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.NamespaceName.7 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.NamespaceName.7 { json.dumps(key) }", NamespaceName
 
   @staticmethod
   def angle_query(*, name: str) -> "ThriftNamespaceName":
@@ -133,8 +207,8 @@ class ThriftNamespaceName(GleanSchemaPredicate):
 
 class ThriftExceptionVal(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.ExceptionVal.7 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.ExceptionVal.7 { json.dumps(key) }", ExceptionVal
 
   @staticmethod
   def angle_query(*, name: str) -> "ThriftExceptionVal":
@@ -142,8 +216,8 @@ class ThriftExceptionVal(GleanSchemaPredicate):
 
 class ThriftHackRecord(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.HackRecord.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.HackRecord.7 { { } }", HackRecord
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftHackRecord":
@@ -151,8 +225,8 @@ class ThriftHackRecord(GleanSchemaPredicate):
 
 class ThriftPythonMethod(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.PythonMethod.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.PythonMethod.7 { { } }", PythonMethod
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftPythonMethod":
@@ -160,8 +234,8 @@ class ThriftPythonMethod(GleanSchemaPredicate):
 
 class ThriftPythonName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.PythonName.7 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.PythonName.7 { json.dumps(key) }", PythonName
 
   @staticmethod
   def angle_query(*, name: str) -> "ThriftPythonName":
@@ -169,8 +243,8 @@ class ThriftPythonName(GleanSchemaPredicate):
 
 class ThriftNamespace(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.Namespace.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.Namespace.7 { { } }", Namespace
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftNamespace":
@@ -178,8 +252,8 @@ class ThriftNamespace(GleanSchemaPredicate):
 
 class ThriftServiceName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.ServiceName.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.ServiceName.7 { { } }", ServiceName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftServiceName":
@@ -187,8 +261,8 @@ class ThriftServiceName(GleanSchemaPredicate):
 
 class ThriftIncludeStatement(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.IncludeStatement.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.IncludeStatement.7 { { } }", IncludeStatement
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftIncludeStatement":
@@ -196,8 +270,8 @@ class ThriftIncludeStatement(GleanSchemaPredicate):
 
 class ThriftTargetX(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.TargetX.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.TargetX.7 { { } }", TargetX
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftTargetX":
@@ -205,8 +279,8 @@ class ThriftTargetX(GleanSchemaPredicate):
 
 class ThriftPythonClassContains(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.PythonClassContains.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.PythonClassContains.7 { { } }", PythonClassContains
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftPythonClassContains":
@@ -214,8 +288,8 @@ class ThriftPythonClassContains(GleanSchemaPredicate):
 
 class ThriftPythonFileModule(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.PythonFileModule.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.PythonFileModule.7 { { } }", PythonFileModule
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftPythonFileModule":
@@ -223,8 +297,8 @@ class ThriftPythonFileModule(GleanSchemaPredicate):
 
 class ThriftTypeDefException(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.TypeDefException.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.TypeDefException.7 { { } }", TypeDefException
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftTypeDefException":
@@ -232,8 +306,8 @@ class ThriftTypeDefException(GleanSchemaPredicate):
 
 class ThriftEnumValue(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.EnumValue.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.EnumValue.7 { { } }", EnumValue
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftEnumValue":
@@ -241,8 +315,8 @@ class ThriftEnumValue(GleanSchemaPredicate):
 
 class ThriftServiceDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.ServiceDefinition.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.ServiceDefinition.7 { { } }", ServiceDefinition
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftServiceDefinition":
@@ -250,8 +324,8 @@ class ThriftServiceDefinition(GleanSchemaPredicate):
 
 class ThriftNamespaceValue(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.NamespaceValue.7 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.NamespaceValue.7 { json.dumps(key) }", NamespaceValue
 
   @staticmethod
   def angle_query(*, name: str) -> "ThriftNamespaceValue":
@@ -259,8 +333,8 @@ class ThriftNamespaceValue(GleanSchemaPredicate):
 
 class ThriftCompileTarget(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.CompileTarget.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.CompileTarget.7 { { } }", CompileTarget
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftCompileTarget":
@@ -268,8 +342,8 @@ class ThriftCompileTarget(GleanSchemaPredicate):
 
 class ThriftPythonModuleFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.PythonModuleFile.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.PythonModuleFile.7 { { } }", PythonModuleFile
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftPythonModuleFile":
@@ -277,8 +351,8 @@ class ThriftPythonModuleFile(GleanSchemaPredicate):
 
 class ThriftFileTarget(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.FileTarget.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.FileTarget.7 { { } }", FileTarget
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftFileTarget":
@@ -286,8 +360,8 @@ class ThriftFileTarget(GleanSchemaPredicate):
 
 class ThriftEnumValueDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.EnumValueDef.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.EnumValueDef.7 { { } }", EnumValueDef
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftEnumValueDef":
@@ -295,8 +369,8 @@ class ThriftEnumValueDef(GleanSchemaPredicate):
 
 class ThriftHackRecordContains(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.HackRecordContains.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.HackRecordContains.7 { { } }", HackRecordContains
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftHackRecordContains":
@@ -304,8 +378,8 @@ class ThriftHackRecordContains(GleanSchemaPredicate):
 
 class ThriftPythonValue(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.PythonValue.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.PythonValue.7 { { } }", PythonValue
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftPythonValue":
@@ -313,8 +387,8 @@ class ThriftPythonValue(GleanSchemaPredicate):
 
 class ThriftStructType(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.StructType.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.StructType.7 { { } }", StructType
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftStructType":
@@ -322,8 +396,8 @@ class ThriftStructType(GleanSchemaPredicate):
 
 class ThriftServiceChild(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.ServiceChild.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.ServiceChild.7 { { } }", ServiceChild
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftServiceChild":
@@ -331,8 +405,8 @@ class ThriftServiceChild(GleanSchemaPredicate):
 
 class ThriftIncludes(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.Includes.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.Includes.7 { { } }", Includes
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftIncludes":
@@ -340,8 +414,8 @@ class ThriftIncludes(GleanSchemaPredicate):
 
 class ThriftQualName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.QualName.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.QualName.7 { { } }", QualName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftQualName":
@@ -349,8 +423,8 @@ class ThriftQualName(GleanSchemaPredicate):
 
 class ThriftOutputTarget(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.OutputTarget.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.OutputTarget.7 { { } }", OutputTarget
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftOutputTarget":
@@ -358,8 +432,8 @@ class ThriftOutputTarget(GleanSchemaPredicate):
 
 class ThriftPythonFunction(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.PythonFunction.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.PythonFunction.7 { { } }", PythonFunction
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftPythonFunction":
@@ -367,8 +441,8 @@ class ThriftPythonFunction(GleanSchemaPredicate):
 
 class ThriftStructuredAnnotation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.StructuredAnnotation.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.StructuredAnnotation.7 { { } }", StructuredAnnotation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftStructuredAnnotation":
@@ -376,8 +450,8 @@ class ThriftStructuredAnnotation(GleanSchemaPredicate):
 
 class ThriftFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.File.7 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.File.7 { json.dumps(key) }", File
 
   @staticmethod
   def angle_query(*, name: str) -> "ThriftFile":
@@ -385,8 +459,8 @@ class ThriftFile(GleanSchemaPredicate):
 
 class ThriftHackMethod(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.HackMethod.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.HackMethod.7 { { } }", HackMethod
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftHackMethod":
@@ -394,8 +468,8 @@ class ThriftHackMethod(GleanSchemaPredicate):
 
 class ThriftConstant(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.Constant.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.Constant.7 { { } }", Constant
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftConstant":
@@ -403,8 +477,8 @@ class ThriftConstant(GleanSchemaPredicate):
 
 class ThriftHackName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.HackName.7 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.HackName.7 { json.dumps(key) }", HackName
 
   @staticmethod
   def angle_query(*, name: str) -> "ThriftHackName":
@@ -412,8 +486,8 @@ class ThriftHackName(GleanSchemaPredicate):
 
 class ThriftNamedDecl(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.NamedDecl.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.NamedDecl.7 { { } }", NamedDecl
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftNamedDecl":
@@ -421,8 +495,8 @@ class ThriftNamedDecl(GleanSchemaPredicate):
 
 class ThriftPythonModuleContains(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.PythonModuleContains.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.PythonModuleContains.7 { { } }", PythonModuleContains
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftPythonModuleContains":
@@ -430,8 +504,8 @@ class ThriftPythonModuleContains(GleanSchemaPredicate):
 
 class ThriftHackMap(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.HackMap.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.HackMap.7 { { } }", HackMap
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftHackMap":
@@ -439,8 +513,8 @@ class ThriftHackMap(GleanSchemaPredicate):
 
 class ThriftIncludeSpecial(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.IncludeSpecial.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.IncludeSpecial.7 { { } }", IncludeSpecial
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftIncludeSpecial":
@@ -448,8 +522,8 @@ class ThriftIncludeSpecial(GleanSchemaPredicate):
 
 class ThriftFileXRefs(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.FileXRefs.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.FileXRefs.7 { { } }", FileXRefs
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftFileXRefs":
@@ -457,8 +531,8 @@ class ThriftFileXRefs(GleanSchemaPredicate):
 
 class ThriftMangle(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.Mangle.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.Mangle.7 { { } }", Mangle
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftMangle":
@@ -466,8 +540,8 @@ class ThriftMangle(GleanSchemaPredicate):
 
 class ThriftStructVal(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.StructVal.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.StructVal.7 { { } }", StructVal
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftStructVal":
@@ -475,8 +549,8 @@ class ThriftStructVal(GleanSchemaPredicate):
 
 class ThriftIncludeSplice(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.IncludeSplice.7 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.IncludeSplice.7 { json.dumps(key) }", IncludeSplice
 
   @staticmethod
   def angle_query(*, name: str) -> "ThriftIncludeSplice":
@@ -484,8 +558,8 @@ class ThriftIncludeSplice(GleanSchemaPredicate):
 
 class ThriftLang(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.Lang.7 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.Lang.7 { json.dumps(key) }", Lang
 
   @staticmethod
   def angle_query(*, name: str) -> "ThriftLang":
@@ -493,8 +567,8 @@ class ThriftLang(GleanSchemaPredicate):
 
 class ThriftLiteral(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.Literal.7 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.Literal.7 { json.dumps(key) }", Literal
 
   @staticmethod
   def angle_query(*, name: str) -> "ThriftLiteral":
@@ -502,8 +576,8 @@ class ThriftLiteral(GleanSchemaPredicate):
 
 class ThriftIdentifier(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.Identifier.7 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.Identifier.7 { json.dumps(key) }", Identifier
 
   @staticmethod
   def angle_query(*, name: str) -> "ThriftIdentifier":
@@ -511,8 +585,8 @@ class ThriftIdentifier(GleanSchemaPredicate):
 
 class ThriftUnionType(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.UnionType.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.UnionType.7 { { } }", UnionType
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftUnionType":
@@ -520,8 +594,8 @@ class ThriftUnionType(GleanSchemaPredicate):
 
 class ThriftDeclarationNameSpan(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.DeclarationNameSpan.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.DeclarationNameSpan.7 { { } }", DeclarationNameSpan
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftDeclarationNameSpan":
@@ -529,8 +603,8 @@ class ThriftDeclarationNameSpan(GleanSchemaPredicate):
 
 class ThriftFromPython(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.FromPython.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.FromPython.7 { { } }", FromPython
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftFromPython":
@@ -538,8 +612,8 @@ class ThriftFromPython(GleanSchemaPredicate):
 
 class ThriftPythonClass(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.PythonClass.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.PythonClass.7 { { } }", PythonClass
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftPythonClass":
@@ -547,8 +621,8 @@ class ThriftPythonClass(GleanSchemaPredicate):
 
 class ThriftToCpp2(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.ToCpp2.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.ToCpp2.7 { { } }", ToCpp2
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftToCpp2":
@@ -556,8 +630,8 @@ class ThriftToCpp2(GleanSchemaPredicate):
 
 class ThriftToHack(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.ToHack.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.ToHack.7 { { } }", ToHack
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftToHack":
@@ -565,8 +639,8 @@ class ThriftToHack(GleanSchemaPredicate):
 
 class ThriftEnumerationType(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.EnumerationType.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.EnumerationType.7 { { } }", EnumerationType
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftEnumerationType":
@@ -574,8 +648,8 @@ class ThriftEnumerationType(GleanSchemaPredicate):
 
 class ThriftFileOutput(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.FileOutput.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.FileOutput.7 { { } }", FileOutput
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftFileOutput":
@@ -583,8 +657,8 @@ class ThriftFileOutput(GleanSchemaPredicate):
 
 class ThriftServiceParent(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.ServiceParent.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.ServiceParent.7 { { } }", ServiceParent
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftServiceParent":
@@ -592,8 +666,8 @@ class ThriftServiceParent(GleanSchemaPredicate):
 
 class ThriftMangleLang(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.MangleLang.7 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.MangleLang.7 { json.dumps(key) }", MangleLang
 
   @staticmethod
   def angle_query(*, name: str) -> "ThriftMangleLang":
@@ -601,8 +675,8 @@ class ThriftMangleLang(GleanSchemaPredicate):
 
 class ThriftExceptionName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.ExceptionName.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.ExceptionName.7 { { } }", ExceptionName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftExceptionName":
@@ -610,8 +684,8 @@ class ThriftExceptionName(GleanSchemaPredicate):
 
 class ThriftEnumVal(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.EnumVal.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.EnumVal.7 { { } }", EnumVal
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftEnumVal":
@@ -619,8 +693,8 @@ class ThriftEnumVal(GleanSchemaPredicate):
 
 class ThriftUnionVal(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"thrift.UnionVal.7 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"thrift.UnionVal.7 { { } }", UnionVal
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ThriftUnionVal":

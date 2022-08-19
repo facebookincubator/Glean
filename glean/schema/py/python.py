@@ -1,14 +1,69 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Union
+from typing import Tuple, Type, Union, TypeVar
 import json
+from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+
+
+from glean.schema.python.types import (
+    NameLowerCase,
+    LocalName,
+    IsTopLevelDefinition,
+    ClassDefinition,
+    NonImportDeclaration,
+    DeclarationReference,
+    DefinitionsByFile,
+    Module,
+    DefinitionLocation,
+    ClassBySName,
+    DeclarationUses,
+    ImportStatement,
+    ModuleDefinition,
+    DeclarationBySName,
+    DeclarationWithSName,
+    ModuleBySName,
+    ImportStarStatement,
+    DeclarationLocation,
+    ClassDeclaration,
+    DeclarationToName,
+    DeclarationDefinition,
+    DeclarationByName,
+    Name,
+    ImportStatementByName,
+    DocstringContent,
+    VariableDefinition,
+    Type,
+    DirectXRefsByFile,
+    VariableBySName,
+    DeclarationWithLocalName,
+    FileDirectXRefs,
+    FunctionDeclaration,
+    SNameToName,
+    NameToSName,
+    ImportStatementByAsName,
+    FunctionDefinition,
+    ImportStarsByFile,
+    IsTopLevelDeclaration,
+    SearchByLocalName,
+    DeclarationsByFile,
+    XRefsViaNameByFile,
+    DeclarationWithName,
+    VariableDeclaration,
+    FunctionBySName,
+    ImportStarLocation,
+    ImportStatementByAsSName,
+    DefinitionDeclaration,
+    ContainingTopLevelDeclaration,
+    SName,
+    LocalNameLowerCase,
+)
 
 
 class PythonNameLowerCase(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.NameLowerCase.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.NameLowerCase.1 { { } }", NameLowerCase
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonNameLowerCase":
@@ -16,8 +71,8 @@ class PythonNameLowerCase(GleanSchemaPredicate):
 
 class PythonLocalName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.LocalName.3 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.LocalName.3 { json.dumps(key) }", LocalName
 
   @staticmethod
   def angle_query(*, name: str) -> "PythonLocalName":
@@ -25,8 +80,8 @@ class PythonLocalName(GleanSchemaPredicate):
 
 class PythonIsTopLevelDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.IsTopLevelDefinition.3 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.IsTopLevelDefinition.3 { json.dumps(key) }", IsTopLevelDefinition
 
   @staticmethod
   def angle_query(*, name: str) -> "PythonIsTopLevelDefinition":
@@ -34,8 +89,8 @@ class PythonIsTopLevelDefinition(GleanSchemaPredicate):
 
 class PythonClassDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.ClassDefinition.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.ClassDefinition.2 { { } }", ClassDefinition
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonClassDefinition":
@@ -43,8 +98,8 @@ class PythonClassDefinition(GleanSchemaPredicate):
 
 class PythonNonImportDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.NonImportDeclaration.2 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.NonImportDeclaration.2 { json.dumps(key) }", NonImportDeclaration
 
   @staticmethod
   def angle_query(*, name: str) -> "PythonNonImportDeclaration":
@@ -52,8 +107,8 @@ class PythonNonImportDeclaration(GleanSchemaPredicate):
 
 class PythonDeclarationReference(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.DeclarationReference.3 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.DeclarationReference.3 { { } }", DeclarationReference
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonDeclarationReference":
@@ -61,8 +116,8 @@ class PythonDeclarationReference(GleanSchemaPredicate):
 
 class PythonDefinitionsByFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.DefinitionsByFile.3 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.DefinitionsByFile.3 { { } }", DefinitionsByFile
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonDefinitionsByFile":
@@ -70,8 +125,8 @@ class PythonDefinitionsByFile(GleanSchemaPredicate):
 
 class PythonModule(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.Module.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.Module.1 { { } }", Module
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonModule":
@@ -79,8 +134,8 @@ class PythonModule(GleanSchemaPredicate):
 
 class PythonDefinitionLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.DefinitionLocation.3 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.DefinitionLocation.3 { { } }", DefinitionLocation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonDefinitionLocation":
@@ -88,8 +143,8 @@ class PythonDefinitionLocation(GleanSchemaPredicate):
 
 class PythonClassBySName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.ClassBySName.2 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.ClassBySName.2 { json.dumps(key) }", ClassBySName
 
   @staticmethod
   def angle_query(*, name: str) -> "PythonClassBySName":
@@ -97,8 +152,8 @@ class PythonClassBySName(GleanSchemaPredicate):
 
 class PythonDeclarationUses(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.DeclarationUses.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.DeclarationUses.2 { { } }", DeclarationUses
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonDeclarationUses":
@@ -106,8 +161,8 @@ class PythonDeclarationUses(GleanSchemaPredicate):
 
 class PythonImportStatement(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.ImportStatement.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.ImportStatement.2 { { } }", ImportStatement
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonImportStatement":
@@ -115,8 +170,8 @@ class PythonImportStatement(GleanSchemaPredicate):
 
 class PythonModuleDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.ModuleDefinition.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.ModuleDefinition.2 { { } }", ModuleDefinition
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonModuleDefinition":
@@ -124,8 +179,8 @@ class PythonModuleDefinition(GleanSchemaPredicate):
 
 class PythonDeclarationBySName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.DeclarationBySName.2 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.DeclarationBySName.2 { json.dumps(key) }", DeclarationBySName
 
   @staticmethod
   def angle_query(*, name: str) -> "PythonDeclarationBySName":
@@ -133,8 +188,8 @@ class PythonDeclarationBySName(GleanSchemaPredicate):
 
 class PythonDeclarationWithSName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.DeclarationWithSName.3 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.DeclarationWithSName.3 { { } }", DeclarationWithSName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonDeclarationWithSName":
@@ -142,8 +197,8 @@ class PythonDeclarationWithSName(GleanSchemaPredicate):
 
 class PythonModuleBySName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.ModuleBySName.2 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.ModuleBySName.2 { json.dumps(key) }", ModuleBySName
 
   @staticmethod
   def angle_query(*, name: str) -> "PythonModuleBySName":
@@ -151,8 +206,8 @@ class PythonModuleBySName(GleanSchemaPredicate):
 
 class PythonImportStarStatement(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.ImportStarStatement.3 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.ImportStarStatement.3 { { } }", ImportStarStatement
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonImportStarStatement":
@@ -160,8 +215,8 @@ class PythonImportStarStatement(GleanSchemaPredicate):
 
 class PythonDeclarationLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.DeclarationLocation.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.DeclarationLocation.2 { { } }", DeclarationLocation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonDeclarationLocation":
@@ -169,8 +224,8 @@ class PythonDeclarationLocation(GleanSchemaPredicate):
 
 class PythonClassDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.ClassDeclaration.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.ClassDeclaration.1 { { } }", ClassDeclaration
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonClassDeclaration":
@@ -178,8 +233,8 @@ class PythonClassDeclaration(GleanSchemaPredicate):
 
 class PythonDeclarationToName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.DeclarationToName.2 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.DeclarationToName.2 { json.dumps(key) }", DeclarationToName
 
   @staticmethod
   def angle_query(*, name: str) -> "PythonDeclarationToName":
@@ -187,8 +242,8 @@ class PythonDeclarationToName(GleanSchemaPredicate):
 
 class PythonDeclarationDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.DeclarationDefinition.3 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.DeclarationDefinition.3 { { } }", DeclarationDefinition
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonDeclarationDefinition":
@@ -196,8 +251,8 @@ class PythonDeclarationDefinition(GleanSchemaPredicate):
 
 class PythonDeclarationByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.DeclarationByName.2 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.DeclarationByName.2 { json.dumps(key) }", DeclarationByName
 
   @staticmethod
   def angle_query(*, name: str) -> "PythonDeclarationByName":
@@ -205,8 +260,8 @@ class PythonDeclarationByName(GleanSchemaPredicate):
 
 class PythonName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.Name.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.Name.1 { json.dumps(key) }", Name
 
   @staticmethod
   def angle_query(*, name: str) -> "PythonName":
@@ -214,8 +269,8 @@ class PythonName(GleanSchemaPredicate):
 
 class PythonImportStatementByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.ImportStatementByName.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.ImportStatementByName.2 { { } }", ImportStatementByName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonImportStatementByName":
@@ -223,8 +278,8 @@ class PythonImportStatementByName(GleanSchemaPredicate):
 
 class PythonDocstringContent(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.DocstringContent.2 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.DocstringContent.2 { json.dumps(key) }", DocstringContent
 
   @staticmethod
   def angle_query(*, name: str) -> "PythonDocstringContent":
@@ -232,8 +287,8 @@ class PythonDocstringContent(GleanSchemaPredicate):
 
 class PythonVariableDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.VariableDefinition.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.VariableDefinition.2 { { } }", VariableDefinition
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonVariableDefinition":
@@ -241,8 +296,8 @@ class PythonVariableDefinition(GleanSchemaPredicate):
 
 class PythonType(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.Type.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.Type.1 { json.dumps(key) }", Type
 
   @staticmethod
   def angle_query(*, name: str) -> "PythonType":
@@ -250,8 +305,8 @@ class PythonType(GleanSchemaPredicate):
 
 class PythonDirectXRefsByFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.DirectXRefsByFile.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.DirectXRefsByFile.2 { { } }", DirectXRefsByFile
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonDirectXRefsByFile":
@@ -259,8 +314,8 @@ class PythonDirectXRefsByFile(GleanSchemaPredicate):
 
 class PythonVariableBySName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.VariableBySName.2 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.VariableBySName.2 { json.dumps(key) }", VariableBySName
 
   @staticmethod
   def angle_query(*, name: str) -> "PythonVariableBySName":
@@ -268,8 +323,8 @@ class PythonVariableBySName(GleanSchemaPredicate):
 
 class PythonDeclarationWithLocalName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.DeclarationWithLocalName.3 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.DeclarationWithLocalName.3 { { } }", DeclarationWithLocalName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonDeclarationWithLocalName":
@@ -277,8 +332,8 @@ class PythonDeclarationWithLocalName(GleanSchemaPredicate):
 
 class PythonFileDirectXRefs(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.FileDirectXRefs.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.FileDirectXRefs.2 { { } }", FileDirectXRefs
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonFileDirectXRefs":
@@ -286,8 +341,8 @@ class PythonFileDirectXRefs(GleanSchemaPredicate):
 
 class PythonFunctionDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.FunctionDeclaration.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.FunctionDeclaration.1 { { } }", FunctionDeclaration
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonFunctionDeclaration":
@@ -295,8 +350,8 @@ class PythonFunctionDeclaration(GleanSchemaPredicate):
 
 class PythonSNameToName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.SNameToName.2 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.SNameToName.2 { json.dumps(key) }", SNameToName
 
   @staticmethod
   def angle_query(*, name: str) -> "PythonSNameToName":
@@ -304,8 +359,8 @@ class PythonSNameToName(GleanSchemaPredicate):
 
 class PythonNameToSName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.NameToSName.2 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.NameToSName.2 { json.dumps(key) }", NameToSName
 
   @staticmethod
   def angle_query(*, name: str) -> "PythonNameToSName":
@@ -313,8 +368,8 @@ class PythonNameToSName(GleanSchemaPredicate):
 
 class PythonImportStatementByAsName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.ImportStatementByAsName.3 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.ImportStatementByAsName.3 { { } }", ImportStatementByAsName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonImportStatementByAsName":
@@ -322,8 +377,8 @@ class PythonImportStatementByAsName(GleanSchemaPredicate):
 
 class PythonFunctionDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.FunctionDefinition.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.FunctionDefinition.2 { { } }", FunctionDefinition
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonFunctionDefinition":
@@ -331,8 +386,8 @@ class PythonFunctionDefinition(GleanSchemaPredicate):
 
 class PythonImportStarsByFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.ImportStarsByFile.3 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.ImportStarsByFile.3 { { } }", ImportStarsByFile
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonImportStarsByFile":
@@ -340,8 +395,8 @@ class PythonImportStarsByFile(GleanSchemaPredicate):
 
 class PythonIsTopLevelDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.IsTopLevelDeclaration.3 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.IsTopLevelDeclaration.3 { json.dumps(key) }", IsTopLevelDeclaration
 
   @staticmethod
   def angle_query(*, name: str) -> "PythonIsTopLevelDeclaration":
@@ -349,8 +404,8 @@ class PythonIsTopLevelDeclaration(GleanSchemaPredicate):
 
 class PythonSearchByLocalName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.SearchByLocalName.3 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.SearchByLocalName.3 { { } }", SearchByLocalName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonSearchByLocalName":
@@ -358,8 +413,8 @@ class PythonSearchByLocalName(GleanSchemaPredicate):
 
 class PythonDeclarationsByFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.DeclarationsByFile.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.DeclarationsByFile.2 { { } }", DeclarationsByFile
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonDeclarationsByFile":
@@ -367,8 +422,8 @@ class PythonDeclarationsByFile(GleanSchemaPredicate):
 
 class PythonXRefsViaNameByFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.XRefsViaNameByFile.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.XRefsViaNameByFile.2 { { } }", XRefsViaNameByFile
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonXRefsViaNameByFile":
@@ -376,8 +431,8 @@ class PythonXRefsViaNameByFile(GleanSchemaPredicate):
 
 class PythonDeclarationWithName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.DeclarationWithName.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.DeclarationWithName.2 { { } }", DeclarationWithName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonDeclarationWithName":
@@ -385,8 +440,8 @@ class PythonDeclarationWithName(GleanSchemaPredicate):
 
 class PythonVariableDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.VariableDeclaration.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.VariableDeclaration.1 { { } }", VariableDeclaration
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonVariableDeclaration":
@@ -394,8 +449,8 @@ class PythonVariableDeclaration(GleanSchemaPredicate):
 
 class PythonFunctionBySName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.FunctionBySName.2 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.FunctionBySName.2 { json.dumps(key) }", FunctionBySName
 
   @staticmethod
   def angle_query(*, name: str) -> "PythonFunctionBySName":
@@ -403,8 +458,8 @@ class PythonFunctionBySName(GleanSchemaPredicate):
 
 class PythonImportStarLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.ImportStarLocation.3 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.ImportStarLocation.3 { { } }", ImportStarLocation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonImportStarLocation":
@@ -412,8 +467,8 @@ class PythonImportStarLocation(GleanSchemaPredicate):
 
 class PythonImportStatementByAsSName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.ImportStatementByAsSName.3 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.ImportStatementByAsSName.3 { { } }", ImportStatementByAsSName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonImportStatementByAsSName":
@@ -421,8 +476,8 @@ class PythonImportStatementByAsSName(GleanSchemaPredicate):
 
 class PythonDefinitionDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.DefinitionDeclaration.3 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.DefinitionDeclaration.3 { { } }", DefinitionDeclaration
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonDefinitionDeclaration":
@@ -430,8 +485,8 @@ class PythonDefinitionDeclaration(GleanSchemaPredicate):
 
 class PythonContainingTopLevelDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.ContainingTopLevelDeclaration.3 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.ContainingTopLevelDeclaration.3 { { } }", ContainingTopLevelDeclaration
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonContainingTopLevelDeclaration":
@@ -439,8 +494,8 @@ class PythonContainingTopLevelDeclaration(GleanSchemaPredicate):
 
 class PythonSName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.SName.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.SName.2 { { } }", SName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonSName":
@@ -448,8 +503,8 @@ class PythonSName(GleanSchemaPredicate):
 
 class PythonLocalNameLowerCase(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"python.LocalNameLowerCase.3 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"python.LocalNameLowerCase.3 { { } }", LocalNameLowerCase
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "PythonLocalNameLowerCase":

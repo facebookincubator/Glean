@@ -1,14 +1,48 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Union
+from typing import Tuple, Type, Union, TypeVar
 import json
+from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+
+
+from glean.schema.rust.types import (
+    EnumDef,
+    DefinitionUses,
+    TraitDef,
+    ImplLocation,
+    ModuleDef,
+    StaticDef,
+    Name,
+    Impl,
+    NameLowerCase,
+    StructDef,
+    TupleVariantDef,
+    ForeignStaticDef,
+    DefLocation,
+    ConstDef,
+    DefinitionName,
+    SearchByName,
+    FileDefinition,
+    FileXRefs,
+    UnionDef,
+    FieldDef,
+    FunctionDef,
+    QName,
+    TypeDef,
+    StructVariantDef,
+    Type,
+    MethodDef,
+    XRef,
+    LocalDef,
+    ForeignFunctionDef,
+)
 
 
 class RustEnumDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.EnumDef.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.EnumDef.1 { { } }", EnumDef
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustEnumDef":
@@ -16,8 +50,8 @@ class RustEnumDef(GleanSchemaPredicate):
 
 class RustDefinitionUses(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.DefinitionUses.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.DefinitionUses.1 { { } }", DefinitionUses
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustDefinitionUses":
@@ -25,8 +59,8 @@ class RustDefinitionUses(GleanSchemaPredicate):
 
 class RustTraitDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.TraitDef.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.TraitDef.1 { { } }", TraitDef
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustTraitDef":
@@ -34,8 +68,8 @@ class RustTraitDef(GleanSchemaPredicate):
 
 class RustImplLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.ImplLocation.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.ImplLocation.1 { { } }", ImplLocation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustImplLocation":
@@ -43,8 +77,8 @@ class RustImplLocation(GleanSchemaPredicate):
 
 class RustModuleDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.ModuleDef.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.ModuleDef.1 { { } }", ModuleDef
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustModuleDef":
@@ -52,8 +86,8 @@ class RustModuleDef(GleanSchemaPredicate):
 
 class RustStaticDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.StaticDef.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.StaticDef.1 { { } }", StaticDef
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustStaticDef":
@@ -61,8 +95,8 @@ class RustStaticDef(GleanSchemaPredicate):
 
 class RustName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.Name.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.Name.1 { json.dumps(key) }", Name
 
   @staticmethod
   def angle_query(*, name: str) -> "RustName":
@@ -70,8 +104,8 @@ class RustName(GleanSchemaPredicate):
 
 class RustImpl(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.Impl.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.Impl.1 { { } }", Impl
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustImpl":
@@ -79,8 +113,8 @@ class RustImpl(GleanSchemaPredicate):
 
 class RustNameLowerCase(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.NameLowerCase.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.NameLowerCase.1 { { } }", NameLowerCase
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustNameLowerCase":
@@ -88,8 +122,8 @@ class RustNameLowerCase(GleanSchemaPredicate):
 
 class RustStructDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.StructDef.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.StructDef.1 { { } }", StructDef
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustStructDef":
@@ -97,8 +131,8 @@ class RustStructDef(GleanSchemaPredicate):
 
 class RustTupleVariantDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.TupleVariantDef.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.TupleVariantDef.1 { { } }", TupleVariantDef
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustTupleVariantDef":
@@ -106,8 +140,8 @@ class RustTupleVariantDef(GleanSchemaPredicate):
 
 class RustForeignStaticDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.ForeignStaticDef.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.ForeignStaticDef.1 { { } }", ForeignStaticDef
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustForeignStaticDef":
@@ -115,8 +149,8 @@ class RustForeignStaticDef(GleanSchemaPredicate):
 
 class RustDefLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.DefLocation.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.DefLocation.1 { { } }", DefLocation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustDefLocation":
@@ -124,8 +158,8 @@ class RustDefLocation(GleanSchemaPredicate):
 
 class RustConstDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.ConstDef.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.ConstDef.1 { { } }", ConstDef
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustConstDef":
@@ -133,8 +167,8 @@ class RustConstDef(GleanSchemaPredicate):
 
 class RustDefinitionName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.DefinitionName.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.DefinitionName.1 { { } }", DefinitionName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustDefinitionName":
@@ -142,8 +176,8 @@ class RustDefinitionName(GleanSchemaPredicate):
 
 class RustSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.SearchByName.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.SearchByName.1 { { } }", SearchByName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustSearchByName":
@@ -151,8 +185,8 @@ class RustSearchByName(GleanSchemaPredicate):
 
 class RustFileDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.FileDefinition.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.FileDefinition.1 { { } }", FileDefinition
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustFileDefinition":
@@ -160,8 +194,8 @@ class RustFileDefinition(GleanSchemaPredicate):
 
 class RustFileXRefs(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.FileXRefs.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.FileXRefs.1 { { } }", FileXRefs
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustFileXRefs":
@@ -169,8 +203,8 @@ class RustFileXRefs(GleanSchemaPredicate):
 
 class RustUnionDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.UnionDef.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.UnionDef.1 { { } }", UnionDef
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustUnionDef":
@@ -178,8 +212,8 @@ class RustUnionDef(GleanSchemaPredicate):
 
 class RustFieldDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.FieldDef.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.FieldDef.1 { { } }", FieldDef
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustFieldDef":
@@ -187,8 +221,8 @@ class RustFieldDef(GleanSchemaPredicate):
 
 class RustFunctionDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.FunctionDef.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.FunctionDef.1 { { } }", FunctionDef
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustFunctionDef":
@@ -196,8 +230,8 @@ class RustFunctionDef(GleanSchemaPredicate):
 
 class RustQName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.QName.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.QName.1 { { } }", QName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustQName":
@@ -205,8 +239,8 @@ class RustQName(GleanSchemaPredicate):
 
 class RustTypeDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.TypeDef.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.TypeDef.1 { { } }", TypeDef
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustTypeDef":
@@ -214,8 +248,8 @@ class RustTypeDef(GleanSchemaPredicate):
 
 class RustStructVariantDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.StructVariantDef.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.StructVariantDef.1 { { } }", StructVariantDef
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustStructVariantDef":
@@ -223,8 +257,8 @@ class RustStructVariantDef(GleanSchemaPredicate):
 
 class RustType(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.Type.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.Type.1 { { } }", Type
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustType":
@@ -232,8 +266,8 @@ class RustType(GleanSchemaPredicate):
 
 class RustMethodDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.MethodDef.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.MethodDef.1 { { } }", MethodDef
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustMethodDef":
@@ -241,8 +275,8 @@ class RustMethodDef(GleanSchemaPredicate):
 
 class RustXRef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.XRef.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.XRef.1 { { } }", XRef
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustXRef":
@@ -250,8 +284,8 @@ class RustXRef(GleanSchemaPredicate):
 
 class RustLocalDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.LocalDef.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.LocalDef.1 { { } }", LocalDef
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustLocalDef":
@@ -259,8 +293,8 @@ class RustLocalDef(GleanSchemaPredicate):
 
 class RustForeignFunctionDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"rust.ForeignFunctionDef.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"rust.ForeignFunctionDef.1 { { } }", ForeignFunctionDef
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "RustForeignFunctionDef":

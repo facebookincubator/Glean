@@ -1,14 +1,24 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Union
+from typing import Tuple, Type, Union, TypeVar
 import json
+from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+
+
+from glean.schema.src.types import (
+    IndexFailure,
+    ByteSpanContains,
+    File,
+    FileLanguage,
+    FileLines,
+)
 
 
 class SrcIndexFailure(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"src.IndexFailure.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"src.IndexFailure.1 { { } }", IndexFailure
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SrcIndexFailure":
@@ -16,8 +26,8 @@ class SrcIndexFailure(GleanSchemaPredicate):
 
 class SrcByteSpanContains(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"src.ByteSpanContains.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"src.ByteSpanContains.1 { { } }", ByteSpanContains
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SrcByteSpanContains":
@@ -25,8 +35,8 @@ class SrcByteSpanContains(GleanSchemaPredicate):
 
 class SrcFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"src.File.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"src.File.1 { json.dumps(key) }", File
 
   @staticmethod
   def angle_query(*, name: str) -> "SrcFile":
@@ -34,8 +44,8 @@ class SrcFile(GleanSchemaPredicate):
 
 class SrcFileLanguage(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"src.FileLanguage.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"src.FileLanguage.1 { { } }", FileLanguage
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SrcFileLanguage":
@@ -43,8 +53,8 @@ class SrcFileLanguage(GleanSchemaPredicate):
 
 class SrcFileLines(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"src.FileLines.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"src.FileLines.1 { { } }", FileLines
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SrcFileLines":

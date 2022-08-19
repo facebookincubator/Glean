@@ -1,14 +1,56 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Union
+from typing import Tuple, Type, Union, TypeVar
 import json
+from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+
+
+from glean.schema.lsif.types import (
+    Range,
+    MonikerSymbolKind,
+    Name,
+    Document,
+    ToSrcRange,
+    PackageInformation,
+    Definition,
+    Project,
+    DefinitionKind,
+    SearchByMoniker,
+    DefinitionMoniker,
+    MonikerScheme,
+    MonikerId,
+    HoverText,
+    Reference,
+    SearchByExactLocation,
+    SearchNonLocalByLocation,
+    NameDefinition,
+    ProjectDocument,
+    SearchByName,
+    ResolveLocation,
+    FileEntityXRefLocation,
+    DefinitionLocation,
+    NameLowerCase,
+    Declaration,
+    TagDefinition,
+    HoverContent,
+    SearchByExactLocationAndName,
+    DefinitionUse,
+    EntityDefinition,
+    EntityLocation,
+    Metadata,
+    MonikerDefinition,
+    EntityUses,
+    EntityKind,
+    DefinitionHover,
+    Moniker,
+)
 
 
 class LsifRange(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.Range.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.Range.2 { { } }", Range
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifRange":
@@ -16,8 +58,8 @@ class LsifRange(GleanSchemaPredicate):
 
 class LsifMonikerSymbolKind(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.MonikerSymbolKind.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.MonikerSymbolKind.2 { { } }", MonikerSymbolKind
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifMonikerSymbolKind":
@@ -25,8 +67,8 @@ class LsifMonikerSymbolKind(GleanSchemaPredicate):
 
 class LsifName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.Name.2 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.Name.2 { json.dumps(key) }", Name
 
   @staticmethod
   def angle_query(*, name: str) -> "LsifName":
@@ -34,8 +76,8 @@ class LsifName(GleanSchemaPredicate):
 
 class LsifDocument(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.Document.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.Document.2 { { } }", Document
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifDocument":
@@ -43,8 +85,8 @@ class LsifDocument(GleanSchemaPredicate):
 
 class LsifToSrcRange(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.ToSrcRange.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.ToSrcRange.2 { { } }", ToSrcRange
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifToSrcRange":
@@ -52,8 +94,8 @@ class LsifToSrcRange(GleanSchemaPredicate):
 
 class LsifPackageInformation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.PackageInformation.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.PackageInformation.2 { { } }", PackageInformation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifPackageInformation":
@@ -61,8 +103,8 @@ class LsifPackageInformation(GleanSchemaPredicate):
 
 class LsifDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.Definition.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.Definition.2 { { } }", Definition
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifDefinition":
@@ -70,8 +112,8 @@ class LsifDefinition(GleanSchemaPredicate):
 
 class LsifProject(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.Project.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.Project.2 { { } }", Project
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifProject":
@@ -79,8 +121,8 @@ class LsifProject(GleanSchemaPredicate):
 
 class LsifDefinitionKind(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.DefinitionKind.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.DefinitionKind.2 { { } }", DefinitionKind
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifDefinitionKind":
@@ -88,8 +130,8 @@ class LsifDefinitionKind(GleanSchemaPredicate):
 
 class LsifSearchByMoniker(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.SearchByMoniker.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.SearchByMoniker.2 { { } }", SearchByMoniker
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifSearchByMoniker":
@@ -97,8 +139,8 @@ class LsifSearchByMoniker(GleanSchemaPredicate):
 
 class LsifDefinitionMoniker(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.DefinitionMoniker.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.DefinitionMoniker.2 { { } }", DefinitionMoniker
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifDefinitionMoniker":
@@ -106,8 +148,8 @@ class LsifDefinitionMoniker(GleanSchemaPredicate):
 
 class LsifMonikerScheme(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.MonikerScheme.2 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.MonikerScheme.2 { json.dumps(key) }", MonikerScheme
 
   @staticmethod
   def angle_query(*, name: str) -> "LsifMonikerScheme":
@@ -115,8 +157,8 @@ class LsifMonikerScheme(GleanSchemaPredicate):
 
 class LsifMonikerId(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.MonikerId.2 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.MonikerId.2 { json.dumps(key) }", MonikerId
 
   @staticmethod
   def angle_query(*, name: str) -> "LsifMonikerId":
@@ -124,8 +166,8 @@ class LsifMonikerId(GleanSchemaPredicate):
 
 class LsifHoverText(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.HoverText.2 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.HoverText.2 { json.dumps(key) }", HoverText
 
   @staticmethod
   def angle_query(*, name: str) -> "LsifHoverText":
@@ -133,8 +175,8 @@ class LsifHoverText(GleanSchemaPredicate):
 
 class LsifReference(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.Reference.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.Reference.2 { { } }", Reference
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifReference":
@@ -142,8 +184,8 @@ class LsifReference(GleanSchemaPredicate):
 
 class LsifSearchByExactLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.SearchByExactLocation.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.SearchByExactLocation.2 { { } }", SearchByExactLocation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifSearchByExactLocation":
@@ -151,8 +193,8 @@ class LsifSearchByExactLocation(GleanSchemaPredicate):
 
 class LsifSearchNonLocalByLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.SearchNonLocalByLocation.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.SearchNonLocalByLocation.2 { { } }", SearchNonLocalByLocation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifSearchNonLocalByLocation":
@@ -160,8 +202,8 @@ class LsifSearchNonLocalByLocation(GleanSchemaPredicate):
 
 class LsifNameDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.NameDefinition.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.NameDefinition.2 { { } }", NameDefinition
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifNameDefinition":
@@ -169,8 +211,8 @@ class LsifNameDefinition(GleanSchemaPredicate):
 
 class LsifProjectDocument(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.ProjectDocument.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.ProjectDocument.2 { { } }", ProjectDocument
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifProjectDocument":
@@ -178,8 +220,8 @@ class LsifProjectDocument(GleanSchemaPredicate):
 
 class LsifSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.SearchByName.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.SearchByName.2 { { } }", SearchByName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifSearchByName":
@@ -187,8 +229,8 @@ class LsifSearchByName(GleanSchemaPredicate):
 
 class LsifResolveLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.ResolveLocation.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.ResolveLocation.2 { { } }", ResolveLocation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifResolveLocation":
@@ -196,8 +238,8 @@ class LsifResolveLocation(GleanSchemaPredicate):
 
 class LsifFileEntityXRefLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.FileEntityXRefLocation.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.FileEntityXRefLocation.2 { { } }", FileEntityXRefLocation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifFileEntityXRefLocation":
@@ -205,8 +247,8 @@ class LsifFileEntityXRefLocation(GleanSchemaPredicate):
 
 class LsifDefinitionLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.DefinitionLocation.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.DefinitionLocation.2 { { } }", DefinitionLocation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifDefinitionLocation":
@@ -214,8 +256,8 @@ class LsifDefinitionLocation(GleanSchemaPredicate):
 
 class LsifNameLowerCase(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.NameLowerCase.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.NameLowerCase.2 { { } }", NameLowerCase
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifNameLowerCase":
@@ -223,8 +265,8 @@ class LsifNameLowerCase(GleanSchemaPredicate):
 
 class LsifDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.Declaration.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.Declaration.2 { { } }", Declaration
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifDeclaration":
@@ -232,8 +274,8 @@ class LsifDeclaration(GleanSchemaPredicate):
 
 class LsifTagDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.TagDefinition.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.TagDefinition.2 { { } }", TagDefinition
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifTagDefinition":
@@ -241,8 +283,8 @@ class LsifTagDefinition(GleanSchemaPredicate):
 
 class LsifHoverContent(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.HoverContent.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.HoverContent.2 { { } }", HoverContent
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifHoverContent":
@@ -250,8 +292,8 @@ class LsifHoverContent(GleanSchemaPredicate):
 
 class LsifSearchByExactLocationAndName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.SearchByExactLocationAndName.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.SearchByExactLocationAndName.2 { { } }", SearchByExactLocationAndName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifSearchByExactLocationAndName":
@@ -259,8 +301,8 @@ class LsifSearchByExactLocationAndName(GleanSchemaPredicate):
 
 class LsifDefinitionUse(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.DefinitionUse.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.DefinitionUse.2 { { } }", DefinitionUse
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifDefinitionUse":
@@ -268,8 +310,8 @@ class LsifDefinitionUse(GleanSchemaPredicate):
 
 class LsifEntityDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.EntityDefinition.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.EntityDefinition.2 { { } }", EntityDefinition
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifEntityDefinition":
@@ -277,8 +319,8 @@ class LsifEntityDefinition(GleanSchemaPredicate):
 
 class LsifEntityLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.EntityLocation.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.EntityLocation.2 { { } }", EntityLocation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifEntityLocation":
@@ -286,8 +328,8 @@ class LsifEntityLocation(GleanSchemaPredicate):
 
 class LsifMetadata(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.Metadata.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.Metadata.2 { { } }", Metadata
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifMetadata":
@@ -295,8 +337,8 @@ class LsifMetadata(GleanSchemaPredicate):
 
 class LsifMonikerDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.MonikerDefinition.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.MonikerDefinition.2 { { } }", MonikerDefinition
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifMonikerDefinition":
@@ -304,8 +346,8 @@ class LsifMonikerDefinition(GleanSchemaPredicate):
 
 class LsifEntityUses(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.EntityUses.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.EntityUses.2 { { } }", EntityUses
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifEntityUses":
@@ -313,8 +355,8 @@ class LsifEntityUses(GleanSchemaPredicate):
 
 class LsifEntityKind(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.EntityKind.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.EntityKind.2 { { } }", EntityKind
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifEntityKind":
@@ -322,8 +364,8 @@ class LsifEntityKind(GleanSchemaPredicate):
 
 class LsifDefinitionHover(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.DefinitionHover.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.DefinitionHover.2 { { } }", DefinitionHover
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifDefinitionHover":
@@ -331,8 +373,8 @@ class LsifDefinitionHover(GleanSchemaPredicate):
 
 class LsifMoniker(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"lsif.Moniker.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"lsif.Moniker.2 { { } }", Moniker
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "LsifMoniker":

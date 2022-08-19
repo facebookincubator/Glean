@@ -1,14 +1,44 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Union
+from typing import Tuple, Type, Union, TypeVar
 import json
+from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+
+
+from glean.schema.java.types import (
+    Name,
+    ClassDeclaration,
+    Path,
+    InterfaceDeclaration,
+    ImportDeclaration,
+    EnumDeclaration,
+    PackageDeclaration,
+    ArrayType,
+    AnnotatedClass,
+    TypeParam,
+    Annotation,
+    XRefFile,
+    MethodDeclaration,
+    QName,
+    VariableDeclaration,
+    TypeVar,
+    DeclaredType,
+    TypeArg,
+    FileXRefs,
+    Inheritance,
+    JavaFile,
+    PrimitiveType,
+    XRef,
+    ConstructorDeclaration,
+    Type,
+)
 
 
 class JavaName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.Name.6 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.Name.6 { json.dumps(key) }", Name
 
   @staticmethod
   def angle_query(*, name: str) -> "JavaName":
@@ -16,8 +46,8 @@ class JavaName(GleanSchemaPredicate):
 
 class JavaClassDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.ClassDeclaration.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.ClassDeclaration.6 { { } }", ClassDeclaration
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaClassDeclaration":
@@ -25,8 +55,8 @@ class JavaClassDeclaration(GleanSchemaPredicate):
 
 class JavaPath(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.Path.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.Path.6 { { } }", Path
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaPath":
@@ -34,8 +64,8 @@ class JavaPath(GleanSchemaPredicate):
 
 class JavaInterfaceDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.InterfaceDeclaration.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.InterfaceDeclaration.6 { { } }", InterfaceDeclaration
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaInterfaceDeclaration":
@@ -43,8 +73,8 @@ class JavaInterfaceDeclaration(GleanSchemaPredicate):
 
 class JavaImportDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.ImportDeclaration.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.ImportDeclaration.6 { { } }", ImportDeclaration
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaImportDeclaration":
@@ -52,8 +82,8 @@ class JavaImportDeclaration(GleanSchemaPredicate):
 
 class JavaEnumDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.EnumDeclaration.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.EnumDeclaration.6 { { } }", EnumDeclaration
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaEnumDeclaration":
@@ -61,8 +91,8 @@ class JavaEnumDeclaration(GleanSchemaPredicate):
 
 class JavaPackageDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.PackageDeclaration.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.PackageDeclaration.6 { { } }", PackageDeclaration
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaPackageDeclaration":
@@ -70,8 +100,8 @@ class JavaPackageDeclaration(GleanSchemaPredicate):
 
 class JavaArrayType(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.ArrayType.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.ArrayType.6 { { } }", ArrayType
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaArrayType":
@@ -79,8 +109,8 @@ class JavaArrayType(GleanSchemaPredicate):
 
 class JavaAnnotatedClass(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.AnnotatedClass.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.AnnotatedClass.6 { { } }", AnnotatedClass
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaAnnotatedClass":
@@ -88,8 +118,8 @@ class JavaAnnotatedClass(GleanSchemaPredicate):
 
 class JavaTypeParam(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.TypeParam.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.TypeParam.6 { { } }", TypeParam
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaTypeParam":
@@ -97,8 +127,8 @@ class JavaTypeParam(GleanSchemaPredicate):
 
 class JavaAnnotation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.Annotation.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.Annotation.6 { { } }", Annotation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaAnnotation":
@@ -106,8 +136,8 @@ class JavaAnnotation(GleanSchemaPredicate):
 
 class JavaXRefFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.XRefFile.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.XRefFile.6 { { } }", XRefFile
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaXRefFile":
@@ -115,8 +145,8 @@ class JavaXRefFile(GleanSchemaPredicate):
 
 class JavaMethodDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.MethodDeclaration.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.MethodDeclaration.6 { { } }", MethodDeclaration
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaMethodDeclaration":
@@ -124,8 +154,8 @@ class JavaMethodDeclaration(GleanSchemaPredicate):
 
 class JavaQName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.QName.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.QName.6 { { } }", QName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaQName":
@@ -133,8 +163,8 @@ class JavaQName(GleanSchemaPredicate):
 
 class JavaVariableDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.VariableDeclaration.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.VariableDeclaration.6 { { } }", VariableDeclaration
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaVariableDeclaration":
@@ -142,8 +172,8 @@ class JavaVariableDeclaration(GleanSchemaPredicate):
 
 class JavaTypeVar(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.TypeVar.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.TypeVar.6 { { } }", TypeVar
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaTypeVar":
@@ -151,8 +181,8 @@ class JavaTypeVar(GleanSchemaPredicate):
 
 class JavaDeclaredType(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.DeclaredType.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.DeclaredType.6 { { } }", DeclaredType
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaDeclaredType":
@@ -160,8 +190,8 @@ class JavaDeclaredType(GleanSchemaPredicate):
 
 class JavaTypeArg(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.TypeArg.6 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.TypeArg.6 { json.dumps(key) }", TypeArg
 
   @staticmethod
   def angle_query(*, name: str) -> "JavaTypeArg":
@@ -169,8 +199,8 @@ class JavaTypeArg(GleanSchemaPredicate):
 
 class JavaFileXRefs(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.FileXRefs.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.FileXRefs.6 { { } }", FileXRefs
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaFileXRefs":
@@ -178,8 +208,8 @@ class JavaFileXRefs(GleanSchemaPredicate):
 
 class JavaInheritance(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.Inheritance.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.Inheritance.6 { { } }", Inheritance
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaInheritance":
@@ -187,8 +217,8 @@ class JavaInheritance(GleanSchemaPredicate):
 
 class JavaJavaFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.JavaFile.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.JavaFile.6 { { } }", JavaFile
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaJavaFile":
@@ -196,8 +226,8 @@ class JavaJavaFile(GleanSchemaPredicate):
 
 class JavaPrimitiveType(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.PrimitiveType.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.PrimitiveType.6 { { } }", PrimitiveType
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaPrimitiveType":
@@ -205,8 +235,8 @@ class JavaPrimitiveType(GleanSchemaPredicate):
 
 class JavaXRef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.XRef.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.XRef.6 { { } }", XRef
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaXRef":
@@ -214,8 +244,8 @@ class JavaXRef(GleanSchemaPredicate):
 
 class JavaConstructorDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.ConstructorDeclaration.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.ConstructorDeclaration.6 { { } }", ConstructorDeclaration
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaConstructorDeclaration":
@@ -223,8 +253,8 @@ class JavaConstructorDeclaration(GleanSchemaPredicate):
 
 class JavaType(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"java.Type.6 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"java.Type.6 { { } }", Type
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "JavaType":

@@ -1,14 +1,29 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Union
+from typing import Tuple, Type, Union, TypeVar
 import json
+from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+
+
+from glean.schema.erlang.types import (
+    DeclarationReference,
+    DeclarationWithFqn,
+    FunctionDeclaration,
+    DeclarationToFqn,
+    SearchByName,
+    DeclarationsByFile,
+    DeclarationLocation,
+    NameLowerCase,
+    XRefsViaFqnByFile,
+    DeclarationUses,
+)
 
 
 class ErlangDeclarationReference(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"erlang.DeclarationReference.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"erlang.DeclarationReference.1 { { } }", DeclarationReference
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ErlangDeclarationReference":
@@ -16,8 +31,8 @@ class ErlangDeclarationReference(GleanSchemaPredicate):
 
 class ErlangDeclarationWithFqn(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"erlang.DeclarationWithFqn.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"erlang.DeclarationWithFqn.1 { { } }", DeclarationWithFqn
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ErlangDeclarationWithFqn":
@@ -25,8 +40,8 @@ class ErlangDeclarationWithFqn(GleanSchemaPredicate):
 
 class ErlangFunctionDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"erlang.FunctionDeclaration.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"erlang.FunctionDeclaration.1 { { } }", FunctionDeclaration
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ErlangFunctionDeclaration":
@@ -34,8 +49,8 @@ class ErlangFunctionDeclaration(GleanSchemaPredicate):
 
 class ErlangDeclarationToFqn(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"erlang.DeclarationToFqn.1 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"erlang.DeclarationToFqn.1 { json.dumps(key) }", DeclarationToFqn
 
   @staticmethod
   def angle_query(*, name: str) -> "ErlangDeclarationToFqn":
@@ -43,8 +58,8 @@ class ErlangDeclarationToFqn(GleanSchemaPredicate):
 
 class ErlangSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"erlang.SearchByName.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"erlang.SearchByName.1 { { } }", SearchByName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ErlangSearchByName":
@@ -52,8 +67,8 @@ class ErlangSearchByName(GleanSchemaPredicate):
 
 class ErlangDeclarationsByFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"erlang.DeclarationsByFile.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"erlang.DeclarationsByFile.1 { { } }", DeclarationsByFile
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ErlangDeclarationsByFile":
@@ -61,8 +76,8 @@ class ErlangDeclarationsByFile(GleanSchemaPredicate):
 
 class ErlangDeclarationLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"erlang.DeclarationLocation.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"erlang.DeclarationLocation.1 { { } }", DeclarationLocation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ErlangDeclarationLocation":
@@ -70,8 +85,8 @@ class ErlangDeclarationLocation(GleanSchemaPredicate):
 
 class ErlangNameLowerCase(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"erlang.NameLowerCase.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"erlang.NameLowerCase.1 { { } }", NameLowerCase
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ErlangNameLowerCase":
@@ -79,8 +94,8 @@ class ErlangNameLowerCase(GleanSchemaPredicate):
 
 class ErlangXRefsViaFqnByFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"erlang.XRefsViaFqnByFile.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"erlang.XRefsViaFqnByFile.1 { { } }", XRefsViaFqnByFile
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ErlangXRefsViaFqnByFile":
@@ -88,8 +103,8 @@ class ErlangXRefsViaFqnByFile(GleanSchemaPredicate):
 
 class ErlangDeclarationUses(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"erlang.DeclarationUses.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"erlang.DeclarationUses.1 { { } }", DeclarationUses
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "ErlangDeclarationUses":

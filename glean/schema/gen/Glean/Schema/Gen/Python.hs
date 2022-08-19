@@ -33,11 +33,13 @@ genSchemaPy _version preddefs typedefs =
   Text.unlines
   [ "# \x40generated"
   , "# To regenerate this file run fbcode//glean/schema/gen/sync"
-  , "from typing import Tuple, Union"
+  , "from typing import Tuple, Type, Union, TypeVar"
+  , "from thrift.py3 import Struct"
   , ""
   , "class GleanSchemaPredicate:"
   , "  " <> "@staticmethod"
-  , "  " <> "def build_angle(key: Union[" <> pythonKeyValues <>"]) -> str:"
+  , "  " <> "def build_angle(key: Union[" <> pythonKeyValues <>"]) -> " <>
+    "Tuple[str, Struct]:"
   , "    " <> "raise Exception" <>
     "(\"this function can only be called from @angle_query\")"
   , ""
@@ -49,7 +51,10 @@ genSchemaPy _version preddefs typedefs =
   [ ("py" </>
       Text.unpack (Text.concat namespaces) <.> "py",
       Text.intercalate (newline <> newline)
-        (header : [genAllPredicates namespaces preds])
+        ( header :
+          genPredicateImports namespaces preds :
+          [genAllPredicates namespaces preds]
+        )
     )
   | (namespaces, (_, preds, _)) <- schemas
   ]
@@ -57,6 +62,15 @@ genSchemaPy _version preddefs typedefs =
     schemas = HashMap.toList declsPerNamespace
     declsPerNamespace =
       addNamespaceDependencies $ sortDeclsByNamespace preddefs typedefs
+    genPredicateImports namespaces preds = Text.unlines $
+      ("from glean.schema." <> Text.concat namespaces <> ".types import (" ) :
+      [ "    " <> return_class_name <> ","
+          | pred <- preds
+          , let ref = predicateDefRef pred
+                predicateName = predicateRef_name ref
+                return_class_name = returnPythonClassName predicateName
+      ] ++
+      [")"]
 
 genAllPredicates
   :: NameSpaces
@@ -67,9 +81,10 @@ genAllPredicates _ preds = Text.unlines $
     [ "class " <> class_name <> "(GleanSchemaPredicate):"
       , "  " <> "@staticmethod"
       , "  " <> "def build_angle(key: Union[" <> pythonKeyValues <>
-        "]) -> str:"
-      , "    " <> "return f\"" <> predicateRef_name ref <> "." <>
-      showt (predicateRef_version ref) <> " { " <> angleFor kTy <> " }\""
+        "]) -> Tuple[str, Struct]:"
+      , "    " <> "return f\"" <> predicateName <> "." <>
+        showt (predicateRef_version ref) <> " { " <> angleFor kTy <>
+        " }\", " <> return_class_name
       , ""
       , "  " <> "@staticmethod"
       , "  " <> "def angle_query(*, name: " <> kTy <> ") -> \"" <>
@@ -81,20 +96,28 @@ genAllPredicates _ preds = Text.unlines $
     , let ref = predicateDefRef pred
           key = predicateDefKeyType pred
           kTy = valueTy key
-          class_name = pythonClassName $ predicateRef_name ref
+          predicateName = predicateRef_name ref
+          class_name = pythonClassName predicateName
+          return_class_name = returnPythonClassName predicateName
   ]
 
 header :: Text
 header = Text.unlines
   [ "# \x40generated"
   , "# To regenerate this file run fbcode//glean/schema/gen/sync"
-  , "from typing import Tuple, Union"
+  , "from typing import Tuple, Type, Union, TypeVar"
   , "import json"
+  , "from thrift.py3 import Struct"
   , "from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate"
   ]
 
 pythonClassName :: Text -> Text
 pythonClassName c = Text.intercalate "" $ map cap1 $ Text.split (== '.') c
+
+returnPythonClassName :: Text -> Text
+returnPythonClassName c = Text.intercalate "" $
+                          tail $
+                          map cap1 $ Text.split (== '.') c
 
 genTargets
   :: HashMap NameSpaces ([NameSpaces], [ResolvedPredicateDef], [ResolvedTypeDef])
@@ -110,6 +133,7 @@ genTargets info =
      [ "python_library("
      , "  name = \"glean_schema_predicate\","
      , "  srcs = [\"glean_schema_predicate.py\"],"
+     , "  deps = [\"//thrift/lib/py3:types\"],"
      , ")"
      , ""
      ] ++
@@ -119,11 +143,15 @@ genTargets info =
     let
       namespace = underscored ns
     in
-    -- mini Haskell library for the module containing allPredicates
+    -- mini Python library for the module containing allPredicates
     [ "python_library("
     , "  name = \"" <> namespace <> "\","
     , "  srcs = [\"" <> Text.concat ns <> ".py\"],"
-    , "  deps = [\"//glean/schema/py:glean_schema_predicate\"]"
+    , "  deps = ["
+    , "    " <> "\"//glean/schema/py:glean_schema_predicate\","
+    , "    " <> "\"//glean/schema/thrift:" <> namespace <> "-py3-types\","
+    , "    " <> "\"//thrift/lib/py3:types\","
+    , "  ]"
     , ")"
     , ""
     ]

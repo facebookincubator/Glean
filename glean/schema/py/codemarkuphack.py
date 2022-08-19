@@ -1,14 +1,29 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Union
+from typing import Tuple, Type, Union, TypeVar
 import json
+from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+
+
+from glean.schema.codemarkuphack.types import (
+    HackHackEntityInfo,
+    HackHackEntityLocation,
+    HackHackVisibility,
+    HackHackAnnotation,
+    HackHackResolveLocation,
+    HackHackContainsChildEntity,
+    HackHackFileEntityXRefLocations,
+    HackHackEntityUses,
+    HackHackEntityKind,
+    HackHackFileEntityXRefSpans,
+)
 
 
 class CodemarkupHackHackEntityInfo(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.hack.HackEntityInfo.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.hack.HackEntityInfo.2 { { } }", HackHackEntityInfo
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackEntityInfo":
@@ -16,8 +31,8 @@ class CodemarkupHackHackEntityInfo(GleanSchemaPredicate):
 
 class CodemarkupHackHackEntityLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.hack.HackEntityLocation.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.hack.HackEntityLocation.2 { { } }", HackHackEntityLocation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackEntityLocation":
@@ -25,8 +40,8 @@ class CodemarkupHackHackEntityLocation(GleanSchemaPredicate):
 
 class CodemarkupHackHackVisibility(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.hack.HackVisibility.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.hack.HackVisibility.2 { { } }", HackHackVisibility
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackVisibility":
@@ -34,8 +49,8 @@ class CodemarkupHackHackVisibility(GleanSchemaPredicate):
 
 class CodemarkupHackHackAnnotation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.hack.HackAnnotation.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.hack.HackAnnotation.2 { { } }", HackHackAnnotation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackAnnotation":
@@ -43,8 +58,8 @@ class CodemarkupHackHackAnnotation(GleanSchemaPredicate):
 
 class CodemarkupHackHackResolveLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.hack.HackResolveLocation.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.hack.HackResolveLocation.2 { { } }", HackHackResolveLocation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackResolveLocation":
@@ -52,8 +67,8 @@ class CodemarkupHackHackResolveLocation(GleanSchemaPredicate):
 
 class CodemarkupHackHackContainsChildEntity(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.hack.HackContainsChildEntity.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.hack.HackContainsChildEntity.2 { { } }", HackHackContainsChildEntity
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackContainsChildEntity":
@@ -61,8 +76,8 @@ class CodemarkupHackHackContainsChildEntity(GleanSchemaPredicate):
 
 class CodemarkupHackHackFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.hack.HackFileEntityXRefLocations.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.hack.HackFileEntityXRefLocations.2 { { } }", HackHackFileEntityXRefLocations
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackFileEntityXRefLocations":
@@ -70,8 +85,8 @@ class CodemarkupHackHackFileEntityXRefLocations(GleanSchemaPredicate):
 
 class CodemarkupHackHackEntityUses(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.hack.HackEntityUses.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.hack.HackEntityUses.2 { { } }", HackHackEntityUses
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackEntityUses":
@@ -79,8 +94,8 @@ class CodemarkupHackHackEntityUses(GleanSchemaPredicate):
 
 class CodemarkupHackHackEntityKind(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.hack.HackEntityKind.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.hack.HackEntityKind.2 { { } }", HackHackEntityKind
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackEntityKind":
@@ -88,8 +103,8 @@ class CodemarkupHackHackEntityKind(GleanSchemaPredicate):
 
 class CodemarkupHackHackFileEntityXRefSpans(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.hack.HackFileEntityXRefSpans.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.hack.HackFileEntityXRefSpans.2 { { } }", HackHackFileEntityXRefSpans
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackFileEntityXRefSpans":

@@ -1,14 +1,25 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Union
+from typing import Tuple, Type, Union, TypeVar
 import json
+from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+
+
+from glean.schema.docmarkup.types import (
+    DocAttr,
+    EntityComments,
+    EntityDocAttr,
+    EntityByDocAttrKey,
+    EntityAnnotations,
+    DocAttrKey,
+)
 
 
 class DocmarkupDocAttr(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"docmarkup.DocAttr.14 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"docmarkup.DocAttr.14 { { } }", DocAttr
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "DocmarkupDocAttr":
@@ -16,8 +27,8 @@ class DocmarkupDocAttr(GleanSchemaPredicate):
 
 class DocmarkupEntityComments(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"docmarkup.EntityComments.14 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"docmarkup.EntityComments.14 { { } }", EntityComments
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "DocmarkupEntityComments":
@@ -25,8 +36,8 @@ class DocmarkupEntityComments(GleanSchemaPredicate):
 
 class DocmarkupEntityDocAttr(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"docmarkup.EntityDocAttr.14 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"docmarkup.EntityDocAttr.14 { json.dumps(key) }", EntityDocAttr
 
   @staticmethod
   def angle_query(*, name: str) -> "DocmarkupEntityDocAttr":
@@ -34,8 +45,8 @@ class DocmarkupEntityDocAttr(GleanSchemaPredicate):
 
 class DocmarkupEntityByDocAttrKey(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"docmarkup.EntityByDocAttrKey.14 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"docmarkup.EntityByDocAttrKey.14 { { } }", EntityByDocAttrKey
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "DocmarkupEntityByDocAttrKey":
@@ -43,8 +54,8 @@ class DocmarkupEntityByDocAttrKey(GleanSchemaPredicate):
 
 class DocmarkupEntityAnnotations(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"docmarkup.EntityAnnotations.14 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"docmarkup.EntityAnnotations.14 { { } }", EntityAnnotations
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "DocmarkupEntityAnnotations":
@@ -52,8 +63,8 @@ class DocmarkupEntityAnnotations(GleanSchemaPredicate):
 
 class DocmarkupDocAttrKey(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"docmarkup.DocAttrKey.14 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"docmarkup.DocAttrKey.14 { json.dumps(key) }", DocAttrKey
 
   @staticmethod
   def angle_query(*, name: str) -> "DocmarkupDocAttrKey":

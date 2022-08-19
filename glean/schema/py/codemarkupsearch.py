@@ -1,14 +1,25 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Union
+from typing import Tuple, Type, Union, TypeVar
 import json
+from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+
+
+from glean.schema.codemarkupsearch.types import (
+    SearchSearchByNameAndKind,
+    SearchSearchEntityByName,
+    SearchSearchEntityByLowerCaseName,
+    SearchSearchByName,
+    SearchEntityLocationAndKind,
+    SearchSearchByScope,
+)
 
 
 class CodemarkupSearchSearchByNameAndKind(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.search.SearchByNameAndKind.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.search.SearchByNameAndKind.1 { { } }", SearchSearchByNameAndKind
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupSearchSearchByNameAndKind":
@@ -16,8 +27,8 @@ class CodemarkupSearchSearchByNameAndKind(GleanSchemaPredicate):
 
 class CodemarkupSearchSearchEntityByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.search.SearchEntityByName.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.search.SearchEntityByName.1 { { } }", SearchSearchEntityByName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupSearchSearchEntityByName":
@@ -25,8 +36,8 @@ class CodemarkupSearchSearchEntityByName(GleanSchemaPredicate):
 
 class CodemarkupSearchSearchEntityByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.search.SearchEntityByLowerCaseName.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.search.SearchEntityByLowerCaseName.1 { { } }", SearchSearchEntityByLowerCaseName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupSearchSearchEntityByLowerCaseName":
@@ -34,8 +45,8 @@ class CodemarkupSearchSearchEntityByLowerCaseName(GleanSchemaPredicate):
 
 class CodemarkupSearchSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.search.SearchByName.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.search.SearchByName.1 { { } }", SearchSearchByName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupSearchSearchByName":
@@ -43,8 +54,8 @@ class CodemarkupSearchSearchByName(GleanSchemaPredicate):
 
 class CodemarkupSearchEntityLocationAndKind(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.search.EntityLocationAndKind.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.search.EntityLocationAndKind.1 { { } }", SearchEntityLocationAndKind
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupSearchEntityLocationAndKind":
@@ -52,8 +63,8 @@ class CodemarkupSearchEntityLocationAndKind(GleanSchemaPredicate):
 
 class CodemarkupSearchSearchByScope(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.search.SearchByScope.1 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.search.SearchByScope.1 { { } }", SearchSearchByScope
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupSearchSearchByScope":

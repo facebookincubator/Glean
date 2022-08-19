@@ -1,14 +1,49 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Union
+from typing import Tuple, Type, Union, TypeVar
 import json
+from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+
+
+from glean.schema.searchcode.types import (
+    CodeCxxSearchByNameAndScopeFact,
+    CodeSearchByLowerCaseScope,
+    CodePythonSearchByLowerCaseName,
+    CodeErlangSearchByName,
+    CodeHsSearchByName,
+    CodeHackSearchByLowerCaseScope,
+    CodeCxxSearchByName,
+    CodeSearchByName,
+    CodeHackSearchByName,
+    CodeHackSearchByScopeWithName,
+    CodeCxxSearchByLowerCaseScope,
+    CodePythonSearchByLocalNameFact,
+    CodeHackSearchByLowerCaseName,
+    CodeLsifSearchByLowerCaseName,
+    CodeRustSearchByLowerCaseName,
+    CodeCxxSearchByLowerCaseName,
+    CodePythonSearchByNameFact,
+    CodeHsSearchByLowerCaseName,
+    CodeErlangSearchByLowerCaseName,
+    CodeSearchByScope,
+    CodeFlowSearchByLowerCaseName,
+    CodeFlowSearchByName,
+    CodeRustSearchByName,
+    CodeLsifSearchByName,
+    CodeSearchByNameAndLanguage,
+    CodeCxxSearchByScope,
+    CodeSearchByLowerCaseNameAndLanguage,
+    CodeSearchByLowerCaseName,
+    CodeHackSearchByScope,
+    CodePythonSearchByName,
+)
 
 
 class SearchCodeCxxSearchByNameAndScopeFact(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.CxxSearchByNameAndScopeFact.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.CxxSearchByNameAndScopeFact.16 { { } }", CodeCxxSearchByNameAndScopeFact
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeCxxSearchByNameAndScopeFact":
@@ -16,8 +51,8 @@ class SearchCodeCxxSearchByNameAndScopeFact(GleanSchemaPredicate):
 
 class SearchCodeSearchByLowerCaseScope(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.SearchByLowerCaseScope.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.SearchByLowerCaseScope.16 { { } }", CodeSearchByLowerCaseScope
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeSearchByLowerCaseScope":
@@ -25,8 +60,8 @@ class SearchCodeSearchByLowerCaseScope(GleanSchemaPredicate):
 
 class SearchCodePythonSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.PythonSearchByLowerCaseName.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.PythonSearchByLowerCaseName.16 { { } }", CodePythonSearchByLowerCaseName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodePythonSearchByLowerCaseName":
@@ -34,8 +69,8 @@ class SearchCodePythonSearchByLowerCaseName(GleanSchemaPredicate):
 
 class SearchCodeErlangSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.ErlangSearchByName.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.ErlangSearchByName.16 { { } }", CodeErlangSearchByName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeErlangSearchByName":
@@ -43,8 +78,8 @@ class SearchCodeErlangSearchByName(GleanSchemaPredicate):
 
 class SearchCodeHsSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.HsSearchByName.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.HsSearchByName.16 { { } }", CodeHsSearchByName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeHsSearchByName":
@@ -52,8 +87,8 @@ class SearchCodeHsSearchByName(GleanSchemaPredicate):
 
 class SearchCodeHackSearchByLowerCaseScope(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.HackSearchByLowerCaseScope.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.HackSearchByLowerCaseScope.16 { { } }", CodeHackSearchByLowerCaseScope
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeHackSearchByLowerCaseScope":
@@ -61,8 +96,8 @@ class SearchCodeHackSearchByLowerCaseScope(GleanSchemaPredicate):
 
 class SearchCodeCxxSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.CxxSearchByName.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.CxxSearchByName.16 { { } }", CodeCxxSearchByName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeCxxSearchByName":
@@ -70,8 +105,8 @@ class SearchCodeCxxSearchByName(GleanSchemaPredicate):
 
 class SearchCodeSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.SearchByName.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.SearchByName.16 { { } }", CodeSearchByName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeSearchByName":
@@ -79,8 +114,8 @@ class SearchCodeSearchByName(GleanSchemaPredicate):
 
 class SearchCodeHackSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.HackSearchByName.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.HackSearchByName.16 { { } }", CodeHackSearchByName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeHackSearchByName":
@@ -88,8 +123,8 @@ class SearchCodeHackSearchByName(GleanSchemaPredicate):
 
 class SearchCodeHackSearchByScopeWithName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.HackSearchByScopeWithName.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.HackSearchByScopeWithName.16 { { } }", CodeHackSearchByScopeWithName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeHackSearchByScopeWithName":
@@ -97,8 +132,8 @@ class SearchCodeHackSearchByScopeWithName(GleanSchemaPredicate):
 
 class SearchCodeCxxSearchByLowerCaseScope(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.CxxSearchByLowerCaseScope.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.CxxSearchByLowerCaseScope.16 { { } }", CodeCxxSearchByLowerCaseScope
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeCxxSearchByLowerCaseScope":
@@ -106,8 +141,8 @@ class SearchCodeCxxSearchByLowerCaseScope(GleanSchemaPredicate):
 
 class SearchCodePythonSearchByLocalNameFact(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.PythonSearchByLocalNameFact.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.PythonSearchByLocalNameFact.16 { { } }", CodePythonSearchByLocalNameFact
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodePythonSearchByLocalNameFact":
@@ -115,8 +150,8 @@ class SearchCodePythonSearchByLocalNameFact(GleanSchemaPredicate):
 
 class SearchCodeHackSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.HackSearchByLowerCaseName.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.HackSearchByLowerCaseName.16 { { } }", CodeHackSearchByLowerCaseName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeHackSearchByLowerCaseName":
@@ -124,8 +159,8 @@ class SearchCodeHackSearchByLowerCaseName(GleanSchemaPredicate):
 
 class SearchCodeLsifSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.LsifSearchByLowerCaseName.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.LsifSearchByLowerCaseName.16 { { } }", CodeLsifSearchByLowerCaseName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeLsifSearchByLowerCaseName":
@@ -133,8 +168,8 @@ class SearchCodeLsifSearchByLowerCaseName(GleanSchemaPredicate):
 
 class SearchCodeRustSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.RustSearchByLowerCaseName.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.RustSearchByLowerCaseName.16 { { } }", CodeRustSearchByLowerCaseName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeRustSearchByLowerCaseName":
@@ -142,8 +177,8 @@ class SearchCodeRustSearchByLowerCaseName(GleanSchemaPredicate):
 
 class SearchCodeCxxSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.CxxSearchByLowerCaseName.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.CxxSearchByLowerCaseName.16 { { } }", CodeCxxSearchByLowerCaseName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeCxxSearchByLowerCaseName":
@@ -151,8 +186,8 @@ class SearchCodeCxxSearchByLowerCaseName(GleanSchemaPredicate):
 
 class SearchCodePythonSearchByNameFact(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.PythonSearchByNameFact.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.PythonSearchByNameFact.16 { { } }", CodePythonSearchByNameFact
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodePythonSearchByNameFact":
@@ -160,8 +195,8 @@ class SearchCodePythonSearchByNameFact(GleanSchemaPredicate):
 
 class SearchCodeHsSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.HsSearchByLowerCaseName.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.HsSearchByLowerCaseName.16 { { } }", CodeHsSearchByLowerCaseName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeHsSearchByLowerCaseName":
@@ -169,8 +204,8 @@ class SearchCodeHsSearchByLowerCaseName(GleanSchemaPredicate):
 
 class SearchCodeErlangSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.ErlangSearchByLowerCaseName.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.ErlangSearchByLowerCaseName.16 { { } }", CodeErlangSearchByLowerCaseName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeErlangSearchByLowerCaseName":
@@ -178,8 +213,8 @@ class SearchCodeErlangSearchByLowerCaseName(GleanSchemaPredicate):
 
 class SearchCodeSearchByScope(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.SearchByScope.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.SearchByScope.16 { { } }", CodeSearchByScope
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeSearchByScope":
@@ -187,8 +222,8 @@ class SearchCodeSearchByScope(GleanSchemaPredicate):
 
 class SearchCodeFlowSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.FlowSearchByLowerCaseName.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.FlowSearchByLowerCaseName.16 { { } }", CodeFlowSearchByLowerCaseName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeFlowSearchByLowerCaseName":
@@ -196,8 +231,8 @@ class SearchCodeFlowSearchByLowerCaseName(GleanSchemaPredicate):
 
 class SearchCodeFlowSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.FlowSearchByName.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.FlowSearchByName.16 { { } }", CodeFlowSearchByName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeFlowSearchByName":
@@ -205,8 +240,8 @@ class SearchCodeFlowSearchByName(GleanSchemaPredicate):
 
 class SearchCodeRustSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.RustSearchByName.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.RustSearchByName.16 { { } }", CodeRustSearchByName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeRustSearchByName":
@@ -214,8 +249,8 @@ class SearchCodeRustSearchByName(GleanSchemaPredicate):
 
 class SearchCodeLsifSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.LsifSearchByName.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.LsifSearchByName.16 { { } }", CodeLsifSearchByName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeLsifSearchByName":
@@ -223,8 +258,8 @@ class SearchCodeLsifSearchByName(GleanSchemaPredicate):
 
 class SearchCodeSearchByNameAndLanguage(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.SearchByNameAndLanguage.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.SearchByNameAndLanguage.16 { { } }", CodeSearchByNameAndLanguage
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeSearchByNameAndLanguage":
@@ -232,8 +267,8 @@ class SearchCodeSearchByNameAndLanguage(GleanSchemaPredicate):
 
 class SearchCodeCxxSearchByScope(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.CxxSearchByScope.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.CxxSearchByScope.16 { { } }", CodeCxxSearchByScope
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeCxxSearchByScope":
@@ -241,8 +276,8 @@ class SearchCodeCxxSearchByScope(GleanSchemaPredicate):
 
 class SearchCodeSearchByLowerCaseNameAndLanguage(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.SearchByLowerCaseNameAndLanguage.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.SearchByLowerCaseNameAndLanguage.16 { { } }", CodeSearchByLowerCaseNameAndLanguage
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeSearchByLowerCaseNameAndLanguage":
@@ -250,8 +285,8 @@ class SearchCodeSearchByLowerCaseNameAndLanguage(GleanSchemaPredicate):
 
 class SearchCodeSearchByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.SearchByLowerCaseName.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.SearchByLowerCaseName.16 { { } }", CodeSearchByLowerCaseName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeSearchByLowerCaseName":
@@ -259,8 +294,8 @@ class SearchCodeSearchByLowerCaseName(GleanSchemaPredicate):
 
 class SearchCodeHackSearchByScope(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.HackSearchByScope.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.HackSearchByScope.16 { { } }", CodeHackSearchByScope
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodeHackSearchByScope":
@@ -268,8 +303,8 @@ class SearchCodeHackSearchByScope(GleanSchemaPredicate):
 
 class SearchCodePythonSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"search.code.PythonSearchByName.16 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"search.code.PythonSearchByName.16 { { } }", CodePythonSearchByName
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "SearchCodePythonSearchByName":

@@ -1,14 +1,29 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Union
+from typing import Tuple, Type, Union, TypeVar
 import json
+from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+
+
+from glean.schema.codemarkuppython.types import (
+    PythonPythonEntityInfo,
+    PythonPythonEntityLocation,
+    PythonPythonResolveLocation,
+    PythonPythonContainsChildEntity,
+    PythonPythonFileEntityXRefLocations,
+    PythonPythonEntityKind,
+    PythonPythonEntityUses,
+    PythonNonImportPythonDeclarationInfo,
+    PythonNonImportPythonDeclarationKind,
+    PythonPythonEntityNameAndLocation,
+)
 
 
 class CodemarkupPythonPythonEntityInfo(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.python.PythonEntityInfo.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.python.PythonEntityInfo.2 { { } }", PythonPythonEntityInfo
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupPythonPythonEntityInfo":
@@ -16,8 +31,8 @@ class CodemarkupPythonPythonEntityInfo(GleanSchemaPredicate):
 
 class CodemarkupPythonPythonEntityLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.python.PythonEntityLocation.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.python.PythonEntityLocation.2 { { } }", PythonPythonEntityLocation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupPythonPythonEntityLocation":
@@ -25,8 +40,8 @@ class CodemarkupPythonPythonEntityLocation(GleanSchemaPredicate):
 
 class CodemarkupPythonPythonResolveLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.python.PythonResolveLocation.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.python.PythonResolveLocation.2 { { } }", PythonPythonResolveLocation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupPythonPythonResolveLocation":
@@ -34,8 +49,8 @@ class CodemarkupPythonPythonResolveLocation(GleanSchemaPredicate):
 
 class CodemarkupPythonPythonContainsChildEntity(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.python.PythonContainsChildEntity.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.python.PythonContainsChildEntity.2 { { } }", PythonPythonContainsChildEntity
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupPythonPythonContainsChildEntity":
@@ -43,8 +58,8 @@ class CodemarkupPythonPythonContainsChildEntity(GleanSchemaPredicate):
 
 class CodemarkupPythonPythonFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.python.PythonFileEntityXRefLocations.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.python.PythonFileEntityXRefLocations.2 { { } }", PythonPythonFileEntityXRefLocations
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupPythonPythonFileEntityXRefLocations":
@@ -52,8 +67,8 @@ class CodemarkupPythonPythonFileEntityXRefLocations(GleanSchemaPredicate):
 
 class CodemarkupPythonPythonEntityKind(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.python.PythonEntityKind.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.python.PythonEntityKind.2 { { } }", PythonPythonEntityKind
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupPythonPythonEntityKind":
@@ -61,8 +76,8 @@ class CodemarkupPythonPythonEntityKind(GleanSchemaPredicate):
 
 class CodemarkupPythonPythonEntityUses(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.python.PythonEntityUses.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.python.PythonEntityUses.2 { { } }", PythonPythonEntityUses
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupPythonPythonEntityUses":
@@ -70,8 +85,8 @@ class CodemarkupPythonPythonEntityUses(GleanSchemaPredicate):
 
 class CodemarkupPythonNonImportPythonDeclarationInfo(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.python.NonImportPythonDeclarationInfo.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.python.NonImportPythonDeclarationInfo.2 { { } }", PythonNonImportPythonDeclarationInfo
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupPythonNonImportPythonDeclarationInfo":
@@ -79,8 +94,8 @@ class CodemarkupPythonNonImportPythonDeclarationInfo(GleanSchemaPredicate):
 
 class CodemarkupPythonNonImportPythonDeclarationKind(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.python.NonImportPythonDeclarationKind.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.python.NonImportPythonDeclarationKind.2 { { } }", PythonNonImportPythonDeclarationKind
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupPythonNonImportPythonDeclarationKind":
@@ -88,8 +103,8 @@ class CodemarkupPythonNonImportPythonDeclarationKind(GleanSchemaPredicate):
 
 class CodemarkupPythonPythonEntityNameAndLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"codemarkup.python.PythonEntityNameAndLocation.2 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"codemarkup.python.PythonEntityNameAndLocation.2 { { } }", PythonPythonEntityNameAndLocation
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "CodemarkupPythonPythonEntityNameAndLocation":

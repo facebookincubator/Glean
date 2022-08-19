@@ -1,14 +1,33 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Union
+from typing import Tuple, Type, Union, TypeVar
 import json
+from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+
+
+from glean.schema.omegaanalyser.types import (
+    Method,
+    PolicyOncall,
+    OmegaEndpoint,
+    DependencyPath,
+    Class_,
+    ClassStaticMethodReferences,
+    OmegaPolicy,
+    EndpointOncall,
+    TargetNodeLocations,
+    DependencyList,
+    Function_,
+    OncallName,
+    Config,
+    DependencyPathByCoreNode,
+)
 
 
 class OmegaanalyserMethod(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omegaanalyser.Method.4 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omegaanalyser.Method.4 { json.dumps(key) }", Method
 
   @staticmethod
   def angle_query(*, name: str) -> "OmegaanalyserMethod":
@@ -16,8 +35,8 @@ class OmegaanalyserMethod(GleanSchemaPredicate):
 
 class OmegaanalyserPolicyOncall(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omegaanalyser.PolicyOncall.4 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omegaanalyser.PolicyOncall.4 { { } }", PolicyOncall
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaanalyserPolicyOncall":
@@ -25,8 +44,8 @@ class OmegaanalyserPolicyOncall(GleanSchemaPredicate):
 
 class OmegaanalyserOmegaEndpoint(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omegaanalyser.OmegaEndpoint.4 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omegaanalyser.OmegaEndpoint.4 { json.dumps(key) }", OmegaEndpoint
 
   @staticmethod
   def angle_query(*, name: str) -> "OmegaanalyserOmegaEndpoint":
@@ -34,8 +53,8 @@ class OmegaanalyserOmegaEndpoint(GleanSchemaPredicate):
 
 class OmegaanalyserDependencyPath(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omegaanalyser.DependencyPath.4 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omegaanalyser.DependencyPath.4 { { } }", DependencyPath
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaanalyserDependencyPath":
@@ -43,8 +62,8 @@ class OmegaanalyserDependencyPath(GleanSchemaPredicate):
 
 class OmegaanalyserClass_(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omegaanalyser.Class_.4 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omegaanalyser.Class_.4 { json.dumps(key) }", Class_
 
   @staticmethod
   def angle_query(*, name: str) -> "OmegaanalyserClass_":
@@ -52,8 +71,8 @@ class OmegaanalyserClass_(GleanSchemaPredicate):
 
 class OmegaanalyserClassStaticMethodReferences(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omegaanalyser.ClassStaticMethodReferences.4 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omegaanalyser.ClassStaticMethodReferences.4 { { } }", ClassStaticMethodReferences
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaanalyserClassStaticMethodReferences":
@@ -61,8 +80,8 @@ class OmegaanalyserClassStaticMethodReferences(GleanSchemaPredicate):
 
 class OmegaanalyserOmegaPolicy(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omegaanalyser.OmegaPolicy.4 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omegaanalyser.OmegaPolicy.4 { json.dumps(key) }", OmegaPolicy
 
   @staticmethod
   def angle_query(*, name: str) -> "OmegaanalyserOmegaPolicy":
@@ -70,8 +89,8 @@ class OmegaanalyserOmegaPolicy(GleanSchemaPredicate):
 
 class OmegaanalyserEndpointOncall(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omegaanalyser.EndpointOncall.4 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omegaanalyser.EndpointOncall.4 { { } }", EndpointOncall
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaanalyserEndpointOncall":
@@ -79,8 +98,8 @@ class OmegaanalyserEndpointOncall(GleanSchemaPredicate):
 
 class OmegaanalyserTargetNodeLocations(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omegaanalyser.TargetNodeLocations.4 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omegaanalyser.TargetNodeLocations.4 { { } }", TargetNodeLocations
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaanalyserTargetNodeLocations":
@@ -88,8 +107,8 @@ class OmegaanalyserTargetNodeLocations(GleanSchemaPredicate):
 
 class OmegaanalyserDependencyList(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omegaanalyser.DependencyList.4 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omegaanalyser.DependencyList.4 { { } }", DependencyList
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaanalyserDependencyList":
@@ -97,8 +116,8 @@ class OmegaanalyserDependencyList(GleanSchemaPredicate):
 
 class OmegaanalyserFunction_(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omegaanalyser.Function_.4 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omegaanalyser.Function_.4 { json.dumps(key) }", Function_
 
   @staticmethod
   def angle_query(*, name: str) -> "OmegaanalyserFunction_":
@@ -106,8 +125,8 @@ class OmegaanalyserFunction_(GleanSchemaPredicate):
 
 class OmegaanalyserOncallName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omegaanalyser.OncallName.4 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omegaanalyser.OncallName.4 { json.dumps(key) }", OncallName
 
   @staticmethod
   def angle_query(*, name: str) -> "OmegaanalyserOncallName":
@@ -115,8 +134,8 @@ class OmegaanalyserOncallName(GleanSchemaPredicate):
 
 class OmegaanalyserConfig(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omegaanalyser.Config.4 { json.dumps(key) }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omegaanalyser.Config.4 { json.dumps(key) }", Config
 
   @staticmethod
   def angle_query(*, name: str) -> "OmegaanalyserConfig":
@@ -124,8 +143,8 @@ class OmegaanalyserConfig(GleanSchemaPredicate):
 
 class OmegaanalyserDependencyPathByCoreNode(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
-    return f"omegaanalyser.DependencyPathByCoreNode.4 { { } }"
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    return f"omegaanalyser.DependencyPathByCoreNode.4 { { } }", DependencyPathByCoreNode
 
   @staticmethod
   def angle_query(*, name: Tuple[()]) -> "OmegaanalyserDependencyPathByCoreNode":
