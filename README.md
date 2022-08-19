@@ -78,6 +78,10 @@ Style guide: for Haskell code, we use `hlint` to check for style issues. Lines
 wrap at 80 columns. Code should be -Wall clean. For C++, code should compile
 with Clang or GCC.
 
+## How to contact the Glean team
+
+- Visit [the project GitHub repo](https://github.com/facebookincubator/Glean) to view the source code, open issues or pull requests.
+- Join the [Glean Discord server](https://discord.com/channels/280033776820813825/505370075402862594/808027763868827659). You can join the server via [this invitation](https://discord.gg/w3s6X6QAHZ).
 ## Building
 
 See [Building Glean](https://glean.software/docs/building).
