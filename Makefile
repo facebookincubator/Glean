@@ -28,8 +28,6 @@ EXTRA_GHC_OPTS ?=
 CABAL = $(CABAL_BIN) --jobs --ghc-options='$(EXTRA_GHC_OPTS)' \
             -vnormal+nowrap --project-file=$(PWD)/cabal.project
 
-THRIFT_COMPILE := $(shell $(CABAL) -v0 list-bin exe:thrift-compiler)
-
 CODEGEN_DIR = .build/codegen
 
 BYTECODE_GEN= \
@@ -123,6 +121,7 @@ thrift-hs:: thrift-hsthrift-hs thrift-glean-hs
 .PHONY: thrift-compiler
 thrift-compiler::
 	(cd hsthrift && make CABAL="$(CABAL)" compiler)
+	$(eval THRIFT_COMPILE := $$(shell $$(CABAL) -v0 list-bin exe:thrift-compiler))
 
 .PHONY: thrift-hsthrift-hs
 thrift-hsthrift-hs::
