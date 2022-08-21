@@ -15,6 +15,7 @@ maintainer:          Glean-team@fb.com
 copyright:           (c) Facebook, All Rights Reserved
 build-type:          Simple
 extra-source-files:  CHANGELOG.md
+CXX_EXTRA_SOURCE_FILES
 
 common fb-haskell
     default-language: Haskell2010
@@ -55,6 +56,7 @@ common fb-cpp
      cxx-options: -march=haswell
   if flag(opt)
      cxx-options: -O3
+  CXX_EXTRA_LIB_DIRS
 
 common exe
   ghc-options: -threaded
@@ -197,9 +199,7 @@ library config
         glean/config/recipes/gen-hs2
         glean/config/server/gen-hs2
         glean/config/client/gen-hs2
-    cxx-sources:
-        glean/config/recipes/gen-cpp2/recipes_types.cpp
-        glean/config/recipes/gen-cpp2/recipes_data.cpp
+    CXX_LIB_glean_cpp_config
     exposed-modules:
         Glean.Recipes.Types
         Glean.Service.Types
@@ -283,18 +283,12 @@ library if-fb303-cpp
     import: fb-haskell, fb-cpp, deps
     visibility: public
     include-dirs: .
-    cxx-sources:
-        glean/github/if/gen-cpp2/fb303_core_types.cpp
-        glean/github/if/gen-cpp2/fb303_core_data.cpp
-        glean/github/if/gen-cpp2/fb303_types.cpp
-        glean/github/if/gen-cpp2/fb303_data.cpp
+    CXX_LIB_glean_cpp_if_fb303
 
 library if-glean-cpp
     import: fb-haskell, fb-cpp, deps
     visibility: public
-    cxx-sources:
-        glean/if/gen-cpp2/glean_types.cpp
-        glean/if/gen-cpp2/glean_data.cpp
+    CXX_LIB_glean_cpp_if
     build-depends:
         glean:if-fb303-cpp,
         glean:config
@@ -302,9 +296,7 @@ library if-glean-cpp
 library if-internal-cpp
     import: fb-haskell, fb-cpp, deps
     visibility: public
-    cxx-sources:
-        glean/if/gen-cpp2/internal_types.cpp
-        glean/if/gen-cpp2/internal_data.cpp
+    CXX_LIB_glean_cpp_if_internal
     build-depends:
         glean:if-fb303-cpp,
         glean:if-glean-cpp,
@@ -314,48 +306,15 @@ library rts
     import: fb-haskell, fb-cpp, deps
     visibility: public
     include-dirs: .
-    cxx-sources:
-        glean/rts/binary.cpp
-        glean/rts/cache.cpp
-        glean/rts/define.cpp
-        glean/rts/error.cpp
-        glean/rts/fact.cpp
-        glean/rts/factset.cpp
-        glean/rts/ffi.cpp
-        glean/rts/inventory.cpp
-        glean/rts/json.cpp
-        glean/rts/lookup.cpp
-        glean/rts/nat.cpp
-        glean/rts/ownership.cpp
-        glean/rts/ownership/derived.cpp
-        glean/rts/ownership/setu32.cpp
-        glean/rts/ownership/slice.cpp
-        glean/rts/ownership/uset.cpp
-        glean/rts/prim.cpp
-        glean/rts/query.cpp
-        glean/rts/sanity.cpp
-        glean/rts/string.cpp
-        glean/rts/substitution.cpp
-        glean/rts/thrift.cpp
-        glean/rts/timer.cpp
-        glean/rts/validate.cpp
-        glean/rts/bytecode/subroutine.cpp
+    CXX_LIB_glean_cpp_rts
     pkgconfig-depends: libfolly, libunwind, libglog, icu-uc, gflags, libxxhash
-    cxx-options: -DOSS=1
     build-depends:
         glean:if-internal-cpp,
 
 library rocksdb
     import: fb-haskell, fb-cpp, deps
     visibility: private
-    cxx-sources:
-        glean/rocksdb/ffi.cpp
-        glean/rocksdb/rocksdb.cpp
-    -- -fno-rtti is needed because RocksDB is compiled with it, and we
-    -- get linker errors for references to missing typeinfo symbols if
-    -- we don't.
-    cxx-options: -fno-rtti
-    cxx-options: -DOSS=1
+    CXX_LIB_glean_cpp_rocksdb
     extra-libraries: rocksdb
     build-depends:
         glean:rocksdb-stats,
@@ -365,8 +324,7 @@ library rocksdb
 library rocksdb-stats
     import: fb-haskell, fb-cpp, deps
     visibility: private
-    cxx-sources:
-        glean/rocksdb/stats.cpp
+    CXX_LIB_glean_cpp_rocksdb_stats
     build-depends:
         glean:rts,
 
@@ -621,12 +579,7 @@ library client-hs-local
 library client-cpp
     import: fb-cpp, deps
     visibility: public
-    cxx-sources:
-        glean/cpp/sender.cpp,
-        glean/cpp/glean.cpp,
-        glean/interprocess/cpp/worklist.cpp,
-        glean/interprocess/cpp/counters.cpp
-    cxx-options: -DOSS=1
+    CXX_LIB_glean_cpp_client
     include-dirs: .
     install-includes:
         glean/cpp/glean.h

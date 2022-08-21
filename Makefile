@@ -7,6 +7,38 @@
 #
 # To run the tests, type "make test"
 #
+# For development, use "make CXX_MODE=make"
+#
+# =======================
+# Cabal and C++ libraries
+# =======================
+#
+# We have two modes of compiling Glean's internal C++ libraries, controlled by
+# the CXX_MODE variable. These modes need slightly different glean.cabal files.
+# Thus, we generate glean.cabal by running glean.cabal.in through m4 with
+# appropriate macro definitions.
+#
+# The reason for this is that Cabal can't build .cpp files in parallel and also
+# doesn't track include dependencies between different libraries with
+# cxx-sources. However, Cabal is the only way to get things onto Hackage. Thus,
+# we support building C++ libraries via Cabal but for development, building
+# via make should be preferred.
+#
+# Building via make (CXX_MODE=make):
+#   * Builds C++ libraries outside of Cabal
+#   * Compiles C++ modules in parallel (about 2:30min faster for full build)
+#   * Automatically tracks include dependencies
+#
+# Building via Cabal (otherwise):
+#   * Might work on Hackage
+#
+# The C++ libraries are defined in mk/cxx.mk, see the docs there for adding,
+# removing or modifying libraries.
+#
+# ===================
+# Auto-generated code
+# ===================
+#
 # Re-running "make" will regenerate a bunch of things. That's because
 # the Makefile is dumb and doesn't know much about the dependencies of
 # the generated files. To avoid recompiling any code if nothing changed,
@@ -28,7 +60,9 @@ EXTRA_GHC_OPTS ?=
 CABAL = $(CABAL_BIN) --jobs --ghc-options='$(EXTRA_GHC_OPTS)' \
             -vnormal+nowrap --project-file=$(PWD)/cabal.project
 
-CODEGEN_DIR = .build/codegen
+BUILD_DIR = .build
+CODEGEN_DIR = $(BUILD_DIR)/def/codegen
+CXX_DIR = $(BUILD_DIR)/def/cxx
 
 BYTECODE_GEN= \
 	glean/rts/bytecode/gen/evaluate.h \
@@ -46,20 +80,33 @@ all:: thrift $(BYTECODE_GEN) gen-schema thrift-schema-hs glean
 # Targets in this file invoke Cabal and hence can't be built in parallel
 .NOTPARALLEL:
 
+glean.cabal: $(CXX_DIR)/defs.m4 glean.cabal.in
+	m4 -E -E -P $^ \
+		| sed "/-- Copyright/a \\\n-- @""generated from glean.cabal.in\\n-- DO NO EDIT THIS FILE DIRECTLY" \
+		> $@
+
+.PHONY: force
+$(CXX_DIR)/defs.m4: force
+	@$(MAKE) -f mk/cxx.mk --no-print-directory CXX_MODE=$(CXX_MODE) CXX_DIR=$(CXX_DIR) $@
+
+.PHONY: cxx-libraries
+cxx-libraries: gen-bytecode
+	@$(MAKE) -f mk/cxx.mk --no-print-directory CXX_MODE=$(CXX_MODE) CXX_DIR=$(CXX_DIR) $@
+
 .PHONY: glean
-glean::
+glean:: glean.cabal cxx-libraries
 	$(CABAL) build glean glean-server glean-hyperlink
 
 .PHONY: gen-bytecode
 gen-bytecode: $(BYTECODE_GEN)
 
 # Note we don't rsync here because we have actual dependencies
-$(BYTECODE_GEN) &: $(BYTECODE_SRCS)
+$(BYTECODE_GEN) &: $(BYTECODE_SRCS) glean.cabal
 	$(CABAL) run gen-bytecode-cpp -- --install_dir=glean/rts
 	$(CABAL) run gen-bytecode-hs -- --install_dir=glean/hs
 
 .PHONY: test
-test::
+test:: glean.cabal cxx-libraries
 	$(CABAL) test glean:tests
 
 SCHEMAS= \
@@ -134,7 +181,7 @@ thrift-hsthrift-hs::
 	(cd hsthrift && make CABAL="$(CABAL)" thrift-hs)
 
 .PHONY: gen-schema
-gen-schema ::
+gen-schema :: glean.cabal cxx-libraries
 	rm -rf $(CODEGEN_DIR)/$@
 	mkdir -p $(CODEGEN_DIR)/$@
 	$(CABAL) run glean:gen-schema -- \
@@ -214,7 +261,7 @@ thrift-hsthrift-cpp::
 
 # full build up to glass lib
 .PHONY: glass-lib
-glass-lib:: thrift $(BYTECODE_GEN) gen-schema thrift-schema-hs thrift-glean-hs
+glass-lib:: thrift gen-schema thrift-schema-hs thrift-glean-hs glean.cabal cxx-libraries
 	$(CABAL) build glass-lib
 
 # short circuit target to avoid thrift regen
@@ -223,9 +270,9 @@ glass::
 	$(CABAL) build glass-server glass-democlient
 
 .PHONY: glean-clang
-glean-clang:: gen-schema glean
+glean-clang:: gen-schema glean glean.cabal cxx-libraries
 	$(CABAL) build glean-clang
 
 .PHONY: glean-hiedb
-glean-hiedb::
+glean-hiedb:: glean.cabal cxx-libraries
 	$(CABAL) build hiedb-indexer
