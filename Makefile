@@ -43,6 +43,9 @@ BYTECODE_SRCS= \
 
 all:: thrift $(BYTECODE_GEN) gen-schema thrift-schema-hs glean
 
+# Targets in this file invoke Cabal and hence can't be built in parallel
+.NOTPARALLEL:
+
 .PHONY: glean
 glean::
 	$(CABAL) build glean glean-server glean-hyperlink
