@@ -33,9 +33,9 @@ CODEGEN_DIR = .build/codegen
 BYTECODE_GEN= \
 	glean/rts/bytecode/gen/evaluate.h \
 	glean/rts/bytecode/gen/instruction.h \
-	glean/hs/Glean/Bytecode/Gen/Instruction.hs \
-	glean/hs/Glean/Bytecode/Gen/Issue.hs \
-	glean/hs/Glean/Bytecode/Gen/Version.hs
+	glean/hs/Glean/RTS/Bytecode/Gen/Instruction.hs \
+	glean/hs/Glean/RTS/Bytecode/Gen/Issue.hs \
+	glean/hs/Glean/RTS/Bytecode/Gen/Version.hs
 
 BYTECODE_SRCS= \
 	$(wildcard glean/bytecode/*/Glean/Bytecode/*/*.hs) \
