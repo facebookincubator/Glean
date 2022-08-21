@@ -627,8 +627,6 @@ library client-cpp
         glean/interprocess/cpp/worklist.cpp,
         glean/interprocess/cpp/counters.cpp
     cxx-options: -DOSS=1
-    if arch(x86_64)
-      cxx-options: -DGLEAN_X86_64
     include-dirs: .
     install-includes:
         glean/cpp/glean.h
