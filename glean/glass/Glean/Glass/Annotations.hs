@@ -6,7 +6,6 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-
 {-# LANGUAGE ApplicativeDo #-}
 {-# LANGUAGE TypeApplications #-}
 
@@ -18,7 +17,6 @@ module Glean.Glass.Annotations
 import Data.Text (Text)
 import Data.Maybe (catMaybes)
 
-import qualified Glean
 import Glean.Angle as Angle
 import qualified Glean.Haxl.Repos as Glean
 import qualified Glean.Schema.Codemarkup.Types as Code
@@ -31,29 +29,38 @@ import qualified Glean.Schema.Hack.Types as Hack
 import Glean.Glass.SymbolId (entityToAngle)
 import Glean.Glass.Pretty.Annotations
 import qualified Glean.Glass.Types as Glass
+import Glean.Glass.Utils ( searchRecursiveWithLimit )
 
-class HasAnnotations a where
-    getAnnotations :: a -> Maybe [Glass.Annotation]
+-- | For Hack, the annotations are a single fact.
+-- For C++ they're sprinkled across each function decl, forcing us to search
+max_annotations_limit :: Int
+max_annotations_limit = 10
 
 getAnnotationsForEntity
   :: Code.Entity
   -> Glean.RepoHaxl u w (Either Text (Maybe [Glass.Annotation]))
-getAnnotationsForEntity entity = do
-  mapM anns $ entityToAngle entity
+getAnnotationsForEntity entity = fetch `mapM` entityToAngle entity
   where
-    anns entityAngle = do
-      preds :: [Code.EntityAnnotations] <-
-        Glean.search_ $ Glean.recursive $ Angle.query $
-          Angle.predicate @Code.EntityAnnotations $ entityAngle .->
-          wild
-      return $ getAnnotations preds
+    fetch ent = getAnnotations <$> queryAnnotations ent
+
+queryAnnotations
+  :: Angle Code.Entity -> Glean.RepoHaxl u w [Code.EntityToAnnotations]
+queryAnnotations entity = searchRecursiveWithLimit (Just max_annotations_limit)$
+  Angle.predicate @Code.EntityToAnnotations $
+    rec $
+      field @"entity" entity
+    end
+
+class HasAnnotations a where
+  getAnnotations :: a -> Maybe [Glass.Annotation]
 
 instance HasAnnotations a => HasAnnotations [a] where
   getAnnotations [] = Nothing
   getAnnotations anns = Just $ concat $ catMaybes $ getAnnotations <$> anns
 
-instance HasAnnotations Code.EntityAnnotations where
-  getAnnotations ann = Code.entityAnnotations_value ann >>= getAnnotations
+instance HasAnnotations Code.EntityToAnnotations where
+  getAnnotations ann = Code.entityToAnnotations_key ann
+    >>= getAnnotations . Code.entityToAnnotations_key_annotations
 
 instance HasAnnotations [Code.Annotations] where
   getAnnotations anns = Just $ concat $ catMaybes $ getAnnotations <$> anns
