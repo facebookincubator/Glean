@@ -9,6 +9,6 @@ class GleanSchemaPredicate:
     raise Exception("this function can only be called from @angle_query")
 
   @staticmethod
-  def angle_query(*, name: str) -> "GleanSchemaPredicate":
+  def angle_query(*, arg: str) -> "GleanSchemaPredicate":
     raise Exception("this function can only be called from @angle_query")
 

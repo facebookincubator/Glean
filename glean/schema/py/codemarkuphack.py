@@ -23,91 +23,91 @@ from glean.schema.codemarkuphack.types import (
 class CodemarkupHackHackEntityInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"codemarkup.hack.HackEntityInfo.2 { { } }", HackHackEntityInfo
+    return f"codemarkup.hack.HackEntityInfo.2 {{ entity = _, info = _ }}", HackHackEntityInfo
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackEntityInfo":
+  def angle_query(*, entity: Tuple[()], info: Tuple[()]) -> "CodemarkupHackHackEntityInfo":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHackHackEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"codemarkup.hack.HackEntityLocation.2 { { } }", HackHackEntityLocation
+    return f"codemarkup.hack.HackEntityLocation.2 {{ entity = _, location = _ }}", HackHackEntityLocation
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackEntityLocation":
+  def angle_query(*, entity: Tuple[()], location: Tuple[()]) -> "CodemarkupHackHackEntityLocation":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHackHackVisibility(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"codemarkup.hack.HackVisibility.2 { { } }", HackHackVisibility
+    return f"codemarkup.hack.HackVisibility.2 {{ entity = _, visibility = _ }}", HackHackVisibility
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackVisibility":
+  def angle_query(*, entity: Tuple[()], visibility: Tuple[()]) -> "CodemarkupHackHackVisibility":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHackHackAnnotation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"codemarkup.hack.HackAnnotation.2 { { } }", HackHackAnnotation
+    return f"codemarkup.hack.HackAnnotation.2 {{ entity = _, anns = _ }}", HackHackAnnotation
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackAnnotation":
+  def angle_query(*, entity: Tuple[()], anns: Tuple[()]) -> "CodemarkupHackHackAnnotation":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHackHackResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"codemarkup.hack.HackResolveLocation.2 { { } }", HackHackResolveLocation
+    return f"codemarkup.hack.HackResolveLocation.2 {{ location = _, entity = _ }}", HackHackResolveLocation
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackResolveLocation":
+  def angle_query(*, location: Tuple[()], entity: Tuple[()]) -> "CodemarkupHackHackResolveLocation":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHackHackContainsChildEntity(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"codemarkup.hack.HackContainsChildEntity.2 { { } }", HackHackContainsChildEntity
+    return f"codemarkup.hack.HackContainsChildEntity.2 {{ parent = _, child = _ }}", HackHackContainsChildEntity
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackContainsChildEntity":
+  def angle_query(*, parent: Tuple[()], child: Tuple[()]) -> "CodemarkupHackHackContainsChildEntity":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHackHackFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"codemarkup.hack.HackFileEntityXRefLocations.2 { { } }", HackHackFileEntityXRefLocations
+    return f"codemarkup.hack.HackFileEntityXRefLocations.2 {{ file = _, xref = _, entity = _ }}", HackHackFileEntityXRefLocations
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackFileEntityXRefLocations":
+  def angle_query(*, file: Tuple[()], xref: Tuple[()], entity: Tuple[()]) -> "CodemarkupHackHackFileEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHackHackEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"codemarkup.hack.HackEntityUses.2 { { } }", HackHackEntityUses
+    return f"codemarkup.hack.HackEntityUses.2 {{ target = _, file = _, span = _ }}", HackHackEntityUses
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackEntityUses":
+  def angle_query(*, target: Tuple[()], file: Tuple[()], span: Tuple[()]) -> "CodemarkupHackHackEntityUses":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHackHackEntityKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"codemarkup.hack.HackEntityKind.2 { { } }", HackHackEntityKind
+    return f"codemarkup.hack.HackEntityKind.2 {{ entity = _, kind = _ }}", HackHackEntityKind
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackEntityKind":
+  def angle_query(*, entity: Tuple[()], kind: Tuple[()]) -> "CodemarkupHackHackEntityKind":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHackHackFileEntityXRefSpans(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"codemarkup.hack.HackFileEntityXRefSpans.2 { { } }", HackHackFileEntityXRefSpans
+    return f"codemarkup.hack.HackFileEntityXRefSpans.2 {{ file = _, span = _, entity = _ }}", HackHackFileEntityXRefSpans
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "CodemarkupHackHackFileEntityXRefSpans":
+  def angle_query(*, file: Tuple[()], span: Tuple[()], entity: Tuple[()]) -> "CodemarkupHackHackFileEntityXRefSpans":
     raise Exception("this function can only be called from @angle_query")
 
 

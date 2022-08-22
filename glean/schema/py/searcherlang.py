@@ -15,19 +15,19 @@ from glean.schema.searcherlang.types import (
 class SearchErlangSearchByFQN(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"search.erlang.SearchByFQN.4 { { } }", ErlangSearchByFQN
+    return f"search.erlang.SearchByFQN.4 {{ module = _, name = _, arity = _, entity = _ }}", ErlangSearchByFQN
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "SearchErlangSearchByFQN":
+  def angle_query(*, module: str, name: str, arity: int, entity: Tuple[()]) -> "SearchErlangSearchByFQN":
     raise Exception("this function can only be called from @angle_query")
 
 class SearchErlangSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"search.erlang.SearchByName.4 { { } }", ErlangSearchByName
+    return f"search.erlang.SearchByName.4 {{ name = _, entity = _ }}", ErlangSearchByName
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "SearchErlangSearchByName":
+  def angle_query(*, name: str, entity: Tuple[()]) -> "SearchErlangSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
 

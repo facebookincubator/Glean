@@ -14,10 +14,10 @@ from glean.schema.configerator.types import (
 class ConfigeratorImportFilesStatement(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"configerator.ImportFilesStatement.1 { { } }", ImportFilesStatement
+    return f"configerator.ImportFilesStatement.1 {{ import_ = _, is_recursive = _ }}", ImportFilesStatement
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ConfigeratorImportFilesStatement":
+  def angle_query(*, import_: Tuple[()], is_recursive: bool) -> "ConfigeratorImportFilesStatement":
     raise Exception("this function can only be called from @angle_query")
 
 

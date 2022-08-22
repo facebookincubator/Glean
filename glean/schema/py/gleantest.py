@@ -57,397 +57,397 @@ from glean.schema.gleantest.types import (
 class GleanTestBar(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.Bar.5 { json.dumps(key) }", TestBar
+    return f"glean.test.Bar.5 {json.dumps(key)}", TestBar
 
   @staticmethod
-  def angle_query(*, name: str) -> "GleanTestBar":
+  def angle_query(*, arg: str) -> "GleanTestBar":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestRevStringPairs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.RevStringPairs.1 { { } }", TestRevStringPairs
+    return f"glean.test.RevStringPairs.1 {{ x = _, r = _ }}", TestRevStringPairs
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestRevStringPairs":
+  def angle_query(*, x: str, r: Tuple[()]) -> "GleanTestRevStringPairs":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestStoredRevStringPair(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.StoredRevStringPair.1 { { } }", TestStoredRevStringPair
+    return f"glean.test.StoredRevStringPair.1 {{ fst = _, snd = _ }}", TestStoredRevStringPair
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestStoredRevStringPair":
+  def angle_query(*, fst: str, snd: str) -> "GleanTestStoredRevStringPair":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestRef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.Ref.5 { json.dumps(key) }", TestRef
+    return f"glean.test.Ref.5 {json.dumps(key)}", TestRef
 
   @staticmethod
-  def angle_query(*, name: str) -> "GleanTestRef":
+  def angle_query(*, arg: Tuple[()]) -> "GleanTestRef":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestKeyValue(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.KeyValue.1 { { } }", TestKeyValue
+    return f"glean.test.KeyValue.1 {{ kstring = _, knat = _ }}", TestKeyValue
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestKeyValue":
+  def angle_query(*, kstring: str, knat: int) -> "GleanTestKeyValue":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestIsThree(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.IsThree.1 { json.dumps(key) }", TestIsThree
+    return f"glean.test.IsThree.1 {json.dumps(key)}", TestIsThree
 
   @staticmethod
-  def angle_query(*, name: int) -> "GleanTestIsThree":
+  def angle_query(*, arg: int) -> "GleanTestIsThree":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestEdgeWrapper(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.EdgeWrapper.5 { { } }", TestEdgeWrapper
+    return f"glean.test.EdgeWrapper.5 {{ edge = _ }}", TestEdgeWrapper
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestEdgeWrapper":
+  def angle_query(*, edge: Tuple[()]) -> "GleanTestEdgeWrapper":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestRefRef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.RefRef.5 { json.dumps(key) }", TestRefRef
+    return f"glean.test.RefRef.5 {json.dumps(key)}", TestRefRef
 
   @staticmethod
-  def angle_query(*, name: str) -> "GleanTestRefRef":
+  def angle_query(*, arg: Tuple[()]) -> "GleanTestRefRef":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestNothingTest(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.nothingTest.5 { { } }", TestNothingTest
+    return f"glean.test.nothingTest.5 {{ a = _, b = _ }}", TestNothingTest
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestNothingTest":
+  def angle_query(*, a: Tuple[()], b: int) -> "GleanTestNothingTest":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestFooToFoo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.FooToFoo.5 { json.dumps(key) }", TestFooToFoo
+    return f"glean.test.FooToFoo.5 {json.dumps(key)}", TestFooToFoo
 
   @staticmethod
-  def angle_query(*, name: str) -> "GleanTestFooToFoo":
+  def angle_query(*, arg: Tuple[()]) -> "GleanTestFooToFoo":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestExpr(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.Expr.1 { json.dumps(key) }", TestExpr
+    return f"glean.test.Expr.1 {json.dumps(key)}", TestExpr
 
   @staticmethod
-  def angle_query(*, name: str) -> "GleanTestExpr":
+  def angle_query(*, arg: Tuple[()]) -> "GleanTestExpr":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestRevRevStringPair(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.RevRevStringPair.1 { { } }", TestRevRevStringPair
+    return f"glean.test.RevRevStringPair.1 {{ fst = _, snd = _ }}", TestRevRevStringPair
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestRevRevStringPair":
+  def angle_query(*, fst: str, snd: str) -> "GleanTestRevRevStringPair":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestEdge(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.Edge.5 { { } }", TestEdge
+    return f"glean.test.Edge.5 {{ parent = _, child = _ }}", TestEdge
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestEdge":
+  def angle_query(*, parent: Tuple[()], child: Tuple[()]) -> "GleanTestEdge":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestSameString(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.SameString.1 { { } }", TestSameString
+    return f"glean.test.SameString.1 {{ x = _, y = _ }}", TestSameString
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestSameString":
+  def angle_query(*, x: str, y: str) -> "GleanTestSameString":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestStoredRevStringPairWithA(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.StoredRevStringPairWithA.1 { { } }", TestStoredRevStringPairWithA
+    return f"glean.test.StoredRevStringPairWithA.1 {{ fst = _, snd = _ }}", TestStoredRevStringPairWithA
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestStoredRevStringPairWithA":
+  def angle_query(*, fst: str, snd: str) -> "GleanTestStoredRevStringPairWithA":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestLeftOr(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.LeftOr.1 { { } }", TestLeftOr
+    return f"glean.test.LeftOr.1 {{ x = _, y = _ }}", TestLeftOr
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestLeftOr":
+  def angle_query(*, x: str, y: int) -> "GleanTestLeftOr":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestRevStringPair(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.RevStringPair.1 { { } }", TestRevStringPair
+    return f"glean.test.RevStringPair.1 {{ fst = _, snd = _ }}", TestRevStringPair
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestRevStringPair":
+  def angle_query(*, fst: str, snd: str) -> "GleanTestRevStringPair":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestDerivedKeyValue(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.DerivedKeyValue.1 { { } }", TestDerivedKeyValue
+    return f"glean.test.DerivedKeyValue.1 {{ kstring = _, knat = _, vnat = _, vstring = _ }}", TestDerivedKeyValue
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestDerivedKeyValue":
+  def angle_query(*, kstring: str, knat: int, vnat: int, vstring: str) -> "GleanTestDerivedKeyValue":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestViaStringPair(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.ViaStringPair.1 { { } }", TestViaStringPair
+    return f"glean.test.ViaStringPair.1 {{ fst = _, snd = _ }}", TestViaStringPair
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestViaStringPair":
+  def angle_query(*, fst: str, snd: str) -> "GleanTestViaStringPair":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestQux(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.Qux.5 { json.dumps(key) }", TestQux
+    return f"glean.test.Qux.5 {json.dumps(key)}", TestQux
 
   @staticmethod
-  def angle_query(*, name: str) -> "GleanTestQux":
+  def angle_query(*, arg: str) -> "GleanTestQux":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestStoredDualStringPair(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.StoredDualStringPair.1 { { } }", TestStoredDualStringPair
+    return f"glean.test.StoredDualStringPair.1 {{ fst = _, snd = _ }}", TestStoredDualStringPair
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestStoredDualStringPair":
+  def angle_query(*, fst: Tuple[()], snd: Tuple[()]) -> "GleanTestStoredDualStringPair":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestIsGlean(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.IsGlean.1 { json.dumps(key) }", TestIsGlean
+    return f"glean.test.IsGlean.1 {json.dumps(key)}", TestIsGlean
 
   @staticmethod
-  def angle_query(*, name: str) -> "GleanTestIsGlean":
+  def angle_query(*, arg: str) -> "GleanTestIsGlean":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestDerivedKeyValue2(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.DerivedKeyValue2.1 { { } }", TestDerivedKeyValue2
+    return f"glean.test.DerivedKeyValue2.1 {{ kstring = _, knat = _ }}", TestDerivedKeyValue2
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestDerivedKeyValue2":
+  def angle_query(*, kstring: str, knat: int) -> "GleanTestDerivedKeyValue2":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestRevStringPairRec(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.RevStringPairRec.1 { { } }", TestRevStringPairRec
+    return f"glean.test.RevStringPairRec.1 {{ fst = _, snd = _ }}", TestRevStringPairRec
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestRevStringPairRec":
+  def angle_query(*, fst: str, snd: str) -> "GleanTestRevStringPairRec":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestTree(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.Tree.5 { { } }", TestTree
+    return f"glean.test.Tree.5 {{ node = _, left = _, right = _ }}", TestTree
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestTree":
+  def angle_query(*, node: Tuple[()], left: Tuple[()], right: Tuple[()]) -> "GleanTestTree":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestPredicate(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.Predicate.5 { json.dumps(key) }", TestPredicate
+    return f"glean.test.Predicate.5 {json.dumps(key)}", TestPredicate
 
   @staticmethod
-  def angle_query(*, name: str) -> "GleanTestPredicate":
+  def angle_query(*, arg: Tuple[()]) -> "GleanTestPredicate":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestLeftOr2(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.LeftOr2.1 { { } }", TestLeftOr2
+    return f"glean.test.LeftOr2.1 {{ x = _, y = _ }}", TestLeftOr2
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestLeftOr2":
+  def angle_query(*, x: str, y: int) -> "GleanTestLeftOr2":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestNode(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.Node.5 { { } }", TestNode
+    return f"glean.test.Node.5 {{ label = _ }}", TestNode
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestNode":
+  def angle_query(*, label: str) -> "GleanTestNode":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestTreeToTree(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.TreeToTree.5 { json.dumps(key) }", TestTreeToTree
+    return f"glean.test.TreeToTree.5 {json.dumps(key)}", TestTreeToTree
 
   @staticmethod
-  def angle_query(*, name: str) -> "GleanTestTreeToTree":
+  def angle_query(*, arg: Tuple[()]) -> "GleanTestTreeToTree":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestStringPair(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.StringPair.1 { { } }", TestStringPair
+    return f"glean.test.StringPair.1 {{ fst = _, snd = _ }}", TestStringPair
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestStringPair":
+  def angle_query(*, fst: str, snd: str) -> "GleanTestStringPair":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.Name.1 { json.dumps(key) }", TestName
+    return f"glean.test.Name.1 {json.dumps(key)}", TestName
 
   @staticmethod
-  def angle_query(*, name: str) -> "GleanTestName":
+  def angle_query(*, arg: str) -> "GleanTestName":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestSkipRevEdge(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.SkipRevEdge.5 { { } }", TestSkipRevEdge
+    return f"glean.test.SkipRevEdge.5 {{ child = _, grandparent = _ }}", TestSkipRevEdge
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestSkipRevEdge":
+  def angle_query(*, child: Tuple[()], grandparent: Tuple[()]) -> "GleanTestSkipRevEdge":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestStoredRevStringPairWithRev(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.StoredRevStringPairWithRev.1 { { } }", TestStoredRevStringPairWithRev
+    return f"glean.test.StoredRevStringPairWithRev.1 {{ fst = _, snd = _ }}", TestStoredRevStringPairWithRev
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestStoredRevStringPairWithRev":
+  def angle_query(*, fst: str, snd: str) -> "GleanTestStoredRevStringPairWithRev":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestMatchOneAlt(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.MatchOneAlt.1 { { } }", TestMatchOneAlt
+    return f"glean.test.MatchOneAlt.1 {{ x = _, y = _ }}", TestMatchOneAlt
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestMatchOneAlt":
+  def angle_query(*, x: Tuple[()], y: int) -> "GleanTestMatchOneAlt":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestRevEdge(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.RevEdge.5 { { } }", TestRevEdge
+    return f"glean.test.RevEdge.5 {{ child = _, parent = _ }}", TestRevEdge
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestRevEdge":
+  def angle_query(*, child: Tuple[()], parent: Tuple[()]) -> "GleanTestRevEdge":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestStoredRevStringPairSum(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.StoredRevStringPairSum.1 { { } }", TestStoredRevStringPairSum
+    return f"glean.test.StoredRevStringPairSum.1 {{ fst = _, snd = _ }}", TestStoredRevStringPairSum
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestStoredRevStringPairSum":
+  def angle_query(*, fst: str, snd: str) -> "GleanTestStoredRevStringPairSum":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestEmptyStoredStringPair(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.EmptyStoredStringPair.1 { { } }", TestEmptyStoredStringPair
+    return f"glean.test.EmptyStoredStringPair.1 {{ fst = _, snd = _ }}", TestEmptyStoredStringPair
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestEmptyStoredStringPair":
+  def angle_query(*, fst: str, snd: str) -> "GleanTestEmptyStoredStringPair":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestUnbound(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.Unbound.1 { { } }", TestUnbound
+    return f"glean.test.Unbound.1 {{ x = _, y = _ }}", TestUnbound
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestUnbound":
+  def angle_query(*, x: str, y: str) -> "GleanTestUnbound":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestPredicate(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.Predicate.1 { json.dumps(key) }", TestPredicate
+    return f"glean.test.Predicate.1 {json.dumps(key)}", TestPredicate
 
   @staticmethod
-  def angle_query(*, name: str) -> "GleanTestPredicate":
+  def angle_query(*, arg: Tuple[()]) -> "GleanTestPredicate":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestDualStringPair(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.DualStringPair.1 { { } }", TestDualStringPair
+    return f"glean.test.DualStringPair.1 {{ fst = _, snd = _ }}", TestDualStringPair
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestDualStringPair":
+  def angle_query(*, fst: Tuple[()], snd: Tuple[()]) -> "GleanTestDualStringPair":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestUnbound2(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.Unbound2.1 { { } }", TestUnbound2
+    return f"glean.test.Unbound2.1 {{ x = _, y = _ }}", TestUnbound2
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestUnbound2":
+  def angle_query(*, x: str, y: str) -> "GleanTestUnbound2":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestStringPairBox(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.StringPairBox.1 { { } }", TestStringPairBox
+    return f"glean.test.StringPairBox.1 {{ box = _ }}", TestStringPairBox
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "GleanTestStringPairBox":
+  def angle_query(*, box: Tuple[()]) -> "GleanTestStringPairBox":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestReflStringPair(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.ReflStringPair.1 { json.dumps(key) }", TestReflStringPair
+    return f"glean.test.ReflStringPair.1 {json.dumps(key)}", TestReflStringPair
 
   @staticmethod
-  def angle_query(*, name: str) -> "GleanTestReflStringPair":
+  def angle_query(*, arg: str) -> "GleanTestReflStringPair":
     raise Exception("this function can only be called from @angle_query")
 
 class GleanTestFoo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"glean.test.Foo.5 { json.dumps(key) }", TestFoo
+    return f"glean.test.Foo.5 {json.dumps(key)}", TestFoo
 
   @staticmethod
-  def angle_query(*, name: str) -> "GleanTestFoo":
+  def angle_query(*, arg: str) -> "GleanTestFoo":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -19,55 +19,55 @@ from glean.schema.scm.types import (
 class ScmRev(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"scm.Rev.1 { json.dumps(key) }", Rev
+    return f"scm.Rev.1 {json.dumps(key)}", Rev
 
   @staticmethod
-  def angle_query(*, name: str) -> "ScmRev":
+  def angle_query(*, arg: str) -> "ScmRev":
     raise Exception("this function can only be called from @angle_query")
 
 class ScmRepo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"scm.Repo.1 { { } }", Repo
+    return f"scm.Repo.1 {{ name = _, type = _ }}", Repo
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ScmRepo":
+  def angle_query(*, name: Tuple[()], type: Tuple[()]) -> "ScmRepo":
     raise Exception("this function can only be called from @angle_query")
 
 class ScmRepoName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"scm.RepoName.1 { json.dumps(key) }", RepoName
+    return f"scm.RepoName.1 {json.dumps(key)}", RepoName
 
   @staticmethod
-  def angle_query(*, name: str) -> "ScmRepoName":
+  def angle_query(*, arg: str) -> "ScmRepoName":
     raise Exception("this function can only be called from @angle_query")
 
 class ScmTimestamp(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"scm.Timestamp.1 { json.dumps(key) }", Timestamp
+    return f"scm.Timestamp.1 {json.dumps(key)}", Timestamp
 
   @staticmethod
-  def angle_query(*, name: int) -> "ScmTimestamp":
+  def angle_query(*, arg: int) -> "ScmTimestamp":
     raise Exception("this function can only be called from @angle_query")
 
 class ScmCommit(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"scm.Commit.1 { { } }", Commit
+    return f"scm.Commit.1 {{ repo = _, rev = _, timestamp = _ }}", Commit
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ScmCommit":
+  def angle_query(*, repo: Tuple[()], rev: Tuple[()], timestamp: Tuple[()]) -> "ScmCommit":
     raise Exception("this function can only be called from @angle_query")
 
 class ScmRepoType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"scm.RepoType.1 { json.dumps(key) }", RepoType
+    return f"scm.RepoType.1 {json.dumps(key)}", RepoType
 
   @staticmethod
-  def angle_query(*, name: str) -> "ScmRepoType":
+  def angle_query(*, arg: str) -> "ScmRepoType":
     raise Exception("this function can only be called from @angle_query")
 
 

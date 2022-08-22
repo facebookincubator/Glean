@@ -15,19 +15,19 @@ from glean.schema.code.types import (
 class CodeEntityLanguageLSIF(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"code.EntityLanguageLSIF.24 { { } }", EntityLanguageLSIF
+    return f"code.EntityLanguageLSIF.24 {{ entity = _, language = _ }}", EntityLanguageLSIF
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "CodeEntityLanguageLSIF":
+  def angle_query(*, entity: Tuple[()], language: Tuple[()]) -> "CodeEntityLanguageLSIF":
     raise Exception("this function can only be called from @angle_query")
 
 class CodeEntityLanguage(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"code.EntityLanguage.24 { { } }", EntityLanguage
+    return f"code.EntityLanguage.24 {{ entity = _, language = _ }}", EntityLanguage
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "CodeEntityLanguage":
+  def angle_query(*, entity: Tuple[()], language: Tuple[()]) -> "CodeEntityLanguage":
     raise Exception("this function can only be called from @angle_query")
 
 

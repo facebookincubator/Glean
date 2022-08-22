@@ -44,7 +44,7 @@ genSchemaPy _version preddefs typedefs =
     "(\"this function can only be called from @angle_query\")"
   , ""
   , "  " <> "@staticmethod"
-  , "  " <> "def angle_query(*, name: str) -> \"GleanSchemaPredicate\":"
+  , "  " <> "def angle_query(*, arg: str) -> \"GleanSchemaPredicate\":"
   , "    " <> "raise Exception" <>
     "(\"this function can only be called from @angle_query\")"
   ]) :
@@ -83,11 +83,11 @@ genAllPredicates _ preds = Text.unlines $
       , "  " <> "def build_angle(key: Union[" <> pythonKeyValues <>
         "]) -> Tuple[str, Struct]:"
       , "    " <> "return f\"" <> predicateName <> "." <>
-        showt (predicateRef_version ref) <> " { " <> angleFor kTy <>
-        " }\", " <> return_class_name
+        showt (predicateRef_version ref) <> " {" <> angleFor key <>
+        "}\", " <> return_class_name
       , ""
       , "  " <> "@staticmethod"
-      , "  " <> "def angle_query(*, name: " <> kTy <> ") -> \"" <>
+      , "  " <> "def angle_query(*, " <> kTy <> ") -> \"" <>
         class_name <> "\":"
       , "    " <> "raise Exception" <>
         "(\"this function can only be called from @angle_query\")"
@@ -159,17 +159,42 @@ genTargets info =
 -- | Generate a value type
 valueTy :: ResolvedType -> Text
 valueTy t = case t of
-  NatTy{} -> Text.pack "int"
-  BooleanTy{} -> Text.pack "bool"
-  StringTy{} -> Text.pack "str"
-  RecordTy{} -> Text.pack "Tuple[()]"
-  -- TODO other types
-  _ -> Text.pack "str"
+  RecordTy [] -> createQueryField (defaultFieldName, baseTy t)
+  RecordTy fields ->
+    let
+      fieldNames = map fieldDefName fields
+      fieldTypes = map (baseTy . fieldDefType) fields
+      queryFields =  zipWith (curry createQueryField) fieldNames fieldTypes
+    in
+      Text.intercalate ", " queryFields
+  _ -> createQueryField (defaultFieldName, baseTy t)
+
+  where
+    createQueryField (name, type_) = name <> ": " <> type_
+    defaultFieldName = Text.pack "arg"
+
 
 pythonKeyValues :: Text
 pythonKeyValues = Text.pack "int, bool, str, Tuple[()]"
 
-angleFor :: Text -> Text
-angleFor keyType = case Text.unpack keyType of
- "Tuple[()]" -> Text.pack "{ }"
- _ -> Text.pack "json.dumps(key)"
+angleFor :: Type_ pref tref -> Text
+angleFor key = case key of
+  RecordTy [] -> Text.pack "json.dumps(key)"
+  RecordTy fields ->
+    let
+      fieldNames = map fieldDefName fields
+      setValue field = field <> " = " <> "_" -- TODO accept field value
+      setValues = map setValue
+    in
+    "{ " <> Text.intercalate ", " (setValues fieldNames) <> " }"
+
+  _ -> Text.pack "json.dumps(key)"
+
+baseTy :: Type_ pref tref -> Text
+baseTy t = case t of
+  NatTy{} -> Text.pack "int"
+  BooleanTy{} -> Text.pack "bool"
+  StringTy{} -> Text.pack "str"
+  RecordTy [] -> Text.pack "Tuple[()]"
+  -- TODO other types
+  _ -> Text.pack "Tuple[()]"

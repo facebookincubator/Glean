@@ -82,622 +82,622 @@ from glean.schema.thrift.types import (
 class ThriftToPython(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.ToPython.7 { { } }", ToPython
+    return f"thrift.ToPython.7 {{ thrift = _, lang = _, python = _ }}", ToPython
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftToPython":
+  def angle_query(*, thrift: Tuple[()], lang: Tuple[()], python: Tuple[()]) -> "ThriftToPython":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftFunctionSpecification(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.FunctionSpecification.7 { { } }", FunctionSpecification
+    return f"thrift.FunctionSpecification.7 {{ name = _, result = _, arguments = _, throws_ = _ }}", FunctionSpecification
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftFunctionSpecification":
+  def angle_query(*, name: Tuple[()], result: Tuple[()], arguments: Tuple[()], throws_: Tuple[()]) -> "ThriftFunctionSpecification":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftExceptionType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.ExceptionType.7 { { } }", ExceptionType
+    return f"thrift.ExceptionType.7 {{ name = _, fields = _, structuredAnnotations = _ }}", ExceptionType
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftExceptionType":
+  def angle_query(*, name: Tuple[()], fields: Tuple[()], structuredAnnotations: Tuple[()]) -> "ThriftExceptionType":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftTypeDefType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.TypeDefType.7 { { } }", TypeDefType
+    return f"thrift.TypeDefType.7 {{ alias = _, type_ = _ }}", TypeDefType
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftTypeDefType":
+  def angle_query(*, alias: Tuple[()], type_: Tuple[()]) -> "ThriftTypeDefType":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftFromCpp2(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.FromCpp2.7 { { } }", FromCpp2
+    return f"thrift.FromCpp2.7 {{ cpp2 = _, thrift = _, role = _ }}", FromCpp2
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftFromCpp2":
+  def angle_query(*, cpp2: Tuple[()], thrift: Tuple[()], role: Tuple[()]) -> "ThriftFromCpp2":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftFromHack(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.FromHack.7 { { } }", FromHack
+    return f"thrift.FromHack.7 {{ hack = _, thrift = _, role = _ }}", FromHack
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftFromHack":
+  def angle_query(*, hack: Tuple[()], thrift: Tuple[()], role: Tuple[()]) -> "ThriftFromHack":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftFileDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.FileDeclaration.7 { { } }", FileDeclaration
+    return f"thrift.FileDeclaration.7 {{ file = _, decl = _ }}", FileDeclaration
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftFileDeclaration":
+  def angle_query(*, file: Tuple[()], decl: Tuple[()]) -> "ThriftFileDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftPythonField(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.PythonField.7 { { } }", PythonField
+    return f"thrift.PythonField.7 {{ name = _, class_ = _ }}", PythonField
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftPythonField":
+  def angle_query(*, name: Tuple[()], class_: Tuple[()]) -> "ThriftPythonField":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftFileError(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.FileError.7 { { } }", FileError
+    return f"thrift.FileError.7 {{ file = _, error = _ }}", FileError
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftFileError":
+  def angle_query(*, file: Tuple[()], error: str) -> "ThriftFileError":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftPythonModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.PythonModule.7 { json.dumps(key) }", PythonModule
+    return f"thrift.PythonModule.7 {json.dumps(key)}", PythonModule
 
   @staticmethod
-  def angle_query(*, name: str) -> "ThriftPythonModule":
+  def angle_query(*, arg: Tuple[()]) -> "ThriftPythonModule":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftConstantType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.ConstantType.7 { { } }", ConstantType
+    return f"thrift.ConstantType.7 {{ name = _, type_ = _ }}", ConstantType
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftConstantType":
+  def angle_query(*, name: Tuple[()], type_: Tuple[()]) -> "ThriftConstantType":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftFunctionName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.FunctionName.7 { { } }", FunctionName
+    return f"thrift.FunctionName.7 {{ service_ = _, name = _, locName = _ }}", FunctionName
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftFunctionName":
+  def angle_query(*, service_: Tuple[()], name: Tuple[()], locName: Tuple[()]) -> "ThriftFunctionName":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftTypeSpecification(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.TypeSpecification.7 { json.dumps(key) }", TypeSpecification
+    return f"thrift.TypeSpecification.7 {json.dumps(key)}", TypeSpecification
 
   @staticmethod
-  def angle_query(*, name: str) -> "ThriftTypeSpecification":
+  def angle_query(*, arg: Tuple[()]) -> "ThriftTypeSpecification":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftNamespaceName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.NamespaceName.7 { json.dumps(key) }", NamespaceName
+    return f"thrift.NamespaceName.7 {json.dumps(key)}", NamespaceName
 
   @staticmethod
-  def angle_query(*, name: str) -> "ThriftNamespaceName":
+  def angle_query(*, arg: str) -> "ThriftNamespaceName":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftExceptionVal(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.ExceptionVal.7 { json.dumps(key) }", ExceptionVal
+    return f"thrift.ExceptionVal.7 {json.dumps(key)}", ExceptionVal
 
   @staticmethod
-  def angle_query(*, name: str) -> "ThriftExceptionVal":
+  def angle_query(*, arg: Tuple[()]) -> "ThriftExceptionVal":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftHackRecord(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.HackRecord.7 { { } }", HackRecord
+    return f"thrift.HackRecord.7 {{ name = _, kind = _ }}", HackRecord
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftHackRecord":
+  def angle_query(*, name: Tuple[()], kind: Tuple[()]) -> "ThriftHackRecord":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftPythonMethod(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.PythonMethod.7 { { } }", PythonMethod
+    return f"thrift.PythonMethod.7 {{ name = _, class_ = _ }}", PythonMethod
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftPythonMethod":
+  def angle_query(*, name: Tuple[()], class_: Tuple[()]) -> "ThriftPythonMethod":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftPythonName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.PythonName.7 { json.dumps(key) }", PythonName
+    return f"thrift.PythonName.7 {json.dumps(key)}", PythonName
 
   @staticmethod
-  def angle_query(*, name: str) -> "ThriftPythonName":
+  def angle_query(*, arg: str) -> "ThriftPythonName":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftNamespace(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.Namespace.7 { { } }", Namespace
+    return f"thrift.Namespace.7 {{ target = _, name = _, namespace_ = _, quoted = _ }}", Namespace
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftNamespace":
+  def angle_query(*, target: Tuple[()], name: Tuple[()], namespace_: Tuple[()], quoted: bool) -> "ThriftNamespace":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftServiceName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.ServiceName.7 { { } }", ServiceName
+    return f"thrift.ServiceName.7 {{ name = _, locName = _ }}", ServiceName
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftServiceName":
+  def angle_query(*, name: Tuple[()], locName: Tuple[()]) -> "ThriftServiceName":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftIncludeStatement(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.IncludeStatement.7 { { } }", IncludeStatement
+    return f"thrift.IncludeStatement.7 {{ target = _, source = _, locSource = _ }}", IncludeStatement
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftIncludeStatement":
+  def angle_query(*, target: Tuple[()], source: Tuple[()], locSource: Tuple[()]) -> "ThriftIncludeStatement":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftTargetX(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.TargetX.7 { { } }", TargetX
+    return f"thrift.TargetX.7 {{ target = _, fileRef = _, locRef = _ }}", TargetX
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftTargetX":
+  def angle_query(*, target: Tuple[()], fileRef: Tuple[()], locRef: Tuple[()]) -> "ThriftTargetX":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftPythonClassContains(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.PythonClassContains.7 { { } }", PythonClassContains
+    return f"thrift.PythonClassContains.7 {{ class_ = _, methods = _, fields = _ }}", PythonClassContains
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftPythonClassContains":
+  def angle_query(*, class_: Tuple[()], methods: Tuple[()], fields: Tuple[()]) -> "ThriftPythonClassContains":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftPythonFileModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.PythonFileModule.7 { { } }", PythonFileModule
+    return f"thrift.PythonFileModule.7 {{ file = _, module = _ }}", PythonFileModule
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftPythonFileModule":
+  def angle_query(*, file: Tuple[()], module: Tuple[()]) -> "ThriftPythonFileModule":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftTypeDefException(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.TypeDefException.7 { { } }", TypeDefException
+    return f"thrift.TypeDefException.7 {{ alias = _, type_ = _ }}", TypeDefException
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftTypeDefException":
+  def angle_query(*, alias: Tuple[()], type_: Tuple[()]) -> "ThriftTypeDefException":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftEnumValue(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.EnumValue.7 { { } }", EnumValue
+    return f"thrift.EnumValue.7 {{ enum_ = _, name = _, locName = _ }}", EnumValue
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftEnumValue":
+  def angle_query(*, enum_: Tuple[()], name: Tuple[()], locName: Tuple[()]) -> "ThriftEnumValue":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftServiceDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.ServiceDefinition.7 { { } }", ServiceDefinition
+    return f"thrift.ServiceDefinition.7 {{ name = _, functions = _ }}", ServiceDefinition
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftServiceDefinition":
+  def angle_query(*, name: Tuple[()], functions: Tuple[()]) -> "ThriftServiceDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftNamespaceValue(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.NamespaceValue.7 { json.dumps(key) }", NamespaceValue
+    return f"thrift.NamespaceValue.7 {json.dumps(key)}", NamespaceValue
 
   @staticmethod
-  def angle_query(*, name: str) -> "ThriftNamespaceValue":
+  def angle_query(*, arg: str) -> "ThriftNamespaceValue":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftCompileTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.CompileTarget.7 { { } }", CompileTarget
+    return f"thrift.CompileTarget.7 {{ includes = _, lang = _, compile = _ }}", CompileTarget
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftCompileTarget":
+  def angle_query(*, includes: Tuple[()], lang: Tuple[()], compile: Tuple[()]) -> "ThriftCompileTarget":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftPythonModuleFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.PythonModuleFile.7 { { } }", PythonModuleFile
+    return f"thrift.PythonModuleFile.7 {{ module = _, file = _ }}", PythonModuleFile
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftPythonModuleFile":
+  def angle_query(*, module: Tuple[()], file: Tuple[()]) -> "ThriftPythonModuleFile":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftFileTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.FileTarget.7 { { } }", FileTarget
+    return f"thrift.FileTarget.7 {{ file = _, target = _ }}", FileTarget
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftFileTarget":
+  def angle_query(*, file: Tuple[()], target: Tuple[()]) -> "ThriftFileTarget":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftEnumValueDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.EnumValueDef.7 { { } }", EnumValueDef
+    return f"thrift.EnumValueDef.7 {{ name = _, value = _ }}", EnumValueDef
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftEnumValueDef":
+  def angle_query(*, name: Tuple[()], value: Tuple[()]) -> "ThriftEnumValueDef":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftHackRecordContains(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.HackRecordContains.7 { { } }", HackRecordContains
+    return f"thrift.HackRecordContains.7 {{ record = _, methods = _ }}", HackRecordContains
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftHackRecordContains":
+  def angle_query(*, record: Tuple[()], methods: Tuple[()]) -> "ThriftHackRecordContains":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftPythonValue(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.PythonValue.7 { { } }", PythonValue
+    return f"thrift.PythonValue.7 {{ name = _, module = _ }}", PythonValue
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftPythonValue":
+  def angle_query(*, name: Tuple[()], module: Tuple[()]) -> "ThriftPythonValue":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftStructType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.StructType.7 { { } }", StructType
+    return f"thrift.StructType.7 {{ name = _, fields = _, structuredAnnotations = _ }}", StructType
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftStructType":
+  def angle_query(*, name: Tuple[()], fields: Tuple[()], structuredAnnotations: Tuple[()]) -> "ThriftStructType":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftServiceChild(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.ServiceChild.7 { { } }", ServiceChild
+    return f"thrift.ServiceChild.7 {{ parent = _, child = _ }}", ServiceChild
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftServiceChild":
+  def angle_query(*, parent: Tuple[()], child: Tuple[()]) -> "ThriftServiceChild":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftIncludes(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.Includes.7 { { } }", Includes
+    return f"thrift.Includes.7 {{ source = _, target = _ }}", Includes
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftIncludes":
+  def angle_query(*, source: Tuple[()], target: Tuple[()]) -> "ThriftIncludes":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftQualName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.QualName.7 { { } }", QualName
+    return f"thrift.QualName.7 {{ file = _, name = _ }}", QualName
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftQualName":
+  def angle_query(*, file: Tuple[()], name: Tuple[()]) -> "ThriftQualName":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftOutputTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.OutputTarget.7 { { } }", OutputTarget
+    return f"thrift.OutputTarget.7 {{ compile = _, output = _, out = _ }}", OutputTarget
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftOutputTarget":
+  def angle_query(*, compile: Tuple[()], output: Tuple[()], out: Tuple[()]) -> "ThriftOutputTarget":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftPythonFunction(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.PythonFunction.7 { { } }", PythonFunction
+    return f"thrift.PythonFunction.7 {{ name = _, module = _ }}", PythonFunction
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftPythonFunction":
+  def angle_query(*, name: Tuple[()], module: Tuple[()]) -> "ThriftPythonFunction":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftStructuredAnnotation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.StructuredAnnotation.7 { { } }", StructuredAnnotation
+    return f"thrift.StructuredAnnotation.7 {{ type_ = _, value = _ }}", StructuredAnnotation
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftStructuredAnnotation":
+  def angle_query(*, type_: Tuple[()], value: Tuple[()]) -> "ThriftStructuredAnnotation":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.File.7 { json.dumps(key) }", File
+    return f"thrift.File.7 {json.dumps(key)}", File
 
   @staticmethod
-  def angle_query(*, name: str) -> "ThriftFile":
+  def angle_query(*, arg: Tuple[()]) -> "ThriftFile":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftHackMethod(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.HackMethod.7 { { } }", HackMethod
+    return f"thrift.HackMethod.7 {{ name = _, record = _ }}", HackMethod
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftHackMethod":
+  def angle_query(*, name: Tuple[()], record: Tuple[()]) -> "ThriftHackMethod":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftConstant(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.Constant.7 { { } }", Constant
+    return f"thrift.Constant.7 {{ name = _, locName = _ }}", Constant
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftConstant":
+  def angle_query(*, name: Tuple[()], locName: Tuple[()]) -> "ThriftConstant":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftHackName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.HackName.7 { json.dumps(key) }", HackName
+    return f"thrift.HackName.7 {json.dumps(key)}", HackName
 
   @staticmethod
-  def angle_query(*, name: str) -> "ThriftHackName":
+  def angle_query(*, arg: str) -> "ThriftHackName":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftNamedDecl(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.NamedDecl.7 { { } }", NamedDecl
+    return f"thrift.NamedDecl.7 {{ name = _, locName = _ }}", NamedDecl
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftNamedDecl":
+  def angle_query(*, name: Tuple[()], locName: Tuple[()]) -> "ThriftNamedDecl":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftPythonModuleContains(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.PythonModuleContains.7 { { } }", PythonModuleContains
+    return f"thrift.PythonModuleContains.7 {{ module = _, classes = _, functions = _, values = _ }}", PythonModuleContains
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftPythonModuleContains":
+  def angle_query(*, module: Tuple[()], classes: Tuple[()], functions: Tuple[()], values: Tuple[()]) -> "ThriftPythonModuleContains":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftHackMap(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.HackMap.7 { { } }", HackMap
+    return f"thrift.HackMap.7 {{ source = _, repoCode = _, path = _, kind = _, mangledsvcs = _, rest = _, server = _ }}", HackMap
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftHackMap":
+  def angle_query(*, source: Tuple[()], repoCode: Tuple[()], path: str, kind: Tuple[()], mangledsvcs: bool, rest: bool, server: bool) -> "ThriftHackMap":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftIncludeSpecial(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.IncludeSpecial.7 { { } }", IncludeSpecial
+    return f"thrift.IncludeSpecial.7 {{ source = _, special = _, target = _ }}", IncludeSpecial
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftIncludeSpecial":
+  def angle_query(*, source: Tuple[()], special: str, target: Tuple[()]) -> "ThriftIncludeSpecial":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftFileXRefs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.FileXRefs.7 { { } }", FileXRefs
+    return f"thrift.FileXRefs.7 {{ file = _, targets = _, xrefs = _ }}", FileXRefs
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftFileXRefs":
+  def angle_query(*, file: Tuple[()], targets: Tuple[()], xrefs: Tuple[()]) -> "ThriftFileXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftMangle(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.Mangle.7 { { } }", Mangle
+    return f"thrift.Mangle.7 {{ from = _, to = _, lang = _ }}", Mangle
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftMangle":
+  def angle_query(*, from: Tuple[()], to: Tuple[()], lang: Tuple[()]) -> "ThriftMangle":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftStructVal(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.StructVal.7 { { } }", StructVal
+    return f"thrift.StructVal.7 {{ fields = _ }}", StructVal
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftStructVal":
+  def angle_query(*, fields: Tuple[()]) -> "ThriftStructVal":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftIncludeSplice(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.IncludeSplice.7 { json.dumps(key) }", IncludeSplice
+    return f"thrift.IncludeSplice.7 {json.dumps(key)}", IncludeSplice
 
   @staticmethod
-  def angle_query(*, name: str) -> "ThriftIncludeSplice":
+  def angle_query(*, arg: str) -> "ThriftIncludeSplice":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftLang(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.Lang.7 { json.dumps(key) }", Lang
+    return f"thrift.Lang.7 {json.dumps(key)}", Lang
 
   @staticmethod
-  def angle_query(*, name: str) -> "ThriftLang":
+  def angle_query(*, arg: str) -> "ThriftLang":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftLiteral(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.Literal.7 { json.dumps(key) }", Literal
+    return f"thrift.Literal.7 {json.dumps(key)}", Literal
 
   @staticmethod
-  def angle_query(*, name: str) -> "ThriftLiteral":
+  def angle_query(*, arg: Tuple[()]) -> "ThriftLiteral":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftIdentifier(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.Identifier.7 { json.dumps(key) }", Identifier
+    return f"thrift.Identifier.7 {json.dumps(key)}", Identifier
 
   @staticmethod
-  def angle_query(*, name: str) -> "ThriftIdentifier":
+  def angle_query(*, arg: str) -> "ThriftIdentifier":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftUnionType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.UnionType.7 { { } }", UnionType
+    return f"thrift.UnionType.7 {{ name = _, alts = _ }}", UnionType
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftUnionType":
+  def angle_query(*, name: Tuple[()], alts: Tuple[()]) -> "ThriftUnionType":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftDeclarationNameSpan(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.DeclarationNameSpan.7 { { } }", DeclarationNameSpan
+    return f"thrift.DeclarationNameSpan.7 {{ decl = _, name = _, file = _, span = _ }}", DeclarationNameSpan
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftDeclarationNameSpan":
+  def angle_query(*, decl: Tuple[()], name: Tuple[()], file: Tuple[()], span: Tuple[()]) -> "ThriftDeclarationNameSpan":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftFromPython(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.FromPython.7 { { } }", FromPython
+    return f"thrift.FromPython.7 {{ python = _, thrift = _, role = _, lang = _ }}", FromPython
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftFromPython":
+  def angle_query(*, python: Tuple[()], thrift: Tuple[()], role: Tuple[()], lang: Tuple[()]) -> "ThriftFromPython":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftPythonClass(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.PythonClass.7 { { } }", PythonClass
+    return f"thrift.PythonClass.7 {{ name = _, module = _ }}", PythonClass
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftPythonClass":
+  def angle_query(*, name: Tuple[()], module: Tuple[()]) -> "ThriftPythonClass":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftToCpp2(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.ToCpp2.7 { { } }", ToCpp2
+    return f"thrift.ToCpp2.7 {{ thrift = _, cpp2 = _ }}", ToCpp2
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftToCpp2":
+  def angle_query(*, thrift: Tuple[()], cpp2: Tuple[()]) -> "ThriftToCpp2":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftToHack(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.ToHack.7 { { } }", ToHack
+    return f"thrift.ToHack.7 {{ thrift = _, hack = _ }}", ToHack
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftToHack":
+  def angle_query(*, thrift: Tuple[()], hack: Tuple[()]) -> "ThriftToHack":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftEnumerationType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.EnumerationType.7 { { } }", EnumerationType
+    return f"thrift.EnumerationType.7 {{ name = _, value = _ }}", EnumerationType
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftEnumerationType":
+  def angle_query(*, name: Tuple[()], value: Tuple[()]) -> "ThriftEnumerationType":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftFileOutput(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.FileOutput.7 { { } }", FileOutput
+    return f"thrift.FileOutput.7 {{ output = _, origin = _ }}", FileOutput
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftFileOutput":
+  def angle_query(*, output: Tuple[()], origin: Tuple[()]) -> "ThriftFileOutput":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftServiceParent(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.ServiceParent.7 { { } }", ServiceParent
+    return f"thrift.ServiceParent.7 {{ child = _, parent = _ }}", ServiceParent
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftServiceParent":
+  def angle_query(*, child: Tuple[()], parent: Tuple[()]) -> "ThriftServiceParent":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftMangleLang(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.MangleLang.7 { json.dumps(key) }", MangleLang
+    return f"thrift.MangleLang.7 {json.dumps(key)}", MangleLang
 
   @staticmethod
-  def angle_query(*, name: str) -> "ThriftMangleLang":
+  def angle_query(*, arg: str) -> "ThriftMangleLang":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftExceptionName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.ExceptionName.7 { { } }", ExceptionName
+    return f"thrift.ExceptionName.7 {{ name = _, locName = _ }}", ExceptionName
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftExceptionName":
+  def angle_query(*, name: Tuple[()], locName: Tuple[()]) -> "ThriftExceptionName":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftEnumVal(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.EnumVal.7 { { } }", EnumVal
+    return f"thrift.EnumVal.7 {{ name = _, loc = _ }}", EnumVal
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftEnumVal":
+  def angle_query(*, name: Tuple[()], loc: Tuple[()]) -> "ThriftEnumVal":
     raise Exception("this function can only be called from @angle_query")
 
 class ThriftUnionVal(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"thrift.UnionVal.7 { { } }", UnionVal
+    return f"thrift.UnionVal.7 {{ field = _ }}", UnionVal
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "ThriftUnionVal":
+  def angle_query(*, field: Tuple[()]) -> "ThriftUnionVal":
     raise Exception("this function can only be called from @angle_query")
 
 

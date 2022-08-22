@@ -15,19 +15,19 @@ from glean.schema.buckuses.types import (
 class BuckusesUsesOfTargetHeader(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"buckuses.UsesOfTargetHeader.4 { { } }", UsesOfTargetHeader
+    return f"buckuses.UsesOfTargetHeader.4 {{ locator = _, exportedHeader = _ }}", UsesOfTargetHeader
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "BuckusesUsesOfTargetHeader":
+  def angle_query(*, locator: Tuple[()], exportedHeader: Tuple[()]) -> "BuckusesUsesOfTargetHeader":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckusesUsesOfTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"buckuses.UsesOfTarget.4 { { } }", UsesOfTarget
+    return f"buckuses.UsesOfTarget.4 {{ locator = _, use_xref = _, use_file = _ }}", UsesOfTarget
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "BuckusesUsesOfTarget":
+  def angle_query(*, locator: Tuple[()], use_xref: Tuple[()], use_file: Tuple[()]) -> "BuckusesUsesOfTarget":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -16,28 +16,28 @@ from glean.schema.codemarkupthrift.types import (
 class CodemarkupThriftThriftFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"codemarkup.thrift.ThriftFileEntityXRefLocations.4 { { } }", ThriftThriftFileEntityXRefLocations
+    return f"codemarkup.thrift.ThriftFileEntityXRefLocations.4 {{ file = _, xref = _, entity = _ }}", ThriftThriftFileEntityXRefLocations
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "CodemarkupThriftThriftFileEntityXRefLocations":
+  def angle_query(*, file: Tuple[()], xref: Tuple[()], entity: Tuple[()]) -> "CodemarkupThriftThriftFileEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupThriftThriftResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"codemarkup.thrift.ThriftResolveLocation.4 { { } }", ThriftThriftResolveLocation
+    return f"codemarkup.thrift.ThriftResolveLocation.4 {{ location = _, entity = _ }}", ThriftThriftResolveLocation
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "CodemarkupThriftThriftResolveLocation":
+  def angle_query(*, location: Tuple[()], entity: Tuple[()]) -> "CodemarkupThriftThriftResolveLocation":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupThriftThriftEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"codemarkup.thrift.ThriftEntityLocation.4 { { } }", ThriftThriftEntityLocation
+    return f"codemarkup.thrift.ThriftEntityLocation.4 {{ entity = _, location = _ }}", ThriftThriftEntityLocation
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "CodemarkupThriftThriftEntityLocation":
+  def angle_query(*, entity: Tuple[()], location: Tuple[()]) -> "CodemarkupThriftThriftEntityLocation":
     raise Exception("this function can only be called from @angle_query")
 
 

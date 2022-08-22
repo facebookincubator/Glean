@@ -17,37 +17,37 @@ from glean.schema.codemarkupbuck.types import (
 class CodemarkupBuckBuckEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"codemarkup.buck.BuckEntityLocation.2 { { } }", BuckBuckEntityLocation
+    return f"codemarkup.buck.BuckEntityLocation.2 {{ entity = _, location = _ }}", BuckBuckEntityLocation
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "CodemarkupBuckBuckEntityLocation":
+  def angle_query(*, entity: Tuple[()], location: Tuple[()]) -> "CodemarkupBuckBuckEntityLocation":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupBuckBuckResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"codemarkup.buck.BuckResolveLocation.2 { { } }", BuckBuckResolveLocation
+    return f"codemarkup.buck.BuckResolveLocation.2 {{ location = _, entity = _ }}", BuckBuckResolveLocation
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "CodemarkupBuckBuckResolveLocation":
+  def angle_query(*, location: Tuple[()], entity: Tuple[()]) -> "CodemarkupBuckBuckResolveLocation":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupBuckBuckFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"codemarkup.buck.BuckFileEntityXRefLocations.2 { { } }", BuckBuckFileEntityXRefLocations
+    return f"codemarkup.buck.BuckFileEntityXRefLocations.2 {{ file = _, xref = _, entity = _ }}", BuckBuckFileEntityXRefLocations
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "CodemarkupBuckBuckFileEntityXRefLocations":
+  def angle_query(*, file: Tuple[()], xref: Tuple[()], entity: Tuple[()]) -> "CodemarkupBuckBuckFileEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupBuckBuckEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"codemarkup.buck.BuckEntityUses.2 { { } }", BuckBuckEntityUses
+    return f"codemarkup.buck.BuckEntityUses.2 {{ target = _, file = _, span = _ }}", BuckBuckEntityUses
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "CodemarkupBuckBuckEntityUses":
+  def angle_query(*, target: Tuple[()], file: Tuple[()], span: Tuple[()]) -> "CodemarkupBuckBuckEntityUses":
     raise Exception("this function can only be called from @angle_query")
 
 

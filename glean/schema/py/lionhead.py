@@ -15,19 +15,19 @@ from glean.schema.lionhead.types import (
 class LionheadCoveredHarness(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"lionhead.CoveredHarness.1 { { } }", CoveredHarness
+    return f"lionhead.CoveredHarness.1 {{ harnessId = _, root = _ }}", CoveredHarness
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "LionheadCoveredHarness":
+  def angle_query(*, harnessId: Tuple[()], root: Tuple[()]) -> "LionheadCoveredHarness":
     raise Exception("this function can only be called from @angle_query")
 
 class LionheadFbId(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"lionhead.FbId.1 { json.dumps(key) }", FbId
+    return f"lionhead.FbId.1 {json.dumps(key)}", FbId
 
   @staticmethod
-  def angle_query(*, name: int) -> "LionheadFbId":
+  def angle_query(*, arg: int) -> "LionheadFbId":
     raise Exception("this function can only be called from @angle_query")
 
 

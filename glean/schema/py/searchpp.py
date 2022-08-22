@@ -15,19 +15,19 @@ from glean.schema.searchpp.types import (
 class SearchPpSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"search.pp.SearchByName.2 { { } }", PpSearchByName
+    return f"search.pp.SearchByName.2 {{ macro = _, entity = _ }}", PpSearchByName
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "SearchPpSearchByName":
+  def angle_query(*, macro: Tuple[()], entity: Tuple[()]) -> "SearchPpSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
 class SearchPpSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"search.pp.SearchByName.1 { { } }", PpSearchByName
+    return f"search.pp.SearchByName.1 {{ name = _, entity = _ }}", PpSearchByName
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "SearchPpSearchByName":
+  def angle_query(*, name: str, entity: Tuple[()]) -> "SearchPpSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
 

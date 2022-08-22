@@ -15,19 +15,19 @@ from glean.schema.lionheadlionizer.types import (
 class LionheadLionizerFindFunction(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"lionhead.lionizer.FindFunction.11 { { } }", LionizerFindFunction
+    return f"lionhead.lionizer.FindFunction.11 {{ key = _, value = _, declaration = _ }}", LionizerFindFunction
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "LionheadLionizerFindFunction":
+  def angle_query(*, key: Tuple[()], value: Tuple[()], declaration: Tuple[()]) -> "LionheadLionizerFindFunction":
     raise Exception("this function can only be called from @angle_query")
 
 class LionheadLionizerFindFunctionWithDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"lionhead.lionizer.FindFunctionWithDef.11 { { } }", LionizerFindFunctionWithDef
+    return f"lionhead.lionizer.FindFunctionWithDef.11 {{ key = _, value = _, declaration = _, definition = _ }}", LionizerFindFunctionWithDef
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "LionheadLionizerFindFunctionWithDef":
+  def angle_query(*, key: Tuple[()], value: Tuple[()], declaration: Tuple[()], definition: Tuple[()]) -> "LionheadLionizerFindFunctionWithDef":
     raise Exception("this function can only be called from @angle_query")
 
 

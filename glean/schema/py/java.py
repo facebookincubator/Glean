@@ -38,226 +38,226 @@ from glean.schema.java.types import (
 class JavaName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.Name.6 { json.dumps(key) }", Name
+    return f"java.Name.6 {json.dumps(key)}", Name
 
   @staticmethod
-  def angle_query(*, name: str) -> "JavaName":
+  def angle_query(*, arg: str) -> "JavaName":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaClassDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.ClassDeclaration.6 { { } }", ClassDeclaration
+    return f"java.ClassDeclaration.6 {{ name = _, modifiers = _, extends_ = _, implements_ = _, annotations = _, variables = _, constructors = _, methods = _, typeParams = _, loc = _, innerDefinitions = _, location = _ }}", ClassDeclaration
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaClassDeclaration":
+  def angle_query(*, name: Tuple[()], modifiers: Tuple[()], extends_: Tuple[()], implements_: Tuple[()], annotations: Tuple[()], variables: Tuple[()], constructors: Tuple[()], methods: Tuple[()], typeParams: Tuple[()], loc: Tuple[()], innerDefinitions: Tuple[()], location: Tuple[()]) -> "JavaClassDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaPath(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.Path.6 { { } }", Path
+    return f"java.Path.6 {{ base = _, container = _ }}", Path
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaPath":
+  def angle_query(*, base: Tuple[()], container: Tuple[()]) -> "JavaPath":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaInterfaceDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.InterfaceDeclaration.6 { { } }", InterfaceDeclaration
+    return f"java.InterfaceDeclaration.6 {{ name = _, annotations = _, modifiers = _, extends_ = _, methods = _, typeParams = _, loc = _, variables = _, innerDefinitions = _, location = _ }}", InterfaceDeclaration
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaInterfaceDeclaration":
+  def angle_query(*, name: Tuple[()], annotations: Tuple[()], modifiers: Tuple[()], extends_: Tuple[()], methods: Tuple[()], typeParams: Tuple[()], loc: Tuple[()], variables: Tuple[()], innerDefinitions: Tuple[()], location: Tuple[()]) -> "JavaInterfaceDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaImportDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.ImportDeclaration.6 { { } }", ImportDeclaration
+    return f"java.ImportDeclaration.6 {{ name = _, import_on_demand = _, static_member = _, loc = _, path = _, location = _ }}", ImportDeclaration
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaImportDeclaration":
+  def angle_query(*, name: str, import_on_demand: bool, static_member: Tuple[()], loc: Tuple[()], path: Tuple[()], location: Tuple[()]) -> "JavaImportDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaEnumDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.EnumDeclaration.6 { { } }", EnumDeclaration
+    return f"java.EnumDeclaration.6 {{ name = _, annotations = _, modifiers = _, implements_ = _, variables = _, methods = _, loc = _, innerDefinitions = _, location = _ }}", EnumDeclaration
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaEnumDeclaration":
+  def angle_query(*, name: Tuple[()], annotations: Tuple[()], modifiers: Tuple[()], implements_: Tuple[()], variables: Tuple[()], methods: Tuple[()], loc: Tuple[()], innerDefinitions: Tuple[()], location: Tuple[()]) -> "JavaEnumDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaPackageDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.PackageDeclaration.6 { { } }", PackageDeclaration
+    return f"java.PackageDeclaration.6 {{ name = _, annotation = _, loc = _, path = _, location = _ }}", PackageDeclaration
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaPackageDeclaration":
+  def angle_query(*, name: str, annotation: Tuple[()], loc: Tuple[()], path: Tuple[()], location: Tuple[()]) -> "JavaPackageDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaArrayType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.ArrayType.6 { { } }", ArrayType
+    return f"java.ArrayType.6 {{ contents = _, location = _ }}", ArrayType
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaArrayType":
+  def angle_query(*, contents: Tuple[()], location: Tuple[()]) -> "JavaArrayType":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaAnnotatedClass(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.AnnotatedClass.6 { { } }", AnnotatedClass
+    return f"java.AnnotatedClass.6 {{ annotation = _, class_ = _ }}", AnnotatedClass
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaAnnotatedClass":
+  def angle_query(*, annotation: Tuple[()], class_: Tuple[()]) -> "JavaAnnotatedClass":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaTypeParam(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.TypeParam.6 { { } }", TypeParam
+    return f"java.TypeParam.6 {{ name = _, extends_ = _, location = _ }}", TypeParam
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaTypeParam":
+  def angle_query(*, name: str, extends_: Tuple[()], location: Tuple[()]) -> "JavaTypeParam":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaAnnotation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.Annotation.6 { { } }", Annotation
+    return f"java.Annotation.6 {{ name = _, location = _ }}", Annotation
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaAnnotation":
+  def angle_query(*, name: Tuple[()], location: Tuple[()]) -> "JavaAnnotation":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaXRefFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.XRefFile.6 { { } }", XRefFile
+    return f"java.XRefFile.6 {{ xref = _, file = _ }}", XRefFile
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaXRefFile":
+  def angle_query(*, xref: Tuple[()], file: Tuple[()]) -> "JavaXRefFile":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaMethodDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.MethodDeclaration.6 { { } }", MethodDeclaration
+    return f"java.MethodDeclaration.6 {{ name = _, parameters = _, returnType = _, annotations = _, modifiers = _, typeParams = _, loc = _, throws_ = _, location = _ }}", MethodDeclaration
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaMethodDeclaration":
+  def angle_query(*, name: Tuple[()], parameters: Tuple[()], returnType: Tuple[()], annotations: Tuple[()], modifiers: Tuple[()], typeParams: Tuple[()], loc: Tuple[()], throws_: Tuple[()], location: Tuple[()]) -> "JavaMethodDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaQName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.QName.6 { { } }", QName
+    return f"java.QName.6 {{ name = _, fqn = _, signature = _, simple = _, path = _ }}", QName
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaQName":
+  def angle_query(*, name: str, fqn: Tuple[()], signature: Tuple[()], simple: Tuple[()], path: Tuple[()]) -> "JavaQName":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaVariableDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.VariableDeclaration.6 { { } }", VariableDeclaration
+    return f"java.VariableDeclaration.6 {{ name = _, type = _, annotations = _, modifiers = _, loc = _, location = _ }}", VariableDeclaration
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaVariableDeclaration":
+  def angle_query(*, name: Tuple[()], type: Tuple[()], annotations: Tuple[()], modifiers: Tuple[()], loc: Tuple[()], location: Tuple[()]) -> "JavaVariableDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaTypeVar(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.TypeVar.6 { { } }", TypeVar
+    return f"java.TypeVar.6 {{ type = _, location = _ }}", TypeVar
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaTypeVar":
+  def angle_query(*, type: str, location: Tuple[()]) -> "JavaTypeVar":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaDeclaredType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.DeclaredType.6 { { } }", DeclaredType
+    return f"java.DeclaredType.6 {{ type = _, location = _ }}", DeclaredType
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaDeclaredType":
+  def angle_query(*, type: Tuple[()], location: Tuple[()]) -> "JavaDeclaredType":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaTypeArg(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.TypeArg.6 { json.dumps(key) }", TypeArg
+    return f"java.TypeArg.6 {json.dumps(key)}", TypeArg
 
   @staticmethod
-  def angle_query(*, name: str) -> "JavaTypeArg":
+  def angle_query(*, arg: Tuple[()]) -> "JavaTypeArg":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaFileXRefs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.FileXRefs.6 { { } }", FileXRefs
+    return f"java.FileXRefs.6 {{ file = _, xrefs = _ }}", FileXRefs
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaFileXRefs":
+  def angle_query(*, file: Tuple[()], xrefs: Tuple[()]) -> "JavaFileXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaInheritance(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.Inheritance.6 { { } }", Inheritance
+    return f"java.Inheritance.6 {{ base = _, subclass = _ }}", Inheritance
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaInheritance":
+  def angle_query(*, base: Tuple[()], subclass: Tuple[()]) -> "JavaInheritance":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaJavaFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.JavaFile.6 { { } }", JavaFile
+    return f"java.JavaFile.6 {{ package_ = _, import_ = _, definition = _, file = _ }}", JavaFile
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaJavaFile":
+  def angle_query(*, package_: Tuple[()], import_: Tuple[()], definition: Tuple[()], file: Tuple[()]) -> "JavaJavaFile":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaPrimitiveType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.PrimitiveType.6 { { } }", PrimitiveType
+    return f"java.PrimitiveType.6 {{ type = _ }}", PrimitiveType
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaPrimitiveType":
+  def angle_query(*, type: str) -> "JavaPrimitiveType":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaXRef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.XRef.6 { { } }", XRef
+    return f"java.XRef.6 {{ target = _, ranges = _, xtarget = _ }}", XRef
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaXRef":
+  def angle_query(*, target: Tuple[()], ranges: Tuple[()], xtarget: Tuple[()]) -> "JavaXRef":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaConstructorDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.ConstructorDeclaration.6 { { } }", ConstructorDeclaration
+    return f"java.ConstructorDeclaration.6 {{ name = _, parameters = _, annotations = _, modifiers = _, typeParams = _, loc = _, throws_ = _, location = _ }}", ConstructorDeclaration
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaConstructorDeclaration":
+  def angle_query(*, name: Tuple[()], parameters: Tuple[()], annotations: Tuple[()], modifiers: Tuple[()], typeParams: Tuple[()], loc: Tuple[()], throws_: Tuple[()], location: Tuple[()]) -> "JavaConstructorDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 class JavaType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
-    return f"java.Type.6 { { } }", Type
+    return f"java.Type.6 {{ type = _, typeArgs = _, stype = _ }}", Type
 
   @staticmethod
-  def angle_query(*, name: Tuple[()]) -> "JavaType":
+  def angle_query(*, type: str, typeArgs: Tuple[()], stype: Tuple[()]) -> "JavaType":
     raise Exception("this function can only be called from @angle_query")
 
 
