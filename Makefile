@@ -60,6 +60,9 @@ EXTRA_GHC_OPTS ?=
 CABAL = $(CABAL_BIN) --jobs --ghc-options='$(EXTRA_GHC_OPTS)' \
             -vnormal+nowrap --project-file=$(PWD)/cabal.project
 
+# Allow developers to locally override things
+-include settings.mk
+
 BUILD_DIR = .build
 CODEGEN_DIR = $(BUILD_DIR)/def/codegen
 CXX_DIR = $(BUILD_DIR)/def/cxx
