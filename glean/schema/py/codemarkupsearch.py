@@ -1,6 +1,6 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Type, Union, TypeVar
+from typing import Optional, Tuple, Union
 import json
 from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
@@ -22,7 +22,7 @@ class CodemarkupSearchSearchByNameAndKind(GleanSchemaPredicate):
     return f"codemarkup.search.SearchByNameAndKind.1 {{ searchcase = _, name = _, entity = _, location = _, kind = _ }}", SearchSearchByNameAndKind
 
   @staticmethod
-  def angle_query(*, searchcase: Tuple[()], name: str, entity: Tuple[()], location: Tuple[()], kind: Tuple[()]) -> "CodemarkupSearchSearchByNameAndKind":
+  def angle_query(*, searchcase: Optional[Tuple[()]] = None, name: Optional[str] = None, entity: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None) -> "CodemarkupSearchSearchByNameAndKind":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupSearchSearchEntityByName(GleanSchemaPredicate):
@@ -31,7 +31,7 @@ class CodemarkupSearchSearchEntityByName(GleanSchemaPredicate):
     return f"codemarkup.search.SearchEntityByName.1 {{ name = _, entity = _, location = _, kind = _ }}", SearchSearchEntityByName
 
   @staticmethod
-  def angle_query(*, name: str, entity: Tuple[()], location: Tuple[()], kind: Tuple[()]) -> "CodemarkupSearchSearchEntityByName":
+  def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None) -> "CodemarkupSearchSearchEntityByName":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupSearchSearchEntityByLowerCaseName(GleanSchemaPredicate):
@@ -40,7 +40,7 @@ class CodemarkupSearchSearchEntityByLowerCaseName(GleanSchemaPredicate):
     return f"codemarkup.search.SearchEntityByLowerCaseName.1 {{ name = _, entity = _, location = _, kind = _ }}", SearchSearchEntityByLowerCaseName
 
   @staticmethod
-  def angle_query(*, name: str, entity: Tuple[()], location: Tuple[()], kind: Tuple[()]) -> "CodemarkupSearchSearchEntityByLowerCaseName":
+  def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None) -> "CodemarkupSearchSearchEntityByLowerCaseName":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupSearchSearchByName(GleanSchemaPredicate):
@@ -49,7 +49,7 @@ class CodemarkupSearchSearchByName(GleanSchemaPredicate):
     return f"codemarkup.search.SearchByName.1 {{ searchcase = _, name = _, entity = _, location = _, kind = _, language = _ }}", SearchSearchByName
 
   @staticmethod
-  def angle_query(*, searchcase: Tuple[()], name: str, entity: Tuple[()], location: Tuple[()], kind: Tuple[()], language: Tuple[()]) -> "CodemarkupSearchSearchByName":
+  def angle_query(*, searchcase: Optional[Tuple[()]] = None, name: Optional[str] = None, entity: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None, language: Optional[Tuple[()]] = None) -> "CodemarkupSearchSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupSearchEntityLocationAndKind(GleanSchemaPredicate):
@@ -58,7 +58,7 @@ class CodemarkupSearchEntityLocationAndKind(GleanSchemaPredicate):
     return f"codemarkup.search.EntityLocationAndKind.1 {{ entity = _, location = _, kind = _ }}", SearchEntityLocationAndKind
 
   @staticmethod
-  def angle_query(*, entity: Tuple[()], location: Tuple[()], kind: Tuple[()]) -> "CodemarkupSearchEntityLocationAndKind":
+  def angle_query(*, entity: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None) -> "CodemarkupSearchEntityLocationAndKind":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupSearchSearchByScope(GleanSchemaPredicate):
@@ -67,7 +67,7 @@ class CodemarkupSearchSearchByScope(GleanSchemaPredicate):
     return f"codemarkup.search.SearchByScope.1 {{ searchcase = _, name = _, scope = _, entity = _, location = _, kind = _, language = _ }}", SearchSearchByScope
 
   @staticmethod
-  def angle_query(*, searchcase: Tuple[()], name: str, scope: Tuple[()], entity: Tuple[()], location: Tuple[()], kind: Tuple[()], language: Tuple[()]) -> "CodemarkupSearchSearchByScope":
+  def angle_query(*, searchcase: Optional[Tuple[()]] = None, name: Optional[str] = None, scope: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None, language: Optional[Tuple[()]] = None) -> "CodemarkupSearchSearchByScope":
     raise Exception("this function can only be called from @angle_query")
 
 

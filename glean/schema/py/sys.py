@@ -1,6 +1,6 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Type, Union, TypeVar
+from typing import Optional, Tuple, Union
 import json
 from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
@@ -17,7 +17,7 @@ class SysBlob(GleanSchemaPredicate):
     return f"sys.Blob.1 {json.dumps(key)}", Blob
 
   @staticmethod
-  def angle_query(*, arg: Tuple[()]) -> "SysBlob":
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "SysBlob":
     raise Exception("this function can only be called from @angle_query")
 
 

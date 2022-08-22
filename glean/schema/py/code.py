@@ -1,6 +1,6 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Type, Union, TypeVar
+from typing import Optional, Tuple, Union
 import json
 from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
@@ -18,7 +18,7 @@ class CodeEntityLanguageLSIF(GleanSchemaPredicate):
     return f"code.EntityLanguageLSIF.24 {{ entity = _, language = _ }}", EntityLanguageLSIF
 
   @staticmethod
-  def angle_query(*, entity: Tuple[()], language: Tuple[()]) -> "CodeEntityLanguageLSIF":
+  def angle_query(*, entity: Optional[Tuple[()]] = None, language: Optional[Tuple[()]] = None) -> "CodeEntityLanguageLSIF":
     raise Exception("this function can only be called from @angle_query")
 
 class CodeEntityLanguage(GleanSchemaPredicate):
@@ -27,7 +27,7 @@ class CodeEntityLanguage(GleanSchemaPredicate):
     return f"code.EntityLanguage.24 {{ entity = _, language = _ }}", EntityLanguage
 
   @staticmethod
-  def angle_query(*, entity: Tuple[()], language: Tuple[()]) -> "CodeEntityLanguage":
+  def angle_query(*, entity: Optional[Tuple[()]] = None, language: Optional[Tuple[()]] = None) -> "CodeEntityLanguage":
     raise Exception("this function can only be called from @angle_query")
 
 

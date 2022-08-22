@@ -1,6 +1,6 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Type, Union, TypeVar
+from typing import Optional, Tuple, Union
 import json
 from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
@@ -17,7 +17,7 @@ class CodeCxxDeclToDef(GleanSchemaPredicate):
     return f"code.cxx.DeclToDef.4 {{ decl = _, defn = _ }}", CxxDeclToDef
 
   @staticmethod
-  def angle_query(*, decl: Tuple[()], defn: Tuple[()]) -> "CodeCxxDeclToDef":
+  def angle_query(*, decl: Optional[Tuple[()]] = None, defn: Optional[Tuple[()]] = None) -> "CodeCxxDeclToDef":
     raise Exception("this function can only be called from @angle_query")
 
 

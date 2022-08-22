@@ -1,6 +1,6 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Type, Union, TypeVar
+from typing import Optional, Tuple, Union
 import json
 from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
@@ -36,7 +36,7 @@ class CodemarkupFileEntityKinds(GleanSchemaPredicate):
     return f"codemarkup.FileEntityKinds.30 {{ file = _, entity = _, kind = _ }}", FileEntityKinds
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], entity: Tuple[()], kind: Tuple[()]) -> "CodemarkupFileEntityKinds":
+  def angle_query(*, file: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None) -> "CodemarkupFileEntityKinds":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupFileEntityXRefKinds(GleanSchemaPredicate):
@@ -45,7 +45,7 @@ class CodemarkupFileEntityXRefKinds(GleanSchemaPredicate):
     return f"codemarkup.FileEntityXRefKinds.30 {{ file = _, entity = _, kind = _ }}", FileEntityXRefKinds
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], entity: Tuple[()], kind: Tuple[()]) -> "CodemarkupFileEntityXRefKinds":
+  def angle_query(*, file: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None) -> "CodemarkupFileEntityXRefKinds":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupEntityAnnotations(GleanSchemaPredicate):
@@ -54,7 +54,7 @@ class CodemarkupEntityAnnotations(GleanSchemaPredicate):
     return f"codemarkup.EntityAnnotations.30 {json.dumps(key)}", EntityAnnotations
 
   @staticmethod
-  def angle_query(*, arg: Tuple[()]) -> "CodemarkupEntityAnnotations":
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "CodemarkupEntityAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupSearchRelatedEntities(GleanSchemaPredicate):
@@ -63,7 +63,7 @@ class CodemarkupSearchRelatedEntities(GleanSchemaPredicate):
     return f"codemarkup.SearchRelatedEntities.30 {{ query = _, parent = _, child = _ }}", SearchRelatedEntities
 
   @staticmethod
-  def angle_query(*, query: Tuple[()], parent: Tuple[()], child: Tuple[()]) -> "CodemarkupSearchRelatedEntities":
+  def angle_query(*, query: Optional[Tuple[()]] = None, parent: Optional[Tuple[()]] = None, child: Optional[Tuple[()]] = None) -> "CodemarkupSearchRelatedEntities":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupEntityVisibility(GleanSchemaPredicate):
@@ -72,7 +72,7 @@ class CodemarkupEntityVisibility(GleanSchemaPredicate):
     return f"codemarkup.EntityVisibility.30 {json.dumps(key)}", EntityVisibility
 
   @staticmethod
-  def angle_query(*, arg: Tuple[()]) -> "CodemarkupEntityVisibility":
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "CodemarkupEntityVisibility":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupFileEntityInfos(GleanSchemaPredicate):
@@ -81,7 +81,7 @@ class CodemarkupFileEntityInfos(GleanSchemaPredicate):
     return f"codemarkup.FileEntityInfos.30 {{ file = _, entity = _, info = _ }}", FileEntityInfos
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], entity: Tuple[()], info: Tuple[()]) -> "CodemarkupFileEntityInfos":
+  def angle_query(*, file: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None, info: Optional[Tuple[()]] = None) -> "CodemarkupFileEntityInfos":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupFileEntityXRefInfos(GleanSchemaPredicate):
@@ -90,7 +90,7 @@ class CodemarkupFileEntityXRefInfos(GleanSchemaPredicate):
     return f"codemarkup.FileEntityXRefInfos.30 {{ file = _, entity = _, info = _ }}", FileEntityXRefInfos
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], entity: Tuple[()], info: Tuple[()]) -> "CodemarkupFileEntityXRefInfos":
+  def angle_query(*, file: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None, info: Optional[Tuple[()]] = None) -> "CodemarkupFileEntityXRefInfos":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupEntityLocation(GleanSchemaPredicate):
@@ -99,7 +99,7 @@ class CodemarkupEntityLocation(GleanSchemaPredicate):
     return f"codemarkup.EntityLocation.30 {{ entity = _, location = _ }}", EntityLocation
 
   @staticmethod
-  def angle_query(*, entity: Tuple[()], location: Tuple[()]) -> "CodemarkupEntityLocation":
+  def angle_query(*, entity: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "CodemarkupEntityLocation":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupExtendsChildEntity(GleanSchemaPredicate):
@@ -108,7 +108,7 @@ class CodemarkupExtendsChildEntity(GleanSchemaPredicate):
     return f"codemarkup.ExtendsChildEntity.30 {{ parent = _, child = _ }}", ExtendsChildEntity
 
   @staticmethod
-  def angle_query(*, parent: Tuple[()], child: Tuple[()]) -> "CodemarkupExtendsChildEntity":
+  def angle_query(*, parent: Optional[Tuple[()]] = None, child: Optional[Tuple[()]] = None) -> "CodemarkupExtendsChildEntity":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupEntityToAnnotations(GleanSchemaPredicate):
@@ -117,7 +117,7 @@ class CodemarkupEntityToAnnotations(GleanSchemaPredicate):
     return f"codemarkup.EntityToAnnotations.30 {{ entity = _, annotations = _ }}", EntityToAnnotations
 
   @staticmethod
-  def angle_query(*, entity: Tuple[()], annotations: Tuple[()]) -> "CodemarkupEntityToAnnotations":
+  def angle_query(*, entity: Optional[Tuple[()]] = None, annotations: Optional[Tuple[()]] = None) -> "CodemarkupEntityToAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupEntityInfo(GleanSchemaPredicate):
@@ -126,7 +126,7 @@ class CodemarkupEntityInfo(GleanSchemaPredicate):
     return f"codemarkup.EntityInfo.30 {{ entity = _, info = _ }}", EntityInfo
 
   @staticmethod
-  def angle_query(*, entity: Tuple[()], info: Tuple[()]) -> "CodemarkupEntityInfo":
+  def angle_query(*, entity: Optional[Tuple[()]] = None, info: Optional[Tuple[()]] = None) -> "CodemarkupEntityInfo":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupExtendsParentEntity(GleanSchemaPredicate):
@@ -135,7 +135,7 @@ class CodemarkupExtendsParentEntity(GleanSchemaPredicate):
     return f"codemarkup.ExtendsParentEntity.30 {{ child = _, parent = _ }}", ExtendsParentEntity
 
   @staticmethod
-  def angle_query(*, child: Tuple[()], parent: Tuple[()]) -> "CodemarkupExtendsParentEntity":
+  def angle_query(*, child: Optional[Tuple[()]] = None, parent: Optional[Tuple[()]] = None) -> "CodemarkupExtendsParentEntity":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupContainsChildEntity(GleanSchemaPredicate):
@@ -144,7 +144,7 @@ class CodemarkupContainsChildEntity(GleanSchemaPredicate):
     return f"codemarkup.ContainsChildEntity.30 {{ parent = _, child = _ }}", ContainsChildEntity
 
   @staticmethod
-  def angle_query(*, parent: Tuple[()], child: Tuple[()]) -> "CodemarkupContainsChildEntity":
+  def angle_query(*, parent: Optional[Tuple[()]] = None, child: Optional[Tuple[()]] = None) -> "CodemarkupContainsChildEntity":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupFileEntityXRefLocations(GleanSchemaPredicate):
@@ -153,7 +153,7 @@ class CodemarkupFileEntityXRefLocations(GleanSchemaPredicate):
     return f"codemarkup.FileEntityXRefLocations.30 {{ file = _, xref = _, entity = _ }}", FileEntityXRefLocations
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], xref: Tuple[()], entity: Tuple[()]) -> "CodemarkupFileEntityXRefLocations":
+  def angle_query(*, file: Optional[Tuple[()]] = None, xref: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupFileEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupFileEntityXRefSpans(GleanSchemaPredicate):
@@ -162,7 +162,7 @@ class CodemarkupFileEntityXRefSpans(GleanSchemaPredicate):
     return f"codemarkup.FileEntityXRefSpans.30 {{ file = _, span = _, entity = _ }}", FileEntityXRefSpans
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], span: Tuple[()], entity: Tuple[()]) -> "CodemarkupFileEntityXRefSpans":
+  def angle_query(*, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupFileEntityXRefSpans":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupEntityUses(GleanSchemaPredicate):
@@ -171,7 +171,7 @@ class CodemarkupEntityUses(GleanSchemaPredicate):
     return f"codemarkup.EntityUses.30 {{ target = _, file = _, span = _ }}", EntityUses
 
   @staticmethod
-  def angle_query(*, target: Tuple[()], file: Tuple[()], span: Tuple[()]) -> "CodemarkupEntityUses":
+  def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "CodemarkupEntityUses":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupFileEntityLocations(GleanSchemaPredicate):
@@ -180,7 +180,7 @@ class CodemarkupFileEntityLocations(GleanSchemaPredicate):
     return f"codemarkup.FileEntityLocations.30 {{ file = _, location = _, entity = _ }}", FileEntityLocations
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], location: Tuple[()], entity: Tuple[()]) -> "CodemarkupFileEntityLocations":
+  def angle_query(*, file: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupFileEntityLocations":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupEntityReferences(GleanSchemaPredicate):
@@ -189,7 +189,7 @@ class CodemarkupEntityReferences(GleanSchemaPredicate):
     return f"codemarkup.EntityReferences.30 {{ target = _, file = _, range = _ }}", EntityReferences
 
   @staticmethod
-  def angle_query(*, target: Tuple[()], file: Tuple[()], range: Tuple[()]) -> "CodemarkupEntityReferences":
+  def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, range: Optional[Tuple[()]] = None) -> "CodemarkupEntityReferences":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupEntityKind(GleanSchemaPredicate):
@@ -198,7 +198,7 @@ class CodemarkupEntityKind(GleanSchemaPredicate):
     return f"codemarkup.EntityKind.30 {{ entity = _, kind = _ }}", EntityKind
 
   @staticmethod
-  def angle_query(*, entity: Tuple[()], kind: Tuple[()]) -> "CodemarkupEntityKind":
+  def angle_query(*, entity: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None) -> "CodemarkupEntityKind":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupResolveLocation(GleanSchemaPredicate):
@@ -207,7 +207,7 @@ class CodemarkupResolveLocation(GleanSchemaPredicate):
     return f"codemarkup.ResolveLocation.30 {{ location = _, entity = _ }}", ResolveLocation
 
   @staticmethod
-  def angle_query(*, location: Tuple[()], entity: Tuple[()]) -> "CodemarkupResolveLocation":
+  def angle_query(*, location: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupResolveLocation":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -1,6 +1,6 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Type, Union, TypeVar
+from typing import Optional, Tuple, Union
 import json
 from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
@@ -20,7 +20,7 @@ class CodemarkupHaskellHaskellEntityLocation(GleanSchemaPredicate):
     return f"codemarkup.haskell.HaskellEntityLocation.2 {{ entity = _, location = _ }}", HaskellHaskellEntityLocation
 
   @staticmethod
-  def angle_query(*, entity: Tuple[()], location: Tuple[()]) -> "CodemarkupHaskellHaskellEntityLocation":
+  def angle_query(*, entity: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "CodemarkupHaskellHaskellEntityLocation":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHaskellHaskellResolveLocation(GleanSchemaPredicate):
@@ -29,7 +29,7 @@ class CodemarkupHaskellHaskellResolveLocation(GleanSchemaPredicate):
     return f"codemarkup.haskell.HaskellResolveLocation.2 {{ location = _, entity = _ }}", HaskellHaskellResolveLocation
 
   @staticmethod
-  def angle_query(*, location: Tuple[()], entity: Tuple[()]) -> "CodemarkupHaskellHaskellResolveLocation":
+  def angle_query(*, location: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupHaskellHaskellResolveLocation":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHaskellHaskellFileEntityXRefLocations(GleanSchemaPredicate):
@@ -38,7 +38,7 @@ class CodemarkupHaskellHaskellFileEntityXRefLocations(GleanSchemaPredicate):
     return f"codemarkup.haskell.HaskellFileEntityXRefLocations.2 {{ file = _, xref = _, entity = _ }}", HaskellHaskellFileEntityXRefLocations
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], xref: Tuple[()], entity: Tuple[()]) -> "CodemarkupHaskellHaskellFileEntityXRefLocations":
+  def angle_query(*, file: Optional[Tuple[()]] = None, xref: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupHaskellHaskellFileEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHaskellHaskellEntityUses(GleanSchemaPredicate):
@@ -47,7 +47,7 @@ class CodemarkupHaskellHaskellEntityUses(GleanSchemaPredicate):
     return f"codemarkup.haskell.HaskellEntityUses.2 {{ target = _, file = _, span = _ }}", HaskellHaskellEntityUses
 
   @staticmethod
-  def angle_query(*, target: Tuple[()], file: Tuple[()], span: Tuple[()]) -> "CodemarkupHaskellHaskellEntityUses":
+  def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "CodemarkupHaskellHaskellEntityUses":
     raise Exception("this function can only be called from @angle_query")
 
 

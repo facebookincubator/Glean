@@ -1,6 +1,6 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Type, Union, TypeVar
+from typing import Optional, Tuple, Union
 import json
 from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
@@ -23,7 +23,7 @@ class SearchHackQueryToScope(GleanSchemaPredicate):
     return f"search.hack.QueryToScope.7 {{ query = _, scopeName = _, scopeNamespace = _ }}", HackQueryToScope
 
   @staticmethod
-  def angle_query(*, query: Tuple[()], scopeName: Tuple[()], scopeNamespace: Tuple[()]) -> "SearchHackQueryToScope":
+  def angle_query(*, query: Optional[Tuple[()]] = None, scopeName: Optional[Tuple[()]] = None, scopeNamespace: Optional[Tuple[()]] = None) -> "SearchHackQueryToScope":
     raise Exception("this function can only be called from @angle_query")
 
 class SearchHackSearchInEnum(GleanSchemaPredicate):
@@ -32,7 +32,7 @@ class SearchHackSearchInEnum(GleanSchemaPredicate):
     return f"search.hack.SearchInEnum.7 {{ name = _, enumName = _, enumNamespace = _, decl = _ }}", HackSearchInEnum
 
   @staticmethod
-  def angle_query(*, name: Tuple[()], enumName: Tuple[()], enumNamespace: Tuple[()], decl: Tuple[()]) -> "SearchHackSearchInEnum":
+  def angle_query(*, name: Optional[Tuple[()]] = None, enumName: Optional[Tuple[()]] = None, enumNamespace: Optional[Tuple[()]] = None, decl: Optional[Tuple[()]] = None) -> "SearchHackSearchInEnum":
     raise Exception("this function can only be called from @angle_query")
 
 class SearchHackSearchInContext(GleanSchemaPredicate):
@@ -41,7 +41,7 @@ class SearchHackSearchInContext(GleanSchemaPredicate):
     return f"search.hack.SearchInContext.7 {{ name = _, contextName = _, contextNamespace = _, decl = _ }}", HackSearchInContext
 
   @staticmethod
-  def angle_query(*, name: Tuple[()], contextName: Tuple[()], contextNamespace: Tuple[()], decl: Tuple[()]) -> "SearchHackSearchInContext":
+  def angle_query(*, name: Optional[Tuple[()]] = None, contextName: Optional[Tuple[()]] = None, contextNamespace: Optional[Tuple[()]] = None, decl: Optional[Tuple[()]] = None) -> "SearchHackSearchInContext":
     raise Exception("this function can only be called from @angle_query")
 
 class SearchHackSearchInNamespace(GleanSchemaPredicate):
@@ -50,7 +50,7 @@ class SearchHackSearchInNamespace(GleanSchemaPredicate):
     return f"search.hack.SearchInNamespace.7 {{ name = _, namespace_ = _, decl = _ }}", HackSearchInNamespace
 
   @staticmethod
-  def angle_query(*, name: Tuple[()], namespace_: Tuple[()], decl: Tuple[()]) -> "SearchHackSearchInNamespace":
+  def angle_query(*, name: Optional[Tuple[()]] = None, namespace_: Optional[Tuple[()]] = None, decl: Optional[Tuple[()]] = None) -> "SearchHackSearchInNamespace":
     raise Exception("this function can only be called from @angle_query")
 
 class SearchHackSearchByName(GleanSchemaPredicate):
@@ -59,7 +59,7 @@ class SearchHackSearchByName(GleanSchemaPredicate):
     return f"search.hack.SearchByName.7 {{ name = _, decl = _ }}", HackSearchByName
 
   @staticmethod
-  def angle_query(*, name: Tuple[()], decl: Tuple[()]) -> "SearchHackSearchByName":
+  def angle_query(*, name: Optional[Tuple[()]] = None, decl: Optional[Tuple[()]] = None) -> "SearchHackSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
 class SearchHackSearchInContainerOrEnum(GleanSchemaPredicate):
@@ -68,7 +68,7 @@ class SearchHackSearchInContainerOrEnum(GleanSchemaPredicate):
     return f"search.hack.SearchInContainerOrEnum.7 {{ name = _, contextName = _, contextNamespace = _, decl = _ }}", HackSearchInContainerOrEnum
 
   @staticmethod
-  def angle_query(*, name: Tuple[()], contextName: Tuple[()], contextNamespace: Tuple[()], decl: Tuple[()]) -> "SearchHackSearchInContainerOrEnum":
+  def angle_query(*, name: Optional[Tuple[()]] = None, contextName: Optional[Tuple[()]] = None, contextNamespace: Optional[Tuple[()]] = None, decl: Optional[Tuple[()]] = None) -> "SearchHackSearchInContainerOrEnum":
     raise Exception("this function can only be called from @angle_query")
 
 class SearchHackSearchInContainer(GleanSchemaPredicate):
@@ -77,7 +77,7 @@ class SearchHackSearchInContainer(GleanSchemaPredicate):
     return f"search.hack.SearchInContainer.7 {{ name = _, containerName = _, containerNamespace = _, decl = _ }}", HackSearchInContainer
 
   @staticmethod
-  def angle_query(*, name: Tuple[()], containerName: Tuple[()], containerNamespace: Tuple[()], decl: Tuple[()]) -> "SearchHackSearchInContainer":
+  def angle_query(*, name: Optional[Tuple[()]] = None, containerName: Optional[Tuple[()]] = None, containerNamespace: Optional[Tuple[()]] = None, decl: Optional[Tuple[()]] = None) -> "SearchHackSearchInContainer":
     raise Exception("this function can only be called from @angle_query")
 
 

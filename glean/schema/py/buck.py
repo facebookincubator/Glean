@@ -1,6 +1,6 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Type, Union, TypeVar
+from typing import Optional, Tuple, Union
 import json
 from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
@@ -60,7 +60,7 @@ class BuckTargetHash(GleanSchemaPredicate):
     return f"buck.TargetHash.1 {{ locator = _, targetHash = _ }}", TargetHash
 
   @staticmethod
-  def angle_query(*, locator: Tuple[()], targetHash: str) -> "BuckTargetHash":
+  def angle_query(*, locator: Optional[Tuple[()]] = None, targetHash: Optional[str] = None) -> "BuckTargetHash":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckTargetSourcesBaseModule(GleanSchemaPredicate):
@@ -69,7 +69,7 @@ class BuckTargetSourcesBaseModule(GleanSchemaPredicate):
     return f"buck.TargetSourcesBaseModule.3 {{ locator = _, srcs = _, baseModule = _ }}", TargetSourcesBaseModule
 
   @staticmethod
-  def angle_query(*, locator: Tuple[()], srcs: Tuple[()], baseModule: Tuple[()]) -> "BuckTargetSourcesBaseModule":
+  def angle_query(*, locator: Optional[Tuple[()]] = None, srcs: Optional[Tuple[()]] = None, baseModule: Optional[Tuple[()]] = None) -> "BuckTargetSourcesBaseModule":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckLocatorReverseDeps(GleanSchemaPredicate):
@@ -78,7 +78,7 @@ class BuckLocatorReverseDeps(GleanSchemaPredicate):
     return f"buck.LocatorReverseDeps.1 {{ locator = _, rdeps = _ }}", LocatorReverseDeps
 
   @staticmethod
-  def angle_query(*, locator: Tuple[()], rdeps: Tuple[()]) -> "BuckLocatorReverseDeps":
+  def angle_query(*, locator: Optional[Tuple[()]] = None, rdeps: Optional[Tuple[()]] = None) -> "BuckLocatorReverseDeps":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckType(GleanSchemaPredicate):
@@ -87,7 +87,7 @@ class BuckType(GleanSchemaPredicate):
     return f"buck.Type.1 {json.dumps(key)}", Type
 
   @staticmethod
-  def angle_query(*, arg: str) -> "BuckType":
+  def angle_query(*, arg: Optional[str] = None) -> "BuckType":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckTargetDependencies(GleanSchemaPredicate):
@@ -96,7 +96,7 @@ class BuckTargetDependencies(GleanSchemaPredicate):
     return f"buck.TargetDependencies.1 {{ target = _, dependencies = _ }}", TargetDependencies
 
   @staticmethod
-  def angle_query(*, target: Tuple[()], dependencies: Tuple[()]) -> "BuckTargetDependencies":
+  def angle_query(*, target: Optional[Tuple[()]] = None, dependencies: Optional[Tuple[()]] = None) -> "BuckTargetDependencies":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckLocator(GleanSchemaPredicate):
@@ -105,7 +105,7 @@ class BuckLocator(GleanSchemaPredicate):
     return f"buck.Locator.1 {{ subdir = _, path = _, name = _ }}", Locator
 
   @staticmethod
-  def angle_query(*, subdir: Tuple[()], path: str, name: str) -> "BuckLocator":
+  def angle_query(*, subdir: Optional[Tuple[()]] = None, path: Optional[str] = None, name: Optional[str] = None) -> "BuckLocator":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckTargetSources(GleanSchemaPredicate):
@@ -114,7 +114,7 @@ class BuckTargetSources(GleanSchemaPredicate):
     return f"buck.TargetSources.1 {{ target = _, headers = _, exportedHeaders = _, srcs = _ }}", TargetSources
 
   @staticmethod
-  def angle_query(*, target: Tuple[()], headers: Tuple[()], exportedHeaders: Tuple[()], srcs: Tuple[()]) -> "BuckTargetSources":
+  def angle_query(*, target: Optional[Tuple[()]] = None, headers: Optional[Tuple[()]] = None, exportedHeaders: Optional[Tuple[()]] = None, srcs: Optional[Tuple[()]] = None) -> "BuckTargetSources":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckPlatform(GleanSchemaPredicate):
@@ -123,7 +123,7 @@ class BuckPlatform(GleanSchemaPredicate):
     return f"buck.Platform.1 {json.dumps(key)}", Platform
 
   @staticmethod
-  def angle_query(*, arg: str) -> "BuckPlatform":
+  def angle_query(*, arg: Optional[str] = None) -> "BuckPlatform":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckTargetAttribute(GleanSchemaPredicate):
@@ -132,7 +132,7 @@ class BuckTargetAttribute(GleanSchemaPredicate):
     return f"buck.TargetAttribute.3 {{ target = _, attribute = _, value = _ }}", TargetAttribute
 
   @staticmethod
-  def angle_query(*, target: Tuple[()], attribute: Tuple[()], value: Tuple[()]) -> "BuckTargetAttribute":
+  def angle_query(*, target: Optional[Tuple[()]] = None, attribute: Optional[Tuple[()]] = None, value: Optional[Tuple[()]] = None) -> "BuckTargetAttribute":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckFileEntity(GleanSchemaPredicate):
@@ -141,7 +141,7 @@ class BuckFileEntity(GleanSchemaPredicate):
     return f"buck.FileEntity.3 {{ file = _, entity = _ }}", FileEntity
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], entity: Tuple[()]) -> "BuckFileEntity":
+  def angle_query(*, file: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "BuckFileEntity":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckOutTarget(GleanSchemaPredicate):
@@ -150,7 +150,7 @@ class BuckOutTarget(GleanSchemaPredicate):
     return f"buck.OutTarget.1 {{ file = _, target = _ }}", OutTarget
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], target: Tuple[()]) -> "BuckOutTarget":
+  def angle_query(*, file: Optional[Tuple[()]] = None, target: Optional[Tuple[()]] = None) -> "BuckOutTarget":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckLabel(GleanSchemaPredicate):
@@ -159,7 +159,7 @@ class BuckLabel(GleanSchemaPredicate):
     return f"buck.Label.1 {json.dumps(key)}", Label
 
   @staticmethod
-  def angle_query(*, arg: str) -> "BuckLabel":
+  def angle_query(*, arg: Optional[str] = None) -> "BuckLabel":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckTargetOuts(GleanSchemaPredicate):
@@ -168,7 +168,7 @@ class BuckTargetOuts(GleanSchemaPredicate):
     return f"buck.TargetOuts.3 {{ target = _, outputLabel = _, file = _ }}", TargetOuts
 
   @staticmethod
-  def angle_query(*, target: Tuple[()], outputLabel: Tuple[()], file: Tuple[()]) -> "BuckTargetOuts":
+  def angle_query(*, target: Optional[Tuple[()]] = None, outputLabel: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None) -> "BuckTargetOuts":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckOutsTarget(GleanSchemaPredicate):
@@ -177,7 +177,7 @@ class BuckOutsTarget(GleanSchemaPredicate):
     return f"buck.OutsTarget.3 {{ file = _, target = _, outputLabel = _ }}", OutsTarget
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], target: Tuple[()], outputLabel: Tuple[()]) -> "BuckOutsTarget":
+  def angle_query(*, file: Optional[Tuple[()]] = None, target: Optional[Tuple[()]] = None, outputLabel: Optional[Tuple[()]] = None) -> "BuckOutsTarget":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckLocatorWithLabel(GleanSchemaPredicate):
@@ -186,7 +186,7 @@ class BuckLocatorWithLabel(GleanSchemaPredicate):
     return f"buck.LocatorWithLabel.3 {{ locator = _, label = _ }}", LocatorWithLabel
 
   @staticmethod
-  def angle_query(*, locator: Tuple[()], label: Tuple[()]) -> "BuckLocatorWithLabel":
+  def angle_query(*, locator: Optional[Tuple[()]] = None, label: Optional[Tuple[()]] = None) -> "BuckLocatorWithLabel":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckTargetSources(GleanSchemaPredicate):
@@ -195,7 +195,7 @@ class BuckTargetSources(GleanSchemaPredicate):
     return f"buck.TargetSources.3 {{ target = _, headers = _, exportedHeaders = _, srcs = _ }}", TargetSources
 
   @staticmethod
-  def angle_query(*, target: Tuple[()], headers: Tuple[()], exportedHeaders: Tuple[()], srcs: Tuple[()]) -> "BuckTargetSources":
+  def angle_query(*, target: Optional[Tuple[()]] = None, headers: Optional[Tuple[()]] = None, exportedHeaders: Optional[Tuple[()]] = None, srcs: Optional[Tuple[()]] = None) -> "BuckTargetSources":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckAttributeValue(GleanSchemaPredicate):
@@ -204,7 +204,7 @@ class BuckAttributeValue(GleanSchemaPredicate):
     return f"buck.AttributeValue.3 {json.dumps(key)}", AttributeValue
 
   @staticmethod
-  def angle_query(*, arg: Tuple[()]) -> "BuckAttributeValue":
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "BuckAttributeValue":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckLabels(GleanSchemaPredicate):
@@ -213,7 +213,7 @@ class BuckLabels(GleanSchemaPredicate):
     return f"buck.Labels.1 {json.dumps(key)}", Labels
 
   @staticmethod
-  def angle_query(*, arg: Tuple[()]) -> "BuckLabels":
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "BuckLabels":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckSourceFileLocation(GleanSchemaPredicate):
@@ -222,7 +222,7 @@ class BuckSourceFileLocation(GleanSchemaPredicate):
     return f"buck.SourceFileLocation.3 {{ file = _, span = _ }}", SourceFileLocation
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], span: Tuple[()]) -> "BuckSourceFileLocation":
+  def angle_query(*, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "BuckSourceFileLocation":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckOutputLabel(GleanSchemaPredicate):
@@ -231,7 +231,7 @@ class BuckOutputLabel(GleanSchemaPredicate):
     return f"buck.OutputLabel.3 {json.dumps(key)}", OutputLabel
 
   @staticmethod
-  def angle_query(*, arg: str) -> "BuckOutputLabel":
+  def angle_query(*, arg: Optional[str] = None) -> "BuckOutputLabel":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckTargetUses(GleanSchemaPredicate):
@@ -240,7 +240,7 @@ class BuckTargetUses(GleanSchemaPredicate):
     return f"buck.TargetUses.3 {{ locator = _, file = _, spans = _ }}", TargetUses
 
   @staticmethod
-  def angle_query(*, locator: Tuple[()], file: Tuple[()], spans: Tuple[()]) -> "BuckTargetUses":
+  def angle_query(*, locator: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, spans: Optional[Tuple[()]] = None) -> "BuckTargetUses":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckOwner(GleanSchemaPredicate):
@@ -249,7 +249,7 @@ class BuckOwner(GleanSchemaPredicate):
     return f"buck.Owner.3 {{ source = _, owner = _ }}", Owner
 
   @staticmethod
-  def angle_query(*, source: Tuple[()], owner: Tuple[()]) -> "BuckOwner":
+  def angle_query(*, source: Optional[Tuple[()]] = None, owner: Optional[Tuple[()]] = None) -> "BuckOwner":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckTarget(GleanSchemaPredicate):
@@ -258,7 +258,7 @@ class BuckTarget(GleanSchemaPredicate):
     return f"buck.Target.2 {{ locator = _, type_ = _, defaultPlatform = _, labels = _ }}", Target
 
   @staticmethod
-  def angle_query(*, locator: Tuple[()], type_: Tuple[()], defaultPlatform: Tuple[()], labels: Tuple[()]) -> "BuckTarget":
+  def angle_query(*, locator: Optional[Tuple[()]] = None, type_: Optional[Tuple[()]] = None, defaultPlatform: Optional[Tuple[()]] = None, labels: Optional[Tuple[()]] = None) -> "BuckTarget":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckDefinitionLocation(GleanSchemaPredicate):
@@ -267,7 +267,7 @@ class BuckDefinitionLocation(GleanSchemaPredicate):
     return f"buck.DefinitionLocation.3 {{ definition = _, file = _, span = _ }}", DefinitionLocation
 
   @staticmethod
-  def angle_query(*, definition: Tuple[()], file: Tuple[()], span: Tuple[()]) -> "BuckDefinitionLocation":
+  def angle_query(*, definition: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "BuckDefinitionLocation":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckTargetIndexer(GleanSchemaPredicate):
@@ -276,7 +276,7 @@ class BuckTargetIndexer(GleanSchemaPredicate):
     return f"buck.TargetIndexer.3 {{ name = _, target = _ }}", TargetIndexer
 
   @staticmethod
-  def angle_query(*, name: Tuple[()], target: Tuple[()]) -> "BuckTargetIndexer":
+  def angle_query(*, name: Optional[Tuple[()]] = None, target: Optional[Tuple[()]] = None) -> "BuckTargetIndexer":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckFileDefinition(GleanSchemaPredicate):
@@ -285,7 +285,7 @@ class BuckFileDefinition(GleanSchemaPredicate):
     return f"buck.FileDefinition.3 {{ file = _, definition = _ }}", FileDefinition
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], definition: Tuple[()]) -> "BuckFileDefinition":
+  def angle_query(*, file: Optional[Tuple[()]] = None, definition: Optional[Tuple[()]] = None) -> "BuckFileDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckTarget(GleanSchemaPredicate):
@@ -294,7 +294,7 @@ class BuckTarget(GleanSchemaPredicate):
     return f"buck.Target.1 {{ repo = _, name = _, platform = _ }}", Target
 
   @staticmethod
-  def angle_query(*, repo: Tuple[()], name: Tuple[()], platform: Tuple[()]) -> "BuckTarget":
+  def angle_query(*, repo: Optional[Tuple[()]] = None, name: Optional[Tuple[()]] = None, platform: Optional[Tuple[()]] = None) -> "BuckTarget":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckAttributeName(GleanSchemaPredicate):
@@ -303,7 +303,7 @@ class BuckAttributeName(GleanSchemaPredicate):
     return f"buck.AttributeName.3 {json.dumps(key)}", AttributeName
 
   @staticmethod
-  def angle_query(*, arg: str) -> "BuckAttributeName":
+  def angle_query(*, arg: Optional[str] = None) -> "BuckAttributeName":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckOwner(GleanSchemaPredicate):
@@ -312,7 +312,7 @@ class BuckOwner(GleanSchemaPredicate):
     return f"buck.Owner.1 {{ source = _, owner = _ }}", Owner
 
   @staticmethod
-  def angle_query(*, source: Tuple[()], owner: Tuple[()]) -> "BuckOwner":
+  def angle_query(*, source: Optional[Tuple[()]] = None, owner: Optional[Tuple[()]] = None) -> "BuckOwner":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckRuleKey(GleanSchemaPredicate):
@@ -321,7 +321,7 @@ class BuckRuleKey(GleanSchemaPredicate):
     return f"buck.RuleKey.1 {{ locator = _, ruleKey = _ }}", RuleKey
 
   @staticmethod
-  def angle_query(*, locator: Tuple[()], ruleKey: str) -> "BuckRuleKey":
+  def angle_query(*, locator: Optional[Tuple[()]] = None, ruleKey: Optional[str] = None) -> "BuckRuleKey":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckTargetLinkWhole(GleanSchemaPredicate):
@@ -330,7 +330,7 @@ class BuckTargetLinkWhole(GleanSchemaPredicate):
     return f"buck.TargetLinkWhole.1 {json.dumps(key)}", TargetLinkWhole
 
   @staticmethod
-  def angle_query(*, arg: Tuple[()]) -> "BuckTargetLinkWhole":
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "BuckTargetLinkWhole":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckDefinition(GleanSchemaPredicate):
@@ -339,7 +339,7 @@ class BuckDefinition(GleanSchemaPredicate):
     return f"buck.Definition.3 {{ module = _, name = _ }}", Definition
 
   @staticmethod
-  def angle_query(*, module: Tuple[()], name: str) -> "BuckDefinition":
+  def angle_query(*, module: Optional[Tuple[()]] = None, name: Optional[str] = None) -> "BuckDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckTargetOut(GleanSchemaPredicate):
@@ -348,7 +348,7 @@ class BuckTargetOut(GleanSchemaPredicate):
     return f"buck.TargetOut.1 {{ target = _, file = _ }}", TargetOut
 
   @staticmethod
-  def angle_query(*, target: Tuple[()], file: Tuple[()]) -> "BuckTargetOut":
+  def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None) -> "BuckTargetOut":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckFileXRefs(GleanSchemaPredicate):
@@ -357,7 +357,7 @@ class BuckFileXRefs(GleanSchemaPredicate):
     return f"buck.FileXRefs.3 {{ file = _, xrefs = _ }}", FileXRefs
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], xrefs: Tuple[()]) -> "BuckFileXRefs":
+  def angle_query(*, file: Optional[Tuple[()]] = None, xrefs: Optional[Tuple[()]] = None) -> "BuckFileXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckTargetLocation(GleanSchemaPredicate):
@@ -366,7 +366,7 @@ class BuckTargetLocation(GleanSchemaPredicate):
     return f"buck.TargetLocation.3 {{ locator = _, file = _, span = _ }}", TargetLocation
 
   @staticmethod
-  def angle_query(*, locator: Tuple[()], file: Tuple[()], span: Tuple[()]) -> "BuckTargetLocation":
+  def angle_query(*, locator: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "BuckTargetLocation":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckDestinationUses(GleanSchemaPredicate):
@@ -375,7 +375,7 @@ class BuckDestinationUses(GleanSchemaPredicate):
     return f"buck.DestinationUses.3 {{ destination = _, file = _, spans = _ }}", DestinationUses
 
   @staticmethod
-  def angle_query(*, destination: Tuple[()], file: Tuple[()], spans: Tuple[()]) -> "BuckDestinationUses":
+  def angle_query(*, destination: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, spans: Optional[Tuple[()]] = None) -> "BuckDestinationUses":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckTranslationUnit(GleanSchemaPredicate):
@@ -384,7 +384,7 @@ class BuckTranslationUnit(GleanSchemaPredicate):
     return f"buck.TranslationUnit.2 {{ file = _, target = _, platform = _ }}", TranslationUnit
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], target: Tuple[()], platform: Tuple[()]) -> "BuckTranslationUnit":
+  def angle_query(*, file: Optional[Tuple[()]] = None, target: Optional[Tuple[()]] = None, platform: Optional[Tuple[()]] = None) -> "BuckTranslationUnit":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckFile(GleanSchemaPredicate):
@@ -393,7 +393,7 @@ class BuckFile(GleanSchemaPredicate):
     return f"buck.File.1 {json.dumps(key)}", File
 
   @staticmethod
-  def angle_query(*, arg: Tuple[()]) -> "BuckFile":
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "BuckFile":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckFileTarget(GleanSchemaPredicate):
@@ -402,7 +402,7 @@ class BuckFileTarget(GleanSchemaPredicate):
     return f"buck.FileTarget.3 {{ file = _, locator = _ }}", FileTarget
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], locator: Tuple[()]) -> "BuckFileTarget":
+  def angle_query(*, file: Optional[Tuple[()]] = None, locator: Optional[Tuple[()]] = None) -> "BuckFileTarget":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckTranslationUnit(GleanSchemaPredicate):
@@ -411,7 +411,7 @@ class BuckTranslationUnit(GleanSchemaPredicate):
     return f"buck.TranslationUnit.1 {{ file = _, target = _ }}", TranslationUnit
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], target: Tuple[()]) -> "BuckTranslationUnit":
+  def angle_query(*, file: Optional[Tuple[()]] = None, target: Optional[Tuple[()]] = None) -> "BuckTranslationUnit":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckTargetIndexerName(GleanSchemaPredicate):
@@ -420,7 +420,7 @@ class BuckTargetIndexerName(GleanSchemaPredicate):
     return f"buck.TargetIndexerName.3 {json.dumps(key)}", TargetIndexerName
 
   @staticmethod
-  def angle_query(*, arg: str) -> "BuckTargetIndexerName":
+  def angle_query(*, arg: Optional[str] = None) -> "BuckTargetIndexerName":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckFileResolved(GleanSchemaPredicate):
@@ -429,7 +429,7 @@ class BuckFileResolved(GleanSchemaPredicate):
     return f"buck.FileResolved.3 {{ buckFile = _, srcFile = _ }}", FileResolved
 
   @staticmethod
-  def angle_query(*, buckFile: Tuple[()], srcFile: Tuple[()]) -> "BuckFileResolved":
+  def angle_query(*, buckFile: Optional[Tuple[()]] = None, srcFile: Optional[Tuple[()]] = None) -> "BuckFileResolved":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckConsumer(GleanSchemaPredicate):
@@ -438,7 +438,7 @@ class BuckConsumer(GleanSchemaPredicate):
     return f"buck.Consumer.3 {{ source = _, consumer = _ }}", Consumer
 
   @staticmethod
-  def angle_query(*, source: Tuple[()], consumer: Tuple[()]) -> "BuckConsumer":
+  def angle_query(*, source: Optional[Tuple[()]] = None, consumer: Optional[Tuple[()]] = None) -> "BuckConsumer":
     raise Exception("this function can only be called from @angle_query")
 
 class BuckFile(GleanSchemaPredicate):
@@ -447,7 +447,7 @@ class BuckFile(GleanSchemaPredicate):
     return f"buck.File.3 {json.dumps(key)}", File
 
   @staticmethod
-  def angle_query(*, arg: Tuple[()]) -> "BuckFile":
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "BuckFile":
     raise Exception("this function can only be called from @angle_query")
 
 

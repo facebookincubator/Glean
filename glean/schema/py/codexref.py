@@ -1,6 +1,6 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Type, Union, TypeVar
+from typing import Optional, Tuple, Union
 import json
 from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
@@ -19,7 +19,7 @@ class CodexrefOutgoingXRefs(GleanSchemaPredicate):
     return f"codexref.OutgoingXRefs.6 {{ file = _, shard = _ }}", OutgoingXRefs
 
   @staticmethod
-  def angle_query(*, file: str, shard: Tuple[()]) -> "CodexrefOutgoingXRefs":
+  def angle_query(*, file: Optional[str] = None, shard: Optional[Tuple[()]] = None) -> "CodexrefOutgoingXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 class CodexrefSymbolName(GleanSchemaPredicate):
@@ -28,7 +28,7 @@ class CodexrefSymbolName(GleanSchemaPredicate):
     return f"codexref.SymbolName.6 {json.dumps(key)}", SymbolName
 
   @staticmethod
-  def angle_query(*, arg: str) -> "CodexrefSymbolName":
+  def angle_query(*, arg: Optional[str] = None) -> "CodexrefSymbolName":
     raise Exception("this function can only be called from @angle_query")
 
 class CodexrefIncomingXRefs(GleanSchemaPredicate):
@@ -37,7 +37,7 @@ class CodexrefIncomingXRefs(GleanSchemaPredicate):
     return f"codexref.IncomingXRefs.6 {{ file = _, shard = _ }}", IncomingXRefs
 
   @staticmethod
-  def angle_query(*, file: str, shard: Tuple[()]) -> "CodexrefIncomingXRefs":
+  def angle_query(*, file: Optional[str] = None, shard: Optional[Tuple[()]] = None) -> "CodexrefIncomingXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 

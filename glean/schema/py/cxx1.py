@@ -1,6 +1,6 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Type, Union, TypeVar
+from typing import Optional, Tuple, Union
 import json
 from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
@@ -90,7 +90,7 @@ class Cxx1DeclInObjcContainer(GleanSchemaPredicate):
     return f"cxx1.DeclInObjcContainer.5 {{ decl = _, record = _ }}", DeclInObjcContainer
 
   @staticmethod
-  def angle_query(*, decl: Tuple[()], record: Tuple[()]) -> "Cxx1DeclInObjcContainer":
+  def angle_query(*, decl: Optional[Tuple[()]] = None, record: Optional[Tuple[()]] = None) -> "Cxx1DeclInObjcContainer":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1XRefIndirectTarget(GleanSchemaPredicate):
@@ -99,7 +99,7 @@ class Cxx1XRefIndirectTarget(GleanSchemaPredicate):
     return f"cxx1.XRefIndirectTarget.5 {{ via = _, target = _ }}", XRefIndirectTarget
 
   @staticmethod
-  def angle_query(*, via: Tuple[()], target: Tuple[()]) -> "Cxx1XRefIndirectTarget":
+  def angle_query(*, via: Optional[Tuple[()]] = None, target: Optional[Tuple[()]] = None) -> "Cxx1XRefIndirectTarget":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1DeclByName(GleanSchemaPredicate):
@@ -108,7 +108,7 @@ class Cxx1DeclByName(GleanSchemaPredicate):
     return f"cxx1.DeclByName.5 {{ name_lowercase = _, kind = _, ident = _ }}", DeclByName
 
   @staticmethod
-  def angle_query(*, name_lowercase: str, kind: Tuple[()], ident: Tuple[()]) -> "Cxx1DeclByName":
+  def angle_query(*, name_lowercase: Optional[str] = None, kind: Optional[Tuple[()]] = None, ident: Optional[Tuple[()]] = None) -> "Cxx1DeclByName":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1DeclarationTargets(GleanSchemaPredicate):
@@ -117,7 +117,7 @@ class Cxx1DeclarationTargets(GleanSchemaPredicate):
     return f"cxx1.DeclarationTargets.5 {{ source = _, targets = _ }}", DeclarationTargets
 
   @staticmethod
-  def angle_query(*, source: Tuple[()], targets: Tuple[()]) -> "Cxx1DeclarationTargets":
+  def angle_query(*, source: Optional[Tuple[()]] = None, targets: Optional[Tuple[()]] = None) -> "Cxx1DeclarationTargets":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1DeclarationLocationName(GleanSchemaPredicate):
@@ -126,7 +126,7 @@ class Cxx1DeclarationLocationName(GleanSchemaPredicate):
     return f"cxx1.DeclarationLocationName.5 {{ decl = _, source = _, name = _ }}", DeclarationLocationName
 
   @staticmethod
-  def angle_query(*, decl: Tuple[()], source: Tuple[()], name: str) -> "Cxx1DeclarationLocationName":
+  def angle_query(*, decl: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None, name: Optional[str] = None) -> "Cxx1DeclarationLocationName":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1EnumDeclaration(GleanSchemaPredicate):
@@ -135,7 +135,7 @@ class Cxx1EnumDeclaration(GleanSchemaPredicate):
     return f"cxx1.EnumDeclaration.5 {{ name = _, isScoped = _, type = _, source = _ }}", EnumDeclaration
 
   @staticmethod
-  def angle_query(*, name: Tuple[()], isScoped: bool, type: Tuple[()], source: Tuple[()]) -> "Cxx1EnumDeclaration":
+  def angle_query(*, name: Optional[Tuple[()]] = None, isScoped: Optional[bool] = None, type: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "Cxx1EnumDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1FileXRefMap(GleanSchemaPredicate):
@@ -144,7 +144,7 @@ class Cxx1FileXRefMap(GleanSchemaPredicate):
     return f"cxx1.FileXRefMap.5 {{ file = _, fixed = _, variable = _ }}", FileXRefMap
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], fixed: Tuple[()], variable: Tuple[()]) -> "Cxx1FileXRefMap":
+  def angle_query(*, file: Optional[Tuple[()]] = None, fixed: Optional[Tuple[()]] = None, variable: Optional[Tuple[()]] = None) -> "Cxx1FileXRefMap":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1ObjcContainerDeclaration(GleanSchemaPredicate):
@@ -153,7 +153,7 @@ class Cxx1ObjcContainerDeclaration(GleanSchemaPredicate):
     return f"cxx1.ObjcContainerDeclaration.5 {{ id = _, source = _ }}", ObjcContainerDeclaration
 
   @staticmethod
-  def angle_query(*, id: Tuple[()], source: Tuple[()]) -> "Cxx1ObjcContainerDeclaration":
+  def angle_query(*, id: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "Cxx1ObjcContainerDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1ObjcMethodDeclaration(GleanSchemaPredicate):
@@ -162,7 +162,7 @@ class Cxx1ObjcMethodDeclaration(GleanSchemaPredicate):
     return f"cxx1.ObjcMethodDeclaration.5 {{ selector = _, container = _, signature = _, isInstance = _, isOptional = _, isAccessor = _, source = _ }}", ObjcMethodDeclaration
 
   @staticmethod
-  def angle_query(*, selector: Tuple[()], container: Tuple[()], signature: Tuple[()], isInstance: bool, isOptional: bool, isAccessor: bool, source: Tuple[()]) -> "Cxx1ObjcMethodDeclaration":
+  def angle_query(*, selector: Optional[Tuple[()]] = None, container: Optional[Tuple[()]] = None, signature: Optional[Tuple[()]] = None, isInstance: Optional[bool] = None, isOptional: Optional[bool] = None, isAccessor: Optional[bool] = None, source: Optional[Tuple[()]] = None) -> "Cxx1ObjcMethodDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1MethodOverrides(GleanSchemaPredicate):
@@ -171,7 +171,7 @@ class Cxx1MethodOverrides(GleanSchemaPredicate):
     return f"cxx1.MethodOverrides.5 {{ derived = _, base = _ }}", MethodOverrides
 
   @staticmethod
-  def angle_query(*, derived: Tuple[()], base: Tuple[()]) -> "Cxx1MethodOverrides":
+  def angle_query(*, derived: Optional[Tuple[()]] = None, base: Optional[Tuple[()]] = None) -> "Cxx1MethodOverrides":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1FunctionDeclAttribute(GleanSchemaPredicate):
@@ -180,7 +180,7 @@ class Cxx1FunctionDeclAttribute(GleanSchemaPredicate):
     return f"cxx1.FunctionDeclAttribute.5 {{ decl = _, attr = _ }}", FunctionDeclAttribute
 
   @staticmethod
-  def angle_query(*, decl: Tuple[()], attr: Tuple[()]) -> "Cxx1FunctionDeclAttribute":
+  def angle_query(*, decl: Optional[Tuple[()]] = None, attr: Optional[Tuple[()]] = None) -> "Cxx1FunctionDeclAttribute":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1ObjcInterfaceToImplementation(GleanSchemaPredicate):
@@ -189,7 +189,7 @@ class Cxx1ObjcInterfaceToImplementation(GleanSchemaPredicate):
     return f"cxx1.ObjcInterfaceToImplementation.5 {{ interface_ = _, implementation = _ }}", ObjcInterfaceToImplementation
 
   @staticmethod
-  def angle_query(*, interface_: Tuple[()], implementation: Tuple[()]) -> "Cxx1ObjcInterfaceToImplementation":
+  def angle_query(*, interface_: Optional[Tuple[()]] = None, implementation: Optional[Tuple[()]] = None) -> "Cxx1ObjcInterfaceToImplementation":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1UsingDirective(GleanSchemaPredicate):
@@ -198,7 +198,7 @@ class Cxx1UsingDirective(GleanSchemaPredicate):
     return f"cxx1.UsingDirective.5 {{ name = _, source = _ }}", UsingDirective
 
   @staticmethod
-  def angle_query(*, name: Tuple[()], source: Tuple[()]) -> "Cxx1UsingDirective":
+  def angle_query(*, name: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "Cxx1UsingDirective":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1Trace(GleanSchemaPredicate):
@@ -207,7 +207,7 @@ class Cxx1Trace(GleanSchemaPredicate):
     return f"cxx1.Trace.5 {{ file = _, declarations = _, preprocessor = _ }}", Trace
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], declarations: Tuple[()], preprocessor: Tuple[()]) -> "Cxx1Trace":
+  def angle_query(*, file: Optional[Tuple[()]] = None, declarations: Optional[Tuple[()]] = None, preprocessor: Optional[Tuple[()]] = None) -> "Cxx1Trace":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1ObjcPropertyImplementation(GleanSchemaPredicate):
@@ -216,7 +216,7 @@ class Cxx1ObjcPropertyImplementation(GleanSchemaPredicate):
     return f"cxx1.ObjcPropertyImplementation.5 {{ declaration = _, kind = _, ivar = _, source = _ }}", ObjcPropertyImplementation
 
   @staticmethod
-  def angle_query(*, declaration: Tuple[()], kind: Tuple[()], ivar: Tuple[()], source: Tuple[()]) -> "Cxx1ObjcPropertyImplementation":
+  def angle_query(*, declaration: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None, ivar: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "Cxx1ObjcPropertyImplementation":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1MethodOverridden(GleanSchemaPredicate):
@@ -225,7 +225,7 @@ class Cxx1MethodOverridden(GleanSchemaPredicate):
     return f"cxx1.MethodOverridden.5 {{ base = _, derived = _ }}", MethodOverridden
 
   @staticmethod
-  def angle_query(*, base: Tuple[()], derived: Tuple[()]) -> "Cxx1MethodOverridden":
+  def angle_query(*, base: Optional[Tuple[()]] = None, derived: Optional[Tuple[()]] = None) -> "Cxx1MethodOverridden":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1PPTrace(GleanSchemaPredicate):
@@ -234,7 +234,7 @@ class Cxx1PPTrace(GleanSchemaPredicate):
     return f"cxx1.PPTrace.5 {{ file = _, events = _ }}", PPTrace
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], events: Tuple[()]) -> "Cxx1PPTrace":
+  def angle_query(*, file: Optional[Tuple[()]] = None, events: Optional[Tuple[()]] = None) -> "Cxx1PPTrace":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1DeclFamilyOf(GleanSchemaPredicate):
@@ -243,7 +243,7 @@ class Cxx1DeclFamilyOf(GleanSchemaPredicate):
     return f"cxx1.DeclFamilyOf.5 {{ decl = _, family = _ }}", DeclFamilyOf
 
   @staticmethod
-  def angle_query(*, decl: Tuple[()], family: Tuple[()]) -> "Cxx1DeclFamilyOf":
+  def angle_query(*, decl: Optional[Tuple[()]] = None, family: Optional[Tuple[()]] = None) -> "Cxx1DeclFamilyOf":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1TargetUses(GleanSchemaPredicate):
@@ -252,7 +252,7 @@ class Cxx1TargetUses(GleanSchemaPredicate):
     return f"cxx1.TargetUses.5 {{ target = _, file = _, uses = _ }}", TargetUses
 
   @staticmethod
-  def angle_query(*, target: Tuple[()], file: Tuple[()], uses: Tuple[()]) -> "Cxx1TargetUses":
+  def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, uses: Optional[Tuple[()]] = None) -> "Cxx1TargetUses":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1NamespaceDefinition(GleanSchemaPredicate):
@@ -261,7 +261,7 @@ class Cxx1NamespaceDefinition(GleanSchemaPredicate):
     return f"cxx1.NamespaceDefinition.5 {{ declaration = _, members = _ }}", NamespaceDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Tuple[()], members: Tuple[()]) -> "Cxx1NamespaceDefinition":
+  def angle_query(*, declaration: Optional[Tuple[()]] = None, members: Optional[Tuple[()]] = None) -> "Cxx1NamespaceDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1FunctionAttribute(GleanSchemaPredicate):
@@ -270,7 +270,7 @@ class Cxx1FunctionAttribute(GleanSchemaPredicate):
     return f"cxx1.FunctionAttribute.5 {{ attr = _, declaration = _ }}", FunctionAttribute
 
   @staticmethod
-  def angle_query(*, attr: Tuple[()], declaration: Tuple[()]) -> "Cxx1FunctionAttribute":
+  def angle_query(*, attr: Optional[Tuple[()]] = None, declaration: Optional[Tuple[()]] = None) -> "Cxx1FunctionAttribute":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1FilePPUseTraceXRefs(GleanSchemaPredicate):
@@ -279,7 +279,7 @@ class Cxx1FilePPUseTraceXRefs(GleanSchemaPredicate):
     return f"cxx1.FilePPUseTraceXRefs.5 {{ file = _, trace = _, source = _, define = _ }}", FilePPUseTraceXRefs
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], trace: Tuple[()], source: Tuple[()], define: Tuple[()]) -> "Cxx1FilePPUseTraceXRefs":
+  def angle_query(*, file: Optional[Tuple[()]] = None, trace: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None, define: Optional[Tuple[()]] = None) -> "Cxx1FilePPUseTraceXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1TypeAliasDeclaration(GleanSchemaPredicate):
@@ -288,7 +288,7 @@ class Cxx1TypeAliasDeclaration(GleanSchemaPredicate):
     return f"cxx1.TypeAliasDeclaration.5 {{ name = _, type = _, kind = _, source = _ }}", TypeAliasDeclaration
 
   @staticmethod
-  def angle_query(*, name: Tuple[()], type: Tuple[()], kind: Tuple[()], source: Tuple[()]) -> "Cxx1TypeAliasDeclaration":
+  def angle_query(*, name: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "Cxx1TypeAliasDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1DefToBaseDecl(GleanSchemaPredicate):
@@ -297,7 +297,7 @@ class Cxx1DefToBaseDecl(GleanSchemaPredicate):
     return f"cxx1.DefToBaseDecl.5 {{ defn = _, decl = _ }}", DefToBaseDecl
 
   @staticmethod
-  def angle_query(*, defn: Tuple[()], decl: Tuple[()]) -> "Cxx1DefToBaseDecl":
+  def angle_query(*, defn: Optional[Tuple[()]] = None, decl: Optional[Tuple[()]] = None) -> "Cxx1DefToBaseDecl":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1Name(GleanSchemaPredicate):
@@ -306,7 +306,7 @@ class Cxx1Name(GleanSchemaPredicate):
     return f"cxx1.Name.5 {json.dumps(key)}", Name
 
   @staticmethod
-  def angle_query(*, arg: str) -> "Cxx1Name":
+  def angle_query(*, arg: Optional[str] = None) -> "Cxx1Name":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1FilePPUseXRefs(GleanSchemaPredicate):
@@ -315,7 +315,7 @@ class Cxx1FilePPUseXRefs(GleanSchemaPredicate):
     return f"cxx1.FilePPUseXRefs.5 {{ file = _, source = _, define = _ }}", FilePPUseXRefs
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], source: Tuple[()], define: Tuple[()]) -> "Cxx1FilePPUseXRefs":
+  def angle_query(*, file: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None, define: Optional[Tuple[()]] = None) -> "Cxx1FilePPUseXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1Enumerator(GleanSchemaPredicate):
@@ -324,7 +324,7 @@ class Cxx1Enumerator(GleanSchemaPredicate):
     return f"cxx1.Enumerator.5 {{ name = _, enumeration = _, source = _ }}", Enumerator
 
   @staticmethod
-  def angle_query(*, name: Tuple[()], enumeration: Tuple[()], source: Tuple[()]) -> "Cxx1Enumerator":
+  def angle_query(*, name: Optional[Tuple[()]] = None, enumeration: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "Cxx1Enumerator":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1FunctionQName(GleanSchemaPredicate):
@@ -333,7 +333,7 @@ class Cxx1FunctionQName(GleanSchemaPredicate):
     return f"cxx1.FunctionQName.5 {{ name = _, scope = _ }}", FunctionQName
 
   @staticmethod
-  def angle_query(*, name: Tuple[()], scope: Tuple[()]) -> "Cxx1FunctionQName":
+  def angle_query(*, name: Optional[Tuple[()]] = None, scope: Optional[Tuple[()]] = None) -> "Cxx1FunctionQName":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1TranslationUnitTrace(GleanSchemaPredicate):
@@ -342,7 +342,7 @@ class Cxx1TranslationUnitTrace(GleanSchemaPredicate):
     return f"cxx1.TranslationUnitTrace.5 {{ tunit = _, trace = _ }}", TranslationUnitTrace
 
   @staticmethod
-  def angle_query(*, tunit: Tuple[()], trace: Tuple[()]) -> "Cxx1TranslationUnitTrace":
+  def angle_query(*, tunit: Optional[Tuple[()]] = None, trace: Optional[Tuple[()]] = None) -> "Cxx1TranslationUnitTrace":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1RecordDeclaration(GleanSchemaPredicate):
@@ -351,7 +351,7 @@ class Cxx1RecordDeclaration(GleanSchemaPredicate):
     return f"cxx1.RecordDeclaration.5 {{ name = _, kind = _, source = _ }}", RecordDeclaration
 
   @staticmethod
-  def angle_query(*, name: Tuple[()], kind: Tuple[()], source: Tuple[()]) -> "Cxx1RecordDeclaration":
+  def angle_query(*, name: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "Cxx1RecordDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1FilePPTraceXRefs(GleanSchemaPredicate):
@@ -360,7 +360,7 @@ class Cxx1FilePPTraceXRefs(GleanSchemaPredicate):
     return f"cxx1.FilePPTraceXRefs.5 {{ file = _, trace = _, source = _, ppEntity = _ }}", FilePPTraceXRefs
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], trace: Tuple[()], source: Tuple[()], ppEntity: Tuple[()]) -> "Cxx1FilePPTraceXRefs":
+  def angle_query(*, file: Optional[Tuple[()]] = None, trace: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None, ppEntity: Optional[Tuple[()]] = None) -> "Cxx1FilePPTraceXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1NamespaceQName(GleanSchemaPredicate):
@@ -369,7 +369,7 @@ class Cxx1NamespaceQName(GleanSchemaPredicate):
     return f"cxx1.NamespaceQName.5 {{ name = _, parent = _ }}", NamespaceQName
 
   @staticmethod
-  def angle_query(*, name: Tuple[()], parent: Tuple[()]) -> "Cxx1NamespaceQName":
+  def angle_query(*, name: Optional[Tuple[()]] = None, parent: Optional[Tuple[()]] = None) -> "Cxx1NamespaceQName":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1DeclarationSrcRange(GleanSchemaPredicate):
@@ -378,7 +378,7 @@ class Cxx1DeclarationSrcRange(GleanSchemaPredicate):
     return f"cxx1.DeclarationSrcRange.5 {{ decl = _, source = _ }}", DeclarationSrcRange
 
   @staticmethod
-  def angle_query(*, decl: Tuple[()], source: Tuple[()]) -> "Cxx1DeclarationSrcRange":
+  def angle_query(*, decl: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "Cxx1DeclarationSrcRange":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1DeclarationLocation(GleanSchemaPredicate):
@@ -387,7 +387,7 @@ class Cxx1DeclarationLocation(GleanSchemaPredicate):
     return f"cxx1.DeclarationLocation.5 {{ decl = _, source = _, name = _ }}", DeclarationLocation
 
   @staticmethod
-  def angle_query(*, decl: Tuple[()], source: Tuple[()], name: Tuple[()]) -> "Cxx1DeclarationLocation":
+  def angle_query(*, decl: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None, name: Optional[Tuple[()]] = None) -> "Cxx1DeclarationLocation":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1ObjContainerIdName(GleanSchemaPredicate):
@@ -396,7 +396,7 @@ class Cxx1ObjContainerIdName(GleanSchemaPredicate):
     return f"cxx1.ObjContainerIdName.5 {{ id = _, name = _ }}", ObjContainerIdName
 
   @staticmethod
-  def angle_query(*, id: Tuple[()], name: Tuple[()]) -> "Cxx1ObjContainerIdName":
+  def angle_query(*, id: Optional[Tuple[()]] = None, name: Optional[Tuple[()]] = None) -> "Cxx1ObjContainerIdName":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1FunctionDeclaration(GleanSchemaPredicate):
@@ -405,7 +405,7 @@ class Cxx1FunctionDeclaration(GleanSchemaPredicate):
     return f"cxx1.FunctionDeclaration.5 {{ name = _, signature = _, method = _, source = _ }}", FunctionDeclaration
 
   @staticmethod
-  def angle_query(*, name: Tuple[()], signature: Tuple[()], method: Tuple[()], source: Tuple[()]) -> "Cxx1FunctionDeclaration":
+  def angle_query(*, name: Optional[Tuple[()]] = None, signature: Optional[Tuple[()]] = None, method: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "Cxx1FunctionDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1Same(GleanSchemaPredicate):
@@ -414,7 +414,7 @@ class Cxx1Same(GleanSchemaPredicate):
     return f"cxx1.Same.5 {{ declaration1 = _, declaration2 = _ }}", Same
 
   @staticmethod
-  def angle_query(*, declaration1: Tuple[()], declaration2: Tuple[()]) -> "Cxx1Same":
+  def angle_query(*, declaration1: Optional[Tuple[()]] = None, declaration2: Optional[Tuple[()]] = None) -> "Cxx1Same":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1NamespaceDeclaration(GleanSchemaPredicate):
@@ -423,7 +423,7 @@ class Cxx1NamespaceDeclaration(GleanSchemaPredicate):
     return f"cxx1.NamespaceDeclaration.5 {{ name = _, source = _ }}", NamespaceDeclaration
 
   @staticmethod
-  def angle_query(*, name: Tuple[()], source: Tuple[()]) -> "Cxx1NamespaceDeclaration":
+  def angle_query(*, name: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "Cxx1NamespaceDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1ObjcPropertyDeclaration(GleanSchemaPredicate):
@@ -432,7 +432,7 @@ class Cxx1ObjcPropertyDeclaration(GleanSchemaPredicate):
     return f"cxx1.ObjcPropertyDeclaration.5 {{ name = _, container = _, type = _, isInstance = _, isOptional = _, isReadOnly = _, isAtomic = _, source = _ }}", ObjcPropertyDeclaration
 
   @staticmethod
-  def angle_query(*, name: Tuple[()], container: Tuple[()], type: Tuple[()], isInstance: bool, isOptional: bool, isReadOnly: bool, isAtomic: bool, source: Tuple[()]) -> "Cxx1ObjcPropertyDeclaration":
+  def angle_query(*, name: Optional[Tuple[()]] = None, container: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None, isInstance: Optional[bool] = None, isOptional: Optional[bool] = None, isReadOnly: Optional[bool] = None, isAtomic: Optional[bool] = None, source: Optional[Tuple[()]] = None) -> "Cxx1ObjcPropertyDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1DeclarationComment(GleanSchemaPredicate):
@@ -441,7 +441,7 @@ class Cxx1DeclarationComment(GleanSchemaPredicate):
     return f"cxx1.DeclarationComment.5 {{ declaration = _, file = _, span = _ }}", DeclarationComment
 
   @staticmethod
-  def angle_query(*, declaration: Tuple[()], file: Tuple[()], span: Tuple[()]) -> "Cxx1DeclarationComment":
+  def angle_query(*, declaration: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "Cxx1DeclarationComment":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1DeclarationNameSpan(GleanSchemaPredicate):
@@ -450,7 +450,7 @@ class Cxx1DeclarationNameSpan(GleanSchemaPredicate):
     return f"cxx1.DeclarationNameSpan.5 {{ decl = _, file = _, span = _ }}", DeclarationNameSpan
 
   @staticmethod
-  def angle_query(*, decl: Tuple[()], file: Tuple[()], span: Tuple[()]) -> "Cxx1DeclarationNameSpan":
+  def angle_query(*, decl: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "Cxx1DeclarationNameSpan":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1Declarations(GleanSchemaPredicate):
@@ -459,7 +459,7 @@ class Cxx1Declarations(GleanSchemaPredicate):
     return f"cxx1.Declarations.5 {json.dumps(key)}", Declarations
 
   @staticmethod
-  def angle_query(*, arg: Tuple[()]) -> "Cxx1Declarations":
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "Cxx1Declarations":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1DeclToFamily(GleanSchemaPredicate):
@@ -468,7 +468,7 @@ class Cxx1DeclToFamily(GleanSchemaPredicate):
     return f"cxx1.DeclToFamily.5 {{ decl = _, family = _ }}", DeclToFamily
 
   @staticmethod
-  def angle_query(*, decl: Tuple[()], family: Tuple[()]) -> "Cxx1DeclToFamily":
+  def angle_query(*, decl: Optional[Tuple[()]] = None, family: Optional[Tuple[()]] = None) -> "Cxx1DeclToFamily":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1DeclFamily(GleanSchemaPredicate):
@@ -477,7 +477,7 @@ class Cxx1DeclFamily(GleanSchemaPredicate):
     return f"cxx1.DeclFamily.5 {json.dumps(key)}", DeclFamily
 
   @staticmethod
-  def angle_query(*, arg: Tuple[()]) -> "Cxx1DeclFamily":
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "Cxx1DeclFamily":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1FunctionDeclarationNameString(GleanSchemaPredicate):
@@ -486,7 +486,7 @@ class Cxx1FunctionDeclarationNameString(GleanSchemaPredicate):
     return f"cxx1.FunctionDeclarationNameString.5 {{ fname = _, name = _ }}", FunctionDeclarationNameString
 
   @staticmethod
-  def angle_query(*, fname: Tuple[()], name: str) -> "Cxx1FunctionDeclarationNameString":
+  def angle_query(*, fname: Optional[Tuple[()]] = None, name: Optional[str] = None) -> "Cxx1FunctionDeclarationNameString":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1EnumeratorInEnum(GleanSchemaPredicate):
@@ -495,7 +495,7 @@ class Cxx1EnumeratorInEnum(GleanSchemaPredicate):
     return f"cxx1.EnumeratorInEnum.5 {{ enumerator = _, enum_ = _ }}", EnumeratorInEnum
 
   @staticmethod
-  def angle_query(*, enumerator: Tuple[()], enum_: Tuple[()]) -> "Cxx1EnumeratorInEnum":
+  def angle_query(*, enumerator: Optional[Tuple[()]] = None, enum_: Optional[Tuple[()]] = None) -> "Cxx1EnumeratorInEnum":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1RecordDefinition(GleanSchemaPredicate):
@@ -504,7 +504,7 @@ class Cxx1RecordDefinition(GleanSchemaPredicate):
     return f"cxx1.RecordDefinition.5 {{ declaration = _, bases = _, members = _ }}", RecordDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Tuple[()], bases: Tuple[()], members: Tuple[()]) -> "Cxx1RecordDefinition":
+  def angle_query(*, declaration: Optional[Tuple[()]] = None, bases: Optional[Tuple[()]] = None, members: Optional[Tuple[()]] = None) -> "Cxx1RecordDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1Type(GleanSchemaPredicate):
@@ -513,7 +513,7 @@ class Cxx1Type(GleanSchemaPredicate):
     return f"cxx1.Type.5 {json.dumps(key)}", Type
 
   @staticmethod
-  def angle_query(*, arg: str) -> "Cxx1Type":
+  def angle_query(*, arg: Optional[str] = None) -> "Cxx1Type":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1RecordDerived(GleanSchemaPredicate):
@@ -522,7 +522,7 @@ class Cxx1RecordDerived(GleanSchemaPredicate):
     return f"cxx1.RecordDerived.5 {{ base = _, derived = _ }}", RecordDerived
 
   @staticmethod
-  def angle_query(*, base: Tuple[()], derived: Tuple[()]) -> "Cxx1RecordDerived":
+  def angle_query(*, base: Optional[Tuple[()]] = None, derived: Optional[Tuple[()]] = None) -> "Cxx1RecordDerived":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1PPDefineLocation(GleanSchemaPredicate):
@@ -531,7 +531,7 @@ class Cxx1PPDefineLocation(GleanSchemaPredicate):
     return f"cxx1.PPDefineLocation.5 {{ define = _, name = _, file = _, range = _ }}", PPDefineLocation
 
   @staticmethod
-  def angle_query(*, define: Tuple[()], name: str, file: Tuple[()], range: Tuple[()]) -> "Cxx1PPDefineLocation":
+  def angle_query(*, define: Optional[Tuple[()]] = None, name: Optional[str] = None, file: Optional[Tuple[()]] = None, range: Optional[Tuple[()]] = None) -> "Cxx1PPDefineLocation":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1ObjcImplements(GleanSchemaPredicate):
@@ -540,7 +540,7 @@ class Cxx1ObjcImplements(GleanSchemaPredicate):
     return f"cxx1.ObjcImplements.5 {{ implementation = _, interface_ = _ }}", ObjcImplements
 
   @staticmethod
-  def angle_query(*, implementation: Tuple[()], interface_: Tuple[()]) -> "Cxx1ObjcImplements":
+  def angle_query(*, implementation: Optional[Tuple[()]] = None, interface_: Optional[Tuple[()]] = None) -> "Cxx1ObjcImplements":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1ObjcSelector(GleanSchemaPredicate):
@@ -549,7 +549,7 @@ class Cxx1ObjcSelector(GleanSchemaPredicate):
     return f"cxx1.ObjcSelector.5 {json.dumps(key)}", ObjcSelector
 
   @staticmethod
-  def angle_query(*, arg: Tuple[()]) -> "Cxx1ObjcSelector":
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "Cxx1ObjcSelector":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1ObjcMethodDefinition(GleanSchemaPredicate):
@@ -558,7 +558,7 @@ class Cxx1ObjcMethodDefinition(GleanSchemaPredicate):
     return f"cxx1.ObjcMethodDefinition.5 {json.dumps(key)}", ObjcMethodDefinition
 
   @staticmethod
-  def angle_query(*, arg: Tuple[()]) -> "Cxx1ObjcMethodDefinition":
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "Cxx1ObjcMethodDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1DeclarationInTrace(GleanSchemaPredicate):
@@ -567,7 +567,7 @@ class Cxx1DeclarationInTrace(GleanSchemaPredicate):
     return f"cxx1.DeclarationInTrace.5 {{ decl = _, trace = _ }}", DeclarationInTrace
 
   @staticmethod
-  def angle_query(*, decl: Tuple[()], trace: Tuple[()]) -> "Cxx1DeclarationInTrace":
+  def angle_query(*, decl: Optional[Tuple[()]] = None, trace: Optional[Tuple[()]] = None) -> "Cxx1DeclarationInTrace":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1PPEntityLocation(GleanSchemaPredicate):
@@ -576,7 +576,7 @@ class Cxx1PPEntityLocation(GleanSchemaPredicate):
     return f"cxx1.PPEntityLocation.5 {{ entity = _, name = _, file = _, range = _ }}", PPEntityLocation
 
   @staticmethod
-  def angle_query(*, entity: Tuple[()], name: str, file: Tuple[()], range: Tuple[()]) -> "Cxx1PPEntityLocation":
+  def angle_query(*, entity: Optional[Tuple[()]] = None, name: Optional[str] = None, file: Optional[Tuple[()]] = None, range: Optional[Tuple[()]] = None) -> "Cxx1PPEntityLocation":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1UsingDeclaration(GleanSchemaPredicate):
@@ -585,7 +585,7 @@ class Cxx1UsingDeclaration(GleanSchemaPredicate):
     return f"cxx1.UsingDeclaration.5 {{ name = _, source = _ }}", UsingDeclaration
 
   @staticmethod
-  def angle_query(*, name: Tuple[()], source: Tuple[()]) -> "Cxx1UsingDeclaration":
+  def angle_query(*, name: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "Cxx1UsingDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1QName(GleanSchemaPredicate):
@@ -594,7 +594,7 @@ class Cxx1QName(GleanSchemaPredicate):
     return f"cxx1.QName.5 {{ name = _, scope = _ }}", QName
 
   @staticmethod
-  def angle_query(*, name: Tuple[()], scope: Tuple[()]) -> "Cxx1QName":
+  def angle_query(*, name: Optional[Tuple[()]] = None, scope: Optional[Tuple[()]] = None) -> "Cxx1QName":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1ObjcContainerDefinition(GleanSchemaPredicate):
@@ -603,7 +603,7 @@ class Cxx1ObjcContainerDefinition(GleanSchemaPredicate):
     return f"cxx1.ObjcContainerDefinition.5 {{ declaration = _, protocols = _, members = _ }}", ObjcContainerDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Tuple[()], protocols: Tuple[()], members: Tuple[()]) -> "Cxx1ObjcContainerDefinition":
+  def angle_query(*, declaration: Optional[Tuple[()]] = None, protocols: Optional[Tuple[()]] = None, members: Optional[Tuple[()]] = None) -> "Cxx1ObjcContainerDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1EnumDefinition(GleanSchemaPredicate):
@@ -612,7 +612,7 @@ class Cxx1EnumDefinition(GleanSchemaPredicate):
     return f"cxx1.EnumDefinition.5 {{ declaration = _, enumerators = _ }}", EnumDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Tuple[()], enumerators: Tuple[()]) -> "Cxx1EnumDefinition":
+  def angle_query(*, declaration: Optional[Tuple[()]] = None, enumerators: Optional[Tuple[()]] = None) -> "Cxx1EnumDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1VariableDeclaration(GleanSchemaPredicate):
@@ -621,7 +621,7 @@ class Cxx1VariableDeclaration(GleanSchemaPredicate):
     return f"cxx1.VariableDeclaration.5 {{ name = _, type = _, kind = _, source = _ }}", VariableDeclaration
 
   @staticmethod
-  def angle_query(*, name: Tuple[()], type: Tuple[()], kind: Tuple[()], source: Tuple[()]) -> "Cxx1VariableDeclaration":
+  def angle_query(*, name: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "Cxx1VariableDeclaration":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1DeclarationLocationNameSpan(GleanSchemaPredicate):
@@ -630,7 +630,7 @@ class Cxx1DeclarationLocationNameSpan(GleanSchemaPredicate):
     return f"cxx1.DeclarationLocationNameSpan.5 {{ decl = _, source = _, name = _, file = _, span = _ }}", DeclarationLocationNameSpan
 
   @staticmethod
-  def angle_query(*, decl: Tuple[()], source: Tuple[()], name: str, file: Tuple[()], span: Tuple[()]) -> "Cxx1DeclarationLocationNameSpan":
+  def angle_query(*, decl: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None, name: Optional[str] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "Cxx1DeclarationLocationNameSpan":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1ObjcContainerBase(GleanSchemaPredicate):
@@ -639,7 +639,7 @@ class Cxx1ObjcContainerBase(GleanSchemaPredicate):
     return f"cxx1.ObjcContainerBase.5 {{ declaration = _, base = _ }}", ObjcContainerBase
 
   @staticmethod
-  def angle_query(*, declaration: Tuple[()], base: Tuple[()]) -> "Cxx1ObjcContainerBase":
+  def angle_query(*, declaration: Optional[Tuple[()]] = None, base: Optional[Tuple[()]] = None) -> "Cxx1ObjcContainerBase":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1DeclarationSources(GleanSchemaPredicate):
@@ -648,7 +648,7 @@ class Cxx1DeclarationSources(GleanSchemaPredicate):
     return f"cxx1.DeclarationSources.5 {{ target = _, sources = _ }}", DeclarationSources
 
   @staticmethod
-  def angle_query(*, target: Tuple[()], sources: Tuple[()]) -> "Cxx1DeclarationSources":
+  def angle_query(*, target: Optional[Tuple[()]] = None, sources: Optional[Tuple[()]] = None) -> "Cxx1DeclarationSources":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1TranslationUnitXRefs(GleanSchemaPredicate):
@@ -657,7 +657,7 @@ class Cxx1TranslationUnitXRefs(GleanSchemaPredicate):
     return f"cxx1.TranslationUnitXRefs.5 {{ tunit = _, xrefs = _ }}", TranslationUnitXRefs
 
   @staticmethod
-  def angle_query(*, tunit: Tuple[()], xrefs: Tuple[()]) -> "Cxx1TranslationUnitXRefs":
+  def angle_query(*, tunit: Optional[Tuple[()]] = None, xrefs: Optional[Tuple[()]] = None) -> "Cxx1TranslationUnitXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1ObjcPropertyIVar(GleanSchemaPredicate):
@@ -666,7 +666,7 @@ class Cxx1ObjcPropertyIVar(GleanSchemaPredicate):
     return f"cxx1.ObjcPropertyIVar.5 {{ property = _, ivar = _ }}", ObjcPropertyIVar
 
   @staticmethod
-  def angle_query(*, property: Tuple[()], ivar: Tuple[()]) -> "Cxx1ObjcPropertyIVar":
+  def angle_query(*, property: Optional[Tuple[()]] = None, ivar: Optional[Tuple[()]] = None) -> "Cxx1ObjcPropertyIVar":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1ObjcContainerInheritance(GleanSchemaPredicate):
@@ -675,7 +675,7 @@ class Cxx1ObjcContainerInheritance(GleanSchemaPredicate):
     return f"cxx1.ObjcContainerInheritance.5 {{ base = _, declaration = _ }}", ObjcContainerInheritance
 
   @staticmethod
-  def angle_query(*, base: Tuple[()], declaration: Tuple[()]) -> "Cxx1ObjcContainerInheritance":
+  def angle_query(*, base: Optional[Tuple[()]] = None, declaration: Optional[Tuple[()]] = None) -> "Cxx1ObjcContainerInheritance":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1FunctionDefinition(GleanSchemaPredicate):
@@ -684,7 +684,7 @@ class Cxx1FunctionDefinition(GleanSchemaPredicate):
     return f"cxx1.FunctionDefinition.5 {{ declaration = _, isInline = _ }}", FunctionDefinition
 
   @staticmethod
-  def angle_query(*, declaration: Tuple[()], isInline: bool) -> "Cxx1FunctionDefinition":
+  def angle_query(*, declaration: Optional[Tuple[()]] = None, isInline: Optional[bool] = None) -> "Cxx1FunctionDefinition":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1Signature(GleanSchemaPredicate):
@@ -693,7 +693,7 @@ class Cxx1Signature(GleanSchemaPredicate):
     return f"cxx1.Signature.5 {{ returns = _, parameters = _ }}", Signature
 
   @staticmethod
-  def angle_query(*, returns: Tuple[()], parameters: Tuple[()]) -> "Cxx1Signature":
+  def angle_query(*, returns: Optional[Tuple[()]] = None, parameters: Optional[Tuple[()]] = None) -> "Cxx1Signature":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1DeclInRecord(GleanSchemaPredicate):
@@ -702,7 +702,7 @@ class Cxx1DeclInRecord(GleanSchemaPredicate):
     return f"cxx1.DeclInRecord.5 {{ decl = _, record = _ }}", DeclInRecord
 
   @staticmethod
-  def angle_query(*, decl: Tuple[()], record: Tuple[()]) -> "Cxx1DeclInRecord":
+  def angle_query(*, decl: Optional[Tuple[()]] = None, record: Optional[Tuple[()]] = None) -> "Cxx1DeclInRecord":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1FileXRefs(GleanSchemaPredicate):
@@ -711,7 +711,7 @@ class Cxx1FileXRefs(GleanSchemaPredicate):
     return f"cxx1.FileXRefs.5 {{ xmap = _, externals = _ }}", FileXRefs
 
   @staticmethod
-  def angle_query(*, xmap: Tuple[()], externals: Tuple[()]) -> "Cxx1FileXRefs":
+  def angle_query(*, xmap: Optional[Tuple[()]] = None, externals: Optional[Tuple[()]] = None) -> "Cxx1FileXRefs":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1Attribute(GleanSchemaPredicate):
@@ -720,7 +720,7 @@ class Cxx1Attribute(GleanSchemaPredicate):
     return f"cxx1.Attribute.5 {json.dumps(key)}", Attribute
 
   @staticmethod
-  def angle_query(*, arg: str) -> "Cxx1Attribute":
+  def angle_query(*, arg: Optional[str] = None) -> "Cxx1Attribute":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1NamespaceDeclarationName(GleanSchemaPredicate):
@@ -729,7 +729,7 @@ class Cxx1NamespaceDeclarationName(GleanSchemaPredicate):
     return f"cxx1.NamespaceDeclarationName.5 {{ qname = _, name = _ }}", NamespaceDeclarationName
 
   @staticmethod
-  def angle_query(*, qname: Tuple[()], name: Tuple[()]) -> "Cxx1NamespaceDeclarationName":
+  def angle_query(*, qname: Optional[Tuple[()]] = None, name: Optional[Tuple[()]] = None) -> "Cxx1NamespaceDeclarationName":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1FunctionDeclarationName(GleanSchemaPredicate):
@@ -738,7 +738,7 @@ class Cxx1FunctionDeclarationName(GleanSchemaPredicate):
     return f"cxx1.FunctionDeclarationName.5 {{ fname = _, name = _ }}", FunctionDeclarationName
 
   @staticmethod
-  def angle_query(*, fname: Tuple[()], name: Tuple[()]) -> "Cxx1FunctionDeclarationName":
+  def angle_query(*, fname: Optional[Tuple[()]] = None, name: Optional[Tuple[()]] = None) -> "Cxx1FunctionDeclarationName":
     raise Exception("this function can only be called from @angle_query")
 
 class Cxx1FunctionName(GleanSchemaPredicate):
@@ -747,7 +747,7 @@ class Cxx1FunctionName(GleanSchemaPredicate):
     return f"cxx1.FunctionName.5 {json.dumps(key)}", FunctionName
 
   @staticmethod
-  def angle_query(*, arg: Tuple[()]) -> "Cxx1FunctionName":
+  def angle_query(*, arg: Optional[Tuple[()]] = None) -> "Cxx1FunctionName":
     raise Exception("this function can only be called from @angle_query")
 
 

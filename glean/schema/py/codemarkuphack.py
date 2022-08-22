@@ -1,6 +1,6 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Type, Union, TypeVar
+from typing import Optional, Tuple, Union
 import json
 from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
@@ -26,7 +26,7 @@ class CodemarkupHackHackEntityInfo(GleanSchemaPredicate):
     return f"codemarkup.hack.HackEntityInfo.2 {{ entity = _, info = _ }}", HackHackEntityInfo
 
   @staticmethod
-  def angle_query(*, entity: Tuple[()], info: Tuple[()]) -> "CodemarkupHackHackEntityInfo":
+  def angle_query(*, entity: Optional[Tuple[()]] = None, info: Optional[Tuple[()]] = None) -> "CodemarkupHackHackEntityInfo":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHackHackEntityLocation(GleanSchemaPredicate):
@@ -35,7 +35,7 @@ class CodemarkupHackHackEntityLocation(GleanSchemaPredicate):
     return f"codemarkup.hack.HackEntityLocation.2 {{ entity = _, location = _ }}", HackHackEntityLocation
 
   @staticmethod
-  def angle_query(*, entity: Tuple[()], location: Tuple[()]) -> "CodemarkupHackHackEntityLocation":
+  def angle_query(*, entity: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "CodemarkupHackHackEntityLocation":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHackHackVisibility(GleanSchemaPredicate):
@@ -44,7 +44,7 @@ class CodemarkupHackHackVisibility(GleanSchemaPredicate):
     return f"codemarkup.hack.HackVisibility.2 {{ entity = _, visibility = _ }}", HackHackVisibility
 
   @staticmethod
-  def angle_query(*, entity: Tuple[()], visibility: Tuple[()]) -> "CodemarkupHackHackVisibility":
+  def angle_query(*, entity: Optional[Tuple[()]] = None, visibility: Optional[Tuple[()]] = None) -> "CodemarkupHackHackVisibility":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHackHackAnnotation(GleanSchemaPredicate):
@@ -53,7 +53,7 @@ class CodemarkupHackHackAnnotation(GleanSchemaPredicate):
     return f"codemarkup.hack.HackAnnotation.2 {{ entity = _, anns = _ }}", HackHackAnnotation
 
   @staticmethod
-  def angle_query(*, entity: Tuple[()], anns: Tuple[()]) -> "CodemarkupHackHackAnnotation":
+  def angle_query(*, entity: Optional[Tuple[()]] = None, anns: Optional[Tuple[()]] = None) -> "CodemarkupHackHackAnnotation":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHackHackResolveLocation(GleanSchemaPredicate):
@@ -62,7 +62,7 @@ class CodemarkupHackHackResolveLocation(GleanSchemaPredicate):
     return f"codemarkup.hack.HackResolveLocation.2 {{ location = _, entity = _ }}", HackHackResolveLocation
 
   @staticmethod
-  def angle_query(*, location: Tuple[()], entity: Tuple[()]) -> "CodemarkupHackHackResolveLocation":
+  def angle_query(*, location: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupHackHackResolveLocation":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHackHackContainsChildEntity(GleanSchemaPredicate):
@@ -71,7 +71,7 @@ class CodemarkupHackHackContainsChildEntity(GleanSchemaPredicate):
     return f"codemarkup.hack.HackContainsChildEntity.2 {{ parent = _, child = _ }}", HackHackContainsChildEntity
 
   @staticmethod
-  def angle_query(*, parent: Tuple[()], child: Tuple[()]) -> "CodemarkupHackHackContainsChildEntity":
+  def angle_query(*, parent: Optional[Tuple[()]] = None, child: Optional[Tuple[()]] = None) -> "CodemarkupHackHackContainsChildEntity":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHackHackFileEntityXRefLocations(GleanSchemaPredicate):
@@ -80,7 +80,7 @@ class CodemarkupHackHackFileEntityXRefLocations(GleanSchemaPredicate):
     return f"codemarkup.hack.HackFileEntityXRefLocations.2 {{ file = _, xref = _, entity = _ }}", HackHackFileEntityXRefLocations
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], xref: Tuple[()], entity: Tuple[()]) -> "CodemarkupHackHackFileEntityXRefLocations":
+  def angle_query(*, file: Optional[Tuple[()]] = None, xref: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupHackHackFileEntityXRefLocations":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHackHackEntityUses(GleanSchemaPredicate):
@@ -89,7 +89,7 @@ class CodemarkupHackHackEntityUses(GleanSchemaPredicate):
     return f"codemarkup.hack.HackEntityUses.2 {{ target = _, file = _, span = _ }}", HackHackEntityUses
 
   @staticmethod
-  def angle_query(*, target: Tuple[()], file: Tuple[()], span: Tuple[()]) -> "CodemarkupHackHackEntityUses":
+  def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "CodemarkupHackHackEntityUses":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHackHackEntityKind(GleanSchemaPredicate):
@@ -98,7 +98,7 @@ class CodemarkupHackHackEntityKind(GleanSchemaPredicate):
     return f"codemarkup.hack.HackEntityKind.2 {{ entity = _, kind = _ }}", HackHackEntityKind
 
   @staticmethod
-  def angle_query(*, entity: Tuple[()], kind: Tuple[()]) -> "CodemarkupHackHackEntityKind":
+  def angle_query(*, entity: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None) -> "CodemarkupHackHackEntityKind":
     raise Exception("this function can only be called from @angle_query")
 
 class CodemarkupHackHackFileEntityXRefSpans(GleanSchemaPredicate):
@@ -107,7 +107,7 @@ class CodemarkupHackHackFileEntityXRefSpans(GleanSchemaPredicate):
     return f"codemarkup.hack.HackFileEntityXRefSpans.2 {{ file = _, span = _, entity = _ }}", HackHackFileEntityXRefSpans
 
   @staticmethod
-  def angle_query(*, file: Tuple[()], span: Tuple[()], entity: Tuple[()]) -> "CodemarkupHackHackFileEntityXRefSpans":
+  def angle_query(*, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupHackHackFileEntityXRefSpans":
     raise Exception("this function can only be called from @angle_query")
 
 

@@ -1,6 +1,6 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Tuple, Type, Union, TypeVar
+from typing import Optional, Tuple, Union
 import json
 from thrift.py3 import Struct
 from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
@@ -18,7 +18,7 @@ class SearchPpSearchByName(GleanSchemaPredicate):
     return f"search.pp.SearchByName.2 {{ macro = _, entity = _ }}", PpSearchByName
 
   @staticmethod
-  def angle_query(*, macro: Tuple[()], entity: Tuple[()]) -> "SearchPpSearchByName":
+  def angle_query(*, macro: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "SearchPpSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
 class SearchPpSearchByName(GleanSchemaPredicate):
@@ -27,7 +27,7 @@ class SearchPpSearchByName(GleanSchemaPredicate):
     return f"search.pp.SearchByName.1 {{ name = _, entity = _ }}", PpSearchByName
 
   @staticmethod
-  def angle_query(*, name: str, entity: Tuple[()]) -> "SearchPpSearchByName":
+  def angle_query(*, name: Optional[str] = None, entity: Optional[Tuple[()]] = None) -> "SearchPpSearchByName":
     raise Exception("this function can only be called from @angle_query")
 
 

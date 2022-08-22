@@ -33,7 +33,7 @@ genSchemaPy _version preddefs typedefs =
   Text.unlines
   [ "# \x40generated"
   , "# To regenerate this file run fbcode//glean/schema/gen/sync"
-  , "from typing import Tuple, Type, Union, TypeVar"
+  , "from typing import Optional, Tuple, Union"
   , "from thrift.py3 import Struct"
   , ""
   , "class GleanSchemaPredicate:"
@@ -105,7 +105,7 @@ header :: Text
 header = Text.unlines
   [ "# \x40generated"
   , "# To regenerate this file run fbcode//glean/schema/gen/sync"
-  , "from typing import Tuple, Type, Union, TypeVar"
+  , "from typing import Optional, Tuple, Union"
   , "import json"
   , "from thrift.py3 import Struct"
   , "from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate"
@@ -191,10 +191,13 @@ angleFor key = case key of
   _ -> Text.pack "json.dumps(key)"
 
 baseTy :: Type_ pref tref -> Text
-baseTy t = case t of
-  NatTy{} -> Text.pack "int"
-  BooleanTy{} -> Text.pack "bool"
-  StringTy{} -> Text.pack "str"
-  RecordTy [] -> Text.pack "Tuple[()]"
+baseTy t = wrapOptionalArg $ case t of
+  NatTy{} -> "int"
+  BooleanTy{} -> "bool"
+  StringTy{} -> "str"
+  RecordTy [] -> "Tuple[()]"
   -- TODO other types
-  _ -> Text.pack "Tuple[()]"
+  _ -> "Tuple[()]"
+  where
+    wrapOptionalArg :: String -> Text
+    wrapOptionalArg arg = "Optional[" <> Text.pack arg <> "] = None"
