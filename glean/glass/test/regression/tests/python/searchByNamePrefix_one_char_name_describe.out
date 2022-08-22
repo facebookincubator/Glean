@@ -21,7 +21,18 @@
                     "localName": "ShadowClass"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/py/shadow.py/shadow.ShadowClass"
+                "sym": "test/py/shadow.py/shadow.ShadowClass",
+                "sym_location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 26,
+                        "lineBegin": 10,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             }
         ],
         "symbols": [

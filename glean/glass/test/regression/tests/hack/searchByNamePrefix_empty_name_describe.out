@@ -21,7 +21,18 @@
                     "localName": "NS"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/NS"
+                "sym": "test/php/NS",
+                "sym_location": {
+                    "filepath": "www/Namespace.php",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 13,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -43,7 +54,18 @@
                     "localName": "NamespaceClass"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/NS/NamespaceClass"
+                "sym": "test/php/NS/NamespaceClass",
+                "sym_location": {
+                    "filepath": "www/Namespace.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 12,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -66,6 +88,17 @@
                 },
                 "repo_hash": "testhash",
                 "sym": "test/php/NS/NamespaceClass/class_function",
+                "sym_location": {
+                    "filepath": "www/Namespace.php",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 13,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
                 "visibility": 20
             },
             {
@@ -88,7 +121,18 @@
                     "localName": "Position"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/Position"
+                "sym": "test/php/Position",
+                "sym_location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 16,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -109,7 +153,18 @@
                     "localName": "Bottom"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/Position/Bottom"
+                "sym": "test/php/Position/Bottom",
+                "sym_location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 9,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -130,7 +185,18 @@
                     "localName": "Center"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/Position/Center"
+                "sym": "test/php/Position/Center",
+                "sym_location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 9,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -151,7 +217,18 @@
                     "localName": "Left"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/Position/Left"
+                "sym": "test/php/Position/Left",
+                "sym_location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 7,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -172,7 +249,18 @@
                     "localName": "Right"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/Position/Right"
+                "sym": "test/php/Position/Right",
+                "sym_location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 8,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -193,7 +281,18 @@
                     "localName": "Top"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/Position/Top"
+                "sym": "test/php/Position/Top",
+                "sym_location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 6,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -215,7 +314,18 @@
                     "localName": "RefClass"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/RefClass"
+                "sym": "test/php/RefClass",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -236,7 +346,18 @@
                     "localName": "JAZZ"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/RefClass/JAZZ"
+                "sym": "test/php/RefClass/JAZZ",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 23,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -259,6 +380,17 @@
                 },
                 "repo_hash": "testhash",
                 "sym": "test/php/RefClass/bar",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 25,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
                 "visibility": 20
             },
             {
@@ -282,6 +414,17 @@
                 },
                 "repo_hash": "testhash",
                 "sym": "test/php/RefClass/bazza",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 21,
+                        "lineEnd": 23
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
                 "visibility": 20
             },
             {
@@ -305,6 +448,17 @@
                 },
                 "repo_hash": "testhash",
                 "sym": "test/php/RefClass/foo",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 17,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
                 "visibility": 20
             },
             {
@@ -328,6 +482,17 @@
                 },
                 "repo_hash": "testhash",
                 "sym": "test/php/RefClass/raz",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 25,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
                 "visibility": 40
             },
             {
@@ -366,7 +531,18 @@
                     "localName": "SourceClass"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SourceClass"
+                "sym": "test/php/SourceClass",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 13,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -387,7 +563,18 @@
                     "localName": "BAZ"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SourceClass/BAZ"
+                "sym": "test/php/SourceClass/BAZ",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 21,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -409,7 +596,18 @@
                     "localName": "T"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SourceClass/T"
+                "sym": "test/php/SourceClass/T",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 22,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -432,6 +630,17 @@
                 },
                 "repo_hash": "testhash",
                 "sym": "test/php/SourceClass/bar",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 22,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
                 "visibility": 20
             },
             {
@@ -455,6 +664,17 @@
                 },
                 "repo_hash": "testhash",
                 "sym": "test/php/SourceClass/daz",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 23,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
                 "visibility": 20
             },
             {
@@ -477,7 +697,18 @@
                     "localName": "SourceInterface"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SourceInterface"
+                "sym": "test/php/SourceInterface",
+                "sym_location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -498,7 +729,18 @@
                     "localName": "JAZZ"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SourceInterface/JAZZ"
+                "sym": "test/php/SourceInterface/JAZZ",
+                "sym_location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 27,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -521,6 +763,17 @@
                 },
                 "repo_hash": "testhash",
                 "sym": "test/php/SourceInterface/foo",
+                "sym_location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 37,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
                 "visibility": 20
             },
             {
@@ -543,7 +796,18 @@
                     "localName": "SourceTrait"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SourceTrait"
+                "sym": "test/php/SourceTrait",
+                "sym_location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -566,6 +830,17 @@
                 },
                 "repo_hash": "testhash",
                 "sym": "test/php/SourceTrait/quux",
+                "sym_location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 11,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
                 "visibility": 20
             },
             {
@@ -588,7 +863,18 @@
                     "localName": "SubClass"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SubClass"
+                "sym": "test/php/SubClass",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 38,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -610,7 +896,18 @@
                     "localName": "SuperClass"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SuperClass"
+                "sym": "test/php/SuperClass",
+                "sym_location": {
+                    "filepath": "www/SuperClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -631,7 +928,18 @@
                     "localName": "BAZ"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SuperClass/BAZ"
+                "sym": "test/php/SuperClass/BAZ",
+                "sym_location": {
+                    "filepath": "www/SuperClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 23,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -654,6 +962,17 @@
                 },
                 "repo_hash": "testhash",
                 "sym": "test/php/SuperClass/superAdd",
+                "sym_location": {
+                    "filepath": "www/SuperClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 14,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
                 "visibility": 20
             },
             {
@@ -676,7 +995,18 @@
                     "localName": "TestAnnotation"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/TestAnnotation"
+                "sym": "test/php/TestAnnotation",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 29,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -699,6 +1029,17 @@
                 },
                 "repo_hash": "testhash",
                 "sym": "test/php/TestAnnotation/__construct",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 55,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
                 "visibility": 20
             },
             {
@@ -722,6 +1063,17 @@
                 },
                 "repo_hash": "testhash",
                 "sym": "test/php/TestAnnotation/test",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 46,
+                        "columnEnd": 51,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
                 "visibility": 40
             },
             {
@@ -743,7 +1095,18 @@
                     "localName": "WALDO"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/WALDO"
+                "sym": "test/php/WALDO",
+                "sym_location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 22,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -764,7 +1127,18 @@
                     "localName": "corge"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/corge"
+                "sym": "test/php/corge",
+                "sym_location": {
+                    "filepath": "www/TopLevel.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 12,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             }
         ],
         "symbols": [

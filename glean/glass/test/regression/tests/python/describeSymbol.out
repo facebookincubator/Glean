@@ -19,6 +19,17 @@
             "localName": "all"
         },
         "repo_hash": "testhash",
-        "sym": "test/py/all.py/all"
+        "sym": "test/py/all.py/all",
+        "sym_location": {
+            "filepath": "all.py",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "lineBegin": 1,
+                "lineEnd": 21
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": []
     }
 ]

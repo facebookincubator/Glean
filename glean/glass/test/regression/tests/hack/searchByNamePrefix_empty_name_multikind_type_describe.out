@@ -22,7 +22,18 @@
                     "localName": "T"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SourceClass/T"
+                "sym": "test/php/SourceClass/T",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 22,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             }
         ],
         "symbols": [

@@ -38,7 +38,18 @@
                     "localName": "SourceClass"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SourceClass"
+                "sym": "test/php/SourceClass",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 13,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -60,7 +71,18 @@
                     "localName": "SourceInterface"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SourceInterface"
+                "sym": "test/php/SourceInterface",
+                "sym_location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -82,7 +104,18 @@
                     "localName": "SourceTrait"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SourceTrait"
+                "sym": "test/php/SourceTrait",
+                "sym_location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             }
         ],
         "symbols": [

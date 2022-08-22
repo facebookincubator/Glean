@@ -20,7 +20,18 @@
                     "localName": "plus"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/cjs_exports/plus"
+                "sym": "test/js/cjs_exports/plus",
+                "sym_location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 14,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -40,7 +51,18 @@
                     "localName": "x"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/cjs_exports/x"
+                "sym": "test/js/cjs_exports/x",
+                "sym_location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 16,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -60,7 +82,18 @@
                     "localName": "C"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/es_exports/C"
+                "sym": "test/js/es_exports/C",
+                "sym_location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 15,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -80,7 +113,18 @@
                     "localName": "bar"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/es_exports/bar"
+                "sym": "test/js/es_exports/bar",
+                "sym_location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 24,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -100,7 +144,18 @@
                     "localName": "baz"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/es_exports/baz"
+                "sym": "test/js/es_exports/baz",
+                "sym_location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -120,7 +175,18 @@
                     "localName": "bor"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/es_exports/bor"
+                "sym": "test/js/es_exports/bor",
+                "sym_location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 13,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -140,7 +206,18 @@
                     "localName": "d"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/es_exports/d"
+                "sym": "test/js/es_exports/d",
+                "sym_location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -160,7 +237,18 @@
                     "localName": "foo"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/es_exports/foo"
+                "sym": "test/js/es_exports/foo",
+                "sym_location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 8,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -180,7 +268,18 @@
                     "localName": "num"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/es_exports/num"
+                "sym": "test/js/es_exports/num",
+                "sym_location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 16,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -200,7 +299,18 @@
                     "localName": "x"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/es_exports/x"
+                "sym": "test/js/es_exports/x",
+                "sym_location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 15,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -220,7 +330,18 @@
                     "localName": "C"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/imports/C"
+                "sym": "test/js/imports/C",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 22,
+                        "lineBegin": 29,
+                        "lineEnd": 29
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -240,7 +361,18 @@
                     "localName": "D"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/imports/D"
+                "sym": "test/js/imports/D",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 7,
+                        "lineBegin": 31,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -260,7 +392,18 @@
                     "localName": "a"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/imports/a"
+                "sym": "test/js/imports/a",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 9,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -280,7 +423,18 @@
                     "localName": "b"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/imports/b"
+                "sym": "test/js/imports/b",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 12,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -300,7 +454,18 @@
                     "localName": "bar"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/imports/bar"
+                "sym": "test/js/imports/bar",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 17,
+                        "columnEnd": 20,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -320,7 +485,18 @@
                     "localName": "baz"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/imports/baz"
+                "sym": "test/js/imports/baz",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 22,
+                        "columnEnd": 25,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -340,7 +516,18 @@
                     "localName": "c"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/imports/c"
+                "sym": "test/js/imports/c",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 15,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -360,7 +547,18 @@
                     "localName": "caz"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/imports/caz"
+                "sym": "test/js/imports/caz",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -380,7 +578,18 @@
                     "localName": "d"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/imports/d"
+                "sym": "test/js/imports/d",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 9,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -400,7 +609,18 @@
                     "localName": "e"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/imports/e"
+                "sym": "test/js/imports/e",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -420,7 +640,18 @@
                     "localName": "fn"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/imports/fn"
+                "sym": "test/js/imports/fn",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 10,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -440,7 +671,18 @@
                     "localName": "foo"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/imports/foo"
+                "sym": "test/js/imports/foo",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 12,
+                        "columnEnd": 15,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -460,7 +702,18 @@
                     "localName": "num"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/imports/num"
+                "sym": "test/js/imports/num",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 17,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -480,7 +733,18 @@
                     "localName": "qux"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/imports/qux"
+                "sym": "test/js/imports/qux",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 16,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -500,7 +764,18 @@
                     "localName": "s"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/imports/s"
+                "sym": "test/js/imports/s",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 32,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -520,7 +795,18 @@
                     "localName": "str"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/imports/str"
+                "sym": "test/js/imports/str",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 18,
+                        "lineBegin": 29,
+                        "lineEnd": 29
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -540,7 +826,18 @@
                     "localName": "x"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/imports/x"
+                "sym": "test/js/imports/x",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -560,7 +857,18 @@
                     "localName": "y"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/imports/y"
+                "sym": "test/js/imports/y",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -580,7 +888,18 @@
                     "localName": "z"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/imports/z"
+                "sym": "test/js/imports/z",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             }
         ],
         "symbols": [

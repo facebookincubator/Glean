@@ -33,7 +33,18 @@
                 },
                 "repo_hash": "testhash",
                 "signature": "class RefClass",
-                "sym": "test/php/RefClass"
+                "sym": "test/php/RefClass",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             "test/php/SourceInterface": {
                 "annotations": [],
@@ -56,7 +67,18 @@
                 },
                 "repo_hash": "testhash",
                 "signature": "interface SourceInterface",
-                "sym": "test/php/SourceInterface"
+                "sym": "test/php/SourceInterface",
+                "sym_location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             "test/php/SourceTrait": {
                 "annotations": [],
@@ -79,7 +101,18 @@
                 },
                 "repo_hash": "testhash",
                 "signature": "trait SourceTrait",
-                "sym": "test/php/SourceTrait"
+                "sym": "test/php/SourceTrait",
+                "sym_location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             }
         }
     }

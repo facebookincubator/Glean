@@ -20,7 +20,18 @@
                     "localName": "foo"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/es_exports/foo"
+                "sym": "test/js/es_exports/foo",
+                "sym_location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 8,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -40,7 +51,18 @@
                     "localName": "foo"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/js/imports/foo"
+                "sym": "test/js/imports/foo",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 12,
+                        "columnEnd": 15,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             }
         ],
         "symbols": [

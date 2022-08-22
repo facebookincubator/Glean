@@ -21,7 +21,18 @@
                     "localName": "foo"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/cpp/foo/foo"
+                "sym": "test/cpp/foo/foo",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 19,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -42,7 +53,18 @@
                     "localName": "fooFn"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/cpp/foo/fooFn"
+                "sym": "test/cpp/foo/fooFn",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 34,
+                        "lineEnd": 36
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -63,7 +85,18 @@
                     "localName": "h"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/cpp/h"
+                "sym": "test/cpp/h",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 40,
+                        "lineEnd": 48
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             }
         ],
         "symbols": [

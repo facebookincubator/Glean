@@ -21,7 +21,18 @@
                     "localName": "meth"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/py/all.py/all.LocalClass.meth"
+                "sym": "test/py/all.py/all.LocalClass.meth",
+                "sym_location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 20,
+                        "lineBegin": 16,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -42,7 +53,18 @@
                     "localName": "another_method"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/py/lib.py/lib.HelperClass.another_method"
+                "sym": "test/py/lib.py/lib.HelperClass.another_method",
+                "sym_location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 15,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -63,7 +85,18 @@
                     "localName": "method"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/py/lib.py/lib.HelperClass.method"
+                "sym": "test/py/lib.py/lib.HelperClass.method",
+                "sym_location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 12,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             }
         ],
         "symbols": [

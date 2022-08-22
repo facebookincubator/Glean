@@ -20,6 +20,17 @@
         },
         "repo_hash": "testhash",
         "signature": "int fooI",
-        "sym": "test/cpp/foo/fooFn/fooI"
+        "sym": "test/cpp/foo/fooFn/fooI",
+        "sym_location": {
+            "filepath": "test.cpp",
+            "range": {
+                "columnBegin": 11,
+                "columnEnd": 19,
+                "lineBegin": 34,
+                "lineEnd": 34
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": []
     }
 ]

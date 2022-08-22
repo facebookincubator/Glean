@@ -21,7 +21,18 @@
                     "localName": "fn"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/py/all.py/all.fn"
+                "sym": "test/py/all.py/all.fn",
+                "sym_location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 21,
+                        "lineBegin": 10,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -42,7 +53,18 @@
                     "localName": "fn"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/py/as.py/as.fn"
+                "sym": "test/py/as.py/as.fn",
+                "sym_location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 21,
+                        "lineBegin": 9,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -63,7 +85,18 @@
                     "localName": "big_func"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/py/big_lib/big_lib.big_func"
+                "sym": "test/py/big_lib/big_lib.big_func",
+                "sym_location": {
+                    "filepath": "big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 19,
+                        "lineBegin": 8,
+                        "lineEnd": 9
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -84,7 +117,18 @@
                     "localName": "helper_func"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/py/lib.py/lib.helper_func"
+                "sym": "test/py/lib.py/lib.helper_func",
+                "sym_location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 25,
+                        "lineBegin": 19,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -105,7 +149,18 @@
                     "localName": "f"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/py/main.py/main.f"
+                "sym": "test/py/main.py/main.f",
+                "sym_location": {
+                    "filepath": "main.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 9,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -126,7 +181,18 @@
                     "localName": "g"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/py/main.py/main.g"
+                "sym": "test/py/main.py/main.g",
+                "sym_location": {
+                    "filepath": "main.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 18,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -147,7 +213,18 @@
                     "localName": "h"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/py/main.py/main.g.%3Clocals%3E.h"
+                "sym": "test/py/main.py/main.g.%3Clocals%3E.h",
+                "sym_location": {
+                    "filepath": "main.py",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 13,
+                        "lineBegin": 21,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -168,7 +245,18 @@
                     "localName": "shadow_func"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/py/shadow.py/shadow.shadow_func"
+                "sym": "test/py/shadow.py/shadow.shadow_func",
+                "sym_location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 26,
+                        "lineBegin": 16,
+                        "lineEnd": 19
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             }
         ],
         "symbols": [

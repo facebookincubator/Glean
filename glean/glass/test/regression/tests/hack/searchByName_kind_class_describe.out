@@ -22,7 +22,18 @@
                     "localName": "NamespaceClass"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/NS/NamespaceClass"
+                "sym": "test/php/NS/NamespaceClass",
+                "sym_location": {
+                    "filepath": "www/Namespace.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 12,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -44,7 +55,18 @@
                     "localName": "RefClass"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/RefClass"
+                "sym": "test/php/RefClass",
+                "sym_location": {
+                    "filepath": "www/RefClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [
@@ -82,7 +104,18 @@
                     "localName": "SourceClass"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SourceClass"
+                "sym": "test/php/SourceClass",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 13,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -104,7 +137,18 @@
                     "localName": "SubClass"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SubClass"
+                "sym": "test/php/SubClass",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 38,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -126,7 +170,18 @@
                     "localName": "SuperClass"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SuperClass"
+                "sym": "test/php/SuperClass",
+                "sym_location": {
+                    "filepath": "www/SuperClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -148,7 +203,18 @@
                     "localName": "TestAnnotation"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/TestAnnotation"
+                "sym": "test/php/TestAnnotation",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 29,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             }
         ],
         "symbols": [

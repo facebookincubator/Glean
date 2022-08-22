@@ -21,6 +21,17 @@
         },
         "repo_hash": "testhash",
         "signature": "enum Position",
-        "sym": "test/php/Position"
+        "sym": "test/php/Position",
+        "sym_location": {
+            "filepath": "www/TopLevel.php",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 2,
+                "lineBegin": 16,
+                "lineEnd": 22
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": []
     }
 ]

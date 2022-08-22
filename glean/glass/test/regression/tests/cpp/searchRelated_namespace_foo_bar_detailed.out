@@ -32,7 +32,18 @@
                 },
                 "repo_hash": "testhash",
                 "signature": "namespace foo::bar",
-                "sym": "test/cpp/foo/bar"
+                "sym": "test/cpp/foo/bar",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 27,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             "test/cpp/foo/bar/T": {
                 "comments": [],
@@ -54,7 +65,18 @@
                 },
                 "repo_hash": "testhash",
                 "signature": "struct foo::bar::T",
-                "sym": "test/cpp/foo/bar/T"
+                "sym": "test/cpp/foo/bar/T",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 12,
+                        "lineBegin": 29,
+                        "lineEnd": 29
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             "test/cpp/foo/bar/g": {
                 "annotations": [],
@@ -77,7 +99,18 @@
                 },
                 "repo_hash": "testhash",
                 "signature": "void foo::bar::g()",
-                "sym": "test/cpp/foo/bar/g"
+                "sym": "test/cpp/foo/bar/g",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             }
         }
     }

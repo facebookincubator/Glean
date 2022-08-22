@@ -21,6 +21,17 @@
         },
         "repo_hash": "testhash",
         "signature": "void ::h(int i)",
-        "sym": "test/cpp/h"
+        "sym": "test/cpp/h",
+        "sym_location": {
+            "filepath": "test.cpp",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 2,
+                "lineBegin": 40,
+                "lineEnd": 48
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": []
     }
 ]

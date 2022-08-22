@@ -10,6 +10,7 @@ module Glean.Glass.Search
   ( searchEntity
   , SearchResult(..)
   , SearchEntity(..)
+  , CodeEntityLocation(..)
   , prefixSearchEntity
   ) where
 
@@ -24,6 +25,7 @@ import Glean.Glass.Search.Class as Search
       SearchResult(..),
       SearchEntity(..),
       PrefixSearch(..),
+      CodeEntityLocation(..),
       ResultLocation)
 import qualified Glean.Glass.Search.Cxx ({- instances -})
 import qualified Glean.Glass.Search.Flow ({- instances -})

@@ -334,12 +334,12 @@ describeSymbol env@Glass.Env{..} symId _opts =
   withSymbol "describeSymbol" env symId $ \(gleanDBs, (repo, lang, toks)) ->
     backendRunHaxl GleanBackend{..} $ do
       r <- Search.searchEntity lang toks
-      (SearchEntity{..}, err) <- case r of
+      (SearchEntity{..} :| _, err) <- case r of
         None t -> throwM (ServerException t)
-        One e -> return (e, Nothing)
-        Many { initial = e } -> return (e, Nothing)
-      (,err) <$> withRepo entityRepo
-        (mkSymbolDescription repo decl file rangespan symId name)
+        One e -> return (e :| [], Nothing)
+        Many { initial = e, rest = es } -> return (e :| es, Nothing)
+      (,err) <$> withRepo entityRepo (mkSymbolDescription symId repo $
+          CodeEntityLocation decl file rangespan name)
 
 fileIncludeLocations
   :: Glass.Env
@@ -393,18 +393,15 @@ processFileIncludes repo rev xmap = do
 
 -- Worker to fill out symbol description metadata uniformly
 mkSymbolDescription
-  :: RepoName
-  -> Code.Entity
-  -> Src.File
-  -> Code.RangeSpan
-  -> SymbolId
-  -> Text
+  :: SymbolId
+  -> RepoName
+  -> CodeEntityLocation
   -> Glean.RepoHaxl u w SymbolDescription
-mkSymbolDescription repo entity file rangespan symbolId name = do
-  range <- rangeSpanToLocationRange repo file rangespan
+mkSymbolDescription symbolId repo CodeEntityLocation{..} = do
+  range <- rangeSpanToLocationRange repo entityFile entityRange
   kind <- eitherToMaybe <$> findSymbolKind entity
   let lang = entityLanguage entity
-  describeEntity entity $ SymbolResult symbolId range lang kind name
+  describeEntity entity $ SymbolResult symbolId range lang kind entityName
 
 -- | Search for entities by string name with kind and language filters
 searchSymbol
@@ -1147,7 +1144,7 @@ runErrorLog :: Glass.Env -> Text -> GleanGlassErrorsLogger -> IO ()
 runErrorLog env cmd err = ErrorsLogger.runLog (Glass.logger env) $
   err <> ErrorsLogger.setMethod cmd
 
--- | Return a description for an Entity.
+-- | Return a description for a single Entity with a unique location.
 describeEntity
   :: Code.Entity
   -> SymbolResult
@@ -1156,8 +1153,7 @@ describeEntity ent SymbolResult{..} = do
   symbolDescription_repo_hash <- Glean.repo_hash <$> Glean.haxlRepo
   symbolDescription_name <- eThrow =<< toQualifiedName ent
   symbolDescription_annotations <- eThrow =<< getAnnotationsForEntity ent
-  symbolDescription_comments <- eThrow =<<
-    getCommentsForEntity locationRange_repository ent
+  symbolDescription_comments <- eThrow =<< getCommentsForEntity repo ent
   symbolDescription_visibility <- eThrow =<< getVisibilityForEntity ent
   symbolDescription_signature <- toSymbolSignature ent
   pure SymbolDescription{..}
@@ -1166,11 +1162,16 @@ describeEntity ent SymbolResult{..} = do
     symbolDescription_kind = symbolResult_kind
     symbolDescription_language = symbolResult_language
 
-    LocationRange{..} = symbolResult_location
+    symbolDescription_sym_location = symbolResult_location
+    symbolDescription_sym_other_locations = []
+
+    repo = locationRange_repository symbolResult_location
+
+    -- deprecated. we already have sym_locatoin
     symbolDescription_location = SymbolPath {
-      symbolPath_range = locationRange_range,
-      symbolPath_repository = locationRange_repository,
-      symbolPath_filepath = locationRange_filepath
+      symbolPath_range = locationRange_range symbolResult_location,
+      symbolPath_repository = locationRange_repository symbolResult_location,
+      symbolPath_filepath = locationRange_filepath symbolResult_location
     }
 
     eThrow (Right x) = pure x
@@ -1248,8 +1249,8 @@ searchRelated env@Glass.Env{..}
     -- building map of sym id -> descriptions, by first occurence
     mkDescribe repo e@(_,SymbolId rawSymId) = (rawSymId,) <$> describe repo e
 
-    describe repo ((entity, file, rangespan, name),symId) =
-      mkSymbolDescription repo entity file rangespan symId name
+    describe repo ((entity, entityFile, entityRange, entityName),symId) =
+      mkSymbolDescription symId repo $ CodeEntityLocation{..}
 
     searchRecursively
       | searchRelatedRequest_recursive = Search.Recursive

@@ -15,6 +15,7 @@ module Glean.Glass.Search.Class
   , ResultLocation
   , searchSymbolId
   , resultToDecl
+  , CodeEntityLocation(..)
   ) where
 
 import Data.Text (Text, intercalate)
@@ -30,6 +31,7 @@ import Glean.Haxl.Repos as Glean
 
 import qualified Glean.Schema.Src.Types as Src
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
+import qualified Glean.Schema.Code.Types as Code
 
 import Glean.Glass.Utils ( searchRecursiveWithLimit )
 
@@ -68,7 +70,16 @@ data SearchEntity t =
     name :: !Text
   }
 
--- Synonym for SearchEntity, used in Angle data queries
+-- | Summary form used for describe()
+data CodeEntityLocation =
+  CodeEntityLocation {
+    entity :: !Code.Entity,
+    entityFile :: !Src.File,
+    entityRange :: !Code.RangeSpan,
+    entityName :: !Text
+  }
+
+-- Similar to SearchEntity , used in Angle data queries. Searches return this
 type ResultLocation t = (t, Src.File, Code.RangeSpan, Text)
 
 resultToDecl :: [(d, a, b)] -> [d]

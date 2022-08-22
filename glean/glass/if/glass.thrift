@@ -257,7 +257,7 @@ enum Visibility {
 // A symbol description extends the symbol id with additional attributes
 struct SymbolDescription {
   1: SymbolId sym;
-  2: SymbolPath location;
+  2: SymbolPath location; // deprecated, use sym_location(s)
   3: QualifiedName name;
   4: optional SymbolKind kind;
   5: optional list<Annotation> annotations;
@@ -266,6 +266,8 @@ struct SymbolDescription {
   8: string repo_hash;
   9: Language language;
   10: optional string signature;
+  11: LocationRange sym_location; // symbol have at least one defining location
+  12: list<LocationRange> sym_other_locations; // and optionally extra locations
 }
 
 struct SearchContext {
@@ -359,7 +361,7 @@ struct SymbolSearchRequest {
 // Core symbol result data. All search results have these
 struct SymbolResult {
   1: SymbolId symbol;
-  2: LocationRange location;
+  2: LocationRange location; // assumes a single location for this entity
   3: Language language;
   4: optional SymbolKind kind;
   5: string name;

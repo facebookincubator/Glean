@@ -38,7 +38,18 @@
                     "localName": "SourceClass"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SourceClass"
+                "sym": "test/php/SourceClass",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 13,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -60,7 +71,18 @@
                     "localName": "SourceInterface"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SourceInterface"
+                "sym": "test/php/SourceInterface",
+                "sym_location": {
+                    "filepath": "www/SourceInterface.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -82,7 +104,18 @@
                     "localName": "SourceTrait"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SourceTrait"
+                "sym": "test/php/SourceTrait",
+                "sym_location": {
+                    "filepath": "www/SourceTrait.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -104,7 +137,18 @@
                     "localName": "SubClass"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SubClass"
+                "sym": "test/php/SubClass",
+                "sym_location": {
+                    "filepath": "www/SourceClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 38,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "annotations": [],
@@ -126,7 +170,18 @@
                     "localName": "SuperClass"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/php/SuperClass"
+                "sym": "test/php/SuperClass",
+                "sym_location": {
+                    "filepath": "www/SuperClass.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 10,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             }
         ],
         "symbols": [

@@ -21,7 +21,18 @@
                     "localName": "all"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/py/all.py/all"
+                "sym": "test/py/all.py/all",
+                "sym_location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -42,7 +53,18 @@
                     "localName": "as"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/py/as.py/as"
+                "sym": "test/py/as.py/as",
+                "sym_location": {
+                    "filepath": "as.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -63,7 +85,18 @@
                     "localName": "big_lib"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/py/big_lib/big_lib"
+                "sym": "test/py/big_lib/big_lib",
+                "sym_location": {
+                    "filepath": "big_lib/__init__.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 10
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -84,7 +117,18 @@
                     "localName": "relative"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/py/big_lib/big_lib.relative"
+                "sym": "test/py/big_lib/big_lib.relative",
+                "sym_location": {
+                    "filepath": "big_lib/relative.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 8
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -105,7 +149,18 @@
                     "localName": "lib"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/py/lib.py/lib"
+                "sym": "test/py/lib.py/lib",
+                "sym_location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -126,7 +181,18 @@
                     "localName": "main"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/py/main.py/main"
+                "sym": "test/py/main.py/main",
+                "sym_location": {
+                    "filepath": "main.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             },
             {
                 "comments": [],
@@ -147,7 +213,18 @@
                     "localName": "shadow"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/py/shadow.py/shadow"
+                "sym": "test/py/shadow.py/shadow",
+                "sym_location": {
+                    "filepath": "shadow.py",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
             }
         ],
         "symbols": [
