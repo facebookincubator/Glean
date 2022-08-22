@@ -1696,6 +1696,8 @@ test-suite dbjanitor
         glean:schema,
         glean:config,
         glean:util
+    -- https://github.com/facebookincubator/Glean/issues/224
+    buildable: False
 
 test-suite dbderive
     import: test
