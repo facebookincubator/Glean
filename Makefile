@@ -7,7 +7,22 @@
 #
 # To run the tests, type "make test"
 #
-# For development, use "make CXX_MODE=make"
+# For development, use "make MODE=dev" for faster, unoptimised builds and
+# "make MODE=opt" for slower, optimised builds.
+#
+# =====
+# Modes
+# =====
+#
+# By default, make builds everything via Cabal using standard Cabal directories.
+# With MODE=dev|opt, make will use a build directory specific to that mode and
+# separate from the default build directories and from other modes. This means
+# that the individual modes don't interfere with each other and can be worked
+# with without rebuilding everything. Typically, you want MODE=dev for
+# development and MODE=opt for benchmarking.
+#
+# The dev and opt modes also build C++ libraries via make rather than Cabal as
+# described below.
 #
 # =======================
 # Cabal and C++ libraries
@@ -57,15 +72,23 @@ PWD := $(shell /bin/pwd)
 #
 EXTRA_GHC_OPTS ?=
 
-CABAL = $(CABAL_BIN) --jobs --ghc-options='$(EXTRA_GHC_OPTS)' \
-            -vnormal+nowrap --project-file=$(PWD)/cabal.project
-
 # Allow developers to locally override things
 -include settings.mk
 
+MODE ?= def
+
+ifneq ($(MODE),def)
+include mk/mode-$(MODE).mk
+endif
+
+CABAL = $(CABAL_BIN) --jobs --ghc-options='$(EXTRA_GHC_OPTS)' \
+            -vnormal+nowrap --project-file=$(PWD)/cabal.project \
+			$(CABAL_CONFIG_FLAGS)
+
 BUILD_DIR = .build
-CODEGEN_DIR = $(BUILD_DIR)/def/codegen
-CXX_DIR = $(BUILD_DIR)/def/cxx
+MODE_DIR = $(BUILD_DIR)/$(MODE)
+CODEGEN_DIR = $(MODE_DIR)/codegen
+CXX_DIR = $(MODE_DIR)/cxx
 
 BYTECODE_GEN= \
 	glean/rts/bytecode/gen/evaluate.h \
@@ -83,12 +106,18 @@ all:: thrift $(BYTECODE_GEN) gen-schema thrift-schema-hs glean
 # Targets in this file invoke Cabal and hence can't be built in parallel
 .NOTPARALLEL:
 
-glean.cabal: $(CXX_DIR)/defs.m4 glean.cabal.in
-	m4 -E -E -P $^ \
+.PHONY: force
+$(BUILD_DIR)/mode: force
+	@mkdir -p $(@D)
+	@(echo $(MODE) | cmp -s $@) || (echo $(MODE) > $@)
+
+# We have to regenerate glean.cabal if the mode (and hence the path to defs.m4)
+# changes even if the actual files are older.
+glean.cabal: glean.cabal.in $(BUILD_DIR)/mode $(CXX_DIR)/defs.m4
+	m4 -E -E -P $(CXX_DIR)/defs.m4 glean.cabal.in \
 		| sed "/-- Copyright/a \\\n-- @""generated from glean.cabal.in\\n-- DO NO EDIT THIS FILE DIRECTLY" \
 		> $@
 
-.PHONY: force
 $(CXX_DIR)/defs.m4: force
 	@$(MAKE) -f mk/cxx.mk --no-print-directory CXX_MODE=$(CXX_MODE) CXX_DIR=$(CXX_DIR) $@
 

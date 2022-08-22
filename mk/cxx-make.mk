@@ -4,7 +4,7 @@ FOLLY_INCLUDES := $(shell pkg-config --cflags-only-I libfolly)
 ARCH := $(firstword $(subst -, ,$(shell $(CC) -dumpmachine)))
 
 # TODO: This is duplicated in glean.cabal.in
-CXXFLAGS = -I. -Ihsthrift/common/util $(FOLLY_INCLUDES) -std=c++17 
+CXXFLAGS += -I. -Ihsthrift/common/util $(FOLLY_INCLUDES) -std=c++17
 ifeq ($(ARCH), x86_64)
 CXXFLAGS += -march=haswell
 endif
