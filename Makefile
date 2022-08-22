@@ -276,3 +276,13 @@ glean-clang:: gen-schema glean glean.cabal cxx-libraries
 .PHONY: glean-hiedb
 glean-hiedb:: glean.cabal cxx-libraries
 	$(CABAL) build hiedb-indexer
+
+define bash_macros
+call_cabal() {
+	$(CABAL) "$$@"
+}
+endef
+
+$(BUILD_DIR)/current.sh: force
+	$(file >$@,$(bash_macros))
+	@:
