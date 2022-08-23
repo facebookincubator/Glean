@@ -63,7 +63,7 @@ data SearchResult t
 
 data SearchEntity t =
   SearchEntity {
-    entityRepo :: !Glean.Repo,
+    entityRepo :: !Glean.Repo, -- vital to know which repo this came from
     decl :: !t,
     file :: !Src.File,
     rangespan :: !Code.RangeSpan,
@@ -109,7 +109,7 @@ searchSymbolId :: (Typeable t, Show t, Glean.Typed.Binary.Type t)
 searchSymbolId toks query = do
   results <- Glean.queryAllRepos $ do
     repo <- Glean.haxlRepo
-    results <- searchRecursiveWithLimit (Just 2) query -- limit enforced
+    results <- searchRecursiveWithLimit (Just max_symbolid_matches) query
     return $ map (repo,) results
   let toksText = intercalate "/" toks
   return $ case results of
@@ -123,6 +123,10 @@ searchSymbolId toks query = do
       }
   where
     mkSearchEntity entityRepo (decl, file, rangespan, name) = SearchEntity{..}
+
+    -- symbol ids do have collisions, but they should be rare. If they are
+    -- expensive it means we have a bad query from symbold id to entity
+    max_symbolid_matches = 10
 
 -- | Search for entities based on the prefix of their symbol ids
 class PrefixSearch t where

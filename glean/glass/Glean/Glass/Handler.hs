@@ -331,15 +331,41 @@ describeSymbol
   -> RequestOptions
   -> IO SymbolDescription
 describeSymbol env@Glass.Env{..} symId _opts =
-  withSymbol "describeSymbol" env symId $ \(gleanDBs, (repo, lang, toks)) ->
+  withSymbol "describeSymbol" env symId $ \(gleanDBs, (scmRepo, lang, toks)) ->
     backendRunHaxl GleanBackend{..} $ do
       r <- Search.searchEntity lang toks
-      (SearchEntity{..} :| _, err) <- case r of
+      (first :| rest, err) <- case r of
         None t -> throwM (ServerException t)
         One e -> return (e :| [], Nothing)
-        Many { initial = e, rest = es } -> return (e :| es, Nothing)
-      (,err) <$> withRepo entityRepo (mkSymbolDescription symId repo $
-          CodeEntityLocation decl file rangespan name)
+        Many { initial = e, rest = es } -> return (e :| es, Nothing) -- log?
+      desc0 <- withRepo (entityRepo first) $
+        mkSymbolDescription symId scmRepo (toCodeEntityLoc first)
+      -- now combine with up to N additional results, possibly across repos
+      -- we have e.g. Optional across fbsource.arvr and fbsource.*
+      -- but typical case is Hack namespaces
+      descN <- forM rest $ \this -> withRepo (entityRepo this) $ -- entity repo
+          mkSymbolDescription symId scmRepo (toCodeEntityLoc this)
+      let !desc = foldr combineDescriptions desc0 descN
+      pure (desc, err)
+
+toCodeEntityLoc :: SearchEntity Code.Entity -> CodeEntityLocation
+toCodeEntityLoc SearchEntity{..} = CodeEntityLocation decl file rangespan name
+
+-- | Given a description for a symbol, fold in extra comments, annotations
+-- and locations from zero or more additional occurences of the same symbol
+-- Should only be necessary for rare non-unique symbols, like Hack namespaces
+--
+combineDescriptions
+  :: SymbolDescription -> SymbolDescription -> SymbolDescription
+combineDescriptions y x =
+  x { symbolDescription_annotations = symbolDescription_annotations x <>
+        symbolDescription_annotations y -- <> Maybe [a]
+    , symbolDescription_comments = symbolDescription_comments x <>
+        symbolDescription_comments y
+    , symbolDescription_sym_other_locations =
+        symbolDescription_sym_other_locations x <>
+          [symbolDescription_sym_location y] -- copy the single unique value
+    }
 
 fileIncludeLocations
   :: Glass.Env
@@ -612,20 +638,6 @@ backendRunHaxl
 backendRunHaxl GleanBackend{..} =
   runHaxlAllRepos gleanBackend (fmap snd gleanDBs)
 
-withEntity
-  :: (RepoName -> Src.File -> Code.RangeSpan -> RepoHaxl u w a)
-  -> RepoName
-  -> Language
-  -> [Text]
-  -> Glean.ReposHaxl u w (a, Maybe GleanGlassErrorsLogger)
-withEntity f scsrepo lang toks = do
-  r <- Search.searchEntity lang toks
-  (SearchEntity{..}, err) <- case r of
-    None t -> throwM (ServerException t)
-    One e -> return (e, Nothing)
-    Many { initial = e, message = t } -> return (e, Just (EntitySearchFail t))
-  (, fmap logError err) <$> withRepo entityRepo (f scsrepo file rangespan)
-
 -- | Symbol search: try to resolve the symbol back to an Entity.
 findSymbolLocation
   :: Glean.Backend b
@@ -695,8 +707,7 @@ symbolToAngleEntity
   :: Language
   -> [Text]
   -> ReposHaxl u w
-      (Either
-        GleanGlassErrorsLogger
+      (Either GleanGlassErrorsLogger
         (Angle Code.Entity, Maybe ErrorTy))
 symbolToAngleEntity lang toks = do
   r <- Search.searchEntity lang toks
@@ -707,6 +718,22 @@ symbolToAngleEntity lang toks = do
   return $ case entityToAngle decl of
       Left err -> Left (logError (EntityNotSupported err))
       Right query -> Right (query, searchErr)
+
+-- | Run an action on the result of looking up a symbol id
+withEntity
+  :: (RepoName -> Src.File -> Code.RangeSpan -> RepoHaxl u w a)
+  -> RepoName
+  -> Language
+  -> [Text]
+  -> Glean.ReposHaxl u w (a, Maybe GleanGlassErrorsLogger)
+withEntity f scsrepo lang toks = do
+  r <- Search.searchEntity lang toks
+  (SearchEntity{..}, err) <- case r of
+    None t -> throwM (ServerException t)
+    One e -> return (e, Nothing)
+    Many { initial = e, message = t } -> return (e, Just (EntitySearchFail t))
+  (, fmap logError err) <$> withRepo entityRepo (f scsrepo file rangespan)
+
 
 -- Find all symbols and refs in file and add all attributes
 fetchSymbolsAndAttributes
@@ -1212,7 +1239,6 @@ searchRelated env@Glass.Env{..}
     sym RequestOptions{..} SearchRelatedRequest{..} =
   withSymbol "searchRelated" env sym $ \(gleanDBs, (repo, lang, toks)) -> do
     backendRunHaxl GleanBackend {..} $ do
-
       r <- Search.searchEntity lang toks
       (entity, err) <- case r of
         None t -> throwM (ServerException t)
