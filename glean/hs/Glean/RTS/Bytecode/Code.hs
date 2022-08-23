@@ -447,8 +447,8 @@ newBlock terminator = Code $ do
     }
 
 -- | Add a literal to the literal table and yield its index
-literal :: ByteString -> Code Word64
-literal lit = Code $ do
+literal :: ByteString -> Code Literal
+literal lit = Code $ Literal . fromIntegral <$> do
   m <- S.gets csLiterals
   case HashMap.lookup lit m of
     Just n -> return n

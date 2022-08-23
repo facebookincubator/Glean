@@ -121,7 +121,7 @@ genInsnEval Insn{..} =
           <> Text.pack (show (length tys) <> ";")
       , "const uint64_t *" <> name <> ";" ]
 
-    decode (Arg name (Imm Literal)) =
+    decode (Arg name (Imm Lit)) =
       [ "args." <> name <> " = &literals[*pc++];" ]
     decode (Arg name (Imm ty)) =
       [ "args." <> name <> " = " <> cppCast ty "*pc++" <> ";" ]
@@ -149,7 +149,7 @@ genInsnEval Insn{..} =
 
 cppType :: Ty -> Text
 cppType DataPtr = "void *"
-cppType Literal = "const std::string *"
+cppType Lit = "const std::string *"
 cppType WordPtr = "uint64_t *"
 cppType BinaryOutputPtr = "binary::Output *"
 cppType (Fun _) = "SysFun"

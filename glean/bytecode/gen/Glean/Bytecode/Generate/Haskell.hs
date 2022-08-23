@@ -115,6 +115,7 @@ genInsnType = "data Insn where" : map genInsn instructions
         <> "Insn"
 
     genArgTy (Imm Offset) = ["{-# UNPACK #-} !Label"]
+    genArgTy (Imm Lit) = ["{-# UNPACK #-} !Literal"]
     genArgTy Imm{} = ["{-# UNPACK #-} !Word64"]
     genArgTy (Reg var ty _) = ["{-# UNPACK #-} !(" <> showRegTy var ty <> ")"]
     genArgTy Offsets = ["[Label]"]
@@ -203,6 +204,7 @@ genInsnWords =
       <> "]" | (op, insn) <- zip [0 :: Int ..] instructions ]
     where
       argWords (Arg name (Imm Offset)) = ", fromLabel " <> name
+      argWords (Arg name (Imm Lit)) = ", fromLiteral " <> name
       argWords (Arg name Imm{}) = ", " <> name
       argWords (Arg name Reg{}) = ", fromReg " <> name
       argWords (Arg name Offsets) =
@@ -245,18 +247,18 @@ genIssue = intercalate [""]
     context [c] = c <> " => "
     context cs = "(" <> Text.intercalate ", " cs <> ") => "
 
-    genArgType (Imm Literal) = ["ByteString"]
+    genArgType (Imm Lit) = ["ByteString"]
     genArgType (Imm Offset) = ["Label"]
     genArgType Imm{} = ["Word64"]
     genArgType (Reg var ty _) = [showRegTy var ty]
     genArgType Offsets = ["[Label]"]
     genArgType (Regs tys) = ["Register " <> showTy ty | ty <- tys]
 
-    genArgRef (Arg name (Imm Literal)) = [name <> "_i"]
+    genArgRef (Arg name (Imm Lit)) = [name <> "_i"]
     genArgRef (Arg name (Regs tys)) = regNames name tys
     genArgRef (Arg name _) = [name]
 
-    literal (Arg name (Imm Literal)) = Just $
+    literal (Arg name (Imm Lit)) = Just $
       name <> "_i <- literal " <> name
     literal _ = Nothing
 
@@ -298,6 +300,7 @@ genInsnShow =
       <> "]" | insn@Insn{..} <- instructions ]
     where
       showArg (Arg name (Imm Offset)) = ["showLabel " <> name]
+      showArg (Arg name (Imm Lit)) = ["show (fromLiteral " <> name <> ")"]
       showArg (Arg name Imm{}) = ["show " <> name]
       showArg (Arg name Reg{}) = ["showReg " <> name]
       showArg (Arg name Offsets) =

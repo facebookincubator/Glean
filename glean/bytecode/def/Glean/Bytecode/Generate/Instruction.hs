@@ -111,7 +111,7 @@ instructions =
   , Insn "InputShiftLit" [] []
       [ Arg "begin" $ reg DataPtr Update
       , Arg "end" $ reg DataPtr Load
-      , Arg "lit" $ Imm Literal
+      , Arg "lit" $ Imm Lit
       , Arg "match" $ reg Word Store ]
 
     -- Check that the input starts with the given byte sequence, and
@@ -191,7 +191,7 @@ instructions =
 
     -- Load the address and size of a literal
   , Insn "LoadLiteral" [] []
-      [ Arg "lit" $ Imm Literal
+      [ Arg "lit" $ Imm Lit
       , Arg "ptr" $ reg DataPtr Store
       , Arg "end" $ reg DataPtr Store ]
 
@@ -356,14 +356,14 @@ instructions =
 
     -- Raise an exception.
   , Insn "Raise" [EndBlock] []
-      [ Arg "msg" $ Imm Literal ]
+      [ Arg "msg" $ Imm Lit ]
 
     -- For debugging
   , Insn "Trace" [] []
-      [ Arg "msg" $ Imm Literal ]
+      [ Arg "msg" $ Imm Lit ]
 
   , Insn "TraceReg" [] []
-      [ Arg "msg" $ Imm Literal
+      [ Arg "msg" $ Imm Lit
       , Arg "reg" $ reg Word Load ]
 
     -- Adjust PC to point to 'cont' and suspend execution. The first argument
