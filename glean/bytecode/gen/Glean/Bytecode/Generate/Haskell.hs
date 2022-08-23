@@ -167,19 +167,27 @@ genInsnLabels =
 genInsnSize :: [Text]
 genInsnSize =
   "insnSize :: Insn -> Word64" :
-  [ "insnSize ("
-      <> Text.unwords (insnName insn : concatMap mkArg (insnArgs insn))
-      <> ") = 1"
-      <> mconcat [" + " <> size arg | arg <- insnArgs insn]
-    | insn <- instructions ]
+  [ "insnSize "
+      <> mkPat insnName (concatMap mkArg insnArgs)
+      <> " = "
+      <> showSize (foldr argSize (1::Int,"") insnArgs)
+    | Insn{..} <- instructions ]
   where
+    mkPat name [] = name
+    mkPat name args
+      | all (=="_") args = name <> "{}"
+      | otherwise = "(" <> Text.unwords (name : args) <> ")"
+
     mkArg (Arg name Offsets) = [name]
     mkArg (Arg _ (Regs tys)) = replicate (length tys) "_"
     mkArg _ = ["_"]
 
-    size (Arg name Offsets) = "fromIntegral (length " <> name <> ") + 1"
-    size (Arg _ (Regs tys)) = Text.pack (show (length tys))
-    size _ = "1"
+    showSize (c,v) = Text.pack (show c) <> v
+
+    argSize (Arg name Offsets) (c,v) =
+      (c+1, v <> " + fromIntegral (length " <> name <> ")")
+    argSize (Arg _ (Regs tys)) (c,v) = (c + length tys, v)
+    argSize _ (c,v) = (c+1, v)
 
 -- | Generates a function that encodes an instruction as a list of words.
 genInsnWords :: [Text]
