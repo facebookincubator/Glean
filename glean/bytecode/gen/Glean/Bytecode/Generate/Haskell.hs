@@ -189,20 +189,19 @@ genInsnWords =
    ++
    [ "insnWords fromReg fromLabel ("
       <> insnPattern id insn
-      <> ") = concat ["
-      <> Text.intercalate ", "
-          ("[" <> Text.pack (show op) <> "]" : map argWords (insnArgs insn))
+      <> ") = ["
+      <> Text.pack (show op)
+      <> Text.concat (map argWords (insnArgs insn))
       <> "]" | (op, insn) <- zip [0 :: Int ..] instructions ]
     where
-      argWords (Arg name (Imm Offset)) = "[fromLabel " <> name <> "]"
-      argWords (Arg name Imm{}) = "[" <> name <> "]"
-      argWords (Arg name Reg{}) = "[fromReg " <> name <> "]"
+      argWords (Arg name (Imm Offset)) = ", fromLabel " <> name
+      argWords (Arg name Imm{}) = ", " <> name
+      argWords (Arg name Reg{}) = ", fromReg " <> name
       argWords (Arg name Offsets) =
-        "fromIntegral (length " <> name <> ") : map fromLabel " <> name
+        ", fromIntegral (length " <> name <> ")] ++ map fromLabel " <> name
+          <> " ++ ["
       argWords (Arg name (Regs tys)) =
-        "["
-        <> Text.intercalate ", " ["fromReg " <> reg | reg <- regNames name tys]
-        <> "]"
+        Text.concat [", fromReg " <> reg | reg <- regNames name tys]
 
 insnPattern :: (Text -> Text) -> Insn -> Text
 insnPattern cname Insn{..} =
