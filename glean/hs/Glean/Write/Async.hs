@@ -20,6 +20,7 @@ import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
 import Data.Default
+import Data.Maybe
 
 import Glean.Backend.Remote (Backend)
 import qualified Glean.Backend.Remote as Backend
@@ -129,14 +130,13 @@ newWriter s settings = do
     , writerSettings = settings
     }
 
-newWriterFromPredicates :: Predicates -> WriterSettings -> IO Writer
-newWriterFromPredicates ps settings = do
-  let first_id = lowestFid
-  v <- newMVar =<< newFacts ps (Just first_id)
+newWriterFromPredicates :: Predicates -> Fid -> WriterSettings -> IO Writer
+newWriterFromPredicates ps firstId settings = do
+  v <- newMVar =<< newFacts ps (Just firstId)
   return Writer
     { writerPredicates = ps
     , writerSender = Nothing
-    , writerFirstId = first_id
+    , writerFirstId = firstId
     , writerFacts = v
     , writerSettings = settings
     }
@@ -168,9 +168,17 @@ withWriter s settings action = do
 -- | Create a new 'Writer' for regression testing.  This accumulates into
 -- a single 'Facts' and produces a single 'Batch' without sending to a backend.
 withBatchWriter
-  :: Predicates -> WriterSettings -> (Writer -> IO a) -> IO (a, Thrift.Batch)
-withBatchWriter ps settings action = do
-  w <- newWriterFromPredicates ps settings
+  :: Predicates
+  -> Maybe Fid
+    --  ^ starting fact ID to create. If the batch will be added to an
+    -- existing DB and the indexer will be creating facts that refer
+    -- to facts from the DB, this should be obtained by calling
+    -- 'firstFreeId' on the DB; otherwise it can be 'Nothing'.
+  -> WriterSettings
+  -> (Writer -> IO a)
+  -> IO (a, Thrift.Batch)
+withBatchWriter ps firstId settings action = do
+  w <- newWriterFromPredicates ps (fromMaybe lowestFid firstId) settings
   result <- action w
   facts <- takeMVar (writerFacts w)
   batch <- serializeFacts facts
