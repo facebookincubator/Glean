@@ -13,6 +13,7 @@ import Control.Monad
 
 import qualified Glean.Clang.Test as Clang
 import Glean.Indexer
+import Glean.Indexer.Cpp (Clang)
 import Glean.Regression.Snapshot.Driver
 import Glean.Regression.Snapshot
 
@@ -21,7 +22,7 @@ import Derive.Lib (dispatchDerive, DerivePass, allPredicates)
 import Derive.Types (testConfig)
 
 -- | Run the Clang indexer followed by the specified deriving passes
-driver :: [DerivePass] -> Driver Clang.Options
+driver :: [DerivePass] -> Driver Clang
 driver passes = Clang.driver { driverIndexer = indexer }
   where
   indexer = driverIndexer Clang.driver `indexerThen` derive

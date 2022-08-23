@@ -1069,6 +1069,30 @@ executable glean-hyperlink
         wai,
         warp
 
+library clang-derive-lib
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs: glean/lang/clang
+    build-depends:
+        ghc-compact,
+        glean:client-hs,
+        glean:client-hs-local,
+        glean:core,
+        glean:db,
+        glean:lib,
+        glean:schema,
+        glean:util,
+        vector-algorithms
+    exposed-modules:
+        Derive.Common
+        Derive.CxxDeclarationSources
+        Derive.CxxDeclarationTargets
+        Derive.CxxSame
+        Derive.CxxTargetUses
+        Derive.Env
+        Derive.Generic
+        Derive.Lib
+        Derive.Types
+
 library hack-derive-lib
     import: fb-haskell, fb-cpp, deps
     hs-source-dirs: glean/lang/hack
@@ -2057,14 +2081,29 @@ test-suite glass-regression-buck
     ghc-options: -main-is Glean.Glass.Regression.Buck
     buildable: False
 
---test-suite glass-regression-cpp
---    import: glass-regression, fb-haskell, deps
---    type: exitcode-stdio-1.0
---    main-is: Glean/Glass/Regression/Cpp.hs
---    ghc-options: -main-is Glean.Glass.Regression.Cpp
---    build-depends:
---        glean:clang-derive,
---        glean:clang-derive-test,
+test-suite glass-regression-cpp
+   import: glass-regression-deps, fb-haskell, deps
+   type: exitcode-stdio-1.0
+   hs-source-dirs:
+     glean/glass/test/regression,
+     glean/lang/clang/tests,
+     glean/lang/clang/tests/github
+   main-is: Glean/Glass/Regression/Cpp/Github.hs
+   ghc-options: -main-is Glean.Glass.Regression.Cpp.Github
+   other-modules: Glean.Clang.Test
+                  Glean.Clang.Test.DerivePass
+                  Glean.Glass.Regression.Cpp
+                  Glean.Regression.Driver.DeriveForCodemarkup
+   build-depends: glean:clang-derive-lib,
+                  glean:client-hs,
+                  glean:client-hs-local,
+                  glean:core,
+                  glean:db,
+                  glean:indexers,
+                  glean:lib,
+                  glean:schema,
+                  glean:stubs,
+                  glean:util
 
 test-suite glass-regression-flow
     import: glass-regression-deps, fb-haskell, deps

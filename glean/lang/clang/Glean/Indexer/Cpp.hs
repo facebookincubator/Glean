@@ -196,8 +196,11 @@ inTreeSearchPath :: FilePath -> Maybe FilePath
 inTreeSearchPath exePath = do
   case reverse (splitDirectories  exePath) of
     -- definitely running in tree:
-    ("glean":"glean":"build":"glean":"x":_:xs) -> Just $ joinPath (reverse xs)
+    ("glean":"glean":"build":"glean":"x":_:xs) -> Just $
+      joinPath (reverse xs)
     ("clang-test-regression":"clang-test-regression":"build":"clang-test-regression":"t":_:xs) -> Just $
+      joinPath (reverse xs)
+    ("glass-regression-cpp":"glass-regression-cpp":"build":"glass-regression-cpp":"t":_:xs) -> Just $
       joinPath (reverse xs)
     _ -> Nothing
 
