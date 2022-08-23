@@ -920,6 +920,19 @@ library lib
         glean:util,
         split
 
+executable disassemble
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs: glean/tools/disassemble
+    main-is: Disassemble.hs
+    ghc-options: -main-is Disassemble
+    extra-libraries: stdc++
+    build-depends:
+        glean:db,
+        glean:core,
+        glean:if-glean-hs,
+        glean:lib,
+        glean:util,
+
 library test-unit
     import: fb-haskell, fb-cpp, deps
     hs-source-dirs: glean/test/unit
