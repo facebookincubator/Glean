@@ -16,6 +16,8 @@ from glean.schema.codemarkupthrift.types import (
 class CodemarkupThriftThriftFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.thrift.ThriftFileEntityXRefLocations.4 {{ }}", ThriftThriftFileEntityXRefLocations
     return f"codemarkup.thrift.ThriftFileEntityXRefLocations.4 {{ file = _, xref = _, entity = _ }}", ThriftThriftFileEntityXRefLocations
 
   @staticmethod
@@ -25,6 +27,8 @@ class CodemarkupThriftThriftFileEntityXRefLocations(GleanSchemaPredicate):
 class CodemarkupThriftThriftResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.thrift.ThriftResolveLocation.4 {{ }}", ThriftThriftResolveLocation
     return f"codemarkup.thrift.ThriftResolveLocation.4 {{ location = _, entity = _ }}", ThriftThriftResolveLocation
 
   @staticmethod
@@ -34,6 +38,8 @@ class CodemarkupThriftThriftResolveLocation(GleanSchemaPredicate):
 class CodemarkupThriftThriftEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.thrift.ThriftEntityLocation.4 {{ }}", ThriftThriftEntityLocation
     return f"codemarkup.thrift.ThriftEntityLocation.4 {{ entity = _, location = _ }}", ThriftThriftEntityLocation
 
   @staticmethod

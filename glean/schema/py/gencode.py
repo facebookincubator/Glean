@@ -18,6 +18,8 @@ from glean.schema.gencode.types import (
 class GencodeGenCodeSignature(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"gencode.GenCodeSignature.1 {{ }}", GenCodeSignature
     return f"gencode.GenCodeSignature.1 {json.dumps(key)}", GenCodeSignature
 
   @staticmethod
@@ -27,6 +29,8 @@ class GencodeGenCodeSignature(GleanSchemaPredicate):
 class GencodeGenCodeBySource(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"gencode.GenCodeBySource.1 {{ }}", GenCodeBySource
     return f"gencode.GenCodeBySource.1 {{ source = _, gencode = _ }}", GenCodeBySource
 
   @staticmethod
@@ -36,6 +40,8 @@ class GencodeGenCodeBySource(GleanSchemaPredicate):
 class GencodeGenCodeCommand(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"gencode.GenCodeCommand.1 {{ }}", GenCodeCommand
     return f"gencode.GenCodeCommand.1 {json.dumps(key)}", GenCodeCommand
 
   @staticmethod
@@ -45,6 +51,8 @@ class GencodeGenCodeCommand(GleanSchemaPredicate):
 class GencodeGenCodeClass(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"gencode.GenCodeClass.1 {{ }}", GenCodeClass
     return f"gencode.GenCodeClass.1 {json.dumps(key)}", GenCodeClass
 
   @staticmethod
@@ -54,6 +62,8 @@ class GencodeGenCodeClass(GleanSchemaPredicate):
 class GencodeGenCode(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"gencode.GenCode.1 {{ }}", GenCode
     return f"gencode.GenCode.1 {{ file = _, variant = _, source = _, command = _, class_ = _, signature = _ }}", GenCode
 
   @staticmethod

@@ -18,6 +18,8 @@ from glean.schema.pp1.types import (
 class Pp1Define(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"pp1.Define.1 {{ }}", Define
     return f"pp1.Define.1 {{ macro = _, source = _ }}", Define
 
   @staticmethod
@@ -27,6 +29,8 @@ class Pp1Define(GleanSchemaPredicate):
 class Pp1Undef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"pp1.Undef.1 {{ }}", Undef
     return f"pp1.Undef.1 {{ macro = _, source = _ }}", Undef
 
   @staticmethod
@@ -36,6 +40,8 @@ class Pp1Undef(GleanSchemaPredicate):
 class Pp1Use(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"pp1.Use.1 {{ }}", Use
     return f"pp1.Use.1 {{ macro = _, name = _, definition = _, expand = _, source = _ }}", Use
 
   @staticmethod
@@ -45,6 +51,8 @@ class Pp1Use(GleanSchemaPredicate):
 class Pp1Include(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"pp1.Include.1 {{ }}", Include
     return f"pp1.Include.1 {{ file = _, path = _, source = _ }}", Include
 
   @staticmethod
@@ -54,6 +62,8 @@ class Pp1Include(GleanSchemaPredicate):
 class Pp1Macro(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"pp1.Macro.1 {{ }}", Macro
     return f"pp1.Macro.1 {json.dumps(key)}", Macro
 
   @staticmethod

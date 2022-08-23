@@ -17,6 +17,8 @@ from glean.schema.codemarkuphaskell.types import (
 class CodemarkupHaskellHaskellEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.haskell.HaskellEntityLocation.2 {{ }}", HaskellHaskellEntityLocation
     return f"codemarkup.haskell.HaskellEntityLocation.2 {{ entity = _, location = _ }}", HaskellHaskellEntityLocation
 
   @staticmethod
@@ -26,6 +28,8 @@ class CodemarkupHaskellHaskellEntityLocation(GleanSchemaPredicate):
 class CodemarkupHaskellHaskellResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.haskell.HaskellResolveLocation.2 {{ }}", HaskellHaskellResolveLocation
     return f"codemarkup.haskell.HaskellResolveLocation.2 {{ location = _, entity = _ }}", HaskellHaskellResolveLocation
 
   @staticmethod
@@ -35,6 +39,8 @@ class CodemarkupHaskellHaskellResolveLocation(GleanSchemaPredicate):
 class CodemarkupHaskellHaskellFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.haskell.HaskellFileEntityXRefLocations.2 {{ }}", HaskellHaskellFileEntityXRefLocations
     return f"codemarkup.haskell.HaskellFileEntityXRefLocations.2 {{ file = _, xref = _, entity = _ }}", HaskellHaskellFileEntityXRefLocations
 
   @staticmethod
@@ -44,6 +50,8 @@ class CodemarkupHaskellHaskellFileEntityXRefLocations(GleanSchemaPredicate):
 class CodemarkupHaskellHaskellEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.haskell.HaskellEntityUses.2 {{ }}", HaskellHaskellEntityUses
     return f"codemarkup.haskell.HaskellEntityUses.2 {{ target = _, file = _, span = _ }}", HaskellHaskellEntityUses
 
   @staticmethod

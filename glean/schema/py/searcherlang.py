@@ -15,6 +15,8 @@ from glean.schema.searcherlang.types import (
 class SearchErlangSearchByFQN(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.erlang.SearchByFQN.4 {{ }}", ErlangSearchByFQN
     return f"search.erlang.SearchByFQN.4 {{ module = _, name = _, arity = _, entity = _ }}", ErlangSearchByFQN
 
   @staticmethod
@@ -24,6 +26,8 @@ class SearchErlangSearchByFQN(GleanSchemaPredicate):
 class SearchErlangSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.erlang.SearchByName.4 {{ }}", ErlangSearchByName
     return f"search.erlang.SearchByName.4 {{ name = _, entity = _ }}", ErlangSearchByName
 
   @staticmethod

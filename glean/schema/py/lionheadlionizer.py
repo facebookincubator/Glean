@@ -15,6 +15,8 @@ from glean.schema.lionheadlionizer.types import (
 class LionheadLionizerFindFunction(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lionhead.lionizer.FindFunction.11 {{ }}", LionizerFindFunction
     return f"lionhead.lionizer.FindFunction.11 {{ key = _, value = _, declaration = _ }}", LionizerFindFunction
 
   @staticmethod
@@ -24,6 +26,8 @@ class LionheadLionizerFindFunction(GleanSchemaPredicate):
 class LionheadLionizerFindFunctionWithDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lionhead.lionizer.FindFunctionWithDef.11 {{ }}", LionizerFindFunctionWithDef
     return f"lionhead.lionizer.FindFunctionWithDef.11 {{ key = _, value = _, declaration = _, definition = _ }}", LionizerFindFunctionWithDef
 
   @staticmethod

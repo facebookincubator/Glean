@@ -87,6 +87,8 @@ from glean.schema.cxx1.types import (
 class Cxx1DeclInObjcContainer(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.DeclInObjcContainer.5 {{ }}", DeclInObjcContainer
     return f"cxx1.DeclInObjcContainer.5 {{ decl = _, record = _ }}", DeclInObjcContainer
 
   @staticmethod
@@ -96,6 +98,8 @@ class Cxx1DeclInObjcContainer(GleanSchemaPredicate):
 class Cxx1XRefIndirectTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.XRefIndirectTarget.5 {{ }}", XRefIndirectTarget
     return f"cxx1.XRefIndirectTarget.5 {{ via = _, target = _ }}", XRefIndirectTarget
 
   @staticmethod
@@ -105,6 +109,8 @@ class Cxx1XRefIndirectTarget(GleanSchemaPredicate):
 class Cxx1DeclByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.DeclByName.5 {{ }}", DeclByName
     return f"cxx1.DeclByName.5 {{ name_lowercase = _, kind = _, ident = _ }}", DeclByName
 
   @staticmethod
@@ -114,6 +120,8 @@ class Cxx1DeclByName(GleanSchemaPredicate):
 class Cxx1DeclarationTargets(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.DeclarationTargets.5 {{ }}", DeclarationTargets
     return f"cxx1.DeclarationTargets.5 {{ source = _, targets = _ }}", DeclarationTargets
 
   @staticmethod
@@ -123,6 +131,8 @@ class Cxx1DeclarationTargets(GleanSchemaPredicate):
 class Cxx1DeclarationLocationName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.DeclarationLocationName.5 {{ }}", DeclarationLocationName
     return f"cxx1.DeclarationLocationName.5 {{ decl = _, source = _, name = _ }}", DeclarationLocationName
 
   @staticmethod
@@ -132,6 +142,8 @@ class Cxx1DeclarationLocationName(GleanSchemaPredicate):
 class Cxx1EnumDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.EnumDeclaration.5 {{ }}", EnumDeclaration
     return f"cxx1.EnumDeclaration.5 {{ name = _, isScoped = _, type = _, source = _ }}", EnumDeclaration
 
   @staticmethod
@@ -141,6 +153,8 @@ class Cxx1EnumDeclaration(GleanSchemaPredicate):
 class Cxx1FileXRefMap(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.FileXRefMap.5 {{ }}", FileXRefMap
     return f"cxx1.FileXRefMap.5 {{ file = _, fixed = _, variable = _ }}", FileXRefMap
 
   @staticmethod
@@ -150,6 +164,8 @@ class Cxx1FileXRefMap(GleanSchemaPredicate):
 class Cxx1ObjcContainerDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.ObjcContainerDeclaration.5 {{ }}", ObjcContainerDeclaration
     return f"cxx1.ObjcContainerDeclaration.5 {{ id = _, source = _ }}", ObjcContainerDeclaration
 
   @staticmethod
@@ -159,6 +175,8 @@ class Cxx1ObjcContainerDeclaration(GleanSchemaPredicate):
 class Cxx1ObjcMethodDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.ObjcMethodDeclaration.5 {{ }}", ObjcMethodDeclaration
     return f"cxx1.ObjcMethodDeclaration.5 {{ selector = _, container = _, signature = _, isInstance = _, isOptional = _, isAccessor = _, source = _ }}", ObjcMethodDeclaration
 
   @staticmethod
@@ -168,6 +186,8 @@ class Cxx1ObjcMethodDeclaration(GleanSchemaPredicate):
 class Cxx1MethodOverrides(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.MethodOverrides.5 {{ }}", MethodOverrides
     return f"cxx1.MethodOverrides.5 {{ derived = _, base = _ }}", MethodOverrides
 
   @staticmethod
@@ -177,6 +197,8 @@ class Cxx1MethodOverrides(GleanSchemaPredicate):
 class Cxx1FunctionDeclAttribute(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.FunctionDeclAttribute.5 {{ }}", FunctionDeclAttribute
     return f"cxx1.FunctionDeclAttribute.5 {{ decl = _, attr = _ }}", FunctionDeclAttribute
 
   @staticmethod
@@ -186,6 +208,8 @@ class Cxx1FunctionDeclAttribute(GleanSchemaPredicate):
 class Cxx1ObjcInterfaceToImplementation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.ObjcInterfaceToImplementation.5 {{ }}", ObjcInterfaceToImplementation
     return f"cxx1.ObjcInterfaceToImplementation.5 {{ interface_ = _, implementation = _ }}", ObjcInterfaceToImplementation
 
   @staticmethod
@@ -195,6 +219,8 @@ class Cxx1ObjcInterfaceToImplementation(GleanSchemaPredicate):
 class Cxx1UsingDirective(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.UsingDirective.5 {{ }}", UsingDirective
     return f"cxx1.UsingDirective.5 {{ name = _, source = _ }}", UsingDirective
 
   @staticmethod
@@ -204,6 +230,8 @@ class Cxx1UsingDirective(GleanSchemaPredicate):
 class Cxx1Trace(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.Trace.5 {{ }}", Trace
     return f"cxx1.Trace.5 {{ file = _, declarations = _, preprocessor = _ }}", Trace
 
   @staticmethod
@@ -213,6 +241,8 @@ class Cxx1Trace(GleanSchemaPredicate):
 class Cxx1ObjcPropertyImplementation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.ObjcPropertyImplementation.5 {{ }}", ObjcPropertyImplementation
     return f"cxx1.ObjcPropertyImplementation.5 {{ declaration = _, kind = _, ivar = _, source = _ }}", ObjcPropertyImplementation
 
   @staticmethod
@@ -222,6 +252,8 @@ class Cxx1ObjcPropertyImplementation(GleanSchemaPredicate):
 class Cxx1MethodOverridden(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.MethodOverridden.5 {{ }}", MethodOverridden
     return f"cxx1.MethodOverridden.5 {{ base = _, derived = _ }}", MethodOverridden
 
   @staticmethod
@@ -231,6 +263,8 @@ class Cxx1MethodOverridden(GleanSchemaPredicate):
 class Cxx1PPTrace(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.PPTrace.5 {{ }}", PPTrace
     return f"cxx1.PPTrace.5 {{ file = _, events = _ }}", PPTrace
 
   @staticmethod
@@ -240,6 +274,8 @@ class Cxx1PPTrace(GleanSchemaPredicate):
 class Cxx1DeclFamilyOf(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.DeclFamilyOf.5 {{ }}", DeclFamilyOf
     return f"cxx1.DeclFamilyOf.5 {{ decl = _, family = _ }}", DeclFamilyOf
 
   @staticmethod
@@ -249,6 +285,8 @@ class Cxx1DeclFamilyOf(GleanSchemaPredicate):
 class Cxx1TargetUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.TargetUses.5 {{ }}", TargetUses
     return f"cxx1.TargetUses.5 {{ target = _, file = _, uses = _ }}", TargetUses
 
   @staticmethod
@@ -258,6 +296,8 @@ class Cxx1TargetUses(GleanSchemaPredicate):
 class Cxx1NamespaceDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.NamespaceDefinition.5 {{ }}", NamespaceDefinition
     return f"cxx1.NamespaceDefinition.5 {{ declaration = _, members = _ }}", NamespaceDefinition
 
   @staticmethod
@@ -267,6 +307,8 @@ class Cxx1NamespaceDefinition(GleanSchemaPredicate):
 class Cxx1FunctionAttribute(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.FunctionAttribute.5 {{ }}", FunctionAttribute
     return f"cxx1.FunctionAttribute.5 {{ attr = _, declaration = _ }}", FunctionAttribute
 
   @staticmethod
@@ -276,6 +318,8 @@ class Cxx1FunctionAttribute(GleanSchemaPredicate):
 class Cxx1FilePPUseTraceXRefs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.FilePPUseTraceXRefs.5 {{ }}", FilePPUseTraceXRefs
     return f"cxx1.FilePPUseTraceXRefs.5 {{ file = _, trace = _, source = _, define = _ }}", FilePPUseTraceXRefs
 
   @staticmethod
@@ -285,6 +329,8 @@ class Cxx1FilePPUseTraceXRefs(GleanSchemaPredicate):
 class Cxx1TypeAliasDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.TypeAliasDeclaration.5 {{ }}", TypeAliasDeclaration
     return f"cxx1.TypeAliasDeclaration.5 {{ name = _, type = _, kind = _, source = _ }}", TypeAliasDeclaration
 
   @staticmethod
@@ -294,6 +340,8 @@ class Cxx1TypeAliasDeclaration(GleanSchemaPredicate):
 class Cxx1DefToBaseDecl(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.DefToBaseDecl.5 {{ }}", DefToBaseDecl
     return f"cxx1.DefToBaseDecl.5 {{ defn = _, decl = _ }}", DefToBaseDecl
 
   @staticmethod
@@ -303,6 +351,8 @@ class Cxx1DefToBaseDecl(GleanSchemaPredicate):
 class Cxx1Name(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.Name.5 {{ }}", Name
     return f"cxx1.Name.5 {json.dumps(key)}", Name
 
   @staticmethod
@@ -312,6 +362,8 @@ class Cxx1Name(GleanSchemaPredicate):
 class Cxx1FilePPUseXRefs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.FilePPUseXRefs.5 {{ }}", FilePPUseXRefs
     return f"cxx1.FilePPUseXRefs.5 {{ file = _, source = _, define = _ }}", FilePPUseXRefs
 
   @staticmethod
@@ -321,6 +373,8 @@ class Cxx1FilePPUseXRefs(GleanSchemaPredicate):
 class Cxx1Enumerator(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.Enumerator.5 {{ }}", Enumerator
     return f"cxx1.Enumerator.5 {{ name = _, enumeration = _, source = _ }}", Enumerator
 
   @staticmethod
@@ -330,6 +384,8 @@ class Cxx1Enumerator(GleanSchemaPredicate):
 class Cxx1FunctionQName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.FunctionQName.5 {{ }}", FunctionQName
     return f"cxx1.FunctionQName.5 {{ name = _, scope = _ }}", FunctionQName
 
   @staticmethod
@@ -339,6 +395,8 @@ class Cxx1FunctionQName(GleanSchemaPredicate):
 class Cxx1TranslationUnitTrace(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.TranslationUnitTrace.5 {{ }}", TranslationUnitTrace
     return f"cxx1.TranslationUnitTrace.5 {{ tunit = _, trace = _ }}", TranslationUnitTrace
 
   @staticmethod
@@ -348,6 +406,8 @@ class Cxx1TranslationUnitTrace(GleanSchemaPredicate):
 class Cxx1RecordDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.RecordDeclaration.5 {{ }}", RecordDeclaration
     return f"cxx1.RecordDeclaration.5 {{ name = _, kind = _, source = _ }}", RecordDeclaration
 
   @staticmethod
@@ -357,6 +417,8 @@ class Cxx1RecordDeclaration(GleanSchemaPredicate):
 class Cxx1FilePPTraceXRefs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.FilePPTraceXRefs.5 {{ }}", FilePPTraceXRefs
     return f"cxx1.FilePPTraceXRefs.5 {{ file = _, trace = _, source = _, ppEntity = _ }}", FilePPTraceXRefs
 
   @staticmethod
@@ -366,6 +428,8 @@ class Cxx1FilePPTraceXRefs(GleanSchemaPredicate):
 class Cxx1NamespaceQName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.NamespaceQName.5 {{ }}", NamespaceQName
     return f"cxx1.NamespaceQName.5 {{ name = _, parent = _ }}", NamespaceQName
 
   @staticmethod
@@ -375,6 +439,8 @@ class Cxx1NamespaceQName(GleanSchemaPredicate):
 class Cxx1DeclarationSrcRange(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.DeclarationSrcRange.5 {{ }}", DeclarationSrcRange
     return f"cxx1.DeclarationSrcRange.5 {{ decl = _, source = _ }}", DeclarationSrcRange
 
   @staticmethod
@@ -384,6 +450,8 @@ class Cxx1DeclarationSrcRange(GleanSchemaPredicate):
 class Cxx1DeclarationLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.DeclarationLocation.5 {{ }}", DeclarationLocation
     return f"cxx1.DeclarationLocation.5 {{ decl = _, source = _, name = _ }}", DeclarationLocation
 
   @staticmethod
@@ -393,6 +461,8 @@ class Cxx1DeclarationLocation(GleanSchemaPredicate):
 class Cxx1ObjContainerIdName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.ObjContainerIdName.5 {{ }}", ObjContainerIdName
     return f"cxx1.ObjContainerIdName.5 {{ id = _, name = _ }}", ObjContainerIdName
 
   @staticmethod
@@ -402,6 +472,8 @@ class Cxx1ObjContainerIdName(GleanSchemaPredicate):
 class Cxx1FunctionDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.FunctionDeclaration.5 {{ }}", FunctionDeclaration
     return f"cxx1.FunctionDeclaration.5 {{ name = _, signature = _, method = _, source = _ }}", FunctionDeclaration
 
   @staticmethod
@@ -411,6 +483,8 @@ class Cxx1FunctionDeclaration(GleanSchemaPredicate):
 class Cxx1Same(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.Same.5 {{ }}", Same
     return f"cxx1.Same.5 {{ declaration1 = _, declaration2 = _ }}", Same
 
   @staticmethod
@@ -420,6 +494,8 @@ class Cxx1Same(GleanSchemaPredicate):
 class Cxx1NamespaceDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.NamespaceDeclaration.5 {{ }}", NamespaceDeclaration
     return f"cxx1.NamespaceDeclaration.5 {{ name = _, source = _ }}", NamespaceDeclaration
 
   @staticmethod
@@ -429,6 +505,8 @@ class Cxx1NamespaceDeclaration(GleanSchemaPredicate):
 class Cxx1ObjcPropertyDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.ObjcPropertyDeclaration.5 {{ }}", ObjcPropertyDeclaration
     return f"cxx1.ObjcPropertyDeclaration.5 {{ name = _, container = _, type = _, isInstance = _, isOptional = _, isReadOnly = _, isAtomic = _, source = _ }}", ObjcPropertyDeclaration
 
   @staticmethod
@@ -438,6 +516,8 @@ class Cxx1ObjcPropertyDeclaration(GleanSchemaPredicate):
 class Cxx1DeclarationComment(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.DeclarationComment.5 {{ }}", DeclarationComment
     return f"cxx1.DeclarationComment.5 {{ declaration = _, file = _, span = _ }}", DeclarationComment
 
   @staticmethod
@@ -447,6 +527,8 @@ class Cxx1DeclarationComment(GleanSchemaPredicate):
 class Cxx1DeclarationNameSpan(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.DeclarationNameSpan.5 {{ }}", DeclarationNameSpan
     return f"cxx1.DeclarationNameSpan.5 {{ decl = _, file = _, span = _ }}", DeclarationNameSpan
 
   @staticmethod
@@ -456,6 +538,8 @@ class Cxx1DeclarationNameSpan(GleanSchemaPredicate):
 class Cxx1Declarations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.Declarations.5 {{ }}", Declarations
     return f"cxx1.Declarations.5 {json.dumps(key)}", Declarations
 
   @staticmethod
@@ -465,6 +549,8 @@ class Cxx1Declarations(GleanSchemaPredicate):
 class Cxx1DeclToFamily(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.DeclToFamily.5 {{ }}", DeclToFamily
     return f"cxx1.DeclToFamily.5 {{ decl = _, family = _ }}", DeclToFamily
 
   @staticmethod
@@ -474,6 +560,8 @@ class Cxx1DeclToFamily(GleanSchemaPredicate):
 class Cxx1DeclFamily(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.DeclFamily.5 {{ }}", DeclFamily
     return f"cxx1.DeclFamily.5 {json.dumps(key)}", DeclFamily
 
   @staticmethod
@@ -483,6 +571,8 @@ class Cxx1DeclFamily(GleanSchemaPredicate):
 class Cxx1FunctionDeclarationNameString(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.FunctionDeclarationNameString.5 {{ }}", FunctionDeclarationNameString
     return f"cxx1.FunctionDeclarationNameString.5 {{ fname = _, name = _ }}", FunctionDeclarationNameString
 
   @staticmethod
@@ -492,6 +582,8 @@ class Cxx1FunctionDeclarationNameString(GleanSchemaPredicate):
 class Cxx1EnumeratorInEnum(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.EnumeratorInEnum.5 {{ }}", EnumeratorInEnum
     return f"cxx1.EnumeratorInEnum.5 {{ enumerator = _, enum_ = _ }}", EnumeratorInEnum
 
   @staticmethod
@@ -501,6 +593,8 @@ class Cxx1EnumeratorInEnum(GleanSchemaPredicate):
 class Cxx1RecordDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.RecordDefinition.5 {{ }}", RecordDefinition
     return f"cxx1.RecordDefinition.5 {{ declaration = _, bases = _, members = _ }}", RecordDefinition
 
   @staticmethod
@@ -510,6 +604,8 @@ class Cxx1RecordDefinition(GleanSchemaPredicate):
 class Cxx1Type(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.Type.5 {{ }}", Type
     return f"cxx1.Type.5 {json.dumps(key)}", Type
 
   @staticmethod
@@ -519,6 +615,8 @@ class Cxx1Type(GleanSchemaPredicate):
 class Cxx1RecordDerived(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.RecordDerived.5 {{ }}", RecordDerived
     return f"cxx1.RecordDerived.5 {{ base = _, derived = _ }}", RecordDerived
 
   @staticmethod
@@ -528,6 +626,8 @@ class Cxx1RecordDerived(GleanSchemaPredicate):
 class Cxx1PPDefineLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.PPDefineLocation.5 {{ }}", PPDefineLocation
     return f"cxx1.PPDefineLocation.5 {{ define = _, name = _, file = _, range = _ }}", PPDefineLocation
 
   @staticmethod
@@ -537,6 +637,8 @@ class Cxx1PPDefineLocation(GleanSchemaPredicate):
 class Cxx1ObjcImplements(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.ObjcImplements.5 {{ }}", ObjcImplements
     return f"cxx1.ObjcImplements.5 {{ implementation = _, interface_ = _ }}", ObjcImplements
 
   @staticmethod
@@ -546,6 +648,8 @@ class Cxx1ObjcImplements(GleanSchemaPredicate):
 class Cxx1ObjcSelector(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.ObjcSelector.5 {{ }}", ObjcSelector
     return f"cxx1.ObjcSelector.5 {json.dumps(key)}", ObjcSelector
 
   @staticmethod
@@ -555,6 +659,8 @@ class Cxx1ObjcSelector(GleanSchemaPredicate):
 class Cxx1ObjcMethodDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.ObjcMethodDefinition.5 {{ }}", ObjcMethodDefinition
     return f"cxx1.ObjcMethodDefinition.5 {json.dumps(key)}", ObjcMethodDefinition
 
   @staticmethod
@@ -564,6 +670,8 @@ class Cxx1ObjcMethodDefinition(GleanSchemaPredicate):
 class Cxx1DeclarationInTrace(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.DeclarationInTrace.5 {{ }}", DeclarationInTrace
     return f"cxx1.DeclarationInTrace.5 {{ decl = _, trace = _ }}", DeclarationInTrace
 
   @staticmethod
@@ -573,6 +681,8 @@ class Cxx1DeclarationInTrace(GleanSchemaPredicate):
 class Cxx1PPEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.PPEntityLocation.5 {{ }}", PPEntityLocation
     return f"cxx1.PPEntityLocation.5 {{ entity = _, name = _, file = _, range = _ }}", PPEntityLocation
 
   @staticmethod
@@ -582,6 +692,8 @@ class Cxx1PPEntityLocation(GleanSchemaPredicate):
 class Cxx1UsingDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.UsingDeclaration.5 {{ }}", UsingDeclaration
     return f"cxx1.UsingDeclaration.5 {{ name = _, source = _ }}", UsingDeclaration
 
   @staticmethod
@@ -591,6 +703,8 @@ class Cxx1UsingDeclaration(GleanSchemaPredicate):
 class Cxx1QName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.QName.5 {{ }}", QName
     return f"cxx1.QName.5 {{ name = _, scope = _ }}", QName
 
   @staticmethod
@@ -600,6 +714,8 @@ class Cxx1QName(GleanSchemaPredicate):
 class Cxx1ObjcContainerDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.ObjcContainerDefinition.5 {{ }}", ObjcContainerDefinition
     return f"cxx1.ObjcContainerDefinition.5 {{ declaration = _, protocols = _, members = _ }}", ObjcContainerDefinition
 
   @staticmethod
@@ -609,6 +725,8 @@ class Cxx1ObjcContainerDefinition(GleanSchemaPredicate):
 class Cxx1EnumDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.EnumDefinition.5 {{ }}", EnumDefinition
     return f"cxx1.EnumDefinition.5 {{ declaration = _, enumerators = _ }}", EnumDefinition
 
   @staticmethod
@@ -618,6 +736,8 @@ class Cxx1EnumDefinition(GleanSchemaPredicate):
 class Cxx1VariableDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.VariableDeclaration.5 {{ }}", VariableDeclaration
     return f"cxx1.VariableDeclaration.5 {{ name = _, type = _, kind = _, source = _ }}", VariableDeclaration
 
   @staticmethod
@@ -627,6 +747,8 @@ class Cxx1VariableDeclaration(GleanSchemaPredicate):
 class Cxx1DeclarationLocationNameSpan(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.DeclarationLocationNameSpan.5 {{ }}", DeclarationLocationNameSpan
     return f"cxx1.DeclarationLocationNameSpan.5 {{ decl = _, source = _, name = _, file = _, span = _ }}", DeclarationLocationNameSpan
 
   @staticmethod
@@ -636,6 +758,8 @@ class Cxx1DeclarationLocationNameSpan(GleanSchemaPredicate):
 class Cxx1ObjcContainerBase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.ObjcContainerBase.5 {{ }}", ObjcContainerBase
     return f"cxx1.ObjcContainerBase.5 {{ declaration = _, base = _ }}", ObjcContainerBase
 
   @staticmethod
@@ -645,6 +769,8 @@ class Cxx1ObjcContainerBase(GleanSchemaPredicate):
 class Cxx1DeclarationSources(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.DeclarationSources.5 {{ }}", DeclarationSources
     return f"cxx1.DeclarationSources.5 {{ target = _, sources = _ }}", DeclarationSources
 
   @staticmethod
@@ -654,6 +780,8 @@ class Cxx1DeclarationSources(GleanSchemaPredicate):
 class Cxx1TranslationUnitXRefs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.TranslationUnitXRefs.5 {{ }}", TranslationUnitXRefs
     return f"cxx1.TranslationUnitXRefs.5 {{ tunit = _, xrefs = _ }}", TranslationUnitXRefs
 
   @staticmethod
@@ -663,6 +791,8 @@ class Cxx1TranslationUnitXRefs(GleanSchemaPredicate):
 class Cxx1ObjcPropertyIVar(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.ObjcPropertyIVar.5 {{ }}", ObjcPropertyIVar
     return f"cxx1.ObjcPropertyIVar.5 {{ property = _, ivar = _ }}", ObjcPropertyIVar
 
   @staticmethod
@@ -672,6 +802,8 @@ class Cxx1ObjcPropertyIVar(GleanSchemaPredicate):
 class Cxx1ObjcContainerInheritance(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.ObjcContainerInheritance.5 {{ }}", ObjcContainerInheritance
     return f"cxx1.ObjcContainerInheritance.5 {{ base = _, declaration = _ }}", ObjcContainerInheritance
 
   @staticmethod
@@ -681,6 +813,8 @@ class Cxx1ObjcContainerInheritance(GleanSchemaPredicate):
 class Cxx1FunctionDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.FunctionDefinition.5 {{ }}", FunctionDefinition
     return f"cxx1.FunctionDefinition.5 {{ declaration = _, isInline = _ }}", FunctionDefinition
 
   @staticmethod
@@ -690,6 +824,8 @@ class Cxx1FunctionDefinition(GleanSchemaPredicate):
 class Cxx1Signature(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.Signature.5 {{ }}", Signature
     return f"cxx1.Signature.5 {{ returns = _, parameters = _ }}", Signature
 
   @staticmethod
@@ -699,6 +835,8 @@ class Cxx1Signature(GleanSchemaPredicate):
 class Cxx1DeclInRecord(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.DeclInRecord.5 {{ }}", DeclInRecord
     return f"cxx1.DeclInRecord.5 {{ decl = _, record = _ }}", DeclInRecord
 
   @staticmethod
@@ -708,6 +846,8 @@ class Cxx1DeclInRecord(GleanSchemaPredicate):
 class Cxx1FileXRefs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.FileXRefs.5 {{ }}", FileXRefs
     return f"cxx1.FileXRefs.5 {{ xmap = _, externals = _ }}", FileXRefs
 
   @staticmethod
@@ -717,6 +857,8 @@ class Cxx1FileXRefs(GleanSchemaPredicate):
 class Cxx1Attribute(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.Attribute.5 {{ }}", Attribute
     return f"cxx1.Attribute.5 {json.dumps(key)}", Attribute
 
   @staticmethod
@@ -726,6 +868,8 @@ class Cxx1Attribute(GleanSchemaPredicate):
 class Cxx1NamespaceDeclarationName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.NamespaceDeclarationName.5 {{ }}", NamespaceDeclarationName
     return f"cxx1.NamespaceDeclarationName.5 {{ qname = _, name = _ }}", NamespaceDeclarationName
 
   @staticmethod
@@ -735,6 +879,8 @@ class Cxx1NamespaceDeclarationName(GleanSchemaPredicate):
 class Cxx1FunctionDeclarationName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.FunctionDeclarationName.5 {{ }}", FunctionDeclarationName
     return f"cxx1.FunctionDeclarationName.5 {{ fname = _, name = _ }}", FunctionDeclarationName
 
   @staticmethod
@@ -744,6 +890,8 @@ class Cxx1FunctionDeclarationName(GleanSchemaPredicate):
 class Cxx1FunctionName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"cxx1.FunctionName.5 {{ }}", FunctionName
     return f"cxx1.FunctionName.5 {json.dumps(key)}", FunctionName
 
   @staticmethod

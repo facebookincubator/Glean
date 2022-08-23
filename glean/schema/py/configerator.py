@@ -14,6 +14,8 @@ from glean.schema.configerator.types import (
 class ConfigeratorImportFilesStatement(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"configerator.ImportFilesStatement.1 {{ }}", ImportFilesStatement
     return f"configerator.ImportFilesStatement.1 {{ import_ = _, is_recursive = _ }}", ImportFilesStatement
 
   @staticmethod

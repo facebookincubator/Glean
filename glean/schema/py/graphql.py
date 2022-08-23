@@ -33,6 +33,8 @@ from glean.schema.graphql.types import (
 class GraphqlDirective(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"graphql.Directive.2 {{ }}", Directive
     return f"graphql.Directive.2 {{ name = _, arguments = _ }}", Directive
 
   @staticmethod
@@ -42,6 +44,8 @@ class GraphqlDirective(GleanSchemaPredicate):
 class GraphqlInputObjectTypeDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"graphql.InputObjectTypeDef.2 {{ }}", InputObjectTypeDef
     return f"graphql.InputObjectTypeDef.2 {{ name = _, fields = _, directives = _ }}", InputObjectTypeDef
 
   @staticmethod
@@ -51,6 +55,8 @@ class GraphqlInputObjectTypeDef(GleanSchemaPredicate):
 class GraphqlEnumTypeDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"graphql.EnumTypeDef.2 {{ }}", EnumTypeDef
     return f"graphql.EnumTypeDef.2 {{ name = _, values = _, directives = _ }}", EnumTypeDef
 
   @staticmethod
@@ -60,6 +66,8 @@ class GraphqlEnumTypeDef(GleanSchemaPredicate):
 class GraphqlUnionTypeDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"graphql.UnionTypeDef.2 {{ }}", UnionTypeDef
     return f"graphql.UnionTypeDef.2 {{ name = _, types = _, directives = _ }}", UnionTypeDef
 
   @staticmethod
@@ -69,6 +77,8 @@ class GraphqlUnionTypeDef(GleanSchemaPredicate):
 class GraphqlField(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"graphql.Field.2 {{ }}", Field
     return f"graphql.Field.2 {{ type = _, name = _, directives = _, selectionSet = _, arguments = _, alias = _, loc = _ }}", Field
 
   @staticmethod
@@ -78,6 +88,8 @@ class GraphqlField(GleanSchemaPredicate):
 class GraphqlObjectTypeDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"graphql.ObjectTypeDef.2 {{ }}", ObjectTypeDef
     return f"graphql.ObjectTypeDef.2 {{ name = _, interfaces = _, fields = _, directives = _ }}", ObjectTypeDef
 
   @staticmethod
@@ -87,6 +99,8 @@ class GraphqlObjectTypeDef(GleanSchemaPredicate):
 class GraphqlArgument(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"graphql.Argument.2 {{ }}", Argument
     return f"graphql.Argument.2 {{ name = _, value = _ }}", Argument
 
   @staticmethod
@@ -96,6 +110,8 @@ class GraphqlArgument(GleanSchemaPredicate):
 class GraphqlDirectiveDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"graphql.DirectiveDef.2 {{ }}", DirectiveDef
     return f"graphql.DirectiveDef.2 {{ name = _, argumentDefs = _, locations = _ }}", DirectiveDef
 
   @staticmethod
@@ -105,6 +121,8 @@ class GraphqlDirectiveDef(GleanSchemaPredicate):
 class GraphqlFragment(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"graphql.Fragment.2 {{ }}", Fragment
     return f"graphql.Fragment.2 {{ name = _, typeCondition = _, variableDefs = _, directives = _, selectionSet = _, loc = _ }}", Fragment
 
   @staticmethod
@@ -114,6 +132,8 @@ class GraphqlFragment(GleanSchemaPredicate):
 class GraphqlScalarTypeDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"graphql.ScalarTypeDef.2 {{ }}", ScalarTypeDef
     return f"graphql.ScalarTypeDef.2 {{ name = _, directives = _ }}", ScalarTypeDef
 
   @staticmethod
@@ -123,6 +143,8 @@ class GraphqlScalarTypeDef(GleanSchemaPredicate):
 class GraphqlVariableDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"graphql.VariableDef.2 {{ }}", VariableDef
     return f"graphql.VariableDef.2 {{ name = _, type = _, directives = _, defaultValue = _ }}", VariableDef
 
   @staticmethod
@@ -132,6 +154,8 @@ class GraphqlVariableDef(GleanSchemaPredicate):
 class GraphqlDeclarationName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"graphql.DeclarationName.2 {{ }}", DeclarationName
     return f"graphql.DeclarationName.2 {json.dumps(key)}", DeclarationName
 
   @staticmethod
@@ -141,6 +165,8 @@ class GraphqlDeclarationName(GleanSchemaPredicate):
 class GraphqlFileDeclarations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"graphql.FileDeclarations.2 {{ }}", FileDeclarations
     return f"graphql.FileDeclarations.2 {{ file = _, span = _, declaration = _ }}", FileDeclarations
 
   @staticmethod
@@ -150,6 +176,8 @@ class GraphqlFileDeclarations(GleanSchemaPredicate):
 class GraphqlDeclarationLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"graphql.DeclarationLocation.2 {{ }}", DeclarationLocation
     return f"graphql.DeclarationLocation.2 {{ declaration = _, file = _, span = _ }}", DeclarationLocation
 
   @staticmethod
@@ -159,6 +187,8 @@ class GraphqlDeclarationLocation(GleanSchemaPredicate):
 class GraphqlFieldDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"graphql.FieldDef.2 {{ }}", FieldDef
     return f"graphql.FieldDef.2 {{ name = _, type = _, argumentDefs = _, directives = _ }}", FieldDef
 
   @staticmethod
@@ -168,6 +198,8 @@ class GraphqlFieldDef(GleanSchemaPredicate):
 class GraphqlInterfaceTypeDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"graphql.InterfaceTypeDef.2 {{ }}", InterfaceTypeDef
     return f"graphql.InterfaceTypeDef.2 {{ name = _, fields = _, directives = _ }}", InterfaceTypeDef
 
   @staticmethod
@@ -177,6 +209,8 @@ class GraphqlInterfaceTypeDef(GleanSchemaPredicate):
 class GraphqlQuery(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"graphql.Query.2 {{ }}", Query
     return f"graphql.Query.2 {{ name = _, directives = _, variableDefs = _, selectionSet = _, loc = _ }}", Query
 
   @staticmethod
@@ -186,6 +220,8 @@ class GraphqlQuery(GleanSchemaPredicate):
 class GraphqlInputValueDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"graphql.InputValueDef.2 {{ }}", InputValueDef
     return f"graphql.InputValueDef.2 {{ name = _, type = _, directives = _, defaultValue = _ }}", InputValueDef
 
   @staticmethod
@@ -195,6 +231,8 @@ class GraphqlInputValueDef(GleanSchemaPredicate):
 class GraphqlValue(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"graphql.Value.2 {{ }}", Value
     return f"graphql.Value.2 {json.dumps(key)}", Value
 
   @staticmethod
@@ -204,6 +242,8 @@ class GraphqlValue(GleanSchemaPredicate):
 class GraphqlInlineFragment(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"graphql.InlineFragment.2 {{ }}", InlineFragment
     return f"graphql.InlineFragment.2 {{ inferredTypeCondition = _, directives = _, selectionSet = _, typeCondition = _ }}", InlineFragment
 
   @staticmethod

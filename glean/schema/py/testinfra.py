@@ -38,6 +38,8 @@ from glean.schema.testinfra.types import (
 class TestinfraCoveredFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.CoveredFile.3 {{ }}", CoveredFile
     return f"testinfra.CoveredFile.3 {{ file = _, coverage = _ }}", CoveredFile
 
   @staticmethod
@@ -47,6 +49,8 @@ class TestinfraCoveredFile(GleanSchemaPredicate):
 class TestinfraAssemblyByTag(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.AssemblyByTag.4 {{ }}", AssemblyByTag
     return f"testinfra.AssemblyByTag.4 {{ tag = _, testId = _ }}", AssemblyByTag
 
   @staticmethod
@@ -56,6 +60,8 @@ class TestinfraAssemblyByTag(GleanSchemaPredicate):
 class TestinfraTestId(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.TestId.1 {{ }}", TestId
     return f"testinfra.TestId.1 {json.dumps(key)}", TestId
 
   @staticmethod
@@ -65,6 +71,8 @@ class TestinfraTestId(GleanSchemaPredicate):
 class TestinfraMeasuredFileOnly(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.MeasuredFileOnly.4 {{ }}", MeasuredFileOnly
     return f"testinfra.MeasuredFileOnly.4 {{ measuredFile = _, file = _ }}", MeasuredFileOnly
 
   @staticmethod
@@ -74,6 +82,8 @@ class TestinfraMeasuredFileOnly(GleanSchemaPredicate):
 class TestinfraCoveredOrLoadedFileTestIds(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.CoveredOrLoadedFileTestIds.5 {{ }}", CoveredOrLoadedFileTestIds
     return f"testinfra.CoveredOrLoadedFileTestIds.5 {{ file = _, assemblies = _ }}", CoveredOrLoadedFileTestIds
 
   @staticmethod
@@ -83,6 +93,8 @@ class TestinfraCoveredOrLoadedFileTestIds(GleanSchemaPredicate):
 class TestinfraCoveredFileByPushBlockingAssembly(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.CoveredFileByPushBlockingAssembly.4 {{ }}", CoveredFileByPushBlockingAssembly
     return f"testinfra.CoveredFileByPushBlockingAssembly.4 {{ coveredFile = _, assemblyId = _ }}", CoveredFileByPushBlockingAssembly
 
   @staticmethod
@@ -92,6 +104,8 @@ class TestinfraCoveredFileByPushBlockingAssembly(GleanSchemaPredicate):
 class TestinfraCoveredFileTestIds(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.CoveredFileTestIds.5 {{ }}", CoveredFileTestIds
     return f"testinfra.CoveredFileTestIds.5 {{ file = _, assemblies = _ }}", CoveredFileTestIds
 
   @staticmethod
@@ -101,6 +115,8 @@ class TestinfraCoveredFileTestIds(GleanSchemaPredicate):
 class TestinfraDatabaseMetadataField(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.DatabaseMetadataField.4 {{ }}", DatabaseMetadataField
     return f"testinfra.DatabaseMetadataField.4 {json.dumps(key)}", DatabaseMetadataField
 
   @staticmethod
@@ -110,6 +126,8 @@ class TestinfraDatabaseMetadataField(GleanSchemaPredicate):
 class TestinfraCoveredAssembly(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.CoveredAssembly.4 {{ }}", CoveredAssembly
     return f"testinfra.CoveredAssembly.4 {{ assemblyId = _, root = _ }}", CoveredAssembly
 
   @staticmethod
@@ -119,6 +137,8 @@ class TestinfraCoveredAssembly(GleanSchemaPredicate):
 class TestinfraCoveredFileTestIds(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.CoveredFileTestIds.4 {{ }}", CoveredFileTestIds
     return f"testinfra.CoveredFileTestIds.4 {{ file = _, assemblies = _ }}", CoveredFileTestIds
 
   @staticmethod
@@ -128,6 +148,8 @@ class TestinfraCoveredFileTestIds(GleanSchemaPredicate):
 class TestinfraTaggedAssembly(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.TaggedAssembly.4 {{ }}", TaggedAssembly
     return f"testinfra.TaggedAssembly.4 {{ assemblyId = _, tag = _ }}", TaggedAssembly
 
   @staticmethod
@@ -137,6 +159,8 @@ class TestinfraTaggedAssembly(GleanSchemaPredicate):
 class TestinfraFileMetadata(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.FileMetadata.2 {{ }}", FileMetadata
     return f"testinfra.FileMetadata.2 {{ file = _, hash = _, length = _, nonexecutableRanges = _ }}", FileMetadata
 
   @staticmethod
@@ -146,6 +170,8 @@ class TestinfraFileMetadata(GleanSchemaPredicate):
 class TestinfraDatabaseMetadata(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.DatabaseMetadata.1 {{ }}", DatabaseMetadata
     return f"testinfra.DatabaseMetadata.1 {{ field = _, serializedValue = _ }}", DatabaseMetadata
 
   @staticmethod
@@ -155,6 +181,8 @@ class TestinfraDatabaseMetadata(GleanSchemaPredicate):
 class TestinfraCoveredFolder(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.CoveredFolder.2 {{ }}", CoveredFolder
     return f"testinfra.CoveredFolder.2 {{ folder = _, folders = _, files = _ }}", CoveredFolder
 
   @staticmethod
@@ -164,6 +192,8 @@ class TestinfraCoveredFolder(GleanSchemaPredicate):
 class TestinfraCoveredFileByTagAndAssembly(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.CoveredFileByTagAndAssembly.4 {{ }}", CoveredFileByTagAndAssembly
     return f"testinfra.CoveredFileByTagAndAssembly.4 {{ coveredFile = _, tag = _, assemblyId = _ }}", CoveredFileByTagAndAssembly
 
   @staticmethod
@@ -173,6 +203,8 @@ class TestinfraCoveredFileByTagAndAssembly(GleanSchemaPredicate):
 class TestinfraFbId(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.FbId.4 {{ }}", FbId
     return f"testinfra.FbId.4 {json.dumps(key)}", FbId
 
   @staticmethod
@@ -182,6 +214,8 @@ class TestinfraFbId(GleanSchemaPredicate):
 class TestinfraCoveredFileOnly(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.CoveredFileOnly.3 {{ }}", CoveredFileOnly
     return f"testinfra.CoveredFileOnly.3 {{ coveredFile = _, file = _ }}", CoveredFileOnly
 
   @staticmethod
@@ -191,6 +225,8 @@ class TestinfraCoveredFileOnly(GleanSchemaPredicate):
 class TestinfraAssemblies(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.Assemblies.4 {{ }}", Assemblies
     return f"testinfra.Assemblies.4 {json.dumps(key)}", Assemblies
 
   @staticmethod
@@ -200,6 +236,8 @@ class TestinfraAssemblies(GleanSchemaPredicate):
 class TestinfraFileMetadata(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.FileMetadata.4 {{ }}", FileMetadata
     return f"testinfra.FileMetadata.4 {{ file = _, hash = _, length = _, nonexecutableRanges = _, executableLength = _ }}", FileMetadata
 
   @staticmethod
@@ -209,6 +247,8 @@ class TestinfraFileMetadata(GleanSchemaPredicate):
 class TestinfraFolder(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.Folder.1 {{ }}", Folder
     return f"testinfra.Folder.1 {json.dumps(key)}", Folder
 
   @staticmethod
@@ -218,6 +258,8 @@ class TestinfraFolder(GleanSchemaPredicate):
 class TestinfraAssemblyId(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.AssemblyId.4 {{ }}", AssemblyId
     return f"testinfra.AssemblyId.4 {json.dumps(key)}", AssemblyId
 
   @staticmethod
@@ -227,6 +269,8 @@ class TestinfraAssemblyId(GleanSchemaPredicate):
 class TestinfraMeasuredFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.MeasuredFile.4 {{ }}", MeasuredFile
     return f"testinfra.MeasuredFile.4 {{ file = _, assemblies = _ }}", MeasuredFile
 
   @staticmethod
@@ -236,6 +280,8 @@ class TestinfraMeasuredFile(GleanSchemaPredicate):
 class TestinfraContainsPushBlockingAssembly(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.ContainsPushBlockingAssembly.4 {{ }}", ContainsPushBlockingAssembly
     return f"testinfra.ContainsPushBlockingAssembly.4 {{ assemblies = _, assembly = _ }}", ContainsPushBlockingAssembly
 
   @staticmethod
@@ -245,6 +291,8 @@ class TestinfraContainsPushBlockingAssembly(GleanSchemaPredicate):
 class TestinfraTag(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.Tag.4 {{ }}", Tag
     return f"testinfra.Tag.4 {json.dumps(key)}", Tag
 
   @staticmethod
@@ -254,6 +302,8 @@ class TestinfraTag(GleanSchemaPredicate):
 class TestinfraCoveredFileAssemblies(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"testinfra.CoveredFileAssemblies.4 {{ }}", CoveredFileAssemblies
     return f"testinfra.CoveredFileAssemblies.4 {{ coveredFile = _, assemblies = _ }}", CoveredFileAssemblies
 
   @staticmethod

@@ -16,6 +16,8 @@ from glean.schema.codexref.types import (
 class CodexrefOutgoingXRefs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codexref.OutgoingXRefs.6 {{ }}", OutgoingXRefs
     return f"codexref.OutgoingXRefs.6 {{ file = _, shard = _ }}", OutgoingXRefs
 
   @staticmethod
@@ -25,6 +27,8 @@ class CodexrefOutgoingXRefs(GleanSchemaPredicate):
 class CodexrefSymbolName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codexref.SymbolName.6 {{ }}", SymbolName
     return f"codexref.SymbolName.6 {json.dumps(key)}", SymbolName
 
   @staticmethod
@@ -34,6 +38,8 @@ class CodexrefSymbolName(GleanSchemaPredicate):
 class CodexrefIncomingXRefs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codexref.IncomingXRefs.6 {{ }}", IncomingXRefs
     return f"codexref.IncomingXRefs.6 {{ file = _, shard = _ }}", IncomingXRefs
 
   @staticmethod

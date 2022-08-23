@@ -18,6 +18,8 @@ from glean.schema.src.types import (
 class SrcIndexFailure(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"src.IndexFailure.1 {{ }}", IndexFailure
     return f"src.IndexFailure.1 {{ file = _, reason = _, details = _ }}", IndexFailure
 
   @staticmethod
@@ -27,6 +29,8 @@ class SrcIndexFailure(GleanSchemaPredicate):
 class SrcByteSpanContains(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"src.ByteSpanContains.1 {{ }}", ByteSpanContains
     return f"src.ByteSpanContains.1 {{ byteSpan = _, contains = _ }}", ByteSpanContains
 
   @staticmethod
@@ -36,6 +40,8 @@ class SrcByteSpanContains(GleanSchemaPredicate):
 class SrcFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"src.File.1 {{ }}", File
     return f"src.File.1 {json.dumps(key)}", File
 
   @staticmethod
@@ -45,6 +51,8 @@ class SrcFile(GleanSchemaPredicate):
 class SrcFileLanguage(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"src.FileLanguage.1 {{ }}", FileLanguage
     return f"src.FileLanguage.1 {{ file = _, language = _ }}", FileLanguage
 
   @staticmethod
@@ -54,6 +62,8 @@ class SrcFileLanguage(GleanSchemaPredicate):
 class SrcFileLines(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"src.FileLines.1 {{ }}", FileLines
     return f"src.FileLines.1 {{ file = _, lengths = _, endsInNewline = _, hasUnicodeOrTabs = _ }}", FileLines
 
   @staticmethod

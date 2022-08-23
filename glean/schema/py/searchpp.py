@@ -15,6 +15,8 @@ from glean.schema.searchpp.types import (
 class SearchPpSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.pp.SearchByName.2 {{ }}", PpSearchByName
     return f"search.pp.SearchByName.2 {{ macro = _, entity = _ }}", PpSearchByName
 
   @staticmethod
@@ -24,6 +26,8 @@ class SearchPpSearchByName(GleanSchemaPredicate):
 class SearchPpSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.pp.SearchByName.1 {{ }}", PpSearchByName
     return f"search.pp.SearchByName.1 {{ name = _, entity = _ }}", PpSearchByName
 
   @staticmethod

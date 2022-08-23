@@ -19,6 +19,8 @@ from glean.schema.codemarkuplsif.types import (
 class CodemarkupLsifLsifEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.lsif.LsifEntityLocation.3 {{ }}", LsifLsifEntityLocation
     return f"codemarkup.lsif.LsifEntityLocation.3 {{ entity = _, location = _ }}", LsifLsifEntityLocation
 
   @staticmethod
@@ -28,6 +30,8 @@ class CodemarkupLsifLsifEntityLocation(GleanSchemaPredicate):
 class CodemarkupLsifLsifResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.lsif.LsifResolveLocation.3 {{ }}", LsifLsifResolveLocation
     return f"codemarkup.lsif.LsifResolveLocation.3 {{ location = _, entity = _ }}", LsifLsifResolveLocation
 
   @staticmethod
@@ -37,6 +41,8 @@ class CodemarkupLsifLsifResolveLocation(GleanSchemaPredicate):
 class CodemarkupLsifLsifEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.lsif.LsifEntityUses.3 {{ }}", LsifLsifEntityUses
     return f"codemarkup.lsif.LsifEntityUses.3 {{ target = _, file = _, range = _ }}", LsifLsifEntityUses
 
   @staticmethod
@@ -46,6 +52,8 @@ class CodemarkupLsifLsifEntityUses(GleanSchemaPredicate):
 class CodemarkupLsifLsifFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.lsif.LsifFileEntityXRefLocations.3 {{ }}", LsifLsifFileEntityXRefLocations
     return f"codemarkup.lsif.LsifFileEntityXRefLocations.3 {{ file = _, xref = _, entity = _ }}", LsifLsifFileEntityXRefLocations
 
   @staticmethod
@@ -55,6 +63,8 @@ class CodemarkupLsifLsifFileEntityXRefLocations(GleanSchemaPredicate):
 class CodemarkupLsifEntityInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.lsif.EntityInfo.3 {{ }}", LsifEntityInfo
     return f"codemarkup.lsif.EntityInfo.3 {{ entity = _, info = _ }}", LsifEntityInfo
 
   @staticmethod
@@ -64,6 +74,8 @@ class CodemarkupLsifEntityInfo(GleanSchemaPredicate):
 class CodemarkupLsifLsifKindToKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.lsif.LsifKindToKind.3 {{ }}", LsifLsifKindToKind
     return f"codemarkup.lsif.LsifKindToKind.3 {{ lsif = _, kind = _ }}", LsifLsifKindToKind
 
   @staticmethod

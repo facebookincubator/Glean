@@ -36,6 +36,8 @@ from glean.schema.hs.types import (
 class HsPackageId(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.PackageId.1 {{ }}", PackageId
     return f"hs.PackageId.1 {json.dumps(key)}", PackageId
 
   @staticmethod
@@ -45,6 +47,8 @@ class HsPackageId(GleanSchemaPredicate):
 class HsDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.Definition.2 {{ }}", Definition
     return f"hs.Definition.2 {{ name = _, source = _ }}", Definition
 
   @staticmethod
@@ -54,6 +58,8 @@ class HsDefinition(GleanSchemaPredicate):
 class HsClassNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.ClassNameLowerCase.1 {{ }}", ClassNameLowerCase
     return f"hs.ClassNameLowerCase.1 {{ nameLowerCase = _, name = _ }}", ClassNameLowerCase
 
   @staticmethod
@@ -63,6 +69,8 @@ class HsClassNameLowerCase(GleanSchemaPredicate):
 class HsDefinitionNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.DefinitionNameLowerCase.1 {{ }}", DefinitionNameLowerCase
     return f"hs.DefinitionNameLowerCase.1 {{ nameLowerCase = _, name = _ }}", DefinitionNameLowerCase
 
   @staticmethod
@@ -72,6 +80,8 @@ class HsDefinitionNameLowerCase(GleanSchemaPredicate):
 class HsModuleName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.ModuleName.1 {{ }}", ModuleName
     return f"hs.ModuleName.1 {json.dumps(key)}", ModuleName
 
   @staticmethod
@@ -81,6 +91,8 @@ class HsModuleName(GleanSchemaPredicate):
 class HsDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.Definition.1 {{ }}", Definition
     return f"hs.Definition.1 {{ name = _, source = _ }}", Definition
 
   @staticmethod
@@ -90,6 +102,8 @@ class HsDefinition(GleanSchemaPredicate):
 class HsDefinitionLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.DefinitionLocation.2 {{ }}", DefinitionLocation
     return f"hs.DefinitionLocation.2 {{ defn = _, name = _, source = _ }}", DefinitionLocation
 
   @staticmethod
@@ -99,6 +113,8 @@ class HsDefinitionLocation(GleanSchemaPredicate):
 class HsDefinitionName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.DefinitionName.1 {{ }}", DefinitionName
     return f"hs.DefinitionName.1 {json.dumps(key)}", DefinitionName
 
   @staticmethod
@@ -108,6 +124,8 @@ class HsDefinitionName(GleanSchemaPredicate):
 class HsModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.Module.1 {{ }}", Module
     return f"hs.Module.1 {{ packageId = _, moduleName = _, source = _ }}", Module
 
   @staticmethod
@@ -117,6 +135,8 @@ class HsModule(GleanSchemaPredicate):
 class HsTargetUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.TargetUses.2 {{ }}", TargetUses
     return f"hs.TargetUses.2 {{ target = _, file = _, uses = _ }}", TargetUses
 
   @staticmethod
@@ -126,6 +146,8 @@ class HsTargetUses(GleanSchemaPredicate):
 class HsFunctionNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.FunctionNameLowerCase.1 {{ }}", FunctionNameLowerCase
     return f"hs.FunctionNameLowerCase.1 {{ nameLowerCase = _, name = _ }}", FunctionNameLowerCase
 
   @staticmethod
@@ -135,6 +157,8 @@ class HsFunctionNameLowerCase(GleanSchemaPredicate):
 class HsFileDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.FileDefinition.2 {{ }}", FileDefinition
     return f"hs.FileDefinition.2 {{ file = _, defn = _ }}", FileDefinition
 
   @staticmethod
@@ -144,6 +168,8 @@ class HsFileDefinition(GleanSchemaPredicate):
 class HsSourceModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.SourceModule.1 {{ }}", SourceModule
     return f"hs.SourceModule.1 {{ moduleName = _, source = _ }}", SourceModule
 
   @staticmethod
@@ -153,6 +179,8 @@ class HsSourceModule(GleanSchemaPredicate):
 class HsFunctionDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.FunctionDefinition.1 {{ }}", FunctionDefinition
     return f"hs.FunctionDefinition.1 {{ name = _, source = _ }}", FunctionDefinition
 
   @staticmethod
@@ -162,6 +190,8 @@ class HsFunctionDefinition(GleanSchemaPredicate):
 class HsClassInstance(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.ClassInstance.1 {{ }}", ClassInstance
     return f"hs.ClassInstance.1 {{ typeclass = _, instance = _, source = _ }}", ClassInstance
 
   @staticmethod
@@ -171,6 +201,8 @@ class HsClassInstance(GleanSchemaPredicate):
 class HsClass(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.Class.1 {{ }}", Class
     return f"hs.Class.1 {{ name = _, source = _ }}", Class
 
   @staticmethod
@@ -180,6 +212,8 @@ class HsClass(GleanSchemaPredicate):
 class HsFunctionName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.FunctionName.1 {{ }}", FunctionName
     return f"hs.FunctionName.1 {json.dumps(key)}", FunctionName
 
   @staticmethod
@@ -189,6 +223,8 @@ class HsFunctionName(GleanSchemaPredicate):
 class HsModuleDefinitions(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.ModuleDefinitions.1 {{ }}", ModuleDefinitions
     return f"hs.ModuleDefinitions.1 {{ module = _, functionDefinitions = _ }}", ModuleDefinitions
 
   @staticmethod
@@ -198,6 +234,8 @@ class HsModuleDefinitions(GleanSchemaPredicate):
 class HsModuleNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.ModuleNameLowerCase.1 {{ }}", ModuleNameLowerCase
     return f"hs.ModuleNameLowerCase.1 {{ nameLowerCase = _, name = _ }}", ModuleNameLowerCase
 
   @staticmethod
@@ -207,6 +245,8 @@ class HsModuleNameLowerCase(GleanSchemaPredicate):
 class HsXRef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.XRef.2 {{ }}", XRef
     return f"hs.XRef.2 {{ loc = _, ref = _ }}", XRef
 
   @staticmethod
@@ -216,6 +256,8 @@ class HsXRef(GleanSchemaPredicate):
 class HsClassName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.ClassName.1 {{ }}", ClassName
     return f"hs.ClassName.1 {json.dumps(key)}", ClassName
 
   @staticmethod
@@ -225,6 +267,8 @@ class HsClassName(GleanSchemaPredicate):
 class HsType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.Type.1 {{ }}", Type
     return f"hs.Type.1 {json.dumps(key)}", Type
 
   @staticmethod
@@ -234,6 +278,8 @@ class HsType(GleanSchemaPredicate):
 class HsFileXRefMap(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hs.FileXRefMap.2 {{ }}", FileXRefMap
     return f"hs.FileXRefMap.2 {{ file = _, refs = _ }}", FileXRefMap
 
   @staticmethod

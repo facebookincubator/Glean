@@ -27,6 +27,8 @@ from glean.schema.omegaanalyser.types import (
 class OmegaanalyserMethod(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"omegaanalyser.Method.4 {{ }}", Method
     return f"omegaanalyser.Method.4 {json.dumps(key)}", Method
 
   @staticmethod
@@ -36,6 +38,8 @@ class OmegaanalyserMethod(GleanSchemaPredicate):
 class OmegaanalyserPolicyOncall(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"omegaanalyser.PolicyOncall.4 {{ }}", PolicyOncall
     return f"omegaanalyser.PolicyOncall.4 {{ policy = _, oncall = _ }}", PolicyOncall
 
   @staticmethod
@@ -45,6 +49,8 @@ class OmegaanalyserPolicyOncall(GleanSchemaPredicate):
 class OmegaanalyserOmegaEndpoint(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"omegaanalyser.OmegaEndpoint.4 {{ }}", OmegaEndpoint
     return f"omegaanalyser.OmegaEndpoint.4 {json.dumps(key)}", OmegaEndpoint
 
   @staticmethod
@@ -54,6 +60,8 @@ class OmegaanalyserOmegaEndpoint(GleanSchemaPredicate):
 class OmegaanalyserDependencyPath(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"omegaanalyser.DependencyPath.4 {{ }}", DependencyPath
     return f"omegaanalyser.DependencyPath.4 {{ node = _, coreNode = _, shortestPath = _ }}", DependencyPath
 
   @staticmethod
@@ -63,6 +71,8 @@ class OmegaanalyserDependencyPath(GleanSchemaPredicate):
 class OmegaanalyserClass_(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"omegaanalyser.Class_.4 {{ }}", Class_
     return f"omegaanalyser.Class_.4 {json.dumps(key)}", Class_
 
   @staticmethod
@@ -72,6 +82,8 @@ class OmegaanalyserClass_(GleanSchemaPredicate):
 class OmegaanalyserClassStaticMethodReferences(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"omegaanalyser.ClassStaticMethodReferences.4 {{ }}", ClassStaticMethodReferences
     return f"omegaanalyser.ClassStaticMethodReferences.4 {{ source = _, targetClass = _, classXRefUses = _, staticMethodXRefUses = _ }}", ClassStaticMethodReferences
 
   @staticmethod
@@ -81,6 +93,8 @@ class OmegaanalyserClassStaticMethodReferences(GleanSchemaPredicate):
 class OmegaanalyserOmegaPolicy(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"omegaanalyser.OmegaPolicy.4 {{ }}", OmegaPolicy
     return f"omegaanalyser.OmegaPolicy.4 {json.dumps(key)}", OmegaPolicy
 
   @staticmethod
@@ -90,6 +104,8 @@ class OmegaanalyserOmegaPolicy(GleanSchemaPredicate):
 class OmegaanalyserEndpointOncall(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"omegaanalyser.EndpointOncall.4 {{ }}", EndpointOncall
     return f"omegaanalyser.EndpointOncall.4 {{ endpoint = _, oncall = _ }}", EndpointOncall
 
   @staticmethod
@@ -99,6 +115,8 @@ class OmegaanalyserEndpointOncall(GleanSchemaPredicate):
 class OmegaanalyserTargetNodeLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"omegaanalyser.TargetNodeLocations.4 {{ }}", TargetNodeLocations
     return f"omegaanalyser.TargetNodeLocations.4 {{ source = _, target = _, pathToFile = _, targetByteSpan = _ }}", TargetNodeLocations
 
   @staticmethod
@@ -108,6 +126,8 @@ class OmegaanalyserTargetNodeLocations(GleanSchemaPredicate):
 class OmegaanalyserDependencyList(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"omegaanalyser.DependencyList.4 {{ }}", DependencyList
     return f"omegaanalyser.DependencyList.4 {{ node = _, endpoints = _ }}", DependencyList
 
   @staticmethod
@@ -117,6 +137,8 @@ class OmegaanalyserDependencyList(GleanSchemaPredicate):
 class OmegaanalyserFunction_(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"omegaanalyser.Function_.4 {{ }}", Function_
     return f"omegaanalyser.Function_.4 {json.dumps(key)}", Function_
 
   @staticmethod
@@ -126,6 +148,8 @@ class OmegaanalyserFunction_(GleanSchemaPredicate):
 class OmegaanalyserOncallName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"omegaanalyser.OncallName.4 {{ }}", OncallName
     return f"omegaanalyser.OncallName.4 {json.dumps(key)}", OncallName
 
   @staticmethod
@@ -135,6 +159,8 @@ class OmegaanalyserOncallName(GleanSchemaPredicate):
 class OmegaanalyserConfig(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"omegaanalyser.Config.4 {{ }}", Config
     return f"omegaanalyser.Config.4 {json.dumps(key)}", Config
 
   @staticmethod
@@ -144,6 +170,8 @@ class OmegaanalyserConfig(GleanSchemaPredicate):
 class OmegaanalyserDependencyPathByCoreNode(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"omegaanalyser.DependencyPathByCoreNode.4 {{ }}", DependencyPathByCoreNode
     return f"omegaanalyser.DependencyPathByCoreNode.4 {{ coreNode = _, node = _, shortestPath = _ }}", DependencyPathByCoreNode
 
   @staticmethod

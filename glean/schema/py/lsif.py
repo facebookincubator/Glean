@@ -50,6 +50,8 @@ from glean.schema.lsif.types import (
 class LsifRange(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.Range.2 {{ }}", Range
     return f"lsif.Range.2 {{ range = _, fullRange = _, text = _ }}", Range
 
   @staticmethod
@@ -59,6 +61,8 @@ class LsifRange(GleanSchemaPredicate):
 class LsifMonikerSymbolKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.MonikerSymbolKind.2 {{ }}", MonikerSymbolKind
     return f"lsif.MonikerSymbolKind.2 {{ moniker = _, kind = _ }}", MonikerSymbolKind
 
   @staticmethod
@@ -68,6 +72,8 @@ class LsifMonikerSymbolKind(GleanSchemaPredicate):
 class LsifName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.Name.2 {{ }}", Name
     return f"lsif.Name.2 {json.dumps(key)}", Name
 
   @staticmethod
@@ -77,6 +83,8 @@ class LsifName(GleanSchemaPredicate):
 class LsifDocument(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.Document.2 {{ }}", Document
     return f"lsif.Document.2 {{ file = _, language = _ }}", Document
 
   @staticmethod
@@ -86,6 +94,8 @@ class LsifDocument(GleanSchemaPredicate):
 class LsifToSrcRange(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.ToSrcRange.2 {{ }}", ToSrcRange
     return f"lsif.ToSrcRange.2 {{ file = _, lsif = _, range = _ }}", ToSrcRange
 
   @staticmethod
@@ -95,6 +105,8 @@ class LsifToSrcRange(GleanSchemaPredicate):
 class LsifPackageInformation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.PackageInformation.2 {{ }}", PackageInformation
     return f"lsif.PackageInformation.2 {{ name = _, manager = _, version = _ }}", PackageInformation
 
   @staticmethod
@@ -104,6 +116,8 @@ class LsifPackageInformation(GleanSchemaPredicate):
 class LsifDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.Definition.2 {{ }}", Definition
     return f"lsif.Definition.2 {{ file = _, range = _ }}", Definition
 
   @staticmethod
@@ -113,6 +127,8 @@ class LsifDefinition(GleanSchemaPredicate):
 class LsifProject(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.Project.2 {{ }}", Project
     return f"lsif.Project.2 {{ kind = _ }}", Project
 
   @staticmethod
@@ -122,6 +138,8 @@ class LsifProject(GleanSchemaPredicate):
 class LsifDefinitionKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.DefinitionKind.2 {{ }}", DefinitionKind
     return f"lsif.DefinitionKind.2 {{ defn = _, kind = _ }}", DefinitionKind
 
   @staticmethod
@@ -131,6 +149,8 @@ class LsifDefinitionKind(GleanSchemaPredicate):
 class LsifSearchByMoniker(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.SearchByMoniker.2 {{ }}", SearchByMoniker
     return f"lsif.SearchByMoniker.2 {{ ident = _, entity = _ }}", SearchByMoniker
 
   @staticmethod
@@ -140,6 +160,8 @@ class LsifSearchByMoniker(GleanSchemaPredicate):
 class LsifDefinitionMoniker(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.DefinitionMoniker.2 {{ }}", DefinitionMoniker
     return f"lsif.DefinitionMoniker.2 {{ defn = _, moniker = _ }}", DefinitionMoniker
 
   @staticmethod
@@ -149,6 +171,8 @@ class LsifDefinitionMoniker(GleanSchemaPredicate):
 class LsifMonikerScheme(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.MonikerScheme.2 {{ }}", MonikerScheme
     return f"lsif.MonikerScheme.2 {json.dumps(key)}", MonikerScheme
 
   @staticmethod
@@ -158,6 +182,8 @@ class LsifMonikerScheme(GleanSchemaPredicate):
 class LsifMonikerId(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.MonikerId.2 {{ }}", MonikerId
     return f"lsif.MonikerId.2 {json.dumps(key)}", MonikerId
 
   @staticmethod
@@ -167,6 +193,8 @@ class LsifMonikerId(GleanSchemaPredicate):
 class LsifHoverText(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.HoverText.2 {{ }}", HoverText
     return f"lsif.HoverText.2 {json.dumps(key)}", HoverText
 
   @staticmethod
@@ -176,6 +204,8 @@ class LsifHoverText(GleanSchemaPredicate):
 class LsifReference(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.Reference.2 {{ }}", Reference
     return f"lsif.Reference.2 {{ file = _, range = _, target = _ }}", Reference
 
   @staticmethod
@@ -185,6 +215,8 @@ class LsifReference(GleanSchemaPredicate):
 class LsifSearchByExactLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.SearchByExactLocation.2 {{ }}", SearchByExactLocation
     return f"lsif.SearchByExactLocation.2 {{ file = _, span = _, entity = _ }}", SearchByExactLocation
 
   @staticmethod
@@ -194,6 +226,8 @@ class LsifSearchByExactLocation(GleanSchemaPredicate):
 class LsifSearchNonLocalByLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.SearchNonLocalByLocation.2 {{ }}", SearchNonLocalByLocation
     return f"lsif.SearchNonLocalByLocation.2 {{ file = _, name = _, entity = _ }}", SearchNonLocalByLocation
 
   @staticmethod
@@ -203,6 +237,8 @@ class LsifSearchNonLocalByLocation(GleanSchemaPredicate):
 class LsifNameDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.NameDefinition.2 {{ }}", NameDefinition
     return f"lsif.NameDefinition.2 {{ name = _, defn = _ }}", NameDefinition
 
   @staticmethod
@@ -212,6 +248,8 @@ class LsifNameDefinition(GleanSchemaPredicate):
 class LsifProjectDocument(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.ProjectDocument.2 {{ }}", ProjectDocument
     return f"lsif.ProjectDocument.2 {{ file = _, project = _ }}", ProjectDocument
 
   @staticmethod
@@ -221,6 +259,8 @@ class LsifProjectDocument(GleanSchemaPredicate):
 class LsifSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.SearchByName.2 {{ }}", SearchByName
     return f"lsif.SearchByName.2 {{ name = _, entity = _ }}", SearchByName
 
   @staticmethod
@@ -230,6 +270,8 @@ class LsifSearchByName(GleanSchemaPredicate):
 class LsifResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.ResolveLocation.2 {{ }}", ResolveLocation
     return f"lsif.ResolveLocation.2 {{ location = _, entity = _ }}", ResolveLocation
 
   @staticmethod
@@ -239,6 +281,8 @@ class LsifResolveLocation(GleanSchemaPredicate):
 class LsifFileEntityXRefLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.FileEntityXRefLocation.2 {{ }}", FileEntityXRefLocation
     return f"lsif.FileEntityXRefLocation.2 {{ file = _, source = _, target = _, entity = _ }}", FileEntityXRefLocation
 
   @staticmethod
@@ -248,6 +292,8 @@ class LsifFileEntityXRefLocation(GleanSchemaPredicate):
 class LsifDefinitionLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.DefinitionLocation.2 {{ }}", DefinitionLocation
     return f"lsif.DefinitionLocation.2 {{ defn = _, location = _ }}", DefinitionLocation
 
   @staticmethod
@@ -257,6 +303,8 @@ class LsifDefinitionLocation(GleanSchemaPredicate):
 class LsifNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.NameLowerCase.2 {{ }}", NameLowerCase
     return f"lsif.NameLowerCase.2 {{ nameLowerCase = _, name = _ }}", NameLowerCase
 
   @staticmethod
@@ -266,6 +314,8 @@ class LsifNameLowerCase(GleanSchemaPredicate):
 class LsifDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.Declaration.2 {{ }}", Declaration
     return f"lsif.Declaration.2 {{ file = _, range = _ }}", Declaration
 
   @staticmethod
@@ -275,6 +325,8 @@ class LsifDeclaration(GleanSchemaPredicate):
 class LsifTagDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.TagDefinition.2 {{ }}", TagDefinition
     return f"lsif.TagDefinition.2 {{ language = _, defn = _, entity = _ }}", TagDefinition
 
   @staticmethod
@@ -284,6 +336,8 @@ class LsifTagDefinition(GleanSchemaPredicate):
 class LsifHoverContent(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.HoverContent.2 {{ }}", HoverContent
     return f"lsif.HoverContent.2 {{ text = _, language = _ }}", HoverContent
 
   @staticmethod
@@ -293,6 +347,8 @@ class LsifHoverContent(GleanSchemaPredicate):
 class LsifSearchByExactLocationAndName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.SearchByExactLocationAndName.2 {{ }}", SearchByExactLocationAndName
     return f"lsif.SearchByExactLocationAndName.2 {{ file = _, name = _, span = _, entity = _ }}", SearchByExactLocationAndName
 
   @staticmethod
@@ -302,6 +358,8 @@ class LsifSearchByExactLocationAndName(GleanSchemaPredicate):
 class LsifDefinitionUse(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.DefinitionUse.2 {{ }}", DefinitionUse
     return f"lsif.DefinitionUse.2 {{ target = _, file = _, range = _ }}", DefinitionUse
 
   @staticmethod
@@ -311,6 +369,8 @@ class LsifDefinitionUse(GleanSchemaPredicate):
 class LsifEntityDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.EntityDefinition.2 {{ }}", EntityDefinition
     return f"lsif.EntityDefinition.2 {{ entity = _, defn = _ }}", EntityDefinition
 
   @staticmethod
@@ -320,6 +380,8 @@ class LsifEntityDefinition(GleanSchemaPredicate):
 class LsifEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.EntityLocation.2 {{ }}", EntityLocation
     return f"lsif.EntityLocation.2 {{ entity = _, location = _ }}", EntityLocation
 
   @staticmethod
@@ -329,6 +391,8 @@ class LsifEntityLocation(GleanSchemaPredicate):
 class LsifMetadata(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.Metadata.2 {{ }}", Metadata
     return f"lsif.Metadata.2 {{ lsifVersion = _, positionEncoding = _, toolInfo = _ }}", Metadata
 
   @staticmethod
@@ -338,6 +402,8 @@ class LsifMetadata(GleanSchemaPredicate):
 class LsifMonikerDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.MonikerDefinition.2 {{ }}", MonikerDefinition
     return f"lsif.MonikerDefinition.2 {{ ident = _, moniker = _, defn = _ }}", MonikerDefinition
 
   @staticmethod
@@ -347,6 +413,8 @@ class LsifMonikerDefinition(GleanSchemaPredicate):
 class LsifEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.EntityUses.2 {{ }}", EntityUses
     return f"lsif.EntityUses.2 {{ target = _, file = _, range = _ }}", EntityUses
 
   @staticmethod
@@ -356,6 +424,8 @@ class LsifEntityUses(GleanSchemaPredicate):
 class LsifEntityKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.EntityKind.2 {{ }}", EntityKind
     return f"lsif.EntityKind.2 {{ entity = _, kind = _ }}", EntityKind
 
   @staticmethod
@@ -365,6 +435,8 @@ class LsifEntityKind(GleanSchemaPredicate):
 class LsifDefinitionHover(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.DefinitionHover.2 {{ }}", DefinitionHover
     return f"lsif.DefinitionHover.2 {{ defn = _, hover = _ }}", DefinitionHover
 
   @staticmethod
@@ -374,6 +446,8 @@ class LsifDefinitionHover(GleanSchemaPredicate):
 class LsifMoniker(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lsif.Moniker.2 {{ }}", Moniker
     return f"lsif.Moniker.2 {{ kind = _, scheme = _, ident = _ }}", Moniker
 
   @staticmethod

@@ -20,6 +20,8 @@ from glean.schema.searchhack.types import (
 class SearchHackQueryToScope(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.hack.QueryToScope.7 {{ }}", HackQueryToScope
     return f"search.hack.QueryToScope.7 {{ query = _, scopeName = _, scopeNamespace = _ }}", HackQueryToScope
 
   @staticmethod
@@ -29,6 +31,8 @@ class SearchHackQueryToScope(GleanSchemaPredicate):
 class SearchHackSearchInEnum(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.hack.SearchInEnum.7 {{ }}", HackSearchInEnum
     return f"search.hack.SearchInEnum.7 {{ name = _, enumName = _, enumNamespace = _, decl = _ }}", HackSearchInEnum
 
   @staticmethod
@@ -38,6 +42,8 @@ class SearchHackSearchInEnum(GleanSchemaPredicate):
 class SearchHackSearchInContext(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.hack.SearchInContext.7 {{ }}", HackSearchInContext
     return f"search.hack.SearchInContext.7 {{ name = _, contextName = _, contextNamespace = _, decl = _ }}", HackSearchInContext
 
   @staticmethod
@@ -47,6 +53,8 @@ class SearchHackSearchInContext(GleanSchemaPredicate):
 class SearchHackSearchInNamespace(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.hack.SearchInNamespace.7 {{ }}", HackSearchInNamespace
     return f"search.hack.SearchInNamespace.7 {{ name = _, namespace_ = _, decl = _ }}", HackSearchInNamespace
 
   @staticmethod
@@ -56,6 +64,8 @@ class SearchHackSearchInNamespace(GleanSchemaPredicate):
 class SearchHackSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.hack.SearchByName.7 {{ }}", HackSearchByName
     return f"search.hack.SearchByName.7 {{ name = _, decl = _ }}", HackSearchByName
 
   @staticmethod
@@ -65,6 +75,8 @@ class SearchHackSearchByName(GleanSchemaPredicate):
 class SearchHackSearchInContainerOrEnum(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.hack.SearchInContainerOrEnum.7 {{ }}", HackSearchInContainerOrEnum
     return f"search.hack.SearchInContainerOrEnum.7 {{ name = _, contextName = _, contextNamespace = _, decl = _ }}", HackSearchInContainerOrEnum
 
   @staticmethod
@@ -74,6 +86,8 @@ class SearchHackSearchInContainerOrEnum(GleanSchemaPredicate):
 class SearchHackSearchInContainer(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.hack.SearchInContainer.7 {{ }}", HackSearchInContainer
     return f"search.hack.SearchInContainer.7 {{ name = _, containerName = _, containerNamespace = _, decl = _ }}", HackSearchInContainer
 
   @staticmethod

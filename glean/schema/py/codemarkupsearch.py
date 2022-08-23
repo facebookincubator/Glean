@@ -19,6 +19,8 @@ from glean.schema.codemarkupsearch.types import (
 class CodemarkupSearchSearchByNameAndKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.search.SearchByNameAndKind.1 {{ }}", SearchSearchByNameAndKind
     return f"codemarkup.search.SearchByNameAndKind.1 {{ searchcase = _, name = _, entity = _, location = _, kind = _ }}", SearchSearchByNameAndKind
 
   @staticmethod
@@ -28,6 +30,8 @@ class CodemarkupSearchSearchByNameAndKind(GleanSchemaPredicate):
 class CodemarkupSearchSearchEntityByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.search.SearchEntityByName.1 {{ }}", SearchSearchEntityByName
     return f"codemarkup.search.SearchEntityByName.1 {{ name = _, entity = _, location = _, kind = _ }}", SearchSearchEntityByName
 
   @staticmethod
@@ -37,6 +41,8 @@ class CodemarkupSearchSearchEntityByName(GleanSchemaPredicate):
 class CodemarkupSearchSearchEntityByLowerCaseName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.search.SearchEntityByLowerCaseName.1 {{ }}", SearchSearchEntityByLowerCaseName
     return f"codemarkup.search.SearchEntityByLowerCaseName.1 {{ name = _, entity = _, location = _, kind = _ }}", SearchSearchEntityByLowerCaseName
 
   @staticmethod
@@ -46,6 +52,8 @@ class CodemarkupSearchSearchEntityByLowerCaseName(GleanSchemaPredicate):
 class CodemarkupSearchSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.search.SearchByName.1 {{ }}", SearchSearchByName
     return f"codemarkup.search.SearchByName.1 {{ searchcase = _, name = _, entity = _, location = _, kind = _, language = _ }}", SearchSearchByName
 
   @staticmethod
@@ -55,6 +63,8 @@ class CodemarkupSearchSearchByName(GleanSchemaPredicate):
 class CodemarkupSearchEntityLocationAndKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.search.EntityLocationAndKind.1 {{ }}", SearchEntityLocationAndKind
     return f"codemarkup.search.EntityLocationAndKind.1 {{ entity = _, location = _, kind = _ }}", SearchEntityLocationAndKind
 
   @staticmethod
@@ -64,6 +74,8 @@ class CodemarkupSearchEntityLocationAndKind(GleanSchemaPredicate):
 class CodemarkupSearchSearchByScope(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.search.SearchByScope.1 {{ }}", SearchSearchByScope
     return f"codemarkup.search.SearchByScope.1 {{ searchcase = _, name = _, scope = _, entity = _, location = _, kind = _, language = _ }}", SearchSearchByScope
 
   @staticmethod

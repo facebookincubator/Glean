@@ -14,6 +14,8 @@ from glean.schema.sys.types import (
 class SysBlob(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"sys.Blob.1 {{ }}", Blob
     return f"sys.Blob.1 {json.dumps(key)}", Blob
 
   @staticmethod

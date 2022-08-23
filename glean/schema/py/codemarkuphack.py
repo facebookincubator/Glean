@@ -23,6 +23,8 @@ from glean.schema.codemarkuphack.types import (
 class CodemarkupHackHackEntityInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.hack.HackEntityInfo.2 {{ }}", HackHackEntityInfo
     return f"codemarkup.hack.HackEntityInfo.2 {{ entity = _, info = _ }}", HackHackEntityInfo
 
   @staticmethod
@@ -32,6 +34,8 @@ class CodemarkupHackHackEntityInfo(GleanSchemaPredicate):
 class CodemarkupHackHackEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.hack.HackEntityLocation.2 {{ }}", HackHackEntityLocation
     return f"codemarkup.hack.HackEntityLocation.2 {{ entity = _, location = _ }}", HackHackEntityLocation
 
   @staticmethod
@@ -41,6 +45,8 @@ class CodemarkupHackHackEntityLocation(GleanSchemaPredicate):
 class CodemarkupHackHackVisibility(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.hack.HackVisibility.2 {{ }}", HackHackVisibility
     return f"codemarkup.hack.HackVisibility.2 {{ entity = _, visibility = _ }}", HackHackVisibility
 
   @staticmethod
@@ -50,6 +56,8 @@ class CodemarkupHackHackVisibility(GleanSchemaPredicate):
 class CodemarkupHackHackAnnotation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.hack.HackAnnotation.2 {{ }}", HackHackAnnotation
     return f"codemarkup.hack.HackAnnotation.2 {{ entity = _, anns = _ }}", HackHackAnnotation
 
   @staticmethod
@@ -59,6 +67,8 @@ class CodemarkupHackHackAnnotation(GleanSchemaPredicate):
 class CodemarkupHackHackResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.hack.HackResolveLocation.2 {{ }}", HackHackResolveLocation
     return f"codemarkup.hack.HackResolveLocation.2 {{ location = _, entity = _ }}", HackHackResolveLocation
 
   @staticmethod
@@ -68,6 +78,8 @@ class CodemarkupHackHackResolveLocation(GleanSchemaPredicate):
 class CodemarkupHackHackContainsChildEntity(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.hack.HackContainsChildEntity.2 {{ }}", HackHackContainsChildEntity
     return f"codemarkup.hack.HackContainsChildEntity.2 {{ parent = _, child = _ }}", HackHackContainsChildEntity
 
   @staticmethod
@@ -77,6 +89,8 @@ class CodemarkupHackHackContainsChildEntity(GleanSchemaPredicate):
 class CodemarkupHackHackFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.hack.HackFileEntityXRefLocations.2 {{ }}", HackHackFileEntityXRefLocations
     return f"codemarkup.hack.HackFileEntityXRefLocations.2 {{ file = _, xref = _, entity = _ }}", HackHackFileEntityXRefLocations
 
   @staticmethod
@@ -86,6 +100,8 @@ class CodemarkupHackHackFileEntityXRefLocations(GleanSchemaPredicate):
 class CodemarkupHackHackEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.hack.HackEntityUses.2 {{ }}", HackHackEntityUses
     return f"codemarkup.hack.HackEntityUses.2 {{ target = _, file = _, span = _ }}", HackHackEntityUses
 
   @staticmethod
@@ -95,6 +111,8 @@ class CodemarkupHackHackEntityUses(GleanSchemaPredicate):
 class CodemarkupHackHackEntityKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.hack.HackEntityKind.2 {{ }}", HackHackEntityKind
     return f"codemarkup.hack.HackEntityKind.2 {{ entity = _, kind = _ }}", HackHackEntityKind
 
   @staticmethod
@@ -104,6 +122,8 @@ class CodemarkupHackHackEntityKind(GleanSchemaPredicate):
 class CodemarkupHackHackFileEntityXRefSpans(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.hack.HackFileEntityXRefSpans.2 {{ }}", HackHackFileEntityXRefSpans
     return f"codemarkup.hack.HackFileEntityXRefSpans.2 {{ file = _, span = _, entity = _ }}", HackHackFileEntityXRefSpans
 
   @staticmethod

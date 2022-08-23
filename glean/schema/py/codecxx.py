@@ -14,6 +14,8 @@ from glean.schema.codecxx.types import (
 class CodeCxxDeclToDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"code.cxx.DeclToDef.4 {{ }}", CxxDeclToDef
     return f"code.cxx.DeclToDef.4 {{ decl = _, defn = _ }}", CxxDeclToDef
 
   @staticmethod

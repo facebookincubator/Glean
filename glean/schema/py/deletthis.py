@@ -14,6 +14,8 @@ from glean.schema.deletthis.types import (
 class DeletthisFileReverseDeps(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"deletthis.FileReverseDeps.15 {{ }}", FileReverseDeps
     return f"deletthis.FileReverseDeps.15 {{ file = _, referenced_by = _, via = _ }}", FileReverseDeps
 
   @staticmethod

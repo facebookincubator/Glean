@@ -19,6 +19,8 @@ from glean.schema.codemarkuperlang.types import (
 class CodemarkupErlangErlangEntityInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.erlang.ErlangEntityInfo.2 {{ }}", ErlangErlangEntityInfo
     return f"codemarkup.erlang.ErlangEntityInfo.2 {{ entity = _, info = _ }}", ErlangErlangEntityInfo
 
   @staticmethod
@@ -28,6 +30,8 @@ class CodemarkupErlangErlangEntityInfo(GleanSchemaPredicate):
 class CodemarkupErlangErlangEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.erlang.ErlangEntityLocation.2 {{ }}", ErlangErlangEntityLocation
     return f"codemarkup.erlang.ErlangEntityLocation.2 {{ entity = _, location = _ }}", ErlangErlangEntityLocation
 
   @staticmethod
@@ -37,6 +41,8 @@ class CodemarkupErlangErlangEntityLocation(GleanSchemaPredicate):
 class CodemarkupErlangErlangResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.erlang.ErlangResolveLocation.2 {{ }}", ErlangErlangResolveLocation
     return f"codemarkup.erlang.ErlangResolveLocation.2 {{ location = _, entity = _ }}", ErlangErlangResolveLocation
 
   @staticmethod
@@ -46,6 +52,8 @@ class CodemarkupErlangErlangResolveLocation(GleanSchemaPredicate):
 class CodemarkupErlangErlangFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.erlang.ErlangFileEntityXRefLocations.2 {{ }}", ErlangErlangFileEntityXRefLocations
     return f"codemarkup.erlang.ErlangFileEntityXRefLocations.2 {{ file = _, xref = _, entity = _ }}", ErlangErlangFileEntityXRefLocations
 
   @staticmethod
@@ -55,6 +63,8 @@ class CodemarkupErlangErlangFileEntityXRefLocations(GleanSchemaPredicate):
 class CodemarkupErlangErlangEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.erlang.ErlangEntityUses.2 {{ }}", ErlangErlangEntityUses
     return f"codemarkup.erlang.ErlangEntityUses.2 {{ target = _, file = _, span = _ }}", ErlangErlangEntityUses
 
   @staticmethod
@@ -64,6 +74,8 @@ class CodemarkupErlangErlangEntityUses(GleanSchemaPredicate):
 class CodemarkupErlangErlangEntityKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.erlang.ErlangEntityKind.2 {{ }}", ErlangErlangEntityKind
     return f"codemarkup.erlang.ErlangEntityKind.2 {{ entity = _, kind = _ }}", ErlangErlangEntityKind
 
   @staticmethod

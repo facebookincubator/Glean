@@ -22,6 +22,8 @@ from glean.schema.searchcxx.types import (
 class SearchCxxSearchBySelector(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.cxx.SearchBySelector.5 {{ }}", CxxSearchBySelector
     return f"search.cxx.SearchBySelector.5 {{ selector = _, entity = _ }}", CxxSearchBySelector
 
   @staticmethod
@@ -31,6 +33,8 @@ class SearchCxxSearchBySelector(GleanSchemaPredicate):
 class SearchCxxSearchByScope(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.cxx.SearchByScope.5 {{ }}", CxxSearchByScope
     return f"search.cxx.SearchByScope.5 {{ scope = _, entity = _ }}", CxxSearchByScope
 
   @staticmethod
@@ -40,6 +44,8 @@ class SearchCxxSearchByScope(GleanSchemaPredicate):
 class SearchCxxQueryToQName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.cxx.QueryToQName.5 {{ }}", CxxQueryToQName
     return f"search.cxx.QueryToQName.5 {{ query = _, scope = _ }}", CxxQueryToQName
 
   @staticmethod
@@ -49,6 +55,8 @@ class SearchCxxQueryToQName(GleanSchemaPredicate):
 class SearchCxxGlobalDeclarationWithName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.cxx.GlobalDeclarationWithName.5 {{ }}", CxxGlobalDeclarationWithName
     return f"search.cxx.GlobalDeclarationWithName.5 {{ name = _, decl = _ }}", CxxGlobalDeclarationWithName
 
   @staticmethod
@@ -58,6 +66,8 @@ class SearchCxxGlobalDeclarationWithName(GleanSchemaPredicate):
 class SearchCxxDeclIsDefn(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.cxx.DeclIsDefn.5 {{ }}", CxxDeclIsDefn
     return f"search.cxx.DeclIsDefn.5 {{ decl = _, defn = _ }}", CxxDeclIsDefn
 
   @staticmethod
@@ -67,6 +77,8 @@ class SearchCxxDeclIsDefn(GleanSchemaPredicate):
 class SearchCxxQueryToScope(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.cxx.QueryToScope.5 {{ }}", CxxQueryToScope
     return f"search.cxx.QueryToScope.5 {{ query = _, scope = _ }}", CxxQueryToScope
 
   @staticmethod
@@ -76,6 +88,8 @@ class SearchCxxQueryToScope(GleanSchemaPredicate):
 class SearchCxxSearchByNameAndScope(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.cxx.SearchByNameAndScope.5 {{ }}", CxxSearchByNameAndScope
     return f"search.cxx.SearchByNameAndScope.5 {{ name = _, scope = _, entity = _ }}", CxxSearchByNameAndScope
 
   @staticmethod
@@ -85,6 +99,8 @@ class SearchCxxSearchByNameAndScope(GleanSchemaPredicate):
 class SearchCxxEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.cxx.EntityUses.5 {{ }}", CxxEntityUses
     return f"search.cxx.EntityUses.5 {{ entity = _, uses = _ }}", CxxEntityUses
 
   @staticmethod
@@ -94,6 +110,8 @@ class SearchCxxEntityUses(GleanSchemaPredicate):
 class SearchCxxQueryToNSQName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.cxx.QueryToNSQName.5 {{ }}", CxxQueryToNSQName
     return f"search.cxx.QueryToNSQName.5 {{ query = _, scope = _ }}", CxxQueryToNSQName
 
   @staticmethod

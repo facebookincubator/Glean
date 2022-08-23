@@ -16,6 +16,8 @@ from glean.schema.perfhack.types import (
 class PerfHackLoopCounts(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"perf.hack.LoopCounts.1 {{ }}", HackLoopCounts
     return f"perf.hack.LoopCounts.1 {{ file = _, loop_counts = _ }}", HackLoopCounts
 
   @staticmethod
@@ -25,6 +27,8 @@ class PerfHackLoopCounts(GleanSchemaPredicate):
 class PerfHackFunctionData(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"perf.hack.FunctionData.1 {{ }}", HackFunctionData
     return f"perf.hack.FunctionData.1 {{ function_definition = _, function_name = _, full_name = _, calls_per_request = _, inclusive_gcpu = _, exclusive_gcpu = _, total_samples = _, callers = _, products = _ }}", HackFunctionData
 
   @staticmethod
@@ -34,6 +38,8 @@ class PerfHackFunctionData(GleanSchemaPredicate):
 class PerfHackReturnPercentages(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"perf.hack.ReturnPercentages.1 {{ }}", HackReturnPercentages
     return f"perf.hack.ReturnPercentages.1 {{ file = _, full_name = _, total_sample_count = _, return_counts = _ }}", HackReturnPercentages
 
   @staticmethod

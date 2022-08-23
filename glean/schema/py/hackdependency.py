@@ -15,6 +15,8 @@ from glean.schema.hackdependency.types import (
 class HackdependencyInheritance(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hackdependency.inheritance.1 {{ }}", Inheritance
     return f"hackdependency.inheritance.1 {{ parent = _, child = _ }}", Inheritance
 
   @staticmethod
@@ -24,6 +26,8 @@ class HackdependencyInheritance(GleanSchemaPredicate):
 class HackdependencyName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"hackdependency.name.1 {{ }}", Name
     return f"hackdependency.name.1 {json.dumps(key)}", Name
 
   @staticmethod

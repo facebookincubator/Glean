@@ -38,8 +38,8 @@ genSchemaPy _version preddefs typedefs =
   , ""
   , "class GleanSchemaPredicate:"
   , "  " <> "@staticmethod"
-  , "  " <> "def build_angle(key: Union[" <> pythonKeyValues <>"]) -> " <>
-    "Tuple[str, Struct]:"
+  , "  " <> "def build_angle(key: Union[" <> pythonKeyValues <>"]" <>
+    ") -> " <> "Tuple[str, Struct]:"
   , "    " <> "raise Exception" <>
     "(\"this function can only be called from @angle_query\")"
   , ""
@@ -82,6 +82,9 @@ genAllPredicates _ preds = Text.unlines $
       , "  " <> "@staticmethod"
       , "  " <> "def build_angle(key: Union[" <> pythonKeyValues <>
         "]) -> Tuple[str, Struct]:"
+      , "    " <> "if key is None:"
+      , "      " <> "return f\"" <> predicateName <> "." <>
+        showt (predicateRef_version ref) <> " {{ }}\", " <> return_class_name
       , "    " <> "return f\"" <> predicateName <> "." <>
         showt (predicateRef_version ref) <> " {" <> angleFor key <>
         "}\", " <> return_class_name

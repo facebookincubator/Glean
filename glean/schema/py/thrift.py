@@ -82,6 +82,8 @@ from glean.schema.thrift.types import (
 class ThriftToPython(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.ToPython.7 {{ }}", ToPython
     return f"thrift.ToPython.7 {{ thrift = _, lang = _, python = _ }}", ToPython
 
   @staticmethod
@@ -91,6 +93,8 @@ class ThriftToPython(GleanSchemaPredicate):
 class ThriftFunctionSpecification(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.FunctionSpecification.7 {{ }}", FunctionSpecification
     return f"thrift.FunctionSpecification.7 {{ name = _, result = _, arguments = _, throws_ = _ }}", FunctionSpecification
 
   @staticmethod
@@ -100,6 +104,8 @@ class ThriftFunctionSpecification(GleanSchemaPredicate):
 class ThriftExceptionType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.ExceptionType.7 {{ }}", ExceptionType
     return f"thrift.ExceptionType.7 {{ name = _, fields = _, structuredAnnotations = _ }}", ExceptionType
 
   @staticmethod
@@ -109,6 +115,8 @@ class ThriftExceptionType(GleanSchemaPredicate):
 class ThriftTypeDefType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.TypeDefType.7 {{ }}", TypeDefType
     return f"thrift.TypeDefType.7 {{ alias = _, type_ = _ }}", TypeDefType
 
   @staticmethod
@@ -118,6 +126,8 @@ class ThriftTypeDefType(GleanSchemaPredicate):
 class ThriftFromCpp2(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.FromCpp2.7 {{ }}", FromCpp2
     return f"thrift.FromCpp2.7 {{ cpp2 = _, thrift = _, role = _ }}", FromCpp2
 
   @staticmethod
@@ -127,6 +137,8 @@ class ThriftFromCpp2(GleanSchemaPredicate):
 class ThriftFromHack(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.FromHack.7 {{ }}", FromHack
     return f"thrift.FromHack.7 {{ hack = _, thrift = _, role = _ }}", FromHack
 
   @staticmethod
@@ -136,6 +148,8 @@ class ThriftFromHack(GleanSchemaPredicate):
 class ThriftFileDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.FileDeclaration.7 {{ }}", FileDeclaration
     return f"thrift.FileDeclaration.7 {{ file = _, decl = _ }}", FileDeclaration
 
   @staticmethod
@@ -145,6 +159,8 @@ class ThriftFileDeclaration(GleanSchemaPredicate):
 class ThriftPythonField(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.PythonField.7 {{ }}", PythonField
     return f"thrift.PythonField.7 {{ name = _, class_ = _ }}", PythonField
 
   @staticmethod
@@ -154,6 +170,8 @@ class ThriftPythonField(GleanSchemaPredicate):
 class ThriftFileError(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.FileError.7 {{ }}", FileError
     return f"thrift.FileError.7 {{ file = _, error = _ }}", FileError
 
   @staticmethod
@@ -163,6 +181,8 @@ class ThriftFileError(GleanSchemaPredicate):
 class ThriftPythonModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.PythonModule.7 {{ }}", PythonModule
     return f"thrift.PythonModule.7 {json.dumps(key)}", PythonModule
 
   @staticmethod
@@ -172,6 +192,8 @@ class ThriftPythonModule(GleanSchemaPredicate):
 class ThriftConstantType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.ConstantType.7 {{ }}", ConstantType
     return f"thrift.ConstantType.7 {{ name = _, type_ = _ }}", ConstantType
 
   @staticmethod
@@ -181,6 +203,8 @@ class ThriftConstantType(GleanSchemaPredicate):
 class ThriftFunctionName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.FunctionName.7 {{ }}", FunctionName
     return f"thrift.FunctionName.7 {{ service_ = _, name = _, locName = _ }}", FunctionName
 
   @staticmethod
@@ -190,6 +214,8 @@ class ThriftFunctionName(GleanSchemaPredicate):
 class ThriftTypeSpecification(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.TypeSpecification.7 {{ }}", TypeSpecification
     return f"thrift.TypeSpecification.7 {json.dumps(key)}", TypeSpecification
 
   @staticmethod
@@ -199,6 +225,8 @@ class ThriftTypeSpecification(GleanSchemaPredicate):
 class ThriftNamespaceName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.NamespaceName.7 {{ }}", NamespaceName
     return f"thrift.NamespaceName.7 {json.dumps(key)}", NamespaceName
 
   @staticmethod
@@ -208,6 +236,8 @@ class ThriftNamespaceName(GleanSchemaPredicate):
 class ThriftExceptionVal(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.ExceptionVal.7 {{ }}", ExceptionVal
     return f"thrift.ExceptionVal.7 {json.dumps(key)}", ExceptionVal
 
   @staticmethod
@@ -217,6 +247,8 @@ class ThriftExceptionVal(GleanSchemaPredicate):
 class ThriftHackRecord(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.HackRecord.7 {{ }}", HackRecord
     return f"thrift.HackRecord.7 {{ name = _, kind = _ }}", HackRecord
 
   @staticmethod
@@ -226,6 +258,8 @@ class ThriftHackRecord(GleanSchemaPredicate):
 class ThriftPythonMethod(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.PythonMethod.7 {{ }}", PythonMethod
     return f"thrift.PythonMethod.7 {{ name = _, class_ = _ }}", PythonMethod
 
   @staticmethod
@@ -235,6 +269,8 @@ class ThriftPythonMethod(GleanSchemaPredicate):
 class ThriftPythonName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.PythonName.7 {{ }}", PythonName
     return f"thrift.PythonName.7 {json.dumps(key)}", PythonName
 
   @staticmethod
@@ -244,6 +280,8 @@ class ThriftPythonName(GleanSchemaPredicate):
 class ThriftNamespace(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.Namespace.7 {{ }}", Namespace
     return f"thrift.Namespace.7 {{ target = _, name = _, namespace_ = _, quoted = _ }}", Namespace
 
   @staticmethod
@@ -253,6 +291,8 @@ class ThriftNamespace(GleanSchemaPredicate):
 class ThriftServiceName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.ServiceName.7 {{ }}", ServiceName
     return f"thrift.ServiceName.7 {{ name = _, locName = _ }}", ServiceName
 
   @staticmethod
@@ -262,6 +302,8 @@ class ThriftServiceName(GleanSchemaPredicate):
 class ThriftIncludeStatement(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.IncludeStatement.7 {{ }}", IncludeStatement
     return f"thrift.IncludeStatement.7 {{ target = _, source = _, locSource = _ }}", IncludeStatement
 
   @staticmethod
@@ -271,6 +313,8 @@ class ThriftIncludeStatement(GleanSchemaPredicate):
 class ThriftTargetX(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.TargetX.7 {{ }}", TargetX
     return f"thrift.TargetX.7 {{ target = _, fileRef = _, locRef = _ }}", TargetX
 
   @staticmethod
@@ -280,6 +324,8 @@ class ThriftTargetX(GleanSchemaPredicate):
 class ThriftPythonClassContains(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.PythonClassContains.7 {{ }}", PythonClassContains
     return f"thrift.PythonClassContains.7 {{ class_ = _, methods = _, fields = _ }}", PythonClassContains
 
   @staticmethod
@@ -289,6 +335,8 @@ class ThriftPythonClassContains(GleanSchemaPredicate):
 class ThriftPythonFileModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.PythonFileModule.7 {{ }}", PythonFileModule
     return f"thrift.PythonFileModule.7 {{ file = _, module = _ }}", PythonFileModule
 
   @staticmethod
@@ -298,6 +346,8 @@ class ThriftPythonFileModule(GleanSchemaPredicate):
 class ThriftTypeDefException(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.TypeDefException.7 {{ }}", TypeDefException
     return f"thrift.TypeDefException.7 {{ alias = _, type_ = _ }}", TypeDefException
 
   @staticmethod
@@ -307,6 +357,8 @@ class ThriftTypeDefException(GleanSchemaPredicate):
 class ThriftEnumValue(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.EnumValue.7 {{ }}", EnumValue
     return f"thrift.EnumValue.7 {{ enum_ = _, name = _, locName = _ }}", EnumValue
 
   @staticmethod
@@ -316,6 +368,8 @@ class ThriftEnumValue(GleanSchemaPredicate):
 class ThriftServiceDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.ServiceDefinition.7 {{ }}", ServiceDefinition
     return f"thrift.ServiceDefinition.7 {{ name = _, functions = _ }}", ServiceDefinition
 
   @staticmethod
@@ -325,6 +379,8 @@ class ThriftServiceDefinition(GleanSchemaPredicate):
 class ThriftNamespaceValue(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.NamespaceValue.7 {{ }}", NamespaceValue
     return f"thrift.NamespaceValue.7 {json.dumps(key)}", NamespaceValue
 
   @staticmethod
@@ -334,6 +390,8 @@ class ThriftNamespaceValue(GleanSchemaPredicate):
 class ThriftCompileTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.CompileTarget.7 {{ }}", CompileTarget
     return f"thrift.CompileTarget.7 {{ includes = _, lang = _, compile = _ }}", CompileTarget
 
   @staticmethod
@@ -343,6 +401,8 @@ class ThriftCompileTarget(GleanSchemaPredicate):
 class ThriftPythonModuleFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.PythonModuleFile.7 {{ }}", PythonModuleFile
     return f"thrift.PythonModuleFile.7 {{ module = _, file = _ }}", PythonModuleFile
 
   @staticmethod
@@ -352,6 +412,8 @@ class ThriftPythonModuleFile(GleanSchemaPredicate):
 class ThriftFileTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.FileTarget.7 {{ }}", FileTarget
     return f"thrift.FileTarget.7 {{ file = _, target = _ }}", FileTarget
 
   @staticmethod
@@ -361,6 +423,8 @@ class ThriftFileTarget(GleanSchemaPredicate):
 class ThriftEnumValueDef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.EnumValueDef.7 {{ }}", EnumValueDef
     return f"thrift.EnumValueDef.7 {{ name = _, value = _ }}", EnumValueDef
 
   @staticmethod
@@ -370,6 +434,8 @@ class ThriftEnumValueDef(GleanSchemaPredicate):
 class ThriftHackRecordContains(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.HackRecordContains.7 {{ }}", HackRecordContains
     return f"thrift.HackRecordContains.7 {{ record = _, methods = _ }}", HackRecordContains
 
   @staticmethod
@@ -379,6 +445,8 @@ class ThriftHackRecordContains(GleanSchemaPredicate):
 class ThriftPythonValue(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.PythonValue.7 {{ }}", PythonValue
     return f"thrift.PythonValue.7 {{ name = _, module = _ }}", PythonValue
 
   @staticmethod
@@ -388,6 +456,8 @@ class ThriftPythonValue(GleanSchemaPredicate):
 class ThriftStructType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.StructType.7 {{ }}", StructType
     return f"thrift.StructType.7 {{ name = _, fields = _, structuredAnnotations = _ }}", StructType
 
   @staticmethod
@@ -397,6 +467,8 @@ class ThriftStructType(GleanSchemaPredicate):
 class ThriftServiceChild(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.ServiceChild.7 {{ }}", ServiceChild
     return f"thrift.ServiceChild.7 {{ parent = _, child = _ }}", ServiceChild
 
   @staticmethod
@@ -406,6 +478,8 @@ class ThriftServiceChild(GleanSchemaPredicate):
 class ThriftIncludes(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.Includes.7 {{ }}", Includes
     return f"thrift.Includes.7 {{ source = _, target = _ }}", Includes
 
   @staticmethod
@@ -415,6 +489,8 @@ class ThriftIncludes(GleanSchemaPredicate):
 class ThriftQualName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.QualName.7 {{ }}", QualName
     return f"thrift.QualName.7 {{ file = _, name = _ }}", QualName
 
   @staticmethod
@@ -424,6 +500,8 @@ class ThriftQualName(GleanSchemaPredicate):
 class ThriftOutputTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.OutputTarget.7 {{ }}", OutputTarget
     return f"thrift.OutputTarget.7 {{ compile = _, output = _, out = _ }}", OutputTarget
 
   @staticmethod
@@ -433,6 +511,8 @@ class ThriftOutputTarget(GleanSchemaPredicate):
 class ThriftPythonFunction(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.PythonFunction.7 {{ }}", PythonFunction
     return f"thrift.PythonFunction.7 {{ name = _, module = _ }}", PythonFunction
 
   @staticmethod
@@ -442,6 +522,8 @@ class ThriftPythonFunction(GleanSchemaPredicate):
 class ThriftStructuredAnnotation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.StructuredAnnotation.7 {{ }}", StructuredAnnotation
     return f"thrift.StructuredAnnotation.7 {{ type_ = _, value = _ }}", StructuredAnnotation
 
   @staticmethod
@@ -451,6 +533,8 @@ class ThriftStructuredAnnotation(GleanSchemaPredicate):
 class ThriftFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.File.7 {{ }}", File
     return f"thrift.File.7 {json.dumps(key)}", File
 
   @staticmethod
@@ -460,6 +544,8 @@ class ThriftFile(GleanSchemaPredicate):
 class ThriftHackMethod(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.HackMethod.7 {{ }}", HackMethod
     return f"thrift.HackMethod.7 {{ name = _, record = _ }}", HackMethod
 
   @staticmethod
@@ -469,6 +555,8 @@ class ThriftHackMethod(GleanSchemaPredicate):
 class ThriftConstant(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.Constant.7 {{ }}", Constant
     return f"thrift.Constant.7 {{ name = _, locName = _ }}", Constant
 
   @staticmethod
@@ -478,6 +566,8 @@ class ThriftConstant(GleanSchemaPredicate):
 class ThriftHackName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.HackName.7 {{ }}", HackName
     return f"thrift.HackName.7 {json.dumps(key)}", HackName
 
   @staticmethod
@@ -487,6 +577,8 @@ class ThriftHackName(GleanSchemaPredicate):
 class ThriftNamedDecl(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.NamedDecl.7 {{ }}", NamedDecl
     return f"thrift.NamedDecl.7 {{ name = _, locName = _ }}", NamedDecl
 
   @staticmethod
@@ -496,6 +588,8 @@ class ThriftNamedDecl(GleanSchemaPredicate):
 class ThriftPythonModuleContains(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.PythonModuleContains.7 {{ }}", PythonModuleContains
     return f"thrift.PythonModuleContains.7 {{ module = _, classes = _, functions = _, values = _ }}", PythonModuleContains
 
   @staticmethod
@@ -505,6 +599,8 @@ class ThriftPythonModuleContains(GleanSchemaPredicate):
 class ThriftHackMap(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.HackMap.7 {{ }}", HackMap
     return f"thrift.HackMap.7 {{ source = _, repoCode = _, path = _, kind = _, mangledsvcs = _, rest = _, server = _ }}", HackMap
 
   @staticmethod
@@ -514,6 +610,8 @@ class ThriftHackMap(GleanSchemaPredicate):
 class ThriftIncludeSpecial(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.IncludeSpecial.7 {{ }}", IncludeSpecial
     return f"thrift.IncludeSpecial.7 {{ source = _, special = _, target = _ }}", IncludeSpecial
 
   @staticmethod
@@ -523,6 +621,8 @@ class ThriftIncludeSpecial(GleanSchemaPredicate):
 class ThriftFileXRefs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.FileXRefs.7 {{ }}", FileXRefs
     return f"thrift.FileXRefs.7 {{ file = _, targets = _, xrefs = _ }}", FileXRefs
 
   @staticmethod
@@ -532,6 +632,8 @@ class ThriftFileXRefs(GleanSchemaPredicate):
 class ThriftMangle(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.Mangle.7 {{ }}", Mangle
     return f"thrift.Mangle.7 {{ from = _, to = _, lang = _ }}", Mangle
 
   @staticmethod
@@ -541,6 +643,8 @@ class ThriftMangle(GleanSchemaPredicate):
 class ThriftStructVal(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.StructVal.7 {{ }}", StructVal
     return f"thrift.StructVal.7 {{ fields = _ }}", StructVal
 
   @staticmethod
@@ -550,6 +654,8 @@ class ThriftStructVal(GleanSchemaPredicate):
 class ThriftIncludeSplice(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.IncludeSplice.7 {{ }}", IncludeSplice
     return f"thrift.IncludeSplice.7 {json.dumps(key)}", IncludeSplice
 
   @staticmethod
@@ -559,6 +665,8 @@ class ThriftIncludeSplice(GleanSchemaPredicate):
 class ThriftLang(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.Lang.7 {{ }}", Lang
     return f"thrift.Lang.7 {json.dumps(key)}", Lang
 
   @staticmethod
@@ -568,6 +676,8 @@ class ThriftLang(GleanSchemaPredicate):
 class ThriftLiteral(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.Literal.7 {{ }}", Literal
     return f"thrift.Literal.7 {json.dumps(key)}", Literal
 
   @staticmethod
@@ -577,6 +687,8 @@ class ThriftLiteral(GleanSchemaPredicate):
 class ThriftIdentifier(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.Identifier.7 {{ }}", Identifier
     return f"thrift.Identifier.7 {json.dumps(key)}", Identifier
 
   @staticmethod
@@ -586,6 +698,8 @@ class ThriftIdentifier(GleanSchemaPredicate):
 class ThriftUnionType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.UnionType.7 {{ }}", UnionType
     return f"thrift.UnionType.7 {{ name = _, alts = _ }}", UnionType
 
   @staticmethod
@@ -595,6 +709,8 @@ class ThriftUnionType(GleanSchemaPredicate):
 class ThriftDeclarationNameSpan(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.DeclarationNameSpan.7 {{ }}", DeclarationNameSpan
     return f"thrift.DeclarationNameSpan.7 {{ decl = _, name = _, file = _, span = _ }}", DeclarationNameSpan
 
   @staticmethod
@@ -604,6 +720,8 @@ class ThriftDeclarationNameSpan(GleanSchemaPredicate):
 class ThriftFromPython(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.FromPython.7 {{ }}", FromPython
     return f"thrift.FromPython.7 {{ python = _, thrift = _, role = _, lang = _ }}", FromPython
 
   @staticmethod
@@ -613,6 +731,8 @@ class ThriftFromPython(GleanSchemaPredicate):
 class ThriftPythonClass(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.PythonClass.7 {{ }}", PythonClass
     return f"thrift.PythonClass.7 {{ name = _, module = _ }}", PythonClass
 
   @staticmethod
@@ -622,6 +742,8 @@ class ThriftPythonClass(GleanSchemaPredicate):
 class ThriftToCpp2(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.ToCpp2.7 {{ }}", ToCpp2
     return f"thrift.ToCpp2.7 {{ thrift = _, cpp2 = _ }}", ToCpp2
 
   @staticmethod
@@ -631,6 +753,8 @@ class ThriftToCpp2(GleanSchemaPredicate):
 class ThriftToHack(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.ToHack.7 {{ }}", ToHack
     return f"thrift.ToHack.7 {{ thrift = _, hack = _ }}", ToHack
 
   @staticmethod
@@ -640,6 +764,8 @@ class ThriftToHack(GleanSchemaPredicate):
 class ThriftEnumerationType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.EnumerationType.7 {{ }}", EnumerationType
     return f"thrift.EnumerationType.7 {{ name = _, value = _ }}", EnumerationType
 
   @staticmethod
@@ -649,6 +775,8 @@ class ThriftEnumerationType(GleanSchemaPredicate):
 class ThriftFileOutput(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.FileOutput.7 {{ }}", FileOutput
     return f"thrift.FileOutput.7 {{ output = _, origin = _ }}", FileOutput
 
   @staticmethod
@@ -658,6 +786,8 @@ class ThriftFileOutput(GleanSchemaPredicate):
 class ThriftServiceParent(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.ServiceParent.7 {{ }}", ServiceParent
     return f"thrift.ServiceParent.7 {{ child = _, parent = _ }}", ServiceParent
 
   @staticmethod
@@ -667,6 +797,8 @@ class ThriftServiceParent(GleanSchemaPredicate):
 class ThriftMangleLang(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.MangleLang.7 {{ }}", MangleLang
     return f"thrift.MangleLang.7 {json.dumps(key)}", MangleLang
 
   @staticmethod
@@ -676,6 +808,8 @@ class ThriftMangleLang(GleanSchemaPredicate):
 class ThriftExceptionName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.ExceptionName.7 {{ }}", ExceptionName
     return f"thrift.ExceptionName.7 {{ name = _, locName = _ }}", ExceptionName
 
   @staticmethod
@@ -685,6 +819,8 @@ class ThriftExceptionName(GleanSchemaPredicate):
 class ThriftEnumVal(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.EnumVal.7 {{ }}", EnumVal
     return f"thrift.EnumVal.7 {{ name = _, loc = _ }}", EnumVal
 
   @staticmethod
@@ -694,6 +830,8 @@ class ThriftEnumVal(GleanSchemaPredicate):
 class ThriftUnionVal(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"thrift.UnionVal.7 {{ }}", UnionVal
     return f"thrift.UnionVal.7 {{ field = _ }}", UnionVal
 
   @staticmethod

@@ -17,6 +17,8 @@ from glean.schema.dyn.types import (
 class DynObserverIdentifier(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"dyn.ObserverIdentifier.6 {{ }}", ObserverIdentifier
     return f"dyn.ObserverIdentifier.6 {json.dumps(key)}", ObserverIdentifier
 
   @staticmethod
@@ -26,6 +28,8 @@ class DynObserverIdentifier(GleanSchemaPredicate):
 class DynEntityDynamicReference(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"dyn.EntityDynamicReference.6 {{ }}", EntityDynamicReference
     return f"dyn.EntityDynamicReference.6 {{ usage = _, file = _, span = _ }}", EntityDynamicReference
 
   @staticmethod
@@ -35,6 +39,8 @@ class DynEntityDynamicReference(GleanSchemaPredicate):
 class DynEntityUsage(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"dyn.EntityUsage.6 {{ }}", EntityUsage
     return f"dyn.EntityUsage.6 {{ entity = _, observer = _, usage = _, environment = _ }}", EntityUsage
 
   @staticmethod
@@ -44,6 +50,8 @@ class DynEntityUsage(GleanSchemaPredicate):
 class DynEnvironment(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"dyn.Environment.6 {{ }}", Environment
     return f"dyn.Environment.6 {json.dumps(key)}", Environment
 
   @staticmethod

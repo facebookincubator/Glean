@@ -15,6 +15,8 @@ from glean.schema.buckuses.types import (
 class BuckusesUsesOfTargetHeader(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"buckuses.UsesOfTargetHeader.4 {{ }}", UsesOfTargetHeader
     return f"buckuses.UsesOfTargetHeader.4 {{ locator = _, exportedHeader = _ }}", UsesOfTargetHeader
 
   @staticmethod
@@ -24,6 +26,8 @@ class BuckusesUsesOfTargetHeader(GleanSchemaPredicate):
 class BuckusesUsesOfTarget(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"buckuses.UsesOfTarget.4 {{ }}", UsesOfTarget
     return f"buckuses.UsesOfTarget.4 {{ locator = _, use_xref = _, use_file = _ }}", UsesOfTarget
 
   @staticmethod

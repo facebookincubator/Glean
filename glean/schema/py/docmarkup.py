@@ -19,6 +19,8 @@ from glean.schema.docmarkup.types import (
 class DocmarkupDocAttr(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"docmarkup.DocAttr.14 {{ }}", DocAttr
     return f"docmarkup.DocAttr.14 {{ key = _, value = _ }}", DocAttr
 
   @staticmethod
@@ -28,6 +30,8 @@ class DocmarkupDocAttr(GleanSchemaPredicate):
 class DocmarkupEntityComments(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"docmarkup.EntityComments.14 {{ }}", EntityComments
     return f"docmarkup.EntityComments.14 {{ entity = _, file = _, span = _ }}", EntityComments
 
   @staticmethod
@@ -37,6 +41,8 @@ class DocmarkupEntityComments(GleanSchemaPredicate):
 class DocmarkupEntityDocAttr(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"docmarkup.EntityDocAttr.14 {{ }}", EntityDocAttr
     return f"docmarkup.EntityDocAttr.14 {json.dumps(key)}", EntityDocAttr
 
   @staticmethod
@@ -46,6 +52,8 @@ class DocmarkupEntityDocAttr(GleanSchemaPredicate):
 class DocmarkupEntityByDocAttrKey(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"docmarkup.EntityByDocAttrKey.14 {{ }}", EntityByDocAttrKey
     return f"docmarkup.EntityByDocAttrKey.14 {{ key = _, entity = _ }}", EntityByDocAttrKey
 
   @staticmethod
@@ -55,6 +63,8 @@ class DocmarkupEntityByDocAttrKey(GleanSchemaPredicate):
 class DocmarkupEntityAnnotations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"docmarkup.EntityAnnotations.14 {{ }}", EntityAnnotations
     return f"docmarkup.EntityAnnotations.14 {{ entity = _, annotations = _ }}", EntityAnnotations
 
   @staticmethod
@@ -64,6 +74,8 @@ class DocmarkupEntityAnnotations(GleanSchemaPredicate):
 class DocmarkupDocAttrKey(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"docmarkup.DocAttrKey.14 {{ }}", DocAttrKey
     return f"docmarkup.DocAttrKey.14 {json.dumps(key)}", DocAttrKey
 
   @staticmethod

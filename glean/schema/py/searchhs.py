@@ -14,6 +14,8 @@ from glean.schema.searchhs.types import (
 class SearchHsSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.hs.SearchByName.9 {{ }}", HsSearchByName
     return f"search.hs.SearchByName.9 {{ name = _, entity = _ }}", HsSearchByName
 
   @staticmethod

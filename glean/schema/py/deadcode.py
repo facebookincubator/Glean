@@ -19,6 +19,8 @@ from glean.schema.deadcode.types import (
 class DeadcodeGraphInverseEdge(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"deadcode.GraphInverseEdge.7 {{ }}", GraphInverseEdge
     return f"deadcode.GraphInverseEdge.7 {{ to = _, from = _ }}", GraphInverseEdge
 
   @staticmethod
@@ -28,6 +30,8 @@ class DeadcodeGraphInverseEdge(GleanSchemaPredicate):
 class DeadcodeGraphNode(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"deadcode.GraphNode.7 {{ }}", GraphNode
     return f"deadcode.GraphNode.7 {{ type = _, entities = _, out_degree = _, in_degree = _ }}", GraphNode
 
   @staticmethod
@@ -37,6 +41,8 @@ class DeadcodeGraphNode(GleanSchemaPredicate):
 class DeadcodeGraphEntityByFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"deadcode.GraphEntityByFile.7 {{ }}", GraphEntityByFile
     return f"deadcode.GraphEntityByFile.7 {{ file = _, graph_entity = _ }}", GraphEntityByFile
 
   @staticmethod
@@ -46,6 +52,8 @@ class DeadcodeGraphEntityByFile(GleanSchemaPredicate):
 class DeadcodeGraphEntity(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"deadcode.GraphEntity.7 {{ }}", GraphEntity
     return f"deadcode.GraphEntity.7 {{ entity = _, file = _, span = _ }}", GraphEntity
 
   @staticmethod
@@ -55,6 +63,8 @@ class DeadcodeGraphEntity(GleanSchemaPredicate):
 class DeadcodeGraphEdge(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"deadcode.GraphEdge.7 {{ }}", GraphEdge
     return f"deadcode.GraphEdge.7 {{ from = _, to = _ }}", GraphEdge
 
   @staticmethod
@@ -64,6 +74,8 @@ class DeadcodeGraphEdge(GleanSchemaPredicate):
 class DeadcodeGraphNodeByEntity(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"deadcode.GraphNodeByEntity.7 {{ }}", GraphNodeByEntity
     return f"deadcode.GraphNodeByEntity.7 {{ entity = _, node = _ }}", GraphNodeByEntity
 
   @staticmethod

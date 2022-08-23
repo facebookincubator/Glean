@@ -15,6 +15,8 @@ from glean.schema.lionhead.types import (
 class LionheadCoveredHarness(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lionhead.CoveredHarness.1 {{ }}", CoveredHarness
     return f"lionhead.CoveredHarness.1 {{ harnessId = _, root = _ }}", CoveredHarness
 
   @staticmethod
@@ -24,6 +26,8 @@ class LionheadCoveredHarness(GleanSchemaPredicate):
 class LionheadFbId(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"lionhead.FbId.1 {{ }}", FbId
     return f"lionhead.FbId.1 {json.dumps(key)}", FbId
 
   @staticmethod

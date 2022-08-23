@@ -23,6 +23,8 @@ from glean.schema.codemarkuppp.types import (
 class CodemarkupPpPpEntityInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.pp.PpEntityInfo.3 {{ }}", PpPpEntityInfo
     return f"codemarkup.pp.PpEntityInfo.3 {{ entity = _, info = _ }}", PpPpEntityInfo
 
   @staticmethod
@@ -32,6 +34,8 @@ class CodemarkupPpPpEntityInfo(GleanSchemaPredicate):
 class CodemarkupPpPPEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.pp.PPEntityLocation.3 {{ }}", PpPPEntityLocation
     return f"codemarkup.pp.PPEntityLocation.3 {{ entity = _, location = _ }}", PpPPEntityLocation
 
   @staticmethod
@@ -41,6 +45,8 @@ class CodemarkupPpPPEntityLocation(GleanSchemaPredicate):
 class CodemarkupPpPpResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.pp.PpResolveLocation.3 {{ }}", PpPpResolveLocation
     return f"codemarkup.pp.PpResolveLocation.3 {{ location = _, entity = _ }}", PpPpResolveLocation
 
   @staticmethod
@@ -50,6 +56,8 @@ class CodemarkupPpPpResolveLocation(GleanSchemaPredicate):
 class CodemarkupPpPpIncludeXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.pp.PpIncludeXRefLocations.3 {{ }}", PpPpIncludeXRefLocations
     return f"codemarkup.pp.PpIncludeXRefLocations.3 {{ trace = _, range = _, target = _ }}", PpPpIncludeXRefLocations
 
   @staticmethod
@@ -59,6 +67,8 @@ class CodemarkupPpPpIncludeXRefLocations(GleanSchemaPredicate):
 class CodemarkupPpPpEntityKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.pp.PpEntityKind.3 {{ }}", PpPpEntityKind
     return f"codemarkup.pp.PpEntityKind.3 {{ entity = _, kind = _ }}", PpPpEntityKind
 
   @staticmethod
@@ -68,6 +78,8 @@ class CodemarkupPpPpEntityKind(GleanSchemaPredicate):
 class CodemarkupPpPpFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.pp.PpFileEntityXRefLocations.3 {{ }}", PpPpFileEntityXRefLocations
     return f"codemarkup.pp.PpFileEntityXRefLocations.3 {{ file = _, xref = _, entity = _ }}", PpPpFileEntityXRefLocations
 
   @staticmethod
@@ -77,6 +89,8 @@ class CodemarkupPpPpFileEntityXRefLocations(GleanSchemaPredicate):
 class CodemarkupPpPpEntityTraceXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.pp.PpEntityTraceXRefLocations.3 {{ }}", PpPpEntityTraceXRefLocations
     return f"codemarkup.pp.PpEntityTraceXRefLocations.3 {{ trace = _, xref = _, entity = _ }}", PpPpEntityTraceXRefLocations
 
   @staticmethod
@@ -86,6 +100,8 @@ class CodemarkupPpPpEntityTraceXRefLocations(GleanSchemaPredicate):
 class CodemarkupPpPpResolveTraceLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.pp.PpResolveTraceLocation.3 {{ }}", PpPpResolveTraceLocation
     return f"codemarkup.pp.PpResolveTraceLocation.3 {{ trace = _, location = _, entity = _ }}", PpPpResolveTraceLocation
 
   @staticmethod
@@ -95,6 +111,8 @@ class CodemarkupPpPpResolveTraceLocation(GleanSchemaPredicate):
 class CodemarkupPpPpFileEntityTraceXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.pp.PpFileEntityTraceXRefLocations.3 {{ }}", PpPpFileEntityTraceXRefLocations
     return f"codemarkup.pp.PpFileEntityTraceXRefLocations.3 {{ file = _, trace = _, xref = _, entity = _ }}", PpPpFileEntityTraceXRefLocations
 
   @staticmethod
@@ -104,6 +122,8 @@ class CodemarkupPpPpFileEntityTraceXRefLocations(GleanSchemaPredicate):
 class CodemarkupPpPpFileEntityTraceLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.pp.PpFileEntityTraceLocations.3 {{ }}", PpPpFileEntityTraceLocations
     return f"codemarkup.pp.PpFileEntityTraceLocations.3 {{ file = _, trace = _, location = _, entity = _ }}", PpPpFileEntityTraceLocations
 
   @staticmethod

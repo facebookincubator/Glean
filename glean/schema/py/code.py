@@ -15,6 +15,8 @@ from glean.schema.code.types import (
 class CodeEntityLanguageLSIF(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"code.EntityLanguageLSIF.24 {{ }}", EntityLanguageLSIF
     return f"code.EntityLanguageLSIF.24 {{ entity = _, language = _ }}", EntityLanguageLSIF
 
   @staticmethod
@@ -24,6 +26,8 @@ class CodeEntityLanguageLSIF(GleanSchemaPredicate):
 class CodeEntityLanguage(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"code.EntityLanguage.24 {{ }}", EntityLanguage
     return f"code.EntityLanguage.24 {{ entity = _, language = _ }}", EntityLanguage
 
   @staticmethod

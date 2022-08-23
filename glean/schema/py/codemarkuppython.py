@@ -23,6 +23,8 @@ from glean.schema.codemarkuppython.types import (
 class CodemarkupPythonPythonEntityInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.python.PythonEntityInfo.2 {{ }}", PythonPythonEntityInfo
     return f"codemarkup.python.PythonEntityInfo.2 {{ entity = _, info = _ }}", PythonPythonEntityInfo
 
   @staticmethod
@@ -32,6 +34,8 @@ class CodemarkupPythonPythonEntityInfo(GleanSchemaPredicate):
 class CodemarkupPythonPythonEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.python.PythonEntityLocation.2 {{ }}", PythonPythonEntityLocation
     return f"codemarkup.python.PythonEntityLocation.2 {{ entity = _, location = _ }}", PythonPythonEntityLocation
 
   @staticmethod
@@ -41,6 +45,8 @@ class CodemarkupPythonPythonEntityLocation(GleanSchemaPredicate):
 class CodemarkupPythonPythonResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.python.PythonResolveLocation.2 {{ }}", PythonPythonResolveLocation
     return f"codemarkup.python.PythonResolveLocation.2 {{ location = _, entity = _ }}", PythonPythonResolveLocation
 
   @staticmethod
@@ -50,6 +56,8 @@ class CodemarkupPythonPythonResolveLocation(GleanSchemaPredicate):
 class CodemarkupPythonPythonContainsChildEntity(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.python.PythonContainsChildEntity.2 {{ }}", PythonPythonContainsChildEntity
     return f"codemarkup.python.PythonContainsChildEntity.2 {{ parent = _, child = _ }}", PythonPythonContainsChildEntity
 
   @staticmethod
@@ -59,6 +67,8 @@ class CodemarkupPythonPythonContainsChildEntity(GleanSchemaPredicate):
 class CodemarkupPythonPythonFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.python.PythonFileEntityXRefLocations.2 {{ }}", PythonPythonFileEntityXRefLocations
     return f"codemarkup.python.PythonFileEntityXRefLocations.2 {{ file = _, xref = _, entity = _ }}", PythonPythonFileEntityXRefLocations
 
   @staticmethod
@@ -68,6 +78,8 @@ class CodemarkupPythonPythonFileEntityXRefLocations(GleanSchemaPredicate):
 class CodemarkupPythonPythonEntityKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.python.PythonEntityKind.2 {{ }}", PythonPythonEntityKind
     return f"codemarkup.python.PythonEntityKind.2 {{ entity = _, kind = _ }}", PythonPythonEntityKind
 
   @staticmethod
@@ -77,6 +89,8 @@ class CodemarkupPythonPythonEntityKind(GleanSchemaPredicate):
 class CodemarkupPythonPythonEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.python.PythonEntityUses.2 {{ }}", PythonPythonEntityUses
     return f"codemarkup.python.PythonEntityUses.2 {{ target = _, file = _, span = _ }}", PythonPythonEntityUses
 
   @staticmethod
@@ -86,6 +100,8 @@ class CodemarkupPythonPythonEntityUses(GleanSchemaPredicate):
 class CodemarkupPythonNonImportPythonDeclarationInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.python.NonImportPythonDeclarationInfo.2 {{ }}", PythonNonImportPythonDeclarationInfo
     return f"codemarkup.python.NonImportPythonDeclarationInfo.2 {{ declaration = _, info = _ }}", PythonNonImportPythonDeclarationInfo
 
   @staticmethod
@@ -95,6 +111,8 @@ class CodemarkupPythonNonImportPythonDeclarationInfo(GleanSchemaPredicate):
 class CodemarkupPythonNonImportPythonDeclarationKind(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.python.NonImportPythonDeclarationKind.2 {{ }}", PythonNonImportPythonDeclarationKind
     return f"codemarkup.python.NonImportPythonDeclarationKind.2 {{ declaration = _, kind = _ }}", PythonNonImportPythonDeclarationKind
 
   @staticmethod
@@ -104,6 +122,8 @@ class CodemarkupPythonNonImportPythonDeclarationKind(GleanSchemaPredicate):
 class CodemarkupPythonPythonEntityNameAndLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.python.PythonEntityNameAndLocation.2 {{ }}", PythonPythonEntityNameAndLocation
     return f"codemarkup.python.PythonEntityNameAndLocation.2 {{ entity = _, name = _, file = _, span = _ }}", PythonPythonEntityNameAndLocation
 
   @staticmethod

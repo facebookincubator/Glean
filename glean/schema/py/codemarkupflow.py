@@ -19,6 +19,8 @@ from glean.schema.codemarkupflow.types import (
 class CodemarkupFlowFlowEntityLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.flow.FlowEntityLocation.2 {{ }}", FlowFlowEntityLocation
     return f"codemarkup.flow.FlowEntityLocation.2 {{ entity = _, location = _ }}", FlowFlowEntityLocation
 
   @staticmethod
@@ -28,6 +30,8 @@ class CodemarkupFlowFlowEntityLocation(GleanSchemaPredicate):
 class CodemarkupFlowFlowResolveLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.flow.FlowResolveLocation.2 {{ }}", FlowFlowResolveLocation
     return f"codemarkup.flow.FlowResolveLocation.2 {{ location = _, entity = _ }}", FlowFlowResolveLocation
 
   @staticmethod
@@ -37,6 +41,8 @@ class CodemarkupFlowFlowResolveLocation(GleanSchemaPredicate):
 class CodemarkupFlowFlowFileReferenceEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.flow.FlowFileReferenceEntityXRefLocations.2 {{ }}", FlowFlowFileReferenceEntityXRefLocations
     return f"codemarkup.flow.FlowFileReferenceEntityXRefLocations.2 {{ file = _, xref = _, entity = _ }}", FlowFlowFileReferenceEntityXRefLocations
 
   @staticmethod
@@ -46,6 +52,8 @@ class CodemarkupFlowFlowFileReferenceEntityXRefLocations(GleanSchemaPredicate):
 class CodemarkupFlowFlowFileImportDeclEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.flow.FlowFileImportDeclEntityXRefLocations.2 {{ }}", FlowFlowFileImportDeclEntityXRefLocations
     return f"codemarkup.flow.FlowFileImportDeclEntityXRefLocations.2 {{ file = _, xref = _, entity = _ }}", FlowFlowFileImportDeclEntityXRefLocations
 
   @staticmethod
@@ -55,6 +63,8 @@ class CodemarkupFlowFlowFileImportDeclEntityXRefLocations(GleanSchemaPredicate):
 class CodemarkupFlowFlowFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.flow.FlowFileEntityXRefLocations.2 {{ }}", FlowFlowFileEntityXRefLocations
     return f"codemarkup.flow.FlowFileEntityXRefLocations.2 {{ file = _, xref = _, entity = _ }}", FlowFlowFileEntityXRefLocations
 
   @staticmethod
@@ -64,6 +74,8 @@ class CodemarkupFlowFlowFileEntityXRefLocations(GleanSchemaPredicate):
 class CodemarkupFlowFlowEntityUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"codemarkup.flow.FlowEntityUses.2 {{ }}", FlowFlowEntityUses
     return f"codemarkup.flow.FlowEntityUses.2 {{ target = _, file = _, span = _ }}", FlowFlowEntityUses
 
   @staticmethod

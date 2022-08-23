@@ -63,6 +63,8 @@ from glean.schema.python.types import (
 class PythonNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.NameLowerCase.1 {{ }}", NameLowerCase
     return f"python.NameLowerCase.1 {{ nameLowerCase = _, name = _ }}", NameLowerCase
 
   @staticmethod
@@ -72,6 +74,8 @@ class PythonNameLowerCase(GleanSchemaPredicate):
 class PythonLocalName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.LocalName.3 {{ }}", LocalName
     return f"python.LocalName.3 {json.dumps(key)}", LocalName
 
   @staticmethod
@@ -81,6 +85,8 @@ class PythonLocalName(GleanSchemaPredicate):
 class PythonIsTopLevelDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.IsTopLevelDefinition.3 {{ }}", IsTopLevelDefinition
     return f"python.IsTopLevelDefinition.3 {json.dumps(key)}", IsTopLevelDefinition
 
   @staticmethod
@@ -90,6 +96,8 @@ class PythonIsTopLevelDefinition(GleanSchemaPredicate):
 class PythonClassDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.ClassDefinition.2 {{ }}", ClassDefinition
     return f"python.ClassDefinition.2 {{ declaration = _, bases = _, keywords = _, decorators = _, docstring = _ }}", ClassDefinition
 
   @staticmethod
@@ -99,6 +107,8 @@ class PythonClassDefinition(GleanSchemaPredicate):
 class PythonNonImportDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.NonImportDeclaration.2 {{ }}", NonImportDeclaration
     return f"python.NonImportDeclaration.2 {json.dumps(key)}", NonImportDeclaration
 
   @staticmethod
@@ -108,6 +118,8 @@ class PythonNonImportDeclaration(GleanSchemaPredicate):
 class PythonDeclarationReference(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.DeclarationReference.3 {{ }}", DeclarationReference
     return f"python.DeclarationReference.3 {{ target = _, source = _ }}", DeclarationReference
 
   @staticmethod
@@ -117,6 +129,8 @@ class PythonDeclarationReference(GleanSchemaPredicate):
 class PythonDefinitionsByFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.DefinitionsByFile.3 {{ }}", DefinitionsByFile
     return f"python.DefinitionsByFile.3 {{ file = _, span = _, definition = _ }}", DefinitionsByFile
 
   @staticmethod
@@ -126,6 +140,8 @@ class PythonDefinitionsByFile(GleanSchemaPredicate):
 class PythonModule(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.Module.1 {{ }}", Module
     return f"python.Module.1 {{ name = _ }}", Module
 
   @staticmethod
@@ -135,6 +151,8 @@ class PythonModule(GleanSchemaPredicate):
 class PythonDefinitionLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.DefinitionLocation.3 {{ }}", DefinitionLocation
     return f"python.DefinitionLocation.3 {{ definition = _, file = _, span = _ }}", DefinitionLocation
 
   @staticmethod
@@ -144,6 +162,8 @@ class PythonDefinitionLocation(GleanSchemaPredicate):
 class PythonClassBySName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.ClassBySName.2 {{ }}", ClassBySName
     return f"python.ClassBySName.2 {json.dumps(key)}", ClassBySName
 
   @staticmethod
@@ -153,6 +173,8 @@ class PythonClassBySName(GleanSchemaPredicate):
 class PythonDeclarationUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.DeclarationUses.2 {{ }}", DeclarationUses
     return f"python.DeclarationUses.2 {{ declaration = _, file = _, span = _ }}", DeclarationUses
 
   @staticmethod
@@ -162,6 +184,8 @@ class PythonDeclarationUses(GleanSchemaPredicate):
 class PythonImportStatement(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.ImportStatement.2 {{ }}", ImportStatement
     return f"python.ImportStatement.2 {{ from_name = _, as_name = _ }}", ImportStatement
 
   @staticmethod
@@ -171,6 +195,8 @@ class PythonImportStatement(GleanSchemaPredicate):
 class PythonModuleDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.ModuleDefinition.2 {{ }}", ModuleDefinition
     return f"python.ModuleDefinition.2 {{ module = _, docstring = _ }}", ModuleDefinition
 
   @staticmethod
@@ -180,6 +206,8 @@ class PythonModuleDefinition(GleanSchemaPredicate):
 class PythonDeclarationBySName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.DeclarationBySName.2 {{ }}", DeclarationBySName
     return f"python.DeclarationBySName.2 {json.dumps(key)}", DeclarationBySName
 
   @staticmethod
@@ -189,6 +217,8 @@ class PythonDeclarationBySName(GleanSchemaPredicate):
 class PythonDeclarationWithSName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.DeclarationWithSName.3 {{ }}", DeclarationWithSName
     return f"python.DeclarationWithSName.3 {{ sname = _, declaration = _ }}", DeclarationWithSName
 
   @staticmethod
@@ -198,6 +228,8 @@ class PythonDeclarationWithSName(GleanSchemaPredicate):
 class PythonModuleBySName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.ModuleBySName.2 {{ }}", ModuleBySName
     return f"python.ModuleBySName.2 {json.dumps(key)}", ModuleBySName
 
   @staticmethod
@@ -207,6 +239,8 @@ class PythonModuleBySName(GleanSchemaPredicate):
 class PythonImportStarStatement(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.ImportStarStatement.3 {{ }}", ImportStarStatement
     return f"python.ImportStarStatement.3 {{ from_name = _, into_module = _ }}", ImportStarStatement
 
   @staticmethod
@@ -216,6 +250,8 @@ class PythonImportStarStatement(GleanSchemaPredicate):
 class PythonDeclarationLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.DeclarationLocation.2 {{ }}", DeclarationLocation
     return f"python.DeclarationLocation.2 {{ declaration = _, file = _, span = _ }}", DeclarationLocation
 
   @staticmethod
@@ -225,6 +261,8 @@ class PythonDeclarationLocation(GleanSchemaPredicate):
 class PythonClassDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.ClassDeclaration.1 {{ }}", ClassDeclaration
     return f"python.ClassDeclaration.1 {{ name = _, bases = _ }}", ClassDeclaration
 
   @staticmethod
@@ -234,6 +272,8 @@ class PythonClassDeclaration(GleanSchemaPredicate):
 class PythonDeclarationToName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.DeclarationToName.2 {{ }}", DeclarationToName
     return f"python.DeclarationToName.2 {json.dumps(key)}", DeclarationToName
 
   @staticmethod
@@ -243,6 +283,8 @@ class PythonDeclarationToName(GleanSchemaPredicate):
 class PythonDeclarationDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.DeclarationDefinition.3 {{ }}", DeclarationDefinition
     return f"python.DeclarationDefinition.3 {{ declaration = _, definition = _ }}", DeclarationDefinition
 
   @staticmethod
@@ -252,6 +294,8 @@ class PythonDeclarationDefinition(GleanSchemaPredicate):
 class PythonDeclarationByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.DeclarationByName.2 {{ }}", DeclarationByName
     return f"python.DeclarationByName.2 {json.dumps(key)}", DeclarationByName
 
   @staticmethod
@@ -261,6 +305,8 @@ class PythonDeclarationByName(GleanSchemaPredicate):
 class PythonName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.Name.1 {{ }}", Name
     return f"python.Name.1 {json.dumps(key)}", Name
 
   @staticmethod
@@ -270,6 +316,8 @@ class PythonName(GleanSchemaPredicate):
 class PythonImportStatementByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.ImportStatementByName.2 {{ }}", ImportStatementByName
     return f"python.ImportStatementByName.2 {{ as_name = _, from_name = _ }}", ImportStatementByName
 
   @staticmethod
@@ -279,6 +327,8 @@ class PythonImportStatementByName(GleanSchemaPredicate):
 class PythonDocstringContent(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.DocstringContent.2 {{ }}", DocstringContent
     return f"python.DocstringContent.2 {json.dumps(key)}", DocstringContent
 
   @staticmethod
@@ -288,6 +338,8 @@ class PythonDocstringContent(GleanSchemaPredicate):
 class PythonVariableDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.VariableDefinition.2 {{ }}", VariableDefinition
     return f"python.VariableDefinition.2 {{ declaration = _, type = _ }}", VariableDefinition
 
   @staticmethod
@@ -297,6 +349,8 @@ class PythonVariableDefinition(GleanSchemaPredicate):
 class PythonType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.Type.1 {{ }}", Type
     return f"python.Type.1 {json.dumps(key)}", Type
 
   @staticmethod
@@ -306,6 +360,8 @@ class PythonType(GleanSchemaPredicate):
 class PythonDirectXRefsByFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.DirectXRefsByFile.2 {{ }}", DirectXRefsByFile
     return f"python.DirectXRefsByFile.2 {{ file = _, xref = _ }}", DirectXRefsByFile
 
   @staticmethod
@@ -315,6 +371,8 @@ class PythonDirectXRefsByFile(GleanSchemaPredicate):
 class PythonVariableBySName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.VariableBySName.2 {{ }}", VariableBySName
     return f"python.VariableBySName.2 {json.dumps(key)}", VariableBySName
 
   @staticmethod
@@ -324,6 +382,8 @@ class PythonVariableBySName(GleanSchemaPredicate):
 class PythonDeclarationWithLocalName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.DeclarationWithLocalName.3 {{ }}", DeclarationWithLocalName
     return f"python.DeclarationWithLocalName.3 {{ local_name = _, declaration = _ }}", DeclarationWithLocalName
 
   @staticmethod
@@ -333,6 +393,8 @@ class PythonDeclarationWithLocalName(GleanSchemaPredicate):
 class PythonFileDirectXRefs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.FileDirectXRefs.2 {{ }}", FileDirectXRefs
     return f"python.FileDirectXRefs.2 {{ file = _, xrefs = _ }}", FileDirectXRefs
 
   @staticmethod
@@ -342,6 +404,8 @@ class PythonFileDirectXRefs(GleanSchemaPredicate):
 class PythonFunctionDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.FunctionDeclaration.1 {{ }}", FunctionDeclaration
     return f"python.FunctionDeclaration.1 {{ name = _ }}", FunctionDeclaration
 
   @staticmethod
@@ -351,6 +415,8 @@ class PythonFunctionDeclaration(GleanSchemaPredicate):
 class PythonSNameToName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.SNameToName.2 {{ }}", SNameToName
     return f"python.SNameToName.2 {json.dumps(key)}", SNameToName
 
   @staticmethod
@@ -360,6 +426,8 @@ class PythonSNameToName(GleanSchemaPredicate):
 class PythonNameToSName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.NameToSName.2 {{ }}", NameToSName
     return f"python.NameToSName.2 {json.dumps(key)}", NameToSName
 
   @staticmethod
@@ -369,6 +437,8 @@ class PythonNameToSName(GleanSchemaPredicate):
 class PythonImportStatementByAsName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.ImportStatementByAsName.3 {{ }}", ImportStatementByAsName
     return f"python.ImportStatementByAsName.3 {{ name = _, import_ = _ }}", ImportStatementByAsName
 
   @staticmethod
@@ -378,6 +448,8 @@ class PythonImportStatementByAsName(GleanSchemaPredicate):
 class PythonFunctionDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.FunctionDefinition.2 {{ }}", FunctionDefinition
     return f"python.FunctionDefinition.2 {{ declaration = _, is_async = _, returns = _, params = _, posonly_params = _, kwonly_params = _, star_arg = _, star_kwarg = _, decorators = _, docstring = _ }}", FunctionDefinition
 
   @staticmethod
@@ -387,6 +459,8 @@ class PythonFunctionDefinition(GleanSchemaPredicate):
 class PythonImportStarsByFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.ImportStarsByFile.3 {{ }}", ImportStarsByFile
     return f"python.ImportStarsByFile.3 {{ file = _, span = _, declaration = _ }}", ImportStarsByFile
 
   @staticmethod
@@ -396,6 +470,8 @@ class PythonImportStarsByFile(GleanSchemaPredicate):
 class PythonIsTopLevelDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.IsTopLevelDeclaration.3 {{ }}", IsTopLevelDeclaration
     return f"python.IsTopLevelDeclaration.3 {json.dumps(key)}", IsTopLevelDeclaration
 
   @staticmethod
@@ -405,6 +481,8 @@ class PythonIsTopLevelDeclaration(GleanSchemaPredicate):
 class PythonSearchByLocalName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.SearchByLocalName.3 {{ }}", SearchByLocalName
     return f"python.SearchByLocalName.3 {{ name = _, decl = _ }}", SearchByLocalName
 
   @staticmethod
@@ -414,6 +492,8 @@ class PythonSearchByLocalName(GleanSchemaPredicate):
 class PythonDeclarationsByFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.DeclarationsByFile.2 {{ }}", DeclarationsByFile
     return f"python.DeclarationsByFile.2 {{ file = _, span = _, declaration = _ }}", DeclarationsByFile
 
   @staticmethod
@@ -423,6 +503,8 @@ class PythonDeclarationsByFile(GleanSchemaPredicate):
 class PythonXRefsViaNameByFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.XRefsViaNameByFile.2 {{ }}", XRefsViaNameByFile
     return f"python.XRefsViaNameByFile.2 {{ file = _, xrefs = _ }}", XRefsViaNameByFile
 
   @staticmethod
@@ -432,6 +514,8 @@ class PythonXRefsViaNameByFile(GleanSchemaPredicate):
 class PythonDeclarationWithName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.DeclarationWithName.2 {{ }}", DeclarationWithName
     return f"python.DeclarationWithName.2 {{ name = _, declaration = _ }}", DeclarationWithName
 
   @staticmethod
@@ -441,6 +525,8 @@ class PythonDeclarationWithName(GleanSchemaPredicate):
 class PythonVariableDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.VariableDeclaration.1 {{ }}", VariableDeclaration
     return f"python.VariableDeclaration.1 {{ name = _ }}", VariableDeclaration
 
   @staticmethod
@@ -450,6 +536,8 @@ class PythonVariableDeclaration(GleanSchemaPredicate):
 class PythonFunctionBySName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.FunctionBySName.2 {{ }}", FunctionBySName
     return f"python.FunctionBySName.2 {json.dumps(key)}", FunctionBySName
 
   @staticmethod
@@ -459,6 +547,8 @@ class PythonFunctionBySName(GleanSchemaPredicate):
 class PythonImportStarLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.ImportStarLocation.3 {{ }}", ImportStarLocation
     return f"python.ImportStarLocation.3 {{ import_star = _, file = _, span = _ }}", ImportStarLocation
 
   @staticmethod
@@ -468,6 +558,8 @@ class PythonImportStarLocation(GleanSchemaPredicate):
 class PythonImportStatementByAsSName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.ImportStatementByAsSName.3 {{ }}", ImportStatementByAsSName
     return f"python.ImportStatementByAsSName.3 {{ sname = _, import_ = _ }}", ImportStatementByAsSName
 
   @staticmethod
@@ -477,6 +569,8 @@ class PythonImportStatementByAsSName(GleanSchemaPredicate):
 class PythonDefinitionDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.DefinitionDeclaration.3 {{ }}", DefinitionDeclaration
     return f"python.DefinitionDeclaration.3 {{ definition = _, declaration = _ }}", DefinitionDeclaration
 
   @staticmethod
@@ -486,6 +580,8 @@ class PythonDefinitionDeclaration(GleanSchemaPredicate):
 class PythonContainingTopLevelDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.ContainingTopLevelDeclaration.3 {{ }}", ContainingTopLevelDeclaration
     return f"python.ContainingTopLevelDeclaration.3 {{ declaration = _, container = _ }}", ContainingTopLevelDeclaration
 
   @staticmethod
@@ -495,6 +591,8 @@ class PythonContainingTopLevelDeclaration(GleanSchemaPredicate):
 class PythonSName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.SName.2 {{ }}", SName
     return f"python.SName.2 {{ local_name = _, parent = _ }}", SName
 
   @staticmethod
@@ -504,6 +602,8 @@ class PythonSName(GleanSchemaPredicate):
 class PythonLocalNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"python.LocalNameLowerCase.3 {{ }}", LocalNameLowerCase
     return f"python.LocalNameLowerCase.3 {{ lowercase = _, name = _ }}", LocalNameLowerCase
 
   @staticmethod

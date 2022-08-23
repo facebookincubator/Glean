@@ -19,6 +19,8 @@ from glean.schema.scm.types import (
 class ScmRev(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"scm.Rev.1 {{ }}", Rev
     return f"scm.Rev.1 {json.dumps(key)}", Rev
 
   @staticmethod
@@ -28,6 +30,8 @@ class ScmRev(GleanSchemaPredicate):
 class ScmRepo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"scm.Repo.1 {{ }}", Repo
     return f"scm.Repo.1 {{ name = _, type = _ }}", Repo
 
   @staticmethod
@@ -37,6 +41,8 @@ class ScmRepo(GleanSchemaPredicate):
 class ScmRepoName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"scm.RepoName.1 {{ }}", RepoName
     return f"scm.RepoName.1 {json.dumps(key)}", RepoName
 
   @staticmethod
@@ -46,6 +52,8 @@ class ScmRepoName(GleanSchemaPredicate):
 class ScmTimestamp(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"scm.Timestamp.1 {{ }}", Timestamp
     return f"scm.Timestamp.1 {json.dumps(key)}", Timestamp
 
   @staticmethod
@@ -55,6 +63,8 @@ class ScmTimestamp(GleanSchemaPredicate):
 class ScmCommit(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"scm.Commit.1 {{ }}", Commit
     return f"scm.Commit.1 {{ repo = _, rev = _, timestamp = _ }}", Commit
 
   @staticmethod
@@ -64,6 +74,8 @@ class ScmCommit(GleanSchemaPredicate):
 class ScmRepoType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"scm.RepoType.1 {{ }}", RepoType
     return f"scm.RepoType.1 {json.dumps(key)}", RepoType
 
   @staticmethod

@@ -16,6 +16,8 @@ from glean.schema.searchbuck.types import (
 class SearchBuckSearchDefinition(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.buck.SearchDefinition.1 {{ }}", BuckSearchDefinition
     return f"search.buck.SearchDefinition.1 {{ module = _, name = _, entity = _ }}", BuckSearchDefinition
 
   @staticmethod
@@ -25,6 +27,8 @@ class SearchBuckSearchDefinition(GleanSchemaPredicate):
 class SearchBuckSearchFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.buck.SearchFile.1 {{ }}", BuckSearchFile
     return f"search.buck.SearchFile.1 {{ file = _, entity = _ }}", BuckSearchFile
 
   @staticmethod
@@ -34,6 +38,8 @@ class SearchBuckSearchFile(GleanSchemaPredicate):
 class SearchBuckSearchByFQN(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"search.buck.SearchByFQN.1 {{ }}", BuckSearchByFQN
     return f"search.buck.SearchByFQN.1 {{ subdir = _, path = _, name = _, entity = _ }}", BuckSearchByFQN
 
   @staticmethod

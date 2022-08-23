@@ -23,6 +23,8 @@ from glean.schema.erlang.types import (
 class ErlangDeclarationReference(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"erlang.DeclarationReference.1 {{ }}", DeclarationReference
     return f"erlang.DeclarationReference.1 {{ target = _, source = _ }}", DeclarationReference
 
   @staticmethod
@@ -32,6 +34,8 @@ class ErlangDeclarationReference(GleanSchemaPredicate):
 class ErlangDeclarationWithFqn(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"erlang.DeclarationWithFqn.1 {{ }}", DeclarationWithFqn
     return f"erlang.DeclarationWithFqn.1 {{ fqn = _, declaration = _ }}", DeclarationWithFqn
 
   @staticmethod
@@ -41,6 +45,8 @@ class ErlangDeclarationWithFqn(GleanSchemaPredicate):
 class ErlangFunctionDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"erlang.FunctionDeclaration.1 {{ }}", FunctionDeclaration
     return f"erlang.FunctionDeclaration.1 {{ fqn = _, file = _, span = _ }}", FunctionDeclaration
 
   @staticmethod
@@ -50,6 +56,8 @@ class ErlangFunctionDeclaration(GleanSchemaPredicate):
 class ErlangDeclarationToFqn(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"erlang.DeclarationToFqn.1 {{ }}", DeclarationToFqn
     return f"erlang.DeclarationToFqn.1 {json.dumps(key)}", DeclarationToFqn
 
   @staticmethod
@@ -59,6 +67,8 @@ class ErlangDeclarationToFqn(GleanSchemaPredicate):
 class ErlangSearchByName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"erlang.SearchByName.1 {{ }}", SearchByName
     return f"erlang.SearchByName.1 {{ name = _, func = _ }}", SearchByName
 
   @staticmethod
@@ -68,6 +78,8 @@ class ErlangSearchByName(GleanSchemaPredicate):
 class ErlangDeclarationsByFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"erlang.DeclarationsByFile.1 {{ }}", DeclarationsByFile
     return f"erlang.DeclarationsByFile.1 {{ file = _, span = _, declaration = _ }}", DeclarationsByFile
 
   @staticmethod
@@ -77,6 +89,8 @@ class ErlangDeclarationsByFile(GleanSchemaPredicate):
 class ErlangDeclarationLocation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"erlang.DeclarationLocation.1 {{ }}", DeclarationLocation
     return f"erlang.DeclarationLocation.1 {{ declaration = _, file = _, span = _ }}", DeclarationLocation
 
   @staticmethod
@@ -86,6 +100,8 @@ class ErlangDeclarationLocation(GleanSchemaPredicate):
 class ErlangNameLowerCase(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"erlang.NameLowerCase.1 {{ }}", NameLowerCase
     return f"erlang.NameLowerCase.1 {{ nameLowercase = _, name = _ }}", NameLowerCase
 
   @staticmethod
@@ -95,6 +111,8 @@ class ErlangNameLowerCase(GleanSchemaPredicate):
 class ErlangXRefsViaFqnByFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"erlang.XRefsViaFqnByFile.1 {{ }}", XRefsViaFqnByFile
     return f"erlang.XRefsViaFqnByFile.1 {{ file = _, xrefs = _ }}", XRefsViaFqnByFile
 
   @staticmethod
@@ -104,6 +122,8 @@ class ErlangXRefsViaFqnByFile(GleanSchemaPredicate):
 class ErlangDeclarationUses(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"erlang.DeclarationUses.1 {{ }}", DeclarationUses
     return f"erlang.DeclarationUses.1 {{ declaration = _, file = _, span = _ }}", DeclarationUses
 
   @staticmethod

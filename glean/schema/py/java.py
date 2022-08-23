@@ -38,6 +38,8 @@ from glean.schema.java.types import (
 class JavaName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.Name.6 {{ }}", Name
     return f"java.Name.6 {json.dumps(key)}", Name
 
   @staticmethod
@@ -47,6 +49,8 @@ class JavaName(GleanSchemaPredicate):
 class JavaClassDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.ClassDeclaration.6 {{ }}", ClassDeclaration
     return f"java.ClassDeclaration.6 {{ name = _, modifiers = _, extends_ = _, implements_ = _, annotations = _, variables = _, constructors = _, methods = _, typeParams = _, loc = _, innerDefinitions = _, location = _ }}", ClassDeclaration
 
   @staticmethod
@@ -56,6 +60,8 @@ class JavaClassDeclaration(GleanSchemaPredicate):
 class JavaPath(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.Path.6 {{ }}", Path
     return f"java.Path.6 {{ base = _, container = _ }}", Path
 
   @staticmethod
@@ -65,6 +71,8 @@ class JavaPath(GleanSchemaPredicate):
 class JavaInterfaceDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.InterfaceDeclaration.6 {{ }}", InterfaceDeclaration
     return f"java.InterfaceDeclaration.6 {{ name = _, annotations = _, modifiers = _, extends_ = _, methods = _, typeParams = _, loc = _, variables = _, innerDefinitions = _, location = _ }}", InterfaceDeclaration
 
   @staticmethod
@@ -74,6 +82,8 @@ class JavaInterfaceDeclaration(GleanSchemaPredicate):
 class JavaImportDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.ImportDeclaration.6 {{ }}", ImportDeclaration
     return f"java.ImportDeclaration.6 {{ name = _, import_on_demand = _, static_member = _, loc = _, path = _, location = _ }}", ImportDeclaration
 
   @staticmethod
@@ -83,6 +93,8 @@ class JavaImportDeclaration(GleanSchemaPredicate):
 class JavaEnumDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.EnumDeclaration.6 {{ }}", EnumDeclaration
     return f"java.EnumDeclaration.6 {{ name = _, annotations = _, modifiers = _, implements_ = _, variables = _, methods = _, loc = _, innerDefinitions = _, location = _ }}", EnumDeclaration
 
   @staticmethod
@@ -92,6 +104,8 @@ class JavaEnumDeclaration(GleanSchemaPredicate):
 class JavaPackageDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.PackageDeclaration.6 {{ }}", PackageDeclaration
     return f"java.PackageDeclaration.6 {{ name = _, annotation = _, loc = _, path = _, location = _ }}", PackageDeclaration
 
   @staticmethod
@@ -101,6 +115,8 @@ class JavaPackageDeclaration(GleanSchemaPredicate):
 class JavaArrayType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.ArrayType.6 {{ }}", ArrayType
     return f"java.ArrayType.6 {{ contents = _, location = _ }}", ArrayType
 
   @staticmethod
@@ -110,6 +126,8 @@ class JavaArrayType(GleanSchemaPredicate):
 class JavaAnnotatedClass(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.AnnotatedClass.6 {{ }}", AnnotatedClass
     return f"java.AnnotatedClass.6 {{ annotation = _, class_ = _ }}", AnnotatedClass
 
   @staticmethod
@@ -119,6 +137,8 @@ class JavaAnnotatedClass(GleanSchemaPredicate):
 class JavaTypeParam(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.TypeParam.6 {{ }}", TypeParam
     return f"java.TypeParam.6 {{ name = _, extends_ = _, location = _ }}", TypeParam
 
   @staticmethod
@@ -128,6 +148,8 @@ class JavaTypeParam(GleanSchemaPredicate):
 class JavaAnnotation(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.Annotation.6 {{ }}", Annotation
     return f"java.Annotation.6 {{ name = _, location = _ }}", Annotation
 
   @staticmethod
@@ -137,6 +159,8 @@ class JavaAnnotation(GleanSchemaPredicate):
 class JavaXRefFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.XRefFile.6 {{ }}", XRefFile
     return f"java.XRefFile.6 {{ xref = _, file = _ }}", XRefFile
 
   @staticmethod
@@ -146,6 +170,8 @@ class JavaXRefFile(GleanSchemaPredicate):
 class JavaMethodDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.MethodDeclaration.6 {{ }}", MethodDeclaration
     return f"java.MethodDeclaration.6 {{ name = _, parameters = _, returnType = _, annotations = _, modifiers = _, typeParams = _, loc = _, throws_ = _, location = _ }}", MethodDeclaration
 
   @staticmethod
@@ -155,6 +181,8 @@ class JavaMethodDeclaration(GleanSchemaPredicate):
 class JavaQName(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.QName.6 {{ }}", QName
     return f"java.QName.6 {{ name = _, fqn = _, signature = _, simple = _, path = _ }}", QName
 
   @staticmethod
@@ -164,6 +192,8 @@ class JavaQName(GleanSchemaPredicate):
 class JavaVariableDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.VariableDeclaration.6 {{ }}", VariableDeclaration
     return f"java.VariableDeclaration.6 {{ name = _, type = _, annotations = _, modifiers = _, loc = _, location = _ }}", VariableDeclaration
 
   @staticmethod
@@ -173,6 +203,8 @@ class JavaVariableDeclaration(GleanSchemaPredicate):
 class JavaTypeVar(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.TypeVar.6 {{ }}", TypeVar
     return f"java.TypeVar.6 {{ type = _, location = _ }}", TypeVar
 
   @staticmethod
@@ -182,6 +214,8 @@ class JavaTypeVar(GleanSchemaPredicate):
 class JavaDeclaredType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.DeclaredType.6 {{ }}", DeclaredType
     return f"java.DeclaredType.6 {{ type = _, location = _ }}", DeclaredType
 
   @staticmethod
@@ -191,6 +225,8 @@ class JavaDeclaredType(GleanSchemaPredicate):
 class JavaTypeArg(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.TypeArg.6 {{ }}", TypeArg
     return f"java.TypeArg.6 {json.dumps(key)}", TypeArg
 
   @staticmethod
@@ -200,6 +236,8 @@ class JavaTypeArg(GleanSchemaPredicate):
 class JavaFileXRefs(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.FileXRefs.6 {{ }}", FileXRefs
     return f"java.FileXRefs.6 {{ file = _, xrefs = _ }}", FileXRefs
 
   @staticmethod
@@ -209,6 +247,8 @@ class JavaFileXRefs(GleanSchemaPredicate):
 class JavaInheritance(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.Inheritance.6 {{ }}", Inheritance
     return f"java.Inheritance.6 {{ base = _, subclass = _ }}", Inheritance
 
   @staticmethod
@@ -218,6 +258,8 @@ class JavaInheritance(GleanSchemaPredicate):
 class JavaJavaFile(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.JavaFile.6 {{ }}", JavaFile
     return f"java.JavaFile.6 {{ package_ = _, import_ = _, definition = _, file = _ }}", JavaFile
 
   @staticmethod
@@ -227,6 +269,8 @@ class JavaJavaFile(GleanSchemaPredicate):
 class JavaPrimitiveType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.PrimitiveType.6 {{ }}", PrimitiveType
     return f"java.PrimitiveType.6 {{ type = _ }}", PrimitiveType
 
   @staticmethod
@@ -236,6 +280,8 @@ class JavaPrimitiveType(GleanSchemaPredicate):
 class JavaXRef(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.XRef.6 {{ }}", XRef
     return f"java.XRef.6 {{ target = _, ranges = _, xtarget = _ }}", XRef
 
   @staticmethod
@@ -245,6 +291,8 @@ class JavaXRef(GleanSchemaPredicate):
 class JavaConstructorDeclaration(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.ConstructorDeclaration.6 {{ }}", ConstructorDeclaration
     return f"java.ConstructorDeclaration.6 {{ name = _, parameters = _, annotations = _, modifiers = _, typeParams = _, loc = _, throws_ = _, location = _ }}", ConstructorDeclaration
 
   @staticmethod
@@ -254,6 +302,8 @@ class JavaConstructorDeclaration(GleanSchemaPredicate):
 class JavaType(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+    if key is None:
+      return f"java.Type.6 {{ }}", Type
     return f"java.Type.6 {{ type = _, typeArgs = _, stype = _ }}", Type
 
   @staticmethod
