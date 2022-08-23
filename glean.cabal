@@ -1387,6 +1387,26 @@ executable makefact-bench
         glean:test-lib,
         criterion
 
+executable compile-bench
+    import: fb-haskell, fb-cpp, deps, exe
+    if !flag(benchmarks)
+       buildable: False
+    hs-source-dirs: glean/bench
+    main-is: CompileBench.hs
+    ghc-options: -main-is CompileBench
+    build-depends:
+        glean:client-hs,
+        glean:core,
+        glean:db,
+        glean:if-glean-hs,
+        glean:schema,
+        glean:test-lib,
+        glean:util,
+        criterion,
+        criterion-measurement,
+        statistics,
+        vector-algorithms
+
 -- -----------------------------------------------------------------------------
 -- Tests
 
