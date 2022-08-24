@@ -70,7 +70,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "public RefClass::bar (SourceClass::T $param): int"
+                            "aString": "public RefClass::bar(SourceClass::T $param): int"
                         },
                         "key": "symbolSignature"
                     },
@@ -99,7 +99,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "public RefClass::bazza (): int"
+                            "aString": "public RefClass::bazza(): int"
                         },
                         "key": "symbolSignature"
                     },
@@ -128,7 +128,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "public static RefClass::foo (): int"
+                            "aString": "public static RefClass::foo(): int"
                         },
                         "key": "symbolSignature"
                     },
@@ -383,7 +383,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "public RefClass::bazza (): int"
+                            "aString": "public RefClass::bazza(): int"
                         },
                         "key": "symbolSignature"
                     },
@@ -422,7 +422,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "public static RefClass::foo (): int"
+                            "aString": "public static RefClass::foo(): int"
                         },
                         "key": "symbolSignature"
                     },
@@ -851,7 +851,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "public SourceTrait::quux (int $i): int"
+                            "aString": "public SourceTrait::quux(int $i): int"
                         },
                         "key": "symbolSignature"
                     },
@@ -890,7 +890,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "public SuperClass::superAdd (int $i, int $i): int"
+                            "aString": "public SuperClass::superAdd(int $i, int $i): int"
                         },
                         "key": "symbolSignature"
                     },
@@ -1007,7 +1007,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "function corge (): int"
+                            "aString": "function corge(): int"
                         },
                         "key": "symbolSignature"
                     },
@@ -1046,7 +1046,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "function corge (): int"
+                            "aString": "function corge(): int"
                         },
                         "key": "symbolSignature"
                     },
@@ -1085,7 +1085,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "function corge (): int"
+                            "aString": "function corge(): int"
                         },
                         "key": "symbolSignature"
                     },
@@ -1124,7 +1124,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "function corge (): int"
+                            "aString": "function corge(): int"
                         },
                         "key": "symbolSignature"
                     },

@@ -111,7 +111,7 @@
                     "localName": "bar"
                 },
                 "repo_hash": "testhash",
-                "signature": "public RefClass::bar (SourceClass::T $param): int",
+                "signature": "public RefClass::bar(SourceClass::T $param): int",
                 "sym": "test/php/RefClass/bar",
                 "sym_location": {
                     "filepath": "www/RefClass.php",
@@ -146,7 +146,7 @@
                     "localName": "bazza"
                 },
                 "repo_hash": "testhash",
-                "signature": "public RefClass::bazza (): int",
+                "signature": "public RefClass::bazza(): int",
                 "sym": "test/php/RefClass/bazza",
                 "sym_location": {
                     "filepath": "www/RefClass.php",
@@ -181,7 +181,7 @@
                     "localName": "foo"
                 },
                 "repo_hash": "testhash",
-                "signature": "public static RefClass::foo (): int",
+                "signature": "public static RefClass::foo(): int",
                 "sym": "test/php/RefClass/foo",
                 "sym_location": {
                     "filepath": "www/RefClass.php",

@@ -119,14 +119,14 @@ prettyDecl (Interface name) =
 prettyDecl (Enumerator enum name) =
   ppQualName enum <::> ppName name
 prettyDecl (Function modifiers name signature) =
-  ppFunctionModifiers modifiers <+> "function" <+> ppQualName name <+>
+  ppFunctionModifiers modifiers <+> "function" <+> ppQualName name <>
   ppSignature signature
 prettyDecl (GlobalConst name) =
   "const" <+> ppQualName name
 prettyDecl (Namespace name) =
   "namespace" <+> ppQual name
 prettyDecl (Method modifiers container name signature) =
-  ppMethodModifiers modifiers <+> ppQualName container <::> ppName name <+>
+  ppMethodModifiers modifiers <+> ppQualName container <::> ppName name <>
   ppSignature signature
 prettyDecl (Property name) =
   ppName name
