@@ -34,13 +34,18 @@ instance Search Cxx.Entity where
   symbolSearch [_] = do -- if the file is anchored at root, the path is missing?
     return $ None "Cxx.symbolSearch: missing path prefix"
 
-  symbolSearch t@[path,name] = searchSymbolId t $
-    searchByPathAndScope path [name] .|
-    searchByPathScopeAndName path [] name -- global, or NS?
+  -- don't do compoosition, do one search, then the other
+  symbolSearch t@[path,name] = do
+    a <- searchSymbolId t $ searchByPathAndScope path [name]
+    case a of
+      None{} -> searchSymbolId t $ searchByPathScopeAndName path [] name
+      _ -> return a
 
-  symbolSearch t@(path:rest@(_:_)) = searchSymbolId t $
-    searchByPathAndScope path rest .|
-    searchByPathScopeAndName path (init rest) (last rest)
+  symbolSearch t@(path:rest@(_:_)) = do
+    a <- searchSymbolId t $ searchByPathScopeAndName path (init rest)(last rest)
+    case a of
+      None{} -> searchSymbolId t $ searchByPathAndScope path rest
+      _ -> return a
 
 -- we always encode C++ symbols by name and scope, with a sub-repo prefix
 --
