@@ -93,16 +93,25 @@ import Glean.Schema.CodeErlang.Types as Erlang ( Entity(Entity_decl) )
 --
 -- If we can't encode the entity, it is still useful to return the path and
 -- file, as this is enough to navigate with.
-toSymbolId
-  :: SymbolRepoPath -> Code.Entity -> Glean.RepoHaxl u w SymbolId
-toSymbolId SymbolRepoPath{symbolRepo=Glass.RepoName repo} entity = do
-  let fileType = toShortCode (entityLanguage entity)
+--
+-- Symbol IDs have 3 parts:
+--
+-- - scm repo (corpus in biggrep term), e.g. "fbsource"
+-- - language short code (e.g py or php or cpp)
+-- - entity encoding
+--
+-- We uri encode the pieces and separate with / so they look like nice urls
+--
+toSymbolId :: SymbolRepoPath -> Code.Entity -> Glean.RepoHaxl u w SymbolId
+toSymbolId path entity = do
+  let langCode = toShortCode (entityLanguage entity)
   eqname <- try $ toSymbol entity
   return $ case eqname of
-    Left (SymbolError _e) -> symbol [repo, fileType, "SYMBOL_ID_MISSING"]
-    Right spec -> symbol $ repo : fileType : map URI.encodeText spec
+    Left (SymbolError _e) -> symbol [repo, langCode, "SYMBOL_ID_MISSING"]
+    Right spec -> symbol $ repo : langCode : map URI.encodeText spec
   where
     symbol = SymbolId . Text.intercalate "/"
+    Glass.RepoName repo = symbolRepo path
 
 --
 -- For entity descriptions, we use toQualifiedName to extract some info
