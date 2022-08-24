@@ -38,8 +38,7 @@ import qualified Haxl.Core.Exception as Haxl
 
 import Glean ( keyOf, Predicate(KeyType) )
 import qualified Glean.Haxl.Repos as Glean
-import Glean.Glass.Types ( Name(Name) )
-import Glean.Glass.Base ( SymbolRepoPath )
+import Glean.Glass.Types as Glass ( Name(Name), Path(..) )
 
 --
 -- Codex-like qname ids for Hack, Flow and Python
@@ -71,7 +70,7 @@ instance Exception SymbolError where
 class Symbol a where
   toSymbol :: a -> Glean.RepoHaxl u w [Text]
 
-  toSymbolWithPath :: a -> SymbolRepoPath -> Glean.RepoHaxl u w [Text]
+  toSymbolWithPath :: a ->  Glass.Path -> Glean.RepoHaxl u w [Text]
   toSymbolWithPath entity _ = toSymbol entity
 
 -- | Symbols that have qualified names can be searched

@@ -32,7 +32,7 @@
                         "lineBegin": 11,
                         "lineEnd": 11
                     },
-                    "sym": "test/cpp/foo/S"
+                    "sym": "test/cpp//foo/S"
                 }
             ],
             "16": [
@@ -66,7 +66,7 @@
                         "lineBegin": 16,
                         "lineEnd": 16
                     },
-                    "sym": "test/cpp/foo/f"
+                    "sym": "test/cpp//foo/f"
                 }
             ],
             "19": [
@@ -97,7 +97,7 @@
                         "lineBegin": 19,
                         "lineEnd": 21
                     },
-                    "sym": "test/cpp/foo/foo"
+                    "sym": "test/cpp//foo/foo"
                 },
                 {
                     "attributes": {
@@ -123,7 +123,7 @@
                         "lineBegin": 19,
                         "lineEnd": 19
                     },
-                    "sym": "test/cpp/foo/foo",
+                    "sym": "test/cpp//foo/foo",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -173,7 +173,7 @@
                         "lineBegin": 25,
                         "lineEnd": 25
                     },
-                    "sym": "test/cpp/foo/foo"
+                    "sym": "test/cpp//foo/foo"
                 },
                 {
                     "attributes": {
@@ -196,7 +196,7 @@
                         "lineBegin": 25,
                         "lineEnd": 25
                     },
-                    "sym": "test/cpp/foo/foo",
+                    "sym": "test/cpp//foo/foo",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -238,7 +238,7 @@
                         "lineBegin": 25,
                         "lineEnd": 25
                     },
-                    "sym": "test/cpp/foo/foo",
+                    "sym": "test/cpp//foo/foo",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -285,7 +285,7 @@
                         "lineBegin": 27,
                         "lineEnd": 32
                     },
-                    "sym": "test/cpp/foo/bar"
+                    "sym": "test/cpp//foo/bar"
                 }
             ],
             "29": [
@@ -316,7 +316,7 @@
                         "lineBegin": 29,
                         "lineEnd": 29
                     },
-                    "sym": "test/cpp/foo/bar/T"
+                    "sym": "test/cpp//foo/bar/T"
                 }
             ],
             "30": [
@@ -350,7 +350,7 @@
                         "lineBegin": 30,
                         "lineEnd": 30
                     },
-                    "sym": "test/cpp/foo/bar/g"
+                    "sym": "test/cpp//foo/bar/g"
                 }
             ],
             "34": [
@@ -381,7 +381,7 @@
                         "lineBegin": 34,
                         "lineEnd": 36
                     },
-                    "sym": "test/cpp/foo/fooFn"
+                    "sym": "test/cpp//foo/fooFn"
                 },
                 {
                     "attributes": {
@@ -413,7 +413,7 @@
                         "lineBegin": 34,
                         "lineEnd": 34
                     },
-                    "sym": "test/cpp/foo/fooFn/fooI"
+                    "sym": "test/cpp//foo/fooFn/fooI"
                 }
             ],
             "35": [
@@ -441,7 +441,7 @@
                         "lineBegin": 35,
                         "lineEnd": 35
                     },
-                    "sym": "test/cpp/foo/fooFn/fooI",
+                    "sym": "test/cpp//foo/fooFn/fooI",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -488,7 +488,7 @@
                         "lineBegin": 40,
                         "lineEnd": 48
                     },
-                    "sym": "test/cpp/h"
+                    "sym": "test/cpp//h"
                 },
                 {
                     "attributes": {
@@ -520,7 +520,7 @@
                         "lineBegin": 40,
                         "lineEnd": 40
                     },
-                    "sym": "test/cpp/h/i"
+                    "sym": "test/cpp//h/i"
                 }
             ],
             "41": [
@@ -545,7 +545,7 @@
                         "lineBegin": 41,
                         "lineEnd": 41
                     },
-                    "sym": "test/cpp/h",
+                    "sym": "test/cpp//h",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -587,7 +587,7 @@
                         "lineBegin": 41,
                         "lineEnd": 41
                     },
-                    "sym": "test/cpp/h/i",
+                    "sym": "test/cpp//h/i",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -628,7 +628,7 @@
                         "lineBegin": 42,
                         "lineEnd": 42
                     },
-                    "sym": "test/cpp/foo",
+                    "sym": "test/cpp//foo",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -670,7 +670,7 @@
                         "lineBegin": 42,
                         "lineEnd": 42
                     },
-                    "sym": "test/cpp/foo/S",
+                    "sym": "test/cpp//foo/S",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -718,7 +718,7 @@
                         "lineBegin": 42,
                         "lineEnd": 42
                     },
-                    "sym": "test/cpp/h/s"
+                    "sym": "test/cpp//h/s"
                 }
             ],
             "43": [
@@ -743,7 +743,7 @@
                         "lineBegin": 43,
                         "lineEnd": 43
                     },
-                    "sym": "test/cpp/foo",
+                    "sym": "test/cpp//foo",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -785,7 +785,7 @@
                         "lineBegin": 43,
                         "lineEnd": 43
                     },
-                    "sym": "test/cpp/foo/bar",
+                    "sym": "test/cpp//foo/bar",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -827,7 +827,7 @@
                         "lineBegin": 43,
                         "lineEnd": 43
                     },
-                    "sym": "test/cpp/foo/bar/T",
+                    "sym": "test/cpp//foo/bar/T",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -875,7 +875,7 @@
                         "lineBegin": 43,
                         "lineEnd": 43
                     },
-                    "sym": "test/cpp/h/t"
+                    "sym": "test/cpp//h/t"
                 }
             ],
             "44": [
@@ -900,7 +900,7 @@
                         "lineBegin": 44,
                         "lineEnd": 44
                     },
-                    "sym": "test/cpp/foo",
+                    "sym": "test/cpp//foo",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -942,7 +942,7 @@
                         "lineBegin": 44,
                         "lineEnd": 44
                     },
-                    "sym": "test/cpp/foo/f",
+                    "sym": "test/cpp//foo/f",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -983,7 +983,7 @@
                         "lineBegin": 45,
                         "lineEnd": 45
                     },
-                    "sym": "test/cpp/foo",
+                    "sym": "test/cpp//foo",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -1022,7 +1022,7 @@
                         "lineBegin": 45,
                         "lineEnd": 45
                     },
-                    "sym": "test/cpp/foo/foo",
+                    "sym": "test/cpp//foo/foo",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -1064,7 +1064,7 @@
                         "lineBegin": 45,
                         "lineEnd": 45
                     },
-                    "sym": "test/cpp/foo/foo",
+                    "sym": "test/cpp//foo/foo",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -1105,7 +1105,7 @@
                         "lineBegin": 46,
                         "lineEnd": 46
                     },
-                    "sym": "test/cpp/foo",
+                    "sym": "test/cpp//foo",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -1147,7 +1147,7 @@
                         "lineBegin": 46,
                         "lineEnd": 46
                     },
-                    "sym": "test/cpp/foo/bar",
+                    "sym": "test/cpp//foo/bar",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -1189,7 +1189,7 @@
                         "lineBegin": 46,
                         "lineEnd": 46
                     },
-                    "sym": "test/cpp/foo/bar/g",
+                    "sym": "test/cpp//foo/bar/g",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -1233,7 +1233,7 @@
                         "lineBegin": 47,
                         "lineEnd": 47
                     },
-                    "sym": "test/cpp/h/i",
+                    "sym": "test/cpp//h/i",
                     "target": {
                         "filepath": "test.cpp",
                         "range": {
@@ -1356,7 +1356,7 @@
                         "lineBegin": 9,
                         "lineEnd": 38
                     },
-                    "sym": "test/cpp/foo"
+                    "sym": "test/cpp//foo"
                 }
             ]
         }

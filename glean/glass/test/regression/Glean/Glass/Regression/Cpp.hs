@@ -37,11 +37,11 @@ unitTests get =
 
 testCppFindReferences :: Getter -> Test
 testCppFindReferences get = TestLabel "findReferences" $ TestList [
-  "test/cpp/foo/S" --> [("test.cpp", 1)],
-  "test/cpp/foo/bar/T" --> [("test.cpp", 1)],
-  "test/cpp/foo/f" --> [("test.cpp", 1)],
-  "test/cpp/foo/bar/g" --> [("test.cpp", 1)],
-  "test/cpp/h" --> [("test.cpp", 1)]
+  "test/cpp//foo/S" --> [("test.cpp", 1)],
+  "test/cpp//foo/bar/T" --> [("test.cpp", 1)],
+  "test/cpp//foo/f" --> [("test.cpp", 1)],
+  "test/cpp//foo/bar/g" --> [("test.cpp", 1)],
+  "test/cpp//h" --> [("test.cpp", 1)]
   ]
   where
     (-->) :: Text -> [(Text,Int)] -> Test
@@ -53,12 +53,12 @@ testCppFindReferences get = TestLabel "findReferences" $ TestList [
 
 testSymbolIdLookup :: Getter -> Test
 testSymbolIdLookup get = TestLabel "describeSymbol" $ TestList [
-  "test/cpp/foo" --> "test.cpp",
-  "test/cpp/foo/f" --> "test.cpp",
-  "test/cpp/foo/S" --> "test.cpp",
-  "test/cpp/foo/bar" --> "test.cpp",
-  "test/cpp/foo/bar/T" --> "test.cpp",
-  "test/cpp/foo/bar/g" --> "test.cpp"
+  "test/cpp//foo" --> "test.cpp",
+  "test/cpp//foo/f" --> "test.cpp",
+  "test/cpp//foo/S" --> "test.cpp",
+  "test/cpp//foo/bar" --> "test.cpp",
+  "test/cpp//foo/bar/T" --> "test.cpp",
+  "test/cpp//foo/bar/g" --> "test.cpp"
   ]
   where
     (-->) :: Text -> Text -> Test
@@ -71,7 +71,7 @@ testSymbolIdLookup get = TestLabel "describeSymbol" $ TestList [
 testCppDescribeSymbolComments :: Getter -> Test
 testCppDescribeSymbolComments get = TestLabel "describeSymbolComments" $
   TestList [
-    "test/cpp/foo/f" --> (13,1)
+    "test/cpp//foo/f" --> (13,1)
   ]
   where
     (-->) :: Text -> (Int,Int) -> Test
@@ -83,7 +83,7 @@ testCppDescribeSymbolComments get = TestLabel "describeSymbolComments" $
 
 testCppSearchRelated :: Getter -> Test
 testCppSearchRelated get = TestLabel "searchRelated" $ TestList $
-  "test/cpp/foo" `contains` "test/cpp/foo/S"
+  "test/cpp//foo" `contains` "test/cpp//foo/S"
   where
     contains :: Text -> Text -> [Test]
     contains = contains' False

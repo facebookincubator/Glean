@@ -17,7 +17,7 @@
                     "repository": "test"
                 },
                 "name": "foo",
-                "symbol": "test/cpp/foo/foo"
+                "symbol": "test/cpp//foo/foo"
             },
             {
                 "kind": 14,
@@ -33,7 +33,7 @@
                     "repository": "test"
                 },
                 "name": "fooFn",
-                "symbol": "test/cpp/foo/fooFn"
+                "symbol": "test/cpp//foo/fooFn"
             }
         ]
     }

@@ -20,7 +20,7 @@
         },
         "repo_hash": "testhash",
         "signature": "namespace foo",
-        "sym": "test/cpp/foo",
+        "sym": "test/cpp//foo",
         "sym_location": {
             "filepath": "test.cpp",
             "range": {

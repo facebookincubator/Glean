@@ -17,7 +17,7 @@
                     "repository": "test"
                 },
                 "name": "S",
-                "symbol": "test/cpp/foo/S"
+                "symbol": "test/cpp//foo/S"
             },
             {
                 "kind": 25,
@@ -33,7 +33,7 @@
                     "repository": "test"
                 },
                 "name": "T",
-                "symbol": "test/cpp/foo/bar/T"
+                "symbol": "test/cpp//foo/bar/T"
             },
             {
                 "kind": 14,
@@ -49,7 +49,7 @@
                     "repository": "test"
                 },
                 "name": "foo",
-                "symbol": "test/cpp/foo/foo"
+                "symbol": "test/cpp//foo/foo"
             },
             {
                 "kind": 14,
@@ -65,7 +65,7 @@
                     "repository": "test"
                 },
                 "name": "fooFn",
-                "symbol": "test/cpp/foo/fooFn"
+                "symbol": "test/cpp//foo/fooFn"
             },
             {
                 "kind": 14,
@@ -81,7 +81,7 @@
                     "repository": "test"
                 },
                 "name": "h",
-                "symbol": "test/cpp/h"
+                "symbol": "test/cpp//h"
             }
         ]
     }

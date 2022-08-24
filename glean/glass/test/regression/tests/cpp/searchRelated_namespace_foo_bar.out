@@ -3,12 +3,12 @@
     {
         "edges": [
             {
-                "child": "test/cpp/foo/bar/T",
-                "parent": "test/cpp/foo/bar"
+                "child": "test/cpp//foo/bar/T",
+                "parent": "test/cpp//foo/bar"
             },
             {
-                "child": "test/cpp/foo/bar/g",
-                "parent": "test/cpp/foo/bar"
+                "child": "test/cpp//foo/bar/g",
+                "parent": "test/cpp//foo/bar"
             }
         ],
         "symbolDetails": {}

@@ -3,16 +3,16 @@
     {
         "edges": [
             {
-                "child": "test/cpp/foo/bar/T",
-                "parent": "test/cpp/foo/bar"
+                "child": "test/cpp//foo/bar/T",
+                "parent": "test/cpp//foo/bar"
             },
             {
-                "child": "test/cpp/foo/bar/g",
-                "parent": "test/cpp/foo/bar"
+                "child": "test/cpp//foo/bar/g",
+                "parent": "test/cpp//foo/bar"
             }
         ],
         "symbolDetails": {
-            "test/cpp/foo/bar": {
+            "test/cpp//foo/bar": {
                 "comments": [],
                 "kind": 6,
                 "language": 1,
@@ -32,7 +32,7 @@
                 },
                 "repo_hash": "testhash",
                 "signature": "namespace foo::bar",
-                "sym": "test/cpp/foo/bar",
+                "sym": "test/cpp//foo/bar",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -45,7 +45,7 @@
                 },
                 "sym_other_locations": []
             },
-            "test/cpp/foo/bar/T": {
+            "test/cpp//foo/bar/T": {
                 "comments": [],
                 "kind": 25,
                 "language": 1,
@@ -65,7 +65,7 @@
                 },
                 "repo_hash": "testhash",
                 "signature": "struct foo::bar::T",
-                "sym": "test/cpp/foo/bar/T",
+                "sym": "test/cpp//foo/bar/T",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -78,7 +78,7 @@
                 },
                 "sym_other_locations": []
             },
-            "test/cpp/foo/bar/g": {
+            "test/cpp//foo/bar/g": {
                 "annotations": [],
                 "comments": [],
                 "kind": 14,
@@ -99,7 +99,7 @@
                 },
                 "repo_hash": "testhash",
                 "signature": "void foo::bar::g()",
-                "sym": "test/cpp/foo/bar/g",
+                "sym": "test/cpp//foo/bar/g",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {

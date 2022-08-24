@@ -20,7 +20,7 @@
         },
         "repo_hash": "testhash",
         "signature": "struct foo::S",
-        "sym": "test/cpp/foo/S",
+        "sym": "test/cpp//foo/S",
         "sym_location": {
             "filepath": "test.cpp",
             "range": {

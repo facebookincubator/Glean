@@ -21,7 +21,7 @@
                     "localName": "foo"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/cpp/foo/foo",
+                "sym": "test/cpp//foo/foo",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -53,7 +53,7 @@
                     "localName": "fooFn"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/cpp/foo/fooFn",
+                "sym": "test/cpp//foo/fooFn",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -82,7 +82,7 @@
                     "repository": "test"
                 },
                 "name": "foo",
-                "symbol": "test/cpp/foo/foo"
+                "symbol": "test/cpp//foo/foo"
             },
             {
                 "kind": 14,
@@ -98,7 +98,7 @@
                     "repository": "test"
                 },
                 "name": "fooFn",
-                "symbol": "test/cpp/foo/fooFn"
+                "symbol": "test/cpp//foo/fooFn"
             }
         ]
     }

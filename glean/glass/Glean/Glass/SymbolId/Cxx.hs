@@ -15,7 +15,8 @@ module Glean.Glass.SymbolId.Cxx (
 
   ) where
 
-import Data.Text ( Text, intercalate )
+import Data.Text as Text ( Text, intercalate, break )
+import Control.Monad.Catch ( throwM )
 
 import Glean.Glass.SymbolId.Class
 
@@ -30,11 +31,20 @@ import Glean.Schema.CodeCxx.Types as Cxx
     ( Entity(..), Definition(..) )
 
 instance Symbol Cxx.Entity where
-  toSymbol e = case e of
-    Cxx.Entity_decl decl -> toSymbol decl
-    Cxx.Entity_defn defn -> toSymbol defn
-    Cxx.Entity_enumerator enum -> toSymbolPredicate enum
-    Cxx.Entity_EMPTY -> return []
+  toSymbol _ = throwM $ SymbolError "Cxx.Entity: use toSymbolWithPath"
+
+  toSymbolWithPath e (Path path) = (root++) <$> case e of
+      Cxx.Entity_decl decl -> toSymbol decl
+      Cxx.Entity_defn defn -> toSymbol defn
+      Cxx.Entity_enumerator enum -> toSymbolPredicate enum
+      Cxx.Entity_EMPTY -> return []
+    where
+      -- find common repo anchor (e.g. "fbcode" or "xplat")
+      (mroot, rest) = Text.break (=='/') path
+      root = case mroot of
+        "" -> []
+        p | rest == "" -> [mempty] -- no path (e.g. "test" repo) produces //
+          | otherwise -> [p]
 
 instance Symbol Cxx.Declaration where
   toSymbol d = case d of
@@ -384,7 +394,7 @@ toSymbolDefnKind k = case k of
 
 instance ToQName Cxx.Entity where
   toQName e = do
-    symId <- toSymbol e
+    symId <- toSymbolWithPath e (Path mempty) -- we already had the symbolid tho
     return $ case symId of
       [] -> Left "C++: toQName: No qualified name for this symbol"
       [name] -> Right (Name name, Name "")

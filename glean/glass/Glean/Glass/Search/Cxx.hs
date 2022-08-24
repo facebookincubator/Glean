@@ -15,6 +15,7 @@ module Glean.Glass.Search.Cxx
   ) where
 
 import Data.Text ( Text )
+import qualified Data.Text as Text ( null )
 
 import Glean.Angle as Angle
 
@@ -29,41 +30,28 @@ import qualified Glean.Schema.Src.Types as Src
 
 instance Search Cxx.Entity where
   symbolSearch [] =
-    return $ None "Cxx.symbolSearch: empty path"
-  symbolSearch t@[name] = do
-    searchSymbolId t $
-      searchByScope t .|
-      searchByNameAndScope [] name
-  symbolSearch t@(_:_) = do
-    searchSymbolId t $
-      searchByScope t .|
-      searchByNameAndScope (init t) (last t)
+    return $ None "Cxx.symbolSearch: empty symbol"
+  symbolSearch [_] = do -- if the file is anchored at root, the path is missing?
+    return $ None "Cxx.symbolSearch: missing path prefix"
 
+  symbolSearch t@[path,name] = searchSymbolId t $
+    searchByPathAndScope path [name] .|
+    searchByPathScopeAndName path [] name -- global, or NS?
+
+  symbolSearch t@(path:rest@(_:_)) = searchSymbolId t $
+    searchByPathAndScope path rest .|
+    searchByPathScopeAndName path (init rest) (last rest)
+
+-- we always encode C++ symbols by name and scope, with a sub-repo prefix
 --
--- Entity search for C++. These should decode precisely
+-- E.g. xplat/folly/Optional is a class under "xplat" with namespace "folly"
 --
-searchByScope
-  :: [Text] -> Angle (ResultLocation Cxx.Entity)
-searchByScope ns =
+searchByPathScopeAndName
+  :: Text -> [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
+searchByPathScopeAndName anchor ns name =
   vars $ \(entity :: Angle Cxx.Entity) (file :: Angle Src.File)
       (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
-    tuple (entity, file, rangespan, lname) `where_` [
-      wild .= predicate @Cxx.SearchByScope (
-        rec $
-          field @"scope" (scopeQuery ns) $
-          field @"entity" entity
-        end),
-      entityLocation (alt @"cxx" entity) file rangespan lname
-    ]
-  where
-    scopeQuery ns = scope (reverse ns)
-
-searchByNameAndScope
-  :: [Text] -> Text -> Angle (ResultLocation Cxx.Entity)
-searchByNameAndScope ns name =
-  vars $ \(entity :: Angle Cxx.Entity) (file :: Angle Src.File)
-      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
-    tuple (entity, file, rangespan, lname) `where_` [
+    tuple (entity, file, rangespan, lname) `where_` ([
       wild .= predicate @Cxx.SearchByNameAndScope (
         rec $
           field @"name" (string name) $
@@ -71,7 +59,29 @@ searchByNameAndScope ns name =
           field @"entity" entity
         end),
       entityLocation (alt @"cxx" entity) file rangespan lname
-    ]
+    ] ++ -- refine to specific sub-repo
+    [file .= predicate @Src.File (stringPrefix anchor) | not (Text.null anchor)]
+    )
+  where
+    scopeQuery ns = scope (reverse ns)
+
+--
+-- namespaces and containers
+--
+searchByPathAndScope :: Text -> [Text] -> Angle (ResultLocation Cxx.Entity)
+searchByPathAndScope anchor ns =
+  vars $ \(entity :: Angle Cxx.Entity) (file :: Angle Src.File)
+      (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+    tuple (entity, file, rangespan, lname) `where_` ([
+      wild .= predicate @Cxx.SearchByScope (
+        rec $
+          field @"scope" (scopeQuery ns) $
+          field @"entity" entity
+        end),
+      entityLocation (alt @"cxx" entity) file rangespan lname
+    ] ++ -- refine to specific sub-repo
+    [file .= predicate @Src.File (stringPrefix anchor) | not (Text.null anchor)]
+    )
   where
     scopeQuery ns = scope (reverse ns)
 

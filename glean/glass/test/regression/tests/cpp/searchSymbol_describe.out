@@ -21,7 +21,7 @@
                     "localName": "foo"
                 },
                 "repo_hash": "testhash",
-                "sym": "test/cpp/foo/foo",
+                "sym": "test/cpp//foo/foo",
                 "sym_location": {
                     "filepath": "test.cpp",
                     "range": {
@@ -50,7 +50,7 @@
                     "repository": "test"
                 },
                 "name": "foo",
-                "symbol": "test/cpp/foo/foo"
+                "symbol": "test/cpp//foo/foo"
             }
         ]
     }

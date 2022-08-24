@@ -105,7 +105,7 @@ import Glean.Schema.CodeErlang.Types as Erlang ( Entity(Entity_decl) )
 toSymbolId :: SymbolRepoPath -> Code.Entity -> Glean.RepoHaxl u w SymbolId
 toSymbolId path entity = do
   let langCode = toShortCode (entityLanguage entity)
-  eqname <- try $ toSymbol entity
+  eqname <- try $ toSymbolWithPath entity (symbolPath path)
   return $ case eqname of
     Left (SymbolError _e) -> symbol [repo, langCode, "SYMBOL_ID_MISSING"]
     Right spec -> symbol $ repo : langCode : map URI.encodeText spec
@@ -220,30 +220,32 @@ languageToCodeLang l = case l of
 --      GleanRecursive   -- enum
 --
 instance Symbol Code.Entity where
-  toSymbol e = case e of
-    Code.Entity_hack (Hack.Entity_decl x) -> toSymbol x
-    Code.Entity_python (Python.Entity_decl x) -> toSymbol x
-    Code.Entity_flow x -> toSymbol x
-    Code.Entity_cxx x -> toSymbol x
-    Code.Entity_pp x -> toSymbol x
-    Code.Entity_hs x -> toSymbol x
-    Code.Entity_rust x -> toSymbol x
-    Code.Entity_buck x -> toSymbol x
-    Code.Entity_thrift x -> toSymbol x
-    Code.Entity_erlang x -> toSymbol x
+  toSymbol _ = throwM $ SymbolError "Code.Entity: use toSymbolWithPath"
+
+  toSymbolWithPath e p = case e of
+    Code.Entity_hack (Hack.Entity_decl x) -> toSymbolWithPath x p
+    Code.Entity_python (Python.Entity_decl x) -> toSymbolWithPath x p
+    Code.Entity_flow x -> toSymbolWithPath x p
+    Code.Entity_cxx x -> toSymbolWithPath x p
+    Code.Entity_pp x -> toSymbolWithPath x p
+    Code.Entity_hs x -> toSymbolWithPath x p
+    Code.Entity_rust x -> toSymbolWithPath x p
+    Code.Entity_buck x -> toSymbolWithPath x p
+    Code.Entity_thrift x -> toSymbolWithPath x p
+    Code.Entity_erlang x -> toSymbolWithPath x p
     Code.Entity_lsif ent -> case ent of -- enumerate all variants for lsif
-      Lsif.Entity_erlang se -> toSymbol se
-      Lsif.Entity_fsharp se -> toSymbol se
-      Lsif.Entity_go se -> toSymbol se
-      Lsif.Entity_haskell se -> toSymbol se
-      Lsif.Entity_java se -> toSymbol se
-      Lsif.Entity_kotlin se -> toSymbol se
-      Lsif.Entity_ocaml se -> toSymbol se
-      Lsif.Entity_python se -> toSymbol se
-      Lsif.Entity_rust se -> toSymbol se
-      Lsif.Entity_scala se -> toSymbol se
-      Lsif.Entity_swift se -> toSymbol se
-      Lsif.Entity_typescript se -> toSymbol se
+      Lsif.Entity_erlang se -> toSymbolWithPath se p
+      Lsif.Entity_fsharp se -> toSymbolWithPath se p
+      Lsif.Entity_go se -> toSymbolWithPath se p
+      Lsif.Entity_haskell se -> toSymbolWithPath se p
+      Lsif.Entity_java se -> toSymbolWithPath se p
+      Lsif.Entity_kotlin se -> toSymbolWithPath se p
+      Lsif.Entity_ocaml se -> toSymbolWithPath se p
+      Lsif.Entity_python se -> toSymbolWithPath se p
+      Lsif.Entity_rust se -> toSymbolWithPath se p
+      Lsif.Entity_scala se -> toSymbolWithPath se p
+      Lsif.Entity_swift se -> toSymbolWithPath se p
+      Lsif.Entity_typescript se -> toSymbolWithPath se p
       Lsif.Entity_EMPTY -> throwM $ SymbolError "Unknown LSIF language"
 
     -- Code.Entity_lsif (Lsif.Entity_java x) -> toSymbol x
