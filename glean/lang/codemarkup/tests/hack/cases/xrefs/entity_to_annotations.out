@@ -10,6 +10,29 @@
                 "key": {
                   "name": {
                     "key": {
+                      "name": { "key": "AnotherNamespaceClass" },
+                      "namespace_": { "key": { "name": { "key": "NS" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": {
                       "name": { "key": "NamespaceClass" },
                       "namespace_": { "key": { "name": { "key": "NS" } } }
                     }
@@ -184,6 +207,34 @@
                   "class_": {
                     "key": {
                       "name": { "key": { "name": { "key": "TestAnnotation" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "another_class_function" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "AnotherNamespaceClass" },
+                          "namespace_": { "key": { "name": { "key": "NS" } } }
+                        }
+                      }
                     }
                   }
                 }

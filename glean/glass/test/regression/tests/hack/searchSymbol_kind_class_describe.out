@@ -8,6 +8,39 @@
                 "kind": 7,
                 "language": 3,
                 "location": {
+                    "filepath": "www/Namespace2.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 13,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "NS",
+                    "localName": "AnotherNamespaceClass"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/NS/AnotherNamespaceClass",
+                "sym_location": {
+                    "filepath": "www/Namespace2.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 13,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": []
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "kind": 7,
+                "language": 3,
+                "location": {
                     "filepath": "www/Namespace.php",
                     "range": {
                         "columnBegin": 1,
@@ -218,6 +251,22 @@
             }
         ],
         "symbols": [
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Namespace2.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 13,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "name": "AnotherNamespaceClass",
+                "symbol": "test/php/NS/AnotherNamespaceClass"
+            },
             {
                 "kind": 7,
                 "language": 3,

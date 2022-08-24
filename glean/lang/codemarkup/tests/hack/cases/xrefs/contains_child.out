@@ -10,6 +10,51 @@
                 "key": {
                   "name": {
                     "key": {
+                      "name": { "key": "AnotherNamespaceClass" },
+                      "namespace_": { "key": { "name": { "key": "NS" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "another_class_function" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "AnotherNamespaceClass" },
+                          "namespace_": { "key": { "name": { "key": "NS" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": {
                       "name": { "key": "NamespaceClass" },
                       "namespace_": { "key": { "name": { "key": "NS" } } }
                     }
@@ -589,6 +634,37 @@
                   "trait": {
                     "key": {
                       "name": { "key": { "name": { "key": "SourceTrait" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "namespace_": {
+              "key": { "name": { "key": { "name": { "key": "NS" } } } }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "AnotherNamespaceClass" },
+                      "namespace_": { "key": { "name": { "key": "NS" } } }
                     }
                   }
                 }

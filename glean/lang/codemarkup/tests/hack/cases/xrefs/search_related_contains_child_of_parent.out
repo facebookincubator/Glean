@@ -12,6 +12,66 @@
                   "key": {
                     "name": {
                       "key": {
+                        "name": { "key": "AnotherNamespaceClass" },
+                        "namespace_": { "key": { "name": { "key": "NS" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "AnotherNamespaceClass",
+          "file": { "key": "www/Namespace2.php" },
+          "location": { "span": { "start": 278, "length": 90 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "method": {
+                "key": {
+                  "name": { "key": "another_class_function" },
+                  "container": {
+                    "class_": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": "AnotherNamespaceClass" },
+                            "namespace_": { "key": { "name": { "key": "NS" } } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "another_class_function",
+          "file": { "key": "www/Namespace2.php" },
+          "location": { "span": { "start": 312, "length": 54 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": {
+                      "key": {
                         "name": { "key": "NamespaceClass" },
                         "namespace_": { "key": { "name": { "key": "NS" } } }
                       }
@@ -885,6 +945,144 @@
           "name": "NS",
           "file": { "key": "www/Namespace.php" },
           "location": { "span": { "start": 236, "length": 2 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "AnotherNamespaceClass" },
+                        "namespace_": { "key": { "name": { "key": "NS" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "AnotherNamespaceClass",
+          "file": { "key": "www/Namespace2.php" },
+          "location": { "span": { "start": 278, "length": 90 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "namespace_": {
+                "key": { "name": { "key": { "name": { "key": "NS" } } } }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "NS",
+          "file": { "key": "www/Namespace.php" },
+          "location": { "span": { "start": 236, "length": 2 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "NamespaceClass" },
+                        "namespace_": { "key": { "name": { "key": "NS" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "NamespaceClass",
+          "file": { "key": "www/Namespace.php" },
+          "location": { "span": { "start": 241, "length": 76 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "namespace_": {
+                "key": { "name": { "key": { "name": { "key": "NS" } } } }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "NS",
+          "file": { "key": "www/Namespace2.php" },
+          "location": { "span": { "start": 273, "length": 2 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "AnotherNamespaceClass" },
+                        "namespace_": { "key": { "name": { "key": "NS" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "AnotherNamespaceClass",
+          "file": { "key": "www/Namespace2.php" },
+          "location": { "span": { "start": 278, "length": 90 } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "namespace_": {
+                "key": { "name": { "key": { "name": { "key": "NS" } } } }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "NS",
+          "file": { "key": "www/Namespace2.php" },
+          "location": { "span": { "start": 273, "length": 2 } }
         }
       },
       "child": {

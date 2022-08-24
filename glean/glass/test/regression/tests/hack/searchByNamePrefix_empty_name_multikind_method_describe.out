@@ -8,6 +8,40 @@
                 "kind": 8,
                 "language": 3,
                 "location": {
+                    "filepath": "www/Namespace2.php",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 14,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "name": {
+                    "container": "NS/AnotherNamespaceClass",
+                    "localName": "another_class_function"
+                },
+                "repo_hash": "testhash",
+                "sym": "test/php/NS/AnotherNamespaceClass/another_class_function",
+                "sym_location": {
+                    "filepath": "www/Namespace2.php",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 14,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "kind": 8,
+                "language": 3,
+                "location": {
                     "filepath": "www/Namespace.php",
                     "range": {
                         "columnBegin": 5,
@@ -310,6 +344,7 @@
             }
         ],
         "symbols": [
+            "test/php/NS/AnotherNamespaceClass/another_class_function",
             "test/php/NS/NamespaceClass/class_function",
             "test/php/RefClass/bar",
             "test/php/RefClass/bazza",

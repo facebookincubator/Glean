@@ -3,6 +3,8 @@
     {
         "symbolDetails": [],
         "symbols": [
+            "test/php/NS/AnotherNamespaceClass",
+            "test/php/NS/AnotherNamespaceClass/another_class_function",
             "test/php/NS/NamespaceClass",
             "test/php/NS/NamespaceClass/class_function",
             "test/php/Position",

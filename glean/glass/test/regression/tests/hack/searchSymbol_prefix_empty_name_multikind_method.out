@@ -7,6 +7,22 @@
                 "kind": 8,
                 "language": 3,
                 "location": {
+                    "filepath": "www/Namespace2.php",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 6,
+                        "lineBegin": 14,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "name": "another_class_function",
+                "symbol": "test/php/NS/AnotherNamespaceClass/another_class_function"
+            },
+            {
+                "kind": 8,
+                "language": 3,
+                "location": {
                     "filepath": "www/Namespace.php",
                     "range": {
                         "columnBegin": 5,

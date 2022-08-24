@@ -120,6 +120,33 @@
                 "key": {
                   "name": {
                     "key": {
+                      "name": { "key": "AnotherNamespaceClass" },
+                      "namespace_": { "key": { "name": { "key": "NS" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/Namespace2.php" },
+        "location": { "span": { "length": 90, "start": 278 } },
+        "name": "AnotherNamespaceClass"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": {
                       "name": { "key": "NamespaceClass" },
                       "namespace_": { "key": { "name": { "key": "NS" } } }
                     }
@@ -480,6 +507,38 @@
                     "key": {
                       "name": {
                         "key": {
+                          "name": { "key": "AnotherNamespaceClass" },
+                          "namespace_": { "key": { "name": { "key": "NS" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "name": { "key": "another_class_function" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/Namespace2.php" },
+        "location": { "span": { "length": 54, "start": 312 } },
+        "name": "another_class_function"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
                           "name": { "key": "NamespaceClass" },
                           "namespace_": { "key": { "name": { "key": "NS" } } }
                         }
@@ -732,6 +791,24 @@
       "location": {
         "file": { "key": "www/Namespace.php" },
         "location": { "span": { "length": 2, "start": 236 } },
+        "name": "NS"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "namespace_": {
+              "key": { "name": { "key": { "name": { "key": "NS" } } } }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "www/Namespace2.php" },
+        "location": { "span": { "length": 2, "start": 273 } },
         "name": "NS"
       }
     }
