@@ -26,6 +26,7 @@ import qualified Glean.Indexer.Flow as Flow
 import qualified Glean.Indexer.Hack as Hack
 #ifdef FACEBOOK
 import qualified Glean.Indexer.Python as Python
+import qualified Glean.Indexer.Buck as Buck
 #endif
 import qualified Glean.Indexer.Go as Go
 import qualified Glean.Indexer.JavaLsif as JavaLsif
@@ -33,7 +34,6 @@ import qualified Glean.Indexer.RustLsif as RustLsif
 import qualified Glean.Indexer.Typescript as Typescript
 import qualified Glean.Indexer.LSIF as LSIF
 import qualified Glean.Indexer.Haskell as Hs
-import qualified Glean.Indexer.Buck as Buck
 
 data SomeIndexer = forall opts . SomeIndexer (Indexer opts)
 
