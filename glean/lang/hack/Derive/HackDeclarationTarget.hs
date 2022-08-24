@@ -21,6 +21,7 @@ import Control.Exception
 import Control.Monad
 import qualified Data.Int as Int
 import qualified Data.IntervalMap.Generic.Strict as IM
+import Data.Maybe
 import Data.List (foldl')
 import Data.List.Extra (chunksOf)
 import Util.Log (logInfo)
@@ -128,12 +129,14 @@ getTargets e cfg files = do
       where
         file = Hack.fileXRefs_key_file key
         xrefs = Hack.fileXRefs_key_xrefs key
-        targets = map target xrefs
-        target xref = im
-          where
-            (Hack.XRefTarget_declaration decl) = Hack.xRef_target xref
-            spans = Hack.xRef_ranges xref
-            (_, im) = foldl' (buildIntervalMap decl) (0, IM.empty) spans
+        targets = mapMaybe target xrefs
+        target xref = case Hack.xRef_target xref of
+          Hack.XRefTarget_declaration decl ->
+            let spans = Hack.xRef_ranges xref
+                (_, im) = foldl' (buildIntervalMap decl) (0, IM.empty) spans
+            in Just im
+          Hack.XRefTarget_occurrence _ -> Nothing
+          Hack.XRefTarget_EMPTY -> Nothing
         buildIntervalMap
           :: Hack.Declaration
           -> (Int.Int64, TargetSpans)
