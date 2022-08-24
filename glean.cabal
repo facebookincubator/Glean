@@ -54,7 +54,7 @@ common fb-cpp
   if arch(x86_64)
      cxx-options: -march=haswell
   if flag(opt)
-     cxx-options: -O3
+     cxx-options: -O3 -DNDEBUG
 
 common exe
   ghc-options: -threaded
