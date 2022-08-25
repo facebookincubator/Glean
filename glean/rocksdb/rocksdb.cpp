@@ -181,18 +181,14 @@ rocksdb::Status openRocksDB(
     const std::string& name,
     rocksdb::DB** dbptr,
     const std::vector<rocksdb::ColumnFamilyDescriptor>& column_families,
-    std::vector<rocksdb::ColumnFamilyHandle*>* handles) {
-  return rocksdb::DB::Open(options, name, column_families, handles, dbptr);
-}
-
-rocksdb::Status openReadOnlyRocksDB(
-    const rocksdb::Options& options,
-    const std::string& name,
-    rocksdb::DB** dbptr,
-    const std::vector<rocksdb::ColumnFamilyDescriptor>& column_families,
-    std::vector<rocksdb::ColumnFamilyHandle*>* handles) {
-  return rocksdb::DB::OpenForReadOnly(
-      options, name, column_families, handles, dbptr);
+    std::vector<rocksdb::ColumnFamilyHandle*>* handles,
+    bool read_only) {
+  if (read_only) {
+    return rocksdb::DB::OpenForReadOnly(
+        options, name, column_families, handles, dbptr);
+  } else {
+    return rocksdb::DB::Open(options, name, column_families, handles, dbptr);
+  }
 }
 } // namespace
 #endif
@@ -273,21 +269,13 @@ struct ContainerImpl final : Container {
 
     std::vector<rocksdb::ColumnFamilyHandle*> hs;
     rocksdb::DB *db_ptr;
-    if (mode == Mode::ReadOnly) {
-      check(openReadOnlyRocksDB(
+    check(openRocksDB(
                 options,
                 path,
                 &db_ptr,
                 existing,
-                &hs));
-    } else {
-      check(openRocksDB(
-                options,
-                path,
-                &db_ptr,
-                existing,
-                &hs));
-    }
+                &hs,
+                mode == Mode::ReadOnly));
     if (!db_ptr) {
       rts::error("got nullptr from rocksdb");
     } else {
