@@ -72,8 +72,19 @@ jobs:
           ./coursier bootstrap --standalone -o lsif-java com.sourcegraph:lsif-java_2.13:0.8.0-RC1 --main-class com.sourcegraph.lsif_java.LsifJava
           mkdir -p "$HOME"/.hsthrift/bin && cp lsif-java "$HOME"/.hsthrift/bin
 
+      - name: Install indexer (go)
+        run: |
+          export GOLANG=1.17.8
+          export LSIFGO=1.9.0
+          mkdir go-install; cd go-install
+          wget "https://go.dev/dl/go${GOLANG}.linux-arm64.tar.gz"
+          tar -C "$HOME/.hsthrift" -xzf  "go${GOLANG}.linux-arm64.tar.gz"
+          wget "https://github.com/sourcegraph/lsif-go/releases/download/v${LSIFGO}/lsif-go_${LSIFGO}_linux_arm64.tar.gz"
+          tar xzf "lsif-go_${LSIFGO}_linux_arm64.tar.gz"
+          mkdir -p "$HOME"/.hsthrift/bin && mv lsif-go "$HOME"/.hsthrift/bin
+          echo "$HOME/.hsthrift/go/bin" >> "$GITHUB_PATH"
+
     # no hhvm builds yet for arm/linux, so we skip the hack indexer
-    # no arm64 builds of go lsif indexer
 
       - name: Fetch hsthrift and build folly, fizz, wangle, fbthrift
         run: ./install_deps.sh --threads 8 --use-system-libs
@@ -87,4 +98,4 @@ jobs:
         run: make glass
     # disable tests for languages we don't have indexer installed
       - name: Run tests
-        run: cabal test glean:tests -f-hack-tests -f-go-tests
+        run: cabal test glean:tests -f-hack-tests
