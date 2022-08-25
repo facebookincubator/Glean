@@ -5,25 +5,6 @@
       "file": { "key": "test.m" },
       "xrefs": [
         {
-          "range": { "begin": 257, "end": 265 },
-          "target": {
-            "declaration": {
-              "objcContainer": {
-                "key": {
-                  "id": { "interface_": { "key": "Protocol" } },
-                  "source": {
-                    "file": { "key": "<builtin>" },
-                    "lineBegin": 1,
-                    "columnBegin": 1,
-                    "lineEnd": 1,
-                    "columnEnd": 1
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
           "range": { "begin": 307, "end": 308 },
           "target": {
             "declaration": {

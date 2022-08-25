@@ -96,41 +96,11 @@
             }
           ],
           "variable": [
-            [
-              { "offset": 257, "length": 3 },
-              { "offset": 29, "length": 3 },
-              { "offset": 82, "length": 3 }
-            ],
             [ { "offset": 376, "length": 14 }, { "offset": 35, "length": 14 } ]
           ]
         }
       },
-      "externals": [
-        {
-          "declaration": {
-            "typeAlias": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "SEL" },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "type": { "key": "SEL *" },
-                "kind": 0,
-                "source": {
-                  "file": { "key": "<builtin>" },
-                  "lineBegin": 1,
-                  "columnBegin": 1,
-                  "lineEnd": 1,
-                  "columnEnd": 1
-                }
-              }
-            }
-          }
-        },
-        { "objcSelector": { "key": [ "foo" ] } }
-      ]
+      "externals": [ { "objcSelector": { "key": [ "foo" ] } } ]
     }
   }
 ]

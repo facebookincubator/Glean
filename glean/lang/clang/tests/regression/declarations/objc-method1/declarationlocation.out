@@ -100,36 +100,6 @@
   {
     "key": {
       "decl": {
-        "typeAlias": {
-          "key": {
-            "name": {
-              "key": { "name": { "key": "id" }, "scope": { "global_": { } } }
-            },
-            "type": { "key": "id" },
-            "kind": 0,
-            "source": {
-              "file": { "key": "<builtin>" },
-              "lineBegin": 1,
-              "columnBegin": 1,
-              "lineEnd": 1,
-              "columnEnd": 1
-            }
-          }
-        }
-      },
-      "source": {
-        "file": { "key": "<builtin>" },
-        "lineBegin": 1,
-        "columnBegin": 1,
-        "lineEnd": 1,
-        "columnEnd": 1
-      },
-      "name": "id"
-    }
-  },
-  {
-    "key": {
-      "decl": {
         "variable": {
           "key": {
             "name": {

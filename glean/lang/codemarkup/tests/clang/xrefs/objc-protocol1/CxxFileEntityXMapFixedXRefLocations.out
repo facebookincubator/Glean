@@ -116,27 +116,10 @@
                   "ranges": [ { "offset": 334, "length": 9 } ]
                 }
               ],
-              "variable": [ [ { "offset": 257, "length": 8 } ] ]
+              "variable": [ ]
             }
           },
-          "externals": [
-            {
-              "declaration": {
-                "objcContainer": {
-                  "key": {
-                    "id": { "interface_": { "key": "Protocol" } },
-                    "source": {
-                      "file": { "key": "<builtin>" },
-                      "lineBegin": 1,
-                      "columnBegin": 1,
-                      "lineEnd": 1,
-                      "columnEnd": 1
-                    }
-                  }
-                }
-              }
-            }
-          ]
+          "externals": [ ]
         }
       },
       "xref": {
@@ -290,27 +273,10 @@
                   "ranges": [ { "offset": 334, "length": 9 } ]
                 }
               ],
-              "variable": [ [ { "offset": 257, "length": 8 } ] ]
+              "variable": [ ]
             }
           },
-          "externals": [
-            {
-              "declaration": {
-                "objcContainer": {
-                  "key": {
-                    "id": { "interface_": { "key": "Protocol" } },
-                    "source": {
-                      "file": { "key": "<builtin>" },
-                      "lineBegin": 1,
-                      "columnBegin": 1,
-                      "lineEnd": 1,
-                      "columnEnd": 1
-                    }
-                  }
-                }
-              }
-            }
-          ]
+          "externals": [ ]
         }
       },
       "xref": {
@@ -464,27 +430,10 @@
                   "ranges": [ { "offset": 334, "length": 9 } ]
                 }
               ],
-              "variable": [ [ { "offset": 257, "length": 8 } ] ]
+              "variable": [ ]
             }
           },
-          "externals": [
-            {
-              "declaration": {
-                "objcContainer": {
-                  "key": {
-                    "id": { "interface_": { "key": "Protocol" } },
-                    "source": {
-                      "file": { "key": "<builtin>" },
-                      "lineBegin": 1,
-                      "columnBegin": 1,
-                      "lineEnd": 1,
-                      "columnEnd": 1
-                    }
-                  }
-                }
-              }
-            }
-          ]
+          "externals": [ ]
         }
       },
       "xref": {
@@ -650,27 +599,10 @@
                   "ranges": [ { "offset": 334, "length": 9 } ]
                 }
               ],
-              "variable": [ [ { "offset": 257, "length": 8 } ] ]
+              "variable": [ ]
             }
           },
-          "externals": [
-            {
-              "declaration": {
-                "objcContainer": {
-                  "key": {
-                    "id": { "interface_": { "key": "Protocol" } },
-                    "source": {
-                      "file": { "key": "<builtin>" },
-                      "lineBegin": 1,
-                      "columnBegin": 1,
-                      "lineEnd": 1,
-                      "columnEnd": 1
-                    }
-                  }
-                }
-              }
-            }
-          ]
+          "externals": [ ]
         }
       },
       "xref": {

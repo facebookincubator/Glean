@@ -63,38 +63,5 @@
       },
       "name": "I"
     }
-  },
-  {
-    "key": {
-      "decl": {
-        "typeAlias": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": "__int128_t" },
-                "scope": { "global_": { } }
-              }
-            },
-            "type": { "key": "__int128" },
-            "kind": 0,
-            "source": {
-              "file": { "key": "<builtin>" },
-              "lineBegin": 1,
-              "columnBegin": 1,
-              "lineEnd": 1,
-              "columnEnd": 1
-            }
-          }
-        }
-      },
-      "source": {
-        "file": { "key": "<builtin>" },
-        "lineBegin": 1,
-        "columnBegin": 1,
-        "lineEnd": 1,
-        "columnEnd": 1
-      },
-      "name": "__int128_t"
-    }
   }
 ]

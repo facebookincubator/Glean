@@ -204,57 +204,6 @@
           }
         },
         {
-          "range": { "begin": 284, "end": 285 },
-          "target": {
-            "declaration": {
-              "function_": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": { "operator_": "operator=" } },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "A" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  },
-                  "signature": {
-                    "key": {
-                      "returns": { "key": "A &" },
-                      "parameters": [
-                        {
-                          "name": { "key": "" },
-                          "type": { "key": "const A &" }
-                        }
-                      ]
-                    }
-                  },
-                  "method": {
-                    "isVirtual": false,
-                    "isConst": false,
-                    "isVolatile": false,
-                    "refQualifier": 0
-                  },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 9,
-                    "columnBegin": 8,
-                    "lineEnd": 9,
-                    "columnEnd": 8
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
           "range": { "begin": 286, "end": 288 },
           "target": {
             "declaration": {
@@ -314,54 +263,6 @@
                     "columnBegin": 3,
                     "lineEnd": 12,
                     "columnEnd": 5
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          "range": { "begin": 294, "end": 295 },
-          "target": {
-            "declaration": {
-              "function_": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": { "operator_": "operator=" } },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "A" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  },
-                  "signature": {
-                    "key": {
-                      "returns": { "key": "A &" },
-                      "parameters": [
-                        { "name": { "key": "" }, "type": { "key": "A &&" } }
-                      ]
-                    }
-                  },
-                  "method": {
-                    "isVirtual": false,
-                    "isConst": false,
-                    "isVolatile": false,
-                    "refQualifier": 0
-                  },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 9,
-                    "columnBegin": 8,
-                    "lineEnd": 9,
-                    "columnEnd": 8
                   }
                 }
               }
@@ -626,57 +527,6 @@
           }
         },
         {
-          "range": { "begin": 425, "end": 426 },
-          "target": {
-            "declaration": {
-              "function_": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": { "operator_": "operator=" } },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "B" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  },
-                  "signature": {
-                    "key": {
-                      "returns": { "key": "B<int> &" },
-                      "parameters": [
-                        {
-                          "name": { "key": "" },
-                          "type": { "key": "const B<int> &" }
-                        }
-                      ]
-                    }
-                  },
-                  "method": {
-                    "isVirtual": false,
-                    "isConst": false,
-                    "isVolatile": false,
-                    "refQualifier": 0
-                  },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 20,
-                    "columnBegin": 8,
-                    "lineEnd": 20,
-                    "columnEnd": 8
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
           "range": { "begin": 427, "end": 429 },
           "target": {
             "declaration": {
@@ -736,57 +586,6 @@
                     "columnBegin": 5,
                     "lineEnd": 24,
                     "columnEnd": 12
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          "range": { "begin": 437, "end": 438 },
-          "target": {
-            "declaration": {
-              "function_": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": { "operator_": "operator=" } },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "B" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  },
-                  "signature": {
-                    "key": {
-                      "returns": { "key": "B<int> &" },
-                      "parameters": [
-                        {
-                          "name": { "key": "" },
-                          "type": { "key": "B<int> &&" }
-                        }
-                      ]
-                    }
-                  },
-                  "method": {
-                    "isVirtual": false,
-                    "isConst": false,
-                    "isVolatile": false,
-                    "refQualifier": 0
-                  },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 20,
-                    "columnBegin": 8,
-                    "lineEnd": 20,
-                    "columnEnd": 8
                   }
                 }
               }
@@ -1051,57 +850,6 @@
           }
         },
         {
-          "range": { "begin": 535, "end": 536 },
-          "target": {
-            "declaration": {
-              "function_": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": { "operator_": "operator=" } },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "B" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  },
-                  "signature": {
-                    "key": {
-                      "returns": { "key": "B<short> &" },
-                      "parameters": [
-                        {
-                          "name": { "key": "" },
-                          "type": { "key": "const B<short> &" }
-                        }
-                      ]
-                    }
-                  },
-                  "method": {
-                    "isVirtual": false,
-                    "isConst": false,
-                    "isVolatile": false,
-                    "refQualifier": 0
-                  },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 20,
-                    "columnBegin": 8,
-                    "lineEnd": 20,
-                    "columnEnd": 8
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
           "range": { "begin": 537, "end": 539 },
           "target": {
             "declaration": {
@@ -1161,57 +909,6 @@
                     "columnBegin": 5,
                     "lineEnd": 31,
                     "columnEnd": 14
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          "range": { "begin": 547, "end": 548 },
-          "target": {
-            "declaration": {
-              "function_": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": { "operator_": "operator=" } },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "B" },
-                              "scope": { "global_": { } }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  },
-                  "signature": {
-                    "key": {
-                      "returns": { "key": "B<short> &" },
-                      "parameters": [
-                        {
-                          "name": { "key": "" },
-                          "type": { "key": "B<short> &&" }
-                        }
-                      ]
-                    }
-                  },
-                  "method": {
-                    "isVirtual": false,
-                    "isConst": false,
-                    "isVolatile": false,
-                    "refQualifier": 0
-                  },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 20,
-                    "columnBegin": 8,
-                    "lineEnd": 20,
-                    "columnEnd": 8
                   }
                 }
               }

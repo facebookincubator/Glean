@@ -560,6 +560,14 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
 
   struct DeclTraits {
+    static bool isImplicit(const clang::Decl* decl) {
+      if (!decl->isImplicit()) {
+        return false;
+      }
+      auto rd = clang::dyn_cast<clang::CXXRecordDecl>(decl);
+      return !rd || !rd->isLambda();
+    }
+
     template<typename T>
     static bool isDefinition(const T* decl) {
       return DeclTraits::getDefinition(decl) == decl;
@@ -736,6 +744,9 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     static folly::Optional<Decl> compute(
         ASTVisitor& visitor,
         const ClangDecl *decl) {
+      if (DeclTraits::isImplicit(decl)) {
+        return folly::none;
+      }
       auto range = visitor.db.srcRange(decl->getSourceRange());
       folly::Optional<Decl> result =
         Decl::declare(
@@ -1136,8 +1147,6 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
             }
           }
         } else if (auto fun = clang::dyn_cast<clang::FunctionDecl>(mem)) {
-          // Skip implicit constructors/destructors
-          if (fun->isImplicit()) continue;
           if (auto m = visitor.funDecls(fun)) {
             members.push_back(Cxx::Declaration::function_(m->decl));
           }
@@ -1260,7 +1269,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         Cxx::Scope scope,
         Src::Range range) {
       // TODO: should we ignore deleted functions or have some info about them?
-      if (decl->isDeleted() || decl->getBuiltinID()) {
+      if (decl->isDeleted()) {
         return folly::none;
       }
 
@@ -2045,6 +2054,9 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   };
 
   void xrefTarget(clang::SourceRange range, XRef xref) {
+    if (DeclTraits::isImplicit(xref.decl)) {
+      return;
+    }
     const auto raw = xref.target
       ? xref.target.value()
       : unknownTarget(xref.decl);
@@ -2268,7 +2280,6 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     if (decl) {
       auto xref = XRef::unknown(decl);
       if (auto fun = clang::dyn_cast<clang::FunctionDecl>(decl)) {
-        if (fun->getBuiltinID()) return;
         xref = XRef::toTemplatableDecl(funDecls, fun);
       } else if (auto var = clang::dyn_cast<clang::VarDecl>(decl)) {
         xref = XRef::toTemplatableDecl(varDecls, var);

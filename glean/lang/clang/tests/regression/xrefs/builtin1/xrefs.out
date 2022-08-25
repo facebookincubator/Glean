@@ -5,32 +5,6 @@
       "file": { "key": "test.cpp" },
       "xrefs": [
         {
-          "range": { "begin": 231, "end": 241 },
-          "target": {
-            "declaration": {
-              "typeAlias": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "__int128_t" },
-                      "scope": { "global_": { } }
-                    }
-                  },
-                  "type": { "key": "__int128" },
-                  "kind": 0,
-                  "source": {
-                    "file": { "key": "<builtin>" },
-                    "lineBegin": 1,
-                    "columnBegin": 1,
-                    "lineEnd": 1,
-                    "columnEnd": 1
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
           "range": { "begin": 265, "end": 266 },
           "target": {
             "declaration": {

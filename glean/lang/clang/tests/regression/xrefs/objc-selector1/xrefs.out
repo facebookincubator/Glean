@@ -5,58 +5,6 @@
       "file": { "key": "test.m" },
       "xrefs": [
         {
-          "range": { "begin": 257, "end": 260 },
-          "target": {
-            "declaration": {
-              "typeAlias": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "SEL" },
-                      "scope": { "global_": { } }
-                    }
-                  },
-                  "type": { "key": "SEL *" },
-                  "kind": 0,
-                  "source": {
-                    "file": { "key": "<builtin>" },
-                    "lineBegin": 1,
-                    "columnBegin": 1,
-                    "lineEnd": 1,
-                    "columnEnd": 1
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          "range": { "begin": 286, "end": 289 },
-          "target": {
-            "declaration": {
-              "typeAlias": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "SEL" },
-                      "scope": { "global_": { } }
-                    }
-                  },
-                  "type": { "key": "SEL *" },
-                  "kind": 0,
-                  "source": {
-                    "file": { "key": "<builtin>" },
-                    "lineBegin": 1,
-                    "columnBegin": 1,
-                    "lineEnd": 1,
-                    "columnEnd": 1
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
           "range": { "begin": 325, "end": 326 },
           "target": {
             "declaration": {
@@ -69,32 +17,6 @@
                     "columnBegin": 1,
                     "lineEnd": 11,
                     "columnEnd": 4
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          "range": { "begin": 368, "end": 371 },
-          "target": {
-            "declaration": {
-              "typeAlias": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "SEL" },
-                      "scope": { "global_": { } }
-                    }
-                  },
-                  "type": { "key": "SEL *" },
-                  "kind": 0,
-                  "source": {
-                    "file": { "key": "<builtin>" },
-                    "lineBegin": 1,
-                    "columnBegin": 1,
-                    "lineEnd": 1,
-                    "columnEnd": 1
                   }
                 }
               }
