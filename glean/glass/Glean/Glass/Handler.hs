@@ -23,7 +23,6 @@ module Glean.Glass.Handler
   , findReferenceRanges
 
   -- * working with symbol ids
-  , resolveSymbol
   , resolveSymbolRange
   , describeSymbol
 
@@ -302,17 +301,6 @@ findReferenceRanges env@Glass.Env{..} sym RequestOptions{..} =
       (GleanBackend gleanBackend db)
   where
     limit = fmap fromIntegral requestOptions_limit
-
--- | Resolve a symbol identifier to its location in the latest db (or older
--- revision if specified)
-resolveSymbol
-  :: Glass.Env
-  -> SymbolId
-  -> RequestOptions
-  -> IO Location
-resolveSymbol env@Glass.Env{..} sym _opts =
-  withSymbol "resolveSymbol" env sym $ \(db,(repo, lang, toks)) ->
-    findSymbolLocation (GleanBackend gleanBackend db) repo lang toks
 
 -- | Resolve a symbol identifier to its range-based location in the latest db
 resolveSymbolRange
@@ -637,17 +625,6 @@ backendRunHaxl
   :: Glean.Backend b => GleanBackend b -> (forall u. ReposHaxl u w a) -> IO a
 backendRunHaxl GleanBackend{..} =
   runHaxlAllRepos gleanBackend (fmap snd gleanDBs)
-
--- | Symbol search: try to resolve the symbol back to an Entity.
-findSymbolLocation
-  :: Glean.Backend b
-  => GleanBackend b
-  -> RepoName
-  -> Language
-  -> [Text]
-  -> IO (Location, Maybe ErrorLogger)
-findSymbolLocation b repo lang toks = backendRunHaxl b $
-  withEntity rangeSpanToLocation repo lang toks
 
 -- | Symbol search: try to resolve the line/col range of an entity
 findSymbolLocationRange

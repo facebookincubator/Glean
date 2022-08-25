@@ -2,10 +2,12 @@
     "@generated",
     {
         "filepath": "all.py",
-        "repository": "test",
-        "span": {
-            "length": 408,
-            "start": 0
-        }
+        "range": {
+            "columnBegin": 1,
+            "columnEnd": 1,
+            "lineBegin": 1,
+            "lineEnd": 21
+        },
+        "repository": "test"
     }
 ]

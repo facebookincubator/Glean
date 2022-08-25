@@ -487,18 +487,13 @@ service GlassService extends fb303.FacebookService {
     2: RequestOptions options,
   ) throws (1: ServerException e);
 
-  // Resolve a symbol id to its definition location
-  Location resolveSymbol(1: SymbolId symbol, 2: RequestOptions options) throws (
-    1: ServerException e,
-  );
-
   // Resolve a symbol id to its definition location range
   LocationRange resolveSymbolRange(
     1: SymbolId symbol,
     2: RequestOptions options,
   ) throws (1: ServerException e);
 
-  // Return basic details about a symbol, a bit more than resolveSymbol
+  // Return details about a symbol, such as its location or type signature
   SymbolDescription describeSymbol(
     1: SymbolId symbol,
     2: RequestOptions options,

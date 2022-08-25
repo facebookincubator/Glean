@@ -2,10 +2,12 @@
     "@generated",
     {
         "filepath": "test.cpp",
-        "repository": "test",
-        "span": {
-            "length": 287,
-            "start": 221
-        }
+        "range": {
+            "columnBegin": 1,
+            "columnEnd": 2,
+            "lineBegin": 9,
+            "lineEnd": 38
+        },
+        "repository": "test"
     }
 ]

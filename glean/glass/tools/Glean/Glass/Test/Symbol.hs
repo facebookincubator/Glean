@@ -84,9 +84,9 @@ main =
 
     case cfgCmd of
       FindLocation -> do
-        let resolveLocation :: SymbolId -> IO Location
+        let resolveLocation :: SymbolId -> IO LocationRange
             resolveLocation r =
-              Handle.resolveSymbol env r (def :: RequestOptions)
+              Handle.resolveSymbolRange env r (def :: RequestOptions)
         forM_ syms $ Text.putStrLn <=< testResolveSymbol resolveLocation
 
       FindReferences -> do
@@ -122,7 +122,7 @@ testFindReferences handler symbol@(SymbolId name) = do
     return $ title : body
 
 testResolveSymbol
-  :: (SymbolId -> IO Location)
+  :: (SymbolId -> IO LocationRange)
   -> SymbolId
   -> IO Text
 testResolveSymbol handler symbol@(SymbolId name) = do
@@ -134,7 +134,7 @@ testResolveSymbol handler symbol@(SymbolId name) = do
       , " "
       , name
       ," -> "
-      ,pprLocation (thd3 res)
+      ,pprLocationRange (thd3 res)
       ]
 
 testDescribe
@@ -152,14 +152,6 @@ testDescribe handler symbol@(SymbolId name) = do
       ," -> "
       ,pprDescription (thd3 res)
       ]
-
-pprLocation :: Location -> Text
-pprLocation Location{..} =
-  Text.concat [
-    unRepoName location_repository, "@",
-    unPath location_filepath, " ",
-    pprSpan location_span
-  ]
 
 pprLocationRange :: LocationRange -> Text
 pprLocationRange LocationRange{..} =
@@ -192,13 +184,6 @@ pprDescription SymbolDescription{..} =
     pprSymbolPath symbolDescription_location,
     "qualified name: "<> pprQName symbolDescription_name,
     "symbol kind: "<> pprKind symbolDescription_kind
-  ]
-
-pprSpan :: ByteSpan -> Text
-pprSpan ByteSpan{..} =
-  Text.concat [
-    textShow byteSpan_start, ":",
-    "(",textShow byteSpan_start, "+", textShow byteSpan_length, ")"
   ]
 
 pprRange :: Range -> Text

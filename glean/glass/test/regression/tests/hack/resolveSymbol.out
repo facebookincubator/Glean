@@ -2,10 +2,12 @@
     "@generated",
     {
         "filepath": "www/TopLevel.php",
-        "repository": "test",
-        "span": {
-            "length": 93,
-            "start": 300
-        }
+        "range": {
+            "columnBegin": 1,
+            "columnEnd": 2,
+            "lineBegin": 16,
+            "lineEnd": 22
+        },
+        "repository": "test"
     }
 ]
