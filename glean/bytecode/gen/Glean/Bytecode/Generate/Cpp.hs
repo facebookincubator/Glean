@@ -105,14 +105,13 @@ genInsnEval Insn{..} =
       | Return `elem` insnEffects = "const uint64_t * FOLLY_NULLABLE "
       | otherwise = "void"
 
-
     declare (Arg name (Imm ty)) =
       [ immType ty <> " " <> name <> ";" ]
     declare (Arg name (Reg _ ty Load)) =
       [ cppType ty <> " " <> name <> ";" ]
     -- just make a pointer to the register for Store and Update for now
     declare (Arg name (Reg _ ty _)) =
-      [ cppType ty <> "* " <> name <> ";" ]
+      [ "Reg<" <> cppType ty <> "> " <> name <> ";" ]
     declare (Arg name Offsets) =
       [ "uint64_t " <> name <> "_size;"
       , "const uint64_t *" <> name <> ";" ]
@@ -126,9 +125,9 @@ genInsnEval Insn{..} =
     decode (Arg name (Imm _)) =
       [ "args." <> name <> " = *pc++;" ]
     decode (Arg name (Reg _ ty Load)) =
-      [ "args." <> name <> " = " <> cppCast ty "frame[*pc++]" <> ";" ]
+      [ "args." <> name <> " = Reg<" <> cppType ty <> ">(&frame[*pc++]).get();" ]
     decode (Arg name (Reg _ ty _)) =
-      [ "args." <> name <> " = " <> cppCastPtr ty "&frame[*pc++]" <> ";" ]
+      [ "args." <> name <> " = Reg<" <> cppType ty <> ">(&frame[*pc++]);" ]
     decode (Arg name Offsets) =
       [ "args." <> name <> "_size = *pc++;"
       , "args." <> name <> " = pc;"
@@ -137,18 +136,8 @@ genInsnEval Insn{..} =
       [ "args." <> name <> " = pc;"
       , "pc += args." <> name <> "_arity;" ]
 
-    cppCast ty s
-      | cppType ty /= "uint64_t" =
-          "reinterpret_cast<" <> cppType ty <> ">(" <> s <> ")"
-      | otherwise = s
-
-    cppCastPtr ty s
-      | cppType ty /= "uint64_t" =
-          "reinterpret_cast<" <> cppType ty <> "*>(" <> s <> ")"
-      | otherwise = s
-
 cppType :: Ty -> Text
-cppType DataPtr = "void *"
+cppType DataPtr = "unsigned char *"
 cppType Lit = "const std::string *"
 cppType WordPtr = "uint64_t *"
 cppType BinaryOutputPtr = "binary::Output *"

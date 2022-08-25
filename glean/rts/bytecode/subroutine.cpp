@@ -30,67 +30,54 @@ struct Eval {
 
   FOLLY_ALWAYS_INLINE void execute(InputNat a) {
     binary::Input input { *a.begin, a.end };
-    *a.dst = input.packed<uint64_t>();
-    *a.begin = reinterpret_cast<void *>(
-        const_cast<unsigned char*>(input.data()));
+    a.dst << input.packed<uint64_t>();
+    a.begin << const_cast<unsigned char*>(input.data());
   }
 
   FOLLY_ALWAYS_INLINE void execute(InputBytes a) {
     binary::Input input { *a.begin, a.end };
     input.bytes(a.size);
-    *a.begin = reinterpret_cast<void *>(
-        const_cast<unsigned char*>(input.data()));
+    a.begin << const_cast<unsigned char*>(input.data());
   }
 
   FOLLY_ALWAYS_INLINE void execute(InputSkipUntrustedString a) {
     binary::Input input { *a.begin, a.end };
     input.skipUntrustedString();
-    *a.begin = reinterpret_cast<void *>(
-        const_cast<unsigned char*>(input.data()));
+    a.begin << const_cast<unsigned char*>(input.data());
   }
 
   FOLLY_ALWAYS_INLINE void execute(InputShiftLit a) {
     binary::Input input { *a.begin, a.end };
-    *a.match = input.shift(binary::byteRange(*a.lit));
-    *a.begin = reinterpret_cast<void *>(
-        const_cast<unsigned char*>(input.data()));
+    a.match << input.shift(binary::byteRange(*a.lit));
+    a.begin << const_cast<unsigned char*>(input.data());
   }
 
   FOLLY_ALWAYS_INLINE void execute(InputShiftBytes a) {
     binary::Input input { *a.begin, a.end };
-    *a.match = input.shift(
-        folly::ByteRange(reinterpret_cast<const unsigned char*>(a.ptr),
-                         reinterpret_cast<const unsigned char*>(a.ptrend)));
-    *a.begin = reinterpret_cast<void *>(
-        const_cast<unsigned char*>(input.data()));
+    a.match << input.shift(folly::ByteRange(a.ptr, a.ptrend));
+    a.begin << const_cast<unsigned char*>(input.data());
   }
 
   FOLLY_ALWAYS_INLINE void execute(InputSkipNat a) {
     binary::Input input { *a.begin, a.end };
     input.packed<uint64_t>();
-    *a.begin = reinterpret_cast<void *>(
-        const_cast<unsigned char*>(input.data()));
+    a.begin << const_cast<unsigned char*>(input.data());
   }
 
   FOLLY_ALWAYS_INLINE void execute(InputSkipTrustedString a) {
     binary::Input input { *a.begin, a.end };
     input.skipTrustedString();
-    *a.begin = reinterpret_cast<void *>(
-        const_cast<unsigned char*>(input.data()));
+    a.begin << const_cast<unsigned char*>(input.data());
   }
 
   FOLLY_ALWAYS_INLINE void execute(OutputStringToLower a) {
-    folly::ByteRange input {
-      reinterpret_cast<const unsigned char*>(a.begin),
-      reinterpret_cast<const unsigned char*>(a.end) };
+    folly::ByteRange input { a.begin, a.end };
     toLowerTrustedString(input, *a.dst);
   }
 
 
   FOLLY_ALWAYS_INLINE void execute(OutputRelToAbsByteSpans a) {
-    folly::ByteRange input {
-      reinterpret_cast<const uint8_t*>(a.begin),
-      reinterpret_cast<const uint8_t*>(a.end) };
+    folly::ByteRange input { a.begin, a.end }; 
     relToAbsByteSpans(input, *a.dst);
   }
 
@@ -118,53 +105,52 @@ struct Eval {
   }
 
   FOLLY_ALWAYS_INLINE void execute(GetOutput a) {
-    *a.ptr = reinterpret_cast<void *>(
-        const_cast<unsigned char*>(a.output->bytes().data()));
-    *a.end = reinterpret_cast<void *>(
-        const_cast<unsigned char*>(a.output->bytes().end()));
+    a.ptr << const_cast<unsigned char*>(a.output->bytes().data());
+    a.end << const_cast<unsigned char*>(a.output->bytes().end());
   }
 
   FOLLY_ALWAYS_INLINE void execute(GetOutputSize a) {
-    *a.dst = a.output->size();
+    a.dst << a.output->size();
   }
 
   FOLLY_ALWAYS_INLINE void execute(LoadConst a) {
-    *a.dst = a.imm;
+    a.dst << a.imm;
   }
 
   FOLLY_ALWAYS_INLINE void execute(LoadLiteral a) {
-    *a.ptr = reinterpret_cast<uint64_t *>(const_cast<char *>(a.lit->data()));
-    *a.end = reinterpret_cast<uint64_t *>(
-        const_cast<char *>(a.lit->data() + a.lit->size()));
+    a.ptr << reinterpret_cast<unsigned char *>(
+      const_cast<char *>(a.lit->data()));
+    a.end << reinterpret_cast<unsigned char *>(
+      const_cast<char *>(a.lit->data() + a.lit->size()));
   }
 
   FOLLY_ALWAYS_INLINE void execute(Move a) {
-    *a.dst = a.src;
+    a.dst << a.src;
   }
 
   FOLLY_ALWAYS_INLINE void execute(SubConst a) {
-    *a.dst -= a.imm;
+    a.dst << *a.dst - a.imm;
   }
 
   FOLLY_ALWAYS_INLINE void execute(AddConst a) {
-    *a.dst += a.imm;
+    a.dst << *a.dst + a.imm;
   }
 
   FOLLY_ALWAYS_INLINE void execute(Sub a) {
-    *a.dst -= a.src;
+    a.dst << *a.dst - a.src;
   }
 
   FOLLY_ALWAYS_INLINE void execute(Add a) {
-    *a.dst += a.src;
+    a.dst << *a.dst + a.src;
   }
 
   FOLLY_ALWAYS_INLINE void execute(PtrDiff a) {
-    *a.dst = reinterpret_cast<uint64_t>(a.src2) -
+    a.dst << reinterpret_cast<uint64_t>(a.src2) -
       reinterpret_cast<uint64_t>(a.src1);
   }
 
   FOLLY_ALWAYS_INLINE void execute(LoadLabel a) {
-    *a.dst = static_cast<uint64_t>(pc - code + std::ptrdiff_t(a.lbl));
+    a.dst << static_cast<uint64_t>(pc - code + std::ptrdiff_t(a.lbl));
       // turn relative into absolute offset
   }
 
@@ -225,14 +211,14 @@ struct Eval {
   }
 
   FOLLY_ALWAYS_INLINE void execute(DecrAndJumpIfNot0 a) {
-    --*a.reg;
+    a.reg << *a.reg - 1;
     if (*a.reg != 0) {
       pc += std::ptrdiff_t(a.tgt);
     }
   }
 
   FOLLY_ALWAYS_INLINE void execute(DecrAndJumpIf0 a) {
-    --*a.reg;
+    a.reg << *a.reg - 1;
     if (*a.reg == 0) {
       pc += std::ptrdiff_t(a.tgt);
     }

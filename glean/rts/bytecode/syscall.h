@@ -15,6 +15,10 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
+/// Type of functions which can be called from bytecode
+using SysFun =
+  void(*)(void *context, uint64_t *frame, const uint64_t *regs, uint64_t nregs);
+
 /// A typed bytecode register which can be read from and written to
 template<typename T>
 struct Reg {
@@ -28,8 +32,17 @@ struct Reg {
     return x;
   }
 
+  T operator*() const {
+    return get();
+  }
+
   void set(T x) {
     *ptr = toWord(x);
+  }
+
+  // This is ugly but not having an operator for this is uglier.
+  void operator<<(T x) {
+    set(x);
   }
 
 private:
@@ -89,6 +102,15 @@ private:
   static uint64_t toWord(const U *x) {
     return toWord(const_cast<U *>(x));
   }
+
+  // SysFun
+  static void fromWord(SysFun& x, uint64_t w) {
+    x = reinterpret_cast<SysFun>(w);
+  }
+
+  static uint64_t toWord(SysFun x) {
+    return reinterpret_cast<uint64_t>(x);
+  }
 };
 
 /// Arguments to syscalls.
@@ -110,10 +132,6 @@ struct SysArg<Reg<T>> {
     return Reg<T>(ptr);
   }
 };
-
-/// Type of functions which can be called from bytecode
-using SysFun =
-  void(*)(void *context, uint64_t *frame, const uint64_t *regs, uint64_t nregs);
 
 /// Typed wrapper over a function which can be invoked from bytecode
 template<typename... Args>
