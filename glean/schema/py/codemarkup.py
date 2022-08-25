@@ -140,6 +140,15 @@ class CodemarkupEntityToAnnotations(GleanSchemaPredicate):
   def angle_query(*, entity: Optional[Tuple[()]] = None, annotations: Optional[Tuple[()]] = None) -> "CodemarkupEntityToAnnotations":
     raise Exception("this function can only be called from @angle_query")
 
+class CodemarkupEntityToAnnotations(GleanSchemaPredicate):
+  @staticmethod
+  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> str:
+    return f"codemarkup.EntityToAnnotations.30 { { } }"
+
+  @staticmethod
+  def angle_query(*, name: Tuple[()]) -> "CodemarkupEntityToAnnotations":
+    raise Exception("this function can only be called from @angle_query")
+
 class CodemarkupEntityInfo(GleanSchemaPredicate):
   @staticmethod
   def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
