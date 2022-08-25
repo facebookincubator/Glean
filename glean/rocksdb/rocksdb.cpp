@@ -174,6 +174,29 @@ const char *admin_names[] = {
   "STARTING_ID"
 };
 
+#ifndef FACEBOOK
+namespace {
+rocksdb::Status openRocksDB(
+    const rocksdb::Options& options,
+    const std::string& name,
+    rocksdb::DB** dbptr,
+    const std::vector<rocksdb::ColumnFamilyDescriptor>& column_families,
+    std::vector<rocksdb::ColumnFamilyHandle*>* handles) {
+  return rocksdb::DB::Open(options, name, column_families, handles, dbptr);
+}
+
+rocksdb::Status openReadOnlyRocksDB(
+    const rocksdb::Options& options,
+    const std::string& name,
+    rocksdb::DB** dbptr,
+    const std::vector<rocksdb::ColumnFamilyDescriptor>& column_families,
+    std::vector<rocksdb::ColumnFamilyHandle*>* handles) {
+  return rocksdb::DB::OpenForReadOnly(
+      options, name, column_families, handles, dbptr);
+}
+} // namespace
+#endif
+
 struct ContainerImpl final : Container {
   Mode mode;
   rocksdb::Options options;
@@ -254,13 +277,21 @@ struct ContainerImpl final : Container {
 
     std::vector<rocksdb::ColumnFamilyHandle*> hs;
     rocksdb::DB *db_ptr;
-    check(rocksdb::DB::Open(
-      options,
-      path,
-      existing,
-      &hs,
-      &db_ptr
-    ));
+    if (mode == Mode::ReadOnly) {
+      check(openReadOnlyRocksDB(
+                options,
+                path,
+                &db_ptr,
+                existing,
+                &hs));
+    } else {
+      check(openRocksDB(
+                options,
+                path,
+                &db_ptr,
+                existing,
+                &hs));
+    }
     if (!db_ptr) {
       rts::error("got nullptr from rocksdb");
     } else {
@@ -398,7 +429,8 @@ struct ContainerImpl final : Container {
 
   void backup(const std::string& path) override {
     requireOpen();
-    check(backupEngine(path)->CreateNewBackup(db.get(), true));
+    bool flush { mode != Mode::ReadOnly };
+    check(backupEngine(path)->CreateNewBackup(db.get(), flush));
   }
 
   std::unique_ptr<Database> openDatabase(Id start, int32_t version) && override;
