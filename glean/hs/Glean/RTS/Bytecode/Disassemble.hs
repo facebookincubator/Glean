@@ -9,6 +9,7 @@
 module Glean.RTS.Bytecode.Disassemble
 where
 
+import qualified Data.ByteString as BS
 import Data.Functor
 import qualified Data.IntMap as IntMap
 import qualified Data.IntSet as IntSet
@@ -26,10 +27,15 @@ import Glean.RTS.Foreign.Bytecode
 disassemble :: Text -> Subroutine s -> [Text]
 disassemble name sub =
   [ "Subroutine " <> name
+  , "  // Code: "
+      <> Text.pack (show (length instructions)) <> " insns, "
+      <> Text.pack (show (V.length subInsns)) <> " bytes"
+  , "  // Literals: "
+            <> Text.pack (show $ sum $ map BS.length subLiterals)
+            <> " bytes"
   , "  #inputs = " <> Text.pack (show subInputs)
   , "  #outputs = " <> Text.pack (show subOutputs)
-  , "  #locals = " <> Text.pack (show subLocals)
-  , "  #instrs = " <> Text.pack (show (length instructions)) ]
+  , "  #locals = " <> Text.pack (show subLocals) ]
   ++
   [ "  #" <> Text.pack (show i) <> " = " <> Text.pack (show lit)
     | (i,lit) <- zip [0 :: Int ..] subLiterals ]
