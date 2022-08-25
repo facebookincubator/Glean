@@ -114,9 +114,9 @@ genInsnType = "data Insn where" : map genInsn instructions
             [ty <> " -> " | arg <- insnArgs, ty <- genArgTy $ argTy arg]
         <> "Insn"
 
-    genArgTy (Imm Offset) = ["{-# UNPACK #-} !Label"]
-    genArgTy (Imm Lit) = ["{-# UNPACK #-} !Literal"]
-    genArgTy Imm{} = ["{-# UNPACK #-} !Word64"]
+    genArgTy (Imm ImmOffset) = ["{-# UNPACK #-} !Label"]
+    genArgTy (Imm ImmLit) = ["{-# UNPACK #-} !Literal"]
+    genArgTy (Imm ImmWord) = ["{-# UNPACK #-} !Word64"]
     genArgTy (Reg var ty _) = ["{-# UNPACK #-} !(" <> showRegTy var ty <> ")"]
     genArgTy Offsets = ["[Label]"]
     genArgTy (Regs tys) = ["(Register " <> showTy ty <> ")" | ty <- tys]
@@ -143,7 +143,7 @@ genMapLabels =
   ++
   [ "mapLabels _ insn = insn"]
   where
-    mkMap (Arg name (Imm Offset)) = "(f " <> name <> ")"
+    mkMap (Arg name (Imm ImmOffset)) = "(f " <> name <> ")"
     mkMap (Arg name Offsets) = "(map f " <> name <> ")"
     mkMap (Arg name _) = name
 
@@ -160,7 +160,7 @@ genInsnLabels =
   ++
   [ "insnLabels _ = []"]
   where
-    mkList (Arg name (Imm Offset)) = Just $ "[" <> name <> "]"
+    mkList (Arg name (Imm ImmOffset)) = Just $ "[" <> name <> "]"
     mkList (Arg name Offsets) = Just name
     mkList Arg{} = Nothing
 
@@ -203,9 +203,9 @@ genInsnWords =
       <> Text.concat (map argWords (insnArgs insn))
       <> "]" | (op, insn) <- zip [0 :: Int ..] instructions ]
     where
-      argWords (Arg name (Imm Offset)) = ", fromLabel " <> name
-      argWords (Arg name (Imm Lit)) = ", fromLiteral " <> name
-      argWords (Arg name Imm{}) = ", " <> name
+      argWords (Arg name (Imm ImmOffset)) = ", fromLabel " <> name
+      argWords (Arg name (Imm ImmLit)) = ", fromLiteral " <> name
+      argWords (Arg name (Imm ImmWord)) = ", " <> name
       argWords (Arg name Reg{}) = ", fromReg " <> name
       argWords (Arg name Offsets) =
         ", fromIntegral (length " <> name <> ")] ++ map fromLabel " <> name
@@ -247,18 +247,18 @@ genIssue = intercalate [""]
     context [c] = c <> " => "
     context cs = "(" <> Text.intercalate ", " cs <> ") => "
 
-    genArgType (Imm Lit) = ["ByteString"]
-    genArgType (Imm Offset) = ["Label"]
-    genArgType Imm{} = ["Word64"]
+    genArgType (Imm ImmLit) = ["ByteString"]
+    genArgType (Imm ImmOffset) = ["Label"]
+    genArgType (Imm ImmWord) = ["Word64"]
     genArgType (Reg var ty _) = [showRegTy var ty]
     genArgType Offsets = ["[Label]"]
     genArgType (Regs tys) = ["Register " <> showTy ty | ty <- tys]
 
-    genArgRef (Arg name (Imm Lit)) = [name <> "_i"]
+    genArgRef (Arg name (Imm ImmLit)) = [name <> "_i"]
     genArgRef (Arg name (Regs tys)) = regNames name tys
     genArgRef (Arg name _) = [name]
 
-    literal (Arg name (Imm Lit)) = Just $
+    literal (Arg name (Imm ImmLit)) = Just $
       name <> "_i <- literal " <> name
     literal _ = Nothing
 
@@ -299,9 +299,9 @@ genInsnShow =
           [", \' \' : " <> w | arg <- insnArgs, w <- showArg arg]
       <> "]" | insn@Insn{..} <- instructions ]
     where
-      showArg (Arg name (Imm Offset)) = ["showLabel " <> name]
-      showArg (Arg name (Imm Lit)) = ["show (fromLiteral " <> name <> ")"]
-      showArg (Arg name Imm{}) = ["show " <> name]
+      showArg (Arg name (Imm ImmOffset)) = ["showLabel " <> name]
+      showArg (Arg name (Imm ImmLit)) = ["show (fromLiteral " <> name <> ")"]
+      showArg (Arg name (Imm ImmWord)) = ["show " <> name]
       showArg (Arg name Reg{}) = ["showReg " <> name]
       showArg (Arg name Offsets) =
         ["showListWith (showString . showLabel) " <> name <> " \"\""]

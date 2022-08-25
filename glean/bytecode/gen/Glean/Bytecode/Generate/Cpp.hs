@@ -107,7 +107,7 @@ genInsnEval Insn{..} =
 
 
     declare (Arg name (Imm ty)) =
-      [ cppType ty <> " " <> name <> ";" ]
+      [ immType ty <> " " <> name <> ";" ]
     declare (Arg name (Reg _ ty Load)) =
       [ cppType ty <> " " <> name <> ";" ]
     -- just make a pointer to the register for Store and Update for now
@@ -121,10 +121,10 @@ genInsnEval Insn{..} =
           <> Text.pack (show (length tys) <> ";")
       , "const uint64_t *" <> name <> ";" ]
 
-    decode (Arg name (Imm Lit)) =
+    decode (Arg name (Imm ImmLit)) =
       [ "args." <> name <> " = &literals[*pc++];" ]
-    decode (Arg name (Imm ty)) =
-      [ "args." <> name <> " = " <> cppCast ty "*pc++" <> ";" ]
+    decode (Arg name (Imm _)) =
+      [ "args." <> name <> " = *pc++;" ]
     decode (Arg name (Reg _ ty Load)) =
       [ "args." <> name <> " = " <> cppCast ty "frame[*pc++]" <> ";" ]
     decode (Arg name (Reg _ ty _)) =
@@ -154,6 +154,11 @@ cppType WordPtr = "uint64_t *"
 cppType BinaryOutputPtr = "binary::Output *"
 cppType (Fun _) = "SysFun"
 cppType _ = "uint64_t"
+
+immType :: ImmTy -> Text
+immType ImmWord = "uint64_t"
+immType ImmOffset = "uint64_t"
+immType ImmLit = "const std::string *"
 
 -- | Generate a switch-based evaluator.
 --
