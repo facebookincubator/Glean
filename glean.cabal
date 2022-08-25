@@ -920,6 +920,19 @@ library lib
         glean:util,
         split
 
+executable disassemble
+    import: fb-haskell, fb-cpp, deps
+    hs-source-dirs: glean/tools/disassemble
+    main-is: Disassemble.hs
+    ghc-options: -main-is Disassemble
+    extra-libraries: stdc++
+    build-depends:
+        glean:db,
+        glean:core,
+        glean:if-glean-hs,
+        glean:lib,
+        glean:util,
+
 library test-unit
     import: fb-haskell, fb-cpp, deps
     hs-source-dirs: glean/test/unit
@@ -1386,6 +1399,26 @@ executable makefact-bench
         glean:schema,
         glean:test-lib,
         criterion
+
+executable compile-bench
+    import: fb-haskell, fb-cpp, deps, exe
+    if !flag(benchmarks)
+       buildable: False
+    hs-source-dirs: glean/bench
+    main-is: CompileBench.hs
+    ghc-options: -main-is CompileBench
+    build-depends:
+        glean:client-hs,
+        glean:core,
+        glean:db,
+        glean:if-glean-hs,
+        glean:schema,
+        glean:test-lib,
+        glean:util,
+        criterion,
+        criterion-measurement,
+        statistics,
+        vector-algorithms
 
 -- -----------------------------------------------------------------------------
 -- Tests
