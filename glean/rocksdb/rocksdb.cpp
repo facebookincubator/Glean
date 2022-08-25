@@ -241,10 +241,6 @@ struct ContainerImpl final : Container {
         rocksdb::NewBlockBasedTableFactory(table_options));
     }
 
-#ifdef FACEBOOK
-    localOptions(options);
-#endif
-
     // options.IncreaseParallelism();
     // options.compression = rocksdb::CompressionType::kNoCompression;
     // writeOptions.sync = false;
