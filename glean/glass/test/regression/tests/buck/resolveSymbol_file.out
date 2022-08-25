@@ -2,10 +2,12 @@
     "@generated",
     {
         "filepath": "buck_project/toto.c",
-        "repository": "test",
-        "span": {
-            "length": 1,
-            "start": 1
-        }
+        "range": {
+            "columnBegin": 0,
+            "columnEnd": 0,
+            "lineBegin": 0,
+            "lineEnd": 0
+        },
+        "repository": "test"
     }
 ]

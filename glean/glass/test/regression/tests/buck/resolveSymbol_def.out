@@ -2,10 +2,12 @@
     "@generated",
     {
         "filepath": "buck_project/my_defs.bzl",
-        "repository": "test",
-        "span": {
-            "length": 71,
-            "start": 132
-        }
+        "range": {
+            "columnBegin": 1,
+            "columnEnd": 6,
+            "lineBegin": 9,
+            "lineEnd": 12
+        },
+        "repository": "test"
     }
 ]

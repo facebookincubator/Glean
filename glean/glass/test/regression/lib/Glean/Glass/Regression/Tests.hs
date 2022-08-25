@@ -84,8 +84,8 @@ testDescribeSymbolMatchesPath sym@(SymbolId name) path get =
       assertEqual "describeSymbol Path matches"
         (symbolPath_filepath symbolDescription_location)
         path
-      Location{..} <- resolveSymbol env sym def
-      assertEqual "resolveSymbol Path matches" location_filepath path
+      LocationRange{..} <- resolveSymbolRange env sym def
+      assertEqual "resolveSymbol Path matches" locationRange_filepath path
 
 -- | Test that both describeSymbol has expected comment
 testDescribeSymbolComments

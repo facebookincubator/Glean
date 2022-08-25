@@ -2,10 +2,12 @@
     "@generated",
     {
         "filepath": "test/imports.js",
-        "repository": "test",
-        "span": {
-            "length": 1,
-            "start": 634
-        }
+        "range": {
+            "columnBegin": 21,
+            "columnEnd": 22,
+            "lineBegin": 29,
+            "lineEnd": 29
+        },
+        "repository": "test"
     }
 ]
