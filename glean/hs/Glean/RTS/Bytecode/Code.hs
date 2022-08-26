@@ -34,7 +34,6 @@ import Control.Monad
 import Control.Monad.Fix (MonadFix(..))
 import Control.Monad.ST (ST, runST)
 import qualified Control.Monad.Trans.State.Strict as S
-import Data.Bifunctor (first)
 import Data.Bits
 import Data.ByteString (ByteString)
 import Data.Functor
@@ -260,7 +259,9 @@ generate opt cg =
           finalInputSize = registerIndex csMaxOutputs
           constantsSize = registerIndex csNextConstant
 
-          get_label pc label = (offsets VP.! fromLabel label) - pc
+          get_label pc label =
+            let addr = offsets VP.! fromLabel label
+            in assert (addr /= maxBound) $ addr - pc
 
           get_reg :: forall ty . Register ty -> Word64
           get_reg r = case registerSegment r of
@@ -340,18 +341,20 @@ data Layout s = Layout
   { -- | Current offset in the instruction stream
     layoutOffset :: {-# UNPACK #-} !Word64
 
-    -- | Label offsets
+    -- | Label offsets, 'maxBound' for blocks which haven't been emitted yet
   , layoutLabels :: !(VPM.STVector s Word64)
 
     -- | Insn stream (all reversed)
   , layoutInsns :: [[Insn]]
 
-    -- | Blocks not yet emitted
+    -- | Blocks we want to emit (some of them might have been emitted already)
   , layoutTodo :: !IntSet
   }
 
 -- | Compute a flat instruction stream for a subroutine as well as a mapping
--- from labels to their offsets in that stream.
+-- from labels to their offsets in that stream. Note that we don't emit
+-- unreachable blocks - a block that hasn't been emitted because it's dead will
+-- have the magic value of maxBound in the label->offset mapping.
 --
 -- This is really simple at the moment.
 --
@@ -363,41 +366,54 @@ data Layout s = Layout
 -- There is obviously ample room for improvement here.
 layout :: CFG -> ([Insn], VP.Vector Word64)
 layout CFG{..} = runST $ do
-  mlabels <- VPM.new $ V.length cfgBlocks
+  mlabels <- VPM.replicate (V.length cfgBlocks) maxBound
   emit cfgEntry Layout
     { layoutOffset = 0
     , layoutLabels = mlabels
     , layoutInsns = []
-    , layoutTodo =
-        IntSet.delete (fromLabel cfgEntry)
-        $ IntSet.fromDistinctAscList [0 .. V.length cfgBlocks - 1]
+    , layoutTodo = IntSet.empty
     }
   where
+    -- Emit a specific block which must not have been emitted already
     emit :: Label -> Layout s -> ST s ([Insn], VP.Vector Word64)
-    emit !label Layout{..} = do
+    emit !label layout@Layout{..} = do
       VPM.write layoutLabels (fromLabel label) layoutOffset
 
-      let (next, insns) = case blockInsns (cfgBlocks V.! fromLabel label) of
-            -- Handle unconditional jumps specially
-            Jump target : insns
-              | IntSet.member (fromLabel target) layoutTodo ->
-                ( Just (target, IntSet.delete (fromLabel target) layoutTodo)
-                , insns)
+      case blockInsns (cfgBlocks V.! fromLabel label) of
+        -- Handle unconditional jumps specially
+        Jump target : insns -> do
+          s <- stillTodo layout target
+          if s
+            then emit target $ addInsns insns layout
+            else emitNext $ addInsns (Jump target : insns) layout
 
-            -- Pick the numerically first block
-            insns -> (first Label <$> IntSet.minView layoutTodo, insns)
+        insns -> emitNext $ addInsns insns layout
 
-      case next of
-        Just (target, todo) -> emit target Layout
-          { layoutOffset = layoutOffset + sum (map insnSize insns)
-          , layoutLabels = layoutLabels
-          , layoutInsns = insns : layoutInsns
-          , layoutTodo = todo
-          }
-
-        Nothing -> do
+    -- Emit the numerically lowest unemitted block (if any)
+    emitNext :: Layout s -> ST s ([Insn], VP.Vector Word64)
+    emitNext layout@Layout{..}
+      | Just (label, todo) <- IntSet.minView layoutTodo = do
+          s <- stillTodo layout $ Label label
+          (if s then emit (Label label) else emitNext) layout{layoutTodo = todo}
+      | otherwise = do
           labels <- VP.unsafeFreeze layoutLabels
-          return (reverse $ concat $ insns : layoutInsns, labels)
+          return (reverse $ concat layoutInsns, labels)
+
+    -- Has a block already been emitted
+    stillTodo :: Layout s -> Label -> ST s Bool
+    stillTodo Layout{..} label =
+      (== maxBound) <$> VPM.read layoutLabels (fromLabel label)
+
+    -- Emit instructions
+    addInsns :: [Insn] -> Layout s -> Layout s
+    addInsns insns !layout = layout
+      { layoutOffset = layoutOffset layout + sum (map insnSize insns)
+      , layoutTodo = foldr
+          (IntSet.insert . fromLabel)
+          (layoutTodo layout)
+          (concatMap insnLabels insns)
+      , layoutInsns = insns : layoutInsns layout
+      }
 
 -- | Frame segment which a register belongs to
 data Segment = Input | Constant | Local
