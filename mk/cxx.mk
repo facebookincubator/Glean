@@ -4,7 +4,6 @@
 # This source code is licensed under the BSD-style license found in the
 # LICENSE file in the root directory of this source tree.
 
-#
 # C++ library definitions
 #
 # To define a C++ library glean_cpp_lib, add
@@ -14,7 +13,6 @@
 # Additionaly, we support:
 #
 # CXX_FLAGS_glean_cpp_lib = ... - sets additional C++ flags for the library
-#
 
 CXX_SOURCES_glean_cpp_if_fb303 = \
     glean/github/if/gen-cpp2/fb303_core_types.cpp \
