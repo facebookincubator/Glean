@@ -1,9 +1,8 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union
-import json
+from typing import Optional, Tuple, Union, List
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
 
 
 from glean.schema.graphql.types import (
@@ -32,10 +31,10 @@ from glean.schema.graphql.types import (
 
 class GraphqlDirective(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"graphql.Directive.2 {{ }}", Directive
-    return f"graphql.Directive.2 {{ name = _, arguments = _ }}", Directive
+    return f"graphql.Directive.2 { concatenateFields(key) }", Directive
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, arguments: Optional[Tuple[()]] = None) -> "GraphqlDirective":
@@ -43,10 +42,10 @@ class GraphqlDirective(GleanSchemaPredicate):
 
 class GraphqlInputObjectTypeDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"graphql.InputObjectTypeDef.2 {{ }}", InputObjectTypeDef
-    return f"graphql.InputObjectTypeDef.2 {{ name = _, fields = _, directives = _ }}", InputObjectTypeDef
+    return f"graphql.InputObjectTypeDef.2 { concatenateFields(key) }", InputObjectTypeDef
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, fields: Optional[Tuple[()]] = None, directives: Optional[Tuple[()]] = None) -> "GraphqlInputObjectTypeDef":
@@ -54,10 +53,10 @@ class GraphqlInputObjectTypeDef(GleanSchemaPredicate):
 
 class GraphqlEnumTypeDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"graphql.EnumTypeDef.2 {{ }}", EnumTypeDef
-    return f"graphql.EnumTypeDef.2 {{ name = _, values = _, directives = _ }}", EnumTypeDef
+    return f"graphql.EnumTypeDef.2 { concatenateFields(key) }", EnumTypeDef
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, values: Optional[Tuple[()]] = None, directives: Optional[Tuple[()]] = None) -> "GraphqlEnumTypeDef":
@@ -65,10 +64,10 @@ class GraphqlEnumTypeDef(GleanSchemaPredicate):
 
 class GraphqlUnionTypeDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"graphql.UnionTypeDef.2 {{ }}", UnionTypeDef
-    return f"graphql.UnionTypeDef.2 {{ name = _, types = _, directives = _ }}", UnionTypeDef
+    return f"graphql.UnionTypeDef.2 { concatenateFields(key) }", UnionTypeDef
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, types: Optional[Tuple[()]] = None, directives: Optional[Tuple[()]] = None) -> "GraphqlUnionTypeDef":
@@ -76,10 +75,10 @@ class GraphqlUnionTypeDef(GleanSchemaPredicate):
 
 class GraphqlField(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"graphql.Field.2 {{ }}", Field
-    return f"graphql.Field.2 {{ type = _, name = _, directives = _, selectionSet = _, arguments = _, alias = _, loc = _ }}", Field
+    return f"graphql.Field.2 { concatenateFields(key) }", Field
 
   @staticmethod
   def angle_query(*, type: Optional[Tuple[()]] = None, name: Optional[Tuple[()]] = None, directives: Optional[Tuple[()]] = None, selectionSet: Optional[Tuple[()]] = None, arguments: Optional[Tuple[()]] = None, alias: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None) -> "GraphqlField":
@@ -87,10 +86,10 @@ class GraphqlField(GleanSchemaPredicate):
 
 class GraphqlObjectTypeDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"graphql.ObjectTypeDef.2 {{ }}", ObjectTypeDef
-    return f"graphql.ObjectTypeDef.2 {{ name = _, interfaces = _, fields = _, directives = _ }}", ObjectTypeDef
+    return f"graphql.ObjectTypeDef.2 { concatenateFields(key) }", ObjectTypeDef
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, interfaces: Optional[Tuple[()]] = None, fields: Optional[Tuple[()]] = None, directives: Optional[Tuple[()]] = None) -> "GraphqlObjectTypeDef":
@@ -98,10 +97,10 @@ class GraphqlObjectTypeDef(GleanSchemaPredicate):
 
 class GraphqlArgument(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"graphql.Argument.2 {{ }}", Argument
-    return f"graphql.Argument.2 {{ name = _, value = _ }}", Argument
+    return f"graphql.Argument.2 { concatenateFields(key) }", Argument
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, value: Optional[Tuple[()]] = None) -> "GraphqlArgument":
@@ -109,10 +108,10 @@ class GraphqlArgument(GleanSchemaPredicate):
 
 class GraphqlDirectiveDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"graphql.DirectiveDef.2 {{ }}", DirectiveDef
-    return f"graphql.DirectiveDef.2 {{ name = _, argumentDefs = _, locations = _ }}", DirectiveDef
+    return f"graphql.DirectiveDef.2 { concatenateFields(key) }", DirectiveDef
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, argumentDefs: Optional[Tuple[()]] = None, locations: Optional[Tuple[()]] = None) -> "GraphqlDirectiveDef":
@@ -120,10 +119,10 @@ class GraphqlDirectiveDef(GleanSchemaPredicate):
 
 class GraphqlFragment(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"graphql.Fragment.2 {{ }}", Fragment
-    return f"graphql.Fragment.2 {{ name = _, typeCondition = _, variableDefs = _, directives = _, selectionSet = _, loc = _ }}", Fragment
+    return f"graphql.Fragment.2 { concatenateFields(key) }", Fragment
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, typeCondition: Optional[Tuple[()]] = None, variableDefs: Optional[Tuple[()]] = None, directives: Optional[Tuple[()]] = None, selectionSet: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None) -> "GraphqlFragment":
@@ -131,10 +130,10 @@ class GraphqlFragment(GleanSchemaPredicate):
 
 class GraphqlScalarTypeDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"graphql.ScalarTypeDef.2 {{ }}", ScalarTypeDef
-    return f"graphql.ScalarTypeDef.2 {{ name = _, directives = _ }}", ScalarTypeDef
+    return f"graphql.ScalarTypeDef.2 { concatenateFields(key) }", ScalarTypeDef
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, directives: Optional[Tuple[()]] = None) -> "GraphqlScalarTypeDef":
@@ -142,10 +141,10 @@ class GraphqlScalarTypeDef(GleanSchemaPredicate):
 
 class GraphqlVariableDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"graphql.VariableDef.2 {{ }}", VariableDef
-    return f"graphql.VariableDef.2 {{ name = _, type = _, directives = _, defaultValue = _ }}", VariableDef
+    return f"graphql.VariableDef.2 { concatenateFields(key) }", VariableDef
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None, directives: Optional[Tuple[()]] = None, defaultValue: Optional[Tuple[()]] = None) -> "GraphqlVariableDef":
@@ -153,10 +152,10 @@ class GraphqlVariableDef(GleanSchemaPredicate):
 
 class GraphqlDeclarationName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"graphql.DeclarationName.2 {{ }}", DeclarationName
-    return f"graphql.DeclarationName.2 {json.dumps(key)}", DeclarationName
+    return f"graphql.DeclarationName.2 {key}", DeclarationName
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "GraphqlDeclarationName":
@@ -164,10 +163,10 @@ class GraphqlDeclarationName(GleanSchemaPredicate):
 
 class GraphqlFileDeclarations(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"graphql.FileDeclarations.2 {{ }}", FileDeclarations
-    return f"graphql.FileDeclarations.2 {{ file = _, span = _, declaration = _ }}", FileDeclarations
+    return f"graphql.FileDeclarations.2 { concatenateFields(key) }", FileDeclarations
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None, declaration: Optional[Tuple[()]] = None) -> "GraphqlFileDeclarations":
@@ -175,10 +174,10 @@ class GraphqlFileDeclarations(GleanSchemaPredicate):
 
 class GraphqlDeclarationLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"graphql.DeclarationLocation.2 {{ }}", DeclarationLocation
-    return f"graphql.DeclarationLocation.2 {{ declaration = _, file = _, span = _ }}", DeclarationLocation
+    return f"graphql.DeclarationLocation.2 { concatenateFields(key) }", DeclarationLocation
 
   @staticmethod
   def angle_query(*, declaration: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "GraphqlDeclarationLocation":
@@ -186,10 +185,10 @@ class GraphqlDeclarationLocation(GleanSchemaPredicate):
 
 class GraphqlFieldDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"graphql.FieldDef.2 {{ }}", FieldDef
-    return f"graphql.FieldDef.2 {{ name = _, type = _, argumentDefs = _, directives = _ }}", FieldDef
+    return f"graphql.FieldDef.2 { concatenateFields(key) }", FieldDef
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None, argumentDefs: Optional[Tuple[()]] = None, directives: Optional[Tuple[()]] = None) -> "GraphqlFieldDef":
@@ -197,10 +196,10 @@ class GraphqlFieldDef(GleanSchemaPredicate):
 
 class GraphqlInterfaceTypeDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"graphql.InterfaceTypeDef.2 {{ }}", InterfaceTypeDef
-    return f"graphql.InterfaceTypeDef.2 {{ name = _, fields = _, directives = _ }}", InterfaceTypeDef
+    return f"graphql.InterfaceTypeDef.2 { concatenateFields(key) }", InterfaceTypeDef
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, fields: Optional[Tuple[()]] = None, directives: Optional[Tuple[()]] = None) -> "GraphqlInterfaceTypeDef":
@@ -208,10 +207,10 @@ class GraphqlInterfaceTypeDef(GleanSchemaPredicate):
 
 class GraphqlQuery(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"graphql.Query.2 {{ }}", Query
-    return f"graphql.Query.2 {{ name = _, directives = _, variableDefs = _, selectionSet = _, loc = _ }}", Query
+    return f"graphql.Query.2 { concatenateFields(key) }", Query
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, directives: Optional[Tuple[()]] = None, variableDefs: Optional[Tuple[()]] = None, selectionSet: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None) -> "GraphqlQuery":
@@ -219,10 +218,10 @@ class GraphqlQuery(GleanSchemaPredicate):
 
 class GraphqlInputValueDef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"graphql.InputValueDef.2 {{ }}", InputValueDef
-    return f"graphql.InputValueDef.2 {{ name = _, type = _, directives = _, defaultValue = _ }}", InputValueDef
+    return f"graphql.InputValueDef.2 { concatenateFields(key) }", InputValueDef
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None, directives: Optional[Tuple[()]] = None, defaultValue: Optional[Tuple[()]] = None) -> "GraphqlInputValueDef":
@@ -230,10 +229,10 @@ class GraphqlInputValueDef(GleanSchemaPredicate):
 
 class GraphqlValue(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"graphql.Value.2 {{ }}", Value
-    return f"graphql.Value.2 {json.dumps(key)}", Value
+    return f"graphql.Value.2 {key}", Value
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "GraphqlValue":
@@ -241,10 +240,10 @@ class GraphqlValue(GleanSchemaPredicate):
 
 class GraphqlInlineFragment(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"graphql.InlineFragment.2 {{ }}", InlineFragment
-    return f"graphql.InlineFragment.2 {{ inferredTypeCondition = _, directives = _, selectionSet = _, typeCondition = _ }}", InlineFragment
+    return f"graphql.InlineFragment.2 { concatenateFields(key) }", InlineFragment
 
   @staticmethod
   def angle_query(*, inferredTypeCondition: Optional[Tuple[()]] = None, directives: Optional[Tuple[()]] = None, selectionSet: Optional[Tuple[()]] = None, typeCondition: Optional[Tuple[()]] = None) -> "GraphqlInlineFragment":

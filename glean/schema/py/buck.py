@@ -1,9 +1,8 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union
-import json
+from typing import Optional, Tuple, Union, List
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
 
 
 from glean.schema.buck.types import (
@@ -56,10 +55,10 @@ from glean.schema.buck.types import (
 
 class BuckTargetHash(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.TargetHash.1 {{ }}", TargetHash
-    return f"buck.TargetHash.1 {{ locator = _, targetHash = _ }}", TargetHash
+    return f"buck.TargetHash.1 { concatenateFields(key) }", TargetHash
 
   @staticmethod
   def angle_query(*, locator: Optional[Tuple[()]] = None, targetHash: Optional[str] = None) -> "BuckTargetHash":
@@ -67,10 +66,10 @@ class BuckTargetHash(GleanSchemaPredicate):
 
 class BuckTargetSourcesBaseModule(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.TargetSourcesBaseModule.3 {{ }}", TargetSourcesBaseModule
-    return f"buck.TargetSourcesBaseModule.3 {{ locator = _, srcs = _, baseModule = _ }}", TargetSourcesBaseModule
+    return f"buck.TargetSourcesBaseModule.3 { concatenateFields(key) }", TargetSourcesBaseModule
 
   @staticmethod
   def angle_query(*, locator: Optional[Tuple[()]] = None, srcs: Optional[Tuple[()]] = None, baseModule: Optional[Tuple[()]] = None) -> "BuckTargetSourcesBaseModule":
@@ -78,10 +77,10 @@ class BuckTargetSourcesBaseModule(GleanSchemaPredicate):
 
 class BuckLocatorReverseDeps(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.LocatorReverseDeps.1 {{ }}", LocatorReverseDeps
-    return f"buck.LocatorReverseDeps.1 {{ locator = _, rdeps = _ }}", LocatorReverseDeps
+    return f"buck.LocatorReverseDeps.1 { concatenateFields(key) }", LocatorReverseDeps
 
   @staticmethod
   def angle_query(*, locator: Optional[Tuple[()]] = None, rdeps: Optional[Tuple[()]] = None) -> "BuckLocatorReverseDeps":
@@ -89,10 +88,10 @@ class BuckLocatorReverseDeps(GleanSchemaPredicate):
 
 class BuckType(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.Type.1 {{ }}", Type
-    return f"buck.Type.1 {json.dumps(key)}", Type
+    return f"buck.Type.1 {key}", Type
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "BuckType":
@@ -100,10 +99,10 @@ class BuckType(GleanSchemaPredicate):
 
 class BuckTargetDependencies(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.TargetDependencies.1 {{ }}", TargetDependencies
-    return f"buck.TargetDependencies.1 {{ target = _, dependencies = _ }}", TargetDependencies
+    return f"buck.TargetDependencies.1 { concatenateFields(key) }", TargetDependencies
 
   @staticmethod
   def angle_query(*, target: Optional[Tuple[()]] = None, dependencies: Optional[Tuple[()]] = None) -> "BuckTargetDependencies":
@@ -111,10 +110,10 @@ class BuckTargetDependencies(GleanSchemaPredicate):
 
 class BuckLocator(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.Locator.1 {{ }}", Locator
-    return f"buck.Locator.1 {{ subdir = _, path = _, name = _ }}", Locator
+    return f"buck.Locator.1 { concatenateFields(key) }", Locator
 
   @staticmethod
   def angle_query(*, subdir: Optional[Tuple[()]] = None, path: Optional[str] = None, name: Optional[str] = None) -> "BuckLocator":
@@ -122,10 +121,10 @@ class BuckLocator(GleanSchemaPredicate):
 
 class BuckTargetSources(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.TargetSources.1 {{ }}", TargetSources
-    return f"buck.TargetSources.1 {{ target = _, headers = _, exportedHeaders = _, srcs = _ }}", TargetSources
+    return f"buck.TargetSources.1 { concatenateFields(key) }", TargetSources
 
   @staticmethod
   def angle_query(*, target: Optional[Tuple[()]] = None, headers: Optional[Tuple[()]] = None, exportedHeaders: Optional[Tuple[()]] = None, srcs: Optional[Tuple[()]] = None) -> "BuckTargetSources":
@@ -133,10 +132,10 @@ class BuckTargetSources(GleanSchemaPredicate):
 
 class BuckPlatform(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.Platform.1 {{ }}", Platform
-    return f"buck.Platform.1 {json.dumps(key)}", Platform
+    return f"buck.Platform.1 {key}", Platform
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "BuckPlatform":
@@ -144,10 +143,10 @@ class BuckPlatform(GleanSchemaPredicate):
 
 class BuckTargetAttribute(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.TargetAttribute.3 {{ }}", TargetAttribute
-    return f"buck.TargetAttribute.3 {{ target = _, attribute = _, value = _ }}", TargetAttribute
+    return f"buck.TargetAttribute.3 { concatenateFields(key) }", TargetAttribute
 
   @staticmethod
   def angle_query(*, target: Optional[Tuple[()]] = None, attribute: Optional[Tuple[()]] = None, value: Optional[Tuple[()]] = None) -> "BuckTargetAttribute":
@@ -155,10 +154,10 @@ class BuckTargetAttribute(GleanSchemaPredicate):
 
 class BuckFileEntity(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.FileEntity.3 {{ }}", FileEntity
-    return f"buck.FileEntity.3 {{ file = _, entity = _ }}", FileEntity
+    return f"buck.FileEntity.3 { concatenateFields(key) }", FileEntity
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "BuckFileEntity":
@@ -166,10 +165,10 @@ class BuckFileEntity(GleanSchemaPredicate):
 
 class BuckOutTarget(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.OutTarget.1 {{ }}", OutTarget
-    return f"buck.OutTarget.1 {{ file = _, target = _ }}", OutTarget
+    return f"buck.OutTarget.1 { concatenateFields(key) }", OutTarget
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, target: Optional[Tuple[()]] = None) -> "BuckOutTarget":
@@ -177,10 +176,10 @@ class BuckOutTarget(GleanSchemaPredicate):
 
 class BuckLabel(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.Label.1 {{ }}", Label
-    return f"buck.Label.1 {json.dumps(key)}", Label
+    return f"buck.Label.1 {key}", Label
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "BuckLabel":
@@ -188,10 +187,10 @@ class BuckLabel(GleanSchemaPredicate):
 
 class BuckTargetOuts(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.TargetOuts.3 {{ }}", TargetOuts
-    return f"buck.TargetOuts.3 {{ target = _, outputLabel = _, file = _ }}", TargetOuts
+    return f"buck.TargetOuts.3 { concatenateFields(key) }", TargetOuts
 
   @staticmethod
   def angle_query(*, target: Optional[Tuple[()]] = None, outputLabel: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None) -> "BuckTargetOuts":
@@ -199,10 +198,10 @@ class BuckTargetOuts(GleanSchemaPredicate):
 
 class BuckOutsTarget(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.OutsTarget.3 {{ }}", OutsTarget
-    return f"buck.OutsTarget.3 {{ file = _, target = _, outputLabel = _ }}", OutsTarget
+    return f"buck.OutsTarget.3 { concatenateFields(key) }", OutsTarget
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, target: Optional[Tuple[()]] = None, outputLabel: Optional[Tuple[()]] = None) -> "BuckOutsTarget":
@@ -210,10 +209,10 @@ class BuckOutsTarget(GleanSchemaPredicate):
 
 class BuckLocatorWithLabel(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.LocatorWithLabel.3 {{ }}", LocatorWithLabel
-    return f"buck.LocatorWithLabel.3 {{ locator = _, label = _ }}", LocatorWithLabel
+    return f"buck.LocatorWithLabel.3 { concatenateFields(key) }", LocatorWithLabel
 
   @staticmethod
   def angle_query(*, locator: Optional[Tuple[()]] = None, label: Optional[Tuple[()]] = None) -> "BuckLocatorWithLabel":
@@ -221,10 +220,10 @@ class BuckLocatorWithLabel(GleanSchemaPredicate):
 
 class BuckTargetSources(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.TargetSources.3 {{ }}", TargetSources
-    return f"buck.TargetSources.3 {{ target = _, headers = _, exportedHeaders = _, srcs = _ }}", TargetSources
+    return f"buck.TargetSources.3 { concatenateFields(key) }", TargetSources
 
   @staticmethod
   def angle_query(*, target: Optional[Tuple[()]] = None, headers: Optional[Tuple[()]] = None, exportedHeaders: Optional[Tuple[()]] = None, srcs: Optional[Tuple[()]] = None) -> "BuckTargetSources":
@@ -232,10 +231,10 @@ class BuckTargetSources(GleanSchemaPredicate):
 
 class BuckAttributeValue(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.AttributeValue.3 {{ }}", AttributeValue
-    return f"buck.AttributeValue.3 {json.dumps(key)}", AttributeValue
+    return f"buck.AttributeValue.3 {key}", AttributeValue
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "BuckAttributeValue":
@@ -243,10 +242,10 @@ class BuckAttributeValue(GleanSchemaPredicate):
 
 class BuckLabels(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.Labels.1 {{ }}", Labels
-    return f"buck.Labels.1 {json.dumps(key)}", Labels
+    return f"buck.Labels.1 {key}", Labels
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "BuckLabels":
@@ -254,10 +253,10 @@ class BuckLabels(GleanSchemaPredicate):
 
 class BuckSourceFileLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.SourceFileLocation.3 {{ }}", SourceFileLocation
-    return f"buck.SourceFileLocation.3 {{ file = _, span = _ }}", SourceFileLocation
+    return f"buck.SourceFileLocation.3 { concatenateFields(key) }", SourceFileLocation
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "BuckSourceFileLocation":
@@ -265,10 +264,10 @@ class BuckSourceFileLocation(GleanSchemaPredicate):
 
 class BuckOutputLabel(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.OutputLabel.3 {{ }}", OutputLabel
-    return f"buck.OutputLabel.3 {json.dumps(key)}", OutputLabel
+    return f"buck.OutputLabel.3 {key}", OutputLabel
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "BuckOutputLabel":
@@ -276,10 +275,10 @@ class BuckOutputLabel(GleanSchemaPredicate):
 
 class BuckTargetUses(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.TargetUses.3 {{ }}", TargetUses
-    return f"buck.TargetUses.3 {{ locator = _, file = _, spans = _ }}", TargetUses
+    return f"buck.TargetUses.3 { concatenateFields(key) }", TargetUses
 
   @staticmethod
   def angle_query(*, locator: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, spans: Optional[Tuple[()]] = None) -> "BuckTargetUses":
@@ -287,10 +286,10 @@ class BuckTargetUses(GleanSchemaPredicate):
 
 class BuckOwner(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.Owner.3 {{ }}", Owner
-    return f"buck.Owner.3 {{ source = _, owner = _ }}", Owner
+    return f"buck.Owner.3 { concatenateFields(key) }", Owner
 
   @staticmethod
   def angle_query(*, source: Optional[Tuple[()]] = None, owner: Optional[Tuple[()]] = None) -> "BuckOwner":
@@ -298,10 +297,10 @@ class BuckOwner(GleanSchemaPredicate):
 
 class BuckTarget(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.Target.2 {{ }}", Target
-    return f"buck.Target.2 {{ locator = _, type_ = _, defaultPlatform = _, labels = _ }}", Target
+    return f"buck.Target.2 { concatenateFields(key) }", Target
 
   @staticmethod
   def angle_query(*, locator: Optional[Tuple[()]] = None, type_: Optional[Tuple[()]] = None, defaultPlatform: Optional[Tuple[()]] = None, labels: Optional[Tuple[()]] = None) -> "BuckTarget":
@@ -309,10 +308,10 @@ class BuckTarget(GleanSchemaPredicate):
 
 class BuckDefinitionLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.DefinitionLocation.3 {{ }}", DefinitionLocation
-    return f"buck.DefinitionLocation.3 {{ definition = _, file = _, span = _ }}", DefinitionLocation
+    return f"buck.DefinitionLocation.3 { concatenateFields(key) }", DefinitionLocation
 
   @staticmethod
   def angle_query(*, definition: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "BuckDefinitionLocation":
@@ -320,10 +319,10 @@ class BuckDefinitionLocation(GleanSchemaPredicate):
 
 class BuckTargetIndexer(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.TargetIndexer.3 {{ }}", TargetIndexer
-    return f"buck.TargetIndexer.3 {{ name = _, target = _ }}", TargetIndexer
+    return f"buck.TargetIndexer.3 { concatenateFields(key) }", TargetIndexer
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, target: Optional[Tuple[()]] = None) -> "BuckTargetIndexer":
@@ -331,10 +330,10 @@ class BuckTargetIndexer(GleanSchemaPredicate):
 
 class BuckFileDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.FileDefinition.3 {{ }}", FileDefinition
-    return f"buck.FileDefinition.3 {{ file = _, definition = _ }}", FileDefinition
+    return f"buck.FileDefinition.3 { concatenateFields(key) }", FileDefinition
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, definition: Optional[Tuple[()]] = None) -> "BuckFileDefinition":
@@ -342,10 +341,10 @@ class BuckFileDefinition(GleanSchemaPredicate):
 
 class BuckTarget(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.Target.1 {{ }}", Target
-    return f"buck.Target.1 {{ repo = _, name = _, platform = _ }}", Target
+    return f"buck.Target.1 { concatenateFields(key) }", Target
 
   @staticmethod
   def angle_query(*, repo: Optional[Tuple[()]] = None, name: Optional[Tuple[()]] = None, platform: Optional[Tuple[()]] = None) -> "BuckTarget":
@@ -353,10 +352,10 @@ class BuckTarget(GleanSchemaPredicate):
 
 class BuckAttributeName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.AttributeName.3 {{ }}", AttributeName
-    return f"buck.AttributeName.3 {json.dumps(key)}", AttributeName
+    return f"buck.AttributeName.3 {key}", AttributeName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "BuckAttributeName":
@@ -364,10 +363,10 @@ class BuckAttributeName(GleanSchemaPredicate):
 
 class BuckOwner(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.Owner.1 {{ }}", Owner
-    return f"buck.Owner.1 {{ source = _, owner = _ }}", Owner
+    return f"buck.Owner.1 { concatenateFields(key) }", Owner
 
   @staticmethod
   def angle_query(*, source: Optional[Tuple[()]] = None, owner: Optional[Tuple[()]] = None) -> "BuckOwner":
@@ -375,10 +374,10 @@ class BuckOwner(GleanSchemaPredicate):
 
 class BuckRuleKey(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.RuleKey.1 {{ }}", RuleKey
-    return f"buck.RuleKey.1 {{ locator = _, ruleKey = _ }}", RuleKey
+    return f"buck.RuleKey.1 { concatenateFields(key) }", RuleKey
 
   @staticmethod
   def angle_query(*, locator: Optional[Tuple[()]] = None, ruleKey: Optional[str] = None) -> "BuckRuleKey":
@@ -386,10 +385,10 @@ class BuckRuleKey(GleanSchemaPredicate):
 
 class BuckTargetLinkWhole(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.TargetLinkWhole.1 {{ }}", TargetLinkWhole
-    return f"buck.TargetLinkWhole.1 {json.dumps(key)}", TargetLinkWhole
+    return f"buck.TargetLinkWhole.1 {key}", TargetLinkWhole
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "BuckTargetLinkWhole":
@@ -397,10 +396,10 @@ class BuckTargetLinkWhole(GleanSchemaPredicate):
 
 class BuckDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.Definition.3 {{ }}", Definition
-    return f"buck.Definition.3 {{ module = _, name = _ }}", Definition
+    return f"buck.Definition.3 { concatenateFields(key) }", Definition
 
   @staticmethod
   def angle_query(*, module: Optional[Tuple[()]] = None, name: Optional[str] = None) -> "BuckDefinition":
@@ -408,10 +407,10 @@ class BuckDefinition(GleanSchemaPredicate):
 
 class BuckTargetOut(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.TargetOut.1 {{ }}", TargetOut
-    return f"buck.TargetOut.1 {{ target = _, file = _ }}", TargetOut
+    return f"buck.TargetOut.1 { concatenateFields(key) }", TargetOut
 
   @staticmethod
   def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None) -> "BuckTargetOut":
@@ -419,10 +418,10 @@ class BuckTargetOut(GleanSchemaPredicate):
 
 class BuckFileXRefs(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.FileXRefs.3 {{ }}", FileXRefs
-    return f"buck.FileXRefs.3 {{ file = _, xrefs = _ }}", FileXRefs
+    return f"buck.FileXRefs.3 { concatenateFields(key) }", FileXRefs
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, xrefs: Optional[Tuple[()]] = None) -> "BuckFileXRefs":
@@ -430,10 +429,10 @@ class BuckFileXRefs(GleanSchemaPredicate):
 
 class BuckTargetLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.TargetLocation.3 {{ }}", TargetLocation
-    return f"buck.TargetLocation.3 {{ locator = _, file = _, span = _ }}", TargetLocation
+    return f"buck.TargetLocation.3 { concatenateFields(key) }", TargetLocation
 
   @staticmethod
   def angle_query(*, locator: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "BuckTargetLocation":
@@ -441,10 +440,10 @@ class BuckTargetLocation(GleanSchemaPredicate):
 
 class BuckDestinationUses(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.DestinationUses.3 {{ }}", DestinationUses
-    return f"buck.DestinationUses.3 {{ destination = _, file = _, spans = _ }}", DestinationUses
+    return f"buck.DestinationUses.3 { concatenateFields(key) }", DestinationUses
 
   @staticmethod
   def angle_query(*, destination: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, spans: Optional[Tuple[()]] = None) -> "BuckDestinationUses":
@@ -452,10 +451,10 @@ class BuckDestinationUses(GleanSchemaPredicate):
 
 class BuckTranslationUnit(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.TranslationUnit.2 {{ }}", TranslationUnit
-    return f"buck.TranslationUnit.2 {{ file = _, target = _, platform = _ }}", TranslationUnit
+    return f"buck.TranslationUnit.2 { concatenateFields(key) }", TranslationUnit
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, target: Optional[Tuple[()]] = None, platform: Optional[Tuple[()]] = None) -> "BuckTranslationUnit":
@@ -463,10 +462,10 @@ class BuckTranslationUnit(GleanSchemaPredicate):
 
 class BuckFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.File.1 {{ }}", File
-    return f"buck.File.1 {json.dumps(key)}", File
+    return f"buck.File.1 {key}", File
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "BuckFile":
@@ -474,10 +473,10 @@ class BuckFile(GleanSchemaPredicate):
 
 class BuckFileTarget(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.FileTarget.3 {{ }}", FileTarget
-    return f"buck.FileTarget.3 {{ file = _, locator = _ }}", FileTarget
+    return f"buck.FileTarget.3 { concatenateFields(key) }", FileTarget
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, locator: Optional[Tuple[()]] = None) -> "BuckFileTarget":
@@ -485,10 +484,10 @@ class BuckFileTarget(GleanSchemaPredicate):
 
 class BuckTranslationUnit(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.TranslationUnit.1 {{ }}", TranslationUnit
-    return f"buck.TranslationUnit.1 {{ file = _, target = _ }}", TranslationUnit
+    return f"buck.TranslationUnit.1 { concatenateFields(key) }", TranslationUnit
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, target: Optional[Tuple[()]] = None) -> "BuckTranslationUnit":
@@ -496,10 +495,10 @@ class BuckTranslationUnit(GleanSchemaPredicate):
 
 class BuckTargetIndexerName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.TargetIndexerName.3 {{ }}", TargetIndexerName
-    return f"buck.TargetIndexerName.3 {json.dumps(key)}", TargetIndexerName
+    return f"buck.TargetIndexerName.3 {key}", TargetIndexerName
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "BuckTargetIndexerName":
@@ -507,10 +506,10 @@ class BuckTargetIndexerName(GleanSchemaPredicate):
 
 class BuckFileResolved(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.FileResolved.3 {{ }}", FileResolved
-    return f"buck.FileResolved.3 {{ buckFile = _, srcFile = _ }}", FileResolved
+    return f"buck.FileResolved.3 { concatenateFields(key) }", FileResolved
 
   @staticmethod
   def angle_query(*, buckFile: Optional[Tuple[()]] = None, srcFile: Optional[Tuple[()]] = None) -> "BuckFileResolved":
@@ -518,10 +517,10 @@ class BuckFileResolved(GleanSchemaPredicate):
 
 class BuckConsumer(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.Consumer.3 {{ }}", Consumer
-    return f"buck.Consumer.3 {{ source = _, consumer = _ }}", Consumer
+    return f"buck.Consumer.3 { concatenateFields(key) }", Consumer
 
   @staticmethod
   def angle_query(*, source: Optional[Tuple[()]] = None, consumer: Optional[Tuple[()]] = None) -> "BuckConsumer":
@@ -529,10 +528,10 @@ class BuckConsumer(GleanSchemaPredicate):
 
 class BuckFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"buck.File.3 {{ }}", File
-    return f"buck.File.3 {json.dumps(key)}", File
+    return f"buck.File.3 {key}", File
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "BuckFile":

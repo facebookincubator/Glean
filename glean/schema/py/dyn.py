@@ -1,9 +1,8 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union
-import json
+from typing import Optional, Tuple, Union, List
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
 
 
 from glean.schema.dyn.types import (
@@ -16,10 +15,10 @@ from glean.schema.dyn.types import (
 
 class DynObserverIdentifier(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"dyn.ObserverIdentifier.6 {{ }}", ObserverIdentifier
-    return f"dyn.ObserverIdentifier.6 {json.dumps(key)}", ObserverIdentifier
+    return f"dyn.ObserverIdentifier.6 {key}", ObserverIdentifier
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "DynObserverIdentifier":
@@ -27,10 +26,10 @@ class DynObserverIdentifier(GleanSchemaPredicate):
 
 class DynEntityDynamicReference(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"dyn.EntityDynamicReference.6 {{ }}", EntityDynamicReference
-    return f"dyn.EntityDynamicReference.6 {{ usage = _, file = _, span = _ }}", EntityDynamicReference
+    return f"dyn.EntityDynamicReference.6 { concatenateFields(key) }", EntityDynamicReference
 
   @staticmethod
   def angle_query(*, usage: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "DynEntityDynamicReference":
@@ -38,10 +37,10 @@ class DynEntityDynamicReference(GleanSchemaPredicate):
 
 class DynEntityUsage(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"dyn.EntityUsage.6 {{ }}", EntityUsage
-    return f"dyn.EntityUsage.6 {{ entity = _, observer = _, usage = _, environment = _ }}", EntityUsage
+    return f"dyn.EntityUsage.6 { concatenateFields(key) }", EntityUsage
 
   @staticmethod
   def angle_query(*, entity: Optional[Tuple[()]] = None, observer: Optional[Tuple[()]] = None, usage: Optional[Tuple[()]] = None, environment: Optional[Tuple[()]] = None) -> "DynEntityUsage":
@@ -49,10 +48,10 @@ class DynEntityUsage(GleanSchemaPredicate):
 
 class DynEnvironment(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"dyn.Environment.6 {{ }}", Environment
-    return f"dyn.Environment.6 {json.dumps(key)}", Environment
+    return f"dyn.Environment.6 {key}", Environment
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "DynEnvironment":

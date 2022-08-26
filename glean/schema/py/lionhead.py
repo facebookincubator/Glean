@@ -1,9 +1,8 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union
-import json
+from typing import Optional, Tuple, Union, List
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
 
 
 from glean.schema.lionhead.types import (
@@ -14,10 +13,10 @@ from glean.schema.lionhead.types import (
 
 class LionheadCoveredHarness(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"lionhead.CoveredHarness.1 {{ }}", CoveredHarness
-    return f"lionhead.CoveredHarness.1 {{ harnessId = _, root = _ }}", CoveredHarness
+    return f"lionhead.CoveredHarness.1 { concatenateFields(key) }", CoveredHarness
 
   @staticmethod
   def angle_query(*, harnessId: Optional[Tuple[()]] = None, root: Optional[Tuple[()]] = None) -> "LionheadCoveredHarness":
@@ -25,10 +24,10 @@ class LionheadCoveredHarness(GleanSchemaPredicate):
 
 class LionheadFbId(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"lionhead.FbId.1 {{ }}", FbId
-    return f"lionhead.FbId.1 {json.dumps(key)}", FbId
+    return f"lionhead.FbId.1 {key}", FbId
 
   @staticmethod
   def angle_query(*, arg: Optional[int] = None) -> "LionheadFbId":

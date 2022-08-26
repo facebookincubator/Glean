@@ -1,9 +1,8 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union
-import json
+from typing import Optional, Tuple, Union, List
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
 
 
 from glean.schema.java.types import (
@@ -37,10 +36,10 @@ from glean.schema.java.types import (
 
 class JavaName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.Name.6 {{ }}", Name
-    return f"java.Name.6 {json.dumps(key)}", Name
+    return f"java.Name.6 {key}", Name
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "JavaName":
@@ -48,10 +47,10 @@ class JavaName(GleanSchemaPredicate):
 
 class JavaClassDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.ClassDeclaration.6 {{ }}", ClassDeclaration
-    return f"java.ClassDeclaration.6 {{ name = _, modifiers = _, extends_ = _, implements_ = _, annotations = _, variables = _, constructors = _, methods = _, typeParams = _, loc = _, innerDefinitions = _, location = _ }}", ClassDeclaration
+    return f"java.ClassDeclaration.6 { concatenateFields(key) }", ClassDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, modifiers: Optional[Tuple[()]] = None, extends_: Optional[Tuple[()]] = None, implements_: Optional[Tuple[()]] = None, annotations: Optional[Tuple[()]] = None, variables: Optional[Tuple[()]] = None, constructors: Optional[Tuple[()]] = None, methods: Optional[Tuple[()]] = None, typeParams: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None, innerDefinitions: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaClassDeclaration":
@@ -59,10 +58,10 @@ class JavaClassDeclaration(GleanSchemaPredicate):
 
 class JavaPath(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.Path.6 {{ }}", Path
-    return f"java.Path.6 {{ base = _, container = _ }}", Path
+    return f"java.Path.6 { concatenateFields(key) }", Path
 
   @staticmethod
   def angle_query(*, base: Optional[Tuple[()]] = None, container: Optional[Tuple[()]] = None) -> "JavaPath":
@@ -70,10 +69,10 @@ class JavaPath(GleanSchemaPredicate):
 
 class JavaInterfaceDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.InterfaceDeclaration.6 {{ }}", InterfaceDeclaration
-    return f"java.InterfaceDeclaration.6 {{ name = _, annotations = _, modifiers = _, extends_ = _, methods = _, typeParams = _, loc = _, variables = _, innerDefinitions = _, location = _ }}", InterfaceDeclaration
+    return f"java.InterfaceDeclaration.6 { concatenateFields(key) }", InterfaceDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, annotations: Optional[Tuple[()]] = None, modifiers: Optional[Tuple[()]] = None, extends_: Optional[Tuple[()]] = None, methods: Optional[Tuple[()]] = None, typeParams: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None, variables: Optional[Tuple[()]] = None, innerDefinitions: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaInterfaceDeclaration":
@@ -81,10 +80,10 @@ class JavaInterfaceDeclaration(GleanSchemaPredicate):
 
 class JavaImportDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.ImportDeclaration.6 {{ }}", ImportDeclaration
-    return f"java.ImportDeclaration.6 {{ name = _, import_on_demand = _, static_member = _, loc = _, path = _, location = _ }}", ImportDeclaration
+    return f"java.ImportDeclaration.6 { concatenateFields(key) }", ImportDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, import_on_demand: Optional[bool] = None, static_member: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None, path: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaImportDeclaration":
@@ -92,10 +91,10 @@ class JavaImportDeclaration(GleanSchemaPredicate):
 
 class JavaEnumDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.EnumDeclaration.6 {{ }}", EnumDeclaration
-    return f"java.EnumDeclaration.6 {{ name = _, annotations = _, modifiers = _, implements_ = _, variables = _, methods = _, loc = _, innerDefinitions = _, location = _ }}", EnumDeclaration
+    return f"java.EnumDeclaration.6 { concatenateFields(key) }", EnumDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, annotations: Optional[Tuple[()]] = None, modifiers: Optional[Tuple[()]] = None, implements_: Optional[Tuple[()]] = None, variables: Optional[Tuple[()]] = None, methods: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None, innerDefinitions: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaEnumDeclaration":
@@ -103,10 +102,10 @@ class JavaEnumDeclaration(GleanSchemaPredicate):
 
 class JavaPackageDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.PackageDeclaration.6 {{ }}", PackageDeclaration
-    return f"java.PackageDeclaration.6 {{ name = _, annotation = _, loc = _, path = _, location = _ }}", PackageDeclaration
+    return f"java.PackageDeclaration.6 { concatenateFields(key) }", PackageDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, annotation: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None, path: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaPackageDeclaration":
@@ -114,10 +113,10 @@ class JavaPackageDeclaration(GleanSchemaPredicate):
 
 class JavaArrayType(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.ArrayType.6 {{ }}", ArrayType
-    return f"java.ArrayType.6 {{ contents = _, location = _ }}", ArrayType
+    return f"java.ArrayType.6 { concatenateFields(key) }", ArrayType
 
   @staticmethod
   def angle_query(*, contents: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaArrayType":
@@ -125,10 +124,10 @@ class JavaArrayType(GleanSchemaPredicate):
 
 class JavaAnnotatedClass(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.AnnotatedClass.6 {{ }}", AnnotatedClass
-    return f"java.AnnotatedClass.6 {{ annotation = _, class_ = _ }}", AnnotatedClass
+    return f"java.AnnotatedClass.6 { concatenateFields(key) }", AnnotatedClass
 
   @staticmethod
   def angle_query(*, annotation: Optional[Tuple[()]] = None, class_: Optional[Tuple[()]] = None) -> "JavaAnnotatedClass":
@@ -136,10 +135,10 @@ class JavaAnnotatedClass(GleanSchemaPredicate):
 
 class JavaTypeParam(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.TypeParam.6 {{ }}", TypeParam
-    return f"java.TypeParam.6 {{ name = _, extends_ = _, location = _ }}", TypeParam
+    return f"java.TypeParam.6 { concatenateFields(key) }", TypeParam
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, extends_: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaTypeParam":
@@ -147,10 +146,10 @@ class JavaTypeParam(GleanSchemaPredicate):
 
 class JavaAnnotation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.Annotation.6 {{ }}", Annotation
-    return f"java.Annotation.6 {{ name = _, location = _ }}", Annotation
+    return f"java.Annotation.6 { concatenateFields(key) }", Annotation
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaAnnotation":
@@ -158,10 +157,10 @@ class JavaAnnotation(GleanSchemaPredicate):
 
 class JavaXRefFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.XRefFile.6 {{ }}", XRefFile
-    return f"java.XRefFile.6 {{ xref = _, file = _ }}", XRefFile
+    return f"java.XRefFile.6 { concatenateFields(key) }", XRefFile
 
   @staticmethod
   def angle_query(*, xref: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None) -> "JavaXRefFile":
@@ -169,10 +168,10 @@ class JavaXRefFile(GleanSchemaPredicate):
 
 class JavaMethodDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.MethodDeclaration.6 {{ }}", MethodDeclaration
-    return f"java.MethodDeclaration.6 {{ name = _, parameters = _, returnType = _, annotations = _, modifiers = _, typeParams = _, loc = _, throws_ = _, location = _ }}", MethodDeclaration
+    return f"java.MethodDeclaration.6 { concatenateFields(key) }", MethodDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, parameters: Optional[Tuple[()]] = None, returnType: Optional[Tuple[()]] = None, annotations: Optional[Tuple[()]] = None, modifiers: Optional[Tuple[()]] = None, typeParams: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None, throws_: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaMethodDeclaration":
@@ -180,10 +179,10 @@ class JavaMethodDeclaration(GleanSchemaPredicate):
 
 class JavaQName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.QName.6 {{ }}", QName
-    return f"java.QName.6 {{ name = _, fqn = _, signature = _, simple = _, path = _ }}", QName
+    return f"java.QName.6 { concatenateFields(key) }", QName
 
   @staticmethod
   def angle_query(*, name: Optional[str] = None, fqn: Optional[Tuple[()]] = None, signature: Optional[Tuple[()]] = None, simple: Optional[Tuple[()]] = None, path: Optional[Tuple[()]] = None) -> "JavaQName":
@@ -191,10 +190,10 @@ class JavaQName(GleanSchemaPredicate):
 
 class JavaVariableDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.VariableDeclaration.6 {{ }}", VariableDeclaration
-    return f"java.VariableDeclaration.6 {{ name = _, type = _, annotations = _, modifiers = _, loc = _, location = _ }}", VariableDeclaration
+    return f"java.VariableDeclaration.6 { concatenateFields(key) }", VariableDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None, annotations: Optional[Tuple[()]] = None, modifiers: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaVariableDeclaration":
@@ -202,10 +201,10 @@ class JavaVariableDeclaration(GleanSchemaPredicate):
 
 class JavaTypeVar(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.TypeVar.6 {{ }}", TypeVar
-    return f"java.TypeVar.6 {{ type = _, location = _ }}", TypeVar
+    return f"java.TypeVar.6 { concatenateFields(key) }", TypeVar
 
   @staticmethod
   def angle_query(*, type: Optional[str] = None, location: Optional[Tuple[()]] = None) -> "JavaTypeVar":
@@ -213,10 +212,10 @@ class JavaTypeVar(GleanSchemaPredicate):
 
 class JavaDeclaredType(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.DeclaredType.6 {{ }}", DeclaredType
-    return f"java.DeclaredType.6 {{ type = _, location = _ }}", DeclaredType
+    return f"java.DeclaredType.6 { concatenateFields(key) }", DeclaredType
 
   @staticmethod
   def angle_query(*, type: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaDeclaredType":
@@ -224,10 +223,10 @@ class JavaDeclaredType(GleanSchemaPredicate):
 
 class JavaTypeArg(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.TypeArg.6 {{ }}", TypeArg
-    return f"java.TypeArg.6 {json.dumps(key)}", TypeArg
+    return f"java.TypeArg.6 {key}", TypeArg
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "JavaTypeArg":
@@ -235,10 +234,10 @@ class JavaTypeArg(GleanSchemaPredicate):
 
 class JavaFileXRefs(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.FileXRefs.6 {{ }}", FileXRefs
-    return f"java.FileXRefs.6 {{ file = _, xrefs = _ }}", FileXRefs
+    return f"java.FileXRefs.6 { concatenateFields(key) }", FileXRefs
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, xrefs: Optional[Tuple[()]] = None) -> "JavaFileXRefs":
@@ -246,10 +245,10 @@ class JavaFileXRefs(GleanSchemaPredicate):
 
 class JavaInheritance(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.Inheritance.6 {{ }}", Inheritance
-    return f"java.Inheritance.6 {{ base = _, subclass = _ }}", Inheritance
+    return f"java.Inheritance.6 { concatenateFields(key) }", Inheritance
 
   @staticmethod
   def angle_query(*, base: Optional[Tuple[()]] = None, subclass: Optional[Tuple[()]] = None) -> "JavaInheritance":
@@ -257,10 +256,10 @@ class JavaInheritance(GleanSchemaPredicate):
 
 class JavaJavaFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.JavaFile.6 {{ }}", JavaFile
-    return f"java.JavaFile.6 {{ package_ = _, import_ = _, definition = _, file = _ }}", JavaFile
+    return f"java.JavaFile.6 { concatenateFields(key) }", JavaFile
 
   @staticmethod
   def angle_query(*, package_: Optional[Tuple[()]] = None, import_: Optional[Tuple[()]] = None, definition: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None) -> "JavaJavaFile":
@@ -268,10 +267,10 @@ class JavaJavaFile(GleanSchemaPredicate):
 
 class JavaPrimitiveType(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.PrimitiveType.6 {{ }}", PrimitiveType
-    return f"java.PrimitiveType.6 {{ type = _ }}", PrimitiveType
+    return f"java.PrimitiveType.6 { concatenateFields(key) }", PrimitiveType
 
   @staticmethod
   def angle_query(*, type: Optional[str] = None) -> "JavaPrimitiveType":
@@ -279,10 +278,10 @@ class JavaPrimitiveType(GleanSchemaPredicate):
 
 class JavaXRef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.XRef.6 {{ }}", XRef
-    return f"java.XRef.6 {{ target = _, ranges = _, xtarget = _ }}", XRef
+    return f"java.XRef.6 { concatenateFields(key) }", XRef
 
   @staticmethod
   def angle_query(*, target: Optional[Tuple[()]] = None, ranges: Optional[Tuple[()]] = None, xtarget: Optional[Tuple[()]] = None) -> "JavaXRef":
@@ -290,10 +289,10 @@ class JavaXRef(GleanSchemaPredicate):
 
 class JavaConstructorDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.ConstructorDeclaration.6 {{ }}", ConstructorDeclaration
-    return f"java.ConstructorDeclaration.6 {{ name = _, parameters = _, annotations = _, modifiers = _, typeParams = _, loc = _, throws_ = _, location = _ }}", ConstructorDeclaration
+    return f"java.ConstructorDeclaration.6 { concatenateFields(key) }", ConstructorDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, parameters: Optional[Tuple[()]] = None, annotations: Optional[Tuple[()]] = None, modifiers: Optional[Tuple[()]] = None, typeParams: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None, throws_: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "JavaConstructorDeclaration":
@@ -301,10 +300,10 @@ class JavaConstructorDeclaration(GleanSchemaPredicate):
 
 class JavaType(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"java.Type.6 {{ }}", Type
-    return f"java.Type.6 {{ type = _, typeArgs = _, stype = _ }}", Type
+    return f"java.Type.6 { concatenateFields(key) }", Type
 
   @staticmethod
   def angle_query(*, type: Optional[str] = None, typeArgs: Optional[Tuple[()]] = None, stype: Optional[Tuple[()]] = None) -> "JavaType":

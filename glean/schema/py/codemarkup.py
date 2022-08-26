@@ -1,9 +1,8 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union
-import json
+from typing import Optional, Tuple, Union, List
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
 
 
 from glean.schema.codemarkup.types import (
@@ -32,10 +31,10 @@ from glean.schema.codemarkup.types import (
 
 class CodemarkupFileEntityKinds(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.FileEntityKinds.30 {{ }}", FileEntityKinds
-    return f"codemarkup.FileEntityKinds.30 {{ file = _, entity = _, kind = _ }}", FileEntityKinds
+    return f"codemarkup.FileEntityKinds.30 { concatenateFields(key) }", FileEntityKinds
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None) -> "CodemarkupFileEntityKinds":
@@ -43,10 +42,10 @@ class CodemarkupFileEntityKinds(GleanSchemaPredicate):
 
 class CodemarkupFileEntityXRefKinds(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.FileEntityXRefKinds.30 {{ }}", FileEntityXRefKinds
-    return f"codemarkup.FileEntityXRefKinds.30 {{ file = _, entity = _, kind = _ }}", FileEntityXRefKinds
+    return f"codemarkup.FileEntityXRefKinds.30 { concatenateFields(key) }", FileEntityXRefKinds
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None) -> "CodemarkupFileEntityXRefKinds":
@@ -54,10 +53,10 @@ class CodemarkupFileEntityXRefKinds(GleanSchemaPredicate):
 
 class CodemarkupEntityAnnotations(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.EntityAnnotations.30 {{ }}", EntityAnnotations
-    return f"codemarkup.EntityAnnotations.30 {json.dumps(key)}", EntityAnnotations
+    return f"codemarkup.EntityAnnotations.30 {key}", EntityAnnotations
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "CodemarkupEntityAnnotations":
@@ -65,10 +64,10 @@ class CodemarkupEntityAnnotations(GleanSchemaPredicate):
 
 class CodemarkupSearchRelatedEntities(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.SearchRelatedEntities.30 {{ }}", SearchRelatedEntities
-    return f"codemarkup.SearchRelatedEntities.30 {{ query = _, parent = _, child = _ }}", SearchRelatedEntities
+    return f"codemarkup.SearchRelatedEntities.30 { concatenateFields(key) }", SearchRelatedEntities
 
   @staticmethod
   def angle_query(*, query: Optional[Tuple[()]] = None, parent: Optional[Tuple[()]] = None, child: Optional[Tuple[()]] = None) -> "CodemarkupSearchRelatedEntities":
@@ -76,10 +75,10 @@ class CodemarkupSearchRelatedEntities(GleanSchemaPredicate):
 
 class CodemarkupEntityVisibility(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.EntityVisibility.30 {{ }}", EntityVisibility
-    return f"codemarkup.EntityVisibility.30 {json.dumps(key)}", EntityVisibility
+    return f"codemarkup.EntityVisibility.30 {key}", EntityVisibility
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "CodemarkupEntityVisibility":
@@ -87,10 +86,10 @@ class CodemarkupEntityVisibility(GleanSchemaPredicate):
 
 class CodemarkupFileEntityInfos(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.FileEntityInfos.30 {{ }}", FileEntityInfos
-    return f"codemarkup.FileEntityInfos.30 {{ file = _, entity = _, info = _ }}", FileEntityInfos
+    return f"codemarkup.FileEntityInfos.30 { concatenateFields(key) }", FileEntityInfos
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None, info: Optional[Tuple[()]] = None) -> "CodemarkupFileEntityInfos":
@@ -98,10 +97,10 @@ class CodemarkupFileEntityInfos(GleanSchemaPredicate):
 
 class CodemarkupFileEntityXRefInfos(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.FileEntityXRefInfos.30 {{ }}", FileEntityXRefInfos
-    return f"codemarkup.FileEntityXRefInfos.30 {{ file = _, entity = _, info = _ }}", FileEntityXRefInfos
+    return f"codemarkup.FileEntityXRefInfos.30 { concatenateFields(key) }", FileEntityXRefInfos
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None, info: Optional[Tuple[()]] = None) -> "CodemarkupFileEntityXRefInfos":
@@ -109,10 +108,10 @@ class CodemarkupFileEntityXRefInfos(GleanSchemaPredicate):
 
 class CodemarkupEntityLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.EntityLocation.30 {{ }}", EntityLocation
-    return f"codemarkup.EntityLocation.30 {{ entity = _, location = _ }}", EntityLocation
+    return f"codemarkup.EntityLocation.30 { concatenateFields(key) }", EntityLocation
 
   @staticmethod
   def angle_query(*, entity: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "CodemarkupEntityLocation":
@@ -120,10 +119,10 @@ class CodemarkupEntityLocation(GleanSchemaPredicate):
 
 class CodemarkupExtendsChildEntity(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.ExtendsChildEntity.30 {{ }}", ExtendsChildEntity
-    return f"codemarkup.ExtendsChildEntity.30 {{ parent = _, child = _ }}", ExtendsChildEntity
+    return f"codemarkup.ExtendsChildEntity.30 { concatenateFields(key) }", ExtendsChildEntity
 
   @staticmethod
   def angle_query(*, parent: Optional[Tuple[()]] = None, child: Optional[Tuple[()]] = None) -> "CodemarkupExtendsChildEntity":
@@ -131,10 +130,10 @@ class CodemarkupExtendsChildEntity(GleanSchemaPredicate):
 
 class CodemarkupEntityToAnnotations(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.EntityToAnnotations.30 {{ }}", EntityToAnnotations
-    return f"codemarkup.EntityToAnnotations.30 {{ entity = _, annotations = _ }}", EntityToAnnotations
+    return f"codemarkup.EntityToAnnotations.30 { concatenateFields(key) }", EntityToAnnotations
 
   @staticmethod
   def angle_query(*, entity: Optional[Tuple[()]] = None, annotations: Optional[Tuple[()]] = None) -> "CodemarkupEntityToAnnotations":
@@ -151,10 +150,10 @@ class CodemarkupEntityToAnnotations(GleanSchemaPredicate):
 
 class CodemarkupEntityInfo(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.EntityInfo.30 {{ }}", EntityInfo
-    return f"codemarkup.EntityInfo.30 {{ entity = _, info = _ }}", EntityInfo
+    return f"codemarkup.EntityInfo.30 { concatenateFields(key) }", EntityInfo
 
   @staticmethod
   def angle_query(*, entity: Optional[Tuple[()]] = None, info: Optional[Tuple[()]] = None) -> "CodemarkupEntityInfo":
@@ -162,10 +161,10 @@ class CodemarkupEntityInfo(GleanSchemaPredicate):
 
 class CodemarkupExtendsParentEntity(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.ExtendsParentEntity.30 {{ }}", ExtendsParentEntity
-    return f"codemarkup.ExtendsParentEntity.30 {{ child = _, parent = _ }}", ExtendsParentEntity
+    return f"codemarkup.ExtendsParentEntity.30 { concatenateFields(key) }", ExtendsParentEntity
 
   @staticmethod
   def angle_query(*, child: Optional[Tuple[()]] = None, parent: Optional[Tuple[()]] = None) -> "CodemarkupExtendsParentEntity":
@@ -173,10 +172,10 @@ class CodemarkupExtendsParentEntity(GleanSchemaPredicate):
 
 class CodemarkupContainsChildEntity(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.ContainsChildEntity.30 {{ }}", ContainsChildEntity
-    return f"codemarkup.ContainsChildEntity.30 {{ parent = _, child = _ }}", ContainsChildEntity
+    return f"codemarkup.ContainsChildEntity.30 { concatenateFields(key) }", ContainsChildEntity
 
   @staticmethod
   def angle_query(*, parent: Optional[Tuple[()]] = None, child: Optional[Tuple[()]] = None) -> "CodemarkupContainsChildEntity":
@@ -184,10 +183,10 @@ class CodemarkupContainsChildEntity(GleanSchemaPredicate):
 
 class CodemarkupFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.FileEntityXRefLocations.30 {{ }}", FileEntityXRefLocations
-    return f"codemarkup.FileEntityXRefLocations.30 {{ file = _, xref = _, entity = _ }}", FileEntityXRefLocations
+    return f"codemarkup.FileEntityXRefLocations.30 { concatenateFields(key) }", FileEntityXRefLocations
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, xref: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupFileEntityXRefLocations":
@@ -195,10 +194,10 @@ class CodemarkupFileEntityXRefLocations(GleanSchemaPredicate):
 
 class CodemarkupFileEntityXRefSpans(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.FileEntityXRefSpans.30 {{ }}", FileEntityXRefSpans
-    return f"codemarkup.FileEntityXRefSpans.30 {{ file = _, span = _, entity = _ }}", FileEntityXRefSpans
+    return f"codemarkup.FileEntityXRefSpans.30 { concatenateFields(key) }", FileEntityXRefSpans
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupFileEntityXRefSpans":
@@ -206,10 +205,10 @@ class CodemarkupFileEntityXRefSpans(GleanSchemaPredicate):
 
 class CodemarkupEntityUses(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.EntityUses.30 {{ }}", EntityUses
-    return f"codemarkup.EntityUses.30 {{ target = _, file = _, span = _ }}", EntityUses
+    return f"codemarkup.EntityUses.30 { concatenateFields(key) }", EntityUses
 
   @staticmethod
   def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "CodemarkupEntityUses":
@@ -217,10 +216,10 @@ class CodemarkupEntityUses(GleanSchemaPredicate):
 
 class CodemarkupFileEntityLocations(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.FileEntityLocations.30 {{ }}", FileEntityLocations
-    return f"codemarkup.FileEntityLocations.30 {{ file = _, location = _, entity = _ }}", FileEntityLocations
+    return f"codemarkup.FileEntityLocations.30 { concatenateFields(key) }", FileEntityLocations
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupFileEntityLocations":
@@ -228,10 +227,10 @@ class CodemarkupFileEntityLocations(GleanSchemaPredicate):
 
 class CodemarkupEntityReferences(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.EntityReferences.30 {{ }}", EntityReferences
-    return f"codemarkup.EntityReferences.30 {{ target = _, file = _, range = _ }}", EntityReferences
+    return f"codemarkup.EntityReferences.30 { concatenateFields(key) }", EntityReferences
 
   @staticmethod
   def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, range: Optional[Tuple[()]] = None) -> "CodemarkupEntityReferences":
@@ -239,10 +238,10 @@ class CodemarkupEntityReferences(GleanSchemaPredicate):
 
 class CodemarkupEntityKind(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.EntityKind.30 {{ }}", EntityKind
-    return f"codemarkup.EntityKind.30 {{ entity = _, kind = _ }}", EntityKind
+    return f"codemarkup.EntityKind.30 { concatenateFields(key) }", EntityKind
 
   @staticmethod
   def angle_query(*, entity: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None) -> "CodemarkupEntityKind":
@@ -250,10 +249,10 @@ class CodemarkupEntityKind(GleanSchemaPredicate):
 
 class CodemarkupResolveLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.ResolveLocation.30 {{ }}", ResolveLocation
-    return f"codemarkup.ResolveLocation.30 {{ location = _, entity = _ }}", ResolveLocation
+    return f"codemarkup.ResolveLocation.30 { concatenateFields(key) }", ResolveLocation
 
   @staticmethod
   def angle_query(*, location: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupResolveLocation":

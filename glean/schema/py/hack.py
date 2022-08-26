@@ -1,9 +1,8 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union
-import json
+from typing import Optional, Tuple, Union, List
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
 
 
 from glean.schema.hack.types import (
@@ -72,10 +71,10 @@ from glean.schema.hack.types import (
 
 class HackMethodDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.MethodDefinition.6 {{ }}", MethodDefinition
-    return f"hack.MethodDefinition.6 {{ declaration = _, signature = _, visibility = _, isAbstract = _, isAsync = _, isFinal = _, isStatic = _, attributes = _, typeParams = _ }}", MethodDefinition
+    return f"hack.MethodDefinition.6 { concatenateFields(key) }", MethodDefinition
 
   @staticmethod
   def angle_query(*, declaration: Optional[Tuple[()]] = None, signature: Optional[Tuple[()]] = None, visibility: Optional[Tuple[()]] = None, isAbstract: Optional[bool] = None, isAsync: Optional[bool] = None, isFinal: Optional[bool] = None, isStatic: Optional[bool] = None, attributes: Optional[Tuple[()]] = None, typeParams: Optional[Tuple[()]] = None) -> "HackMethodDefinition":
@@ -83,10 +82,10 @@ class HackMethodDefinition(GleanSchemaPredicate):
 
 class HackSymbolNamespace(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.symbolNamespace.1 {{ }}", SymbolNamespace
-    return f"hack.symbolNamespace.1 {{ namespace_id = _, namespace_name = _ }}", SymbolNamespace
+    return f"hack.symbolNamespace.1 { concatenateFields(key) }", SymbolNamespace
 
   @staticmethod
   def angle_query(*, namespace_id: Optional[int] = None, namespace_name: Optional[str] = None) -> "HackSymbolNamespace":
@@ -94,10 +93,10 @@ class HackSymbolNamespace(GleanSchemaPredicate):
 
 class HackTraitDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.TraitDeclaration.6 {{ }}", TraitDeclaration
-    return f"hack.TraitDeclaration.6 {{ name = _ }}", TraitDeclaration
+    return f"hack.TraitDeclaration.6 { concatenateFields(key) }", TraitDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None) -> "HackTraitDeclaration":
@@ -105,10 +104,10 @@ class HackTraitDeclaration(GleanSchemaPredicate):
 
 class HackFunctionDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.FunctionDeclaration.6 {{ }}", FunctionDeclaration
-    return f"hack.FunctionDeclaration.6 {{ name = _ }}", FunctionDeclaration
+    return f"hack.FunctionDeclaration.6 { concatenateFields(key) }", FunctionDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None) -> "HackFunctionDeclaration":
@@ -116,10 +115,10 @@ class HackFunctionDeclaration(GleanSchemaPredicate):
 
 class HackTypedefDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.TypedefDefinition.6 {{ }}", TypedefDefinition
-    return f"hack.TypedefDefinition.6 {{ declaration = _, isTransparent = _, attributes = _, typeParams = _, module_ = _ }}", TypedefDefinition
+    return f"hack.TypedefDefinition.6 { concatenateFields(key) }", TypedefDefinition
 
   @staticmethod
   def angle_query(*, declaration: Optional[Tuple[()]] = None, isTransparent: Optional[bool] = None, attributes: Optional[Tuple[()]] = None, typeParams: Optional[Tuple[()]] = None, module_: Optional[Tuple[()]] = None) -> "HackTypedefDefinition":
@@ -127,10 +126,10 @@ class HackTypedefDefinition(GleanSchemaPredicate):
 
 class HackAttributeToDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.AttributeToDefinition.6 {{ }}", AttributeToDefinition
-    return f"hack.AttributeToDefinition.6 {{ attribute = _, definition = _ }}", AttributeToDefinition
+    return f"hack.AttributeToDefinition.6 { concatenateFields(key) }", AttributeToDefinition
 
   @staticmethod
   def angle_query(*, attribute: Optional[Tuple[()]] = None, definition: Optional[Tuple[()]] = None) -> "HackAttributeToDefinition":
@@ -138,10 +137,10 @@ class HackAttributeToDefinition(GleanSchemaPredicate):
 
 class HackNamespaceMember(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.NamespaceMember.6 {{ }}", NamespaceMember
-    return f"hack.NamespaceMember.6 {{ namespace_ = _, decl = _ }}", NamespaceMember
+    return f"hack.NamespaceMember.6 { concatenateFields(key) }", NamespaceMember
 
   @staticmethod
   def angle_query(*, namespace_: Optional[Tuple[()]] = None, decl: Optional[Tuple[()]] = None) -> "HackNamespaceMember":
@@ -149,10 +148,10 @@ class HackNamespaceMember(GleanSchemaPredicate):
 
 class HackGlobalConstDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.GlobalConstDefinition.6 {{ }}", GlobalConstDefinition
-    return f"hack.GlobalConstDefinition.6 {{ declaration = _, type = _, value = _ }}", GlobalConstDefinition
+    return f"hack.GlobalConstDefinition.6 { concatenateFields(key) }", GlobalConstDefinition
 
   @staticmethod
   def angle_query(*, declaration: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None, value: Optional[str] = None) -> "HackGlobalConstDefinition":
@@ -160,10 +159,10 @@ class HackGlobalConstDefinition(GleanSchemaPredicate):
 
 class HackContainerParent(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.ContainerParent.6 {{ }}", ContainerParent
-    return f"hack.ContainerParent.6 {{ container = _, parent = _ }}", ContainerParent
+    return f"hack.ContainerParent.6 { concatenateFields(key) }", ContainerParent
 
   @staticmethod
   def angle_query(*, container: Optional[Tuple[()]] = None, parent: Optional[Tuple[()]] = None) -> "HackContainerParent":
@@ -171,10 +170,10 @@ class HackContainerParent(GleanSchemaPredicate):
 
 class HackInterfaceDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.InterfaceDefinition.6 {{ }}", InterfaceDefinition
-    return f"hack.InterfaceDefinition.6 {{ declaration = _, members = _, extends_ = _, attributes = _, typeParams = _, requireExtends = _, module_ = _ }}", InterfaceDefinition
+    return f"hack.InterfaceDefinition.6 { concatenateFields(key) }", InterfaceDefinition
 
   @staticmethod
   def angle_query(*, declaration: Optional[Tuple[()]] = None, members: Optional[Tuple[()]] = None, extends_: Optional[Tuple[()]] = None, attributes: Optional[Tuple[()]] = None, typeParams: Optional[Tuple[()]] = None, requireExtends: Optional[Tuple[()]] = None, module_: Optional[Tuple[()]] = None) -> "HackInterfaceDefinition":
@@ -182,10 +181,10 @@ class HackInterfaceDefinition(GleanSchemaPredicate):
 
 class HackContext_(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.Context_.6 {{ }}", Context_
-    return f"hack.Context_.6 {json.dumps(key)}", Context_
+    return f"hack.Context_.6 {key}", Context_
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HackContext_":
@@ -193,10 +192,10 @@ class HackContext_(GleanSchemaPredicate):
 
 class HackContainerDeclarationQName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.ContainerDeclarationQName.6 {{ }}", ContainerDeclarationQName
-    return f"hack.ContainerDeclarationQName.6 {json.dumps(key)}", ContainerDeclarationQName
+    return f"hack.ContainerDeclarationQName.6 {key}", ContainerDeclarationQName
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "HackContainerDeclarationQName":
@@ -204,10 +203,10 @@ class HackContainerDeclarationQName(GleanSchemaPredicate):
 
 class HackTargetUses(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.TargetUses.6 {{ }}", TargetUses
-    return f"hack.TargetUses.6 {{ target = _, file = _, uses = _ }}", TargetUses
+    return f"hack.TargetUses.6 { concatenateFields(key) }", TargetUses
 
   @staticmethod
   def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, uses: Optional[Tuple[()]] = None) -> "HackTargetUses":
@@ -215,10 +214,10 @@ class HackTargetUses(GleanSchemaPredicate):
 
 class HackTargetUsesAbs(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.TargetUsesAbs.6 {{ }}", TargetUsesAbs
-    return f"hack.TargetUsesAbs.6 {{ target = _, file = _, uses = _ }}", TargetUsesAbs
+    return f"hack.TargetUsesAbs.6 { concatenateFields(key) }", TargetUsesAbs
 
   @staticmethod
   def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, uses: Optional[Tuple[()]] = None) -> "HackTargetUsesAbs":
@@ -226,10 +225,10 @@ class HackTargetUsesAbs(GleanSchemaPredicate):
 
 class HackMethodOverridden(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.MethodOverridden.6 {{ }}", MethodOverridden
-    return f"hack.MethodOverridden.6 {{ base = _, derived = _ }}", MethodOverridden
+    return f"hack.MethodOverridden.6 { concatenateFields(key) }", MethodOverridden
 
   @staticmethod
   def angle_query(*, base: Optional[Tuple[()]] = None, derived: Optional[Tuple[()]] = None) -> "HackMethodOverridden":
@@ -237,10 +236,10 @@ class HackMethodOverridden(GleanSchemaPredicate):
 
 class HackClassDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.ClassDeclaration.6 {{ }}", ClassDeclaration
-    return f"hack.ClassDeclaration.6 {{ name = _ }}", ClassDeclaration
+    return f"hack.ClassDeclaration.6 { concatenateFields(key) }", ClassDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None) -> "HackClassDeclaration":
@@ -248,10 +247,10 @@ class HackClassDeclaration(GleanSchemaPredicate):
 
 class HackQName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.QName.6 {{ }}", QName
-    return f"hack.QName.6 {{ name = _, namespace_ = _ }}", QName
+    return f"hack.QName.6 { concatenateFields(key) }", QName
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, namespace_: Optional[Tuple[()]] = None) -> "HackQName":
@@ -259,10 +258,10 @@ class HackQName(GleanSchemaPredicate):
 
 class HackFilename(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.filename.1 {{ }}", Filename
-    return f"hack.filename.1 {{ filename = _, filehash_id = _ }}", Filename
+    return f"hack.filename.1 { concatenateFields(key) }", Filename
 
   @staticmethod
   def angle_query(*, filename: Optional[str] = None, filehash_id: Optional[str] = None) -> "HackFilename":
@@ -270,10 +269,10 @@ class HackFilename(GleanSchemaPredicate):
 
 class HackKind(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.kind.1 {{ }}", Kind
-    return f"hack.kind.1 {{ id = _, name = _ }}", Kind
+    return f"hack.kind.1 { concatenateFields(key) }", Kind
 
   @staticmethod
   def angle_query(*, id: Optional[int] = None, name: Optional[str] = None) -> "HackKind":
@@ -281,10 +280,10 @@ class HackKind(GleanSchemaPredicate):
 
 class HackTypedefDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.TypedefDeclaration.6 {{ }}", TypedefDeclaration
-    return f"hack.TypedefDeclaration.6 {{ name = _ }}", TypedefDeclaration
+    return f"hack.TypedefDeclaration.6 { concatenateFields(key) }", TypedefDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None) -> "HackTypedefDeclaration":
@@ -292,10 +291,10 @@ class HackTypedefDeclaration(GleanSchemaPredicate):
 
 class HackModuleDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.ModuleDefinition.6 {{ }}", ModuleDefinition
-    return f"hack.ModuleDefinition.6 {{ declaration = _, attributes = _ }}", ModuleDefinition
+    return f"hack.ModuleDefinition.6 { concatenateFields(key) }", ModuleDefinition
 
   @staticmethod
   def angle_query(*, declaration: Optional[Tuple[()]] = None, attributes: Optional[Tuple[()]] = None) -> "HackModuleDefinition":
@@ -303,10 +302,10 @@ class HackModuleDefinition(GleanSchemaPredicate):
 
 class HackAttributeHasParameter(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.AttributeHasParameter.6 {{ }}", AttributeHasParameter
-    return f"hack.AttributeHasParameter.6 {{ name = _, parameter = _, attribute = _ }}", AttributeHasParameter
+    return f"hack.AttributeHasParameter.6 { concatenateFields(key) }", AttributeHasParameter
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, parameter: Optional[str] = None, attribute: Optional[Tuple[()]] = None) -> "HackAttributeHasParameter":
@@ -314,10 +313,10 @@ class HackAttributeHasParameter(GleanSchemaPredicate):
 
 class HackName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.Name.6 {{ }}", Name
-    return f"hack.Name.6 {json.dumps(key)}", Name
+    return f"hack.Name.6 {key}", Name
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HackName":
@@ -325,10 +324,10 @@ class HackName(GleanSchemaPredicate):
 
 class HackMethodDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.MethodDeclaration.6 {{ }}", MethodDeclaration
-    return f"hack.MethodDeclaration.6 {{ name = _, container = _ }}", MethodDeclaration
+    return f"hack.MethodDeclaration.6 { concatenateFields(key) }", MethodDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, container: Optional[Tuple[()]] = None) -> "HackMethodDeclaration":
@@ -336,10 +335,10 @@ class HackMethodDeclaration(GleanSchemaPredicate):
 
 class HackFileXRefs(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.FileXRefs.6 {{ }}", FileXRefs
-    return f"hack.FileXRefs.6 {{ file = _, xrefs = _ }}", FileXRefs
+    return f"hack.FileXRefs.6 { concatenateFields(key) }", FileXRefs
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, xrefs: Optional[Tuple[()]] = None) -> "HackFileXRefs":
@@ -347,10 +346,10 @@ class HackFileXRefs(GleanSchemaPredicate):
 
 class HackEnumerator(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.Enumerator.6 {{ }}", Enumerator
-    return f"hack.Enumerator.6 {{ name = _, enumeration = _ }}", Enumerator
+    return f"hack.Enumerator.6 { concatenateFields(key) }", Enumerator
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, enumeration: Optional[Tuple[()]] = None) -> "HackEnumerator":
@@ -358,10 +357,10 @@ class HackEnumerator(GleanSchemaPredicate):
 
 class HackIdentifier(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.identifier.1 {{ }}", Identifier
-    return f"hack.identifier.1 {{ kind = _, name = _ }}", Identifier
+    return f"hack.identifier.1 { concatenateFields(key) }", Identifier
 
   @staticmethod
   def angle_query(*, kind: Optional[int] = None, name: Optional[str] = None) -> "HackIdentifier":
@@ -369,10 +368,10 @@ class HackIdentifier(GleanSchemaPredicate):
 
 class HackDeclarationSpan(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.DeclarationSpan.6 {{ }}", DeclarationSpan
-    return f"hack.DeclarationSpan.6 {{ declaration = _, file = _, span = _ }}", DeclarationSpan
+    return f"hack.DeclarationSpan.6 { concatenateFields(key) }", DeclarationSpan
 
   @staticmethod
   def angle_query(*, declaration: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "HackDeclarationSpan":
@@ -380,10 +379,10 @@ class HackDeclarationSpan(GleanSchemaPredicate):
 
 class HackSignature(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.Signature.6 {{ }}", Signature
-    return f"hack.Signature.6 {{ returns = _, parameters = _, contexts = _ }}", Signature
+    return f"hack.Signature.6 { concatenateFields(key) }", Signature
 
   @staticmethod
   def angle_query(*, returns: Optional[Tuple[()]] = None, parameters: Optional[Tuple[()]] = None, contexts: Optional[Tuple[()]] = None) -> "HackSignature":
@@ -391,10 +390,10 @@ class HackSignature(GleanSchemaPredicate):
 
 class HackContainerChild(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.ContainerChild.6 {{ }}", ContainerChild
-    return f"hack.ContainerChild.6 {{ container = _, child = _ }}", ContainerChild
+    return f"hack.ContainerChild.6 { concatenateFields(key) }", ContainerChild
 
   @staticmethod
   def angle_query(*, container: Optional[Tuple[()]] = None, child: Optional[Tuple[()]] = None) -> "HackContainerChild":
@@ -402,10 +401,10 @@ class HackContainerChild(GleanSchemaPredicate):
 
 class HackNamespaceQName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.NamespaceQName.6 {{ }}", NamespaceQName
-    return f"hack.NamespaceQName.6 {{ name = _, parent = _ }}", NamespaceQName
+    return f"hack.NamespaceQName.6 { concatenateFields(key) }", NamespaceQName
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, parent: Optional[Tuple[()]] = None) -> "HackNamespaceQName":
@@ -413,10 +412,10 @@ class HackNamespaceQName(GleanSchemaPredicate):
 
 class HackInterfaceDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.InterfaceDeclaration.6 {{ }}", InterfaceDeclaration
-    return f"hack.InterfaceDeclaration.6 {{ name = _ }}", InterfaceDeclaration
+    return f"hack.InterfaceDeclaration.6 { concatenateFields(key) }", InterfaceDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None) -> "HackInterfaceDeclaration":
@@ -424,10 +423,10 @@ class HackInterfaceDeclaration(GleanSchemaPredicate):
 
 class HackDeclarationSource(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.DeclarationSource.6 {{ }}", DeclarationSource
-    return f"hack.DeclarationSource.6 {{ target = _, source = _ }}", DeclarationSource
+    return f"hack.DeclarationSource.6 { concatenateFields(key) }", DeclarationSource
 
   @staticmethod
   def angle_query(*, target: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "HackDeclarationSource":
@@ -435,10 +434,10 @@ class HackDeclarationSource(GleanSchemaPredicate):
 
 class HackUserAttribute(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.UserAttribute.6 {{ }}", UserAttribute
-    return f"hack.UserAttribute.6 {{ name = _, parameters = _, qname = _ }}", UserAttribute
+    return f"hack.UserAttribute.6 { concatenateFields(key) }", UserAttribute
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, parameters: Optional[Tuple[()]] = None, qname: Optional[Tuple[()]] = None) -> "HackUserAttribute":
@@ -446,10 +445,10 @@ class HackUserAttribute(GleanSchemaPredicate):
 
 class HackModuleDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.ModuleDeclaration.6 {{ }}", ModuleDeclaration
-    return f"hack.ModuleDeclaration.6 {{ name = _ }}", ModuleDeclaration
+    return f"hack.ModuleDeclaration.6 { concatenateFields(key) }", ModuleDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None) -> "HackModuleDeclaration":
@@ -457,10 +456,10 @@ class HackModuleDeclaration(GleanSchemaPredicate):
 
 class HackPropertyDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.PropertyDefinition.6 {{ }}", PropertyDefinition
-    return f"hack.PropertyDefinition.6 {{ declaration = _, type = _, visibility = _, isFinal = _, isAbstract = _, isStatic = _, attributes = _ }}", PropertyDefinition
+    return f"hack.PropertyDefinition.6 { concatenateFields(key) }", PropertyDefinition
 
   @staticmethod
   def angle_query(*, declaration: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None, visibility: Optional[Tuple[()]] = None, isFinal: Optional[bool] = None, isAbstract: Optional[bool] = None, isStatic: Optional[bool] = None, attributes: Optional[Tuple[()]] = None) -> "HackPropertyDefinition":
@@ -468,10 +467,10 @@ class HackPropertyDefinition(GleanSchemaPredicate):
 
 class HackClassConstDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.ClassConstDeclaration.6 {{ }}", ClassConstDeclaration
-    return f"hack.ClassConstDeclaration.6 {{ name = _, container = _ }}", ClassConstDeclaration
+    return f"hack.ClassConstDeclaration.6 { concatenateFields(key) }", ClassConstDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, container: Optional[Tuple[()]] = None) -> "HackClassConstDeclaration":
@@ -479,10 +478,10 @@ class HackClassConstDeclaration(GleanSchemaPredicate):
 
 class HackEnumDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.EnumDeclaration.6 {{ }}", EnumDeclaration
-    return f"hack.EnumDeclaration.6 {{ name = _ }}", EnumDeclaration
+    return f"hack.EnumDeclaration.6 { concatenateFields(key) }", EnumDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None) -> "HackEnumDeclaration":
@@ -490,10 +489,10 @@ class HackEnumDeclaration(GleanSchemaPredicate):
 
 class HackDeclarationComment(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.DeclarationComment.6 {{ }}", DeclarationComment
-    return f"hack.DeclarationComment.6 {{ declaration = _, file = _, span = _ }}", DeclarationComment
+    return f"hack.DeclarationComment.6 { concatenateFields(key) }", DeclarationComment
 
   @staticmethod
   def angle_query(*, declaration: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "HackDeclarationComment":
@@ -501,10 +500,10 @@ class HackDeclarationComment(GleanSchemaPredicate):
 
 class HackNamespaceDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.NamespaceDeclaration.6 {{ }}", NamespaceDeclaration
-    return f"hack.NamespaceDeclaration.6 {{ name = _ }}", NamespaceDeclaration
+    return f"hack.NamespaceDeclaration.6 { concatenateFields(key) }", NamespaceDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None) -> "HackNamespaceDeclaration":
@@ -512,10 +511,10 @@ class HackNamespaceDeclaration(GleanSchemaPredicate):
 
 class HackClassDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.ClassDefinition.6 {{ }}", ClassDefinition
-    return f"hack.ClassDefinition.6 {{ declaration = _, isAbstract = _, isFinal = _, members = _, extends_ = _, implements_ = _, uses = _, attributes = _, typeParams = _, module_ = _ }}", ClassDefinition
+    return f"hack.ClassDefinition.6 { concatenateFields(key) }", ClassDefinition
 
   @staticmethod
   def angle_query(*, declaration: Optional[Tuple[()]] = None, isAbstract: Optional[bool] = None, isFinal: Optional[bool] = None, members: Optional[Tuple[()]] = None, extends_: Optional[Tuple[()]] = None, implements_: Optional[Tuple[()]] = None, uses: Optional[Tuple[()]] = None, attributes: Optional[Tuple[()]] = None, typeParams: Optional[Tuple[()]] = None, module_: Optional[Tuple[()]] = None) -> "HackClassDefinition":
@@ -523,10 +522,10 @@ class HackClassDefinition(GleanSchemaPredicate):
 
 class HackMethodOccurrence(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.MethodOccurrence.6 {{ }}", MethodOccurrence
-    return f"hack.MethodOccurrence.6 {{ name = _, className = _ }}", MethodOccurrence
+    return f"hack.MethodOccurrence.6 { concatenateFields(key) }", MethodOccurrence
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, className: Optional[Tuple[()]] = None) -> "HackMethodOccurrence":
@@ -534,10 +533,10 @@ class HackMethodOccurrence(GleanSchemaPredicate):
 
 class HackMethodOverrides(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.MethodOverrides.6 {{ }}", MethodOverrides
-    return f"hack.MethodOverrides.6 {{ derived = _, base = _ }}", MethodOverrides
+    return f"hack.MethodOverrides.6 { concatenateFields(key) }", MethodOverrides
 
   @staticmethod
   def angle_query(*, derived: Optional[Tuple[()]] = None, base: Optional[Tuple[()]] = None) -> "HackMethodOverrides":
@@ -545,10 +544,10 @@ class HackMethodOverrides(GleanSchemaPredicate):
 
 class HackType(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.Type.6 {{ }}", Type
-    return f"hack.Type.6 {json.dumps(key)}", Type
+    return f"hack.Type.6 {key}", Type
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HackType":
@@ -556,10 +555,10 @@ class HackType(GleanSchemaPredicate):
 
 class HackNameLowerCase(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.NameLowerCase.6 {{ }}", NameLowerCase
-    return f"hack.NameLowerCase.6 {{ nameLowercase = _, name = _ }}", NameLowerCase
+    return f"hack.NameLowerCase.6 { concatenateFields(key) }", NameLowerCase
 
   @staticmethod
   def angle_query(*, nameLowercase: Optional[str] = None, name: Optional[Tuple[()]] = None) -> "HackNameLowerCase":
@@ -567,10 +566,10 @@ class HackNameLowerCase(GleanSchemaPredicate):
 
 class HackTypeConstDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.TypeConstDefinition.6 {{ }}", TypeConstDefinition
-    return f"hack.TypeConstDefinition.6 {{ declaration = _, type = _, kind = _, attributes = _ }}", TypeConstDefinition
+    return f"hack.TypeConstDefinition.6 { concatenateFields(key) }", TypeConstDefinition
 
   @staticmethod
   def angle_query(*, declaration: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None, kind: Optional[Tuple[()]] = None, attributes: Optional[Tuple[()]] = None) -> "HackTypeConstDefinition":
@@ -578,10 +577,10 @@ class HackTypeConstDefinition(GleanSchemaPredicate):
 
 class HackDeclarationTarget(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.DeclarationTarget.6 {{ }}", DeclarationTarget
-    return f"hack.DeclarationTarget.6 {{ source = _, target = _ }}", DeclarationTarget
+    return f"hack.DeclarationTarget.6 { concatenateFields(key) }", DeclarationTarget
 
   @staticmethod
   def angle_query(*, source: Optional[Tuple[()]] = None, target: Optional[Tuple[()]] = None) -> "HackDeclarationTarget":
@@ -589,10 +588,10 @@ class HackDeclarationTarget(GleanSchemaPredicate):
 
 class HackSymbol(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.symbol.1 {{ }}", Symbol
-    return f"hack.symbol.1 {{ name_lowercase = _, valid = _, kind_id = _, ns_id = _, filehash_id = _, is_abstract = _, is_final = _, canonical_name = _ }}", Symbol
+    return f"hack.symbol.1 { concatenateFields(key) }", Symbol
 
   @staticmethod
   def angle_query(*, name_lowercase: Optional[str] = None, valid: Optional[Tuple[()]] = None, kind_id: Optional[int] = None, ns_id: Optional[int] = None, filehash_id: Optional[str] = None, is_abstract: Optional[bool] = None, is_final: Optional[bool] = None, canonical_name: Optional[str] = None) -> "HackSymbol":
@@ -600,10 +599,10 @@ class HackSymbol(GleanSchemaPredicate):
 
 class HackEnumDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.EnumDefinition.6 {{ }}", EnumDefinition
-    return f"hack.EnumDefinition.6 {{ declaration = _, enumBase = _, enumConstraint = _, enumerators = _, attributes = _, includes = _, isEnumClass = _, module_ = _ }}", EnumDefinition
+    return f"hack.EnumDefinition.6 { concatenateFields(key) }", EnumDefinition
 
   @staticmethod
   def angle_query(*, declaration: Optional[Tuple[()]] = None, enumBase: Optional[Tuple[()]] = None, enumConstraint: Optional[Tuple[()]] = None, enumerators: Optional[Tuple[()]] = None, attributes: Optional[Tuple[()]] = None, includes: Optional[Tuple[()]] = None, isEnumClass: Optional[bool] = None, module_: Optional[Tuple[()]] = None) -> "HackEnumDefinition":
@@ -611,10 +610,10 @@ class HackEnumDefinition(GleanSchemaPredicate):
 
 class HackClassConstDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.ClassConstDefinition.6 {{ }}", ClassConstDefinition
-    return f"hack.ClassConstDefinition.6 {{ declaration = _, type = _, value = _ }}", ClassConstDefinition
+    return f"hack.ClassConstDefinition.6 { concatenateFields(key) }", ClassConstDefinition
 
   @staticmethod
   def angle_query(*, declaration: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None, value: Optional[Tuple[()]] = None) -> "HackClassConstDefinition":
@@ -622,10 +621,10 @@ class HackClassConstDefinition(GleanSchemaPredicate):
 
 class HackStringLiteral(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.StringLiteral.6 {{ }}", StringLiteral
-    return f"hack.StringLiteral.6 {json.dumps(key)}", StringLiteral
+    return f"hack.StringLiteral.6 {key}", StringLiteral
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HackStringLiteral":
@@ -633,10 +632,10 @@ class HackStringLiteral(GleanSchemaPredicate):
 
 class HackGlobalConstDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.GlobalConstDeclaration.6 {{ }}", GlobalConstDeclaration
-    return f"hack.GlobalConstDeclaration.6 {{ name = _ }}", GlobalConstDeclaration
+    return f"hack.GlobalConstDeclaration.6 { concatenateFields(key) }", GlobalConstDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None) -> "HackGlobalConstDeclaration":
@@ -644,10 +643,10 @@ class HackGlobalConstDeclaration(GleanSchemaPredicate):
 
 class HackFunctionDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.FunctionDefinition.6 {{ }}", FunctionDefinition
-    return f"hack.FunctionDefinition.6 {{ declaration = _, signature = _, isAsync = _, attributes = _, typeParams = _, module_ = _ }}", FunctionDefinition
+    return f"hack.FunctionDefinition.6 { concatenateFields(key) }", FunctionDefinition
 
   @staticmethod
   def angle_query(*, declaration: Optional[Tuple[()]] = None, signature: Optional[Tuple[()]] = None, isAsync: Optional[bool] = None, attributes: Optional[Tuple[()]] = None, typeParams: Optional[Tuple[()]] = None, module_: Optional[Tuple[()]] = None) -> "HackFunctionDefinition":
@@ -655,10 +654,10 @@ class HackFunctionDefinition(GleanSchemaPredicate):
 
 class HackTraitDefinition(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.TraitDefinition.6 {{ }}", TraitDefinition
-    return f"hack.TraitDefinition.6 {{ declaration = _, members = _, implements_ = _, uses = _, attributes = _, typeParams = _, requireExtends = _, requireImplements = _, module_ = _ }}", TraitDefinition
+    return f"hack.TraitDefinition.6 { concatenateFields(key) }", TraitDefinition
 
   @staticmethod
   def angle_query(*, declaration: Optional[Tuple[()]] = None, members: Optional[Tuple[()]] = None, implements_: Optional[Tuple[()]] = None, uses: Optional[Tuple[()]] = None, attributes: Optional[Tuple[()]] = None, typeParams: Optional[Tuple[()]] = None, requireExtends: Optional[Tuple[()]] = None, requireImplements: Optional[Tuple[()]] = None, module_: Optional[Tuple[()]] = None) -> "HackTraitDefinition":
@@ -666,10 +665,10 @@ class HackTraitDefinition(GleanSchemaPredicate):
 
 class HackDeclarationName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.DeclarationName.6 {{ }}", DeclarationName
-    return f"hack.DeclarationName.6 {json.dumps(key)}", DeclarationName
+    return f"hack.DeclarationName.6 {key}", DeclarationName
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "HackDeclarationName":
@@ -677,10 +676,10 @@ class HackDeclarationName(GleanSchemaPredicate):
 
 class HackPropertyDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.PropertyDeclaration.6 {{ }}", PropertyDeclaration
-    return f"hack.PropertyDeclaration.6 {{ name = _, container = _ }}", PropertyDeclaration
+    return f"hack.PropertyDeclaration.6 { concatenateFields(key) }", PropertyDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, container: Optional[Tuple[()]] = None) -> "HackPropertyDeclaration":
@@ -688,10 +687,10 @@ class HackPropertyDeclaration(GleanSchemaPredicate):
 
 class HackFileCall(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.FileCall.6 {{ }}", FileCall
-    return f"hack.FileCall.6 {{ file = _, callee_span = _, call_args = _ }}", FileCall
+    return f"hack.FileCall.6 { concatenateFields(key) }", FileCall
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, callee_span: Optional[Tuple[()]] = None, call_args: Optional[Tuple[()]] = None) -> "HackFileCall":
@@ -699,10 +698,10 @@ class HackFileCall(GleanSchemaPredicate):
 
 class HackFileDeclarations(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.FileDeclarations.6 {{ }}", FileDeclarations
-    return f"hack.FileDeclarations.6 {{ file = _, declarations = _ }}", FileDeclarations
+    return f"hack.FileDeclarations.6 { concatenateFields(key) }", FileDeclarations
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, declarations: Optional[Tuple[()]] = None) -> "HackFileDeclarations":
@@ -710,10 +709,10 @@ class HackFileDeclarations(GleanSchemaPredicate):
 
 class HackTypeConstDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.TypeConstDeclaration.6 {{ }}", TypeConstDeclaration
-    return f"hack.TypeConstDeclaration.6 {{ name = _, container = _ }}", TypeConstDeclaration
+    return f"hack.TypeConstDeclaration.6 { concatenateFields(key) }", TypeConstDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, container: Optional[Tuple[()]] = None) -> "HackTypeConstDeclaration":
@@ -721,10 +720,10 @@ class HackTypeConstDeclaration(GleanSchemaPredicate):
 
 class HackDeclarationLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hack.DeclarationLocation.6 {{ }}", DeclarationLocation
-    return f"hack.DeclarationLocation.6 {{ declaration = _, file = _, span = _ }}", DeclarationLocation
+    return f"hack.DeclarationLocation.6 { concatenateFields(key) }", DeclarationLocation
 
   @staticmethod
   def angle_query(*, declaration: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "HackDeclarationLocation":

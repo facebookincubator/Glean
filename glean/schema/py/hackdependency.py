@@ -1,9 +1,8 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union
-import json
+from typing import Optional, Tuple, Union, List
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
 
 
 from glean.schema.hackdependency.types import (
@@ -14,10 +13,10 @@ from glean.schema.hackdependency.types import (
 
 class HackdependencyInheritance(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hackdependency.inheritance.1 {{ }}", Inheritance
-    return f"hackdependency.inheritance.1 {{ parent = _, child = _ }}", Inheritance
+    return f"hackdependency.inheritance.1 { concatenateFields(key) }", Inheritance
 
   @staticmethod
   def angle_query(*, parent: Optional[Tuple[()]] = None, child: Optional[Tuple[()]] = None) -> "HackdependencyInheritance":
@@ -25,10 +24,10 @@ class HackdependencyInheritance(GleanSchemaPredicate):
 
 class HackdependencyName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"hackdependency.name.1 {{ }}", Name
-    return f"hackdependency.name.1 {json.dumps(key)}", Name
+    return f"hackdependency.name.1 {key}", Name
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "HackdependencyName":

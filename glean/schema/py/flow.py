@@ -1,9 +1,8 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union
-import json
+from typing import Optional, Tuple, Union, List
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
 
 
 from glean.schema.flow.types import (
@@ -57,10 +56,10 @@ from glean.schema.flow.types import (
 
 class FlowFlowTypeEntityImportUses(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.FlowTypeEntityImportUses.3 {{ }}", FlowTypeEntityImportUses
-    return f"flow.FlowTypeEntityImportUses.3 {{ target = _, local = _ }}", FlowTypeEntityImportUses
+    return f"flow.FlowTypeEntityImportUses.3 { concatenateFields(key) }", FlowTypeEntityImportUses
 
   @staticmethod
   def angle_query(*, target: Optional[Tuple[()]] = None, local: Optional[Tuple[()]] = None) -> "FlowFlowTypeEntityImportUses":
@@ -68,10 +67,10 @@ class FlowFlowTypeEntityImportUses(GleanSchemaPredicate):
 
 class FlowTypeExport(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.TypeExport.3 {{ }}", TypeExport
-    return f"flow.TypeExport.3 {json.dumps(key)}", TypeExport
+    return f"flow.TypeExport.3 {key}", TypeExport
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "FlowTypeExport":
@@ -79,10 +78,10 @@ class FlowTypeExport(GleanSchemaPredicate):
 
 class FlowImportDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.ImportDeclaration.3 {{ }}", ImportDeclaration
-    return f"flow.ImportDeclaration.3 {{ declaration = _, import_ = _ }}", ImportDeclaration
+    return f"flow.ImportDeclaration.3 { concatenateFields(key) }", ImportDeclaration
 
   @staticmethod
   def angle_query(*, declaration: Optional[Tuple[()]] = None, import_: Optional[Tuple[()]] = None) -> "FlowImportDeclaration":
@@ -90,10 +89,10 @@ class FlowImportDeclaration(GleanSchemaPredicate):
 
 class FlowDeclarationLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.DeclarationLocation.3 {{ }}", DeclarationLocation
-    return f"flow.DeclarationLocation.3 {{ decl = _, file = _, span = _ }}", DeclarationLocation
+    return f"flow.DeclarationLocation.3 { concatenateFields(key) }", DeclarationLocation
 
   @staticmethod
   def angle_query(*, decl: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "FlowDeclarationLocation":
@@ -101,10 +100,10 @@ class FlowDeclarationLocation(GleanSchemaPredicate):
 
 class FlowDeclarationInfo(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.DeclarationInfo.3 {{ }}", DeclarationInfo
-    return f"flow.DeclarationInfo.3 {{ declaration = _, type = _, documentation = _ }}", DeclarationInfo
+    return f"flow.DeclarationInfo.3 { concatenateFields(key) }", DeclarationInfo
 
   @staticmethod
   def angle_query(*, declaration: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None, documentation: Optional[Tuple[()]] = None) -> "FlowDeclarationInfo":
@@ -112,10 +111,10 @@ class FlowDeclarationInfo(GleanSchemaPredicate):
 
 class FlowFileDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.FileDeclaration.3 {{ }}", FileDeclaration
-    return f"flow.FileDeclaration.3 {{ file = _, declaration = _ }}", FileDeclaration
+    return f"flow.FileDeclaration.3 { concatenateFields(key) }", FileDeclaration
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, declaration: Optional[Tuple[()]] = None) -> "FlowFileDeclaration":
@@ -123,10 +122,10 @@ class FlowFileDeclaration(GleanSchemaPredicate):
 
 class FlowModuleTypeExport(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.ModuleTypeExport.3 {{ }}", ModuleTypeExport
-    return f"flow.ModuleTypeExport.3 {{ module = _, typeExport = _ }}", ModuleTypeExport
+    return f"flow.ModuleTypeExport.3 { concatenateFields(key) }", ModuleTypeExport
 
   @staticmethod
   def angle_query(*, module: Optional[Tuple[()]] = None, typeExport: Optional[Tuple[()]] = None) -> "FlowModuleTypeExport":
@@ -134,10 +133,10 @@ class FlowModuleTypeExport(GleanSchemaPredicate):
 
 class FlowLocalDeclarationReference(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.LocalDeclarationReference.3 {{ }}", LocalDeclarationReference
-    return f"flow.LocalDeclarationReference.3 {{ declaration = _, loc = _ }}", LocalDeclarationReference
+    return f"flow.LocalDeclarationReference.3 { concatenateFields(key) }", LocalDeclarationReference
 
   @staticmethod
   def angle_query(*, declaration: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None) -> "FlowLocalDeclarationReference":
@@ -145,10 +144,10 @@ class FlowLocalDeclarationReference(GleanSchemaPredicate):
 
 class FlowFlowTypeImportXRef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.FlowTypeImportXRef.3 {{ }}", FlowTypeImportXRef
-    return f"flow.FlowTypeImportXRef.3 {{ local = _, entity = _, targetFile = _, targetSpan = _ }}", FlowTypeImportXRef
+    return f"flow.FlowTypeImportXRef.3 { concatenateFields(key) }", FlowTypeImportXRef
 
   @staticmethod
   def angle_query(*, local: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None, targetFile: Optional[Tuple[()]] = None, targetSpan: Optional[Tuple[()]] = None) -> "FlowFlowTypeImportXRef":
@@ -156,10 +155,10 @@ class FlowFlowTypeImportXRef(GleanSchemaPredicate):
 
 class FlowName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.Name.3 {{ }}", Name
-    return f"flow.Name.3 {json.dumps(key)}", Name
+    return f"flow.Name.3 {key}", Name
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "FlowName":
@@ -167,10 +166,10 @@ class FlowName(GleanSchemaPredicate):
 
 class FlowSearchByModule(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.SearchByModule.3 {{ }}", SearchByModule
-    return f"flow.SearchByModule.3 {{ string_ = _, name = _, decl = _ }}", SearchByModule
+    return f"flow.SearchByModule.3 { concatenateFields(key) }", SearchByModule
 
   @staticmethod
   def angle_query(*, string_: Optional[str] = None, name: Optional[Tuple[()]] = None, decl: Optional[Tuple[()]] = None) -> "FlowSearchByModule":
@@ -178,10 +177,10 @@ class FlowSearchByModule(GleanSchemaPredicate):
 
 class FlowRange(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.Range.3 {{ }}", Range
-    return f"flow.Range.3 {{ module = _, span = _ }}", Range
+    return f"flow.Range.3 { concatenateFields(key) }", Range
 
   @staticmethod
   def angle_query(*, module: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "FlowRange":
@@ -189,10 +188,10 @@ class FlowRange(GleanSchemaPredicate):
 
 class FlowDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.Declaration.3 {{ }}", Declaration
-    return f"flow.Declaration.3 {{ name = _, loc = _ }}", Declaration
+    return f"flow.Declaration.3 { concatenateFields(key) }", Declaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None) -> "FlowDeclaration":
@@ -200,10 +199,10 @@ class FlowDeclaration(GleanSchemaPredicate):
 
 class FlowDeclarationUses(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.DeclarationUses.3 {{ }}", DeclarationUses
-    return f"flow.DeclarationUses.3 {{ target = _, file = _, use = _ }}", DeclarationUses
+    return f"flow.DeclarationUses.3 { concatenateFields(key) }", DeclarationUses
 
   @staticmethod
   def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, use: Optional[Tuple[()]] = None) -> "FlowDeclarationUses":
@@ -211,10 +210,10 @@ class FlowDeclarationUses(GleanSchemaPredicate):
 
 class FlowSourceOfTypeExport(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.SourceOfTypeExport.3 {{ }}", SourceOfTypeExport
-    return f"flow.SourceOfTypeExport.3 {{ moduleTypeExport = _, source = _ }}", SourceOfTypeExport
+    return f"flow.SourceOfTypeExport.3 { concatenateFields(key) }", SourceOfTypeExport
 
   @staticmethod
   def angle_query(*, moduleTypeExport: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "FlowSourceOfTypeExport":
@@ -222,10 +221,10 @@ class FlowSourceOfTypeExport(GleanSchemaPredicate):
 
 class FlowFlowCompatibleExport(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.FlowCompatibleExport.3 {{ }}", FlowCompatibleExport
-    return f"flow.FlowCompatibleExport.3 {{ left = _, right = _ }}", FlowCompatibleExport
+    return f"flow.FlowCompatibleExport.3 { concatenateFields(key) }", FlowCompatibleExport
 
   @staticmethod
   def angle_query(*, left: Optional[Tuple[()]] = None, right: Optional[Tuple[()]] = None) -> "FlowFlowCompatibleExport":
@@ -233,10 +232,10 @@ class FlowFlowCompatibleExport(GleanSchemaPredicate):
 
 class FlowFlowEntityUsesAll(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.FlowEntityUsesAll.3 {{ }}", FlowEntityUsesAll
-    return f"flow.FlowEntityUsesAll.3 {{ target = _, file = _, span = _ }}", FlowEntityUsesAll
+    return f"flow.FlowEntityUsesAll.3 { concatenateFields(key) }", FlowEntityUsesAll
 
   @staticmethod
   def angle_query(*, target: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "FlowFlowEntityUsesAll":
@@ -244,10 +243,10 @@ class FlowFlowEntityUsesAll(GleanSchemaPredicate):
 
 class FlowNameLowerCase(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.NameLowerCase.3 {{ }}", NameLowerCase
-    return f"flow.NameLowerCase.3 {{ nameLowerCase = _, name = _ }}", NameLowerCase
+    return f"flow.NameLowerCase.3 { concatenateFields(key) }", NameLowerCase
 
   @staticmethod
   def angle_query(*, nameLowerCase: Optional[str] = None, name: Optional[Tuple[()]] = None) -> "FlowNameLowerCase":
@@ -255,10 +254,10 @@ class FlowNameLowerCase(GleanSchemaPredicate):
 
 class FlowSearchByFileModule(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.SearchByFileModule.3 {{ }}", SearchByFileModule
-    return f"flow.SearchByFileModule.3 {{ file = _, name = _, decl = _ }}", SearchByFileModule
+    return f"flow.SearchByFileModule.3 { concatenateFields(key) }", SearchByFileModule
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, name: Optional[Tuple[()]] = None, decl: Optional[Tuple[()]] = None) -> "FlowSearchByFileModule":
@@ -266,10 +265,10 @@ class FlowSearchByFileModule(GleanSchemaPredicate):
 
 class FlowModule(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.Module.3 {{ }}", Module
-    return f"flow.Module.3 {json.dumps(key)}", Module
+    return f"flow.Module.3 {key}", Module
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "FlowModule":
@@ -277,10 +276,10 @@ class FlowModule(GleanSchemaPredicate):
 
 class FlowFlowSameModule(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.FlowSameModule.3 {{ }}", FlowSameModule
-    return f"flow.FlowSameModule.3 {{ left = _, right = _ }}", FlowSameModule
+    return f"flow.FlowSameModule.3 { concatenateFields(key) }", FlowSameModule
 
   @staticmethod
   def angle_query(*, left: Optional[Tuple[()]] = None, right: Optional[Tuple[()]] = None) -> "FlowFlowSameModule":
@@ -288,10 +287,10 @@ class FlowFlowSameModule(GleanSchemaPredicate):
 
 class FlowFlowModuleNamespaceXRef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.FlowModuleNamespaceXRef.3 {{ }}", FlowModuleNamespaceXRef
-    return f"flow.FlowModuleNamespaceXRef.3 {{ local = _, entity = _, file = _ }}", FlowModuleNamespaceXRef
+    return f"flow.FlowModuleNamespaceXRef.3 { concatenateFields(key) }", FlowModuleNamespaceXRef
 
   @staticmethod
   def angle_query(*, local: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None) -> "FlowFlowModuleNamespaceXRef":
@@ -299,10 +298,10 @@ class FlowFlowModuleNamespaceXRef(GleanSchemaPredicate):
 
 class FlowDocumentation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.Documentation.3 {{ }}", Documentation
-    return f"flow.Documentation.3 {json.dumps(key)}", Documentation
+    return f"flow.Documentation.3 {key}", Documentation
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "FlowDocumentation":
@@ -310,10 +309,10 @@ class FlowDocumentation(GleanSchemaPredicate):
 
 class FlowSearchByName(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.SearchByName.3 {{ }}", SearchByName
-    return f"flow.SearchByName.3 {{ name = _, decl = _ }}", SearchByName
+    return f"flow.SearchByName.3 { concatenateFields(key) }", SearchByName
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, decl: Optional[Tuple[()]] = None) -> "FlowSearchByName":
@@ -321,10 +320,10 @@ class FlowSearchByName(GleanSchemaPredicate):
 
 class FlowStringToFileModule(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.StringToFileModule.3 {{ }}", StringToFileModule
-    return f"flow.StringToFileModule.3 {{ string_ = _, file = _ }}", StringToFileModule
+    return f"flow.StringToFileModule.3 { concatenateFields(key) }", StringToFileModule
 
   @staticmethod
   def angle_query(*, string_: Optional[str] = None, file: Optional[Tuple[()]] = None) -> "FlowStringToFileModule":
@@ -332,10 +331,10 @@ class FlowStringToFileModule(GleanSchemaPredicate):
 
 class FlowFlowExportLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.FlowExportLocation.3 {{ }}", FlowExportLocation
-    return f"flow.FlowExportLocation.3 {{ module = _, export_ = _, entity = _, file = _, span = _ }}", FlowExportLocation
+    return f"flow.FlowExportLocation.3 { concatenateFields(key) }", FlowExportLocation
 
   @staticmethod
   def angle_query(*, module: Optional[Tuple[()]] = None, export_: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "FlowFlowExportLocation":
@@ -343,10 +342,10 @@ class FlowFlowExportLocation(GleanSchemaPredicate):
 
 class FlowFlowXRefDeclInfo(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.FlowXRefDeclInfo.3 {{ }}", FlowXRefDeclInfo
-    return f"flow.FlowXRefDeclInfo.3 {{ ref = _, srcLoc = _, name = _, targetLoc = _, entity = _ }}", FlowXRefDeclInfo
+    return f"flow.FlowXRefDeclInfo.3 { concatenateFields(key) }", FlowXRefDeclInfo
 
   @staticmethod
   def angle_query(*, ref: Optional[Tuple[()]] = None, srcLoc: Optional[Tuple[()]] = None, name: Optional[Tuple[()]] = None, targetLoc: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "FlowFlowXRefDeclInfo":
@@ -354,10 +353,10 @@ class FlowFlowXRefDeclInfo(GleanSchemaPredicate):
 
 class FlowSearchTypeByModuleExport(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.SearchTypeByModuleExport.3 {{ }}", SearchTypeByModuleExport
-    return f"flow.SearchTypeByModuleExport.3 {{ string_ = _, name = _, decl = _ }}", SearchTypeByModuleExport
+    return f"flow.SearchTypeByModuleExport.3 { concatenateFields(key) }", SearchTypeByModuleExport
 
   @staticmethod
   def angle_query(*, string_: Optional[str] = None, name: Optional[Tuple[()]] = None, decl: Optional[Tuple[()]] = None) -> "FlowSearchTypeByModuleExport":
@@ -365,10 +364,10 @@ class FlowSearchTypeByModuleExport(GleanSchemaPredicate):
 
 class FlowFlowEntityImportUses(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.FlowEntityImportUses.3 {{ }}", FlowEntityImportUses
-    return f"flow.FlowEntityImportUses.3 {{ target = _, local = _ }}", FlowEntityImportUses
+    return f"flow.FlowEntityImportUses.3 { concatenateFields(key) }", FlowEntityImportUses
 
   @staticmethod
   def angle_query(*, target: Optional[Tuple[()]] = None, local: Optional[Tuple[()]] = None) -> "FlowFlowEntityImportUses":
@@ -376,10 +375,10 @@ class FlowFlowEntityImportUses(GleanSchemaPredicate):
 
 class FlowExport(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.Export.3 {{ }}", Export
-    return f"flow.Export.3 {json.dumps(key)}", Export
+    return f"flow.Export.3 {key}", Export
 
   @staticmethod
   def angle_query(*, arg: Optional[Tuple[()]] = None) -> "FlowExport":
@@ -387,10 +386,10 @@ class FlowExport(GleanSchemaPredicate):
 
 class FlowTypeImportDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.TypeImportDeclaration.3 {{ }}", TypeImportDeclaration
-    return f"flow.TypeImportDeclaration.3 {{ typeDeclaration = _, import_ = _ }}", TypeImportDeclaration
+    return f"flow.TypeImportDeclaration.3 { concatenateFields(key) }", TypeImportDeclaration
 
   @staticmethod
   def angle_query(*, typeDeclaration: Optional[Tuple[()]] = None, import_: Optional[Tuple[()]] = None) -> "FlowTypeImportDeclaration":
@@ -398,10 +397,10 @@ class FlowTypeImportDeclaration(GleanSchemaPredicate):
 
 class FlowFlowImportXRef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.FlowImportXRef.3 {{ }}", FlowImportXRef
-    return f"flow.FlowImportXRef.3 {{ local = _, entity = _, targetFile = _, targetSpan = _ }}", FlowImportXRef
+    return f"flow.FlowImportXRef.3 { concatenateFields(key) }", FlowImportXRef
 
   @staticmethod
   def angle_query(*, local: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None, targetFile: Optional[Tuple[()]] = None, targetSpan: Optional[Tuple[()]] = None) -> "FlowFlowImportXRef":
@@ -409,10 +408,10 @@ class FlowFlowImportXRef(GleanSchemaPredicate):
 
 class FlowModuleExport(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.ModuleExport.3 {{ }}", ModuleExport
-    return f"flow.ModuleExport.3 {{ module = _, export_ = _ }}", ModuleExport
+    return f"flow.ModuleExport.3 { concatenateFields(key) }", ModuleExport
 
   @staticmethod
   def angle_query(*, module: Optional[Tuple[()]] = None, export_: Optional[Tuple[()]] = None) -> "FlowModuleExport":
@@ -420,10 +419,10 @@ class FlowModuleExport(GleanSchemaPredicate):
 
 class FlowMemberDeclarationInfo(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.MemberDeclarationInfo.3 {{ }}", MemberDeclarationInfo
-    return f"flow.MemberDeclarationInfo.3 {{ memberDeclaration = _, type = _, documentation = _ }}", MemberDeclarationInfo
+    return f"flow.MemberDeclarationInfo.3 { concatenateFields(key) }", MemberDeclarationInfo
 
   @staticmethod
   def angle_query(*, memberDeclaration: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None, documentation: Optional[Tuple[()]] = None) -> "FlowMemberDeclarationInfo":
@@ -431,10 +430,10 @@ class FlowMemberDeclarationInfo(GleanSchemaPredicate):
 
 class FlowTypeDeclarationInfo(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.TypeDeclarationInfo.3 {{ }}", TypeDeclarationInfo
-    return f"flow.TypeDeclarationInfo.3 {{ typeDeclaration = _, type = _, documentation = _ }}", TypeDeclarationInfo
+    return f"flow.TypeDeclarationInfo.3 { concatenateFields(key) }", TypeDeclarationInfo
 
   @staticmethod
   def angle_query(*, typeDeclaration: Optional[Tuple[()]] = None, type: Optional[Tuple[()]] = None, documentation: Optional[Tuple[()]] = None) -> "FlowTypeDeclarationInfo":
@@ -442,10 +441,10 @@ class FlowTypeDeclarationInfo(GleanSchemaPredicate):
 
 class FlowFileXRef(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.FileXRef.3 {{ }}", FileXRef
-    return f"flow.FileXRef.3 {{ file = _, ref = _ }}", FileXRef
+    return f"flow.FileXRef.3 { concatenateFields(key) }", FileXRef
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, ref: Optional[Tuple[()]] = None) -> "FlowFileXRef":
@@ -453,10 +452,10 @@ class FlowFileXRef(GleanSchemaPredicate):
 
 class FlowSourceOfExport(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.SourceOfExport.3 {{ }}", SourceOfExport
-    return f"flow.SourceOfExport.3 {{ moduleExport = _, source = _ }}", SourceOfExport
+    return f"flow.SourceOfExport.3 { concatenateFields(key) }", SourceOfExport
 
   @staticmethod
   def angle_query(*, moduleExport: Optional[Tuple[()]] = None, source: Optional[Tuple[()]] = None) -> "FlowSourceOfExport":
@@ -464,10 +463,10 @@ class FlowSourceOfExport(GleanSchemaPredicate):
 
 class FlowMemberDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.MemberDeclaration.3 {{ }}", MemberDeclaration
-    return f"flow.MemberDeclaration.3 {{ name = _, loc = _ }}", MemberDeclaration
+    return f"flow.MemberDeclaration.3 { concatenateFields(key) }", MemberDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None) -> "FlowMemberDeclaration":
@@ -475,10 +474,10 @@ class FlowMemberDeclaration(GleanSchemaPredicate):
 
 class FlowType(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.Type.3 {{ }}", Type
-    return f"flow.Type.3 {json.dumps(key)}", Type
+    return f"flow.Type.3 {key}", Type
 
   @staticmethod
   def angle_query(*, arg: Optional[str] = None) -> "FlowType":
@@ -486,10 +485,10 @@ class FlowType(GleanSchemaPredicate):
 
 class FlowFileOfStringModule(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.FileOfStringModule.3 {{ }}", FileOfStringModule
-    return f"flow.FileOfStringModule.3 {{ file = _, string_ = _ }}", FileOfStringModule
+    return f"flow.FileOfStringModule.3 { concatenateFields(key) }", FileOfStringModule
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, string_: Optional[str] = None) -> "FlowFileOfStringModule":
@@ -497,10 +496,10 @@ class FlowFileOfStringModule(GleanSchemaPredicate):
 
 class FlowTypeDeclaration(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.TypeDeclaration.3 {{ }}", TypeDeclaration
-    return f"flow.TypeDeclaration.3 {{ name = _, loc = _ }}", TypeDeclaration
+    return f"flow.TypeDeclaration.3 { concatenateFields(key) }", TypeDeclaration
 
   @staticmethod
   def angle_query(*, name: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None) -> "FlowTypeDeclaration":
@@ -508,10 +507,10 @@ class FlowTypeDeclaration(GleanSchemaPredicate):
 
 class FlowDeclarationNameSpan(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.DeclarationNameSpan.3 {{ }}", DeclarationNameSpan
-    return f"flow.DeclarationNameSpan.3 {{ decl = _, name = _, span = _ }}", DeclarationNameSpan
+    return f"flow.DeclarationNameSpan.3 { concatenateFields(key) }", DeclarationNameSpan
 
   @staticmethod
   def angle_query(*, decl: Optional[Tuple[()]] = None, name: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "FlowDeclarationNameSpan":
@@ -519,10 +518,10 @@ class FlowDeclarationNameSpan(GleanSchemaPredicate):
 
 class FlowMemberDeclarationReference(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.MemberDeclarationReference.3 {{ }}", MemberDeclarationReference
-    return f"flow.MemberDeclarationReference.3 {{ memberDeclaration = _, loc = _ }}", MemberDeclarationReference
+    return f"flow.MemberDeclarationReference.3 { concatenateFields(key) }", MemberDeclarationReference
 
   @staticmethod
   def angle_query(*, memberDeclaration: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None) -> "FlowMemberDeclarationReference":
@@ -530,10 +529,10 @@ class FlowMemberDeclarationReference(GleanSchemaPredicate):
 
 class FlowFlowTypeExportLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.FlowTypeExportLocation.3 {{ }}", FlowTypeExportLocation
-    return f"flow.FlowTypeExportLocation.3 {{ moduleTypeExport = _, entity = _, file = _, span = _ }}", FlowTypeExportLocation
+    return f"flow.FlowTypeExportLocation.3 { concatenateFields(key) }", FlowTypeExportLocation
 
   @staticmethod
   def angle_query(*, moduleTypeExport: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "FlowFlowTypeExportLocation":
@@ -541,10 +540,10 @@ class FlowFlowTypeExportLocation(GleanSchemaPredicate):
 
 class FlowTypeDeclarationReference(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"flow.TypeDeclarationReference.3 {{ }}", TypeDeclarationReference
-    return f"flow.TypeDeclarationReference.3 {{ typeDeclaration = _, loc = _ }}", TypeDeclarationReference
+    return f"flow.TypeDeclarationReference.3 { concatenateFields(key) }", TypeDeclarationReference
 
   @staticmethod
   def angle_query(*, typeDeclaration: Optional[Tuple[()]] = None, loc: Optional[Tuple[()]] = None) -> "FlowTypeDeclarationReference":

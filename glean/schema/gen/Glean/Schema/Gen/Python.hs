@@ -33,7 +33,7 @@ genSchemaPy _version preddefs typedefs =
   Text.unlines
   [ "# \x40generated"
   , "# To regenerate this file run fbcode//glean/schema/gen/sync"
-  , "from typing import Optional, Tuple, Union"
+  , "from typing import Optional, Tuple, Union, List"
   , "from thrift.py3 import Struct"
   , ""
   , "class GleanSchemaPredicate:"
@@ -47,6 +47,11 @@ genSchemaPy _version preddefs typedefs =
   , "  " <> "def angle_query(*, arg: str) -> \"GleanSchemaPredicate\":"
   , "    " <> "raise Exception" <>
     "(\"this function can only be called from @angle_query\")"
+    , ""
+  , "def concatenateFields(fields: List[Tuple[str,str]]) -> str:"
+  , "  " <> "f = ', '.join(map((lambda f: f'{f[0]} = {f[1]}'), " <>
+    "fields))"
+  , "  " <> "return f'{{ {f} }}'"
   ]) :
   [ ("py" </>
       Text.unpack (Text.concat namespaces) <.> "py",
@@ -108,10 +113,10 @@ header :: Text
 header = Text.unlines
   [ "# \x40generated"
   , "# To regenerate this file run fbcode//glean/schema/gen/sync"
-  , "from typing import Optional, Tuple, Union"
-  , "import json"
+  , "from typing import Optional, Tuple, Union, List"
   , "from thrift.py3 import Struct"
-  , "from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate"
+  , "from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate"<>
+    ", concatenateFields"
   ]
 
 pythonClassName :: Text -> Text
@@ -173,25 +178,21 @@ valueTy t = case t of
   _ -> createQueryField (defaultFieldName, baseTy t)
 
   where
-    createQueryField (name, type_) = name <> ": " <> type_
+    createQueryField (name, type_) = from_ name <> ": " <> type_
     defaultFieldName = Text.pack "arg"
+    from_ name -- avoid Python keywards
+      | name == Text.pack "from" = "_" <> name
+      | otherwise = name
 
 
 pythonKeyValues :: Text
-pythonKeyValues = Text.pack "int, bool, str, Tuple[()]"
+pythonKeyValues = Text.pack "int, bool, str, Tuple[()], List[Tuple[str, str]]"
 
 angleFor :: Type_ pref tref -> Text
 angleFor key = case key of
-  RecordTy [] -> Text.pack "json.dumps(key)"
-  RecordTy fields ->
-    let
-      fieldNames = map fieldDefName fields
-      setValue field = field <> " = " <> "_" -- TODO accept field value
-      setValues = map setValue
-    in
-    "{ " <> Text.intercalate ", " (setValues fieldNames) <> " }"
-
-  _ -> Text.pack "json.dumps(key)"
+  RecordTy [] -> Text.pack "key"
+  RecordTy _ -> " concatenateFields(key) "
+  _ -> Text.pack "key"
 
 baseTy :: Type_ pref tref -> Text
 baseTy t = wrapOptionalArg $ case t of

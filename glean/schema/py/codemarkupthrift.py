@@ -1,9 +1,8 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union
-import json
+from typing import Optional, Tuple, Union, List
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
 
 
 from glean.schema.codemarkupthrift.types import (
@@ -15,10 +14,10 @@ from glean.schema.codemarkupthrift.types import (
 
 class CodemarkupThriftThriftFileEntityXRefLocations(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.thrift.ThriftFileEntityXRefLocations.4 {{ }}", ThriftThriftFileEntityXRefLocations
-    return f"codemarkup.thrift.ThriftFileEntityXRefLocations.4 {{ file = _, xref = _, entity = _ }}", ThriftThriftFileEntityXRefLocations
+    return f"codemarkup.thrift.ThriftFileEntityXRefLocations.4 { concatenateFields(key) }", ThriftThriftFileEntityXRefLocations
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, xref: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupThriftThriftFileEntityXRefLocations":
@@ -26,10 +25,10 @@ class CodemarkupThriftThriftFileEntityXRefLocations(GleanSchemaPredicate):
 
 class CodemarkupThriftThriftResolveLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.thrift.ThriftResolveLocation.4 {{ }}", ThriftThriftResolveLocation
-    return f"codemarkup.thrift.ThriftResolveLocation.4 {{ location = _, entity = _ }}", ThriftThriftResolveLocation
+    return f"codemarkup.thrift.ThriftResolveLocation.4 { concatenateFields(key) }", ThriftThriftResolveLocation
 
   @staticmethod
   def angle_query(*, location: Optional[Tuple[()]] = None, entity: Optional[Tuple[()]] = None) -> "CodemarkupThriftThriftResolveLocation":
@@ -37,10 +36,10 @@ class CodemarkupThriftThriftResolveLocation(GleanSchemaPredicate):
 
 class CodemarkupThriftThriftEntityLocation(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"codemarkup.thrift.ThriftEntityLocation.4 {{ }}", ThriftThriftEntityLocation
-    return f"codemarkup.thrift.ThriftEntityLocation.4 {{ entity = _, location = _ }}", ThriftThriftEntityLocation
+    return f"codemarkup.thrift.ThriftEntityLocation.4 { concatenateFields(key) }", ThriftThriftEntityLocation
 
   @staticmethod
   def angle_query(*, entity: Optional[Tuple[()]] = None, location: Optional[Tuple[()]] = None) -> "CodemarkupThriftThriftEntityLocation":

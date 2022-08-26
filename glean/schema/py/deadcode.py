@@ -1,9 +1,8 @@
 # @generated
 # To regenerate this file run fbcode//glean/schema/gen/sync
-from typing import Optional, Tuple, Union
-import json
+from typing import Optional, Tuple, Union, List
 from thrift.py3 import Struct
-from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate
+from glean.schema.py.glean_schema_predicate import GleanSchemaPredicate, concatenateFields
 
 
 from glean.schema.deadcode.types import (
@@ -18,21 +17,21 @@ from glean.schema.deadcode.types import (
 
 class DeadcodeGraphInverseEdge(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"deadcode.GraphInverseEdge.7 {{ }}", GraphInverseEdge
-    return f"deadcode.GraphInverseEdge.7 {{ to = _, from = _ }}", GraphInverseEdge
+    return f"deadcode.GraphInverseEdge.7 { concatenateFields(key) }", GraphInverseEdge
 
   @staticmethod
-  def angle_query(*, to: Optional[Tuple[()]] = None, from: Optional[Tuple[()]] = None) -> "DeadcodeGraphInverseEdge":
+  def angle_query(*, to: Optional[Tuple[()]] = None, _from: Optional[Tuple[()]] = None) -> "DeadcodeGraphInverseEdge":
     raise Exception("this function can only be called from @angle_query")
 
 class DeadcodeGraphNode(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"deadcode.GraphNode.7 {{ }}", GraphNode
-    return f"deadcode.GraphNode.7 {{ type = _, entities = _, out_degree = _, in_degree = _ }}", GraphNode
+    return f"deadcode.GraphNode.7 { concatenateFields(key) }", GraphNode
 
   @staticmethod
   def angle_query(*, type: Optional[Tuple[()]] = None, entities: Optional[Tuple[()]] = None, out_degree: Optional[int] = None, in_degree: Optional[int] = None) -> "DeadcodeGraphNode":
@@ -40,10 +39,10 @@ class DeadcodeGraphNode(GleanSchemaPredicate):
 
 class DeadcodeGraphEntityByFile(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"deadcode.GraphEntityByFile.7 {{ }}", GraphEntityByFile
-    return f"deadcode.GraphEntityByFile.7 {{ file = _, graph_entity = _ }}", GraphEntityByFile
+    return f"deadcode.GraphEntityByFile.7 { concatenateFields(key) }", GraphEntityByFile
 
   @staticmethod
   def angle_query(*, file: Optional[Tuple[()]] = None, graph_entity: Optional[Tuple[()]] = None) -> "DeadcodeGraphEntityByFile":
@@ -51,10 +50,10 @@ class DeadcodeGraphEntityByFile(GleanSchemaPredicate):
 
 class DeadcodeGraphEntity(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"deadcode.GraphEntity.7 {{ }}", GraphEntity
-    return f"deadcode.GraphEntity.7 {{ entity = _, file = _, span = _ }}", GraphEntity
+    return f"deadcode.GraphEntity.7 { concatenateFields(key) }", GraphEntity
 
   @staticmethod
   def angle_query(*, entity: Optional[Tuple[()]] = None, file: Optional[Tuple[()]] = None, span: Optional[Tuple[()]] = None) -> "DeadcodeGraphEntity":
@@ -62,21 +61,21 @@ class DeadcodeGraphEntity(GleanSchemaPredicate):
 
 class DeadcodeGraphEdge(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"deadcode.GraphEdge.7 {{ }}", GraphEdge
-    return f"deadcode.GraphEdge.7 {{ from = _, to = _ }}", GraphEdge
+    return f"deadcode.GraphEdge.7 { concatenateFields(key) }", GraphEdge
 
   @staticmethod
-  def angle_query(*, from: Optional[Tuple[()]] = None, to: Optional[Tuple[()]] = None) -> "DeadcodeGraphEdge":
+  def angle_query(*, _from: Optional[Tuple[()]] = None, to: Optional[Tuple[()]] = None) -> "DeadcodeGraphEdge":
     raise Exception("this function can only be called from @angle_query")
 
 class DeadcodeGraphNodeByEntity(GleanSchemaPredicate):
   @staticmethod
-  def build_angle(key: Union[int, bool, str, Tuple[()]]) -> Tuple[str, Struct]:
+  def build_angle(key: Union[int, bool, str, Tuple[()], List[Tuple[str, str]]]) -> Tuple[str, Struct]:
     if key is None:
       return f"deadcode.GraphNodeByEntity.7 {{ }}", GraphNodeByEntity
-    return f"deadcode.GraphNodeByEntity.7 {{ entity = _, node = _ }}", GraphNodeByEntity
+    return f"deadcode.GraphNodeByEntity.7 { concatenateFields(key) }", GraphNodeByEntity
 
   @staticmethod
   def angle_query(*, entity: Optional[Tuple[()]] = None, node: Optional[Tuple[()]] = None) -> "DeadcodeGraphNodeByEntity":
