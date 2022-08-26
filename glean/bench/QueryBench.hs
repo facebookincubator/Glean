@@ -32,7 +32,7 @@ import Glean.Util.Benchmark
 import BenchDB
 
 main :: IO ()
-main = benchmarkMain $ \run -> withBenchDB 100000 $ \env repo -> do
+main = benchmarkMain $ \run -> withBenchDB 10000 $ \env repo -> do
   let
     simpleQueryThrift = query $ Query.Sys.Blob_with_key "x1"
     nestedQueryThrift = query $ Query.Cxx.FunctionName_with_key $ def
