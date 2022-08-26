@@ -30,24 +30,27 @@ predicate GlobalDeclarationWithName :
     ) |
     (cxx1.Declaration { objcProperty = { name = N }})
 
-predicate DeclIsDefn : { decl : cxx1.Declaration, defn : code.cxx.Definition }
-  { Decl, Defn }
-  where
-  Defn =
-    (code.cxx.Definition { record_ = { declaration = D } }
-      where { record_ = D } = Decl ) |
-    (code.cxx.Definition { function_ = { declaration = D } }
-      where { function_ = D } = Decl ) |
-    (code.cxx.Definition { enum_ = { declaration = D } }
-      where { enum_ = D } = Decl )  |
-    (code.cxx.Definition { objcMethod = cxx1.ObjcMethodDefinition D }
-      where { objcMethod = D } = Decl ) |
-    (code.cxx.Definition { objcContainer = { declaration = D } }
-      where { objcContainer = D } = Decl ) |
-    (code.cxx.Definition { variable = D }
-      where { variable = D } = Decl;
-            D = cxx1.VariableDeclaration
-                  { kind = { global_ = { definition = true }}} )
+# Find direct definition entities for various declaration types
+predicate DeclIsDefn :
+  {
+    decl : cxx1.Declaration,
+    defn : code.cxx.Definition
+  }
+  { Decl, Defn } where
+    ({ record_ = D } = Decl;
+     { record_ = cxx1.RecordDefinition { declaration = D } } = Defn ) |
+    ({ function_ = D } = Decl;
+     { function_ = cxx1.FunctionDefinition { declaration = D } } = Defn) |
+    ({ enum_ = D } = Decl;
+     { enum_ = cxx1.EnumDefinition { declaration = D } } = Defn) |
+    # global variables only?
+    ({ variable = D } = Decl;
+     cxx1.VariableDeclaration { kind = { global_ = { definition = true }}} = D;
+     { variable = D } = Defn) |
+    ({ objcMethod = D } = Decl;
+     { objcMethod = cxx1.ObjcMethodDefinition D } = Defn ) |
+    ({ objcContainer = D } = Decl;
+     { objcContainer = cxx1.ObjcContainerDefinition { declaration = D }} = Defn)
 
 predicate SearchByNameAndScope :
   {
