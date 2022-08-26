@@ -1,8 +1,10 @@
 *~
 *.save[0-9]*
+.build
 dist-newstyle
 gen-hs2
 gen-cpp2
+glean.cabal
 glean/hs/Glean/RTS/Bytecode/Gen
 glean/rts/bytecode/gen
 glean/lang/clang/schema.h
@@ -12,5 +14,6 @@ glean/schema/v[0-9]*
 glean/lang/java-lsif/tests/cases/xrefs/target
 hsthrift
 dump.lsif
+settings.mk
 .vscode
 glean.code-workspace
