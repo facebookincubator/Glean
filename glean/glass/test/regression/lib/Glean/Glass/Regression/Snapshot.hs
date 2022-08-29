@@ -169,10 +169,6 @@ evalQuery glassEnv qFile Query{..} oFile = case action of
     (Glass.describeSymbol glassEnv)
   "searchSymbol" ->  withObjectArgs qFile oFile args
     (Glass.searchSymbol glassEnv)
-  "searchByName" ->  withObjectArgs qFile oFile args
-    (Glass.searchByName glassEnv)
-  "searchByNamePrefix" ->  withObjectArgs qFile oFile args
-    (Glass.searchByNamePrefix glassEnv)
   "searchBySymbolId" -> withSymbolId oFile args
     (Glass.searchBySymbolId glassEnv)
   "searchRelated" -> withObjectAndSymbolId qFile oFile args
@@ -260,10 +256,6 @@ instance SortedResponse DocumentSymbolListXResult where
 instance SortedResponse DocumentSymbolIndex where
   sorted (DocumentSymbolIndex syms _rev size) =
     DocumentSymbolIndex (Map.map sort syms) (Revision "testhash") size
-
-instance SortedResponse SearchByNameResult where
-  sorted (SearchByNameResult syms deets) =
-    SearchByNameResult (sorted syms) (sorted deets)
 
 instance SortedResponse SymbolSearchResult where
   sorted (SymbolSearchResult syms deets) =

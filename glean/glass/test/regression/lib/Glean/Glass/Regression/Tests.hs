@@ -15,7 +15,6 @@ module Glean.Glass.Regression.Tests (
   testDescribeSymbolHasVisibility,
   testSearchRelated,
   testResolveSymbol,
-  testSearchSymbolByName
 ) where
 
 import Data.Default
@@ -60,17 +59,6 @@ testResolveSymbol sym@(SymbolId name) path get =
     withTestEnv backend $ \env -> do
       LocationRange{..} <- resolveSymbolRange env sym def
       assertEqual "resolveSymbol Path matches" locationRange_filepath path
-
-testSearchSymbolByName :: Text -> SymbolId -> Getter -> Test
-testSearchSymbolByName searchStr sym@(SymbolId name) get =
-  TestLabel (Text.unpack name) $ TestCase $ do
-    (backend, _repo) <- get
-    withTestEnv backend $ \env -> do
-      syms <- searchByNameResult_symbols <$> searchByName env req def
-      assertBool "searchByName" (elem sym syms)
-  where
-    req = SearchByNameRequest ctx searchStr False True
-    ctx = SearchContext (Just $ RepoName "test") Nothing{-lang-} def{- kinds -}
 
 -- | Test that both describeSymbol and resolveSymbol for a SymbolId
 -- find the symbol in a given Path.
