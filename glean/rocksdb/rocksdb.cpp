@@ -237,6 +237,10 @@ struct ContainerImpl final : Container {
         rocksdb::NewBlockBasedTableFactory(table_options));
     }
 
+    // larger files, so we get fewer of them, particularly with large DBs.
+    options.target_file_size_base = 256 * 1048576;
+    options.target_file_size_multiplier = 10;
+
     // options.IncreaseParallelism();
     // options.compression = rocksdb::CompressionType::kNoCompression;
     // writeOptions.sync = false;
@@ -393,8 +397,6 @@ struct ContainerImpl final : Container {
         const auto nlevels = db->NumberLevels(handle);
         if (nlevels != 2) {
           rocksdb::CompactRangeOptions copts;
-          copts.change_level = true;
-          copts.target_level = 1;
           check(db->CompactRange(copts, handle, nullptr, nullptr));
         }
       }
