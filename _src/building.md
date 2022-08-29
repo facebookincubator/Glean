@@ -36,9 +36,11 @@ that we use for building the base image for CI).
 sudo apt-get install \
     g++ \
     cmake \
+    make \
     ninja-build \
     bison flex \
-    git \
+    git curl \
+    rsync m4 \
     libzstd-dev \
     libboost-all-dev \
     libevent-dev \
@@ -49,7 +51,6 @@ sudo apt-get install \
     liblz4-dev \
     liblzma-dev \
     libsnappy-dev \
-    make \
     zlib1g-dev \
     binutils-dev \
     libjemalloc-dev \
@@ -57,17 +58,14 @@ sudo apt-get install \
     pkg-config \
     libunwind-dev \
     libsodium-dev \
-    curl \
     libpcre3-dev \
-    libmysqlclient-dev \
     libfftw3-dev \
     libxxhash-dev
 ```
 
 ### Debian
 
-The package dependencies for Debian current are the same as above for Ubuntu,
-except you need `default-libmysqlclient-dev` instead of `libmysqlclient-dev`.
+The package dependencies for Debian current are the same as above for Ubuntu.
 
 ### Fedora
 
@@ -78,10 +76,11 @@ sudo dnf install \
     g++ \
     make \
     cmake \
+    curl git \
+    rsync m4 \
     ninja-build \
     binutils \
     bison flex \
-    curl \
     libzstd-devel \
     boost-devel \
     libevent-devel \
@@ -93,11 +92,11 @@ sudo dnf install \
     libunwind-devel \
     libsodium-devel \
     pcre-devel \
-    community-mysql-devel \
     fftw-devel \
     xxhash-devel \
     snappy-devel \
-    lz4-devel
+    lz4-devel \
+    libxxhash-dev
 ```
 
 ## Building
