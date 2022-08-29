@@ -1,47 +1,37 @@
 [
     "@generated",
     {
+        "annotations": [],
         "comments": [],
-        "kind": 6,
+        "kind": 12,
         "language": 3,
         "location": {
-            "filepath": "www/Namespace2.php",
+            "filepath": "www/TopLevel.php",
             "range": {
-                "columnBegin": 11,
-                "columnEnd": 13,
-                "lineBegin": 11,
-                "lineEnd": 11
+                "columnBegin": 1,
+                "columnEnd": 2,
+                "lineBegin": 16,
+                "lineEnd": 22
             },
             "repository": "test"
         },
         "name": {
             "container": "",
-            "localName": "NS"
+            "localName": "Position"
         },
         "repo_hash": "testhash",
-        "signature": "namespace NS",
-        "sym": "test/php/NS",
+        "signature": "enum Position",
+        "sym": "test/php/Position",
         "sym_location": {
-            "filepath": "www/Namespace2.php",
+            "filepath": "www/TopLevel.php",
             "range": {
-                "columnBegin": 11,
-                "columnEnd": 13,
-                "lineBegin": 11,
-                "lineEnd": 11
+                "columnBegin": 1,
+                "columnEnd": 2,
+                "lineBegin": 16,
+                "lineEnd": 22
             },
             "repository": "test"
         },
-        "sym_other_locations": [
-            {
-                "filepath": "www/Namespace.php",
-                "range": {
-                    "columnBegin": 11,
-                    "columnEnd": 13,
-                    "lineBegin": 10,
-                    "lineEnd": 10
-                },
-                "repository": "test"
-            }
-        ]
+        "sym_other_locations": []
     }
 ]
