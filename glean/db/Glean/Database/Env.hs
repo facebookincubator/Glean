@@ -117,6 +117,7 @@ initEnv evb dbRoot envCatalog shardManager cfg
     envLookupCacheStats <- LookupCache.newStats
     envWarden <- Warden.create
     envDatabaseJanitor <- newTVarIO Nothing
+    envDatabaseJanitorPublishedCounters <- newTVarIO mempty
     envCachedRestorableDBs <- newTVarIO Nothing
 
     envLoggerRateLimit <-

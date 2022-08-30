@@ -22,6 +22,7 @@ import Data.ByteString (ByteString)
 import Data.Foldable as Foldable
 import Data.Hashable
 import qualified Data.HashMap.Strict as HashMap
+import qualified Data.HashSet as HashSet
 import Data.List (sortOn)
 import Data.List.Extra (nubOrdOn)
 import qualified Data.Map as Map
@@ -72,11 +73,24 @@ The database janitor has the following functions:
 -}
 runDatabaseJanitor :: Env -> IO ()
 runDatabaseJanitor env = do
-  runDatabaseJanitorPureish env >>= executeJanitorSideEffects
+  runDatabaseJanitorPureish env >>= executeJanitorSideEffects env
 
-executeJanitorSideEffects :: Foldable t => t JanitorSideEffect -> IO ()
-executeJanitorSideEffects = mapM_ $ \case
-    PublishCounter n v -> setCounter n v
+executeJanitorSideEffects :: Env -> [JanitorSideEffect] -> IO ()
+executeJanitorSideEffects Env{envDatabaseJanitorPublishedCounters} sideEffects =
+  do
+  forM_ sideEffects $ \case
+    PublishCounter n v -> void $ Stats.setCounter n v
+
+  -- Record the published counters and clear stale ones
+  let countersPublished =
+        HashSet.fromList [n | PublishCounter n _ <- sideEffects]
+  lastPublishedCounters <- atomically $ do
+    last <- readTVar envDatabaseJanitorPublishedCounters
+    writeTVar envDatabaseJanitorPublishedCounters countersPublished
+    return last
+  forM_ (HashSet.difference lastPublishedCounters countersPublished)
+    clearCounter
+
 
 data JanitorSideEffect
   = PublishCounter !ByteString !Int

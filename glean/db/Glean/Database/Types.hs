@@ -19,7 +19,9 @@ import Control.Concurrent.Async
 import Control.Concurrent.MVar (MVar)
 import Control.Concurrent.STM
 import Control.Exception
+import Data.ByteString (ByteString)
 import Data.HashMap.Strict (HashMap)
+import Data.HashSet (HashSet)
 import Data.IORef (IORef)
 import Data.Text (Text)
 import Data.Time
@@ -221,6 +223,7 @@ data Env = forall storage. Storage storage => Env
   , envLookupCacheStats :: LookupCache.Stats
   , envWarden :: Warden
   , envDatabaseJanitor :: TVar (Maybe UTCTime)
+  , envDatabaseJanitorPublishedCounters :: TVar (HashSet ByteString)
   , envCachedRestorableDBs :: TVar (Maybe (UTCTime, [(Thrift.Repo, Meta)]))
   , envWorkQueue :: WorkQueue
   , envHeartbeats :: Heartbeats

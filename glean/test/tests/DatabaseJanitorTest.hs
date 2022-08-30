@@ -36,6 +36,7 @@ import System.Time.Extra (sleep)
 import System.Timeout
 import Test.HUnit
 
+import ServiceData.GlobalStats (getCounters)
 import TestRunner
 import Util.EventBase
 import Util.TimeSec
@@ -655,8 +656,11 @@ expireTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
     assertEqual "All deleted" [] (map database_repo localDBs)
 
 ageCountersTestEx
-  :: HasCallStack => SomeShardManager -> ([BS.ByteString] -> IO ()) -> Test
-ageCountersTestEx shardManager k = TestCase $
+  :: HasCallStack
+  => SomeShardManager
+  -> (Env -> [BS.ByteString] -> IO ())
+  -> IO ()
+ageCountersTestEx shardManager k =
   withTest setupBasicDBs setupBasicCloudDBs $ \evb cfgAPI dbdir backupdir -> do
     let cfg = (dbConfig dbdir (serverConfig backupdir)
           { config_restore = def {
@@ -672,28 +676,44 @@ ageCountersTestEx shardManager k = TestCase $
             | PublishCounter c _ <- sideEffects
             , ".age" `BS.isSuffixOf` c
             ]
-      k $ sort countersToPublish
+      k env $ sort countersToPublish
 
 ageCountersCompleteTest :: Test
-ageCountersCompleteTest = ageCountersTestEx
+ageCountersCompleteTest = TestCase $ ageCountersTestEx
   (SomeShardManager $ shardByRepoHash (pure $ Just ["0001"]))
-  $ assertEqual
+  $ \_ -> assertEqual
     "Should publish age counters for all newest DBs restored locally"
     ["glean.db.test.age"]
 
 ageCountersOnlyLocalTest :: Test
-ageCountersOnlyLocalTest = ageCountersTestEx
+ageCountersOnlyLocalTest = TestCase $ ageCountersTestEx
   (SomeShardManager $ shardByRepoHash (pure $ Just ["0006"]))
-  $ assertEqual
+  $ \_ -> assertEqual
       "Should not publish age for locally newest DBs not globally newest"
     []
 
 ageCountersOnlyNewestTest :: Test
-ageCountersOnlyNewestTest = ageCountersTestEx
+ageCountersOnlyNewestTest = TestCase $ ageCountersTestEx
   (SomeShardManager $ shardByRepoHash (pure $ Just []))
-  $ assertEqual
+  $ \_ -> assertEqual
       "Should not publish age for newest DBs not restored locally"
       []
+
+ageCountersClearTest:: Test
+ageCountersClearTest = TestCase $ do
+  shardAssignmentRef <- newIORef ["0001"]
+  ageCountersTestEx
+    (SomeShardManager $ shardByRepoHash (Just <$> readIORef shardAssignmentRef))
+    $ \env _ -> do
+    writeIORef shardAssignmentRef []
+    -- Run the Janitor to pick up the new assignment and delete unassigned DBs
+    runDatabaseJanitor env
+    waitDel env
+    -- Run the Janitor again after DBs are deleted to clear the counters
+    runDatabaseJanitor env
+    counters <- getCounters
+    assertBool "glean.db.test.age cleared"
+      $ not (HashMap.member "glean.db.test.age" counters)
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
@@ -714,4 +734,5 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "ageCountersForAllNewestDBs" ageCountersCompleteTest
   , TestLabel "ageCountersForOnlyNewestDBs" ageCountersOnlyNewestTest
   , TestLabel "ageCountersForOnlyLocalDBs" ageCountersOnlyLocalTest
+  , TestLabel "ageCountersClear" ageCountersClearTest
   ]
