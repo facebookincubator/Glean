@@ -490,6 +490,14 @@ closeIdleDBsTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
 shardByRepoHash :: IO (Maybe [Text.Text]) -> ShardManager Text.Text
 shardByRepoHash refShardAssignment = ShardManager
   refShardAssignment
+  (pure (\_ Repo{..} -> repo_hash))
+  (pure [])
+
+-- | A shard manager that uses repo hashes as shards,
+-- and a dynamic shard assignment
+shardByBaseOfStackRepoHash :: IO (Maybe [Text.Text]) -> ShardManager Text.Text
+shardByBaseOfStackRepoHash refShardAssignment = ShardManager
+  refShardAssignment
   (pure (\(BaseOfStack Repo{..}) _ -> repo_hash))
   (pure [])
 
@@ -521,7 +529,7 @@ shardingStacksTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   myShards <- newIORef ["0006"] -- initial shard assignment
   let cfg = (dbConfig dbdir (serverConfig backupdir))
         {cfgShardManager = \_ _ k -> k $ SomeShardManager $
-          shardByRepoHash (Just <$> readIORef myShards)}
+          shardByBaseOfStackRepoHash (Just <$> readIORef myShards)}
   withDatabases evb cfg cfgAPI $ \env -> do
     runDatabaseJanitor env
     waitDel env
