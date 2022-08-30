@@ -7,57 +7,6 @@
           "key": {
             "name": {
               "key": {
-                "name": { "key": { "name": { "key": "bar" } } },
-                "scope": { "global_": { } }
-              }
-            },
-            "signature": {
-              "key": {
-                "parameters": [
-                  { "name": { "key": "selector" }, "type": { "key": "SEL" } }
-                ],
-                "returns": { "key": "void" }
-              }
-            },
-            "source": {
-              "columnBegin": 1,
-              "columnEnd": 1,
-              "file": { "key": "test.m" },
-              "lineBegin": 13,
-              "lineEnd": 16
-            }
-          }
-        }
-      },
-      "targets": [
-        {
-          "typeAlias": {
-            "key": {
-              "kind": 0,
-              "name": {
-                "key": { "name": { "key": "SEL" }, "scope": { "global_": { } } }
-              },
-              "source": {
-                "columnBegin": 1,
-                "columnEnd": 1,
-                "file": { "key": "<builtin>" },
-                "lineBegin": 1,
-                "lineEnd": 1
-              },
-              "type": { "key": "SEL *" }
-            }
-          }
-        }
-      ]
-    }
-  },
-  {
-    "key": {
-      "source": {
-        "function_": {
-          "key": {
-            "name": {
-              "key": {
                 "name": { "key": { "name": { "key": "call" } } },
                 "scope": { "global_": { } }
               }
@@ -122,24 +71,6 @@
           }
         },
         {
-          "typeAlias": {
-            "key": {
-              "kind": 0,
-              "name": {
-                "key": { "name": { "key": "SEL" }, "scope": { "global_": { } } }
-              },
-              "source": {
-                "columnBegin": 1,
-                "columnEnd": 1,
-                "file": { "key": "<builtin>" },
-                "lineBegin": 1,
-                "lineEnd": 1
-              },
-              "type": { "key": "SEL *" }
-            }
-          }
-        },
-        {
           "variable": {
             "key": {
               "kind": { "local": { "attribute": 0, "kind": 2 } },
@@ -164,94 +95,6 @@
                 "lineEnd": 18
               },
               "type": { "key": "J *" }
-            }
-          }
-        }
-      ]
-    }
-  },
-  {
-    "key": {
-      "source": {
-        "objcContainer": {
-          "key": {
-            "id": { "interface_": { "key": "J" } },
-            "source": {
-              "columnBegin": 1,
-              "columnEnd": 4,
-              "file": { "key": "test.m" },
-              "lineBegin": 9,
-              "lineEnd": 11
-            }
-          }
-        }
-      },
-      "targets": [
-        {
-          "typeAlias": {
-            "key": {
-              "kind": 0,
-              "name": {
-                "key": { "name": { "key": "SEL" }, "scope": { "global_": { } } }
-              },
-              "source": {
-                "columnBegin": 1,
-                "columnEnd": 1,
-                "file": { "key": "<builtin>" },
-                "lineBegin": 1,
-                "lineEnd": 1
-              },
-              "type": { "key": "SEL *" }
-            }
-          }
-        }
-      ]
-    }
-  },
-  {
-    "key": {
-      "source": {
-        "objcMethod": {
-          "key": {
-            "container": { "interface_": { "key": "J" } },
-            "isAccessor": false,
-            "isInstance": true,
-            "isOptional": false,
-            "selector": { "key": [ "checkSelector" ] },
-            "signature": {
-              "key": {
-                "parameters": [
-                  { "name": { "key": "selector" }, "type": { "key": "SEL" } }
-                ],
-                "returns": { "key": "void" }
-              }
-            },
-            "source": {
-              "columnBegin": 1,
-              "columnEnd": 36,
-              "file": { "key": "test.m" },
-              "lineBegin": 10,
-              "lineEnd": 10
-            }
-          }
-        }
-      },
-      "targets": [
-        {
-          "typeAlias": {
-            "key": {
-              "kind": 0,
-              "name": {
-                "key": { "name": { "key": "SEL" }, "scope": { "global_": { } } }
-              },
-              "source": {
-                "columnBegin": 1,
-                "columnEnd": 1,
-                "file": { "key": "<builtin>" },
-                "lineBegin": 1,
-                "lineEnd": 1
-              },
-              "type": { "key": "SEL *" }
             }
           }
         }
