@@ -1002,7 +1002,9 @@ struct CompletePredicatesResponse {}
 
 service GleanService extends fb303.FacebookService {
   // Get the schema of a database.
-  SchemaInfo getSchemaInfo(1: Repo repo, 2: GetSchemaInfo get);
+  SchemaInfo getSchemaInfo(1: Repo repo, 2: GetSchemaInfo get) throws (
+    1: UnknownDatabase u,
+  );
 
   // Check that a schema is valid, throws an exception if not.  Used
   // to verify a schema against the server before making it the
@@ -1010,7 +1012,7 @@ service GleanService extends fb303.FacebookService {
   void validateSchema(1: ValidateSchema v) throws (1: Exception e);
 
   // Send a batch of fact. See the comments on ComputedBatch.
-  SendResponse sendBatch(1: ComputedBatch batch);
+  SendResponse sendBatch(1: ComputedBatch batch) throws (1: UnknownDatabase u);
 
   // Get the substitution for the given handle (obtained via a previous
   // sendBatch) if no writes are outstanding for it. The server forgets the
@@ -1024,6 +1026,7 @@ service GleanService extends fb303.FacebookService {
   SendJsonBatchResponse sendJsonBatch(1: Repo repo, 2: SendJsonBatch s) throws (
     1: Exception e,
     2: Retry r,
+    3: UnknownDatabase u,
   );
 
   // Kick off a database; does nothing if the DB already exists
@@ -1077,30 +1080,37 @@ service GleanService extends fb303.FacebookService {
   CompletePredicatesResponse completePredicates(
     1: Repo repo,
   // later: 2: optional list<PredicateRef> predicates
-  ) throws (1: Exception e, 3: Retry r);
+  ) throws (1: Exception e, 3: Retry r, 4: UnknownDatabase u);
 
   // Wait for a DB to be complete, after the last workFinished
   // call. If finalization failed, this will throw an Exception with
   // the failure reason. If finalization is still in progress, this
   // will throw Retry.
-  FinalizeResponse finalize(1: Repo repo) throws (1: Exception e, 3: Retry r);
+  FinalizeResponse finalize(1: Repo repo) throws (
+    1: Exception e,
+    3: Retry r,
+    4: UnknownDatabase u,
+  );
 
   // Return Fact 0 "" "" when nothing found
-  Fact queryFact(1: Repo repo, 2: Id id);
+  Fact queryFact(1: Repo repo, 2: Id id) throws (1: UnknownDatabase u);
 
   // Get lower and upper bounds on fact ids in the database. The database is
   // guaranteed to have no fact ids < start or >= finish and fact ids within
   // the range will be reasonably dense. There is no guarantee that they are
   // consecutive or that a fact with id start exists.
-  FactIdRange factIdRange(1: Repo repo) throws (1: Exception e);
+  FactIdRange factIdRange(1: Repo repo) throws (
+    1: Exception e,
+    2: UnknownDatabase u,
+  );
 
   // DEPRECATED
-  Id firstFreeId(1: Repo repo) throws (1: Exception e);
+  Id firstFreeId(1: Repo repo) throws (1: Exception e, 2: UnknownDatabase u);
 
   map<Id, PredicateStats> predicateStats(
     1: Repo repo,
     2: PredicateStatsOpts opts,
-  ) throws (1: Exception e);
+  ) throws (1: Exception e, 2: UnknownDatabase u);
 
   ListDatabasesResult listDatabases(1: ListDatabases l);
   GetDatabaseResult getDatabase(1: Repo repo) throws (
@@ -1117,12 +1127,14 @@ service GleanService extends fb303.FacebookService {
   UserQueryResults userQueryFacts(1: Repo repo, 2: UserQueryFacts q) throws (
     1: Exception e,
     3: BadQuery b,
+    4: UnknownDatabase u,
   );
 
   UserQueryResults userQuery(1: Repo repo, 2: UserQuery q) throws (
     1: Exception e,
     3: BadQuery b,
     4: Retry r,
+    5: UnknownDatabase u,
   );
 
   DerivationStatus deriveStored(
