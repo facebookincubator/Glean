@@ -23,8 +23,6 @@ module Glean.RTS.Bytecode.Code
   , output
   , generate
   , castRegister
-  , move
-  , advancePtr
   , callSite
   , calledFrom
   ) where
@@ -433,13 +431,6 @@ registerSegment (Register i) = toEnum $ fromIntegral (i `shiftR` 62)
 -- | Get the index of the register within its segment
 registerIndex :: Register a -> Word64
 registerIndex (Register i) = i .&. 0x3FFFFFFFFFFFFFFF
-
--- | loadReg is fixed to Word, so make a polymorphic version
-move :: Register a -> Register a -> Code ()
-move src dst = issue $ LoadReg (castRegister src) (castRegister dst)
-
-advancePtr :: Register 'DataPtr -> Register 'Word -> Code ()
-advancePtr ptr off = issue $ Add off (castRegister ptr)
 
 -- | Start a new basic block. The previous block will be terminated by the
 -- supplied unconditional jump instruction or, if none is provided, by a jump
