@@ -29,7 +29,7 @@ main :: IO ()
 main = do
   let driver = DerivePass.driver [DeriveGeneric "cxx1.DeclByName"]
   mainTestIndexGeneric driver (pure ()) "search-test" $
-    \_ _ platform _ get -> TestCase $ do
+    \_ _ _ _ get -> TestCase $ do
 
       (backend, repo) <- get
 
@@ -287,16 +287,8 @@ main = do
           _ -> False
 
       search "prop1" "objc property" $ \r ->
-        case (sort r, platform) of
-          -- For some reason we get a method and a property...
-          ([ Entity_cxx (Entity_decl Declaration_objcMethod{}),
-            Entity_cxx (Entity_decl Declaration_objcProperty{})],
-             "platform009") -> True
-          -- llvm12-based indexer returns one extra method (property setter)
-          ([ Entity_cxx (Entity_decl Declaration_objcMethod{}),
-            Entity_cxx (Entity_decl Declaration_objcMethod{}),
-            Entity_cxx (Entity_decl Declaration_objcProperty{})],
-            "platform010" ) -> True
+        case sort r of
+          [ Entity_cxx (Entity_decl Declaration_objcProperty{}) ] -> True
           _ -> False
 
       -- TODO: protocol
