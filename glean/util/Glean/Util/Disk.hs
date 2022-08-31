@@ -9,6 +9,7 @@
 module Glean.Util.Disk
   ( getDiskSize
   , getUsedDiskSpace
+  , getFreeDiskSpace
   ) where
 import System.Process
 import Text.Printf
@@ -20,6 +21,10 @@ getDiskSize = getDfOutput "size"
 -- | Return the used bytes for the current volume
 getUsedDiskSpace :: FilePath -> IO Int
 getUsedDiskSpace = getDfOutput "used"
+
+-- | Return the free bytes in the current volume
+getFreeDiskSpace :: FilePath -> IO Int
+getFreeDiskSpace = getDfOutput "avail"
 
 getDfOutput :: String -> FilePath -> IO Int
 getDfOutput outp path =

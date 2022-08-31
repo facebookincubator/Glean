@@ -6,12 +6,14 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE NamedFieldPuns #-}
 module BackupTest (main) where
 
 import Control.Concurrent.STM
 import Control.Monad
 import Data.Default
 import qualified Data.HashSet as HashSet
+import Data.Int (Int64)
 import Data.List
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -39,6 +41,11 @@ import Glean.Types as Thrift
 import Glean.Util.ConfigProvider
 import Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.Trace
+import Glean.Internal.Types (Completeness(Complete))
+import qualified Data.Map.Strict as Map
+import qualified Data.ByteString.Lazy.Char8 as LBS
+import qualified Glean.Database.Storage as Storage
+import Data.Aeson (encode)
 
 withTest
   :: (EventBaseDataplane -> NullConfigProvider -> FilePath -> IO ())
@@ -56,12 +63,20 @@ data TestEnv = forall site. Backup.Site site => TestEnv
   , testEvents :: TQueue Event
   }
 
-data TestDbSpec = TestDbSpec
-  { _testDbRepo :: Repo
-  , _testDbGood :: Bool
-  , _testDbAge :: Int
-  , _testDbDeps :: Maybe Dependencies
-  }
+data TestDbSpec
+  = TestDbSpec
+    { testDbRepo :: Repo
+    , testDbGood :: Bool
+    , testDbAge :: Int
+    , testDbDeps :: Maybe Dependencies
+    }
+  | CloudTestDbSpec
+    { testDbRepo :: Repo
+    , testDbGood :: Bool
+    , testDbAge :: Int
+    , testDbSize :: Int64
+    , testDbDeps :: Maybe Dependencies
+    }
 
 goodDb :: Text -> Text -> TestDbSpec
 goodDb name hash = TestDbSpec (Repo name hash) True 0 Nothing
@@ -109,13 +124,14 @@ withTestEnv dbs init_server_cfg action evb cfgAPI backupdir = do
 
   withDatabases evb config cfgAPI $ \env -> do
     now <- getCurrentTime
-    mapM_ (makeDB env now) dbs
-    action TestEnv
-      { testEnv = env
-      , testBackup = Backup.Mock.mockSite backupdir
-      , testUpdConfig = update_server_cfg
-      , testEvents = events
-      }
+    let testEnv = TestEnv
+          { testEnv = env
+          , testBackup = Backup.Mock.mockSite backupdir
+          , testUpdConfig = update_server_cfg
+          , testEvents = events
+          }
+    mapM_ (makeDB testEnv now) dbs
+    action testEnv
 
 expectBackups :: [Repo] -> Expect Event
 expectBackups repos = parallel
@@ -132,16 +148,18 @@ expectFinalize repos = parallel
   [ opt (want Waiting) <> wants [ FinalizeStarted repo, FinalizeFinished repo ]
   | repo <- repos ]
 
-makeDB :: Env -> UTCTime -> TestDbSpec -> IO ()
-makeDB env now (TestDbSpec repo good age deps) = do
+created :: Integral a => a -> UTCTime -> UTCTime
+created t = addUTCTime (negate (fromIntegral t))
+
+makeDB :: TestEnv -> UTCTime -> TestDbSpec -> IO ()
+makeDB TestEnv{testEnv = env} now (TestDbSpec repo good age deps) = do
   KickOffResponse False <- kickOffDatabase env def
     { kickOff_repo = repo
     , kickOff_fill = Just $ KickOffFill_writeHandle ""
     , kickOff_dependencies = deps
     }
-  let created t = addUTCTime (negate (fromIntegral t)) now
   void $ atomically $ Catalog.modifyMeta (envCatalog env) repo $ \meta ->
-    return meta { metaCreated = utcTimeToPosixEpochTime (created age) }
+    return meta { metaCreated = utcTimeToPosixEpochTime (created age now) }
   workFinished env WorkFinished
     { workFinished_work = def
         { work_repo = repo
@@ -152,6 +170,26 @@ makeDB env now (TestDbSpec repo good age deps) = do
         else Outcome_failure $ Failure "failed"
     }
   when good $ finalizeWait env repo
+
+makeDB TestEnv{testBackup} now CloudTestDbSpec{..} =
+  void $ Backup.backup testBackup testDbRepo props Nothing mempty
+  where
+    dbtime = utcTimeToPosixEpochTime (created testDbAge now)
+    props = Map.fromList [
+      ("meta"::String, LBS.unpack $ encode $ Meta
+        { metaVersion = Storage.currentVersion
+        , metaCreated = dbtime
+        , metaRepoHashTime = Nothing
+        , metaCompleteness =
+          Complete $ DatabaseComplete dbtime (Just testDbSize)
+        , metaBackup = Nothing
+        , metaProperties = mempty
+        , metaDependencies = testDbDeps
+        , metaCompletePredicates = mempty
+        , metaAxiomComplete = False
+        }
+      )
+      ]
 
 basicBackupTest :: Test
 basicBackupTest = TestCase $ withTest $ withTestEnv
@@ -267,9 +305,26 @@ restoreOrderTest = TestCase $ withTest $ withTestEnv
       , goodDbAge "baz" "4" 3
       ]
 
+restoreNoDiskSpaceTest :: Test
+restoreNoDiskSpaceTest =
+  TestCase $ withTest $ withTestEnv repos id $ \TestEnv{..} -> do
+    testUpdConfig $ \scfg -> scfg
+      { config_restore = def { databaseRestorePolicy_enabled = True }
+      }
+    runDatabaseJanitor testEnv
+    expect testEvents $
+       opt (want Waiting) <> wants [ RestoreStarted repo, RestoreFailed repo ]
+
+  where
+    repo = Repo "foo" "1"
+    repos = [ CloudTestDbSpec repo True 1 (10*tb) Nothing]
+    tb :: Int64
+    tb = 1000000000000
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "basicBackup" basicBackupTest
   , TestLabel "allowedTest" allowedTest
   , TestLabel "restoreOrderTest" restoreOrderTest
+  , TestLabel "restoreNoDiskSpace" restoreNoDiskSpaceTest
   ]

@@ -32,6 +32,7 @@ import Data.Typeable (Typeable)
 import GHC.Generics hiding (Meta)
 import System.Directory
 import System.FilePath
+import Text.Printf
 import TextShow
 
 import Util.Control.Exception
@@ -57,6 +58,7 @@ import Glean.ServerConfig.Types (DatabaseBackupPolicy(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Internal.Types as Thrift
 import Glean.Types as Thrift
+import Glean.Util.Disk
 import Glean.Util.Some
 import Glean.Util.Observed as Observed
 import Glean.Util.Trace
@@ -83,6 +85,11 @@ type Todo = (Repo, IO Bool)
 -- our DB list which matches previous behaviour. Eventually, we should retry
 -- with exponential back-off.
 type SinBin = HashSet Repo
+
+-- | In order to download a DB we need twice the space to untar it, plus a bit
+--   more for RocksDB to expand it
+dbSizeDownloadFactor :: Double
+dbSizeDownloadFactor = 2.1
 
 -- | Get the next thing to do. Prioritises restores over backups and prefers
 -- newer databases.
@@ -235,10 +242,19 @@ doBackup env@Env{..} repo prefix site =
 doRestore :: Env -> Repo -> Meta -> IO Bool
 doRestore env@Env{..} repo meta
   | Just loc <- metaBackup meta
+  , Complete DatabaseComplete{databaseComplete_bytes = Just size}
+  <- metaCompleteness meta
   , Just (_, Some site, r_repo) <- fromRepoLocator envBackupBackends loc
   , r_repo == repo =
     loggingAction (runLogRepo "restore" env repo) (const mempty) (do
       atomically $ notify envListener $ RestoreStarted repo
+      freeBytes <- getFreeDiskSpace envRoot
+      let neededBytes = ceiling $ dbSizeDownloadFactor * fromIntegral size
+      when (freeBytes < neededBytes) $
+        -- the catch-all exception handler will log and cancel the download
+        error $ printf "Not enough disk space: %d needed, %d available"
+                        neededBytes freeBytes
+
       withScratchDirectory envRoot repo $ \scratch -> do
       say logInfo "starting"
       say logInfo "downloading"
