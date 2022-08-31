@@ -153,7 +153,6 @@ getSCMrevisions backend repo = do
   GetDatabaseResult{getDatabaseResult_database = db} <- getDatabase backend repo
 
   let properties = HashMap.toList (database_properties db)
-  putStrLn $ unlines $ map show properties
 
   return $ HashMap.fromList
       [ (scm_name, prop_value)
