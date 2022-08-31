@@ -15,6 +15,9 @@ import ServiceData.Types
 setCounter :: ByteString -> Int -> IO ()
 setCounter _ _ = return ()
 
+clearCounter :: ByteString -> IO ()
+clearCounter _ = return ()
+
 addStatValue :: ByteString -> Int -> IO ()
 addStatValue _ _ = return ()
 
